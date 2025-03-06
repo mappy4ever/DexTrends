@@ -1,0 +1,231 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Define CSS Variables for Colors */
+:root {
+  --color-primary: #7f9282;
+  --color-secondary: #e9ddd2;
+  --color-background: #fffbf7;
+  --color-navbar: rgba(98, 82, 59, 0.6);
+  --color-navbar-scrolled: rgba(98, 82, 59, 0.85);
+  --color-herobox: #4a3b2a;
+  --color-chart: #fdf8f3;
+  --color-text-primary: #1A271E;
+  --color-text-title: #13100a;
+  --color-text-navbar: #E8EBE8;
+  --color-text-heroTitle: #e28743;
+  --color-text-heroSubtitle: #fdf8f3;
+  --color-text-heroDescription: #FAFEF8;
+  --color-text-heading: #46423b;  
+  --color-text-subheading: #393329;
+  --color-text-comment: #3D3D3D;
+  --color-highlightHover: #e28743;
+  --color-button: #DF6D2D;
+  --color-button-hover: #e28743;
+  --color-button-title: #FFFFF4;
+}
+
+.dark {
+  --color-primary: 7f9282;
+  --color-secondary: #393129;
+  --color-background: #13100a;
+  --color-navbar: rgba(30, 28, 23, 0.7);
+  --color-navbar-scrolled: rgba(30, 28, 23, 0.9);
+  --color-herobox: #4a3b2a;
+  --color-chart: #251F14;
+  --color-text-primary: #FFF3E6;
+  --color-text-title: #13100a;
+  --color-text-navbar: #D6D4D1;
+  --color-text-heroTitle: #DF6D2D;
+  --color-text-heroSubtitle: #FFF3E6;
+  --color-text-heroDescription: #FAEFE6;
+  --color-text-heading: #F9F2EC; 
+  --color-text-subheading: #FFF3E6;
+  --color-text-comment: #D3D6D1;
+  --color-highlightHover: #DF6D2D;
+  --color-button: #DF6D2D;
+  --color-button-hover: #B84C05;
+  --color-button-title: #FFFFF4;  
+}
+
+/* Components Section */
+
+@layer components {
+  .title-styling {
+    @apply text-3xl font-title font-bold text-text-title pl-2 mb-4 text-left border-l-4 border-primary md:text-4xl lg:text-5xl transition-transform duration-500;
+  }
+
+  .heading-styling {
+    @apply text-4xl font-heading font-bold text-text-heading pl-4 mb-6 text-left md:text-5xl lg:text-5xl transition-transform duration-500;
+  }
+
+  .subheading-styling {
+    @apply text-xl font-subtitle text-text-subheading font-bold mb-2 text-left md:text-2xl lg:text-3xl transition-transform duration-500;
+  }
+
+  .cardheading-styling {
+    @apply text-xl font-heading font-bold text-text-heading mb-6 text-left md:text-2xl lg:text-3xl border-l-4 pl-2 border-primary transition-transform duration-500;
+  }
+  
+  .blogheading-styling {
+    @apply text-lg font-faq text-text-subheading hover:text-button-hover font-bold text-left md:text-xl transition-transform duration-500;
+  }
+
+  .blogexcerpt-styling {
+    @apply font-subtitle text-text-primary mt-2 text-left text-base transition-transform duration-500;
+  }
+  
+  .body-styling {
+    @apply text-base font-body text-text-primary leading-relaxed md:text-lg lg:text-xl transition-transform duration-500;
+  }
+
+  .faq-styling {
+    @apply text-base font-faq text-text-comment italic md:text-lg lg:text-xl;
+  }
+
+  .comment-styling {
+    @apply text-base font-comment text-text-comment italic md:text-lg lg:text-xl;
+  }
+  
+  /* Hero Styles */
+  .hero-title {
+    @apply text-4xl font-bold text-text-heroTitle opacity-100 md:text-5xl tracking-wide transition-transform duration-500;
+  }
+
+  .hero-subtitle {
+    @apply text-lg mt-2 font-semibold text-text-heroSubtitle opacity-100 md:text-xl lg:text-2xl leading-loose transition-transform duration-500;
+  }
+
+  .hero-description {
+    @apply text-text-heroDescription opacity-100 md:text-lg leading-loose transition-transform duration-500;
+  }
+    
+  /* Responsive floating effect */
+  @screen md {
+    .heading-styling {
+      left: 2rem;
+    }
+  }
+
+  @screen lg {
+    .heading-styling {
+      left: 3rem;
+    }
+  }
+
+  /* Parallax Effect for Headings */
+  .parallax-heading {
+    will-change: transform, opacity;
+    transition: transform 0.1s ease-out, opacity 0.1s ease-out;
+  }
+  
+  .heading-styling,
+  .cardheading-styling,
+  .blogheading-styling {
+    @apply parallax-heading;
+  }
+  
+  /* Button Styles */
+  .btn-primary {
+    @apply bg-button hover:bg-button-hover text-button-title text-base hover:scale-105 transition-all duration-500 rounded-btn font-semibold px-6 py-2 lg:px-8 lg:py-4 lg:text-xl;
+  }
+  
+  .btn-secondary {
+    @apply bg-herobox px-3 py-1 text-base border-transparent text-button-title rounded-full transition-all duration-500 transform hover:bg-button-hover hover:scale-105 flex items-center gap-2;
+  }
+
+  /* Card Styles */
+  .card {
+    @apply bg-secondary shadow-lg rounded-card p-4 transition-transform transform duration-500 hover:scale-105 md:p-6 lg:p-8;
+  }
+
+  /* Container Utilities */
+  .container-sm {
+    @apply max-w-container-sm mx-auto px-4 md:px-6;
+  }
+
+  .container-md {
+    @apply max-w-container-md mx-auto px-4 md:px-8;
+  }
+
+  .container-lg {
+    @apply max-w-container-lg mx-auto px-4 md:px-10;
+  }
+  
+  /* Flex container to show full image in its box dynamically */
+  .flex-container {
+	display: flex;
+    align-items: strech;
+	height: 100%;
+  }
+  
+  .flex-container img {
+	flex-grow: 1;
+    width: 100%;
+    height: auto;
+	min-height: 100%;
+    object-fit: cover;
+  }
+
+  /* Chart highlighting effect */
+  .chart-highlight {
+  filter: brightness(1.2);
+  border: 2px solid #FFAA00;
+  transition: all 0.3s ease-in-out;
+  }
+  
+  #chart-legend.chart-highlight {
+  background-color: rgba(255, 170, 0, 0.2);
+  }
+
+  #chart-slider.chart-highlight {
+  background-color: rgba(0, 150, 255, 0.2);
+  }
+}
+
+/* Utilities Section */
+@layer utilities {
+  /* Responsive Margins */
+  .m-responsive {
+    @apply mx-4 md:mx-6 lg:mx-8;
+  }
+
+  .mt-responsive {
+    @apply mt-4 md:mt-6 lg:mt-8;
+  }
+
+  .mb-responsive {
+    @apply mb-4 md:mb-6 lg:mb-8;
+  }
+
+  /* Responsive Paddings */
+  .p-responsive {
+    @apply p-4 md:p-6 lg:p-8;
+  }
+
+  .px-responsive {
+    @apply px-4 md:px-6 lg:px-8;
+  }
+
+  .py-responsive {
+    @apply py-4 md:py-6 lg:py-8;
+  }
+
+  /* Transition Effects */
+  .transition-default {
+    @apply transition-all duration-300 ease-in-out;
+  }
+
+  .scroll-fade-in {
+    opacity: 0;
+    transform: translateX(10px);
+    transition: opacity 1.2s ease-out, transform 0.8s ease-out;
+  }
+
+  .scroll-fade-in.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  
+}

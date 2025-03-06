@@ -1,0 +1,46 @@
+[
+  {
+    "question": "What types of businesses do you work with?",
+    "answer": "We collaborate with startups, enterprises, and everything in between across healthcare, education, finance, retail, and technology. Whether you're a fast-growing startup or an established enterprise, our data solutions are tailored to meet your unique challenges and goals."
+  },
+  {
+    "question": "How do I know if my business needs Business Intelligence (BI) services?",
+    "answer": "If you find your business is managing large datasets, struggling with inefficiencies, or making decisions based on assumptions rather than data, BI can help streamline operations and drive smarter decision-making."
+  },
+  {
+    "question": "What BI tools and technologies do you use?",
+    "answer": "We leverage a range of powerful BI tools, including Power BI, Tableau, SQL Server, and Azure Data Factory, to ensure seamless data integration and analysis. Additionally, we utilize industry-leading JavaScript tools for dynamic visualizations and Python for advanced analytics and predictive modeling."
+  },
+  {
+    "question": "What’s your typical project timeline?",
+    "answer": "Every project is unique, but most BI implementations range from 4 to 12 weeks depending on scope. During our initial consultation, we’ll map out a detailed project plan with clear milestones."
+  },
+  {
+    "question": "Can you integrate with my existing systems?",
+    "answer": "Absolutely! Our expertise lies in seamlessly integrating new BI solutions with your existing software, databases, and cloud platforms. We ensure minimal disruption while optimizing data flow, compatibility, and system performance."
+  },
+  {
+    "question": "Do you provide training and support for my team?",
+    "answer": "Yes! We believe in empowering our clients, so training and post-implementation support are always part of our process. We provide detailed documentation and ongoing support to empower your team with long-term BI success."
+  },
+   {
+    "question": "Can you help with data migration from legacy systems?",
+    "answer": "Yes! If your business is transitioning from older data systems, we can assist with data migration, cleansing, and structuring to ensure a smooth and reliable transition."
+  },
+  {
+    "question": "Do you work with cloud-based BI solutions?",
+    "answer": "Yes! We specialize in both on-premise and cloud-based BI solutions, leveraging platforms like Azure, AWS, and Google Cloud Platform to build scalable, flexible data ecosystems. Using real-time data processing solutions, you can monitor key business metrics as they happen."
+  },
+  {
+    "question": "How do you ensure data security and compliance?",
+    "answer": "We prioritize data security through encryption, access control, and adherence to industry standards. Our solutions comply with HIPA, PIPIDA, GDPR, and other relevant regulations, ensuring your sensitive data is protected at every stage."
+  },
+  {
+    "question": "What’s the cost of your services?",
+    "answer": "Pricing is based on the scope and complexity of your project. Contact us for a personalized quote."
+  },
+  {
+    "question": "What is your process for getting started?",
+    "answer": "Our engagement begins with a free discovery call, where we discuss your challenges, goals, and data needs. From there, we outline a customized BI strategy tailored to your business, ensuring a seamless transition into data-driven decision-making."
+  }
+]

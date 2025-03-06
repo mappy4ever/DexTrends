@@ -1,0 +1,41 @@
+# Node.js dependencies
+node_modules
+
+# Next.js build files
+.next/
+out/
+.cache/
+
+# System files
+.DS_Store
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.tmp*
+
+# Git related files
+*.lock
+*.bak
+.gitignore.bak
+
+# Old project directories
+**/old/
+
+.vercel
