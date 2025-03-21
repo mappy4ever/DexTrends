@@ -53,18 +53,38 @@ export default function People() {
 
   // Spending over time chart
   const spendingOverTimeChart = useMemo(() => {
-    if (!data?.personData?.spendingByMonth) return {};
-
-    const sortedMonths = [...new Set(data.personData.spendingByMonth.map(d => d.month))].sort();
-
+    if (!data?.orgFacts) return {};
+  
+    const groupedData = data.orgFacts.reduce((acc, entry) => {
+      if (!acc[entry.month]) {
+        acc[entry.month] = {
+          month: entry.month,
+          airfare_spent: 0,
+          other_transport_spent: 0,
+          lodging_spent: 0,
+          meals_spent: 0,
+          other_expenses_spent: 0,
+        };
+      }
+      acc[entry.month].airfare_spent += entry.airfare_spent || 0;
+      acc[entry.month].other_transport_spent += entry.other_transport_spent || 0;
+      acc[entry.month].lodging_spent += entry.lodging_spent || 0;
+      acc[entry.month].meals_spent += entry.meals_spent || 0;
+      acc[entry.month].other_expenses_spent += entry.other_expenses_spent || 0;
+      return acc;
+    }, {});
+  
+    const sortedMonths = Object.keys(groupedData).sort();
+  
     return {
       xAxis: { type: "category", data: sortedMonths },
       yAxis: { type: "value" },
       series: [
-        { name: "Airfare", type: "line", data: sortedMonths.map(month => data.personData.spendingByMonth.find(d => d.month === month)?.airfare || 0) },
-        { name: "Other Transport", type: "line", data: sortedMonths.map(month => data.personData.spendingByMonth.find(d => d.month === month)?.other_transport || 0) },
-        { name: "Lodging", type: "line", data: sortedMonths.map(month => data.personData.spendingByMonth.find(d => d.month === month)?.lodging || 0) },
-        { name: "Meals", type: "line", data: sortedMonths.map(month => data.personData.spendingByMonth.find(d => d.month === month)?.meals || 0) },
+        { name: "Airfare", type: "line", data: sortedMonths.map(month => groupedData[month].airfare_spent) },
+        { name: "Other Transport", type: "line", data: sortedMonths.map(month => groupedData[month].other_transport_spent) },
+        { name: "Lodging", type: "line", data: sortedMonths.map(month => groupedData[month].lodging_spent) },
+        { name: "Meals", type: "line", data: sortedMonths.map(month => groupedData[month].meals_spent) },
+        { name: "Other Expenses", type: "line", data: sortedMonths.map(month => groupedData[month].other_expenses_spent) },
       ],
     };
   }, [data]);
@@ -74,11 +94,17 @@ export default function People() {
     series: [
       {
         type: "pie",
-        data: data?.personData?.spendingByPurpose?.map(p => ({ name: p.purpose_category, value: p.total_spent })) || [],
+        data: Object.values(
+          data?.orgFacts?.reduce((acc, p) => {
+            acc[p.purpose_category] = acc[p.purpose_category] || { name: p.purpose_category, value: 0 };
+            acc[p.purpose_category].value += p.total_spent;
+            return acc;
+          }, {}) || {}
+        ),
       },
     ],
   }), [data]);
-
+  
   // Country map visualization
   const countrySpendingMap = useMemo(() => {
     if (!data || !data.personData || !Array.isArray(data.personData.spendingByCountry)) return {}; // Prevents error
@@ -108,6 +134,10 @@ export default function People() {
       ],
     };
   }, [data]);
+  
+  const totalSpending = useMemo(() => data?.orgFacts?.reduce((acc, item) => acc + item.total_spent, 0) || 0, [data]);
+  const numExpenseReports = useMemo(() => data?.orgFacts?.reduce((acc, item) => acc + item.record_count, 0) || 0, [data]);
+  const avgTripCost = numExpenseReports > 0 ? totalSpending / numExpenseReports : 0;
 
   return (
     <div className="p-6">
@@ -131,8 +161,8 @@ export default function People() {
             className="w-full p-2 border rounded"
           >
             <option value="all">All People</option>
-            {data?.spendingByOrg?.map((org) => (
-              <option key={person.name} value={person.name}>{person.name}</option>
+            {data?.orgFacts?.map((org) => (
+              <option key={org.cleaned_name} value={org.cleaned_name}>{org.cleaned_name}</option>
             ))}
           </select>
         </div>
@@ -142,15 +172,15 @@ export default function People() {
       <div className="grid grid-cols-3 gap-4 mb-4">
         <div className="bg-white p-4 rounded shadow">
           <h2 className="text-lg font-semibold">Total Spending</h2>
-          <p className="text-2xl">${data?.personData?.totalSpending?.toLocaleString() || "0"}</p>
+          <p className="text-2xl">${totalSpending.toLocaleString() || "0"}</p>
         </div>
         <div className="bg-white p-4 rounded shadow">
           <h2 className="text-lg font-semibold">Total Expense Reports</h2>
-          <p className="text-2xl">{data?.personData?.expenseReports || "0"}</p>
+          <p className="text-2xl">{numExpenseReports.toLocaleString() || "0"}</p>
         </div>
         <div className="bg-white p-4 rounded shadow">
           <h2 className="text-lg font-semibold">Average Trip Cost</h2>
-          <p className="text-2xl">${data?.personData?.avgTripCost?.toLocaleString() || "0"}</p>
+          <p className="text-2xl">${avgTripCost.toLocaleString() || "0"}</p>
         </div>
       </div>
 

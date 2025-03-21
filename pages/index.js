@@ -204,7 +204,7 @@ export default function Dashboard() {
         </div>
         <div className="bg-white p-4 rounded shadow">
           <h2 className="text-lg font-semibold">Total Expense Reports</h2>
-          <p className="text-2xl">{numExpenseReports}</p>
+          <p className="text-2xl">{numExpenseReports.toLocaleString()}</p>
         </div>
         <div className="bg-white p-4 rounded shadow">
           <h2 className="text-lg font-semibold">Average Trip Cost</h2>

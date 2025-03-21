@@ -53,28 +53,58 @@ export default function MinistryTrends() {
     series: [
       {
         type: "pie",
-        data: data?.orgData?.spendingByPurpose?.map(p => ({ name: p.purpose_category, value: p.total_spent })) || [],
+        data: Object.values(
+          data?.orgData?.reduce((acc, p) => {
+            acc[p.purpose_category] = acc[p.purpose_category] || { name: p.purpose_category, value: 0 };
+            acc[p.purpose_category].value += p.total_spent;
+            return acc;
+          }, {}) || {}
+        ),
       },
     ],
   }), [data]);
-
+  
   // Spending over time chart
   const spendingOverTimeChart = useMemo(() => {
-    if (!data?.orgData?.spendingByMonth) return {};
-    
-    const sortedMonths = [...new Set(data.orgData.spendingByMonth.map(d => d.month))].sort();
-    
+    if (!data?.orgData) return {};
+  
+    const groupedData = data.orgData.reduce((acc, entry) => {
+      if (!acc[entry.month]) {
+        acc[entry.month] = {
+          month: entry.month,
+          airfare_spent: 0,
+          other_transport_spent: 0,
+          lodging_spent: 0,
+          meals_spent: 0,
+          other_expenses_spent: 0,
+        };
+      }
+      acc[entry.month].airfare_spent += entry.airfare_spent || 0;
+      acc[entry.month].other_transport_spent += entry.other_transport_spent || 0;
+      acc[entry.month].lodging_spent += entry.lodging_spent || 0;
+      acc[entry.month].meals_spent += entry.meals_spent || 0;
+      acc[entry.month].other_expenses_spent += entry.other_expenses_spent || 0;
+      return acc;
+    }, {});
+  
+    const sortedMonths = Object.keys(groupedData).sort();
+  
     return {
       xAxis: { type: "category", data: sortedMonths },
       yAxis: { type: "value" },
       series: [
-        { name: "Airfare", type: comparisonMode ? "bar" : "line", stack: comparisonMode ? "total" : null, data: sortedMonths.map(month => data.orgData.spendingByMonth.find(d => d.month === month)?.airfare || 0) },
-        { name: "Transport", type: comparisonMode ? "bar" : "line", stack: comparisonMode ? "total" : null, data: sortedMonths.map(month => data.orgData.spendingByMonth.find(d => d.month === month)?.other_transport || 0) },
-        { name: "Lodging", type: comparisonMode ? "bar" : "line", stack: comparisonMode ? "total" : null, data: sortedMonths.map(month => data.orgData.spendingByMonth.find(d => d.month === month)?.lodging || 0) },
-        { name: "Meals", type: comparisonMode ? "bar" : "line", stack: comparisonMode ? "total" : null, data: sortedMonths.map(month => data.orgData.spendingByMonth.find(d => d.month === month)?.meals || 0) },
+        { name: "Airfare", type: "line", data: sortedMonths.map(month => groupedData[month].airfare_spent) },
+        { name: "Other Transport", type: "line", data: sortedMonths.map(month => groupedData[month].other_transport_spent) },
+        { name: "Lodging", type: "line", data: sortedMonths.map(month => groupedData[month].lodging_spent) },
+        { name: "Meals", type: "line", data: sortedMonths.map(month => groupedData[month].meals_spent) },
+        { name: "Other Expenses", type: "line", data: sortedMonths.map(month => groupedData[month].other_expenses_spent) },
       ],
     };
-  }, [data, comparisonMode]);
+  }, [data]);
+
+  const totalSpending = useMemo(() => data?.orgData?.reduce((acc, item) => acc + item.total_spent, 0) || 0, [data]);
+  const numExpenseReports = useMemo(() => data?.orgData?.reduce((acc, item) => acc + item.record_count, 0) || 0, [data]);
+  const avgTripCost = numExpenseReports > 0 ? totalSpending / numExpenseReports : 0;
 
   return (
     <div className="p-6">
@@ -98,7 +128,7 @@ export default function MinistryTrends() {
             className="w-full p-2 border rounded"
           >
             <option value="all">All Organizations</option>
-            {data?.spendingByOrg?.map((org) => (
+            {data?.orgData?.map((org) => (
               <option key={org.owner_org_title} value={org.owner_org_title}>
                 {org.owner_org_title}
               </option>
@@ -127,15 +157,15 @@ export default function MinistryTrends() {
       <div className="grid grid-cols-3 gap-4 mb-4">
         <div className="bg-white p-4 rounded shadow">
           <h2 className="text-lg font-semibold">Total Spending</h2>
-          <p className="text-2xl">${data?.orgData?.totalSpending?.toLocaleString() || "0"}</p>
+          <p className="text-2xl">${totalSpending.toLocaleString() || "0"}</p>
         </div>
         <div className="bg-white p-4 rounded shadow">
           <h2 className="text-lg font-semibold">Total Expense Reports</h2>
-          <p className="text-2xl">{data?.orgData?.expenseReports || "0"}</p>
+          <p className="text-2xl">{numExpenseReports.toLocaleString() || "0"}</p>
         </div>
         <div className="bg-white p-4 rounded shadow">
           <h2 className="text-lg font-semibold">Average Trip Cost</h2>
-          <p className="text-2xl">${data?.orgData?.avgTripCost?.toLocaleString() || "0"}</p>
+          <p className="text-2xl">${avgTripCost.toLocaleString() || "0"}</p>
         </div>
       </div>
 
