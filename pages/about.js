@@ -1,3 +1,4 @@
+import DashboardAbout from "../components/DashboardAbout";
 import AboutSection from "../components/AboutSection";
 import FAQ from "../components/FAQ";
 import HeroSection from "../components/HeroSection";
@@ -14,7 +15,8 @@ export default function About() {
       />
 
       <div className="max-w-7xl mx-auto p2-2 md:px-4 py-4 md:py-12 space-y-12">
-        <AboutSection />
+        <DashboardAbout />
+		<AboutSection />
         <FAQ />
       </div>
     </div>

@@ -1,153 +1,194 @@
 import { useTheme } from "next-themes";
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
-import { AiOutlineHome } from "react-icons/ai";
-import { BsSun, BsMoon } from "react-icons/bs";
-import PakePointLogo from '../components/PakePointLogo';
+import { RxDashboard, RxTable } from "react-icons/rx";
+import { AiOutlineBulb } from "react-icons/ai";
+import { BsSun, BsMoon, BsGlobeEuropeAfrica, BsPersonBoundingBox } from "react-icons/bs";
+import { MdCompare, MdPersonSearch } from "react-icons/md";
+import { IoStatsChart, IoMap } from "react-icons/io5";
+import { RiGovernmentFill } from "react-icons/ri";
+import { TbLayoutSidebarLeftCollapse, TbLayoutSidebarLeftExpand } from "react-icons/tb";
+import { useRouter } from "next/router";
 
-export default function Navbar() {
+export default function Navbar({ isCollapsed, setIsCollapsed }) {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const menuWrapperRef = useRef(null); // Wraps both the button and the menu
+  const [hoverExpanded, setHoverExpanded] = useState(false);
+  const [sidebarMode, setSidebarMode] = useState("expand"); // "expand", "collapse", "hover"
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const menuWrapperRef = useRef(null);
+  const router = useRouter();
+
+  const pageTitles = {
+    "/": "Dashboard",
+    "/reports": "Reports",
+    "/events": "Events",
+    "/tables": "Tables",
+    "/about": "About",
+  };
+
+  const currentTitle = pageTitles[router.pathname] || "OnOurDime";
 
   useEffect(() => {
     setMounted(true);
-    
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
+    const savedMode = localStorage.getItem("sidebarMode");
+    if (savedMode) setSidebarMode(savedMode);
+  }, []);
 
+  useEffect(() => {
+    localStorage.setItem("sidebarMode", sidebarMode);
+    if (sidebarMode === "collapse") {
+      setIsCollapsed(true);
+      setHoverExpanded(false);
+    }
+    if (sidebarMode === "expand") {
+      setIsCollapsed(false);
+      setHoverExpanded(true);
+    }
+    if (sidebarMode === "hover") {
+      setIsCollapsed(true);
+    }
+  }, [sidebarMode]);
+
+  useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuWrapperRef.current && !menuWrapperRef.current.contains(event.target)) {
-        setIsOpen(false);
+        setMobileOpen(false);
       }
     };
-
-    window.addEventListener("scroll", handleScroll);
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => {
-      window.removeEventListener("scroll", handleScroll);
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
-  return (
-    <nav
-      className={`bg-[var(--color-navbar)] text-text-navbar fixed top-0 left-0 w-full z-50 transition-all duration-500 items-center backdrop-blur-sm ${
-        scrolled ? "bg-[var(--color-navbar-scrolled)] dark:bg-[var(--color-navbar-scrolled)]" : ""
-      } md:h-20 h-16`}
+  const handleSidebarToggle = () => {
+    if (sidebarMode === "expand") {
+      setSidebarMode("collapse");
+      setHoverExpanded(false);
+    } else if (sidebarMode === "collapse") {
+      setSidebarMode("hover");
+	  setHoverExpanded(true);
+    } else {
+      setSidebarMode("expand");
+      setHoverExpanded(true);
+    }
+  };
+
+  const handleMouseEnter = () => {
+    if (sidebarMode === "hover") setHoverExpanded(true);
+  };
+
+  const handleMouseLeave = () => {
+    if (sidebarMode === "hover") setHoverExpanded(false);
+  };
+
+  const SidebarItem = ({ href, icon, text }) => (
+    <Link 
+      href={href} 
+      className="flex items-center gap-3 p-3 hover:bg-gray-600 dark:hover:bg-gray-700 rounded-md"
     >
-      <div className="max-w-7xl mx-auto px-4 w-full h-full flex items-center justify-between">
-        <Link
-          href="/"
-          className="font-heading hover:text-text-highlightHover md:text-3xl"
-          onClick={() => setIsOpen(false)}
-        >
-          <PakePointLogo className="h-10 md:h-16 w-auto text-text-navbar hover:text-text-highlightHover" />
-        </Link>
+      {icon}
+      {!isCollapsed || hoverExpanded ? <span>{text}</span> : null}
+    </Link>
+  );
 
-        {/* Dark Mode Toggle */}
-        <div className="flex items-center space-x-4">
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex text-xl items-center space-x-4">
-            <Link href="/" className="hover:text-text-highlightHover">
-              <AiOutlineHome size={30} />
-            </Link>
-            <Link href="/about" className="hover:text-text-highlightHover">About</Link>
-            <Link href="/services" className="hover:text-text-highlightHover">Services</Link>
-            <Link href="/portfolio" className="hover:text-text-highlightHover">Portfolio</Link>
-            <Link href="/blog" className="hover:text-text-highlightHover">Blog</Link>
-            <Link href="/contact" className="hover:text-text-highlightHover">Contact</Link>
-          </div>
-          <button
-            className={`relative w-16 h-8 rounded-full transition-all duration-300 shadow-inner ${
-              theme === "dark" ? "bg-white/10 shadow-[#251f14]" : "bg-white/10 shadow-[#393129]"
-            }`}
+  return (
+    <>
+      {/* Mobile Navbar */}
+      <div className="md:hidden fixed top-0 left-0 w-full bg-[var(--color-navbar)] text-text-navbar flex items-center justify-between px-4 h-14 shadow-md z-50">
+        <span className="font-bold text-lg">{currentTitle}</span>
+        <div className="flex items-center gap-4">
+          
+		  {/* Dark Mode Toggle */}
+		  <button
+            className="p-1 rounded-full bg-white/10"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            aria-label="Toggle Dark Mode"
           >
-            <div
-              className={`absolute top-1 left-1 w-6 h-6 rounded-full shadow-md transition-all duration-300 transform ${
-                theme === "dark"
-                  ? "translate-x-8 bg-[#251f14] shadow-lg shadow-[#251f14]"
-                  : "bg-[#3D3D3D] shadow-lg shadow-[#393129]"
-              }`}
-            >
-              {mounted && theme === "dark" ? (
-                <BsMoon className="text-text-navbar mx-auto mt-1" size={18} />
-              ) : (
-                <BsSun className="text-[#DFAD2D] mx-auto mt-1" size={18} />
-              )}
-            </div>
+            {mounted && theme === "dark" ? <BsSun size={24} /> : <BsMoon size={24} />}
           </button>
-        </div>
 
-        {/* Mobile Menu Wrapper */}
-        <div ref={menuWrapperRef} className="md:hidden relative">
           {/* Mobile Menu Button */}
-          <button
+		  <button
             type="button"
             className="text-button focus:outline-none focus:text-button-darkHover transition-transform duration-300 transform scale-110"
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={(e) => setMobileOpen(true)}
           >
-            {isOpen ? (
-              // X Icon
+            {mobileOpen ? (
               <svg className="h-8 w-8" viewBox="0 0 24 24" fill="none">
-                <path
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 6L18 18M6 18L18 6"
-                />
+                <path stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M6 6L18 18M6 18L18 6" />
               </svg>
             ) : (
-              // Hamburger Menu Icon
               <svg className="h-8 w-8" viewBox="0 0 24 24" fill="none">
-                <path
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
+                <path stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             )}
           </button>
-
-          {/* Mobile Navigation with Full-Width & Opaque Background */}
-          {isOpen && (
-           <>
-         
-           {/* Full-width dropdown menu with opaque background */}
-           <div className="fixed top-16 left-0 w-full bg-[var(--color-navbar)] px-4 pb-3 space-y-2 transition-all duration-300 shadow-lg z-50">
-          	 <Link href="/" className="block hover:text-text-highlightHover transition" onClick={() => setIsOpen(false)}>
-          	 Home
-          	 </Link>
-          	 <Link href="/about" className="block hover:text-text-highlightHover transition" onClick={() => setIsOpen(false)}>
-          	 About
-          	 </Link>
-          	 <Link href="/services" className="block hover:text-text-highlightHover transition" onClick={() => setIsOpen(false)}>
-          	 Services
-          	 </Link>
-          	 <Link href="/portfolio" className="block hover:text-text-highlightHover transition" onClick={() => setIsOpen(false)}>
-          	 Portfolio
-          	 </Link>
-          	 <Link href="/blog" className="block hover:text-text-highlightHover transition" onClick={() => setIsOpen(false)}>
-          	 Blog
-          	 </Link>
-          	 <Link href="/contact" className="block hover:text-text-highlightHover transition" onClick={() => setIsOpen(false)}>
-          	 Contact
-          	 </Link>
-           </div>
-           </>
-          )}
-
         </div>
       </div>
-    </nav>
+
+      {/* Mobile Menu (Dropdown) */}
+      {mobileOpen && (
+        <div
+          ref={menuWrapperRef}
+          className="md:hidden fixed top-14 left-0 w-full bg-[var(--color-navbar)] px-4 pb-3 space-y-2 shadow-md z-50"
+        >
+          {/* Mobile Navigation (No Icons) */}
+          <nav className="flex flex-col gap-4 mt-6 text-lg">
+            <Link href="/" className="hover:text-text-highlightHover" onClick={() => setMobileOpen(false)}>Dashboard</Link>
+            <Link href="/orgs" className="hover:text-text-highlightHover" onClick={() => setMobileOpen(false)}>Department&nbsp;Trends</Link>
+			<Link href="/people" className="hover:text-text-highlightHover" onClick={() => setMobileOpen(false)}>Person&nbsp;Inspector</Link>
+            <Link href="/map" className="hover:text-text-highlightHover" onClick={() => setMobileOpen(false)}>Map&nbsp;Explorer</Link>
+            <Link href="/events" className="hover:text-text-highlightHover" onClick={() => setMobileOpen(false)}>Event&nbsp;Comparer</Link>
+            <Link href="/tables" className="hover:text-text-highlightHover" onClick={() => setMobileOpen(false)}>Tables</Link>
+            <Link href="/about" className="hover:text-text-highlightHover" onClick={() => setMobileOpen(false)}>About</Link>
+          </nav>
+        </div>
+      )}
+
+      {/* Left Sidebar (Desktop Only) */}
+      <div
+        className={`hidden md:flex flex-col fixed left-0 top-0 z-50 h-screen bg-[var(--color-navbar)] text-text-navbar shadow-md transition-all duration-300 ${
+          isCollapsed && !hoverExpanded ? "w-16" : "w-64"
+        }`}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        {/* Sidebar Header */}
+        <div className="flex justify-between items-center px-4 py-3">
+          {!isCollapsed || hoverExpanded ? <h1 className="text-lg font-bold">OnOurDime</h1> : null}
+          <button onClick={handleSidebarToggle} className="p-2">
+            {sidebarMode === "expand" ? (
+              <TbLayoutSidebarLeftCollapse size={24} className="text-gray-500" />
+            ) : sidebarMode === "collapse" ? (
+              <TbLayoutSidebarLeftExpand size={24} className="text-gray-500" />
+            ) : (
+              <TbLayoutSidebarLeftExpand size={24} />
+            )}
+          </button>
+        </div>
+
+        {/* Navigation Links */}
+        <nav className="flex flex-col gap-2 px-2">
+          <SidebarItem href="/" icon={<RxDashboard size={24} />} text="Dashboard" />
+          <SidebarItem href="/orgs" icon={<RiGovernmentFill size={24} />} text="Department&nbsp;Trends" />
+		  <SidebarItem href="/people" icon={<BsPersonBoundingBox size={24} />} text="Person&nbsp;Inspector" />
+		  <SidebarItem href="/map" icon={<BsGlobeEuropeAfrica size={24} />} text="Map&nbsp;Explorer" />
+          <SidebarItem href="/events" icon={<MdCompare size={24} />} text="Event&nbsp;Comparer" />
+          <SidebarItem href="/tables" icon={<RxTable size={24} />} text="Tables" />
+          <SidebarItem href="/about" icon={<AiOutlineBulb size={24} />} text="About" />
+        </nav>
+
+        {/* Dark Mode Button */}
+        <div className="absolute bottom-4 left-4">
+          <button
+            className="p-1 rounded-full bg-white/10"
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          >
+            {mounted && theme === "dark" ? <BsSun size={24} /> : <BsMoon size={24} />}
+          </button>
+        </div>
+      </div>
+    </>
   );
 }

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import "../styles/globals.css";
+import "react-datepicker/dist/react-datepicker.css";
 import Layout from "../components/Layout";
-import CallToActionButton from "../components/CallToActionButton";
 import ThemeProvider from "../components/ThemeProvider";
 
 function MyApp({ Component, pageProps }) {
@@ -24,9 +24,6 @@ function MyApp({ Component, pageProps }) {
     <ThemeProvider>
       <Layout>
         <Component {...pageProps} />
-        <div className="fixed bottom-8 right-8 z-50">
-          <CallToActionButton />
-        </div>
       </Layout>
     </ThemeProvider>
   );

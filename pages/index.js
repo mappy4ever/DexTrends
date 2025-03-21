@@ -1,239 +1,253 @@
-import { useEffect, useState } from "react";
-import HeroSection from "../components/HeroSection";
-import ServicesOverview from "../components/ServicesOverview";
-import { AiOutlineBulb, AiOutlineRocket, AiOutlineThunderbolt, AiOutlineBarChart, AiOutlineFundView, AiOutlineFileDone, AiOutlineSetting, AiOutlineGlobal, AiOutlineSketch, AiOutlineCheckCircle, AiOutlineCloud, AiOutlineTeam } from "react-icons/ai";
-import { FaBuildingColumns } from "react-icons/fa6";
-import { FiDatabase } from "react-icons/fi";
-import { VscRocket, VscRobot } from "react-icons/vsc";
+import { useEffect, useState, useMemo } from "react";
+import dynamic from "next/dynamic";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-export default function Home() {
-  const [offset, setOffset] = useState(0);
+const ECharts = dynamic(() => import("echarts-for-react"), { ssr: false });
 
+export default function Dashboard() {
+  const [data, setData] = useState(null);
+  const [heatmapData, setHeatmapData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [customStartDate, setCustomStartDate] = useState(() => {
+    if (typeof window !== "undefined") {
+      const storedStart = localStorage.getItem("start_date");
+      return storedStart ? new Date(storedStart) : new Date(new Date().setFullYear(new Date().getFullYear() - 1));
+    }
+    return new Date(new Date().setFullYear(new Date().getFullYear() - 1));
+  });
+
+  const [customEndDate, setCustomEndDate] = useState(() => {
+    if (typeof window !== "undefined") {
+      const storedEnd = localStorage.getItem("end_date");
+      return storedEnd ? new Date(storedEnd) : new Date();
+    }
+    return new Date();
+  });
+  
+  const [selectedOrg, setSelectedOrg] = useState("all");
+  
   useEffect(() => {
-    const elements = document.querySelectorAll(".scroll-fade-in");
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-          }
-        });
+    if (typeof window !== "undefined") {
+      localStorage.setItem("start_date", customStartDate.toISOString());
+      localStorage.setItem("end_date", customEndDate.toISOString());
+    }
+
+    let url = `/api/data?type=dashboard&start=${customStartDate.toISOString().slice(0, 7)}&end=${customEndDate.toISOString().slice(0, 7)}&org=${selectedOrg}`;
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+        setLoading(false);
+
+        // Transform heatmap data: Ensure valid numbers and remove any undefined/null values
+        const transformedHeatmap = data.spendingHeatmap
+          .filter(({ year, month, total_spent }) => year && month && total_spent)
+          .map(({ year, month, total_spent }) => [month, year, total_spent]);
+
+        setHeatmapData(transformedHeatmap);
+      })
+      .catch(() => setLoading(false));
+  }, [customStartDate, customEndDate, selectedOrg]);
+
+  // Spending by purpose chart
+  const spendingByPurposeChart = useMemo(() => ({
+    series: [
+      {
+        type: "pie",
+        data: Object.values(
+          data?.spendingByPurpose?.reduce((acc, p) => {
+            acc[p.purpose_category] = acc[p.purpose_category] || { name: p.purpose_category, value: 0 };
+            acc[p.purpose_category].value += p.total_spent;
+            return acc;
+          }, {}) || {}
+        ),
       },
-      { threshold: 0.1 }
-    );
+    ],
+  }), [data]);
 
-    elements.forEach((el) => observer.observe(el));
-    return () => elements.forEach((el) => observer.unobserve(el));
-  }, []);
+  // Spending over time chart
+  const spendingOverTimeChart = useMemo(() => {
+    if (!data?.spendingByOrg) return {};
+    
+    const groupedData = data.spendingByOrg.reduce((acc, t) => {
+      if (!acc[t.month]) {
+        acc[t.month] = { month: t.month, airfare: 0, other_transport: 0, lodging: 0, meals: 0, other_expenses: 0 };
+      }
+      acc[t.month].airfare += t.airfare;
+      acc[t.month].other_transport += t.other_transport;
+      acc[t.month].lodging += t.lodging;
+      acc[t.month].meals += t.meals;
+      acc[t.month].other_expenses += t.other_expenses;
+      return acc;
+    }, {});
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const headings = document.querySelectorAll(".parallax-heading");
-      headings.forEach((heading) => {
-        const rect = heading.getBoundingClientRect();
-        const scrollAmount = Math.max(0, window.innerHeight - rect.top) * 0.04;
-  
-        heading.style.transform = `translateX(${scrollAmount}px)`; // Moves to the right
-        heading.style.opacity = Math.max(0.8, 1 - scrollAmount * 0.01); // Fades to XX% opacity
-      });
+    const sortedMonths = Object.keys(groupedData).sort();
+
+    return {
+      xAxis: { type: "category", data: sortedMonths },
+      yAxis: { type: "value" },
+      series: [
+        { name: "Airfare", type: "line", data: sortedMonths.map(month => groupedData[month].airfare) },
+        { name: "Other Transport", type: "line", data: sortedMonths.map(month => groupedData[month].other_transport) },
+        { name: "Lodging", type: "line", data: sortedMonths.map(month => groupedData[month].lodging) },
+        { name: "Meals", type: "line", data: sortedMonths.map(month => groupedData[month].meals) },
+        { name: "Other Expenses", type: "line", data: sortedMonths.map(month => groupedData[month].other_expenses) },
+      ],
     };
+  }, [data]);
+
+  const maxHeatmapValue = heatmapData.length > 0 ? Math.max(...heatmapData.map(d => d[2])) : 0;
   
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const heatmapChart = {
+    tooltip: {
+      position: 'top',
+      formatter: function (params) {
+        return `Year: ${params.value[1]}<br>Month: ${params.value[0]}<br>Spending: $${params.value[2].toLocaleString()}`;
+      },
+    },
+    grid: {
+      height: '70%',
+      top: '10%',
+    },
+    xAxis: {
+      type: 'category',
+      name: 'Month',
+      data: Array.from({ length: 12 }, (_, i) => i + 1), // 1-12 for months
+      splitArea: { show: true },
+    },
+    yAxis: {
+      type: 'category',
+      name: 'Year',
+      data: [...new Set(heatmapData.map(d => d[1]))].sort(),
+      splitArea: { show: true },
+    },
+    visualMap: {
+      min: 0,
+      max: maxHeatmapValue || 10000,
+      calculable: true,
+      orient: "horizontal",
+      left: "center",
+      bottom: "10",
+      inRange: { color: ["#ffffb2", "#fd8d3c", "#bd0026"] },
+    },
+    series: [
+      {
+        name: "Spending",
+        type: "heatmap",
+        data: heatmapData,
+        emphasis: {
+          itemStyle: {
+            borderColor: "#333",
+            borderWidth: 1,
+          },
+        },
+      },
+    ],
+  };
+
+  const totalSpending = useMemo(() => data?.spendingByPurpose?.reduce((acc, item) => acc + item.total_spent, 0) || 0, [data]);
+  const numExpenseReports = useMemo(() => data?.spendingByPurpose?.reduce((acc, item) => acc + item.record_count, 0) || 0, [data]);
+  const avgTripCost = numExpenseReports > 0 ? totalSpending / numExpenseReports : 0;
+  
+  const aggregateTop10Data = (arr, key) => {
+    return Object.values(arr?.reduce((acc, item) => {
+      if (!acc[item[key]]) {
+        acc[item[key]] = { ...item };
+      } else {
+        acc[item[key]].total_spent += item.total_spent;
+      }
+      return acc;
+    }, {}) || {}).sort((a, b) => b.total_spent - a.total_spent).slice(0, 10);
+  };
+
+  const topOrgs = aggregateTop10Data(data?.spendingByOrg, "owner_org_title");
+  const topNames = aggregateTop10Data(data?.spendingByName, "name");
 
   return (
-    <div>
-      <HeroSection
-        title="Turning Data into Strategy"
-        subtitle="Empowering Your Business with Intelligent Insights"
-        description="Bridging data, technology, and strategy to help businesses unlock their full potential."
-        backgroundImage="/index-hero.jpg"
-      />
+    <div className="p-6">
+      <h1 className="text-2xl font-bold">Dashboard</h1>
 
-      <section className="py-4 md:py-12 px-6 bg-background dark:bg-background-dark transition-all duration-300">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="heading-styling ml-0 md:parallax-heading">
-            Your Data. Your Vision. Our Expertise.
-          </h2>
-          <p className="body-styling max-w-5xl mx-auto">
-            In a world where data drives success, we don’t just analyze numbers—we unlock opportunities. Our mission is simple: to empower businesses with actionable intelligence, bridging the gap between technology, strategy, and real-world impact.
-          </p>
-          <p className="body-styling mt-4 md:mt-8 mb-6 md:mb-10 max-w-3xl mx-auto flex items-center gap-3">
-            <AiOutlineBulb size={48}/>
-            From business intelligence to automation, cloud migration, and analytics, we ensure your data works for you—not the other way around.
-          </p>
-          <h3 className="subheading-styling parallax-heading flex items-center gap-2">
-            <VscRocket /> Why Choose Us?
-          </h3>
-          <p className="body-styling py-2 md:py-4">
-            We approach every project with the same dedication as if it were our own business. From high-level strategy to hands-on execution, we craft cost-effective, results-driven solutions tailored to your unique needs.
-          </p>
-          <ul className="list-disc list-inside body-styling mt-2 ml-6 space-y-2">
-            <li className="flex items-start gap-3">
-              <AiOutlineCheckCircle size={48}/>
-              <div>
-                <strong>Industry-Leading Expertise. </strong>
-                No jargon, just clear, real-world solutions that help you grow.
-              </div>
-            </li>
-            <li className="flex items-start gap-3">
-              <AiOutlineCheckCircle size={48}/>
-              <div>
-                <strong>We Work as Partners. </strong>
-                Data isn’t just numbers...it’s your roadmap to scalability, efficiency, and success.
-              </div>
-            </li>
-            <li className="flex items-start gap-3">
-              <AiOutlineCheckCircle size={48}/>
-              <div>
-                <strong>Cost-Effective, Scalable Solutions. </strong>
-                Your success is our success, and we build solutions with your business in mind.
-              </div>
-            </li>
+      {/* Date & Organization Filters */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div className="flex flex-col">
+          <label className="font-medium mb-1">Select Date Range:</label>
+          <div className="flex gap-2">
+            <DatePicker selected={customStartDate} onChange={setCustomStartDate} className="w-full p-2 border rounded" />
+            <DatePicker selected={customEndDate} onChange={setCustomEndDate} className="w-full p-2 border rounded" />
+          </div>
+        </div>
+
+        <div className="flex flex-col">
+          <label className="font-medium mb-1">Select Organization:</label>
+          <select
+            value={selectedOrg}
+            onChange={(e) => setSelectedOrg(e.target.value)}
+            className="w-full p-2 border rounded"
+          >
+            <option value="all">All Organizations</option>
+            {data?.spendingByOrg?.map((org) => (
+              <option key={org.owner_org_title} value={org.owner_org_title}>
+                {org.owner_org_title}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+	  {/* Summary Cards */}
+      <div className="grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="bg-white p-4 rounded shadow">
+          <h2 className="text-lg font-semibold">Total Spending</h2>
+          <p className="text-2xl">${totalSpending.toLocaleString()}</p>
+        </div>
+        <div className="bg-white p-4 rounded shadow">
+          <h2 className="text-lg font-semibold">Total Expense Reports</h2>
+          <p className="text-2xl">{numExpenseReports}</p>
+        </div>
+        <div className="bg-white p-4 rounded shadow">
+          <h2 className="text-lg font-semibold">Average Trip Cost</h2>
+          <p className="text-2xl">${avgTripCost.toLocaleString()}</p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+        <div className="bg-white p-4 rounded shadow">
+          <h2 className="text-lg font-semibold">Top People</h2>
+          <ul>
+            {topNames.map((person, index) => (
+              <li key={index}>{person.name}: ${person.total_spent.toLocaleString()}</li>
+            ))}
           </ul>
         </div>
-      </section>
-
-      <section className="max-w-7xl mx-auto py-4 md:py-12 px-6 space-y-12">
-        <div className="flex flex-col md:flex-row items-center gap-12 scroll-fade-in">
-          <div className="w-full md:w-1/2">
-            <img
-              src="/bi-matters.jpg"
-              alt="Harness Your Data"
-              className="rounded-lg object-cover shadow-lg transition-transform duration-500 ease-in-out transform hover:scale-105 h-[225px] md:h-full w-full max-w-lg mx-auto"
-            />
-          </div>
-          <div className="max-w-xl space-y-4">
-            <h3 className="subheading-styling flex items-center gap-2">
-              <VscRobot size={48} /> Harness the Full Potential of Your Data
-            </h3>
-            <p className="body-styling">
-               Data is more than just information—it’s the foundation of every decision that shapes the future of your business. But raw data alone isn’t enough. You need clarity, automation, and strategy to turn insights into action.
-            </p>
-            <p className="body-styling">
-               We help businesses navigate complex data landscapes, eliminate inefficiencies, and optimize decision-making through tailored BI solutions. Whether you're scaling operations, improving reporting, or migrating to the cloud, our expertise ensures you stay ahead of the curve.
-            </p>
-            <h3 className="subheading-styling">
-              The Power of BI
-            </h3>
-            <ul className="list-inside body-styling mt-2 ml-4 space-y-4">
-              <li className="flex items-start gap-3">
-                <AiOutlineGlobal size={48} />
-                <div>
-                  <strong>Make Smarter, Data-Driven Decisions. </strong>
-                  Move beyond gut instincts with analytics-driven strategy.
-                </div>
-              </li>
-              <li className="flex items-start gap-3">
-                <AiOutlineSetting size={48} />
-                <div>
-                  <strong>Enhance Efficiency & Automation. </strong>
-                  Streamline processes to maximize productivity and reduce manual effort.
-                </div>
-              </li>
-              <li className="flex items-start gap-3">
-                <AiOutlineSketch size={48} />
-                <div>
-                  <strong>Seamless Integration Across Teams. </strong>
-                  Foster collaboration through intuitive dashboards and real-time insights.
-                </div>
-              </li>
-            </ul>
-          </div>
+        <div className="bg-white p-4 rounded shadow">
+          <h2 className="text-lg font-semibold">Top Organizations</h2>
+          <ul>
+            {topOrgs.map((org, index) => (
+              <li key={index}>{org.owner_org_title}: ${org.total_spent.toLocaleString()}</li>
+            ))}
+          </ul>
         </div>
-
-        <section className="w-full px-4 space-y-6 text-center">
-          <h3 className="subheading-styling parallax-heading text-3xl md:text-4xl flex items-center gap-3"> 
-            <FaBuildingColumns size={48} /> Our Approach: 3 Pillars of BI Success
-          </h3>
-          <p className="body-styling">
-            Our proven approach is built on three key pillars that drive results and help organizations leverage data effectively.
-          </p>
-        </section>
-
-        <div className="flex flex-col md:flex-row-reverse items-center gap-4 md:gap-12 scroll-fade-in">
-          <div className="w-full md:w-1/2">
-            <img
-              src="/three-pillars.jpg"
-              alt="Our 3 Pillars of BI Success"
-              className="rounded-lg object-cover shadow-lg transition-transform duration-500 ease-in-out transform hover:scale-105 h-[225px] md:h-full w-full max-w-lg mx-auto"
-            />
-          </div>
-          <div className="max-w-xl">
-
-            <div className="mt-4 md:mt-8 space-y-6">
-              <div>
-                <h4 className="subheading-styling inline-flex items-center">
-                  <FiDatabase size={36} className="mr-4" /> Data: Foundation of Strategy
-                </h4>
-                <p className="body-styling mt-2">
-                  Your business is only as strong as the data driving it. We ensure your data is accurate, secure, and actionable.
-                </p>
-                <ul className="list-inside body-styling mt-4 ml-4 space-y-2 md:space-y-4">
-                  <li><strong>Robust Data Governance -</strong> Compliance with HIPA, PIPEDA, and industry best practices.</li>
-                  <li><strong>Secure Cloud Solutions -</strong> Expertise in Azure, GCP, and scalable infrastructure.</li>
-                  <li><strong>Advanced Analytics -</strong> Predict trends and uncover opportunities before your competitors.</li>
-                </ul>
-              </div>
-
-              <div>
-                <h4 className="subheading-styling inline-flex items-center">
-                  <AiOutlineCloud size={36} className="mr-4" /> Technology: Powering Your Insights
-                </h4>
-                <p className="body-styling mt-2">
-                  Transform complex data into meaningful insights with cutting-edge BI tools.
-                </p>
-                <ul className="list-inside body-styling mt-4 ml-4 space-y-2 md:space-y-4">
-                  <li><strong>Interactive Dashboards -</strong> Power BI, Tableau, and Apache Echarts for real-time decision-making.</li>
-                  <li><strong>Scalable Cloud Solutions -</strong> Efficient storage, processing, and analysis in the cloud.</li>
-                  <li><strong>Workflow Automation -</strong> Reduce manual processes and streamline business operations.</li>
-                </ul>
-              </div>
-
-              <div>
-                <h4 className="subheading-styling inline-flex items-center">
-                  <AiOutlineTeam size={36} className="mr-2 text-xl" /> People: Enabling Data-Driven Cultures
-                </h4>
-                <p className="body-styling mt-2">
-                  Data alone isn’t enough—it must be accessible, understandable, and actionable for your team.
-                </p>
-                <ul className="list-inside body-styling mt-4 ml-4 space-y-2 md:space-y-4">
-                  <li><strong>Training & Upskilling -</strong> Build data literacy and empower employees at every level.</li>
-                  <li><strong>Seamless Collaboration -</strong> Break down silos between teams with centralized, intuitive tools.</li>
-                  <li><strong>Ongoing Support -</strong> We’re with you every step of the way, ensuring long-term success.</li>
-                </ul>
-              </div>
-            </div>
-          </div>
+      </div>
+	  
+	  {/* Charts */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 mt-6 pb-16">
+		<div className="bg-white p-4 rounded shadow mt-6">
+          <h2 className="text-lg font-semibold">Spending Over Time</h2>
+          {!loading && <ECharts option={spendingOverTimeChart} style={{ height: "400px" }} />}
         </div>
-
-        <div className="flex flex-col md:flex-row items-center gap-12 scroll-fade-in">
-          <div className="w-full md:w-1/2">
-            <img
-              src="/process.jpg"
-              alt="Our Process"
-              className="rounded-lg object-cover shadow-lg transition-transform duration-500 ease-in-out transform hover:scale-105 h-[225px] md:h-full w-full max-w-lg mx-auto"
-            />
-          </div>
-          <div className="max-w-xl">
-            <h3 className="subheading-styling flex items-center gap-3">
-              <AiOutlineFileDone size={36}/> Our Process: Vision to Value
-            </h3>
-            <p className="body-styling">
-              We take a structured, collaborative approach to business intelligence, ensuring your investment delivers meaningful business impact.
-            </p>
-            <div className="body-styling mt-2 md:mt-6 ml-4 space-y-4">
-              <p><strong>Discovery:</strong> We dive deep into your goals, challenges, and data landscape to identify opportunities and pain points that shape our strategy aligned with both technical and broader business objectives.</p>
-              <p><strong>Strategy Development:</strong> Using insights from discovery, we design practical and future-proof BI solutions that improve decision-making, streamline operations, and unlock growth.</p>
-              <p><strong>Implementation:</strong> We integrate systems with minimal disruption, empowering your team with the tools and knowledge to succeed, while keeping you informed throughout.</p>
-              <p><strong>Optimization:</strong> We monitor, refine, and scale your solutions as your business evolves, ensuring your investment delivers long-term value and adapts to new opportunities.</p>
-            </div>
-          </div>
+ 
+		<div className="bg-white p-4 rounded shadow mt-6">
+          <h2 className="text-lg font-semibold">Spending by Purpose</h2>
+          {!loading && <ECharts option={spendingByPurposeChart} style={{ height: "400px" }} />}
         </div>
-      </section>
-
-      <ServicesOverview />
+	    
+        <div className="bg-white p-4 rounded shadow mt-6">
+          <h2 className="text-lg font-semibold">Monthly Spending Heatmap</h2>
+          {!loading && <ECharts option={heatmapChart} style={{ height: "400px" }} />}
+        </div>
+	  </div>
     </div>
   );
 }

@@ -1,102 +1,90 @@
+import { createClient } from '@supabase/supabase-js';
 import { Redis } from '@upstash/redis';
 import Papa from 'papaparse';
 
-// Token and URL for authenticating with Vercel KV Storage
-const redis = new Redis({
-  url: process.env.KV_REST_API_URL,
-  token: process.env.KV_REST_API_TOKEN,
-});
+// Initialize Supabase client
+const supabase = createClient("https://opvdrtdwkcdmiskxpnal.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9wdmRydGR3a2NkbWlza3hwbmFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDExNDYzMjcsImV4cCI6MjA1NjcyMjMyN30.1eeSkKboKB4DGKND5It8mdAo4OQuW6cWrLdVNS8uFmI");
 
-// Token for authenticating with Vercel Blob
-const blob_token = process.env.BLOB_READ_WRITE_TOKEN;
+// Initialize Redis for caching
+const redis = new Redis({
+  url: 'https://unified-jawfish-32586.upstash.io',
+  token: 'AX9KAAIjcDEyNDVhZjQwYWU4ZjQ0OTM2OGZmMjQzOWQxNmMyZWJhMXAxMA',
+})
 
 export default async function handler(req, res) {
-  if (req.method === 'GET') {
-    try {
-      // Check if data exists in Redis
-      const blobURL = await redis.get('monthly-org-trends-blob-url');
-
-      if (blobURL) {
-        console.log('Found monthly-org-trends-blob-url from redis', blobURL);
-		
-		const blobResponse  = await fetch(blobURL, {
-          headers: {
-            Authorization: `Bearer ${blob_token}`,
-          },
-        });
-        
-        if (!blobResponse.ok) {
-          console.error('Blob response error headers:', blobResponse.headers); // Log headers on error
-		  throw new Error(`Failed to fetch blob: ${blobResponse.status} ${blobResponse.statusText}`);
-        }
-		
-		const data = await blobResponse.json();
-		const jsonData = JSON.parse(data.monthly_org_trends.data); 
-		
-        const cleanedData = {
-          updated_date: data.monthly_org_trends.updated_date,
-          data: Object.keys(jsonData.month).map((key) => ({
-            month: jsonData.month[key],
-            owner_org_title: jsonData.owner_org_title[key],
-            count: parseFloat(jsonData.count[key]) || 0,
-            airfare: parseFloat(jsonData.airfare[key]) || 0,
-            other_transport: parseFloat(jsonData.other_transport[key]) || 0,
-            lodging: parseFloat(jsonData.lodging[key]) || 0,
-            meals: parseFloat(jsonData.meals[key]) || 0,
-            other_expenses: parseFloat(jsonData.other_expenses[key]) || 0,
-          })),
-        };
-
-        console.log('Travel expenses fetched from blob', blobURL);
-        res.setHeader('Content-Type', 'application/json');
-        res.status(200).json(cleanedData);	
-	  } else {
-
-	    // If not found in blob, fetch from CSV
-        const csvResponse = await fetch('/data/monthly_org_trends.csv');
-        if (!csvResponse.ok) {
-          console.error('CSV response error headers:', csvResponse.headers); // Log headers on error
-		  throw new Error(`Failed to fetch CSV: ${csvResponse.status} ${csvResponse.statusText}`);
-        }
-	    
-        const text = await csvResponse.text();
-	    
-        // Parse CSV using Papa Parse
-		Papa.parse(text, {
-			header: true,
-			dynamicTyping: true,
-			complete: async (results) => {
-				const cleanedData = {
-					data: results.data
-						.filter((row) => row.month && row.owner_org_title)
-						.map((row) => ({
-							month: row.month,
-							owner_org_title: row.owner_org_title,
-							count: parseFloat(row.count) || 0,
-							airfare: parseFloat(row.airfare) || 0,
-							other_transport: parseFloat(row.other_transport) || 0,
-							lodging: parseFloat(row.lodging) || 0,
-							meals: parseFloat(row.meals) || 0,
-							other_expenses: parseFloat(row.other_expenses) || 0,
-						})),
-				};
-		
-				console.log('Travel expenses fetched and cached');
-				console.log('Response headers:', res.getHeaders());
-				res.status(200).json(cleanedData); // Send the whole cleanedData object
-			},
-            error: (err) => {
-                console.error('Error parsing CSV data:', err);
-                res.status(500).json({ error: 'Failed to parse CSV data' });
-            },
-        });
-	  }
-    } catch (error) {
-      console.error('Error fetching travel data:', error);
-      res.status(500).json({ error: 'Failed to fetch travel data' });
-    }
-  } else {
+  if (req.method !== 'GET') {
     res.setHeader('Allow', ['GET']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
+    return res.status(405).json({ error: `Method ${req.method} Not Allowed` });
+  }
+
+  try {
+    console.log('Fetching updated date from Redis...');
+    const updatedDate = await redis.get('monthly_org_trends-updated-date') || new Date().toISOString();
+    
+    console.log('Fetching data from Supabase...');
+    const { data, error } = await supabase.from('monthly_org_trends').select('*');
+
+    if (!error && data?.length > 0) {
+      console.log('Data successfully retrieved from Supabase.');
+      return res.status(200).json({
+        updated_date: updatedDate,
+        data: data.map(row => ({
+          month: row.month,
+          owner_org_title: row.owner_org_title,
+          count: parseFloat(row.count) || 0,
+          airfare: parseFloat(row.airfare) || 0,
+          other_transport: parseFloat(row.other_transport) || 0,
+          lodging: parseFloat(row.lodging) || 0,
+          meals: parseFloat(row.meals) || 0,
+          other_expenses: parseFloat(row.other_expenses) || 0,
+        })),
+      });
+    } else {
+      console.warn('Supabase fetch failed or returned no data. Falling back to CSV...');
+    }
+  } catch (error) {
+    console.error('Supabase fetch error:', error);
+  }
+
+  try {
+    console.log('Fetching data from CSV backup...');
+    const csvResponse = await fetch('/data/monthly_org_trends.csv');
+    if (!csvResponse.ok) {
+      console.error('CSV response error headers:', csvResponse.headers);
+      throw new Error(`Failed to fetch CSV: ${csvResponse.status} ${csvResponse.statusText}`);
+    }
+
+    const text = await csvResponse.text();
+    
+    let cleanedData = [];
+
+    Papa.parse(text, {
+      header: true,
+      dynamicTyping: true,
+      complete: (results) => {
+        cleanedData = results.data
+          .filter(row => row.month && row.owner_org_title)
+          .map(row => ({
+            month: row.month,
+            owner_org_title: row.owner_org_title,
+            count: parseFloat(row.count) || 0,
+            airfare: parseFloat(row.airfare) || 0,
+            other_transport: parseFloat(row.other_transport) || 0,
+            lodging: parseFloat(row.lodging) || 0,
+            meals: parseFloat(row.meals) || 0,
+            other_expenses: parseFloat(row.other_expenses) || 0,
+          }));
+
+        console.log('Data successfully retrieved from CSV.');
+        res.status(200).json({ updated_date: new Date().toISOString(), data: cleanedData });
+      },
+      error: (err) => {
+        console.error('Error parsing CSV data:', err);
+        res.status(500).json({ error: 'Failed to parse CSV data' });
+      },
+    });
+  } catch (error) {
+    console.error('Error fetching CSV data:', error);
+    res.status(500).json({ error: 'Failed to fetch travel data from all sources' });
   }
 }

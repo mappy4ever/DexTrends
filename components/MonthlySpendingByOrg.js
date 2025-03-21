@@ -1,12 +1,14 @@
 import ReactECharts from "echarts-for-react";
 import dynamic from "next/dynamic";
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useTheme } from "next-themes";
-import { AiOutlineBulb } from "react-icons/ai";
-import { VscMapFilled, VscTools } from "react-icons/vsc";
+import Papa from "papaparse";
+import { saveAs } from "file-saver";
+import html2canvas from "html2canvas";
+import { TbTableDown } from "react-icons/tb";
+import { LuImageDown } from "react-icons/lu";
 
-
-export default function TravelExpenseChart() {
+export default function MonthlySpendingByOrg() {
   const chartRef = useRef(null);
   const [selectedOrg, setSelectedOrg] = useState("");
   const { theme } = useTheme();
@@ -23,7 +25,7 @@ export default function TravelExpenseChart() {
           setIsLoading(true);
           setError(null);
           try {
-              const response = await fetch("/api/get-travel-data");
+			  const response = await fetch("/api/get-travel-data");
               if (!response.ok) {
                   console.error('API error headers:', response.headers);
                   throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
@@ -257,7 +259,7 @@ export default function TravelExpenseChart() {
     series: Object.keys(expenseMapping).map((expense) => ({
       name: expenseMapping[expense],
       type: "line",
-    smooth: true,
+	  smooth: true,
       symbol: "circle",
       symbolSize: 6,
       lineStyle: {
@@ -283,63 +285,24 @@ export default function TravelExpenseChart() {
 	backgroundColor: isDarkMode ? "#1C1513" : "#fdf8f3", // Chart background
   };
 
+  // Export CSV
+  const exportCSV = () => {
+    const csvData = Papa.unparse(filteredData);
+    const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
+    saveAs(blob, "travel_expenses.csv");
+  };
+
+  // Export PNG
+  const exportPNG = async () => {
+    if (!chartRef.current) return;
+    const chartCanvas = await html2canvas(chartRef.current.getEchartsInstance().getDom());
+    chartCanvas.toBlob((blob) => {
+      saveAs(blob, "travel_expenses.png");
+    });
+  };
+  
   return (
     <div className="max-w-7xl mx-auto px-4">
-
-      {/* Canadian Federal Travel Expenses */}
-      <div className="text-left">
-        <h1 className="heading-styling parallax-heading text-3xl md:text-4xl flex items-center gap-3">
-          <VscMapFilled size={60}/> Featured Project: Canadian Federal Travel Expenses Dashboard
-        </h1>
-
-        <h2 className="subheading-styling max-w-7xl mx-auto text-center">
-            How are public funds being allocated for travel?
-        </h2>
-      
-        <p className="body-styling max-w-7xl mx-auto leading-relaxed">
-          This interactive dashboard tracks federal travel spending across departments, using data from the{" "}
-          <a
-            href="https://open.canada.ca/data/en/dataset/009f9a49-c2d9-4d29-a6d4-1a228da335ce"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-button hover:text-button-hover font-semibold transition-colors"
-          >
-            Government of Canada's Open Data Portal.
-          </a>
-          {" "}Designed to increase transparency, optimize budgeting, and identify trends, this project showcases our expertise in:
-        </p>
-        <ul className="list-disc list-inside body-styling leading-relaxed mt-4 mb-8 ml-6">
-          <li><strong>Data Engineering & Automation -</strong> Built on a serverless Python backend for real-time data updates.</li>
-          <li><strong>Advanced Visualization -</strong> Interactive charts powered by Next.js & Apache ECharts.</li>
-          <li><strong>Actionable Insights -</strong> Drill-down analytics to explore expenses at a granular level.</li>
-          <li><strong>User-Friendly Navigation -</strong> Simple toggles to filter spending by category (airfare, lodging, meals, etc.).</li>
-        </ul>
-      </div>
-
-      {/* How to Use This Dashboard */}
-      <div className="card border-l-0 hover:scale-100 max-w-5xl mb-8 mx-auto">
-        <h2 className="subheading-styling mb-4 flex items-center gap-3"><VscTools size={36}/> How to Use This Dashboard</h2>
-        <ul className="list-disc list-inside body-styling text-base space-y-2">
-          <li>
-            <strong>Filter by Organization:</strong> Who's spending the most? Analyze individual federal department spending.
-          </li>
-          <li>
-            <strong>Interactive Charts:</strong> Where did the money go? Hover over data to reveal detailed insights.
-          </li>
-          <li
-            onMouseEnter={() => highlightChartElement("legend")}
-            onMouseLeave={() => removeChartHighlight("legend")}
-          >
-            <strong>Customize Your View:</strong> Toggle categories such as airfare, lodging, or meals by clicking the chart legend.
-          </li>
-          <li
-            onMouseEnter={() => highlightChartElement("slider")}
-            onMouseLeave={() => removeChartHighlight("slider")}
-          >
-            <strong>Zoom & Pan:</strong> Use the chart controls to explore data over different time periods.
-          </li>
-        </ul>
-      </div>
 
     <div className="py-4">
         <select
@@ -360,7 +323,7 @@ export default function TravelExpenseChart() {
 
       <div className="w-full h-[300px] md:h-[450px] lg:h-[550px] bg-chart p-4 rounded-lg shadow-lg">
         {isLoading ? (
-          <div className="heading-styling flex items-center justify-center h-full">
+          <div className="heading-styling animate-pulse bg-gradient-to-r from-pink-500 via-yellow-500 to-blue-500 flex items-center justify-center h-full">
             LOADING
           </div>
         ) : error ? (
@@ -383,6 +346,11 @@ export default function TravelExpenseChart() {
         </div>
       )}
 	  
+	  {/* Export Buttons */}
+      <div className="mt-4 flex gap-4">
+        <button onClick={exportCSV} className="btn-primary flex items-center gap-3"><TbTableDown size={30} /> Export CSV</button>
+        <button onClick={exportPNG} className="btn-primary flex items-center gap-3"><LuImageDown size={30} /> Export PNG</button>
+      </div>
     </div>
   );
 }

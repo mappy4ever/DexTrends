@@ -1,13 +1,18 @@
 export default function Footer() {
   return (
-    <footer className="bg-navbar w-full text-text-navbar py-4 mt-12 z-20 transition-colors duration-300">
-	  {/* Gradient border at top of footer */}
-      <div className="absolute top-0 left-0 w-full h-4 bg-gradient-to-b from-transparent to-navbar transition-colors duration-300 z-20">
-      </div>
-	  
-	  <div className="max-w-7xl mx-auto text-center">
+    <footer className="bg-navbar w-full text-text-navbar pl-16 py-4 mt-12 z-20 transition-colors duration-300 fixed bottom-0">
+	  <div className="text-center">
         <p className="text-sm">
-          © {new Date().getFullYear()}  PakePoint Analytics. All rights reserved. Empowering businesses with intelligent insights.
+          © {new Date().getFullYear()}  OnOurDime - A{" "}
+		  <a
+            href="https://www.pakepoint.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-button hover:text-button-hover font-semibold transition-colors"
+          >
+			PakePoint 
+		  </a>
+		  {" "}Project. All rights reserved.
         </p>
       </div>
     </footer>
