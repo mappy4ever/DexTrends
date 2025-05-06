@@ -28,7 +28,7 @@ export default function FAQ() {
   return (
     <section className="max-w-7xl mx-auto mt-12 px-4">
       <h2 className="heading-styling parallax-heading">
-        Why Choose Us
+        FAQ
       </h2>
       <div className="max-w-5xl mx-auto space-y-6 mt-12">
         {faqData.map((faq, index) => (

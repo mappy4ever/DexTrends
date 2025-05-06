@@ -139,8 +139,8 @@ export default function Navbar({ isCollapsed, setIsCollapsed }) {
             <Link href="/orgs" className="hover:text-text-highlightHover" onClick={() => setMobileOpen(false)}>Department&nbsp;Trends</Link>
 			<Link href="/people" className="hover:text-text-highlightHover" onClick={() => setMobileOpen(false)}>Person&nbsp;Inspector</Link>
             <Link href="/map" className="hover:text-text-highlightHover" onClick={() => setMobileOpen(false)}>Map&nbsp;Explorer</Link>
-            <Link href="/events" className="hover:text-text-highlightHover" onClick={() => setMobileOpen(false)}>Event&nbsp;Comparer</Link>
-            <Link href="/tables" className="hover:text-text-highlightHover" onClick={() => setMobileOpen(false)}>Tables</Link>
+            {/* <Link href="/events" className="hover:text-text-highlightHover" onClick={() => setMobileOpen(false)}>Event&nbsp;Comparer</Link>
+            <Link href="/tables" className="hover:text-text-highlightHover" onClick={() => setMobileOpen(false)}>Tables</Link> */}
             <Link href="/about" className="hover:text-text-highlightHover" onClick={() => setMobileOpen(false)}>About</Link>
           </nav>
         </div>
@@ -174,8 +174,8 @@ export default function Navbar({ isCollapsed, setIsCollapsed }) {
           <SidebarItem href="/orgs" icon={<RiGovernmentFill size={24} />} text="Department&nbsp;Trends" />
 		  <SidebarItem href="/people" icon={<BsPersonBoundingBox size={24} />} text="Person&nbsp;Inspector" />
 		  <SidebarItem href="/map" icon={<BsGlobeEuropeAfrica size={24} />} text="Map&nbsp;Explorer" />
-          <SidebarItem href="/events" icon={<MdCompare size={24} />} text="Event&nbsp;Comparer" />
-          <SidebarItem href="/tables" icon={<RxTable size={24} />} text="Tables" />
+		  {/* <SidebarItem href="/events" icon={<MdCompare size={24} />} text="Event&nbsp;Comparer" /> 
+          <SidebarItem href="/tables" icon={<RxTable size={24} />} text="Tables" /> */}
           <SidebarItem href="/about" icon={<AiOutlineBulb size={24} />} text="About" />
         </nav>
 

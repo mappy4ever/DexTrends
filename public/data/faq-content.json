@@ -1,46 +1,58 @@
 [
   {
-    "question": "What types of businesses do you work with?",
-    "answer": "We collaborate with startups, enterprises, and everything in between across healthcare, education, finance, retail, and technology. Whether you're a fast-growing startup or an established enterprise, our data solutions are tailored to meet your unique challenges and goals."
+    "question": "What is the purpose of this website?",
+    "answer": "This website provides an interactive platform to explore and analyze Canadian federal government travel expenses. It aims to make public data more accessible and understandable, showing how funds are allocated for travel across departments, by officials, and over different time periods."
   },
   {
-    "question": "How do I know if my business needs Business Intelligence (BI) services?",
-    "answer": "If you find your business is managing large datasets, struggling with inefficiencies, or making decisions based on assumptions rather than data, BI can help streamline operations and drive smarter decision-making."
+    "question": "Where does the data come from?",
+    "answer": "The data is sourced directly from the Government of Canada's official Open Data Portal, specifically the 'Proactive Disclosure of Travel Expenses' dataset. You can find the source dataset at https://open.canada.ca/data/en/dataset/009f9a49-c2d9-4d29-a6d4-1a228da335ce."
   },
   {
-    "question": "What BI tools and technologies do you use?",
-    "answer": "We leverage a range of powerful BI tools, including Power BI, Tableau, SQL Server, and Azure Data Factory, to ensure seamless data integration and analysis. Additionally, we utilize industry-leading JavaScript tools for dynamic visualizations and Python for advanced analytics and predictive modeling."
+    "question": "How up-to-date is the data?",
+    "answer": "The data is updated based on the release schedule of the official Government of Canada dataset. The 'About' page usually indicates the 'data current as of' date. There might be a natural reporting lag between when expenses are incurred and when they are published."
   },
   {
-    "question": "What’s your typical project timeline?",
-    "answer": "Every project is unique, but most BI implementations range from 4 to 12 weeks depending on scope. During our initial consultation, we’ll map out a detailed project plan with clear milestones."
+    "question": "What kind of information can I find on the Dashboard?",
+    "answer": "The Dashboard provides a high-level overview, including Key Performance Indicators (KPIs) like total spending and average trip cost. It also shows spending trends over time, breakdowns by travel purpose, top spending departments, and top spending officials (e.g., Ministers) within the selected date range."
   },
   {
-    "question": "Can you integrate with my existing systems?",
-    "answer": "Absolutely! Our expertise lies in seamlessly integrating new BI solutions with your existing software, databases, and cloud platforms. We ensure minimal disruption while optimizing data flow, compatibility, and system performance."
+    "question": "How do I see spending for a specific department or by traveler title?",
+    "answer": "Navigate to the 'Orgs' (Organization Trends) page. Here, you can use the filters to select specific departments and traveler titles to see their spending trends and breakdowns over the chosen date range."
   },
   {
-    "question": "Do you provide training and support for my team?",
-    "answer": "Yes! We believe in empowering our clients, so training and post-implementation support are always part of our process. We provide detailed documentation and ongoing support to empower your team with long-term BI success."
-  },
-   {
-    "question": "Can you help with data migration from legacy systems?",
-    "answer": "Yes! If your business is transitioning from older data systems, we can assist with data migration, cleansing, and structuring to ensure a smooth and reliable transition."
+    "question": "Can I see the travel expenses for a particular individual?",
+    "answer": "Yes, the 'People' (Person Inspector) page allows you to search for and select specific individuals. Once selected, you can view their detailed travel expenses, trip history, and spending patterns for the filtered period."
   },
   {
-    "question": "Do you work with cloud-based BI solutions?",
-    "answer": "Yes! We specialize in both on-premise and cloud-based BI solutions, leveraging platforms like Azure, AWS, and Google Cloud Platform to build scalable, flexible data ecosystems. Using real-time data processing solutions, you can monitor key business metrics as they happen."
+    "question": "What does the Map Explorer show?",
+    "answer": "The 'Map' page visualizes the destinations of government travel. It helps you see where travel is concentrated geographically within the selected date range."
   },
   {
-    "question": "How do you ensure data security and compliance?",
-    "answer": "We prioritize data security through encryption, access control, and adherence to industry standards. Our solutions comply with HIPA, PIPIDA, GDPR, and other relevant regulations, ensuring your sensitive data is protected at every stage."
+    "question": "How do the filters work?",
+    "answer": "At the top of most pages, you'll find a filter bar. You can select a 'Start Date' and 'End Date' (year and month) to define the period for which you want to see data. Other relevant filters like 'Organization', 'Title', or 'Person' will be available depending on the page. Your filter selections are generally remembered as you navigate the site."
   },
   {
-    "question": "What’s the cost of your services?",
-    "answer": "Pricing is based on the scope and complexity of your project. Contact us for a personalized quote."
+    "question": "Are there any limitations to the data?",
+    "answer": "Yes, some limitations include: the accuracy and completeness depend on the source data; there can be reporting delays; the level of detail in expense descriptions might vary; and it's important to consider the context (e.g., traveler's role, purpose of travel) when interpreting the figures. More details are available on the 'About' page."
   },
   {
-    "question": "What is your process for getting started?",
-    "answer": "Our engagement begins with a free discovery call, where we discuss your challenges, goals, and data needs. From there, we outline a customized BI strategy tailored to your business, ensuring a seamless transition into data-driven decision-making."
+    "question": "Is this website an official Government of Canada site?",
+    "answer": "No, this is an independent project created to visualize publicly available data and is not officially affiliated with the Government of Canada."
+  },
+  {
+    "question": "How are 'Top Spending Departments' and 'Top Spending Ministers' calculated on the Dashboard?",
+    "answer": "These lists are generated by aggregating the total travel expenses attributed to each department or individual official (specifically names that appear in roles like 'Minister') within the currently selected date range on the Dashboard. They represent the highest cumulative spenders for that period."
+  },
+  {
+    "question": "Why might the data for a very recent month be incomplete?",
+    "answer": "Government departments have a reporting cycle for disclosing expenses. It's common for there to be a delay of one to three months (or sometimes more) between the end of a travel period and when the full data for that period appears in the public dataset. Always check the 'data current as of' information if available."
+  },
+  {
+    "question": "What do the different expense categories (Airfare, Lodging, Meals, etc.) mean?",
+    "answer": "These categories are generally defined by the Government's travel directives. 'Airfare' covers flights, 'Lodging' is for accommodation, 'Meals' covers meal allowances, 'Other Transport' can include things like taxis, rail, or rental cars, and 'Other Expenses' might cover miscellaneous costs like conference fees or incidentals. The specifics are based on the source dataset's classifications."
+  },
+  {
+    "question": "Can I download the data from this website?",
+    "answer": "This website primarily focuses on visualizing the data. To download the raw dataset, it's recommended to visit the official Government of Canada Open Data Portal page for the 'Proactive Disclosure of Travel Expenses' (link available on our 'About' page)."
   }
 ]
