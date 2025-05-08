@@ -362,8 +362,8 @@ export default function PersonInspectorPage() {
             // REFACTOR: Ensure legend is shown and positioned
             legend: {
                 data: ['Airfare', 'Lodging', 'Meals', 'Other Transport', 'Other Expenses'],
-                inactiveColor: 'var(--color-foreground-muted)',
-                textStyle: { color: 'var(--color-foreground-default)'},
+                inactiveColor: resolvedTheme === 'dark' ? '#718096' : '#A0AEC0',
+                textStyle: { color: resolvedTheme === 'dark' ? '#E2E8F0' : '#2D3748' },
                 top: '5%', // Position legend at the top explicitly
                 type: 'scroll', // In case of many items, allow scrolling
                 show: true // Explicitly show legend
@@ -485,14 +485,13 @@ export default function PersonInspectorPage() {
                                 />
                             </div>
                             <div className="lg:w-2/3 xl:w-3/4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                                {/* REFACTOR: Pass raw numbers to KPICard for it to format */}
                                 <KPICard title="Total Spent" value={personKPIs.totalSpent} isLoading={uiIsLoading} />
                                 <KPICard title="Average Trip Cost" value={personKPIs.avgTripCost} isLoading={uiIsLoading} />
                                 <KPICard title="Total Trips" value={personKPIs.tripCount.toLocaleString()} isLoading={uiIsLoading} />
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div className="mt-6 grid grid-cols-1 gap-6">
                             <ChartContainer title="Spending Over Time" isLoading={uiIsLoading}>
                                 {(!uiIsLoading && personData?.personTrips && personData.personTrips.length > 0) ? (
                                     <ReactEcharts option={spendingOverTimeOptions} notMerge={true} lazyUpdate={true} theme={echartTheme} style={{ height: '100%', width: '100%' }} />
@@ -500,6 +499,8 @@ export default function PersonInspectorPage() {
                                     <p className="text-foreground-muted text-center py-10">No spending data to display for the selected period.</p>
                                 ) : null}
                             </ChartContainer>
+						</div>
+						<div className="mt-6 grid grid-cols-1 gap-6">
                             <ChartContainer title="Spending by Purpose" isLoading={uiIsLoading}>
                                  {(!uiIsLoading && personData?.personTrips && personData.personTrips.length > 0) ? (
                                     <ReactEcharts option={spendingByPurposeOptions} notMerge={true} lazyUpdate={true} theme={echartTheme} style={{ height: '100%', width: '100%' }} />

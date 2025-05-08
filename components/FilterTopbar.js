@@ -1,8 +1,6 @@
 // components/FilterTopbar.js
 import React from 'react';
 import DatePicker from 'react-datepicker';
-// "react-datepicker/dist/react-datepicker.css"; // Base CSS is imported in _app.js
-// Custom styles for DatePicker are in globals.css
 import AsyncCreatableSelect from 'react-select/async-creatable';
 import Select from 'react-select';
 import { useTheme } from 'next-themes';
@@ -21,27 +19,28 @@ export default function FilterTopbar({
     const isDarkMode = resolvedTheme === 'dark';
 
     const handleReactSelectChange = (filterKey, selectedOptionOrOptions) => {
-        // For multi-select, selectedOptionOrOptions will be an array
-        // For single-select, it will be an object or null
         if (Array.isArray(selectedOptionOrOptions)) {
             onFilterChange(filterKey, selectedOptionOrOptions.map(opt => opt.value));
         } else {
-            onFilterChange(filterKey, selectedOptionOrOptions ? selectedOptionOrOptions.value : null);
+            // For single select, react-select passes the selected option object or null
+            // The consuming page's onFilterChange will handle this object or null value.
+            // Let's pass the whole object or null to give more context to the parent.
+            // Parent (pages/orgs.js handleFilterChange) is already set up to expect object or value or null.
+            onFilterChange(filterKey, selectedOptionOrOptions); 
         }
     };
     
     const handleReactSelectCreate = (filterKey, inputValue, isMulti = false) => {
-        // This function should call onFilterChange with the newly created value.
-        // The parent component (consuming FilterTopbar) might need to handle
-        // how this new value is added to availableFilters or processed.
-        // For simplicity, we assume onFilterChange can handle a new string value.
+        // Simplified: Assuming parent onFilterChange can handle a new string value directly
+        // or the parent's onCreateOption handles creating the option structure.
         console.log(`FilterTopbar: New option created for ${filterKey}:`, inputValue);
         if (isMulti) {
-             // Get current values, ensure it's an array, add new value
-             const currentValues = Array.isArray(selectedFilters[filterKey]) ? selectedFilters[filterKey] : [];
-             onFilterChange(filterKey, [...currentValues, inputValue]); // Assuming inputValue is the new value itself
+            const currentValues = Array.isArray(selectedFilters[filterKey]) ? selectedFilters[filterKey] : [];
+            // This assumes the new value should be added to an array of primitive values (IDs)
+            // If selectedFilters[filterKey] stores objects, this needs adjustment.
+            onFilterChange(filterKey, [...currentValues, inputValue]); 
         } else {
-            onFilterChange(filterKey, inputValue); // New value for single select/creatable
+            onFilterChange(filterKey, inputValue); // For single creatable, pass the raw input value
         }
     };
 
@@ -143,41 +142,59 @@ export default function FilterTopbar({
     return (
         <div className="p-4 bg-card text-card-foreground rounded-app-lg shadow-app mb-6 flex flex-wrap items-end gap-x-4 gap-y-4 z-20">
             {filterConfig.map(filter => {
-                const { key, label, type, optionsKey, placeholder, loadOptions, isMulti = false, creatable = false, onCreateOption: parentOnCreateOption } = filter;
+                // Destructure 'options' from filter as 'filterSpecificOptions'
+                const { 
+                    key, label, type, optionsKey, placeholder, loadOptions, 
+                    isMulti = false, creatable = false, onCreateOption: parentOnCreateOption, 
+                    options: filterSpecificOptions, // these are options like [{value, label}, ...]
+                    isLoading: itemIsLoading // loading state for individual filter item
+                } = filter;
 
                 if (type === 'select' || type === 'async_select' || type === 'async_creatable_select') {
-                    const currentFilterValue = selectedFilters[key];
-                    let valueForSelect;
+                    const currentFilterValueFromState = selectedFilters[key]; // This is the ID string from pages/orgs.js state
 
-                    const optionsToUse = type === 'select' ? (availableFilters[optionsKey || key] || []) : undefined;
+                    // Determine options for 'select' type, prioritizing filterSpecificOptions
+                    const optionsForSimpleSelect = type === 'select'
+                        ? (filterSpecificOptions || availableFilters[optionsKey || key] || [])
+                        : undefined; // Not used for async types here
 
+                    let valueForReactSelect;
                     if (isMulti) {
-                        valueForSelect = Array.isArray(currentFilterValue)
-                            ? currentFilterValue.map(val => ({
-                                  value: val,
-                                  // Try to find label from options, or use val as label
-                                  label: (optionsToUse || []).find(opt => opt.value === val)?.label || val
-                              }))
-                            : [];
+                        // Logic for multi-select value (array of objects)
+                        const currentArray = Array.isArray(currentFilterValueFromState) ? currentFilterValueFromState : [];
+                        valueForReactSelect = currentArray.map(val => {
+                            const foundOpt = (optionsForSimpleSelect || []).find(opt => opt.value === val) || 
+                                           (type !== 'select' ? null : undefined); // For async, label might not be known yet
+                            return { value: val, label: foundOpt ? foundOpt.label : val };
+                        });
                     } else {
-                        valueForSelect = currentFilterValue
-                            ? {
-                                  value: currentFilterValue,
-                                  label: (optionsToUse || []).find(opt => opt.value === currentFilterValue)?.label || selectedFilters[`${key}_label`] || currentFilterValue
-                              }
-                            : null;
+                        // Logic for single-select value (object or null)
+                        if (currentFilterValueFromState) {
+                            const foundOpt = (optionsForSimpleSelect || []).find(opt => opt.value === currentFilterValueFromState);
+                            // For async_select, if the initial value's label isn't in defaultOptions,
+                            // react-select might show the value until options load.
+                            // Or, the parent could pass a selectedFilters[`${key}_label`] if absolutely needed.
+                            // But for simple 'select', optionsForSimpleSelect should contain the label.
+                            valueForReactSelect = {
+                                value: currentFilterValueFromState,
+                                label: foundOpt ? foundOpt.label : (type === 'async_select' || type === 'async_creatable_select' ? currentFilterValueFromState : `ID: ${currentFilterValueFromState}`) // Fallback label
+                            };
+                        } else {
+                            valueForReactSelect = null;
+                        }
                     }
-
+                    
                     const commonSelectProps = {
                         id: `${key}-filter`,
-                        value: valueForSelect,
-                        onChange: (selected) => handleReactSelectChange(key, selected),
+                        value: valueForReactSelect,
+                        onChange: (selected) => handleReactSelectChange(key, selected), // Pass the whole selected object or null
                         isClearable: filter.isClearable !== undefined ? filter.isClearable : true,
                         isMulti: isMulti,
                         placeholder: placeholder || `Select ${label.replace(':', '').trim()}`,
                         styles: customReactSelectStyles(isDarkMode),
                         className: "text-sm",
-                        classNamePrefix: "react-select", // For easier global styling if needed
+                        classNamePrefix: "react-select",
+                        isLoading: itemIsLoading, // Use individual item loading state
                     };
 
                     return (
@@ -186,24 +203,24 @@ export default function FilterTopbar({
                             {type === 'select' && (
                                 <Select
                                     {...commonSelectProps}
-                                    options={optionsToUse}
+                                    options={optionsForSimpleSelect}
                                 />
                             )}
                             {(type === 'async_select' || type === 'async_creatable_select') && (
                                 <AsyncCreatableSelect
                                     {...commonSelectProps}
                                     isCreatable={type === 'async_creatable_select' && creatable}
-                                    loadOptions={loadOptions} // Function passed from parent, e.g., (inputValue, callback) => ...
+                                    loadOptions={loadOptions}
                                     onCreateOption={
                                         type === 'async_creatable_select' && creatable
                                         ? (inputValue) => {
-                                            if (parentOnCreateOption) parentOnCreateOption(key, inputValue); // Call parent's handler
-                                            else handleReactSelectCreate(key, inputValue, isMulti); // Default handler
+                                            if (parentOnCreateOption) parentOnCreateOption(key, inputValue);
+                                            else handleReactSelectCreate(key, inputValue, isMulti);
                                           }
                                         : undefined
                                     }
-                                    defaultOptions // Consider true or an initial list
-                                    cacheOptions
+                                    defaultOptions // Consider true or an initial list for async
+                                    cacheOptions   // For async
                                 />
                             )}
                         </div>

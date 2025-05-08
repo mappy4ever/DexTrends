@@ -19,7 +19,7 @@ export default function Layout({ children }) {
       
 	  <div className="flex flex-grow"> {/* This div ensures Navbar and main content are side-by-side */}
       <main
-        className={`flex-grow transition-all duration-300 pt-14 md:pt-0 ${
+        className={`flex-grow transition-all duration-300 pt-14 pb-10 md:pt-0 ${
 			isCollapsed ? 'md:ml-16' : 'md:ml-64'}
 			`}
       >

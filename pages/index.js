@@ -12,9 +12,12 @@ import Modal from '../components/ui/Modal'; // Corrected path assuming 'ui' subf
 import {
     getDefaultInitialStartDate,
     getDefaultInitialEndDate,
-    getYearMonthString, // Make sure this returns YYYY-MM
-    parseYearMonthToDate, // Make sure this parses YYYY-MM
+    getYearMonthString,
+    parseYearMonthToDate,
     LOCAL_STORAGE_KEYS,
+    loadFromLocalStorage,
+    saveToLocalStorage,
+    debounce
 } from '../utils/filterUtils'; // Assuming filterUtils.js exists and is correct
 
 import { FaRegLightbulb } from "react-icons/fa";
@@ -254,7 +257,7 @@ export default function DashboardPage() {
 
         return {
             tooltip: { trigger: 'axis', backgroundColor: 'var(--color-surface-default)', borderColor: 'var(--color-border-default)', textStyle: { color: 'var(--color-foreground-default)'} },
-            legend: { data: ['Airfare', 'Other Transport', 'Lodging', 'Meals', 'Other Expenses'], inactiveColor: 'var(--color-foreground-muted)', textStyle: { color: 'var(--color-text-body)'} },
+            legend: { data: ['Airfare', 'Other Transport', 'Lodging', 'Meals', 'Other Expenses'], inactiveColor: resolvedTheme === 'dark' ? '#718096' : '#A0AEC0', textStyle: { color: resolvedTheme === 'dark' ? '#E2E8F0' : '#2D3748' }, top: '5%', type: 'scroll', show: true },
             grid: { left: '3%', right: '4%', bottom: '12%', containLabel: true }, // Increased bottom for dataZoom
             xAxis: { type: 'category', boundaryGap: false, data: monthLabels, axisLabel: { color: 'var(--color-text-muted)'} },
             yAxis: { type: 'value', axisLabel: { formatter: '${value}', color: 'var(--color-text-muted)' }, splitLine: { lineStyle: { color: 'var(--color-border-default)' }}},
@@ -436,7 +439,7 @@ export default function DashboardPage() {
                        const queryParams = new URLSearchParams();
                        if (startDate) queryParams.append('start', getYearMonthString(startDate));
                        if (endDate) queryParams.append('end', getYearMonthString(endDate));
-                       queryParams.append('orgName', org.name); // Assuming orgs page can filter by name
+                       queryParams.append('orgId', org.id); // Assuming orgs page can filter by org
 
                        return (
                            <li key={org.name} className="flex justify-between items-center py-1.5 border-b border-border last:border-b-0">
