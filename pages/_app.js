@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import "../styles/globals.css";
 import "react-datepicker/dist/react-datepicker.css";
+import '../styles/CustomMapStyles.css'; // Your custom styles
 import Layout from "../components/Layout";
 import ThemeProvider from "../components/ThemeProvider"; // Assuming this component exists and is correctly set up
 import ErrorBoundary from "../components/ErrorBoundary";
@@ -23,20 +24,21 @@ const throttle = (func, limit) => {
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
     const handleScroll = () => {
-      const headings = document.querySelectorAll(".parallax-heading");
+      const headings = document.querySelectorAll(".parallax-heading"); // Class used for JS targeting
       headings.forEach((heading) => {
-        // Ensure heading is in viewport before calculating to potentially save some computation
         const rect = heading.getBoundingClientRect();
-        if (rect.bottom >= 0 && rect.top <= window.innerHeight) {
-          const scrollAmount = Math.max(0, (window.innerHeight - rect.top) * 0.08); // Adjust speed
+        // Check if element is in viewport or close to it
+        if (rect.bottom >= -window.innerHeight && rect.top <= 2 * window.innerHeight) { // Expanded check
+          const scrollAmount = Math.max(0, (window.innerHeight - rect.top) * 0.08);
+          // Apply transform and opacity directly for parallax effect
+          // Tailwind classes for this dynamic effect are less suitable here due to per-pixel updates
           heading.style.transform = `translateY(${scrollAmount}px)`;
-          heading.style.opacity = Math.max(0, 1 - scrollAmount * 0.015).toString(); // Ensure opacity is not negative
+          heading.style.opacity = Math.max(0, 1 - scrollAmount * 0.015).toString();
         }
       });
     };
 
-    // Throttle the scroll handler to run at most once every 100ms
-    const throttledScrollHandler = throttle(handleScroll, 100);
+    const throttledScrollHandler = throttle(handleScroll, 50); // Reduced throttle time for smoother parallax
 
     window.addEventListener("scroll", throttledScrollHandler);
     return () => window.removeEventListener("scroll", throttledScrollHandler);
@@ -44,7 +46,7 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <ErrorBoundary>
-      <ThemeProvider> {/* Assuming ThemeProvider manages its own error states or is simple enough */}
+      <ThemeProvider> {/* Custom ThemeProvider */}
         <Layout>
           <Component {...pageProps} />
         </Layout>

@@ -1,128 +1,136 @@
 import { useTheme } from "next-themes";
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
-import { RxDashboard, RxTable } from "react-icons/rx";
+import { useRouter } from "next/router";
+import { RxDashboard } from "react-icons/rx"; // RxTable was unused, removed
 import { AiOutlineBulb } from "react-icons/ai";
 import { BsSun, BsMoon, BsGlobeEuropeAfrica, BsPersonBoundingBox } from "react-icons/bs";
-import { MdCompare, MdPersonSearch } from "react-icons/md";
-import { IoStatsChart, IoMap } from "react-icons/io5";
+// MdCompare, MdPersonSearch, IoStatsChart, IoMap were unused and have been removed
 import { RiGovernmentFill } from "react-icons/ri";
 import { TbLayoutSidebarLeftCollapse, TbLayoutSidebarLeftExpand } from "react-icons/tb";
-import { useRouter } from "next/router";
+import { VscQuestion, VscClose, VscMenu } from "react-icons/vsc";
 
 export default function Navbar({ isCollapsed, setIsCollapsed }) {
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  const [hoverExpanded, setHoverExpanded] = useState(false);
+  const { theme, setTheme, resolvedTheme, mounted: themeMounted } = useTheme(); // Use 'mounted' from useTheme
   const [sidebarMode, setSidebarMode] = useState("expand"); // "expand", "collapse", "hover"
+  const [hoverExpanded, setHoverExpanded] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const menuWrapperRef = useRef(null);
   const router = useRouter();
 
-  const pageTitles = {
-    "/": "Dashboard",
-    "/reports": "Reports",
-    "/events": "Events",
-    "/tables": "Tables",
-    "/about": "About",
-  };
+  const navItems = [
+    { href: "/", label: "Dashboard", icon: <RxDashboard size={22} /> }, // Standardized icon size
+    { href: "/orgs", label: "Department Trends", icon: <RiGovernmentFill size={22} /> },
+    { href: "/people", label: "Person Inspector", icon: <BsPersonBoundingBox size={22} /> },
+    { href: "/map", label: "Map Explorer", icon: <BsGlobeEuropeAfrica size={22} /> },
+    { href: "/about", label: "About", icon: <AiOutlineBulb size={22} /> },
+    // { href: "/faq", label: "FAQ", icon: <VscQuestion size={22} /> },
+  ];
+
+  const pageTitles = navItems.reduce((acc, item) => {
+    acc[item.href] = item.label;
+    return acc;
+  }, { "/": "Dashboard" }); // Ensure root path has a title
 
   const currentTitle = pageTitles[router.pathname] || "OnOurDime";
 
+  // Initialize sidebarMode from localStorage
   useEffect(() => {
-    setMounted(true);
     const savedMode = localStorage.getItem("sidebarMode");
-    if (savedMode) setSidebarMode(savedMode);
+    if (savedMode && ["expand", "collapse", "hover"].includes(savedMode)) {
+        setSidebarMode(savedMode);
+    } else {
+        setSidebarMode("expand"); // Default to expand
+    }
   }, []);
 
+  // Update localStorage and parent state when sidebarMode changes
   useEffect(() => {
     localStorage.setItem("sidebarMode", sidebarMode);
-    if (sidebarMode === "collapse") {
-      setIsCollapsed(true);
-      setHoverExpanded(false);
-    }
+    setIsCollapsed(sidebarMode === "collapse" || (sidebarMode === "hover" && !hoverExpanded));
     if (sidebarMode === "expand") {
-      setIsCollapsed(false);
-      setHoverExpanded(true);
+        setHoverExpanded(true); // In expand mode, it's always "hover expanded" conceptually
+    } else if (sidebarMode === "collapse") {
+        setHoverExpanded(false);
     }
-    if (sidebarMode === "hover") {
-      setIsCollapsed(true);
-    }
-  }, [sidebarMode]);
+    // For "hover" mode, hoverExpanded is controlled by mouse events
+  }, [sidebarMode, setIsCollapsed, hoverExpanded]);
 
+
+  // Click outside for mobile menu
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (menuWrapperRef.current && !menuWrapperRef.current.contains(event.target)) {
+      if (mobileOpen && menuWrapperRef.current && !menuWrapperRef.current.contains(event.target)) {
+        const mobileToggle = document.getElementById("mobile-menu-button");
+        if (mobileToggle && mobileToggle.contains(event.target)) {
+            return; // Don't close if clicking the toggle button itself
+        }
         setMobileOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [mobileOpen]);
 
   const handleSidebarToggle = () => {
-    if (sidebarMode === "expand") {
-      setSidebarMode("collapse");
-      setHoverExpanded(false);
-    } else if (sidebarMode === "collapse") {
-      setSidebarMode("hover");
-	  setHoverExpanded(true);
-    } else {
-      setSidebarMode("expand");
-      setHoverExpanded(true);
-    }
+    if (sidebarMode === "expand") setSidebarMode("collapse");
+    else if (sidebarMode === "collapse") setSidebarMode("hover");
+    else setSidebarMode("expand"); // "hover" -> "expand"
   };
 
-  const handleMouseEnter = () => {
-    if (sidebarMode === "hover") setHoverExpanded(true);
-  };
+  const handleMouseEnter = () => { if (sidebarMode === "hover") setHoverExpanded(true); };
+  const handleMouseLeave = () => { if (sidebarMode === "hover") setHoverExpanded(false); };
 
-  const handleMouseLeave = () => {
-    if (sidebarMode === "hover") setHoverExpanded(false);
-  };
+  const showText = sidebarMode === 'expand' || (sidebarMode === 'hover' && hoverExpanded);
 
-  const SidebarItem = ({ href, icon, text }) => (
-    <Link 
-      href={href} 
-      className="flex items-center gap-3 p-3 hover:bg-gray-600 dark:hover:bg-gray-700 rounded-md"
+  const SidebarItem = ({ href, icon, text, isActive }) => (
+    <Link
+      href={href}
+      onClick={() => setMobileOpen(false)}
+      className={`flex items-center gap-x-3 p-2.5 rounded-app-md transition-colors text-sm font-medium group
+                  ${isActive
+                    ? 'bg-primary/10 text-primary dark:bg-primary/20' // Adjusted dark active state
+                    : 'text-text-navbar hover:bg-surface-hovered hover:text-foreground'}
+                  ${!showText ? "justify-center" : ""}`}
+        title={!showText ? text : undefined} // Show tooltip when text is hidden
     >
-      {icon}
-      {!isCollapsed || hoverExpanded ? <span>{text}</span> : null}
+      <span className="flex-shrink-0 w-5 h-5">{icon}</span> {/* Consistent icon container */}
+      {showText && <span className="truncate">{text}</span>}
     </Link>
   );
+
+  const desktopSidebarWidth = showText ? "w-60" : "w-16"; // Adjusted widths for better visual balance
+
+//  const currentUiTheme = themeMounted && resolvedTheme === 'dark' ? 'dark' : 'light';
+
+  const isDarkMode = resolvedTheme === 'dark';
 
   return (
     <>
       {/* Mobile Navbar */}
-      <div className="md:hidden fixed top-0 left-0 w-full bg-[var(--color-navbar)] text-text-navbar flex items-center justify-between px-4 h-14 shadow-md z-50">
-        <span className="font-bold text-lg">{currentTitle}</span>
-        <div className="flex items-center gap-4">
-          
-		  {/* Dark Mode Toggle */}
-		  <button
-            className="p-1 rounded-full bg-white/10"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      <div className="md:hidden fixed top-0 left-0 right-0 flex items-center justify-between px-4 h-14 shadow-md z-40 bg-navbar text-text-navbar backdrop-blur-sm">
+        <Link href="/" className="text-lg font-semibold text-foreground">
+          {currentTitle}
+        </Link>
+        <div className="flex items-center gap-x-2">
+          <button
+            aria-label={isDarkMode ? "Activate light mode" : "Activate dark mode"}
+            title={isDarkMode ? "Activate light mode" : "Activate dark mode"}
+            className="p-2 rounded-full hover:bg-surface-hovered focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            onClick={() => setTheme(isDarkMode ? "light" : "dark")}
           >
-            {mounted && theme === "dark" ? <BsSun size={24} /> : <BsMoon size={24} />}
+            {isDarkMode ? <BsSun size={18} /> : <BsMoon size={18} />}
           </button>
-
-          {/* Mobile Menu Button */}
-		  <button
+          <button
+            id="mobile-menu-button"
             type="button"
-            className="text-button focus:outline-none focus:text-button-darkHover transition-transform duration-300 transform scale-110"
-            onClick={(e) => setMobileOpen(true)}
+            className="p-2 rounded-md hover:bg-surface-hovered focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-menu"
+            aria-label="Toggle navigation menu"
           >
-            {mobileOpen ? (
-              <svg className="h-8 w-8" viewBox="0 0 24 24" fill="none">
-                <path stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M6 6L18 18M6 18L18 6" />
-              </svg>
-            ) : (
-              <svg className="h-8 w-8" viewBox="0 0 24 24" fill="none">
-                <path stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            )}
+            {mobileOpen ? <VscClose size={22} /> : <VscMenu size={22} />}
           </button>
         </div>
       </div>
@@ -131,64 +139,74 @@ export default function Navbar({ isCollapsed, setIsCollapsed }) {
       {mobileOpen && (
         <div
           ref={menuWrapperRef}
-          className="md:hidden fixed top-14 left-0 w-full bg-[var(--color-navbar)] px-4 pb-3 space-y-2 shadow-md z-50"
+          id="mobile-menu"
+          className="md:hidden fixed top-14 left-0 w-full bg-navbar p-4 space-y-1 shadow-lg z-30 border-b border-border backdrop-blur-sm"
         >
-          {/* Mobile Navigation (No Icons) */}
-          <nav className="flex flex-col gap-4 mt-6 text-lg">
-            <Link href="/" className="hover:text-text-highlightHover" onClick={() => setMobileOpen(false)}>Dashboard</Link>
-            <Link href="/orgs" className="hover:text-text-highlightHover" onClick={() => setMobileOpen(false)}>Department&nbsp;Trends</Link>
-			<Link href="/people" className="hover:text-text-highlightHover" onClick={() => setMobileOpen(false)}>Person&nbsp;Inspector</Link>
-            <Link href="/map" className="hover:text-text-highlightHover" onClick={() => setMobileOpen(false)}>Map&nbsp;Explorer</Link>
-            {/* <Link href="/events" className="hover:text-text-highlightHover" onClick={() => setMobileOpen(false)}>Event&nbsp;Comparer</Link>
-            <Link href="/tables" className="hover:text-text-highlightHover" onClick={() => setMobileOpen(false)}>Tables</Link> */}
-            <Link href="/about" className="hover:text-text-highlightHover" onClick={() => setMobileOpen(false)}>About</Link>
+          <nav className="flex flex-col gap-y-1">
+            {navItems.map(item => (
+              <Link
+                key={`mobile-${item.href}`} // Ensure href is unique if labels can repeat
+                href={item.href}
+                onClick={() => setMobileOpen(false)}
+                className={`block px-3 py-2.5 rounded-app-md text-base font-medium
+                            ${router.pathname === item.href
+                                ? 'bg-primary/10 text-primary dark:bg-primary/20'
+                                : 'text-text-navbar hover:bg-surface-hovered hover:text-foreground'}`}
+              >
+                {item.label}
+              </Link>
+            ))}
           </nav>
         </div>
       )}
 
       {/* Left Sidebar (Desktop Only) */}
-      <div
-        className={`hidden md:flex flex-col fixed left-0 top-0 z-50 h-screen bg-[var(--color-navbar)] text-text-navbar shadow-md transition-all duration-300 ${
-          isCollapsed && !hoverExpanded ? "w-16" : "w-64"
-        }`}
+      <aside
+        className={`hidden md:flex flex-col fixed left-0 top-0 z-30 h-screen
+                   bg-navbar text-text-navbar shadow-lg transition-all duration-300 ease-in-out border-r border-border backdrop-blur-sm
+                   ${desktopSidebarWidth}`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        {/* Sidebar Header */}
-        <div className="flex justify-between items-center px-4 py-3">
-          {!isCollapsed || hoverExpanded ? <h1 className="text-lg font-bold">OnOurDime</h1> : null}
-          <button onClick={handleSidebarToggle} className="p-2">
-            {sidebarMode === "expand" ? (
-              <TbLayoutSidebarLeftCollapse size={24} className="text-gray-500" />
-            ) : sidebarMode === "collapse" ? (
-              <TbLayoutSidebarLeftExpand size={24} className="text-gray-500" />
-            ) : (
-              <TbLayoutSidebarLeftExpand size={24} />
-            )}
-          </button>
+        <div className={`flex items-center h-16 px-4 border-b border-border flex-shrink-0 ${!showText && "justify-center"}`}>
+          <Link href="/" className="flex items-center gap-x-2 text-xl font-bold text-foreground overflow-hidden">
+            <RiGovernmentFill size={26} className="flex-shrink-0 text-primary" />
+            {showText && <span className="truncate">OnOurDime</span>}
+          </Link>
         </div>
 
-        {/* Navigation Links */}
-        <nav className="flex flex-col gap-2 px-2">
-          <SidebarItem href="/" icon={<RxDashboard size={24} />} text="Dashboard" />
-          <SidebarItem href="/orgs" icon={<RiGovernmentFill size={24} />} text="Department&nbsp;Trends" />
-		  <SidebarItem href="/people" icon={<BsPersonBoundingBox size={24} />} text="Person&nbsp;Inspector" />
-		  <SidebarItem href="/map" icon={<BsGlobeEuropeAfrica size={24} />} text="Map&nbsp;Explorer" />
-		  {/* <SidebarItem href="/events" icon={<MdCompare size={24} />} text="Event&nbsp;Comparer" /> 
-          <SidebarItem href="/tables" icon={<RxTable size={24} />} text="Tables" /> */}
-          <SidebarItem href="/about" icon={<AiOutlineBulb size={24} />} text="About" />
+        <button
+            onClick={handleSidebarToggle}
+            className="absolute top-12 -right-3.5 z-10 p-1.5 bg-card border border-border rounded-full shadow-md hover:bg-surface-hovered focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            aria-label={sidebarMode === "expand" ? "Collapse sidebar" : sidebarMode === "collapse" ? "Enable hover to expand sidebar": "Expand sidebar fully"}
+            title={sidebarMode === "expand" ? "Collapse" : sidebarMode === "collapse" ? "Enable Hover" : "Expand Fully"}
+          >
+            {sidebarMode === "expand" ? <TbLayoutSidebarLeftCollapse size={18} /> : <TbLayoutSidebarLeftExpand size={18} />}
+        </button>
+
+        <nav className="flex-grow space-y-1.5 px-2.5 py-4 overflow-y-auto">
+          {navItems.map(item => (
+            <SidebarItem
+              key={`desktop-${item.href}`}
+              href={item.href}
+              icon={item.icon}
+              text={item.label}
+              isActive={router.pathname === item.href}
+            />
+          ))}
         </nav>
 
-        {/* Dark Mode Button */}
-        <div className="absolute bottom-4 left-4">
+        <div className={"absolute bottom-2 left-1 mt-auto p-3 flex-shrink-0"}>
           <button
-            className="p-1 rounded-full bg-white/10"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            aria-label={isDarkMode ? "Activate light mode" : "Activate dark mode"}
+            title={isDarkMode ? "Activate light mode" : "Activate dark mode"}
+            className="p-1 rounded-full hover:bg-surface-hovered focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            onClick={() => setTheme(isDarkMode ? "light" : "dark")}
           >
-            {mounted && theme === "dark" ? <BsSun size={24} /> : <BsMoon size={24} />}
+            {isDarkMode ? <BsSun size={22} /> : <BsMoon size={22} />}
           </button>
         </div>
-      </div>
+      </aside>
     </>
   );
 }

@@ -1,11 +1,11 @@
-// pages/orgs.js 
+// pages/orgs.js
 import { useEffect, useState, useMemo, useCallback } from "react";
 import useSWR from 'swr';
 import dynamic from "next/dynamic";
-import "react-datepicker/dist/react-datepicker.css";
-//import { useTheme } from 'next-themes';
+// Datepicker CSS is in _app.js and globals.css
+import { useTheme } from 'next-themes'; // Import useTheme
 
-import FilterTopbar from '../components/FilterTopbar';
+import FilterTopbar from '../components/FilterTopbar'; // Already styled
 import {
     getDefaultInitialStartDate,
     getDefaultInitialEndDate,
@@ -16,40 +16,65 @@ import {
     saveToLocalStorage
 } from '../utils/filterUtils';
 
-// --- UI Components (TrendsLayout, ChartContainer etc. - kept as is from original) ---
-const TrendsLayout = ({ children }) => <div className="p-4 md:p-6">{children}</div>;
+// --- UI Components ---
+const TrendsLayout = ({ children }) => (
+    // Using section-spacing-y-default for consistent vertical padding, px for horizontal
+    <div className="section-spacing-y-default px-4 md:px-6 bg-background min-h-screen text-foreground">
+        {children}
+    </div>
+);
+
 const ChartContainer = ({ title, children, isLoading, className = "" }) => (
-  <div className={`bg-card text-card-foreground p-4 rounded-lg shadow ${className}`}>
-    <h2 className="text-lg font-semibold mb-2">{title}</h2>
-    {isLoading ? <div className="h-72 w-full bg-muted animate-pulse rounded"></div> : <div style={{ height: '450px', width: '100%' }}>{children}</div>}
+  // Using .card and .card-padding-default from globals.css
+  <div className={`card card-padding-default ${className}`}>
+    <h2 className="text-section-heading mb-4">{title}</h2>
+    {isLoading ? (
+        <div className="h-72 w-full bg-foreground-muted/20 animate-pulse rounded-app-md"></div>
+    ) : (
+        <div className="h-[450px] w-full">{children}</div> // Ensure specific height for charts
+    )}
   </div>
 );
-const LoadingSpinner = () => <div className="text-center p-10">Loading...</div>;
-const ErrorMessage = ({ message }) => <div className="text-center p-10 text-red-600">Error: {message}</div>;
-//const { resolvedTheme } = useTheme();
 
-const ReactEcharts = dynamic(() => import("echarts-for-react"), { ssr: false });
+const LoadingSpinner = () => (
+    <div className="flex justify-center items-center h-64 text-foreground-muted">
+        <svg className="animate-spin h-8 w-8 text-primary mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        Loading data...
+    </div>
+);
 
-const fetcher = url => fetch(url).then(res => {
-    if (!res.ok) {
-        // Consider more specific error handling based on response
-        const error = new Error('Failed to fetch data');
-        error.status = res.status;
-        // try to get error message from body
-        return res.json().then(body => {
-            error.info = body.message || body.error || 'Server error';
-            throw error;
-        }).catch(() => { // if body is not json or other error
-            error.info = res.statusText;
-            throw error;
-        });
-    }
-    return res.json();
+const ErrorMessage = ({ message }) => (
+    <div className="p-4 my-4 text-center text-red-700 bg-red-100 border border-red-300 rounded-app-md dark:bg-red-900/30 dark:text-red-300 dark:border-red-700">
+        Error: {message}
+    </div>
+);
+
+const ReactEcharts = dynamic(() => import("echarts-for-react"), {
+    ssr: false,
+    loading: () => <div className="h-[450px] w-full flex justify-center items-center"><LoadingSpinner/></div>
 });
 
-// Helper to generate all months in a range (inclusive) -> ['YYYY-MM', ...]
-// (This can also be moved to utils if used by multiple chart pages)
+const fetcher = async url => { // fetcher remains the same
+    const res = await fetch(url);
+    if (!res.ok) {
+        const error = new Error('Failed to fetch data');
+        error.status = res.status;
+        try {
+            const body = await res.json();
+            error.info = body.message || body.error || 'Server error';
+        } catch (e) {
+            error.info = res.statusText;
+        }
+        throw error;
+    }
+    return res.json();
+};
+
 function generateMonthsInRangeForCharts(startDate, endDate) {
+    // Logic remains the same
     if (!startDate || !endDate) return [];
     const start = new Date(Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(), 1));
     const end = new Date(Date.UTC(endDate.getUTCFullYear(), endDate.getUTCMonth(), 1));
@@ -63,116 +88,79 @@ function generateMonthsInRangeForCharts(startDate, endDate) {
 }
 
 
-export default function OrgsPage() { 
-    const [startDate, setStartDate] = useState(null); // Date object
-    const [endDate, setEndDate] = useState(null);     // Date object
-
-    // selectedFilters for API query (strings/IDs)
+export default function OrgsPage() {
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
     const [selectedFilters, setSelectedFilters] = useState({
-        startMonth: '',
-        endMonth: '',
-        org: 'all',     // Store actual ID or 'all'
-        title: 'all',   // Store actual ID or 'all'
+        startMonth: '', endMonth: '', org: 'all', title: 'all',
     });
-
-    const [availableFilterOptions, setAvailableFilterOptions] = useState({
-        orgs: [], // Expects [{ value: 'id', label: 'Name' }, ...]
-        titles: [],
-    });
+    const [availableFilterOptions, setAvailableFilterOptions] = useState({ orgs: [], titles: [] });
     const [initialFiltersLoaded, setInitialFiltersLoaded] = useState(false);
+    const { resolvedTheme } = useTheme(); // For ECharts theme
 
-	useEffect(() => {
-		// --- 1. Determine Initial Values (Query > LocalStorage > Default) ---
-		const queryParams = new URLSearchParams(window.location.search);
-		const queryStart = queryParams.get('start');
-		const queryEnd = queryParams.get('end');
-	
-		const queryOrgId = queryParams.get('orgId');
-		const queryTitleId = queryParams.get('titleId');
-	
-		const savedGlobalDates = loadFromLocalStorage(LOCAL_STORAGE_KEYS.GLOBAL_DATE_FILTERS, {});
-		const pageSpecificLocalStorageKey = LOCAL_STORAGE_KEYS.ORGS_PAGE_FILTERS;
-		const savedPageSpecificFilters = loadFromLocalStorage(pageSpecificLocalStorageKey, {});
-	
-		// Determine final initial values with precedence
-		const finalInitialStartDate = parseYearMonthToDate(queryStart) || parseYearMonthToDate(savedGlobalDates.startMonth) || getDefaultInitialStartDate();
-		const finalInitialEndDate = parseYearMonthToDate(queryEnd) || parseYearMonthToDate(savedGlobalDates.endMonth) || getDefaultInitialEndDate();
-	
-		const finalSelectedFiltersForState = {
-			startMonth: getYearMonthString(finalInitialStartDate),
-			endMonth: getYearMonthString(finalInitialEndDate),
-			org: queryOrgId !== null ? queryOrgId : (savedPageSpecificFilters.org !== undefined ? savedPageSpecificFilters.org : 'all'),
-			title: queryTitleId !== null ? queryTitleId : (savedPageSpecificFilters.title !== undefined ? savedPageSpecificFilters.title : 'all'),
-		};
-	
-		// --- 2. Set React State ---
-		setStartDate(finalInitialStartDate);
-		setEndDate(finalInitialEndDate);
-		setSelectedFilters(finalSelectedFiltersForState);
-	
-		// --- 3. Explicitly Save These Determined Values to LocalStorage ---
-		// This ensures that the state derived from query params (or fallbacks) IS the new persisted state.
-		saveToLocalStorage(LOCAL_STORAGE_KEYS.GLOBAL_DATE_FILTERS, {
-			startMonth: finalSelectedFiltersForState.startMonth,
-			endMonth: finalSelectedFiltersForState.endMonth,
-		});
-		saveToLocalStorage(pageSpecificLocalStorageKey, {
-			org: finalSelectedFiltersForState.org,
-			title: finalSelectedFiltersForState.title,
-		});
-	
-		// --- 4. Mark Initial Loading as Complete ---
-		setInitialFiltersLoaded(true);
-	
-	}, []); // Empty dependency array to run once on mount (and when query params change if using a router event listener)
-
-    // Persist filters to localStorage whenever they change
+    // useEffect for loading initial filters (logic largely same, ensure keys match)
     useEffect(() => {
-        if (!initialFiltersLoaded) return;
+        const queryParams = new URLSearchParams(window.location.search);
+        const queryStart = queryParams.get('start');
+        const queryEnd = queryParams.get('end');
+        const queryOrgId = queryParams.get('orgId') || queryParams.get('orgName'); // Accept orgName for backward compatibility if dashboard links use it
+        const queryTitleId = queryParams.get('titleId');
 
-        if (startDate && endDate) {
-            saveToLocalStorage(LOCAL_STORAGE_KEYS.GLOBAL_DATE_FILTERS, {
-                startMonth: getYearMonthString(startDate),
-                endMonth: getYearMonthString(endDate),
-            });
-        }
+        const savedGlobalDates = loadFromLocalStorage(LOCAL_STORAGE_KEYS.GLOBAL_DATE_FILTERS, {});
+        const pageSpecificFilters = loadFromLocalStorage(LOCAL_STORAGE_KEYS.ORGS_PAGE_FILTERS, {});
+
+        const finalInitialStartDate = parseYearMonthToDate(queryStart) || parseYearMonthToDate(savedGlobalDates.startMonth) || getDefaultInitialStartDate();
+        const finalInitialEndDate = parseYearMonthToDate(queryEnd) || parseYearMonthToDate(savedGlobalDates.endMonth) || getDefaultInitialEndDate();
+
+        const finalSelected = {
+            startMonth: getYearMonthString(finalInitialStartDate),
+            endMonth: getYearMonthString(finalInitialEndDate),
+            org: queryOrgId !== null ? queryOrgId : (pageSpecificFilters.org !== undefined ? pageSpecificFilters.org : 'all'),
+            title: queryTitleId !== null ? queryTitleId : (pageSpecificFilters.title !== undefined ? pageSpecificFilters.title : 'all'),
+        };
+
+        setStartDate(finalInitialStartDate);
+        setEndDate(finalInitialEndDate);
+        setSelectedFilters(finalSelected);
+
+        saveToLocalStorage(LOCAL_STORAGE_KEYS.GLOBAL_DATE_FILTERS, { startMonth: finalSelected.startMonth, endMonth: finalSelected.endMonth });
+        saveToLocalStorage(LOCAL_STORAGE_KEYS.ORGS_PAGE_FILTERS, { org: finalSelected.org, title: finalSelected.title });
+
+        setInitialFiltersLoaded(true);
+    }, []);
+
+    // Persist filters to localStorage (logic largely same)
+    useEffect(() => {
+        if (!initialFiltersLoaded || !startDate || !endDate) return;
+        saveToLocalStorage(LOCAL_STORAGE_KEYS.GLOBAL_DATE_FILTERS, {
+            startMonth: getYearMonthString(startDate),
+            endMonth: getYearMonthString(endDate),
+        });
         saveToLocalStorage(LOCAL_STORAGE_KEYS.ORGS_PAGE_FILTERS, {
             org: selectedFilters.org,
             title: selectedFilters.title,
         });
     }, [startDate, endDate, selectedFilters.org, selectedFilters.title, initialFiltersLoaded]);
 
-    // Fetch available filter options (Orgs, Titles)
-    // This should ideally come from a dedicated endpoint: /api/filters?optionsFor=orgsPage
-    // For now, we'll simulate it or assume data from main trends API can populate it.
-    // The original code derived them from `data?.trendsData`. This is okay if trendsData is comprehensive enough.
-    // Or use a dedicated API like `/api/filters.js`
     const { data: filterOptionsData, error: filterOptionsError } = useSWR('/api/filters?types=org,title', fetcher);
-    
-	useEffect(() => {
-		if (filterOptionsData) {
-			setAvailableFilterOptions({
-				// API now returns { id, name }, map directly to { value, label } for react-select
-				orgs: filterOptionsData.orgs
-					? filterOptionsData.orgs.map(org => ({ value: org.id, label: org.name }))
-					: [],
-				titles: filterOptionsData.titles
-					? filterOptionsData.titles.map(title => ({ value: title.id, label: title.name }))
-					: [],
-			});
-		} else if (filterOptionsError) {
-			console.error("Error fetching filter options:", filterOptionsError);
-			setAvailableFilterOptions({ orgs: [], titles: [] });
-		}
-	}, [filterOptionsData, filterOptionsError]);
 
-    // Handlers for FilterTopbar
+    useEffect(() => {
+        if (filterOptionsData) {
+            setAvailableFilterOptions({
+                orgs: filterOptionsData.orgs ? filterOptionsData.orgs.map(o => ({ value: o.id, label: o.name })) : [],
+                titles: filterOptionsData.titles ? filterOptionsData.titles.map(t => ({ value: t.id, label: t.name })) : [],
+            });
+        } else if (filterOptionsError) {
+            console.error("Error fetching filter options for Orgs page:", filterOptionsError);
+        }
+    }, [filterOptionsData, filterOptionsError]);
+
     const handleDateChange = useCallback((filterKey, dateObject) => {
-        const newDateString = getYearMonthString(dateObject);
-        if (filterKey === 'startMonth' || filterKey === 'startDate') {
+        const newDateString = dateObject ? getYearMonthString(dateObject) : '';
+        if (filterKey === 'startDate') {
             setStartDate(dateObject);
             setSelectedFilters(prev => ({ ...prev, startMonth: newDateString }));
-        } else if (filterKey === 'endMonth' || filterKey === 'endDate') {
+        } else if (filterKey === 'endDate') {
             setEndDate(dateObject);
             setSelectedFilters(prev => ({ ...prev, endMonth: newDateString }));
         }
@@ -182,46 +170,40 @@ export default function OrgsPage() {
         setSelectedFilters(prev => ({ ...prev, [filterKey]: value }));
     }, []);
 
-    // Define filterConfig for the FilterTopbar
     const filterConfig = useMemo(() => [
-        { key: 'startMonth', label: 'Start Date:', type: 'month' },
-        { key: 'endMonth', label: 'End Date:', type: 'month' },
-        { key: 'org', label: 'Organization:', type: 'select', optionsKey: 'orgs', placeholder: 'Select Organization' },
-        { key: 'title', label: 'Traveler Title:', type: 'select', optionsKey: 'titles', placeholder: 'Select Title' },
+        { key: 'startDate', label: 'Start Date:', type: 'month' },
+        { key: 'endDate', label: 'End Date:', type: 'month' },
+        { key: 'org', label: 'Organization:', type: 'select', optionsKey: 'orgs', placeholder: 'All Organizations' },
+        { key: 'title', label: 'Traveler Title:', type: 'select', optionsKey: 'titles', placeholder: 'All Titles' },
     ], []);
 
-    // API URL construction
     const apiUrl = useMemo(() => {
         if (!initialFiltersLoaded || !selectedFilters.startMonth || !selectedFilters.endMonth) return null;
-        
         const params = new URLSearchParams({
             start: selectedFilters.startMonth,
             end: selectedFilters.endMonth,
         });
-        if (selectedFilters.org && selectedFilters.org !== 'all') {
-            params.append('orgId', selectedFilters.org);
-        }
-        if (selectedFilters.title && selectedFilters.title !== 'all') {
-            params.append('titleId', selectedFilters.title);
-        }
+        if (selectedFilters.org && selectedFilters.org !== 'all') params.append('orgId', selectedFilters.org);
+        if (selectedFilters.title && selectedFilters.title !== 'all') params.append('titleId', selectedFilters.title);
         return `/api/trends?${params.toString()}`;
     }, [selectedFilters, initialFiltersLoaded]);
 
-    const { data: trendsApiData, error: trendsApiError, isLoading: trendsApiIsLoading } = useSWR(apiUrl, fetcher, { keepPreviousData: true });
+    const { data: trendsApiData, error: trendsApiError, isLoading: dataIsLoading, isValidating } = useSWR(apiUrl, fetcher, { keepPreviousData: true, revalidateOnFocus: false });
 
-    // --- ECharts Options (similar to original, adapt as needed) ---
+    const echartTheme = resolvedTheme === 'dark' ? 'dark' : 'light';
+    const pageIsLoading = !initialFiltersLoaded || dataIsLoading || isValidating || (filterOptionsData === undefined && !filterOptionsError);
+
+
+    // ECharts options (spendingTrendsOptions, spendingByPurposeOptions) - use CSS vars for colors
     const spendingTrendsOptions = useMemo(() => {
         const trends = trendsApiData?.trendsData || [];
-        if (!startDate || !endDate || !initialFiltersLoaded) return {}; // Added initialFiltersLoaded check
+        if (!startDate || !endDate ) return { series: [] };
 
         const allMonthsInRange = generateMonthsInRangeForCharts(startDate, endDate);
         const trendsMap = trends.reduce((map, item) => {
-            // Ensure item.month is valid before slicing
-            const monthKey = item && item.month ? String(item.month).slice(0, 7) : null; 
+            const monthKey = item && item.month ? String(item.month).slice(0, 7) : null;
             if (monthKey) {
-                 if (!map[monthKey]) {
-                    map[monthKey] = { total_cost: 0, airfare: 0, other_transport: 0, lodging: 0, meals: 0, other_expenses: 0, record_count: 0 };
-                }
+                if (!map[monthKey]) map[monthKey] = { total_cost: 0, airfare: 0, other_transport: 0, lodging: 0, meals: 0, other_expenses: 0, record_count: 0 };
                 map[monthKey].total_cost += Number(item.total_cost) || 0;
                 map[monthKey].airfare += Number(item.airfare) || 0;
                 map[monthKey].other_transport += Number(item.other_transport) || 0;
@@ -234,84 +216,72 @@ export default function OrgsPage() {
         }, {});
 
         const monthlyAggregates = allMonthsInRange.map(monthKey => {
-            const dataFromApiForMonth = trendsMap[monthKey];
-            if (dataFromApiForMonth) {
-                return {
-                    month: monthKey, // Ensure month property is always present
-                    ...dataFromApiForMonth 
-                };
-            } else {
-                // Fallback for months with no data from API
-                return { 
-                    month: monthKey, 
-                    total_cost: 0, airfare: 0, other_transport: 0, 
-                    lodging: 0, meals: 0, other_expenses: 0, record_count: 0 
-                };
+            const dataForMonth = trendsMap[monthKey];
+            if(dataForMonth) {
+                // Ensure the month property is added if it came from trendsMap
+                return { month: monthKey, ...dataForMonth };
             }
+            // Fallback for months with no data in trendsMap for this monthKey
+            return { month: monthKey, total_cost: 0, airfare: 0, other_transport: 0, lodging: 0, meals: 0, other_expenses: 0, record_count: 0 };
         });
         
         const monthLabels = monthlyAggregates.map(d => {
-             // Now d.month should always be a valid 'YYYY-MM' string
-             const [year, monthNum] = d.month.split('-'); 
+             // This check adds robustness, though the fix above should prevent d.month from being undefined
+             if (!d || !d.month) return 'Unknown Date';
+             const [year, monthNum] = d.month.split('-');
              const dateLabel = new Date(Date.UTC(Number(year), Number(monthNum) - 1, 1));
-             return dateLabel.toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
+             return dateLabel.toLocaleDateString('en-US', { month: 'short', year: '2-digit', timeZone: 'UTC' });
         });
+        const seriesColors = ['#00A9B5', '#FF6B6B', '#FFD166', '#06D6A0', '#7884D5'];
 
-        // ... (rest of the spendingTrendsOptions object)
         return {
-            tooltip: { trigger: 'axis' },
-            legend: { data: ['Airfare', 'Lodging', 'Meals', 'Other Transport', 'Other Expenses'], textStyle: { color: '#9CA3AF'} },
-            grid: { left: '3%', right: '4%', bottom: '10%', containLabel: true },
-            xAxis: { type: 'category', boundaryGap: false, data: monthLabels, axisLabel: { color: '#9CA3AF'} },
-            yAxis: [
-                { type: 'value', name: 'Cost', axisLabel: { formatter: '${value}', color: '#9CA3AF' } },
+            tooltip: { trigger: 'axis', backgroundColor: 'var(--color-surface-default)', borderColor: 'var(--color-border-default)', textStyle: { color: 'var(--color-foreground-default)'} },
+            legend: { data: ['Airfare', 'Lodging', 'Meals', 'Other Transport', 'Other Expenses'], inactiveColor: 'var(--color-foreground-muted)', textStyle: { color: 'var(--color-text-body)'} },
+            grid: { left: '3%', right: '4%', bottom: '12%', containLabel: true },
+            xAxis: { type: 'category', boundaryGap: false, data: monthLabels, axisLabel: { color: 'var(--color-text-body)'} },
+            yAxis: { type: 'value', name: 'Cost', axisLabel: { formatter: '${value}', color: 'var(--color-text-body)' }, splitLine: { lineStyle: { color: 'var(--color-border-default)' }}},
+            dataZoom: [
+                { type: 'inside', start: 0, end: 100, zoomLock: false },
+                { show: true, type: 'slider', bottom: 10, height: 20, backgroundColor: 'var(--color-surface-default)', borderColor: 'var(--color-border-default)', dataBackground: { lineStyle: { color: 'var(--color-primary-default)/0.2' }, areaStyle: { color: 'var(--color-primary-default)/0.1'}}, selectedDataBackground: {lineStyle: {color: 'var(--color-primary-default)'}, areaStyle: {color: 'var(--color-primary-default)/0.3'}}, fillerColor: 'var(--color-primary-default)/0.2', handleStyle: { color: 'var(--color-primary-default)'}, textStyle: {color: 'var(--color-text-muted)'}}
             ],
-            dataZoom: [ { type: 'inside' }, { show: true, type: 'slider', bottom: 10 } ],
-            series: [
-                { name: 'Airfare', type: 'line', smooth: true, yAxisIndex: 0, emphasis: { focus: 'series' }, data: monthlyAggregates.map(d => d.airfare) },
-                { name: 'Lodging', type: 'line', smooth: true, yAxisIndex: 0, emphasis: { focus: 'series' }, data: monthlyAggregates.map(d => d.lodging) },
-                { name: 'Meals', type: 'line', smooth: true, yAxisIndex: 0, emphasis: { focus: 'series' }, data: monthlyAggregates.map(d => d.meals) },
-                { name: 'Other Transport', type: 'line', smooth: true, yAxisIndex: 0, emphasis: { focus: 'series' }, data: monthlyAggregates.map(d => d.other_transport) },
-                { name: 'Other Expenses', type: 'line', smooth: true, yAxisIndex: 0, emphasis: { focus: 'series' }, data: monthlyAggregates.map(d => d.other_expenses) }
-            ]
+            series: [ /* Series data mapping */
+                { name: 'Airfare', type: 'line', smooth: true, data: monthlyAggregates.map(d => d.airfare), color: seriesColors[0] },
+                { name: 'Lodging', type: 'line', smooth: true, data: monthlyAggregates.map(d => d.lodging), color: seriesColors[1] },
+                { name: 'Meals', type: 'line', smooth: true, data: monthlyAggregates.map(d => d.meals), color: seriesColors[2] },
+                { name: 'Other Transport', type: 'line', smooth: true, data: monthlyAggregates.map(d => d.other_transport), color: seriesColors[3] },
+                { name: 'Other Expenses', type: 'line', smooth: true, data: monthlyAggregates.map(d => d.other_expenses), color: seriesColors[4] },
+            ].map(s => ({ ...s, showSymbol: false, lineStyle: { width: 2.5 }, emphasis: { focus: 'series' } }))
         };
-    }, [trendsApiData?.trendsData, startDate, endDate, initialFiltersLoaded]); // Added initialFiltersLoaded
+    }, [trendsApiData?.trendsData, startDate, endDate, resolvedTheme]);
 
-
-
-    // Example for spendingByPurposeOptions - ensure your API and data structure match
     const spendingByPurposeOptions = useMemo(() => {
-        const purposeData = trendsApiData?.purposeBreakdown || []; // Assuming API provides this
+        const purposeData = trendsApiData?.purposeBreakdown || [];
         const purposeAgg = purposeData.reduce((acc, item) => {
             const name = item.purpose || 'Unknown';
-            const value = item.total_cost || 0;
-            acc[name] = (acc[name] || 0) + value;
+            acc[name] = (acc[name] || 0) + (Number(item.total_cost) || 0);
             return acc;
         }, {});
         const formattedData = Object.entries(purposeAgg).map(([name, value]) => ({ name, value })).filter(item => item.value > 0).sort((a, b) => b.value - a.value);
         return {
-            tooltip: { trigger: 'item', formatter: '{b}: ${c} ({d}%)' },
-            legend: { orient: 'vertical', left: 'left', top: 'center', type: 'scroll', textStyle: { color: '#9CA3AF'} },
+            tooltip: { trigger: 'item', formatter: '{b}: ${c} ({d}%)', backgroundColor: 'var(--color-surface-default)', borderColor: 'var(--color-border-default)', textStyle: { color: 'var(--color-foreground-default)'} },
+            legend: { type: 'scroll', orient: 'vertical', left: 10, top: 20, bottom: 20, inactiveColor: 'var(--color-foreground-muted)', textStyle: { color: 'var(--color-text-body)'} },
             series: [{
-                name: 'Spending by Purpose', type: 'pie', radius: ['40%', '70%'], center: ['65%', '50%'],
-                avoidLabelOverlap: true, itemStyle: { borderRadius: 5, borderColor: '#fff', borderWidth: 1 },
-                label: { show: false }, emphasis: { label: { show: true, fontSize: '16', fontWeight: 'bold' } },
-                labelLine: { show: false }, data: formattedData,
+                name: 'Spending by Purpose', type: 'pie', radius: ['50%', '70%'], center: ['60%', '50%'],
+                avoidLabelOverlap: true, itemStyle: { borderRadius: 5, borderColor: 'var(--color-card-background)', borderWidth: 2 },
+                label: { show: false }, emphasis: { label: { show: true, fontSize: 16, fontWeight: 'bold', color: 'var(--color-text-heading)' }, itemStyle: { shadowBlur: 10, shadowColor: 'var(--color-shadow-default)'}},
+                data: formattedData,
             }],
         };
-    }, [trendsApiData?.purposeBreakdown]);
-    
-    const pageIsLoading = !initialFiltersLoaded || trendsApiIsLoading || (filterOptionsData === undefined && !filterOptionsError);
+    }, [trendsApiData?.purposeBreakdown, resolvedTheme]);
 
 
     if (!initialFiltersLoaded || (filterOptionsData === undefined && !filterOptionsError && !pageIsLoading) ) {
          return <TrendsLayout><LoadingSpinner /></TrendsLayout>;
     }
 
-
     return (
         <TrendsLayout>
-            <h1 className="text-2xl font-bold mb-4 text-slate-800 dark:text-slate-100">Organization Trends</h1>
+            <h1 className="text-page-heading">Organization Trends</h1>
             {filterOptionsError && <ErrorMessage message={`Failed to load filter options: ${filterOptionsError.info || filterOptionsError.message}`} />}
 
             <FilterTopbar
@@ -322,17 +292,23 @@ export default function OrgsPage() {
                 onFilterChange={handleFilterChange}
                 startDate={startDate}
                 endDate={endDate}
-                loading={pageIsLoading && !trendsApiData} // Show loading in filter bar if main data is loading
+                loading={pageIsLoading && !trendsApiData && !filterOptionsData}
             />
 
             {trendsApiError && <ErrorMessage message={`Failed to load trends data: ${trendsApiError.info || trendsApiError.message}`} />}
 
+            {(!pageIsLoading && !trendsApiError && !trendsApiData?.trendsData?.length) && (
+                <div className="card card-padding-default mt-6 text-center text-foreground-muted">
+                    No trend data available for the selected filters.
+                </div>
+            )}
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
                 <ChartContainer title="Spending Trends Over Time" isLoading={pageIsLoading && !trendsApiData} className="lg:col-span-2">
-                    {(!pageIsLoading || trendsApiData) && trendsApiData?.trendsData && <ReactEcharts option={spendingTrendsOptions} notMerge={true} lazyUpdate={true} theme="light" />}
+                    {(!pageIsLoading || trendsApiData?.trendsData) && <ReactEcharts option={spendingTrendsOptions} notMerge={true} lazyUpdate={true} theme={echartTheme} style={{ height: '100%', width: '100%' }} />}
                 </ChartContainer>
                 <ChartContainer title="Spending by Purpose" isLoading={pageIsLoading && !trendsApiData}>
-                     {(!pageIsLoading || trendsApiData) && trendsApiData?.purposeBreakdown && <ReactEcharts option={spendingByPurposeOptions} notMerge={true} lazyUpdate={true} theme="light" />}
+                     {(!pageIsLoading || trendsApiData?.purposeBreakdown) && <ReactEcharts option={spendingByPurposeOptions} notMerge={true} lazyUpdate={true} theme={echartTheme} style={{ height: '100%', width: '100%' }} />}
                 </ChartContainer>
             </div>
         </TrendsLayout>

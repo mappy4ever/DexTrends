@@ -1,181 +1,244 @@
-// components/FilterTopBar.js
+// components/FilterTopbar.js
 import React from 'react';
 import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";
+// "react-datepicker/dist/react-datepicker.css"; // Base CSS is imported in _app.js
+// Custom styles for DatePicker are in globals.css
 import AsyncCreatableSelect from 'react-select/async-creatable';
-import Select from 'react-select'; // For standard sync select, if preferred over native
+import Select from 'react-select';
 import { useTheme } from 'next-themes';
-
-// Helper function (assuming it might be used by parent components for loadOptions)
-// const getYearMonthString = (date) => { ... }; // (already defined in previous step, keep if needed globally or move to utils)
 
 export default function FilterTopbar({
     filterConfig,
-    availableFilters,
-    selectedFilters,
-    onFilterChange,
-    onDateChange,
+    availableFilters, // e.g., { org: [{value: '1', label: 'Org A'}], title: [...] }
+    selectedFilters,  // e.g., { org: '1', title: 'Manager', startMonth: '2023-01', ... }
+    onFilterChange,   // (filterKey, value) => void
+    onDateChange,     // (dateKey {'startDate'|'endDate'}, dateObject) => void
     loading = false,
-    startDate,
-    endDate,
+    startDate,        // Date object
+    endDate,          // Date object
 }) {
+    const { resolvedTheme } = useTheme();
+    const isDarkMode = resolvedTheme === 'dark';
 
-    const handleSelectChange = (filterKey, value) => {
-        onFilterChange(filterKey, value);
+    const handleReactSelectChange = (filterKey, selectedOptionOrOptions) => {
+        // For multi-select, selectedOptionOrOptions will be an array
+        // For single-select, it will be an object or null
+        if (Array.isArray(selectedOptionOrOptions)) {
+            onFilterChange(filterKey, selectedOptionOrOptions.map(opt => opt.value));
+        } else {
+            onFilterChange(filterKey, selectedOptionOrOptions ? selectedOptionOrOptions.value : null);
+        }
+    };
+    
+    const handleReactSelectCreate = (filterKey, inputValue, isMulti = false) => {
+        // This function should call onFilterChange with the newly created value.
+        // The parent component (consuming FilterTopbar) might need to handle
+        // how this new value is added to availableFilters or processed.
+        // For simplicity, we assume onFilterChange can handle a new string value.
+        console.log(`FilterTopbar: New option created for ${filterKey}:`, inputValue);
+        if (isMulti) {
+             // Get current values, ensure it's an array, add new value
+             const currentValues = Array.isArray(selectedFilters[filterKey]) ? selectedFilters[filterKey] : [];
+             onFilterChange(filterKey, [...currentValues, inputValue]); // Assuming inputValue is the new value itself
+        } else {
+            onFilterChange(filterKey, inputValue); // New value for single select/creatable
+        }
     };
 
-    const handleReactSelectChange = (filterKey, selectedOption) => {
-        onFilterChange(filterKey, selectedOption ? selectedOption.value : null);
-    };
 
-    const handleDatePickerChange = (filterKey, dateObject) => {
-        onDateChange(filterKey, dateObject);
-    };
-
-	const { resolvedTheme } = useTheme();
-
-    // Styles for react-select to somewhat match Tailwind inputs
-    const customReactSelectStyles = (isDarkMode = false) => ({
+    const customReactSelectStyles = (isDark) => ({
         control: (provided, state) => ({
             ...provided,
-            minHeight: '42px', // Matches p-2 border height roughly
-            borderColor: state.isFocused ? (isDarkMode ? '#5A67D8' : '#4A5568') : (isDarkMode ? '#4A5568' : '#D1D5DB'), // Tailwind gray-300, focus: indigo-500
-            backgroundColor: isDarkMode ? '#2D3748' : 'white', // Tailwind gray-800 for dark
-            boxShadow: state.isFocused ? (isDarkMode ? '0 0 0 1px #5A67D8' : '0 0 0 1px #4A5568') : 'none',
+            minHeight: '42px', // Approx h-10 or py-2 + border
+            backgroundColor: `var(--color-input-background)`,
+            borderColor: state.isFocused ? `var(--color-primary-default)` : `var(--color-input-border)`,
+            boxShadow: state.isFocused ? `0 0 0 1px var(--color-primary-default)` : 'none',
+            borderRadius: `var(--radius-md)`, // from globals.css or tailwind config
             '&:hover': {
-                borderColor: state.isFocused ? (isDarkMode ? '#5A67D8' : '#4A5568') : (isDarkMode ? '#718096' : '#A0AEC0'), // Tailwind gray-500 on hover
+                borderColor: `var(--color-primary-default)`,
             },
+            fontSize: '0.875rem', // text-sm
         }),
         menu: (provided) => ({
             ...provided,
-            backgroundColor: isDarkMode ? '#2D3748' : 'white',
-            zIndex: 20, // Ensure dropdown is above other content
+            backgroundColor: `var(--color-surface-default)`,
+            borderColor: `var(--color-border-default)`,
+            borderWidth: '1px',
+            borderRadius: `var(--radius-md)`,
+            boxShadow: `var(--shadow-app)`, // or specific shadow for dropdowns
+            zIndex: 50, // High z-index for dropdowns
         }),
         option: (provided, state) => ({
             ...provided,
-            backgroundColor: state.isSelected ? (isDarkMode ? '#4A5568' : '#EBF4FF') : state.isFocused ? (isDarkMode ? '#4A5568' : '#F7FAFC') : (isDarkMode ? '#2D3748' : 'white'),
-            color: isDarkMode ? 'white' : 'black',
+            backgroundColor: state.isSelected
+                ? `var(--color-primary-default)`
+                : state.isFocused
+                ? `var(--color-primary-default)/0.1` // primary with low opacity
+                : 'transparent',
+            color: state.isSelected ? `var(--color-primary-foreground)` : `var(--color-input-text)`,
             '&:active': {
-                backgroundColor: isDarkMode ? '#3D4852' : '#EBF4FF',
+                backgroundColor: `var(--color-primary-default)/0.2`,
             },
+            fontSize: '0.875rem',
+            padding: '0.5rem 0.75rem', // py-2 px-3
         }),
         singleValue: (provided) => ({
             ...provided,
-            color: isDarkMode ? 'white' : 'black',
+            color: `var(--color-input-text)`,
         }),
         input: (provided) => ({
             ...provided,
-            color: isDarkMode ? 'white' : 'black',
+            color: `var(--color-input-text)`,
+            margin: '0px', // Reset margin
+            paddingBottom: '0px', // Reset padding
+            paddingTop: '0px',    // Reset padding
         }),
         placeholder: (provided) => ({
             ...provided,
-            color: isDarkMode ? '#A0AEC0' : '#A0AEC0', // Tailwind gray-400
+            color: `var(--color-input-placeholder)`,
         }),
-        // Add more styles for multiValue, clearIndicator, dropdownIndicator etc. if needed
+        indicatorSeparator: () => ({ display: 'none' }), // Hide separator
+        dropdownIndicator: (provided) => ({
+            ...provided,
+            color: `var(--color-text-muted)`,
+            '&:hover': { color: `var(--color-text-body)` },
+        }),
+        clearIndicator: (provided) => ({
+            ...provided,
+            color: `var(--color-text-muted)`,
+            '&:hover': { color: `var(--color-text-body)` },
+        }),
+        multiValue: (provided) => ({
+            ...provided,
+            backgroundColor: `var(--color-primary-default)/0.1`,
+            borderRadius: `var(--radius-sm)`,
+        }),
+        multiValueLabel: (provided) => ({
+            ...provided,
+            color: `var(--color-primary-default)`, // Text color for selected item
+            fontSize: '0.875rem',
+        }),
+        multiValueRemove: (provided) => ({
+            ...provided,
+            color: `var(--color-primary-default)`,
+            '&:hover': {
+                backgroundColor: `var(--color-primary-default)/0.2`,
+                color: `var(--color-primary-darker)`,
+            },
+        }),
     });
-    
-    // Detect dark mode (basic example, adapt if you have a theme context)
-    const isDarkMode = typeof window !== 'undefined' && document.documentElement.classList.contains('dark');
-
 
     if (loading) {
         return (
-            <div className="p-3 mb-5 bg-gray-100 border-b border-gray-300 text-gray-500 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-400">
+            <div className="p-4 mb-6 bg-surface rounded-app-lg shadow-app text-center text-foreground-muted">
                 Loading filters...
             </div>
         );
     }
 
     if (!filterConfig || filterConfig.length === 0) {
-        return null;
+        return null; // No filters configured
     }
 
     return (
-        <div className="p-4 bg-card text-card-foreground rounded-lg shadow mb-6 flex flex-wrap items-end gap-x-6 gap-y-4">
+        <div className="p-4 bg-card text-card-foreground rounded-app-lg shadow-app mb-6 flex flex-wrap items-end gap-x-4 gap-y-4 z-20">
             {filterConfig.map(filter => {
-                const { key, label, type, optionsKey, placeholder, loadOptions, creatable } = filter;
+                const { key, label, type, optionsKey, placeholder, loadOptions, isMulti = false, creatable = false, onCreateOption: parentOnCreateOption } = filter;
 
-                if (type === 'select') { // For standard, relatively small dropdowns like Org, Title
-                    const effectiveOptionsKey = optionsKey || key;
-                    const filterOptions = availableFilters[effectiveOptionsKey] || [];
-                    // For react-select, value should be an object or null
-                    const currentValueObj = filterOptions.find(opt => opt.value === selectedFilters[key]);
+                if (type === 'select' || type === 'async_select' || type === 'async_creatable_select') {
+                    const currentFilterValue = selectedFilters[key];
+                    let valueForSelect;
+
+                    const optionsToUse = type === 'select' ? (availableFilters[optionsKey || key] || []) : undefined;
+
+                    if (isMulti) {
+                        valueForSelect = Array.isArray(currentFilterValue)
+                            ? currentFilterValue.map(val => ({
+                                  value: val,
+                                  // Try to find label from options, or use val as label
+                                  label: (optionsToUse || []).find(opt => opt.value === val)?.label || val
+                              }))
+                            : [];
+                    } else {
+                        valueForSelect = currentFilterValue
+                            ? {
+                                  value: currentFilterValue,
+                                  label: (optionsToUse || []).find(opt => opt.value === currentFilterValue)?.label || selectedFilters[`${key}_label`] || currentFilterValue
+                              }
+                            : null;
+                    }
+
+                    const commonSelectProps = {
+                        id: `${key}-filter`,
+                        value: valueForSelect,
+                        onChange: (selected) => handleReactSelectChange(key, selected),
+                        isClearable: filter.isClearable !== undefined ? filter.isClearable : true,
+                        isMulti: isMulti,
+                        placeholder: placeholder || `Select ${label.replace(':', '').trim()}`,
+                        styles: customReactSelectStyles(isDarkMode),
+                        className: "text-sm",
+                        classNamePrefix: "react-select", // For easier global styling if needed
+                    };
 
                     return (
-                        <div key={key} className="flex flex-col min-w-[180px] sm:min-w-[200px] flex-1 sm:flex-none">
-                            <label htmlFor={`${key}-filter`} className="block text-sm font-medium text-muted-foreground mb-1">{label}</label>
-                            <Select
-                                id={`${key}-filter`}
-                                options={[{ value: 'all', label: `All ${label.replace(':', '').trim()}` }, ...filterOptions]}
-                                value={currentValueObj || ({ value: 'all', label: `All ${label.replace(':', '').trim()}` })}
-                                onChange={(selectedOption) => handleReactSelectChange(key, selectedOption)}
-                                placeholder={placeholder || `Select ${label.replace(':', '').trim()}`}
-                                styles={customReactSelectStyles(isDarkMode)}
-                                isClearable={filter.isClearable !== undefined ? filter.isClearable : true}
-                            />
+                        <div key={key} className="flex flex-col min-w-[180px] sm:min-w-[200px] flex-1 basis-full sm:basis-auto">
+                            <label htmlFor={`${key}-filter`} className="block text-sm font-medium text-foreground-muted mb-1.5">{label}</label>
+                            {type === 'select' && (
+                                <Select
+                                    {...commonSelectProps}
+                                    options={optionsToUse}
+                                />
+                            )}
+                            {(type === 'async_select' || type === 'async_creatable_select') && (
+                                <AsyncCreatableSelect
+                                    {...commonSelectProps}
+                                    isCreatable={type === 'async_creatable_select' && creatable}
+                                    loadOptions={loadOptions} // Function passed from parent, e.g., (inputValue, callback) => ...
+                                    onCreateOption={
+                                        type === 'async_creatable_select' && creatable
+                                        ? (inputValue) => {
+                                            if (parentOnCreateOption) parentOnCreateOption(key, inputValue); // Call parent's handler
+                                            else handleReactSelectCreate(key, inputValue, isMulti); // Default handler
+                                          }
+                                        : undefined
+                                    }
+                                    defaultOptions // Consider true or an initial list
+                                    cacheOptions
+                                />
+                            )}
                         </div>
                     );
+
                 } else if (type === 'month') {
-                    const isStartDate = key === 'startMonth' || key === 'startDate';
-                    const selectedDateValue = isStartDate ? startDate : endDate;
+                    const isStartDateKey = key === 'startMonth' || key === 'startDate';
+                    const selectedDateValue = isStartDateKey ? startDate : endDate;
 
                     return (
-                        <div key={key} className="flex flex-col min-w-[150px] sm:min-w-[160px] flex-1 sm:flex-none">
-                            <label htmlFor={`${key}-filter`} className="block text-sm font-medium text-muted-foreground mb-1">{label}</label>
+                        <div key={key} className="flex flex-col min-w-[150px] sm:min-w-[160px] flex-1 basis-full sm:basis-auto">
+                            <label htmlFor={`${key}-filter`} className="block text-sm font-medium text-foreground-muted mb-1.5">{label}</label>
                             <DatePicker
-                                selected={selectedDateValue}
-                                onChange={(date) => handleDatePickerChange(key, date)}
-                                selectsStart={isStartDate ? true : undefined}
-                                selectsEnd={!isStartDate ? true : undefined}
-                                startDate={isStartDate ? undefined : startDate}
-                                endDate={!isStartDate ? undefined : endDate}
-                                minDate={isStartDate ? undefined : startDate}
-                                maxDate={!isStartDate ? undefined : endDate}
-                                dateFormat="yyyy-MM"
+                                selected={selectedDateValue instanceof Date && !isNaN(selectedDateValue) ? selectedDateValue : null}
+                                onChange={(date) => onDateChange(isStartDateKey ? 'startDate' : 'endDate', date)}
+                                selectsStart={isStartDateKey}
+                                selectsEnd={!isStartDateKey}
+                                startDate={isStartDateKey ? null : startDate} // For selectsEnd, provide startDate
+                                endDate={!isStartDateKey ? null : endDate}   // For selectsStart, provide endDate
+                                minDate={isStartDateKey ? null : startDate} // Prevent end before start
+                                maxDate={!isStartDateKey ? null : (filter.allowFutureDates ? null : new Date())} // Prevent start after end, optionally allow future
+                                dateFormat="MMM yyyy" // Changed format for better readability
                                 showMonthYearPicker
                                 isClearable
-                                placeholderText={placeholder || "Select month"}
-                                className="w-full p-2 border border-input rounded-md dark:bg-slate-700 dark:border-slate-600 dark:text-white focus:ring-indigo-500 focus:border-indigo-500"
+                                placeholderText={placeholder || "Pick a month"}
+                                className="input w-full" // Use the .input class from globals.css
                                 wrapperClassName="w-full"
                                 id={`${key}-filter`}
-                            />
-                        </div>
-                    );
-                } else if (type === 'async_creatable_select') { // For Person filter or similar large async lists
-                     const currentValueObj = selectedFilters[key] ? { value: selectedFilters[key], label: selectedFilters[`${key}_label`] || selectedFilters[key] } : null;
-
-
-                    return (
-                        <div key={key} className="flex flex-col min-w-[200px] sm:min-w-[240px] flex-1 sm:flex-none">
-                            <label htmlFor={`${key}-filter`} className="block text-sm font-medium text-muted-foreground mb-1">{label}</label>
-                            <AsyncCreatableSelect
-                                id={`${key}-filter`}
-                                cacheOptions
-                                defaultOptions // Consider loading initial set of options or popular choices
-                                loadOptions={loadOptions} // This function will be defined in the parent page
-                                value={currentValueObj}
-                                onChange={(selectedOption) => {
-                                    // When an option is selected or created
-                                    if (selectedOption) {
-                                        onFilterChange(key, selectedOption.value);
-                                        // If the label might be different from value (e.g. new item created), store it for display
-                                        onFilterChange(`${key}_label`, selectedOption.label);
-                                    } else {
-                                        onFilterChange(key, null);
-                                        onFilterChange(`${key}_label`, null);
-                                    }
-                                }}
-                                onCreateOption={creatable && filter.onCreateOption ? (inputValue) => filter.onCreateOption(key, inputValue) : undefined}
-                                isClearable
-                                placeholder={placeholder || `Search or create ${label.replace(':', '').trim()}`}
-                                styles={customReactSelectStyles(isDarkMode)}
-                                // menuPortalTarget={document.body} // Useful if parent clips menu
+                                popperPlacement="bottom-start"
                             />
                         </div>
                     );
                 }
 
-                console.warn(`FilterTopbar: Unsupported filter type "${type}" for key "${key}"`);
+                console.warn(`FilterTopbar: Unsupported filter type "${type}" for key "${key}". Ensure type is 'select', 'async_select', 'async_creatable_select', or 'month'.`);
                 return null;
             })}
         </div>

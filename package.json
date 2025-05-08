@@ -8,6 +8,9 @@
     "start": "next start"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
     "@google-cloud/recaptcha-enterprise": "^5.13.0",
     "@headlessui/react": "^2.2.0",
     "@supabase/supabase-js": "^2.49.1",
@@ -16,6 +19,7 @@
     "@vercel/analytics": "^1.5.0",
     "@vercel/blob": "^0.27.2",
     "@vercel/speed-insights": "^1.2.0",
+    "dompurify": "^3.2.5",
     "echarts": "^5.6.0",
     "echarts-for-react": "^3.0.2",
     "file-saver": "^2.0.5",

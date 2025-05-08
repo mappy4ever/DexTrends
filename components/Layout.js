@@ -14,13 +14,15 @@ export default function Layout({ children }) {
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-card-foreground transition-colors duration-300">
-      <div className="flex flex-grow"> {/* This div ensures Navbar and main content are side-by-side */}
-        <Navbar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
-        <main 
-          className={`flex-grow transition-all duration-300 ${isCollapsed ? 'ml-16' : 'ml-64'}`}
-          // Consider accessibility: Ensure content remains navigable and readable when margin changes.
-          // The ml-16 and ml-64 values likely correspond to the Navbar's width in its two states.
-        >
+	  {/* Navbar is rendered here. It contains both mobile fixed top bar and desktop fixed sidebar */}
+      <Navbar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+      
+	  <div className="flex flex-grow"> {/* This div ensures Navbar and main content are side-by-side */}
+      <main
+        className={`flex-grow transition-all duration-300 pt-14 md:pt-0 ${
+			isCollapsed ? 'md:ml-16' : 'md:ml-64'}
+			`}
+      >
           {children}
           {/* Vercel Analytics and Speed Insights are good to have here for a full-app coverage. */}
           <Analytics />

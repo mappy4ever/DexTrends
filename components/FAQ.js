@@ -1,53 +1,45 @@
+// components/FAQ.js
 import { useEffect, useState } from "react";
-import faqData from "../public/data/faq-content.json";
+import faqData from "../public/data/faq-content.json"; // Assuming path is correct
+import { FiChevronDown, FiChevronUp } from "react-icons/fi"; // Using different icons for expand/collapse
 
 export default function FAQ() {
-  const [offset, setOffset] = useState(0);
-  const [lockedIndex, setLockedIndex] = useState(null); // Tracks locked question
+  // Parallax effect for the main FAQ heading is handled by _app.js targeting ".parallax-heading"
+  // No offset state needed here if the JS in _app.js handles the parallax transformation.
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const headings = document.querySelectorAll(".parallax-heading");
-      headings.forEach((heading) => {
-        const rect = heading.getBoundingClientRect();
-        const scrollAmount = Math.max(0, window.innerHeight - rect.top) * 0.08;
+  const [activeIndex, setActiveIndex] = useState(null); // Tracks active/open question
 
-        heading.style.transform = `translateX(${scrollAmount}px)`; // Moves only to the right
-        heading.style.opacity = Math.max(0.8, 1 - scrollAmount * 0.02); // Fades only to 50% opacity
-      });
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const toggleLock = (index) => {
-    setLockedIndex(lockedIndex === index ? null : index);
+  const toggleFAQ = (index) => {
+    setActiveIndex(activeIndex === index ? null : index);
   };
 
   return (
-    <section className="max-w-7xl mx-auto mt-12 px-4">
-      <h2 className="heading-styling parallax-heading">
-        FAQ
+    <section className="mt-12"> {/* Removed max-w-7xl and mx-auto, should be handled by page layout */}
+      {/* The h2 below will be targeted by the global parallax effect script in _app.js */}
+      <h2 className="text-page-heading parallax-heading text-center md:text-left mb-10">
+        Frequently Asked Questions
       </h2>
-      <div className="max-w-5xl mx-auto space-y-6 mt-12">
+      <div className="max-w-3xl mx-auto space-y-4"> {/* Centered content for FAQ items */}
         {faqData.map((faq, index) => (
           <div
             key={index}
-            className="group border-b border-text-subheading pb-6"
+            className="border-b border-border last:border-b-0" // Use themed border
           >
             <button
-              className="text-left w-full blogheading-styling lg:text-2xl font-semibold py-3 focus:outline-none transition-colors duration-300"
-              onClick={() => toggleLock(index)}
+              className="flex items-center justify-between text-left w-full text-lg font-semibold text-text-heading py-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-app-sm"
+              onClick={() => toggleFAQ(index)}
+              aria-expanded={activeIndex === index}
+              aria-controls={`faq-answer-${index}`}
             >
-              {faq.question}
+              <span>{faq.question}</span>
+              {activeIndex === index ? <FiChevronUp size={20} /> : <FiChevronDown size={20} />}
             </button>
             <div
-              className={`overflow-hidden transition-all duration-500 ease-in-out ${
-                lockedIndex === index ? "max-h-screen" : "group-hover:max-h-screen max-h-0"
-              }`}
+              id={`faq-answer-${index}`}
+              className={`overflow-hidden transition-all duration-300 ease-in-out text-content-default text-base leading-relaxed`}
+              style={{ maxHeight: activeIndex === index ? '1000px' : '0px' }} // Inline style for dynamic max-height
             >
-              <p className="body-styling text-lg">{faq.answer}</p>
+              <p className="pt-1 pb-4 pr-6">{faq.answer}</p> {/* Added padding for content visibility */}
             </div>
           </div>
         ))}

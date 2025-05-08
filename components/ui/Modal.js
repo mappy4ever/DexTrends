@@ -1,50 +1,56 @@
-// components/ui/Modal.js (New File)
+// components/ui/Modal.js
 import React from 'react';
 import { FaTimes } from 'react-icons/fa';
 
 export default function Modal({ isOpen, onClose, title, children, size = "md" }) {
   if (!isOpen) return null;
 
-  let sizeClass = "max-w-md"; // Default md
-  if (size === "lg") sizeClass = "max-w-lg";
-  if (size === "xl") sizeClass = "max-w-xl";
-  if (size === "2xl") sizeClass = "max-w-2xl";
-
+  // Define size classes based on props
+  // These should align with Tailwind's max-width scale or your custom extensions
+  const sizeClasses = {
+    sm: "max-w-sm",
+    md: "max-w-md",
+    lg: "max-w-lg",
+    xl: "max-w-xl",
+    "2xl": "max-w-2xl",
+    "3xl": "max-w-3xl", // Example: Added more sizes
+    "4xl": "max-w-4xl",
+    "5xl": "max-w-5xl",
+    full: "max-w-full",
+  };
+  const resolvedSizeClass = sizeClasses[size] || sizeClasses.md;
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm p-4 transition-opacity duration-300 ease-in-out"
-      onClick={onClose} // Close on overlay click
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm transition-opacity duration-300 ease-in-out" // Using Tailwind opacity shorthand
+      onClick={onClose}
       aria-modal="true"
       role="dialog"
     >
       <div
-        className={`bg-card text-card-foreground rounded-lg shadow-2xl p-6 m-4 w-full ${sizeClass} transform transition-all duration-300 ease-in-out scale-100 opacity-100 animate-fadeIn`}
+        className={`bg-card text-card-foreground rounded-app-lg shadow-2xl m-4 w-full ${resolvedSizeClass} transform transition-all duration-300 ease-in-out scale-100 opacity-100 animate-fadeIn overflow-y-auto max-h-[90vh]`} // Added overflow and max-height
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal content
       >
-        <div className="flex items-center justify-between mb-4">
-          {title && <h2 className="text-xl font-semibold text-foreground">{title}</h2>}
+        <div className="flex items-center justify-between p-4 md:p-6 border-b border-border"> {/* Standardized padding */}
+          {title && (
+            typeof title === 'string' ? (
+                <h2 className="text-xl font-semibold text-foreground">{title}</h2>
+            ) : (
+                title // Allow JSX title
+            )
+          )}
           <button
             onClick={onClose}
-            className="text-muted-foreground hover:text-foreground transition-colors"
+            className="text-foreground-muted hover:text-foreground transition-colors rounded-full p-1 -mr-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" // Improved focus and spacing
             aria-label="Close modal"
           >
             <FaTimes size={20} />
           </button>
         </div>
-        <div>{children}</div>
+        <div className="p-4 md:p-6"> {/* Standardized padding */}
+            {children}
+        </div>
       </div>
     </div>
   );
 }
-
-// Add to your globals.css for the animation (optional)
-/*
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-.animate-fadeIn {
-  animation: fadeIn 0.3s ease-out forwards;
-}
-*/

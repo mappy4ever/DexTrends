@@ -2,10 +2,9 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import useSWR from 'swr';
 import dynamic from 'next/dynamic';
-import 'react-datepicker/dist/react-datepicker.css';
-//import { useTheme } from 'next-themes';
+import { useTheme } from 'next-themes';
 
-import FilterTopbar from '../components/FilterTopbar';
+import FilterTopbar from '../components/FilterTopbar'; // Already styled
 import {
     getDefaultInitialStartDate,
     getDefaultInitialEndDate,
@@ -14,99 +13,170 @@ import {
     LOCAL_STORAGE_KEYS,
     loadFromLocalStorage,
     saveToLocalStorage,
-    debounce // For loadOptions if needed, though AsyncCreatableSelect handles some debouncing
+    debounce
 } from '../utils/filterUtils';
 
-//const { resolvedTheme } = useTheme();
+// --- Helper Function for Date Formatting ---
+const formatDatePretty = (dateString) => {
+    if (!dateString) return 'N/A';
+    try {
+        // The dateString is already in a full ISO format with UTC timezone (Z)
+        const date = new Date(dateString);
 
-// --- UI Components (PeopleLayout, PersonDetailsCard, etc. - kept as is) ---
-const PeopleLayout = ({ children }) => <div className="p-4 md:p-6">{children}</div>;
+        // Check if the date is valid after parsing
+        if (isNaN(date.getTime())) {
+            console.warn("Invalid date string provided to formatDatePretty:", dateString);
+            return dateString; // Return original if parsing fails
+        }
+
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short', // e.g., "Aug"
+            day: 'numeric',  // e.g., "27"
+            timeZone: 'UTC'  // Explicitly state we want the output based on UTC
+                             // since the input was UTC. This prevents the user's
+                             // local timezone from shifting the date if the time part
+                             // was near midnight.
+        });
+    } catch (e) {
+        console.error("Error formatting date:", dateString, e);
+        return dateString; // Fallback to original string on error
+    }
+};
+
+// --- Helper Function for Currency Formatting ---
+const formatCurrency = (amount) => {
+    const number = Number(amount) || 0;
+    return number.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+};
+
+
+// --- UI Components ---
+const PeopleLayout = ({ children }) => (
+    <div className="section-spacing-y-default px-4 md:px-6 bg-background min-h-screen text-foreground">
+        {children}
+    </div>
+);
+
 const KPICard = ({ title, value, isLoading, className = "" }) => (
-  <div className={`bg-card text-card-foreground p-4 rounded-lg shadow ${className}`}>
-    <h3 className="text-sm font-medium text-muted-foreground">{title}</h3>
+  <div className={`card card-padding-default ${className}`}>
+    <h3 className="text-sm font-medium text-foreground-muted mb-1">{title}</h3>
     {isLoading ? (
-      <div className="h-8 w-2/3 bg-muted animate-pulse mt-1 rounded"></div>
+      <div className="h-8 w-2/3 bg-foreground-muted/20 animate-pulse mt-1 rounded-app-sm"></div>
     ) : (
-      <p className="text-2xl font-bold mt-1">{value}</p>
+      // Assuming value might already be formatted with '$' or needs it
+      <p className="text-2xl font-bold text-text-heading mt-1">
+        {typeof value === 'number' ? `$${formatCurrency(value)}` : value}
+      </p>
     )}
   </div>
 );
 
-const PersonDetailsCard = ({ person, isLoading }) => (
-     <div className="bg-card text-card-foreground p-4 rounded-lg shadow mb-6 min-h-[100px]">
-        <h2 className="text-xl font-semibold mb-2">{isLoading ? 'Loading Person...' : person?.name || 'Person Details'}</h2>
+const PersonDetailsCard = ({ person, isLoading, className = "" }) => (
+     <div className={`card card-padding-default ${className}`}> {/* Removed mb-6 */}
+        <h2 className="text-xl font-semibold text-text-heading mb-2">
+            {isLoading ? 'Loading Person...' : person?.name || 'Person Details'}
+        </h2>
         {isLoading && !person ? (
-             <div className="space-y-1"><div className="h-4 w-1/2 bg-muted animate-pulse rounded"></div><div className="h-4 w-1/3 bg-muted animate-pulse rounded"></div></div>
+             <div className="space-y-1">
+                <div className="h-4 w-1/2 bg-foreground-muted/20 animate-pulse rounded-app-sm"></div>
+                <div className="h-4 w-1/3 bg-foreground-muted/20 animate-pulse rounded-app-sm"></div>
+            </div>
         ) : person ? (
              <>
-                <p className="text-muted-foreground text-sm">ID: {person?.name_id}</p>
-                <p className="text-muted-foreground text-sm">Party: {person?.party || 'N/A'}</p>
+                <p className="text-content-default text-sm">ID: <span className="font-medium text-foreground">{person?.name_id || 'N/A'}</span></p>
+                {/*<p className="text-content-default text-sm">Party: <span className="font-medium text-foreground">{person?.party || 'N/A'}</span></p>*/}
              </>
         ) : (
-            <p className="text-muted-foreground">Select a person to view details.</p>
+            <p className="text-foreground-muted">Select a person to view details.</p>
         )}
      </div>
 );
+
 const TripTable = ({ trips, isLoading }) => (
-    <div className="bg-card text-card-foreground p-4 rounded-lg shadow mt-6">
-        <h3 className="text-lg font-semibold mb-2">Associated Trips</h3>
+    <div className="card card-padding-default"> {/* Removed mt-6 */}
+        <h3 className="text-section-heading mb-3">Associated Trips</h3>
         {isLoading ? (
-             <div className="space-y-2"><div className="h-8 w-full bg-muted animate-pulse rounded"></div><div className="h-8 w-full bg-muted animate-pulse rounded"></div><div className="h-8 w-full bg-muted animate-pulse rounded"></div></div>
+             <div className="space-y-2">
+                {[...Array(3)].map((_, i) => <div key={i} className="h-10 w-full bg-foreground-muted/20 animate-pulse rounded-app-sm"></div>)}
+             </div>
          ) : trips && trips.length > 0 ? (
             <div className="overflow-x-auto">
-                <table className="w-full text-sm text-left">
-                     <thead className="text-xs text-muted-foreground uppercase bg-muted/50 dark:bg-slate-700">
-                         <tr>
-                             <th scope="col" className="px-4 py-2">Date</th><th scope="col" className="px-4 py-2">Days</th>
-                             <th scope="col" className="px-4 py-2">Org</th><th scope="col" className="px-4 py-2">Title</th>
-                             <th scope="col" className="px-4 py-2">Purpose</th><th scope="col" className="px-4 py-2">Destinations</th>
-                             <th scope="col" className="px-4 py-2 text-right">Cost</th>
-                         </tr>
-                     </thead>
-                     <tbody>
-                         {trips.map((trip, index) => ( // Added index for key fallback
-                            <tr key={trip.id || trip.ref_number || `trip-${index}`} className="border-b border-border dark:border-slate-700 hover:bg-muted/40 dark:hover:bg-slate-600/30">
-                                 <td className="px-4 py-2 font-medium">{trip.start_date}</td>
-                                 <td className="px-4 py-2">{trip.traveldays}</td>
-                                 <td className="px-4 py-2">{trip.owner_org_title || 'N/A'}</td>
-                                 <td className="px-4 py-2">{trip.title || 'N/A'}</td>
-                                 <td className="px-4 py-2">{trip.purpose_en || trip.purpose || 'N/A'}</td>
-                                 <td className="px-4 py-2">{trip.destination_en || trip.destination_en || 'N/A'}</td>
-                                 <td className="px-4 py-2 text-right">${(Number(trip.total) || 0).toLocaleString()}</td>
-                             </tr>
-                         ))}
-                     </tbody>
-                 </table>
+                <table className="w-full text-sm text-left text-foreground">
+                    <thead className="text-xs text-foreground-muted uppercase bg-surface-hovered">
+                        <tr>
+                            <th scope="col" className="px-4 py-3">Date</th>
+                            <th scope="col" className="px-4 py-3">Days</th>
+                            <th scope="col" className="px-4 py-3">Organization</th>
+                            <th scope="col" className="px-4 py-3">Title</th>
+                            <th scope="col" className="px-4 py-3">Purpose</th>
+                            <th scope="col" className="px-4 py-3">Destinations</th>
+                            <th scope="col" className="px-4 py-3 text-right">Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {trips.map((trip, index) => (
+                            <tr key={trip.id || trip.ref_number || `trip-${index}`} className="border-b border-border hover:bg-surface-hovered transition-colors duration-150">
+                                {/* REFACTOR: Format date pretty */}
+                                <td className="px-4 py-2.5 font-medium text-text-heading">{formatDatePretty(trip.start_date)}</td>
+                                <td className="px-4 py-2.5">{trip.traveldays}</td>
+                                <td className="px-4 py-2.5">{trip.owner_org_title || 'N/A'}</td>
+                                <td className="px-4 py-2.5">{trip.title || 'N/A'}</td>
+                                <td className="px-4 py-2.5">{trip.purpose_en || trip.purpose || 'N/A'}</td>
+                                <td className="px-4 py-2.5">{trip.destination_en || 'N/A'}</td>
+                                {/* REFACTOR: Consistent currency formatting (already good) */}
+                                <td className="px-4 py-2.5 text-right font-medium text-text-heading">${formatCurrency(trip.total)}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
         ) : (
-            <p className="text-muted-foreground">No trips found for this person in the selected date range.</p>
+            <p className="text-foreground-muted py-4">No trips found for this person in the selected date range.</p>
         )}
     </div>
 );
+
 const ChartContainer = ({ title, children, isLoading, className = "" }) => (
-  <div className={`bg-card text-card-foreground p-4 rounded-lg shadow ${className}`}>
-    <h2 className="text-lg font-semibold mb-2">{title}</h2>
-    {isLoading ? <div className="h-72 w-full bg-muted animate-pulse rounded"></div> : <div style={{ height: '400px', width: '100%' }}>{children}</div>}
+  <div className={`card card-padding-default ${className}`}>
+    <h2 className="text-section-heading mb-4">{title}</h2>
+    {isLoading ? (
+        <div className="h-72 w-full bg-foreground-muted/20 animate-pulse rounded-app-md"></div>
+    ) : (
+        <div className="h-[400px] w-full">{children}</div>
+    )}
   </div>
 );
-const LoadingSpinner = () => <div className="text-center p-10">Loading...</div>;
-const ErrorMessage = ({ message }) => <div className="text-center p-10 text-red-600">Error: {message}</div>;
 
+const LoadingSpinner = () => (
+    <div className="flex justify-center items-center h-64 text-foreground-muted">
+        <svg className="animate-spin h-8 w-8 text-primary mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        Loading data...
+    </div>
+);
+const ErrorMessage = ({ message }) => (
+    <div className="p-4 my-4 text-center text-red-700 bg-red-100 border border-red-300 rounded-app-md dark:bg-red-900/30 dark:text-red-300 dark:border-red-700">
+        Error: {message}
+    </div>
+);
 
-const ReactEcharts = dynamic(() => import('echarts-for-react'), { ssr: false });
-
-import { useTheme } from 'next-themes';
+const ReactEcharts = dynamic(() => import('echarts-for-react'), {
+    ssr: false,
+    loading: () => <div className="h-[400px] w-full flex justify-center items-center"><LoadingSpinner/></div>
+});
 
 const fetcher = async (url) => {
     const res = await fetch(url);
     if (!res.ok) {
         const error = new Error('An error occurred while fetching data.');
-        try {
-            const info = await res.json();
-            error.info = info?.message || info?.error || res.statusText;
-        } catch (e) {
-            error.info = res.statusText;
-        }
+        try { const info = await res.json(); error.info = info?.message || info?.error || res.statusText; }
+        catch (e) { error.info = res.statusText; }
         error.status = res.status;
         throw error;
     }
@@ -117,189 +187,128 @@ function generateMonthsInRangeYYYYMM(startDate, endDate) {
     if (!startDate || !endDate) return [];
     const start = new Date(Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(), 1));
     const end = new Date(Date.UTC(endDate.getUTCFullYear(), endDate.getUTCMonth(), 1));
-    const months = [];
-    let current = new Date(start);
-    while (current <= end) {
-        months.push(getYearMonthString(current));
-        current.setUTCMonth(current.getUTCMonth() + 1);
-    }
+    const months = []; let current = new Date(start);
+    while (current <= end) { months.push(getYearMonthString(current)); current.setUTCMonth(current.getUTCMonth() + 1); }
     return months;
 }
 
 export default function PersonInspectorPage() {
-    const [startDate, setStartDate] = useState(null); // Date object
-    const [endDate, setEndDate] = useState(null);     // Date object
-
-    // selectedFilters for API query and FilterTopbar state
-    const [selectedFilters, setSelectedFilters] = useState({
-        startMonth: '',
-        endMonth: '',
-        person: null,       // Store person_id
-        person_label: '',   // Store person's name for display in AsyncCreatableSelect
-    });
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+    const [selectedFilters, setSelectedFilters] = useState({ startMonth: '', endMonth: '', person: null, person_label: '' });
     const [initialFiltersLoaded, setInitialFiltersLoaded] = useState(false);
-	const { resolvedTheme } = useTheme(); // For chart theming
+    const { resolvedTheme } = useTheme();
 
-	useEffect(() => {
-		// --- 1. Determine Initial Values (Query > LocalStorage > Default) ---
-		const queryParams = new URLSearchParams(window.location.search);
-		const queryStart = queryParams.get('start');
-		const queryEnd = queryParams.get('end');
-	
-		const queryPersonId = queryParams.get('personId');
-		// A 'person_label' might not always be passed in query params, especially if ID is sufficient
-		// and the label can be fetched or is part of the AsyncSelect's initial option loading.
-		// However, if your dashboard link constructs it, this is fine.
-		const queryPersonLabel = queryParams.get('person_label'); // This is an addition to consider.
-	
-		// const queryTitleId = queryParams.get('titleId'); // Not needed for people.js
-	
-		const savedGlobalDates = loadFromLocalStorage(LOCAL_STORAGE_KEYS.GLOBAL_DATE_FILTERS, {});
-		const pageSpecificLocalStorageKey = LOCAL_STORAGE_KEYS.PEOPLE_PAGE_FILTERS;
-		const savedPageSpecificFilters = loadFromLocalStorage(pageSpecificLocalStorageKey, {});
-	
-		// Determine final initial values with precedence
-		const finalInitialStartDate = parseYearMonthToDate(queryStart) || parseYearMonthToDate(savedGlobalDates.startMonth) || getDefaultInitialStartDate();
-		const finalInitialEndDate = parseYearMonthToDate(queryEnd) || parseYearMonthToDate(savedGlobalDates.endMonth) || getDefaultInitialEndDate();
-	
-		const finalSelectedFiltersForState = {
-			startMonth: getYearMonthString(finalInitialStartDate),
-			endMonth: getYearMonthString(finalInitialEndDate),
-			person: queryPersonId !== null ? queryPersonId : (savedPageSpecificFilters.person !== undefined ? savedPageSpecificFilters.person : null),
-			person_label: queryPersonLabel !== null ? queryPersonLabel : (savedPageSpecificFilters.person_label !== undefined ? savedPageSpecificFilters.person_label : ''),
-		};
-	
-		// --- 2. Set React State ---
-		setStartDate(finalInitialStartDate);
-		setEndDate(finalInitialEndDate);
-		setSelectedFilters(finalSelectedFiltersForState);
-	
-		// --- 3. Explicitly Save These Determined Values to LocalStorage ---
-		saveToLocalStorage(LOCAL_STORAGE_KEYS.GLOBAL_DATE_FILTERS, {
-			startMonth: finalSelectedFiltersForState.startMonth,
-			endMonth: finalSelectedFiltersForState.endMonth,
-		});
-		saveToLocalStorage(pageSpecificLocalStorageKey, {
-			person: finalSelectedFiltersForState.person,
-			person_label: finalSelectedFiltersForState.person_label,
-		});
-	
-		// --- 4. Mark Initial Loading as Complete ---
-		setInitialFiltersLoaded(true);
-	
-	}, []); // Empty dependency array ensures this runs once on mount
-
-    // Persist filters to localStorage
     useEffect(() => {
-        if (!initialFiltersLoaded) return;
-        if (startDate && endDate) {
-            saveToLocalStorage(LOCAL_STORAGE_KEYS.GLOBAL_DATE_FILTERS, {
-                startMonth: getYearMonthString(startDate),
-                endMonth: getYearMonthString(endDate),
-            });
-        }
-        saveToLocalStorage(LOCAL_STORAGE_KEYS.PEOPLE_PAGE_FILTERS, {
-            person: selectedFilters.person,
-            person_label: selectedFilters.person_label,
-        });
+        const queryParams = new URLSearchParams(window.location.search);
+        const savedGlobalDates = loadFromLocalStorage(LOCAL_STORAGE_KEYS.GLOBAL_DATE_FILTERS, {});
+        const savedPageFilters = loadFromLocalStorage(LOCAL_STORAGE_KEYS.PEOPLE_PAGE_FILTERS, {});
+
+        const finalInitialStartDate = parseYearMonthToDate(queryParams.get('start')) || parseYearMonthToDate(savedGlobalDates.startMonth) || getDefaultInitialStartDate();
+        const finalInitialEndDate = parseYearMonthToDate(queryParams.get('end')) || parseYearMonthToDate(savedGlobalDates.endMonth) || getDefaultInitialEndDate();
+
+        const finalSelected = {
+            startMonth: getYearMonthString(finalInitialStartDate),
+            endMonth: getYearMonthString(finalInitialEndDate),
+            person: queryParams.get('personId') || savedPageFilters.person || null,
+            person_label: queryParams.get('person_label') || savedPageFilters.person_label || '',
+        };
+
+        setStartDate(finalInitialStartDate);
+        setEndDate(finalInitialEndDate);
+        setSelectedFilters(finalSelected);
+
+        saveToLocalStorage(LOCAL_STORAGE_KEYS.GLOBAL_DATE_FILTERS, { startMonth: finalSelected.startMonth, endMonth: finalSelected.endMonth });
+        saveToLocalStorage(LOCAL_STORAGE_KEYS.PEOPLE_PAGE_FILTERS, { person: finalSelected.person, person_label: finalSelected.person_label });
+
+        setInitialFiltersLoaded(true);
+    }, []);
+
+    useEffect(() => {
+        if (!initialFiltersLoaded || !startDate || !endDate) return;
+        saveToLocalStorage(LOCAL_STORAGE_KEYS.GLOBAL_DATE_FILTERS, { startMonth: getYearMonthString(startDate), endMonth: getYearMonthString(endDate) });
+        saveToLocalStorage(LOCAL_STORAGE_KEYS.PEOPLE_PAGE_FILTERS, { person: selectedFilters.person, person_label: selectedFilters.person_label });
     }, [startDate, endDate, selectedFilters.person, selectedFilters.person_label, initialFiltersLoaded]);
 
-    // Handlers for FilterTopbar
     const handleDateChange = useCallback((filterKey, dateObject) => {
-        const newDateString = getYearMonthString(dateObject);
-        if (filterKey === 'startMonth' || filterKey === 'startDate') {
+        const newDateString = dateObject ? getYearMonthString(dateObject) : '';
+        if (filterKey === 'startDate') {
             setStartDate(dateObject);
             setSelectedFilters(prev => ({ ...prev, startMonth: newDateString }));
-        } else if (filterKey === 'endMonth' || filterKey === 'endDate') {
+        } else if (filterKey === 'endDate') {
             setEndDate(dateObject);
             setSelectedFilters(prev => ({ ...prev, endMonth: newDateString }));
         }
     }, []);
 
     const handleFilterChange = useCallback((filterKey, value) => {
-        // Special handling for person_label when person is cleared
-        if (filterKey === 'person' && value === null) {
-            setSelectedFilters(prev => ({ ...prev, person: null, person_label: '' }));
-        } else {
+        if (filterKey === 'person') {
+            setSelectedFilters(prev => ({ ...prev, person: value, person_label: value === null ? '' : prev.person_label }));
+        } else if (filterKey === 'person_label') {
+             setSelectedFilters(prev => ({ ...prev, person_label: value }));
+        }
+        else {
             setSelectedFilters(prev => ({ ...prev, [filterKey]: value }));
         }
     }, []);
 
-    // Function to load person options for AsyncCreatableSelect
     const loadPersonOptions = useCallback(debounce(async (inputValue, callback) => {
-        if (!inputValue || inputValue.length < 2) { // Adjust min length if needed
-            callback([]);
-            return;
-        }
+        if (!inputValue || inputValue.length < 2) { callback([]); return; }
         try {
             const response = await fetch(`/api/filters?searchPerson=${encodeURIComponent(inputValue)}&limit=30`);
             if (!response.ok) throw new Error('Failed to fetch person suggestions');
             const data = await response.json();
-            // Assuming /api/filters returns { persons: [{ id, name }] }
             const options = data.persons ? data.persons.map(p => ({ value: p.id, label: p.name })) : [];
             callback(options);
-        } catch (error) {
-            console.error("Error loading person options:", error);
-            callback([]);
-        }
+        } catch (error) { console.error("Error loading person options:", error); callback([]); }
     }, 300), []);
 
-    // Define filterConfig for FilterTopbar
     const filterConfig = useMemo(() => [
-        { key: 'startMonth', label: 'Start Date:', type: 'month' },
-        { key: 'endMonth', label: 'End Date:', type: 'month' },
+        { key: 'startDate', label: 'Start Date:', type: 'month' },
+        { key: 'endDate', label: 'End Date:', type: 'month' },
         {
-            key: 'person',
-            label: 'Person:',
-            type: 'async_creatable_select', // Use the new type
-            placeholder: 'Search by name...',
-            loadOptions: loadPersonOptions,
-            creatable: false, // Assuming we don't want to create new people from this UI for now
-            // onCreateOption: (key, inputValue) => { /* handle creation if needed */ }
+            key: 'person', label: 'Person:', type: 'async_creatable_select',
+            placeholder: 'Search by name...', loadOptions: loadPersonOptions, creatable: false,
         },
     ], [loadPersonOptions]);
 
-    // API URL for fetching selected person's details and trips
     const personApiUrl = useMemo(() => {
-        if (!initialFiltersLoaded || !selectedFilters.person || !selectedFilters.startMonth || !selectedFilters.endMonth) {
-            return null;
-        }
+        if (!initialFiltersLoaded || !selectedFilters.person || !selectedFilters.startMonth || !selectedFilters.endMonth) return null;
         return `/api/people?personId=${selectedFilters.person}&start=${selectedFilters.startMonth}&end=${selectedFilters.endMonth}`;
     }, [selectedFilters, initialFiltersLoaded]);
 
-    const { data: personData, error: personError, isLoading: personIsLoading } = useSWR(personApiUrl, fetcher, {
-        keepPreviousData: true,
+    const { data: personData, error: personError, isLoading: dataIsLoading, isValidating } = useSWR(personApiUrl, fetcher, {
+        keepPreviousData: true, revalidateOnFocus: false,
     });
-    
-    // --- Calculate KPIs for the selected person ---
+
     const personKPIs = useMemo(() => {
-        if (!personData || !personData.personTrips || personData.personTrips.length === 0) {
-            return { totalSpent: 0, avgTripCost: 0, tripCount: 0 };
-        }
-        const trips = personData.personTrips;
-        const tripCount = trips.length;
+        if (!personData?.personTrips || personData.personTrips.length === 0) return { totalSpent: 0, avgTripCost: 0, tripCount: 0 };
+        const trips = personData.personTrips; const tripCount = trips.length;
         const totalSpent = trips.reduce((sum, trip) => sum + (Number(trip.total) || 0), 0);
         const avgTripCost = tripCount > 0 ? totalSpent / tripCount : 0;
-
+        // REFACTOR: Ensure KPI values are numbers for KPICard to format
         return {
-            totalSpent,
-            avgTripCost,
+            totalSpent: Number(totalSpent) || 0,
+            avgTripCost: Number(avgTripCost) || 0,
             tripCount
         };
-    }, [personData?.personTrips]);	
-	
-    // -- ECharts options (similar to original, ensure data dependencies are correct) --
+    }, [personData?.personTrips]);
+
+    const echartTheme = resolvedTheme === 'dark' ? 'dark' : 'light';
+    const uiIsLoading = !initialFiltersLoaded || (dataIsLoading && selectedFilters.person) || (isValidating && selectedFilters.person) ;
+
     const spendingOverTimeOptions = useMemo(() => {
         const trips = personData?.personTrips || [];
-        if (!startDate || !endDate || !initialFiltersLoaded) return {};
-
+        if (!startDate || !endDate ) return {series: []}; // Should have an empty option structure
         const allMonthsInRange = generateMonthsInRangeYYYYMM(startDate, endDate);
+
         const spendingMap = trips.reduce((map, trip) => {
             if (!trip || !trip.start_date) return map;
             const monthKey = String(trip.start_date).slice(0, 7);
             if (!map[monthKey]) {
                 map[monthKey] = { total_cost: 0, airfare: 0, other_transport: 0, lodging: 0, meals: 0, other_expenses: 0, record_count: 0 };
             }
+            // REFACTOR: Ensure numbers are used for aggregation
             map[monthKey].total_cost += Number(trip.total) || 0;
             map[monthKey].airfare += Number(trip.airfare) || 0;
             map[monthKey].other_transport += Number(trip.other_transport) || 0;
@@ -312,136 +321,208 @@ export default function PersonInspectorPage() {
 
         const monthlyAggregates = allMonthsInRange.map(monthKey => {
             const dataForMonth = spendingMap[monthKey];
-            if(dataForMonth) return { month: monthKey, ...dataForMonth };
+            if(dataForMonth) {
+                return { month: monthKey, ...dataForMonth };
+            }
             return { month: monthKey, total_cost: 0, airfare: 0, other_transport: 0, lodging: 0, meals: 0, other_expenses: 0, record_count: 0 };
         });
-        
+
         const monthLabels = monthlyAggregates.map(d => {
+             if (!d || !d.month) return 'Unknown Date';
              const [year, monthNum] = d.month.split('-');
              const dateLabel = new Date(Date.UTC(Number(year), Number(monthNum) - 1, 1));
-             return dateLabel.toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
+             return dateLabel.toLocaleDateString('en-US', { month: 'short', year: '2-digit', timeZone: 'UTC' });
         });
+        const seriesColors = ['#00A9B5', '#FF6B6B', '#FFD166', '#06D6A0', '#7884D5']; // Teal, Red, Yellow, Green, Purple
+
+        const seriesData = [
+            { name: 'Airfare', data: monthlyAggregates.map(d => parseFloat(d.airfare.toFixed(2))) },
+            { name: 'Lodging', data: monthlyAggregates.map(d => parseFloat(d.lodging.toFixed(2))) },
+            { name: 'Meals', data: monthlyAggregates.map(d => parseFloat(d.meals.toFixed(2))) },
+            { name: 'Other Transport', data: monthlyAggregates.map(d => parseFloat(d.other_transport.toFixed(2))) },
+            { name: 'Other Expenses', data: monthlyAggregates.map(d => parseFloat(d.other_expenses.toFixed(2))) },
+        ];
+
 
         return {
-            tooltip: { trigger: 'axis' },
-            legend: { data: ['Airfare', 'Lodging', 'Meals', 'Other Transport', 'Other Expenses'], textStyle: { color: '#9CA3AF'} },
-            grid: { left: '3%', right: '4%', bottom: '10%', containLabel: true },
-            xAxis: { type: 'category', boundaryGap: false, data: monthLabels, axisLabel: { color: '#9CA3AF'} },
-            yAxis: [
-                { type: 'value', name: 'Cost', axisLabel: { formatter: '${value}', color: '#9CA3AF' } },
+            tooltip: {
+                trigger: 'axis',
+                backgroundColor: 'var(--color-surface-default)',
+                borderColor: 'var(--color-border-default)',
+                textStyle: { color: 'var(--color-foreground-default)'},
+                // REFACTOR: Format tooltip currency
+                formatter: (params) => {
+                    let tooltipHtml = `${params[0].axisValueLabel}<br/>`;
+                    params.forEach(param => {
+                        tooltipHtml += `${param.marker} ${param.seriesName}: $${formatCurrency(param.value)}<br/>`;
+                    });
+                    return tooltipHtml;
+                }
+            },
+            // REFACTOR: Ensure legend is shown and positioned
+            legend: {
+                data: ['Airfare', 'Lodging', 'Meals', 'Other Transport', 'Other Expenses'],
+                inactiveColor: 'var(--color-foreground-muted)',
+                textStyle: { color: 'var(--color-foreground-default)'},
+                top: '5%', // Position legend at the top explicitly
+                type: 'scroll', // In case of many items, allow scrolling
+                show: true // Explicitly show legend
+            },
+            grid: { left: '3%', right: '4%', bottom: '12%', containLabel: true, top: '15%' /* Adjust top to make space for legend */ },
+            xAxis: { type: 'category', boundaryGap: false, data: monthLabels, axisLabel: { color: 'var(--color-text-muted)'} },
+            yAxis: {
+                type: 'value',
+                name: 'Cost',
+                axisLabel: {
+                    // REFACTOR: Format Y-axis currency
+                    formatter: (value) => `$${value.toLocaleString()}`, // Simpler formatting for axis, tooltips provide detail
+                    color: 'var(--color-text-muted)'
+                },
+                splitLine: { lineStyle: { color: 'var(--color-border-default)' }}
+            },
+            dataZoom: [
+                { type: 'inside', start: 0, end: 100, zoomLock: false },
+                { show: true, type: 'slider', bottom: 10, height: 20, backgroundColor: 'var(--color-surface-default)', borderColor: 'var(--color-border-default)', dataBackground: { lineStyle: { color: 'var(--color-primary-default)/0.2' }, areaStyle: { color: 'var(--color-primary-default)/0.1'}}, selectedDataBackground: {lineStyle: {color: 'var(--color-primary-default)'}, areaStyle: {color: 'var(--color-primary-default)/0.3'}}, fillerColor: 'var(--color-primary-default)/0.2', handleStyle: { color: 'var(--color-primary-default)'}, textStyle: {color: 'var(--color-text-muted)'}}
             ],
-            dataZoom: [ { type: 'inside' }, { show: true, type: 'slider', bottom: 10 } ],
-            series: [
-                { name: 'Airfare', type: 'line', smooth: true, data: monthlyAggregates.map(d => d.airfare) },
-                { name: 'Lodging', type: 'line', smooth: true, data: monthlyAggregates.map(d => d.lodging) },
-				{ name: 'Meals', type: 'line', smooth: true, data: monthlyAggregates.map(d => d.meals) },
-                { name: 'Other Transport', type: 'line', smooth: true, data: monthlyAggregates.map(d => d.other_transport) },
-                { name: 'Other Expenses', type: 'line', smooth: true, data: monthlyAggregates.map(d => d.other_expenses) }
-            ]
+            series: seriesData.map((s, index) => ({
+                ...s,
+                type: 'line',
+                smooth: true,
+                color: seriesColors[index % seriesColors.length], // Use modulo for safety
+                showSymbol: false,
+                lineStyle: { width: 2.5 },
+                emphasis: { focus: 'series' }
+            }))
         };
-    }, [personData?.personTrips, startDate, endDate, initialFiltersLoaded]);
+    }, [personData?.personTrips, startDate, endDate, resolvedTheme]);
 
     const spendingByPurposeOptions = useMemo(() => {
         const trips = personData?.personTrips || [];
-        if(!initialFiltersLoaded) return {};
-
+        if (!trips.length) return { series: [] }; // Return basic structure
         const purposeAgg = trips.reduce((acc, trip) => {
-            const name = trip.purpose || trip.purpose || 'Unknown';
-            const value = Number(trip.total) || 0;
-            acc[name] = (acc[name] || 0) + value;
+            const name = trip.purpose || trip.purpose_en || 'Unknown';
+            // REFACTOR: Ensure numbers are used for aggregation
+            acc[name] = (acc[name] || 0) + (Number(trip.total) || 0);
             return acc;
         }, {});
 
-        const formattedData = Object.entries(purposeAgg).map(([name, value]) => ({ name, value })).filter(item => item.value > 0).sort((a, b) => b.value - a.value);
+        const formattedData = Object.entries(purposeAgg)
+            .map(([name, value]) => ({
+                name,
+                // REFACTOR: Round to 2 decimal places for pie chart data
+                value: parseFloat(value.toFixed(2))
+            }))
+            .filter(item => item.value > 0)
+            .sort((a,b)=>b.value-a.value);
+
         return {
-            tooltip: { trigger: 'item', formatter: '{b}: ${c} ({d}%)' },
-            legend: { type: 'scroll', orient: 'vertical', left: 10, top: 20, bottom: 20, textStyle: { color: '#9CA3AF'} },
+            tooltip: {
+                trigger: 'item',
+                // REFACTOR: Format tooltip currency
+                formatter: (params) => `${params.name}: $${formatCurrency(params.value)} (${params.percent}%)`,
+                backgroundColor: 'var(--color-surface-default)',
+                borderColor: 'var(--color-border-default)',
+                textStyle: { color: 'var(--color-foreground-default)'}
+            },
+            legend: {
+                type: 'scroll',
+                orient: 'vertical',
+                left: 10,
+                top: 20,
+                bottom: 20,
+                inactiveColor: 'var(--color-foreground-muted)',
+                textStyle: { color: 'var(--color-text-body)'}
+            },
             series: [{
-                name: 'Spending by Purpose', type: 'pie', radius: ['40%', '70%'], center: ['65%', '50%'],
-                avoidLabelOverlap: true, itemStyle: { borderRadius: 5, borderColor: '#fff', borderWidth: 1 },
-                label: { show: false }, emphasis: { scale: true }, labelLine: { show: false }, data: formattedData,
+                name: 'Spending by Purpose',
+                type: 'pie',
+                radius: ['50%', '70%'],
+                center: ['60%', '50%'],
+                avoidLabelOverlap: true,
+                itemStyle: { borderRadius: 5, borderColor: 'var(--color-surface-default)', borderWidth: 1.5 },
+                label: { show: false },
+                emphasis: {
+                    label: { show: true, fontSize: 16, fontWeight: 'bold', color: 'var(--color-text-heading)' },
+                    itemStyle: { shadowBlur: 10, shadowColor: 'var(--color-shadow-default)'}
+                },
+                data: formattedData,
             }],
         };
-    }, [personData?.personTrips, initialFiltersLoaded]);
+    }, [personData?.personTrips, resolvedTheme]);
 
-    const uiIsLoading = !initialFiltersLoaded || (personIsLoading && selectedFilters.person);
 
-    if (!initialFiltersLoaded) {
+    if (!initialFiltersLoaded && !uiIsLoading) { // Should be checking initialFiltersLoaded first
         return <PeopleLayout><LoadingSpinner /></PeopleLayout>;
     }
 
     return (
         <PeopleLayout>
-             <h1 className="text-2xl font-bold mb-4 text-slate-800 dark:text-slate-100">Person Inspector</h1>
+            <h1 className="text-page-heading">Person Inspector</h1>
 
-             <FilterTopbar
-                 filterConfig={filterConfig}
-                 availableFilters={{}} // Async person select manages its own options
-                 selectedFilters={selectedFilters}
-                 onDateChange={handleDateChange}
-                 onFilterChange={handleFilterChange}
-                 startDate={startDate}
-                 endDate={endDate}
-                 loading={!initialFiltersLoaded}
-             />
+            <FilterTopbar
+                filterConfig={filterConfig}
+                availableFilters={{}} // This seems empty, ensure it's intentional
+                selectedFilters={selectedFilters}
+                onDateChange={handleDateChange}
+                onFilterChange={handleFilterChange}
+                startDate={startDate}
+                endDate={endDate}
+                loading={!initialFiltersLoaded} // Loading for filter bar is when initial filters haven't loaded
+            />
 
-             {personError && selectedFilters.person && <ErrorMessage message={`Failed to load person data: ${personError.info || personError.message}`} />}
+            {personError && selectedFilters.person && <ErrorMessage message={`Failed to load person data: ${personError.info || personError.message}`} />}
 
-            {/* Section for Person Details and KPIs */}
-            {selectedFilters.person && ( // Only show this section if a person is selected
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                    <PersonDetailsCard
-                        person={personData?.personDetails}
-                        isLoading={uiIsLoading}
-                        className="md:col-span-1" // Takes 1 column on medium screens and up
-                    />
-                    <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6"> {/* KPIs take 2 columns */}
-                        <KPICard
-                            title="Total Spent"
-                            value={`$${personKPIs.totalSpent.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
-                            isLoading={uiIsLoading}
-                        />
-                        <KPICard
-                            title="Average Trip Cost"
-                            value={`$${personKPIs.avgTripCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
-                            isLoading={uiIsLoading}
-                        />
-                         {/* You can also add a trip count KPI if desired */}
-                         <KPICard
-                            title="Total Trips"
-                            value={personKPIs.tripCount.toLocaleString()}
-                            isLoading={uiIsLoading}
-                            className="sm:col-span-2" // Span full width if only 3 KPIs and this is the third
-                        />
+            <div className="mt-6 space-y-6">
+
+                {selectedFilters.person ? (
+                    <>
+                        <div className="flex flex-col lg:flex-row gap-6">
+                            <div className="lg:w-1/3 xl:w-1/4 flex">
+                                <PersonDetailsCard
+                                    person={personData?.personDetails}
+                                    isLoading={uiIsLoading} // This uiIsLoading combines initial load and data fetch for selected person
+                                    className="w-full"
+                                />
+                            </div>
+                            <div className="lg:w-2/3 xl:w-3/4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                                {/* REFACTOR: Pass raw numbers to KPICard for it to format */}
+                                <KPICard title="Total Spent" value={personKPIs.totalSpent} isLoading={uiIsLoading} />
+                                <KPICard title="Average Trip Cost" value={personKPIs.avgTripCost} isLoading={uiIsLoading} />
+                                <KPICard title="Total Trips" value={personKPIs.tripCount.toLocaleString()} isLoading={uiIsLoading} />
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <ChartContainer title="Spending Over Time" isLoading={uiIsLoading}>
+                                {(!uiIsLoading && personData?.personTrips && personData.personTrips.length > 0) ? (
+                                    <ReactEcharts option={spendingOverTimeOptions} notMerge={true} lazyUpdate={true} theme={echartTheme} style={{ height: '100%', width: '100%' }} />
+                                ) : !uiIsLoading ? (
+                                    <p className="text-foreground-muted text-center py-10">No spending data to display for the selected period.</p>
+                                ) : null}
+                            </ChartContainer>
+                            <ChartContainer title="Spending by Purpose" isLoading={uiIsLoading}>
+                                 {(!uiIsLoading && personData?.personTrips && personData.personTrips.length > 0) ? (
+                                    <ReactEcharts option={spendingByPurposeOptions} notMerge={true} lazyUpdate={true} theme={echartTheme} style={{ height: '100%', width: '100%' }} />
+                                  ) : !uiIsLoading ? (
+                                    <p className="text-foreground-muted text-center py-10">No purpose data to display for the selected period.</p>
+                                  ) : null}
+                            </ChartContainer>
+                        </div>
+
+                        <div>
+                            <TripTable trips={personData?.personTrips} isLoading={uiIsLoading} />
+                        </div>
+                    </>
+                ) : !uiIsLoading ? (
+                    <div className="card card-padding-default text-center text-foreground-muted py-10">
+                        Please select a person from the dropdown to view their details and spending patterns.
                     </div>
-                </div>
-            )}
+                ) : null }
 
+                {/* This specific spinner is for when a person IS selected, but their data is loading. */}
+                {(uiIsLoading && selectedFilters.person && !personData) && <LoadingSpinner />}
 
-             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                 {/* TripTable now effectively takes full width if charts are in the other column or hidden */}
-                 <div className={`lg:col-span-${selectedFilters.person ? '2' : '3'} space-y-6`}>
-                      {selectedFilters.person && <TripTable trips={personData?.personTrips} isLoading={uiIsLoading} />}
-                 </div>
-
-                 {/* Charts Column - only show if a person is selected */}
-                 {selectedFilters.person && (
-                     <div className="space-y-6 lg:col-span-1">
-                        <ChartContainer title="Spending Over Time" isLoading={uiIsLoading}>
-                            {(!uiIsLoading || personData?.personTrips) && <ReactEcharts option={spendingOverTimeOptions} notMerge={true} lazyUpdate={true} theme={resolvedTheme === 'dark' ? 'dark' : 'light'} />}
-                        </ChartContainer>
-                        <ChartContainer title="Spending by Purpose" isLoading={uiIsLoading}>
-                            {(!uiIsLoading || personData?.personTrips) && <ReactEcharts option={spendingByPurposeOptions} notMerge={true} lazyUpdate={true} theme={resolvedTheme === 'dark' ? 'dark' : 'light'} />}
-                        </ChartContainer>
-                     </div>
-                 )}
-                 
-                 {!selectedFilters.person && !uiIsLoading && (
-                      <div className="lg:col-span-3 p-6 text-center text-muted-foreground bg-card rounded-lg shadow dark:bg-slate-800">
-                          Please select a person from the dropdown to view their details and spending patterns.
-                      </div>
-                  )}
-             </div>
+            </div>
         </PeopleLayout>
     );
 }

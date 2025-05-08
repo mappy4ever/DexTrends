@@ -1,0 +1,129 @@
+body {
+    height: 100vh;
+    margin: 0;
+}
+#root, .App {
+    height: 100%;
+}
+
+.map-loading-placeholder, .map-no-markers-overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    background-color: #f0f0f0;
+    color: #555;
+    font-size: 1.2em;
+    text-align: center;
+}
+.map-no-markers-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.85);
+    z-index: 1000;
+}
+
+
+// Custom Popup Styling
+.leaflet-popup-content-wrapper {
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.leaflet-popup-content {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 15px !important;
+}
+.leaflet-popup-content h3 {
+    margin-top: 0;
+    font-size: 1.1em;
+    color: #333;
+}
+.leaflet-popup-content p {
+    margin-bottom: 0.5em;
+}
+.popup-details-link {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 6px 12px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+.popup-details-link:hover {
+    background-color: #0056b3;
+}
+
+
+// Custom Marker Cluster Styling
+.custom-marker-cluster {
+    background-clip: padding-box;
+    border-radius: 50%;
+    transition: background-color 0.2s ease-out;
+}
+.custom-marker-cluster div {
+    width: 30px;
+    height: 30px;
+    margin-left: 5px;
+    margin-top: 5px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.custom-marker-cluster.custom-marker-cluster-small { background-color: rgba(110, 204, 57, 0.9); }
+.custom-marker-cluster.custom-marker-cluster-medium { background-color: rgba(240, 194, 12, 0.9); }
+.custom-marker-cluster.custom-marker-cluster-large { background-color: rgba(253, 156, 115, 0.9); }
+.custom-marker-cluster:hover {
+    transform: scale(1.1);
+}
+
+/* Style for the L.DivIcon container that holds the Font Awesome icon */
+.map-fa-icon-marker-container {
+    background-color: transparent !important; /* Remove default divIcon background */
+    border: none !important; /* Remove default divIcon border */
+    display: flex; /* Helps with alignment if needed */
+    justify-content: center;
+    align-items: center;
+}
+
+/* You can add styles for the FontAwesomeIcon itself if you used a className prop on it,
+   e.g., if you passed className: 'my-fa-marker' to createFontAwesomeMarkerIcon
+.my-fa-marker {
+    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3)); // Example shadow
+}
+*/
+
+
+/* --- Popup Content (from previous suggestion, ensure it's here) --- */
+.custom-popup-content .popup-section {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+.custom-popup-content .popup-section:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+.custom-popup-content h4 { font-size: 1em; color: #555; margin-bottom: 6px; font-weight: 600; }
+.custom-popup-content .popup-list { list-style: disc; margin-left: 20px; padding-left: 0; font-size: 0.9em; color: #333; }
+.custom-popup-content .popup-list li { margin-bottom: 4px; }
+.custom-popup-content .popup-long-text-list li { word-break: break-word; line-height: 1.5; }
+.popup-details-link { display: inline-block; margin-top: 10px; padding: 6px 12px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; font-size: 0.9em; }
+.popup-details-link:hover { background-color: #0056b3; }
+
+/* --- Marker Cluster Styling (ensure it's here) --- */
+.custom-marker-cluster { background-clip: padding-box; border-radius: 50%; transition: background-color 0.2s ease-out; }
+.custom-marker-cluster div { width: 30px; height: 30px; margin-left: 5px; margin-top: 5px; text-align: center; border-radius: 50%; font-size: 12px; font-weight: bold; color: white; display: flex; align-items: center; justify-content: center; }
+.custom-marker-cluster.custom-marker-cluster-small { background-color: rgba(110, 204, 57, 0.9); }
+.custom-marker-cluster.custom-marker-cluster-medium { background-color: rgba(240, 194, 12, 0.9); }
+.custom-marker-cluster.custom-marker-cluster-large { background-color: rgba(253, 156, 115, 0.9); }
+
+/* --- Loading Placeholders (ensure it's here) --- */
+.map-loading-placeholder, .map-no-markers-overlay { display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; background-color: #f0f0f0; color: #555; font-size: 1.2em; text-align: center; }
+.map-no-markers-overlay { position: absolute; top: 0; left: 0; background-color: rgba(255, 255, 255, 0.85); z-index: 1000; }

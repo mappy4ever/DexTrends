@@ -3,94 +3,134 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import useSWR from 'swr';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import 'react-datepicker/dist/react-datepicker.css';
+// Datepicker CSS is in _app.js and globals.css
 import { useTheme } from 'next-themes';
 
-// Import the shared FilterTopBar
 import FilterTopbar from '../components/FilterTopbar';
+import Modal from '../components/ui/Modal'; // Corrected path assuming 'ui' subfolder
 
-// Import utility functions
 import {
     getDefaultInitialStartDate,
     getDefaultInitialEndDate,
-    getYearMonthString,
-    parseYearMonthToDate,
+    getYearMonthString, // Make sure this returns YYYY-MM
+    parseYearMonthToDate, // Make sure this parses YYYY-MM
     LOCAL_STORAGE_KEYS,
-    loadFromLocalStorage,
-    saveToLocalStorage
-} from '../utils/filterUtils';
+} from '../utils/filterUtils'; // Assuming filterUtils.js exists and is correct
 
-import Modal from '../components/ui/Modal';
 import { FaRegLightbulb } from "react-icons/fa";
 import { VscDashboard, VscOrganization, VscAccount, VscGlobe, VscInfo } from "react-icons/vsc";
 
-// --- UI Components (KPICard, ChartContainer, etc. - kept as is from original) ---
-const DashboardLayout = ({ children }) => <div className="p-4 md:p-6">{children}</div>;
+
+// --- UI Components ---
+const DashboardLayout = ({ children }) => (
+    // Using section-spacing-y-default for consistent vertical padding, px for horizontal
+    <div className="section-spacing-y-default px-4 md:px-6 bg-background min-h-screen">
+        {children}
+    </div>
+);
+
 const KPICard = ({ title, value, isLoading }) => (
-  <div className="bg-card text-card-foreground p-4 rounded-lg shadow">
-    <h3 className="text-sm font-medium text-muted-foreground">{title}</h3>
-    {isLoading ? <div className="h-8 w-2/3 bg-muted animate-pulse mt-1 rounded"></div> : <p className="text-2xl font-bold mt-1">{value}</p>}
+  // Using .card and .card-padding-default from globals.css
+  <div className="card card-padding-default">
+    <h3 className="text-sm font-medium text-foreground-muted mb-1">{title}</h3> {/* Adjusted title style for KPI */}
+    {isLoading ? (
+        <div className="h-10 w-2/3 bg-foreground-muted/20 animate-pulse mt-1 rounded-app-sm"></div>
+    ) : (
+        <p className="text-kpi-value">{value}</p> // .text-kpi-value from globals.css
+    )}
   </div>
 );
+
 const ChartContainer = ({ title, children, isLoading, className = "" }) => (
-  <div className={`bg-card text-card-foreground p-4 rounded-lg shadow ${className}`}>
-    <h2 className="text-lg font-semibold mb-2">{title}</h2>
-    {isLoading ? <div className="h-72 w-full bg-muted animate-pulse rounded"></div> : <div style={{ height: '400px', width: '100%' }}>{children}</div>}
+  <div className={`card card-padding-default ${className}`}>
+    <h2 className="text-section-heading mb-4">{title}</h2> {/* .text-section-heading from globals.css */}
+    {isLoading ? (
+        <div className="h-72 w-full bg-foreground-muted/20 animate-pulse rounded-app-md"></div>
+    ) : (
+        // Ensure child (ReactEcharts) takes up available space. height is often critical.
+        <div className="h-[400px] w-full">{children}</div>
+    )}
   </div>
 );
-const ListContainer = ({ title, items, isLoading, renderItem }) => ( // Keep your ListContainer definition
-    <div className="bg-card text-card-foreground p-4 rounded-lg shadow">
-        <h2 className="text-lg font-semibold mb-2">{title}</h2>
+
+const ListContainer = ({ title, items, isLoading, renderItem }) => (
+    <div className="card card-padding-default">
+        <h2 className="text-section-heading mb-3">{title}</h2>
         {isLoading ? (
-            <ul className="space-y-1">
-                <li className="h-5 w-3/4 bg-muted animate-pulse rounded my-1"></li>
-                <li className="h-5 w-2/3 bg-muted animate-pulse rounded my-1"></li>
-                <li className="h-5 w-full bg-muted animate-pulse rounded my-1"></li>
+            <ul className="space-y-2">
+                {[...Array(3)].map((_, i) => ( // Placeholder for 3 items
+                     <li key={i} className="h-6 w-full bg-foreground-muted/20 animate-pulse rounded-app-sm"></li>
+                ))}
             </ul>
         ) : items && items.length > 0 ? (
-            <ul className="space-y-1 text-sm">{items.map(renderItem)}</ul>
+            <ul className="space-y-2 text-sm text-foreground">{items.map(renderItem)}</ul>
         ) : (
-            <p className="text-sm text-muted-foreground">No data available for the selected period.</p>
+            <p className="text-foreground-muted">No data available for the selected period.</p>
         )}
     </div>
 );
 
-const LoadingSpinner = () => <div className="text-center p-10">Loading...</div>; // Keep or use a global one
-const ErrorMessage = ({ message }) => <div className="text-center p-10 text-red-600">Error: {message}</div>; // Keep or use a global one
+const LoadingSpinner = () => (
+    <div className="flex justify-center items-center h-64 text-foreground-muted">
+        {/* You can use an actual SVG spinner here */}
+        <svg className="animate-spin h-8 w-8 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span className="ml-2">Loading...</span>
+    </div>
+);
 
-const ReactEcharts = dynamic(() => import('echarts-for-react'), { ssr: false });
+const ErrorMessage = ({ message }) => (
+    <div className="p-4 my-4 text-center text-red-700 bg-red-100 border border-red-300 rounded-app-md dark:bg-red-900/30 dark:text-red-300 dark:border-red-700">
+        Error: {message}
+    </div>
+);
 
-const fetcher = url => fetch(url).then(res => {
+// Dynamic import for ECharts
+const ReactEcharts = dynamic(() => import('echarts-for-react'), {
+    ssr: false,
+    loading: () => <LoadingSpinner /> // Show spinner while ECharts component loads
+});
+
+// SWR fetcher
+const fetcher = async url => {
+    const res = await fetch(url);
     if (!res.ok) {
         const error = new Error('An error occurred while fetching the data.');
-        error.info = res.statusText;
+        error.info = await res.json().catch(() => res.statusText); // Try to get more info
         error.status = res.status;
         throw error;
     }
     return res.json();
-});
+};
 
+// Generates YYYY-MM strings for all months in a date range
 function generateMonthsInRange(startDate, endDate) {
+    if (!startDate || !endDate) return [];
     const start = new Date(Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(), 1));
     const end = new Date(Date.UTC(endDate.getUTCFullYear(), endDate.getUTCMonth(), 1));
     const months = [];
     let current = new Date(start);
+
     while (current <= end) {
-        months.push(getYearMonthString(current)); // Use UTC consistent YYYY-MM
+        months.push(getYearMonthString(current)); // Expects YYYY-MM
         current.setUTCMonth(current.getUTCMonth() + 1);
     }
     return months;
 }
 
 export default function DashboardPage() {
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
-    const [selectedFilters, setSelectedFilters] = useState({ startMonth: '', endMonth: '' });
+    const [startDate, setStartDate] = useState(null); // Date object
+    const [endDate, setEndDate] = useState(null);     // Date object
+    // selectedFilters now primarily for non-date string filters if any,
+    // date string versions (startMonth, endMonth) are derived for API calls.
+    const [selectedNonDateFilters, setSelectedNonDateFilters] = useState({});
     const [initialFiltersLoaded, setInitialFiltersLoaded] = useState(false);
-    const [showSplashModal, setShowSplashModal] = useState(false); // Moved to top
-    const { resolvedTheme } = useTheme(); // Assuming this is used for chart themes
+    const [showSplashModal, setShowSplashModal] = useState(false);
+    const { resolvedTheme, theme } = useTheme(); // Use resolvedTheme for ECharts
 
-    // Load filters from localStorage on initial mount
+    // Load filters from localStorage
     useEffect(() => {
         const savedGlobalFilters = localStorage.getItem(LOCAL_STORAGE_KEYS.GLOBAL_DATE_FILTERS);
         let initialStartDate = getDefaultInitialStartDate();
@@ -99,93 +139,98 @@ export default function DashboardPage() {
         if (savedGlobalFilters) {
             try {
                 const { startMonth: savedStartStr, endMonth: savedEndStr } = JSON.parse(savedGlobalFilters);
-                const parsedStart = parseYearMonthToDate(savedStartStr);
-                const parsedEnd = parseYearMonthToDate(savedEndStr);
+                const parsedStart = parseYearMonthToDate(savedStartStr); // Expects YYYY-MM
+                const parsedEnd = parseYearMonthToDate(savedEndStr);   // Expects YYYY-MM
                 if (parsedStart) initialStartDate = parsedStart;
                 if (parsedEnd) initialEndDate = parsedEnd;
             } catch (e) {
-                console.error("Failed to parse saved date filters from localStorage", e);
+                console.error("Failed to parse saved date filters:", e);
+                // Keep defaults if parsing fails
             }
         }
         setStartDate(initialStartDate);
         setEndDate(initialEndDate);
-        setSelectedFilters({
-            startMonth: getYearMonthString(initialStartDate),
-            endMonth: getYearMonthString(initialEndDate),
-        });
         setInitialFiltersLoaded(true);
     }, []);
 
-    // Persist filters to localStorage whenever they change
+    // Persist date filters to localStorage
     useEffect(() => {
-        if (!initialFiltersLoaded) return; // Don't save uninitialized dates
+        if (!initialFiltersLoaded || !startDate || !endDate) return;
 
-        if (startDate && endDate) {
-            const filtersToSave = {
-                startMonth: getYearMonthString(startDate),
-                endMonth: getYearMonthString(endDate),
-            };
-            localStorage.setItem(LOCAL_STORAGE_KEYS.GLOBAL_DATE_FILTERS, JSON.stringify(filtersToSave));
-        }
+        const filtersToSave = {
+            startMonth: getYearMonthString(startDate), // YYYY-MM
+            endMonth: getYearMonthString(endDate),     // YYYY-MM
+        };
+        localStorage.setItem(LOCAL_STORAGE_KEYS.GLOBAL_DATE_FILTERS, JSON.stringify(filtersToSave));
     }, [startDate, endDate, initialFiltersLoaded]);
 
-    // useEffect for splash modal logic (depends on initialFiltersLoaded being potentially set first)
+    // Splash modal logic
     useEffect(() => {
-        // Only run this check after initial filters (and potentially component hydration) are done
-        if (initialFiltersLoaded) { // Ensure this runs after initial setup
+        if (initialFiltersLoaded) {
             const hasVisitedBefore = localStorage.getItem('hasVisitedTravelDashboard');
             if (!hasVisitedBefore) {
                 setShowSplashModal(true);
             }
         }
-    }, [initialFiltersLoaded]); // Depend on initialFiltersLoaded
-	
-    // Handler for FilterTopbar's onDateChange
-    const handleDateChange = useCallback((filterKey, dateObject) => {
-        if (filterKey === 'startMonth' || filterKey === 'startDate') {
+    }, [initialFiltersLoaded]);
+
+    const handleDateChange = useCallback((dateKey, dateObject) => {
+        if (dateKey === 'startDate') {
             setStartDate(dateObject);
-            setSelectedFilters(prev => ({ ...prev, startMonth: getYearMonthString(dateObject) }));
-        } else if (filterKey === 'endMonth' || filterKey === 'endDate') {
+        } else if (dateKey === 'endDate') {
             setEndDate(dateObject);
-            setSelectedFilters(prev => ({ ...prev, endMonth: getYearMonthString(dateObject) }));
         }
     }, []);
     
-    // Handler for FilterTopbar's onFilterChange (not used by Dashboard, but good practice to have)
-    // const handleFilterChange = useCallback((filterKey, value) => {
-    //     setSelectedFilters(prev => ({ ...prev, [filterKey]: value }));
-    // }, []);
+    const handleNonDateFilterChange = useCallback((filterKey, value) => {
+        setSelectedNonDateFilters(prev => ({ ...prev, [filterKey]: value }));
+    }, []);
 
     const handleCloseSplashModal = () => {
         setShowSplashModal(false);
         localStorage.setItem('hasVisitedTravelDashboard', 'true');
     };
 
-    // Define filterConfig for the FilterTopbar
     const filterConfig = useMemo(() => [
-        { key: 'startMonth', label: 'Start Date:', type: 'month' },
-        { key: 'endMonth', label: 'End Date:', type: 'month' },
+        { key: 'startDate', label: 'Start Date:', type: 'month' },
+        { key: 'endDate', label: 'End Date:', type: 'month' },
+        // Add other non-date filters here if needed
+        // { key: 'department', label: 'Department:', type: 'select', optionsKey: 'departments', placeholder: 'All Departments' },
     ], []);
 
-    // API URL construction based on selectedFilters (string values)
-    // Only generate URL if dates are valid to prevent unnecessary fetches
+    // API URL construction using date objects
     const apiUrl = useMemo(() => {
-        if (!selectedFilters.startMonth || !selectedFilters.endMonth || !initialFiltersLoaded) {
-            return null; // Prevent fetching if filters aren't ready
-        }
-        return `/api/dashboard?start=${selectedFilters.startMonth}&end=${selectedFilters.endMonth}`;
-    }, [selectedFilters.startMonth, selectedFilters.endMonth, initialFiltersLoaded]);
+        if (!initialFiltersLoaded || !startDate || !endDate) return null;
+        const startMonthStr = getYearMonthString(startDate); // YYYY-MM
+        const endMonthStr = getYearMonthString(endDate);     // YYYY-MM
+        const params = new URLSearchParams({
+            start: startMonthStr,
+            end: endMonthStr,
+            ...selectedNonDateFilters // Spread other string-based filters
+        });
+        return `/api/dashboard?${params.toString()}`;
+    }, [startDate, endDate, selectedNonDateFilters, initialFiltersLoaded]);
 
-    const { data, error, isLoading: dataIsLoading } = useSWR(apiUrl, fetcher, {
-        keepPreviousData: true, // Optional: good for UX
-    });
+    const { data, error, isLoading: dataIsLoading, isValidating } = useSWR(
+        apiUrl,
+        fetcher,
+        {
+            keepPreviousData: true,
+            revalidateOnFocus: false, // Optional: prevent revalidation on window focus
+        }
+    );
     
-    // --- ECharts Options & Data Processing (largely similar to original, ensure dependencies are correct) ---
+    const isLoading = !initialFiltersLoaded || dataIsLoading || isValidating;
+
+    // ECharts theme based on NextJS theme
+    const echartTheme = resolvedTheme === 'dark' ? 'dark' : 'light'; // ECharts has built-in 'dark' theme
+
+    // --- ECharts Options ---
     const spendingOverTimeOptions = useMemo(() => {
         const spendingData = data?.spendingOverTime || [];
-        if (!startDate || !endDate) return {}; // Ensure dates are loaded
+        if (!startDate || !endDate) return { series: [] }; // Return empty series if no dates
 
-        const allMonthsInRange = generateMonthsInRange(startDate, endDate);
+        const allMonthsInRange = generateMonthsInRange(startDate, endDate); // YYYY-MM strings
         const spendingMap = spendingData.reduce((map, item) => {
             const monthKey = item.month ? item.month.slice(0, 7) : null; // Ensure YYYY-MM from data
             if (monthKey) map[monthKey] = item;
@@ -202,292 +247,244 @@ export default function DashboardPage() {
         const monthLabels = monthlyAggregates.map(d => {
              const [year, monthNum] = d.month.split('-');
              const dateLabel = new Date(Date.UTC(Number(year), Number(monthNum) - 1, 1));
-             return dateLabel.toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
+             return dateLabel.toLocaleDateString('en-US', { month: 'short', year: '2-digit', timeZone: 'UTC' });
         });
 
+        const seriesColors = ['#00A9B5', '#FF6B6B', '#FFD166', '#06D6A0', '#7884D5']; // Example palette
+
         return {
-            tooltip: { trigger: 'axis' },
-            legend: { data: ['Airfare', 'Other Transport', 'Lodging', 'Meals', 'Other Expenses'], textStyle: { color: '#9CA3AF'} }, // Muted legend
-            grid: { left: '3%', right: '4%', bottom: '10%', containLabel: true },
-            xAxis: { type: 'category', boundaryGap: false, data: monthLabels, axisLabel: { color: '#9CA3AF'} },
-            yAxis: { type: 'value', axisLabel: { formatter: '${value}', color: '#9CA3AF' } },
+            tooltip: { trigger: 'axis', backgroundColor: 'var(--color-surface-default)', borderColor: 'var(--color-border-default)', textStyle: { color: 'var(--color-foreground-default)'} },
+            legend: { data: ['Airfare', 'Other Transport', 'Lodging', 'Meals', 'Other Expenses'], inactiveColor: 'var(--color-foreground-muted)', textStyle: { color: 'var(--color-text-body)'} },
+            grid: { left: '3%', right: '4%', bottom: '12%', containLabel: true }, // Increased bottom for dataZoom
+            xAxis: { type: 'category', boundaryGap: false, data: monthLabels, axisLabel: { color: 'var(--color-text-muted)'} },
+            yAxis: { type: 'value', axisLabel: { formatter: '${value}', color: 'var(--color-text-muted)' }, splitLine: { lineStyle: { color: 'var(--color-border-default)' }}},
             dataZoom: [
-                { type: 'inside', start: 0, end: 100 },
-                { show: true, type: 'slider', bottom: 10, start: 0, end: 100 }
+                { type: 'inside', start: 0, end: 100, zoomLock: false },
+                { show: true, type: 'slider', bottom: 10, height: 20, start: 0, end: 100, backgroundColor: 'var(--color-surface-default)', borderColor: 'var(--color-border-default)', dataBackground: { lineStyle: { color: 'var(--color-primary-default)/0.2' }, areaStyle: { color: 'var(--color-primary-default)/0.1'}}, selectedDataBackground: {lineStyle: {color: 'var(--color-primary-default)'}, areaStyle: {color: 'var(--color-primary-default)/0.3'}}, fillerColor: 'var(--color-primary-default)/0.2', handleStyle: { color: 'var(--color-primary-default)'}, textStyle: {color: 'var(--color-text-muted)'}}
             ],
             series: [
-                 { name: 'Airfare', type: 'line', smooth: true, data: monthlyAggregates.map(d => d.total_airfare) },
-                 { name: 'Other Transport', type: 'line', smooth: true, data: monthlyAggregates.map(d => d.total_other_transport) },
-                 { name: 'Lodging', type: 'line', smooth: true, data: monthlyAggregates.map(d => d.total_lodging) },
-                 { name: 'Meals', type: 'line', smooth: true, data: monthlyAggregates.map(d => d.total_meals) },
-                 { name: 'Other Expenses', type: 'line', smooth: true, data: monthlyAggregates.map(d => d.total_other_expenses) },
-            ]
+                 { name: 'Airfare', type: 'line', smooth: true, data: monthlyAggregates.map(d => d.total_airfare), color: seriesColors[0] },
+                 { name: 'Other Transport', type: 'line', smooth: true, data: monthlyAggregates.map(d => d.total_other_transport), color: seriesColors[1] },
+                 { name: 'Lodging', type: 'line', smooth: true, data: monthlyAggregates.map(d => d.total_lodging), color: seriesColors[2] },
+                 { name: 'Meals', type: 'line', smooth: true, data: monthlyAggregates.map(d => d.total_meals), color: seriesColors[3] },
+                 { name: 'Other Expenses', type: 'line', smooth: true, data: monthlyAggregates.map(d => d.total_other_expenses), color: seriesColors[4] },
+            ].map(s => ({ ...s, showSymbol: false, lineStyle: { width: 2.5 } })) // Common series styling
         };
-    }, [data?.spendingOverTime, startDate, endDate]);
+    }, [data?.spendingOverTime, startDate, endDate, resolvedTheme]);
 
     const spendingByPurposeOptions = useMemo(() => ({
-        tooltip: { trigger: 'item', formatter: '{b}: ${c} ({d}%)' },
-        legend: { type: 'scroll', orient: 'vertical', left: 10, top: 20, bottom: 20, textStyle: { color: '#9CA3AF'} },
+        tooltip: { trigger: 'item', formatter: '{b}: ${c} ({d}%)', backgroundColor: 'var(--color-surface-default)', borderColor: 'var(--color-border-default)', textStyle: { color: 'var(--color-foreground-default)'} },
+        legend: { type: 'scroll', orient: 'vertical', left: 10, top: 20, bottom: 20, inactiveColor: 'var(--color-foreground-muted)', textStyle: { color: 'var(--color-text-body)'} },
         series: [{
-            name: 'Spending by Purpose', type: 'pie', radius: ['50%', '70%'], center: ['65%', '50%'],
-            avoidLabelOverlap: false, itemStyle: { borderRadius: 5, borderColor: '#fff', borderWidth: 1 },
-            label: { show: false }, emphasis: { scale: true }, labelLine: { show: false },
+            name: 'Spending by Purpose', type: 'pie', radius: ['50%', '70%'], center: ['60%', '50%'], // Adjusted center
+            avoidLabelOverlap: true,
+            itemStyle: { borderRadius: 5, borderColor: 'var(--color-card-background)', borderWidth: 1.5 }, // Themed border
+            label: { show: false, position: 'center' }, // Keep label hidden, or configure as needed
+            emphasis: {
+                label: { show: true, fontSize: '16', fontWeight: 'bold', color: 'var(--color-text-heading)' },
+                itemStyle: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'var(--color-shadow-default)' }
+            },
+            labelLine: { show: false },
             data: data?.spendingByPurpose || [],
+            // Consider defining colors here if they don't match theme defaults well
         }],
-    }), [data?.spendingByPurpose]);
+    }), [data?.spendingByPurpose, resolvedTheme]);
 
     const heatmapOptions = useMemo(() => {
         const rawData = data?.heatmapData || [];
-
-        // Ensure data is clean (optional, but good practice)
         const cleanData = rawData.filter(item =>
             Array.isArray(item) && item.length === 3 &&
-            typeof item[0] === 'number' && // month_num
-            typeof item[1] === 'number' && // year
-            typeof item[2] === 'number'    // value
+            typeof item[0] === 'number' && typeof item[1] === 'number' && typeof item[2] === 'number'
         );
 
-        if (cleanData.length === 0) {
-            // Return a configuration that shows "No Data" or similar
-            // ECharts doesn't have a built-in "no data" message easily for heatmap,
-            // so returning empty options or handling it in render is better.
-             console.warn("No valid data available for heatmap.");
-             return null; // Indicate no options to render below
-        }
+        if (cleanData.length === 0) return null;
 
-        const years = [...new Set(cleanData.map(d => d[1]))].sort((a, b) => a - b); // Sort years numerically
-        const months = Array.from({ length: 12 }, (_, i) => i + 1); // Months 1-12
+        const years = [...new Set(cleanData.map(d => d[1]))].sort((a, b) => a - b);
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        // Map month numbers (1-12) to month names for xAxis labels
+        const monthLabels = Array.from({ length: 12 }, (_, i) => months[i]);
 
-        // Find min/max values for visualMap after ensuring data exists
+
         const values = cleanData.map(d => d[2]);
-        const minValue = Math.min(...values); // Can be used in visualMap if needed
-        const maxValue = Math.max(...values);
+        const minValue = values.length > 0 ? Math.min(...values) : 0;
+        const maxValue = values.length > 0 ? Math.max(...values) : 1; // Ensure maxValue is at least 1
+
+        // Transform data for ECharts: [xAxisIndex, yAxisIndex, value]
+        // xAxisIndex maps to month (0-11), yAxisIndex maps to year index
+        const heatmapChartData = cleanData.map(item => [item[0] - 1, years.indexOf(item[1]), item[2]]);
+
 
         return {
             tooltip: {
                 position: 'top',
                 formatter: params => {
-                    // params.value should be [month_num, year, value]
                     if (!params || !params.value) return '';
-                    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-                    const monthIndex = params.value[0] - 1; // month_num is 1-12
-                    return `Year: ${params.value[1]}, Month: ${monthNames[monthIndex]}<br/>Spend: $${params.value[2]?.toLocaleString()}`;
-                }
+                    const monthIndex = params.value[0]; // 0-11
+                    const yearIndex = params.value[1]; // index in `years` array
+                    const year = years[yearIndex];
+                    return `Year: ${year}, Month: ${months[monthIndex]}<br/>Spend: $${params.value[2]?.toLocaleString()}`;
+                },
+                backgroundColor: 'var(--color-surface-default)', borderColor: 'var(--color-border-default)', textStyle: { color: 'var(--color-foreground-default)'}
             },
-            grid: { height: '60%', top: '10%', bottom: '30%', left: '10%', right: '10%' }, // Adjust grid
+            grid: { top: '10%', bottom: '25%', left: '12%', right: '5%' },
             xAxis: {
-                type: 'category',
-                data: months.map(m => m.toString()), // Ensure data is string for category axis
-                splitArea: { show: true },
-                name: 'Month',
-                nameLocation: 'center',
-                nameGap: 35, // Increase gap if name overlaps visualMap
-                axisLabel: { color: '#9CA3AF'},
-                nameTextStyle: { color: '#9CA3AF'}
+                type: 'category', data: monthLabels, splitArea: { show: true, areaStyle: { color: ['var(--color-surface-default)/0.5', 'var(--color-background-default)/0.5']}},
+                name: 'Month', nameLocation: 'center', nameGap: 30,
+                axisLabel: { color: 'var(--color-text-muted)'}, nameTextStyle: { color: 'var(--color-text-body)'}
             },
             yAxis: {
-                type: 'category',
-                data: years.map(y => y.toString()), // Ensure data is string for category axis
-                splitArea: { show: true },
-                name: 'Year',
-                nameLocation: 'center',
-                nameGap: 35, // Adjust gap if needed
-                axisLabel: { color: '#9CA3AF'},
-                nameTextStyle: { color: '#9CA3AF'}
+                type: 'category', data: years.map(y => y.toString()), splitArea: { show: true, areaStyle: { color: ['var(--color-surface-default)/0.5', 'var(--color-background-default)/0.5']}},
+                name: 'Year', nameLocation: 'middle', nameGap: 45,
+                axisLabel: { color: 'var(--color-text-muted)'}, nameTextStyle: { color: 'var(--color-text-body)'}
             },
             visualMap: {
-                min: minValue, // Use calculated min
-                max: Math.max(1, maxValue), // Use calculated max, ensure at least 1
-                calculable: true,
-                orient: 'horizontal',
-                left: 'center',
-                bottom: '5%', // Position visualMap at bottom
-                // Example Yellow-Green-Blue scale
-                inRange: { color: ['#ffffd9', '#edf8b1', '#c7e9b4', '#7fcdbb', '#41b6c4', '#1d91c0', '#225ea8', '#0c2c84'] },
-                textStyle: { color: '#9CA3AF'}
+                min: minValue, max: maxValue, calculable: true, orient: 'horizontal',
+                left: 'center', bottom: '2%',
+                inRange: { color: resolvedTheme === 'dark' ? ['#1A4D2E', '#4F6F52', '#739072', '#ECE3CE'] : ['#D6EFED', '#A1CCD1', '#7C9D96', '#5B9A8B'] }, // Dark and Light mode specific colors
+                textStyle: { color: 'var(--color-text-muted)'}
             },
             series: [{
-                name: 'Monthly Spending',
-                type: 'heatmap',
-                data: cleanData, // Use the cleaned data
-                label: { show: false }, // Heatmaps usually don't show labels on cells
-                emphasis: {
-                    itemStyle: {
-                        shadowBlur: 10,
-                        shadowColor: 'rgba(0, 0, 0, 0.5)'
-                    }
-                }
+                name: 'Monthly Spending', type: 'heatmap', data: heatmapChartData,
+                label: { show: false },
+                emphasis: { itemStyle: { shadowBlur: 10, shadowColor: 'var(--color-shadow-default)' } }
             }]
         };
-    }, [data?.heatmapData]);
+    }, [data?.heatmapData, resolvedTheme]);
 
-    // Overall loading state for UI (considers initial filter load and data fetch)
-    const pageIsLoading = !initialFiltersLoaded || dataIsLoading;
 
-    if (!initialFiltersLoaded) { // Or a more specific initial loading state if preferred
+    if (!initialFiltersLoaded) {
         return <DashboardLayout><LoadingSpinner /></DashboardLayout>;
     }
 
     return (
         <DashboardLayout>
-            {/* --- Splash/Welcome Modal --- */}
             <Modal
                 isOpen={showSplashModal}
                 onClose={handleCloseSplashModal}
                 title={
-                    <div className="flex items-center gap-3">
-                        <FaRegLightbulb size={26} className="text-primary dark:text-primary-dark" />
-                        <span>Welcome to the Travel Expense Explorer!</span>
+                    <div className="flex items-center gap-x-3">
+                        <FaRegLightbulb size={24} className="text-primary" />
+                        <span className="text-xl font-semibold text-foreground">Welcome to OnOurDime.ca!</span>
                     </div>
                 }
-                size="xl" // Adjust size as needed: "md", "lg", "xl", "2xl"
+                size="xl"
             >
-                <div className="text-sm text-muted-foreground space-y-4">
-                    <p>
-                        This dashboard provides insights into Canadian federal government travel expenses. Here’s a quick guide to get you started:
-                    </p>
-                    <ul className="list-none space-y-3 pl-1">
-                        <li className="flex items-start gap-3 p-2 rounded-md hover:bg-muted/50 dark:hover:bg-slate-700/50 transition-colors">
-                            <VscDashboard size={24} className="mt-0.5 flex-shrink-0 text-primary dark:text-primary-dark" />
-                            <div>
-                                <strong className="text-foreground">Dashboard (You are here!):</strong>
-                                <span className="block text-xs">Get an overview of total spending, key trends, top spending departments, and officials. Use the date filters to explore different periods.</span>
-                            </div>
-                        </li>
-                        <li className="flex items-start gap-3 p-2 rounded-md hover:bg-muted/50 dark:hover:bg-slate-700/50 transition-colors">
-                            <VscOrganization size={24} className="mt-0.5 flex-shrink-0 text-primary dark:text-primary-dark" />
-                            <div>
-                                <strong className="text-foreground">Organization Trends:</strong>
-                                <span className="block text-xs">Navigate to the <Link href="/orgs" onClick={handleCloseSplashModal} className="font-medium underline hover:text-primary-focus dark:hover:text-primary-dark-focus">Orgs page</Link> to see detailed spending trends for specific departments and filter by traveler titles.</span>
-                            </div>
-                        </li>
-                        <li className="flex items-start gap-3 p-2 rounded-md hover:bg-muted/50 dark:hover:bg-slate-700/50 transition-colors">
-                            <VscAccount size={24} className="mt-0.5 flex-shrink-0 text-primary dark:text-primary-dark" />
-                            <div>
-                                <strong className="text-foreground">People Inspector:</strong>
-                                <span className="block text-xs">Use the <Link href="/people" onClick={handleCloseSplashModal} className="font-medium underline hover:text-primary-focus dark:hover:text-primary-dark-focus">People page</Link> to look up travel expenses for individual officials and see their spending patterns.</span>
-                            </div>
-                        </li>
-                        <li className="flex items-start gap-3 p-2 rounded-md hover:bg-muted/50 dark:hover:bg-slate-700/50 transition-colors">
-                             <VscGlobe size={24} className="mt-0.5 flex-shrink-0 text-primary dark:text-primary-dark" />
-                            <div>
-                                <strong className="text-foreground">Map Explorer:</strong>
-                                <span className="block text-xs">Visit the <Link href="/map" onClick={handleCloseSplashModal} className="font-medium underline hover:text-primary-focus dark:hover:text-primary-dark-focus">Map page</Link> to visualize travel destinations across the globe.</span>
-                            </div>
-                        </li>
+                <div className="text-sm text-foreground-default space-y-4">
+                    <p>This dashboard provides insights into Canadian federal government travel expenses. Here’s a quick guide:</p>
+                    <ul className="list-none space-y-3">
+                        {[
+                            { icon: <VscDashboard size={20} className="text-primary" />, title: "Dashboard", text: "Overview of spending, trends, top departments/officials. Use date filters.", link: null },
+                            { icon: <VscOrganization size={20} className="text-primary" />, title: "Department Trends", text: "Visit Orgs for department spending.", link: "/orgs" },
+                            { icon: <VscAccount size={20} className="text-primary" />, title: "Person Inspector", text: "See individual expenses on the People page.", link: "/people" },
+                            { icon: <VscGlobe size={20} className="text-primary" />, title: "Map Explorer", text: "Visualize destinations on the Map.", link: "/map" },
+                        ].map(item => (
+                            <li key={item.title} className="flex items-start gap-x-3 p-2.5 rounded-app-md hover:bg-surface-hovered transition-colors">
+                                <span className="mt-0.5 flex-shrink-0 w-5 h-5">{item.icon}</span>
+                                <div>
+                                    <strong className="text-text-heading font-medium">{item.title}:</strong>
+                                    <span className="block text-xs text-foreground-muted">
+                                        {item.text}
+                                        {item.link && <Link href={item.link} onClick={handleCloseSplashModal} className="ml-1 btn-link text-xs">Go to {item.title.split(' ')[0]}</Link>}
+                                    </span>
+                                </div>
+                            </li>
+                        ))}
                     </ul>
-                    <p className="mt-5 text-xs">
-                        All data is sourced from Open.Canada.ca. For more details, check out the <Link href="/about" onClick={handleCloseSplashModal} className="font-medium underline hover:text-primary-focus dark:hover:text-primary-dark-focus">About page</Link>.
-                    </p>
+                    <p className="mt-5 text-xs text-foreground-muted">Data from Open.Canada.ca. More on the <Link href="/about" onClick={handleCloseSplashModal} className="btn-link text-xs">About page</Link>.</p>
                     <div className="mt-6 text-right">
-                        <button
-                            onClick={handleCloseSplashModal}
-                            className="px-4 py-2 bg-primary text-primary-foreground hover:bg-primary-focus dark:bg-primary-dark dark:hover:text-primary-dark-focus rounded-md text-sm font-medium transition-colors"
-                        >
-                            Got it, let's explore!
-                        </button>
+                        <button onClick={handleCloseSplashModal} className="btn-primary">Got it, let's explore!</button>
                     </div>
                 </div>
             </Modal>
-			
-            <div className="flex justify-between items-center mb-4">
-                <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100">Dashboard</h1>
+            
+            <div className="flex justify-between items-center mb-6">
+                <h1 className="text-page-heading">Dashboard</h1> {/* Uses .text-page-heading from globals.css */}
                 <button
                     onClick={() => setShowSplashModal(true)}
-                    className="p-2 text-muted-foreground hover:text-primary dark:hover:text-primary-dark transition-colors"
-                    title="Show Welcome Guide"
-                    aria-label="Show Welcome Guide"
+                    className="p-2 text-foreground-muted hover:text-primary transition-colors rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    title="Show Welcome Guide" aria-label="Show Welcome Guide"
                 >
                     <VscInfo size={22}/>
                 </button>
             </div>
+
             <FilterTopbar
                 filterConfig={filterConfig}
-                availableFilters={{}}
-                selectedFilters={selectedFilters}
+                availableFilters={{ /* Pass actual available filters if any, e.g., for departments */ }}
+                selectedFilters={{ ...selectedNonDateFilters /* Pass string filters */ }}
+                onFilterChange={handleNonDateFilterChange}
+                startDate={startDate} // Pass Date object
+                endDate={endDate}   // Pass Date object
                 onDateChange={handleDateChange}
-                startDate={startDate}
-                endDate={endDate}
-                loading={!initialFiltersLoaded || (dataIsLoading && !data)}
+                loading={!initialFiltersLoaded} // Loading state for filters themselves
             />
 
-            {error && <ErrorMessage message={error.message || 'Failed to load dashboard data.'} />}
+            {error && <ErrorMessage message={error.info?.message || error.message || 'Failed to load dashboard data.'} />}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                <KPICard title="Total Spending" value={`$${data?.kpiData?.totalSpending?.toLocaleString() ?? '...'}`} isLoading={pageIsLoading} />
-                <KPICard title="Total Expense Reports" value={data?.kpiData?.recordCount?.toLocaleString() ?? '...'} isLoading={pageIsLoading} />
-                <KPICard title="Average Trip Cost" value={`$${data?.kpiData?.avgTripCost?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) ?? '...'}`} isLoading={pageIsLoading} />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-6">
+                <KPICard title="Total Spending" value={data?.kpiData?.totalSpending != null ? `$${data.kpiData.totalSpending.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})}` : '...'} isLoading={isLoading} />
+                <KPICard title="Total Expense Reports" value={data?.kpiData?.recordCount != null ? data.kpiData.recordCount.toLocaleString() : '...'} isLoading={isLoading} />
+                <KPICard title="Average Trip Cost" value={data?.kpiData?.avgTripCost != null ? `$${data.kpiData.avgTripCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '...'} isLoading={isLoading} />
             </div>
 
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                  <ListContainer
-                    title="Top Spending Departments"
-                    isLoading={pageIsLoading}
-                    items={data?.topOrgs} // Expects array of { id, name, value }
-                    renderItem={(org) => {
-                        const queryParams = new URLSearchParams();
-                        // Use startMonth/endMonth from selectedFilters (which are YYYY-MM strings)
-                        if (selectedFilters.startMonth) queryParams.append('start', selectedFilters.startMonth);
-                        if (selectedFilters.endMonth) queryParams.append('end', selectedFilters.endMonth);
-                        if (org.id) queryParams.append('orgId', org.id);
+                   title="Top Spending Departments"
+                   isLoading={isLoading}
+                   items={data?.topOrgs}
+                   renderItem={(org) => {
+                       const queryParams = new URLSearchParams();
+                       if (startDate) queryParams.append('start', getYearMonthString(startDate));
+                       if (endDate) queryParams.append('end', getYearMonthString(endDate));
+                       queryParams.append('orgName', org.name); // Assuming orgs page can filter by name
 
-                        return (
-                            <li key={org.id || org.name} className="flex justify-between items-center py-1.5">
-                                <Link
-                                    href={`/orgs?${queryParams.toString()}`}
-                                    className="text-primary hover:text-primary-focus dark:text-primary-dark dark:hover:text-primary-dark-focus underline-offset-2 hover:underline"
-                                >
-                                    {org.name}
-                                </Link>
-                                <span className="font-medium">${(org.value || 0).toLocaleString()}</span>
-                            </li>
-                        );
-                    }}
-                 />
-                 <ListContainer
-                    title="Top Spending Ministers"
-                    isLoading={pageIsLoading}
-                    items={data?.topNames} // Expects array of { id, name, value }
-                    renderItem={(person) => {
-                        const queryParams = new URLSearchParams();
-                        if (selectedFilters.startMonth) queryParams.append('start', selectedFilters.startMonth);
-                        if (selectedFilters.endMonth) queryParams.append('end', selectedFilters.endMonth);
-                        if (person.id) queryParams.append('personId', person.id);
+                       return (
+                           <li key={org.name} className="flex justify-between items-center py-1.5 border-b border-border last:border-b-0">
+                               <Link href={`/orgs?${queryParams.toString()}`} className="btn-link text-sm">
+                                   {org.name}
+                               </Link>
+                               <span className="font-medium text-foreground">${(org.value || 0).toLocaleString()}</span>
+                           </li>
+                       );
+                   }}
+                />
+                <ListContainer
+                   title="Top Spending People"
+                   isLoading={isLoading}
+                   items={data?.topNames}
+                   renderItem={(person) => {
+                       const queryParams = new URLSearchParams();
+                       if (startDate) queryParams.append('start', getYearMonthString(startDate));
+                       if (endDate) queryParams.append('end', getYearMonthString(endDate));
+                       if (person.id) queryParams.append('personId', person.id); // If person ID available
+                       else queryParams.append('personName', person.name); // Fallback to name
 
-                        return (
-                            <li key={person.id || person.name} className="flex justify-between items-center py-1.5">
-                                <Link
-                                    href={`/people?${queryParams.toString()}`}
-                                    className="text-primary hover:text-primary-focus dark:text-primary-dark dark:hover:text-primary-dark-focus underline-offset-2 hover:underline"
-                                >
-                                    {person.name}
-                                </Link>
-                                <span className="font-medium">${(person.value || 0).toLocaleString()}</span>
-                            </li>
-                        );
-                    }}
-                 />
-             </div>
+                       return (
+                           <li key={person.name} className="flex justify-between items-center py-1.5 border-b border-border last:border-b-0">
+                               <Link href={`/people?${queryParams.toString()}`} className="btn-link text-sm">
+                                   {person.name}
+                               </Link>
+                               <span className="font-medium text-foreground">${(person.value || 0).toLocaleString()}</span>
+                           </li>
+                       );
+                   }}
+                />
+            </div>
 
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-                <ChartContainer title="Spending Over Time" isLoading={pageIsLoading} className="xl:col-span-2">
-                    {!pageIsLoading && data && <ReactEcharts option={spendingOverTimeOptions} notMerge={true} lazyUpdate={true} theme="light" />}
+                <ChartContainer title="Spending Over Time" isLoading={isLoading} className="xl:col-span-2">
+                    {(!isLoading && data && startDate && endDate) && <ReactEcharts option={spendingOverTimeOptions} notMerge={true} lazyUpdate={true} theme={echartTheme} style={{ height: '100%', width: '100%' }} />}
                 </ChartContainer>
-
-                <ChartContainer title="Spending by Purpose" isLoading={pageIsLoading}>
-                     {!pageIsLoading && data && <ReactEcharts option={spendingByPurposeOptions} notMerge={true} lazyUpdate={true} theme="light" />}
+                <ChartContainer title="Spending by Purpose" isLoading={isLoading}>
+                    {(!isLoading && data) && <ReactEcharts option={spendingByPurposeOptions} notMerge={true} lazyUpdate={true} theme={echartTheme} style={{ height: '100%', width: '100%' }} />}
                 </ChartContainer>
-
-                <ChartContainer title="Monthly Spending Heatmap" isLoading={pageIsLoading} className={!heatmapOptions ? 'flex items-center justify-center text-muted-foreground' : ''}>
-                    {/* Render chart only if options are generated */}
-                    {heatmapOptions && !pageIsLoading && (
-                        <ReactEcharts option={heatmapOptions} notMerge={true} lazyUpdate={true} theme="light" />
+                <ChartContainer title="Monthly Spending Heatmap" isLoading={isLoading} className={!heatmapOptions && !isLoading ? 'flex items-center justify-center text-foreground-muted' : ''}>
+                    {heatmapOptions && !isLoading && (
+                        <ReactEcharts option={heatmapOptions} notMerge={true} lazyUpdate={true} theme={echartTheme} style={{ height: '100%', width: '100%' }} />
                     )}
-                    {/* Show message if options are null (e.g., no data) and not loading */}
-                    {!heatmapOptions && !pageIsLoading && (
-                        <div>No data available for the selected period.</div>
+                    {!heatmapOptions && !isLoading && (
+                        <div>No heatmap data available for the selected period.</div>
                     )}
-                     {/* Loading overlay is handled by ChartContainer's isLoading prop */}
                 </ChartContainer>
             </div>
         </DashboardLayout>
