@@ -460,7 +460,7 @@ export default function DashboardPage() {
                        if (startDate) queryParams.append('start', getYearMonthString(startDate));
                        if (endDate) queryParams.append('end', getYearMonthString(endDate));
                        if (person.id) queryParams.append('personId', person.id); // If person ID available
-                       else queryParams.append('personName', person.name); // Fallback to name
+                       if (person.name) queryParams.append('personName', person.name); // Fallback to name
 
                        return (
                            <li key={person.name} className="flex justify-between items-center py-1.5 border-b border-border last:border-b-0">

@@ -169,19 +169,24 @@ export default function FilterTopbar({
                         });
                     } else {
                         // Logic for single-select value (object or null)
-                        if (currentFilterValueFromState) {
-                            const foundOpt = (optionsForSimpleSelect || []).find(opt => opt.value === currentFilterValueFromState);
-                            // For async_select, if the initial value's label isn't in defaultOptions,
-                            // react-select might show the value until options load.
-                            // Or, the parent could pass a selectedFilters[`${key}_label`] if absolutely needed.
-                            // But for simple 'select', optionsForSimpleSelect should contain the label.
-                            valueForReactSelect = {
-                                value: currentFilterValueFromState,
-                                label: foundOpt ? foundOpt.label : (type === 'async_select' || type === 'async_creatable_select' ? currentFilterValueFromState : `ID: ${currentFilterValueFromState}`) // Fallback label
-                            };
-                        } else {
-                            valueForReactSelect = null;
-                        }
+						if (currentFilterValueFromState) { // This is the ID, e.g., selectedFilters.person
+						    const foundOpt = (optionsForSimpleSelect || []).find(opt => opt.value === currentFilterValueFromState);
+						    let label = foundOpt ? foundOpt.label : currentFilterValueFromState; // Default to ID
+						    
+						    if (type === 'async_select' || type === 'async_creatable_select') {
+						        const labelFromState = selectedFilters[`${key}_label`]; // e.g., selectedFilters.person_label
+						        if (labelFromState) {
+						            label = labelFromState;
+						        }
+						    }
+						
+						    valueForReactSelect = {
+						        value: currentFilterValueFromState,
+						        label: label 
+						    };
+						} else {
+						    valueForReactSelect = null;
+						}
                     }
                     
                     const commonSelectProps = {

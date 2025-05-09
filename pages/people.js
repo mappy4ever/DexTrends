@@ -211,7 +211,7 @@ export default function PersonInspectorPage() {
             startMonth: getYearMonthString(finalInitialStartDate),
             endMonth: getYearMonthString(finalInitialEndDate),
             person: queryParams.get('personId') || savedPageFilters.person || null,
-            person_label: queryParams.get('person_label') || savedPageFilters.person_label || '',
+            person_label: queryParams.get('personName') || savedPageFilters.person_label || '',
         };
 
         setStartDate(finalInitialStartDate);
@@ -241,16 +241,23 @@ export default function PersonInspectorPage() {
         }
     }, []);
 
-    const handleFilterChange = useCallback((filterKey, value) => {
-        if (filterKey === 'person') {
-            setSelectedFilters(prev => ({ ...prev, person: value, person_label: value === null ? '' : prev.person_label }));
-        } else if (filterKey === 'person_label') {
-             setSelectedFilters(prev => ({ ...prev, person_label: value }));
-        }
-        else {
-            setSelectedFilters(prev => ({ ...prev, [filterKey]: value }));
-        }
-    }, []);
+	const handleFilterChange = useCallback((filterKey, value) => {
+	    if (filterKey === 'person') {
+	        if (value && typeof value === 'object' && value.hasOwnProperty('value')) {
+	            // Value is the selected option object { value: id, label: name }
+	            setSelectedFilters(prev => ({ ...prev, person: value.value, person_label: value.label }));
+	        } else if (value === null) {
+	            // Person filter was cleared
+	            setSelectedFilters(prev => ({ ...prev, person: null, person_label: '' }));
+	        }
+	        // If creatable were true, you might handle 'value' being a string here too
+	    } else if (filterKey === 'person_label') { 
+	        // This case might not be strictly necessary if 'person' handles label correctly
+	        setSelectedFilters(prev => ({ ...prev, person_label: value }));
+	    } else {
+	        setSelectedFilters(prev => ({ ...prev, [filterKey]: value }));
+	    }
+	}, []);
 
     const loadPersonOptions = useCallback(debounce(async (inputValue, callback) => {
         if (!inputValue || inputValue.length < 2) { callback([]); return; }
