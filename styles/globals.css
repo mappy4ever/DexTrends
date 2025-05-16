@@ -9,7 +9,7 @@
 */
 :root {
   /* Core Palette Values (RGB for opacity control if needed, or hex directly) */
-  --color-primary-default-val: 0 95 115; /* #005f73 */
+  --color-primary-default-val: 0 95 115; /* #005f73 216 6 33 0 95 115*/
   --color-primary-darker-val: 0 76 92;  /* #004c5c (Derived from #005f73) */
   --color-secondary-default-val: 233 196 106; /* #e9c46a */
   --color-secondary-darker-val: 212 172 93; /* #d4ac5d (Derived from #e9c46a) */
@@ -211,7 +211,7 @@ html {
   }
 
   .section-spacing-y-default {
-    @apply py-8 md:py-12;
+    @apply py-4 md:py-12;
   }
 }
 

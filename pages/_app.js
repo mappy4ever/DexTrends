@@ -3,9 +3,9 @@ import { useEffect } from "react";
 import "../styles/globals.css";
 import "react-datepicker/dist/react-datepicker.css";
 import '../styles/CustomMapStyles.css'; // Your custom styles
-import Layout from "../components/Layout";
-import ThemeProvider from "../components/ThemeProvider"; // Assuming this component exists and is correctly set up
-import ErrorBoundary from "../components/ErrorBoundary";
+import Layout from "../components/layout/Layout";
+import ThemeProvider from "../components/layout/ThemeProvider"; // Assuming this component exists and is correctly set up
+import ErrorBoundary from "../components/layout/ErrorBoundary";
 
 // Simple throttle function
 const throttle = (func, limit) => {

@@ -53,7 +53,7 @@ export default async function handler(req, res) {
       ? supabase
           .from('org_title_dim') // Your org table
           .select('*') // Select relevant fields like org_name, director_name
-          .eq('org_title_id', parsedOrgId) // Ensure this is the correct ID column in org_title_dim
+          .eq('owner_org_title_id', parsedOrgId) // Ensure this is the correct ID column in org_title_dim
           .maybeSingle()
       : Promise.resolve({ data: null, error: null });
 

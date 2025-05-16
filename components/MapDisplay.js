@@ -52,7 +52,7 @@ const createFontAwesomeMarkerIcon = (iconData = {}) => {
 const defaultFAMarkerIcon = createFontAwesomeMarkerIcon({ size: "2x" }); // You can change default size/color here
 
 // --- Helper Component to Fit Bounds (remains the same) ---
-const FitBounds = ({ markers, map, padding = [50, 50], maxZoom = 16 }) => {
+const FitBounds = ({ markers, map, padding = [50, 50], maxZoom = 12 }) => {
     useEffect(() => {
         if (map && markers && markers.length > 0) {
             const validMarkers = markers.filter(m => m.position && L.Util.isArray(m.position) && m.position.length === 2);
@@ -138,8 +138,8 @@ const MapDisplay = ({ mapMarkers, isLoading = false, initialCenter, initialZoom 
         window.__LEAFLET_ICON_FIX_APPLIED__ = true;
     }, []);
 
-    const defaultCenter = initialCenter || [43.6532, -79.3832]; // Toronto, ON, Canada
-    const defaultZoom = initialZoom || 10;
+    const defaultCenter = initialCenter || [49.6532, -95.3832];
+    const defaultZoom = initialZoom || 3;
 
     const handleMarkerClick = (markerData) => {
         if (mapInstance && markerData.position) {
@@ -170,10 +170,9 @@ const MapDisplay = ({ mapMarkers, isLoading = false, initialCenter, initialZoom 
                 zoom={defaultZoom}
                 style={{ height: '100%', width: '100%', zIndex: 1 }}
                 scrollWheelZoom={true}
-                // For smoother scroll wheel zoom, you can experiment with these:
-                // wheelDebounceTime={60} // Default 40
-                // wheelPxPerZoomLevel={70} // Default 60
-                // zoomAnimation={true} // Default true
+                wheelDebounceTime={60} // Default 40
+                wheelPxPerZoomLevel={70} // Default 60
+                zoomAnimation={true} // Default true
                 whenCreated={setMapInstance}
                 zoomControl={false}
             >
@@ -210,7 +209,7 @@ const MapDisplay = ({ mapMarkers, isLoading = false, initialCenter, initialZoom 
                                         icon={iconToUse} // Use the Font Awesome icon
                                         eventHandlers={{ click: () => handleMarkerClick(marker) }}
                                     >
-                                        <Popup minWidth={280} maxWidth={450}>
+                                        <Popup minWidth={280} maxWidth={450} maxHeight={450}>
                                             {renderPopupContent(marker)}
                                         </Popup>
                                         {marker.tooltipContent && <Tooltip>{marker.tooltipContent}</Tooltip>}

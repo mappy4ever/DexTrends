@@ -16,10 +16,10 @@ export default function FAQ() {
   return (
     <section className="mt-12"> {/* Removed max-w-7xl and mx-auto, should be handled by page layout */}
       {/* The h2 below will be targeted by the global parallax effect script in _app.js */}
-      <h2 className="text-page-heading parallax-heading text-center md:text-left mb-10">
+      <h2 className="text-page-heading text-center md:text-left mb-10">
         Frequently Asked Questions
       </h2>
-      <div className="max-w-3xl mx-auto space-y-4"> {/* Centered content for FAQ items */}
+      <div className="max-w-5xl mx-auto space-y-4"> {/* Centered content for FAQ items */}
         {faqData.map((faq, index) => (
           <div
             key={index}

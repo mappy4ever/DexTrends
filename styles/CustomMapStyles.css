@@ -1,69 +1,146 @@
+/* --- General Body/Root (Ensure these are sensible for your app) --- */
 body {
     height: 100vh;
     margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; /* Modern system font stack */
 }
-#root, .App {
+#root, .App { /* If you use these IDs/classes for your main app container */
     height: 100%;
 }
 
+/* --- Leaflet Popup General Styling --- */
+.leaflet-popup-content-wrapper {
+    background-color: #fff; /* Ensure popup has a background */
+    border-radius: 10px;   /* Slightly more rounded */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2); /* Softer, more modern shadow */
+    /* Remove any fixed width/height here; let content and max-* properties dictate size */
+}
+
+.leaflet-popup-content {
+    margin: 0 !important; /* Reset Leaflet's default margin. We'll use padding on an inner div. */
+    padding: 0;          /* Reset padding for the same reason. */
+    width: auto;         /* Allow content to determine width up to max-width. */
+    
+    /* CSS constraints to ensure popup is not bigger than the window and enables scrolling.
+      These are secondary to Leaflet's JS options (maxWidth, maxHeight) but provide good fallbacks.
+    */
+    max-width: calc(100vw - 25px);  /* Max width: 100% of viewport width minus 20px margin on each side */
+    max-height: calc(100vh - 60px); /* Max height: 100% of viewport height minus space for map controls/tip */
+    overflow-y: auto;               /* Enable VERTICAL scroll if content overflows */
+    overflow-x: hidden;             /* Typically, horizontal scroll is not desired for popups; content should wrap. */
+    box-sizing: border-box;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+/* Apply this class to the outermost div of your HTML string used for popup content.
+  e.g., marker.bindPopup('<div class="custom-map-popup-content">...</div>', options);
+*/
+.custom-map-popup-content {
+    padding: 12px 12px; /* Inner padding for your content */
+    font-family: inherit; /* Inherit from body/app's base font */
+    line-height: 1.5;
+    color: #333333; /* Default text color */
+}
+
+.custom-map-popup-content .text-base.text-text-heading { /* Targeting your specific strong tag */
+    display: block; /* Ensure it takes full width for margin */
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-size: 1.1rem; /* Adjust if Tailwind's text-base is different */
+    font-weight: 600;  /* Corresponds to font-semibold */
+    color: #1a202c;    /* Example: Darker heading color */
+}
+
+.custom-map-popup-content .text-sm { /* Targeting your descriptive spans */
+    display: block; /* To allow margin-bottom */
+    margin-bottom: 3px;
+    font-size: 0.875rem; /* Tailwind's text-sm */
+}
+.custom-map-popup-content .text-sm.text-foreground-muted {
+    color: #718096; /* Example muted color */
+}
+.custom-map-popup-content .text-sm.text-foreground {
+    color: #2d3748; /* Example foreground color */
+    font-weight: 500; /* Example: medium weight for values */
+}
+
+.custom-map-popup-content hr.my-1.border-border { /* Targeting your <hr> */
+    margin-top: 0.5rem; /* my-1 (assuming 1 unit = 0.25rem) */
+    margin-bottom: 0.5rem; /* my-1 */
+    border: 0;
+    border-top: 1px solid #e2e8f0; /* Example border color */
+}
+
+.custom-map-popup-content small.text-xs.text-foreground-muted { /* Targeting your <small> tags */
+    display: block; /* To allow margin-bottom */
+    margin-bottom: 5px;
+    font-size: 0.75rem; /* Tailwind's text-xs */
+    color: #a0aec0;    /* Example more muted color for small text */
+    word-break: break-word; /* Important for long lists of departments/people */
+    line-height: .75;
+}
+
+
+/* --- Leaflet Popup Close Button (X) --- */
+.leaflet-popup-close-button {
+    position: absolute;
+    top: 20px;   /* Adjust for better placement with new padding */
+    right: 20px;  /* Adjust for better placement */
+    width: 30px;
+    height: 30px;
+    background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent background */
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%; /* Circular button */
+    color: #555;        /* Color of the '×' symbol */
+    font-size: 22px;     /* Size of the '×' symbol */
+    font-weight: normal; /* Lighter than bold for a modern feel */
+    text-decoration: none;
+    text-align: center;
+    line-height: 28px;   /* Adjust to vertically center '×' in the 30x30 box */
+    cursor: pointer;
+    z-index: 20;         /* Ensure it's above other popup content */
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.1s ease-in-out;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.leaflet-popup-close-button:hover {
+    background-color: rgba(240, 240, 240, 0.9);
+    color: #000;
+    transform: scale(1.1);
+}
+
+.leaflet-popup-close-button:focus,
+.leaflet-popup-close-button:active {
+    outline: none; /* Remove focus outline for cleaner look */
+    background-color: rgba(220, 220, 220, 0.95); /* Slightly different active state */
+}
+
+/* --- Styles from your original file (consolidated and checked) --- */
+/* Map Loading/No Data Placeholders */
 .map-loading-placeholder, .map-no-markers-overlay {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100%;
     width: 100%;
-    background-color: #f0f0f0;
-    color: #555;
-    font-size: 1.2em;
+    background-color: #f8f9fa; /* Lighter, neutral background */
+    color: #6c757d;     /* Muted text color */
+    font-size: 1.1em;
     text-align: center;
 }
 .map-no-markers-overlay {
     position: absolute;
     top: 0;
     left: 0;
-    background-color: rgba(255, 255, 255, 0.85);
-    z-index: 1000;
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly more opaque overlay */
+    z-index: 1000; /* Below popups/UI elements, above map tiles */
 }
 
-
-// Custom Popup Styling
-.leaflet-popup-content-wrapper {
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-.leaflet-popup-content {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    margin: 15px !important;
-}
-.leaflet-popup-content h3 {
-    margin-top: 0;
-    font-size: 1.1em;
-    color: #333;
-}
-.leaflet-popup-content p {
-    margin-bottom: 0.5em;
-}
-.popup-details-link {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 6px 12px;
-    background-color: #007bff;
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
-    font-size: 0.9em;
-}
-.popup-details-link:hover {
-    background-color: #0056b3;
-}
-
-
-// Custom Marker Cluster Styling
+/* Custom Marker Cluster Styling */
 .custom-marker-cluster {
     background-clip: padding-box;
     border-radius: 50%;
-    transition: background-color 0.2s ease-out;
+    transition: background-color 0.2s ease-out, transform 0.2s ease-out;
 }
 .custom-marker-cluster div {
     width: 30px;
@@ -86,44 +163,11 @@ body {
     transform: scale(1.1);
 }
 
-/* Style for the L.DivIcon container that holds the Font Awesome icon */
+/* DivIcon container for Font Awesome icons */
 .map-fa-icon-marker-container {
-    background-color: transparent !important; /* Remove default divIcon background */
-    border: none !important; /* Remove default divIcon border */
-    display: flex; /* Helps with alignment if needed */
+    background-color: transparent !important;
+    border: none !important;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
-
-/* You can add styles for the FontAwesomeIcon itself if you used a className prop on it,
-   e.g., if you passed className: 'my-fa-marker' to createFontAwesomeMarkerIcon
-.my-fa-marker {
-    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3)); // Example shadow
-}
-*/
-
-
-/* --- Popup Content (from previous suggestion, ensure it's here) --- */
-.custom-popup-content .popup-section {
-    margin-top: 12px;
-    padding-top: 10px;
-    border-top: 1px solid #eee;
-}
-.custom-popup-content .popup-section:first-child { margin-top: 0; padding-top: 0; border-top: none; }
-.custom-popup-content h4 { font-size: 1em; color: #555; margin-bottom: 6px; font-weight: 600; }
-.custom-popup-content .popup-list { list-style: disc; margin-left: 20px; padding-left: 0; font-size: 0.9em; color: #333; }
-.custom-popup-content .popup-list li { margin-bottom: 4px; }
-.custom-popup-content .popup-long-text-list li { word-break: break-word; line-height: 1.5; }
-.popup-details-link { display: inline-block; margin-top: 10px; padding: 6px 12px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; font-size: 0.9em; }
-.popup-details-link:hover { background-color: #0056b3; }
-
-/* --- Marker Cluster Styling (ensure it's here) --- */
-.custom-marker-cluster { background-clip: padding-box; border-radius: 50%; transition: background-color 0.2s ease-out; }
-.custom-marker-cluster div { width: 30px; height: 30px; margin-left: 5px; margin-top: 5px; text-align: center; border-radius: 50%; font-size: 12px; font-weight: bold; color: white; display: flex; align-items: center; justify-content: center; }
-.custom-marker-cluster.custom-marker-cluster-small { background-color: rgba(110, 204, 57, 0.9); }
-.custom-marker-cluster.custom-marker-cluster-medium { background-color: rgba(240, 194, 12, 0.9); }
-.custom-marker-cluster.custom-marker-cluster-large { background-color: rgba(253, 156, 115, 0.9); }
-
-/* --- Loading Placeholders (ensure it's here) --- */
-.map-loading-placeholder, .map-no-markers-overlay { display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; background-color: #f0f0f0; color: #555; font-size: 1.2em; text-align: center; }
-.map-no-markers-overlay { position: absolute; top: 0; left: 0; background-color: rgba(255, 255, 255, 0.85); z-index: 1000; }

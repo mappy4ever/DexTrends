@@ -1,58 +1,38 @@
 [
   {
-    "question": "What is the purpose of this website?",
-    "answer": "This website provides an interactive platform to explore and analyze Canadian federal government travel expenses. It aims to make public data more accessible and understandable, showing how funds are allocated for travel across departments, by officials, and over different time periods."
+    "question": "What is OnOurDime?",
+    "answer": "OnOurDime is an interactive platform designed to make Canadian federal government expenses data more accessible, understandable, and engaging. Our goal is to visualize publicly available information to help citizens, researchers, and journalists explore how public funds are utilized."
   },
   {
-    "question": "Where does the data come from?",
-    "answer": "The data is sourced directly from the Government of Canada's official Open Data Portal, specifically the 'Proactive Disclosure of Travel Expenses' dataset. You can find the source dataset at https://open.canada.ca/data/en/dataset/009f9a49-c2d9-4d29-a6d4-1a228da335ce."
+    "question": "Why was this site created?",
+    "answer": "This site was started to provide an easy-to-use tool for exploring government expenses that are often found in complex spreadsheets buried on obscure government websites. Our goal is to promote public interest in government spending and foster a better understanding of how taxpayer money is invested on behalf of citizens."
   },
   {
-    "question": "How up-to-date is the data?",
-    "answer": "The data is updated based on the release schedule of the official Government of Canada dataset. The 'About' page usually indicates the 'data current as of' date. There might be a natural reporting lag between when expenses are incurred and when they are published."
+    "question": "Is this site meant to criticize government spending?",
+    "answer": "No, the primary aim of OnOurDime is not to criticize but to provide transparency and foster understanding. We believe that when citizens can easily access and explore this data, they can form their own informed opinions and knowledgably engage in public discourse. It's about empowering the public with information for civic engagement and government accountability."
   },
   {
-    "question": "What kind of information can I find on the Dashboard?",
-    "answer": "The Dashboard provides a high-level overview, including Key Performance Indicators (KPIs) like total spending and average trip cost. It also shows spending trends over time, breakdowns by travel purpose, top spending departments, and top spending officials (e.g., Ministers) within the selected date range."
+    "question": "Where does the expense data come from?",
+    "answer": "All data is sourced from the Government of Canada's official Open Data Portal. This is public information provided by the government itself."
   },
   {
-    "question": "How do I see spending for a specific department or by traveler title?",
-    "answer": "Navigate to the 'Orgs' (Organization Trends) page. Here, you can use the filters to select specific departments and traveler titles to see their spending trends and breakdowns over the chosen date range."
+    "question": "How is the data cleaned or processed?",
+    "answer": "To improve consistency for analysis and visualization, the raw data undergoes some automated processing. This includes standardizing text for department names, traveler titles, and names (e.g., consistent casing, trimming whitespace). Destination information is parsed to identify cities and countries for mapping, though this can have limitations due to variations or errors in the original free-text entries."
   },
   {
-    "question": "Can I see the travel expenses for a particular individual?",
-    "answer": "Yes, the 'People' (Person Inspector) page allows you to search for and select specific individuals. Once selected, you can view their detailed travel expenses, trip history, and spending patterns for the filtered period."
+    "question": "What are the limitations of the destination data?",
+    "answer": "Destination data is often entered as free text in the source files, which can lead to spelling variations, different formatting, or incomplete information. While we attempt to parse these into standardized locations for mapping, not all entries can be geocoded with perfect accuracy. In cases of ambiguity or unparseable entries, they may not appear on the map or might be grouped under a broader region or country. The original destination text is retained in the source data for transparency."
   },
   {
-    "question": "What does the Map Explorer show?",
-    "answer": "The 'Map' page visualizes the destinations of government travel. It helps you see where travel is concentrated geographically within the selected date range."
+    "question": "How should I interpret these expenses?",
+    "answer": "It's important to consider context. Government travel is often necessary for officials and public servants to perform their duties. Factors like an individual's role, a department's mandate, the purpose of the travel (e.g., international G7 meeting vs. domestic site visit), and the location all influence costs. This tool provides the data; forming conclusions requires considering these contextual factors."
   },
   {
-    "question": "How do the filters work?",
-    "answer": "At the top of most pages, you'll find a filter bar. You can select a 'Start Date' and 'End Date' (year and month) to define the period for which you want to see data. Other relevant filters like 'Organization', 'Title', or 'Person' will be available depending on the page. Your filter selections are generally remembered as you navigate the site."
+    "question": "Why might the data for a recent month be incomplete?",
+    "answer": "Government departments have a reporting cycle for disclosing expenses. It's common for there to be a delay between the end of a reporting period and when the full data appears in the public dataset."
   },
   {
-    "question": "Are there any limitations to the data?",
-    "answer": "Yes, some limitations include: the accuracy and completeness depend on the source data; there can be reporting delays; the level of detail in expense descriptions might vary; and it's important to consider the context (e.g., traveler's role, purpose of travel) when interpreting the figures. More details are available on the 'About' page."
-  },
-  {
-    "question": "Is this website an official Government of Canada site?",
-    "answer": "No, this is an independent project created to visualize publicly available data and is not officially affiliated with the Government of Canada."
-  },
-  {
-    "question": "How are 'Top Spending Departments' and 'Top Spending Ministers' calculated on the Dashboard?",
-    "answer": "These lists are generated by aggregating the total travel expenses attributed to each department or individual official (specifically names that appear in roles like 'Minister') within the currently selected date range on the Dashboard. They represent the highest cumulative spenders for that period."
-  },
-  {
-    "question": "Why might the data for a very recent month be incomplete?",
-    "answer": "Government departments have a reporting cycle for disclosing expenses. It's common for there to be a delay of one to three months (or sometimes more) between the end of a travel period and when the full data for that period appears in the public dataset. Always check the 'data current as of' information if available."
-  },
-  {
-    "question": "What do the different expense categories (Airfare, Lodging, Meals, etc.) mean?",
-    "answer": "These categories are generally defined by the Government's travel directives. 'Airfare' covers flights, 'Lodging' is for accommodation, 'Meals' covers meal allowances, 'Other Transport' can include things like taxis, rail, or rental cars, and 'Other Expenses' might cover miscellaneous costs like conference fees or incidentals. The specifics are based on the source dataset's classifications."
-  },
-  {
-    "question": "Can I download the data from this website?",
-    "answer": "This website primarily focuses on visualizing the data. To download the raw dataset, it's recommended to visit the official Government of Canada Open Data Portal page for the 'Proactive Disclosure of Travel Expenses' (link available on our 'About' page)."
+    "question": "Is OnOurDime an official government website?",
+    "answer": "No, this is an independent project and is not affiliated with or endorsed by the Government of Canada."
   }
 ]

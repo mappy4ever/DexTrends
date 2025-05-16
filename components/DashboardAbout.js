@@ -1,114 +1,114 @@
 // components/DashboardAbout.js
-import { VscGlobe, VscServerProcess, VscBeaker, VscWarning } from "react-icons/vsc"; // VscGithubInverted, VscLinkExternal removed as unused
-import { FaCanadianMapleLeaf } from "react-icons/fa";
-// Link from next/link is not used directly in this component, assuming it's for the parent page or other links.
+import { VscGlobe, VscServerProcess, VscBeaker, VscWarning, VscLaw, VscCommentDiscussion } from "react-icons/vsc";
+import { FaCanadianMapleLeaf, FaBalanceScale } from "react-icons/fa";
 
-export default function DashboardAbout() { // Renamed from AboutPage to DashboardAbout for clarity as a component
+
+export default function DashboardAbout() { 
   const dataSetUrl = "https://open.canada.ca/data/en/dataset/009f9a49-c2d9-4d29-a6d4-1a228da335ce";
 
   return (
-    // Removed max-w-4xl, mx-auto, py-8 etc. as these should be on the page layout (about.js)
-    // text-slate-700 dark:text-slate-300 removed, will rely on body text color (text-foreground)
     <div>
       <header className="mb-10 text-center">
         <div className="inline-flex items-center justify-center gap-x-3 mb-4">
           <FaCanadianMapleLeaf size={50} className="text-red-600 dark:text-red-500" />
-          <h1 className="text-page-heading !mb-0"> {/* Use .text-page-heading, remove its margin for this context */}
-            About This Dashboard
+          <h1 className="text-page-heading !mb-0">
+            About The Project
           </h1>
         </div>
         <p className="mt-2 text-lg md:text-xl text-foreground-muted">
-          Understanding Canadian Federal Government Travel Expenses.
+          An Open Look at Canadian Federal Government Travel Expenses.
         </p>
       </header>
 
-      <section className="card card-padding-default mb-12"> {/* Use .card and .card-padding-default */}
-        <h2 className="flex items-center gap-x-3 text-section-heading mb-4"> {/* Use .text-section-heading */}
-          <VscGlobe size={30} className="text-primary" /> Data Source & Purpose
+      <section className="card card-padding-default mb-8">
+        <h2 className="flex items-center gap-x-3 text-section-heading mb-4">
+          <FaBalanceScale size={28} className="text-primary dark:text-primary-dark" /> Our Mission
         </h2>
-        <div className="space-y-3 text-content-default"> {/* Use .text-content-default for paragraphs */}
+        <div className="space-y-3 text-content-default dark:text-slate-300">
           <p>
-            This interactive dashboard visualizes travel expenses incurred by the Government of Canada. The data is sourced directly from the official{" "}
-            <a
-              href={dataSetUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-link" // Use .btn-link for styled links
-            >
+            OnOurDime was created to provide an accessible and user-friendly tool for exploring Canadian federal government travel expenses. Often, this type of data is published in spreadsheets or on less accessible government websites. Our aim is to transform this public data into clear, interactive visualizations.
+          </p>
+          <p>
+            We believe that government investments, made with taxpayer money on behalf of citizens, should be understandable and accessible. By presenting this travel expense data clearly, we hope to promote greater public interest in government spending and contribute to a more informed civic discourse on accountability. This platform is intended as a resource for citizens, journalists, and researchers alike.
+          </p>
+        </div>
+      </section>
+	  
+      <section className="card card-padding-default mb-8">
+        <h2 className="flex items-center gap-x-3 text-section-heading mb-4">
+          <VscGlobe size={30} className="text-primary" /> Data Source
+        </h2>
+        <div className="space-y-3 text-content-default dark:text-slate-300">
+          <p>
+            All visualizations on this platform are based on data from the official{" "}
+            <a href={dataSetUrl} target="_blank" rel="noopener noreferrer" className="btn-link">
               Proactive Disclosure of Travel Expenses dataset
             </a>
-            {" "}on the Government of Canada's Open Data Portal.
+            {" "}published by the Government of Canada on its Open Data Portal. This is publicly available information.
           </p>
           <p>
-            The primary purpose of this tool is to provide a transparent and accessible way for the public, researchers, and journalists to explore how public funds are allocated for travel across various federal departments, by different officials, and over time. By presenting this data in an interactive format, we aim to foster greater understanding and accountability.
+            The data typically includes details on the traveler, department, purpose of travel, destination, dates, and costs broken down by categories like airfare, accommodation, meals, and other expenses.
           </p>
-          <p>
-            The data typically includes details such as the purpose of travel, mode of transport, accommodation costs, meal allowances, and other associated expenses. This dashboard aggregates and visualizes this information to reveal trends, patterns, and significant expenditures.
+           <p className="mt-3 text-sm">
+            Last checked for updates: <span className="font-semibold">May 13, 2025</span>.
+            Data itself reflects the period covered by the government's publications.
           </p>
         </div>
       </section>
 
-      <section className="card card-padding-default mb-12">
+      <section className="card card-padding-default mb-8">
         <h2 className="flex items-center gap-x-3 text-section-heading mb-4">
-          <VscServerProcess size={30} className="text-primary" /> Data Processing & Presentation
+          <VscServerProcess size={30} className="text-primary" /> Data Processing & Cleaning
         </h2>
-        <div className="space-y-3 text-content-default">
+        <div className="space-y-3 text-content-default dark:text-slate-300">
           <p>
-            The raw data from the Open Data Portal undergoes processing to ensure consistency, handle variations in naming, and structure it for effective visualization. This includes:
+            To enhance usability and consistency for analysis, the raw data undergoes some automated processing:
           </p>
           <ul className="list-disc list-inside space-y-1 pl-4">
-            <li>Cleaning and standardizing department names, traveler titles, and travel purposes.</li>
-            <li>Geocoding destination data for map visualizations (where possible).</li>
-            <li>Aggregating monthly totals and creating summaries for key performance indicators (KPIs).</li>
+            <li><strong>Text Normalization:</strong> Fields like department names, traveler titles, and names are standardized (e.g., trimming whitespace, consistent casing) to improve aggregation and filtering. For example, "Minister of X" and "MINISTER OF X" would be treated as the same title.</li>
+            <li><strong>Name Cleaning:</strong> Traveler names are processed to improve consistency. This may involve removing honorifics for grouping or attempting to standardize formats. The original disclosed name is always the ultimate reference.</li>
+            <li><strong>Destination Parsing:</strong> Destination information, often provided as free text (e.g., "Paris, France" or "Paris (France)"), is parsed to identify cities and countries for geographical mapping.
+                <ul className="list-disc list-inside text-sm space-y-1 pl-5 mt-1 mb-2">
+                    <li>Due to variations and potential spelling errors in the source data, not all destinations can be parsed with 100% accuracy.</li>
+                    <li>When a destination cannot be reliably geocoded, it will not appear on the map. The original destination text from the source data is retained and can be seen in detailed views where applicable for full transparency.</li>
+                </ul>
+            </li>
           </ul>
-          <p>
-            Visualizations are created using ECharts and Leaflet maps to provide various perspectives on the data, from high-level dashboard summaries to detailed breakdowns by organization and individual. Data is typically updated based on the release schedule of the official dataset.
-          </p>
-          <p className="mt-3">
-            Data is current as of: <span className="font-semibold text-text-heading">May 2024</span>. {/* Maintain dynamic/manual update value */}
-          </p>
+          <p>Our processing aims to make the data more explorable while striving to maintain the integrity of the original information.</p>
         </div>
       </section>
 
-      <section className="card card-padding-default mb-12">
+      <section className="card card-padding-default mb-8">
         <h2 className="flex items-center gap-x-3 text-section-heading mb-4">
-          <VscBeaker size={30} className="text-primary" /> How to Interpret the Data
+          <VscBeaker size={30} className="text-primary" /> Interpreting the Information
         </h2>
         <div className="space-y-3 text-content-default">
-          <p>
-            When exploring the dashboard, consider the following:
-          </p>
+          <p>This dashboard is a tool for exploration. When viewing the data, remember:</p>
           <ul className="list-disc list-inside space-y-1 pl-4">
-            <li><strong>Trends Over Time:</strong> Look for patterns in spending across different months or years. Seasonal variations or significant events might influence these trends.</li>
-            <li><strong>Departmental Spending:</strong> Compare spending across different government organizations. Note that department size and mandate heavily influence travel needs.</li>
-            <li><strong>Individual Expenses:</strong> The "People" section allows for viewing expenses by specific individuals (e.g., Ministers). Context, such as the individual's role and responsibilities, is important.</li>
-            <li><strong>Purpose of Travel:</strong> The data usually specifies the purpose of travel (e.g., meetings, conferences, international delegations), which helps understand the necessity of the expenditure.</li>
-            <li><strong>Geographical Data:</strong> The map visualization shows travel destinations, offering insights into where travel is concentrated.</li>
+            <li>Travel is a necessary function of government. Expenses should be viewed in the context of a department's mandate or an official's responsibilities.</li>
+            <li>Use the provided filters (dates, departments, etc.) to focus your analysis.</li>
+            <li>Compare trends over time rather than isolated figures where possible.</li>
           </ul>
-          <p>
-            Use the filters at the top of each page (Date Range, Organization, Title, Person) to narrow down the data and focus on specific areas of interest.
-          </p>
+          <p>For more questions, please see our FAQ below.</p>
         </div>
       </section>
 
-      <section className="card card-padding-default"> {/* Removed mb-12 for the last section */}
+      <section className="card card-padding-default">
         <h2 className="flex items-center gap-x-3 text-section-heading mb-4">
-          <VscWarning size={30} className="text-primary" /> Limitations & Considerations
+          <VscWarning size={30} className="text-primary" /> Data Limitations
         </h2>
         <div className="space-y-3 text-content-default">
           <p>
-            While this tool aims for accuracy and transparency, users should be aware of potential limitations:
+            While we strive for accuracy, the visualizations reflect the data as published by the Government of Canada. Users should be aware of:
           </p>
           <ul className="list-disc list-inside space-y-1 pl-4">
-            <li><strong>Data Accuracy:</strong> The visualizations are based on the data provided by the Government of Canada. Any inaccuracies or omissions in the source data will be reflected here.</li>
-            <li><strong>Reporting Lags:</strong> There might be a delay between when expenses are incurred and when they are reported and published in the open data portal.</li>
-            <li><strong>Data Granularity:</strong> The level of detail can vary. Some entries might have more comprehensive information than others.</li>
-            <li><strong>Context is Key:</strong> Travel expenses should always be considered within the context of the traveler's role, the purpose of the travel, and the operational needs of the department. This dashboard provides the data; interpreting its significance requires understanding this broader context.</li>
-            <li><strong>Amendments:</strong> The source data may be amended over time. This dashboard reflects the data as fetched at the time of its last update.</li>
+            <li><strong>Source Data Accuracy:</strong> Any errors or omissions in the original dataset will be reflected here.</li>
+            <li><strong>Reporting Timeliness:</strong> There can be a lag between when travel occurs and when it's publicly disclosed.</li>
+            <li><strong>Data Granularity & Amendments:</strong> The level of detail can vary, and the source data may be amended over time. This dashboard is updated periodically from the source.</li>
             <li><strong>Currency:</strong> All monetary values are in Canadian Dollars (CAD).</li>
           </ul>
           <p>
-            This dashboard is an independent project and is not officially affiliated with the Government of Canada.
+            OnOurDime is an independent project and is not affiliated with or endorsed by the Government of Canada.
           </p>
         </div>
       </section>

@@ -2,10 +2,10 @@ import { useTheme } from "next-themes";
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { RxDashboard } from "react-icons/rx"; // RxTable was unused, removed
+import CustomSiteLogo from '../components/icons/CustomSiteLogo';
+import { RxDashboard } from "react-icons/rx"; 
 import { AiOutlineBulb } from "react-icons/ai";
 import { BsSun, BsMoon, BsGlobeEuropeAfrica, BsPersonBoundingBox } from "react-icons/bs";
-// MdCompare, MdPersonSearch, IoStatsChart, IoMap were unused and have been removed
 import { RiGovernmentFill } from "react-icons/ri";
 import { TbLayoutSidebarLeftCollapse, TbLayoutSidebarLeftExpand } from "react-icons/tb";
 import { VscQuestion, VscClose, VscMenu } from "react-icons/vsc";
@@ -170,7 +170,7 @@ export default function Navbar({ isCollapsed, setIsCollapsed }) {
       >
         <div className={`flex items-center h-16 px-4 border-b border-border flex-shrink-0 ${!showText && "justify-center"}`}>
           <Link href="/" className="flex items-center gap-x-2 text-xl font-bold text-foreground overflow-hidden">
-            <RiGovernmentFill size={26} className="flex-shrink-0 text-primary" />
+            <RiGovernmentFill size={24} className="flex-shrink-0 text-primary" />
             {showText && <span className="truncate">OnOurDime</span>}
           </Link>
         </div>

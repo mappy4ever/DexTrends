@@ -1,7 +1,7 @@
 // components/Layout.js
 import { useState } from "react";
-import Navbar from "./Navbar"; // Assuming Navbar component exists
-import Footer from "./Footer"; // Assuming Footer component exists
+import Navbar from "../Navbar"; // Assuming Navbar component exists
+import Footer from "../Footer"; // Assuming Footer component exists
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from "@vercel/speed-insights/next";
 

@@ -1,7 +1,6 @@
 // pages/about.js
 import DashboardAbout from "../components/DashboardAbout";
 import FAQ from "../components/FAQ";
-import Layout from "../components/Layout"; // Assuming Layout provides overall page structure
 
 export default function AboutPage() { // Renamed component function for clarity
   return (
