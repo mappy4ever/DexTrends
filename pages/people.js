@@ -216,8 +216,8 @@ export default function PersonInspectorPage() {
                 />
               </div>
               <div className="lg:w-2/3 xl:w-3/4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-                <KPICard title={<div className="flex items-center gap-1.5"><span>Total Spending</span><Tooltip text={TOOLTIP_TEXTS.TOTAL_SPENDING_KPI}><VscInfo className="text-muted-foreground cursor-help hover:text-primary"/></Tooltip></div>} value={personKPIs.totalSpent} isLoading={pageIsLoading && !personData} />
-                <KPICard title={<div className="flex items-center gap-1.5"><span>Average Trip Cost</span><Tooltip text={TOOLTIP_TEXTS.AVG_TRIP_COST_KPI}><VscInfo className="text-muted-foreground cursor-help hover:text-primary"/></Tooltip></div>} value={personKPIs.avgTripCost} isLoading={pageIsLoading && !personData} />
+                <KPICard title={<div className="flex items-center gap-1.5"><span>Total Spending</span><Tooltip text={TOOLTIP_TEXTS.TOTAL_SPENDING_KPI}><VscInfo className="text-muted-foreground cursor-help hover:text-primary"/></Tooltip></div>} value={formatCurrency(personKPIs.totalSpent)} isLoading={pageIsLoading && !personData} />
+                <KPICard title={<div className="flex items-center gap-1.5"><span>Average Trip Cost</span><Tooltip text={TOOLTIP_TEXTS.AVG_TRIP_COST_KPI}><VscInfo className="text-muted-foreground cursor-help hover:text-primary"/></Tooltip></div>} value={formatCurrency(personKPIs.avgTripCost)} isLoading={pageIsLoading && !personData} />
                 <KPICard title={<div className="flex items-center gap-1.5"><span>Total Trips</span><Tooltip text={TOOLTIP_TEXTS.TOTAL_TRIPS_KPI}><VscInfo className="text-muted-foreground cursor-help hover:text-primary"/></Tooltip></div>} value={personKPIs.tripCount.toLocaleString()} isLoading={pageIsLoading && !personData} />
               </div>
             </div>

@@ -139,7 +139,7 @@ const MapDisplay = ({ mapMarkers, isLoading = false, initialCenter, initialZoom 
     }, []);
 
     const defaultCenter = initialCenter || [49.6532, -95.3832];
-    const defaultZoom = initialZoom || 3;
+    const defaultZoom = initialZoom || 4;
 
     const handleMarkerClick = (markerData) => {
         if (mapInstance && markerData.position) {

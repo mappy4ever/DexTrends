@@ -221,8 +221,8 @@ export default function DashboardPage() {
       {!pageIsLoading && !error && data && (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-4 md:mb-6">
-            <KPICard title={<div className="flex items-center gap-1.5"><span>Total Spending</span><Tooltip text={TOOLTIP_TEXTS.TOTAL_SPENDING_KPI}><VscInfo className="text-muted-foreground cursor-help hover:text-primary"/></Tooltip></div>} value={data.kpiData?.totalSpending} isLoading={swrIsLoading && !data} />
-            <KPICard title={<div className="flex items-center gap-1.5"><span>Average Trip Cost</span><Tooltip text={TOOLTIP_TEXTS.AVG_TRIP_COST_KPI}><VscInfo className="text-muted-foreground cursor-help hover:text-primary"/></Tooltip></div>} value={data.kpiData?.avgTripCost} isLoading={swrIsLoading && !data} />
+            <KPICard title={<div className="flex items-center gap-1.5"><span>Total Spending</span><Tooltip text={TOOLTIP_TEXTS.TOTAL_SPENDING_KPI}><VscInfo className="text-muted-foreground cursor-help hover:text-primary"/></Tooltip></div>} value={formatCurrency(data.kpiData?.totalSpending)} isLoading={swrIsLoading && !data} />
+            <KPICard title={<div className="flex items-center gap-1.5"><span>Average Trip Cost</span><Tooltip text={TOOLTIP_TEXTS.AVG_TRIP_COST_KPI}><VscInfo className="text-muted-foreground cursor-help hover:text-primary"/></Tooltip></div>} value={formatCurrency(data.kpiData?.avgTripCost)} isLoading={swrIsLoading && !data} />
             <KPICard title={<div className="flex items-center gap-1.5"><span>Total Trips</span><Tooltip text={TOOLTIP_TEXTS.TOTAL_TRIPS_KPI}><VscInfo className="text-muted-foreground cursor-help hover:text-primary"/></Tooltip></div>} value={data.kpiData?.recordCount} isLoading={swrIsLoading && !data} />
           </div>
 
