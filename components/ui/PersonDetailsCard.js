@@ -1,10 +1,13 @@
 // components/ui/PersonDetailsCard.js
 import React from 'react';
+import { VscInfo } from "react-icons/vsc";
+import Tooltip from './Tooltip';
+import { TOOLTIP_TEXTS } from './data/tooltips';
 
 const PersonDetailsCard = ({ person, isLoading, className = "" }) => (
     <div className={`card card-padding-default ${className}`}>
         <h2 className="text-xl font-semibold text-text-heading mb-2">
-            {isLoading && !person ? 'Loading Person...' : person?.name || 'Person Details'}
+            {isLoading && !person ? 'Loading Person...' : <div className="flex items-center gap-1.5"><span>{person?.name}</span><Tooltip text={TOOLTIP_TEXTS.NAME_TITLE_DEPT}><VscInfo size = {18} className="text-muted-foreground cursor-help hover:text-primary"/></Tooltip></div> || 'Person Details'}
         </h2>
         {(isLoading && !person) ? (
             <div className="space-y-1.5">

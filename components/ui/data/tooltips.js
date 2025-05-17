@@ -10,4 +10,5 @@ export const TOOLTIP_TEXTS = {
   TOTAL_TRIPS_KPI: "The total number of trips (expense reports) during the filtered time period.",
   AVG_TRIP_COST_KPI: "Calculated as Total Spending divided by Total Number of Trips for the filtered time period.",
   SPENDING_OVER_TIME: "Data shows monthly aggregated totals derived from reported expenses. Figures are subject to errors inherent in the underlying data, such as potential typos or reporting lags.",
+  NAME_TITLE_DEPT: "An official's title and department are based off their most recently reported expense and may not reflect their current role.",
 };

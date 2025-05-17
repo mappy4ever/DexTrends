@@ -224,15 +224,43 @@ export default function OrgsPage() {
     return apiPurposeBreakdown || []; // apiPurposeBreakdown is [{name, value}, ...]
   }, [apiPurposeBreakdown]);
   
-  const topSpendingTitles = useMemo(() => {
-    const currentTrips = trips || [];
-    if (!currentTrips.length) return [];
-    const spendingByTitle = currentTrips.reduce((acc, trip) => {
-        const titleName = trip.title || 'Unknown Title'; const cost = Number(trip.total) || 0;
-        acc[titleName] = (acc[titleName] || 0) + cost; return acc;
-    }, {});
-    return Object.entries(spendingByTitle).map(([name, totalSpent]) => ({ name, totalSpent: parseFloat(totalSpent.toFixed(2)) })).sort((a, b) => b.totalSpent - a.totalSpent).slice(0, 5);
-  }, [trips]);
+const topSpendingTitles = useMemo(() => {
+  const currentTrips = trips || []; // 'trips' should be the array of trip objects from your SWR data
+  if (!currentTrips.length) return [];
+
+  const spendingByTitle = currentTrips.reduce((acc, trip) => {
+    const titleName = trip.title || 'Unknown Title';
+    const cost = Number(trip.total) || 0;
+    const tripName = trip.name || 'Unknown Person'; // Get the person's name from the trip
+
+    if (!acc[titleName]) {
+      // If this is the first time we encounter this title,
+      // initialize its entry with the total cost and the name from this trip.
+      acc[titleName] = {
+        totalSpent: 0,
+        firstTripName: tripName, // Store the name from the first trip for this title
+        // tripCount: 0, // Optional: if you want to count trips per title
+      };
+    }
+
+    // Add the current trip's cost to the total for this title
+    acc[titleName].totalSpent += cost;
+    // acc[titleName].tripCount += 1; // Optional: increment trip count
+
+    return acc;
+  }, {});
+
+  // Now, map over the aggregated data to format it for display
+  return Object.entries(spendingByTitle)
+    .map(([title, data]) => ({
+      name: title, // This is the title (e.g., "Director General")
+      totalSpent: parseFloat(data.totalSpent.toFixed(2)),
+      firstPersonName: data.firstTripName, // The name of the person from the first trip with this title
+      // tripCount: data.tripCount, // Optional: if you included tripCount
+    }))
+    .sort((a, b) => b.totalSpent - a.totalSpent) // Sort by total spending
+    .slice(0, 5); // Get the top 5
+}, [trips]);
 
   // Prepare org data for OrgDetailsCard
   const orgDetailsForCard = orgDetails 
@@ -318,12 +346,31 @@ export default function OrgsPage() {
                     title={<div className="flex items-center gap-1.5"><span>Top Spending Titles</span><Tooltip text={TOOLTIP_TEXTS.TITLE_CLEANING}><VscInfo size={18} className="text-muted-foreground cursor-help hover:text-primary"/></Tooltip></div>}
                     items={topSpendingTitles}
                     isLoading={dataIsLoading && !trips} 
-                    renderItem={(item, index) => (
-                        <li key={index} className="flex justify-between items-center py-1.5 border-b border-border-subtle last:border-b-0">
-                            <span className="truncate pr-2" title={item.name}>{item.name}</span>
-                            <span className="font-semibold text-foreground-muted">${formatCurrency(item.totalSpent)}</span>
-                        </li>
-                    )}
+					renderItem={(item, index) => {
+						// Construct the tooltip content.
+						// You can use simple text or even more complex JSX if your Tooltip component supports it.
+						// For this example, we'll use a multi-line string.
+						const tooltipTextContent = `${item.firstPersonName || 'N/A'}`;
+
+						return (
+							<li key={index} className="flex justify-between items-center py-1.5 border-b border-border-subtle last:border-b-0">
+								{/* Wrap the title span with your Tooltip component */}
+								<Tooltip text={tooltipTextContent} position="top" className="min-w-0 flex-shrink">
+									{/* The child of the Tooltip is the element that triggers it on hover/focus */}
+									<span 
+										className="truncate font-semibold pr-2 text-primary hover:text-text-heading transition-colors cursor-default"
+										// The native 'title' attribute is no longer needed here as the custom Tooltip handles it
+									>
+										{item.name}
+									</span>
+								</Tooltip>
+								
+								<span className="font-semibold text-foreground-muted">
+									${formatCurrency(item.totalSpent)}
+								</span>
+							</li>
+						);
+					}}
                 />
               </div>
             </>
