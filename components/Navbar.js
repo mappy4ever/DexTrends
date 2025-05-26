@@ -18,13 +18,12 @@ export default function Navbar({ isCollapsed, setIsCollapsed }) {
   const menuWrapperRef = useRef(null);
   const router = useRouter();
 
+  // DexTrends key pages
   const navItems = [
-    { href: "/", label: "Dashboard", icon: <RxDashboard size={22} /> }, // Standardized icon size
-    { href: "/orgs", label: "Department Trends", icon: <RiGovernmentFill size={22} /> },
-    { href: "/people", label: "Person Inspector", icon: <BsPersonBoundingBox size={22} /> },
-    { href: "/map", label: "Map Explorer", icon: <BsGlobeEuropeAfrica size={22} /> },
-    { href: "/about", label: "About", icon: <AiOutlineBulb size={22} /> },
-    // { href: "/faq", label: "FAQ", icon: <VscQuestion size={22} /> },
+    { href: "/", label: "Main", icon: <RxDashboard size={22} /> },
+    { href: "/TCGSets", label: "TCG Sets", icon: <RiGovernmentFill size={22} /> },
+    { href: "/leaderboard", label: "Leaderboard", icon: <AiOutlineBulb size={22} /> },
+    { href: "/PokeDex", label: "Pokédex", icon: <BsGlobeEuropeAfrica size={22} /> },
   ];
 
   const pageTitles = navItems.reduce((acc, item) => {
@@ -145,15 +144,16 @@ export default function Navbar({ isCollapsed, setIsCollapsed }) {
           <nav className="flex flex-col gap-y-1">
             {navItems.map(item => (
               <Link
-                key={`mobile-${item.href}`} // Ensure href is unique if labels can repeat
+                key={`mobile-${item.href}`}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
-                className={`block px-3 py-2.5 rounded-app-md text-base font-medium
+                className={`flex items-center gap-x-3 px-3 py-2.5 rounded-app-md text-base font-medium
                             ${router.pathname === item.href
                                 ? 'bg-primary/10 text-primary dark:bg-primary/20'
                                 : 'text-text-navbar hover:bg-surface-hovered hover:text-foreground'}`}
               >
-                {item.label}
+                <span className="flex-shrink-0 w-5 h-5">{item.icon}</span>
+                <span className="truncate">{item.label}</span>
               </Link>
             ))}
           </nav>

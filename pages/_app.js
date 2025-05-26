@@ -1,11 +1,13 @@
-// pages/_app.js
 import { useEffect } from "react";
 import "../styles/globals.css";
 import "react-datepicker/dist/react-datepicker.css";
-import '../styles/CustomMapStyles.css'; // Your custom styles
 import Layout from "../components/layout/Layout";
 import ThemeProvider from "../components/layout/ThemeProvider"; // Assuming this component exists and is correctly set up
 import ErrorBoundary from "../components/layout/ErrorBoundary";
+import "../components/cardfeatures.css";
+
+import { ModalProvider } from '../context/ModalContext';
+import GlobalModal from '../components/GlobalModal';
 
 // Simple throttle function
 const throttle = (func, limit) => {
@@ -47,12 +49,23 @@ function MyApp({ Component, pageProps }) {
   return (
     <ErrorBoundary>
       <ThemeProvider> {/* Custom ThemeProvider */}
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <ModalProvider>
+          <Layout>
+            <Component {...pageProps} />
+            <GlobalModal />
+          </Layout>
+        </ModalProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );
 }
+
+
+MyApp.getInitialProps = async (appContext) => {
+  const pageProps = appContext.Component.getInitialProps
+    ? await appContext.Component.getInitialProps(appContext.ctx)
+    : {};
+  return { pageProps };
+};
 
 export default MyApp;

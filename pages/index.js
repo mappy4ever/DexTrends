@@ -1,300 +1,264 @@
-// pages/index.js
-import { useState, useEffect, useMemo, useCallback } from 'react';
-import useSWR from 'swr';
-import Link from 'next/link';
-import { useTheme } from 'next-themes';
-import { FaRegLightbulb } from "react-icons/fa";
-import { VscDashboard, VscOrganization, VscAccount, VscGlobe, VscInfo } from "react-icons/vsc";
+import React, { useState, useEffect, useRef } from "react";
+import pokemon from "pokemontcgsdk";
 
-// Utils
-import { formatCurrency } from '../utils/formatters';
-import { fetcher } from '../utils/apiUtils';
-import { generateMonthsInRangeForCharts } from '../utils/dateUtils';
-import { CHART_PALETTES, SPENDING_SERIES_DASHBOARD_CONFIG } from '../components/ui/data/chartConstants';
-import {
-  getDefaultInitialStartDate,
-  getDefaultInitialEndDate,
-  getYearMonthString,
-  parseYearMonthToDate,
-  LOCAL_STORAGE_KEYS,
-  loadFromLocalStorage,
-  saveToLocalStorage,
-  debounce
-} from '../utils/filterUtils';
+pokemon.configure({ apiKey: "7ee6ca7f-f74d-4599-87c9-3c9a95d0ebba" });
 
-// UI Components
-import Modal from '../components/ui/Modal';
-import TrendsLayout from '../components/layout/TrendsLayout'; // Using TrendsLayout as DashboardLayout
-import KPICard from '../components/ui/KPICard';
-import ChartContainer from '../components/ui/ChartContainer';
-import ListContainer from '../components/ui/ListContainer';
-import LoadingSpinner from '../components/ui/LoadingSpinner';
-import ErrorMessage from '../components/ui/ErrorMessage';
-import FilterTopbar from '../components/FilterTopbar';
-import Tooltip from '../components/ui/Tooltip';
-import { TOOLTIP_TEXTS } from '../components/ui/data/tooltips';
+function getPrice(card) {
+  // TCGPlayer market price if available
+  if (
+    card.tcgplayer &&
+    card.tcgplayer.prices &&
+    card.tcgplayer.prices.normal &&
+    card.tcgplayer.prices.normal.market
+  ) {
+    return `$${card.tcgplayer.prices.normal.market.toFixed(2)}`;
+  }
+  if (
+    card.tcgplayer &&
+    card.tcgplayer.prices &&
+    card.tcgplayer.prices.holofoil &&
+    card.tcgplayer.prices.holofoil.market
+  ) {
+    return `$${card.tcgplayer.prices.holofoil.market.toFixed(2)}`;
+  }
+  return "N/A";
+}
 
-// Chart Components
-import SpendingOverTimeChart from '../components/charts/SpendingOverTimeChart';
-import SpendingByPurposeChart from '../components/charts/SpendingByPurposeChart';
-import MonthlySpendingHeatmap from '../components/charts/MonthlySpendingHeatmap';
+function getRarityGlow(rarity) {
+  if (!rarity) return "";
+  const rare = rarity.toLowerCase();
+  if (rare.includes("ultra") || rare.includes("secret")) return "shadow-glow-ultra";
+  if (rare.includes("rare")) return "shadow-glow-rare";
+  if (rare.includes("holo")) return "shadow-glow-holo";
+  return "";
+}
 
-export default function DashboardPage() {
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-  const [selectedNonDateFilters, setSelectedNonDateFilters] = useState({}); // For any non-date filters
-  const [initialFiltersLoaded, setInitialFiltersLoaded] = useState(false);
-  const [showSplashModal, setShowSplashModal] = useState(false);
-  const { resolvedTheme } = useTheme();
+export default function Moazzam() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const savedGlobalFilters = loadFromLocalStorage(LOCAL_STORAGE_KEYS.GLOBAL_DATE_FILTERS, null);
-    let initialStartDate = getDefaultInitialStartDate();
-    let initialEndDate = getDefaultInitialEndDate();
+  // State for expanded card modal
+  const [expandedCard, setExpandedCard] = useState(null);
 
-    if (savedGlobalFilters) {
-      const parsedStart = parseYearMonthToDate(savedGlobalFilters.startMonth);
-      const parsedEnd = parseYearMonthToDate(savedGlobalFilters.endMonth);
-      if (parsedStart) initialStartDate = parsedStart;
-      if (parsedEnd) initialEndDate = parsedEnd;
+  // Ref to detect clicks outside expanded card modal
+  const containerRef = useRef(null);
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    setCards([]);
+    try {
+      const result = await pokemon.card.where({ q: `name:${searchTerm}` });
+      setCards(result.data);
+    } catch (err) {
+      setError("Failed to load cards.");
     }
-    setStartDate(initialStartDate);
-    setEndDate(initialEndDate);
-    setInitialFiltersLoaded(true);
-  }, []);
+    setLoading(false);
+  };
 
-  useEffect(() => {
-    if (!initialFiltersLoaded || !startDate || !endDate) return;
-    const filtersToSave = {
-      startMonth: getYearMonthString(startDate),
-      endMonth: getYearMonthString(endDate),
-    };
-    saveToLocalStorage(LOCAL_STORAGE_KEYS.GLOBAL_DATE_FILTERS, filtersToSave);
-  }, [startDate, endDate, initialFiltersLoaded]);
+  const renderEvolutionLine = (card) => (
+    <div className="mt-2 flex flex-wrap gap-2 text-xs">
+      {card.evolvesFrom && (
+        <span>
+          <b className="text-foreground-muted">Evolves From:</b>{" "}
+          <span className="font-medium">{card.evolvesFrom}</span>
+        </span>
+      )}
+      {card.evolvesTo && card.evolvesTo.length > 0 && (
+        <span>
+          <b className="text-foreground-muted">Evolves To:</b>{" "}
+          <span className="font-medium">{card.evolvesTo.join(", ")}</span>
+        </span>
+      )}
+    </div>
+  );
 
+  // Handle click outside expanded card modal to close it
   useEffect(() => {
-    if (initialFiltersLoaded) {
-      const hasVisitedBefore = localStorage.getItem('hasVisitedTravelDashboard');
-      if (!hasVisitedBefore) {
-        setShowSplashModal(true);
+    function handleClickOutside(event) {
+      if (
+        expandedCard &&
+        containerRef.current &&
+        !containerRef.current.contains(event.target)
+      ) {
+        setExpandedCard(null);
       }
     }
-  }, [initialFiltersLoaded]);
-
-  const handleDateChange = useCallback((dateKey, dateObject) => {
-    if (dateKey === 'startDate') setStartDate(dateObject);
-    else if (dateKey === 'endDate') setEndDate(dateObject);
-  }, []);
-  
-  const handleNonDateFilterChange = useCallback((filterKey, value) => {
-    setSelectedNonDateFilters(prev => ({ ...prev, [filterKey]: value }));
-  }, []);
-
-  const handleCloseSplashModal = useCallback(() => {
-    setShowSplashModal(false);
-    localStorage.setItem('hasVisitedTravelDashboard', 'true');
-  }, []);
-
-  const filterConfig = useMemo(() => [
-    { key: 'startDate', label: 'Start Date:', type: 'month' },
-    { key: 'endDate', label: 'End Date:', type: 'month' },
-    // Add other non-date filter configurations here if needed
-  ], []);
-
-  const apiUrl = useMemo(() => {
-    if (!initialFiltersLoaded || !startDate || !endDate) return null;
-    const startMonthStr = getYearMonthString(startDate);
-    const endMonthStr = getYearMonthString(endDate);
-    const params = new URLSearchParams({
-      start: startMonthStr,
-      end: endMonthStr,
-      ...selectedNonDateFilters
-    });
-    return `/api/dashboard?${params.toString()}`; // Ensure this API endpoint exists
-  }, [startDate, endDate, selectedNonDateFilters, initialFiltersLoaded]);
-
-  const { data, error, isLoading: swrIsLoading, isValidating: swrIsValidating } = useSWR(
-    apiUrl, fetcher, { keepPreviousData: true, revalidateOnFocus: false }
-  );
-  
-  const pageIsLoading = !initialFiltersLoaded || swrIsLoading || swrIsValidating;
-
-  // Data preparation for SpendingOverTimeChart
-  const processedLineChartData = useMemo(() => {
-    const spendingData = data?.spendingOverTime || []; 
-    if (!startDate || !endDate) return { monthLabels: [], seriesData: [] };
-
-    const allMonthsInRange = generateMonthsInRangeForCharts(startDate, endDate); 
-
-    const spendingMap = spendingData.reduce((map, item) => {
-      const monthKey = item.month ? String(item.month).slice(0, 7) : null;
-      if (monthKey) map[monthKey] = item;
-      return map;
-    }, {});
-
-    const monthLabels = allMonthsInRange.map(monthKey => {
-      const [year, monthNum] = monthKey.split('-');
-      return new Date(Date.UTC(Number(year), Number(monthNum) - 1, 1))
-        .toLocaleDateString('en-US', { month: 'short', year: '2-digit', timeZone: 'UTC' });
-    });
-
-    const seriesData = SPENDING_SERIES_DASHBOARD_CONFIG.map(sConfig => ({
-      name: sConfig.name,
-      data: allMonthsInRange.map(monthKey =>
-        parseFloat((spendingMap[monthKey]?.[sConfig.dashboardKey || sConfig.dataKey] || 0).toFixed(2))
-      )
-    }));
-    
-    return { monthLabels, seriesData };
-  }, [data?.spendingOverTime, startDate, endDate]);
-
-
-  // Data preparation for SpendingByPurposeChart
-  const processedPieChartData = useMemo(() => data?.spendingByPurpose || [], [data?.spendingByPurpose]);
-  
-  // Data for Heatmap (raw data from API)
-  const heatmapRawApiData = useMemo(() => data?.heatmapData || [], [data?.heatmapData]);
-
-  if (!initialFiltersLoaded) { 
-    return <TrendsLayout><LoadingSpinner /></TrendsLayout>;
-  }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [expandedCard]);
 
   return (
-    <TrendsLayout> 
-      <Modal isOpen={showSplashModal} onClose={handleCloseSplashModal} title={<div className="flex items-center gap-x-3"><FaRegLightbulb size={24} className="text-primary" /><span className="text-xl font-semibold text-foreground">Welcome to OnOurDime.ca!</span></div>} size="xl">
-        <div className="text-sm text-foreground-default space-y-2 md:space-y-4">
-          <p>Welcome to <strong>OnOurDime</strong> - your window into Canadian federal government travel expenses.</p>
-          <p>We believe that understanding where taxpayer money is invested is crucial for informed citizenship.</p>
-          <p>This platform transforms publicly available data from the Government of Canada into interactive visualizations. Our goal is to make it easier for everyone to see how public funds are utilized for travel, fostering understanding and promoting interest in government accountability.</p>
-          <p>Here’s a quick guide to help you navigate:</p>
-          <ul className="list-none space-y-1">
-            {[
-              { icon: <VscDashboard size={20} className="text-primary" />, title: "Dashboard", text: "An overview of spending, key trends, and top expenditures. Use filters to explore different time periods.", link: null },
-              { icon: <VscOrganization size={20} className="text-primary" />, title: "Department Trends", text: "Dive into spending by specific government departments.", link: "/orgs" },
-              { icon: <VscAccount size={20} className="text-primary" />, title: "Person Inspector", text: "Explore travel expenses for individual officials.", link: "/people" },
-              { icon: <VscGlobe size={20} className="text-primary" />, title: "Map Explorer", text: "Visualize travel globally on a map.", link: "/map" },
-            ].map(item => (
-              <li key={item.title} className="flex items-start gap-x-3 p-2 rounded-app-md hover:bg-surface-hovered transition-colors">
-                <span className="mt-0.5 flex-shrink-0 w-5 h-5">{item.icon}</span>
-                <div>
-                  <strong className="text-text-heading font-medium">{item.title}:</strong>
-                  <span className="block text-xs text-foreground-muted">
-                    {item.text}
-                    {item.link && <Link href={item.link} onClick={handleCloseSplashModal} className="ml-1 btn-link text-xs">Go to {item.title.split(' ')[0]}</Link>}
-                  </span>
-                </div>
-              </li>
-            ))}
-          </ul>
-          <p className="mt-5 text-sm text-foreground-default">For detailed information on data sources and limitations, please see our <Link href="/about" onClick={handleCloseSplashModal} className="btn-link text-sm">About page</Link>.</p>
-          <div className="mt-6 text-right">
-            <button onClick={handleCloseSplashModal} className="btn-primary">Got it, let's explore!</button>
+    <div
+      className="container section-spacing-y-default max-w-6xl mx-auto relative min-h-screen"
+    >
+      <h2 className="text-page-heading text-center mb-6">
+        Pokémon Card Search
+        <span className="ml-2 animate-bounce">✨</span>
+      </h2>
+      <form
+        onSubmit={handleSearch}
+        className="flex justify-center mb-8"
+        autoComplete="off"
+      >
+        <input
+          type="text"
+          placeholder="Enter Pokémon name (e.g., Charizard)"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="input rounded-l-app-md text-lg w-72 max-w-xs focus:ring-primary focus:border-primary bg-white/80"
+        />
+        <button
+          type="submit"
+          className="btn-primary rounded-r-app-md rounded-l-none text-lg font-semibold px-6 shadow hover:scale-105 active:scale-95 transition-transform duration-150"
+        >
+          Search
+        </button>
+      </form>
+
+      {loading && (
+        <p className="text-center text-content-muted animate-fadeIn">
+          Loading cards...
+        </p>
+      )}
+      {error && (
+        <p className="text-center text-red-500 animate-fadeIn">{error}</p>
+      )}
+
+      <div className="flex flex-wrap gap-8 justify-center">
+        {cards.map((card, i) => {
+          return (
+            <div
+              key={card.id}
+              onClick={() => setExpandedCard(card)}
+              className={`card card-padding-default flex flex-col items-center w-[260px] bg-gradient-to-br from-surface via-card to-background shadow-app-md rounded-app-lg border border-border animate-fadeIn group cursor-pointer ${getRarityGlow(card.rarity)}`}
+              style={{
+                animationDelay: `${i * 50}ms`
+              }}
+            >
+              <div className="relative mb-2 w-[190px] h-[260px]">
+                <img
+                  src={card.images.large}
+                  alt={card.name}
+                  className="rounded-app-md w-full h-full object-cover shadow-lg transition-all duration-200 ease-in-out transform hover:scale-125 hover:z-20 hover:shadow-2xl cursor-pointer"
+                  draggable="false"
+                />
+                {/* Magnifier / Zoom icon */}
+                <button
+                  type="button"
+                  tabIndex={-1}
+                  aria-hidden="true"
+                  className="absolute top-2 right-2 z-30 text-xl select-none bg-white/80 rounded-full p-1 shadow-md transition-opacity duration-200 opacity-0 group-hover:opacity-100 cursor-pointer"
+                  aria-label="Zoom in"
+                >
+                  🔍
+                </button>
+              </div>
+              <h3 className="text-lg font-bold text-text-heading text-center mb-1">
+                {card.name}
+              </h3>
+              <div className="text-content-default text-sm text-center mb-1">
+                <b>Set:</b> {card.set?.name || "N/A"}
+              </div>
+              <div className="text-content-default text-xs mb-1">
+                <b>Rarity:</b>{" "}
+                <span className="font-semibold">{card.rarity || "N/A"}</span>
+              </div>
+              <div className="text-content-default text-xs mb-1">
+                <b>Market Price:</b>{" "}
+                <span className="font-semibold text-green-700">
+                  {getPrice(card)}
+                </span>
+              </div>
+              <div className="text-content-default text-xs mb-1">
+                <b>Type:</b> {card.types ? card.types.join(", ") : "N/A"}
+              </div>
+              {renderEvolutionLine(card)}
+            </div>
+          );
+        })}
+      </div>
+      {!loading && !error && cards.length === 0 && (
+        <p className="text-center text-content-muted mt-12 animate-fadeIn">
+          No cards found. Try another Pokémon name!
+        </p>
+      )}
+
+      {/* Modal overlay for expanded card */}
+      {expandedCard && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[9999]" onClick={() => setExpandedCard(null)}>
+          <div
+            ref={containerRef}
+            className="bg-background rounded-app-lg p-6 max-w-[90vw] max-h-[90vh] overflow-auto relative flex flex-col items-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setExpandedCard(null)}
+              className="absolute top-2 right-2 text-3xl font-bold text-content-muted hover:text-content-default cursor-pointer"
+              aria-label="Close modal"
+            >
+              ✕
+            </button>
+            <img
+              src={expandedCard.images.large}
+              alt={expandedCard.name}
+              className="rounded-app-md w-[340px] h-[480px] max-w-full max-h-[60vh] object-cover shadow-lg mb-4"
+              draggable="false"
+            />
+            <h3 className="text-2xl font-bold text-text-heading mb-2 text-center">
+              {expandedCard.name}
+            </h3>
+            <div className="text-content-default text-base text-center mb-2">
+              <b>Set:</b> {expandedCard.set?.name || "N/A"}
+            </div>
+            <div className="text-content-default text-base text-center mb-2">
+              <b>Rarity:</b>{" "}
+              <span className="font-semibold">{expandedCard.rarity || "N/A"}</span>
+            </div>
+            <div className="text-content-default text-base text-center mb-2">
+              <b>Market Price:</b>{" "}
+              <span className="font-semibold text-green-700">
+                {getPrice(expandedCard)}
+              </span>
+            </div>
+            <div className="text-content-default text-base text-center mb-2">
+              <b>Type:</b> {expandedCard.types ? expandedCard.types.join(", ") : "N/A"}
+            </div>
+            {renderEvolutionLine(expandedCard)}
           </div>
         </div>
-      </Modal>
-      
-      <div className="flex justify-between items-center">
-        <h1 className="text-page-heading">Dashboard</h1>
-        <button onClick={() => setShowSplashModal(true)} className="p-2 text-foreground-muted hover:text-primary transition-colors rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" title="Show Welcome Guide" aria-label="Show Welcome Guide">
-          <VscInfo size={22}/>
-        </button>
-      </div>
-
-      <p className="mb-4 md:mb-6 text-base text-center md:text-left text-foreground-default mx-auto md:mx-0 px-5">
-        Welcome to the main Dashboard. Get a high-level overview of Canadian federal government travel expenses by exploring key spending indicators and trends over time, top spending departments and officials, and a heatmap of monthly expenditures. Use the date filters below to narrow your focus.
-      </p>
-
-      <FilterTopbar
-        filterConfig={filterConfig}
-        availableFilters={{}} 
-        selectedFilters={{ ...selectedNonDateFilters }} 
-        onFilterChange={handleNonDateFilterChange}
-        startDate={startDate} 
-        endDate={endDate}   
-        onDateChange={handleDateChange}
-        loading={!initialFiltersLoaded} 
-      />
-
-      {error && <ErrorMessage message={error.info?.message || error.message || 'Failed to load dashboard data.'} />}
-      {pageIsLoading && !error && <LoadingSpinner />}
-
-      {!pageIsLoading && !error && data && (
-        <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-4 md:mb-6">
-            <KPICard title={<div className="flex items-center gap-1.5"><span>Total Spending</span><Tooltip text={TOOLTIP_TEXTS.TOTAL_SPENDING_KPI}><VscInfo className="text-muted-foreground cursor-help hover:text-primary"/></Tooltip></div>} value={formatCurrency(data.kpiData?.totalSpending)} isLoading={swrIsLoading && !data} />
-            <KPICard title={<div className="flex items-center gap-1.5"><span>Average Trip Cost</span><Tooltip text={TOOLTIP_TEXTS.AVG_TRIP_COST_KPI}><VscInfo className="text-muted-foreground cursor-help hover:text-primary"/></Tooltip></div>} value={formatCurrency(data.kpiData?.avgTripCost)} isLoading={swrIsLoading && !data} />
-            <KPICard title={<div className="flex items-center gap-1.5"><span>Total Trips</span><Tooltip text={TOOLTIP_TEXTS.TOTAL_TRIPS_KPI}><VscInfo className="text-muted-foreground cursor-help hover:text-primary"/></Tooltip></div>} value={data.kpiData?.recordCount} isLoading={swrIsLoading && !data} />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-4 md:mb-6">
-            <ListContainer title={<div className="flex items-center gap-1.5"><span>Top Spending Departments</span><Tooltip text={TOOLTIP_TEXTS.DEPARTMENT_CLEANING}><VscInfo size={18} className="text-muted-foreground cursor-help hover:text-primary"/></Tooltip></div>} isLoading={swrIsLoading && !data} items={data.topOrgs}
-              renderItem={(org) => {
-                const queryParams = new URLSearchParams();
-                if (startDate) queryParams.append('start', getYearMonthString(startDate));
-                if (endDate) queryParams.append('end', getYearMonthString(endDate));
-                queryParams.append('orgId', org.id);
-                return (
-                  <li key={org.name} className="flex justify-between items-center py-1.5 border-b border-border-subtle last:border-b-0">
-                    <Link href={`/orgs?${queryParams.toString()}`} className="btn-link text-sm hover:underline">{org.name}</Link>
-                    <span className="font-medium text-foreground-muted">${formatCurrency(org.value)}</span>
-                  </li>);
-              }}
-            />
-            <ListContainer title={<div className="flex items-center gap-1.5"><span>Top Spending Officials</span><Tooltip text={TOOLTIP_TEXTS.NAME_CLEANING}><VscInfo size={18} className="text-muted-foreground cursor-help hover:text-primary"/></Tooltip></div>} isLoading={swrIsLoading && !data} items={data.topNames}
-              renderItem={(person) => {
-                const queryParams = new URLSearchParams();
-                if (startDate) queryParams.append('start', getYearMonthString(startDate));
-                if (endDate) queryParams.append('end', getYearMonthString(endDate));
-                if (person.id) queryParams.append('personId', person.id);
-                return (
-                  <li key={person.name} className="flex justify-between items-center py-1.5 border-b border-border-subtle last:border-b-0">
-                    <Link href={`/people?personId=${person.id}&start=${getYearMonthString(startDate)}&end=${getYearMonthString(endDate)}`} className="btn-link text-sm hover:underline">{person.name}</Link>
-                    <span className="font-medium text-foreground-muted">${formatCurrency(person.value)}</span>
-                  </li>);
-              }}
-            />
-          </div>
-
-          <div className="grid grid-cols-1 gap-4 md:gap-6"> 
-            <ChartContainer title={<div className="flex items-center gap-1.5"><span>Spending Over Time</span><Tooltip text={TOOLTIP_TEXTS.SPENDING_OVER_TIME}><VscInfo size={18} className="text-muted-foreground cursor-help hover:text-primary"/></Tooltip></div>} 
-                            isLoading={swrIsLoading && (!processedLineChartData.monthLabels || processedLineChartData.monthLabels.length === 0)} 
-                            className="xl:col-span-1"> 
-                <SpendingOverTimeChart
-                    monthLabels={processedLineChartData.monthLabels}
-                    seriesData={processedLineChartData.seriesData}
-                    palette={CHART_PALETTES.LINE_PALETTE}
-                    formatCurrencyFn={formatCurrency}
-                    isLoading={swrIsLoading && !processedLineChartData.monthLabels.length && !!apiUrl} 
-                />
-            </ChartContainer>
-           </div>
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6"> 
-            <ChartContainer 
-                title={<div className="flex items-center gap-1.5"><span>Spending by Purpose</span><Tooltip text={TOOLTIP_TEXTS.PURPOSE_CLEANING}><VscInfo size={18} className="text-muted-foreground cursor-help hover:text-primary"/></Tooltip></div>} 
-                isLoading={swrIsLoading && (!processedPieChartData || processedPieChartData.length === 0 ) && !!apiUrl}
-            >
-              <SpendingByPurposeChart
-                purposeData={processedPieChartData}
-                palette={CHART_PALETTES.PIE_PALETTE || CHART_PALETTES.LINE_PALETTE} // Fallback to line palette if pie not defined
-                formatCurrencyFn={formatCurrency}
-                isLoading={swrIsLoading && !processedPieChartData.length && !!apiUrl}
-              />
-            </ChartContainer>
-            <ChartContainer 
-                title={<div className="flex items-center gap-1.5"><span>Monthly Spending Heatmap</span><Tooltip text={TOOLTIP_TEXTS.HEATMAP}><VscInfo className="text-muted-foreground cursor-help hover:text-primary"/></Tooltip></div>} 
-                isLoading={swrIsLoading && !heatmapRawApiData.length && !!apiUrl} // Check raw data for heatmap loading
-            >
-              <MonthlySpendingHeatmap
-                heatmapRawData={heatmapRawApiData}
-                palette={CHART_PALETTES.HEATMAP_PALETTE}
-                darkPalette={CHART_PALETTES.HEATMAP_PALETTE_DARK} // Pass the dark mode palette
-                formatCurrencyFn={formatCurrency}
-                isLoading={swrIsLoading && !heatmapRawApiData.length && !!apiUrl} // Pass loading state
-              />
-            </ChartContainer>
-          </div>
-        </>
       )}
-    </TrendsLayout>
+
+      <style jsx global>{`
+        .shadow-glow-rare {
+          box-shadow: 0 0 14px 4px #ffe06655, 0 2px 8px 0 var(--color-shadow-default);
+        }
+        .shadow-glow-ultra {
+          box-shadow: 0 0 18px 6px #a685ff99, 0 2px 8px 0 var(--color-shadow-default);
+        }
+        .shadow-glow-holo {
+          box-shadow: 0 0 16px 5px #99ecff99, 0 2px 8px 0 var(--color-shadow-default);
+        }
+        @keyframes sparkleBurst {
+          0% {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+          }
+          100% {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(2);
+          }
+        }
+        .animate-sparkleBurst {
+          animation: sparkleBurst 0.2s ease-out forwards;
+        }
+      `}</style>
+    </div>
   );
 }
