@@ -1,0 +1,38 @@
+[
+  {
+    "question": "What is OnOurDime?",
+    "answer": "OnOurDime is an interactive platform designed to make Canadian federal government expenses data more accessible, understandable, and engaging. Our goal is to visualize publicly available information to help citizens, researchers, and journalists explore how public funds are utilized."
+  },
+  {
+    "question": "Why was this site created?",
+    "answer": "This site was started to provide an easy-to-use tool for exploring government expenses that are often found in complex spreadsheets buried on obscure government websites. Our goal is to promote public interest in government spending and foster a better understanding of how taxpayer money is invested on behalf of citizens."
+  },
+  {
+    "question": "Is this site meant to criticize government spending?",
+    "answer": "No, the primary aim of OnOurDime is not to criticize but to provide transparency and foster understanding. We believe that when citizens can easily access and explore this data, they can form their own informed opinions and knowledgably engage in public discourse. It's about empowering the public with information for civic engagement and government accountability."
+  },
+  {
+    "question": "Where does the expense data come from?",
+    "answer": "All data is sourced from the Government of Canada's official Open Data Portal. This is public information provided by the government itself."
+  },
+  {
+    "question": "How is the data cleaned or processed?",
+    "answer": "To improve consistency for analysis and visualization, the raw data undergoes some automated processing. This includes standardizing text for department names, traveler titles, and names (e.g., consistent casing, trimming whitespace). Destination information is parsed to identify cities and countries for mapping, though this can have limitations due to variations or errors in the original free-text entries."
+  },
+  {
+    "question": "What are the limitations of the destination data?",
+    "answer": "Destination data is often entered as free text in the source files, which can lead to spelling variations, different formatting, or incomplete information. While we attempt to parse these into standardized locations for mapping, not all entries can be geocoded with perfect accuracy. In cases of ambiguity or unparseable entries, they may not appear on the map or might be grouped under a broader region or country. The original destination text is retained in the source data for transparency."
+  },
+  {
+    "question": "How should I interpret these expenses?",
+    "answer": "It's important to consider context. Government travel is often necessary for officials and public servants to perform their duties. Factors like an individual's role, a department's mandate, the purpose of the travel (e.g., international G7 meeting vs. domestic site visit), and the location all influence costs. This tool provides the data; forming conclusions requires considering these contextual factors."
+  },
+  {
+    "question": "Why might the data for a recent month be incomplete?",
+    "answer": "Government departments have a reporting cycle for disclosing expenses. It's common for there to be a delay between the end of a reporting period and when the full data appears in the public dataset."
+  },
+  {
+    "question": "Is OnOurDime an official government website?",
+    "answer": "No, this is an independent project and is not affiliated with or endorsed by the Government of Canada."
+  }
+]

@@ -1,0 +1,112 @@
+[
+  {
+    "ref": "biSolutionsRef",
+    "num": 1,
+    "icon": "AiOutlineBarChart",
+    "title": "HiBusiness Intelligence & Analytics Solutions",
+    "image": "/data-viz.jpg",
+    "intro": "Transform raw data into actionable insights with our cutting-edge BI solutions. We specialize in building intuitive, interactive dashboards and data visualizations that drive smarter business decisions.",
+    "content": [
+      {
+        "heading": "Dashboard Development & Optimization",
+        "text": "Leverage Power BI and Tableau to create dynamic, user-friendly dashboards. Our tailored solutions help you track KPIs, identify trends, and gain real-time visibility into your business performance."
+      },
+      {
+        "heading": "Predictive Analytics & Trend Forecasting",
+        "text": "Harness the power of advanced analytics to anticipate market trends. Our predictive modeling techniques empower businesses to make proactive, data-driven decisions."
+      },
+      {
+        "heading": "Self-Service BI Enablement",
+        "text": "Empower your teams with intuitive, self-service BI tools. We design reporting solutions that allow employees at all levels to access, analyze, and leverage data with ease."
+      }
+    ]
+  },
+  {
+    "ref": "dataStratRef",
+    "num": 2,
+    "icon": "AiOutlineDeploymentUnit",
+    "title": "Data Strategy & Governance",
+    "image": "/data-strat.jpg",
+    "intro": "Ensure the integrity, security, and compliance of your data assets with a robust data governance strategy. We help organizations implement scalable frameworks that foster trust and reliability in data management.",
+    "content": [
+      {
+        "heading": "Data Governance Framework Implementation",
+        "text": "Develop comprehensive policies and best practices to ensure data accuracy, consistency, and compliance with industry regulations such as GDPR, HIPAA, and PHIPA."
+      },
+      {
+        "heading": "Data Security & Compliance Audits",
+        "text": "Identify vulnerabilities and strengthen your security posture. Our audits assess your data infrastructure to ensure it meets compliance standards and safeguards sensitive information."
+      },
+      {
+        "heading": "Master Data Management (MDM)",
+        "text": "Create a single source of truth for your enterprise data. We centralize and streamline data across systems to enhance consistency, accuracy, and decision-making."
+      }
+    ]
+  },
+  {
+    "ref": "projManRef",
+    "num": 3,
+    "icon": "AiOutlineFundView",
+    "title": "Project Management for Data Initiatives",
+    "image": "/project-management.jpg",
+    "intro": "Seamlessly execute complex data projects with structured methodologies and strategic oversight. Our expertise in Agile and PMP-certified project management ensures on-time, efficient project delivery.",
+    "content": [
+      {
+        "heading": "Agile Project Execution for BI Solutions",
+        "text": "Accelerate your BI projects with an Agile approach. We implement iterative development cycles to ensure flexibility, adaptability, and timely delivery of high-impact data solutions."
+      },
+      {
+        "heading": "Stakeholder Collaboration & Requirement Analysis",
+        "text": "Bridge the gap between business and technology. We engage key stakeholders to capture precise requirements, align expectations, and ensure data projects deliver measurable value."
+      },
+      {
+        "heading": "Risk Management in Data Projects",
+        "text": "Identify and mitigate risks in cloud migrations, data platform transitions, and compliance challenges. Our structured risk management approach minimizes disruptions and enhances project success rates."
+      }
+    ]
+  },
+  {
+    "ref": "cloudRef",
+    "num": 4,
+    "icon": "AiOutlineFileDone",
+    "title": "Cloud Data Engineering & Migration",
+    "image": "/cloud.jpg",
+    "intro": "Migrate, modernize, and optimize your data infrastructure with cloud-first solutions. We help businesses transition seamlessly to cloud environments while ensuring scalability and cost efficiency.",
+    "content": [
+      {
+        "heading": "Cloud Transition Strategy (Azure & GCP)",
+        "text": "Ensure a smooth migration to cloud platforms like Azure and Google Cloud. Our strategy minimizes downtime and ensures business continuity throughout the transition."
+      },
+      {
+        "heading": "ETL Pipeline Optimization",
+        "text": "Streamline data flow with optimized ETL (Extract, Transform, Load) processes. We enhance data integration pipelines to improve speed, accuracy, and reporting efficiency."
+      },
+      {
+        "heading": "Cost Optimization Strategies",
+        "text": "Reduce cloud spending while maximizing performance. We design cost-efficient architectures that align with your business needs and operational demands."
+      }
+    ]
+  },
+  {
+    "ref": "automationRef",
+    "num": 5,
+    "icon": "AiFillFire",
+    "title": "Workflow Automation & Process Optimization",
+    "image": "/automation.jpg",
+    "intro": "Enhance operational efficiency by automating repetitive tasks and streamlining workflows. Our automation solutions free up resources, reduce errors, and boost overall productivity.",
+    "content": [
+      {
+        "heading": "Process Automation with Power Automate & Python",
+        "text": "Automate tedious manual processes using AI-driven tools like Power Automate and Python. Reduce human intervention while increasing efficiency across departments."
+      },
+      {
+        "heading": "AI-Powered Decision Support Systems",
+        "text": "Leverage artificial intelligence to make smarter, data-driven decisions. Our AI-powered solutions help businesses optimize workflows and improve strategic planning."
+      },
+      {
+        "heading": "End-to-End Integration Solutions",
+        "text": "Unify business systems by integrating Microsoft, Google, and custom cloud platforms. We eliminate data silos and enable seamless interoperability between tools."
+      }
+    ]
+  }
+]

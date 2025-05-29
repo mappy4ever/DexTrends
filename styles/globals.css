@@ -1,0 +1,335 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Define CSS Variables for the entire color palette.
+  These will be the single source of truth for colors,
+  referenced by tailwind.config.js.
+*/
+:root {
+  /* Core Palette Values (RGB for opacity control if needed, or hex directly) */
+  --color-primary-default-val: 0 95 115; /* #005f73 216 6 33 0 95 115*/
+  --color-primary-darker-val: 0 76 92;  /* #004c5c (Derived from #005f73) */
+  --color-secondary-default-val: 233 196 106; /* #e9c46a */
+  --color-secondary-darker-val: 212 172 93; /* #d4ac5d (Derived from #e9c46a) */
+  --color-accent-default-val: 244 162 97; /* #f4a261 */
+  --color-accent-darker-val: 226 135 67; /* #e28743 (Derived or chosen) */
+
+  /* Light Theme Colors */
+  --color-primary-default: rgb(var(--color-primary-default-val));
+  --color-primary-darker: rgb(var(--color-primary-darker-val));
+  --color-secondary-default: rgb(var(--color-secondary-default-val));
+  --color-secondary-darker: rgb(var(--color-secondary-darker-val));
+  --color-accent-default: rgb(var(--color-accent-default-val));
+  --color-accent-darker: rgb(var(--color-accent-darker-val));
+
+  --color-background-default: #f8f9fa;
+  --color-surface-default: #ffffff;
+  --color-navbar-default: rgba(255, 255, 255, 0.8);
+  --color-navbar-scrolled: rgba(255, 255, 255, 0.95);
+
+  --color-text-heading: #003440;
+  --color-text-subheading: #003440; /* Often same as heading */
+  --color-text-body: #212529;
+  --color-text-muted: #6c757d;
+  --color-text-inverted: #ffffff;
+  --color-text-link: var(--color-primary-default);
+  --color-text-link-hover: var(--color-primary-darker);
+  --color-text-highlight: var(--color-accent-default); /* Using accent for highlight */
+  --color-text-highlight-hover: var(--color-accent-darker);
+
+  --color-border-default: #dee2e6;
+  --color-shadow-default: rgba(0, 0, 0, 0.075);
+  --color-chart-background: #fdf8f3; /* Example, adjust as needed */
+
+  /* Semantic UI Element Colors (derived from palette) */
+  --color-foreground-default: var(--color-text-body);
+  --color-foreground-muted: var(--color-text-muted);
+  --color-card-background: var(--color-surface-default);
+  --color-card-foreground: var(--color-text-body);
+  --color-input-background: var(--color-surface-default);
+  --color-input-border: var(--color-border-default);
+  --color-input-text: var(--color-text-body);
+  --color-input-placeholder: var(--color-text-muted);
+
+  /* Fonts */
+  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-serif: "Georgia", Cambria, "Times New Roman", Times, serif;
+  --font-mono: "Menlo", Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  /* Radius (optional, can also be fully managed in tailwind.config.js) */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+}
+
+.dark {
+  /* Dark Theme Colors */
+  --color-primary-default-val: 42 157 143; /* #2a9d8f */
+  --color-primary-darker-val: 33 134 122;  /* #21867a (Derived from #2a9d8f) */
+  /* Secondary and Accent can be reused or adjusted for dark mode */
+
+  --color-primary-default: rgb(var(--color-primary-default-val));
+  --color-primary-darker: rgb(var(--color-primary-darker-val));
+  /* Keep secondary & accent same as light, or define dark specific ones */
+  --color-secondary-default: rgb(var(--color-secondary-default-val));
+  --color-secondary-darker: rgb(var(--color-secondary-darker-val));
+  --color-accent-default: rgb(var(--color-accent-default-val));
+  --color-accent-darker: rgb(var(--color-accent-darker-val));
+
+
+  --color-background-default: #1a202c; /* Tailwind slate-900 */
+  --color-surface-default: #2d3748;    /* Tailwind slate-800 */
+  --color-navbar-default: rgba(26, 32, 44, 0.8);
+  --color-navbar-scrolled: rgba(26, 32, 44, 0.95);
+
+  --color-text-heading: #e2e8f0;    /* Tailwind slate-200 */
+  --color-text-subheading: #e2e8f0;
+  --color-text-body: #cbd5e0;       /* Tailwind slate-300 */
+  --color-text-muted: #94a3b8;      /* Tailwind slate-400 */
+  --color-text-inverted: #1a202c;   /* Background color for text on primary bg */
+  --color-text-link: var(--color-primary-default);
+  --color-text-link-hover: var(--color-primary-darker);
+  --color-text-highlight: var(--color-accent-default);
+  --color-text-highlight-hover: var(--color-accent-darker);
+
+  --color-border-default: #4a5568;    /* Tailwind slate-600 */
+  --color-shadow-default: rgba(0, 0, 0, 0.25); /* Darker shadow */
+  --color-chart-background: #251F14; /* Example */
+
+  /* Semantic UI Element Colors - Dark */
+  --color-foreground-default: var(--color-text-body);
+  --color-foreground-muted: var(--color-text-muted);
+  --color-card-background: var(--color-surface-default);
+  --color-card-foreground: var(--color-text-body);
+  --color-input-background: var(--color-surface-default);
+  --color-input-border: var(--color-border-default);
+  --color-input-text: var(--color-text-body);
+  --color-input-placeholder: var(--color-text-muted);
+}
+
+/* Base HTML Element Styling */
+body {
+  @apply bg-background text-foreground font-sans antialiased;
+  /* font-family is set by Tailwind via config, antialiased is good */
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/*
+  Global animation keyframes.
+  The fadeIn from Modal.js is included here.
+*/
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+/*
+  Utility class for the animation.
+  Tailwind JIT can pick this up, but defining it here is also fine
+  if it's a common, project-wide animation.
+*/
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+
+/* Components Layer (@layer components) - for more complex, multi-utility abstractions */
+@layer components {
+  /* Typography Base Styles - Using more descriptive names */
+  .text-page-heading {
+    @apply text-3xl font-bold text-text-heading mb-6 md:text-4xl;
+  }
+
+  .text-section-heading { /* Renamed from .text-section-title for consistency */
+    @apply text-xl font-semibold text-text-heading mb-4 md:text-2xl;
+  }
+
+  .text-kpi-value { /* Maintained from original globals.css */
+     @apply text-3xl font-bold text-text-heading mt-1;
+  }
+
+  .text-content-default { /* For default paragraph text */
+    @apply text-foreground leading-relaxed md:text-lg;
+  }
+
+  .text-content-muted { /* For muted paragraph text */
+    @apply text-foreground-muted text-sm;
+  }
+
+  .text-content-link { /* For muted paragraph text */
+    @apply text-text-link hover:text-text-link-hover font-medium;
+  }
+
+  /* Button Base Styles */
+  .btn {
+    @apply px-4 py-2 rounded-app-md font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 transition-colors duration-150 select-none disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply focus-visible:ring-offset-background; /* Ensure offset is against current background */
+  }
+
+  .btn-primary {
+    @apply btn bg-primary text-primary-foreground hover:bg-primary-hover focus-visible:ring-primary;
+  }
+
+  .btn-secondary {
+    @apply btn bg-secondary text-secondary-foreground hover:bg-secondary-hover focus-visible:ring-secondary;
+  }
+
+  .btn-accent {
+    @apply btn bg-accent text-accent-foreground hover:bg-accent-hover focus-visible:ring-accent;
+  }
+
+  .btn-link {
+    @apply font-medium text-content-link hover:underline focus:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-app-sm;
+  }
+
+  /* Base Card Styling */
+  .card { /* Renamed from card-base for simplicity if it's the primary card style */
+    @apply bg-card text-card-foreground rounded-app-lg shadow-app;
+  }
+
+  /* Form Input Base Styling */
+  .input { /* Renamed from input-base for simplicity */
+    @apply block w-full px-3 py-2 border border-input-border rounded-app-md shadow-sm
+           placeholder-input-placeholder focus:outline-none focus:ring-1 focus:ring-primary
+           focus:border-primary bg-input text-input-text text-sm;
+  }
+  select.input { /* Ensure select styling is consistent */
+      @apply pr-8; /* Add padding for select arrow if not using @tailwindcss/forms's .form-select */
+  }
+
+  /* Specific utility patterns that are composed of multiple Tailwind classes */
+  /* These were .card-padding and .section-spacing-y */
+  .card-padding-default {
+    @apply p-4 md:p-6;
+  }
+
+  .section-spacing-y-default {
+    @apply py-4 md:py-12;
+  }
+}
+
+/* Utilities Layer (@layer utilities) - for very specific, single-purpose utilities if Tailwind doesn't cover them */
+@layer utilities {
+  .transition-default {
+    @apply transition-all duration-200 ease-in-out;
+  }
+
+  /* Scroll-triggered Animations - can remain here or be JS-only */
+  .scroll-fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  .scroll-fade-in.is-visible { /* More semantic class for JS to toggle */
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Parallax heading effect might be better handled by direct Tailwind classes or a specific component style if complex */
+  /* If the JS in _app.js remains the primary driver, a utility class like this is less useful for styling directly */
+  /* .parallax-heading-effect { ... } */
+}
+
+
+/* Third-party library overrides */
+
+/* react-datepicker */
+.react-datepicker-wrapper {
+  @apply block w-full;
+}
+.react-datepicker__input-container input,
+input.react-datepicker-ignore-onclickoutside { /* Target the actual input */
+  @apply input; /* Use the .input component style */
+}
+
+.react-datepicker {
+  @apply rounded-app-md border-border bg-surface shadow-lg text-sm;
+  font-family: var(--font-sans) !important; /* Important to override inline styles from the library */
+}
+.react-datepicker__header {
+  @apply bg-surface border-b border-border rounded-t-app-md p-2; /* Added padding */
+  /* color for header text is inherited or can be set to text-heading */
+}
+.react-datepicker__current-month,
+.react-datepicker-time__header, /* Added for time picker consistency */
+.react-datepicker-year-header {  /* Added for year picker consistency */
+  @apply font-semibold text-text-heading;
+}
+.react-datepicker__day-name,
+.react-datepicker__day,
+.react-datepicker__time-name { /* Added for time picker consistency */
+  @apply text-text-body w-8 h-8 leading-8 m-0.5; /* Standardized size and margin */
+}
+.react-datepicker__day:hover,
+.react-datepicker__month-text:hover, /* Added for month picker */
+.react-datepicker__quarter-text:hover, /* Added for quarter picker */
+.react-datepicker__year-text:hover { /* Added for year picker */
+  @apply bg-primary rounded-app-sm; /* Use primary with opacity for hover */
+}
+.react-datepicker__day--selected,
+.react-datepicker__day--in-selecting-range,
+.react-datepicker__day--in-range,
+.react-datepicker__month-text--selected, /* Added */
+.react-datepicker__month-text--in-selecting-range, /* Added */
+.react-datepicker__month-text--in-range, /* Added */
+.react-datepicker__quarter-text--selected, /* Added */
+.react-datepicker__quarter-text--in-selecting-range, /* Added */
+.react-datepicker__quarter-text--in-range, /* Added */
+.react-datepicker__year-text--selected, /* Added */
+.react-datepicker__year-text--in-selecting-range, /* Added */
+.react-datepicker__year-text--in-range { /* Added */
+  @apply bg-primary text-primary-foreground rounded-app-sm;
+  /* font-weight: normal; Remove bolding if not desired */
+}
+.react-datepicker__day--keyboard-selected,
+.react-datepicker__month-text--keyboard-selected, /* Added */
+.react-datepicker__quarter-text--keyboard-selected, /* Added */
+.react-datepicker__year-text--keyboard-selected { /* Added */
+  @apply bg-primary rounded-app-sm; /* Slightly different for keyboard focus */
+}
+.react-datepicker__day--disabled {
+  @apply text-foreground-muted cursor-not-allowed opacity-50;
+}
+.react-datepicker__navigation {
+  @apply top-2; /* Adjust vertical alignment */
+}
+.react-datepicker__navigation-icon::before {
+  border-color: var(--color-text-body); /* Ensure arrow color is themable */
+  border-width: 2px 2px 0 0;
+  height: 7px; /* Adjust size if needed */
+  width: 7px;  /* Adjust size if needed */
+}
+.react-datepicker__navigation:hover .react-datepicker__navigation-icon::before {
+  border-color: var(--color-text-link-hover);
+}
+
+/* Dark mode overrides for react-datepicker, if not covered by CSS vars */
+/* Most styles should adapt via CSS variables. Explicit dark overrides are for structural elements or where variables don't reach. */
+.dark .react-datepicker {
+   /* Already inherits from .dark :root vars, but can specify if needed */
+}
+.dark .react-datepicker__day:hover,
+.dark .react-datepicker__month-text:hover,
+.dark .react-datepicker__quarter-text:hover,
+.dark .react-datepicker__year-text:hover {
+  @apply bg-primary; /* Ensure dark hover is distinct */
+}
+/* Other dark mode specific styles can be added if var() updates are not sufficient */
+
+
+/* ECharts text color adjustments */
+/* More specific selectors might be needed depending on chart configurations */
+.echarts-for-react text { /* General text elements in ECharts */
+  fill: var(--color-text-muted); /* Default for axis labels, legend text etc. */
+}
+/* Example for legend specifically, if needed */
+.echarts-for-react .echarts-legend text {
+  fill: var(--color-text-body); /* Or a more specific color */
+}
