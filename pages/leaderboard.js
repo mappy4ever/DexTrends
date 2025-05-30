@@ -86,38 +86,68 @@ export default function Leaderboard() {
           ))}
         </tbody>
       </table>
+      <style jsx>{`
+        .badge {
+          font-size: 0.75rem;
+          font-weight: 700;
+          padding: 0.1rem 0.4rem;
+          border-radius: 0.375rem;
+          color: white;
+          user-select: none;
+          animation-duration: 2s;
+          animation-iteration-count: infinite;
+          animation-timing-function: ease-in-out;
+        }
+        .hot {
+          background-color: #22c55e; /* Tailwind green-500 */
+          box-shadow: 0 0 8px #22c55e;
+          animation-name: pulse-green;
+        }
+        .cold {
+          background-color: #ef4444; /* Tailwind red-500 */
+          box-shadow: 0 0 8px #ef4444;
+          animation-name: pulse-red;
+        }
+        @keyframes pulse-green {
+          0%, 100% { box-shadow: 0 0 8px #22c55e; }
+          50% { box-shadow: 0 0 16px #22c55e; }
+        }
+        @keyframes pulse-red {
+          0%, 100% { box-shadow: 0 0 8px #ef4444; }
+          50% { box-shadow: 0 0 16px #ef4444; }
+        }
+      `}</style>
     </div>
   );
 }
 
-<style jsx>{`
-  .badge {
-    font-size: 0.75rem;
-    font-weight: 700;
-    padding: 0.1rem 0.4rem;
-    border-radius: 0.375rem;
-    color: white;
-    user-select: none;
-    animation-duration: 2s;
-    animation-iteration-count: infinite;
-    animation-timing-function: ease-in-out;
-  }
-  .hot {
-    background-color: #22c55e; /* Tailwind green-500 */
-    box-shadow: 0 0 8px #22c55e;
-    animation-name: pulse-green;
-  }
-  .cold {
-    background-color: #ef4444; /* Tailwind red-500 */
-    box-shadow: 0 0 8px #ef4444;
-    animation-name: pulse-red;
-  }
-  @keyframes pulse-green {
-    0%, 100% { box-shadow: 0 0 8px #22c55e; }
-    50% { box-shadow: 0 0 16px #22c55e; }
-  }
-  @keyframes pulse-red {
-    0%, 100% { box-shadow: 0 0 8px #ef4444; }
-    50% { box-shadow: 0 0 16px #ef4444; }
-  }
-`}</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
