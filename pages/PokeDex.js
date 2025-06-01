@@ -141,7 +141,7 @@ export default function PokeDex() {
         <div className="text-center text-content-muted">Failed to load Pokémon.</div>
       ) : (
         <>
-          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-6">
+          <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-6">
             {sortedPokemon.map((poke) => {
               const pokeId = poke.id ? String(poke.id) : poke.url.split("/").filter(Boolean).pop();
               return (
