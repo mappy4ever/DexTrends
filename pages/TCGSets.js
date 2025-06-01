@@ -2,7 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import pokemon from "pokemontcgsdk";
 
-pokemon.configure({ apiKey: "7ee6ca7f-f74d-4599-87c9-3c9a95d0ebba" });
+const pokemonKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+if (!pokemonKey) {
+  throw new Error(
+    "NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY environment variable is not set. Please set it to your .env.local."
+  );
+}
+
+pokemon.configure({ apiKey: pokemonKey });
 
 export default function TCGSets() {
   const [sets, setSets] = useState([]);

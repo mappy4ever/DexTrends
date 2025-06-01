@@ -1,7 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import pokemon from "pokemontcgsdk";
 
-pokemon.configure({ apiKey: "7ee6ca7f-f74d-4599-87c9-3c9a95d0ebba" });
+const pokemonKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+if (!pokemonKey) {
+  throw new Error(
+    "NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY environment variable is not set. Please set it to your .env.local."
+  );
+}
+
+pokemon.configure({ apiKey: pokemonKey });
 
 function getPrice(card) {
   // TCGPlayer market price if available

@@ -7,6 +7,7 @@ import ErrorBoundary from "../components/layout/ErrorBoundary";
 import "../components/cardfeatures.css";
 
 import { ModalProvider } from '../context/ModalContext';
+import { SortingProvider } from '../context/SortingContext';
 import GlobalModal from '../components/GlobalModal';
 
 // Simple throttle function
@@ -49,12 +50,14 @@ function MyApp({ Component, pageProps }) {
   return (
     <ErrorBoundary>
       <ThemeProvider> {/* Custom ThemeProvider */}
-        <ModalProvider>
-          <Layout>
-            <Component {...pageProps} />
-            <GlobalModal />
-          </Layout>
-        </ModalProvider>
+        <SortingProvider>
+          <ModalProvider>
+            <Layout>
+              <Component {...pageProps} />
+              <GlobalModal />
+            </Layout>
+          </ModalProvider>
+        </SortingProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );
