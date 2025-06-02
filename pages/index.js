@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import pokemon from "pokemontcgsdk";
+import Modal from "../components/Modal";
 
 const pokemonKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
 if (!pokemonKey) {
@@ -46,11 +47,25 @@ export default function Moazzam() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // State for expanded card modal
-  const [expandedCard, setExpandedCard] = useState(null);
+  // State for modal and selected card
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalCard, setModalCard] = useState(null);
+  const [selectedCardId, setSelectedCardId] = useState(null);
 
   // Ref to detect clicks outside expanded card modal
   const containerRef = useRef(null);
+
+  function openModal(card) {
+    setModalCard(card);
+    setModalOpen(true);
+    setSelectedCardId(card.id);
+  }
+
+  function closeModal() {
+    setModalOpen(false);
+    setModalCard(null);
+    setSelectedCardId(null);
+  }
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -58,7 +73,7 @@ export default function Moazzam() {
     setError(null);
     setCards([]);
     try {
-      const result = await pokemon.card.where({ q: `name:${searchTerm}` });
+      const result = await pokemon.card.where({ q: `name:${searchTerm}*` });
       setCards(result.data);
     } catch (err) {
       setError("Failed to load cards.");
@@ -87,18 +102,18 @@ export default function Moazzam() {
   useEffect(() => {
     function handleClickOutside(event) {
       if (
-        expandedCard &&
+        modalOpen &&
         containerRef.current &&
         !containerRef.current.contains(event.target)
       ) {
-        setExpandedCard(null);
+        closeModal();
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [expandedCard]);
+  }, [modalOpen]);
 
   return (
     <div
@@ -142,8 +157,8 @@ export default function Moazzam() {
           return (
             <div
               key={card.id}
-              onClick={() => setExpandedCard(card)}
-              className={`card card-padding-default flex flex-col items-center w-[260px] bg-gradient-to-br from-surface via-card to-background shadow-app-md rounded-app-lg border border-border animate-fadeIn group cursor-pointer ${getRarityGlow(card.rarity)}`}
+              onClick={() => openModal(card)}
+              className={`card card-padding-default flex flex-col items-center w-[260px] bg-gradient-to-br from-surface via-card to-background shadow-app-md rounded-app-lg border border-border animate-fadeIn group cursor-pointer ${getRarityGlow(card.rarity)} ${selectedCardId === card.id ? "card-selected" : ""}`}
               style={{
                 animationDelay: `${i * 50}ms`
               }}
@@ -196,50 +211,16 @@ export default function Moazzam() {
         </p>
       )}
 
-      {/* Modal overlay for expanded card */}
-      {expandedCard && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[9999]" onClick={() => setExpandedCard(null)}>
-          <div
-            ref={containerRef}
-            className="bg-background rounded-app-lg p-6 max-w-[90vw] max-h-[90vh] overflow-auto relative flex flex-col items-center"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              type="button"
-              onClick={() => setExpandedCard(null)}
-              className="absolute top-2 right-2 text-3xl font-bold text-content-muted hover:text-content-default cursor-pointer"
-              aria-label="Close modal"
-            >
-              ✕
-            </button>
+      {modalOpen && (
+        <Modal onClose={closeModal}>
+          <div className="flex flex-col" ref={containerRef}>
             <img
-              src={expandedCard.images.large}
-              alt={expandedCard.name}
-              className="rounded-app-md w-[340px] h-[480px] max-w-full max-h-[60vh] object-cover shadow-lg mb-4"
-              draggable="false"
+              src={modalCard.images.large}
+              alt={modalCard.name}
+              className="max-w-[80vw] md:max-w-[400px] max-h-[80vh] object-contain rounded-md"
             />
-            <h3 className="text-2xl font-bold text-text-heading mb-2 text-center">
-              {expandedCard.name}
-            </h3>
-            <div className="text-content-default text-base text-center mb-2">
-              <b>Set:</b> {expandedCard.set?.name || "N/A"}
-            </div>
-            <div className="text-content-default text-base text-center mb-2">
-              <b>Rarity:</b>{" "}
-              <span className="font-semibold">{expandedCard.rarity || "N/A"}</span>
-            </div>
-            <div className="text-content-default text-base text-center mb-2">
-              <b>Market Price:</b>{" "}
-              <span className="font-semibold text-green-700">
-                {getPrice(expandedCard)}
-              </span>
-            </div>
-            <div className="text-content-default text-base text-center mb-2">
-              <b>Type:</b> {expandedCard.types ? expandedCard.types.join(", ") : "N/A"}
-            </div>
-            {renderEvolutionLine(expandedCard)}
           </div>
-        </div>
+        </Modal>
       )}
 
       <style jsx global>{`

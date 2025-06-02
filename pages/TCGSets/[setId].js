@@ -25,10 +25,18 @@ export default function SetIdPage() {
       setLoading(false);
     });
 
-    pokemon.card.where({ set: setId }).then((cardsData) => {
+    pokemon.card.where({ q: `set.id:${setId}` }).then((cardsData) => {
       setCards(cardsData.data);
     });
   }, [setId]);
+
+  function getPrice(card) {
+    return (
+      card.tcgplayer?.prices?.holofoil?.market?.toFixed(2) ||
+      card.tcgplayer?.prices?.normal?.market?.toFixed(2) ||
+      null
+    );
+  }
 
   function openModal(card) {
     setModalCard(card);
@@ -63,6 +71,9 @@ export default function SetIdPage() {
               />
             )}
             <div className="card-name-overlay">{card.name}</div>
+            <div className="card-price-box mt-1 px-2 py-1 bg-gray-100 rounded text-sm font-semibold text-green-700">
+              {getPrice(card) ? `$${getPrice(card)}` : "N/A"}
+            </div>
             <div className="card-magnifier-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M15.5 14h-.79l-.28-.27a6.471 6.471 0 001.48-5.34C14.99 5.42 12.5 3 9.5 3S4 5.42 4 8.5 6.5 14 9.5 14a6.471 6.471 0 005.34-1.48l.27.28v.79l5 4.99L20.49 19l-4.99-5zM9.5 12c-1.93 0-3.5-1.57-3.5-3.5S7.57 5 9.5 5 13 6.57 13 8.5 11.43 12 9.5 12z" />
