@@ -8,61 +8,40 @@
   referenced by tailwind.config.js.
 */
 :root {
-  /* Core Palette Values (RGB for opacity control if needed, or hex directly) */
-  --color-primary-default-val: 0 95 115; /* #005f73 216 6 33 0 95 115*/
-  --color-primary-darker-val: 0 76 92;  /* #004c5c (Derived from #005f73) */
-  --color-secondary-default-val: 233 196 106; /* #e9c46a */
-  --color-secondary-darker-val: 212 172 93; /* #d4ac5d (Derived from #e9c46a) */
-  --color-accent-default-val: 244 162 97; /* #f4a261 */
-  --color-accent-darker-val: 226 135 67; /* #e28743 (Derived or chosen) */
+  /* Updated Core Palette Values */
+  --color-primary-default-val: 255 0 0; /* #FF0000 (Pokédex Red) */
+  --color-primary-darker-val: 200 0 0; /* #C80000 */
+  --color-secondary-default-val: 255 255 0; /* #FFFF00 (Pokédex Yellow) */
+  --color-secondary-darker-val: 200 200 0; /* #C8C800 */
+  --color-accent-default-val: 0 0 255; /* #0000FF (Pokédex Blue) */
+  --color-accent-darker-val: 0 0 200; /* #0000C8 */
 
-  /* Light Theme Colors */
-  --color-primary-default: rgb(var(--color-primary-default-val));
-  --color-primary-darker: rgb(var(--color-primary-darker-val));
-  --color-secondary-default: rgb(var(--color-secondary-default-val));
-  --color-secondary-darker: rgb(var(--color-secondary-darker-val));
-  --color-accent-default: rgb(var(--color-accent-default-val));
-  --color-accent-darker: rgb(var(--color-accent-darker-val));
-
-  --color-background-default: #f8f9fa;
+  /* Updated Light Theme Colors */
+  --color-background-default: #f0f8ff; /* Light blue background */
   --color-surface-default: #ffffff;
-  --color-navbar-default: rgba(255, 255, 255, 0.8);
-  --color-navbar-scrolled: rgba(255, 255, 255, 0.95);
+  --color-navbar-default: rgba(255, 255, 255, 0.9);
+  --color-navbar-scrolled: rgba(255, 255, 255, 1);
 
-  --color-text-heading: #003440;
-  --color-text-subheading: #003440; /* Often same as heading */
+  /* Updated Text Colors */
+  --color-text-heading: #FF0000; /* Red for headings */
   --color-text-body: #212529;
-  --color-text-muted: #6c757d;
-  --color-text-inverted: #ffffff;
   --color-text-link: var(--color-primary-default);
   --color-text-link-hover: var(--color-primary-darker);
-  --color-text-highlight: var(--color-accent-default); /* Using accent for highlight */
-  --color-text-highlight-hover: var(--color-accent-darker);
 
-  --color-border-default: #dee2e6;
-  --color-shadow-default: rgba(0, 0, 0, 0.075);
-  --color-chart-background: #fdf8f3; /* Example, adjust as needed */
+  /* Updated Card and Button Styling */
+  --color-card-background: #FFFFE0; /* Light yellow for cards */
+  --color-card-foreground: #212529;
+  --color-button-background: var(--color-primary-default);
+  --color-button-hover: var(--color-primary-darker);
+  --color-button-text: #ffffff;
 
-  /* Semantic UI Element Colors (derived from palette) */
-  --color-foreground-default: var(--color-text-body);
-  --color-foreground-muted: var(--color-text-muted);
-  --color-card-background: var(--color-surface-default);
-  --color-card-foreground: var(--color-text-body);
-  --color-input-background: var(--color-surface-default);
-  --color-input-border: var(--color-border-default);
-  --color-input-text: var(--color-text-body);
-  --color-input-placeholder: var(--color-text-muted);
+  /* Updated Fonts */
+  --font-sans: "Pokemon", "Inter", system-ui, sans-serif;
 
-  /* Fonts */
-  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-serif: "Georgia", Cambria, "Times New Roman", Times, serif;
-  --font-mono: "Menlo", Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-
-  /* Radius (optional, can also be fully managed in tailwind.config.js) */
-  --radius-sm: 0.25rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
+  /* Unified border radius */
+  --radius-default: 0.75rem;
+  /* Smooth animation timing */
+  --transition-duration: 300ms;
 }
 
 .dark {
@@ -112,7 +91,7 @@
 
 /* Base HTML Element Styling */
 body {
-  @apply bg-background text-foreground font-sans antialiased;
+  @apply bg-gradient-to-br from-[#f8fafc] to-[#eff6ff] font-sans text-foreground antialiased;
   /* font-family is set by Tailwind via config, antialiased is good */
 }
 
@@ -169,8 +148,11 @@ html {
 
   /* Button Base Styles */
   .btn {
-    @apply px-4 py-2 rounded-app-md font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 transition-colors duration-150 select-none disabled:opacity-50 disabled:cursor-not-allowed;
-    @apply focus-visible:ring-offset-background; /* Ensure offset is against current background */
+    @apply px-4 py-2 rounded-[var(--radius-default)] font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 transition-colors duration-[var(--transition-duration)] transform;
+  }
+  .btn:hover {
+    @apply scale-105;
+    transition-duration: var(--transition-duration);
   }
 
   .btn-primary {
@@ -189,14 +171,17 @@ html {
     @apply font-medium text-content-link hover:underline focus:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-app-sm;
   }
 
-  /* Base Card Styling */
-  .card { /* Renamed from card-base for simplicity if it's the primary card style */
-    @apply bg-card text-card-foreground rounded-app-lg shadow-app;
+  /* Card Base Styles */
+  .card {
+    @apply bg-card text-card-foreground rounded-[var(--radius-default)] shadow-md p-4 transition-transform duration-[var(--transition-duration)];
+  }
+  .card:hover {
+    @apply shadow-lg scale-105;
   }
 
   /* Form Input Base Styling */
   .input { /* Renamed from input-base for simplicity */
-    @apply block w-full px-3 py-2 border border-input-border rounded-app-md shadow-sm
+    @apply block w-full px-3 py-2 border border-input-border rounded-[var(--radius-default)] shadow-sm
            placeholder-input-placeholder focus:outline-none focus:ring-1 focus:ring-primary
            focus:border-primary bg-input text-input-text text-sm;
   }
@@ -235,6 +220,21 @@ html {
   /* Parallax heading effect might be better handled by direct Tailwind classes or a specific component style if complex */
   /* If the JS in _app.js remains the primary driver, a utility class like this is less useful for styling directly */
   /* .parallax-heading-effect { ... } */
+
+  /* Custom Animations */
+  .animate-fadeIn {
+    animation: fadeIn 0.4s ease-out forwards;
+  }
+  .animate-scaleIn {
+    animation: scaleIn 0.4s ease-out forwards;
+  }
+}
+
+
+/* Keyframes */
+@keyframes scaleIn {
+  0% { opacity: 0; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
 

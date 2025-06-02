@@ -31,7 +31,7 @@ export default function Navbar({ isCollapsed, setIsCollapsed }) {
     return acc;
   }, { "/": "Dashboard" }); // Ensure root path has a title
 
-  const currentTitle = pageTitles[router.pathname] || "OnOurDime";
+  const currentTitle = pageTitles[router.pathname] || "DexTrends"; // Updated title
 
   // Initialize sidebarMode from localStorage
   useEffect(() => {
@@ -171,7 +171,7 @@ export default function Navbar({ isCollapsed, setIsCollapsed }) {
         <div className={`flex items-center h-16 px-4 border-b border-border flex-shrink-0 ${!showText && "justify-center"}`}>
           <Link href="/" className="flex items-center gap-x-2 text-xl font-bold text-foreground overflow-hidden">
             <RiGovernmentFill size={24} className="flex-shrink-0 text-primary" />
-            {showText && <span className="truncate">OnOurDime</span>}
+            {showText && <span className="truncate">DexTrends</span>}
           </Link>
         </div>
 

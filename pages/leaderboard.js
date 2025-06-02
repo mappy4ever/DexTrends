@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+// import CardList from "../components/CardList";
 
 function formatDate(dateString) {
   const date = new Date(dateString);
@@ -53,39 +54,7 @@ export default function Leaderboard() {
           Last updated: {formatDate(lastUpdated)}
         </p>
       )}
-      <table className="min-w-full border-collapse border border-gray-300">
-        <thead>
-          <tr>
-            <th className="border border-gray-300 px-4 py-2">Card</th>
-            <th className="border border-gray-300 px-4 py-2">Price (USD)</th>
-            <th className="border border-gray-300 px-4 py-2">Change (%)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {cards.map(card => (
-            <tr key={card.id} className="hover:bg-gray-100">
-              <td className="border border-gray-300 px-4 py-2 flex items-center space-x-4">
-                <img src={card.image} alt={card.name} className="w-16 h-22 object-contain rounded" />
-                <span className="flex items-center space-x-2">
-                  <span>{card.name}</span>
-                  {card.priceChange > 5 && (
-                    <span className="badge hot">🔥 Hot</span>
-                  )}
-                  {card.priceChange < -5 && (
-                    <span className="badge cold">❄️ Cold</span>
-                  )}
-                </span>
-              </td>
-              <td className="border border-gray-300 px-4 py-2">${card.price?.toFixed(2) ?? 'N/A'}</td>
-              <td className={`border border-gray-300 px-4 py-2 font-semibold ${
-                card.priceChange > 0 ? 'text-green-600' : card.priceChange < 0 ? 'text-red-600' : ''
-              }`}>
-                {card.priceChange !== null ? card.priceChange.toFixed(2) + '%' : 'N/A'}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {/* <CardList cards={cards} /> */}
       <style jsx>{`
         .badge {
           font-size: 0.75rem;

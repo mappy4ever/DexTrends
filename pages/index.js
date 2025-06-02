@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import pokemon from "pokemontcgsdk";
 import Modal from "../components/Modal";
+import CardList from "../components/CardList";
+import CustomSiteLogo from "../components/icons/CustomSiteLogo";
 
 const pokemonKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
 if (!pokemonKey) {
@@ -41,7 +43,7 @@ function getRarityGlow(rarity) {
   return "";
 }
 
-export default function Moazzam() {
+export default function IndexPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -116,113 +118,84 @@ export default function Moazzam() {
   }, [modalOpen]);
 
   return (
-    <div
-      className="container section-spacing-y-default max-w-6xl mx-auto relative min-h-screen"
-    >
-      <h2 className="text-page-heading text-center mb-6">
-        Pokémon Card Search
-        <span className="ml-2 animate-bounce">✨</span>
-      </h2>
-      <form
-        onSubmit={handleSearch}
-        className="flex justify-center mb-8"
-        autoComplete="off"
-      >
+    <div className="min-h-screen bg-gradient-to-br from-[#f0f8ff] via-[#f9fafb] to-[#e0e7ff] flex flex-col items-center justify-start py-10 px-4">
+      <div className="flex flex-col items-center mb-8 animate-fadeIn">
+        <div className="rounded-3xl shadow-2xl border-4 border-[#FFDE59] bg-white p-6 mb-4 relative overflow-visible" style={{ background: 'linear-gradient(135deg, #fffbe6 60%, #e0f7fa 100%)' }}>
+          <div className="absolute -top-4 -right-4 animate-bounce">
+            <span className="inline-block text-yellow-400 text-3xl">✨</span>
+          </div>
+          <CustomSiteLogo size={130} className="mx-auto drop-shadow-xl" />
+        </div>
+        <h1 className="text-4xl md:text-5xl font-extrabold text-[#FF0000] drop-shadow-lg tracking-tight text-center mb-2 font-sans">
+          Pokémon Card Search <span className="align-middle animate-pulse">✨</span>
+        </h1>
+        <p className="text-lg md:text-xl text-[#2a2a2a] font-medium text-center mb-4 max-w-xl">
+          Discover, track, and explore Pokémon TCG card prices and trends in a beautiful Pokédex-inspired experience.
+        </p>
+      </div>
+      <form onSubmit={handleSearch} className="flex flex-col md:flex-row justify-center items-center gap-3 mb-8 w-full max-w-2xl bg-white/80 rounded-xl shadow-md p-4 border border-[#FFDE59]">
         <input
           type="text"
-          placeholder="Enter Pokémon name (e.g., Charizard)"
+          className="input text-lg rounded-app-md w-full md:w-80 max-w-full border-2 border-[#FFDE59] focus:border-[#FF0000] focus:ring-2 focus:ring-[#FFDE59] bg-[#fffbe6] placeholder-gray-400"
+          placeholder="Search for a card (e.g., Pikachu)"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="input rounded-l-app-md text-lg w-72 max-w-xs focus:ring-primary focus:border-primary bg-white/80"
         />
-        <button
-          type="submit"
-          className="btn-primary rounded-r-app-md rounded-l-none text-lg font-semibold px-6 shadow hover:scale-105 active:scale-95 transition-transform duration-150"
-        >
+        <button type="submit" className="btn btn-primary ml-0 md:ml-2 px-6 py-2 text-lg rounded-lg shadow-md bg-[#FF0000] hover:bg-[#C80000] text-white font-bold transition-all duration-150">
           Search
         </button>
       </form>
-
-      {loading && (
-        <p className="text-center text-content-muted animate-fadeIn">
-          Loading cards...
-        </p>
-      )}
-      {error && (
-        <p className="text-center text-red-500 animate-fadeIn">{error}</p>
-      )}
-
-      <div className="flex flex-wrap gap-8 justify-center">
-        {cards.map((card, i) => {
-          return (
-            <div
-              key={card.id}
-              onClick={() => openModal(card)}
-              className={`card card-padding-default flex flex-col items-center w-[260px] bg-gradient-to-br from-surface via-card to-background shadow-app-md rounded-app-lg border border-border animate-fadeIn group cursor-pointer ${getRarityGlow(card.rarity)} ${selectedCardId === card.id ? "card-selected" : ""}`}
-              style={{
-                animationDelay: `${i * 50}ms`
-              }}
-            >
-              <div className="relative mb-2 w-[190px] h-[260px]">
-                <img
-                  src={card.images.large}
-                  alt={card.name}
-                  className="rounded-app-md w-full h-full object-cover shadow-lg transition-all duration-200 ease-in-out transform hover:scale-125 hover:z-20 hover:shadow-2xl cursor-pointer"
-                  draggable="false"
-                />
-                {/* Magnifier / Zoom icon */}
-                <button
-                  type="button"
-                  tabIndex={-1}
-                  aria-hidden="true"
-                  className="absolute top-2 right-2 z-30 text-xl select-none bg-white/80 rounded-full p-1 shadow-md transition-opacity duration-200 opacity-0 group-hover:opacity-100 cursor-pointer"
-                  aria-label="Zoom in"
-                >
-                  🔍
-                </button>
-              </div>
-              <h3 className="text-lg font-bold text-text-heading text-center mb-1">
-                {card.name}
-              </h3>
-              <div className="text-content-default text-sm text-center mb-1">
-                <b>Set:</b> {card.set?.name || "N/A"}
-              </div>
-              <div className="text-content-default text-xs mb-1">
-                <b>Rarity:</b>{" "}
-                <span className="font-semibold">{card.rarity || "N/A"}</span>
-              </div>
-              <div className="text-content-default text-xs mb-1">
-                <b>Market Price:</b>{" "}
-                <span className="font-semibold text-green-700">
-                  {getPrice(card)}
-                </span>
-              </div>
-              <div className="text-content-default text-xs mb-1">
-                <b>Type:</b> {card.types ? card.types.join(", ") : "N/A"}
-              </div>
-              {renderEvolutionLine(card)}
-            </div>
-          );
-        })}
+      <div className="w-full max-w-2xl mb-8">
+        <CardList
+          cards={cards}
+          loading={loading}
+          error={error}
+          initialSortOption="price"
+          onCardClick={openModal}
+          getPrice={getPrice}
+          getReleaseDate={(card) => card.set?.releaseDate || "0000-00-00"}
+          getRarityRank={(card) => {
+            const rarityOrder = {
+              "Common": 1,
+              "Uncommon": 2,
+              "Rare": 3,
+              "Rare Holo": 4,
+              "Rare Ultra": 5,
+              "Rare Secret": 6,
+              "Rare Holo GX": 7,
+              "Rare Rainbow": 8,
+              "Rare Prism Star": 9,
+              "Rare Full Art": 10,
+              "Rare Holo EX": 11,
+              "Rare Holo V": 12,
+              "Rare Holo VMAX": 13,
+            };
+            return rarityOrder[card.rarity] || 0;
+          }}
+        />
       </div>
-      {!loading && !error && cards.length === 0 && (
-        <p className="text-center text-content-muted mt-12 animate-fadeIn">
-          No cards found. Try another Pokémon name!
-        </p>
-      )}
-
-      {modalOpen && (
+      {modalOpen && modalCard && (
         <Modal onClose={closeModal}>
-          <div className="flex flex-col" ref={containerRef}>
+          <div className="flex flex-col items-center" ref={containerRef}>
             <img
               src={modalCard.images.large}
               alt={modalCard.name}
-              className="max-w-[80vw] md:max-w-[400px] max-h-[80vh] object-contain rounded-md"
+              className="max-w-[80vw] md:max-w-[400px] max-h-[80vh] object-contain rounded-2xl border-4 border-[#FFDE59] shadow-xl bg-white"
             />
+            <h3 className="text-2xl font-bold mt-4 text-[#FF0000] drop-shadow-md">{modalCard.name}</h3>
+            <p className="text-content-default mt-2">
+              <b>Set:</b> {modalCard.set?.name || "N/A"}
+            </p>
+            <p className="text-content-default mt-1">
+              <b>Rarity:</b> {modalCard.rarity || "N/A"}
+            </p>
+            <p className="text-content-default mt-1">
+              <b>Price:</b> {getPrice(modalCard)}
+            </p>
+            {renderEvolutionLine(modalCard)}
           </div>
         </Modal>
       )}
-
       <style jsx global>{`
         .shadow-glow-rare {
           box-shadow: 0 0 14px 4px #ffe06655, 0 2px 8px 0 var(--color-shadow-default);
