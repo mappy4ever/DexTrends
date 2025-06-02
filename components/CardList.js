@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import Image from 'next/image';
 
 export default function CardList({
   cards = [],
@@ -55,17 +56,21 @@ export default function CardList({
         {sortedCards.map((card) => (
           <div
             key={card.id}
-            className="card card-padding-default flex flex-col items-center w-[260px] bg-card shadow-app-md rounded-app-lg border border-border cursor-zoom-in"
+            className="card card-padding-default flex flex-col items-center w-[260px] bg-card shadow-app-md rounded-app-lg border border-border cursor-zoom-in transition-transform duration-200 hover:scale-105 hover:shadow-xl animate-fadeIn"
             onClick={() => onCardClick(card)}
             title={`Click to zoom card: ${card.name}`}
+            tabIndex={0}
+            role="button"
+            onKeyPress={e => { if (e.key === 'Enter') onCardClick(card); }}
           >
-            {card.images?.large && (
-              <img
-                src={card.images.large}
-                alt={card.name}
-                className="rounded-app-md mb-2 w-[190px] h-[260px] object-cover shadow cursor-zoom-in hover:scale-110 transition-transform duration-200"
-              />
-            )}
+            <Image
+              src={card.images?.large || '/placeholder.png'}
+              alt={card.name}
+              width={190}
+              height={260}
+              className="rounded-app-md mb-2 object-cover shadow"
+              priority={false}
+            />
             <h3 className="text-lg font-bold text-text-heading text-center mb-1">
               {card.name}
             </h3>
