@@ -111,7 +111,7 @@ export default function PokeDex() {
   const isReachingEnd = data && data[data.length - 1]?.results.length < pageSize;
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-2 sm:px-4 section-spacing-y-default">
+    <div className="container section-spacing-y-default max-w-5xl mx-auto">
       <h1 className="text-3xl font-bold text-center mb-8">Pokédex Gallery</h1>
       <div className="flex justify-center mb-6">
         <input
@@ -141,7 +141,7 @@ export default function PokeDex() {
         <div className="text-center text-content-muted">Failed to load Pokémon.</div>
       ) : (
         <>
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 2xl:grid-cols-12 gap-6">
+          <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-6">
             {sortedPokemon.map((poke) => {
               const pokeId = poke.id ? String(poke.id) : poke.url.split("/").filter(Boolean).pop();
               return (
@@ -160,7 +160,7 @@ export default function PokeDex() {
                   <div className="capitalize font-semibold text-center mt-2">
                     {poke.name}
                   </div>
-                  <div className="mt-1 mb-2 px-3 py-1 rounded-full bg-gray-300 text-gray-700 font-semibold text-sm select-none">
+                  <div className="mt-1 mb-2 px-3 py-1 rounded-full bg-gray-200 text-gray-800 font-semibold text-sm select-none">
                     #{pokeId.padStart(3, '0')}
                   </div>
                 </div>

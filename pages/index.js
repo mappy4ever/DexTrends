@@ -145,33 +145,35 @@ export default function IndexPage() {
           Search
         </button>
       </form>
-      <CardList
-        cards={cards}
-        loading={loading}
-        error={error}
-        initialSortOption="price"
-        onCardClick={openModal}
-        getPrice={getPrice}
-        getReleaseDate={(card) => card.set?.releaseDate || "0000-00-00"}
-        getRarityRank={(card) => {
-          const rarityOrder = {
-            "Common": 1,
-            "Uncommon": 2,
-            "Rare": 3,
-            "Rare Holo": 4,
-            "Rare Ultra": 5,
-            "Rare Secret": 6,
-            "Rare Holo GX": 7,
-            "Rare Rainbow": 8,
-            "Rare Prism Star": 9,
-            "Rare Full Art": 10,
-            "Rare Holo EX": 11,
-            "Rare Holo V": 12,
-            "Rare Holo VMAX": 13,
-          };
-          return rarityOrder[card.rarity] || 0;
-        }}
-      />
+      <div className="w-full mb-8">
+        <CardList
+          cards={cards}
+          loading={loading}
+          error={error}
+          initialSortOption="price"
+          onCardClick={openModal}
+          getPrice={getPrice}
+          getReleaseDate={(card) => card.set?.releaseDate || "0000-00-00"}
+          getRarityRank={(card) => {
+            const rarityOrder = {
+              "Common": 1,
+              "Uncommon": 2,
+              "Rare": 3,
+              "Rare Holo": 4,
+              "Rare Ultra": 5,
+              "Rare Secret": 6,
+              "Rare Holo GX": 7,
+              "Rare Rainbow": 8,
+              "Rare Prism Star": 9,
+              "Rare Full Art": 10,
+              "Rare Holo EX": 11,
+              "Rare Holo V": 12,
+              "Rare Holo VMAX": 13,
+            };
+            return rarityOrder[card.rarity] || 0;
+          }}
+        />
+      </div>
       {modalOpen && modalCard && (
         <Modal onClose={closeModal}>
           <div className="flex flex-col items-center" ref={containerRef}>

@@ -5,6 +5,7 @@ import Layout from "../components/layout/Layout";
 import ThemeProvider from "../components/layout/ThemeProvider"; // Assuming this component exists and is correctly set up
 import ErrorBoundary from "../components/layout/ErrorBoundary";
 import "../components/cardfeatures.css";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { ModalProvider } from '../context/ModalContext';
 import { SortingProvider } from '../context/SortingContext';
@@ -24,7 +25,7 @@ const throttle = (func, limit) => {
   };
 };
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps, router }) {
   useEffect(() => {
     const handleScroll = () => {
       const headings = document.querySelectorAll(".parallax-heading"); // Class used for JS targeting
@@ -53,7 +54,18 @@ function MyApp({ Component, pageProps }) {
         <SortingProvider>
           <ModalProvider>
             <Layout>
-              <Component {...pageProps} />
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={router.route}
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -24 }}
+                  transition={{ duration: 0.35, ease: "easeInOut" }}
+                  className="min-h-screen"
+                >
+                  <Component {...pageProps} />
+                </motion.div>
+              </AnimatePresence>
               <GlobalModal />
             </Layout>
           </ModalProvider>
