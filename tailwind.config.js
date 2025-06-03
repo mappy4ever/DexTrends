@@ -9,73 +9,60 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Core semantic colors using CSS Variables defined in globals.css
+        // Premium, sophisticated palette
         primary: {
           DEFAULT: "var(--color-primary-default)",
-          foreground: "var(--color-text-inverted)", // Text on primary background
-          hover: "var(--color-primary-darker)",    // For hover states of primary elements
+          foreground: "#fff",
+          hover: "var(--color-primary-darker)",
         },
         secondary: {
           DEFAULT: "var(--color-secondary-default)",
-          foreground: "var(--color-text-body)", // Text on secondary (depends on secondary's lightness)
+          foreground: "#222f3f",
           hover: "var(--color-secondary-darker)",
         },
         accent: {
           DEFAULT: "var(--color-accent-default)",
-          foreground: "var(--color-text-inverted)", // Text on accent
+          foreground: "#fff",
           hover: "var(--color-accent-darker)",
         },
-        // UI elements
         background: "var(--color-background-default)",
-        surface: "var(--color-surface-default)", // For cards, modals, etc.
+        surface: "var(--color-surface-default)",
         navbar: {
           DEFAULT: "var(--color-navbar-default)",
           scrolled: "var(--color-navbar-scrolled)",
         },
         border: "var(--color-border-default)",
-        ring: "var(--color-primary-default)", // For focus rings, often matches primary
-
-        // Foreground (text) colors
+        ring: "var(--color-primary-default)",
         foreground: {
-            DEFAULT: "var(--color-foreground-default)",
-            muted: "var(--color-foreground-muted)",
-            // Add more if needed: subtle, emphasis, etc.
+          DEFAULT: "#222f3f",
+          muted: "#7b8794",
         },
-        // Card specific colors (can often just use surface and foreground)
         card: {
-            DEFAULT: "var(--color-card-background)",
-            foreground: "var(--color-card-foreground)",
+          DEFAULT: "var(--color-card-background)",
+          foreground: "var(--color-card-foreground)",
         },
-        // Input specific colors
         input: {
-            DEFAULT: "var(--color-input-background)", // Input field background
-            text: "var(--color-input-text)",
-            border: "var(--color-input-border)",
-            placeholder: "var(--color-input-placeholder)",
+          DEFAULT: "var(--color-surface-default)",
+          text: "#222f3f",
+          border: "var(--color-border-default)",
+          placeholder: "#b0b8c1",
         },
-        // Direct text color mapping (use foreground.DEFAULT/muted where possible)
         text: {
-          heading: "var(--color-text-heading)",
-          subheading: "var(--color-text-subheading)",
-          body: "var(--color-text-body)", // Aliased by foreground.DEFAULT
-          muted: "var(--color-text-muted)", // Aliased by foreground.muted
-          navbar: "var(--color-text-navbar)", // Specific for navbar if different
-          inverted: "var(--color-text-inverted)",
-          link: "var(--color-text-link)",
-          'link-hover': "var(--color-text-link-hover)",
-          highlight: "var(--color-text-highlight)",
-          'highlight-hover': "var(--color-text-highlight-hover)",
+          heading: "#22304f",
+          subheading: "#22304f",
+          body: "#222f3f",
+          muted: "#7b8794",
+          navbar: "#22304f",
+          inverted: "#fff",
+          link: "var(--color-primary-default)",
+          'link-hover': "var(--color-primary-darker)",
+          highlight: "var(--color-secondary-default)",
+          'highlight-hover': "var(--color-secondary-darker)",
         },
-        // Chart colors (if they don't fit into the primary/secondary/accent model)
         chart: {
-          background: "var(--color-chart-background)",
-		  legend: "var(--color-text-body)"
-          // e.g., series1: 'var(--color-chart-series-1)',
+          background: "#f5f7fa",
+          legend: "#222f3f"
         },
-        // Removed button & button-secondary color objects.
-        // Button styling is better handled by .btn-primary, .btn-secondary in CSS
-        // using the primary, secondary, accent colors directly.
-        // Example: bg-primary, text-primary-foreground
       },
       fontFamily: {
         // Ensure these CSS variables are defined in globals.css

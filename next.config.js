@@ -13,4 +13,7 @@ module.exports = {
     // Add your Pokémon API key here for explicit clarity in next.config.js
     NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY: process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY,
   },
+  images: {
+    domains: ['images.pokemontcg.io'],
+  },
 };

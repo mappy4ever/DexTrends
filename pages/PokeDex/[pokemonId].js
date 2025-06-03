@@ -78,11 +78,7 @@ export default function PokemonDetail() {
   }
 
   return (
-    <div className="container section-spacing-y-default max-w-5xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6 capitalize text-center">
-        Cards for {pokemonId}
-      </h1>
-
+    <>
       <CardList
         cards={cards}
         loading={loading}
@@ -92,8 +88,10 @@ export default function PokemonDetail() {
         getPrice={getPrice}
         getReleaseDate={getReleaseDate}
         getRarityRank={getRarityRank}
+        title={`Cards for ${pokemonId}`}
+        subtitle={null}
+        showSearch={true}
       />
-
       {modalOpen && modalCard && (
         <Modal onClose={closeModal}>
           <div className="flex flex-col items-center">
@@ -120,6 +118,6 @@ export default function PokemonDetail() {
           </div>
         </Modal>
       )}
-    </div>
+    </>
   );
 }

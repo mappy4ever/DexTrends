@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import pokemon from "pokemontcgsdk";
 import Modal from "../../components/Modal";
 import CardList from "../../components/CardList";
+import LoadingSpinner from "../../components/ui/LoadingSpinner";
 
 export default function SetIdPage() {
   const router = useRouter();
@@ -50,9 +51,12 @@ export default function SetIdPage() {
     setModalCard(null);
   }
 
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
   return (
-    <div className="container section-spacing-y-default max-w-5xl mx-auto">
-      <h2 className="text-lg font-semibold mb-2">{setInfo?.name || "Loading..."}</h2>
+    <>
       <CardList
         cards={cards}
         loading={loading}
@@ -79,6 +83,9 @@ export default function SetIdPage() {
           };
           return rarityOrder[card.rarity] || 0;
         }}
+        title={setInfo?.name || "Loading..."}
+        subtitle={null}
+        showSearch={true}
       />
       {modalOpen && modalCard && (
         <Modal onClose={closeModal}>
@@ -101,6 +108,6 @@ export default function SetIdPage() {
           </div>
         </Modal>
       )}
-    </div>
+    </>
   );
 }
