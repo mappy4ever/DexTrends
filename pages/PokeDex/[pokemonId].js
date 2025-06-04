@@ -2,11 +2,9 @@ import React, { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import pokemon from "pokemontcgsdk";
-import Modal from "../../components/Modal";
 import CardList from "../../components/CardList";
 import { TypeBadge, TypeBadgeSelector } from "../../components/ui/TypeBadge";
 import { FadeIn, SlideUp, Scale, CardHover } from "../../components/ui/Animations";
-import PriceHistoryChart from "../../components/ui/PriceHistoryChart";
 import { useFavorites } from "../../context/FavoritesContext";
 import { useTheme } from "../../context/ThemeContext";
 import { useViewSettings } from "../../context/ViewSettingsContext";
@@ -40,9 +38,7 @@ export default function PokemonDetail() {
   const [filterRarity, setFilterRarity] = useState("");
   const [filterSet, setFilterSet] = useState("");
 
-  // Modal state
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalCard, setModalCard] = useState(null);
+  // Navigation function takes care of showing card details now
   
   // Stats labels
   const statLabels = {
@@ -177,14 +173,11 @@ export default function PokemonDetail() {
   }
 
   function openModal(card) {
-    setModalCard(card);
-    setModalOpen(true);
+    // Navigate to card details page instead of opening modal
+    router.push(`/cards/${card.id}`);
   }
-
-  function closeModal() {
-    setModalOpen(false);
-    setModalCard(null);
-  }
+  
+  // No longer need closeModal as we're using navigation instead of modals
 
   // Toggle favorite status
   function handleToggleFavorite() {
@@ -722,103 +715,9 @@ export default function PokemonDetail() {
         </>
       )}
       
-      {modalOpen && modalCard && (
-        <Modal onClose={closeModal}>
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-6 p-4">
-            <img
-              src={modalCard.images.large}
-              alt={modalCard.name}
-              className="max-w-[80vw] md:max-w-[300px] max-h-[70vh] object-contain rounded-md shadow-lg"
-            />
-            <div className="flex-1">
-              <h3 className="text-2xl font-bold">{modalCard.name}</h3>
-              
-              <div className="mt-4 space-y-2">
-                <div className="flex justify-between py-2 border-b">
-                  <span className="font-medium">Set</span>
-                  <span>{modalCard.set?.name || "N/A"}</span>
-                </div>
-                <div className="flex justify-between py-2 border-b">
-                  <span className="font-medium">Release Date</span>
-                  <span>{modalCard.set?.releaseDate ? new Date(modalCard.set.releaseDate).toLocaleDateString() : "N/A"}</span>
-                </div>
-                <div className="flex justify-between py-2 border-b">
-                  <span className="font-medium">Rarity</span>
-                  <span>{modalCard.rarity || "N/A"}</span>
-                </div>
-                <div className="flex justify-between py-2 border-b">
-                  <span className="font-medium">Card Number</span>
-                  <span>{modalCard.number || "N/A"}/{modalCard.set?.printedTotal || "?"}</span>
-                </div>
-                <div className="flex justify-between py-2 border-b">
-                  <span className="font-medium">Artist</span>
-                  <span>{modalCard.artist || "N/A"}</span>
-                </div>
-                
-                {/* Pricing Information */}
-                <div className="mt-6">
-                  <h4 className="font-bold text-lg mb-2">Market Prices</h4>
-                  {modalCard.tcgplayer?.prices ? (
-                    <div className="space-y-2">
-                      {modalCard.tcgplayer.prices.normal?.market && (
-                        <div className="flex justify-between py-2 bg-gray-50 px-3 rounded">
-                          <span>Normal</span>
-                          <span className="font-bold">${modalCard.tcgplayer.prices.normal.market.toFixed(2)}</span>
-                        </div>
-                      )}
-                      {modalCard.tcgplayer.prices.holofoil?.market && (
-                        <div className="flex justify-between py-2 bg-blue-50 px-3 rounded">
-                          <span>Holofoil</span>
-                          <span className="font-bold">${modalCard.tcgplayer.prices.holofoil.market.toFixed(2)}</span>
-                        </div>
-                      )}
-                      {modalCard.tcgplayer.prices.reverseHolofoil?.market && (
-                        <div className="flex justify-between py-2 bg-purple-50 px-3 rounded">
-                          <span>Reverse Holofoil</span>
-                          <span className="font-bold">${modalCard.tcgplayer.prices.reverseHolofoil.market.toFixed(2)}</span>
-                        </div>
-                      )}
-                      {modalCard.tcgplayer.prices.firstEditionHolofoil?.market && (
-                        <div className="flex justify-between py-2 bg-yellow-50 px-3 rounded">
-                          <span>1st Edition Holofoil</span>
-                          <span className="font-bold">${modalCard.tcgplayer.prices.firstEditionHolofoil.market.toFixed(2)}</span>
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <p className="text-gray-500">No pricing data available</p>
-                  )}
-                </div>
-                
-                {/* TCGPlayer Link */}
-                {modalCard.tcgplayer?.url && (
-                  <a 
-                    href={modalCard.tcgplayer.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-6 block w-full bg-blue-600 text-white text-center py-2 rounded-md hover:bg-blue-700 transition-colors"
-                  >
-                    View on TCGPlayer
-                  </a>
-                )}
-              </div>
-              
-              {/* Price History Chart */}
-              <div className="mt-8">
-                <h4 className="font-bold text-lg mb-4">Price History</h4>
-                <PriceHistoryChart 
-                  cardId={modalCard.id} 
-                  initialPrice={
-                    modalCard.tcgplayer?.prices?.holofoil?.market || 
-                    modalCard.tcgplayer?.prices?.normal?.market || 
-                    0
-                  }
-                />
-              </div>
-            </div>
-          </div>
-        </Modal>
-      )}
+      {/* Card modal has been replaced with navigation to the dedicated card details page */}
+      
+      {/* Card Modal has been removed in favor of the dedicated card details page */}
     </div>
   );
 }

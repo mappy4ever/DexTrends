@@ -27,6 +27,7 @@ export default function Navbar() {
   const navItems = [
     { href: "/", label: "Main", icon: <RiGovernmentFill size={22} /> },
     { href: "/TCGSets", label: "TCG Sets", icon: <RiGovernmentFill size={22} /> },
+    { href: "/trending", label: "Trending", icon: <AiOutlineBulb size={22} /> },
     { href: "/leaderboard", label: "Leaderboard", icon: <AiOutlineBulb size={22} /> },
     { href: "/PokeDex", label: "Pokédex", icon: <BsGlobeEuropeAfrica size={22} /> },
   ];

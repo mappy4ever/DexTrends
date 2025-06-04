@@ -3,10 +3,8 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
 import pokemon from "pokemontcgsdk";
-import Modal from "../../components/Modal";
 import CardList from "../../components/CardList";
 import { FadeIn, SlideUp } from "../../components/ui/Animations";
-import PriceHistoryChart from "../../components/ui/PriceHistoryChart";
 import { useTheme } from "../../context/ThemeContext";
 import { useFavorites } from "../../context/FavoritesContext";
 import { useViewSettings } from "../../context/ViewSettingsContext";
@@ -50,9 +48,10 @@ export default function SetIdPage() {
     highestValueCards: []
   });
 
-  // Modal state
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalCard, setModalCard] = useState(null);
+  // Navigation function to card details page
+  const navigateToCardDetails = (card) => {
+    router.push(`/cards/${card.id}`);
+  };
 
   // Fetch set information and cards
   useEffect(() => {
@@ -209,17 +208,9 @@ export default function SetIdPage() {
     return price || 0;
   }
 
-  // Open card detail modal
-  function openModal(card) {
-    setModalCard(card);
-    setModalOpen(true);
+  // This function is used to select a card and set the ID for any functionality that might depend on it
+  function selectCard(card) {
     setSelectedCardId(card.id);
-  }
-
-  // Close card detail modal
-  function closeModal() {
-    setModalOpen(false);
-    setModalCard(null);
   }
 
   // Toggle favorite status for a card
@@ -409,7 +400,7 @@ export default function SetIdPage() {
                       className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 cursor-pointer"
                       onClick={() => {
                         const fullCard = cards.find(c => c.id === card.id);
-                        if (fullCard) openModal(fullCard);
+                        if (fullCard) navigateToCardDetails(fullCard);
                       }}
                     >
                       {card.image && (
@@ -538,7 +529,7 @@ export default function SetIdPage() {
           loading={loading}
           error={error}
           initialSortOption="number"
-          onCardClick={openModal}
+          onCardClick={navigateToCardDetails}
           getPrice={getPrice}
           getReleaseDate={(card) => card.set?.releaseDate || "0000-00-00"}
           getRarityRank={getRarityRank}
@@ -557,145 +548,7 @@ export default function SetIdPage() {
         )}
       </div>
       
-      {/* Card Detail Modal */}
-      {modalOpen && modalCard && (
-        <Modal onClose={closeModal}>
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-6 p-6 max-w-4xl mx-auto">
-            <div className="relative group">
-              <img
-                src={modalCard.images.large}
-                alt={modalCard.name}
-                className="max-w-[85vw] md:max-w-[360px] max-h-[70vh] object-contain rounded-lg shadow-lg transform transition-all duration-500 group-hover:scale-[1.02] group-hover:shadow-xl"
-              />
-              <div className="absolute top-2 right-2">
-                <button 
-                  className={`p-2 rounded-full transition-all duration-300 shadow-sm ${
-                    isCardFavorite(modalCard.id) 
-                      ? 'bg-red-50 text-red-500 hover:bg-red-100' 
-                      : 'bg-white/90 text-gray-400 hover:text-red-500 hover:bg-red-50'
-                  }`}
-                  onClick={() => handleToggleFavorite(modalCard)}
-                  aria-label={isCardFavorite(modalCard.id) ? "Remove from favorites" : "Add to favorites"}
-                >
-                  <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    viewBox="0 0 24 24" 
-                    fill={isCardFavorite(modalCard.id) ? "currentColor" : "none"}
-                    stroke="currentColor" 
-                    className="w-6 h-6"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={isCardFavorite(modalCard.id) ? 0 : 2} d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-            <div className="flex-1">
-              <div className="flex justify-between items-start">
-                <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100">{modalCard.name}</h3>
-              </div>
-              
-              <div className="mt-6 space-y-3 bg-white/50 dark:bg-gray-800/50 rounded-lg p-4 border border-gray-200 dark:border-gray-700 shadow-sm">
-                <div className="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700">
-                  <span className="font-medium text-gray-600 dark:text-gray-300">Number</span>
-                  <span className="font-semibold">{modalCard.number}/{setInfo?.printedTotal || "?"}</span>
-                </div>
-                <div className="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700">
-                  <span className="font-medium text-gray-600 dark:text-gray-300">Rarity</span>
-                  <span className="font-semibold">{modalCard.rarity || "N/A"}</span>
-                </div>
-                <div className="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700">
-                  <span className="font-medium text-gray-600 dark:text-gray-300">Type</span>
-                  <span>
-                    {modalCard.types?.join(', ') || 
-                     (modalCard.supertype === 'Trainer' ? 'Trainer' : 
-                      modalCard.supertype === 'Energy' ? 'Energy' : 'N/A')}
-                  </span>
-                </div>
-                {modalCard.artist && (
-                  <div className="flex justify-between py-2 border-b">
-                    <span className="font-medium">Artist</span>
-                    <span>{modalCard.artist}</span>
-                  </div>
-                )}
-                
-                {/* Card attributes based on card type */}
-                {modalCard.hp && (
-                  <div className="flex justify-between py-2 border-b">
-                    <span className="font-medium">HP</span>
-                    <span>{modalCard.hp}</span>
-                  </div>
-                )}
-                
-                {/* Card Rules Text */}
-                {modalCard.rules && modalCard.rules.length > 0 && (
-                  <div className="py-2 border-b">
-                    <span className="font-medium block mb-1">Rules</span>
-                    {modalCard.rules.map((rule, index) => (
-                      <p key={index} className="text-gray-600 italic text-sm">{rule}</p>
-                    ))}
-                  </div>
-                )}
-                
-                {/* Pricing Information */}
-                <div className="mt-6">
-                  <h4 className="font-bold text-lg mb-2">Market Prices</h4>
-                  {modalCard.tcgplayer?.prices ? (
-                    <div className="space-y-2">
-                      {modalCard.tcgplayer.prices.normal?.market && (
-                        <div className="flex justify-between py-2 bg-gray-50 px-3 rounded">
-                          <span>Normal</span>
-                          <span className="font-bold">${modalCard.tcgplayer.prices.normal.market.toFixed(2)}</span>
-                        </div>
-                      )}
-                      {modalCard.tcgplayer.prices.holofoil?.market && (
-                        <div className="flex justify-between py-2 bg-blue-50 px-3 rounded">
-                          <span>Holofoil</span>
-                          <span className="font-bold">${modalCard.tcgplayer.prices.holofoil.market.toFixed(2)}</span>
-                        </div>
-                      )}
-                      {modalCard.tcgplayer.prices.reverseHolofoil?.market && (
-                        <div className="flex justify-between py-2 bg-purple-50 px-3 rounded">
-                          <span>Reverse Holofoil</span>
-                          <span className="font-bold">${modalCard.tcgplayer.prices.reverseHolofoil.market.toFixed(2)}</span>
-                        </div>
-                      )}
-                      {modalCard.tcgplayer.prices.firstEditionHolofoil?.market && (
-                        <div className="flex justify-between py-2 bg-yellow-50 px-3 rounded">
-                          <span>1st Edition Holofoil</span>
-                          <span className="font-bold">${modalCard.tcgplayer.prices.firstEditionHolofoil.market.toFixed(2)}</span>
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <p className="text-gray-500">No pricing data available</p>
-                  )}
-                </div>
-                
-                {/* TCGPlayer Link */}
-                {modalCard.tcgplayer?.url && (
-                  <a 
-                    href={modalCard.tcgplayer.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-6 block w-full bg-blue-600 text-white text-center py-2 rounded-md hover:bg-blue-700 transition-colors"
-                  >
-                    View on TCGPlayer
-                  </a>
-                )}
-              </div>
-              
-              {/* Price History Chart */}
-              <div className="mt-8">
-                <h4 className="font-bold text-lg mb-4">Price History</h4>
-                <PriceHistoryChart 
-                  cardId={modalCard.id} 
-                  initialPrice={getPrice(modalCard)} 
-                />
-              </div>
-            </div>
-          </div>
-        </Modal>
-      )}
+      {/* No modal needed - we use card details page now */}
     </div>
   );
 }

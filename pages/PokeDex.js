@@ -636,7 +636,10 @@ export default function PokeDex() {
                   <div
                     key={poke.name}
                     className="group flex items-center bg-white dark:bg-gray-800 p-3 md:p-4 rounded-xl border border-gray-200/80 dark:border-gray-700/80 hover:border-primary/30 cursor-pointer hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-all duration-300 shadow-sm hover:shadow-md relative overflow-hidden"
-                    onClick={() => router.push(`/PokeDex/${poke.name}`)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.location.href = `/PokeDex/${poke.name}`;
+                    }}
                   >
                     {/* Background decorative element based on type */}
                     {primaryType && (
