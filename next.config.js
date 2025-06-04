@@ -14,6 +14,6 @@ module.exports = {
     NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY: process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY,
   },
   images: {
-    domains: ['images.pokemontcg.io'],
+    domains: ['images.pokemontcg.io', 'raw.githubusercontent.com'],
   },
 };

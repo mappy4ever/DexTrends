@@ -103,16 +103,41 @@ module.exports = {
         },
         // screens: { ... } // Only override if container breakpoints need to differ from global
       },
-      // Example: Adding custom keyframes/animations if not in globals.css
-      // keyframes: {
-      //   fadeIn: {
-      //     '0%': { opacity: '0', transform: 'scale(0.95)' },
-      //     '100%': { opacity: '1', transform: 'scale(1)' },
-      //   },
-      // },
-      // animation: {
-      //   fadeIn: 'fadeIn 0.3s ease-out forwards',
-      // },
+      // Custom animations for our application
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        slideUp: {
+          '0%': { transform: 'translateY(20px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        scale: {
+          '0%': { transform: 'scale(0.95)', opacity: '0' },
+          '100%': { transform: 'scale(1)', opacity: '1' },
+        },
+        pulse: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.5' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+        bounce: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-5px)' },
+        }
+      },
+      animation: {
+        fadeIn: 'fadeIn 0.5s ease-in-out',
+        slideUp: 'slideUp 0.5s ease-in-out',
+        scale: 'scale 0.5s ease-in-out',
+        pulse: 'pulse 2s ease-in-out infinite',
+        float: 'float 3s ease-in-out infinite',
+        bounce: 'bounce 1s ease-in-out infinite',
+      },
     },
   },
   plugins: [

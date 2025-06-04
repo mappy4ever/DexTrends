@@ -2,11 +2,13 @@ import { useEffect } from "react";
 import "../styles/globals.css";
 import "react-datepicker/dist/react-datepicker.css";
 import Layout from "../components/layout/Layout";
-import ThemeProvider from "../components/layout/ThemeProvider"; // Assuming this component exists and is correctly set up
 import ErrorBoundary from "../components/layout/ErrorBoundary";
 import "../components/cardfeatures.css";
 import { AnimatePresence, motion } from "framer-motion";
 
+import { ThemeProvider } from '../context/ThemeContext';
+import { FavoritesProvider } from '../context/FavoritesContext';
+import { ViewSettingsProvider } from '../context/ViewSettingsContext';
 import { ModalProvider } from '../context/ModalContext';
 import { SortingProvider } from '../context/SortingContext';
 import GlobalModal from '../components/GlobalModal';
@@ -50,27 +52,31 @@ function MyApp({ Component, pageProps, router }) {
 
   return (
     <ErrorBoundary>
-      <ThemeProvider> {/* Custom ThemeProvider */}
-        <SortingProvider>
-          <ModalProvider>
-            <Layout>
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.div
-                  key={router.route}
-                  initial={{ opacity: 0, y: 24 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -24 }}
-                  transition={{ duration: 0.35, ease: "easeInOut" }}
-                  className="min-h-screen"
-                >
-                  <Component {...pageProps} />
-                </motion.div>
-              </AnimatePresence>
-              <GlobalModal />
-            </Layout>
-          </ModalProvider>
-        </SortingProvider>
-      </ThemeProvider>
+      <ThemeProvider>
+        <FavoritesProvider>
+          <ViewSettingsProvider>
+            <SortingProvider>
+              <ModalProvider>
+                  <Layout>
+                    <AnimatePresence mode="wait" initial={false}>
+                      <motion.div
+                        key={router.route}
+                        initial={{ opacity: 0, y: 24 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -24 }}
+                        transition={{ duration: 0.35, ease: "easeInOut" }}
+                        className="min-h-screen"
+                      >
+                        <Component {...pageProps} />
+                      </motion.div>
+                    </AnimatePresence>
+                    <GlobalModal />
+                  </Layout>
+                </ModalProvider>
+              </SortingProvider>
+            </ViewSettingsProvider>
+          </FavoritesProvider>
+        </ThemeProvider>
     </ErrorBoundary>
   );
 }

@@ -1,19 +1,27 @@
-import { useTheme } from "next-themes";
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { RiGovernmentFill } from "react-icons/ri";
 import { AiOutlineBulb } from "react-icons/ai";
-import { BsSun, BsMoon, BsGlobeEuropeAfrica } from "react-icons/bs";
+import { BsSun, BsMoon, BsGlobeEuropeAfrica, BsHeart, BsSearch } from "react-icons/bs";
 import GlobalSearchModal from "./GlobalSearchModal";
+import { useTheme } from "../context/ThemeContext";
+import { useFavorites } from "../context/FavoritesContext";
+import Image from "next/image";
 
 export default function Navbar() {
-  const { theme, setTheme, resolvedTheme, mounted: themeMounted } = useTheme(); // Use 'mounted' from useTheme
+  const { theme, toggleTheme } = useTheme();
+  const { favorites } = useFavorites();
   const [hoverExpanded, setHoverExpanded] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const menuWrapperRef = useRef(null);
   const router = useRouter();
   const searchModalRef = useRef();
+  
+  // Count total favorites
+  const totalFavorites = favorites ? 
+    (favorites.pokemon ? favorites.pokemon.length : 0) + 
+    (favorites.cards ? favorites.cards.length : 0) : 0;
 
   // DexTrends key pages
   const navItems = [
@@ -45,7 +53,7 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [mobileOpen]);
 
-  const isDarkMode = resolvedTheme === 'dark';
+  const isDarkMode = theme === 'dark';
 
   return (
     <>
@@ -77,15 +85,31 @@ export default function Navbar() {
             className="p-2 rounded-full hover:bg-surface-hovered focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring text-primary border border-primary bg-white/80 dark:bg-gray-800/80 shadow"
             onClick={() => searchModalRef.current?.open()}
           >
-            <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z"/></svg>
+            <BsSearch size={18} />
           </button>
+          
+          <Link href="/favorites" legacyBehavior>
+            <a
+              aria-label="View favorites"
+              title="View favorites"
+              className="relative p-2 rounded-full hover:bg-surface-hovered focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring text-primary"
+            >
+              <BsHeart size={18} />
+              {totalFavorites > 0 && (
+                <span className="absolute top-0 right-0 -mt-1 -mr-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  {totalFavorites > 99 ? '99+' : totalFavorites}
+                </span>
+              )}
+            </a>
+          </Link>
+          
           <button
-            aria-label={isDarkMode ? "Activate light mode" : "Activate dark mode"}
-            title={isDarkMode ? "Activate light mode" : "Activate dark mode"}
+            aria-label={theme === 'dark' ? "Activate light mode" : "Activate dark mode"}
+            title={theme === 'dark' ? "Activate light mode" : "Activate dark mode"}
             className="p-2 rounded-full hover:bg-surface-hovered focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            onClick={() => setTheme(isDarkMode ? "light" : "dark")}
+            onClick={toggleTheme}
           >
-            {isDarkMode ? <BsSun size={18} /> : <BsMoon size={18} />}
+            {theme === 'dark' ? <BsSun size={18} /> : <BsMoon size={18} />}
           </button>
         </div>
       </div>
