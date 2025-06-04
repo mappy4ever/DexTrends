@@ -55,7 +55,7 @@ export default function CardList({
       </div>
 
       {/* Card grid: always one big flex-wrap, not split by anything else */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7 gap-7 justify-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-5 md:gap-7 justify-center">
         {sortedCards.map((card) => {
           const setLogo = card.set?.images?.logo;
           const setId = card.set?.id;
@@ -97,12 +97,12 @@ export default function CardList({
           }
           const priceDisplay = price !== null && price !== undefined && price !== 'N/A'
             ? (
-                <span className="inline-block text-base font-bold text-black bg-gray-100 px-2 py-0.5 rounded-md border border-gray-300 tracking-tight mb-1">
+                <span className="inline-block text-sm font-medium text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-800 px-2 py-0.5 rounded-md border border-gray-200 dark:border-gray-700 tracking-tight mb-1">
                   ${price.toFixed(2)}
                 </span>
               )
             : (
-                <span className="inline-block text-base font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md mb-1">
+                <span className="inline-block text-xs font-medium text-gray-400 bg-gray-50 dark:bg-gray-800 px-2 py-0.5 rounded-md mb-1">
                   N/A
                 </span>
               );
@@ -117,21 +117,21 @@ export default function CardList({
             <div
               key={card.id}
               className={
-                `card card-padding-default flex flex-col items-center bg-card shadow-app-md rounded-app-lg border border-border transition-all duration-200 animate-fadeIn group ring-0
+                `card p-3 md:p-4 flex flex-col items-center bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-200 dark:border-gray-700 transition-all duration-300 animate-fadeIn group ring-0
                 hover:border-primary/90 hover:ring-2 hover:ring-primary/60 hover:-translate-y-2 hover:bg-primary/5 hover:shadow-xl
                 focus-within:border-primary/90 focus-within:ring-2 focus-within:ring-primary/60 focus-within:-translate-y-2 focus-within:bg-primary/5 focus-within:shadow-xl
                 `
               }
-              style={{ boxShadow: '0 4px 24px 0 rgba(0,0,0,0.10)', cursor: 'pointer' }}
+              style={{ boxShadow: '0 4px 20px 0 rgba(0,0,0,0.08)', cursor: 'pointer' }}
               tabIndex={0}
             >
               <div className="w-full flex flex-col items-center relative" onClick={() => onCardClick(card)}>
                 <Image
                   src={card.images?.large || '/back-card.png'}
                   alt={card.name}
-                  width={190}
-                  height={260}
-                  className="rounded-app-md mb-2 object-cover shadow"
+                  width={220}
+                  height={308}
+                  className="rounded-app-md mb-2 object-cover shadow-md hover:shadow-lg transition-all"
                   priority={false}
                   onError={(e) => {
                     const target = e.target;

@@ -26,7 +26,10 @@ export default function SetIdPage() {
   const { theme } = useTheme();
   const { toggleCardFavorite, isCardFavorite } = useFavorites();
   const { viewSettings } = useViewSettings();
-
+  
+  // Create refs for scrolling
+  const cardsGridRef = React.useRef(null);
+  
   // State variables
   const [setInfo, setSetInfo] = useState(null);
   const [cards, setCards] = useState([]);
@@ -248,6 +251,18 @@ export default function SetIdPage() {
     return rarityOrder[card.rarity] || 0;
   }
 
+  // Function to handle filtering by rarity and scroll to cards section
+  function handleFilterByRarity(rarity) {
+    setFilterRarity(rarity);
+    
+    // Scroll to cards grid after a short delay to ensure filter is applied
+    setTimeout(() => {
+      if (cardsGridRef.current) {
+        cardsGridRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  }
+
   // Clear all filters
   function clearFilters() {
     setFilterRarity("");
@@ -350,9 +365,32 @@ export default function SetIdPage() {
               <h3 className="text-lg font-semibold mb-3">Rarity Distribution</h3>
               <div className="space-y-2">
                 {Object.keys(statistics.rarityDistribution).map(rarity => (
-                  <div key={rarity} className="flex justify-between items-center">
-                    <span className="font-medium">{rarity}</span>
-                    <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm">
+                  <div 
+                    key={rarity} 
+                    className={`flex justify-between items-center p-2 rounded-lg cursor-pointer transition-all ${
+                      filterRarity === rarity 
+                        ? 'bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700'
+                        : 'hover:bg-gray-100 dark:hover:bg-gray-700 border border-transparent'
+                    }`}
+                    onClick={() => handleFilterByRarity(rarity)}
+                    title={`Filter by ${rarity} cards`}
+                  >
+                    <div className="flex items-center">
+                      <svg 
+                        className={`w-4 h-4 mr-1.5 ${filterRarity === rarity ? 'text-blue-500 opacity-100' : 'text-gray-400 opacity-0 group-hover:opacity-100'}`}
+                        fill="none" 
+                        viewBox="0 0 24 24" 
+                        stroke="currentColor"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                      </svg>
+                      <span className="font-medium">{rarity}</span>
+                    </div>
+                    <span className={`px-2 py-1 rounded-full text-sm ${
+                      filterRarity === rarity
+                        ? 'bg-blue-500 text-white'
+                        : 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-100'
+                    }`}>
                       {statistics.rarityDistribution[rarity]} cards
                     </span>
                   </div>
@@ -398,7 +436,7 @@ export default function SetIdPage() {
       </SlideUp>
 
       {/* Card Filtering */}
-      <div className={`p-6 rounded-xl shadow-lg mb-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+      <div className={`p-6 rounded-xl shadow-lg mb-8 ${theme === 'dark' ? 'bg-gray-800/95' : 'bg-white'}`}>
         <h2 className="text-xl font-bold mb-4">Browse Cards</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -409,7 +447,7 @@ export default function SetIdPage() {
               id="cardSearch"
               type="text"
               placeholder="Card name, number..."
-              className="w-full border border-gray-300 rounded-md px-3 py-2"
+              className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 dark:bg-gray-700 dark:text-white"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -422,7 +460,7 @@ export default function SetIdPage() {
               id="rarityFilter"
               className="w-full border border-gray-300 rounded-md px-3 py-2"
               value={filterRarity}
-              onChange={(e) => setFilterRarity(e.target.value)}
+              onChange={(e) => handleFilterByRarity(e.target.value)}
             >
               <option value="">All Rarities</option>
               {filterOptions.rarities.map(rarity => (
@@ -460,17 +498,36 @@ export default function SetIdPage() {
       </div>
 
       {/* Card Grid */}
-      <div>
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold">
-            Cards 
-            <span className="text-gray-500 text-lg ml-2">
-              {filteredCards.length === cards.length 
-                ? `(${cards.length})` 
-                : `(${filteredCards.length} of ${cards.length})`
-              }
-            </span>
-          </h2>
+      <div ref={cardsGridRef}>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
+          <div>
+            <h2 className="text-2xl font-bold flex items-center flex-wrap">
+              Cards 
+              <span className="text-gray-500 text-lg ml-2">
+                {filteredCards.length === cards.length 
+                  ? `(${cards.length})` 
+                  : `(${filteredCards.length} of ${cards.length})`
+                }
+              </span>
+            </h2>
+            {filterRarity && (
+              <div className="flex items-center mt-1 text-sm text-primary dark:text-primary-light">
+                <span>Filtered by rarity: </span>
+                <span className="font-medium ml-1 bg-primary/10 px-2 py-0.5 rounded-full">
+                  {filterRarity}
+                </span>
+                <button 
+                  onClick={() => setFilterRarity("")}
+                  className="ml-2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none"
+                  aria-label="Clear rarity filter"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            )}
+          </div>
           <Link href="/TCGSets" className="text-blue-600 hover:underline">
             Back to Sets
           </Link>
@@ -503,18 +560,19 @@ export default function SetIdPage() {
       {/* Card Detail Modal */}
       {modalOpen && modalCard && (
         <Modal onClose={closeModal}>
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-6 p-4">
-            <img
-              src={modalCard.images.large}
-              alt={modalCard.name}
-              className="max-w-[80vw] md:max-w-[300px] max-h-[70vh] object-contain rounded-md shadow-lg"
-            />
-            <div className="flex-1">
-              <div className="flex justify-between items-start">
-                <h3 className="text-2xl font-bold">{modalCard.name}</h3>
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-6 p-6 max-w-4xl mx-auto">
+            <div className="relative group">
+              <img
+                src={modalCard.images.large}
+                alt={modalCard.name}
+                className="max-w-[85vw] md:max-w-[360px] max-h-[70vh] object-contain rounded-lg shadow-lg transform transition-all duration-500 group-hover:scale-[1.02] group-hover:shadow-xl"
+              />
+              <div className="absolute top-2 right-2">
                 <button 
-                  className={`p-2 rounded-full transition-all duration-300 ${
-                    isCardFavorite(modalCard.id) ? 'text-red-500 hover:text-red-600' : 'text-gray-400 hover:text-gray-500'
+                  className={`p-2 rounded-full transition-all duration-300 shadow-sm ${
+                    isCardFavorite(modalCard.id) 
+                      ? 'bg-red-50 text-red-500 hover:bg-red-100' 
+                      : 'bg-white/90 text-gray-400 hover:text-red-500 hover:bg-red-50'
                   }`}
                   onClick={() => handleToggleFavorite(modalCard)}
                   aria-label={isCardFavorite(modalCard.id) ? "Remove from favorites" : "Add to favorites"}
@@ -530,18 +588,23 @@ export default function SetIdPage() {
                   </svg>
                 </button>
               </div>
+            </div>
+            <div className="flex-1">
+              <div className="flex justify-between items-start">
+                <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100">{modalCard.name}</h3>
+              </div>
               
-              <div className="mt-4 space-y-2">
-                <div className="flex justify-between py-2 border-b">
-                  <span className="font-medium">Number</span>
-                  <span>{modalCard.number}/{setInfo?.printedTotal || "?"}</span>
+              <div className="mt-6 space-y-3 bg-white/50 dark:bg-gray-800/50 rounded-lg p-4 border border-gray-200 dark:border-gray-700 shadow-sm">
+                <div className="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700">
+                  <span className="font-medium text-gray-600 dark:text-gray-300">Number</span>
+                  <span className="font-semibold">{modalCard.number}/{setInfo?.printedTotal || "?"}</span>
                 </div>
-                <div className="flex justify-between py-2 border-b">
-                  <span className="font-medium">Rarity</span>
-                  <span>{modalCard.rarity || "N/A"}</span>
+                <div className="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700">
+                  <span className="font-medium text-gray-600 dark:text-gray-300">Rarity</span>
+                  <span className="font-semibold">{modalCard.rarity || "N/A"}</span>
                 </div>
-                <div className="flex justify-between py-2 border-b">
-                  <span className="font-medium">Type</span>
+                <div className="flex justify-between py-2 border-b border-gray-100 dark:border-gray-700">
+                  <span className="font-medium text-gray-600 dark:text-gray-300">Type</span>
                   <span>
                     {modalCard.types?.join(', ') || 
                      (modalCard.supertype === 'Trainer' ? 'Trainer' : 

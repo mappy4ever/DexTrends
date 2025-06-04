@@ -4,7 +4,8 @@ import { typeColors } from '../../utils/pokemonUtils';
 // Type badge component for consistent display of Pokémon types
 export function TypeBadge({ type, className = '', size = 'md', onClick = null }) {
   // Get colors from the type colors mapping
-  const colors = typeColors[type.toLowerCase()] || { bg: "bg-gray-200", text: "text-gray-800", border: "border-gray-300", hover: "hover:bg-gray-300" };
+  const typeLower = type?.toLowerCase() || '';
+  const colors = typeColors[typeLower] || { bg: "bg-gray-200", text: "text-gray-800", border: "border-gray-300", hover: "hover:bg-gray-300" };
   
   // Size classes
   const sizeClasses = {
@@ -14,13 +15,17 @@ export function TypeBadge({ type, className = '', size = 'md', onClick = null })
   };
   
   const interactiveClasses = onClick ? `cursor-pointer ${colors.hover}` : '';
-  
+
   return (
     <span 
-      className={`${sizeClasses[size]} rounded-full font-bold uppercase ${colors.bg} ${colors.text} ${colors.border} border transition-all ${interactiveClasses} ${className}`}
+      className={`${sizeClasses[size]} rounded-full font-bold uppercase ${colors.bg} ${colors.text} transition-all ${interactiveClasses} ${className}`}
       onClick={onClick}
       role={onClick ? "button" : undefined}
       tabIndex={onClick ? 0 : undefined}
+      style={{ 
+        boxShadow: '0 1px 3px rgba(0,0,0,0.2)', 
+        textShadow: '0 1px 1px rgba(0,0,0,0.1)'
+      }}
     >
       {type}
     </span>

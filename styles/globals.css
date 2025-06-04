@@ -198,6 +198,12 @@ html {
   .section-spacing-y-default {
     @apply py-4 md:py-12;
   }
+  
+  /* Type badge styling for consistent look across the app */
+  .type-badge {
+    @apply inline-flex items-center justify-center rounded-full font-bold uppercase text-white shadow-sm px-3 py-1 text-sm;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.1);
+  }
 }
 
 /* Utilities Layer (@layer utilities) - for very specific, single-purpose utilities if Tailwind doesn't cover them */
