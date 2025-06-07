@@ -23,6 +23,9 @@ export default function PokemonDetail() {
   const [activeCardSource, setActiveCardSource] = useState("tcg");
   const [filterRarity, setFilterRarity] = useState("");
   const [filterSet, setFilterSet] = useState("");
+  const [relatedPokemonList, setRelatedPokemonList] = useState([]);
+  const [relatedLoading, setRelatedLoading] = useState(false);
+  const [relatedError, setRelatedError] = useState(null);
 
   // Helper: is this Pokémon a favorite?
   const isFavorite = favorites?.pokemon?.includes(String(pokeId));
@@ -37,6 +40,8 @@ export default function PokemonDetail() {
     setGenerationInfo(null);
     setEvolutions([]);
     setCards([]);
+    setRelatedPokemonList([]); // Reset related list on new Pokemon
+    setRelatedError(null);    // Reset related error
 
     let didCancel = false;
     // Timeout fallback: always end loading after 15s
@@ -66,15 +71,40 @@ export default function PokemonDetail() {
         if (didCancel) return;
         setPokemonSpecies(species);
 
-        if (species.generation) {
+        if (species.generation && species.generation.url) {
           console.log('Fetching generation:', species.generation.url);
           const genRes = await fetch(species.generation.url);
           const genData = await genRes.json();
           if (didCancel) return;
           setGenerationInfo(genData);
+
+          // Fetch related Pokemon from the same generation
+          if (genData.pokemon_species && pokeId) {
+            setRelatedLoading(true);
+            setRelatedError(null);
+            try {
+              // Ensure pokeId is a string for comparison, as IDs from URL are strings
+              const currentPokemonIdString = String(pokeId);
+              const filteredRelatedPokemon = genData.pokemon_species.filter(p => {
+                const relatedId = p.url.split("/").filter(Boolean).pop();
+                return relatedId !== currentPokemonIdString;
+              });
+              setRelatedPokemonList(filteredRelatedPokemon);
+            } catch (err) {
+              console.error('Error processing related Pokemon:', err);
+              setRelatedError('Failed to load related Pokemon.');
+            } finally {
+              if (!didCancel) setRelatedLoading(false);
+            }
+          } else {
+             if (!didCancel) setRelatedLoading(false);
+          }
+        } else {
+            if (!didCancel) setRelatedLoading(false);
         }
 
-        if (species.evolution_chain) {
+
+        if (species.evolution_chain && species.evolution_chain.url) {
           console.log('Fetching evolution chain:', species.evolution_chain.url);
           const evoRes = await fetch(species.evolution_chain.url);
           const evoData = await evoRes.json();
@@ -106,7 +136,7 @@ export default function PokemonDetail() {
           console.error('TCG API fetch failed:', cardErr);
         }
       } catch (err) {
-        setError(err.message);
+        if (!didCancel) setError(err.message);
         console.error('Pokémon fetch failed:', err);
       } finally {
         if (!didCancel) setLoading(false);
@@ -541,4 +571,79 @@ export default function PokemonDetail() {
                         <option key={set} value={set}>{set}</option>
                       ))}
                     </select>
-                  </div
+                  </div>
+                </div>
+
+                <CardList
+                  cards={filteredCards}
+                  source={activeCardSource}
+                  pokemonName={pokemonDetails.name}
+                  loading={loading && cards.length === 0}
+                  error={!loading && cards.length === 0 && pokemonDetails?.name ? 'No cards found for this Pokémon.' : null}
+                />
+              </div>
+            </FadeIn>
+          )}
+        </div>
+      </SlideUp>
+
+      {/* Related Pokemon Section */}
+      {relatedPokemonList.length > 0 && !relatedLoading && !relatedError && (
+        <SlideUp delay={300}>
+          <div className="mt-12 p-4 md:p-6 rounded-lg shadow-lg bg-white/90 dark:bg-gray-800/90 backdrop-blur-md border border-gray-200 dark:border-gray-700">
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center text-gray-800 dark:text-white">
+              Other Pokémon in {generationInfo?.name ? generationInfo.name.replace('generation-','Gen ').toUpperCase() : 'this Generation'}
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
+              {relatedPokemonList.map(relatedPoke => {
+                const id = relatedPoke.url.split("/").filter(Boolean).pop();
+                const spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+                return (
+                  <div
+                    key={id}
+                    className="flex flex-col items-center p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700/60 transition-all duration-200 cursor-pointer group transform hover:scale-105 active:scale-95 shadow-sm border border-gray-200/50 dark:border-gray-700/50"
+                    onClick={() => router.push(`/PokeDex/${id}`)}
+                    title={`View ${relatedPoke.name}`}
+                  >
+                    <div className="relative w-20 h-20 md:w-24 md:h-24 mb-2">
+                      <Image
+                        src={spriteUrl}
+                        alt={relatedPoke.name}
+                        layout="fill"
+                        objectFit="contain"
+                        className="group-hover:rotate-3 transition-transform"
+                        onError={(e) => {
+                          e.currentTarget.srcset = "/DexTrendsLogo.png"; // Fallback for modern browsers
+                          e.currentTarget.src = "/DexTrendsLogo.png"; // Fallback for older browsers
+                        }}
+                      />
+                    </div>
+                    <p className="text-sm font-semibold capitalize text-center text-gray-700 dark:text-gray-300 group-hover:text-primary transition-colors">
+                      {relatedPoke.name.replace(/-/g, ' ')}
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">#{String(id).padStart(3, '0')}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </SlideUp>
+      )}
+
+      {/* Loading/Error states for Related Pokemon (if list is empty or during initial load, or if main loading is done) */}
+      {relatedLoading && (!pokemonDetails || relatedPokemonList.length === 0) && (
+         <div className="text-center py-8">
+           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-3"></div>
+           <p className="text-gray-500 dark:text-gray-400">Loading related Pokémon...</p>
+         </div>
+       )}
+      {relatedError && (!pokemonDetails || relatedPokemonList.length === 0) &&(
+        <div className="text-center py-8 px-4">
+          <p className="text-red-500 bg-red-50 dark:bg-red-900/30 p-3 rounded-md border border-red-200 dark:border-red-700/50">
+            <span className="font-semibold">Error:</span> {relatedError}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}

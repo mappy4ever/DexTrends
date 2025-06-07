@@ -554,7 +554,7 @@ export default function PokeDex() {
                   <CardHover
                     key={poke.id || poke.name}
                     className="flex flex-col items-center rounded-xl bg-gradient-to-br p-4 border border-gray-200/60 dark:border-gray-700/60 shadow-sm hover:shadow-md group relative transition-all duration-300 overflow-hidden"
-                    onClick={() => router.push(`/PokeDex/${poke.name}`)}
+                    onClick={() => router.push(`/PokeDex/${pokeId}`)}
                   >
                     <button
                       className={`absolute top-2 right-2 z-10 p-1.5 rounded-full transition-all transform ${
@@ -623,7 +623,7 @@ export default function PokeDex() {
                   <div
                     key={poke.id || poke.name}
                     className="group flex items-center bg-white dark:bg-gray-800 p-3 md:p-4 rounded-xl border border-gray-200/80 dark:border-gray-700/80 hover:border-primary/30 cursor-pointer hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-all duration-300 shadow-sm hover:shadow-md relative overflow-hidden"
-                    onClick={() => router.push(`/PokeDex/${poke.name}`)}
+                    onClick={() => router.push(`/PokeDex/${pokeId}`)}
                   >
                     {/* Background decorative element based on type */}
                     {primaryType && (
