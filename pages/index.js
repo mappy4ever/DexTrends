@@ -61,7 +61,7 @@ export default function IndexPage() {
 
   function openModal(card) {
     // Navigate to card details page instead of opening modal
-    window.location.href = `/cards/${card.id}`;
+    router.push(`/cards/${card.id}`);
   }
 
   function closeModal() {
