@@ -2,15 +2,15 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Head from "next/head";
-import { FadeIn, SlideUp } from "../../components/ui/Animations";
-import { TypeBadge } from "../../components/ui/TypeBadge";
-import CardList from "../../components/CardList";
-import { useFavorites } from "../../context/FavoritesContext";
-import { typeEffectiveness } from "../../utils/pokemonUtils";
+import { FadeIn, SlideUp } from "../../components/ui/animations";
+import { TypeBadge } from "../../components/ui/typebadge";
+import CardList from "../../components/cardlist";
+import { useFavorites } from "../../context/favoritescontext";
+import { typeEffectiveness } from "../../utils/pokemonutils";
 
 export default function PokemonDetail() {
   const router = useRouter();
-  const { pokeId } = router.query;
+  const { pokeid } = router.query; // Changed pokeId to pokeid
   const { favorites, togglePokemonFavorite } = useFavorites();
   const [pokemonDetails, setPokemonDetails] = useState(null);
   const [pokemonSpecies, setPokemonSpecies] = useState(null);
@@ -28,11 +28,11 @@ export default function PokemonDetail() {
   const [relatedError, setRelatedError] = useState(null);
 
   // Helper: is this Pokémon a favorite?
-  const isFavorite = favorites?.pokemon?.includes(String(pokeId));
+  const isFavorite = favorites?.pokemon?.includes(String(pokeid)); // Changed pokeId to pokeid
 
   // Fetch Pokémon details, species, evolution, and cards
   useEffect(() => {
-    if (!router.isReady || !pokeId) return;
+    if (!router.isReady || !pokeid) return; // Changed pokeId to pokeid
     setLoading(true);
     setError(null);
     setPokemonDetails(null);
@@ -79,12 +79,12 @@ export default function PokemonDetail() {
           setGenerationInfo(genData);
 
           // Fetch related Pokemon from the same generation
-          if (genData.pokemon_species && pokeId) {
+          if (genData.pokemon_species && pokeid) { // Changed pokeId to pokeid
             setRelatedLoading(true);
             setRelatedError(null);
             try {
-              // Ensure pokeId is a string for comparison, as IDs from URL are strings
-              const currentPokemonIdString = String(pokeId);
+              // Ensure pokeid is a string for comparison, as IDs from URL are strings
+              const currentPokemonIdString = String(pokeid); // Changed pokeId to pokeid
               const filteredRelatedPokemon = genData.pokemon_species.filter(p => {
                 const relatedId = p.url.split("/").filter(Boolean).pop();
                 return relatedId !== currentPokemonIdString;
@@ -145,7 +145,7 @@ export default function PokemonDetail() {
     };
     fetchAll();
     return () => { didCancel = true; clearTimeout(timeout); };
-  }, [router.isReady, pokeId]);
+  }, [router.isReady, pokeid]); // Changed pokeId to pokeid
 
   // Type effectiveness info
   let typeEffectivenessInfo = null;
@@ -205,7 +205,7 @@ export default function PokemonDetail() {
           {/* Pokémon Image */}
           <div className="flex-shrink-0 flex flex-col items-center">
             <Image
-              src={pokemonDetails.sprites?.other?.["official-artwork"]?.front_default || "/DexTrendsLogo.png"}
+              src={pokemonDetails.sprites?.other?.["official-artwork"]?.front_default || "/dextrendslogo.png"}
               alt={pokemonDetails.name}
               width={240}
               height={240}
@@ -602,7 +602,7 @@ export default function PokemonDetail() {
                   <div
                     key={id}
                     className="flex flex-col items-center p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700/60 transition-all duration-200 cursor-pointer group transform hover:scale-105 active:scale-95 shadow-sm border border-gray-200/50 dark:border-gray-700/50"
-                    onClick={() => router.push(`/PokeDex/${id}`)}
+                    onClick={() => router.push(`/pokedex/${id}`)}
                     title={`View ${relatedPoke.name}`}
                   >
                     <div className="relative w-20 h-20 md:w-24 md:h-24 mb-2">
@@ -613,8 +613,8 @@ export default function PokemonDetail() {
                         objectFit="contain"
                         className="group-hover:rotate-3 transition-transform"
                         onError={(e) => {
-                          e.currentTarget.srcset = "/DexTrendsLogo.png"; // Fallback for modern browsers
-                          e.currentTarget.src = "/DexTrendsLogo.png"; // Fallback for older browsers
+                          e.currentTarget.srcset = "/dextrendslogo.png"; // Fallback for modern browsers
+                          e.currentTarget.src = "/dextrendslogo.png"; // Fallback for older browsers
                         }}
                       />
                     </div>

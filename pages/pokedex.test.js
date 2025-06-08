@@ -1,11 +1,11 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { useRouter } from 'next/router'; // Automatically uses the mock from __mocks__
-import PokeDex from './PokeDex'; // Adjust path as necessary
-import { FavoritesProvider } from '../context/FavoritesContext';
-import { SortingProvider } from '../context/SortingContext';
-import { ThemeProvider } from '../context/ThemeContext';
-import { ViewSettingsProvider } from '../context/ViewSettingsContext';
+import PokeDex from './pokedex'; // Adjust path as necessary
+import { FavoritesProvider } from '../context/favoritescontext';
+import { SortingProvider } from '../context/sortingcontext';
+import { ThemeProvider } from '../context/themecontext';
+import { ViewSettingsProvider } from '../context/viewsettingscontext';
 
 // Mock useSWRInfinite
 jest.mock('swr/infinite', () => ({
@@ -32,9 +32,9 @@ describe('PokeDex Page', () => {
     useRouter.mockImplementation(() => ({
       push: mockPush,
       query: {},
-      pathname: '/PokeDex',
-      asPath: '/PokeDex',
-      route: '/PokeDex',
+      pathname: '/pokedex',
+      asPath: '/pokedex',
+      route: '/pokedex',
       isReady: true,
     }));
 
@@ -114,7 +114,7 @@ describe('PokeDex Page', () => {
     // The component constructs pokeId from poke.id
     await waitFor(() => {
       expect(mockPush).toHaveBeenCalledTimes(1);
-      expect(mockPush).toHaveBeenCalledWith('/PokeDex/1');
+      expect(mockPush).toHaveBeenCalledWith('/pokedex/1');
     });
   });
 });

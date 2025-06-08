@@ -3,16 +3,16 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
 import Head from "next/head";
-import { FadeIn, SlideUp, Scale } from "../../components/ui/Animations";
-import { TypeBadge } from "../../components/ui/TypeBadge";
+import { FadeIn, SlideUp, Scale } from "../../components/ui/animations";
+import { TypeBadge } from "../../components/ui/typebadge";
 
 function PocketPokemonDetail() {
   const router = useRouter();
-  const { pokemonId } = router.query;
+  const { pokemonid } = router.query; // Changed to pokemonid
   
-  // Debug: Log router state and pokemonId on every render
+  // Debug: Log router state and pokemonid on every render
   if (typeof window !== 'undefined') {
-    console.log('router.isReady:', router.isReady, 'pokemonId:', pokemonId, 'router.query:', router.query);
+    console.log('router.isReady:', router.isReady, 'pokemonid:', pokemonid, 'router.query:', router.query);
   }
   
   const [pokemonDetails, setPokemonDetails] = useState(null);
@@ -22,12 +22,12 @@ function PocketPokemonDetail() {
   const [activeTab, setActiveTab] = useState("overview");
   
   useEffect(() => {
-    if (!router.isReady || !pokemonId) return;
+    if (!router.isReady || !pokemonid) return; // Changed to pokemonid
     
     const fetchPokemonDetails = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`https://api.tcgdex.net/v2/en/cards/${pokemonId}`);
+        const response = await fetch(`https://api.tcgdex.net/v2/en/cards/${pokemonid}`); // Changed to pokemonid
         if (!response.ok) throw new Error("Card not found");
         const data = await response.json();
         
@@ -38,7 +38,7 @@ function PocketPokemonDetail() {
           const relatedResponse = await fetch(`https://api.tcgdex.net/v2/en/cards?name=${encodeURIComponent(data.name)}`);
           if (relatedResponse.ok) {
             const relatedData = await relatedResponse.json();
-            setCards(relatedData.filter(card => card.id !== pokemonId));
+            setCards(relatedData.filter(card => card.id !== pokemonid)); // Changed to pokemonid
           }
         } catch (err) {
           console.error("Failed to fetch related cards:", err);
@@ -53,7 +53,7 @@ function PocketPokemonDetail() {
     };
     
     fetchPokemonDetails();
-  }, [router.isReady, pokemonId]);
+  }, [router.isReady, pokemonid]); // Changed to pokemonid
   
   if (loading) {
     return (
@@ -84,7 +84,7 @@ function PocketPokemonDetail() {
             {error || "Card not found or unavailable at this time."}
           </p>
           <button 
-            onClick={() => router.push('/PocketMode', undefined, { shallow: false })}
+            onClick={() => router.push('/pocketmode', undefined, { shallow: false })}
             className="mt-6 px-6 py-2.5 bg-primary text-white rounded-lg hover:bg-primary-dark transition-all"
           >
             Back to Pocket Mode
@@ -133,7 +133,7 @@ function PocketPokemonDetail() {
                     )}
                   </h1>
                 </div>
-                <Link href="/PocketMode">
+                <Link href="/pocketmode">
                   <button className="p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700">
                     <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -381,7 +381,7 @@ function PocketPokemonDetail() {
                 {cards && cards.length > 0 ? (
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                     {cards.map(card => (
-                      <Link href={`/PocketMode/${card.id}`} key={card.id}>
+                      <Link href={`/pocketmode/${card.id}`} key={card.id}>
                         <div className="flex flex-col items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg transform hover:scale-105 transition-all">
                           <div className="relative w-full h-40 mb-2">
                             <Image 

@@ -151,14 +151,14 @@ export default function CardList({
                 </div>
               </div>
               <h3 className="text-lg font-bold text-text-heading text-center mb-1 group-hover:text-primary group-focus-within:text-primary transition-colors duration-200">
-                <Link href={`/PokeDex/${pokemonName}`} legacyBehavior>
+                <Link href={`/pokedex/${pokemonName}`} legacyBehavior>
                   <a className="text-blue-900 hover:text-blue-700 focus:text-blue-700 hover:underline focus:underline outline-none focus-visible:ring-2 focus-visible:ring-primary px-1 rounded" tabIndex={0} title={`View all cards for ${pokemonName}`} onClick={e => e.stopPropagation()}>
                     {card.name}
                   </a>
                 </Link>
               </h3>
               <div className="flex items-center gap-2 mb-1">
-                <Link href={`/TCGSets/${setId}`} legacyBehavior>
+                <Link href={`/tcgsets/${setId}`} legacyBehavior>
                   <a
                     className="text-blue-900 hover:text-blue-700 focus:text-blue-700 hover:underline focus:underline outline-none focus-visible:ring-2 focus-visible:ring-primary px-1 rounded"
                     tabIndex={0}

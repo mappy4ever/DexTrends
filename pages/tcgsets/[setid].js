@@ -3,13 +3,13 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
 import pokemon from "pokemontcgsdk";
-import Modal from "../../components/Modal";
-import CardList from "../../components/CardList";
-import { FadeIn, SlideUp } from "../../components/ui/Animations";
-import PriceHistoryChart from "../../components/ui/PriceHistoryChart";
-import { useTheme } from "../../context/ThemeContext";
-import { useFavorites } from "../../context/FavoritesContext";
-import { useViewSettings } from "../../context/ViewSettingsContext";
+import Modal from "../../components/modal";
+import CardList from "../../components/cardlist";
+import { FadeIn, SlideUp } from "../../components/ui/animations";
+import PriceHistoryChart from "../../components/ui/pricehistorychart";
+import { useTheme } from "../../context/themecontext";
+import { useFavorites } from "../../context/favoritescontext";
+import { useViewSettings } from "../../context/viewsettingscontext";
 
 const pokemonKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
 if (!pokemonKey) {
@@ -22,7 +22,7 @@ pokemon.configure({ apiKey: pokemonKey });
 
 export default function SetIdPage() {
   const router = useRouter();
-  const { setId } = router.query;
+  const { setid } = router.query; // Changed to setid
   const { theme } = useTheme();
   const { toggleCardFavorite, isCardFavorite } = useFavorites();
   const { viewSettings } = useViewSettings();
@@ -56,19 +56,19 @@ export default function SetIdPage() {
 
   // Fetch set information and cards
   useEffect(() => {
-    if (!setId) return;
+    if (!setid) return; // Changed to setid
 
     setLoading(true);
     setError(null);
     
     Promise.all([
-      pokemon.set.find(setId).catch(err => {
+      pokemon.set.find(setid).catch(err => { // Changed to setid
         console.error("Error fetching set info:", err);
         setError("Failed to load set information");
         return null;
       }),
       
-      pokemon.card.where({ q: `set.id:${setId}` }).catch(err => {
+      pokemon.card.where({ q: `set.id:${setid}` }).catch(err => { // Changed to setid
         console.error("Error fetching cards:", err);
         setError("Failed to load cards for this set");
         return { data: [] };
@@ -82,7 +82,7 @@ export default function SetIdPage() {
       }
       setLoading(false);
     });
-  }, [setId]);
+  }, [setid]); // Changed to setid
 
   // Calculate set statistics when cards are loaded
   const calculateSetStatistics = (cardsData) => {
@@ -294,7 +294,7 @@ export default function SetIdPage() {
           <p className="text-red-600 mt-2">{error}</p>
           <button 
             className="mt-4 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
-            onClick={() => router.push('/TCGSets')}
+            onClick={() => router.push('/tcgsets')}
           >
             Back to Sets
           </button>
@@ -528,7 +528,7 @@ export default function SetIdPage() {
               </div>
             )}
           </div>
-          <Link href="/TCGSets" className="text-blue-600 hover:underline">
+          <Link href="/tcgsets" className="text-blue-600 hover:underline">
             Back to Sets
           </Link>
         </div>

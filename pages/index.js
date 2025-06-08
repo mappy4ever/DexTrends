@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import pokemon from "pokemontcgsdk";
-import Modal from "../components/Modal";
-import CardList from "../components/CardList";
-import CustomSiteLogo from "../components/icons/CustomSiteLogo";
+import Modal from "../components/modal";
+import CardList from "../components/cardlist";
+import CustomSiteLogo from "../components/icons/customsitelogo";
 
 const pokemonKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
 if (!pokemonKey) {

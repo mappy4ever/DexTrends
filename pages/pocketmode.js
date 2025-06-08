@@ -3,12 +3,12 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
 import Head from "next/head";
-import { FadeIn, SlideUp } from "../components/ui/Animations";
-import { TypeBadge } from "../components/ui/TypeBadge";
-import { TypeFilter } from "../components/ui/TypeFilter";
-import PocketDeckViewer from "../components/PocketDeckViewer";
-import PocketExpansionViewer from "../components/PocketExpansionViewer";
-import PocketRulesGuide from "../components/PocketRulesGuide";
+import { FadeIn, SlideUp } from "../components/ui/animations";
+import { TypeBadge } from "../components/ui/typebadge";
+import { TypeFilter } from "../components/ui/typefilter";
+import PocketDeckViewer from "../components/pocketdeckviewer";
+import PocketExpansionViewer from "../components/pocketexpansionviewer";
+import PocketRulesGuide from "../components/pocketrulesguide";
 
 export default function PocketMode() {
   const router = useRouter();
@@ -386,7 +386,7 @@ export default function PocketMode() {
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
               {filteredPokemon.length > 0 ? (
                 filteredPokemon.map((poke) => (
-                  <Link href={"/PocketMode/" + poke.id} key={poke.id} className="block transition-all duration-300">
+                  <Link href={"/pocketmode/" + poke.id} key={poke.id} className="block transition-all duration-300">
                     <div className="flex flex-col items-center rounded-xl bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 p-4 border border-gray-200/60 dark:border-gray-700/60 shadow-sm hover:shadow-md relative overflow-hidden">
                       {/* Card image */}
                       <div className="relative w-full h-40 mb-3">

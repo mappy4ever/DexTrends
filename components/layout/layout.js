@@ -1,8 +1,8 @@
 // components/Layout.js
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import Navbar from "../Navbar"; // Assuming Navbar component exists
-import Footer from "../Footer"; // Assuming Footer component exists
+import Navbar from "../navbar"; // Assuming Navbar component exists
+import Footer from "../footer"; // Assuming Footer component exists
 
 export default function Layout({ children }) {
   return (

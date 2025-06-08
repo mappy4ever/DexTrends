@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-// import CardList from "../components/CardList";
+// import CardList from "../components/cardlist.js";
 
 function formatDate(dateString) {
   const date = new Date(dateString);

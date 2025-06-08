@@ -1,17 +1,17 @@
 import { useEffect } from "react";
 import "../styles/globals.css";
 import "react-datepicker/dist/react-datepicker.css";
-import Layout from "../components/layout/Layout";
-import ErrorBoundary from "../components/layout/ErrorBoundary";
+import Layout from "../components/layout/layout";
+import ErrorBoundary from "../components/layout/errorboundary";
 import "../components/cardfeatures.css";
 import { AnimatePresence, motion } from "framer-motion";
 
-import { ThemeProvider } from '../context/ThemeContext';
-import { FavoritesProvider } from '../context/FavoritesContext';
-import { ViewSettingsProvider } from '../context/ViewSettingsContext';
-import { ModalProvider } from '../context/ModalContext';
-import { SortingProvider } from '../context/SortingContext';
-import GlobalModal from '../components/GlobalModal';
+import { ThemeProvider } from '../context/themecontext';
+import { FavoritesProvider } from '../context/favoritescontext';
+import { ViewSettingsProvider } from '../context/viewsettingscontext';
+import { ModalProvider } from '../context/modalcontext';
+import { SortingProvider } from '../context/sortingcontext';
+import GlobalModal from '../components/globalmodal';
 
 // Simple throttle function
 const throttle = (func, limit) => {

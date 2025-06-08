@@ -2,13 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import useSWRInfinite from "swr/infinite";
-import { useSorting } from "../context/SortingContext";
-import { useTheme } from "../context/ThemeContext";
-import { useFavorites } from "../context/FavoritesContext";
-import { useViewSettings } from "../context/ViewSettingsContext";
-import { TypeBadge, TypeBadgeSelector } from "../components/ui/TypeBadge";
-import { FadeIn, SlideUp, CardHover } from "../components/ui/Animations";
-import { typeColors, getGeneration, generationNames } from "../utils/pokemonUtils";
+import { useSorting } from "../context/sortingcontext";
+import { useTheme } from "../context/themecontext";
+import { useFavorites } from "../context/favoritescontext";
+import { useViewSettings } from "../context/viewsettingscontext";
+import { TypeBadge, TypeBadgeSelector } from "../components/ui/typebadge";
+import { FadeIn, SlideUp, CardHover } from "../components/ui/animations";
+import { typeColors, getGeneration, generationNames } from "../utils/pokemonutils";
 
 const pageSize = 50;
 
@@ -554,7 +554,7 @@ export default function PokeDex() {
                   <CardHover
                     key={poke.id || poke.name}
                     className="flex flex-col items-center rounded-xl bg-gradient-to-br p-4 border border-gray-200/60 dark:border-gray-700/60 shadow-sm hover:shadow-md group relative transition-all duration-300 overflow-hidden"
-                    onClick={() => router.push(`/PokeDex/${pokeId}`)}
+                    onClick={() => router.push(`/pokedex/${pokeId}`)}
                   >
                     <button
                       className={`absolute top-2 right-2 z-10 p-1.5 rounded-full transition-all transform ${
@@ -623,7 +623,7 @@ export default function PokeDex() {
                   <div
                     key={poke.id || poke.name}
                     className="group flex items-center bg-white dark:bg-gray-800 p-3 md:p-4 rounded-xl border border-gray-200/80 dark:border-gray-700/80 hover:border-primary/30 cursor-pointer hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-all duration-300 shadow-sm hover:shadow-md relative overflow-hidden"
-                    onClick={() => router.push(`/PokeDex/${pokeId}`)}
+                    onClick={() => router.push(`/pokedex/${pokeId}`)}
                   >
                     {/* Background decorative element based on type */}
                     {primaryType && (
