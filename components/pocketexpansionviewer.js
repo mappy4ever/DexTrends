@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { SlideUp } from "./ui/Animations";
+import { SlideUp } from "./ui/animations";
 
 /**
  * Component to display Pokémon TCG Pocket expansion details

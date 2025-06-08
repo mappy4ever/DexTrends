@@ -1,5 +1,5 @@
 // utils/dateUtils.js
-import { getYearMonthString } from './filterUtils'; // Assuming filterUtils is in the same directory or adjust path
+import { getYearMonthString } from './filterutils'; // Assuming filterUtils is in the same directory or adjust path
 
 export function generateMonthsInRangeForCharts(startDate, endDate) {
   if (!startDate || !endDate) return [];

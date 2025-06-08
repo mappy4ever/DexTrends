@@ -6,7 +6,7 @@ export default function CustomSiteLogo({ size = 120, className = '', ...props })
   return (
     <div className="site-logo">
       <Image
-        src="/DexTrendsLogo.png" // Updated to use the new Pokédex-themed logo
+        src="/dextrendslogo.png" // Updated to use the new Pokédex-themed logo
         alt="DexTrends Logo"
         width={150} // Adjusted size for better visibility
         height={150}

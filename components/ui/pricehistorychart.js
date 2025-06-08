@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../context/themecontext';
 
 // A component to show price history for TCG cards
 // Note: In a real app, you would fetch actual price history data

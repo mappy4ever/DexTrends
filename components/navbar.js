@@ -4,9 +4,9 @@ import { useRouter } from "next/router";
 import { RiGovernmentFill } from "react-icons/ri";
 import { AiOutlineBulb } from "react-icons/ai";
 import { BsSun, BsMoon, BsGlobeEuropeAfrica, BsHeart, BsSearch } from "react-icons/bs";
-import GlobalSearchModal from "./GlobalSearchModal";
-import { useTheme } from "../context/ThemeContext";
-import { useFavorites } from "../context/FavoritesContext";
+import GlobalSearchModal from "./globalsearchmodal";
+import { useTheme } from "../context/themecontext";
+import { useFavorites } from "../context/favoritescontext";
 import Image from "next/image";
 
 export default function Navbar() {
@@ -26,9 +26,9 @@ export default function Navbar() {
   // DexTrends key pages
   const navItems = [
     { href: "/", label: "Main", icon: <RiGovernmentFill size={22} /> },
-    { href: "/TCGSets", label: "TCG Sets", icon: <RiGovernmentFill size={22} /> },
+    { href: "/tcgsets", label: "TCG Sets", icon: <RiGovernmentFill size={22} /> },
     { href: "/leaderboard", label: "Leaderboard", icon: <AiOutlineBulb size={22} /> },
-    { href: "/PokeDex", label: "Pokédex", icon: <BsGlobeEuropeAfrica size={22} /> },
+    { href: "/pokedex", label: "Pokédex", icon: <BsGlobeEuropeAfrica size={22} /> },
   ];
 
   const pageTitles = navItems.reduce((acc, item) => {

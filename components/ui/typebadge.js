@@ -1,5 +1,5 @@
 import React from 'react';
-import { typeColors } from '../../utils/pokemonUtils';
+import { typeColors } from '../../utils/pokemonutils';
 
 // Type badge component for consistent display of Pokémon types
 export function TypeBadge({ type, className = '', size = 'md', onClick = null }) {

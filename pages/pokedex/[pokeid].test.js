@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import { useRouter } from 'next/router'; // Automatically uses the mock from __mocks__
-import PokemonDetail from './[pokeId]'; // Adjust path as necessary
-import { FavoritesProvider } from '../../context/FavoritesContext';
-import { ThemeProvider } from '../../context/ThemeContext';
+import PokemonDetail from './[pokeid]'; // Adjust path as necessary
+import { FavoritesProvider } from '../../context/favoritescontext';
+import { ThemeProvider } from '../../context/themecontext';
 
 // Mock fetch globally
 const mockFetch = jest.spyOn(global, 'fetch');
@@ -75,10 +75,10 @@ describe('PokemonDetail Page - Related Pokemon Section', () => {
     mockPush = jest.fn();
     useRouter.mockImplementation(() => ({
       push: mockPush,
-      query: { pokeId: '1' }, // Default pokeId for tests
-      pathname: '/PokeDex/[pokeId]',
-      asPath: '/PokeDex/1',
-      route: '/PokeDex/[pokeId]',
+      query: { pokeid: '1' }, // Default pokeid for tests
+      pathname: '/pokedex/[pokeid]',
+      asPath: '/pokedex/1',
+      route: '/pokedex/[pokeid]',
       isReady: true,
     }));
     mockFetch.mockReset(); // Reset fetch mock before each test
@@ -129,7 +129,7 @@ describe('PokemonDetail Page - Related Pokemon Section', () => {
     fireEvent.click(relatedPokemonLink);
     await waitFor(() => {
       expect(mockPush).toHaveBeenCalledTimes(1);
-      expect(mockPush).toHaveBeenCalledWith('/PokeDex/2');
+      expect(mockPush).toHaveBeenCalledWith('/pokedex/2');
     });
   });
 

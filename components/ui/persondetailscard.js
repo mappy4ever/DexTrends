@@ -1,7 +1,7 @@
 // components/ui/PersonDetailsCard.js
 import React from 'react';
 import { VscInfo } from "react-icons/vsc";
-import Tooltip from './Tooltip';
+import Tooltip from './tooltip';
 import { TOOLTIP_TEXTS } from './data/tooltips';
 
 const PersonDetailsCard = ({ person, isLoading, className = "" }) => (

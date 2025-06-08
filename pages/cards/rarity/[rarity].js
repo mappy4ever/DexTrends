@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import pokemon from "pokemontcgsdk";
-import CardList from "../../../components/CardList";
-import LoadingSpinner from "../../../components/ui/LoadingSpinner";
+import CardList from "../../../components/cardlist";
+import LoadingSpinner from "../../../components/ui/loadingspinner";
 
 const rarityLabelToName = {
   C: "Common",

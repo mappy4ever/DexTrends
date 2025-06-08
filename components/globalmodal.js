@@ -1,5 +1,5 @@
-import Modal from './Modal';
-import { useModal } from '../context/ModalContext';
+import Modal from './modal';
+import { useModal } from '../context/modalcontext';
 
 export default function GlobalModal() {
   const { modalContent, closeModal } = useModal();

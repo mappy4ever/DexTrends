@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { TypeBadge } from "./ui/TypeBadge";
-import { FadeIn, SlideUp } from "./ui/Animations";
+import { TypeBadge } from "./ui/typebadge";
+import { FadeIn, SlideUp } from "./ui/animations";
 
 /**
  * Component to display and interact with Pokémon TCG Pocket deck details
@@ -40,7 +40,7 @@ export default function PocketDeckViewer({ deck }) {
         <div className="flex mb-4 overflow-x-auto gap-3 pb-2">
           {deck.keyCards.map(card => (
             <Link
-              href={`/PocketMode/${card.id}`}
+              href={`/pocketmode/${card.id}`}
               key={card.id}
               className="flex-shrink-0 relative group transform transition-all hover:scale-105"
             >

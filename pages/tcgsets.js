@@ -2,9 +2,9 @@ import React, { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import pokemon from "pokemontcgsdk";
-import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../components/ui/Animations";
-import { useTheme } from "../context/ThemeContext";
-import { useViewSettings } from "../context/ViewSettingsContext";
+import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../components/ui/animations";
+import { useTheme } from "../context/themecontext";
+import { useViewSettings } from "../context/viewsettingscontext";
 
 const pokemonKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
 if (!pokemonKey) {
@@ -203,7 +203,7 @@ export default function TCGSets() {
               className="animate-fadeIn"
               onClick={() => {
                 setSelectedSetId(set.id);
-                router.push(`/TCGSets/${set.id}`);
+                router.push(`/tcgsets/${set.id}`);
               }}
             >
               <div 
