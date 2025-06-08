@@ -1,5 +1,5 @@
 import React from "react";
-import { TypeBadge } from "./typebadge";
+import { TypeBadge } from "./TypeBadge"; // Updated path
 
 /**
  * A component for filtering Pokémon cards by type

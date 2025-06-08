@@ -1,23 +1,23 @@
 // Type colors mapping for consistent usage across the app - with solid colors and white text like the GRASS example
 export const typeColors = {
-  normal: { bg: "bg-gray-400", text: "text-white", border: "border-gray-500", hover: "hover:bg-gray-500" },
-  fire: { bg: "bg-red-600", text: "text-white", border: "border-red-700", hover: "hover:bg-red-700" },
-  water: { bg: "bg-blue-500", text: "text-white", border: "border-blue-600", hover: "hover:bg-blue-600" },
-  grass: { bg: "bg-green-500", text: "text-white", border: "border-green-600", hover: "hover:bg-green-600" },
-  electric: { bg: "bg-yellow-500", text: "text-white", border: "border-yellow-600", hover: "hover:bg-yellow-600" },
-  ice: { bg: "bg-cyan-400", text: "text-white", border: "border-cyan-500", hover: "hover:bg-cyan-500" },
-  fighting: { bg: "bg-red-700", text: "text-white", border: "border-red-800", hover: "hover:bg-red-800" },
-  poison: { bg: "bg-purple-600", text: "text-white", border: "border-purple-700", hover: "hover:bg-purple-700" },
-  ground: { bg: "bg-amber-700", text: "text-white", border: "border-amber-800", hover: "hover:bg-amber-800" },
-  flying: { bg: "bg-blue-400", text: "text-white", border: "border-blue-500", hover: "hover:bg-blue-500" },
-  psychic: { bg: "bg-pink-500", text: "text-white", border: "border-pink-600", hover: "hover:bg-pink-600" },
-  bug: { bg: "bg-lime-500", text: "text-white", border: "border-lime-600", hover: "hover:bg-lime-600" },
-  rock: { bg: "bg-stone-500", text: "text-white", border: "border-stone-600", hover: "hover:bg-stone-600" },
-  ghost: { bg: "bg-purple-700", text: "text-white", border: "border-purple-800", hover: "hover:bg-purple-800" },
-  dragon: { bg: "bg-indigo-600", text: "text-white", border: "border-indigo-700", hover: "hover:bg-indigo-700" },
-  dark: { bg: "bg-gray-800", text: "text-white", border: "border-gray-900", hover: "hover:bg-gray-900" },
-  steel: { bg: "bg-slate-500", text: "text-white", border: "border-slate-600", hover: "hover:bg-slate-600" },
-  fairy: { bg: "bg-pink-500", text: "text-white", border: "border-pink-600", hover: "hover:bg-pink-600" }
+  normal: { bg: "bg-gray-400", text: "text-white", border: "border-gray-500", hover: "hover:bg-gray-500" }, // Hex: #A8A878
+  fire: { bg: "bg-orange-500", text: "text-white", border: "border-orange-600", hover: "hover:bg-orange-600" }, // Hex: #F08030
+  water: { bg: "bg-blue-500", text: "text-white", border: "border-blue-600", hover: "hover:bg-blue-600" }, // Hex: #6890F0
+  electric: { bg: "bg-yellow-400", text: "text-black", border: "border-yellow-500", hover: "hover:bg-yellow-500" }, // Hex: #F8D030
+  grass: { bg: "bg-green-500", text: "text-white", border: "border-green-600", hover: "hover:bg-green-600" }, // Hex: #78C850
+  ice: { bg: "bg-cyan-300", text: "text-black", border: "border-cyan-400", hover: "hover:bg-cyan-400" }, // Hex: #98D8D8
+  fighting: { bg: "bg-red-700", text: "text-white", border: "border-red-800", hover: "hover:bg-red-800" }, // Hex: #C03028
+  poison: { bg: "bg-purple-600", text: "text-white", border: "border-purple-700", hover: "hover:bg-purple-700" }, // Hex: #A040A0
+  ground: { bg: "bg-yellow-600", text: "text-black", border: "border-yellow-700", hover: "hover:bg-yellow-700" }, // Hex: #E0C068
+  flying: { bg: "bg-indigo-400", text: "text-white", border: "border-indigo-500", hover: "hover:bg-indigo-500" }, // Hex: #A890F0
+  psychic: { bg: "bg-pink-500", text: "text-white", border: "border-pink-600", hover: "hover:bg-pink-600" }, // Hex: #F85888
+  bug: { bg: "bg-lime-600", text: "text-white", border: "border-lime-700", hover: "hover:bg-lime-700" }, // Hex: #A8B820
+  rock: { bg: "bg-yellow-700", text: "text-white", border: "border-yellow-800", hover: "hover:bg-yellow-800" }, // Hex: #B8A038
+  ghost: { bg: "bg-purple-800", text: "text-white", border: "border-purple-900", hover: "hover:bg-purple-900" }, // Hex: #705898
+  dragon: { bg: "bg-indigo-600", text: "text-white", border: "border-indigo-700", hover: "hover:bg-indigo-700" }, // Hex: #7038F8
+  dark: { bg: "bg-gray-700", text: "text-white", border: "border-gray-800", hover: "hover:bg-gray-800" }, // Hex: #705848
+  steel: { bg: "bg-slate-400", text: "text-black", border: "border-slate-500", hover: "hover:bg-slate-500" }, // Hex: #B8B8D0
+  fairy: { bg: "bg-pink-300", text: "text-black", border: "border-pink-400", hover: "hover:bg-pink-400" } // Hex: #EE99AC
 };
 
 // Complete type effectiveness chart
@@ -178,4 +178,18 @@ export const getRarityRank = (card) => {
     "Rare Holo VMAX": 13,
   };
   return rarityMap[rarity] || 0;
+};
+
+// Helper to extract ID from a PokeAPI URL (e.g., "https://pokeapi.co/api/v2/pokemon/25/")
+export const extractIdFromUrl = (urlString) => {
+  if (typeof urlString !== 'string' || !urlString) {
+    return null;
+  }
+  const parts = urlString.split('/').filter(Boolean);
+  return parts.pop(); // The ID is usually the last part of the path
+};
+
+export const getOfficialArtworkSpriteUrl = (pokemonId) => {
+  if (!pokemonId) return "/dextrendslogo.png"; // Fallback image
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonId}.png`;
 };

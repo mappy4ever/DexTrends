@@ -1,5 +1,7 @@
 import React, { forwardRef, useImperativeHandle, useState, useRef } from "react";
+import Link from "next/link"; // Import Link
 import pokemon from "pokemontcgsdk";
+import { toLowercaseUrl } from "../utils/formatters"; // Import toLowercaseUrl
 
 const POKE_API = "https://pokeapi.co/api/v2/pokemon?limit=10&offset=0";
 
@@ -97,10 +99,12 @@ const GlobalSearchModal = forwardRef(function GlobalSearchModal(_, ref) {
               <ul>
                 {results.cards.map((card) => (
                   <li key={card.id} className="py-2 px-2 rounded hover:bg-primary/10 cursor-pointer">
-                    <a href={`/pokedex/${card.name}`} className="text-primary font-semibold flex items-center gap-2">
-                      <img src={card.images?.small} alt={card.name} className="w-8 h-8 rounded shadow" />
-                      {card.name} <span className="text-xs text-gray-400">({card.set?.name})</span>
-                    </a>
+                    <Link href={toLowercaseUrl(`/pokedex/${card.name}`)} passHref>
+                      <a className="text-primary font-semibold flex items-center gap-2">
+                        <img src={card.images?.small} alt={card.name} className="w-8 h-8 rounded shadow" />
+                        {card.name} <span className="text-xs text-gray-400">({card.set?.name})</span>
+                      </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -112,10 +116,12 @@ const GlobalSearchModal = forwardRef(function GlobalSearchModal(_, ref) {
               <ul>
                 {results.sets.map((set) => (
                   <li key={set.id} className="py-2 px-2 rounded hover:bg-primary/10 cursor-pointer">
-                    <a href={`/tcgsets/${set.id}`} className="text-primary font-semibold flex items-center gap-2">
-                      {set.images?.logo && <img src={set.images.logo} alt={set.name} className="w-8 h-8 rounded" />}
-                      {set.name}
-                    </a>
+                    <Link href={toLowercaseUrl(`/tcgsets/${set.id}`)} passHref>
+                      <a className="text-primary font-semibold flex items-center gap-2">
+                        {set.images?.logo && <img src={set.images.logo} alt={set.name} className="w-8 h-8 rounded" />}
+                        {set.name}
+                      </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -127,9 +133,11 @@ const GlobalSearchModal = forwardRef(function GlobalSearchModal(_, ref) {
               <ul>
                 {results.pokemon.map((poke) => (
                   <li key={poke.name} className="py-2 px-2 rounded hover:bg-primary/10 cursor-pointer">
-                    <a href={`/pokedex/${poke.name}`} className="text-primary font-semibold flex items-center gap-2">
-                      <span className="capitalize">{poke.name}</span>
-                    </a>
+                    <Link href={toLowercaseUrl(`/pokedex/${poke.name}`)} passHref>
+                      <a className="text-primary font-semibold flex items-center gap-2">
+                        <span className="capitalize">{poke.name}</span>
+                      </a>
+                    </Link>
                   </li>
                 ))}
               </ul>

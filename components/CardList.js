@@ -88,24 +88,21 @@ export default function CardList({
             'Radiant Rare': { label: 'Rad', color: 'bg-lime-100 border border-lime-400 text-lime-900' },
           };
           const rarityTag = rarityMap[rarity] || { label: '?', color: 'bg-gray-100 border border-gray-300 text-gray-400' };
-          // Price formatting (black, bold, no $ if N/A)
-          let price = null;
-          if (card.tcgplayer?.prices?.holofoil?.market) {
-            price = card.tcgplayer.prices.holofoil.market;
-          } else if (card.tcgplayer?.prices?.normal?.market) {
-            price = card.tcgplayer.prices.normal.market;
-          }
-          const priceDisplay = price !== null && price !== undefined && price !== 'N/A'
+
+          // Use getPrice prop for price display
+          const currentPrice = getPrice(card); // getPrice already formats it as string "$X.XX" or "N/A"
+          const priceDisplay = currentPrice !== 'N/A'
             ? (
-                <span className="inline-block text-sm font-medium text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-800 px-2 py-0.5 rounded-md border border-gray-200 dark:border-gray-700 tracking-tight mb-1">
-                  ${price.toFixed(2)}
+                <span className="inline-block text-sm font-medium text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-800 px-2 py-0.5 rounded-md border border-gray-200 dark:border-gray-700 tracking-tight">
+                  {currentPrice}
                 </span>
               )
             : (
-                <span className="inline-block text-xs font-medium text-gray-400 bg-gray-50 dark:bg-gray-800 px-2 py-0.5 rounded-md mb-1">
+                <span className="inline-block text-xs font-medium text-gray-400 bg-gray-50 dark:bg-gray-800 px-2 py-0.5 rounded-md">
                   N/A
                 </span>
               );
+
           const handleRarityClick = (e) => {
             e.stopPropagation();
             // Always navigate to a dedicated rarity page using the short label (e.g. /cards/rarity/SR)
@@ -193,6 +190,32 @@ export default function CardList({
               {setRelease && (
                 <div className="text-xs text-gray-400 mt-1">{setRelease}</div>
               )}
+
+              {/* External Links */}
+              <div className="mt-2 flex flex-wrap justify-center gap-x-3 gap-y-1 text-xs">
+                {card.tcgplayer?.url && (
+                  <a
+                    href={card.tcgplayer.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()} // Prevent card click when link is clicked
+                    className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:underline focus:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded"
+                  >
+                    TCGPlayer
+                  </a>
+                )}
+                {card.cardmarket?.url && (
+                  <a
+                    href={card.cardmarket.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()} // Prevent card click when link is clicked
+                    className="text-green-500 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300 hover:underline focus:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded"
+                  >
+                    CardMarket
+                  </a>
+                )}
+              </div>
             </div>
           );
         })}

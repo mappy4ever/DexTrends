@@ -18,7 +18,7 @@ export function TypeBadge({ type, className = '', size = 'md', onClick = null })
 
   return (
     <span 
-      className={`${sizeClasses[size]} rounded-full font-bold uppercase ${colors.bg} ${colors.text} transition-all ${interactiveClasses} ${className}`}
+      className={`${sizeClasses[size]} rounded-full font-bold uppercase ${colors.bg} ${colors.text} border-2 ${colors.border} transition-all ${interactiveClasses} ${className}`}
       onClick={onClick}
       role={onClick ? "button" : undefined}
       tabIndex={onClick ? 0 : undefined}

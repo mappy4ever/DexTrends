@@ -6,13 +6,15 @@ import { useSorting } from "../context/sortingcontext";
 import { useTheme } from "../context/themecontext";
 import { useFavorites } from "../context/favoritescontext";
 import { useViewSettings } from "../context/viewsettingscontext";
-import { TypeBadge, TypeBadgeSelector } from "../components/ui/typebadge";
+import { TypeBadge, TypeBadgeSelector } from "../components/ui/TypeBadge"; // Updated path
 import { FadeIn, SlideUp, CardHover } from "../components/ui/animations";
-import { typeColors, getGeneration, generationNames } from "../utils/pokemonutils";
+import { typeColors, getGeneration, generationNames, extractIdFromUrl, getOfficialArtworkSpriteUrl } from "../utils/pokemonutils"; // Import getOfficialArtworkSpriteUrl
+import { toLowercaseUrl } from "../../utils/formatters";
+import { fetchData } from "../../utils/apiutils"; // Import fetchData
 
 const pageSize = 50;
 
-const fetcher = (url) => fetch(url).then((res) => res.json());
+// const fetcher = (url) => fetch(url).then((res) => res.json()); // Old fetcher
 
 function getKey(pageIndex, previousPageData) {
   if (previousPageData && !previousPageData.results.length) return null; // reached end
@@ -79,7 +81,7 @@ export default function PokeDex() {
     }
   }, [viewMode, cardSize, updateSetting]);
 
-  const { data, error, size, setSize, isValidating } = useSWRInfinite(getKey, fetcher);
+  const { data, error, size, setSize, isValidating } = useSWRInfinite(getKey, fetchData); // Use fetchData for SWR
 
   // Flatten pages and fetch detailed info for each pokemon
   const [pokemonList, setPokemonList] = useState([]);
@@ -91,21 +93,24 @@ export default function PokeDex() {
         const detailedPokemon = await Promise.all(
           allResults.map(async (poke) => {
             try {
-              const detailRes = await fetch(`https://pokeapi.co/api/v2/pokemon/${poke.name}`);
-              if (!detailRes.ok) throw new Error('Failed fetch');
-              const detailData = await detailRes.json();
+              // const detailRes = await fetch(`https://pokeapi.co/api/v2/pokemon/${poke.name}`); // Old fetch
+              // if (!detailRes.ok) throw new Error('Failed fetch');
+              // const detailData = await detailRes.json(); // Old fetch
+              const detailData = await fetchData(`https://pokeapi.co/api/v2/pokemon/${poke.name}`); // Use fetchData
               if (!detailData.is_default) {
                 return null; // skip non-default forms
               }
               const types = detailData.types.map((typeInfo) => typeInfo.type.name);
               return { ...poke, types, id: detailData.id };
-            } catch {
+            } catch (err) { // Catch error from fetchData
+              console.error(`Failed to fetch details for ${poke.name}:`, err);
               return null; // skip failed fetches
             }
           })
         );
         setPokemonList(detailedPokemon.filter(Boolean));
-      } catch {
+      } catch (mainErr) { // Catch error from Promise.all or other parts of fetchDetails
+        console.error("Error in fetchDetails:", mainErr);
         setPokemonList([]);
       }
     }
@@ -122,25 +127,28 @@ export default function PokeDex() {
       (poke.types && poke.types.some(type => typeFilter.includes(type)));
     
     // Generation filtering
-    const generation = getGeneration(poke.id || poke.url.split("/").filter(Boolean).pop());
+    const idForGen = poke.id || extractIdFromUrl(poke.url);
+    const generation = getGeneration(idForGen);
     const genMatch = genFilter.length === 0 || genFilter.includes(generation);
     
     // Favorites filtering
+    const idForFav = poke.id || extractIdFromUrl(poke.url);
     const favoriteMatch = !showOnlyFavorites || 
-      isPokemonFavorite(poke.id || poke.url.split("/").filter(Boolean).pop());
+      isPokemonFavorite(idForFav);
     
     return nameMatch && typeMatch && genMatch && favoriteMatch;
   });
 
-  // Helper to get sprite URL from Pokémon API URL
-  function getSpriteUrl(url) {
-    const id = url.split("/").filter(Boolean).pop();
-    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
-  }
+  // // Helper to get sprite URL from Pokémon API URL - REMOVED, will use getOfficialArtworkSpriteUrl from utils
+  // function getSpriteUrl(url) {
+  //   const id = extractIdFromUrl(url);
+  //   return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+  // }
 
   // Helper to get ID number from poke object for sorting
   function getId(poke) {
-    return poke.id || parseInt(poke.url.split("/").filter(Boolean).pop());
+    // Assuming poke.id is populated by fetchDetails, otherwise extractIdFromUrl should be used carefully if poke.url is the only source
+    return poke.id || (poke.url ? parseInt(extractIdFromUrl(poke.url)) : null);
   }
 
   // Helper to get primary type name safely for sorting
@@ -540,7 +548,8 @@ export default function PokeDex() {
           {viewMode === 'grid' ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4 md:gap-6">
               {sortedPokemon.map((poke) => {
-                const pokeId = poke.id ? String(poke.id) : poke.url.split("/").filter(Boolean).pop();
+                // poke.id should be reliably populated by fetchDetails. Fallback is a safety.
+                const pokeId = poke.id ? String(poke.id) : (poke.url ? extractIdFromUrl(poke.url) : null);
                 const isFavorite = isPokemonFavorite(pokeId);
                 const generation = getGeneration(pokeId);
                 const sizeClasses = {
@@ -554,7 +563,7 @@ export default function PokeDex() {
                   <CardHover
                     key={poke.id || poke.name}
                     className="flex flex-col items-center rounded-xl bg-gradient-to-br p-4 border border-gray-200/60 dark:border-gray-700/60 shadow-sm hover:shadow-md group relative transition-all duration-300 overflow-hidden"
-                    onClick={() => router.push(`/pokedex/${pokeId}`)}
+                    onClick={() => router.push(toLowercaseUrl(`/pokedex/${pokeId}`))}
                   >
                     <button
                       className={`absolute top-2 right-2 z-10 p-1.5 rounded-full transition-all transform ${
@@ -582,7 +591,7 @@ export default function PokeDex() {
                     <div className="relative flex items-center justify-center w-full mb-3 z-10 cursor-pointer">
                       <div className="absolute inset-0 rounded-full bg-transparent dark:bg-transparent transform scale-75 group-hover:scale-90 transition-transform duration-300"></div>
                       <Image
-                        src={getSpriteUrl(poke.url)}
+                        src={getOfficialArtworkSpriteUrl(poke.id)}
                         alt={poke.name}
                         width={120}
                         height={120}
@@ -623,7 +632,7 @@ export default function PokeDex() {
                   <div
                     key={poke.id || poke.name}
                     className="group flex items-center bg-white dark:bg-gray-800 p-3 md:p-4 rounded-xl border border-gray-200/80 dark:border-gray-700/80 hover:border-primary/30 cursor-pointer hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-all duration-300 shadow-sm hover:shadow-md relative overflow-hidden"
-                    onClick={() => router.push(`/pokedex/${pokeId}`)}
+                    onClick={() => router.push(toLowercaseUrl(`/pokedex/${pokeId}`))}
                   >
                     {/* Background decorative element based on type */}
                     {primaryType && (
@@ -637,7 +646,7 @@ export default function PokeDex() {
                     <div className="relative flex-shrink-0 mr-5">
                       <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
                         <Image
-                          src={getSpriteUrl(poke.url)}
+                          src={getOfficialArtworkSpriteUrl(poke.id)}
                           alt={poke.name}
                           width={80}
                           height={80}

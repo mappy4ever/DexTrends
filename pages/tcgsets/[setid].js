@@ -6,7 +6,7 @@ import pokemon from "pokemontcgsdk";
 import Modal from "../../components/modal";
 import CardList from "../../components/cardlist";
 import { FadeIn, SlideUp } from "../../components/ui/animations";
-import PriceHistoryChart from "../../components/ui/pricehistorychart";
+import PriceHistoryChart from "../../components/ui/PriceHistoryChart"; // Updated path
 import { useTheme } from "../../context/themecontext";
 import { useFavorites } from "../../context/favoritescontext";
 import { useViewSettings } from "../../context/viewsettingscontext";

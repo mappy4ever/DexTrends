@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Head from "next/head";
 import { FadeIn, SlideUp, Scale } from "../../components/ui/animations";
-import { TypeBadge } from "../../components/ui/typebadge";
+import { TypeBadge } from "../../components/ui/TypeBadge"; // Updated path
 
 function PocketPokemonDetail() {
   const router = useRouter();

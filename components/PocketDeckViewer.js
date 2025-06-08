@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { TypeBadge } from "./ui/typebadge";
+import { TypeBadge } from "./ui/TypeBadge"; // Updated path
 import { FadeIn, SlideUp } from "./ui/animations";
 
 /**

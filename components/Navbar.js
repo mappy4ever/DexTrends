@@ -4,10 +4,11 @@ import { useRouter } from "next/router";
 import { RiGovernmentFill } from "react-icons/ri";
 import { AiOutlineBulb } from "react-icons/ai";
 import { BsSun, BsMoon, BsGlobeEuropeAfrica, BsHeart, BsSearch } from "react-icons/bs";
-import GlobalSearchModal from "./globalsearchmodal";
+import GlobalSearchModal from "./GlobalSearchModal"; // Updated path
 import { useTheme } from "../context/themecontext";
 import { useFavorites } from "../context/favoritescontext";
 import Image from "next/image";
+import { toLowercaseUrl } from "../utils/formatters";
 
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
@@ -60,7 +61,7 @@ export default function Navbar() {
     <>
       {/* Top Navbar (Desktop & Mobile) */}
       <div className="fixed top-0 left-0 right-0 flex items-center justify-between px-4 h-16 shadow-md z-40 bg-navbar text-text-navbar backdrop-blur-sm">
-        <Link href="/" className="flex items-center gap-x-2 text-xl font-bold text-foreground overflow-hidden">
+        <Link href={toLowercaseUrl("/")} className="flex items-center gap-x-2 text-xl font-bold text-foreground overflow-hidden">
           <RiGovernmentFill size={24} className="flex-shrink-0 text-primary" />
           <span className="truncate">DexTrends</span>
         </Link>
@@ -68,7 +69,7 @@ export default function Navbar() {
           {navItems.map(item => (
             <Link
               key={`topnav-${item.href}`}
-              href={item.href}
+              href={toLowercaseUrl(item.href)}
               className={`flex items-center gap-x-2 px-3 py-2 rounded-app-md text-base font-medium transition-colors
                 ${router.pathname === item.href
                   ? 'bg-primary/10 text-primary dark:bg-primary/20'
@@ -89,7 +90,7 @@ export default function Navbar() {
             <BsSearch size={18} />
           </button>
           
-          <Link href="/favorites" legacyBehavior>
+          <Link href={toLowercaseUrl("/favorites")} legacyBehavior>
             <a
               aria-label="View favorites"
               title="View favorites"

@@ -4,11 +4,11 @@ import Link from "next/link";
 import Image from "next/image";
 import Head from "next/head";
 import { FadeIn, SlideUp } from "../components/ui/animations";
-import { TypeBadge } from "../components/ui/typebadge";
-import { TypeFilter } from "../components/ui/typefilter";
-import PocketDeckViewer from "../components/pocketdeckviewer";
-import PocketExpansionViewer from "../components/pocketexpansionviewer";
-import PocketRulesGuide from "../components/pocketrulesguide";
+import { TypeBadge } from "../components/ui/TypeBadge"; // Updated path
+import { TypeFilter } from "../components/ui/TypeFilter"; // Updated path
+import PocketDeckViewer from "../components/PocketDeckViewer"; // Updated path
+import PocketExpansionViewer from "../components/PocketExpansionViewer"; // Updated path
+import PocketRulesGuide from "../components/PocketRulesGuide"; // Updated path
 
 export default function PocketMode() {
   const router = useRouter();

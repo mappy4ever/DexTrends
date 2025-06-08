@@ -11,7 +11,7 @@ import { FavoritesProvider } from '../context/favoritescontext';
 import { ViewSettingsProvider } from '../context/viewsettingscontext';
 import { ModalProvider } from '../context/modalcontext';
 import { SortingProvider } from '../context/sortingcontext';
-import GlobalModal from '../components/globalmodal';
+import GlobalModal from '../components/GlobalModal'; // Updated path
 
 // Simple throttle function
 const throttle = (func, limit) => {
