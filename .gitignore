@@ -39,3 +39,6 @@ yarn-error.log*
 **/old/
 
 .vercel
+*.old
+pages/pokedex/\[pokemonid\].js
+pages/pokedex/\[pokemonid\].js
