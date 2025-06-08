@@ -9,6 +9,7 @@ import { useTheme } from "../../context/ThemeContext";
 import { useFavorites } from "../../context/FavoritesContext";
 import { TypeBadge } from "../../components/ui/TypeBadge";
 import Image from "next/image";
+import { getPrice as getCardPrice } from "../../utils/pokemonutils.js";
 
 const pokemonKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
 if (!pokemonKey) {
@@ -86,20 +87,6 @@ export default function CardDetailPage() {
     if (card) {
       toggleCardFavorite(card);
     }
-  };
-
-  // Get price from card
-  const getPrice = () => {
-    if (!card || !card.tcgplayer || !card.tcgplayer.prices) {
-      return null;
-    }
-    
-    const prices = card.tcgplayer.prices;
-    return prices.holofoil?.market || 
-           prices.normal?.market || 
-           prices.reverseHolofoil?.market || 
-           prices.firstEditionHolofoil?.market ||
-           prices.unlimitedHolofoil?.market;
   };
 
   // Format types as badges
@@ -358,12 +345,12 @@ export default function CardDetailPage() {
             </div>
 
             {/* Price history chart */}
-            {getPrice() && (
+            {getCardPrice(card) !== 'N/A' && (
               <div className={`mt-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} p-6 rounded-xl shadow-lg`}>
                 <h2 className="text-xl font-semibold mb-4">Price History</h2>
                 <PriceHistoryChart 
                   cardId={card.id} 
-                  initialPrice={getPrice()} 
+                  initialPrice={parseFloat(getCardPrice(card).substring(1))}
                   timeRange="1y"
                 />
               </div>

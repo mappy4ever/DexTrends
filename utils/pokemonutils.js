@@ -140,3 +140,42 @@ export const generationNames = {
   8: "Generation VIII (Sword, Shield)",
   9: "Generation IX (Scarlet, Violet)"
 };
+
+export const getPrice = (card) => {
+  if (card && card.tcgplayer && card.tcgplayer.prices) {
+    const prices = card.tcgplayer.prices;
+    const priceOrder = [
+      "holofoil",
+      "normal",
+      "reverseHolofoil",
+      "firstEditionHolofoil",
+      "unlimitedHolofoil",
+    ];
+    for (const type of priceOrder) {
+      if (prices[type] && prices[type].market) {
+        return `$${prices[type].market.toFixed(2)}`;
+      }
+    }
+  }
+  return "N/A";
+};
+
+export const getRarityRank = (card) => {
+  const rarity = card && card.rarity;
+  const rarityMap = {
+    Common: 1,
+    Uncommon: 2,
+    Rare: 3,
+    "Rare Holo": 4,
+    "Rare Ultra": 5,
+    "Rare Secret": 6,
+    "Rare Holo GX": 7,
+    "Rare Rainbow": 8,
+    "Rare Prism Star": 9,
+    "Rare Full Art": 10,
+    "Rare Holo EX": 11,
+    "Rare Holo V": 12,
+    "Rare Holo VMAX": 13,
+  };
+  return rarityMap[rarity] || 0;
+};

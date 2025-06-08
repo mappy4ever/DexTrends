@@ -450,7 +450,7 @@ export default function PocketMode() {
               </p>
               
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {decks.map(deck => (
+                {decks.filter(deck => deck && deck.id).map(deck => (
                   <PocketDeckViewer key={deck.id} deck={deck} />
                 ))}
               </div>
@@ -490,7 +490,7 @@ export default function PocketMode() {
           </div>
         ) : currentView === "expansions" ? (
           <div className="space-y-8">
-            {expansions.map(expansion => (
+            {expansions.filter(expansion => expansion && expansion.id).map(expansion => (
               <PocketExpansionViewer key={expansion.id} expansion={expansion} />
             ))}
           </div>

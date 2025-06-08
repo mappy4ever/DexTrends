@@ -29,6 +29,7 @@ export default function Navbar() {
     { href: "/tcgsets", label: "TCG Sets", icon: <RiGovernmentFill size={22} /> },
     { href: "/leaderboard", label: "Leaderboard", icon: <AiOutlineBulb size={22} /> },
     { href: "/pokedex", label: "Pokédex", icon: <BsGlobeEuropeAfrica size={22} /> },
+    { href: "/pocketmode", label: "Pocket Mode", icon: <AiOutlineBulb size={22} /> },
   ];
 
   const pageTitles = navItems.reduce((acc, item) => {

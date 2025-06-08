@@ -3,6 +3,7 @@ import pokemon from "pokemontcgsdk";
 import Modal from "../components/modal";
 import CardList from "../components/cardlist";
 import CustomSiteLogo from "../components/icons/customsitelogo";
+import { getPrice, getRarityRank } from "../utils/pokemonutils.js";
 
 const pokemonKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
 if (!pokemonKey) {
@@ -12,27 +13,6 @@ if (!pokemonKey) {
 }
 
 pokemon.configure({ apiKey: pokemonKey });
-
-function getPrice(card) {
-  // TCGPlayer market price if available
-  if (
-    card.tcgplayer &&
-    card.tcgplayer.prices &&
-    card.tcgplayer.prices.normal &&
-    card.tcgplayer.prices.normal.market
-  ) {
-    return `$${card.tcgplayer.prices.normal.market.toFixed(2)}`;
-  }
-  if (
-    card.tcgplayer &&
-    card.tcgplayer.prices &&
-    card.tcgplayer.prices.holofoil &&
-    card.tcgplayer.prices.holofoil.market
-  ) {
-    return `$${card.tcgplayer.prices.holofoil.market.toFixed(2)}`;
-  }
-  return "N/A";
-}
 
 function getRarityGlow(rarity) {
   if (!rarity) return "";
@@ -154,24 +134,7 @@ export default function IndexPage() {
           onCardClick={openModal}
           getPrice={getPrice}
           getReleaseDate={(card) => card.set?.releaseDate || "0000-00-00"}
-          getRarityRank={(card) => {
-            const rarityOrder = {
-              "Common": 1,
-              "Uncommon": 2,
-              "Rare": 3,
-              "Rare Holo": 4,
-              "Rare Ultra": 5,
-              "Rare Secret": 6,
-              "Rare Holo GX": 7,
-              "Rare Rainbow": 8,
-              "Rare Prism Star": 9,
-              "Rare Full Art": 10,
-              "Rare Holo EX": 11,
-              "Rare Holo V": 12,
-              "Rare Holo VMAX": 13,
-            };
-            return rarityOrder[card.rarity] || 0;
-          }}
+          getRarityRank={getRarityRank}
         />
       </div>
       {modalOpen && modalCard && (

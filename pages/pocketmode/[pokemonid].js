@@ -10,11 +10,6 @@ function PocketPokemonDetail() {
   const router = useRouter();
   const { pokemonid } = router.query; // Changed to pokemonid
   
-  // Debug: Log router state and pokemonid on every render
-  if (typeof window !== 'undefined') {
-    console.log('router.isReady:', router.isReady, 'pokemonid:', pokemonid, 'router.query:', router.query);
-  }
-  
   const [pokemonDetails, setPokemonDetails] = useState(null);
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
