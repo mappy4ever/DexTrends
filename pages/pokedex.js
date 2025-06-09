@@ -7,10 +7,10 @@ import { useTheme } from "../context/themecontext";
 import { useFavorites } from "../context/favoritescontext";
 import { useViewSettings } from "../context/viewsettingscontext";
 import { TypeBadge, TypeBadgeSelector } from "../components/ui/TypeBadge"; // Updated path
-import { FadeIn, SlideUp, CardHover } from "../components/ui/animations";
+import { FadeIn, SlideUp, CardHover } from "../components/ui/Animations"; // file name i
 import { typeColors, getGeneration, generationNames, extractIdFromUrl, getOfficialArtworkSpriteUrl } from "../utils/pokemonutils"; // Import getOfficialArtworkSpriteUrl
-import { toLowercaseUrl } from "../../utils/formatters";
-import { fetchData } from "../../utils/apiutils"; // Import fetchData
+import { toLowercaseUrl } from "../utils/formatters"; // Correct import path
+import { fetchData } from "../utils/apiutils"; // Corrected import path
 
 const pageSize = 50;
 

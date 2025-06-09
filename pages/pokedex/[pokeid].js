@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Head from "next/head";
-import { FadeIn, SlideUp } from "../../components/ui/animations";
+import { FadeIn, SlideUp } from "../../components/ui/Animations"; //file seems capital?
 import { TypeBadge } from "../../components/ui/TypeBadge"; // Updated path
 import CardList from "../../components/cardlist";
 import { useFavorites } from "../../context/favoritescontext";
@@ -16,8 +16,7 @@ export default function PokemonDetail() {
   const { favorites, togglePokemonFavorite } = useFavorites();
   const [pokemonDetails, setPokemonDetails] = useState(null);
   const [pokemonSpecies, setPokemonSpecies] = useState(null);
-  const [generationInfo, setGenerationInfo] = useState(null);
-  // const [evolutions, setEvolutions] = useState([]); // Old simple evolutions state
+  const [generationInfo, setPokemonGenerationInfo] = useState(null);
   const [processedEvolutions, setProcessedEvolutions] = useState([]);
   const [showShinySprite, setShowShinySprite] = useState(false);
   const [showShinyEvolutionSprite, setShowShinyEvolutionSprite] = useState(false);
@@ -44,8 +43,8 @@ export default function PokemonDetail() {
     setError(null);
     setPokemonDetails(null);
     setPokemonSpecies(null);
-    setGenerationInfo(null);
-    setEvolutions([]);
+    setPokemonGenerationInfo(null);
+    setProcessedEvolutions([]);
     setCards([]);
     setRelatedPokemonList([]); // Reset related list on new Pokemon
     setRelatedError(null);    // Reset related error
@@ -77,7 +76,7 @@ export default function PokemonDetail() {
           console.log('Fetching generation:', species.generation.url);
           const genData = await fetchData(species.generation.url);
           if (didCancel) return;
-          setGenerationInfo(genData);
+          setPokemonGenerationInfo(genData);
 
           // Fetch related Pokemon from the same generation
           if (genData.pokemon_species && pokeid) { // Changed pokeId to pokeid
@@ -377,48 +376,49 @@ export default function PokemonDetail() {
               ))}
             </div>
 
-            {/* Generation info as a badge */}
+            {/* Generation info and Basic Info */}
             {generationInfo && (
-              <div className="mt-2">
-                <span className="inline-block bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 text-xs font-semibold px-2.5 py-1 rounded">
-                  {generationInfo.name}
-                </span>
-              </div>
+              <>
+                <div className="mt-2">
+                  <span className="inline-block bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 text-xs font-semibold px-2.5 py-1 rounded">
+                    {generationInfo.name}
+                  </span>
+                </div>
+                {/* Basic Info */}
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6 bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm">
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500">Height</h3>
+                    <p className="text-lg font-semibold">{(pokemonDetails.height / 10).toFixed(1)} m</p>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500">Weight</h3>
+                    <p className="text-lg font-semibold">{(pokemonDetails.weight / 10).toFixed(1)} kg</p>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500">Base Experience</h3>
+                    <p className="text-lg font-semibold">{pokemonDetails.base_experience || 'N/A'}</p>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500">Abilities</h3>
+                    <p className="text-lg font-semibold capitalize">
+                      {pokemonDetails.abilities.map((ability, idx) => (
+                        <span key={ability.ability.name}>
+                          {ability.ability.name.replace('-', ' ')}
+                          {ability.is_hidden && <span className="text-xs text-gray-500 ml-1">(Hidden)</span>}
+                          {idx < pokemonDetails.abilities.length - 1 ? ', ' : ''}
+                        </span>
+                      ))}
+                    </p>
+                  </div>
+                </div>
+              </>
             )}
-
-            {/* Basic Info */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6 bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm">
-              <div>
-                <h3 className="text-sm font-medium text-gray-500">Height</h3>
-                <p className="text-lg font-semibold">{(pokemonDetails.height / 10).toFixed(1)} m</p>
-              </div>
-              <div>
-                <h3 className="text-sm font-medium text-gray-500">Weight</h3>
-                <p className="text-lg font-semibold">{(pokemonDetails.weight / 10).toFixed(1)} kg</p>
-              </div>
-              <div>
-                <h3 className="text-sm font-medium text-gray-500">Base Experience</h3>
-                <p className="text-lg font-semibold">{pokemonDetails.base_experience || 'N/A'}</p>
-              </div>
-              <div>
-                <h3 className="text-sm font-medium text-gray-500">Abilities</h3>
-                <p className="text-lg font-semibold capitalize">
-                  {pokemonDetails.abilities.map((ability, idx) => (
-                    <span key={ability.ability.name}>
-                      {ability.ability.name.replace('-', ' ')}
-                      {ability.is_hidden && <span className="text-xs text-gray-500 ml-1">(Hidden)</span>}
-                      {idx < pokemonDetails.abilities.length - 1 ? ', ' : ''}
-                    </span>
-                  ))}
-                </p>
-              </div>
-            </div>
           </div>
         </div>
       </FadeIn>
 
       <SlideUp delay={200}>
-        {/* Tabs */}
+        {/* Tabs and Tab Content */}
         <div className="flex flex-col mb-6">
           {/* Card Source Toggle */}
           <div className="flex items-center mb-4 justify-end">
@@ -480,8 +480,6 @@ export default function PokemonDetail() {
             </button>
           </div>
         </div>
-
-        {/* Tab Content */}
         <div className="mb-8">
           {/* Info Tab (Renamed from About) */}
           {activeTab === "info" && (
@@ -653,17 +651,15 @@ export default function PokemonDetail() {
                       );
                     })}
                   </div>
-                    </div>
                   </div>
                 </div>
-              </div>
-            </FadeIn>
-          )}
-          {/* Stats Tab */}
-          {activeTab === "stats" && (
-            <FadeIn>
-              <div className="grid grid-cols-1 gap-8">
-                 <div className={`p-6 rounded-lg shadow-sm bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-100/50 dark:border-gray-700/50`}>
+              </FadeIn>
+            )}
+            {/* Stats Tab */}
+            {activeTab === "stats" && (
+              <FadeIn>
+                <div className="grid grid-cols-1 gap-8">
+                   <div className={`p-6 rounded-lg shadow-sm bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-100/50 dark:border-gray-700/50`}>
                    <h3 className="font-bold text-lg mb-4">Detailed Stat Analysis</h3>
                    <p className="text-gray-600 dark:text-gray-400 mb-4">
                      Base stats are now displayed in the "Info" tab. This section can be used for a more in-depth look at stat distributions,
@@ -706,59 +702,30 @@ export default function PokemonDetail() {
               </div>
             </FadeIn>
           )}
-          {/* Evolution Tab content removed as it's a separate section now */}
+          {/* Evolution Tab (if present) */}
           {activeTab === "evolution" && (
-             <FadeIn>
-               <div className="p-6 rounded-lg shadow-sm bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-100/50 dark:border-gray-700/50">
-                 <h3 className="font-bold text-lg mb-4">Evolution Data</h3>
-                 <p className="text-gray-600 dark:text-gray-400">
-                   The full evolution chain is now displayed in a dedicated section below.
-                 </p>
-               </div>
-             </FadeIn>
+            <FadeIn>
+              <div className="p-6 rounded-lg shadow-sm bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-100/50 dark:border-gray-700/50">
+                <h3 className="font-bold text-lg mb-4">Evolution Data</h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  {/* Evolution content here (if needed) */}
+                </p>
+              </div>
+            </FadeIn>
           )}
           {/* Cards Tab */}
           {activeTab === "cards" && (
             <FadeIn>
               <div className="grid grid-cols-1 gap-8">
-                <div className="flex flex-col md:flex-row gap-4">
-                  {/* Rarity Filter */}
-                  <div className="flex-1">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Rarity</label>
-                    <select
-                      value={filterRarity}
-                      onChange={(e) => setFilterRarity(e.target.value)}
-                      className="block w-full p-2 text-sm rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 focus:ring-primary focus:border-primary"
-                    >
-                      <option value="">All Rarities</option>
-                      {uniqueRarities.map(rarity => (
-                        <option key={rarity} value={rarity}>{rarity}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Set Filter */}
-                  <div className="flex-1">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Set</label>
-                    <select
-                      value={filterSet}
-                      onChange={(e) => setFilterSet(e.target.value)}
-                      className="block w-full p-2 text-sm rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 focus:ring-primary focus:border-primary"
-                    >
-                      <option value="">All Sets</option>
-                      {uniqueSets.map(set => (
-                        <option key={set} value={set}>{set}</option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
+                {/* Card list or content here */}
                 <CardList
                   cards={filteredCards}
-                  source={activeCardSource}
-                  pokemonName={pokemonDetails.name}
-                  loading={loading && cards.length === 0}
-                  error={!loading && cards.length === 0 && pokemonDetails?.name ? 'No cards found for this Pokémon.' : null}
+                  loading={loading}
+                  error={error}
+                  onCardClick={(card) => {
+                    // Handle card click, e.g., open card details or link to TCG website
+                    window.open(card.url, "_blank");
+                  }}
                 />
               </div>
             </FadeIn>
@@ -770,37 +737,25 @@ export default function PokemonDetail() {
       {relatedPokemonList.length > 0 && !relatedLoading && !relatedError && (
         <SlideUp delay={300}>
           <div className="mt-12 p-4 md:p-6 rounded-lg shadow-lg bg-white/90 dark:bg-gray-800/90 backdrop-blur-md border border-gray-200 dark:border-gray-700">
-            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center text-gray-800 dark:text-white">
-              Other Pokémon in {generationInfo?.name ? generationInfo.name.replace('generation-','Gen ').toUpperCase() : 'this Generation'}
-            </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
-              {relatedPokemonList.map(relatedPoke => {
-                const id = extractIdFromUrl(relatedPoke.url); // Use utility here
-                const spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+            <h3 className="font-bold text-lg mb-4">Related Pokémon</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              {relatedPokemonList.map((pokemon) => {
+                const relatedId = extractIdFromUrl(pokemon.url);
                 return (
                   <div
-                    key={id}
-                    className="flex flex-col items-center p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700/60 transition-all duration-200 cursor-pointer group transform hover:scale-105 active:scale-95 shadow-sm border border-gray-200/50 dark:border-gray-700/50"
-                    onClick={() => router.push(toLowercaseUrl(`/pokedex/${id}`))} // Already uses toLowercaseUrl
-                    title={`View ${relatedPoke.name}`}
+                    key={relatedId}
+                    className="p-4 rounded-lg bg-gray-100 dark:bg-gray-800 flex flex-col items-center transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer"
+                    onClick={() => router.push(`/pokedex/${relatedId}`)}
                   >
-                    <div className="relative w-20 h-20 md:w-24 md:h-24 mb-2">
-                      <Image
-                        src={spriteUrl}
-                        alt={relatedPoke.name}
-                        layout="fill"
-                        objectFit="contain"
-                        className="group-hover:rotate-3 transition-transform"
-                        onError={(e) => {
-                          e.currentTarget.srcset = "/dextrendslogo.png"; // Fallback for modern browsers
-                          e.currentTarget.src = "/dextrendslogo.png"; // Fallback for older browsers
-                        }}
-                      />
-                    </div>
-                    <p className="text-sm font-semibold capitalize text-center text-gray-700 dark:text-gray-300 group-hover:text-primary transition-colors">
-                      {relatedPoke.name.replace(/-/g, ' ')}
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">#{String(id).padStart(3, '0')}</p>
+                    <Image
+                      src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${relatedId}.png`}
+                      alt={pokemon.name}
+                      width={96}
+                      height={96}
+                      className="mb-2"
+                    />
+                    <span className="text-sm font-medium capitalize">{pokemon.name.replace('-', ' ')}</span>
+                    <span className="text-xs text-gray-500">#{String(relatedId).padStart(3, '0')}</span>
                   </div>
                 );
               })}
@@ -809,14 +764,14 @@ export default function PokemonDetail() {
         </SlideUp>
       )}
 
-      {/* Loading/Error states for Related Pokemon (if list is empty or during initial load, or if main loading is done) */}
+      {/* Loading/Error states for Related Pokemon */}
       {relatedLoading && (!pokemonDetails || relatedPokemonList.length === 0) && (
-         <div className="text-center py-8">
-           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-3"></div>
-           <p className="text-gray-500 dark:text-gray-400">Loading related Pokémon...</p>
-         </div>
-       )}
-      {relatedError && (!pokemonDetails || relatedPokemonList.length === 0) &&(
+        <div className="text-center py-8">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-3"></div>
+          <p className="text-gray-500 dark:text-gray-400">Loading related Pokémon...</p>
+        </div>
+      )}
+      {relatedError && (!pokemonDetails || relatedPokemonList.length === 0) && (
         <div className="text-center py-8 px-4">
           <p className="text-red-500 bg-red-50 dark:bg-red-900/30 p-3 rounded-md border border-red-200 dark:border-red-700/50">
             <span className="font-semibold">Error:</span> {relatedError}
