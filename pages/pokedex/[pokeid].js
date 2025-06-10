@@ -2,9 +2,9 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Head from "next/head";
-import { FadeIn, SlideUp } from "../../components/ui/Animations"; //file seems capital?
+import { FadeIn, SlideUp } from "../../components/ui/animations"; // Lowercase filename
 import { TypeBadge } from "../../components/ui/TypeBadge"; // Updated path
-import CardList from "../../components/cardlist";
+import CardList from "../../components/CardList"; // Correct capitalization
 import { useFavorites } from "../../context/favoritescontext";
 import { typeEffectiveness, extractIdFromUrl } from "../../utils/pokemonutils";
 import { toLowercaseUrl } from "../../utils/formatters";

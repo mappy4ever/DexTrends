@@ -47,8 +47,43 @@ function MyApp({ Component, pageProps, router }) {
     const throttledScrollHandler = throttle(handleScroll, 50); // Reduced throttle time for smoother parallax
 
     window.addEventListener("scroll", throttledScrollHandler);
-    return () => window.removeEventListener("scroll", throttledScrollHandler);
-  }, []);
+    
+    // Load our navigation fix as early as possible to ensure all clicks are properly handled
+    const loadNavigationFix = () => {
+      console.log('Loading navigation fix script from _app.js');
+      
+      // Check if script already exists
+      if (document.querySelector('script[src="/js/fix-navigation.js"]')) {
+        console.log('Fix script already loaded, skipping');
+        return;
+      }
+      
+      // Create and load the script
+      const script = document.createElement('script');
+      script.src = '/js/fix-navigation.js';
+      script.async = true;
+      script.id = 'navigation-fix-script';
+      script.onload = () => console.log('Navigation fix script loaded successfully');
+      script.onerror = (e) => console.error('Error loading navigation fix script:', e);
+      
+      // Append to head for earlier execution
+      document.head.appendChild(script);
+    };
+    
+    // Load right away
+    loadNavigationFix();
+    
+    // Also run on route changes in Next.js to ensure script runs
+    // after client-side navigations
+    router.events.on('routeChangeComplete', loadNavigationFix);
+    
+    return () => {
+      window.removeEventListener("scroll", throttledScrollHandler);
+      router.events.off('routeChangeComplete', loadNavigationFix);
+      
+      // No need to clean up the script as it should persist across pages
+    };
+  }, [router.events]);
 
   return (
     <ErrorBoundary>

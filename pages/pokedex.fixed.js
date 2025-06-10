@@ -9,7 +9,7 @@ import { useTheme } from "../context/themecontext";
 import { useFavorites } from "../context/favoritescontext";
 import { useViewSettings } from "../context/viewsettingscontext";
 import { TypeBadge, TypeBadgeSelector } from "../components/ui/TypeBadge"; // Updated path
-import { FadeIn, SlideUp, CardHover } from "../components/ui/animations"; // Lowercase filename
+import { FadeIn, SlideUp, CardHover } from "../components/ui/Animations"; // file name i
 import { typeColors, getGeneration, generationNames, extractIdFromUrl, getOfficialArtworkSpriteUrl } from "../utils/pokemonutils"; // Import getOfficialArtworkSpriteUrl
 import { toLowercaseUrl } from "../utils/formatters"; // Correct import path
 import { fetchData } from "../utils/apiutils"; // Corrected import path
@@ -206,21 +206,10 @@ export default function PokeDex() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // We're removing this duplicate click handler as it's handled by fix-navigation.js
-  // Adding debug logging to help track navigation issues
-  useEffect(() => {
-    console.log('Pokedex page loaded, navigation should be handled by fix-navigation.js');
-    
-    // Log when cards are rendered to help debug
-    const logCardRendered = () => {
-      console.log('Pokemon cards rendered and ready for navigation');
-    };
-    
-    // Small timeout to ensure cards are rendered
-    const timeoutId = setTimeout(logCardRendered, 1000);
-    
-    return () => clearTimeout(timeoutId);
-  }, []);
+  // Direct navigation function - forces a complete navigation rather than client-side routing
+  const handlePokemonClick = (pokeId) => {
+    window.location.href = toLowercaseUrl(`/pokedex/${pokeId}`);
+  };
 
   return (
     <div className="container section-spacing-y-default max-w-7xl mx-auto px-4 animate-fadeIn">
@@ -565,28 +554,25 @@ export default function PokeDex() {
                 };
                 const primaryType = poke.types && poke.types.length > 0 ? poke.types[0] : null;
                 
-                // FIX: Use Link component for proper navigation with data attributes
+                // FIX: Use Link component for proper navigation
                 return (
                   <Link href={toLowercaseUrl(`/pokedex/${pokeId}`)} key={poke.id || poke.name} passHref legacyBehavior>
-                    <a className="block cursor-pointer" data-pokemon-card="true" data-pokemon-id={pokeId}>
+                    <a className="block">
                       <CardHover
                         className="flex flex-col items-center rounded-xl bg-gradient-to-br p-4 border border-gray-200/60 dark:border-gray-700/60 shadow-sm hover:shadow-md group relative transition-all duration-300 overflow-hidden"
                       >
                         <button
-                          className={`absolute top-2 right-2 z-20 p-1.5 rounded-full transition-all transform ${
+                          className={`absolute top-2 right-2 z-10 p-1.5 rounded-full transition-all transform ${
                             isFavorite 
                               ? 'text-red-500 bg-red-50 dark:bg-red-900/30 shadow-sm rotate-0' 
                               : 'text-gray-400 bg-gray-100/70 dark:bg-gray-800/70 opacity-0 group-hover:opacity-100 hover:rotate-12'
                           }`}
                           onClick={(e) => {
-                            // These calls prevent navigation events from bubbling
                             e.stopPropagation();
                             e.preventDefault();
                             togglePokemonFavorite(pokeId);
                           }}
-                          data-no-navigate="true"
                           title={isFavorite ? "Remove from favorites" : "Add to favorites"}
-                          aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
                         >
                           <svg width="18" height="18" fill={isFavorite ? "currentColor" : "none"} viewBox="0 0 24 24" stroke="currentColor" className="transform transition-transform duration-300">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={isFavorite ? 2.5 : 2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -642,10 +628,10 @@ export default function PokeDex() {
                 const generation = getGeneration(pokeId);
                 const primaryType = poke.types && poke.types.length > 0 ? poke.types[0] : null;
                 
-                // FIX: Use Link component for proper navigation with data attributes
+                // FIX: Use Link component for proper navigation
                 return (
                   <Link href={toLowercaseUrl(`/pokedex/${pokeId}`)} key={poke.id || poke.name} passHref legacyBehavior>
-                    <a className="block cursor-pointer" data-pokemon-card="true" data-pokemon-id={pokeId}>
+                    <a className="block">
                       <div
                         className="group flex items-center bg-white dark:bg-gray-800 p-3 md:p-4 rounded-xl border border-gray-200/80 dark:border-gray-700/80 hover:border-primary/30 cursor-pointer hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-all duration-300 shadow-sm hover:shadow-md relative overflow-hidden"
                       >
@@ -701,14 +687,11 @@ export default function PokeDex() {
                                 : 'bg-gray-100 dark:bg-gray-700 text-gray-400 opacity-70 group-hover:opacity-100 hover:scale-110'
                             }`}
                             onClick={(e) => {
-                              // These calls prevent navigation events from bubbling
                               e.stopPropagation();
                               e.preventDefault();
                               togglePokemonFavorite(pokeId);
                             }}
                             title={isFavorite ? "Remove from favorites" : "Add to favorites"}
-                            aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
-                            data-no-navigate="true"
                           >
                             <svg width="20" height="20" fill={isFavorite ? "currentColor" : "none"} viewBox="0 0 24 24" stroke="currentColor" 
                               className={isFavorite ? "animate-pulse-once" : ""}>

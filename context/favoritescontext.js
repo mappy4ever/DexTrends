@@ -26,18 +26,26 @@ export function FavoritesProvider({ children }) {
     localStorage.setItem('favorites', JSON.stringify(favorites));
   }, [favorites]);
 
-  // Toggle a Pokémon as favorite
+  // Toggle a Pokémon as favorite with improved handling
   const togglePokemonFavorite = (pokemonId) => {
+    if (!pokemonId) return; // Guard against invalid IDs
+    
+    // Normalize the ID to string for consistent comparison
+    const normalizedId = String(pokemonId);
+    
     setFavorites(prev => {
-      const newPokemonFavorites = prev.pokemon.includes(pokemonId)
-        ? prev.pokemon.filter(id => id !== pokemonId)
-        : [...prev.pokemon, pokemonId];
+      const newPokemonFavorites = prev.pokemon.includes(normalizedId)
+        ? prev.pokemon.filter(id => id !== normalizedId)
+        : [...prev.pokemon, normalizedId];
       
       return {
         ...prev,
         pokemon: newPokemonFavorites
       };
     });
+    
+    // Return a success indicator that can be used by components
+    return true;
   };
 
   // Toggle a card as favorite
@@ -54,8 +62,11 @@ export function FavoritesProvider({ children }) {
     });
   };
 
-  // Check if a Pokémon is favorited
-  const isPokemonFavorite = (pokemonId) => favorites.pokemon.includes(pokemonId);
+  // Check if a Pokémon is favorited with improved type handling
+  const isPokemonFavorite = (pokemonId) => {
+    if (!pokemonId) return false;
+    return favorites.pokemon.includes(String(pokemonId));
+  };
   
   // Check if a card is favorited
   const isCardFavorite = (cardId) => favorites.cards.includes(cardId);

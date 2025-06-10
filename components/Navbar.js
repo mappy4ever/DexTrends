@@ -74,6 +74,15 @@ export default function Navbar() {
                 ${router.pathname === item.href
                   ? 'bg-primary/10 text-primary dark:bg-primary/20'
                   : 'text-text-navbar hover:bg-surface-hovered hover:text-foreground'}`}
+              data-is-navbar="true"
+              onClick={(e) => {
+                // Log click for debugging
+                console.log('Navbar link clicked:', item.href);
+                
+                // Force navigation through window.location to bypass potential Next.js router issues
+                e.preventDefault();
+                window.location.href = toLowercaseUrl(item.href);
+              }}
             >
               <span className="flex-shrink-0 w-5 h-5">{item.icon}</span>
               <span className="truncate">{item.label}</span>
@@ -95,6 +104,7 @@ export default function Navbar() {
               aria-label="View favorites"
               title="View favorites"
               className="relative p-2 rounded-full hover:bg-surface-hovered focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring text-primary"
+              data-is-navbar="true"
             >
               <BsHeart size={18} />
               {totalFavorites > 0 && (
