@@ -9,10 +9,11 @@ import { useTheme } from "../context/themecontext";
 import { useFavorites } from "../context/favoritescontext";
 import { useViewSettings } from "../context/viewsettingscontext";
 import { TypeBadge, TypeBadgeSelector } from "../components/ui/TypeBadge"; // Updated path
-import { FadeIn, SlideUp, CardHover } from "../components/ui/animations"; // Lowercase filename
+import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../components/ui/animations"; // Lowercase filename, added StaggeredChildren
 import { typeColors, getGeneration, generationNames, extractIdFromUrl, getOfficialArtworkSpriteUrl } from "../utils/pokemonutils"; // Import getOfficialArtworkSpriteUrl
 import { toLowercaseUrl } from "../utils/formatters"; // Correct import path
 import { fetchData } from "../utils/apiutils"; // Corrected import path
+import PokemonCardSkeleton from "../components/ui/PokemonCardSkeleton"; // Import the skeleton component
 
 const pageSize = 50;
 
@@ -480,49 +481,10 @@ export default function PokeDex() {
       )}
 
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-16">
-          {/* Enhanced animated loading state */}
-          <div className="relative">
-            <div className="absolute inset-0 rounded-full bg-primary/10 animate-ping"></div>
-            <div className="w-20 h-20 rounded-full border-4 border-t-primary border-r-primary/70 border-b-primary/40 border-l-transparent animate-spin"></div>
-            
-            <div className="absolute inset-0 flex items-center justify-center">
-              <svg className="w-10 h-10 text-primary" fill="none" viewBox="0 0 24 24">
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1.5"
-                  d="M12 4.75L19.25 9L12 13.25L4.75 9L12 4.75Z"
-                ></path>
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1.5"
-                  d="M9.25 12L4.75 15L12 19.25L19.25 15L14.6722 12"
-                ></path>
-              </svg>
-            </div>
-          </div>
-          
-          <div className="mt-6 text-center">
-            <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300">Loading Pokémon...</h3>
-            <p className="text-gray-500 dark:text-gray-400 mt-2">Preparing your Pokédex experience</p>
-          </div>
-          
-          {/* Loading progress skeleton */}
-          <div className="mt-10 w-full max-w-md">
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
-              {[...Array(8)].map((_, i) => (
-                <div key={i} className="animate-pulse flex flex-col items-center">
-                  <div className={`rounded-lg bg-gray-200 dark:bg-gray-700 w-16 h-16`}></div>
-                  <div className="mt-2 h-3 bg-gray-200 dark:bg-gray-700 rounded w-12"></div>
-                  <div className="mt-1 h-2 bg-gray-100 dark:bg-gray-800 rounded w-8"></div>
-                </div>
-              ))}
-            </div>
-          </div>
+        <div className={viewMode === 'grid' ? "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4 md:gap-6" : "flex flex-col gap-3"}>
+          {Array.from({ length: pageSize }).map((_, index) => (
+            <PokemonCardSkeleton key={index} viewMode={viewMode} cardSize={cardSize} />
+          ))}
         </div>
       ) : error && (!data || data.length === 0) ? (
         <div className="flex flex-col items-center justify-center py-12 animate-fadeIn">
@@ -552,7 +514,7 @@ export default function PokeDex() {
         <>
           {/* Enhanced grid view with modern cards */}
           {viewMode === 'grid' ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4 md:gap-6">
+            <StaggeredChildren baseDelay={50} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4 md:gap-6">
               {sortedPokemon.map((poke) => {
                 // poke.id should be reliably populated by fetchDetails. Fallback is a safety.
                 const pokeId = poke.id ? String(poke.id) : (poke.url ? extractIdFromUrl(poke.url) : null);
@@ -567,75 +529,77 @@ export default function PokeDex() {
                 
                 // FIX: Use Link component for proper navigation with data attributes
                 return (
-                  <Link href={toLowercaseUrl(`/pokedex/${pokeId}`)} key={poke.id || poke.name} passHref legacyBehavior>
-                    <a className="block cursor-pointer" data-pokemon-card="true" data-pokemon-id={pokeId}>
-                      <CardHover
-                        className="flex flex-col items-center rounded-xl bg-gradient-to-br p-4 border border-gray-200/60 dark:border-gray-700/60 shadow-sm hover:shadow-md group relative transition-all duration-300 overflow-hidden"
-                      >
-                        <button
-                          className={`absolute top-2 right-2 z-20 p-1.5 rounded-full transition-all transform ${
-                            isFavorite 
-                              ? 'text-red-500 bg-red-50 dark:bg-red-900/30 shadow-sm rotate-0' 
-                              : 'text-gray-400 bg-gray-100/70 dark:bg-gray-800/70 opacity-0 group-hover:opacity-100 hover:rotate-12'
-                          }`}
-                          onClick={(e) => {
-                            // These calls prevent navigation events from bubbling
-                            e.stopPropagation();
-                            e.preventDefault();
-                            togglePokemonFavorite(pokeId);
-                          }}
-                          data-no-navigate="true"
-                          title={isFavorite ? "Remove from favorites" : "Add to favorites"}
-                          aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+                  <FadeIn key={poke.id || poke.name} duration={400}>
+                    <Link href={toLowercaseUrl(`/pokedex/${pokeId}`)} passHref legacyBehavior>
+                      <a className="block cursor-pointer" data-pokemon-card="true" data-pokemon-id={pokeId}>
+                        <CardHover
+                          className="flex flex-col items-center rounded-xl bg-gradient-to-br p-4 border border-gray-200/60 dark:border-gray-700/60 shadow-sm hover:shadow-md group relative transition-all duration-300 overflow-hidden"
                         >
-                          <svg width="18" height="18" fill={isFavorite ? "currentColor" : "none"} viewBox="0 0 24 24" stroke="currentColor" className="transform transition-transform duration-300">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={isFavorite ? 2.5 : 2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                          </svg>
-                        </button>
-                        {/* Decorative background element */}
-                        <div className="absolute -right-6 -bottom-6 w-24 h-24 rounded-full bg-gray-100/50 dark:bg-gray-700/30 z-0"></div>
-                        {/* Pokemon ID indicator */}
-                        <div className="absolute top-3 left-3 opacity-20 font-bold text-2xl text-black/30 dark:text-white/20">
-                          #{pokeId.padStart(3, '0')}
-                        </div>
-                        {/* Pokemon image with enhanced container - transparent background */}
-                        <div className="relative flex items-center justify-center w-full mb-3 z-10 cursor-pointer">
-                          <div className="absolute inset-0 rounded-full bg-transparent dark:bg-transparent transform scale-75 group-hover:scale-90 transition-transform duration-300"></div>
-                          <Image
-                            src={getOfficialArtworkSpriteUrl(poke.id)}
-                            alt={poke.name}
-                            width={120}
-                            height={120}
-                            className={`${sizeClasses[cardSize]} object-contain drop-shadow-sm transition-all duration-500 group-hover:scale-110 group-hover:rotate-2 z-10`}
-                            onError={(e) => {
-                              e.currentTarget.src = "/back-card.png";
+                          <button
+                            className={`absolute top-2 right-2 z-20 p-1.5 rounded-full transition-all transform ${
+                              isFavorite
+                                ? 'text-red-500 bg-red-50 dark:bg-red-900/30 shadow-sm rotate-0'
+                                : 'text-gray-400 bg-gray-100/70 dark:bg-gray-800/70 opacity-0 group-hover:opacity-100 hover:rotate-12'
+                            }`}
+                            onClick={(e) => {
+                              // These calls prevent navigation events from bubbling
+                              e.stopPropagation();
+                              e.preventDefault();
+                              togglePokemonFavorite(pokeId);
                             }}
-                            priority={false}
-                          />
-                          {/* Generation badge with enhanced design */}
-                          <div className="absolute bottom-0 right-0 bg-gradient-to-br from-blue-500 to-blue-600 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center shadow-sm border border-blue-400/30 z-20">
-                            {generation}
+                            data-no-navigate="true"
+                            title={isFavorite ? "Remove from favorites" : "Add to favorites"}
+                            aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+                          >
+                            <svg width="18" height="18" fill={isFavorite ? "currentColor" : "none"} viewBox="0 0 24 24" stroke="currentColor" className="transform transition-transform duration-300">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={isFavorite ? 2.5 : 2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                          </button>
+                          {/* Decorative background element */}
+                          <div className="absolute -right-6 -bottom-6 w-24 h-24 rounded-full bg-gray-100/50 dark:bg-gray-700/30 z-0"></div>
+                          {/* Pokemon ID indicator */}
+                          <div className="absolute top-3 left-3 opacity-20 font-bold text-2xl text-black/30 dark:text-white/20">
+                            #{pokeId.padStart(3, '0')}
                           </div>
-                        </div>
-                        {/* Pokemon name with enhanced typography */}
-                        <h3 className="capitalize font-bold text-sm md:text-base text-center mb-1 group-hover:text-primary transition-colors truncate w-full px-1 z-10">
-                          {poke.name.replace(/-/g, ' ')}
-                        </h3>
-                        {/* Type badges with improved layout */}
-                        <div className="flex gap-1.5 mt-1 flex-wrap justify-center z-10">
-                          {poke.types && poke.types.map(type => (
-                            <TypeBadge key={type} type={type} size="sm" className="shadow-sm" />
-                          ))}
-                        </div>
-                      </CardHover>
-                    </a>
-                  </Link>
+                          {/* Pokemon image with enhanced container - transparent background */}
+                          <div className="relative flex items-center justify-center w-full mb-3 z-10 cursor-pointer">
+                            <div className="absolute inset-0 rounded-full bg-transparent dark:bg-transparent transform scale-75 group-hover:scale-90 transition-transform duration-300"></div>
+                            <Image
+                              src={getOfficialArtworkSpriteUrl(poke.id)}
+                              alt={poke.name}
+                              width={120}
+                              height={120}
+                              className={`${sizeClasses[cardSize]} object-contain drop-shadow-sm transition-all duration-500 group-hover:scale-110 group-hover:rotate-2 z-10`}
+                              onError={(e) => {
+                                e.currentTarget.src = "/back-card.png";
+                              }}
+                              priority={false}
+                            />
+                            {/* Generation badge with enhanced design */}
+                            <div className="absolute bottom-0 right-0 bg-gradient-to-br from-blue-500 to-blue-600 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center shadow-sm border border-blue-400/30 z-20">
+                              {generation}
+                            </div>
+                          </div>
+                          {/* Pokemon name with enhanced typography */}
+                          <h3 className="capitalize font-bold text-sm md:text-base text-center mb-1 group-hover:text-primary transition-colors truncate w-full px-1 z-10">
+                            {poke.name.replace(/-/g, ' ')}
+                          </h3>
+                          {/* Type badges with improved layout */}
+                          <div className="flex gap-1.5 mt-1 flex-wrap justify-center z-10">
+                            {poke.types && poke.types.map(type => (
+                              <TypeBadge key={type} type={type} size="sm" className="shadow-sm" />
+                            ))}
+                          </div>
+                        </CardHover>
+                      </a>
+                    </Link>
+                  </FadeIn>
                 );
               })}
-            </div>
+            </StaggeredChildren>
           ) : (
             /* Enhanced list view with modern design */
-            <div className="flex flex-col gap-3">
+            <StaggeredChildren baseDelay={50} className="flex flex-col gap-3">
               {sortedPokemon.map((poke) => {
                 const pokeId = poke.id ? String(poke.id) : poke.url.split("/").filter(Boolean).pop();
                 const isFavorite = isPokemonFavorite(pokeId);
@@ -644,84 +608,86 @@ export default function PokeDex() {
                 
                 // FIX: Use Link component for proper navigation with data attributes
                 return (
-                  <Link href={toLowercaseUrl(`/pokedex/${pokeId}`)} key={poke.id || poke.name} passHref legacyBehavior>
-                    <a className="block cursor-pointer" data-pokemon-card="true" data-pokemon-id={pokeId}>
-                      <div
-                        className="group flex items-center bg-white dark:bg-gray-800 p-3 md:p-4 rounded-xl border border-gray-200/80 dark:border-gray-700/80 hover:border-primary/30 cursor-pointer hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-all duration-300 shadow-sm hover:shadow-md relative overflow-hidden"
-                      >
-                        {/* Background decorative element based on type */}
-                        {primaryType && (
-                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-transparent group-hover:to-primary/5 transition-colors duration-500"></div>
-                        )}
-                        {/* Pokemon ID watermark */}
-                        <div className="absolute right-3 top-1/2 -translate-y-1/2 font-bold text-6xl opacity-5 dark:opacity-10 pointer-events-none">
-                          #{pokeId.padStart(3, '0')}
-                        </div>
-                        {/* Pokemon image with enhanced container */}
-                        <div className="relative flex-shrink-0 mr-5">
-                          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                            <Image
-                              src={getOfficialArtworkSpriteUrl(poke.id)}
-                              alt={poke.name}
-                              width={80}
-                              height={80}
-                              className="w-14 h-14 sm:w-16 sm:h-16 object-contain drop-shadow-sm transition-all duration-300 group-hover:scale-110"
-                              onError={(e) => {
-                                e.currentTarget.src = "/back-card.png";
+                  <FadeIn key={poke.id || poke.name} duration={400}>
+                    <Link href={toLowercaseUrl(`/pokedex/${pokeId}`)} passHref legacyBehavior>
+                      <a className="block cursor-pointer" data-pokemon-card="true" data-pokemon-id={pokeId}>
+                        <div
+                          className="group flex items-center bg-white dark:bg-gray-800 p-3 md:p-4 rounded-xl border border-gray-200/80 dark:border-gray-700/80 hover:border-primary/30 cursor-pointer hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-all duration-300 shadow-sm hover:shadow-md relative overflow-hidden"
+                        >
+                          {/* Background decorative element based on type */}
+                          {primaryType && (
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-transparent group-hover:to-primary/5 transition-colors duration-500"></div>
+                          )}
+                          {/* Pokemon ID watermark */}
+                          <div className="absolute right-3 top-1/2 -translate-y-1/2 font-bold text-6xl opacity-5 dark:opacity-10 pointer-events-none">
+                            #{pokeId.padStart(3, '0')}
+                          </div>
+                          {/* Pokemon image with enhanced container */}
+                          <div className="relative flex-shrink-0 mr-5">
+                            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                              <Image
+                                src={getOfficialArtworkSpriteUrl(poke.id)}
+                                alt={poke.name}
+                                width={80}
+                                height={80}
+                                className="w-14 h-14 sm:w-16 sm:h-16 object-contain drop-shadow-sm transition-all duration-300 group-hover:scale-110"
+                                onError={(e) => {
+                                  e.currentTarget.src = "/back-card.png";
+                                }}
+                              />
+                            </div>
+                            {/* Generation badge - enhanced */}
+                            <div className="absolute -bottom-1 -right-1 bg-gradient-to-br from-blue-500 to-blue-600 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center shadow-md border border-white dark:border-gray-800">
+                              {generation}
+                            </div>
+                          </div>
+                          {/* Pokemon details with enhanced layout */}
+                          <div className="flex-grow pr-10">
+                            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-1">
+                              <h3 className="capitalize font-bold text-lg group-hover:text-primary transition-colors">
+                                {poke.name.replace(/-/g, ' ')}
+                              </h3>
+                              <span className="px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs font-mono border border-gray-200 dark:border-gray-600">
+                                #{pokeId.padStart(3, '0')}
+                              </span>
+                            </div>
+                            <div className="flex flex-wrap gap-1.5 mt-1.5">
+                              {poke.types && poke.types.map(type => (
+                                <TypeBadge key={type} type={type} size="sm" className="shadow-sm" />
+                              ))}
+                            </div>
+                          </div>
+                          {/* Favorite button with animation */}
+                          <div className="flex-shrink-0 absolute right-4 top-1/2 -translate-y-1/2">
+                            <button
+                              className={`p-2 rounded-full transition-all duration-300 transform ${
+                                isFavorite
+                                  ? 'bg-red-50 dark:bg-red-500/20 text-red-500'
+                                  : 'bg-gray-100 dark:bg-gray-700 text-gray-400 opacity-70 group-hover:opacity-100 hover:scale-110'
+                              }`}
+                              onClick={(e) => {
+                                // These calls prevent navigation events from bubbling
+                                e.stopPropagation();
+                                e.preventDefault();
+                                togglePokemonFavorite(pokeId);
                               }}
-                            />
-                          </div>
-                          {/* Generation badge - enhanced */}
-                          <div className="absolute -bottom-1 -right-1 bg-gradient-to-br from-blue-500 to-blue-600 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center shadow-md border border-white dark:border-gray-800">
-                            {generation}
-                          </div>
-                        </div>
-                        {/* Pokemon details with enhanced layout */}
-                        <div className="flex-grow pr-10">
-                          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-1">
-                            <h3 className="capitalize font-bold text-lg group-hover:text-primary transition-colors">
-                              {poke.name.replace(/-/g, ' ')}
-                            </h3>
-                            <span className="px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs font-mono border border-gray-200 dark:border-gray-600">
-                              #{pokeId.padStart(3, '0')}
-                            </span>
-                          </div>
-                          <div className="flex flex-wrap gap-1.5 mt-1.5">
-                            {poke.types && poke.types.map(type => (
-                              <TypeBadge key={type} type={type} size="sm" className="shadow-sm" />
-                            ))}
+                              title={isFavorite ? "Remove from favorites" : "Add to favorites"}
+                              aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+                              data-no-navigate="true"
+                            >
+                              <svg width="20" height="20" fill={isFavorite ? "currentColor" : "none"} viewBox="0 0 24 24" stroke="currentColor"
+                                className={isFavorite ? "animate-pulse-once" : ""}>
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={isFavorite ? 2.5 : 2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                              </svg>
+                            </button>
                           </div>
                         </div>
-                        {/* Favorite button with animation */}
-                        <div className="flex-shrink-0 absolute right-4 top-1/2 -translate-y-1/2">
-                          <button
-                            className={`p-2 rounded-full transition-all duration-300 transform ${
-                              isFavorite 
-                                ? 'bg-red-50 dark:bg-red-500/20 text-red-500' 
-                                : 'bg-gray-100 dark:bg-gray-700 text-gray-400 opacity-70 group-hover:opacity-100 hover:scale-110'
-                            }`}
-                            onClick={(e) => {
-                              // These calls prevent navigation events from bubbling
-                              e.stopPropagation();
-                              e.preventDefault();
-                              togglePokemonFavorite(pokeId);
-                            }}
-                            title={isFavorite ? "Remove from favorites" : "Add to favorites"}
-                            aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
-                            data-no-navigate="true"
-                          >
-                            <svg width="20" height="20" fill={isFavorite ? "currentColor" : "none"} viewBox="0 0 24 24" stroke="currentColor" 
-                              className={isFavorite ? "animate-pulse-once" : ""}>
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={isFavorite ? 2.5 : 2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                            </svg>
-                          </button>
-                        </div>
-                      </div>
-                    </a>
-                  </Link>
+                      </a>
+                    </Link>
+                  </FadeIn>
                 );
               })}
-            </div>
+            </StaggeredChildren>
           )}
           
           {/* Enhanced Empty state */}

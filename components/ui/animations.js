@@ -2,7 +2,15 @@ import React from 'react';
 
 // Simple animation components for consistent animations across the app
 
-// Fade in animation component
+/**
+ * Renders children with a fade-in animation.
+ * @param {object} props - The component props.
+ * @param {React.ReactNode} props.children - The content to be animated.
+ * @param {number} [props.delay=0] - Delay in milliseconds before the animation starts.
+ * @param {number} [props.duration=500] - Duration of the animation in milliseconds.
+ * @param {string} [props.className=''] - Additional CSS classes to apply to the wrapper div.
+ * @returns {JSX.Element} The animated content.
+ */
 export const FadeIn = ({ children, delay = 0, duration = 500, className = '' }) => {
   return (
     <div 
@@ -17,7 +25,15 @@ export const FadeIn = ({ children, delay = 0, duration = 500, className = '' }) 
   );
 };
 
-// Slide up animation component
+/**
+ * Renders children with a slide-up animation.
+ * @param {object} props - The component props.
+ * @param {React.ReactNode} props.children - The content to be animated.
+ * @param {number} [props.delay=0] - Delay in milliseconds before the animation starts.
+ * @param {number} [props.duration=500] - Duration of the animation in milliseconds.
+ * @param {string} [props.className=''] - Additional CSS classes to apply to the wrapper div.
+ * @returns {JSX.Element} The animated content.
+ */
 export const SlideUp = ({ children, delay = 0, duration = 500, className = '' }) => {
   return (
     <div 
@@ -32,7 +48,15 @@ export const SlideUp = ({ children, delay = 0, duration = 500, className = '' })
   );
 };
 
-// Scale animation component
+/**
+ * Renders children with a scaling animation.
+ * @param {object} props - The component props.
+ * @param {React.ReactNode} props.children - The content to be animated.
+ * @param {number} [props.delay=0] - Delay in milliseconds before the animation starts.
+ * @param {number} [props.duration=500] - Duration of the animation in milliseconds.
+ * @param {string} [props.className=''] - Additional CSS classes to apply to the wrapper div.
+ * @returns {JSX.Element} The animated content.
+ */
 export const Scale = ({ children, delay = 0, duration = 500, className = '' }) => {
   return (
     <div 
@@ -47,7 +71,15 @@ export const Scale = ({ children, delay = 0, duration = 500, className = '' }) =
   );
 };
 
-// Card hover animation (can be applied to any card)
+/**
+ * Applies a hover effect (scaling and shadow) to children elements.
+ * Useful for card-like UI elements to indicate interactivity.
+ * @param {object} props - The component props.
+ * @param {React.ReactNode} props.children - The content to apply the hover effect to.
+ * @param {string} [props.className=''] - Additional CSS classes to apply to the wrapper div.
+ * @param {function} [props.onClick=()=>{}] - Optional click handler for the component.
+ * @returns {JSX.Element} The content with hover effects.
+ */
 export const CardHover = ({ children, className = '', onClick = () => {} }) => {
   return (
     <div 
@@ -74,7 +106,16 @@ export const CardHover = ({ children, className = '', onClick = () => {} }) => {
   );
 };
 
-// Pulse animation component (useful for highlighting elements)
+/**
+ * Renders children with a pulse animation.
+ * Useful for highlighting elements or indicating loading states.
+ * @param {object} props - The component props.
+ * @param {React.ReactNode} props.children - The content to be animated.
+ * @param {number} [props.delay=0] - Delay in milliseconds before the animation starts.
+ * @param {number} [props.duration=1500] - Duration of one pulse cycle in milliseconds.
+ * @param {string} [props.className=''] - Additional CSS classes to apply to the wrapper div.
+ * @returns {JSX.Element} The animated content.
+ */
 export const Pulse = ({ children, delay = 0, duration = 1500, className = '' }) => {
   return (
     <div 
@@ -89,7 +130,15 @@ export const Pulse = ({ children, delay = 0, duration = 1500, className = '' }) 
   );
 };
 
-// Bounce animation component
+/**
+ * Renders children with a bounce animation.
+ * @param {object} props - The component props.
+ * @param {React.ReactNode} props.children - The content to be animated.
+ * @param {number} [props.delay=0] - Delay in milliseconds before the animation starts.
+ * @param {number} [props.duration=1000] - Duration of the bounce animation in milliseconds.
+ * @param {string} [props.className=''] - Additional CSS classes to apply to the wrapper div.
+ * @returns {JSX.Element} The animated content.
+ */
 export const Bounce = ({ children, delay = 0, duration = 1000, className = '' }) => {
   return (
     <div 
@@ -104,13 +153,27 @@ export const Bounce = ({ children, delay = 0, duration = 1000, className = '' })
   );
 };
 
-// Staggered children animation (applies incremental delays to children)
+/**
+ * Animates direct children components with a staggered delay.
+ * It clones each child and applies an incremental `animationDelay`.
+ * Useful for list animations where items appear one after another.
+ * @param {object} props - The component props.
+ * @param {React.ReactNode} props.children - The child elements to be animated.
+ * @param {number} [props.baseDelay=100] - The base delay in milliseconds, which is multiplied by the child's index.
+ * @param {string} [props.className=''] - Additional CSS classes to apply to the wrapper div.
+ * @returns {JSX.Element} A div containing the children with staggered animation delays.
+ */
 export const StaggeredChildren = ({ children, baseDelay = 100, className = '' }) => {
   return (
     <div className={className}>
       {React.Children.map(children, (child, index) => {
+        // Ensure child is a valid React element before cloning
+        if (!React.isValidElement(child)) {
+          return child;
+        }
         const delay = baseDelay * index;
         return React.cloneElement(child, {
+          // @ts-ignore
           style: {
             ...child.props.style,
             animationDelay: `${delay}ms`,
@@ -121,12 +184,13 @@ export const StaggeredChildren = ({ children, baseDelay = 100, className = '' })
   );
 };
 
-export default {
-  FadeIn,
-  SlideUp,
-  Scale,
-  CardHover,
-  Pulse,
-  Bounce,
-  StaggeredChildren
-};
+// Removed the default export to allow named imports
+// export default {
+//   FadeIn,
+//   SlideUp,
+//   Scale,
+//   CardHover,
+//   Pulse,
+//   Bounce,
+//   StaggeredChildren
+// };
