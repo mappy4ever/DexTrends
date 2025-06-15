@@ -90,7 +90,7 @@ function PocketPokemonDetail() {
   }
   
   return (
-    <div className="container section-spacing-y-default max-w-6xl mx-auto px-4">
+    <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto px-2 sm:px-4 animate-fadeIn">
       <Head>
         <title>{pokemonDetails.name} | Pokémon TCG Pocket Card | DexTrends</title>
         <meta name="description" content={`View detailed information about ${pokemonDetails.name} Pokémon TCG Pocket card, including attacks, abilities, and market prices.`} />

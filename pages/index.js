@@ -98,8 +98,8 @@ export default function IndexPage() {
   }, [modalOpen]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f0f8ff] via-[#f9fafb] to-[#e0e7ff] flex flex-col items-center justify-start py-10 px-4">
-      <div className="flex flex-col items-center mb-8 animate-fadeIn">
+    <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto px-2 sm:px-4 animate-fadeIn">
+      <div className="flex flex-col items-center mb-8">
         <div className="rounded-3xl shadow-2xl border-4 border-[#FFDE59] bg-white p-6 mb-4 relative overflow-visible" style={{ background: 'linear-gradient(135deg, #fffbe6 60%, #e0f7fa 100%)' }}>
           <div className="absolute -top-4 -right-4 animate-bounce">
             <span className="inline-block text-yellow-400 text-3xl">✨</span>

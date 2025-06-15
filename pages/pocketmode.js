@@ -9,6 +9,7 @@ import { TypeFilter } from "../components/ui/TypeFilter"; // Updated path
 import PocketDeckViewer from "../components/PocketDeckViewer"; // Updated path
 import PocketExpansionViewer from "../components/PocketExpansionViewer"; // Updated path
 import PocketRulesGuide from "../components/PocketRulesGuide"; // Updated path
+import { fetchPocketData } from "../utils/pocketData";
 
 export default function PocketMode() {
   const router = useRouter();
@@ -29,30 +30,19 @@ export default function PocketMode() {
   const [currentView, setCurrentView] = useState("pokemon"); // pokemon, decks, expansions, rules
   const [typeFilter, setTypeFilter] = useState("all");
   const [sortBy, setSortBy] = useState("name"); // name, rarity
+  const [selectedExpansion, setSelectedExpansion] = useState(null);
+  const [expansionCards, setExpansionCards] = useState([]);
   
-  // Define fetchPokemonData function that can be called from multiple places
+  // Replace fetchPokemonData to use the live Pocket API
   const fetchPokemonData = async () => {
     try {
       setLoading(prev => ({ ...prev, pokemon: true }));
       setError(prev => ({ ...prev, pokemon: null }));
-      
-      const response = await fetch("/api/pocket-types", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        cache: "no-store" // Disable caching
-      });
-      
-      if (!response.ok) {
-        throw new Error("Failed to fetch data: " + response.status + " " + response.statusText);
-      }
-      
-      const data = await response.json();
-      setPokemon(data);
+      const cards = await fetchPocketData(); // Now returns an array
+      setPokemon(cards || []);
       setLoading(prev => ({ ...prev, pokemon: false }));
     } catch (err) {
-      console.error("Failed to fetch Pokémon data:", err);
+      console.error("Failed to fetch Pokémon Pocket data:", err);
       setError(prev => ({ 
         ...prev, 
         pokemon: "Failed to load Pokémon Pocket data. Please try again later." 
@@ -60,27 +50,17 @@ export default function PocketMode() {
       setLoading(prev => ({ ...prev, pokemon: false }));
     }
   };
-  
+
   // Define fetch functions for expansions and decks
   const fetchExpansionsData = async () => {
     try {
       setLoading(prev => ({ ...prev, expansions: true }));
       setError(prev => ({ ...prev, expansions: null }));
-      
-      const response = await fetch("/api/pocket-expansions", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        cache: "no-store" // Disable caching
-      });
-      
-      if (!response.ok) {
-        throw new Error("Failed to fetch expansions: " + response.status + " " + response.statusText);
-      }
-      
-      const data = await response.json();
-      setExpansions(data);
+      const data = await fetchPocketData();
+      // Build unique expansions from the 'pack' property of each card
+      const packs = Array.from(new Set(data.map(card => card.pack).filter(Boolean)));
+      const expansions = packs.map(pack => ({ id: pack, name: pack }));
+      setExpansions(expansions);
       setLoading(prev => ({ ...prev, expansions: false }));
     } catch (err) {
       console.error("Failed to fetch expansions data:", err);
@@ -177,8 +157,18 @@ export default function PocketMode() {
       ? error.expansions 
       : error.decks;
 
+  // When an expansion is selected, filter cards for that set
+  useEffect(() => {
+    if (selectedExpansion && pokemon.length > 0) {
+      const cardsForSet = pokemon.filter(card => card.pack === selectedExpansion.id);
+      setExpansionCards(cardsForSet);
+    } else {
+      setExpansionCards([]);
+    }
+  }, [selectedExpansion, pokemon]);
+
   return (
-    <div className="container section-spacing-y-default max-w-7xl mx-auto px-4">
+    <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto px-2 sm:px-4 animate-fadeIn">
       <Head>
         <title>Pokémon TCG Pocket | DexTrends</title>
         <meta name="description" content="Explore the Pokémon Trading Card Game Pocket - the streamlined mobile version with simplified rules, exclusive cards, top decks, and expansions." />
@@ -383,6 +373,47 @@ export default function PocketMode() {
           </div>
         ) : currentView === "pokemon" ? (
           <>
+            {/* TEST: Show one random card from each Pocket set */}
+            {expansions.length > 0 && (
+              <div className="mb-8">
+                <h2 className="text-lg font-bold mb-3 text-center">Test: One Random Card from Each Pocket Set</h2>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                  {expansions.map(set => {
+                    const cardsInSet = pokemon.filter(card => card.pack === set.id);
+                    if (!cardsInSet.length) return null;
+                    const randomCard = cardsInSet[Math.floor(Math.random() * cardsInSet.length)];
+                    return (
+                      <Link href={`/pocketmode/${randomCard.id}`} key={randomCard.id} className="block transition-all duration-300">
+                        <div className="flex flex-col items-center rounded-xl bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 p-4 border border-gray-200/60 dark:border-gray-700/60 shadow-sm hover:shadow-md relative overflow-hidden">
+                          <div className="relative w-full h-40 mb-3">
+                            <Image
+                              src={randomCard.image || "/back-card.png"}
+                              alt={randomCard.name}
+                              width={150}
+                              height={200}
+                              layout="responsive"
+                              className="transition-all duration-500 hover:scale-110 object-contain"
+                              onError={e => { e.currentTarget.src = "/back-card.png"; }}
+                            />
+                          </div>
+                          <h3 className="capitalize font-bold text-sm text-center mb-1 truncate w-full px-1">{randomCard.name}</h3>
+                          <div className="flex gap-1.5 mt-1 flex-wrap justify-center">
+                            {randomCard.types?.map(type => (
+                              <TypeBadge key={type} type={type.toLowerCase()} size="sm" />
+                            ))}
+                          </div>
+                          {randomCard.rarity && (
+                            <span className="mt-2 px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-xs rounded-full">{randomCard.rarity}</span>
+                          )}
+                          <div className="text-xs text-gray-400 mt-1 text-center">{set.name}</div>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+            {/* END TEST */}
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
               {filteredPokemon.length > 0 ? (
                 filteredPokemon.map((poke) => (
@@ -489,10 +520,81 @@ export default function PocketMode() {
             </div>
           </div>
         ) : currentView === "expansions" ? (
-          <div className="space-y-8">
-            {expansions.filter(expansion => expansion && expansion.id).map(expansion => (
-              <PocketExpansionViewer key={expansion.id} expansion={expansion} />
-            ))}
+          <div className="flex flex-col md:flex-row gap-8">
+            {/* Expansions List Sidebar */}
+            <div className="md:w-1/3 w-full md:max-w-xs mb-6 md:mb-0">
+              <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm p-4 sticky top-24 max-h-[70vh] overflow-y-auto">
+                <h3 className="text-lg font-bold mb-4 text-center">All Expansions</h3>
+                <div className="space-y-3">
+                  {expansions.filter(exp => exp && exp.id).map(expansion => (
+                    <div
+                      key={expansion.id}
+                      className={`cursor-pointer rounded-lg px-3 py-2 transition-all border border-transparent hover:bg-primary/10 ${selectedExpansion && selectedExpansion.id === expansion.id ? 'bg-primary/20 border-primary' : ''}`}
+                      onClick={() => setSelectedExpansion(expansion)}
+                    >
+                      <div className="flex items-center gap-3">
+                        {/* Optionally add logo here if available in future */}
+                        <span className="font-medium text-base">{expansion.name}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            {/* Expansion Details & Cards */}
+            <div className="flex-1">
+              {selectedExpansion ? (
+                <>
+                  <button
+                    className="mb-6 px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-medium"
+                    onClick={() => setSelectedExpansion(null)}
+                  >
+                    ← Back to All Expansions
+                  </button>
+                  <PocketExpansionViewer expansion={selectedExpansion} />
+                  <h3 className="text-xl font-bold mt-8 mb-4 text-center">All Cards in {selectedExpansion.name}</h3>
+                  {expansionCards.length > 0 ? (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                      {expansionCards.map(card => (
+                        <Link href={`/pocketmode/${card.id}`} key={card.id} className="block transition-all duration-300">
+                          <div className="flex flex-col items-center rounded-xl bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 p-4 border border-gray-200/60 dark:border-gray-700/60 shadow-sm hover:shadow-md relative overflow-hidden">
+                            <div className="relative w-full h-40 mb-3">
+                              <Image
+                                src={card.image || "/back-card.png"}
+                                alt={card.name}
+                                width={150}
+                                height={200}
+                                layout="responsive"
+                                className="transition-all duration-500 hover:scale-110 object-contain"
+                                onError={e => { e.currentTarget.src = "/back-card.png"; }}
+                              />
+                            </div>
+                            <h3 className="capitalize font-bold text-sm text-center mb-1 truncate w-full px-1">{card.name}</h3>
+                            <div className="flex gap-1.5 mt-1 flex-wrap justify-center">
+                              {card.types?.map(type => (
+                                <TypeBadge key={type} type={type.toLowerCase()} size="sm" />
+                              ))}
+                            </div>
+                            {card.rarity && (
+                              <span className="mt-2 px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-xs rounded-full">{card.rarity}</span>
+                            )}
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center text-gray-500 dark:text-gray-400 py-8">No cards found for this expansion.</div>
+                  )}
+                </>
+              ) : (
+                <div className="flex flex-col items-center justify-center h-full py-16">
+                  <h3 className="text-xl font-semibold text-gray-600 dark:text-gray-300 mb-4">Select an expansion to view its details and cards.</h3>
+                  <svg className="w-16 h-16 text-primary/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>
+                </div>
+              )}
+            </div>
           </div>
         ) : (
           <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm mb-6">

@@ -94,7 +94,7 @@ export default function TCGSets() {
   }, [filteredSets, sortOption, sortDirection]);
 
   return (
-    <div className="container section-spacing-y-default max-w-6xl mx-auto px-4">
+    <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto px-2 sm:px-4 animate-fadeIn">
       <FadeIn>
         <h1 className="text-3xl font-bold text-center mb-8">Pokémon TCG Sets</h1>
         

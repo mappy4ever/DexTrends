@@ -1,23 +1,23 @@
 // Type colors mapping for consistent usage across the app - with solid colors and white text like the GRASS example
 export const typeColors = {
-  normal: { bg: "bg-gray-400", text: "text-white", border: "border-gray-500", hover: "hover:bg-gray-500" }, // Hex: #A8A878
-  fire: { bg: "bg-orange-500", text: "text-white", border: "border-orange-600", hover: "hover:bg-orange-600" }, // Hex: #F08030
-  water: { bg: "bg-blue-500", text: "text-white", border: "border-blue-600", hover: "hover:bg-blue-600" }, // Hex: #6890F0
-  electric: { bg: "bg-yellow-400", text: "text-black", border: "border-yellow-500", hover: "hover:bg-yellow-500" }, // Hex: #F8D030
-  grass: { bg: "bg-green-500", text: "text-white", border: "border-green-600", hover: "hover:bg-green-600" }, // Hex: #78C850
-  ice: { bg: "bg-cyan-300", text: "text-black", border: "border-cyan-400", hover: "hover:bg-cyan-400" }, // Hex: #98D8D8
-  fighting: { bg: "bg-red-700", text: "text-white", border: "border-red-800", hover: "hover:bg-red-800" }, // Hex: #C03028
-  poison: { bg: "bg-purple-600", text: "text-white", border: "border-purple-700", hover: "hover:bg-purple-700" }, // Hex: #A040A0
-  ground: { bg: "bg-yellow-600", text: "text-black", border: "border-yellow-700", hover: "hover:bg-yellow-700" }, // Hex: #E0C068
-  flying: { bg: "bg-indigo-400", text: "text-white", border: "border-indigo-500", hover: "hover:bg-indigo-500" }, // Hex: #A890F0
-  psychic: { bg: "bg-pink-500", text: "text-white", border: "border-pink-600", hover: "hover:bg-pink-600" }, // Hex: #F85888
-  bug: { bg: "bg-lime-600", text: "text-white", border: "border-lime-700", hover: "hover:bg-lime-700" }, // Hex: #A8B820
-  rock: { bg: "bg-yellow-700", text: "text-white", border: "border-yellow-800", hover: "hover:bg-yellow-800" }, // Hex: #B8A038
-  ghost: { bg: "bg-purple-800", text: "text-white", border: "border-purple-900", hover: "hover:bg-purple-900" }, // Hex: #705898
-  dragon: { bg: "bg-indigo-600", text: "text-white", border: "border-indigo-700", hover: "hover:bg-indigo-700" }, // Hex: #7038F8
-  dark: { bg: "bg-gray-700", text: "text-white", border: "border-gray-800", hover: "hover:bg-gray-800" }, // Hex: #705848
-  steel: { bg: "bg-slate-400", text: "text-black", border: "border-slate-500", hover: "hover:bg-slate-500" }, // Hex: #B8B8D0
-  fairy: { bg: "bg-pink-300", text: "text-black", border: "border-pink-400", hover: "hover:bg-pink-400" } // Hex: #EE99AC
+  normal: { bg: "bg-poke-normal", text: "text-white", border: "border-poke-normal", hover: "hover:bg-poke-normal" },
+  fire: { bg: "bg-poke-fire", text: "text-white", border: "border-poke-fire", hover: "hover:bg-poke-fire" },
+  water: { bg: "bg-poke-water", text: "text-white", border: "border-poke-water", hover: "hover:bg-poke-water" },
+  electric: { bg: "bg-poke-electric", text: "text-white", border: "border-poke-electric", hover: "hover:bg-poke-electric" },
+  grass: { bg: "bg-poke-grass", text: "text-white", border: "border-poke-grass", hover: "hover:bg-poke-grass" },
+  ice: { bg: "bg-poke-ice", text: "text-white", border: "border-poke-ice", hover: "hover:bg-poke-ice" },
+  fighting: { bg: "bg-poke-fighting", text: "text-white", border: "border-poke-fighting", hover: "hover:bg-poke-fighting" },
+  poison: { bg: "bg-poke-poison", text: "text-white", border: "border-poke-poison", hover: "hover:bg-poke-poison" },
+  ground: { bg: "bg-poke-ground", text: "text-white", border: "border-poke-ground", hover: "hover:bg-poke-ground" },
+  flying: { bg: "bg-poke-flying", text: "text-white", border: "border-poke-flying", hover: "hover:bg-poke-flying" },
+  psychic: { bg: "bg-poke-psychic", text: "text-white", border: "border-poke-psychic", hover: "hover:bg-poke-psychic" },
+  bug: { bg: "bg-poke-bug", text: "text-white", border: "border-poke-bug", hover: "hover:bg-poke-bug" },
+  rock: { bg: "bg-poke-rock", text: "text-white", border: "border-poke-rock", hover: "hover:bg-poke-rock" },
+  ghost: { bg: "bg-poke-ghost", text: "text-white", border: "border-poke-ghost", hover: "hover:bg-poke-ghost" },
+  dragon: { bg: "bg-poke-dragon", text: "text-white", border: "border-poke-dragon", hover: "hover:bg-poke-dragon" },
+  dark: { bg: "bg-poke-dark", text: "text-white", border: "border-poke-dark", hover: "hover:bg-poke-dark" },
+  steel: { bg: "bg-poke-steel", text: "text-white", border: "border-poke-steel", hover: "hover:bg-poke-steel" },
+  fairy: { bg: "bg-poke-fairy", text: "text-white", border: "border-poke-fairy", hover: "hover:bg-poke-fairy" },
 };
 
 // Complete type effectiveness chart

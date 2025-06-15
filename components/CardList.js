@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react";
 import Image from 'next/image';
 import Link from 'next/link';
+import Modal from "./Modal";
 
 export default function CardList({
   cards = [],
@@ -15,6 +16,7 @@ export default function CardList({
 }) {
   // Local sort state
   const [sortOption, setSortOption] = useState(initialSortOption);
+  const [zoomedCard, setZoomedCard] = useState(null);
 
   // Sorting logic
   const sortedCards = useMemo(() => {
@@ -110,6 +112,17 @@ export default function CardList({
               window.location.href = `/cards/rarity/${encodeURIComponent(rarityTag.label)}`;
             }
           };
+
+          const handleCardClick = (e) => {
+            // Prevent navigation if a link or button was clicked
+            if (
+              e.target.closest('a') ||
+              e.target.closest('button') ||
+              e.target.closest('.magnifier-icon')
+            ) return;
+            window.location.href = `/cards/${card.id}`;
+          };
+
           return (
             <div
               key={card.id}
@@ -121,38 +134,49 @@ export default function CardList({
               }
               style={{ boxShadow: '0 4px 20px 0 rgba(0,0,0,0.08)', cursor: 'pointer' }}
               tabIndex={0}
+              onClick={handleCardClick}
             >
-              <div className="w-full flex flex-col items-center relative" onClick={() => onCardClick(card)}>
-                <Image
-                  src={card.images?.large || '/back-card.png'}
-                  alt={card.name}
-                  width={220}
-                  height={308}
-                  className="rounded-app-md mb-2 object-cover shadow-md hover:shadow-lg transition-all"
-                  priority={false}
-                  onError={(e) => {
-                    const target = e.target;
-                    if (target && target.src !== window.location.origin + '/back-card.png') {
-                      target.src = '/back-card.png';
-                    }
-                  }}
-                  unoptimized
-                />
-                {/* Magnifier icon overlay on hover */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200 scale-100 group-hover:scale-110 group-focus-within:scale-110">
-                  <svg width="44" height="44" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-2xl">
-                    <circle cx="32" cy="32" r="26" fill="rgba(255,255,255,0.70)" />
-                    <path d="M44 44L60 60" stroke="#1e293b" strokeWidth="4" strokeLinecap="round"/>
-                    <circle cx="32" cy="32" r="14" stroke="#1e293b" strokeWidth="4" fill="none"/>
-                  </svg>
-                </div>
+              <div className="w-full flex flex-col items-center relative">
+                <Link href={`/cards/${card.id}`} legacyBehavior>
+                  <a
+                    className="block w-full"
+                    tabIndex={-1}
+                    onClick={e => e.stopPropagation()}
+                  >
+                    <Image
+                      src={card.images?.large || '/back-card.png'}
+                      alt={card.name}
+                      width={220}
+                      height={308}
+                      className="rounded-app-md mb-2 object-cover shadow-md hover:shadow-lg transition-all"
+                      priority={false}
+                      onError={(e) => {
+                        const target = e.target;
+                        if (target && target.src !== window.location.origin + '/back-card.png') {
+                          target.src = '/back-card.png';
+                        }
+                      }}
+                      unoptimized
+                    />
+                  </a>
+                </Link>
               </div>
-              <h3 className="text-lg font-bold text-text-heading text-center mb-1 group-hover:text-primary group-focus-within:text-primary transition-colors duration-200">
-                <Link href={`/pokedex/${pokemonName}`} legacyBehavior>
-                  <a className="text-blue-900 hover:text-blue-700 focus:text-blue-700 hover:underline focus:underline outline-none focus-visible:ring-2 focus-visible:ring-primary px-1 rounded" tabIndex={0} title={`View all cards for ${pokemonName}`} onClick={e => e.stopPropagation()}>
+              <h3 className="text-lg font-bold text-text-heading text-center mb-1 group-hover:text-primary group-focus-within:text-primary transition-colors duration-200 flex items-center justify-center gap-2">
+                <Link href={`/cards/${card.id}`} legacyBehavior>
+                  <a className="text-blue-900 hover:text-blue-700 focus:text-blue-700 hover:underline focus:underline outline-none focus-visible:ring-2 focus-visible:ring-primary px-1 rounded" tabIndex={0} title={`View card details for ${card.name}`} onClick={e => e.stopPropagation()}>
                     {card.name}
                   </a>
                 </Link>
+                <button
+                  className="magnifier-icon ml-1 p-1 rounded-full hover:bg-gray-200 focus:bg-gray-300 focus:outline-none"
+                  title="Zoom card"
+                  tabIndex={0}
+                  onClick={e => { e.stopPropagation(); setZoomedCard(card); }}
+                  aria-label="Zoom card"
+                  type="button"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                </button>
               </h3>
               <div className="flex items-center gap-2 mb-1">
                 <Link href={`/tcgsets/${setId}`} legacyBehavior>
@@ -225,6 +249,28 @@ export default function CardList({
         <p className="text-center text-content-muted mt-12">
           No cards found for this Pokémon.
         </p>
+      )}
+
+      {/* Modal for zoomed card */}
+      {zoomedCard && (
+        <Modal isOpen={!!zoomedCard} onClose={() => setZoomedCard(null)}>
+          <div className="flex flex-col items-center p-4">
+            <Image
+              src={zoomedCard.images?.large || '/back-card.png'}
+              alt={zoomedCard.name}
+              width={400}
+              height={560}
+              className="rounded-lg shadow-2xl mb-4"
+              unoptimized
+            />
+            <button
+              className="mt-2 px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark"
+              onClick={() => setZoomedCard(null)}
+            >
+              Close
+            </button>
+          </div>
+        </Modal>
       )}
     </div>
   );

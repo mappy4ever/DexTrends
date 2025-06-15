@@ -304,7 +304,7 @@ export default function SetIdPage() {
   }
 
   return (
-    <div className="container section-spacing-y-default max-w-6xl mx-auto px-4">
+    <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto px-2 sm:px-4 animate-fadeIn">
       {/* Set Header */}
       <FadeIn>
         <div className={`p-6 rounded-xl shadow-lg mb-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>

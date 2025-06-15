@@ -3,31 +3,48 @@ import { typeColors } from '../../utils/pokemonutils';
 
 // Type badge component for consistent display of Pokémon types
 export function TypeBadge({ type, className = '', size = 'md', onClick = null }) {
-  // Get colors from the type colors mapping
-  const typeLower = type?.toLowerCase() || '';
-  const colors = typeColors[typeLower] || { bg: "bg-gray-200", text: "text-gray-800", border: "border-gray-300", hover: "hover:bg-gray-300" };
-  
+  // Defensive: always string, fallback to ''
+  const typeStr = typeof type === 'string' ? type : '';
+  const typeLower = typeStr.toLowerCase();
+  const isKnownType = !!typeColors[typeLower];
+  if (!isKnownType && typeStr) {
+    // Warn in dev if unknown type
+    if (typeof window !== 'undefined' && window?.location?.hostname === 'localhost') {
+      // eslint-disable-next-line no-console
+      console.warn('Unknown Pokémon type for badge:', typeStr);
+    }
+  }
+  const colors = isKnownType
+    ? typeColors[typeLower]
+    : { bg: "bg-gray-200", text: "text-gray-800", border: "border-gray-300", hover: "hover:bg-gray-300" };
+
   // Size classes
   const sizeClasses = {
+    'list': 'px-1.5 py-0.5 text-[0.65rem]', // 20% smaller than sm
     'sm': 'px-2 py-0.5 text-xs',
     'md': 'px-3 py-1 text-sm',
     'lg': 'px-4 py-1.5 text-base'
   };
-  
+
   const interactiveClasses = onClick ? `cursor-pointer ${colors.hover}` : '';
 
+  // Capitalize type for display, fallback to 'Unknown'
+  const displayType = typeStr
+    ? typeStr.charAt(0).toUpperCase() + typeStr.slice(1)
+    : 'Unknown';
+
   return (
-    <span 
+    <span
       className={`${sizeClasses[size]} rounded-full font-bold uppercase ${colors.bg} ${colors.text} border-2 ${colors.border} transition-all ${interactiveClasses} ${className}`}
       onClick={onClick}
       role={onClick ? "button" : undefined}
       tabIndex={onClick ? 0 : undefined}
-      style={{ 
-        boxShadow: '0 1px 3px rgba(0,0,0,0.2)', 
+      style={{
+        boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
         textShadow: '0 1px 1px rgba(0,0,0,0.1)'
       }}
     >
-      {type}
+      {displayType}
     </span>
   );
 }

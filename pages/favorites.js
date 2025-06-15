@@ -89,7 +89,7 @@ export default function FavoritesPage() {
   }, [favorites?.cards]);
 
   return (
-    <div className="container max-w-7xl mx-auto px-4 py-8 animate-fadeIn">
+    <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto px-2 sm:px-4 animate-fadeIn">
       <h1 className="text-3xl md:text-4xl font-bold text-center mb-8">Your Favorites</h1>
       
       {/* Tabs */}

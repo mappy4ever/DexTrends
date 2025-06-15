@@ -75,13 +75,12 @@ export default function Navbar() {
                   ? 'bg-primary/10 text-primary dark:bg-primary/20'
                   : 'text-text-navbar hover:bg-surface-hovered hover:text-foreground'}`}
               data-is-navbar="true"
-              onClick={(e) => {
-                // Log click for debugging
-                console.log('Navbar link clicked:', item.href);
-                
-                // Force navigation through window.location to bypass potential Next.js router issues
+              onClick={e => {
+                // Use Next.js router for navigation
                 e.preventDefault();
-                window.location.href = toLowercaseUrl(item.href);
+                if (router.pathname !== toLowercaseUrl(item.href)) {
+                  router.push(toLowercaseUrl(item.href));
+                }
               }}
             >
               <span className="flex-shrink-0 w-5 h-5">{item.icon}</span>
