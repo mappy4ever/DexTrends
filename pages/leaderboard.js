@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-// import CardList from "../components/CardList";
+// import CardList from "../components/cardlist.js";
 
 function formatDate(dateString) {
   const date = new Date(dateString);
@@ -47,7 +47,7 @@ export default function Leaderboard() {
   if (error) return <p>Error loading leaderboard: {error}</p>;
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto px-2 sm:px-4 animate-fadeIn">
       <h1 className="text-3xl font-bold mb-2">Pokémon Card Leaderboard</h1>
       {lastUpdated && (
         <p className="text-sm text-gray-500 mb-6">

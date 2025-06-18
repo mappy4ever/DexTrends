@@ -4,10 +4,11 @@ import { useRouter } from "next/router";
 import { RiGovernmentFill } from "react-icons/ri";
 import { AiOutlineBulb } from "react-icons/ai";
 import { BsSun, BsMoon, BsGlobeEuropeAfrica, BsHeart, BsSearch } from "react-icons/bs";
-import GlobalSearchModal from "./GlobalSearchModal";
-import { useTheme } from "../context/ThemeContext";
-import { useFavorites } from "../context/FavoritesContext";
+import GlobalSearchModal from "./GlobalSearchModal"; // Updated path
+import { useTheme } from "../context/themecontext";
+import { useFavorites } from "../context/favoritescontext";
 import Image from "next/image";
+import { toLowercaseUrl } from "../utils/formatters";
 
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
@@ -26,10 +27,10 @@ export default function Navbar() {
   // DexTrends key pages
   const navItems = [
     { href: "/", label: "Main", icon: <RiGovernmentFill size={22} /> },
-    { href: "/TCGSets", label: "TCG Sets", icon: <RiGovernmentFill size={22} /> },
-    { href: "/trending", label: "Trending", icon: <AiOutlineBulb size={22} /> },
+    { href: "/tcgsets", label: "TCG Sets", icon: <RiGovernmentFill size={22} /> },
     { href: "/leaderboard", label: "Leaderboard", icon: <AiOutlineBulb size={22} /> },
-    { href: "/PokeDex", label: "Pokédex", icon: <BsGlobeEuropeAfrica size={22} /> },
+    { href: "/pokedex", label: "Pokédex", icon: <BsGlobeEuropeAfrica size={22} /> },
+    { href: "/pocketmode", label: "Pocket Mode", icon: <AiOutlineBulb size={22} /> },
   ];
 
   const pageTitles = navItems.reduce((acc, item) => {
@@ -60,7 +61,7 @@ export default function Navbar() {
     <>
       {/* Top Navbar (Desktop & Mobile) */}
       <div className="fixed top-0 left-0 right-0 flex items-center justify-between px-4 h-16 shadow-md z-40 bg-navbar text-text-navbar backdrop-blur-sm">
-        <Link href="/" className="flex items-center gap-x-2 text-xl font-bold text-foreground overflow-hidden">
+        <Link href={toLowercaseUrl("/")} className="flex items-center gap-x-2 text-xl font-bold text-foreground overflow-hidden">
           <RiGovernmentFill size={24} className="flex-shrink-0 text-primary" />
           <span className="truncate">DexTrends</span>
         </Link>
@@ -68,11 +69,19 @@ export default function Navbar() {
           {navItems.map(item => (
             <Link
               key={`topnav-${item.href}`}
-              href={item.href}
+              href={toLowercaseUrl(item.href)}
               className={`flex items-center gap-x-2 px-3 py-2 rounded-app-md text-base font-medium transition-colors
                 ${router.pathname === item.href
                   ? 'bg-primary/10 text-primary dark:bg-primary/20'
                   : 'text-text-navbar hover:bg-surface-hovered hover:text-foreground'}`}
+              data-is-navbar="true"
+              onClick={e => {
+                // Use Next.js router for navigation
+                e.preventDefault();
+                if (router.pathname !== toLowercaseUrl(item.href)) {
+                  router.push(toLowercaseUrl(item.href));
+                }
+              }}
             >
               <span className="flex-shrink-0 w-5 h-5">{item.icon}</span>
               <span className="truncate">{item.label}</span>
@@ -89,11 +98,12 @@ export default function Navbar() {
             <BsSearch size={18} />
           </button>
           
-          <Link href="/favorites" legacyBehavior>
+          <Link href={toLowercaseUrl("/favorites")} legacyBehavior>
             <a
               aria-label="View favorites"
               title="View favorites"
               className="relative p-2 rounded-full hover:bg-surface-hovered focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring text-primary"
+              data-is-navbar="true"
             >
               <BsHeart size={18} />
               {totalFavorites > 0 && (

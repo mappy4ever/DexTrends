@@ -14,6 +14,10 @@ module.exports = {
     NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY: process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY,
   },
   images: {
-    domains: ['images.pokemontcg.io', 'raw.githubusercontent.com'],
+    domains: [
+      'images.pokemontcg.io',
+      'raw.githubusercontent.com',
+      'limitlesstcg.nyc3.cdn.digitaloceanspaces.com', // Added for Pocket card images
+    ],
   },
 };

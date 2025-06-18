@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import pokemon from "pokemontcgsdk";
-import Modal from "../components/Modal";
-import CardList from "../components/CardList";
-import TrendingCards from "../components/TrendingCards";
-import CustomSiteLogo from "../components/icons/CustomSiteLogo";
+import Modal from "../components/modal";
+import CardList from "../components/CardList"; // Updated path
+import CustomSiteLogo from "../components/icons/customsitelogo";
+import { getPrice, getRarityRank } from "../utils/pokemonutils.js";
 
 const pokemonKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
 if (!pokemonKey) {
@@ -13,27 +13,6 @@ if (!pokemonKey) {
 }
 
 pokemon.configure({ apiKey: pokemonKey });
-
-function getPrice(card) {
-  // TCGPlayer market price if available
-  if (
-    card.tcgplayer &&
-    card.tcgplayer.prices &&
-    card.tcgplayer.prices.normal &&
-    card.tcgplayer.prices.normal.market
-  ) {
-    return `$${card.tcgplayer.prices.normal.market.toFixed(2)}`;
-  }
-  if (
-    card.tcgplayer &&
-    card.tcgplayer.prices &&
-    card.tcgplayer.prices.holofoil &&
-    card.tcgplayer.prices.holofoil.market
-  ) {
-    return `$${card.tcgplayer.prices.holofoil.market.toFixed(2)}`;
-  }
-  return "N/A";
-}
 
 function getRarityGlow(rarity) {
   if (!rarity) return "";
@@ -49,7 +28,6 @@ export default function IndexPage() {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [trendingCards, setTrendingCards] = useState([]);
 
   // State for modal and selected card
   const [modalOpen, setModalOpen] = useState(false);
@@ -60,8 +38,9 @@ export default function IndexPage() {
   const containerRef = useRef(null);
 
   function openModal(card) {
-    // Navigate to card details page instead of opening modal
-    window.location.href = `/cards/${card.id}`;
+    setModalCard(card);
+    setModalOpen(true);
+    setSelectedCardId(card.id);
   }
 
   function closeModal() {
@@ -117,50 +96,10 @@ export default function IndexPage() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [modalOpen]);
-  
-  // Fetch initial cards for trending section
-  useEffect(() => {
-    const fetchTrendingCards = async () => {
-      try {
-        // Fetch some popular cards that are likely to have price data
-        const popularPokemon = ['charizard', 'pikachu', 'mew', 'mewtwo', 'lugia', 'rayquaza', 'blastoise'];
-        const randomPokemon = popularPokemon.sort(() => 0.5 - Math.random()).slice(0, 2);
-        
-        const promises = randomPokemon.map(name => 
-          pokemon.card.where({ q: `name:${name}* rarity:rare` })
-        );
-        
-        const results = await Promise.all(promises);
-        let allCards = [];
-        
-        results.forEach(result => {
-          if (result.data && result.data.length > 0) {
-            // Filter to only include cards with price data
-            const cardsWithPrices = result.data.filter(card => 
-              card.tcgplayer?.prices?.holofoil?.market || 
-              card.tcgplayer?.prices?.normal?.market ||
-              card.tcgplayer?.prices?.reverseHolofoil?.market ||
-              card.tcgplayer?.prices?.firstEditionHolofoil?.market
-            );
-            
-            allCards = [...allCards, ...cardsWithPrices];
-          }
-        });
-        
-        // Get a random selection of up to 20 cards
-        const randomSelection = allCards.sort(() => 0.5 - Math.random()).slice(0, 20);
-        setTrendingCards(randomSelection);
-      } catch (err) {
-        console.error("Failed to load trending cards:", err);
-      }
-    };
-    
-    fetchTrendingCards();
-  }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f0f8ff] via-[#f9fafb] to-[#e0e7ff] flex flex-col items-center justify-start py-10 px-4">
-      <div className="flex flex-col items-center mb-8 animate-fadeIn">
+    <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto px-2 sm:px-4 animate-fadeIn">
+      <div className="flex flex-col items-center mb-8">
         <div className="rounded-3xl shadow-2xl border-4 border-[#FFDE59] bg-white p-6 mb-4 relative overflow-visible" style={{ background: 'linear-gradient(135deg, #fffbe6 60%, #e0f7fa 100%)' }}>
           <div className="absolute -top-4 -right-4 animate-bounce">
             <span className="inline-block text-yellow-400 text-3xl">✨</span>
@@ -186,12 +125,6 @@ export default function IndexPage() {
           Search
         </button>
       </form>
-      
-      {/* Trending Cards Section */}
-      <div className="w-full max-w-6xl mb-8">
-        <TrendingCards cards={trendingCards} />
-      </div>
-      
       <div className="w-full mb-8">
         <CardList
           cards={cards}
@@ -201,24 +134,7 @@ export default function IndexPage() {
           onCardClick={openModal}
           getPrice={getPrice}
           getReleaseDate={(card) => card.set?.releaseDate || "0000-00-00"}
-          getRarityRank={(card) => {
-            const rarityOrder = {
-              "Common": 1,
-              "Uncommon": 2,
-              "Rare": 3,
-              "Rare Holo": 4,
-              "Rare Ultra": 5,
-              "Rare Secret": 6,
-              "Rare Holo GX": 7,
-              "Rare Rainbow": 8,
-              "Rare Prism Star": 9,
-              "Rare Full Art": 10,
-              "Rare Holo EX": 11,
-              "Rare Holo V": 12,
-              "Rare Holo VMAX": 13,
-            };
-            return rarityOrder[card.rarity] || 0;
-          }}
+          getRarityRank={getRarityRank}
         />
       </div>
       {modalOpen && modalCard && (

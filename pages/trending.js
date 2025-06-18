@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import pokemon from "pokemontcgsdk";
 import CardList from '../components/CardList';
-import { useTheme } from '../context/ThemeContext';
+import { useTheme } from '../context/themecontext';
 
 const pokemonKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
 if (!pokemonKey) {

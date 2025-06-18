@@ -3,12 +3,13 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import pokemon from "pokemontcgsdk";
 import Modal from "../../components/Modal";
-import { FadeIn, SlideUp } from "../../components/ui/Animations";
+import { FadeIn, SlideUp } from "../../components/ui/animations";
 import PriceHistoryChart from "../../components/ui/PriceHistoryChart";
-import { useTheme } from "../../context/ThemeContext";
-import { useFavorites } from "../../context/FavoritesContext";
+import { useTheme } from "../../context/themecontext";
+import { useFavorites } from "../../context/favoritescontext";
 import { TypeBadge } from "../../components/ui/TypeBadge";
 import Image from "next/image";
+import { getPrice as getCardPrice } from "../../utils/pokemonutils.js";
 
 const pokemonKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
 if (!pokemonKey) {
@@ -18,6 +19,22 @@ if (!pokemonKey) {
 }
 
 pokemon.configure({ apiKey: pokemonKey });
+
+// --- Add type color mapping and RGBA helpers (copied from pokedex.js) ---
+const typeHexColors = {
+  normal: '#A8A77A', fire: '#EE8130', water: '#6390F0', electric: '#F7D02C', grass: '#7AC74C', ice: '#96D9D6',
+  fighting: '#C22E28', poison: '#A33EA1', ground: '#E2BF65', flying: '#A98FF3', psychic: '#F95587', bug: '#A6B91A',
+  rock: '#B6A136', ghost: '#735797', dragon: '#6F35FC', dark: '#705746', steel: '#B7B7CE', fairy: '#D685AD',
+};
+function hexToRgba(hex, alpha) {
+  let c = hex.replace('#', '');
+  if (c.length === 3) c = c.split('').map(x => x + x).join('');
+  const num = parseInt(c, 16);
+  return `rgba(${(num >> 16) & 255}, ${(num >> 8) & 255}, ${num & 255}, ${alpha})`;
+}
+function getTypeRgba(type, alpha) {
+  return hexToRgba(typeHexColors[type?.toLowerCase()] || '#e5e7eb', alpha);
+}
 
 export default function CardDetailPage() {
   const router = useRouter();
@@ -88,20 +105,6 @@ export default function CardDetailPage() {
     }
   };
 
-  // Get price from card
-  const getPrice = () => {
-    if (!card || !card.tcgplayer || !card.tcgplayer.prices) {
-      return null;
-    }
-    
-    const prices = card.tcgplayer.prices;
-    return prices.holofoil?.market || 
-           prices.normal?.market || 
-           prices.reverseHolofoil?.market || 
-           prices.firstEditionHolofoil?.market ||
-           prices.unlimitedHolofoil?.market;
-  };
-
   // Format types as badges
   const renderTypes = (types) => {
     if (!types || types.length === 0) return null;
@@ -114,6 +117,23 @@ export default function CardDetailPage() {
       </div>
     );
   };
+
+  // Compute gradient for card background
+  let leftBg = theme === 'dark' ? '#23272f' : '#f3f4f6';
+  let bgGradient = 'none';
+  const types = card?.types || [];
+  const primaryType = types[0] || null;
+  const secondaryType = types[1] || null;
+  const thirdType = types[2] || null;
+  if (primaryType && secondaryType && thirdType) {
+    bgGradient = `linear-gradient(90deg, ${leftBg} 0%, ${leftBg} 20%, ${getTypeRgba(primaryType,0.13)} 20%, ${getTypeRgba(primaryType,0.13)} 49%, ${getTypeRgba(secondaryType,0.13)} 50%, ${getTypeRgba(secondaryType,0.13)} 79%, ${getTypeRgba(thirdType,0.13)} 80%, ${getTypeRgba(thirdType,0.13)} 100%)`;
+  } else if (primaryType && secondaryType) {
+    // Type 2 occupies both Type 2 and Type 3 regions
+    bgGradient = `linear-gradient(90deg, ${leftBg} 0%, ${leftBg} 20%, ${getTypeRgba(primaryType,0.11)} 20%, ${getTypeRgba(primaryType,0.11)} 49%, ${getTypeRgba(secondaryType,0.11)} 50%, ${getTypeRgba(secondaryType,0.11)} 100%)`;
+  } else if (primaryType) {
+    // Single type: blend from background at 0% to type color at 3%, then fill to 100% for a quicker solid color
+    bgGradient = `linear-gradient(90deg, ${leftBg} 0%, ${getTypeRgba(primaryType,0.10)} 3%, ${getTypeRgba(primaryType,0.10)} 100%)`;
+  }
 
   // Loading state
   if (loading) {
@@ -184,7 +204,8 @@ export default function CardDetailPage() {
           {/* Card image section */}
           <div className="lg:col-span-1">
             <div className="relative">
-              <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} p-4 rounded-xl shadow-lg`}>
+              {/* Apply gradient background here */}
+              <div className="p-4 rounded-xl shadow-lg" style={{ background: bgGradient }}>
                 {/* Card image with zoom functionality */}
                 <div className="relative cursor-zoom-in mb-4" onClick={() => setMagnifyImage(true)}>
                   <img 
@@ -229,7 +250,8 @@ export default function CardDetailPage() {
 
           {/* Card details section */}
           <div className="lg:col-span-2">
-            <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} p-6 rounded-xl shadow-lg`}>
+            {/* Apply gradient background here too for details */}
+            <div className="p-6 rounded-xl shadow-lg" style={{ background: bgGradient }}>
               <div className="mb-6 border-b border-gray-200 dark:border-gray-700 pb-4">
                 <h1 className="text-3xl font-bold mb-2">{card.name}</h1>
                 <div className="flex flex-wrap items-center gap-3">
@@ -358,12 +380,12 @@ export default function CardDetailPage() {
             </div>
 
             {/* Price history chart */}
-            {getPrice() && (
+            {getCardPrice(card) !== 'N/A' && (
               <div className={`mt-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} p-6 rounded-xl shadow-lg`}>
                 <h2 className="text-xl font-semibold mb-4">Price History</h2>
                 <PriceHistoryChart 
                   cardId={card.id} 
-                  initialPrice={getPrice()} 
+                  initialPrice={parseFloat(getCardPrice(card).substring(1))}
                   timeRange="1y"
                 />
               </div>

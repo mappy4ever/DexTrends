@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useFavorites } from '../context/FavoritesContext';
-import { FadeIn, SlideUp } from '../components/ui/Animations';
-import { TypeBadge } from '../components/ui/TypeBadge';
-import { getGeneration } from '../utils/pokemonUtils';
+import { useFavorites } from '../context/favoritescontext';
+import { FadeIn, SlideUp } from '../components/ui/animations';
+import { TypeBadge } from '../components/ui/TypeBadge'; // Updated path
+import { getGeneration } from '../utils/pokemonutils';
 
 export default function FavoritesPage() {
   const router = useRouter();
@@ -89,7 +89,7 @@ export default function FavoritesPage() {
   }, [favorites?.cards]);
 
   return (
-    <div className="container max-w-7xl mx-auto px-4 py-8 animate-fadeIn">
+    <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto px-2 sm:px-4 animate-fadeIn">
       <h1 className="text-3xl md:text-4xl font-bold text-center mb-8">Your Favorites</h1>
       
       {/* Tabs */}
@@ -134,7 +134,7 @@ export default function FavoritesPage() {
                       className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-gray-200 dark:border-gray-700 transition-all hover:shadow-lg hover:-translate-y-1"
                     >
                       <div className="relative">
-                        <Link href={`/PokeDex/${pokemon.name}`}>
+                        <Link href={`/pokedex/${pokemon.name}`}>
                           <Image
                             src={pokemon.sprite}
                             alt={pokemon.name}
@@ -179,7 +179,7 @@ export default function FavoritesPage() {
                   <p className="text-gray-500 dark:text-gray-400 mb-6">
                     Add Pokémon to your favorites by clicking the heart icon on their page.
                   </p>
-                  <Link href="/PokeDex" legacyBehavior>
+                  <Link href="/pokedex" legacyBehavior>
                     <a className="inline-block px-6 py-3 bg-primary text-white font-medium rounded-md hover:bg-primary-dark transition-colors">
                       Browse Pokédex
                     </a>
@@ -243,7 +243,7 @@ export default function FavoritesPage() {
                   <p className="text-gray-500 dark:text-gray-400 mb-6">
                     Add cards to your favorites by clicking the heart icon on card details.
                   </p>
-                  <Link href="/TCGSets" legacyBehavior>
+                  <Link href="/tcgsets" legacyBehavior>
                     <a className="inline-block px-6 py-3 bg-primary text-white font-medium rounded-md hover:bg-primary-dark transition-colors">
                       Browse TCG Sets
                     </a>

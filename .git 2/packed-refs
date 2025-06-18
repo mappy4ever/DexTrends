@@ -1,4 +1,0 @@
-# pack-refs with: peeled fully-peeled sorted 
-7f2847736e3db0344bfac0898eadf429666d2846 refs/remotes/origin/feat/typescript-setup
-550ba1a623c626018e9593bd2954a30174802774 refs/remotes/origin/fix/typescript-eslint-errors-partial
-5e5e5732e464ff75a8f9c4ca6a196a82938bbbf5 refs/remotes/origin/main

@@ -28,3 +28,11 @@ export const formatDatePretty = (dateString) => {
     return dateString;
   }
 };
+
+export const toLowercaseUrl = (pathString) => {
+  if (typeof pathString !== 'string') {
+    // console.warn('toLowercaseUrl expects a string, received:', pathString);
+    return ''; // Or handle error as appropriate
+  }
+  return pathString.toLowerCase();
+};
