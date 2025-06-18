@@ -26,6 +26,7 @@ export const tcgTypeColors = {
   fire: { bg: "bg-red-500", text: "text-white", border: "border-red-600", hover: "hover:bg-red-600" },
   water: { bg: "bg-blue-500", text: "text-white", border: "border-blue-600", hover: "hover:bg-blue-600" },
   electric: { bg: "bg-yellow-400", text: "text-black", border: "border-yellow-500", hover: "hover:bg-yellow-500" },
+  lightning: { bg: "bg-yellow-400", text: "text-black", border: "border-yellow-500", hover: "hover:bg-yellow-500" }, // Pocket TCG alias
   grass: { bg: "bg-green-500", text: "text-white", border: "border-green-600", hover: "hover:bg-green-600" },
   ice: { bg: "bg-cyan-400", text: "text-white", border: "border-cyan-500", hover: "hover:bg-cyan-500" },
   fighting: { bg: "bg-orange-600", text: "text-white", border: "border-orange-700", hover: "hover:bg-orange-700" },
@@ -38,8 +39,12 @@ export const tcgTypeColors = {
   ghost: { bg: "bg-purple-600", text: "text-white", border: "border-purple-700", hover: "hover:bg-purple-700" },
   dragon: { bg: "bg-indigo-600", text: "text-white", border: "border-indigo-700", hover: "hover:bg-indigo-700" },
   dark: { bg: "bg-gray-800", text: "text-white", border: "border-gray-900", hover: "hover:bg-gray-900" },
+  darkness: { bg: "bg-gray-800", text: "text-white", border: "border-gray-900", hover: "hover:bg-gray-900" }, // Pocket TCG alias
   steel: { bg: "bg-slate-500", text: "text-white", border: "border-slate-600", hover: "hover:bg-slate-600" },
+  metal: { bg: "bg-slate-500", text: "text-white", border: "border-slate-600", hover: "hover:bg-slate-600" }, // Pocket TCG alias
   fairy: { bg: "bg-pink-400", text: "text-white", border: "border-pink-500", hover: "hover:bg-pink-500" },
+  colorless: { bg: "bg-gray-300", text: "text-gray-800", border: "border-gray-400", hover: "hover:bg-gray-400" }, // Pocket TCG specific
+  trainer: { bg: "bg-emerald-500", text: "text-white", border: "border-emerald-600", hover: "hover:bg-emerald-600" }, // Pocket TCG specific
 };
 
 // Complete type effectiveness chart
@@ -204,14 +209,42 @@ export const getRarityRank = (card) => {
 
 // Pocket TCG type mapping - maps Pocket-specific type names to standard TCG types
 export const pocketTypeMapping = {
-  'lighting': 'electric',
-  'darkness': 'dark',
-  // Add other Pocket-specific mappings as needed
+  'lighting': 'lightning', // Common typo
+  'lightning': 'lightning', // Direct mapping for consistency
+  'electric': 'lightning', // Map electric to lightning for pocket
+  'darkness': 'darkness',
+  'dark': 'darkness', // Map standard dark to pocket darkness
+  'metal': 'metal',
+  'steel': 'metal', // Map standard steel to pocket metal
+  'colorless': 'colorless',
+  'trainer': 'trainer',
+  // Keep standard types as-is for pocket cards
+  'psychic': 'psychic',
+  'normal': 'normal',
+  'fire': 'fire',
+  'water': 'water',
+  'grass': 'grass',
+  'ice': 'ice',
+  'fighting': 'fighting',
+  'poison': 'poison',
+  'ground': 'ground',
+  'flying': 'flying',
+  'bug': 'bug',
+  'rock': 'rock',
+  'ghost': 'ghost',
+  'dragon': 'dragon',
+  'fairy': 'fairy',
 };
 
 // Helper to map Pocket type names to standard types for TCG colors
 export const mapPocketTypeToStandard = (pocketType) => {
-  if (!pocketType || typeof pocketType !== 'string') return pocketType;
+  if (!pocketType || typeof pocketType !== 'string') {
+    return {
+      displayName: '',
+      standardType: '',
+      isPocketMapped: false
+    };
+  }
   
   const lowerType = pocketType.toLowerCase();
   const mappedType = pocketTypeMapping[lowerType];

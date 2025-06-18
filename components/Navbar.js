@@ -61,7 +61,7 @@ export default function Navbar() {
     <>
       {/* Top Navbar (Desktop & Mobile) */}
       <div className="fixed top-0 left-0 right-0 flex items-center justify-between px-4 h-16 shadow-md z-40 bg-navbar text-text-navbar backdrop-blur-sm">
-        <Link href={toLowercaseUrl("/")} className="flex items-center gap-x-2 text-xl font-bold text-foreground overflow-hidden">
+        <Link href="/" className="flex items-center gap-x-2 text-xl font-bold text-foreground overflow-hidden">
           <RiGovernmentFill size={24} className="flex-shrink-0 text-primary" />
           <span className="truncate">DexTrends</span>
         </Link>
@@ -69,19 +69,12 @@ export default function Navbar() {
           {navItems.map(item => (
             <Link
               key={`topnav-${item.href}`}
-              href={toLowercaseUrl(item.href)}
-              className={`flex items-center gap-x-2 px-3 py-2 rounded-app-md text-base font-medium transition-colors
+              href={item.href}
+              className={`flex items-center gap-x-2 px-3 py-2 rounded-app-md text-base font-medium transition-colors cursor-pointer
                 ${router.pathname === item.href
                   ? 'bg-primary/10 text-primary dark:bg-primary/20'
                   : 'text-text-navbar hover:bg-surface-hovered hover:text-foreground'}`}
-              data-is-navbar="true"
-              onClick={e => {
-                // Use Next.js router for navigation
-                e.preventDefault();
-                if (router.pathname !== toLowercaseUrl(item.href)) {
-                  router.push(toLowercaseUrl(item.href));
-                }
-              }}
+              style={{ pointerEvents: 'auto' }}
             >
               <span className="flex-shrink-0 w-5 h-5">{item.icon}</span>
               <span className="truncate">{item.label}</span>
@@ -98,7 +91,7 @@ export default function Navbar() {
             <BsSearch size={18} />
           </button>
           
-          <Link href={toLowercaseUrl("/favorites")} legacyBehavior>
+          <Link href="/favorites" legacyBehavior>
             <a
               aria-label="View favorites"
               title="View favorites"

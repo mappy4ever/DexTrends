@@ -142,7 +142,7 @@ export default function PocketMode() {
     });
   
   // Get unique types from all Pokémon cards for filter options
-  const uniqueTypes = [...new Set(pokemon.flatMap(p => p.type ? [p.type] : (p.types || [])))];
+  const uniqueTypes = [...new Set(pokemon.flatMap(p => p.type ? [p.type.toLowerCase()] : (p.types || []).map(t => t.toLowerCase())))];
   
   // View-specific loading state
   const isViewLoading = currentView === "pokemon" 
@@ -322,6 +322,7 @@ export default function PocketMode() {
                 types={uniqueTypes} 
                 selectedType={typeFilter} 
                 onTypeChange={setTypeFilter}
+                isPocketCard={true}
               />
             </div>
           </div>
@@ -415,7 +416,7 @@ export default function PocketMode() {
                           <h3 className="capitalize font-bold text-sm text-center mb-1 truncate w-full px-1">{randomCard.name}</h3>
                           <div className="flex gap-1.5 mt-1 flex-wrap justify-center">
                             {randomCard.types?.map(type => (
-                              <TypeBadge key={type} type={type.toLowerCase()} size="sm" />
+                              <TypeBadge key={type} type={type.toLowerCase()} size="sm" isPocketCard={true} />
                             ))}
                           </div>
                           {randomCard.rarity && (

@@ -8,8 +8,9 @@ import { TypeBadge } from "./TypeBadge"; // Updated path
  * @param {string} props.selectedType Currently selected type filter
  * @param {Function} props.onTypeChange Handler for type change
  * @param {boolean} props.compact Display in compact form (optional)
+ * @param {boolean} props.isPocketCard Whether to use Pocket card colors (optional)
  */
-export function TypeFilter({ types = [], selectedType, onTypeChange, compact = false }) {
+export function TypeFilter({ types = [], selectedType, onTypeChange, compact = false, isPocketCard = false }) {
   if (!types || types.length === 0) {
     return null;
   }
@@ -39,7 +40,7 @@ export function TypeFilter({ types = [], selectedType, onTypeChange, compact = f
               All Types
             </div>
           ) : (
-            <TypeBadge type={type} size={compact ? "sm" : "md"} />
+            <TypeBadge type={type} size={compact ? "sm" : "md"} isPocketCard={isPocketCard} />
           )}
         </button>
       ))}

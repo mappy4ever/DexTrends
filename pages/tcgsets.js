@@ -5,6 +5,8 @@ import pokemon from "pokemontcgsdk";
 import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../components/ui/animations";
 import { useTheme } from "../context/themecontext";
 import { useViewSettings } from "../context/viewsettingscontext";
+import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
+import { InlineLoadingSpinner } from "../components/ui/LoadingSpinner";
 
 const pokemonKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
 if (!pokemonKey) {
@@ -92,6 +94,13 @@ export default function TCGSets() {
       return sortDirection === "desc" ? -comparison : comparison;
     });
   }, [filteredSets, sortOption, sortDirection]);
+
+  // Infinite scroll for sets
+  const { visibleItems: visibleSets, hasMore, isLoading: scrollLoading } = useInfiniteScroll(
+    sortedSets, 
+    20, // Initial visible count
+    10  // Load 10 more at a time
+  );
 
   return (
     <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto px-2 sm:px-4 animate-fadeIn">
@@ -197,7 +206,7 @@ export default function TCGSets() {
         </div>
       ) : (
         <StaggeredChildren className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-          {sortedSets.map((set) => (
+          {visibleSets.map((set) => (
             <CardHover
               key={set.id}
               className="animate-fadeIn"
@@ -266,6 +275,30 @@ export default function TCGSets() {
             </CardHover>
           ))}
         </StaggeredChildren>
+      )}
+
+      {/* Infinite scroll loading indicator */}
+      {scrollLoading && hasMore && (
+        <InlineLoadingSpinner 
+          text="Loading more sets..." 
+          className="mt-8"
+        />
+      )}
+
+      {/* Show scroll hint */}
+      {!loading && !error && hasMore && (
+        <div className="text-center mt-4 text-sm text-gray-600 dark:text-gray-400">
+          Showing {visibleSets.length} of {sortedSets.length} sets
+          <div className="text-xs text-primary mt-1">
+            Scroll down to load more...
+          </div>
+        </div>
+      )}
+
+      {!loading && !scrollLoading && !hasMore && sortedSets.length > 0 && (
+        <div className="text-center mt-4 text-sm text-gray-500 dark:text-gray-400">
+          All {sortedSets.length} sets loaded
+        </div>
       )}
       
       {!loading && !error && sortedSets.length === 0 && (

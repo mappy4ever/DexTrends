@@ -1,62 +1,62 @@
 import React from 'react';
-import { typeColors, tcgTypeColors, mapPocketTypeToStandard } from '../../utils/pokemonutils';
+
+// Direct type-to-color mapping for Pocket cards
+const typeColors = {
+  fire: 'bg-red-500',
+  water: 'bg-blue-500',
+  grass: 'bg-green-500',
+  electric: 'bg-yellow-400',
+  lightning: 'bg-yellow-400', // Pocket alias for electric
+  psychic: 'bg-pink-500',
+  ice: 'bg-cyan-400',
+  dragon: 'bg-indigo-600',
+  dark: 'bg-gray-800',
+  darkness: 'bg-gray-800', // Pocket alias for dark
+  fairy: 'bg-pink-400',
+  normal: 'bg-gray-400',
+  fighting: 'bg-orange-600',
+  flying: 'bg-indigo-400',
+  poison: 'bg-purple-500',
+  ground: 'bg-yellow-600',
+  rock: 'bg-stone-500',
+  bug: 'bg-lime-500',
+  ghost: 'bg-purple-600',
+  steel: 'bg-slate-500',
+  metal: 'bg-slate-500', // Pocket alias for steel
+  colorless: 'bg-gray-300',
+  trainer: 'bg-emerald-500'
+};
 
 // Type badge component for consistent display of Pokémon types
 export function TypeBadge({ type, className = '', size = 'md', onClick = null, isPocketCard = false }) {
   // Defensive: always string, fallback to ''
   const typeStr = typeof type === 'string' ? type : '';
+  const lowerType = typeStr.toLowerCase();
   
-  // Handle Pocket-specific type mapping
-  let displayName, standardType, mappedType;
-  if (isPocketCard) {
-    mappedType = mapPocketTypeToStandard(typeStr);
-    displayName = mappedType.displayName;
-    standardType = mappedType.standardType;
-  } else {
-    displayName = typeStr;
-    standardType = typeStr.toLowerCase();
-  }
+  // Get color class
+  const colorClass = typeColors[lowerType] || 'bg-gray-200';
   
-  // Choose color palette based on whether it's a Pocket card
-  const colorPalette = isPocketCard ? tcgTypeColors : typeColors;
-  const isKnownType = !!colorPalette[standardType];
-  
-  if (!isKnownType && typeStr) {
-    // Warn in dev if unknown type
-    if (typeof window !== 'undefined' && window?.location?.hostname === 'localhost') {
-      // eslint-disable-next-line no-console
-      console.warn('Unknown Pokémon type for badge:', typeStr, 'mapped to:', standardType);
-    }
-  }
-  const colors = isKnownType
-    ? colorPalette[standardType]
-    : { bg: "bg-gray-200", text: "text-gray-800", border: "border-gray-300", hover: "hover:bg-gray-300" };
-
   // Size classes
-  const sizeClasses = {
-    'list': 'px-1.5 py-0.5 text-[0.65rem]', // 20% smaller than sm
-    'sm': 'px-2 py-0.5 text-xs',
-    'md': 'px-3 py-1 text-sm',
-    'lg': 'px-4 py-1.5 text-base'
-  };
+  const sizeClass = {
+    'list': 'size-list',
+    'sm': 'size-sm',
+    'md': 'size-md',
+    'lg': 'size-lg'
+  }[size] || 'size-md';
 
-  const interactiveClasses = onClick ? `cursor-pointer ${colors.hover}` : '';
+  const interactiveClasses = onClick ? 'cursor-pointer' : '';
 
-  // Use the display name (which may include TCG suffix for Pocket types)
-  const displayType = displayName
-    ? displayName.charAt(0).toUpperCase() + displayName.slice(1)
+  // Display name
+  const displayType = typeStr
+    ? typeStr.charAt(0).toUpperCase() + typeStr.slice(1)
     : 'Unknown';
 
   return (
     <span
-      className={`${sizeClasses[size]} rounded-full font-bold uppercase ${colors.bg} ${colors.text} border-2 ${colors.border} transition-all ${interactiveClasses} ${className}`}
+      className={`type-badge ${colorClass} ${sizeClass} ${interactiveClasses} ${className}`}
       onClick={onClick}
       role={onClick ? "button" : undefined}
       tabIndex={onClick ? 0 : undefined}
-      style={{
-        boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-        textShadow: '0 1px 1px rgba(0,0,0,0.1)'
-      }}
     >
       {displayType}
     </span>

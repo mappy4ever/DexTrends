@@ -1,10 +1,25 @@
 import { useEffect } from "react";
+import dynamic from "next/dynamic";
 import "../styles/globals.css";
 import "react-datepicker/dist/react-datepicker.css";
 import Layout from "../components/layout/layout";
 import ErrorBoundary from "../components/layout/errorboundary";
 import "../components/cardfeatures.css";
-import { AnimatePresence, motion } from "framer-motion";
+import "../components/typebadge.css";
+
+// Dynamic imports for framer-motion to reduce initial bundle size
+const AnimatePresence = dynamic(
+  () => import("framer-motion").then((mod) => ({ default: mod.AnimatePresence })),
+  { ssr: false }
+);
+
+const MotionDiv = dynamic(
+  () => import("framer-motion").then((mod) => ({ default: mod.motion.div })),
+  { 
+    ssr: false,
+    loading: () => <div className="min-h-screen" /> // Fallback while loading
+  }
+);
 
 import { ThemeProvider } from '../context/themecontext';
 import { FavoritesProvider } from '../context/favoritescontext';
@@ -94,7 +109,7 @@ function MyApp({ Component, pageProps, router }) {
               <ModalProvider>
                   <Layout>
                     <AnimatePresence mode="wait" initial={false}>
-                      <motion.div
+                      <MotionDiv
                         key={router.route}
                         initial={{ opacity: 0, y: 24 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -103,7 +118,7 @@ function MyApp({ Component, pageProps, router }) {
                         className="min-h-screen"
                       >
                         <Component {...pageProps} />
-                      </motion.div>
+                      </MotionDiv>
                     </AnimatePresence>
                     <GlobalModal />
                   </Layout>

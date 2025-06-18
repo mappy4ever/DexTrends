@@ -7,6 +7,7 @@ import { FadeIn, SlideUp, Scale } from "../../components/ui/animations";
 import { TypeBadge } from "../../components/ui/TypeBadge"; // Updated path
 import { fetchPocketData } from "../../utils/pocketData";
 import PocketCardList from "../../components/PocketCardList";
+import Modal from "../../components/Modal";
 
 function PocketPokemonDetail() {
   const router = useRouter();
@@ -17,6 +18,7 @@ function PocketPokemonDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState("overview");
+  const [zoomedCard, setZoomedCard] = useState(null);
   
   useEffect(() => {
     if (!router.isReady || !pokemonid) return; // Changed to pokemonid
@@ -106,17 +108,25 @@ function PocketPokemonDetail() {
       </Head>
       <FadeIn>
         <div className="mb-8">
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-            <Scale className="relative">
-              <div className="relative w-48 h-64 md:w-64 md:h-80 transform hover:scale-105 transition-transform duration-300">
+          <div className="flex flex-col lg:flex-row items-center lg:items-start gap-6">
+            <Scale className="relative flex-shrink-0">
+              <div className="relative w-64 h-96 sm:w-72 sm:h-108 lg:w-80 lg:h-120 cursor-pointer group">
                 <Image 
                   src={pokemonDetails.image || "/back-card.png"} 
                   alt={pokemonDetails.name}
-                  width={260}
-                  height={360}
-                  layout="responsive"
-                  className="drop-shadow-xl object-contain"
+                  fill
+                  className="drop-shadow-xl object-contain group-hover:scale-105 transition-transform duration-300 rounded-lg"
+                  onClick={() => setZoomedCard(pokemonDetails)}
+                  priority
                 />
+                {/* Zoom overlay indicator */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100">
+                  <div className="bg-white/90 p-2 rounded-full shadow-lg">
+                    <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </div>
+                </div>
               </div>
             </Scale>
             
@@ -196,47 +206,95 @@ function PocketPokemonDetail() {
       </FadeIn>
       
       <SlideUp delay={200}>
-        <div className="flex mb-6 overflow-x-auto bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg p-2">
-          <button
-            className={`px-5 py-2.5 font-medium text-sm rounded-md transition-all ${
-              activeTab === "overview"
-                ? "bg-primary text-white shadow-sm"
-                : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-            }`}
-            onClick={() => setActiveTab("overview")}
-          >
-            Overview
-          </button>
-          <button
-            className={`px-5 py-2.5 font-medium text-sm rounded-md transition-all ${
-              activeTab === "abilities"
-                ? "bg-primary text-white shadow-sm"
-                : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-            }`}
-            onClick={() => setActiveTab("abilities")}
-          >
-            Abilities
-          </button>
-          <button
-            className={`px-5 py-2.5 font-medium text-sm rounded-md transition-all ${
-              activeTab === "similar"
-                ? "bg-primary text-white shadow-sm"
-                : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-            }`}
-            onClick={() => setActiveTab("similar")}
-          >
-            Similar Cards
-          </button>
-          <button
-            className={`px-5 py-2.5 font-medium text-sm rounded-md transition-all ${
-              activeTab === "tcg"
-                ? "bg-primary text-white shadow-sm"
-                : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-            }`}
-            onClick={() => setActiveTab("tcg")}
-          >
-            View in TCG
-          </button>
+        {/* Mobile-optimized tab navigation */}
+        <div className="mb-6">
+          {/* Mobile: Horizontal scroll tabs */}
+          <div className="flex sm:hidden overflow-x-auto bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg p-2 gap-1 scrollbar-hide">
+            <button
+              className={`flex-shrink-0 px-4 py-2.5 font-medium text-sm rounded-md transition-all whitespace-nowrap ${
+                activeTab === "overview"
+                  ? "bg-primary text-white shadow-sm"
+                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+              }`}
+              onClick={() => setActiveTab("overview")}
+            >
+              Overview
+            </button>
+            <button
+              className={`flex-shrink-0 px-4 py-2.5 font-medium text-sm rounded-md transition-all whitespace-nowrap ${
+                activeTab === "abilities"
+                  ? "bg-primary text-white shadow-sm"
+                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+              }`}
+              onClick={() => setActiveTab("abilities")}
+            >
+              Abilities
+            </button>
+            <button
+              className={`flex-shrink-0 px-4 py-2.5 font-medium text-sm rounded-md transition-all whitespace-nowrap ${
+                activeTab === "similar"
+                  ? "bg-primary text-white shadow-sm"
+                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+              }`}
+              onClick={() => setActiveTab("similar")}
+            >
+              Similar
+            </button>
+            <button
+              className={`flex-shrink-0 px-4 py-2.5 font-medium text-sm rounded-md transition-all whitespace-nowrap ${
+                activeTab === "tcg"
+                  ? "bg-primary text-white shadow-sm"
+                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+              }`}
+              onClick={() => setActiveTab("tcg")}
+            >
+              TCG
+            </button>
+          </div>
+
+          {/* Desktop: Grid tabs */}
+          <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg p-2">
+            <button
+              className={`px-4 py-2.5 font-medium text-sm rounded-md transition-all ${
+                activeTab === "overview"
+                  ? "bg-primary text-white shadow-sm"
+                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+              }`}
+              onClick={() => setActiveTab("overview")}
+            >
+              Overview
+            </button>
+            <button
+              className={`px-4 py-2.5 font-medium text-sm rounded-md transition-all ${
+                activeTab === "abilities"
+                  ? "bg-primary text-white shadow-sm"
+                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+              }`}
+              onClick={() => setActiveTab("abilities")}
+            >
+              Abilities
+            </button>
+            <button
+              className={`px-4 py-2.5 font-medium text-sm rounded-md transition-all ${
+                activeTab === "similar"
+                  ? "bg-primary text-white shadow-sm"
+                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+              }`}
+              onClick={() => setActiveTab("similar")}
+            >
+              Similar Cards
+            </button>
+            <button
+              className={`px-4 py-2.5 font-medium text-sm rounded-md transition-all ${
+                activeTab === "tcg"
+                  ? "bg-primary text-white shadow-sm"
+                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+              }`}
+              onClick={() => setActiveTab("tcg")}
+            >
+              View in TCG
+            </button>
+          </div>
         </div>
         
         <div className="mb-8">
@@ -415,6 +473,34 @@ function PocketPokemonDetail() {
           )}
         </div>
       </SlideUp>
+
+      {/* Zoom Modal */}
+      {zoomedCard && (
+        <Modal onClose={() => setZoomedCard(null)}>
+          <div className="flex flex-col items-center p-4">
+            <div className="relative w-full max-w-md">
+              <Image
+                src={zoomedCard.image || "/back-card.png"}
+                alt={zoomedCard.name}
+                width={400}
+                height={560}
+                className="rounded-lg shadow-2xl w-full h-auto"
+                priority
+              />
+            </div>
+            <h3 className="mt-4 text-xl font-bold text-center">{zoomedCard.name}</h3>
+            {zoomedCard.pack && (
+              <p className="text-gray-600 dark:text-gray-400 mt-2">{zoomedCard.pack}</p>
+            )}
+            <button
+              className="mt-4 px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark transition-colors"
+              onClick={() => setZoomedCard(null)}
+            >
+              Close
+            </button>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };

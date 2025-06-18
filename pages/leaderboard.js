@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
 // import CardList from "../components/cardlist.js";
 
 function formatDate(dateString) {
@@ -48,12 +49,25 @@ export default function Leaderboard() {
 
   return (
     <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto px-2 sm:px-4 animate-fadeIn">
-      <h1 className="text-3xl font-bold mb-2">Pokémon Card Leaderboard</h1>
-      {lastUpdated && (
-        <p className="text-sm text-gray-500 mb-6">
-          Last updated: {formatDate(lastUpdated)}
-        </p>
-      )}
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <h1 className="text-3xl font-bold mb-2">Pokémon Card Leaderboard</h1>
+          {lastUpdated && (
+            <p className="text-sm text-gray-500">
+              Last updated: {formatDate(lastUpdated)}
+            </p>
+          )}
+        </div>
+        <Link 
+          href="/trending"
+          className="px-4 py-2 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg hover:from-green-600 hover:to-blue-600 transition-all transform hover:scale-105 active:scale-95 shadow-lg flex items-center gap-2"
+        >
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+          </svg>
+          View Trending
+        </Link>
+      </div>
       {/* <CardList cards={cards} /> */}
       <style jsx>{`
         .badge {

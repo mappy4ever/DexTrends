@@ -1,8 +1,157 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useCallback, memo } from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { TypeBadge } from "./ui/TypeBadge";
 import Modal from "./Modal";
+import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
+import { InlineLoadingSpinner } from "./ui/LoadingSpinner";
+
+// Dynamic import for react-window to reduce bundle size
+const VirtualizedGrid = dynamic(
+  () => import('react-window').then((mod) => ({ default: mod.FixedSizeGrid })),
+  { 
+    ssr: false,
+    loading: () => <div className="animate-pulse bg-gray-200 h-96 rounded-lg" />
+  }
+);
+
+// Memoized Card Component for performance
+const PocketCard = memo(({ 
+  card, 
+  cardClassName, 
+  showHP, 
+  showRarity, 
+  rarity, 
+  cardFeatures, 
+  setZoomedCard 
+}) => {
+  const cardTypes = card.type ? [card.type] : (card.types || []);
+
+  const handleCardClick = (e) => {
+    if (
+      e.target.closest('a') ||
+      e.target.closest('button') ||
+      e.target.closest('.magnifier-icon')
+    ) return;
+    window.location.href = `/pocketmode/${card.id}`;
+  };
+
+  return (
+    <div
+      className={cardClassName || 
+        `card p-3 md:p-4 flex flex-col items-center bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-200 dark:border-gray-700 transition-all duration-300 animate-fadeIn group ring-0
+        hover:border-primary/90 hover:ring-2 hover:ring-primary/60 hover:-translate-y-2 hover:bg-primary/5 hover:shadow-xl
+        focus-within:border-primary/90 focus-within:ring-2 focus-within:ring-primary/60 focus-within:-translate-y-2 focus-within:bg-primary/5 focus-within:shadow-xl`
+      }
+      style={{ boxShadow: '0 4px 20px 0 rgba(0,0,0,0.08)', cursor: 'pointer' }}
+      tabIndex={0}
+      onClick={handleCardClick}
+    >
+      <div className="w-full flex flex-col items-center relative">
+        <Link href={`/pocketmode/${card.id}`} legacyBehavior>
+          <a
+            className="block w-full"
+            tabIndex={-1}
+            onClick={e => e.stopPropagation()}
+          >
+            <Image
+              src={card.image || "/back-card.png"}
+              alt={card.name}
+              width={220}
+              height={308}
+              className="rounded-app-md mb-2 object-cover shadow-md hover:shadow-lg transition-all"
+              priority={false}
+              loading="lazy"
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Eve6J4HNvbzTe7+v1+8BvxRf4X3/f/9k="
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              onError={(e) => {
+                const target = e.target;
+                if (target && target.src !== window.location.origin + '/back-card.png') {
+                  target.src = '/back-card.png';
+                }
+              }}
+            />
+          </a>
+        </Link>
+      </div>
+      
+      <h3 className="text-lg font-bold text-text-heading text-center mb-1 group-hover:text-primary group-focus-within:text-primary transition-colors duration-200 flex items-center justify-center gap-2">
+        <Link href={`/pocketmode/${card.id}`} legacyBehavior>
+          <a className="text-blue-900 hover:text-blue-700 focus:text-blue-700 hover:underline focus:underline outline-none focus-visible:ring-2 focus-visible:ring-primary px-1 rounded" tabIndex={0} title={`View card details for ${card.name}`} onClick={e => e.stopPropagation()}>
+            {card.name}
+          </a>
+        </Link>
+        <button
+          className="magnifier-icon ml-1 p-1 rounded-full hover:bg-gray-200 focus:bg-gray-300 focus:outline-none"
+          title="Zoom card"
+          tabIndex={0}
+          onClick={e => { e.stopPropagation(); setZoomedCard(card); }}
+          aria-label="Zoom card"
+          type="button"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+      </h3>
+      
+      <div className="flex flex-wrap justify-center gap-1 mb-2">
+        {cardTypes.length > 0 && (
+          <TypeBadge type={cardTypes[0].toLowerCase()} size="sm" isPocketCard={true} />
+        )}
+        
+        {showHP && card.health && (
+          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-red-100 text-red-800 border border-red-300">
+            {card.health}HP
+          </span>
+        )}
+        
+        {card.ex === "Yes" && (
+          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-800 border border-yellow-300">
+            EX
+          </span>
+        )}
+        
+        {card.fullart === "Yes" && (
+          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-800 border border-purple-300">
+            Full Art
+          </span>
+        )}
+        
+        {showRarity && card.rarity && (
+          <span className={`inline-flex items-center px-2 py-1 rounded-lg text-xs font-bold border ${rarity.color} ${rarity.glow} shadow-sm`}>
+            {rarity.label}
+          </span>
+        )}
+        
+        {cardFeatures.map((feature, index) => (
+          <span 
+            key={`${feature.type}-${index}`}
+            className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-bold border ${feature.color}`}
+          >
+            {feature.label}
+          </span>
+        ))}
+      </div>
+      
+      <div className="text-center space-y-1">
+        {card.pack && (
+          <div className="text-sm text-gray-600 dark:text-gray-400">
+            {card.pack}
+          </div>
+        )}
+        
+        {card.artist && (
+          <div className="text-xs text-gray-400 dark:text-gray-500 italic">
+            by {card.artist}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+});
+
+PocketCard.displayName = 'PocketCard';
 
 // PocketCardList: displays cards from the Pocket API with enhanced visual design
 export default function PocketCardList({ 
@@ -15,7 +164,8 @@ export default function PocketCardList({
   showPack = true,
   showRarity = true,
   showHP = true,
-  showSort = true
+  showSort = true,
+  itemsPerPage = 48 // 6 columns x 8 rows = reasonable page size
 }) {
   const [zoomedCard, setZoomedCard] = useState(null);
   const [sortOption, setSortOption] = useState("name");
@@ -54,6 +204,18 @@ export default function PocketCardList({
       }
     });
   }, [cards, sortOption]);
+
+  // Infinite scroll for cards
+  const { visibleItems: displayedCards, hasMore, isLoading: scrollLoading } = useInfiniteScroll(
+    sortedCards, 
+    24, // Initial visible count
+    12  // Load 12 more at a time
+  );
+
+  // Reset when sorting changes
+  const handleSortChange = useCallback((newSort) => {
+    setSortOption(newSort);
+  }, []);
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-16">
@@ -100,7 +262,7 @@ export default function PocketCardList({
         <select
           id="pocket-sort"
           value={sortOption}
-          onChange={(e) => setSortOption(e.target.value)}
+          onChange={(e) => handleSortChange(e.target.value)}
           className="input"
         >
           <option value="name">Name</option>
@@ -115,213 +277,66 @@ export default function PocketCardList({
     )}
     
     <div className={gridClassName || "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-5 md:gap-7 justify-center"}>
-      {sortedCards.map(card => {
-        // Convert single type to array for consistency
-        const cardTypes = card.type ? [card.type] : (card.types || []);
-        
-        // Enhanced rarity display mapping with better colors and gradients
+      {displayedCards.map(card => {
+        // Enhanced rarity display mapping
         const rarityDisplay = {
-          '◊': { 
-            label: 'C', 
-            color: 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 border-gray-300',
-            glow: 'shadow-gray-200/50' 
-          },
-          '◊◊': { 
-            label: 'U', 
-            color: 'bg-gradient-to-r from-green-100 to-green-200 text-green-800 border-green-300',
-            glow: 'shadow-green-200/50' 
-          },
-          '◊◊◊': { 
-            label: 'R', 
-            color: 'bg-gradient-to-r from-blue-100 to-blue-200 text-blue-800 border-blue-300',
-            glow: 'shadow-blue-200/50' 
-          },
-          '◊◊◊◊': { 
-            label: 'RR', 
-            color: 'bg-gradient-to-r from-purple-100 to-purple-200 text-purple-800 border-purple-300',
-            glow: 'shadow-purple-200/50' 
-          },
-          '★': { 
-            label: 'EX', 
-            color: 'bg-gradient-to-r from-yellow-100 to-amber-200 text-amber-800 border-amber-300',
-            glow: 'shadow-amber-200/50' 
-          },
-          '★★': { 
-            label: 'Crown', 
-            color: 'bg-gradient-to-r from-red-100 to-rose-200 text-red-800 border-red-300',
-            glow: 'shadow-red-200/50' 
-          }
+          '◊': { label: 'C', color: 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 border-gray-300', glow: 'shadow-gray-200/50' },
+          '◊◊': { label: 'U', color: 'bg-gradient-to-r from-green-100 to-green-200 text-green-800 border-green-300', glow: 'shadow-green-200/50' },
+          '◊◊◊': { label: 'R', color: 'bg-gradient-to-r from-blue-100 to-blue-200 text-blue-800 border-blue-300', glow: 'shadow-blue-200/50' },
+          '◊◊◊◊': { label: 'RR', color: 'bg-gradient-to-r from-purple-100 to-purple-200 text-purple-800 border-purple-300', glow: 'shadow-purple-200/50' },
+          '★': { label: 'EX', color: 'bg-gradient-to-r from-yellow-100 to-amber-200 text-amber-800 border-amber-300', glow: 'shadow-amber-200/50' },
+          '★★': { label: 'Crown', color: 'bg-gradient-to-r from-red-100 to-rose-200 text-red-800 border-red-300', glow: 'shadow-red-200/50' }
         };
         
-        const rarity = rarityDisplay[card.rarity] || { 
-          label: '?', 
-          color: 'bg-gray-100 text-gray-500 border-gray-200',
-          glow: 'shadow-gray-100/50' 
-        };
+        const rarity = rarityDisplay[card.rarity] || { label: '?', color: 'bg-gray-100 text-gray-500 border-gray-200', glow: 'shadow-gray-100/50' };
         
-        // Determine card features for tags
-        const getCardFeatures = (card) => {
-          const features = [];
-          
-          // Evolution Stage detection
-          if (card.name.toLowerCase().includes('stage 2') || card.name.toLowerCase().includes('final evolution')) {
-            features.push({ type: 'stage', label: 'Stage 2', color: 'bg-indigo-100 text-indigo-800 border-indigo-300' });
-          } else if (card.name.toLowerCase().includes('stage 1') || card.name.toLowerCase().includes('evolution')) {
-            features.push({ type: 'stage', label: 'Stage 1', color: 'bg-blue-100 text-blue-800 border-blue-300' });
-          } else if (card.name.toLowerCase().includes('basic')) {
-            features.push({ type: 'stage', label: 'Basic', color: 'bg-gray-100 text-gray-800 border-gray-300' });
-          }
-          
-          // Promo detection
-          if (card.pack && card.pack.toLowerCase().includes('promo')) {
-            features.push({ type: 'promo', label: 'Promo', color: 'bg-orange-100 text-orange-800 border-orange-300' });
-          }
-          
-          // Special card types
-          if (card.name.toLowerCase().includes('rainbow')) {
-            features.push({ type: 'special', label: 'Rainbow', color: 'bg-gradient-to-r from-pink-100 to-purple-100 text-purple-800 border-purple-300' });
-          }
-          
-          if (card.name.toLowerCase().includes('secret')) {
-            features.push({ type: 'special', label: 'Secret', color: 'bg-slate-100 text-slate-800 border-slate-300' });
-          }
-          
-          return features;
-        };
-
-        const cardFeatures = getCardFeatures(card);
-
-        const handleCardClick = (e) => {
-          // Prevent navigation if a link or button was clicked
-          if (
-            e.target.closest('a') ||
-            e.target.closest('button') ||
-            e.target.closest('.magnifier-icon')
-          ) return;
-          window.location.href = `/pocketmode/${card.id}`;
-        };
+        // Card features detection
+        const cardFeatures = [];
+        if (card.name.toLowerCase().includes('stage 2')) cardFeatures.push({ type: 'stage', label: 'Stage 2', color: 'bg-indigo-100 text-indigo-800 border-indigo-300' });
+        else if (card.name.toLowerCase().includes('stage 1')) cardFeatures.push({ type: 'stage', label: 'Stage 1', color: 'bg-blue-100 text-blue-800 border-blue-300' });
+        else if (card.name.toLowerCase().includes('basic')) cardFeatures.push({ type: 'stage', label: 'Basic', color: 'bg-gray-100 text-gray-800 border-gray-300' });
+        if (card.pack?.toLowerCase().includes('promo')) cardFeatures.push({ type: 'promo', label: 'Promo', color: 'bg-orange-100 text-orange-800 border-orange-300' });
 
         return (
-          <div
+          <PocketCard
             key={card.id}
-            className={cardClassName || 
-              `card p-3 md:p-4 flex flex-col items-center bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-200 dark:border-gray-700 transition-all duration-300 animate-fadeIn group ring-0
-              hover:border-primary/90 hover:ring-2 hover:ring-primary/60 hover:-translate-y-2 hover:bg-primary/5 hover:shadow-xl
-              focus-within:border-primary/90 focus-within:ring-2 focus-within:ring-primary/60 focus-within:-translate-y-2 focus-within:bg-primary/5 focus-within:shadow-xl`
-            }
-            style={{ boxShadow: '0 4px 20px 0 rgba(0,0,0,0.08)', cursor: 'pointer' }}
-            tabIndex={0}
-            onClick={handleCardClick}
-          >
-            <div className="w-full flex flex-col items-center relative">
-              <Link href={`/pocketmode/${card.id}`} legacyBehavior>
-                <a
-                  className="block w-full"
-                  tabIndex={-1}
-                  onClick={e => e.stopPropagation()}
-                >
-                  <Image
-                    src={card.image || "/back-card.png"}
-                    alt={card.name}
-                    width={220}
-                    height={308}
-                    className="rounded-app-md mb-2 object-cover shadow-md hover:shadow-lg transition-all"
-                    priority={false}
-                    onError={(e) => {
-                      const target = e.target;
-                      if (target && target.src !== window.location.origin + '/back-card.png') {
-                        target.src = '/back-card.png';
-                      }
-                    }}
-                    unoptimized
-                  />
-                </a>
-              </Link>
-            </div>
-            
-            {/* Card Name with Magnifier */}
-            <h3 className="text-lg font-bold text-text-heading text-center mb-1 group-hover:text-primary group-focus-within:text-primary transition-colors duration-200 flex items-center justify-center gap-2">
-              <Link href={`/pocketmode/${card.id}`} legacyBehavior>
-                <a className="text-blue-900 hover:text-blue-700 focus:text-blue-700 hover:underline focus:underline outline-none focus-visible:ring-2 focus-visible:ring-primary px-1 rounded" tabIndex={0} title={`View card details for ${card.name}`} onClick={e => e.stopPropagation()}>
-                  {card.name}
-                </a>
-              </Link>
-              <button
-                className="magnifier-icon ml-1 p-1 rounded-full hover:bg-gray-200 focus:bg-gray-300 focus:outline-none"
-                title="Zoom card"
-                tabIndex={0}
-                onClick={e => { e.stopPropagation(); setZoomedCard(card); }}
-                aria-label="Zoom card"
-                type="button"
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              </button>
-            </h3>
-            
-            {/* Card Feature Tags */}
-            <div className="flex flex-wrap justify-center gap-1 mb-2">
-              {/* Type Badge */}
-              {cardTypes.length > 0 && (
-                <TypeBadge type={cardTypes[0]} size="sm" isPocketCard={true} />
-              )}
-              
-              {/* HP Tag */}
-              {showHP && card.health && (
-                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-red-100 text-red-800 border border-red-300">
-                  {card.health}HP
-                </span>
-              )}
-              
-              {/* EX Tag */}
-              {card.ex === "Yes" && (
-                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-800 border border-yellow-300">
-                  EX
-                </span>
-              )}
-              
-              {/* Full Art Tag */}
-              {card.fullart === "Yes" && (
-                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-800 border border-purple-300">
-                  Full Art
-                </span>
-              )}
-              
-              {/* Rarity Tag */}
-              {showRarity && card.rarity && (
-                <span className={`inline-flex items-center px-2 py-1 rounded-lg text-xs font-bold border ${rarity.color} ${rarity.glow} shadow-sm`}>
-                  {rarity.label}
-                </span>
-              )}
-              
-              {/* Additional Card Features */}
-              {cardFeatures.map((feature, index) => (
-                <span 
-                  key={`${feature.type}-${index}`}
-                  className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-bold border ${feature.color}`}
-                >
-                  {feature.label}
-                </span>
-              ))}
-            </div>
-            
-            {/* Pack and Artist Info */}
-            <div className="text-center space-y-1">
-              {showPack && card.pack && (
-                <div className="text-sm text-gray-600 dark:text-gray-400">
-                  {card.pack}
-                </div>
-              )}
-              
-              {card.artist && (
-                <div className="text-xs text-gray-400 dark:text-gray-500 italic">
-                  by {card.artist}
-                </div>
-              )}
-            </div>
-          </div>
+            card={card}
+            cardClassName={cardClassName}
+            showHP={showHP}
+            showRarity={showRarity}
+            rarity={rarity}
+            cardFeatures={cardFeatures}
+            setZoomedCard={setZoomedCard}
+          />
         );
       })}
     </div>
+
+    {/* Infinite scroll loading indicator */}
+    {scrollLoading && hasMore && (
+      <InlineLoadingSpinner 
+        text="Loading more cards..." 
+        className="mt-8"
+      />
+    )}
+
+    {/* Cards Count Info */}
+    {sortedCards.length > 0 && (
+      <div className="text-center mt-4 text-sm text-gray-600 dark:text-gray-400">
+        Showing {displayedCards.length} of {sortedCards.length} cards
+        {hasMore && (
+          <div className="text-xs text-primary mt-1">
+            Scroll down to load more...
+          </div>
+        )}
+      </div>
+    )}
+
+    {!scrollLoading && !hasMore && sortedCards.length > 0 && (
+      <div className="text-center mt-4 text-sm text-gray-500 dark:text-gray-400">
+        All {sortedCards.length} cards loaded
+      </div>
+    )}
     
     {/* Zoom Modal */}
     {zoomedCard && (
@@ -333,7 +348,9 @@ export default function PocketCardList({
             width={400}
             height={560}
             className="rounded-lg shadow-lg"
-            unoptimized
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Eve6J4HNvbzTe7+v1+8BvxRf4X3/f/9k="
+            sizes="400px"
           />
           <h3 className="mt-4 text-xl font-bold text-center">{zoomedCard.name}</h3>
           {zoomedCard.pack && (

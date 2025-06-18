@@ -2,6 +2,8 @@ import React, { useState, useMemo } from "react";
 import Image from 'next/image';
 import Link from 'next/link';
 import Modal from "./Modal";
+import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
+import { InlineLoadingSpinner } from "./ui/LoadingSpinner";
 
 export default function CardList({
   cards = [],
@@ -37,6 +39,13 @@ export default function CardList({
     });
   }, [cards, sortOption, getPrice, getReleaseDate, getRarityRank]);
 
+  // Infinite scroll for cards
+  const { visibleItems: visibleCards, hasMore, isLoading: scrollLoading } = useInfiniteScroll(
+    sortedCards, 
+    24, // Initial visible count
+    12  // Load 12 more at a time
+  );
+
   return (
     <div className="w-full max-w-[1800px] mx-auto px-2 sm:px-4 transition-all duration-300 animate-fadeIn">
       {loading && <p className="text-center text-content-muted">Loading cards...</p>}
@@ -58,7 +67,7 @@ export default function CardList({
 
       {/* Card grid: always one big flex-wrap, not split by anything else */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-5 md:gap-7 justify-center">
-        {sortedCards.map((card) => {
+        {visibleCards.map((card) => {
           const setLogo = card.set?.images?.logo;
           const setId = card.set?.id;
           const setName = card.set?.name;
@@ -149,14 +158,16 @@ export default function CardList({
                       width={220}
                       height={308}
                       className="rounded-app-md mb-2 object-cover shadow-md hover:shadow-lg transition-all"
-                      priority={false}
+                      loading="lazy"
+                      placeholder="blur"
+                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Eve6J4HNvbzTe7+v1+8BvxRf4X3/f/9k="
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       onError={(e) => {
                         const target = e.target;
                         if (target && target.src !== window.location.origin + '/back-card.png') {
                           target.src = '/back-card.png';
                         }
                       }}
-                      unoptimized
                     />
                   </a>
                 </Link>
@@ -245,10 +256,24 @@ export default function CardList({
         })}
       </div>
 
+      {/* Infinite scroll loading indicator */}
+      {scrollLoading && hasMore && (
+        <InlineLoadingSpinner 
+          text="Loading more cards..." 
+          className="mt-8"
+        />
+      )}
+
       {!loading && !error && cards.length === 0 && (
         <p className="text-center text-content-muted mt-12">
           No cards found for this Pokémon.
         </p>
+      )}
+
+      {!loading && !scrollLoading && !hasMore && cards.length > 0 && (
+        <div className="text-center mt-8 text-gray-500 dark:text-gray-400">
+          All {cards.length} cards loaded
+        </div>
       )}
 
       {/* Modal for zoomed card */}
@@ -261,7 +286,9 @@ export default function CardList({
               width={400}
               height={560}
               className="rounded-lg shadow-2xl mb-4"
-              unoptimized
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Eve6J4HNvbzTe7+v1+8BvxRf4X3/f/9k="
+              sizes="400px"
             />
             <button
               className="mt-2 px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark"

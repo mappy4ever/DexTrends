@@ -14,20 +14,37 @@ import { toLowercaseUrl } from "../../utils/formatters";
 import { fetchData } from "../../utils/apiutils"; // Import fetchData
 import { fetchPocketData } from "../../utils/pocketData";
 
+// Simple cache for Pokemon API requests to avoid duplicate calls
+const pokemonCache = new Map();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
+const cachedFetchData = async (url) => {
+  const now = Date.now();
+  const cached = pokemonCache.get(url);
+  
+  if (cached && (now - cached.timestamp) < CACHE_DURATION) {
+    return cached.data;
+  }
+  
+  const data = await fetchData(url);
+  pokemonCache.set(url, { data, timestamp: now });
+  return data;
+};
+
 // const [pocketCards, setPocketCards] = useState([]);
 // const [loadingPocketCards, setLoadingPocketCards] = useState(false);
 // const [errorPocketCards, setErrorPocketCards] = useState(null);
 
 // --- Evolution Tree Utilities ---
 // Recursively build a tree structure for the evolution chain
-const buildEvolutionTree = async (node, fetchData, extractIdFromUrl) => {
+const buildEvolutionTree = async (node, fetchDataFn, extractIdFromUrl) => {
   if (!node || !node.species) return null;
   const speciesId = extractIdFromUrl(node.species.url);
   let types = [];
   let formName = '';
   let isVariant = false;
   try {
-    const pokeData = await fetchData(`https://pokeapi.co/api/v2/pokemon/${speciesId}`);
+    const pokeData = await fetchDataFn(`https://pokeapi.co/api/v2/pokemon/${speciesId}`);
     types = pokeData.types.map(t => t.type.name);
     // Detect variant forms (e.g., galar, alola, hisui, paldea, etc.)
     const variantMatch = pokeData.name.match(/-(galar|alola|hisui|paldea|mega|gigantamax|totem|origin|crowned|busted|school|eternamax|starter|battle|dawn|midnight|dusk|ultra|rainy|snowy|sunny|attack|defense|speed|fan|frost|heat|mow|wash|sky|therian|black|white|resolute|pirouette|ash|baile|pom-pom|pau|sensu|zen|dada|single|rapid|low-key|amped|noice|super|small|large|average|male|female|plant|sandy|trash|east|west|blue-striped|red-striped|white-striped|yellow-striped|striped|unbound|complete|core|10|50|solo|midday|disguised|hangry|gmax)/);
@@ -48,7 +65,7 @@ const buildEvolutionTree = async (node, fetchData, extractIdFromUrl) => {
         }
         // For other Pokémon, allow evolutions for variants only if the child is a variant
         if (isVariant || node.species.name !== 'mr-mime') {
-          return buildEvolutionTree(child, fetchData, extractIdFromUrl);
+          return buildEvolutionTree(child, fetchDataFn, extractIdFromUrl);
         }
         return null;
       })
@@ -159,34 +176,50 @@ export default function PokemonDetail() {
     const fetchAll = async () => {
       try {
         const pokeApiId = toLowercaseUrl(pokeid);
-        const details = await fetchData(`https://pokeapi.co/api/v2/pokemon/${pokeApiId}`);
+        const details = await cachedFetchData(`https://pokeapi.co/api/v2/pokemon/${pokeApiId}`);
         if (didCancel) return;
         setPokemonDetails(details);
-        const species = await fetchData(details.species.url);
+        
+        // Fetch species and parallel API calls
+        const [species, cardsData] = await Promise.allSettled([
+          cachedFetchData(details.species.url),
+          fetchData(`https://api.pokemontcg.io/v2/cards?q=name:${details.name}`).catch(err => {
+            console.error('TCG API fetch failed:', err.message);
+            return { data: [] };
+          })
+        ]);
+        
         if (didCancel) return;
-        setPokemonSpecies(species);
-        setBaseSpeciesName(species.name);
-        // Fetch all forms/varieties for this species
+        
+        const speciesData = species.status === 'fulfilled' ? species.value : null;
+        const cardsResult = cardsData.status === 'fulfilled' ? cardsData.value : { data: [] };
+        
+        if (speciesData) {
+          setPokemonSpecies(speciesData);
+          setBaseSpeciesName(speciesData.name);
+        }
+        setCards(cardsResult.data || []);
+        // Fetch all forms/varieties and other data in parallel
         let allForms = [];
-        if (species.varieties && species.varieties.length > 1) {
-          allForms = await Promise.all(
-            species.varieties.map(async (variety) => {
-              const formDetail = await fetchData(variety.pokemon.url);
-              return {
-                ...formDetail,
-                id: formDetail.id,
-                name: formDetail.name,
-                is_default: variety.is_default,
-                types: formDetail.types.map((t) => t.type.name),
-                sprite: formDetail.sprites?.other?.["official-artwork"]?.front_default || formDetail.sprites?.front_default,
-                formName: variety.pokemon.name !== species.name ? variety.pokemon.name.replace(species.name, '').replace(/^-/, '').replace(/-/g, ' ').trim() : '',
-              };
-            })
+        const parallelTasks = [];
+        
+        if (speciesData?.varieties && speciesData.varieties.length > 1) {
+          parallelTasks.push(
+            Promise.all(
+              speciesData.varieties.map(async (variety) => {
+                const formDetail = await cachedFetchData(variety.pokemon.url);
+                return {
+                  ...formDetail,
+                  id: formDetail.id,
+                  name: formDetail.name,
+                  is_default: variety.is_default,
+                  types: formDetail.types.map((t) => t.type.name),
+                  sprite: formDetail.sprites?.other?.["official-artwork"]?.front_default || formDetail.sprites?.front_default,
+                  formName: variety.pokemon.name !== speciesData.name ? variety.pokemon.name.replace(speciesData.name, '').replace(/^-/, '').replace(/-/g, ' ').trim() : '',
+                };
+              })
+            )
           );
-          // Remove Eevee starter form (id === 133 and name === 'eevee') if there are other forms
-          if (species.name === 'eevee') {
-            allForms = allForms.filter(f => !(f.id === 133 && f.name === 'eevee'));
-          }
         } else {
           allForms = [{
             ...details,
@@ -198,22 +231,80 @@ export default function PokemonDetail() {
             formName: '',
           }];
         }
+        
+        // Add generation data fetch to parallel tasks
+        if (speciesData?.generation) {
+          parallelTasks.push(cachedFetchData(speciesData.generation.url));
+        }
+        
+        // Add evolution chain fetch to parallel tasks
+        if (speciesData?.evolution_chain?.url) {
+          parallelTasks.push(cachedFetchData(speciesData.evolution_chain.url));
+        }
+        
+        // Add abilities fetch to parallel tasks
+        if (details.abilities) {
+          parallelTasks.push(
+            Promise.all(
+              details.abilities.map(async (abilityEntry) => {
+                try {
+                  const abilityData = await cachedFetchData(abilityEntry.ability.url);
+                  const effectEntry = abilityData.effect_entries.find(e => e.language.name === 'en');
+                  return {
+                    name: abilityData.name.replace('-', ' '),
+                    description: effectEntry?.short_effect || effectEntry?.effect || 'No English description available.',
+                    is_hidden: abilityEntry.is_hidden,
+                  };
+                } catch (err) {
+                  console.error(`Error fetching ability ${abilityEntry.ability.name}:`, err);
+                  return {
+                    name: abilityEntry.ability.name.replace('-', ' '),
+                    description: 'Error loading ability details.',
+                    is_hidden: abilityEntry.is_hidden,
+                  };
+                }
+              })
+            )
+          );
+        }
+        
+        // Execute all parallel tasks
+        const parallelResults = await Promise.allSettled(parallelTasks);
+        let resultIndex = 0;
+        
+        // Process forms result
+        if (speciesData?.varieties && speciesData.varieties.length > 1) {
+          const formsResult = parallelResults[resultIndex++];
+          if (formsResult.status === 'fulfilled') {
+            allForms = formsResult.value;
+            // Remove Eevee starter form (id === 133 and name === 'eevee') if there are other forms
+            if (speciesData.name === 'eevee') {
+              allForms = allForms.filter(f => !(f.id === 133 && f.name === 'eevee'));
+            }
+          }
+        }
+        
         allForms.sort((a, b) => (b.is_default ? 1 : 0) - (a.is_default ? 1 : 0));
         setForms(allForms);
         // Set selected form index to match pokeid if possible
         const idx = allForms.findIndex(f => String(f.id) === String(pokeid));
         setSelectedFormIdx(idx >= 0 ? idx : 0);
 
-        const genData = species.generation ? await fetchData(species.generation.url) : null;
-        if (didCancel) return;
-        setPokemonGenerationInfo(genData);
+        // Process generation data result
+        let genData = null;
+        if (speciesData?.generation) {
+          const genResult = parallelResults[resultIndex++];
+          if (genResult.status === 'fulfilled') {
+            genData = genResult.value;
+            setPokemonGenerationInfo(genData);
+          }
+        }
 
-        // Fetch related Pokemon from the same generation
-        if (genData?.pokemon_species && pokeid) { // Changed pokeId to pokeid
+        // Process related Pokemon from the same generation
+        if (genData?.pokemon_species && pokeid) {
           setRelatedLoading(true);
           setRelatedError(null);
           try {
-            // Ensure pokeid is a string for comparison, as IDs from URL are strings
             const currentPokemonIdString = String(pokeid);
             const filteredRelatedPokemon = genData.pokemon_species.filter(p => {
               const relatedId = extractIdFromUrl(p.url);
@@ -227,53 +318,31 @@ export default function PokemonDetail() {
             if (!didCancel) setRelatedLoading(false);
           }
         } else {
-           if (!didCancel) setRelatedLoading(false);
+          if (!didCancel) setRelatedLoading(false);
         }
 
-        if (species.evolution_chain && species.evolution_chain.url) {
-          console.log('Fetching evolution chain:', species.evolution_chain.url);
-          const evoData = await fetchData(species.evolution_chain.url);
-          if (didCancel) return;
-          if (evoData.chain) {
-            const evoTree = await buildEvolutionTree(evoData.chain, fetchData, extractIdFromUrl);
-            if (!didCancel) setProcessedEvolutions(evoTree);
-          } else {
-            setProcessedEvolutions(null);
+        // Process evolution chain result
+        if (speciesData?.evolution_chain?.url) {
+          const evoResult = parallelResults[resultIndex++];
+          if (evoResult.status === 'fulfilled') {
+            const evoData = evoResult.value;
+            console.log('Processing evolution chain data');
+            if (evoData.chain) {
+              const evoTree = await buildEvolutionTree(evoData.chain, cachedFetchData, extractIdFromUrl);
+              if (!didCancel) setProcessedEvolutions(evoTree);
+            } else {
+              setProcessedEvolutions(null);
+            }
           }
         }
 
-        // Fetch detailed abilities (Part 3)
+        // Process abilities result
         if (details.abilities) {
-          const abilityPromises = details.abilities.map(async (abilityEntry) => {
-            try {
-              const abilityData = await fetchData(abilityEntry.ability.url);
-              const effectEntry = abilityData.effect_entries.find(e => e.language.name === 'en');
-              return {
-                name: abilityData.name.replace('-', ' '), // Already formatted in previous step, but ensure consistency
-                description: effectEntry?.short_effect || effectEntry?.effect || 'No English description available.',
-                is_hidden: abilityEntry.is_hidden,
-              };
-            } catch (err) {
-              console.error(`Error fetching ability ${abilityEntry.ability.name}:`, err);
-               return {
-                name: abilityEntry.ability.name.replace('-', ' '),
-                description: 'Error loading ability details.',
-                is_hidden: abilityEntry.is_hidden,
-              };
-            }
-          });
-          const resolvedAbilities = (await Promise.all(abilityPromises));
-          if (!didCancel) setDetailedAbilities(resolvedAbilities.filter(Boolean));
-        }
-
-        try {
-          console.log('Fetching TCG cards for', details.name);
-          const cardsData = await fetchData(`https://api.pokemontcg.io/v2/cards?q=name:${details.name}`);
-          if (didCancel) return;
-          setCards(cardsData.data || []);
-        } catch (cardErr) {
-          console.error('TCG API fetch failed:', cardErr.message); // Log message from fetchData
-          // Optionally, set a specific error state for cards if needed
+          const abilitiesResult = parallelResults[resultIndex++];
+          if (abilitiesResult.status === 'fulfilled') {
+            const resolvedAbilities = abilitiesResult.value;
+            if (!didCancel) setDetailedAbilities(resolvedAbilities.filter(Boolean));
+          }
         }
       } catch (err) {
         if (!didCancel) setError(err.message);
@@ -807,7 +876,10 @@ export default function PokemonDetail() {
                       width={96}
                       height={96}
                       className="pixelated mb-2 drop-shadow-lg"
-                      unoptimized={true}
+                      loading="lazy"
+                      placeholder="blur"
+                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Eve6J4HNvbzTe7+v1+8BvxRf4X3/f/9k="
+                      sizes="96px"
                     />
                   </div>
                   <div className="space-y-3">
