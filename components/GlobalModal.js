@@ -1,4 +1,4 @@
-import Modal from './modal';
+import Modal from './ui/Modal';
 import { useModal } from '../context/modalcontext';
 
 export default function GlobalModal() {

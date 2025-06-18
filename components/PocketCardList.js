@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { TypeBadge } from "./ui/TypeBadge";
-import Modal from "./Modal";
+import Modal from "./ui/Modal";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import { InlineLoadingSpinner } from "./ui/LoadingSpinner";
 

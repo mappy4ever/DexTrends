@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import Image from 'next/image';
 import Link from 'next/link';
-import Modal from "./Modal";
+import Modal from "./ui/Modal";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import { InlineLoadingSpinner } from "./ui/LoadingSpinner";
 
