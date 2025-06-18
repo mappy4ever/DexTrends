@@ -9,6 +9,7 @@ import { TypeFilter } from "../components/ui/TypeFilter"; // Updated path
 import PocketDeckViewer from "../components/PocketDeckViewer"; // Updated path
 import PocketExpansionViewer from "../components/PocketExpansionViewer"; // Updated path
 import PocketRulesGuide from "../components/PocketRulesGuide"; // Updated path
+import PocketCardList from "../components/PocketCardList"; // Import PocketCardList
 import { fetchPocketData } from "../utils/pocketData";
 
 export default function PocketMode() {
@@ -27,7 +28,7 @@ export default function PocketMode() {
     decks: null
   });
   const [search, setSearch] = useState("");
-  const [currentView, setCurrentView] = useState("pokemon"); // pokemon, decks, expansions, rules
+  const [currentView, setCurrentView] = useState("pokemon"); // pokemon, decks, expansions, rules, packs
   const [typeFilter, setTypeFilter] = useState("all");
   const [sortBy, setSortBy] = useState("name"); // name, rarity
   const [selectedExpansion, setSelectedExpansion] = useState(null);
@@ -119,7 +120,7 @@ export default function PocketMode() {
   const filteredPokemon = pokemon
     .filter(poke => 
       poke.name.toLowerCase().includes(search.toLowerCase()) &&
-      (typeFilter === "all" || (poke.types && poke.types.includes(typeFilter)))
+      (typeFilter === "all" || (poke.type && poke.type.toLowerCase() === typeFilter.toLowerCase()) || (poke.types && poke.types.includes(typeFilter)))
     )
     .sort((a, b) => {
       if (sortBy === "name") {
@@ -141,7 +142,7 @@ export default function PocketMode() {
     });
   
   // Get unique types from all Pokémon cards for filter options
-  const uniqueTypes = [...new Set(pokemon.flatMap(p => p.types || []))];
+  const uniqueTypes = [...new Set(pokemon.flatMap(p => p.type ? [p.type] : (p.types || [])))];
   
   // View-specific loading state
   const isViewLoading = currentView === "pokemon" 
@@ -232,6 +233,21 @@ export default function PocketMode() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                 </svg>
                 Expansions
+              </div>
+            </button>
+            <button
+              className={`px-5 py-2.5 font-medium text-sm rounded-md transition-all whitespace-nowrap ${
+                currentView === "packs"
+                  ? "bg-primary text-white shadow-sm"
+                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+              }`}
+              onClick={() => setCurrentView("packs")}
+            >
+              <div className="flex items-center">
+                <svg className="w-5 h-5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                </svg>
+                Booster Packs
               </div>
             </button>
             <button
@@ -414,57 +430,17 @@ export default function PocketMode() {
               </div>
             )}
             {/* END TEST */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-              {filteredPokemon.length > 0 ? (
-                filteredPokemon.map((poke) => (
-                  <Link href={"/pocketmode/" + poke.id} key={poke.id} className="block transition-all duration-300">
-                    <div className="flex flex-col items-center rounded-xl bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 p-4 border border-gray-200/60 dark:border-gray-700/60 shadow-sm hover:shadow-md relative overflow-hidden">
-                      {/* Card image */}
-                      <div className="relative w-full h-40 mb-3">
-                        <Image
-                          src={poke.image || "/back-card.png"}
-                          alt={poke.name}
-                          width={150}
-                          height={200}
-                          layout="responsive"
-                          className="transition-all duration-500 hover:scale-110 object-contain"
-                          onError={(e) => {
-                            e.currentTarget.src = "/back-card.png";
-                          }}
-                        />
-                      </div>
-                      
-                      {/* Card name */}
-                      <h3 className="capitalize font-bold text-sm text-center mb-1 truncate w-full px-1">
-                        {poke.name}
-                      </h3>
-                      
-                      {/* Card types */}
-                      <div className="flex gap-1.5 mt-1 flex-wrap justify-center">
-                        {poke.types?.map(type => (
-                          <TypeBadge key={type} type={type.toLowerCase()} size="sm" />
-                        ))}
-                      </div>
-                      
-                      {/* Rarity indicator */}
-                      {poke.rarity && (
-                        <span className="mt-2 px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-xs rounded-full">
-                          {poke.rarity}
-                        </span>
-                      )}
-                    </div>
-                  </Link>
-                ))
-              ) : (
-                <div className="col-span-full flex flex-col items-center justify-center py-12">
-                  <svg className="w-16 h-16 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                  <h3 className="text-xl font-medium text-gray-600 dark:text-gray-400">No Pokémon Found</h3>
-                  <p className="mt-2 text-gray-500">Try adjusting your search criteria</p>
-                </div>
-              )}
-            </div>
+            
+            {/* Use PocketCardList for better rendering */}
+            <PocketCardList 
+              cards={filteredPokemon}
+              loading={loading.pokemon}
+              error={error.pokemon}
+              emptyMessage="No Pokémon found. Try adjusting your search criteria."
+              showPack={true}
+              showRarity={true}
+              showHP={true}
+            />
           </>
         ) : currentView === "decks" ? (
           <div className="space-y-8">
@@ -553,38 +529,15 @@ export default function PocketMode() {
                   </button>
                   <PocketExpansionViewer expansion={selectedExpansion} />
                   <h3 className="text-xl font-bold mt-8 mb-4 text-center">All Cards in {selectedExpansion.name}</h3>
-                  {expansionCards.length > 0 ? (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                      {expansionCards.map(card => (
-                        <Link href={`/pocketmode/${card.id}`} key={card.id} className="block transition-all duration-300">
-                          <div className="flex flex-col items-center rounded-xl bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 p-4 border border-gray-200/60 dark:border-gray-700/60 shadow-sm hover:shadow-md relative overflow-hidden">
-                            <div className="relative w-full h-40 mb-3">
-                              <Image
-                                src={card.image || "/back-card.png"}
-                                alt={card.name}
-                                width={150}
-                                height={200}
-                                layout="responsive"
-                                className="transition-all duration-500 hover:scale-110 object-contain"
-                                onError={e => { e.currentTarget.src = "/back-card.png"; }}
-                              />
-                            </div>
-                            <h3 className="capitalize font-bold text-sm text-center mb-1 truncate w-full px-1">{card.name}</h3>
-                            <div className="flex gap-1.5 mt-1 flex-wrap justify-center">
-                              {card.types?.map(type => (
-                                <TypeBadge key={type} type={type.toLowerCase()} size="sm" />
-                              ))}
-                            </div>
-                            {card.rarity && (
-                              <span className="mt-2 px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-xs rounded-full">{card.rarity}</span>
-                            )}
-                          </div>
-                        </Link>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center text-gray-500 dark:text-gray-400 py-8">No cards found for this expansion.</div>
-                  )}
+                  <PocketCardList 
+                    cards={expansionCards}
+                    loading={false}
+                    error={null}
+                    emptyMessage="No cards found for this expansion."
+                    showPack={false}
+                    showRarity={true}
+                    showHP={true}
+                  />
                 </>
               ) : (
                 <div className="flex flex-col items-center justify-center h-full py-16">
@@ -594,6 +547,115 @@ export default function PocketMode() {
                   </svg>
                 </div>
               )}
+            </div>
+          </div>
+        ) : currentView === "packs" ? (
+          <div className="space-y-8">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-bold mb-4 flex items-center justify-center">
+                <svg className="w-6 h-6 mr-2 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                </svg>
+                Booster Packs
+              </h2>
+              <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                Discover the available booster packs in Pokémon TCG Pocket. Each pack contains carefully curated cards designed for the mobile experience.
+              </p>
+            </div>
+            
+            {/* Pack Categories */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {expansions.map(pack => {
+                const packCards = pokemon.filter(card => card.pack === pack.id);
+                const cardCount = packCards.length;
+                const rareCards = packCards.filter(card => card.rarity && (card.rarity.includes('★') || card.rarity.length >= 3));
+                
+                return (
+                  <div key={pack.id} className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg transition-all duration-300">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200">{pack.name} Pack</h3>
+                      <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-dark rounded-lg flex items-center justify-center">
+                        <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                        </svg>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-3 mb-6">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600 dark:text-gray-400">Total Cards:</span>
+                        <span className="font-semibold">{cardCount}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600 dark:text-gray-400">Rare Cards:</span>
+                        <span className="font-semibold text-yellow-600">{rareCards.length}</span>
+                      </div>
+                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                        <div 
+                          className="bg-gradient-to-r from-primary to-primary-dark h-2 rounded-full transition-all duration-500"
+                          style={{ width: `${Math.min(100, (rareCards.length / cardCount) * 100)}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                    
+                    {/* Sample Cards Preview */}
+                    <div className="mb-4">
+                      <h4 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Sample Cards:</h4>
+                      <div className="flex gap-2 overflow-x-auto">
+                        {packCards.slice(0, 3).map(card => (
+                          <div key={card.id} className="flex-shrink-0 w-16 h-20 relative rounded-md overflow-hidden border border-gray-300 dark:border-gray-600">
+                            <Image
+                              src={card.image || "/back-card.png"}
+                              alt={card.name}
+                              fill
+                              className="object-cover"
+                              sizes="64px"
+                            />
+                          </div>
+                        ))}
+                        {cardCount > 3 && (
+                          <div className="flex-shrink-0 w-16 h-20 bg-gray-100 dark:bg-gray-700 rounded-md flex items-center justify-center text-xs font-medium text-gray-500">
+                            +{cardCount - 3}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <button 
+                      onClick={() => {
+                        setSelectedExpansion(pack);
+                        setCurrentView("expansions");
+                      }}
+                      className="w-full bg-gradient-to-r from-primary to-primary-dark text-white py-2.5 rounded-lg font-medium hover:shadow-md transition-all transform hover:scale-[1.02] active:scale-[0.98]"
+                    >
+                      Explore {pack.name} Pack
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+            
+            {/* Pack Opening Simulator */}
+            <div className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl p-8 text-center border border-blue-200 dark:border-blue-800">
+              <div className="max-w-md mx-auto">
+                <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <svg className="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3l2.09 6.26L21 9.27l-5 4.87L17.18 21 12 17.27 6.82 21 8 14.14l-5-4.87 6.91-1.01z" />
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  Pack Opening Simulator
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400 mb-6">
+                  Experience the thrill of opening booster packs! Try your luck and see what rare cards you can discover.
+                </p>
+                <button className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-3 rounded-lg font-medium hover:shadow-lg transition-all transform hover:scale-105 active:scale-95">
+                  Open a Pack
+                </button>
+                <p className="text-xs text-gray-500 mt-3">
+                  *Simulation only - no real cards or purchases involved
+                </p>
+              </div>
             </div>
           </div>
         ) : (

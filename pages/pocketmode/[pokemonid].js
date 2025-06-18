@@ -5,6 +5,8 @@ import Link from "next/link";
 import Head from "next/head";
 import { FadeIn, SlideUp, Scale } from "../../components/ui/animations";
 import { TypeBadge } from "../../components/ui/TypeBadge"; // Updated path
+import { fetchPocketData } from "../../utils/pocketData";
+import PocketCardList from "../../components/PocketCardList";
 
 function PocketPokemonDetail() {
   const router = useRouter();
@@ -22,22 +24,24 @@ function PocketPokemonDetail() {
     const fetchPokemonDetails = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`https://api.tcgdex.net/v2/en/cards/${pokemonid}`); // Changed to pokemonid
-        if (!response.ok) throw new Error("Card not found");
-        const data = await response.json();
+        // Fetch all Pocket data and find the specific card
+        const allCards = await fetchPocketData();
+        const card = allCards.find(c => c.id === pokemonid);
         
-        setPokemonDetails(data);
-        
-        // Also fetch related cards
-        try {
-          const relatedResponse = await fetch(`https://api.tcgdex.net/v2/en/cards?name=${encodeURIComponent(data.name)}`);
-          if (relatedResponse.ok) {
-            const relatedData = await relatedResponse.json();
-            setCards(relatedData.filter(card => card.id !== pokemonid)); // Changed to pokemonid
-          }
-        } catch (err) {
-          console.error("Failed to fetch related cards:", err);
+        if (!card) {
+          throw new Error("Card not found");
         }
+        
+        setPokemonDetails(card);
+        
+        // Find related cards (same name or same Pokémon family)
+        const relatedCards = allCards.filter(c => 
+          c.id !== pokemonid && 
+          (c.name.toLowerCase() === card.name.toLowerCase() || 
+           (c.name.includes(card.name.split(' ')[0]) || card.name.includes(c.name.split(' ')[0])))
+        ).slice(0, 10); // Limit to 10 related cards
+        
+        setCards(relatedCards);
         
         setLoading(false);
       } catch (err) {
@@ -138,57 +142,54 @@ function PocketPokemonDetail() {
               </div>
               
               <div className="flex gap-2 mt-3">
-                {pokemonDetails.types?.map(type => (
+                {pokemonDetails.type && (
                   <TypeBadge 
-                    key={type} 
-                    type={type.toLowerCase()} 
+                    type={pokemonDetails.type} 
                     size="lg" 
+                    isPocketCard={true}
                   />
-                ))}
+                )}
               </div>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm">
-                {pokemonDetails.hp && (
+                {pokemonDetails.health && (
                   <div>
                     <h3 className="text-sm font-medium text-gray-500">HP</h3>
-                    <p className="text-lg font-semibold">{pokemonDetails.hp}</p>
+                    <p className="text-lg font-semibold">{pokemonDetails.health}</p>
                   </div>
                 )}
-                {pokemonDetails.set && (
+                {pokemonDetails.pack && (
                   <div>
-                    <h3 className="text-sm font-medium text-gray-500">Set</h3>
-                    <p className="text-lg font-semibold">{pokemonDetails.set.name}</p>
+                    <h3 className="text-sm font-medium text-gray-500">Pack</h3>
+                    <p className="text-lg font-semibold">{pokemonDetails.pack}</p>
                   </div>
                 )}
-                {pokemonDetails.number && (
+                {pokemonDetails.rarity && (
                   <div>
-                    <h3 className="text-sm font-medium text-gray-500">Card Number</h3>
-                    <p className="text-lg font-semibold">{pokemonDetails.number}</p>
+                    <h3 className="text-sm font-medium text-gray-500">Rarity</h3>
+                    <p className="text-lg font-semibold">{pokemonDetails.rarity}</p>
+                  </div>
+                )}
+                {pokemonDetails.artist && (
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500">Artist</h3>
+                    <p className="text-lg font-semibold">{pokemonDetails.artist}</p>
+                  </div>
+                )}
+                {pokemonDetails.ex && (
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500">EX Card</h3>
+                    <p className="text-lg font-semibold">{pokemonDetails.ex}</p>
+                  </div>
+                )}
+                {pokemonDetails.fullart && (
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500">Full Art</h3>
+                    <p className="text-lg font-semibold">{pokemonDetails.fullart}</p>
                   </div>
                 )}
               </div>
               
-              {pokemonDetails.tcgplayer?.prices && (
-                <div className="mt-6 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg backdrop-blur-sm">
-                  <h3 className="font-medium text-lg mb-2 flex items-center">
-                    <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    Market Prices
-                  </h3>
-                  
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                    {Object.entries(pokemonDetails.tcgplayer.prices).map(([key, value]) => (
-                      <div key={key} className="p-2 bg-white dark:bg-gray-800 rounded shadow-sm">
-                        <h4 className="text-sm capitalize">{key.replace(/([A-Z])/g, ' $1')}</h4>
-                        <p className="text-lg font-bold text-green-600 dark:text-green-400">
-                          ${value.market ? value.market.toFixed(2) : (value.mid || 0).toFixed(2)}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>
@@ -347,7 +348,7 @@ function PocketPokemonDetail() {
                             <div className="flex gap-1 mr-3">
                               {attack.cost?.map((type, i) => (
                                 <div key={i} className="w-6 h-6">
-                                  <TypeBadge type={type.toLowerCase()} size="xs" />
+                                  <TypeBadge type={type} size="xs" isPocketCard={true} />
                                 </div>
                               ))}
                             </div>
@@ -373,38 +374,16 @@ function PocketPokemonDetail() {
               <div className="p-6 rounded-lg shadow-sm bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-100/50 dark:border-gray-700/50">
                 <h3 className="font-bold text-lg mb-4">Similar Cards</h3>
                 
-                {cards && cards.length > 0 ? (
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                    {cards.map(card => (
-                      <Link href={`/pocketmode/${card.id}`} key={card.id}>
-                        <div className="flex flex-col items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg transform hover:scale-105 transition-all">
-                          <div className="relative w-full h-40 mb-2">
-                            <Image 
-                              src={card.image || "/back-card.png"} 
-                              alt={card.name}
-                              width={120}
-                              height={180}
-                              layout="responsive"
-                              className="drop-shadow-sm"
-                              objectFit="contain"
-                            />
-                          </div>
-                          <h4 className="text-sm font-medium text-center truncate w-full">{card.name}</h4>
-                          {card.set && (
-                            <p className="text-xs text-gray-500 text-center truncate w-full">{card.set.name}</p>
-                          )}
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-8">
-                    <svg className="w-12 h-12 mx-auto text-gray-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <p className="text-gray-500">No similar cards found.</p>
-                  </div>
-                )}
+                <PocketCardList 
+                  cards={cards}
+                  loading={false}
+                  error={null}
+                  emptyMessage="No similar cards found."
+                  showPack={true}
+                  showRarity={true}
+                  showHP={false}
+                  gridClassName="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
+                />
               </div>
             </FadeIn>
           )}

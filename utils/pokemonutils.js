@@ -20,6 +20,28 @@ export const typeColors = {
   fairy: { bg: "bg-poke-fairy", text: "text-white", border: "border-poke-fairy", hover: "hover:bg-poke-fairy" },
 };
 
+// TCG-specific type colors for Pocket mode (more familiar to TCG players)
+export const tcgTypeColors = {
+  normal: { bg: "bg-gray-400", text: "text-white", border: "border-gray-500", hover: "hover:bg-gray-500" },
+  fire: { bg: "bg-red-500", text: "text-white", border: "border-red-600", hover: "hover:bg-red-600" },
+  water: { bg: "bg-blue-500", text: "text-white", border: "border-blue-600", hover: "hover:bg-blue-600" },
+  electric: { bg: "bg-yellow-400", text: "text-black", border: "border-yellow-500", hover: "hover:bg-yellow-500" },
+  grass: { bg: "bg-green-500", text: "text-white", border: "border-green-600", hover: "hover:bg-green-600" },
+  ice: { bg: "bg-cyan-400", text: "text-white", border: "border-cyan-500", hover: "hover:bg-cyan-500" },
+  fighting: { bg: "bg-orange-600", text: "text-white", border: "border-orange-700", hover: "hover:bg-orange-700" },
+  poison: { bg: "bg-purple-500", text: "text-white", border: "border-purple-600", hover: "hover:bg-purple-600" },
+  ground: { bg: "bg-yellow-600", text: "text-white", border: "border-yellow-700", hover: "hover:bg-yellow-700" },
+  flying: { bg: "bg-indigo-400", text: "text-white", border: "border-indigo-500", hover: "hover:bg-indigo-500" },
+  psychic: { bg: "bg-pink-500", text: "text-white", border: "border-pink-600", hover: "hover:bg-pink-600" },
+  bug: { bg: "bg-lime-500", text: "text-white", border: "border-lime-600", hover: "hover:bg-lime-600" },
+  rock: { bg: "bg-stone-500", text: "text-white", border: "border-stone-600", hover: "hover:bg-stone-600" },
+  ghost: { bg: "bg-purple-600", text: "text-white", border: "border-purple-700", hover: "hover:bg-purple-700" },
+  dragon: { bg: "bg-indigo-600", text: "text-white", border: "border-indigo-700", hover: "hover:bg-indigo-700" },
+  dark: { bg: "bg-gray-800", text: "text-white", border: "border-gray-900", hover: "hover:bg-gray-900" },
+  steel: { bg: "bg-slate-500", text: "text-white", border: "border-slate-600", hover: "hover:bg-slate-600" },
+  fairy: { bg: "bg-pink-400", text: "text-white", border: "border-pink-500", hover: "hover:bg-pink-500" },
+};
+
 // Complete type effectiveness chart
 export const typeEffectiveness = {
   normal: {
@@ -178,6 +200,35 @@ export const getRarityRank = (card) => {
     "Rare Holo VMAX": 13,
   };
   return rarityMap[rarity] || 0;
+};
+
+// Pocket TCG type mapping - maps Pocket-specific type names to standard TCG types
+export const pocketTypeMapping = {
+  'lighting': 'electric',
+  'darkness': 'dark',
+  // Add other Pocket-specific mappings as needed
+};
+
+// Helper to map Pocket type names to standard types for TCG colors
+export const mapPocketTypeToStandard = (pocketType) => {
+  if (!pocketType || typeof pocketType !== 'string') return pocketType;
+  
+  const lowerType = pocketType.toLowerCase();
+  const mappedType = pocketTypeMapping[lowerType];
+  
+  if (mappedType) {
+    return {
+      displayName: pocketType, // No TCG suffix in display
+      standardType: mappedType,
+      isPocketMapped: true
+    };
+  }
+  
+  return {
+    displayName: pocketType,
+    standardType: lowerType,
+    isPocketMapped: false
+  };
 };
 
 // Helper to extract ID from a PokeAPI URL (e.g., "https://pokeapi.co/api/v2/pokemon/25/")

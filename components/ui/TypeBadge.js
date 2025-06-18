@@ -1,21 +1,35 @@
 import React from 'react';
-import { typeColors } from '../../utils/pokemonutils';
+import { typeColors, tcgTypeColors, mapPocketTypeToStandard } from '../../utils/pokemonutils';
 
 // Type badge component for consistent display of Pokémon types
-export function TypeBadge({ type, className = '', size = 'md', onClick = null }) {
+export function TypeBadge({ type, className = '', size = 'md', onClick = null, isPocketCard = false }) {
   // Defensive: always string, fallback to ''
   const typeStr = typeof type === 'string' ? type : '';
-  const typeLower = typeStr.toLowerCase();
-  const isKnownType = !!typeColors[typeLower];
+  
+  // Handle Pocket-specific type mapping
+  let displayName, standardType, mappedType;
+  if (isPocketCard) {
+    mappedType = mapPocketTypeToStandard(typeStr);
+    displayName = mappedType.displayName;
+    standardType = mappedType.standardType;
+  } else {
+    displayName = typeStr;
+    standardType = typeStr.toLowerCase();
+  }
+  
+  // Choose color palette based on whether it's a Pocket card
+  const colorPalette = isPocketCard ? tcgTypeColors : typeColors;
+  const isKnownType = !!colorPalette[standardType];
+  
   if (!isKnownType && typeStr) {
     // Warn in dev if unknown type
     if (typeof window !== 'undefined' && window?.location?.hostname === 'localhost') {
       // eslint-disable-next-line no-console
-      console.warn('Unknown Pokémon type for badge:', typeStr);
+      console.warn('Unknown Pokémon type for badge:', typeStr, 'mapped to:', standardType);
     }
   }
   const colors = isKnownType
-    ? typeColors[typeLower]
+    ? colorPalette[standardType]
     : { bg: "bg-gray-200", text: "text-gray-800", border: "border-gray-300", hover: "hover:bg-gray-300" };
 
   // Size classes
@@ -28,9 +42,9 @@ export function TypeBadge({ type, className = '', size = 'md', onClick = null })
 
   const interactiveClasses = onClick ? `cursor-pointer ${colors.hover}` : '';
 
-  // Capitalize type for display, fallback to 'Unknown'
-  const displayType = typeStr
-    ? typeStr.charAt(0).toUpperCase() + typeStr.slice(1)
+  // Use the display name (which may include TCG suffix for Pocket types)
+  const displayType = displayName
+    ? displayName.charAt(0).toUpperCase() + displayName.slice(1)
     : 'Unknown';
 
   return (

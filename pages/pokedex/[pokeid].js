@@ -5,6 +5,7 @@ import Image from "next/image";
 import Head from "next/head";
 import { FadeIn, SlideUp } from "../../components/ui/animations"; // Lowercase filename
 import { TypeBadge } from "../../components/ui/TypeBadge"; // Updated path
+import EvolutionStageCard from "../../components/ui/EvolutionStageCard"; // Add missing import
 import CardList from "../../components/CardList"; // Correct capitalization
 import PocketCardList from "../../components/PocketCardList";
 import { useFavorites } from "../../context/favoritescontext";
@@ -285,6 +286,48 @@ export default function PokemonDetail() {
     fetchAll();
     return () => { didCancel = true; clearTimeout(timeout); };
   }, [router.isReady, pokeid]);
+
+  // Fetch Pocket cards for this Pokémon
+  useEffect(() => {
+    if (!pokemonDetails?.name) return;
+    
+    const fetchPocketCards = async () => {
+      try {
+        setLoadingPocketCards(true);
+        setErrorPocketCards(null);
+        
+        const allPocketCards = await fetchPocketData();
+        
+        // Filter cards by Pokémon name (case insensitive)
+        const pokemonName = pokemonDetails.name.toLowerCase().trim();
+        const baseName = pokemonName.split(' ')[0]; // Get first word (e.g., "venusaur" from "venusaur-mega")
+        
+        console.log('Looking for Pocket cards for:', pokemonName, 'base name:', baseName);
+        
+        const matchingCards = allPocketCards.filter(card => {
+          const cardName = card.name.toLowerCase().trim();
+          const cardBaseName = cardName.split(' ')[0];
+          
+          // Match exact name or base name
+          return cardName === pokemonName || 
+                 cardBaseName === baseName || 
+                 cardName.includes(baseName) || 
+                 baseName.includes(cardBaseName);
+        });
+        
+        console.log('Found Pocket cards:', matchingCards.length, matchingCards.map(c => c.name));
+        
+        setPocketCards(matchingCards);
+        setLoadingPocketCards(false);
+      } catch (err) {
+        console.error('Failed to fetch Pocket cards:', err);
+        setErrorPocketCards('Failed to load Pocket cards.');
+        setLoadingPocketCards(false);
+      }
+    };
+    
+    fetchPocketCards();
+  }, [pokemonDetails?.name]);
 
   // Use selected form for all display
   const selectedForm = forms[selectedFormIdx] || pokemonDetails;
