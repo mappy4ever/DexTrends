@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import pokemon from "pokemontcgsdk";
-import CardList from "../../../components/cardlist";
+import CardList from "../../../components/CardList";
 import LoadingSpinner from "../../../components/ui/LoadingSpinner"; // Updated path
 
 const rarityLabelToName = {
