@@ -7,7 +7,7 @@ import { FadeIn, SlideUp, Scale } from "../../components/ui/animations";
 import { TypeBadge } from "../../components/ui/TypeBadge"; // Updated path
 import { fetchPocketData } from "../../utils/pocketData";
 import PocketCardList from "../../components/PocketCardList";
-import Modal from "../../components/Modal";
+import Modal from "../../components/ui/Modal";
 
 function PocketPokemonDetail() {
   const router = useRouter();

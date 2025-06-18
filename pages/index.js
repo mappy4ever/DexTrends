@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import pokemon from "pokemontcgsdk";
-import Modal from "../components/modal";
+import Modal from "../components/ui/Modal";
 import CardList from "../components/CardList"; // Updated path
 import CustomSiteLogo from "../components/icons/customsitelogo";
 import { getPrice, getRarityRank } from "../utils/pokemonutils.js";

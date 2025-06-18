@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import pokemon from "pokemontcgsdk";
-import Modal from "../../components/Modal";
+import Modal from "../../components/ui/Modal";
 import { FadeIn, SlideUp } from "../../components/ui/animations";
 import PriceHistoryChart from "../../components/ui/PriceHistoryChart";
 import { useTheme } from "../../context/themecontext";

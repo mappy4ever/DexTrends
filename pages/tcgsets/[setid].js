@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
 import pokemon from "pokemontcgsdk";
-import Modal from "../../components/modal";
-import CardList from "../../components/cardlist";
+import Modal from "../../components/ui/Modal";
+import CardList from "../../components/CardList";
 import { FadeIn, SlideUp } from "../../components/ui/animations";
 import PriceHistoryChart from "../../components/ui/PriceHistoryChart"; // Updated path
 import { useTheme } from "../../context/themecontext";
