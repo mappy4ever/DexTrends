@@ -56,9 +56,6 @@ export default function PokedexIndex() {
     setSelectedStage(pendingStages.length === 1 ? pendingStages[0] : ""); // For backward compatibility
     setSortBy(pendingSortBy);
     setVisibleCount(48); // Reset pagination
-    
-    // Set pokemon to allPokemon for full search capability
-    setPokemon(allPokemon);
   };
 
   // Clear all filters
@@ -210,9 +207,9 @@ export default function PokedexIndex() {
           }
         }
         
-        // Store all Pokemon data but only display first 48 initially
+        // Store all Pokemon data and make it available for scrolling
         setAllPokemon(allPokemonData);
-        setPokemon(allPokemonData.slice(0, 48));
+        setPokemon(allPokemonData);
       } catch (err) {
         setError("Failed to load Pokédex data");
       } finally {
@@ -225,10 +222,8 @@ export default function PokedexIndex() {
 
   // Enhanced filtering with multiple criteria and multi-select support
   const filteredPokemon = useMemo(() => {
-    // Use allPokemon for filtering if we have search criteria, otherwise use pokemon
-    const dataToFilter = (searchTerm || pendingTypes.length > 0 || selectedType || selectedGeneration || 
-                         pendingCategories.length > 0 || selectedCategory || pendingStages.length > 0 || selectedStage) 
-                         ? allPokemon : pokemon;
+    // Always use the full pokemon dataset for filtering
+    const dataToFilter = pokemon;
     
     return dataToFilter.filter(poke => {
       const matchesSearch = poke.name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -269,7 +264,7 @@ export default function PokedexIndex() {
       
       return matchesSearch && matchesType && matchesGeneration && matchesCategory && matchesStage;
     });
-  }, [pokemon, allPokemon, searchTerm, selectedType, selectedGeneration, selectedCategory, selectedStage, pendingTypes, pendingCategories, pendingStages]);
+  }, [pokemon, searchTerm, selectedType, selectedGeneration, selectedCategory, selectedStage, pendingTypes, pendingCategories, pendingStages]);
 
   // Infinite scroll functionality
   const loadMoreVisible = useCallback(() => {
