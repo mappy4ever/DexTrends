@@ -55,29 +55,31 @@ export default function PocketExpansionViewer({ expansion }) {
           </div>
         </div>
         
-        <div className="mt-4">
-          <h3 className="text-lg font-medium mb-3">Featured Cards</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {expansion.featuredPokemon.map(pokemon => (
-              <div key={pokemon.id} className="p-3 bg-gray-50 dark:bg-gray-900 rounded-lg hover:shadow-md transition-all">
-                <div className="relative w-full h-28 sm:h-36 mb-2">
-                  <Image
-                    src={pokemon.imageUrl || "/back-card.png"}
-                    alt={pokemon.name}
-                    layout="fill"
-                    objectFit="contain"
-                    className="transition-all duration-300 hover:scale-110"
-                    onError={(e) => {
-                      e.currentTarget.src = "/back-card.png";
-                    }}
-                  />
+        {expansion.featuredPokemon && expansion.featuredPokemon.length > 0 && (
+          <div className="mt-4">
+            <h3 className="text-lg font-medium mb-3">Featured Cards</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {expansion.featuredPokemon.map(pokemon => (
+                <div key={pokemon.id} className="p-3 bg-gray-50 dark:bg-gray-900 rounded-lg hover:shadow-md transition-all">
+                  <div className="relative w-full h-28 sm:h-36 mb-2">
+                    <Image
+                      src={pokemon.imageUrl || "/back-card.png"}
+                      alt={pokemon.name}
+                      layout="fill"
+                      objectFit="contain"
+                      className="transition-all duration-300 hover:scale-110"
+                      onError={(e) => {
+                        e.currentTarget.src = "/back-card.png";
+                      }}
+                    />
+                  </div>
+                  <h4 className="text-sm font-medium text-center truncate">{pokemon.name}</h4>
+                  <div className="text-xs text-center text-primary-dark dark:text-primary-light mt-1">{pokemon.rarity}</div>
                 </div>
-                <h4 className="text-sm font-medium text-center truncate">{pokemon.name}</h4>
-                <div className="text-xs text-center text-primary-dark dark:text-primary-light mt-1">{pokemon.rarity}</div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+        )}
         
         {/* Toggle button for viewing more details */}
         <button

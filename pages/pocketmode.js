@@ -7,7 +7,6 @@ import { FadeIn, SlideUp } from "../components/ui/animations";
 import { TypeBadge } from "../components/ui/TypeBadge"; // Updated path
 import { TypeFilter } from "../components/ui/TypeFilter"; // Updated path
 import PocketDeckViewer from "../components/PocketDeckViewer"; // Updated path
-import PocketExpansionViewer from "../components/PocketExpansionViewer"; // Updated path
 import PocketRulesGuide from "../components/PocketRulesGuide"; // Updated path
 import PocketCardList from "../components/PocketCardList"; // Import PocketCardList
 import { fetchPocketData } from "../utils/pocketData";
@@ -15,24 +14,19 @@ import { fetchPocketData } from "../utils/pocketData";
 export default function PocketMode() {
   const router = useRouter();
   const [pokemon, setPokemon] = useState([]);
-  const [expansions, setExpansions] = useState([]);
   const [decks, setDecks] = useState([]);
   const [loading, setLoading] = useState({
     pokemon: true,
-    expansions: true,
     decks: true
   });
   const [error, setError] = useState({
     pokemon: null,
-    expansions: null,
     decks: null
   });
   const [search, setSearch] = useState("");
-  const [currentView, setCurrentView] = useState("pokemon"); // pokemon, decks, expansions, rules, packs
+  const [currentView, setCurrentView] = useState("pokemon"); // pokemon, decks, rules, packs
   const [typeFilter, setTypeFilter] = useState("all");
   const [sortBy, setSortBy] = useState("name"); // name, rarity
-  const [selectedExpansion, setSelectedExpansion] = useState(null);
-  const [expansionCards, setExpansionCards] = useState([]);
   
   // Replace fetchPokemonData to use the live Pocket API
   const fetchPokemonData = async () => {
@@ -52,27 +46,6 @@ export default function PocketMode() {
     }
   };
 
-  // Define fetch functions for expansions and decks
-  const fetchExpansionsData = async () => {
-    try {
-      setLoading(prev => ({ ...prev, expansions: true }));
-      setError(prev => ({ ...prev, expansions: null }));
-      const data = await fetchPocketData();
-      // Build unique expansions from the 'pack' property of each card
-      const packs = Array.from(new Set(data.map(card => card.pack).filter(Boolean)));
-      const expansions = packs.map(pack => ({ id: pack, name: pack }));
-      setExpansions(expansions);
-      setLoading(prev => ({ ...prev, expansions: false }));
-    } catch (err) {
-      console.error("Failed to fetch expansions data:", err);
-      setError(prev => ({ 
-        ...prev, 
-        expansions: "Failed to load expansion data. Please try again later." 
-      }));
-      setLoading(prev => ({ ...prev, expansions: false }));
-    }
-  };
-  
   const fetchDecksData = async () => {
     try {
       setLoading(prev => ({ ...prev, decks: true }));
@@ -109,12 +82,10 @@ export default function PocketMode() {
   }, []);
   
   useEffect(() => {
-    if (currentView === "expansions" && expansions.length === 0) {
-      fetchExpansionsData();
-    } else if (currentView === "decks" && decks.length === 0) {
+    if (currentView === "decks" && decks.length === 0) {
       fetchDecksData();
     }
-  }, [currentView, expansions.length, decks.length]);
+  }, [currentView, decks.length]);
 
   // Filter and sort Pokémon by search term, type, and sort order
   const filteredPokemon = pokemon
@@ -147,26 +118,13 @@ export default function PocketMode() {
   // View-specific loading state
   const isViewLoading = currentView === "pokemon" 
     ? loading.pokemon 
-    : currentView === "expansions" 
-      ? loading.expansions 
-      : loading.decks;
+    : loading.decks;
   
   // View-specific error state
   const viewError = currentView === "pokemon" 
     ? error.pokemon 
-    : currentView === "expansions" 
-      ? error.expansions 
-      : error.decks;
+    : error.decks;
 
-  // When an expansion is selected, filter cards for that set
-  useEffect(() => {
-    if (selectedExpansion && pokemon.length > 0) {
-      const cardsForSet = pokemon.filter(card => card.pack === selectedExpansion.id);
-      setExpansionCards(cardsForSet);
-    } else {
-      setExpansionCards([]);
-    }
-  }, [selectedExpansion, pokemon]);
 
   return (
     <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto px-2 sm:px-4 animate-fadeIn">
@@ -187,9 +145,9 @@ export default function PocketMode() {
           <div className="w-32 h-1 bg-gradient-to-r from-transparent via-primary to-transparent rounded"></div>
         </div>
         
-        {/* Secondary navigation for Pocket Mode - Sticky on mobile */}
-        <div className="mb-6 sticky top-0 z-30 -mx-4 px-4 pt-2 pb-2 backdrop-blur-sm bg-white/90 dark:bg-gray-900/90">
-          <div className="flex overflow-x-auto bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg p-2 shadow-sm">
+        {/* Enhanced Secondary Navigation with New Features */}
+        <div className="mb-6 sticky top-0 z-30 -mx-4 px-4 pt-2 pb-4 backdrop-blur-sm bg-white/90 dark:bg-gray-900/90">
+          <div className="flex overflow-x-auto bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg p-2 shadow-sm mb-3">
             <button
               className={`px-5 py-2.5 font-medium text-sm rounded-md transition-all whitespace-nowrap ${
                 currentView === "pokemon"
@@ -202,7 +160,7 @@ export default function PocketMode() {
                 <svg className="w-5 h-5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-                Cards
+                🃏 Cards
               </div>
             </button>
             <button
@@ -217,24 +175,21 @@ export default function PocketMode() {
                 <svg className="w-5 h-5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                 </svg>
-                Top Decks
+                📊 Top Decks
               </div>
             </button>
-            <button
-              className={`px-5 py-2.5 font-medium text-sm rounded-md transition-all whitespace-nowrap ${
-                currentView === "expansions"
-                  ? "bg-primary text-white shadow-sm"
-                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-              }`}
-              onClick={() => setCurrentView("expansions")}
-            >
-              <div className="flex items-center">
-                <svg className="w-5 h-5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                </svg>
-                Expansions
-              </div>
-            </button>
+            <Link href="/pocketmode/expansions">
+              <button
+                className="px-5 py-2.5 font-medium text-sm rounded-md transition-all whitespace-nowrap text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                <div className="flex items-center">
+                  <svg className="w-5 h-5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                  </svg>
+                  📦 Packs
+                </div>
+              </button>
+            </Link>
             <button
               className={`px-5 py-2.5 font-medium text-sm rounded-md transition-all whitespace-nowrap ${
                 currentView === "packs"
@@ -265,6 +220,36 @@ export default function PocketMode() {
                 Rules
               </div>
             </button>
+          </div>
+          
+          {/* Quick Action Buttons */}
+          <div className="flex gap-2 overflow-x-auto">
+            <Link href="/pocketmode/deckbuilder">
+              <button className="px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-200 flex items-center gap-2 font-medium shadow-sm transform hover:scale-105 whitespace-nowrap">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                🛠️ Build Deck
+              </button>
+            </Link>
+            
+            <Link href="/pocketmode/decks">
+              <button className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 flex items-center gap-2 font-medium shadow-sm transform hover:scale-105 whitespace-nowrap">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+                💾 My Decks
+              </button>
+            </Link>
+            
+            <Link href="/pocketmode/expansions">
+              <button className="px-4 py-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg hover:from-purple-600 hover:to-purple-700 transition-all duration-200 flex items-center gap-2 font-medium shadow-sm transform hover:scale-105 whitespace-nowrap">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                </svg>
+                📦 Open Packs
+              </button>
+            </Link>
           </div>
         </div>
         
@@ -377,7 +362,6 @@ export default function PocketMode() {
             <button 
               onClick={() => {
                 if (currentView === "pokemon") fetchPokemonData();
-                else if (currentView === "expansions") fetchExpansionsData();
                 else if (currentView === "decks") fetchDecksData();
               }} 
               className="mt-6 px-6 py-2.5 bg-gradient-to-r from-primary to-primary-dark text-white rounded-lg hover:shadow-md transition-all transform hover:scale-105 active:scale-95 flex items-center gap-2"
@@ -389,60 +373,15 @@ export default function PocketMode() {
             </button>
           </div>
         ) : currentView === "pokemon" ? (
-          <>
-            {/* TEST: Show one random card from each Pocket set */}
-            {expansions.length > 0 && (
-              <div className="mb-8">
-                <h2 className="text-lg font-bold mb-3 text-center">Test: One Random Card from Each Pocket Set</h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                  {expansions.map(set => {
-                    const cardsInSet = pokemon.filter(card => card.pack === set.id);
-                    if (!cardsInSet.length) return null;
-                    const randomCard = cardsInSet[Math.floor(Math.random() * cardsInSet.length)];
-                    return (
-                      <Link href={`/pocketmode/${randomCard.id}`} key={randomCard.id} className="block transition-all duration-300">
-                        <div className="flex flex-col items-center rounded-xl bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 p-4 border border-gray-200/60 dark:border-gray-700/60 shadow-sm hover:shadow-md relative overflow-hidden">
-                          <div className="relative w-full h-40 mb-3">
-                            <Image
-                              src={randomCard.image || "/back-card.png"}
-                              alt={randomCard.name}
-                              width={150}
-                              height={200}
-                              layout="responsive"
-                              className="transition-all duration-500 hover:scale-110 object-contain"
-                              onError={e => { e.currentTarget.src = "/back-card.png"; }}
-                            />
-                          </div>
-                          <h3 className="capitalize font-bold text-sm text-center mb-1 truncate w-full px-1">{randomCard.name}</h3>
-                          <div className="flex gap-1.5 mt-1 flex-wrap justify-center">
-                            {randomCard.types?.map(type => (
-                              <TypeBadge key={type} type={type.toLowerCase()} size="sm" isPocketCard={true} />
-                            ))}
-                          </div>
-                          {randomCard.rarity && (
-                            <span className="mt-2 px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-xs rounded-full">{randomCard.rarity}</span>
-                          )}
-                          <div className="text-xs text-gray-400 mt-1 text-center">{set.name}</div>
-                        </div>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-            {/* END TEST */}
-            
-            {/* Use PocketCardList for better rendering */}
-            <PocketCardList 
-              cards={filteredPokemon}
-              loading={loading.pokemon}
-              error={error.pokemon}
-              emptyMessage="No Pokémon found. Try adjusting your search criteria."
-              showPack={true}
-              showRarity={true}
-              showHP={true}
-            />
-          </>
+          <PocketCardList 
+            cards={filteredPokemon}
+            loading={loading.pokemon}
+            error={error.pokemon}
+            emptyMessage="No Pokémon found. Try adjusting your search criteria."
+            showPack={true}
+            showRarity={true}
+            showHP={true}
+          />
         ) : currentView === "decks" ? (
           <div className="space-y-8">
             <div className="mb-5">
@@ -496,60 +435,6 @@ export default function PocketMode() {
               </div>
             </div>
           </div>
-        ) : currentView === "expansions" ? (
-          <div className="flex flex-col md:flex-row gap-8">
-            {/* Expansions List Sidebar */}
-            <div className="md:w-1/3 w-full md:max-w-xs mb-6 md:mb-0">
-              <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm p-4 sticky top-24 max-h-[70vh] overflow-y-auto">
-                <h3 className="text-lg font-bold mb-4 text-center">All Expansions</h3>
-                <div className="space-y-3">
-                  {expansions.filter(exp => exp && exp.id).map(expansion => (
-                    <div
-                      key={expansion.id}
-                      className={`cursor-pointer rounded-lg px-3 py-2 transition-all border border-transparent hover:bg-primary/10 ${selectedExpansion && selectedExpansion.id === expansion.id ? 'bg-primary/20 border-primary' : ''}`}
-                      onClick={() => setSelectedExpansion(expansion)}
-                    >
-                      <div className="flex items-center gap-3">
-                        {/* Optionally add logo here if available in future */}
-                        <span className="font-medium text-base">{expansion.name}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-            {/* Expansion Details & Cards */}
-            <div className="flex-1">
-              {selectedExpansion ? (
-                <>
-                  <button
-                    className="mb-6 px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-medium"
-                    onClick={() => setSelectedExpansion(null)}
-                  >
-                    ← Back to All Expansions
-                  </button>
-                  <PocketExpansionViewer expansion={selectedExpansion} />
-                  <h3 className="text-xl font-bold mt-8 mb-4 text-center">All Cards in {selectedExpansion.name}</h3>
-                  <PocketCardList 
-                    cards={expansionCards}
-                    loading={false}
-                    error={null}
-                    emptyMessage="No cards found for this expansion."
-                    showPack={false}
-                    showRarity={true}
-                    showHP={true}
-                  />
-                </>
-              ) : (
-                <div className="flex flex-col items-center justify-center h-full py-16">
-                  <h3 className="text-xl font-semibold text-gray-600 dark:text-gray-300 mb-4">Select an expansion to view its details and cards.</h3>
-                  <svg className="w-16 h-16 text-primary/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                  </svg>
-                </div>
-              )}
-            </div>
-          </div>
         ) : currentView === "packs" ? (
           <div className="space-y-8">
             <div className="text-center mb-8">
@@ -565,75 +450,17 @@ export default function PocketMode() {
             </div>
             
             {/* Pack Categories */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {expansions.map(pack => {
-                const packCards = pokemon.filter(card => card.pack === pack.id);
-                const cardCount = packCards.length;
-                const rareCards = packCards.filter(card => card.rarity && (card.rarity.includes('★') || card.rarity.length >= 3));
-                
-                return (
-                  <div key={pack.id} className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg transition-all duration-300">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200">{pack.name} Pack</h3>
-                      <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-dark rounded-lg flex items-center justify-center">
-                        <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                        </svg>
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-3 mb-6">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-600 dark:text-gray-400">Total Cards:</span>
-                        <span className="font-semibold">{cardCount}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-600 dark:text-gray-400">Rare Cards:</span>
-                        <span className="font-semibold text-yellow-600">{rareCards.length}</span>
-                      </div>
-                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                        <div 
-                          className="bg-gradient-to-r from-primary to-primary-dark h-2 rounded-full transition-all duration-500"
-                          style={{ width: `${Math.min(100, (rareCards.length / cardCount) * 100)}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                    
-                    {/* Sample Cards Preview */}
-                    <div className="mb-4">
-                      <h4 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Sample Cards:</h4>
-                      <div className="flex gap-2 overflow-x-auto">
-                        {packCards.slice(0, 3).map(card => (
-                          <div key={card.id} className="flex-shrink-0 w-16 h-20 relative rounded-md overflow-hidden border border-gray-300 dark:border-gray-600">
-                            <Image
-                              src={card.image || "/back-card.png"}
-                              alt={card.name}
-                              fill
-                              className="object-cover"
-                              sizes="64px"
-                            />
-                          </div>
-                        ))}
-                        {cardCount > 3 && (
-                          <div className="flex-shrink-0 w-16 h-20 bg-gray-100 dark:bg-gray-700 rounded-md flex items-center justify-center text-xs font-medium text-gray-500">
-                            +{cardCount - 3}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    
-                    <button 
-                      onClick={() => {
-                        setSelectedExpansion(pack);
-                        setCurrentView("expansions");
-                      }}
-                      className="w-full bg-gradient-to-r from-primary to-primary-dark text-white py-2.5 rounded-lg font-medium hover:shadow-md transition-all transform hover:scale-[1.02] active:scale-[0.98]"
-                    >
-                      Explore {pack.name} Pack
-                    </button>
-                  </div>
-                );
-              })}
+            <div className="text-center py-16">
+              <div className="text-6xl mb-6">📦</div>
+              <h3 className="text-2xl font-bold mb-4">Booster Pack Opening</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
+                Experience the thrill of opening Pokemon Pocket booster packs with realistic animations and rare card reveals.
+              </p>
+              <Link href="/pocketmode/expansions">
+                <button className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white px-8 py-3 rounded-xl font-bold transition-all transform hover:scale-105 shadow-lg">
+                  🎲 Open Booster Packs
+                </button>
+              </Link>
             </div>
             
             {/* Pack Opening Simulator */}
