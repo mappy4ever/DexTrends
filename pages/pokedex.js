@@ -7,6 +7,20 @@ import { fetchData } from "../utils/apiutils";
 import { FadeIn, SlideUp } from "../components/ui/animations";
 import { TypeBadge } from "../components/ui/TypeBadge";
 import { getGeneration } from "../utils/pokemonutils";
+import { 
+  GlassCard, 
+  PremiumButton, 
+  PremiumInput, 
+  PremiumProgress,
+  PremiumBadge 
+} from "../components/ui/PremiumComponents";
+import { 
+  PageTransition, 
+  StaggerContainer, 
+  StaggerItem, 
+  HoverCard,
+  RevealElement 
+} from "../components/ui/AnimationSystem";
 
 export default function PokedexIndex() {
   const router = useRouter();
@@ -362,23 +376,56 @@ export default function PokedexIndex() {
 
   if (loading) {
     return (
-      <div className="container max-w-6xl mx-auto py-12 text-center">
-        <Head>
-          <title>Pokédex | DexTrends</title>
-        </Head>
-        <div className="mb-8">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-gray-600 mb-4">Loading All Pokémon Data...</p>
-          <div className="w-full max-w-md mx-auto bg-gray-200 rounded-full h-3">
-            <div 
-              className="bg-primary h-3 rounded-full transition-all duration-300" 
-              style={{ width: `${loadingProgress}%` }}
-            ></div>
-          </div>
-          <p className="text-sm text-gray-500 mt-2">{loadingProgress}% Complete ({Math.round(loadingProgress * 10.1)}/1010 Pokémon)</p>
-          <p className="text-xs text-gray-400 mt-1">Loading all data for comprehensive search...</p>
+      <PageTransition>
+        <div className="container max-w-6xl mx-auto py-12 text-center min-h-screen flex items-center justify-center">
+          <Head>
+            <title>Pokédex | DexTrends</title>
+          </Head>
+          <GlassCard className="max-w-md mx-auto animate-scale-in" elevated>
+            <div className="space-y-6">
+              <div className="animate-pulse-scale">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full gradient-primary flex items-center justify-center">
+                  <div className="animate-rotate">
+                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="space-y-2">
+                <h3 className="text-xl font-display font-bold text-gray-900 dark:text-white">
+                  Loading Pokédex
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Gathering all Pokémon data for comprehensive search...
+                </p>
+              </div>
+              
+              <PremiumProgress 
+                value={loadingProgress} 
+                max={100} 
+                variant="primary"
+                size="lg"
+                animated
+                showLabel
+              />
+              
+              <div className="space-y-1">
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600 dark:text-gray-400">Progress</span>
+                  <span className="font-mono text-primary font-medium">
+                    {Math.round(loadingProgress * 10.1)}/1010
+                  </span>
+                </div>
+                <PremiumBadge variant="glass" size="sm" className="animate-pulse-scale">
+                  {loadingProgress}% Complete
+                </PremiumBadge>
+              </div>
+            </div>
+          </GlassCard>
         </div>
-      </div>
+      </PageTransition>
     );
   }
 
@@ -395,79 +442,103 @@ export default function PokedexIndex() {
   }
 
   return (
-    <div className="container max-w-7xl mx-auto px-4 py-8">
-      <Head>
-        <title>Pokédex | DexTrends</title>
-        <meta name="description" content="Complete Pokédex with detailed information about all Pokémon" />
-      </Head>
+    <PageTransition>
+      <div className="container max-w-7xl mx-auto px-4 py-8 space-y-8">
+        <Head>
+          <title>Pokédex | DexTrends</title>
+          <meta name="description" content="Complete Pokédex with detailed information about all Pokémon" />
+        </Head>
 
-      <FadeIn>
-        <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-            Pokédex
-          </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Discover detailed information about all Pokémon species, including stats, types, and evolutions.
-          </p>
-        </div>
+        <RevealElement className="text-center">
+          <div className="space-y-4 mb-8">
+            <h1 className="font-display text-5xl md:text-6xl font-black animate-slide-in-top">
+              Pokédex
+            </h1>
+            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto animate-slide-in-bottom delay-200">
+              Discover detailed information about all Pokémon species, including stats, types, and evolutions.
+            </p>
+            <div className="flex items-center justify-center gap-2 animate-slide-in-bottom delay-300">
+              <PremiumBadge variant="glass" glow>
+                🔍 Advanced Search
+              </PremiumBadge>
+              <PremiumBadge variant="glass" glow>
+                📊 Complete Data
+              </PremiumBadge>
+              <PremiumBadge variant="glass" glow>
+                ⚡ Real-time Filtering
+              </PremiumBadge>
+            </div>
+          </div>
+        </RevealElement>
 
         {/* Enhanced Search and Filter Controls */}
-        <div className="mb-8 space-y-4">
-          <div className="flex flex-col gap-4">
-            {/* Main Search Bar */}
-            <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
-              <div className="relative">
-                <input
+        <RevealElement delay={0.4}>
+          <GlassCard className="space-y-6" elevated>
+            <div className="flex flex-col gap-6">
+              {/* Main Search Bar */}
+              <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
+                <PremiumInput
                   type="text"
                   placeholder="Search Pokémon..."
                   value={pendingSearchTerm}
                   onChange={(e) => setPendingSearchTerm(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                  className="w-80 px-4 py-2 pl-10 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-80"
+                  icon={
+                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  }
                 />
-                <svg className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
+              
+                {/* Sort Dropdown */}
+                <div className="relative">
+                  <select
+                    value={pendingSortBy}
+                    onChange={(e) => setPendingSortBy(e.target.value)}
+                    className="glass rounded-lg px-4 py-3 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent appearance-none pr-10 min-w-[200px]"
+                  >
+                    {sortOptions.map(option => (
+                      <option key={option.value} value={option.value}>
+                        Sort by {option.label}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+                
+                {/* Search Button */}
+                <PremiumButton
+                  onClick={handleSearch}
+                  variant="success"
+                  glow
+                  className="flex items-center gap-2"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                  Search Pokémon
+                </PremiumButton>
+                
+                {/* Advanced Filters Toggle */}
+                <PremiumButton
+                  onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+                  variant="glass"
+                  className="flex items-center gap-2"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.414A1 1 0 013 6.707V4z" />
+                  </svg>
+                  {showAdvancedFilters ? 'Hide Filters' : 'Show Filters'}
+                  <svg className={`w-4 h-4 transition-transform duration-300 ${showAdvancedFilters ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </PremiumButton>
               </div>
-              
-              {/* Sort By */}
-              <select
-                value={pendingSortBy}
-                onChange={(e) => setPendingSortBy(e.target.value)}
-                className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent"
-              >
-                {sortOptions.map(option => (
-                  <option key={option.value} value={option.value}>
-                    Sort by {option.label}
-                  </option>
-                ))}
-              </select>
-              
-              {/* Search Button */}
-              <button
-                onClick={handleSearch}
-                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2 font-medium"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                Search
-              </button>
-              
-              {/* Advanced Filters Toggle */}
-              <button
-                onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 font-medium"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.414A1 1 0 013 6.707V4z" />
-                </svg>
-                {showAdvancedFilters ? 'Hide Filters' : 'Show Filters'}
-                <svg className={`w-4 h-4 transition-transform ${showAdvancedFilters ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-            </div>
             
             {/* Interactive Advanced Filters Panel */}
             {showAdvancedFilters && (
@@ -644,19 +715,23 @@ export default function PokedexIndex() {
                 Scroll down to load more...
               </div>
             )}
-          </div>
-        </div>
-      </FadeIn>
-
-      <SlideUp delay={200}>
+            </div>
+          </GlassCard>
+        </RevealElement>
         {/* Enhanced Pokemon Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6 mb-8">
-          {sortedAndVisiblePokemon.map((poke) => (
-            <div 
-              key={poke.id} 
-              onClick={() => handlePokemonClick(poke.id)}
-              className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-4 cursor-pointer hover:-translate-y-2 border border-gray-200 dark:border-gray-700 group"
-            >
+        <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6 mb-8" staggerDelay={0.05}>
+          {sortedAndVisiblePokemon.map((poke, index) => (
+            <StaggerItem key={poke.id}>
+              <HoverCard 
+                onClick={() => handlePokemonClick(poke.id)}
+                className="group cursor-pointer"
+                scale={1.03}
+                y={-6}
+              >
+                <GlassCard 
+                  className="p-4 hover-lift interactive border border-glass-border hover:border-primary/20 transition-all duration-300"
+                  hoverable
+                >
                 <div className="text-center">
                   <div className="relative w-24 h-24 mx-auto mb-3">
                     <Image
@@ -715,9 +790,11 @@ export default function PokedexIndex() {
                     </div>
                   </div>
                 </div>
-            </div>
+                </GlassCard>
+              </HoverCard>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
 
         {/* Loading indicator for infinite scroll */}
         {isLoadingMore && (
@@ -736,7 +813,27 @@ export default function PokedexIndex() {
             </p>
           </div>
         )}
-      </SlideUp>
-    </div>
+        
+        {/* No results message */}
+        {filteredPokemon.length === 0 && !loading && (
+          <RevealElement className="text-center py-12">
+            <GlassCard className="max-w-md mx-auto">
+              <div className="space-y-4">
+                <div className="text-6xl animate-bounce-gentle">🔍</div>
+                <h3 className="text-xl font-display font-bold text-gray-900 dark:text-white">
+                  No Pokémon Found
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  No Pokémon match your current search criteria. Try adjusting your filters.
+                </p>
+                <PremiumButton onClick={clearAllFilters} variant="glass">
+                  Clear All Filters
+                </PremiumButton>
+              </div>
+            </GlassCard>
+          </RevealElement>
+        )}
+      </div>
+    </PageTransition>
   );
 }

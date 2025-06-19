@@ -2,6 +2,114 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Premium Typography Base Styles */
+html {
+  font-family: var(--font-body);
+  font-feature-settings: 'cv11', 'ss01';
+  font-variation-settings: 'opsz' 32;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--leading-normal);
+  letter-spacing: -0.011em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Premium Heading Styles */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--leading-tight);
+  letter-spacing: -0.025em;
+  color: var(--color-text-heading);
+}
+
+h1 {
+  font-size: var(--text-5xl);
+  font-weight: var(--font-weight-black);
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.04em;
+}
+
+h2 {
+  font-size: var(--text-4xl);
+  font-weight: var(--font-weight-extrabold);
+}
+
+h3 {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-weight-bold);
+}
+
+h4 {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-weight-semibold);
+}
+
+h5 {
+  font-size: var(--text-xl);
+  font-weight: var(--font-weight-medium);
+}
+
+h6 {
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Premium Link Styles */
+a {
+  color: var(--color-text-link);
+  text-decoration: none;
+  transition: all var(--duration-fast) var(--ease-premium);
+  position: relative;
+}
+
+a:hover {
+  color: var(--color-text-link-hover);
+}
+
+/* Focus styles for accessibility */
+:focus-visible {
+  outline: 2px solid rgb(var(--color-primary-default-val));
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--glass-secondary);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--glass-primary);
+  border-radius: var(--radius-full);
+  transition: background var(--duration-normal) var(--ease-premium);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--glass-elevated);
+}
+
+/* Selection styles */
+::selection {
+  background: rgba(var(--color-primary-default-val), 0.2);
+  color: var(--color-text-body);
+}
+
 /* Line clamp utilities for text truncation */
 .line-clamp-1 {
   overflow: hidden;

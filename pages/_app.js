@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import dynamic from "next/dynamic";
 import "../styles/globals.css";
+import "../styles/design-system.css";
 import "react-datepicker/dist/react-datepicker.css";
 import Layout from "../components/layout/layout";
 import ErrorBoundary from "../components/layout/errorboundary";
