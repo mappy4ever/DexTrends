@@ -103,33 +103,33 @@ export default function PocketDeckBuilder({
           <div className="flex flex-col sm:flex-row gap-3 mb-4">
             <div className="flex-1">
               <input
-                type=\"text\"
-                placeholder=\"Search cards...\"
-                className=\"input-clean w-full\"
+                type="text"
+                placeholder="Search cards..."
+                className="input-clean w-full"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
             <select
-              className=\"select-clean w-full sm:w-auto\"
+              className="select-clean w-full sm:w-auto"
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
             >
-              <option value=\"all\">All Types</option>
-              <option value=\"fire\">Fire</option>
-              <option value=\"water\">Water</option>
-              <option value=\"grass\">Grass</option>
-              <option value=\"electric\">Electric</option>
-              <option value=\"psychic\">Psychic</option>
-              <option value=\"fighting\">Fighting</option>
-              <option value=\"dark\">Dark</option>
-              <option value=\"metal\">Metal</option>
-              <option value=\"colorless\">Colorless</option>
+              <option value="all">All Types</option>
+              <option value="fire">Fire</option>
+              <option value="water">Water</option>
+              <option value="grass">Grass</option>
+              <option value="electric">Electric</option>
+              <option value="psychic">Psychic</option>
+              <option value="fighting">Fighting</option>
+              <option value="dark">Dark</option>
+              <option value="metal">Metal</option>
+              <option value="colorless">Colorless</option>
             </select>
           </div>
 
           {/* Results count */}
-          <p className=\"text-sm text-text-grey\">
+          <p className="text-sm text-text-grey">
             Showing {filteredCards.length} cards
           </p>
         </div>

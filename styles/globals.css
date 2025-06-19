@@ -191,11 +191,6 @@ button, a, [role="button"], input, select, textarea {
     border-width: 0.5px;
   }
 }
-  /* Clean buttons */
-  --color-button-background: var(--pokemon-red);
-  --color-button-hover: #B91C1C;
-  --color-button-text: white;
-}
 
 .dark {
   /* Dark theme adjustments */
