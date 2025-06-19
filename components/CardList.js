@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Modal from "./ui/Modal";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import { InlineLoadingSpinner } from "./ui/LoadingSpinner";
+import { getHolographicEffect, getRarityGlowClass } from "../utils/cardEffects";
 
 export default function CardList({
   cards = [],
@@ -132,11 +133,14 @@ export default function CardList({
             window.location.href = `/cards/${card.id}`;
           };
 
+          const holographicClass = getHolographicEffect(rarity);
+          const glowClass = getRarityGlowClass(rarity);
+
           return (
             <div
               key={card.id}
               className={
-                `card p-3 md:p-4 flex flex-col items-center bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-200 dark:border-gray-700 transition-all duration-300 animate-fadeIn group ring-0
+                `card p-3 md:p-4 flex flex-col items-center bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-200 dark:border-gray-700 transition-all duration-300 animate-fadeIn group ring-0 ${holographicClass} ${glowClass}
                 hover:border-primary/90 hover:ring-2 hover:ring-primary/60 hover:-translate-y-2 hover:bg-primary/5 hover:shadow-xl
                 focus-within:border-primary/90 focus-within:ring-2 focus-within:ring-primary/60 focus-within:-translate-y-2 focus-within:bg-primary/5 focus-within:shadow-xl
                 `

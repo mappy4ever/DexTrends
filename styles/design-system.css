@@ -1,91 +1,78 @@
-/* DexTrends Premium Design System */
+/* DexTrends Clean Classic Design System */
 
-/* Import Premium Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Inter+Tight:wght@400;500;600;700&display=swap');
+/* Import Clean, Readable Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
-  /* === PREMIUM COLOR PALETTE === */
+  /* === CLEAN CLASSIC COLOR PALETTE === */
   
-  /* Primary Gradients */
-  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --primary-gradient-hover: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
-  --accent-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  --accent-gradient-hover: linear-gradient(135deg, #e681f0 0%, #f3455a 100%);
+  /* Base Clean Colors - Primary Palette */
+  --white: #FFFFFF;
+  --off-white: #FAFAFA;
+  --light-grey: #F5F5F5;
+  --mid-grey: #E5E7EB;
+  --border-grey: #D1D5DB;
+  --text-grey: #6B7280;
+  --dark-text: #374151;
+  --charcoal: #1F2937;
+  --black: #111827;
   
-  /* Glass Morphism Colors */
-  --glass-primary: rgba(255, 255, 255, 0.1);
-  --glass-secondary: rgba(255, 255, 255, 0.05);
-  --glass-elevated: rgba(255, 255, 255, 0.15);
-  --glass-hover: rgba(255, 255, 255, 0.2);
-  --glass-border: rgba(255, 255, 255, 0.18);
+  /* Strategic Pokémon Colors - Used Sparingly */
+  --pokemon-red: #DC2626;
+  --pokemon-blue: #2563EB;
+  --pokemon-yellow: #F59E0B;
+  --pokemon-green: #059669;
   
-  /* Dark Mode Glass */
-  --glass-dark-primary: rgba(0, 0, 0, 0.1);
-  --glass-dark-secondary: rgba(0, 0, 0, 0.05);
-  --glass-dark-elevated: rgba(0, 0, 0, 0.15);
-  --glass-dark-hover: rgba(0, 0, 0, 0.2);
-  --glass-dark-border: rgba(0, 0, 0, 0.18);
+  /* Subtle Backgrounds */
+  --card-bg: var(--white);
+  --card-bg-hover: var(--off-white);
+  --sidebar-bg: var(--white);
+  --page-bg: var(--off-white);
   
-  /* Premium Shadows */
-  --shadow-sm: 0 2px 8px rgba(31, 38, 135, 0.15);
-  --shadow-md: 0 4px 16px rgba(31, 38, 135, 0.25);
-  --shadow-lg: 0 8px 32px rgba(31, 38, 135, 0.37);
-  --shadow-xl: 0 16px 64px rgba(31, 38, 135, 0.45);
-  --shadow-premium: 0 25px 80px rgba(31, 38, 135, 0.5);
+  /* Clean Borders & Shadows */
+  --border-color: var(--border-grey);
+  --border-light: var(--mid-grey);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
   
-  /* Glow Effects */
-  --glow-primary: 0 0 20px rgba(102, 126, 234, 0.4);
-  --glow-accent: 0 0 20px rgba(240, 147, 251, 0.4);
-  --glow-success: 0 0 20px rgba(34, 197, 94, 0.4);
-  --glow-warning: 0 0 20px rgba(251, 191, 36, 0.4);
-  --glow-error: 0 0 20px rgba(239, 68, 68, 0.4);
-  
-  /* Semantic Colors */
-  --success-gradient: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-  --warning-gradient: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-  --error-gradient: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  --info-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  /* Minimal Glass Effect (when needed) */
+  --glass-minimal: rgba(255, 255, 255, 0.95);
+  --glass-border: rgba(0, 0, 0, 0.08);
   
   /* === TYPOGRAPHY SYSTEM === */
   
   /* Font Families */
-  --font-display: 'Inter Tight', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  --font-heading: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', Consolas, monospace;
   
   /* Font Weights */
-  --font-weight-light: 300;
-  --font-weight-normal: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-  --font-weight-bold: 700;
-  --font-weight-extrabold: 800;
-  --font-weight-black: 900;
+  --font-light: 300;
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
   
-  /* Font Sizes - Fluid Typography */
-  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
-  --text-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
-  --text-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
-  --text-lg: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);
-  --text-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
-  --text-2xl: clamp(1.5rem, 1.3rem + 1vw, 1.875rem);
-  --text-3xl: clamp(1.875rem, 1.6rem + 1.375vw, 2.25rem);
-  --text-4xl: clamp(2.25rem, 1.9rem + 1.75vw, 3rem);
-  --text-5xl: clamp(3rem, 2.5rem + 2.5vw, 4rem);
-  --text-6xl: clamp(4rem, 3rem + 5vw, 6rem);
+  /* Font Sizes */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
   
   /* Line Heights */
   --leading-tight: 1.25;
-  --leading-snug: 1.375;
   --leading-normal: 1.5;
   --leading-relaxed: 1.625;
-  --leading-loose: 2;
   
   /* === SPACING SYSTEM === */
   
-  /* Premium Spacing Scale */
-  --space-px: 1px;
-  --space-0: 0;
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -97,310 +84,443 @@
   --space-12: 3rem;
   --space-16: 4rem;
   --space-20: 5rem;
-  --space-24: 6rem;
-  --space-32: 8rem;
-  --space-40: 10rem;
-  --space-48: 12rem;
-  --space-56: 14rem;
-  --space-64: 16rem;
   
   /* === BORDER RADIUS === */
   
-  --radius-none: 0;
   --radius-sm: 0.125rem;
-  --radius-base: 0.25rem;
   --radius-md: 0.375rem;
   --radius-lg: 0.5rem;
   --radius-xl: 0.75rem;
   --radius-2xl: 1rem;
-  --radius-3xl: 1.5rem;
   --radius-full: 9999px;
   
-  /* === ANIMATION SYSTEM === */
+  /* === TRANSITIONS === */
   
-  /* Easing Functions */
-  --ease-linear: linear;
-  --ease-in: cubic-bezier(0.4, 0, 1, 1);
-  --ease-out: cubic-bezier(0, 0, 0.2, 1);
-  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-premium: cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  
-  /* Duration Scale */
-  --duration-fast: 150ms;
-  --duration-normal: 250ms;
-  --duration-slow: 350ms;
-  --duration-slower: 500ms;
-  --duration-slowest: 750ms;
+  --transition-fast: 150ms ease-out;
+  --transition-normal: 250ms ease-out;
+  --transition-slow: 350ms ease-out;
   
   /* === Z-INDEX SCALE === */
   
-  --z-hide: -1;
-  --z-auto: auto;
-  --z-base: 0;
-  --z-docked: 10;
   --z-dropdown: 1000;
   --z-sticky: 1100;
-  --z-banner: 1200;
-  --z-overlay: 1300;
   --z-modal: 1400;
-  --z-popover: 1500;
-  --z-skiplink: 1600;
-  --z-toast: 1700;
   --z-tooltip: 1800;
 }
 
-/* Dark mode color adjustments */
+/* Dark Mode */
 .dark {
-  --glass-primary: var(--glass-dark-primary);
-  --glass-secondary: var(--glass-dark-secondary);
-  --glass-elevated: var(--glass-dark-elevated);
-  --glass-hover: var(--glass-dark-hover);
-  --glass-border: var(--glass-dark-border);
+  --white: #1F2937;
+  --off-white: #374151;
+  --light-grey: #4B5563;
+  --mid-grey: #6B7280;
+  --border-grey: #9CA3AF;
+  --text-grey: #D1D5DB;
+  --dark-text: #F9FAFB;
+  --charcoal: #E5E7EB;
+  --black: #FFFFFF;
+  
+  --card-bg: #1F2937;
+  --card-bg-hover: #374151;
+  --sidebar-bg: #1F2937;
+  --page-bg: #111827;
+  
+  --border-color: #374151;
+  --border-light: #4B5563;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --shadow-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.6);
+  
+  --glass-minimal: rgba(31, 41, 55, 0.95);
+  --glass-border: rgba(255, 255, 255, 0.1);
 }
 
 /* === UTILITY CLASSES === */
 
-/* Glass Morphism Effects */
-.glass {
-  background: var(--glass-primary);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+/* Clean Card Styles */
+.card-clean {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+}
+
+.card-clean:hover {
+  background: var(--card-bg-hover);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-1px);
+}
+
+/* Minimal Glass Effect (only when absolutely needed) */
+.glass-minimal {
+  background: var(--glass-minimal);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--glass-border);
 }
 
-.glass-elevated {
-  background: var(--glass-elevated);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-lg);
+/* Clean Button Styles */
+.btn-clean {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-body);
+  font-weight: var(--font-medium);
+  font-size: var(--text-sm);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background: var(--white);
+  color: var(--dark-text);
+  cursor: pointer;
+  transition: all var(--transition-normal);
 }
 
-.glass-hover:hover {
-  background: var(--glass-hover);
-  transform: translateY(-2px);
-  transition: all var(--duration-normal) var(--ease-premium);
+.btn-clean:hover {
+  background: var(--off-white);
+  border-color: var(--text-grey);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
-/* Premium Gradients */
-.gradient-primary {
-  background: var(--primary-gradient);
+.btn-primary {
+  background: var(--pokemon-red);
+  border-color: var(--pokemon-red);
+  color: white;
 }
 
-.gradient-accent {
-  background: var(--accent-gradient);
-}
-
-.gradient-success {
-  background: var(--success-gradient);
-}
-
-.gradient-warning {
-  background: var(--warning-gradient);
-}
-
-.gradient-error {
-  background: var(--error-gradient);
-}
-
-.gradient-info {
-  background: var(--info-gradient);
-}
-
-/* Premium Shadows */
-.shadow-premium {
-  box-shadow: var(--shadow-premium);
-}
-
-.shadow-glass {
-  box-shadow: var(--shadow-lg);
-}
-
-/* Glow Effects */
-.glow-primary {
-  box-shadow: var(--glow-primary);
-}
-
-.glow-accent {
-  box-shadow: var(--glow-accent);
-}
-
-.glow-success {
-  box-shadow: var(--glow-success);
+.btn-primary:hover {
+  background: #B91C1C;
+  border-color: #B91C1C;
 }
 
 /* Typography Classes */
-.font-display {
-  font-family: var(--font-display);
-}
-
 .font-body {
   font-family: var(--font-body);
+}
+
+.font-heading {
+  font-family: var(--font-heading);
+  font-weight: var(--font-semibold);
 }
 
 .font-mono {
   font-family: var(--font-mono);
 }
 
-/* Animation Utilities */
+/* Text Colors */
+.text-primary {
+  color: var(--dark-text);
+}
+
+.text-secondary {
+  color: var(--text-grey);
+}
+
+.text-pokemon-red {
+  color: var(--pokemon-red);
+}
+
+.text-pokemon-blue {
+  color: var(--pokemon-blue);
+}
+
+.text-pokemon-yellow {
+  color: var(--pokemon-yellow);
+}
+
+/* Clean Animations (subtle and smooth) */
 .animate-fade-in {
-  animation: fadeIn var(--duration-normal) var(--ease-out);
+  animation: clean-fade-in 0.3s ease-out;
 }
 
 .animate-slide-up {
-  animation: slideUp var(--duration-normal) var(--ease-premium);
+  animation: clean-slide-up 0.4s ease-out;
 }
 
-.animate-scale-in {
-  animation: scaleIn var(--duration-normal) var(--ease-bounce);
-}
-
-.animate-float {
-  animation: float 3s var(--ease-in-out) infinite;
-}
-
-.animate-glow {
-  animation: glow 2s var(--ease-in-out) infinite;
-}
-
-.animate-bounce-gentle {
-  animation: bounce-gentle 2s var(--ease-in-out) infinite;
-}
-
-.animate-pulse-scale {
-  animation: pulse-scale 2s var(--ease-in-out) infinite;
-}
-
-.animate-rotate {
-  animation: rotate-360 2s linear infinite;
-}
-
-.animate-slide-in-right {
-  animation: slide-in-right var(--duration-normal) var(--ease-premium);
-}
-
-.animate-slide-in-left {
-  animation: slide-in-left var(--duration-normal) var(--ease-premium);
-}
-
-.animate-slide-in-top {
-  animation: slide-in-top var(--duration-normal) var(--ease-premium);
-}
-
-.animate-slide-in-bottom {
-  animation: slide-in-bottom var(--duration-normal) var(--ease-premium);
-}
-
-.animate-zoom-in {
-  animation: zoom-in var(--duration-normal) var(--ease-premium);
-}
-
-.animate-zoom-out {
-  animation: zoom-out var(--duration-normal) var(--ease-premium);
-}
-
-.animate-flip-horizontal {
-  animation: flip-horizontal var(--duration-normal) var(--ease-premium);
-}
-
-.animate-flip-vertical {
-  animation: flip-vertical var(--duration-normal) var(--ease-premium);
-}
-
-.animate-elastic {
-  animation: elastic var(--duration-slow) var(--ease-bounce);
-}
-
-.animate-rubber-band {
-  animation: rubber-band 1s var(--ease-premium);
-}
-
-.animate-wobble {
-  animation: wobble 1s var(--ease-premium);
-}
-
-.animate-jello {
-  animation: jello 1s var(--ease-premium);
-}
-
-.animate-heart-beat {
-  animation: heart-beat 1.5s var(--ease-in-out) infinite;
-}
-
-/* Hover Animations */
 .hover-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-premium);
-  transition: all var(--duration-normal) var(--ease-premium);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+  transition: all var(--transition-normal);
 }
 
-.hover-scale:hover {
+/* Enhanced Card Animations */
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Smooth Scale Animation */
+.scale-hover {
+  transition: transform 0.2s ease-out;
+}
+
+.scale-hover:hover {
   transform: scale(1.05);
-  transition: all var(--duration-normal) var(--ease-premium);
 }
 
-.hover-rotate:hover {
-  transform: rotate(5deg);
-  transition: all var(--duration-normal) var(--ease-premium);
+/* Subtle Glow Effect */
+.glow-hover {
+  transition: all 0.3s ease-out;
 }
 
-.hover-glow:hover {
-  box-shadow: var(--glow-primary);
-  transition: all var(--duration-normal) var(--ease-premium);
+.glow-hover:hover {
+  box-shadow: 0 0 20px rgba(220, 38, 38, 0.3);
 }
 
-.hover-tilt:hover {
-  transform: perspective(1000px) rotateX(10deg) rotateY(10deg);
-  transition: all var(--duration-normal) var(--ease-premium);
+/* === HOLOGRAPHIC CARD EFFECTS === */
+
+/* Holographic Rainbow Gradient Background */
+.holographic-bg {
+  background: linear-gradient(
+    45deg,
+    #ff0000,
+    #ff7f00,
+    #ffff00,
+    #00ff00,
+    #0000ff,
+    #4b0082,
+    #9400d3,
+    #ff0000
+  );
+  background-size: 400% 400%;
+  animation: holographic-shift 8s ease-in-out infinite;
+}
+
+/* Holographic Foil Effect */
+.holographic-foil {
+  position: relative;
+  overflow: hidden;
+}
+
+.holographic-foil::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 40%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.1) 60%,
+    transparent 70%
+  );
+  transform: rotate(45deg);
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.holographic-foil:hover::before {
+  opacity: 1;
+  animation: holographic-sweep 0.8s ease-out;
+}
+
+/* Holographic Border Effect */
+.holographic-border {
+  position: relative;
+  border: 2px solid transparent;
+  background: linear-gradient(white, white) padding-box,
+              linear-gradient(45deg, #ff0080, #ff8c00, #40e0d0, #ff0080) border-box;
+  transition: all 0.3s ease;
+}
+
+.holographic-border:hover {
+  background: linear-gradient(white, white) padding-box,
+              linear-gradient(45deg, #ff8c00, #40e0d0, #ff0080, #ff8c00) border-box;
+}
+
+/* Holographic Text Effect */
+.holographic-text {
+  background: linear-gradient(
+    45deg,
+    #ff0080,
+    #ff8c00,
+    #40e0d0,
+    #ff0080
+  );
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: holographic-text-shift 3s ease-in-out infinite;
+}
+
+/* Subtle Holographic Card Enhancement */
+.card-holographic {
+  position: relative;
+  background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.card-holographic::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 0, 128, 0.05) 0%,
+    rgba(255, 140, 0, 0.05) 25%,
+    rgba(64, 224, 208, 0.05) 50%,
+    rgba(255, 0, 128, 0.05) 75%,
+    rgba(255, 140, 0, 0.05) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.card-holographic:hover::after {
+  opacity: 1;
+}
+
+.card-holographic:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Rare Card Glow Effects */
+.card-rare-glow {
+  box-shadow: 0 0 20px rgba(255, 223, 0, 0.4);
+}
+
+.card-ultra-glow {
+  box-shadow: 0 0 25px rgba(138, 43, 226, 0.5);
+}
+
+.card-secret-glow {
+  box-shadow: 0 0 30px rgba(255, 20, 147, 0.6);
 }
 
 /* Interactive States */
 .interactive {
   cursor: pointer;
-  transition: all var(--duration-normal) var(--ease-premium);
+  transition: all var(--transition-normal);
 }
 
 .interactive:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-1px);
 }
 
-.interactive:active {
-  transform: translateY(0);
-  box-shadow: var(--shadow-md);
-}
-
-/* Loading States */
-.loading-shimmer {
+/* Clean Loading States */
+.loading-clean {
   background: linear-gradient(90deg, 
-    var(--glass-primary) 25%, 
-    var(--glass-hover) 50%, 
-    var(--glass-primary) 75%
+    var(--light-grey) 25%, 
+    var(--mid-grey) 50%, 
+    var(--light-grey) 75%
   );
   background-size: 200% 100%;
-  animation: shimmer 2s infinite;
+  animation: clean-shimmer 1.5s infinite;
 }
 
-.loading-pulse {
-  animation: pulse-scale 1.5s var(--ease-in-out) infinite;
+/* Professional Loading Spinner */
+.loading-spinner {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid var(--light-grey);
+  border-radius: 50%;
+  border-top-color: var(--pokemon-red);
+  animation: spin 1s linear infinite;
 }
 
-.loading-bounce {
-  animation: bounce-gentle 1s var(--ease-in-out) infinite;
+.loading-spinner-sm {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-width: 2px;
 }
 
-/* Delay Classes */
-.delay-100 { animation-delay: 100ms; }
-.delay-200 { animation-delay: 200ms; }
-.delay-300 { animation-delay: 300ms; }
-.delay-500 { animation-delay: 500ms; }
-.delay-700 { animation-delay: 700ms; }
-.delay-1000 { animation-delay: 1000ms; }
+.loading-spinner-lg {
+  width: 3rem;
+  height: 3rem;
+  border-width: 4px;
+}
+
+/* Loading Dots */
+.loading-dots {
+  display: inline-flex;
+  gap: 0.25rem;
+}
+
+.loading-dots span {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: var(--pokemon-red);
+  border-radius: 50%;
+  animation: loading-dots-bounce 1.4s infinite ease-in-out both;
+}
+
+.loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+.loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+.loading-dots span:nth-child(3) { animation-delay: 0s; }
+
+/* Loading Progress Bar */
+.loading-progress {
+  width: 100%;
+  height: 0.5rem;
+  background-color: var(--light-grey);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.loading-progress-bar {
+  height: 100%;
+  background-color: var(--pokemon-red);
+  border-radius: var(--radius-full);
+  transition: width 0.3s ease-out;
+}
+
+.loading-progress-indeterminate {
+  background: linear-gradient(90deg, 
+    transparent, 
+    var(--pokemon-red), 
+    transparent
+  );
+  background-size: 50% 100%;
+  animation: loading-progress-slide 2s infinite;
+}
+
+/* Loading Card Skeleton */
+.loading-skeleton {
+  background: var(--light-grey);
+  border-radius: var(--radius-md);
+  animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.loading-skeleton-text {
+  height: 1rem;
+  background: var(--light-grey);
+  border-radius: var(--radius-sm);
+  animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.loading-skeleton-circle {
+  background: var(--light-grey);
+  border-radius: 50%;
+  animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
 
 /* === KEYFRAME ANIMATIONS === */
 
-@keyframes fadeIn {
+@keyframes clean-fade-in {
   from {
     opacity: 0;
   }
@@ -409,10 +529,10 @@
   }
 }
 
-@keyframes slideUp {
+@keyframes clean-slide-up {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -420,27 +540,7 @@
   }
 }
 
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-@keyframes shimmer {
+@keyframes clean-shimmer {
   0% {
     background-position: -200px 0;
   }
@@ -449,293 +549,197 @@
   }
 }
 
-@keyframes glow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
-  }
-  50% {
-    box-shadow: 0 0 40px rgba(102, 126, 234, 0.8);
-  }
-}
-
-@keyframes bounce-gentle {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-5px);
-  }
-}
-
-@keyframes pulse-scale {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-}
-
-@keyframes rotate-360 {
-  from {
-    transform: rotate(0deg);
-  }
+@keyframes spin {
   to {
     transform: rotate(360deg);
   }
 }
 
-@keyframes slide-in-right {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slide-in-left {
-  from {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slide-in-top {
-  from {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slide-in-bottom {
-  from {
-    transform: translateY(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes zoom-in {
-  from {
-    transform: scale(0.8);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes zoom-out {
-  from {
-    transform: scale(1.2);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes flip-horizontal {
-  from {
-    transform: rotateY(-90deg);
-    opacity: 0;
-  }
-  to {
-    transform: rotateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes flip-vertical {
-  from {
-    transform: rotateX(-90deg);
-    opacity: 0;
-  }
-  to {
-    transform: rotateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes elastic {
-  from {
+@keyframes loading-dots-bounce {
+  0%, 80%, 100% {
     transform: scale(0);
   }
-  50% {
-    transform: scale(1.1);
-  }
-  to {
-    transform: scale(1);
-  }
-}
-
-@keyframes rubber-band {
-  from {
-    transform: scale3d(1, 1, 1);
-  }
-  30% {
-    transform: scale3d(1.25, 0.75, 1);
-  }
   40% {
-    transform: scale3d(0.75, 1.25, 1);
+    transform: scale(1);
+  }
+}
+
+@keyframes loading-progress-slide {
+  0% {
+    background-position: -50% 0;
+  }
+  100% {
+    background-position: 150% 0;
+  }
+}
+
+@keyframes skeleton-pulse {
+  0%, 100% {
+    opacity: 1;
   }
   50% {
-    transform: scale3d(1.15, 0.85, 1);
-  }
-  65% {
-    transform: scale3d(0.95, 1.05, 1);
-  }
-  75% {
-    transform: scale3d(1.05, 0.95, 1);
-  }
-  to {
-    transform: scale3d(1, 1, 1);
+    opacity: 0.5;
   }
 }
 
-@keyframes wobble {
-  from {
-    transform: translateX(0%);
+@keyframes holographic-shift {
+  0%, 100% {
+    background-position: 0% 50%;
   }
-  15% {
-    transform: translateX(-25%) rotate(-5deg);
-  }
-  30% {
-    transform: translateX(20%) rotate(3deg);
-  }
-  45% {
-    transform: translateX(-15%) rotate(-3deg);
-  }
-  60% {
-    transform: translateX(10%) rotate(2deg);
-  }
-  75% {
-    transform: translateX(-5%) rotate(-1deg);
-  }
-  to {
-    transform: translateX(0%);
+  50% {
+    background-position: 100% 50%;
   }
 }
 
-@keyframes jello {
-  from, 11.1%, to {
-    transform: translate3d(0, 0, 0);
-  }
-  22.2% {
-    transform: skewX(-12.5deg) skewY(-12.5deg);
-  }
-  33.3% {
-    transform: skewX(6.25deg) skewY(6.25deg);
-  }
-  44.4% {
-    transform: skewX(-3.125deg) skewY(-3.125deg);
-  }
-  55.5% {
-    transform: skewX(1.5625deg) skewY(1.5625deg);
-  }
-  66.6% {
-    transform: skewX(-0.78125deg) skewY(-0.78125deg);
-  }
-  77.7% {
-    transform: skewX(0.390625deg) skewY(0.390625deg);
-  }
-  88.8% {
-    transform: skewX(-0.1953125deg) skewY(-0.1953125deg);
-  }
-}
-
-@keyframes heart-beat {
+@keyframes holographic-sweep {
   0% {
-    transform: scale(1);
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
   }
-  14% {
-    transform: scale(1.3);
-  }
-  28% {
-    transform: scale(1);
-  }
-  42% {
-    transform: scale(1.3);
-  }
-  70% {
-    transform: scale(1);
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
   }
 }
 
-/* === COMPONENT BASE STYLES === */
+@keyframes holographic-text-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
 
-/* Premium Button Base */
-.btn-premium {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  padding: var(--space-3) var(--space-6);
+/* === COMPONENT STYLES === */
+
+/* Clean Sidebar */
+.sidebar-clean {
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Clean Input */
+.input-clean {
+  width: 100%;
+  padding: var(--space-3);
   font-family: var(--font-body);
-  font-weight: var(--font-weight-medium);
   font-size: var(--text-sm);
-  line-height: var(--leading-tight);
-  border-radius: var(--radius-lg);
-  border: none;
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--dark-text);
+  transition: all var(--transition-normal);
+}
+
+.input-clean:focus {
+  outline: none;
+  border-color: var(--pokemon-blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Clean Select */
+.select-clean {
+  width: 100%;
+  padding: var(--space-3);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--dark-text);
   cursor: pointer;
-  transition: all var(--duration-normal) var(--ease-premium);
-  overflow: hidden;
+  transition: all var(--transition-normal);
 }
 
-.btn-premium::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
-  transform: translateX(-100%);
-  transition: transform var(--duration-slower) var(--ease-premium);
-}
-
-.btn-premium:hover::before {
-  transform: translateX(100%);
-}
-
-/* Premium Card Base */
-.card-premium {
-  position: relative;
-  background: var(--glass-primary);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-2xl);
-  padding: var(--space-6);
-  box-shadow: var(--shadow-lg);
-  transition: all var(--duration-normal) var(--ease-premium);
-  overflow: hidden;
-}
-
-.card-premium:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-premium);
-  background: var(--glass-elevated);
+.select-clean:focus {
+  outline: none;
+  border-color: var(--pokemon-blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 /* === RESPONSIVE DESIGN === */
+
+/* Mobile-Optimized Animations */
+@media (max-width: 768px) {
+  /* Reduce animation complexity on mobile for better performance */
+  .card-holographic::after {
+    display: none; /* Disable complex gradients on mobile */
+  }
+  
+  .holographic-foil::before {
+    opacity: 0.3; /* Reduce foil intensity on mobile */
+  }
+  
+  /* Simplify hover effects for touch devices */
+  .card-hover:hover {
+    transform: translateY(-2px) scale(1.01); /* Less dramatic scale */
+  }
+  
+  /* Optimize loading spinners for mobile */
+  .loading-spinner {
+    border-width: 2px; /* Thinner borders for better mobile performance */
+  }
+  
+  /* Reduce backdrop blur intensity on mobile for performance */
+  .glass-minimal {
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+  }
+}
+
+/* Touch-specific optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Touch devices - optimize interactions */
+  .card-holographic:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease-out;
+  }
+  
+  .btn-clean:active,
+  .btn-primary:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease-out;
+  }
+  
+  /* Remove hover effects that don't work well on touch */
+  .holographic-foil:hover::before {
+    opacity: 0;
+  }
+  
+  /* Simplify touch interactions */
+  .interactive:active {
+    transform: scale(0.98);
+  }
+}
+
+/* High-performance mobile optimizations */
+@media (max-width: 480px) {
+  /* Disable expensive animations on small screens */
+  .holographic-bg,
+  .holographic-text {
+    animation: none;
+    background: var(--pokemon-red); /* Fallback solid color */
+  }
+  
+  /* Optimize card grids for mobile */
+  .card-holographic {
+    background: var(--white); /* Solid background on small screens */
+  }
+  
+  /* Reduce shadow complexity */
+  .card-hover:hover {
+    box-shadow: var(--shadow-md);
+  }
+}
+
+/* Landscape mobile optimizations */
+@media (max-width: 768px) and (orientation: landscape) {
+  /* Optimize for mobile landscape */
+  .sidebar-clean {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -750,11 +754,11 @@
 /* High contrast mode support */
 @media (prefers-contrast: high) {
   :root {
-    --glass-border: rgba(255, 255, 255, 0.5);
-    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.8);
+    --border-color: #000000;
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
   }
   
   .dark {
-    --glass-border: rgba(0, 0, 0, 0.5);
+    --border-color: #FFFFFF;
   }
 }

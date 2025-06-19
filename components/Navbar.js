@@ -3,8 +3,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { RiGovernmentFill } from "react-icons/ri";
 import { AiOutlineBulb } from "react-icons/ai";
-import { BsSun, BsMoon, BsGlobeEuropeAfrica, BsHeart, BsSearch } from "react-icons/bs";
-import GlobalSearchModal from "./GlobalSearchModal"; // Updated path
+import { BsSun, BsMoon, BsGlobeEuropeAfrica, BsHeart, BsSearch, BsCardList, BsGrid, BsBook } from "react-icons/bs";
+import { GiPokerHand, GiCardPickup } from "react-icons/gi";
+import GlobalSearchModal from "./GlobalSearchModal";
 import { useTheme } from "../context/themecontext";
 import { useFavorites } from "../context/favoritescontext";
 import Image from "next/image";
@@ -24,13 +25,13 @@ export default function Navbar() {
     (favorites.pokemon ? favorites.pokemon.length : 0) + 
     (favorites.cards ? favorites.cards.length : 0) : 0;
 
-  // DexTrends key pages
+  // DexTrends Pokémon-themed navigation
   const navItems = [
-    { href: "/", label: "Main", icon: <RiGovernmentFill size={22} /> },
-    { href: "/tcgsets", label: "TCG Sets", icon: <RiGovernmentFill size={22} /> },
-    { href: "/leaderboard", label: "Leaderboard", icon: <AiOutlineBulb size={22} /> },
-    { href: "/pokedex", label: "Pokédex", icon: <BsGlobeEuropeAfrica size={22} /> },
-    { href: "/pocketmode", label: "Pocket Mode", icon: <AiOutlineBulb size={22} /> },
+    { href: "/", label: "Home", icon: <BsGrid size={22} />, color: "text-pokeball-red" },
+    { href: "/tcgsets", label: "TCG Sets", icon: <BsCardList size={22} />, color: "text-greatball-blue" },
+    { href: "/leaderboard", label: "Leaderboard", icon: <BsGrid size={22} />, color: "text-ultraball-yellow" },
+    { href: "/pokedex", label: "Pokédex", icon: <BsBook size={22} />, color: "text-poke-psychic" },
+    { href: "/pocketmode", label: "Pocket Mode", icon: <GiCardPickup size={22} />, color: "text-poke-electric" },
   ];
 
   const pageTitles = navItems.reduce((acc, item) => {
@@ -59,33 +60,39 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Top Navbar (Desktop & Mobile) */}
-      <div className="fixed top-0 left-0 right-0 flex items-center justify-between px-4 h-16 shadow-md z-40 bg-navbar text-text-navbar backdrop-blur-sm">
-        <Link href="/" className="flex items-center gap-x-2 text-xl font-bold text-foreground overflow-hidden">
-          <RiGovernmentFill size={24} className="flex-shrink-0 text-primary" />
-          <span className="truncate">DexTrends</span>
+      {/* Clean Navbar */}
+      <div className="fixed top-0 left-0 right-0 flex items-center justify-between px-4 h-16 z-40 bg-white border-b border-border-color shadow-sm">
+        <Link href="/" className="flex items-center gap-x-3 text-xl font-bold text-pokemon-red overflow-hidden hover:opacity-80 transition-opacity duration-300">
+          <div className="flex-shrink-0 w-8 h-8 bg-pokemon-red rounded-full flex items-center justify-center">
+            <BsGrid size={20} className="text-white" />
+          </div>
+          <span className="truncate">
+            DexTrends
+          </span>
         </Link>
-        <nav className="flex items-center gap-x-6">
+        <nav className="hidden md:flex items-center gap-x-2">
           {navItems.map(item => (
             <Link
               key={`topnav-${item.href}`}
               href={item.href}
-              className={`flex items-center gap-x-2 px-3 py-2 rounded-app-md text-base font-medium transition-colors cursor-pointer
+              className={`group flex items-center gap-x-2 px-4 py-2 rounded-lg font-medium transition-all duration-300 cursor-pointer border-2
                 ${router.pathname === item.href
-                  ? 'bg-primary/10 text-primary dark:bg-primary/20'
-                  : 'text-text-navbar hover:bg-surface-hovered hover:text-foreground'}`}
+                  ? 'bg-pokemon-red text-white border-pokemon-red shadow-md'
+                  : 'text-dark-text border-transparent hover:border-border-color hover:bg-light-grey'}`}
               style={{ pointerEvents: 'auto' }}
             >
-              <span className="flex-shrink-0 w-5 h-5">{item.icon}</span>
-              <span className="truncate">{item.label}</span>
+              <span className={`flex-shrink-0 w-5 h-5 transition-colors duration-300 ${router.pathname === item.href ? 'text-white' : 'text-pokemon-red'}`}>
+                {item.icon}
+              </span>
+              <span className="truncate text-sm font-semibold">{item.label}</span>
             </Link>
           ))}
         </nav>
-        <div className="flex items-center gap-x-2">
+        <div className="flex items-center gap-x-3">
           <button
             aria-label="Open global search"
             title="Search (Cmd+K)"
-            className="p-2 rounded-full hover:bg-surface-hovered focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring text-primary border border-primary bg-white/80 dark:bg-gray-800/80 shadow"
+            className="p-3 rounded-lg bg-pokemon-blue text-white hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pokemon-blue shadow-sm transition-all duration-300"
             onClick={() => searchModalRef.current?.open()}
           >
             <BsSearch size={18} />
@@ -95,12 +102,12 @@ export default function Navbar() {
             <a
               aria-label="View favorites"
               title="View favorites"
-              className="relative p-2 rounded-full hover:bg-surface-hovered focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring text-primary"
+              className="relative p-3 rounded-lg bg-pokemon-yellow text-white hover:bg-yellow-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pokemon-yellow shadow-sm transition-all duration-300"
               data-is-navbar="true"
             >
               <BsHeart size={18} />
               {totalFavorites > 0 && (
-                <span className="absolute top-0 right-0 -mt-1 -mr-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-pokemon-red text-white text-xs font-bold rounded-full min-w-5 h-5 flex items-center justify-center px-1 shadow-sm">
                   {totalFavorites > 99 ? '99+' : totalFavorites}
                 </span>
               )}
@@ -110,13 +117,63 @@ export default function Navbar() {
           <button
             aria-label={theme === 'dark' ? "Activate light mode" : "Activate dark mode"}
             title={theme === 'dark' ? "Activate light mode" : "Activate dark mode"}
-            className="p-2 rounded-full hover:bg-surface-hovered focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="p-3 rounded-lg border border-border-color bg-white text-dark-text hover:bg-light-grey focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pokemon-blue shadow-sm transition-all duration-300"
             onClick={toggleTheme}
           >
-            {theme === 'dark' ? <BsSun size={18} /> : <BsMoon size={18} />}
+            {theme === 'dark' ? 
+              <BsSun size={18} className="text-pokemon-yellow" /> : 
+              <BsMoon size={18} className="text-pokemon-blue" />
+            }
+          </button>
+          
+          {/* Mobile Menu Button */}
+          <button
+            id="mobile-menu-button"
+            className="md:hidden p-3 rounded-lg bg-pokemon-red text-white hover:bg-red-700 shadow-sm transition-all duration-300 touch-manipulation"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle mobile menu"
+            style={{ minHeight: '48px', minWidth: '48px' }}
+          >
+            <div className="w-5 h-5 flex flex-col justify-center space-y-1">
+              <div className={`w-full h-0.5 bg-white transition-all duration-300 ${mobileOpen ? 'rotate-45 translate-y-1' : ''}`} />
+              <div className={`w-full h-0.5 bg-white transition-all duration-300 ${mobileOpen ? 'opacity-0' : ''}`} />
+              <div className={`w-full h-0.5 bg-white transition-all duration-300 ${mobileOpen ? '-rotate-45 -translate-y-1' : ''}`} />
+            </div>
           </button>
         </div>
       </div>
+      
+      {/* Mobile Menu Overlay */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-50 md:hidden">
+          <div className="fixed inset-0 bg-black/50" onClick={() => setMobileOpen(false)} />
+          <div 
+            ref={menuWrapperRef}
+            className="fixed top-16 right-0 left-0 bg-white/95 backdrop-blur-sm border-t border-border-color p-4 shadow-lg"
+          >
+            <nav className="flex flex-col space-y-2">
+              {navItems.map(item => (
+                <Link
+                  key={`mobile-${item.href}`}
+                  href={item.href}
+                  className={`flex items-center gap-x-3 px-4 py-3 rounded-lg font-medium transition-all duration-300 border-2 touch-manipulation
+                    ${router.pathname === item.href
+                      ? 'bg-pokemon-red text-white border-pokemon-red'
+                      : 'text-dark-text border-transparent hover:border-border-color hover:bg-light-grey'}`}
+                  onClick={() => setMobileOpen(false)}
+                  style={{ minHeight: '48px' }}
+                >
+                  <span className={`flex-shrink-0 w-6 h-6 ${router.pathname === item.href ? 'text-white' : 'text-pokemon-red'}`}>
+                    {item.icon}
+                  </span>
+                  <span className="font-semibold">{item.label}</span>
+                </Link>
+              ))}
+            </nav>
+          </div>
+        </div>
+      )}
+      
       {/* Spacer for fixed navbar */}
       <div className="h-16" />
       <GlobalSearchModal ref={searchModalRef} />

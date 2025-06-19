@@ -2,458 +2,309 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Premium Typography Base Styles */
+/* Clean Base Styles */
 html {
   font-family: var(--font-body);
-  font-feature-settings: 'cv11', 'ss01';
-  font-variation-settings: 'opsz' 32;
   scroll-behavior: smooth;
-}
-
-body {
-  font-family: var(--font-body);
-  font-weight: var(--font-weight-normal);
-  line-height: var(--leading-normal);
-  letter-spacing: -0.011em;
-  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Premium Heading Styles */
+body {
+  font-family: var(--font-body);
+  font-weight: var(--font-normal);
+  line-height: var(--leading-normal);
+  color: var(--dark-text);
+  background: var(--page-bg);
+  margin: 0;
+  padding: 0;
+  /* Mobile performance optimizations */
+  -webkit-overflow-scrolling: touch;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+}
+
+/* Clean Heading Styles */
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-display);
-  font-weight: var(--font-weight-bold);
+  font-family: var(--font-heading);
+  font-weight: var(--font-semibold);
   line-height: var(--leading-tight);
-  letter-spacing: -0.025em;
-  color: var(--color-text-heading);
+  color: var(--dark-text);
+  margin: 0;
 }
 
 h1 {
-  font-size: var(--text-5xl);
-  font-weight: var(--font-weight-black);
-  background: var(--primary-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -0.04em;
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  color: var(--pokemon-red);
 }
 
 h2 {
-  font-size: var(--text-4xl);
-  font-weight: var(--font-weight-extrabold);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-semibold);
 }
 
 h3 {
-  font-size: var(--text-3xl);
-  font-weight: var(--font-weight-bold);
-}
-
-h4 {
-  font-size: var(--text-2xl);
-  font-weight: var(--font-weight-semibold);
-}
-
-h5 {
   font-size: var(--text-xl);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-medium);
 }
 
-h6 {
-  font-size: var(--text-lg);
-  font-weight: var(--font-weight-medium);
-}
-
-/* Premium Link Styles */
+/* Clean Link Styles */
 a {
-  color: var(--color-text-link);
+  color: var(--pokemon-blue);
   text-decoration: none;
-  transition: all var(--duration-fast) var(--ease-premium);
-  position: relative;
+  transition: color var(--transition-normal);
 }
 
 a:hover {
-  color: var(--color-text-link-hover);
+  color: #1E40AF;
 }
 
 /* Focus styles for accessibility */
 :focus-visible {
-  outline: 2px solid rgb(var(--color-primary-default-val));
+  outline: 2px solid var(--pokemon-blue);
   outline-offset: 2px;
   border-radius: var(--radius-sm);
 }
 
-/* Custom scrollbar */
+/* Clean scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--glass-secondary);
-  border-radius: var(--radius-full);
+  background: var(--light-grey);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--glass-primary);
+  background: var(--border-grey);
   border-radius: var(--radius-full);
-  transition: background var(--duration-normal) var(--ease-premium);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--glass-elevated);
+  background: var(--text-grey);
 }
 
 /* Selection styles */
 ::selection {
-  background: rgba(var(--color-primary-default-val), 0.2);
-  color: var(--color-text-body);
+  background: rgba(37, 99, 235, 0.2);
+  color: var(--dark-text);
 }
 
-/* Line clamp utilities for text truncation */
-.line-clamp-1 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-}
-
-.line-clamp-2 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-
-/*
-  Define CSS Variables for the entire color palette.
-  These will be the single source of truth for colors,
-  referenced by tailwind.config.js.
-*/
+/* Color Variables for Tailwind */
 :root {
-  /* Updated Core Palette Values */
-  --color-primary-default-val: 255 0 0; /* #FF0000 (Pokédex Red) */
-  --color-primary-darker-val: 200 0 0; /* #C80000 */
-  --color-secondary-default-val: 255 255 0; /* #FFFF00 (Pokédex Yellow) */
-  --color-secondary-darker-val: 200 200 0; /* #C8C800 */
-  --color-accent-default-val: 0 0 255; /* #0000FF (Pokédex Blue) */
-  --color-accent-darker-val: 0 0 200; /* #0000C8 */
+  /* Clean primary colors */
+  --color-primary-default-val: 220 38 38; /* Pokemon Red */
+  --color-secondary-default-val: 37 99 235; /* Pokemon Blue */
+  --color-accent-default-val: 245 158 11; /* Pokemon Yellow */
+  
+  /* Clean backgrounds */
+  --color-background-default: var(--page-bg);
+  --color-surface-default: var(--card-bg);
+  --color-navbar-default: var(--white);
+  
+  /* Clean text colors */
+  --color-text-heading: var(--dark-text);
+  --color-text-body: var(--dark-text);
+  --color-text-muted: var(--text-grey);
+  --color-text-link: var(--pokemon-blue);
+  --color-text-link-hover: #1E40AF;
+  
+  /* Clean card and component colors */
+  --color-card-background: var(--card-bg);
+  --color-card-foreground: var(--dark-text);
+  --color-border-default: var(--border-color);
+}
 
-  /* Updated Light Theme Colors */
-  --color-background-default: #f0f8ff; /* Light blue background */
-  --color-surface-default: #ffffff;
-  --color-navbar-default: rgba(255, 255, 255, 0.9);
-  --color-navbar-scrolled: rgba(255, 255, 255, 1);
+/* === MOBILE OPTIMIZATIONS === */
 
-  /* Updated Text Colors */
-  --color-text-heading: #FF0000; /* Red for headings */
-  --color-text-body: #212529;
-  --color-text-link: var(--color-primary-default);
-  --color-text-link-hover: var(--color-primary-darker);
+/* Touch-friendly interactive elements */
+button, a, [role="button"], input, select, textarea {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
 
-  /* Updated Card and Button Styling */
-  --color-card-background: #FFFFE0; /* Light yellow for cards */
-  --color-card-foreground: #212529;
-  --color-button-background: var(--color-primary-default);
-  --color-button-hover: var(--color-primary-darker);
-  --color-button-text: #ffffff;
+/* Ensure minimum touch target sizes */
+@media (max-width: 768px) {
+  button, a[role="button"], input[type="submit"], input[type="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Improve focus visibility on mobile */
+  *:focus {
+    outline: 2px solid var(--pokemon-blue);
+    outline-offset: 2px;
+  }
+  
+  /* Optimize text selection on mobile */
+  .touch-select-none {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+}
 
-  /* Updated Fonts */
-  --font-sans: "Pokemon", "Inter", system-ui, sans-serif;
+/* iOS specific optimizations */
+@supports (-webkit-touch-callout: none) {
+  /* Prevent iOS Safari bounce scrolling issues */
+  html, body {
+    position: relative;
+    overflow-x: hidden;
+  }
+  
+  /* Prevent zoom on input focus */
+  input, select, textarea {
+    font-size: 16px;
+  }
+  
+  /* Optimize scrolling performance */
+  .scrollable {
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+  }
+}
 
-  /* Unified border radius */
-  --radius-default: 0.75rem;
-  /* Smooth animation timing */
-  --transition-duration: 300ms;
+/* Performance optimizations for animations on mobile */
+@media (max-width: 768px) {
+  /* Use hardware acceleration wisely */
+  .card-hover, .holographic-foil, .loading-spinner {
+    will-change: transform;
+  }
+  
+  /* Reduce motion for better performance */
+  @media (prefers-reduced-motion: no-preference) {
+    .reduced-motion {
+      animation-duration: 0.15s;
+      transition-duration: 0.15s;
+    }
+  }
+}
+
+/* High DPI display optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* Ensure crisp borders and shadows on retina displays */
+  .card-holographic, .btn-clean, .input-clean {
+    border-width: 0.5px;
+  }
+}
+  /* Clean buttons */
+  --color-button-background: var(--pokemon-red);
+  --color-button-hover: #B91C1C;
+  --color-button-text: white;
 }
 
 .dark {
-  /* Dark Theme Colors */
-  --color-primary-default-val: 42 157 143; /* #2a9d8f */
-  --color-primary-darker-val: 33 134 122;  /* #21867a (Derived from #2a9d8f) */
-  /* Secondary and Accent can be reused or adjusted for dark mode */
-
-  --color-primary-default: rgb(var(--color-primary-default-val));
-  --color-primary-darker: rgb(var(--color-primary-darker-val));
-  /* Keep secondary & accent same as light, or define dark specific ones */
-  --color-secondary-default: rgb(var(--color-secondary-default-val));
-  --color-secondary-darker: rgb(var(--color-secondary-darker-val));
-  --color-accent-default: rgb(var(--color-accent-default-val));
-  --color-accent-darker: rgb(var(--color-accent-darker-val));
-
-
-  --color-background-default: #1a202c; /* Tailwind slate-900 */
-  --color-surface-default: #2d3748;    /* Tailwind slate-800 */
-  --color-navbar-default: rgba(26, 32, 44, 0.8);
-  --color-navbar-scrolled: rgba(26, 32, 44, 0.95);
-
-  --color-text-heading: #e2e8f0;    /* Tailwind slate-200 */
-  --color-text-subheading: #e2e8f0;
-  --color-text-body: #cbd5e0;       /* Tailwind slate-300 */
-  --color-text-muted: #94a3b8;      /* Tailwind slate-400 */
-  --color-text-inverted: #1a202c;   /* Background color for text on primary bg */
-  --color-text-link: var(--color-primary-default);
-  --color-text-link-hover: var(--color-primary-darker);
-  --color-text-highlight: var(--color-accent-default);
-  --color-text-highlight-hover: var(--color-accent-darker);
-
-  --color-border-default: #4a5568;    /* Tailwind slate-600 */
-  --color-shadow-default: rgba(0, 0, 0, 0.25); /* Darker shadow */
-  --color-chart-background: #251F14; /* Example */
-
-  /* Semantic UI Element Colors - Dark */
-  --color-foreground-default: var(--color-text-body);
-  --color-foreground-muted: var(--color-text-muted);
-  --color-card-background: var(--color-surface-default);
-  --color-card-foreground: var(--color-text-body);
-  --color-input-background: var(--color-surface-default);
-  --color-input-border: var(--color-border-default);
-  --color-input-text: var(--color-text-body);
-  --color-input-placeholder: var(--color-text-muted);
+  /* Dark theme adjustments */
+  --color-background-default: var(--page-bg);
+  --color-surface-default: var(--card-bg);
+  --color-navbar-default: var(--card-bg);
+  
+  --color-text-heading: var(--dark-text);
+  --color-text-body: var(--dark-text);
+  --color-text-muted: var(--text-grey);
+  
+  --color-card-background: var(--card-bg);
+  --color-card-foreground: var(--dark-text);
+  --color-border-default: var(--border-color);
 }
 
-/* Base HTML Element Styling */
-body {
-  @apply bg-gradient-to-br from-[#f8fafc] to-[#eff6ff] font-sans text-foreground antialiased;
-  /* font-family is set by Tailwind via config, antialiased is good */
-}
-
-html {
-  scroll-behavior: smooth;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/*
-  Global animation keyframes.
-  The fadeIn from Modal.js is included here.
-*/
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-/*
-  Utility class for the animation.
-  Tailwind JIT can pick this up, but defining it here is also fine
-  if it's a common, project-wide animation.
-*/
-.animate-fadeIn {
-  animation: fadeIn 0.3s ease-out forwards;
-}
-
-
-/* Components Layer (@layer components) - for more complex, multi-utility abstractions */
+/* Component Styles */
 @layer components {
-  /* Typography Base Styles - Using more descriptive names */
+  /* Clean typography */
   .text-page-heading {
-    @apply text-3xl font-bold text-text-heading mb-6 md:text-4xl;
+    @apply text-2xl font-semibold text-pokemon-red mb-4 md:text-3xl;
   }
 
-  .text-section-heading { /* Renamed from .text-section-title for consistency */
-    @apply text-xl font-semibold text-text-heading mb-4 md:text-2xl;
+  .text-section-heading {
+    @apply text-xl font-medium mb-3 md:text-2xl;
   }
 
-  .text-kpi-value { /* Maintained from original globals.css */
-     @apply text-3xl font-bold text-text-heading mt-1;
+  .text-content-default {
+    @apply text-base leading-relaxed;
   }
 
-  .text-content-default { /* For default paragraph text */
-    @apply text-foreground leading-relaxed md:text-lg;
+  .text-content-muted {
+    @apply text-sm;
+    color: var(--text-grey);
   }
 
-  .text-content-muted { /* For muted paragraph text */
-    @apply text-foreground-muted text-sm;
-  }
-
-  .text-content-link { /* For muted paragraph text */
-    @apply text-text-link hover:text-text-link-hover font-medium;
-  }
-
-  /* Button Base Styles */
+  /* Clean buttons */
   .btn {
-    @apply px-4 py-2 rounded-[var(--radius-default)] font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 transition-colors duration-[var(--transition-duration)] transform;
-  }
-  .btn:hover {
-    @apply scale-105;
-    transition-duration: var(--transition-duration);
+    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-md border transition-all duration-200;
   }
 
   .btn-primary {
-    @apply btn bg-primary text-primary-foreground hover:bg-primary-hover focus-visible:ring-primary;
+    @apply btn bg-pokemon-red border-pokemon-red text-white hover:bg-red-700;
   }
 
   .btn-secondary {
-    @apply btn bg-secondary text-secondary-foreground hover:bg-secondary-hover focus-visible:ring-secondary;
+    @apply btn bg-white text-dark-text hover:bg-off-white;
+    border-color: var(--border-color);
   }
 
-  .btn-accent {
-    @apply btn bg-accent text-accent-foreground hover:bg-accent-hover focus-visible:ring-accent;
-  }
-
-  .btn-link {
-    @apply font-medium text-content-link hover:underline focus:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded-app-sm;
-  }
-
-  /* Card Base Styles */
+  /* Clean cards */
   .card {
-    @apply bg-card text-card-foreground rounded-[var(--radius-default)] shadow-md p-4 transition-transform duration-[var(--transition-duration)];
+    @apply bg-card-bg border border-border-color rounded-lg shadow-sm p-4 transition-all duration-200;
   }
+
   .card:hover {
-    @apply shadow-lg scale-105;
+    @apply shadow-md transform -translate-y-0.5;
   }
 
-  /* Form Input Base Styling */
-  .input { /* Renamed from input-base for simplicity */
-    @apply block w-full px-3 py-2 border border-input-border rounded-[var(--radius-default)] shadow-sm
-           placeholder-input-placeholder focus:outline-none focus:ring-1 focus:ring-primary
-           focus:border-primary bg-input text-input-text text-sm;
-  }
-  select.input { /* Ensure select styling is consistent */
-      @apply pr-8; /* Add padding for select arrow if not using @tailwindcss/forms's .form-select */
-  }
-
-  /* Specific utility patterns that are composed of multiple Tailwind classes */
-  /* These were .card-padding and .section-spacing-y */
-  .card-padding-default {
-    @apply p-4 md:p-6;
-  }
-
-  .section-spacing-y-default {
-    @apply py-4 md:py-12;
+  /* Clean inputs */
+  .input {
+    @apply w-full px-3 py-2 border border-border-color rounded-md bg-white text-dark-text focus:outline-none focus:border-pokemon-blue focus:ring-1;
+    color: var(--dark-text);
   }
   
-  /* Type badge styling for consistent look across the app */
-  .type-badge {
-    @apply inline-flex items-center justify-center rounded-full font-bold uppercase text-white shadow-sm px-3 py-1 text-sm;
-    text-shadow: 0 1px 1px rgba(0,0,0,0.1);
+  .input::placeholder {
+    color: var(--text-grey);
+  }
+  
+  .input:focus {
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  }
+
+  .select {
+    @apply input cursor-pointer;
+  }
+
+  /* Layout utilities */
+  .section-spacing {
+    @apply py-8 md:py-12;
+  }
+
+  .card-padding {
+    @apply p-4 md:p-6;
   }
 }
 
-/* Utilities Layer (@layer utilities) - for very specific, single-purpose utilities if Tailwind doesn't cover them */
+/* Utility Classes */
 @layer utilities {
-  .transition-default {
-    @apply transition-all duration-200 ease-in-out;
+  .transition-clean {
+    @apply transition-all duration-200 ease-out;
   }
 
-  /* Scroll-triggered Animations - can remain here or be JS-only */
-  .scroll-fade-in {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-  }
-  .scroll-fade-in.is-visible { /* More semantic class for JS to toggle */
-    opacity: 1;
-    transform: translateY(0);
+  /* Clean animations */
+  .animate-fade-in {
+    animation: clean-fade-in 0.3s ease-out;
   }
 
-  /* Parallax heading effect might be better handled by direct Tailwind classes or a specific component style if complex */
-  /* If the JS in _app.js remains the primary driver, a utility class like this is less useful for styling directly */
-  /* .parallax-heading-effect { ... } */
-
-  /* Custom Animations */
-  .animate-fadeIn {
-    animation: fadeIn 0.4s ease-out forwards;
+  .animate-slide-up {
+    animation: clean-slide-up 0.4s ease-out;
   }
-  .animate-scaleIn {
-    animation: scaleIn 0.4s ease-out forwards;
+
+  .hover-lift:hover {
+    @apply transform -translate-y-1 shadow-lg;
   }
 }
 
-
-/* Keyframes */
-@keyframes scaleIn {
-  0% { opacity: 0; transform: scale(0.95); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
-
-/* Third-party library overrides */
-
-/* react-datepicker */
-.react-datepicker-wrapper {
-  @apply block w-full;
-}
-.react-datepicker__input-container input,
-input.react-datepicker-ignore-onclickoutside { /* Target the actual input */
-  @apply input; /* Use the .input component style */
-}
-
-.react-datepicker {
-  @apply rounded-app-md border-border bg-surface shadow-lg text-sm;
-  font-family: var(--font-sans) !important; /* Important to override inline styles from the library */
-}
-.react-datepicker__header {
-  @apply bg-surface border-b border-border rounded-t-app-md p-2; /* Added padding */
-  /* color for header text is inherited or can be set to text-heading */
-}
-.react-datepicker__current-month,
-.react-datepicker-time__header, /* Added for time picker consistency */
-.react-datepicker-year-header {  /* Added for year picker consistency */
-  @apply font-semibold text-text-heading;
-}
-.react-datepicker__day-name,
-.react-datepicker__day,
-.react-datepicker__time-name { /* Added for time picker consistency */
-  @apply text-text-body w-8 h-8 leading-8 m-0.5; /* Standardized size and margin */
-}
-.react-datepicker__day:hover,
-.react-datepicker__month-text:hover, /* Added for month picker */
-.react-datepicker__quarter-text:hover, /* Added for quarter picker */
-.react-datepicker__year-text:hover { /* Added for year picker */
-  @apply bg-primary rounded-app-sm; /* Use primary with opacity for hover */
-}
-.react-datepicker__day--selected,
-.react-datepicker__day--in-selecting-range,
-.react-datepicker__day--in-range,
-.react-datepicker__month-text--selected, /* Added */
-.react-datepicker__month-text--in-selecting-range, /* Added */
-.react-datepicker__month-text--in-range, /* Added */
-.react-datepicker__quarter-text--selected, /* Added */
-.react-datepicker__quarter-text--in-selecting-range, /* Added */
-.react-datepicker__quarter-text--in-range, /* Added */
-.react-datepicker__year-text--selected, /* Added */
-.react-datepicker__year-text--in-selecting-range, /* Added */
-.react-datepicker__year-text--in-range { /* Added */
-  @apply bg-primary text-primary-foreground rounded-app-sm;
-  /* font-weight: normal; Remove bolding if not desired */
-}
-.react-datepicker__day--keyboard-selected,
-.react-datepicker__month-text--keyboard-selected, /* Added */
-.react-datepicker__quarter-text--keyboard-selected, /* Added */
-.react-datepicker__year-text--keyboard-selected { /* Added */
-  @apply bg-primary rounded-app-sm; /* Slightly different for keyboard focus */
-}
-.react-datepicker__day--disabled {
-  @apply text-foreground-muted cursor-not-allowed opacity-50;
-}
-.react-datepicker__navigation {
-  @apply top-2; /* Adjust vertical alignment */
-}
-.react-datepicker__navigation-icon::before {
-  border-color: var(--color-text-body); /* Ensure arrow color is themable */
-  border-width: 2px 2px 0 0;
-  height: 7px; /* Adjust size if needed */
-  width: 7px;  /* Adjust size if needed */
-}
-.react-datepicker__navigation:hover .react-datepicker__navigation-icon::before {
-  border-color: var(--color-text-link-hover);
-}
-
-/* Dark mode overrides for react-datepicker, if not covered by CSS vars */
-/* Most styles should adapt via CSS variables. Explicit dark overrides are for structural elements or where variables don't reach. */
-.dark .react-datepicker {
-   /* Already inherits from .dark :root vars, but can specify if needed */
-}
-.dark .react-datepicker__day:hover,
-.dark .react-datepicker__month-text:hover,
-.dark .react-datepicker__quarter-text:hover,
-.dark .react-datepicker__year-text:hover {
-  @apply bg-primary; /* Ensure dark hover is distinct */
-}
-/* Other dark mode specific styles can be added if var() updates are not sufficient */
-
-/* Custom animations */
-@keyframes fadeIn {
+/* Clean Keyframes */
+@keyframes clean-fade-in {
   from {
     opacity: 0;
   }
@@ -462,7 +313,7 @@ input.react-datepicker-ignore-onclickoutside { /* Target the actual input */
   }
 }
 
-@keyframes slideUp {
+@keyframes clean-slide-up {
   from {
     opacity: 0;
     transform: translateY(20px);
@@ -473,33 +324,13 @@ input.react-datepicker-ignore-onclickoutside { /* Target the actual input */
   }
 }
 
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
+/* Responsive Design */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-.animate-slideUp {
-  animation: slideUp 0.5s ease-in-out;
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-/* ECharts text color adjustments */
-/* More specific selectors might be needed depending on chart configurations */
-.echarts-for-react text { /* General text elements in ECharts */
-  fill: var(--color-text-muted); /* Default for axis labels, legend text etc. */
-}
-/* Example for legend specifically, if needed */
-.echarts-for-react .echarts-legend text {
-  fill: var(--color-text-body); /* Or a more specific color */
 }

@@ -21,6 +21,7 @@ import {
   HoverCard,
   RevealElement 
 } from "../components/ui/AnimationSystem";
+import SidebarLayout from "../components/layout/SidebarLayout";
 
 export default function PokedexIndex() {
   const router = useRouter();
@@ -376,49 +377,43 @@ export default function PokedexIndex() {
           <Head>
             <title>Pokédex | DexTrends</title>
           </Head>
-          <GlassCard className="max-w-md mx-auto animate-scale-in" elevated>
+          <div className="max-w-md mx-auto p-6 bg-white border border-border-color rounded-lg shadow-sm">
             <div className="space-y-6">
-              <div className="animate-pulse-scale">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full gradient-primary flex items-center justify-center">
-                  <div className="animate-rotate">
-                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                    </svg>
-                  </div>
+              <div className="text-center">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-pokemon-red flex items-center justify-center">
+                  <div className="loading-spinner-lg" style={{borderColor: 'rgba(255,255,255,0.3)', borderTopColor: 'white'}}></div>
                 </div>
               </div>
               
-              <div className="space-y-2">
-                <h3 className="text-xl font-display font-bold text-gray-900 dark:text-white">
+              <div className="text-center space-y-2">
+                <h3 className="text-xl font-semibold text-dark-text">
                   Loading Pokédex
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-text-grey">
                   Gathering all Pokémon data for comprehensive search...
                 </p>
               </div>
               
-              <PremiumProgress 
-                value={loadingProgress} 
-                max={100} 
-                variant="primary"
-                size="lg"
-                animated
-                showLabel
-              />
+              <div className="w-full bg-light-grey rounded-full h-2">
+                <div 
+                  className="bg-pokemon-red h-2 rounded-full transition-all duration-300" 
+                  style={{width: `${loadingProgress}%`}}
+                ></div>
+              </div>
               
-              <div className="space-y-1">
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600 dark:text-gray-400">Progress</span>
-                  <span className="font-mono text-primary font-medium">
+              <div className="text-center">
+                <div className="flex justify-between text-sm mb-1">
+                  <span className="text-text-grey">Progress</span>
+                  <span className="font-mono text-pokemon-red font-medium">
                     {Math.round(loadingProgress * 10.1)}/1010
                   </span>
                 </div>
-                <PremiumBadge variant="glass" size="sm" className="animate-pulse-scale">
+                <span className="inline-block bg-light-grey text-dark-text text-xs px-2 py-1 rounded">
                   {loadingProgress}% Complete
-                </PremiumBadge>
+                </span>
               </div>
             </div>
-          </GlassCard>
+          </div>
         </div>
       </PageTransition>
     );
@@ -436,399 +431,227 @@ export default function PokedexIndex() {
     );
   }
 
+  // Sidebar filter configuration
+  const sidebarFilters = [
+    {
+      id: 'search',
+      type: 'search',
+      label: 'Search Pokémon',
+      placeholder: 'Search by name...',
+      value: pendingSearchTerm,
+    },
+    {
+      id: 'generation',
+      type: 'select',
+      label: 'Generation',
+      placeholder: 'All Generations',
+      value: pendingGeneration,
+      options: generations,
+    },
+    {
+      id: 'types',
+      type: 'types',
+      label: 'Types',
+      value: pendingTypes,
+    },
+    {
+      id: 'categories',
+      type: 'multiselect',
+      label: 'Categories',
+      value: pendingCategories,
+      options: categories,
+    },
+    {
+      id: 'stages',
+      type: 'multiselect',
+      label: 'Evolution Stages',
+      value: pendingStages,
+      options: stages,
+    },
+    {
+      id: 'sort',
+      type: 'select',
+      label: 'Sort By',
+      value: pendingSortBy,
+      options: sortOptions,
+    },
+  ];
+
+  const handleSidebarFilterChange = (filterId, value) => {
+    switch (filterId) {
+      case 'search':
+        setPendingSearchTerm(value);
+        break;
+      case 'generation':
+        setPendingGeneration(value);
+        break;
+      case 'types':
+        setPendingTypes(value);
+        break;
+      case 'categories':
+        setPendingCategories(value);
+        break;
+      case 'stages':
+        setPendingStages(value);
+        break;
+      case 'sort':
+        setPendingSortBy(value);
+        break;
+    }
+  };
+
   return (
     <PageTransition>
-      <div className="container max-w-7xl mx-auto px-4 py-8 space-y-8">
-        <Head>
-          <title>Pokédex | DexTrends</title>
-          <meta name="description" content="Complete Pokédex with detailed information about all Pokémon" />
-        </Head>
+      <Head>
+        <title>Pokédex | DexTrends</title>
+        <meta name="description" content="Complete Pokédex with detailed information about all Pokémon" />
+      </Head>
 
-        <RevealElement className="text-center">
-          <div className="space-y-4 mb-8">
-            <h1 className="font-display text-5xl md:text-6xl font-black animate-slide-in-top">
-              Pokédex
-            </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto animate-slide-in-bottom delay-200">
-              Discover detailed information about all Pokémon species, including stats, types, and evolutions.
-            </p>
-            <div className="flex items-center justify-center gap-2 animate-slide-in-bottom delay-300">
-              <PremiumBadge variant="glass" glow>
-                🔍 Advanced Search
-              </PremiumBadge>
-              <PremiumBadge variant="glass" glow>
-                📊 Complete Data
-              </PremiumBadge>
-              <PremiumBadge variant="glass" glow>
-                ⚡ Real-time Filtering
-              </PremiumBadge>
+      <SidebarLayout
+        sidebarFilters={sidebarFilters}
+        onFilterChange={handleSidebarFilterChange}
+        sidebarContent={
+          <div className="mt-6 space-y-4">
+            <div className="bg-pokemon-red p-4 rounded-lg text-white text-center">
+              <h4 className="font-semibold mb-2">Quick Search</h4>
+              <button
+                onClick={handleSearch}
+                className="w-full px-4 py-2 bg-white/20 rounded-lg text-white font-semibold hover:bg-white/30 transition-all duration-300"
+              >
+                Apply Filters
+              </button>
+            </div>
+            <div className="bg-white border border-border-color p-4 rounded-lg text-center">
+              <p className="text-sm text-dark-text mb-2">
+                Showing {sortedAndVisiblePokemon.length} of {filteredPokemon.length}
+              </p>
+              <p className="text-xs text-text-grey">
+                Total: {allPokemon.length}/1010
+              </p>
             </div>
           </div>
-        </RevealElement>
-
-        {/* Enhanced Search and Filter Controls */}
-        <RevealElement delay={0.4}>
-          <GlassCard className="space-y-6" elevated>
-            <div className="flex flex-col gap-6">
-              {/* Main Search Bar */}
-              <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
-                <PremiumInput
-                  type="text"
-                  placeholder="Search Pokémon..."
-                  value={pendingSearchTerm}
-                  onChange={(e) => setPendingSearchTerm(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                  className="w-80"
-                  icon={
-                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                  }
-                />
-              
-                {/* Sort Dropdown */}
-                <div className="relative">
-                  <select
-                    value={pendingSortBy}
-                    onChange={(e) => setPendingSortBy(e.target.value)}
-                    className="glass rounded-lg px-4 py-3 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent appearance-none pr-10 min-w-[200px]"
-                  >
-                    {sortOptions.map(option => (
-                      <option key={option.value} value={option.value}>
-                        Sort by {option.label}
-                      </option>
-                    ))}
-                  </select>
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </div>
-                </div>
-                
-                {/* Search Button */}
-                <PremiumButton
-                  onClick={handleSearch}
-                  variant="success"
-                  glow
-                  className="flex items-center gap-2"
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                  Search Pokémon
-                </PremiumButton>
-                
-                {/* Advanced Filters Toggle */}
-                <PremiumButton
-                  onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-                  variant="glass"
-                  className="flex items-center gap-2"
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.414A1 1 0 013 6.707V4z" />
-                  </svg>
-                  {showAdvancedFilters ? 'Hide Filters' : 'Show Filters'}
-                  <svg className={`w-4 h-4 transition-transform duration-300 ${showAdvancedFilters ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </PremiumButton>
+        }
+      >
+        <div className="space-y-8">
+          <div className="text-center">
+            <div className="space-y-4 mb-8">
+              <h1 className="text-4xl md:text-5xl font-bold text-pokemon-red">
+                Pokédex
+              </h1>
+              <p className="text-lg text-text-grey max-w-2xl mx-auto">
+                Discover detailed information about all Pokémon species, including stats, types, and evolutions.
+              </p>
+              <div className="flex items-center justify-center gap-2">
+                <span className="inline-block bg-light-grey text-dark-text text-sm px-3 py-1 rounded-full">
+                  Advanced Search
+                </span>
+                <span className="inline-block bg-light-grey text-dark-text text-sm px-3 py-1 rounded-full">
+                  Complete Data
+                </span>
+                <span className="inline-block bg-light-grey text-dark-text text-sm px-3 py-1 rounded-full">
+                  Real-time Filtering
+                </span>
               </div>
-            
-            {/* Interactive Advanced Filters Panel */}
-            {showAdvancedFilters && (
-              <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-xl p-6 border border-gray-200 dark:border-gray-700 shadow-lg">
-                <div className="mb-4 text-center">
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    🎯 Click to select multiple options, then hit <strong className="text-green-600">Search</strong> to apply
-                  </p>
-                </div>
-                
-                <div className="space-y-6">
-                  {/* Selected Filters Summary */}
-                  {(pendingTypes.length > 0 || pendingCategories.length > 0 || pendingStages.length > 0 || pendingGeneration) && (
-                    <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
-                      <h4 className="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-2">Selected Filters:</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {pendingTypes.map(type => (
-                          <span key={type} className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200 rounded-full text-xs">
-                            <TypeBadge type={type} size="sm" className="!px-1 !py-0" />
-                            <button onClick={() => toggleType(type)} className="hover:text-red-600">×</button>
-                          </span>
-                        ))}
-                        {pendingCategories.map(cat => (
-                          <span key={cat} className="inline-flex items-center gap-1 px-2 py-1 bg-purple-100 dark:bg-purple-800 text-purple-800 dark:text-purple-200 rounded-full text-xs">
-                            {categories.find(c => c.value === cat)?.label}
-                            <button onClick={() => toggleCategory(cat)} className="hover:text-red-600">×</button>
-                          </span>
-                        ))}
-                        {pendingStages.map(stage => (
-                          <span key={stage} className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 rounded-full text-xs">
-                            {stages.find(s => s.value === stage)?.label}
-                            <button onClick={() => toggleStage(stage)} className="hover:text-red-600">×</button>
-                          </span>
-                        ))}
-                        {pendingGeneration && (
-                          <span className="inline-flex items-center gap-1 px-2 py-1 bg-orange-100 dark:bg-orange-800 text-orange-800 dark:text-orange-200 rounded-full text-xs">
-                            {generations.find(g => g.value === pendingGeneration)?.label}
-                            <button onClick={() => setPendingGeneration("")} className="hover:text-red-600">×</button>
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Pokemon Types - Interactive Badge Selection */}
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-                      🔥 Pokemon Types (click to select multiple)
-                    </label>
-                    <div className="flex flex-wrap gap-2">
-                      {pokemonTypes.map(type => (
-                        <button
-                          key={type}
-                          onClick={() => toggleType(type)}
-                          className={`transition-all duration-200 transform hover:scale-105 ${
-                            pendingTypes.includes(type) 
-                              ? 'ring-2 ring-blue-500 ring-offset-2 shadow-lg' 
-                              : 'opacity-80 hover:opacity-100'
-                          }`}
-                        >
-                          <TypeBadge type={type} size="md" />
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Generation - Single Select */}
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-                      🎮 Generation (select one)
-                    </label>
-                    <div className="flex flex-wrap gap-2">
-                      {generations.map(gen => (
-                        <button
-                          key={gen.value}
-                          onClick={() => setPendingGeneration(pendingGeneration === gen.value ? "" : gen.value)}
-                          className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 ${
-                            pendingGeneration === gen.value
-                              ? 'bg-orange-500 text-white shadow-lg ring-2 ring-orange-300'
-                              : 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
-                          }`}
-                        >
-                          {gen.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Categories - Multi Select */}
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-                      ⭐ Categories (click to select multiple)
-                    </label>
-                    <div className="flex flex-wrap gap-2">
-                      {categories.map(cat => (
-                        <button
-                          key={cat.value}
-                          onClick={() => toggleCategory(cat.value)}
-                          className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 ${
-                            pendingCategories.includes(cat.value)
-                              ? 'bg-purple-500 text-white shadow-lg ring-2 ring-purple-300'
-                              : 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
-                          }`}
-                        >
-                          {cat.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Evolution Stages - Multi Select */}
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-                      🔄 Evolution Stages (click to select multiple)
-                    </label>
-                    <div className="flex flex-wrap gap-2">
-                      {stages.map(stage => (
-                        <button
-                          key={stage.value}
-                          onClick={() => toggleStage(stage.value)}
-                          className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 ${
-                            pendingStages.includes(stage.value)
-                              ? 'bg-green-500 text-white shadow-lg ring-2 ring-green-300'
-                              : 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
-                          }`}
-                        >
-                          {stage.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Action Buttons */}
-                <div className="mt-6 flex justify-between items-center">
-                  <button
-                    onClick={clearAllFilters}
-                    className="px-6 py-2 text-sm bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors font-medium"
-                  >
-                    🗑️ Clear All
-                  </button>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
-                    {(pendingTypes.length + pendingCategories.length + pendingStages.length + (pendingGeneration ? 1 : 0))} filters selected
-                  </div>
-                  <button
-                    onClick={handleSearch}
-                    className="px-8 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-200 flex items-center gap-2 font-semibold shadow-lg transform hover:scale-105"
-                  >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                    🔍 Search Pokemon
-                  </button>
-                </div>
-              </div>
-            )}
+            </div>
           </div>
 
           {/* Results count and stats */}
-          <div className="text-center text-gray-600 dark:text-gray-400 space-y-1">
-            <div>
-              Showing {sortedAndVisiblePokemon.length} of {filteredPokemon.length} Pokémon
-              <span className="ml-2 text-sm">
-                ({allPokemon.length}/1010 total loaded)
-              </span>
-            </div>
-            {(pendingTypes.length > 0 || selectedType || selectedGeneration || pendingCategories.length > 0 || selectedCategory || pendingStages.length > 0 || selectedStage || searchTerm) && (
-              <div className="text-sm">
-                {filteredPokemon.length} match your filters out of {allPokemon.length} total
+          <div className="text-center mb-6">
+            <div className="bg-white border border-border-color p-4 rounded-lg">
+              <div className="text-lg font-semibold text-pokemon-red mb-2">
+                Showing {sortedAndVisiblePokemon.length} of {filteredPokemon.length} Pokémon
               </div>
-            )}
-            {visibleCount < filteredPokemon.length && (
-              <div className="text-sm text-primary">
-                Scroll down to load more...
+              <div className="text-sm text-text-grey">
+                Total Loaded: {allPokemon.length}/1010
               </div>
-            )}
-            </div>
-          </GlassCard>
-        </RevealElement>
-        {/* Enhanced Pokemon Grid */}
-        <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6 mb-8" staggerDelay={0.05}>
-          {sortedAndVisiblePokemon.map((poke, index) => (
-            <StaggerItem key={poke.id}>
-              <HoverCard 
-                onClick={() => handlePokemonClick(poke.id)}
-                className="group cursor-pointer"
-                scale={1.03}
-                y={-6}
-              >
-                <GlassCard 
-                  className="p-4 hover-lift interactive border border-glass-border hover:border-primary/20 transition-all duration-300"
-                  hoverable
-                >
-                <div className="text-center">
-                  <div className="relative w-24 h-24 mx-auto mb-3">
-                    <Image
-                      src={poke.sprite || "/dextrendslogo.png"}
-                      alt={poke.name}
-                      fill
-                      className="object-contain group-hover:scale-110 transition-transform duration-300"
-                      loading="lazy"
-                      placeholder="blur"
-                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Eve6J4HNvbzTe7+v1+8BvxRf4X3/f/9k="
-                      sizes="96px"
-                    />
-                  </div>
-                  
-                  <h3 className="font-bold text-lg capitalize text-gray-900 dark:text-white mb-1 group-hover:text-primary transition-colors">
-                    {poke.name.replace("-", " ")}
-                  </h3>
-                  
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                    #{String(poke.id).padStart(3, "0")}
-                  </p>
-                  
-                  {/* Types */}
-                  <div className="flex justify-center gap-1 mb-2">
-                    {poke.types.map(type => (
-                      <TypeBadge key={type} type={type} size="sm" />
-                    ))}
-                  </div>
-                  
-                  {/* Enhanced stats */}
-                  <div className="text-xs text-gray-600 dark:text-gray-400 space-y-1">
-                    <div>Height: {(poke.height / 10).toFixed(1)}m</div>
-                    <div>Weight: {(poke.weight / 10).toFixed(1)}kg</div>
-                    {poke.baseStats > 0 && (
-                      <div>BST: {poke.baseStats}</div>
-                    )}
-                    <div className="flex justify-center gap-1 mt-1">
-                      <span className="inline-block bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 text-xs px-1.5 py-0.5 rounded">
-                        Gen {poke.generation}
-                      </span>
-                      {poke.isLegendary && (
-                        <span className="inline-block bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 text-xs px-1.5 py-0.5 rounded">
-                          L
-                        </span>
-                      )}
-                      {poke.isMythical && (
-                        <span className="inline-block bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 text-xs px-1.5 py-0.5 rounded">
-                          M
-                        </span>
-                      )}
-                      {poke.isUltraBeast && (
-                        <span className="inline-block bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 text-xs px-1.5 py-0.5 rounded">
-                          UB
-                        </span>
-                      )}
-                    </div>
-                  </div>
+              {(pendingTypes.length > 0 || selectedType || selectedGeneration || pendingCategories.length > 0 || selectedCategory || pendingStages.length > 0 || selectedStage || searchTerm) && (
+                <div className="text-sm mt-1 text-pokemon-blue">
+                  {filteredPokemon.length} match your active filters
                 </div>
-                </GlassCard>
-              </HoverCard>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
-
-        {/* Loading indicator for infinite scroll */}
-        {isLoadingMore && (
-          <div className="flex justify-center py-8">
-            <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-              <span>Loading more Pokémon...</span>
+              )}
+              {visibleCount < filteredPokemon.length && (
+                <div className="text-sm text-pokemon-yellow mt-2">
+                  ↓ Scroll down to load more...
+                </div>
+              )}
             </div>
           </div>
-        )}
 
-        {filteredPokemon.length === 0 && !loading && (
-          <div className="text-center py-12">
-            <p className="text-xl text-gray-500 dark:text-gray-400">
-              No Pokémon found matching your criteria
-            </p>
-          </div>
-        )}
-        
-        {/* No results message */}
-        {filteredPokemon.length === 0 && !loading && (
-          <RevealElement className="text-center py-12">
-            <GlassCard className="max-w-md mx-auto">
-              <div className="space-y-4">
-                <div className="text-6xl animate-bounce-gentle">🔍</div>
-                <h3 className="text-xl font-display font-bold text-gray-900 dark:text-white">
-                  No Pokémon Found
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  No Pokémon match your current search criteria. Try adjusting your filters.
-                </p>
-                <PremiumButton onClick={clearAllFilters} variant="glass">
-                  Clear All Filters
-                </PremiumButton>
+          {/* Enhanced Pokemon Grid */}
+          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6 mb-8" staggerDelay={0.05}>
+            {sortedAndVisiblePokemon.map((poke, index) => (
+              <StaggerItem key={poke.id}>
+                <div 
+                  onClick={() => handlePokemonClick(poke.id)}
+                  className="group cursor-pointer bg-white border border-border-color rounded-lg p-4 shadow-sm card-holographic"
+                >
+                    <div className="text-center">
+                      <div className="relative w-20 h-20 mx-auto mb-3 bg-off-white rounded-lg p-2">
+                        <Image
+                          src={poke.sprite || "/dextrendslogo.png"}
+                          alt={poke.name}
+                          fill
+                          className="object-contain group-hover:scale-110 transition-transform duration-300"
+                          loading="lazy"
+                          placeholder="blur"
+                          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Eve6J4HNvbzTe7+v1+8BvxRf4X3/f/9k="
+                          sizes="80px"
+                        />
+                      </div>
+                      
+                      <p className="text-xs text-text-grey mb-1">
+                        #{String(poke.id).padStart(3, "0")}
+                      </p>
+                      
+                      <h3 className="font-medium text-sm capitalize text-dark-text mb-2 group-hover:text-pokemon-red transition-colors">
+                        {poke.name.replace("-", " ")}
+                      </h3>
+                      
+                      {/* Types only */}
+                      <div className="flex justify-center gap-1">
+                        {poke.types.map(type => (
+                          <TypeBadge key={type} type={type} size="sm" />
+                        ))}
+                      </div>
+                    </div>
+                </div>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+
+          {/* Loading indicator for infinite scroll */}
+          {isLoadingMore && (
+            <div className="flex justify-center py-8">
+              <div className="flex items-center gap-3 text-text-grey">
+                <div className="loading-spinner-sm"></div>
+                <span>Loading more Pokémon...</span>
               </div>
-            </GlassCard>
-          </RevealElement>
-        )}
-      </div>
+            </div>
+          )}
+          
+          {/* No results message */}
+          {filteredPokemon.length === 0 && !loading && (
+            <div className="text-center py-12">
+              <div className="max-w-md mx-auto bg-white border border-border-color rounded-lg p-6">
+                <div className="space-y-4">
+                  <h3 className="text-xl font-semibold text-dark-text">
+                    No Pokémon Found
+                  </h3>
+                  <p className="text-text-grey">
+                    No Pokémon match your current search criteria. Try adjusting your filters.
+                  </p>
+                  <button 
+                    onClick={clearAllFilters} 
+                    className="px-4 py-2 bg-pokemon-red text-white rounded-lg hover:bg-red-700 transition-colors"
+                  >
+                    Clear All Filters
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </SidebarLayout>
     </PageTransition>
   );
 }

@@ -44,7 +44,7 @@ export function TypeBadge({ type, className = '', size = 'md', onClick = null, i
     'lg': 'size-lg'
   }[size] || 'size-md';
 
-  const interactiveClasses = onClick ? 'cursor-pointer' : '';
+  const interactiveClasses = onClick ? 'cursor-pointer hover:scale-105' : 'hover:scale-105';
 
   // Display name
   const displayType = typeStr
@@ -53,7 +53,7 @@ export function TypeBadge({ type, className = '', size = 'md', onClick = null, i
 
   return (
     <span
-      className={`type-badge ${colorClass} ${sizeClass} ${interactiveClasses} ${className}`}
+      className={`type-badge ${colorClass} ${sizeClass} ${interactiveClasses} transition-transform duration-200 ${className}`}
       onClick={onClick}
       role={onClick ? "button" : undefined}
       tabIndex={onClick ? 0 : undefined}

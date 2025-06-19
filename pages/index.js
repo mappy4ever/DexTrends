@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 import pokemon from "pokemontcgsdk";
 import Modal from "../components/ui/Modal";
-import CardList from "../components/CardList"; // Updated path
+import CardList from "../components/CardList";
 import CustomSiteLogo from "../components/icons/customsitelogo";
 import { getPrice, getRarityRank } from "../utils/pokemonutils.js";
+import { BsBook, BsCardList, BsGrid } from "react-icons/bs";
+import { GiCardPickup } from "react-icons/gi";
 
 const pokemonKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
 if (!pokemonKey) {
@@ -99,29 +102,61 @@ export default function IndexPage() {
 
   return (
     <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto px-2 sm:px-4 animate-fadeIn">
-      <div className="flex flex-col items-center mb-8">
-        <div className="rounded-3xl shadow-2xl border-4 border-[#FFDE59] bg-white p-6 mb-4 relative overflow-visible" style={{ background: 'linear-gradient(135deg, #fffbe6 60%, #e0f7fa 100%)' }}>
-          <div className="absolute -top-4 -right-4 animate-bounce">
-            <span className="inline-block text-yellow-400 text-3xl">✨</span>
-          </div>
-          <CustomSiteLogo size={130} className="mx-auto drop-shadow-xl" />
+      <div className="flex flex-col items-center mb-8 relative">
+        {/* Clean Logo Container */}
+        <div className="relative p-8 mb-6 transition-transform duration-300 hover:scale-105">
+          <CustomSiteLogo size={150} className="mx-auto" />
         </div>
-        <h1 className="text-4xl md:text-5xl font-extrabold text-[#FF0000] drop-shadow-lg tracking-tight text-center mb-2 font-sans">
-          Pokémon Card Search <span className="align-middle animate-pulse">✨</span>
+        
+        {/* Clean Title */}
+        <h1 className="text-4xl md:text-6xl font-bold text-center mb-4 text-pokemon-red">
+          DexTrends
         </h1>
-        <p className="text-lg md:text-xl text-[#2a2a2a] font-medium text-center mb-4 max-w-xl">
-          Discover, track, and explore Pokémon TCG card prices and trends in a beautiful Pokédex-inspired experience.
+        
+        <p className="text-lg md:text-xl text-text-grey font-medium text-center mb-6 max-w-2xl">
+          Discover, track, and explore <span className="font-bold text-pokemon-red">Pokémon TCG</span> card prices and trends in a beautiful 
+          <span className="font-bold text-pokemon-blue"> Pokédex-inspired</span> experience.
         </p>
+        
+        {/* Quick Action Tiles */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-4xl mt-8">
+          <Link href="/pokedex" className="group bg-white border border-border-color p-6 rounded-lg shadow-sm card-hover text-center">
+            <BsBook className="mx-auto mb-3 text-3xl text-pokemon-red group-hover:scale-110 transition-transform duration-300" />
+            <h3 className="font-semibold text-sm text-dark-text">Pokédex</h3>
+          </Link>
+          <Link href="/tcgsets" className="group bg-white border border-border-color p-6 rounded-lg shadow-sm card-hover text-center">
+            <BsCardList className="mx-auto mb-3 text-3xl text-pokemon-blue group-hover:scale-110 transition-transform duration-300" />
+            <h3 className="font-semibold text-sm text-dark-text">TCG Sets</h3>
+          </Link>
+          <Link href="/pocketmode" className="group bg-white border border-border-color p-6 rounded-lg shadow-sm card-hover text-center">
+            <GiCardPickup className="mx-auto mb-3 text-3xl text-pokemon-yellow group-hover:scale-110 transition-transform duration-300" />
+            <h3 className="font-semibold text-sm text-dark-text">Pocket</h3>
+          </Link>
+          <Link href="/leaderboard" className="group bg-white border border-border-color p-6 rounded-lg shadow-sm card-hover text-center">
+            <BsGrid className="mx-auto mb-3 text-3xl text-pokemon-green group-hover:scale-110 transition-transform duration-300" />
+            <h3 className="font-semibold text-sm text-dark-text">Rankings</h3>
+          </Link>
+        </div>
       </div>
-      <form onSubmit={handleSearch} className="flex flex-col md:flex-row justify-center items-center gap-3 mb-8 w-full max-w-2xl bg-white/80 rounded-xl shadow-md p-4 border border-[#FFDE59]">
-        <input
-          type="text"
-          className="input text-lg rounded-app-md w-full md:w-80 max-w-full border-2 border-[#FFDE59] focus:border-[#FF0000] focus:ring-2 focus:ring-[#FFDE59] bg-[#fffbe6] placeholder-gray-400"
-          placeholder="Search for a card (e.g., Pikachu)"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <button type="submit" className="btn btn-primary ml-0 md:ml-2 px-6 py-2 text-lg rounded-lg shadow-md bg-[#FF0000] hover:bg-[#C80000] text-white font-bold transition-all duration-150">
+      <form onSubmit={handleSearch} className="flex flex-col md:flex-row justify-center items-center gap-4 mb-8 w-full max-w-3xl">
+        <div className="relative flex-1 w-full md:max-w-lg">
+          <input
+            type="text"
+            className="input-clean px-6 py-4 text-lg rounded-lg"
+            placeholder="Search for Pokémon cards..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-text-grey">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+        </div>
+        <button 
+          type="submit" 
+          className="btn-primary px-8 py-4 text-lg font-semibold rounded-lg hover:scale-105 transition-all duration-300"
+        >
           Search
         </button>
       </form>

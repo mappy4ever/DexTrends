@@ -9,6 +9,7 @@ import { TypeFilter } from "../components/ui/TypeFilter"; // Updated path
 import PocketDeckViewer from "../components/PocketDeckViewer"; // Updated path
 import PocketRulesGuide from "../components/PocketRulesGuide"; // Updated path
 import PocketCardList from "../components/PocketCardList"; // Import PocketCardList
+import PocketDeckBuilder from "../components/ui/PocketDeckBuilder"; // Import PocketDeckBuilder
 import { fetchPocketData } from "../utils/pocketData";
 
 export default function PocketMode() {
@@ -24,7 +25,7 @@ export default function PocketMode() {
     decks: null
   });
   const [search, setSearch] = useState("");
-  const [currentView, setCurrentView] = useState("pokemon"); // pokemon, decks, rules, packs
+  const [currentView, setCurrentView] = useState("pokemon"); // pokemon, decks, builder, rules, packs
   const [typeFilter, setTypeFilter] = useState("all");
   const [sortBy, setSortBy] = useState("name"); // name, rarity
   
@@ -176,6 +177,21 @@ export default function PocketMode() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                 </svg>
                 📊 Top Decks
+              </div>
+            </button>
+            <button
+              className={`px-5 py-2.5 font-medium text-sm rounded-md transition-all whitespace-nowrap ${
+                currentView === "builder"
+                  ? "bg-primary text-white shadow-sm"
+                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+              }`}
+              onClick={() => setCurrentView("builder")}
+            >
+              <div className="flex items-center">
+                <svg className="w-5 h-5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                🔧 Deck Builder
               </div>
             </button>
             <Link href="/pocketmode/expansions">
@@ -433,6 +449,30 @@ export default function PocketMode() {
                   </button>
                 </div>
               </div>
+            </div>
+          </div>
+        ) : currentView === "builder" ? (
+          <div className="space-y-6">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold mb-4 flex items-center justify-center">
+                <svg className="w-6 h-6 mr-2 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                Deck Builder
+              </h2>
+              <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                Create your own custom Pokémon TCG Pocket deck. Build with a 20-card limit and up to 2 copies per card for strategic gameplay.
+              </p>
+            </div>
+            
+            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+              <PocketDeckBuilder 
+                availableCards={pokemon}
+                onDeckChange={(deck) => {
+                  // Handle deck changes - could save to localStorage or API
+                  console.log('Deck updated:', deck);
+                }}
+              />
             </div>
           </div>
         ) : currentView === "packs" ? (

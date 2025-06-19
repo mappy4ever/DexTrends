@@ -30,61 +30,47 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Premium, sophisticated palette
+        // Clean base colors
+        'white': 'var(--white)',
+        'off-white': 'var(--off-white)',
+        'light-grey': 'var(--light-grey)',
+        'mid-grey': 'var(--mid-grey)',
+        'border-grey': 'var(--border-grey)',
+        'text-grey': 'var(--text-grey)',
+        'dark-text': 'var(--dark-text)',
+        'charcoal': 'var(--charcoal)',
+        'black': 'var(--black)',
+        
+        // Strategic Pokémon colors
+        'pokemon-red': 'var(--pokemon-red)',
+        'pokemon-blue': 'var(--pokemon-blue)',
+        'pokemon-yellow': 'var(--pokemon-yellow)',
+        'pokemon-green': 'var(--pokemon-green)',
+        
+        // Clean semantic colors
         primary: {
-          DEFAULT: "var(--color-primary-default)",
-          foreground: "#fff",
-          hover: "var(--color-primary-darker)",
+          DEFAULT: 'var(--pokemon-red)',
+          foreground: '#ffffff',
         },
         secondary: {
-          DEFAULT: "var(--color-secondary-default)",
-          foreground: "#222f3f",
-          hover: "var(--color-secondary-darker)",
+          DEFAULT: 'var(--text-grey)',
+          foreground: 'var(--dark-text)',
         },
-        accent: {
-          DEFAULT: "var(--color-accent-default)",
-          foreground: "#fff",
-          hover: "var(--color-accent-darker)",
-        },
-        background: "var(--color-background-default)",
-        surface: "var(--color-surface-default)",
-        navbar: {
-          DEFAULT: "var(--color-navbar-default)",
-          scrolled: "var(--color-navbar-scrolled)",
-        },
-        border: "var(--color-border-default)",
-        ring: "var(--color-primary-default)",
-        foreground: {
-          DEFAULT: "#222f3f",
-          muted: "#7b8794",
-        },
+        
+        // Clean backgrounds
+        'page-bg': 'var(--page-bg)',
+        'card-bg': 'var(--card-bg)',
+        'sidebar-bg': 'var(--sidebar-bg)',
+        'border-color': 'var(--border-color)',
+        
+        // Component colors
+        background: 'var(--page-bg)',
         card: {
-          DEFAULT: "var(--color-card-background)",
-          foreground: "var(--color-card-foreground)",
+          DEFAULT: 'var(--card-bg)',
+          foreground: 'var(--dark-text)',
         },
-        input: {
-          DEFAULT: "var(--color-surface-default)",
-          text: "#222f3f",
-          border: "var(--color-border-default)",
-          placeholder: "#b0b8c1",
-        },
-        text: {
-          heading: "#22304f",
-          subheading: "#22304f",
-          body: "#222f3f",
-          muted: "#7b8794",
-          navbar: "#22304f",
-          inverted: "#fff",
-          link: "var(--color-primary-default)",
-          'link-hover': "var(--color-primary-darker)",
-          highlight: "var(--color-secondary-default)",
-          'highlight-hover': "var(--color-secondary-darker)",
-        },
-        chart: {
-          background: "#f5f7fa",
-          legend: "#222f3f"
-        },
-        // Official Pokémon type colors
+        
+        // Official Pokémon type colors (for type badges only)
         'poke-normal': '#A8A77A',
         'poke-fire': '#EE8130',
         'poke-water': '#6390F0',

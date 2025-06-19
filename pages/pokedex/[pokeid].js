@@ -133,7 +133,7 @@ export default function PokemonDetail() {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [activeTab, setActiveTab] = useState("info"); // Part 1: Default to "info"
+  const [activeTab, setActiveTab] = useState("overview"); // Default to "overview"
   const [activeCardSource, setActiveCardSource] = useState("tcg");
   const [filterRarity, setFilterRarity] = useState("");
   const [filterSet, setFilterSet] = useState("");
@@ -664,19 +664,21 @@ export default function PokemonDetail() {
               </button>
             </div>
 
-            {/* Pokémon Types */}
-            <div className="flex gap-2 mt-3">
+            {/* Enhanced Pokémon Types - Always Visible */}
+            <div className="flex gap-3 mt-4">
               {selectedForm.types && selectedForm.types.map((type) => (
-                <TypeBadge
-                  key={type}
-                  type={type}
-                  size="lg"
-                />
+                <div key={type} className="group">
+                  <TypeBadge
+                    type={type}
+                    size="lg"
+                    className="shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 border-2 border-white/50"
+                  />
+                </div>
               ))}
             </div>
 
             {/* Basic Info */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6 bg-white/70 dark:bg-gray-800/70 p-4 rounded-lg backdrop-blur-sm">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6 glass-elevated p-6 rounded-2xl shadow-lg">
               <div>
                 <h3 className="text-sm font-medium text-gray-500">Height</h3>
                 <p className="text-lg font-semibold">{(pokemonDetails.height / 10).toFixed(1)} m</p>
@@ -707,43 +709,47 @@ export default function PokemonDetail() {
       </FadeIn>
 
       <SlideUp delay={200}>
-        {/* Tabs and Tab Content */}
-        <div className="flex flex-col mb-6">
-          {/* Tab Navigation */}
-          <div className="flex overflow-x-auto bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg p-2 gap-1">
-            {[
-              { key: "info", label: "Info" },
-              { key: "stats", label: "Stats" },
-              { key: "evolution", label: "Evolution" },
-              { key: "cards", label: "Cards" },
-            ].map(tab => (
-              <button
-                key={tab.key}
-                className={`px-4 py-2 font-medium text-sm rounded-md transition-all
-                  ${activeTab === tab.key
-                    ? "bg-blue-100 border-2 border-blue-700 text-blue-800 shadow-sm"
-                    : "text-blue-700 hover:bg-blue-50 hover:border-blue-300 border-2 border-transparent"}
-                  focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2`
-                }
-                onClick={() => setActiveTab(tab.key)}
-                style={{ minWidth: 90 }}
-              >
-                {tab.label}
-              </button>
-            ))}
+        {/* Enhanced Pokémon-themed Tab Navigation */}
+        <div className="flex flex-col mb-8">
+          <div className="glass-elevated rounded-2xl p-3 mb-6 shadow-lg">
+            <div className="flex overflow-x-auto gap-2">
+              {[
+                { key: "overview", label: "Overview" },
+                { key: "stats", label: "Stats" },
+                { key: "moves", label: "Moves" },
+                { key: "abilities", label: "Abilities" },
+                { key: "evolution", label: "Evolution" },
+                { key: "cards", label: "Cards" },
+                { key: "flavor", label: "Flavor Texts" },
+                { key: "media", label: "Media" },
+              ].map(tab => (
+                <button
+                  key={tab.key}
+                  className={`flex items-center gap-2 px-4 py-3 font-medium text-sm rounded-lg transition-all duration-300 whitespace-nowrap border-2
+                    ${activeTab === tab.key
+                      ? "bg-pokemon-red text-white border-pokemon-red shadow-md"
+                      : "bg-white text-dark-text border-border-color hover:border-pokemon-red hover:bg-light-grey"}
+                    focus:outline-none focus-visible:ring-2 focus-visible:ring-pokemon-red/20`
+                  }
+                  onClick={() => setActiveTab(tab.key)}
+                >
+                  <span className="font-semibold">{tab.label}</span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
         <div className="mb-8">
-          {/* Info Tab (Renamed from About) */}
-          {activeTab === "info" && (
+          {/* Overview Tab - Essential Pokemon Information */}
+          {activeTab === "overview" && (
             <FadeIn>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Column 1: Description, Taxonomy, Training, Type Effectiveness, Additional Info */}
-                <div className={`p-6 rounded-lg shadow-sm bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-100/50 dark:border-gray-700/50`}>
+                {/* Column 1: Essential Information */}
+                <div className="glass-elevated p-6 rounded-2xl shadow-lg border-0">
                   {/* Generation Tag */}
                   {generationInfo && (
                     <div className="mb-2">
-                      <span className="inline-block bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 text-xs font-semibold px-2.5 py-1 rounded">
+                      <span className="inline-block glass-pokeball text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
                         Gen {generationInfo.name?.match(/generation-(\w+)/i)?.[1]?.toUpperCase() || generationInfo.name}
                       </span>
                     </div>
@@ -852,8 +858,8 @@ export default function PokemonDetail() {
                   </div>
                 </div>
 
-                {/* Column 2: Base Stats & Shiny Toggle (Part 1) */}
-                <div className={`p-6 rounded-lg shadow-sm bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-100/50 dark:border-gray-700/50`}>
+                {/* Column 2: Base Stats & Sprite */}
+                <div className="glass-elevated p-6 rounded-2xl shadow-lg border-0">
                   <div className="flex justify-between items-center mb-4">
                     <h3 className="font-bold text-lg">Base Stats</h3>
                     <button
@@ -919,57 +925,134 @@ export default function PokemonDetail() {
                 </div>
               </FadeIn>
             )}
-            {/* Stats Tab */}
+            {/* Stats Tab - Enhanced with visual stat comparison */}
             {activeTab === "stats" && (
               <FadeIn>
-                <div className="grid grid-cols-1 gap-8">
-                   <div className={`p-6 rounded-lg shadow-sm bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-100/50 dark:border-gray-700/50`}>
-                   <h3 className="font-bold text-lg mb-4">Detailed Stat Analysis</h3>
-                   <p className="text-gray-600 dark:text-gray-400 mb-4">
-                     Base stats are now displayed in the "Info" tab. This section can be used for a more in-depth look at stat distributions,
-                     effort values (EVs), or how this Pokémon's stats compare to others.
-                   </p>
-                   <h4 className="font-semibold text-md mt-4 mb-2">EV Yield</h4>
-                   <p className="text-gray-700 dark:text-gray-300 capitalize">
-                     {pokemonDetails?.stats?.filter(s => s.effort > 0).map(s => `${s.effort} ${s.stat.name.replace('-', ' ')}`).join(', ') || 'None specified'}
-                   </p>
-                 </div>
-                {/* Abilities (detailed) (Part 3) */}
-                <div className={`p-6 rounded-lg shadow-sm bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-100/50 dark:border-gray-700/50`}>
-                  <h3 className="font-bold text-lg mb-4">Abilities</h3>
-                  {detailedAbilities.length > 0 ? (
-                    detailedAbilities.map((ability) => (
-                      <div key={ability.name} className="mb-3 pb-3 border-b border-gray-200 dark:border-gray-700 last:border-b-0 last:pb-0 last:mb-0">
-                        <h4 className="font-semibold text-md capitalize flex items-center">
-                          {ability.name}
-                          {ability.is_hidden && (
-                            <span className="ml-2 text-xs bg-purple-100 text-purple-700 dark:bg-purple-700 dark:text-purple-200 px-1.5 py-0.5 rounded-full">
-                              Hidden
-                            </span>
-                          )}
-                        </h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{ability.description}</p>
-                      </div>
-                    ))
+                <div className="glass-elevated p-6 rounded-2xl shadow-lg border-0">
+                  <h3 className="font-pokemon text-2xl mb-6 text-pokeball-red">Detailed Stats</h3>
+                  
+                  {/* Enhanced Base Stats with bars */}
+                  <div className="mb-8">
+                    <h4 className="font-semibold text-lg mb-4 text-greatball-blue">Base Stats</h4>
+                    <div className="space-y-4">
+                      {pokemonDetails.stats.map(stat => {
+                        const statName = stat.stat.name.replace('-', ' ');
+                        const statValue = stat.base_stat;
+                        const maxStatValue = 255;
+                        const barPercentage = Math.max(0, Math.min(100, (statValue / maxStatValue) * 100));
+                        let barColorClass = "bg-red-500";
+                        if (statValue >= 120) barColorClass = "bg-green-500";
+                        else if (statValue >= 90) barColorClass = "bg-sky-500";
+                        else if (statValue >= 60) barColorClass = "bg-yellow-400";
+                        else if (statValue >= 40) barColorClass = "bg-orange-500";
+                        
+                        return (
+                          <div key={stat.stat.name} className="glass p-4 rounded-xl">
+                            <div className="flex justify-between items-center mb-2">
+                              <span className="capitalize font-semibold text-gray-700 dark:text-gray-300">{statName}</span>
+                              <span className="font-bold text-pokeball-red text-lg">{statValue}</span>
+                            </div>
+                            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden shadow-inner">
+                              <div
+                                className={`h-4 rounded-full ${barColorClass} transition-all duration-1000 ease-out shadow-lg`}
+                                style={{ width: `${barPercentage}%` }}
+                                title={`${statValue} / ${maxStatValue}`}
+                              ></div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* EV Yield Section */}
+                  <div className="glass-pokeball p-4 rounded-xl text-white">
+                    <h4 className="font-semibold text-lg mb-2">EV Yield</h4>
+                    <p className="capitalize">
+                      {pokemonDetails?.stats?.filter(s => s.effort > 0).map(s => `${s.effort} ${s.stat.name.replace('-', ' ')}`).join(', ') || 'None specified'}
+                    </p>
+                  </div>
+                </div>
+              </FadeIn>
+            )}
+
+            {/* Moves Tab - New dedicated moves section */}
+            {activeTab === "moves" && (
+              <FadeIn>
+                <div className="glass-elevated p-6 rounded-2xl shadow-lg border-0">
+                  <h3 className="font-pokemon text-2xl mb-6 text-ultraball-yellow">Moves & Attacks</h3>
+                  
+                  {groupedMoves ? (
+                    <div className="space-y-6">
+                      {Object.entries(groupedMoves).map(([method, moves]) => (
+                        <div key={method} className="glass p-4 rounded-xl">
+                          <h4 className="font-semibold text-lg mb-3 capitalize text-pokeball-red">
+                            {method.replace('-', ' ')} Moves
+                          </h4>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                            {moves.map((move, idx) => (
+                              <div key={idx} className="glass-greatball p-2 rounded-lg text-white text-sm font-medium">
+                                {method === 'level-up' && move.level > 0 && (
+                                  <span className="text-xs opacity-90 mr-2">Lv.{move.level}</span>
+                                )}
+                                {move.name}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   ) : (
-                     pokemonDetails.abilities.map((ability) => (
-                      <div key={ability.ability.name} className="mb-4">
-                        <h4 className="font-medium text-md capitalize">{ability.ability.name.replace('-', ' ')}</h4>
-                        <p className="text-sm text-gray-500 mb-2">
-                          {ability.is_hidden ? 'Hidden Ability' : 'Normal Ability'}
-                        </p>
-                        <p className="text-gray-700 dark:text-gray-300 italic">Loading description...</p>
-                      </div>
-                     ))
+                    <p className="text-gray-500 dark:text-gray-400 text-center py-8">No move data available.</p>
                   )}
                 </div>
-              </div>
-            </FadeIn>
-          )}
-          {/* Evolution Tab (if present) */}
+              </FadeIn>
+            )}
+
+            {/* Abilities Tab - Dedicated abilities section */}
+            {activeTab === "abilities" && (
+              <FadeIn>
+                <div className="glass-elevated p-6 rounded-2xl shadow-lg border-0">
+                  <h3 className="font-pokemon text-2xl mb-6 text-pokeball-red">Abilities</h3>
+                  
+                  {detailedAbilities.length > 0 ? (
+                    <div className="space-y-4">
+                      {detailedAbilities.map((ability) => (
+                        <div key={ability.name} className="glass p-6 rounded-xl">
+                          <h4 className="font-bold text-lg capitalize flex items-center mb-3 text-greatball-blue">
+                            {ability.name}
+                            {ability.is_hidden && (
+                              <span className="ml-3 glass-ultraball text-white text-xs px-2 py-1 rounded-full font-normal">
+                                Hidden Ability
+                              </span>
+                            )}
+                          </h4>
+                          <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{ability.description}</p>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {pokemonDetails.abilities.map((ability) => (
+                        <div key={ability.ability.name} className="glass p-6 rounded-xl">
+                          <h4 className="font-bold text-lg capitalize text-greatball-blue mb-2">
+                            {ability.ability.name.replace('-', ' ')}
+                          </h4>
+                          <p className="text-sm text-gray-500 mb-2">
+                            {ability.is_hidden ? 'Hidden Ability' : 'Normal Ability'}
+                          </p>
+                          <p className="text-gray-700 dark:text-gray-300 italic">Loading description...</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </FadeIn>
+            )}
+          {/* Evolution Tab - Enhanced styling */}
           {activeTab === "evolution" && (
             <FadeIn>
-              <div className="p-6 rounded-lg shadow-sm bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-100/50 dark:border-gray-700/50">
+              <div className="glass-elevated p-6 rounded-2xl shadow-lg border-0">
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="font-bold text-lg">Evolution Chain</h3>
                   <button
@@ -1064,6 +1147,95 @@ export default function PokemonDetail() {
                       )}
                     </div>
                   )}
+                </div>
+              </div>
+            </FadeIn>
+          )}
+
+          {/* Flavor Texts Tab - Pokédex entries */}
+          {activeTab === "flavor" && (
+            <FadeIn>
+              <div className="glass-elevated p-6 rounded-2xl shadow-lg border-0">
+                <h3 className="font-pokemon text-2xl mb-6 text-pokeball-red">Pokédex Entries</h3>
+                
+                {pokemonSpecies?.flavor_text_entries ? (
+                  <div className="space-y-4">
+                    {pokemonSpecies.flavor_text_entries
+                      .filter(entry => entry.language.name === 'en')
+                      .slice(0, 5)
+                      .map((entry, idx) => (
+                        <div key={idx} className="glass p-4 rounded-xl">
+                          <div className="flex items-center mb-2">
+                            <span className="glass-greatball text-white text-xs px-2 py-1 rounded-full font-bold mr-3">
+                              {entry.version?.name || `Entry ${idx + 1}`}
+                            </span>
+                          </div>
+                          <p className="text-gray-700 dark:text-gray-300 leading-relaxed italic">
+                            "{entry.flavor_text.replace(/[\f\n]/g, ' ')}"
+                          </p>
+                        </div>
+                      ))}
+                  </div>
+                ) : (
+                  <p className="text-gray-500 dark:text-gray-400 text-center py-8">No Pokédex entries available.</p>
+                )}
+              </div>
+            </FadeIn>
+          )}
+
+          {/* Media Tab - Sprites and visual content */}
+          {activeTab === "media" && (
+            <FadeIn>
+              <div className="glass-elevated p-6 rounded-2xl shadow-lg border-0">
+                <h3 className="font-pokemon text-2xl mb-6 text-greatball-blue">Media Gallery</h3>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {/* Sprites Section */}
+                  <div className="glass p-4 rounded-xl">
+                    <h4 className="font-semibold text-lg mb-4 text-pokeball-red">Sprites</h4>
+                    <div className="grid grid-cols-2 gap-4">
+                      {pokemonDetails.sprites?.front_default && (
+                        <div className="glass-pokeball p-3 rounded-lg text-center">
+                          <img src={pokemonDetails.sprites.front_default} alt="Front sprite" className="mx-auto mb-2 pixelated" />
+                          <p className="text-white text-xs font-semibold">Front</p>
+                        </div>
+                      )}
+                      {pokemonDetails.sprites?.back_default && (
+                        <div className="glass-greatball p-3 rounded-lg text-center">
+                          <img src={pokemonDetails.sprites.back_default} alt="Back sprite" className="mx-auto mb-2 pixelated" />
+                          <p className="text-white text-xs font-semibold">Back</p>
+                        </div>
+                      )}
+                      {pokemonDetails.sprites?.front_shiny && (
+                        <div className="glass-ultraball p-3 rounded-lg text-center">
+                          <img src={pokemonDetails.sprites.front_shiny} alt="Shiny front sprite" className="mx-auto mb-2 pixelated" />
+                          <p className="text-white text-xs font-semibold">Shiny Front</p>
+                        </div>
+                      )}
+                      {pokemonDetails.sprites?.back_shiny && (
+                        <div className="glass p-3 rounded-lg text-center">
+                          <img src={pokemonDetails.sprites.back_shiny} alt="Shiny back sprite" className="mx-auto mb-2 pixelated" />
+                          <p className="text-gray-700 dark:text-gray-300 text-xs font-semibold">Shiny Back</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Official Artwork */}
+                  <div className="glass p-4 rounded-xl">
+                    <h4 className="font-semibold text-lg mb-4 text-pokeball-red">Official Artwork</h4>
+                    {pokemonDetails.sprites?.other?.["official-artwork"]?.front_default ? (
+                      <div className="text-center">
+                        <img 
+                          src={pokemonDetails.sprites.other["official-artwork"].front_default} 
+                          alt="Official artwork" 
+                          className="mx-auto rounded-lg shadow-lg max-w-full h-auto"
+                        />
+                      </div>
+                    ) : (
+                      <p className="text-gray-500 dark:text-gray-400 text-center py-8">No official artwork available.</p>
+                    )}
+                  </div>
                 </div>
               </div>
             </FadeIn>
