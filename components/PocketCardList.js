@@ -40,11 +40,11 @@ const PocketCard = memo(({
   return (
     <div
       className={cardClassName || 
-        `card p-3 md:p-4 flex flex-col items-center bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-200 dark:border-gray-700 transition-all duration-300 animate-fadeIn group ring-0
-        hover:border-primary/90 hover:ring-2 hover:ring-primary/60 hover:-translate-y-2 hover:bg-primary/5 hover:shadow-xl
-        focus-within:border-primary/90 focus-within:ring-2 focus-within:ring-primary/60 focus-within:-translate-y-2 focus-within:bg-primary/5 focus-within:shadow-xl`
+        `card p-2 sm:p-3 md:p-4 flex flex-col items-center bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 animate-fadeIn group ring-0
+        hover:border-primary/90 hover:ring-2 hover:ring-primary/60 hover:-translate-y-1 hover:bg-primary/5 hover:shadow-lg
+        focus-within:border-primary/90 focus-within:ring-2 focus-within:ring-primary/60 focus-within:-translate-y-1 focus-within:bg-primary/5 focus-within:shadow-lg`
       }
-      style={{ boxShadow: '0 4px 20px 0 rgba(0,0,0,0.08)', cursor: 'pointer' }}
+      style={{ boxShadow: '0 2px 8px 0 rgba(0,0,0,0.08)', cursor: 'pointer' }}
       tabIndex={0}
       onClick={handleCardClick}
     >
@@ -84,14 +84,14 @@ const PocketCard = memo(({
           </a>
         </Link>
         <button
-          className="magnifier-icon ml-1 p-1 rounded-full hover:bg-gray-200 focus:bg-gray-300 focus:outline-none"
-          title="Zoom card"
+          className="click-icon ml-1 p-1 rounded-full hover:bg-gray-200 focus:bg-gray-300 focus:outline-none"
+          title="View card"
           tabIndex={0}
           onClick={e => { e.stopPropagation(); setZoomedCard(card); }}
-          aria-label="Zoom card"
+          aria-label="View card"
           type="button"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
         </button>
       </h3>
       
@@ -276,7 +276,7 @@ export default function PocketCardList({
       </div>
     )}
     
-    <div className={gridClassName || "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-5 md:gap-7 justify-center"}>
+    <div className={gridClassName || "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-3 sm:gap-4 md:gap-5 justify-center"}>
       {displayedCards.map(card => {
         // Enhanced rarity display mapping
         const rarityDisplay = {

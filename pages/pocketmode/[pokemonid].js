@@ -476,8 +476,12 @@ function PocketPokemonDetail() {
 
       {/* Zoom Modal */}
       {zoomedCard && (
-        <Modal onClose={() => setZoomedCard(null)}>
-          <div className="flex flex-col items-center p-4">
+        <Modal 
+          isOpen={!!zoomedCard} 
+          onClose={() => setZoomedCard(null)}
+          size="lg"
+        >
+          <div className="flex flex-col items-center">
             <div className="relative w-full max-w-md">
               <Image
                 src={zoomedCard.image || "/back-card.png"}

@@ -146,179 +146,105 @@ export default function PocketMode() {
           <div className="w-32 h-1 bg-gradient-to-r from-transparent via-primary to-transparent rounded"></div>
         </div>
         
-        {/* Enhanced Secondary Navigation with New Features */}
-        <div className="mb-6 sticky top-0 z-30 -mx-4 px-4 pt-2 pb-4 backdrop-blur-sm bg-white/90 dark:bg-gray-900/90">
-          <div className="flex overflow-x-auto bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg p-2 shadow-sm mb-3">
-            <button
-              className={`px-5 py-2.5 font-medium text-sm rounded-md transition-all whitespace-nowrap ${
-                currentView === "pokemon"
-                  ? "bg-primary text-white shadow-sm"
-                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-              }`}
-              onClick={() => setCurrentView("pokemon")}
-            >
-              <div className="flex items-center">
-                <svg className="w-5 h-5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                🃏 Cards
-              </div>
-            </button>
-            <button
-              className={`px-5 py-2.5 font-medium text-sm rounded-md transition-all whitespace-nowrap ${
-                currentView === "decks"
-                  ? "bg-primary text-white shadow-sm"
-                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-              }`}
-              onClick={() => setCurrentView("decks")}
-            >
-              <div className="flex items-center">
-                <svg className="w-5 h-5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                </svg>
-                📊 Top Decks
-              </div>
-            </button>
-            <button
-              className={`px-5 py-2.5 font-medium text-sm rounded-md transition-all whitespace-nowrap ${
-                currentView === "builder"
-                  ? "bg-primary text-white shadow-sm"
-                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-              }`}
-              onClick={() => setCurrentView("builder")}
-            >
-              <div className="flex items-center">
-                <svg className="w-5 h-5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
-                🔧 Deck Builder
-              </div>
-            </button>
-            <Link href="/pocketmode/expansions">
+        {/* Enhanced Secondary Navigation - Mobile Optimized */}
+        <div className="mb-4 sticky top-0 z-30 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-border-color">
+          <div className="px-4 pt-2 pb-3">
+            {/* Main Navigation Tabs - Mobile Optimized */}
+            <div className="flex overflow-x-auto gap-1 p-1 bg-light-grey rounded-lg scrollbar-hide">
               <button
-                className="px-5 py-2.5 font-medium text-sm rounded-md transition-all whitespace-nowrap text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                className={`px-3 py-2 text-xs font-medium rounded-md transition-all whitespace-nowrap min-w-0 flex-shrink-0 ${
+                  currentView === "pokemon"
+                    ? "bg-pokemon-red text-white shadow-sm"
+                    : "text-dark-text hover:bg-white"
+                }`}
+                onClick={() => setCurrentView("pokemon")}
               >
-                <div className="flex items-center">
-                  <svg className="w-5 h-5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                  </svg>
-                  📦 Packs
-                </div>
+                Cards
               </button>
-            </Link>
-            <button
-              className={`px-5 py-2.5 font-medium text-sm rounded-md transition-all whitespace-nowrap ${
-                currentView === "packs"
-                  ? "bg-primary text-white shadow-sm"
-                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-              }`}
-              onClick={() => setCurrentView("packs")}
-            >
-              <div className="flex items-center">
-                <svg className="w-5 h-5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                </svg>
-                Booster Packs
-              </div>
-            </button>
-            <button
-              className={`px-5 py-2.5 font-medium text-sm rounded-md transition-all whitespace-nowrap ${
-                currentView === "rules"
-                  ? "bg-primary text-white shadow-sm"
-                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-              }`}
-              onClick={() => setCurrentView("rules")}
-            >
-              <div className="flex items-center">
-                <svg className="w-5 h-5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
+              <button
+                className={`px-3 py-2 text-xs font-medium rounded-md transition-all whitespace-nowrap min-w-0 flex-shrink-0 ${
+                  currentView === "decks"
+                    ? "bg-pokemon-red text-white shadow-sm"
+                    : "text-dark-text hover:bg-white"
+                }`}
+                onClick={() => setCurrentView("decks")}
+              >
+                Top Decks
+              </button>
+              <button
+                className={`px-3 py-2 text-xs font-medium rounded-md transition-all whitespace-nowrap min-w-0 flex-shrink-0 ${
+                  currentView === "builder"
+                    ? "bg-pokemon-red text-white shadow-sm"
+                    : "text-dark-text hover:bg-white"
+                }`}
+                onClick={() => setCurrentView("builder")}
+              >
+                Builder
+              </button>
+              <Link href="/pocketmode/expansions">
+                <button className="px-3 py-2 text-xs font-medium rounded-md transition-all whitespace-nowrap min-w-0 flex-shrink-0 text-dark-text hover:bg-white">
+                  Packs
+                </button>
+              </Link>
+              <button
+                className={`px-3 py-2 text-xs font-medium rounded-md transition-all whitespace-nowrap min-w-0 flex-shrink-0 ${
+                  currentView === "rules"
+                    ? "bg-pokemon-red text-white shadow-sm"
+                    : "text-dark-text hover:bg-white"
+                }`}
+                onClick={() => setCurrentView("rules")}
+              >
                 Rules
-              </div>
-            </button>
-          </div>
-          
-          {/* Quick Action Buttons */}
-          <div className="flex gap-2 overflow-x-auto">
-            <Link href="/pocketmode/deckbuilder">
-              <button className="px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-200 flex items-center gap-2 font-medium shadow-sm transform hover:scale-105 whitespace-nowrap">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                </svg>
-                🛠️ Build Deck
               </button>
-            </Link>
-            
-            <Link href="/pocketmode/decks">
-              <button className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 flex items-center gap-2 font-medium shadow-sm transform hover:scale-105 whitespace-nowrap">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                </svg>
-                💾 My Decks
-              </button>
-            </Link>
-            
-            <Link href="/pocketmode/expansions">
-              <button className="px-4 py-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg hover:from-purple-600 hover:to-purple-700 transition-all duration-200 flex items-center gap-2 font-medium shadow-sm transform hover:scale-105 whitespace-nowrap">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                </svg>
-                📦 Open Packs
-              </button>
-            </Link>
+            </div>
           </div>
         </div>
         
-        {/* Dynamic filters based on current view */}
+        {/* Dynamic filters - Mobile Optimized */}
         {currentView === "pokemon" && (
-          <div className="mb-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="mb-4 px-4">
+            {/* Search and Sort - Mobile Stack */}
+            <div className="space-y-3 mb-4">
               {/* Search input */}
-              <div className="md:col-span-2">
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <svg className="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                  </div>
-                  <input
-                    type="text"
-                    className="block w-full p-3 pl-10 pr-10 text-base rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
-                    placeholder="Search cards by name..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                  />
-                  {search && (
-                    <button 
-                      className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
-                      onClick={() => setSearch('')}
-                    >
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
-                  )}
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <svg className="w-4 h-4 text-text-grey" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
                 </div>
+                <input
+                  type="text"
+                  className="input-clean w-full pl-10 pr-10"
+                  placeholder="Search cards..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+                {search && (
+                  <button 
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-text-grey hover:text-dark-text"
+                    onClick={() => setSearch('')}
+                  >
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                )}
               </div>
               
-              {/* Filters */}
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <select
-                    className="block w-full p-3 text-base rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                  >
-                    <option value="name">Sort by Name</option>
-                    <option value="rarity">Sort by Rarity</option>
-                  </select>
-                </div>
-              </div>
+              {/* Sort dropdown */}
+              <select
+                className="select-clean w-full"
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+              >
+                <option value="name">Sort by Name</option>
+                <option value="rarity">Sort by Rarity</option>
+              </select>
             </div>
 
-            {/* Type filter using the new component */}
-            <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
-              <h3 className="text-sm font-medium mb-2 text-gray-500 dark:text-gray-400">Filter by Type</h3>
+            {/* Type filter - Mobile Horizontal Scroll */}
+            <div className="bg-light-grey rounded-lg p-3">
+              <h3 className="text-sm font-medium mb-2 text-text-grey">Filter by Type</h3>
               <TypeFilter 
                 types={uniqueTypes} 
                 selectedType={typeFilter} 
@@ -465,15 +391,22 @@ export default function PocketMode() {
               </p>
             </div>
             
-            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-              <PocketDeckBuilder 
-                availableCards={pokemon}
-                onDeckChange={(deck) => {
-                  // Handle deck changes - could save to localStorage or API
-                  console.log('Deck updated:', deck);
-                }}
-              />
-            </div>
+            {loading.pokemon ? (
+              <div className="flex flex-col items-center justify-center py-16">
+                <div className="w-16 h-16 border-4 border-pokemon-red border-t-transparent rounded-full animate-spin mb-4"></div>
+                <p className="text-text-grey">Loading cards for deck builder...</p>
+              </div>
+            ) : (
+              <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+                <PocketDeckBuilder 
+                  availableCards={pokemon}
+                  onDeckChange={(deck) => {
+                    // Handle deck changes - could save to localStorage or API
+                    console.log('Deck updated:', deck);
+                  }}
+                />
+              </div>
+            )}
           </div>
         ) : currentView === "packs" ? (
           <div className="space-y-8">

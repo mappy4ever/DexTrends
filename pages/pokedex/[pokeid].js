@@ -130,6 +130,7 @@ export default function PokemonDetail() {
   const [showShinyEvolutionSprite, setShowShinyEvolutionSprite] = useState(false);
   const [detailedAbilities, setDetailedAbilities] = useState([]);
   const [groupedMoves, setGroupedMoves] = useState(null);
+  const [detailedMoves, setDetailedMoves] = useState({});
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -472,7 +473,11 @@ export default function PokemonDetail() {
 
         if (!acc[method]) acc[method] = [];
 
-        let displayData = { name: moveName, id: extractIdFromUrl(moveEntry.move.url) };
+        let displayData = { 
+          name: moveName, 
+          id: extractIdFromUrl(moveEntry.move.url),
+          url: moveEntry.move.url
+        };
         if (method === 'level-up') displayData.level = learnDetail.level_learned_at;
 
         acc[method].push(displayData);
@@ -485,6 +490,50 @@ export default function PokemonDetail() {
       setGroupedMoves(movesByMethod);
     }
   }, [pokemonDetails]);
+
+  // Fetch detailed move information when moves tab is active
+  useEffect(() => {
+    if (activeTab === "moves" && groupedMoves && Object.keys(detailedMoves).length === 0) {
+      const fetchMoveDetails = async () => {
+        const moveDetailsMap = {};
+        const allMoves = Object.values(groupedMoves).flat();
+        const limitedMoves = allMoves.slice(0, 30); // Limit to first 30 moves for performance
+        
+        for (const move of limitedMoves) {
+          try {
+            const moveData = await cachedFetchData(move.url);
+            moveDetailsMap[move.id] = {
+              name: move.name,
+              type: moveData.type?.name || 'normal',
+              power: moveData.power || 'N/A',
+              accuracy: moveData.accuracy || 'N/A',
+              pp: moveData.pp || 'N/A',
+              description: moveData.effect_entries?.find(entry => entry.language.name === 'en')?.short_effect || 
+                          moveData.flavor_text_entries?.find(entry => entry.language.name === 'en')?.flavor_text || 
+                          'No description available',
+              damageClass: moveData.damage_class?.name || 'status',
+              target: moveData.target?.name || 'selected-pokemon'
+            };
+          } catch (error) {
+            console.error(`Failed to fetch move details for ${move.name}:`, error);
+            moveDetailsMap[move.id] = {
+              name: move.name,
+              type: 'normal',
+              power: 'N/A',
+              accuracy: 'N/A', 
+              pp: 'N/A',
+              description: 'Details unavailable',
+              damageClass: 'status',
+              target: 'selected-pokemon'
+            };
+          }
+        }
+        setDetailedMoves(moveDetailsMap);
+      };
+      
+      fetchMoveDetails();
+    }
+  }, [activeTab, groupedMoves, detailedMoves]);
 
   // Helper function to format evolution details (Part 2)
   const formatEvolutionDetails = (detailsArray) => {
@@ -795,7 +844,7 @@ export default function PokemonDetail() {
                     </div>
                     <div>
                       <p className="text-gray-500 dark:text-gray-400">EV Yield</p>
-                      <p className="font-medium capitalize">
+                      <p className="font-medium capitalize text-gray-900 dark:text-gray-100">
                         {pokemonDetails?.stats?.filter(s => s.effort > 0).map(s => `${s.effort} ${s.stat.name.replace('-', ' ')}`).join(', ') || 'None'}
                       </p>
                     </div>
@@ -966,9 +1015,9 @@ export default function PokemonDetail() {
                   </div>
 
                   {/* EV Yield Section */}
-                  <div className="glass-pokeball p-4 rounded-xl text-white">
-                    <h4 className="font-semibold text-lg mb-2">EV Yield</h4>
-                    <p className="capitalize">
+                  <div className="bg-gradient-to-br from-indigo-900 to-purple-900 border-2 border-indigo-400 p-4 rounded-xl text-white shadow-lg">
+                    <h4 className="font-semibold text-lg mb-2 text-indigo-200">EV Yield</h4>
+                    <p className="capitalize text-white font-medium">
                       {pokemonDetails?.stats?.filter(s => s.effort > 0).map(s => `${s.effort} ${s.stat.name.replace('-', ' ')}`).join(', ') || 'None specified'}
                     </p>
                   </div>
@@ -976,7 +1025,7 @@ export default function PokemonDetail() {
               </FadeIn>
             )}
 
-            {/* Moves Tab - New dedicated moves section */}
+            {/* Moves Tab - Enhanced with detailed move boxes */}
             {activeTab === "moves" && (
               <FadeIn>
                 <div className="glass-elevated p-6 rounded-2xl shadow-lg border-0">
@@ -986,19 +1035,103 @@ export default function PokemonDetail() {
                     <div className="space-y-6">
                       {Object.entries(groupedMoves).map(([method, moves]) => (
                         <div key={method} className="glass p-4 rounded-xl">
-                          <h4 className="font-semibold text-lg mb-3 capitalize text-pokeball-red">
+                          <h4 className="font-semibold text-lg mb-4 capitalize text-pokeball-red flex items-center">
                             {method.replace('-', ' ')} Moves
+                            <span className="ml-2 text-sm bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded-full">
+                              {moves.length}
+                            </span>
                           </h4>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-                            {moves.map((move, idx) => (
-                              <div key={idx} className="glass-greatball p-2 rounded-lg text-white text-sm font-medium">
-                                {method === 'level-up' && move.level > 0 && (
-                                  <span className="text-xs opacity-90 mr-2">Lv.{move.level}</span>
-                                )}
-                                {move.name}
-                              </div>
-                            ))}
+                          
+                          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            {moves.slice(0, 20).map((move, idx) => {
+                              const moveDetails = detailedMoves[move.id];
+                              
+                              return (
+                                <div key={idx} className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 shadow-sm hover:shadow-md transition-all">
+                                  {/* Move header */}
+                                  <div className="flex items-center justify-between mb-3">
+                                    <div className="flex items-center gap-2">
+                                      {method === 'level-up' && move.level > 0 && (
+                                        <span className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 text-xs font-bold px-2 py-1 rounded-full">
+                                          Lv.{move.level}
+                                        </span>
+                                      )}
+                                      <h5 className="font-bold text-lg text-gray-900 dark:text-white">
+                                        {move.name}
+                                      </h5>
+                                    </div>
+                                    {moveDetails && (
+                                      <TypeBadge type={moveDetails.type} size="sm" />
+                                    )}
+                                  </div>
+                                  
+                                  {/* Move stats */}
+                                  {moveDetails && (
+                                    <div className="grid grid-cols-3 gap-3 mb-3">
+                                      <div className="text-center">
+                                        <div className="text-xs text-gray-500 dark:text-gray-400 uppercase font-medium">Power</div>
+                                        <div className="text-sm font-bold text-gray-900 dark:text-white">
+                                          {moveDetails.power}
+                                        </div>
+                                      </div>
+                                      <div className="text-center">
+                                        <div className="text-xs text-gray-500 dark:text-gray-400 uppercase font-medium">Accuracy</div>
+                                        <div className="text-sm font-bold text-gray-900 dark:text-white">
+                                          {moveDetails.accuracy === 'N/A' ? 'N/A' : `${moveDetails.accuracy}%`}
+                                        </div>
+                                      </div>
+                                      <div className="text-center">
+                                        <div className="text-xs text-gray-500 dark:text-gray-400 uppercase font-medium">PP</div>
+                                        <div className="text-sm font-bold text-gray-900 dark:text-white">
+                                          {moveDetails.pp}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  )}
+                                  
+                                  {/* Move category */}
+                                  {moveDetails && (
+                                    <div className="flex items-center gap-2 mb-3">
+                                      <span className={`text-xs font-bold px-2 py-1 rounded-full ${
+                                        moveDetails.damageClass === 'physical' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' :
+                                        moveDetails.damageClass === 'special' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' :
+                                        'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
+                                      }`}>
+                                        {moveDetails.damageClass.charAt(0).toUpperCase() + moveDetails.damageClass.slice(1)}
+                                      </span>
+                                    </div>
+                                  )}
+                                  
+                                  {/* Move description */}
+                                  {moveDetails && (
+                                    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
+                                      <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                                        {moveDetails.description.replace(/\$effect_chance/g, '').trim()}
+                                      </p>
+                                    </div>
+                                  )}
+                                  
+                                  {/* Loading state for move details */}
+                                  {!moveDetails && (
+                                    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
+                                      <p className="text-sm text-gray-500 dark:text-gray-400 italic">
+                                        Loading move details...
+                                      </p>
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })}
                           </div>
+                          
+                          {/* Show more moves indicator */}
+                          {moves.length > 20 && (
+                            <div className="mt-4 text-center">
+                              <p className="text-sm text-gray-500 dark:text-gray-400">
+                                Showing first 20 of {moves.length} moves
+                              </p>
+                            </div>
+                          )}
                         </div>
                       ))}
                     </div>
@@ -1009,39 +1142,124 @@ export default function PokemonDetail() {
               </FadeIn>
             )}
 
-            {/* Abilities Tab - Dedicated abilities section */}
+            {/* Abilities Tab - In-game style abilities section */}
             {activeTab === "abilities" && (
               <FadeIn>
                 <div className="glass-elevated p-6 rounded-2xl shadow-lg border-0">
-                  <h3 className="font-pokemon text-2xl mb-6 text-pokeball-red">Abilities</h3>
+                  <h3 className="font-pokemon text-2xl mb-6 text-pokeball-red text-center">Abilities</h3>
                   
                   {detailedAbilities.length > 0 ? (
-                    <div className="space-y-4">
-                      {detailedAbilities.map((ability) => (
-                        <div key={ability.name} className="glass p-6 rounded-xl">
-                          <h4 className="font-bold text-lg capitalize flex items-center mb-3 text-greatball-blue">
-                            {ability.name}
-                            {ability.is_hidden && (
-                              <span className="ml-3 glass-ultraball text-white text-xs px-2 py-1 rounded-full font-normal">
-                                Hidden Ability
+                    <div className="space-y-6">
+                      {detailedAbilities.map((ability, index) => (
+                        <div key={ability.name} className={`relative bg-gradient-to-br ${
+                          ability.is_hidden 
+                            ? 'from-purple-900 to-violet-900 border-4 border-purple-400' 
+                            : 'from-green-900 to-emerald-900 border-4 border-green-400'
+                        } rounded-xl p-6 shadow-xl overflow-hidden`}>
+                          {/* Ability screen effect */}
+                          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
+                          <div className="absolute top-2 left-2 w-3 h-3 bg-blue-400 rounded-full shadow-lg animate-pulse"></div>
+                          
+                          <div className="relative z-10">
+                            {/* Ability header */}
+                            <div className="flex items-center justify-between mb-4">
+                              <h4 className="font-bold text-xl capitalize text-white">
+                                {ability.name.replace('-', ' ')}
+                              </h4>
+                              {ability.is_hidden && (
+                                <span className="bg-gradient-to-r from-purple-400 to-pink-500 text-black text-xs px-3 py-1 rounded-full font-bold shadow-lg">
+                                  HIDDEN
+                                </span>
+                              )}
+                            </div>
+                            
+                            {/* Ability type indicator */}
+                            <div className="mb-4">
+                              <span className={`inline-block text-xs font-mono px-3 py-1 rounded-full ${
+                                ability.is_hidden 
+                                  ? 'bg-purple-400 text-purple-900' 
+                                  : 'bg-green-400 text-green-900'
+                              }`}>
+                                {ability.is_hidden ? 'SPECIAL ABILITY' : 'STANDARD ABILITY'}
                               </span>
-                            )}
-                          </h4>
-                          <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{ability.description}</p>
+                            </div>
+                            
+                            {/* Ability description */}
+                            <div className={`border-2 ${
+                              ability.is_hidden ? 'border-purple-300' : 'border-green-300'
+                            } rounded-lg p-4 bg-black/30`}>
+                              <p className="text-gray-100 leading-relaxed text-sm">
+                                {ability.description}
+                              </p>
+                            </div>
+                            
+                            {/* Bottom decoration */}
+                            <div className="flex justify-center mt-4">
+                              <div className="flex space-x-1">
+                                <div className={`w-2 h-2 rounded-full ${
+                                  ability.is_hidden ? 'bg-purple-400' : 'bg-green-400'
+                                }`}></div>
+                                <div className={`w-2 h-2 rounded-full ${
+                                  ability.is_hidden ? 'bg-purple-400' : 'bg-green-400'
+                                }`}></div>
+                                <div className={`w-2 h-2 rounded-full ${
+                                  ability.is_hidden ? 'bg-purple-400' : 'bg-green-400'
+                                }`}></div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       ))}
                     </div>
                   ) : (
-                    <div className="space-y-4">
-                      {pokemonDetails.abilities.map((ability) => (
-                        <div key={ability.ability.name} className="glass p-6 rounded-xl">
-                          <h4 className="font-bold text-lg capitalize text-greatball-blue mb-2">
-                            {ability.ability.name.replace('-', ' ')}
-                          </h4>
-                          <p className="text-sm text-gray-500 mb-2">
-                            {ability.is_hidden ? 'Hidden Ability' : 'Normal Ability'}
-                          </p>
-                          <p className="text-gray-700 dark:text-gray-300 italic">Loading description...</p>
+                    <div className="space-y-6">
+                      {pokemonDetails.abilities.map((ability, index) => (
+                        <div key={ability.ability.name} className={`relative bg-gradient-to-br ${
+                          ability.is_hidden 
+                            ? 'from-purple-900 to-violet-900 border-4 border-purple-400' 
+                            : 'from-green-900 to-emerald-900 border-4 border-green-400'
+                        } rounded-xl p-6 shadow-xl overflow-hidden`}>
+                          {/* Loading effect */}
+                          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
+                          <div className="absolute top-2 left-2 w-3 h-3 bg-yellow-400 rounded-full shadow-lg animate-pulse"></div>
+                          
+                          <div className="relative z-10">
+                            {/* Ability header */}
+                            <div className="flex items-center justify-between mb-4">
+                              <h4 className="font-bold text-xl capitalize text-white">
+                                {ability.ability.name.replace('-', ' ')}
+                              </h4>
+                              {ability.is_hidden && (
+                                <span className="bg-gradient-to-r from-purple-400 to-pink-500 text-black text-xs px-3 py-1 rounded-full font-bold shadow-lg">
+                                  HIDDEN
+                                </span>
+                              )}
+                            </div>
+                            
+                            {/* Ability type indicator */}
+                            <div className="mb-4">
+                              <span className={`inline-block text-xs font-mono px-3 py-1 rounded-full ${
+                                ability.is_hidden 
+                                  ? 'bg-purple-400 text-purple-900' 
+                                  : 'bg-green-400 text-green-900'
+                              }`}>
+                                {ability.is_hidden ? 'SPECIAL ABILITY' : 'STANDARD ABILITY'}
+                              </span>
+                            </div>
+                            
+                            {/* Loading placeholder */}
+                            <div className={`border-2 ${
+                              ability.is_hidden ? 'border-purple-300' : 'border-green-300'
+                            } rounded-lg p-4 bg-black/30`}>
+                              <div className="animate-pulse">
+                                <div className="h-4 bg-gray-600 rounded mb-2"></div>
+                                <div className="h-4 bg-gray-600 rounded w-3/4"></div>
+                              </div>
+                              <p className="text-gray-400 text-sm font-mono mt-2">
+                                LOADING ABILITY DATA...
+                              </p>
+                            </div>
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -1152,88 +1370,184 @@ export default function PokemonDetail() {
             </FadeIn>
           )}
 
-          {/* Flavor Texts Tab - Pokédex entries */}
+          {/* Flavor Texts Tab - In-game style Pokédex entries */}
           {activeTab === "flavor" && (
             <FadeIn>
               <div className="glass-elevated p-6 rounded-2xl shadow-lg border-0">
-                <h3 className="font-pokemon text-2xl mb-6 text-pokeball-red">Pokédex Entries</h3>
+                <h3 className="font-pokemon text-2xl mb-6 text-pokeball-red text-center">Pokédex Entries</h3>
                 
                 {pokemonSpecies?.flavor_text_entries ? (
-                  <div className="space-y-4">
+                  <div className="space-y-6">
                     {pokemonSpecies.flavor_text_entries
                       .filter(entry => entry.language.name === 'en')
-                      .slice(0, 5)
+                      .slice(0, 6)
                       .map((entry, idx) => (
-                        <div key={idx} className="glass p-4 rounded-xl">
-                          <div className="flex items-center mb-2">
-                            <span className="glass-greatball text-white text-xs px-2 py-1 rounded-full font-bold mr-3">
-                              {entry.version?.name || `Entry ${idx + 1}`}
-                            </span>
+                        <div key={idx} className="bg-gradient-to-br from-blue-900 to-indigo-900 border-4 border-yellow-400 rounded-xl p-6 shadow-xl relative overflow-hidden">
+                          {/* Pokedex screen effect */}
+                          <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-transparent"></div>
+                          <div className="absolute top-2 right-2 w-3 h-3 bg-red-500 rounded-full shadow-lg"></div>
+                          <div className="absolute top-2 right-8 w-2 h-2 bg-green-400 rounded-full shadow-lg"></div>
+                          
+                          <div className="relative z-10">
+                            {/* Version badge */}
+                            <div className="flex items-center justify-between mb-4">
+                              <span className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-sm px-4 py-2 rounded-full font-bold shadow-lg">
+                                {entry.version?.name?.toUpperCase() || `ENTRY ${idx + 1}`}
+                              </span>
+                              <div className="text-yellow-400 text-xs font-mono">
+                                #{String(pokemonDetails?.id || 0).padStart(3, '0')}
+                              </div>
+                            </div>
+                            
+                            {/* Pokedex entry text */}
+                            <div className="bg-black/30 border-2 border-cyan-400 rounded-lg p-4">
+                              <p className="text-cyan-100 leading-relaxed font-mono text-sm">
+                                "{entry.flavor_text.replace(/[\f\n]/g, ' ')}"
+                              </p>
+                            </div>
+                            
+                            {/* Bottom decoration */}
+                            <div className="flex justify-center mt-4">
+                              <div className="flex space-x-1">
+                                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                              </div>
+                            </div>
                           </div>
-                          <p className="text-gray-700 dark:text-gray-300 leading-relaxed italic">
-                            "{entry.flavor_text.replace(/[\f\n]/g, ' ')}"
-                          </p>
                         </div>
                       ))}
                   </div>
                 ) : (
-                  <p className="text-gray-500 dark:text-gray-400 text-center py-8">No Pokédex entries available.</p>
+                  <div className="text-center py-12 bg-gradient-to-br from-gray-800 to-gray-900 border-4 border-red-500 rounded-xl">
+                    <div className="relative">
+                      <div className="absolute inset-0 bg-red-500/10 rounded-lg"></div>
+                      <p className="text-red-400 font-mono relative z-10">ERROR: NO POKÉDEX DATA FOUND</p>
+                    </div>
+                  </div>
                 )}
               </div>
             </FadeIn>
           )}
 
-          {/* Media Tab - Sprites and visual content */}
+          {/* Media Tab - Enhanced sprites and visual content */}
           {activeTab === "media" && (
             <FadeIn>
-              <div className="glass-elevated p-6 rounded-2xl shadow-lg border-0">
-                <h3 className="font-pokemon text-2xl mb-6 text-greatball-blue">Media Gallery</h3>
+              <div className="glass-elevated p-6 rounded-2xl shadow-xl border-0">
+                <h3 className="font-pokemon text-2xl mb-6 text-greatball-blue text-center">Media Gallery</h3>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   {/* Sprites Section */}
-                  <div className="glass p-4 rounded-xl">
-                    <h4 className="font-semibold text-lg mb-4 text-pokeball-red">Sprites</h4>
+                  <div className="glass p-6 rounded-xl shadow-lg">
+                    <h4 className="font-semibold text-lg mb-6 text-pokeball-red text-center">Game Sprites</h4>
                     <div className="grid grid-cols-2 gap-4">
                       {pokemonDetails.sprites?.front_default && (
-                        <div className="glass-pokeball p-3 rounded-lg text-center">
-                          <img src={pokemonDetails.sprites.front_default} alt="Front sprite" className="mx-auto mb-2 pixelated" />
+                        <div className="glass-pokeball p-4 rounded-lg text-center shadow-md hover:shadow-lg transition-shadow">
+                          <img src={pokemonDetails.sprites.front_default} alt="Front sprite" className="mx-auto mb-3 pixelated w-16 h-16" />
                           <p className="text-white text-xs font-semibold">Front</p>
                         </div>
                       )}
                       {pokemonDetails.sprites?.back_default && (
-                        <div className="glass-greatball p-3 rounded-lg text-center">
-                          <img src={pokemonDetails.sprites.back_default} alt="Back sprite" className="mx-auto mb-2 pixelated" />
+                        <div className="glass-greatball p-4 rounded-lg text-center shadow-md hover:shadow-lg transition-shadow">
+                          <img src={pokemonDetails.sprites.back_default} alt="Back sprite" className="mx-auto mb-3 pixelated w-16 h-16" />
                           <p className="text-white text-xs font-semibold">Back</p>
                         </div>
                       )}
                       {pokemonDetails.sprites?.front_shiny && (
-                        <div className="glass-ultraball p-3 rounded-lg text-center">
-                          <img src={pokemonDetails.sprites.front_shiny} alt="Shiny front sprite" className="mx-auto mb-2 pixelated" />
-                          <p className="text-white text-xs font-semibold">Shiny Front</p>
+                        <div className="glass-ultraball p-4 rounded-lg text-center shadow-md hover:shadow-lg transition-shadow">
+                          <img src={pokemonDetails.sprites.front_shiny} alt="Shiny front sprite" className="mx-auto mb-3 pixelated w-16 h-16" />
+                          <p className="text-white text-xs font-semibold">✨ Shiny Front</p>
                         </div>
                       )}
                       {pokemonDetails.sprites?.back_shiny && (
-                        <div className="glass p-3 rounded-lg text-center">
-                          <img src={pokemonDetails.sprites.back_shiny} alt="Shiny back sprite" className="mx-auto mb-2 pixelated" />
-                          <p className="text-gray-700 dark:text-gray-300 text-xs font-semibold">Shiny Back</p>
+                        <div className="glass p-4 rounded-lg text-center shadow-md hover:shadow-lg transition-shadow bg-gradient-to-br from-purple-400 to-pink-400">
+                          <img src={pokemonDetails.sprites.back_shiny} alt="Shiny back sprite" className="mx-auto mb-3 pixelated w-16 h-16" />
+                          <p className="text-white text-xs font-semibold">✨ Shiny Back</p>
                         </div>
                       )}
                     </div>
                   </div>
 
                   {/* Official Artwork */}
-                  <div className="glass p-4 rounded-xl">
-                    <h4 className="font-semibold text-lg mb-4 text-pokeball-red">Official Artwork</h4>
+                  <div className="glass p-6 rounded-xl shadow-lg">
+                    <h4 className="font-semibold text-lg mb-6 text-pokeball-red text-center">Official Artwork</h4>
                     {pokemonDetails.sprites?.other?.["official-artwork"]?.front_default ? (
                       <div className="text-center">
-                        <img 
-                          src={pokemonDetails.sprites.other["official-artwork"].front_default} 
-                          alt="Official artwork" 
-                          className="mx-auto rounded-lg shadow-lg max-w-full h-auto"
-                        />
+                        <div className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-700 p-6 rounded-xl shadow-inner">
+                          <img 
+                            src={pokemonDetails.sprites.other["official-artwork"].front_default} 
+                            alt={`${pokemonDetails.name} official artwork`}
+                            className="mx-auto rounded-lg shadow-2xl max-w-full h-auto hover:scale-105 transition-transform duration-300"
+                            style={{ maxHeight: '300px' }}
+                          />
+                          <p className="text-center text-sm text-gray-600 dark:text-gray-400 mt-4 font-medium">
+                            Official Nintendo Artwork
+                          </p>
+                        </div>
                       </div>
                     ) : (
-                      <p className="text-gray-500 dark:text-gray-400 text-center py-8">No official artwork available.</p>
+                      <div className="text-center py-12 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                        <div className="w-16 h-16 mx-auto mb-4 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">
+                          <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                        </div>
+                        <p className="text-gray-500 dark:text-gray-400">No official artwork available</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Additional Media Section */}
+                <div className="mt-8 glass p-6 rounded-xl shadow-lg">
+                  <h4 className="font-semibold text-lg mb-6 text-pokeball-red text-center">Additional Sprites</h4>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {/* Dream World Sprite */}
+                    {pokemonDetails.sprites?.other?.dream_world?.front_default && (
+                      <div className="text-center p-4 bg-gradient-to-br from-pink-100 to-purple-100 dark:from-pink-900/30 dark:to-purple-900/30 rounded-lg shadow-md">
+                        <img 
+                          src={pokemonDetails.sprites.other.dream_world.front_default} 
+                          alt="Dream World sprite" 
+                          className="mx-auto mb-2 w-16 h-16 object-contain"
+                        />
+                        <p className="text-xs font-medium text-gray-700 dark:text-gray-300">Dream World</p>
+                      </div>
+                    )}
+                    
+                    {/* Home Sprite */}
+                    {pokemonDetails.sprites?.other?.home?.front_default && (
+                      <div className="text-center p-4 bg-gradient-to-br from-green-100 to-blue-100 dark:from-green-900/30 dark:to-blue-900/30 rounded-lg shadow-md">
+                        <img 
+                          src={pokemonDetails.sprites.other.home.front_default} 
+                          alt="Home sprite" 
+                          className="mx-auto mb-2 w-16 h-16 object-contain"
+                        />
+                        <p className="text-xs font-medium text-gray-700 dark:text-gray-300">Pokémon Home</p>
+                      </div>
+                    )}
+
+                    {/* Showdown Sprite */}
+                    {pokemonDetails.sprites?.other?.showdown?.front_default && (
+                      <div className="text-center p-4 bg-gradient-to-br from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 rounded-lg shadow-md">
+                        <img 
+                          src={pokemonDetails.sprites.other.showdown.front_default} 
+                          alt="Showdown sprite" 
+                          className="mx-auto mb-2 w-16 h-16 object-contain"
+                        />
+                        <p className="text-xs font-medium text-gray-700 dark:text-gray-300">Showdown</p>
+                      </div>
+                    )}
+
+                    {/* Crystal Sprite */}
+                    {pokemonDetails.sprites?.versions?.["generation-ii"]?.crystal?.front_default && (
+                      <div className="text-center p-4 bg-gradient-to-br from-cyan-100 to-blue-100 dark:from-cyan-900/30 dark:to-blue-900/30 rounded-lg shadow-md">
+                        <img 
+                          src={pokemonDetails.sprites.versions["generation-ii"].crystal.front_default} 
+                          alt="Crystal sprite" 
+                          className="mx-auto mb-2 w-16 h-16 object-contain pixelated"
+                        />
+                        <p className="text-xs font-medium text-gray-700 dark:text-gray-300">Crystal</p>
+                      </div>
                     )}
                   </div>
                 </div>

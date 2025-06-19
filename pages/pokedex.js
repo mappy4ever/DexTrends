@@ -577,42 +577,70 @@ export default function PokedexIndex() {
             </div>
           </div>
 
-          {/* Enhanced Pokemon Grid */}
-          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6 mb-8" staggerDelay={0.05}>
+          {/* Enhanced Pokemon Grid - More Vertical Cards */}
+          <StaggerContainer className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mb-8" staggerDelay={0.05}>
             {sortedAndVisiblePokemon.map((poke, index) => (
               <StaggerItem key={poke.id}>
                 <div 
                   onClick={() => handlePokemonClick(poke.id)}
-                  className="group cursor-pointer bg-white border border-border-color rounded-lg p-4 shadow-sm card-holographic"
+                  className="group cursor-pointer bg-white dark:bg-gray-800 border border-border-color rounded-lg shadow-sm card-holographic hover:shadow-lg transition-all duration-300 hover:-translate-y-1 min-h-[200px] flex flex-col"
                 >
-                    <div className="text-center">
-                      <div className="relative w-20 h-20 mx-auto mb-3 bg-off-white rounded-lg p-2">
+                    <div className="flex-1 flex flex-col text-center p-3">
+                      {/* Larger, more vertical image container */}
+                      <div className="relative w-24 h-24 sm:w-28 sm:h-28 mx-auto mb-3 bg-gradient-to-br from-off-white to-light-grey rounded-xl p-3 overflow-hidden">
                         <Image
                           src={poke.sprite || "/dextrendslogo.png"}
                           alt={poke.name}
                           fill
-                          className="object-contain group-hover:scale-110 transition-transform duration-300"
+                          className="object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-sm"
                           loading="lazy"
                           placeholder="blur"
                           blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Eve6J4HNvbzTe7+v1+8BvxRf4X3/f/9k="
-                          sizes="80px"
+                          sizes="(max-width: 640px) 96px, 112px"
                         />
+                        {/* Subtle glow effect for legendary/mythical */}
+                        {(poke.isLegendary || poke.isMythical) && (
+                          <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-purple-400/20 rounded-xl"></div>
+                        )}
                       </div>
                       
-                      <p className="text-xs text-text-grey mb-1">
+                      {/* Pokemon number */}
+                      <p className="text-xs text-text-grey mb-1 font-mono">
                         #{String(poke.id).padStart(3, "0")}
                       </p>
                       
-                      <h3 className="font-medium text-sm capitalize text-dark-text mb-2 group-hover:text-pokemon-red transition-colors">
+                      {/* Pokemon name with better typography */}
+                      <h3 className="font-semibold text-sm sm:text-base capitalize text-dark-text dark:text-white mb-3 group-hover:text-pokemon-red transition-colors line-clamp-1">
                         {poke.name.replace("-", " ")}
                       </h3>
                       
-                      {/* Types only */}
-                      <div className="flex justify-center gap-1">
+                      {/* Types with better spacing */}
+                      <div className="flex justify-center gap-1 mb-2">
                         {poke.types.map(type => (
                           <TypeBadge key={type} type={type} size="sm" />
                         ))}
                       </div>
+
+                      {/* Special indicators for legendary/mythical */}
+                      {(poke.isLegendary || poke.isMythical || poke.isUltraBeast) && (
+                        <div className="flex justify-center">
+                          {poke.isLegendary && (
+                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-800 border border-yellow-300">
+                              ⭐ Legendary
+                            </span>
+                          )}
+                          {poke.isMythical && (
+                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-800 border border-purple-300">
+                              ✨ Mythical
+                            </span>
+                          )}
+                          {poke.isUltraBeast && (
+                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-indigo-100 text-indigo-800 border border-indigo-300">
+                              🌌 Ultra Beast
+                            </span>
+                          )}
+                        </div>
+                      )}
                     </div>
                 </div>
               </StaggerItem>

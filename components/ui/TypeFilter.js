@@ -28,8 +28,8 @@ export function TypeFilter({ types = [], selectedType, onTypeChange, compact = f
             compact ? 'scale-90' : ''
           } ${
             selectedType === type
-              ? 'ring-2 ring-primary ring-offset-1 scale-105 shadow-sm'
-              : 'opacity-70 hover:opacity-100'
+              ? 'ring-2 ring-red-500 ring-offset-1 scale-105 shadow-lg shadow-red-500/25'
+              : 'opacity-70 hover:opacity-100 hover:scale-105'
           }`}
           title={`Filter by ${type === 'all' ? 'all types' : type + ' type'}`}
         >

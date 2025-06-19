@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { fetchPocketData } from '../../utils/pocketData';
 import { TypeBadge } from '../../components/ui/TypeBadge';
+import PackOpening from '../../components/ui/PackOpening';
 
 export default function Expansions() {
   const router = useRouter();
@@ -16,13 +17,9 @@ export default function Expansions() {
   
   // UI state
   const [selectedExpansion, setSelectedExpansion] = useState(null);
-  const [showPackModal, setShowPackModal] = useState(false);
-  const [packOpeningCards, setPackOpeningCards] = useState([]);
-  const [isOpeningPack, setIsOpeningPack] = useState(false);
-  const [packAnimation, setPackAnimation] = useState('idle'); // idle, shaking, opening, revealing
-  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [showPackOpening, setShowPackOpening] = useState(false);
   const [packOpenCount, setPackOpenCount] = useState(0);
-  const [rareCardFound, setRareCardFound] = useState(false);
+  const [lastOpenedCards, setLastOpenedCards] = useState([]);
   
   // Load cards on component mount
   useEffect(() => {
@@ -42,13 +39,24 @@ export default function Expansions() {
     loadCards();
   }, []);
 
-  // Generate expansion data from cards
+  // Generate expansion data from cards - excluding promo sets
   const expansions = useMemo(() => {
     if (!allCards.length) return [];
     
     const expansionMap = {};
     
-    allCards.forEach(card => {
+    // Filter out promo cards and focus on main sets only
+    const mainSetCards = allCards.filter(card => {
+      const packName = (card.pack || '').toLowerCase();
+      // Exclude promo packs and small sets
+      return !packName.includes('promo') && 
+             !packName.includes('promotional') && 
+             !packName.includes('special') &&
+             packName !== 'unknown' &&
+             packName !== '';
+    });
+    
+    mainSetCards.forEach(card => {
       const packName = card.pack || 'Unknown';
       
       if (!expansionMap[packName]) {
@@ -69,8 +77,10 @@ export default function Expansions() {
       expansionMap[packName].totalCards++;
     });
     
-    // Convert to array and add additional metadata
-    return Object.values(expansionMap).map(expansion => {
+    // Convert to array and add additional metadata - filter out small sets
+    return Object.values(expansionMap)
+    .filter(expansion => expansion.totalCards >= 20) // Only show sets with 20+ cards
+    .map(expansion => {
       // Get featured cards (rare cards for showcase)
       const rareCards = expansion.cards
         .filter(card => card.rarity.includes('★') || card.rarity.includes('◊◊◊'))
@@ -144,82 +154,22 @@ export default function Expansions() {
     };
   }
 
-  // Enhanced pack opening with animations
-  const openBoosterPack = async (expansion) => {
-    if (isOpeningPack) return;
-    
+  // Open pack with new clean component
+  const openBoosterPack = (expansion) => {
     setSelectedExpansion(expansion);
-    setIsOpeningPack(true);
-    setShowPackModal(true);
-    setPackOpeningCards([]);
-    setPackAnimation('shaking');
-    setRareCardFound(false);
-    
-    // Pack shaking animation
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    setPackAnimation('opening');
-    
-    // Generate random pack contents with enhanced rarity system
-    const packCards = [];
-    const cards = expansion.cards;
-    let hasRare = false;
-    
-    for (let i = 0; i < 5; i++) {
-      let selectedCard;
-      const randomValue = Math.random();
-      
-      // Guarantee at least one rare in the last slot if none found
-      const guaranteeRare = i === 4 && !hasRare;
-      
-      if (guaranteeRare || randomValue < 0.02) { // Ultra rare or guaranteed rare
-        const ultraRares = cards.filter(c => c.rarity.includes('★★'));
-        if (ultraRares.length > 0) {
-          selectedCard = ultraRares[Math.floor(Math.random() * ultraRares.length)];
-          hasRare = true;
-          setRareCardFound(true);
-        }
-      } 
-      
-      if (!selectedCard && (guaranteeRare || randomValue < 0.08)) { // Rare
-        const rares = cards.filter(c => c.rarity.includes('★') || c.rarity.includes('◊◊◊◊'));
-        if (rares.length > 0) {
-          selectedCard = rares[Math.floor(Math.random() * rares.length)];
-          hasRare = true;
-        }
-      }
-      
-      if (!selectedCard && randomValue < 0.25) { // Uncommon
-        const uncommons = cards.filter(c => c.rarity.includes('◊◊◊'));
-        selectedCard = uncommons[Math.floor(Math.random() * uncommons.length)] || cards[Math.floor(Math.random() * cards.length)];
-      } else if (!selectedCard && randomValue < 0.50) { // Less common
-        const lessCommons = cards.filter(c => c.rarity.includes('◊◊'));
-        selectedCard = lessCommons[Math.floor(Math.random() * lessCommons.length)] || cards[Math.floor(Math.random() * cards.length)];
-      } else if (!selectedCard) { // Common
-        const commons = cards.filter(c => c.rarity.includes('◊') && !c.rarity.includes('◊◊'));
-        selectedCard = commons[Math.floor(Math.random() * commons.length)] || cards[Math.floor(Math.random() * cards.length)];
-      }
-      
-      packCards.push(selectedCard);
-    }
-    
-    // Card revealing animation
-    setPackAnimation('revealing');
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    // Reveal cards one by one with dramatic effect
-    for (let i = 0; i < packCards.length; i++) {
-      await new Promise(resolve => setTimeout(resolve, 800));
-      setPackOpeningCards(prev => [...prev, { ...packCards[i], revealed: true }]);
-      
-      // Extra dramatic pause for rare cards
-      if (packCards[i].rarity.includes('★')) {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-      }
-    }
-    
-    setPackAnimation('completed');
-    setIsOpeningPack(false);
+    setShowPackOpening(true);
+  };
+
+  // Handle pack opened callback
+  const handlePackOpened = (cards) => {
+    setLastOpenedCards(cards);
     setPackOpenCount(prev => prev + 1);
+  };
+
+  // Close pack opening modal
+  const closePackOpening = () => {
+    setShowPackOpening(false);
+    setSelectedExpansion(null);
   };
 
   // Get rarity color and effects
@@ -316,53 +266,46 @@ export default function Expansions() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 text-white relative overflow-hidden">
+    <div className="min-h-screen bg-off-white">
       <Head>
-        <title>Expansions | Pokemon Pocket | DexTrends</title>
-        <meta name="description" content="Experience the thrill of opening Pokemon Pocket booster packs" />
+        <title>Pack Opening | Pokemon Pocket | DexTrends</title>
+        <meta name="description" content="Experience realistic Pokemon Pocket booster pack opening with authentic rarity rates" />
       </Head>
 
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 text-6xl opacity-20 animate-bounce" style={{animationDelay: '0s'}}>⚡</div>
-        <div className="absolute top-40 right-20 text-4xl opacity-30 animate-pulse" style={{animationDelay: '1s'}}>🔥</div>
-        <div className="absolute bottom-20 left-20 text-5xl opacity-25 animate-bounce" style={{animationDelay: '2s'}}>🔮</div>
-        <div className="absolute bottom-40 right-10 text-3xl opacity-20 animate-pulse" style={{animationDelay: '3s'}}>✨</div>
-      </div>
-
-      {/* Header */}
-      <div className="sticky top-0 z-50 bg-black/80 backdrop-blur-xl border-b border-white/20">
-        <div className="max-w-7xl mx-auto px-6 py-6">
+      {/* Clean Header */}
+      <div className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-border-color shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-6">
               <Link 
                 href="/pocketmode" 
-                className="group flex items-center gap-3 text-yellow-400 hover:text-yellow-300 font-semibold transition-all transform hover:scale-105"
+                className="group flex items-center gap-3 text-pokemon-blue hover:text-blue-700 font-semibold transition-all"
               >
-                <svg className="w-6 h-6 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
                 Back to Pocket Mode
               </Link>
               <div className="flex items-center gap-3">
-                <div className="text-4xl animate-bounce">📦</div>
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-yellow-400 to-pink-400 bg-clip-text text-transparent">
-                  Booster Pack Central
+                <div className="w-8 h-8 bg-pokemon-red rounded-full flex items-center justify-center">
+                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                  </svg>
+                </div>
+                <h1 className="text-2xl font-bold text-dark-text">
+                  Pack Opening
                 </h1>
               </div>
             </div>
             
             <div className="flex items-center gap-4">
-              <div className="bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 border border-white/20">
-                <span className="text-sm font-medium">Packs Opened: </span>
-                <span className="text-yellow-400 font-bold">{packOpenCount}</span>
+              <div className="bg-light-grey rounded-lg px-4 py-2 border border-border-color">
+                <span className="text-sm font-medium text-text-grey">Packs Opened: </span>
+                <span className="text-pokemon-red font-bold">{packOpenCount}</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-full text-sm font-medium border border-emerald-500/30">
-                  📦 {expansions.length} Expansions
-                </span>
-                <span className="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full text-sm font-medium border border-purple-500/30">
-                  🎲 Pack Simulator
+                <span className="bg-pokemon-green/10 text-pokemon-green px-3 py-1 rounded-full text-sm font-medium border border-pokemon-green/20">
+                  {expansions.length} Expansions
                 </span>
               </div>
             </div>
@@ -371,160 +314,105 @@ export default function Expansions() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-12">
-        {/* Hero Section */}
-        <div className="text-center mb-16">
-          <div className="relative inline-block mb-8">
-            <h2 className="text-6xl font-black bg-gradient-to-r from-yellow-400 via-pink-400 to-purple-400 bg-clip-text text-transparent animate-pulse">
-              OPEN LEGENDARY PACKS
-            </h2>
-            <div className="absolute -top-6 -right-6 text-4xl animate-spin" style={{animationDuration: '3s'}}>✨</div>
-          </div>
-          <p className="text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Experience the ultimate thrill of opening free booster packs with our advanced simulator featuring 
-            <span className="text-yellow-400 font-bold"> realistic rarities</span>,
-            <span className="text-pink-400 font-bold"> dramatic animations</span>, and
-            <span className="text-purple-400 font-bold"> guaranteed rare cards</span>!
+        {/* Clean Hero Section */}
+        <div className="text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-bold text-pokemon-red mb-4">
+            Booster Pack Opening
+          </h2>
+          <p className="text-lg text-text-grey max-w-2xl mx-auto leading-relaxed">
+            Experience realistic Pokémon TCG Pocket pack opening with authentic rarity rates, 
+            <span className="font-semibold text-dark-text"> guaranteed rare cards</span>, and 
+            <span className="font-semibold text-dark-text"> smooth animations</span>.
           </p>
         </div>
 
         {/* Expansion Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {expansions.map((expansion, index) => {
-            const theme = expansion.theme;
-            
             return (
               <div
                 key={expansion.id}
-                className="group relative"
-                style={{ animationDelay: `${index * 200}ms` }}
+                className="group bg-white border border-border-color rounded-lg shadow-sm card-holographic overflow-hidden"
               >
-                {/* Background Effect */}
-                <div 
-                  className="absolute inset-0 rounded-3xl opacity-30 blur-xl transition-all duration-700 group-hover:opacity-50"
-                  style={{ background: theme.bgPattern }}
-                />
-                
-                <div className={`relative bg-black/60 backdrop-blur-xl rounded-3xl p-8 border border-white/20 transition-all duration-500 hover:border-white/40 hover:shadow-2xl ${theme.glowColor} group-hover:shadow-2xl transform hover:scale-105`}>
-                  {/* Pack Artwork */}
-                  <div className="relative mb-8">
-                    <div className={`w-48 h-64 mx-auto bg-gradient-to-b ${theme.gradient} rounded-2xl shadow-2xl relative overflow-hidden border-4 border-white/20 group-hover:border-white/40 transition-all duration-500 transform group-hover:scale-110 group-hover:rotate-3`}>
-                      {/* Holographic Effect */}
-                      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      
-                      {/* Pack Image or Fallback */}
-                      {expansion.packArt || expansion.logoUrl ? (
-                        <div className="absolute inset-0">
-                          <Image
-                            src={expansion.packArt || expansion.logoUrl}
-                            alt={`${expansion.name} pack`}
-                            fill
-                            className="object-cover rounded-xl"
-                            onError={(e) => {
-                              // Fallback to emoji design if image fails
-                              e.target.style.display = 'none';
-                            }}
-                          />
-                          {/* Overlay for text */}
-                          <div className="absolute inset-0 bg-black/20 rounded-xl" />
-                          <div className="absolute bottom-4 left-4 right-4 text-center">
-                            <div className="text-white font-bold text-lg drop-shadow-lg">
-                              {expansion.name}
-                            </div>
-                            <div className="text-white/90 text-sm mt-1">
-                              {expansion.symbol || 'Genetic Apex'}
-                            </div>
-                          </div>
+                {/* Pack Image */}
+                <div className="relative h-48 bg-light-grey rounded-t-lg overflow-hidden">
+                  {expansion.packArt || expansion.logoUrl ? (
+                    <Image
+                      src={expansion.packArt || expansion.logoUrl}
+                      alt={`${expansion.name} pack`}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  ) : (
+                    // Clean placeholder with rainbow indicator
+                    <div className="w-full h-full bg-gradient-to-br from-red-400 via-yellow-400 via-green-400 via-blue-400 to-purple-400 flex items-center justify-center relative">
+                      <div className="absolute inset-0 bg-white/20 backdrop-blur-sm"></div>
+                      <div className="relative z-10 text-center text-white">
+                        <div className="w-12 h-12 bg-white/30 rounded-full flex items-center justify-center mb-2 mx-auto">
+                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                          </svg>
                         </div>
-                      ) : (
-                        // Fallback emoji design
-                        <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
-                          <div className="text-8xl mb-4 animate-pulse group-hover:animate-bounce">
-                            {theme.emoji}
-                          </div>
-                          <div className="text-white font-bold text-xl drop-shadow-lg">
-                            {expansion.name}
-                          </div>
-                          <div className="text-white/80 text-sm mt-2">
-                            Genetic Apex
-                          </div>
-                        </div>
-                      )}
-                      
-                      {/* Shine Effect */}
-                      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                    </div>
-                    
-                    {/* Pack Stats */}
-                    <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2">
-                      <div className="bg-black/80 backdrop-blur-sm rounded-full px-4 py-2 border border-white/20">
-                        <span className="text-xs font-medium text-white">💎 {expansion.totalCards} Cards</span>
+                        <p className="font-semibold text-sm">PLACEHOLDER</p>
+                        <p className="text-xs opacity-80">Rainbow = Temp</p>
                       </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Pack Info */}
+                <div className="p-6">
+                  <div className="text-center mb-4">
+                    <h3 className="text-xl font-bold text-dark-text mb-2">{expansion.name}</h3>
+                    <p className="text-text-grey text-sm leading-relaxed">
+                      {expansion.description}
+                    </p>
+                  </div>
+
+                  {/* Stats */}
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div className="bg-light-grey rounded-lg p-3 text-center border border-border-color">
+                      <div className="text-lg font-bold text-dark-text">
+                        {expansion.totalCards}
+                      </div>
+                      <div className="text-xs text-text-grey">Total Cards</div>
+                    </div>
+                    <div className="bg-light-grey rounded-lg p-3 text-center border border-border-color">
+                      <div className="text-lg font-bold text-dark-text">
+                        {expansion.types.length}
+                      </div>
+                      <div className="text-xs text-text-grey">Types</div>
                     </div>
                   </div>
 
-                  {/* Expansion Info */}
-                  <div className="text-center space-y-6">
-                    <div>
-                      <h3 className="text-3xl font-bold mb-3 text-white">{expansion.name}</h3>
-                      <p className="text-gray-300 leading-relaxed">
-                        {expansion.description}
-                      </p>
+                  {/* Types Preview */}
+                  <div className="mb-6">
+                    <div className="text-sm font-semibold mb-2 text-dark-text">Featured Types</div>
+                    <div className="flex flex-wrap justify-center gap-1">
+                      {expansion.types.slice(0, 4).map(type => (
+                        <TypeBadge key={type} type={type} size="sm" />
+                      ))}
+                      {expansion.types.length > 4 && (
+                        <span className="bg-light-grey text-text-grey px-2 py-1 rounded-full text-xs border border-border-color">
+                          +{expansion.types.length - 4}
+                        </span>
+                      )}
                     </div>
+                  </div>
 
-                    {/* Stats Grid */}
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className={`bg-gradient-to-r ${theme.gradient} bg-opacity-20 rounded-xl p-4 border border-white/10`}>
-                        <div className="text-2xl font-bold text-white">
-                          {expansion.totalCards}
-                        </div>
-                        <div className="text-sm text-gray-300">Total Cards</div>
-                      </div>
-                      <div className={`bg-gradient-to-r ${theme.gradient} bg-opacity-20 rounded-xl p-4 border border-white/10`}>
-                        <div className="text-2xl font-bold text-white">
-                          {expansion.types.length}
-                        </div>
-                        <div className="text-sm text-gray-300">Types</div>
-                      </div>
-                    </div>
-
-                    {/* Types Preview */}
-                    <div>
-                      <div className="text-sm font-semibold mb-3 text-gray-300">Featured Types</div>
-                      <div className="flex flex-wrap justify-center gap-2">
-                        {expansion.types.slice(0, 4).map(type => (
-                          <TypeBadge key={type} type={type} size="sm" />
-                        ))}
-                        {expansion.types.length > 4 && (
-                          <span className="bg-white/10 text-white px-2 py-1 rounded-full text-xs">
-                            +{expansion.types.length - 4}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Action Button */}
+                  {/* Action Buttons */}
+                  <div className="space-y-3">
                     <button
                       onClick={() => openBoosterPack(expansion)}
-                      disabled={isOpeningPack}
-                      className={`w-full bg-gradient-to-r ${theme.gradient} hover:shadow-2xl text-white py-4 px-6 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed border-2 border-white/20 hover:border-white/40`}
+                      disabled={showPackOpening}
+                      className="w-full btn-primary py-3 font-semibold text-lg hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      {isOpeningPack ? (
-                        <div className="flex items-center justify-center gap-3">
-                          <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent" />
-                          Opening Pack...
-                        </div>
-                      ) : (
-                        <div className="flex items-center justify-center gap-3">
-                          <span className="text-2xl">{theme.emoji}</span>
-                          <span>OPEN FREE PACK</span>
-                          <span className="text-2xl animate-bounce">✨</span>
-                        </div>
-                      )}
+                      {showPackOpening ? 'Opening Pack...' : 'Open Pack'}
                     </button>
                     
                     <Link href={`/pocketmode/set/${expansion.id}`}>
-                      <button className="w-full bg-white/10 hover:bg-white/20 text-white py-3 rounded-xl font-medium transition-all border border-white/20 hover:border-white/40">
-                        📋 Browse All Cards
+                      <button className="w-full btn-clean py-2 font-medium">
+                        Browse All Cards
                       </button>
                     </Link>
                   </div>
@@ -534,230 +422,52 @@ export default function Expansions() {
           })}
         </div>
 
-        {/* Feature Highlights */}
-        <div className="bg-black/40 backdrop-blur-xl rounded-3xl p-12 border border-white/20 text-center">
-          <h3 className="text-4xl font-bold mb-8 bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-            🎯 Collection Features
+        {/* Clean Feature Highlights */}
+        <div className="bg-white rounded-lg border border-border-color shadow-sm p-8 text-center">
+          <h3 className="text-2xl font-bold text-dark-text mb-6">
+            Pack Opening Features
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="group cursor-pointer transform hover:scale-105 transition-all">
-              <div className="text-5xl mb-4 group-hover:animate-bounce">📊</div>
-              <h4 className="text-xl font-bold mb-2 text-white">Authentic Experience</h4>
-              <p className="text-gray-300">Experience realistic pack opening with distribution matching Pokemon Pocket cards</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="group cursor-pointer hover:bg-light-grey p-4 rounded-lg transition-all">
+              <div className="w-12 h-12 bg-pokemon-blue text-white rounded-full flex items-center justify-center mx-auto mb-3">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </div>
+              <h4 className="text-lg font-semibold mb-2 text-dark-text">Authentic Experience</h4>
+              <p className="text-text-grey text-sm">Experience realistic pack opening with distribution matching Pokemon Pocket cards</p>
             </div>
-            <div className="group cursor-pointer transform hover:scale-105 transition-all">
-              <div className="text-5xl mb-4 group-hover:animate-pulse">🎁</div>
-              <h4 className="text-xl font-bold mb-2 text-white">Free & Fun</h4>
-              <p className="text-gray-300">Open unlimited packs and discover new cards without any cost or limits</p>
+            <div className="group cursor-pointer hover:bg-light-grey p-4 rounded-lg transition-all">
+              <div className="w-12 h-12 bg-pokemon-green text-white rounded-full flex items-center justify-center mx-auto mb-3">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 0v1.5M9 21v-5a2 2 0 012-2h2a2 2 0 012 2v5" />
+                </svg>
+              </div>
+              <h4 className="text-lg font-semibold mb-2 text-dark-text">Free & Fun</h4>
+              <p className="text-text-grey text-sm">Open unlimited packs and discover new cards without any cost or limits</p>
             </div>
-            <div className="group cursor-pointer transform hover:scale-105 transition-all">
-              <div className="text-5xl mb-4 group-hover:animate-spin">✨</div>
-              <h4 className="text-xl font-bold mb-2 text-white">Beautiful Animations</h4>
-              <p className="text-gray-300">Enjoy smooth animations and satisfying card reveals with special effects</p>
+            <div className="group cursor-pointer hover:bg-light-grey p-4 rounded-lg transition-all">
+              <div className="w-12 h-12 bg-pokemon-yellow text-white rounded-full flex items-center justify-center mx-auto mb-3">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                </svg>
+              </div>
+              <h4 className="text-lg font-semibold mb-2 text-dark-text">Beautiful Animations</h4>
+              <p className="text-text-grey text-sm">Enjoy smooth animations and satisfying card reveals with special effects</p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Enhanced Pack Opening Modal */}
-      {showPackModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm">
-          <div className="bg-black/95 backdrop-blur-xl rounded-3xl p-8 w-full max-w-6xl border border-white/20 shadow-2xl">
-            {packAnimation === 'shaking' && (
-              <div className="text-center">
-                <h3 className="text-4xl font-bold text-white mb-4">🎁 Get Ready...</h3>
-                <p className="text-xl text-gray-300 mb-8">Your pack is about to be opened!</p>
-                <div className="flex justify-center mb-8">
-                  <div className={`w-64 h-80 bg-gradient-to-b ${selectedExpansion?.theme.gradient} rounded-2xl shadow-2xl animate-bounce border-4 border-white/30 relative overflow-hidden`}>
-                    {selectedExpansion?.packArt || selectedExpansion?.logoUrl ? (
-                      <div className="absolute inset-0">
-                        <Image
-                          src={selectedExpansion.packArt || selectedExpansion.logoUrl}
-                          alt={`${selectedExpansion.name} pack`}
-                          fill
-                          className="object-cover rounded-xl"
-                        />
-                        <div className="absolute inset-0 bg-black/20 rounded-xl" />
-                        <div className="absolute bottom-6 left-6 right-6 text-center">
-                          <div className="text-white font-bold text-2xl drop-shadow-lg">
-                            {selectedExpansion.name}
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="flex items-center justify-center h-full">
-                        <div className="text-center">
-                          <div className="text-8xl mb-4 animate-pulse">
-                            {selectedExpansion?.theme.emoji}
-                          </div>
-                          <div className="text-white font-bold text-2xl">
-                            {selectedExpansion?.name}
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div className="text-lg text-yellow-400 animate-pulse">Shaking the pack for luck... 🤞</div>
-              </div>
-            )}
+      {/* Pack Opening Modal */}
+      <PackOpening 
+        expansion={selectedExpansion}
+        availableCards={selectedExpansion?.cards || []}
+        onPackOpened={handlePackOpened}
+        onClose={closePackOpening}
+        isOpen={showPackOpening}
+      />
 
-            {packAnimation === 'opening' && (
-              <div className="text-center">
-                <h3 className="text-4xl font-bold text-white mb-4">📦 Opening Pack...</h3>
-                <div className="text-6xl animate-spin mb-8">🌟</div>
-                <div className="text-lg text-purple-400 animate-pulse">Revealing your cards...</div>
-              </div>
-            )}
-
-            {packAnimation === 'revealing' && (
-              <div className="text-center">
-                <h3 className="text-4xl font-bold text-white mb-6">✨ Your Cards Are Here!</h3>
-                {rareCardFound && (
-                  <div className="mb-6">
-                    <div className="text-6xl animate-bounce mb-2">🎉</div>
-                    <div className="text-2xl font-bold text-yellow-400 animate-pulse">RARE CARD FOUND!</div>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {(packAnimation === 'revealing' || packAnimation === 'completed') && packOpeningCards.length > 0 && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
-                {packOpeningCards.map((card, index) => {
-                  const rarityInfo = getRarityInfo(card.rarity);
-                  
-                  return (
-                    <div
-                      key={`${card.id}-${index}`}
-                      className={`group bg-white/10 backdrop-blur-sm rounded-2xl p-4 text-center transition-all duration-500 transform hover:scale-110 border-2 ${rarityInfo.border} hover:shadow-2xl ${rarityInfo.glow}`}
-                      style={{ 
-                        animationDelay: `${index * 200}ms`,
-                        animation: card.revealed ? 'slideInUp 0.6s ease-out' : 'none'
-                      }}
-                    >
-                      <div className="relative w-full aspect-[3/4] mb-4 overflow-hidden rounded-xl">
-                        <Image
-                          src={card.image || "/dextrendslogo.png"}
-                          alt={card.name}
-                          fill
-                          className="object-contain transition-transform duration-300 group-hover:scale-110"
-                          sizes="250px"
-                        />
-                        {card.rarity.includes('★') && (
-                          <div className="absolute inset-0 bg-gradient-to-t from-yellow-400/20 to-transparent animate-pulse" />
-                        )}
-                      </div>
-                      
-                      <h4 className="font-bold text-lg mb-2 text-white line-clamp-2">{card.name}</h4>
-                      
-                      <div className="flex items-center justify-center gap-2 mb-3">
-                        <TypeBadge type={card.type} size="sm" />
-                      </div>
-                      
-                      <div className={`inline-block px-3 py-1 rounded-full text-sm font-bold ${rarityInfo.bg} ${rarityInfo.textColor} shadow-lg`}>
-                        {rarityInfo.rarity}
-                      </div>
-                      
-                      {card.health && (
-                        <div className="text-sm text-gray-300 mt-2">
-                          HP: {card.health}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-
-            {packAnimation === 'completed' && (
-              <div className="text-center">
-                <div className="flex justify-center gap-4">
-                  <button
-                    onClick={() => openBoosterPack(selectedExpansion)}
-                    className={`bg-gradient-to-r ${selectedExpansion?.theme.gradient} hover:shadow-xl text-white px-8 py-3 rounded-xl font-bold transition-all transform hover:scale-105`}
-                  >
-                    🎲 Open Another Pack
-                  </button>
-                  <button
-                    onClick={() => setShowPackModal(false)}
-                    className="bg-gray-600 hover:bg-gray-700 text-white px-8 py-3 rounded-xl font-bold transition-all"
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Expansion Details Modal */}
-      {selectedExpansion && !showPackModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="bg-black/95 backdrop-blur-xl rounded-3xl p-8 w-full max-w-7xl max-h-[90vh] border border-white/20 shadow-2xl">
-            <div className="flex items-center justify-between mb-8">
-              <div className="flex items-center gap-4">
-                <div className="text-4xl">{selectedExpansion.theme.emoji}</div>
-                <h3 className="text-4xl font-bold text-white">{selectedExpansion.name}</h3>
-              </div>
-              <div className="flex items-center gap-4">
-                <span className={`${selectedExpansion.theme.bg} text-white px-4 py-2 rounded-full text-sm font-bold`}>
-                  {selectedExpansion.totalCards} cards
-                </span>
-                <button
-                  onClick={() => setSelectedExpansion(null)}
-                  className="text-gray-400 hover:text-white transition-colors text-3xl"
-                >
-                  ×
-                </button>
-              </div>
-            </div>
-
-            <p className="text-xl text-gray-300 mb-8">
-              {selectedExpansion.description}
-            </p>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 max-h-96 overflow-y-auto">
-              {selectedExpansion.cards.map((card) => (
-                <Link 
-                  key={card.id} 
-                  href={`/pocketmode/${card.id}`}
-                  className="block group"
-                >
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center hover:bg-white/20 transition-all transform hover:scale-105 border border-white/10 hover:border-white/30">
-                    <div className="relative w-full aspect-[3/4] mb-3">
-                      <Image
-                        src={card.image || "/dextrendslogo.png"}
-                        alt={card.name}
-                        fill
-                        className="object-contain rounded transition-transform duration-300 group-hover:scale-110"
-                        loading="lazy"
-                        sizes="150px"
-                      />
-                    </div>
-                    <h4 className="font-medium text-sm mb-2 text-white line-clamp-2">{card.name}</h4>
-                    <TypeBadge type={card.type} size="sm" />
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      <style jsx>{`
-        @keyframes slideInUp {
-          from {
-            opacity: 0;
-            transform: translateY(100px) scale(0.8);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-          }
-        }
-      `}</style>
     </div>
   );
 }

@@ -296,6 +296,32 @@ button, a, [role="button"], input, select, textarea {
   .hover-lift:hover {
     @apply transform -translate-y-1 shadow-lg;
   }
+
+  /* Hide scrollbars for mobile */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Mobile grid optimizations */
+  .grid-mobile-2 {
+    @apply grid-cols-2;
+  }
+  .grid-mobile-3 {
+    @apply grid-cols-3;
+  }
+  
+  @media (max-width: 640px) {
+    .grid-mobile-2 {
+      @apply grid-cols-2 gap-2;
+    }
+    .grid-mobile-3 {
+      @apply grid-cols-3 gap-2;
+    }
+  }
 }
 
 /* Clean Keyframes */

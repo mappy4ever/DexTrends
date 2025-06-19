@@ -183,14 +183,14 @@ export default function CardList({
                   </a>
                 </Link>
                 <button
-                  className="magnifier-icon ml-1 p-1 rounded-full hover:bg-gray-200 focus:bg-gray-300 focus:outline-none"
-                  title="Zoom card"
+                  className="click-icon ml-1 p-1 rounded-full hover:bg-gray-200 focus:bg-gray-300 focus:outline-none"
+                  title="View card"
                   tabIndex={0}
                   onClick={e => { e.stopPropagation(); setZoomedCard(card); }}
-                  aria-label="Zoom card"
+                  aria-label="View card"
                   type="button"
                 >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
                 </button>
               </h3>
               <div className="flex items-center gap-2 mb-1">
