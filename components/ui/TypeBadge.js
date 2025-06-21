@@ -19,7 +19,7 @@ const typeColors = {
   poison: 'bg-purple-500',
   ground: 'bg-yellow-600',
   rock: 'bg-stone-500',
-  bug: 'bg-lime-500',
+  bug: 'bg-lime-400',
   ghost: 'bg-purple-600',
   steel: 'bg-slate-500',
   metal: 'bg-slate-500', // Pocket alias for steel

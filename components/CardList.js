@@ -5,6 +5,7 @@ import Modal from "./ui/Modal";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import { InlineLoadingSpinner } from "./ui/LoadingSpinner";
 import { getHolographicEffect, getRarityGlowClass } from "../utils/cardEffects";
+import { CompactPriceIndicator } from "./ui/PriceIndicator";
 
 export default function CardList({
   cards = [],
@@ -101,19 +102,8 @@ export default function CardList({
           };
           const rarityTag = rarityMap[rarity] || { label: '?', color: 'bg-gray-100 border border-gray-300 text-gray-400' };
 
-          // Use getPrice prop for price display
+          // Use getPrice prop for price display with trend indicators
           const currentPrice = getPrice(card); // getPrice already formats it as string "$X.XX" or "N/A"
-          const priceDisplay = currentPrice !== 'N/A'
-            ? (
-                <span className="inline-block text-sm font-medium text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-800 px-2 py-0.5 rounded-md border border-gray-200 dark:border-gray-700 tracking-tight">
-                  {currentPrice}
-                </span>
-              )
-            : (
-                <span className="inline-block text-xs font-medium text-gray-400 bg-gray-50 dark:bg-gray-800 px-2 py-0.5 rounded-md">
-                  N/A
-                </span>
-              );
 
           const handleRarityClick = (e) => {
             e.stopPropagation();
@@ -221,7 +211,11 @@ export default function CardList({
                 >
                   {rarityTag.label}
                 </button>
-                {priceDisplay}
+                <CompactPriceIndicator 
+                  cardId={card.id}
+                  currentPrice={currentPrice}
+                  variantType="holofoil"
+                />
               </div>
               <div className="text-content-default text-xs mb-1">
                 <b>Number:</b> {card.number}

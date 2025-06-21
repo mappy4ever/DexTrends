@@ -387,6 +387,7 @@ export default function CardDetailPage() {
                   cardId={card.id} 
                   initialPrice={parseFloat(getCardPrice(card).substring(1))}
                   timeRange="1y"
+                  variantType="holofoil"
                 />
               </div>
             )}

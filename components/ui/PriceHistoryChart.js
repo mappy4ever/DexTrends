@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '../../context/themecontext';
+import { PriceHistoryManager } from '../../lib/supabase';
 
-// A component to show price history for TCG cards
-// Note: In a real app, you would fetch actual price history data
-// This component simulates price history data for demonstration purposes
+// A component to show REAL price history for TCG cards
+// Uses actual price data from our Supabase database
 
-export default function PriceHistoryChart({ cardId, initialPrice = 0, timeRange = '1y' }) {
+export default function PriceHistoryChart({ cardId, initialPrice = 0, timeRange = '1y', variantType = 'holofoil' }) {
   const { theme } = useTheme();
   const [priceData, setPriceData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,9 +14,9 @@ export default function PriceHistoryChart({ cardId, initialPrice = 0, timeRange 
   const [lowestPrice, setLowestPrice] = useState(0);
   const [averagePrice, setAveragePrice] = useState(0);
 
-  // Generate fake price history data based on initial price
+  // Fetch real price history data from Supabase
   useEffect(() => {
-    if (!cardId || initialPrice <= 0) {
+    if (!cardId) {
       setPriceData([]);
       setLoading(false);
       return;
@@ -24,63 +24,86 @@ export default function PriceHistoryChart({ cardId, initialPrice = 0, timeRange 
 
     setLoading(true);
 
-    // Generate random price fluctuations based on initial price
-    const generatePriceData = (days, initialValue) => {
-      const today = new Date();
-      const data = [];
-      let currentPrice = initialValue;
-      let highest = currentPrice;
-      let lowest = currentPrice;
-      let total = 0;
-      
-      for (let i = days; i >= 0; i--) {
-        const date = new Date();
-        date.setDate(today.getDate() - i);
+    const fetchPriceData = async () => {
+      try {
+        // Set number of days based on selected time range
+        const daysMap = {
+          '1m': 30,
+          '3m': 90,
+          '6m': 180,
+          '1y': 365,
+          'all': 730 // Approximately 2 years for "All Time"
+        };
+
+        const days = daysMap[selectedRange] || 365;
         
-        // Add some randomness to the price (between -8% and +8%)
-        const volatilityFactor = 0.08;
-        const change = (Math.random() * 2 - 1) * volatilityFactor;
-        currentPrice = Math.max(0.01, currentPrice * (1 + change));
-        
-        // Ensure some trend patterns
-        if (i % 30 === 0) {
-          // Bigger swing every month
-          currentPrice = currentPrice * (1 + (Math.random() * 0.2 - 0.1));
+        // Fetch price history and statistics from Supabase
+        const [historyData, statsData] = await Promise.all([
+          PriceHistoryManager.getCardPriceHistory(cardId, variantType, days),
+          PriceHistoryManager.getCardPriceStats(cardId, variantType, days)
+        ]);
+
+        if (historyData && historyData.length > 0) {
+          // Transform data format for compatibility with existing chart logic
+          const transformedData = historyData.map(item => ({
+            date: item.collected_date,
+            price: parseFloat(item.price_market || 0)
+          }));
+
+          setPriceData(transformedData);
+
+          // Calculate statistics from the data
+          const prices = transformedData.map(d => d.price);
+          const highest = Math.max(...prices);
+          const lowest = Math.min(...prices);
+          const average = prices.reduce((sum, price) => sum + price, 0) / prices.length;
+
+          setHighestPrice(highest);
+          setLowestPrice(lowest);
+          setAveragePrice(parseFloat(average.toFixed(2)));
+        } else {
+          // No data available - use fallback to initial price if provided
+          if (initialPrice > 0) {
+            const fallbackData = [{
+              date: new Date().toISOString().split('T')[0],
+              price: initialPrice
+            }];
+            setPriceData(fallbackData);
+            setHighestPrice(initialPrice);
+            setLowestPrice(initialPrice);
+            setAveragePrice(initialPrice);
+          } else {
+            setPriceData([]);
+            setHighestPrice(0);
+            setLowestPrice(0);
+            setAveragePrice(0);
+          }
         }
-        
-        const roundedPrice = parseFloat(currentPrice.toFixed(2));
-        data.push({
-          date: date.toISOString().split('T')[0],
-          price: roundedPrice
-        });
-        
-        // Track statistics
-        highest = Math.max(highest, roundedPrice);
-        lowest = Math.min(lowest, roundedPrice);
-        total += roundedPrice;
+      } catch (error) {
+        console.error('Error fetching price data:', error);
+        // Fallback to initial price if there's an error
+        if (initialPrice > 0) {
+          const fallbackData = [{
+            date: new Date().toISOString().split('T')[0],
+            price: initialPrice
+          }];
+          setPriceData(fallbackData);
+          setHighestPrice(initialPrice);
+          setLowestPrice(initialPrice);
+          setAveragePrice(initialPrice);
+        } else {
+          setPriceData([]);
+          setHighestPrice(0);
+          setLowestPrice(0);
+          setAveragePrice(0);
+        }
+      } finally {
+        setLoading(false);
       }
-      
-      setHighestPrice(highest);
-      setLowestPrice(lowest);
-      setAveragePrice(parseFloat((total / data.length).toFixed(2)));
-      
-      return data;
     };
 
-    // Set number of days based on selected time range
-    const daysMap = {
-      '1m': 30,
-      '3m': 90,
-      '6m': 180,
-      '1y': 365,
-      'all': 730 // Approximately 2 years for "All Time"
-    };
-
-    const days = daysMap[selectedRange] || 365;
-    const data = generatePriceData(days, initialPrice);
-    setPriceData(data);
-    setLoading(false);
-  }, [cardId, initialPrice, selectedRange]);
+    fetchPriceData();
+  }, [cardId, variantType, selectedRange, initialPrice]);
 
   // Time range options
   const ranges = [
@@ -370,7 +393,10 @@ export default function PriceHistoryChart({ cardId, initialPrice = 0, timeRange 
       </div>
       
       <div className="text-xs text-gray-500 text-center mt-2">
-        Note: This chart shows simulated price history for demonstration purposes.
+        {priceData.length > 0 ? 
+          'Price data sourced from Pokemon TCG API market prices.' :
+          'No historical price data available for this card.'
+        }
       </div>
     </div>
   );
