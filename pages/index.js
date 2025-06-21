@@ -124,24 +124,51 @@ export default function IndexPage() {
           <span className="font-bold text-pokemon-blue"> Pokédex-inspired</span> experience.
         </p>
         
-        {/* Quick Action Tiles */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-4xl mt-8">
-          <Link href="/pokedex" className="group bg-white border border-border-color p-6 rounded-lg shadow-sm card-hover text-center">
-            <BsBook className="mx-auto mb-3 text-3xl text-pokemon-red group-hover:scale-110 transition-transform duration-300" />
-            <h3 className="font-semibold text-sm text-dark-text">Pokédex</h3>
+        {/* Enhanced Quick Action Tiles with Descriptions */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-6xl mt-12">
+          <Link href="/pokedex" className="group bg-white border border-border-color p-6 rounded-xl shadow-sm card-hover text-center hover:shadow-lg transition-all duration-300">
+            <BsBook className="mx-auto mb-4 text-4xl text-pokemon-red group-hover:scale-110 transition-transform duration-300" />
+            <h3 className="font-semibold text-lg text-dark-text mb-2">Pokédex</h3>
+            <p className="text-sm text-text-grey">Browse all Pokémon with detailed stats and information</p>
           </Link>
-          <Link href="/tcgsets" className="group bg-white border border-border-color p-6 rounded-lg shadow-sm card-hover text-center">
-            <BsCardList className="mx-auto mb-3 text-3xl text-pokemon-blue group-hover:scale-110 transition-transform duration-300" />
-            <h3 className="font-semibold text-sm text-dark-text">TCG Sets</h3>
+          <Link href="/tcgsets" className="group bg-white border border-border-color p-6 rounded-xl shadow-sm card-hover text-center hover:shadow-lg transition-all duration-300">
+            <BsCardList className="mx-auto mb-4 text-4xl text-pokemon-blue group-hover:scale-110 transition-transform duration-300" />
+            <h3 className="font-semibold text-lg text-dark-text mb-2">Pokémon TCG</h3>
+            <p className="text-sm text-text-grey">Explore sets, track prices, and manage collections</p>
           </Link>
-          <Link href="/pocketmode" className="group bg-white border border-border-color p-6 rounded-lg shadow-sm card-hover text-center">
-            <GiCardPickup className="mx-auto mb-3 text-3xl text-pokemon-yellow group-hover:scale-110 transition-transform duration-300" />
-            <h3 className="font-semibold text-sm text-dark-text">Pocket</h3>
+          <Link href="/pocketmode" className="group bg-white border border-border-color p-6 rounded-xl shadow-sm card-hover text-center hover:shadow-lg transition-all duration-300">
+            <GiCardPickup className="mx-auto mb-4 text-4xl text-pokemon-yellow group-hover:scale-110 transition-transform duration-300" />
+            <h3 className="font-semibold text-lg text-dark-text mb-2">Pocket Mode</h3>
+            <p className="text-sm text-text-grey">Mobile TCG format with streamlined gameplay</p>
           </Link>
-          <Link href="/leaderboard" className="group bg-white border border-border-color p-6 rounded-lg shadow-sm card-hover text-center">
-            <BsGrid className="mx-auto mb-3 text-3xl text-pokemon-green group-hover:scale-110 transition-transform duration-300" />
-            <h3 className="font-semibold text-sm text-dark-text">Rankings</h3>
+          <Link href="/leaderboard" className="group bg-white border border-border-color p-6 rounded-xl shadow-sm card-hover text-center hover:shadow-lg transition-all duration-300">
+            <BsGrid className="mx-auto mb-4 text-4xl text-pokemon-green group-hover:scale-110 transition-transform duration-300" />
+            <h3 className="font-semibold text-lg text-dark-text mb-2">Rankings</h3>
+            <p className="text-sm text-text-grey">See top players and competitive statistics</p>
           </Link>
+        </div>
+        
+        {/* Features Preview Section */}
+        <div className="w-full max-w-6xl mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-xl border border-blue-100">
+            <h3 className="text-2xl font-bold text-dark-text mb-4">🎯 Smart Collection Management</h3>
+            <p className="text-text-grey mb-6">Track your card values, set price alerts, and get insights into market trends with our advanced collection tools.</p>
+            <Link href="/collections">
+              <button className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                Manage Collection
+              </button>
+            </Link>
+          </div>
+          
+          <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-8 rounded-xl border border-purple-100">
+            <h3 className="text-2xl font-bold text-dark-text mb-4">⚡ Pocket Mode Experience</h3>
+            <p className="text-text-grey mb-6">Dive into the mobile-optimized TCG format with exclusive cards, quick battles, and streamlined rules.</p>
+            <Link href="/pocketmode">
+              <button className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                Explore Pocket
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
       <form onSubmit={handleSearch} className="flex flex-col md:flex-row justify-center items-center gap-4 mb-8 w-full max-w-3xl">

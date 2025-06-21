@@ -3,8 +3,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { RiGovernmentFill } from "react-icons/ri";
 import { AiOutlineBulb } from "react-icons/ai";
-import { BsSun, BsMoon, BsGlobeEuropeAfrica, BsHeart, BsSearch, BsCardList, BsGrid, BsBook } from "react-icons/bs";
+import { BsSun, BsMoon, BsGlobeEuropeAfrica, BsHeart, BsSearch, BsCardList, BsGrid, BsBook, BsChevronDown } from "react-icons/bs";
 import { GiPokerHand, GiCardPickup } from "react-icons/gi";
+import { FiTrendingUp, FiShoppingBag } from "react-icons/fi";
 import GlobalSearchModal from "./GlobalSearchModal";
 import { useTheme } from "../context/themecontext";
 import { useFavorites } from "../context/favoritescontext";
@@ -16,7 +17,9 @@ export default function Navbar() {
   const { favorites } = useFavorites();
   const [hoverExpanded, setHoverExpanded] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [tcgDropdownOpen, setTcgDropdownOpen] = useState(false);
   const menuWrapperRef = useRef(null);
+  const tcgDropdownRef = useRef(null);
   const router = useRouter();
   const searchModalRef = useRef();
   
@@ -25,14 +28,36 @@ export default function Navbar() {
     (favorites.pokemon ? favorites.pokemon.length : 0) + 
     (favorites.cards ? favorites.cards.length : 0) : 0;
 
-  // DexTrends Pokémon-themed navigation
+  // DexTrends Pokémon-themed navigation with dropdown structure
   const navItems = [
     { href: "/", label: "Home", icon: <BsGrid size={22} />, color: "text-pokeball-red" },
-    { href: "/tcgsets", label: "TCG Sets", icon: <BsCardList size={22} />, color: "text-greatball-blue" },
-    { href: "/collections", label: "Collections", icon: <BsHeart size={22} />, color: "text-poke-psychic" },
+    { 
+      href: "/tcgsets", 
+      label: "Pokémon TCG", 
+      icon: <BsCardList size={22} />, 
+      color: "text-greatball-blue",
+      hasDropdown: true,
+      dropdownItems: [
+        { href: "/tcgsets", label: "Sets", icon: <BsCardList size={18} />, description: "Browse all TCG sets" },
+        { href: "/trending", label: "Price Tracker", icon: <FiTrendingUp size={18} />, description: "Track card prices" },
+        { href: "/collections", label: "Collections", icon: <BsHeart size={18} />, description: "Manage your collection" },
+      ]
+    },
     { href: "/leaderboard", label: "Leaderboard", icon: <BsGrid size={22} />, color: "text-ultraball-yellow" },
     { href: "/pokedex", label: "Pokédex", icon: <BsBook size={22} />, color: "text-poke-fairy" },
-    { href: "/pocketmode", label: "Pocket Mode", icon: <GiCardPickup size={22} />, color: "text-poke-electric" },
+    { 
+      href: "/pocketmode", 
+      label: "Pocket", 
+      icon: <GiCardPickup size={22} />, 
+      color: "text-poke-electric",
+      hasDropdown: true,
+      dropdownItems: [
+        { href: "/pocketmode", label: "Cards", icon: <BsCardList size={18} />, description: "Browse Pocket cards" },
+        { href: "/pocketmode/decks", label: "Top Decks", icon: <BsGrid size={18} />, description: "Popular deck builds" },
+        { href: "/pocketmode/deckbuilder", label: "Deck Builder", icon: <BsGrid size={18} />, description: "Build custom decks" },
+        { href: "/pocketmode/expansions", label: "Booster Packs", icon: <FiShoppingBag size={18} />, description: "Open virtual packs" },
+      ]
+    },
   ];
 
   const pageTitles = navItems.reduce((acc, item) => {
@@ -42,7 +67,7 @@ export default function Navbar() {
 
   const currentTitle = pageTitles[router.pathname] || "DexTrends"; // Updated title
 
-  // Click outside for mobile menu
+  // Click outside for mobile menu and dropdowns
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (mobileOpen && menuWrapperRef.current && !menuWrapperRef.current.contains(event.target)) {
@@ -52,10 +77,15 @@ export default function Navbar() {
         }
         setMobileOpen(false);
       }
+      
+      // Close TCG dropdown when clicking outside
+      if (tcgDropdownOpen && tcgDropdownRef.current && !tcgDropdownRef.current.contains(event.target)) {
+        setTcgDropdownOpen(false);
+      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [mobileOpen]);
+  }, [mobileOpen, tcgDropdownOpen]);
 
   const isDarkMode = theme === 'dark';
 
@@ -72,22 +102,83 @@ export default function Navbar() {
           </span>
         </Link>
         <nav className="hidden md:flex items-center gap-x-2">
-          {navItems.map(item => (
-            <Link
-              key={`topnav-${item.href}`}
-              href={item.href}
-              className={`group flex items-center gap-x-2 px-4 py-2 rounded-lg font-medium transition-all duration-300 cursor-pointer border-2
-                ${router.pathname === item.href
-                  ? 'bg-pokemon-red text-white border-pokemon-red shadow-md'
-                  : 'text-dark-text border-transparent hover:border-border-color hover:bg-light-grey'}`}
-              style={{ pointerEvents: 'auto' }}
-            >
-              <span className={`flex-shrink-0 w-5 h-5 transition-colors duration-300 ${router.pathname === item.href ? 'text-white' : 'text-pokemon-red'}`}>
-                {item.icon}
-              </span>
-              <span className="truncate text-sm font-semibold">{item.label}</span>
-            </Link>
-          ))}
+          {navItems.map(item => {
+            const isActive = router.pathname === item.href || 
+              (item.dropdownItems && item.dropdownItems.some(subItem => router.pathname === subItem.href));
+            
+            if (item.hasDropdown) {
+              return (
+                <div key={`topnav-${item.href}`} className="relative" ref={tcgDropdownRef}>
+                  <button
+                    className={`group flex items-center gap-x-2 px-4 py-2 rounded-lg font-medium transition-all duration-300 cursor-pointer border-2
+                      ${isActive
+                        ? 'bg-pokemon-red text-white border-pokemon-red shadow-md'
+                        : 'text-dark-text border-transparent hover:border-border-color hover:bg-light-grey'}`}
+                    onMouseEnter={() => setTcgDropdownOpen(true)}
+                    onMouseLeave={() => setTcgDropdownOpen(false)}
+                    onClick={() => setTcgDropdownOpen(!tcgDropdownOpen)}
+                  >
+                    <span className={`flex-shrink-0 w-5 h-5 transition-colors duration-300 ${isActive ? 'text-white' : 'text-pokemon-red'}`}>
+                      {item.icon}
+                    </span>
+                    <span className="truncate text-sm font-semibold">{item.label}</span>
+                    <BsChevronDown className={`w-3 h-3 transition-transform duration-200 ${tcgDropdownOpen ? 'rotate-180' : ''}`} />
+                  </button>
+                  
+                  {/* Dropdown Menu */}
+                  <div 
+                    className={`absolute top-full left-0 mt-1 w-64 bg-white border border-border-color rounded-lg shadow-lg z-50 transition-all duration-200 ${
+                      tcgDropdownOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
+                    }`}
+                    onMouseEnter={() => setTcgDropdownOpen(true)}
+                    onMouseLeave={() => setTcgDropdownOpen(false)}
+                  >
+                    <div className="p-2">
+                      {item.dropdownItems.map(dropdownItem => (
+                        <Link
+                          key={`dropdown-${dropdownItem.href}`}
+                          href={dropdownItem.href}
+                          className={`group flex items-start gap-3 p-3 rounded-lg transition-all duration-200 hover:bg-light-grey ${
+                            router.pathname === dropdownItem.href ? 'bg-pokemon-red/10 border-l-4 border-pokemon-red' : ''
+                          }`}
+                          onClick={() => setTcgDropdownOpen(false)}
+                        >
+                          <span className="flex-shrink-0 w-5 h-5 mt-0.5 text-pokemon-red">
+                            {dropdownItem.icon}
+                          </span>
+                          <div className="flex-1 min-w-0">
+                            <div className="font-semibold text-sm text-dark-text truncate">
+                              {dropdownItem.label}
+                            </div>
+                            <div className="text-xs text-text-grey mt-0.5">
+                              {dropdownItem.description}
+                            </div>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+            
+            return (
+              <Link
+                key={`topnav-${item.href}`}
+                href={item.href}
+                className={`group flex items-center gap-x-2 px-4 py-2 rounded-lg font-medium transition-all duration-300 cursor-pointer border-2
+                  ${isActive
+                    ? 'bg-pokemon-red text-white border-pokemon-red shadow-md'
+                    : 'text-dark-text border-transparent hover:border-border-color hover:bg-light-grey'}`}
+                style={{ pointerEvents: 'auto' }}
+              >
+                <span className={`flex-shrink-0 w-5 h-5 transition-colors duration-300 ${isActive ? 'text-white' : 'text-pokemon-red'}`}>
+                  {item.icon}
+                </span>
+                <span className="truncate text-sm font-semibold">{item.label}</span>
+              </Link>
+            );
+          })}
         </nav>
         <div className="flex items-center gap-x-3">
           <button
@@ -153,23 +244,66 @@ export default function Navbar() {
             className="fixed top-16 right-0 left-0 bg-white/95 backdrop-blur-sm border-t border-border-color p-4 shadow-lg"
           >
             <nav className="flex flex-col space-y-2">
-              {navItems.map(item => (
-                <Link
-                  key={`mobile-${item.href}`}
-                  href={item.href}
-                  className={`flex items-center gap-x-3 px-4 py-3 rounded-lg font-medium transition-all duration-300 border-2 touch-manipulation
-                    ${router.pathname === item.href
-                      ? 'bg-pokemon-red text-white border-pokemon-red'
-                      : 'text-dark-text border-transparent hover:border-border-color hover:bg-light-grey'}`}
-                  onClick={() => setMobileOpen(false)}
-                  style={{ minHeight: '48px' }}
-                >
-                  <span className={`flex-shrink-0 w-6 h-6 ${router.pathname === item.href ? 'text-white' : 'text-pokemon-red'}`}>
-                    {item.icon}
-                  </span>
-                  <span className="font-semibold">{item.label}</span>
-                </Link>
-              ))}
+              {navItems.map(item => {
+                const isActive = router.pathname === item.href || 
+                  (item.dropdownItems && item.dropdownItems.some(subItem => router.pathname === subItem.href));
+                
+                if (item.hasDropdown) {
+                  return (
+                    <div key={`mobile-${item.href}`} className="space-y-1">
+                      <div className={`flex items-center gap-x-3 px-4 py-3 rounded-lg font-medium border-2 touch-manipulation
+                        ${isActive
+                          ? 'bg-pokemon-red text-white border-pokemon-red'
+                          : 'text-dark-text border-transparent bg-light-grey'}`}
+                        style={{ minHeight: '48px' }}
+                      >
+                        <span className={`flex-shrink-0 w-6 h-6 ${isActive ? 'text-white' : 'text-pokemon-red'}`}>
+                          {item.icon}
+                        </span>
+                        <span className="font-semibold">{item.label}</span>
+                      </div>
+                      {/* Mobile dropdown items */}
+                      <div className="pl-6 space-y-1">
+                        {item.dropdownItems.map(dropdownItem => (
+                          <Link
+                            key={`mobile-dropdown-${dropdownItem.href}`}
+                            href={dropdownItem.href}
+                            className={`flex items-center gap-x-3 px-4 py-2 rounded-lg font-medium transition-all duration-300 border-2 touch-manipulation
+                              ${router.pathname === dropdownItem.href
+                                ? 'bg-pokemon-blue text-white border-pokemon-blue'
+                                : 'text-dark-text border-transparent hover:border-border-color hover:bg-white'}`}
+                            onClick={() => setMobileOpen(false)}
+                            style={{ minHeight: '40px' }}
+                          >
+                            <span className={`flex-shrink-0 w-5 h-5 ${router.pathname === dropdownItem.href ? 'text-white' : 'text-pokemon-blue'}`}>
+                              {dropdownItem.icon}
+                            </span>
+                            <span className="font-medium text-sm">{dropdownItem.label}</span>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                }
+                
+                return (
+                  <Link
+                    key={`mobile-${item.href}`}
+                    href={item.href}
+                    className={`flex items-center gap-x-3 px-4 py-3 rounded-lg font-medium transition-all duration-300 border-2 touch-manipulation
+                      ${isActive
+                        ? 'bg-pokemon-red text-white border-pokemon-red'
+                        : 'text-dark-text border-transparent hover:border-border-color hover:bg-light-grey'}`}
+                    onClick={() => setMobileOpen(false)}
+                    style={{ minHeight: '48px' }}
+                  >
+                    <span className={`flex-shrink-0 w-6 h-6 ${isActive ? 'text-white' : 'text-pokemon-red'}`}>
+                      {item.icon}
+                    </span>
+                    <span className="font-semibold">{item.label}</span>
+                  </Link>
+                );
+              })}
             </nav>
           </div>
         </div>

@@ -206,12 +206,12 @@ function PocketPokemonDetail() {
       </FadeIn>
       
       <SlideUp delay={200}>
-        {/* Mobile-optimized tab navigation */}
+        {/* Mobile-optimized tab navigation - Fixed overlap issue */}
         <div className="mb-6">
-          {/* Mobile: Horizontal scroll tabs */}
-          <div className="flex sm:hidden overflow-x-auto bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg p-2 gap-1 scrollbar-hide">
+          {/* Mobile: Horizontal scroll tabs with better spacing */}
+          <div className="flex sm:hidden overflow-x-auto bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg p-3 gap-2 scrollbar-hide min-h-[60px]">
             <button
-              className={`flex-shrink-0 px-4 py-2.5 font-medium text-sm rounded-md transition-all whitespace-nowrap ${
+              className={`flex-shrink-0 px-5 py-3 font-medium text-sm rounded-md transition-all whitespace-nowrap min-w-fit ${
                 activeTab === "overview"
                   ? "bg-primary text-white shadow-sm"
                   : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -221,7 +221,7 @@ function PocketPokemonDetail() {
               Overview
             </button>
             <button
-              className={`flex-shrink-0 px-4 py-2.5 font-medium text-sm rounded-md transition-all whitespace-nowrap ${
+              className={`flex-shrink-0 px-5 py-3 font-medium text-sm rounded-md transition-all whitespace-nowrap min-w-fit ${
                 activeTab === "abilities"
                   ? "bg-primary text-white shadow-sm"
                   : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -231,7 +231,7 @@ function PocketPokemonDetail() {
               Abilities
             </button>
             <button
-              className={`flex-shrink-0 px-4 py-2.5 font-medium text-sm rounded-md transition-all whitespace-nowrap ${
+              className={`flex-shrink-0 px-5 py-3 font-medium text-sm rounded-md transition-all whitespace-nowrap min-w-fit ${
                 activeTab === "similar"
                   ? "bg-primary text-white shadow-sm"
                   : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -241,7 +241,7 @@ function PocketPokemonDetail() {
               Similar
             </button>
             <button
-              className={`flex-shrink-0 px-4 py-2.5 font-medium text-sm rounded-md transition-all whitespace-nowrap ${
+              className={`flex-shrink-0 px-5 py-3 font-medium text-sm rounded-md transition-all whitespace-nowrap min-w-fit ${
                 activeTab === "tcg"
                   ? "bg-primary text-white shadow-sm"
                   : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -474,34 +474,84 @@ function PocketPokemonDetail() {
         </div>
       </SlideUp>
 
-      {/* Zoom Modal */}
+      {/* Enhanced Card Zoom Modal with Better Styling */}
       {zoomedCard && (
         <Modal 
           isOpen={!!zoomedCard} 
           onClose={() => setZoomedCard(null)}
-          size="lg"
+          size="xl"
         >
-          <div className="flex flex-col items-center">
-            <div className="relative w-full max-w-md">
+          <div className="flex flex-col items-center max-w-2xl mx-auto">
+            {/* Card Container with Enhanced Shadow and Background */}
+            <div className="relative w-full max-w-lg bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 p-6 rounded-2xl shadow-2xl">
               <Image
                 src={zoomedCard.image || "/back-card.png"}
                 alt={zoomedCard.name}
-                width={400}
-                height={560}
-                className="rounded-lg shadow-2xl w-full h-auto"
+                width={500}
+                height={700}
+                className="rounded-xl shadow-xl w-full h-auto ring-4 ring-white/50 dark:ring-gray-700/50"
                 priority
               />
+              
+              {/* Close button overlay */}
+              <button
+                className="absolute top-2 right-2 p-2 bg-black/50 hover:bg-black/70 text-white rounded-full transition-all duration-200 backdrop-blur-sm"
+                onClick={() => setZoomedCard(null)}
+                aria-label="Close zoom view"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
             </div>
-            <h3 className="mt-4 text-xl font-bold text-center">{zoomedCard.name}</h3>
-            {zoomedCard.pack && (
-              <p className="text-gray-600 dark:text-gray-400 mt-2">{zoomedCard.pack}</p>
-            )}
-            <button
-              className="mt-4 px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark transition-colors"
-              onClick={() => setZoomedCard(null)}
-            >
-              Close
-            </button>
+            
+            {/* Card Information */}
+            <div className="mt-6 text-center space-y-2">
+              <h3 className="text-2xl font-pokemon font-black text-gray-900 dark:text-white">
+                {zoomedCard.name}
+              </h3>
+              
+              <div className="flex items-center justify-center gap-3 flex-wrap">
+                {zoomedCard.pack && (
+                  <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                    📦 {zoomedCard.pack}
+                  </span>
+                )}
+                {zoomedCard.health && (
+                  <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-medium">
+                    ❤️ {zoomedCard.health}HP
+                  </span>
+                )}
+                {zoomedCard.rarity && (
+                  <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-medium">
+                    ⭐ {zoomedCard.rarity}
+                  </span>
+                )}
+              </div>
+              
+              {zoomedCard.artist && (
+                <p className="text-gray-600 dark:text-gray-400 text-sm mt-3">
+                  🎨 Artist: {zoomedCard.artist}
+                </p>
+              )}
+            </div>
+            
+            {/* Action Buttons */}
+            <div className="flex gap-3 mt-6">
+              <button
+                className="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-lg font-medium"
+                onClick={() => setZoomedCard(null)}
+              >
+                ✨ Close View
+              </button>
+              
+              <button
+                className="px-6 py-3 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-lg hover:from-gray-600 hover:to-gray-700 transition-all duration-200 shadow-lg font-medium"
+                onClick={() => window.open(zoomedCard.image, '_blank')}
+              >
+                🔍 Full Size
+              </button>
+            </div>
           </div>
         </Modal>
       )}

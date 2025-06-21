@@ -512,7 +512,7 @@ export default function PokedexIndex() {
         onFilterChange={handleSidebarFilterChange}
         sidebarContent={
           <div className="mt-6 space-y-4">
-            <div className="bg-pokemon-red p-4 rounded-lg text-white text-center">
+            <div className="bg-blue-500 p-4 rounded-lg text-white text-center">
               <h4 className="font-semibold mb-2">Quick Search</h4>
               <button
                 onClick={handleSearch}
@@ -583,11 +583,18 @@ export default function PokedexIndex() {
               <StaggerItem key={poke.id}>
                 <div 
                   onClick={() => handlePokemonClick(poke.id)}
-                  className="group cursor-pointer bg-white dark:bg-gray-800 border border-border-color rounded-lg shadow-sm card-holographic hover:shadow-lg transition-all duration-300 hover:-translate-y-1 min-h-[200px] flex flex-col"
+                  className="group cursor-pointer bg-neutral-100 dark:bg-neutral-900 border border-border-color rounded-lg shadow-sm card-holographic hover:shadow-lg transition-all duration-300 hover:-translate-y-1 min-h-[200px] flex flex-col relative overflow-hidden"
                 >
-                    <div className="flex-1 flex flex-col text-center p-3">
-                      {/* Larger, more vertical image container */}
-                      <div className="relative w-24 h-24 sm:w-28 sm:h-28 mx-auto mb-3 bg-gradient-to-br from-off-white to-light-grey rounded-xl p-3 overflow-hidden">
+                    {/* Large watermark Pokédex number */}
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      <span className="text-gray-200 dark:text-gray-700 text-6xl font-bold opacity-30 select-none">
+                        #{String(poke.id).padStart(3, "0")}
+                      </span>
+                    </div>
+                    
+                    <div className="flex-1 flex flex-col text-center p-3 relative z-10">
+                      {/* Larger, more vertical image container with consistent background */}
+                      <div className="relative w-24 h-24 sm:w-28 sm:h-28 mx-auto mb-3 bg-neutral-100 dark:bg-neutral-900 rounded-xl p-3 overflow-hidden">
                         <Image
                           src={poke.sprite || "/dextrendslogo.png"}
                           alt={poke.name}
@@ -609,8 +616,8 @@ export default function PokedexIndex() {
                         #{String(poke.id).padStart(3, "0")}
                       </p>
                       
-                      {/* Pokemon name with better typography */}
-                      <h3 className="font-semibold text-sm sm:text-base capitalize text-dark-text dark:text-white mb-3 group-hover:text-pokemon-red transition-colors line-clamp-1">
+                      {/* Pokemon name with better typography using Montserrat */}
+                      <h3 className="font-pokemon font-black text-base sm:text-lg capitalize text-dark-text dark:text-white mb-3 group-hover:text-pokemon-red transition-colors line-clamp-1">
                         {poke.name.replace("-", " ")}
                       </h3>
                       
@@ -670,7 +677,7 @@ export default function PokedexIndex() {
                   </p>
                   <button 
                     onClick={clearAllFilters} 
-                    className="px-4 py-2 bg-pokemon-red text-white rounded-lg hover:bg-red-700 transition-colors"
+                    className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700 transition-colors"
                   >
                     Clear All Filters
                   </button>

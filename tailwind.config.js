@@ -96,6 +96,7 @@ module.exports = {
         sans: ['var(--font-sans)', 'ui-sans-serif', 'system-ui'],
         serif: ['var(--font-serif)', 'ui-serif', 'Georgia'],
         mono: ['var(--font-mono)', 'ui-monospace', 'SFMono-Regular'],
+        'pokemon': ['Montserrat', 'sans-serif'],
       },
       borderRadius: {
         // Extend Tailwind's default scale or use your 'app-' prefixed ones
