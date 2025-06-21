@@ -7,6 +7,8 @@ import CustomSiteLogo from "../components/icons/customsitelogo";
 import { getPrice, getRarityRank } from "../utils/pokemonutils.js";
 import { BsBook, BsCardList, BsGrid } from "react-icons/bs";
 import { GiCardPickup } from "react-icons/gi";
+import AdvancedSearchModal from "../components/AdvancedSearchModal";
+import MarketAnalytics from "../components/MarketAnalytics";
 
 const pokemonKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
 if (!pokemonKey) {
@@ -36,6 +38,10 @@ export default function IndexPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalCard, setModalCard] = useState(null);
   const [selectedCardId, setSelectedCardId] = useState(null);
+
+  // New advanced features state
+  const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
+  const [showMarketAnalytics, setShowMarketAnalytics] = useState(false);
 
   // Ref to detect clicks outside expanded card modal
   const containerRef = useRef(null);
@@ -159,7 +165,37 @@ export default function IndexPage() {
         >
           Search
         </button>
+        <button
+          type="button"
+          onClick={() => setShowAdvancedSearch(true)}
+          className="btn-secondary px-6 py-4 text-lg font-semibold rounded-lg hover:scale-105 transition-all duration-300 flex items-center gap-2"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
+          </svg>
+          Advanced
+        </button>
       </form>
+
+      {/* Market Analytics Toggle */}
+      <div className="w-full mb-8 flex justify-center">
+        <button
+          onClick={() => setShowMarketAnalytics(!showMarketAnalytics)}
+          className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 flex items-center gap-2 shadow-lg"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          </svg>
+          {showMarketAnalytics ? 'Hide' : 'Show'} Market Analytics
+        </button>
+      </div>
+
+      {/* Market Analytics Section */}
+      {showMarketAnalytics && (
+        <div className="w-full mb-8">
+          <MarketAnalytics />
+        </div>
+      )}
       <div className="w-full mb-8">
         <CardList
           cards={cards}
@@ -194,6 +230,17 @@ export default function IndexPage() {
           </div>
         </Modal>
       )}
+
+      {/* Advanced Search Modal */}
+      <AdvancedSearchModal
+        isOpen={showAdvancedSearch}
+        onClose={() => setShowAdvancedSearch(false)}
+        onSearchResults={(results) => {
+          setCards(results);
+          setShowAdvancedSearch(false);
+        }}
+      />
+
       <style jsx global>{`
         .shadow-glow-rare {
           box-shadow: 0 0 14px 4px #ffe06655, 0 2px 8px 0 var(--color-shadow-default);

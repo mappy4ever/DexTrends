@@ -29,8 +29,9 @@ export default function Navbar() {
   const navItems = [
     { href: "/", label: "Home", icon: <BsGrid size={22} />, color: "text-pokeball-red" },
     { href: "/tcgsets", label: "TCG Sets", icon: <BsCardList size={22} />, color: "text-greatball-blue" },
+    { href: "/collections", label: "Collections", icon: <BsHeart size={22} />, color: "text-poke-psychic" },
     { href: "/leaderboard", label: "Leaderboard", icon: <BsGrid size={22} />, color: "text-ultraball-yellow" },
-    { href: "/pokedex", label: "Pokédex", icon: <BsBook size={22} />, color: "text-poke-psychic" },
+    { href: "/pokedex", label: "Pokédex", icon: <BsBook size={22} />, color: "text-poke-fairy" },
     { href: "/pocketmode", label: "Pocket Mode", icon: <GiCardPickup size={22} />, color: "text-poke-electric" },
   ];
 
