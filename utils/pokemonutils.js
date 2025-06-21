@@ -1,3 +1,6 @@
+// Enhanced Pokémon utility functions with Supabase caching
+import { SupabaseCache } from '../lib/supabase';
+
 // Type colors mapping for consistent usage across the app - with solid colors and white text like the GRASS example
 export const typeColors = {
   normal: { bg: "bg-poke-normal", text: "text-white", border: "border-poke-normal", hover: "hover:bg-poke-normal" },

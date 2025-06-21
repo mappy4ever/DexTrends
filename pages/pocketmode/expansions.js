@@ -45,18 +45,44 @@ export default function Expansions() {
     
     const expansionMap = {};
     
-    // Filter out promo cards and focus on main sets only
+    // Filter out promo cards and redistribute shared cards to individual packs
     const mainSetCards = allCards.filter(card => {
       const packName = (card.pack || '').toLowerCase();
       // Exclude promo packs and small sets
       return !packName.includes('promo') && 
              !packName.includes('promotional') && 
              !packName.includes('special') &&
+             !packName.includes('shop') &&
+             !packName.includes('campaign') &&
+             !packName.includes('premium') &&
+             !packName.includes('wonder') &&
              packName !== 'unknown' &&
              packName !== '';
     });
     
-    mainSetCards.forEach(card => {
+    // Redistribute shared cards to individual packs based on type
+    const redistributedCards = mainSetCards.map(card => {
+      if (card.pack === 'Shared(Genetic Apex)') {
+        const cardType = (card.type || '').toLowerCase();
+        
+        // Redistribute based on type affinity
+        if (['grass', 'psychic', 'darkness', 'dark'].includes(cardType)) {
+          return { ...card, pack: 'Mewtwo' };
+        } else if (['lightning', 'electric'].includes(cardType)) {
+          return { ...card, pack: 'Pikachu' };
+        } else if (['water', 'fighting', 'fire'].includes(cardType)) {
+          return { ...card, pack: 'Charizard' };
+        } else {
+          // Colorless and other types - distribute evenly
+          const hash = card.name.charCodeAt(0) % 3;
+          const packs = ['Mewtwo', 'Pikachu', 'Charizard'];
+          return { ...card, pack: packs[hash] };
+        }
+      }
+      return card;
+    });
+    
+    redistributedCards.forEach(card => {
       const packName = card.pack || 'Unknown';
       
       if (!expansionMap[packName]) {
@@ -77,9 +103,40 @@ export default function Expansions() {
       expansionMap[packName].totalCards++;
     });
     
-    // Convert to array and add additional metadata - filter out small sets
-    return Object.values(expansionMap)
-    .filter(expansion => expansion.totalCards >= 20) // Only show sets with 20+ cards
+    // Get only real expansions with high card counts and filter out shared/placeholder packs
+    const realExpansions = Object.values(expansionMap).filter(expansion => {
+      const name = expansion.name;
+      const cardCount = expansion.totalCards;
+      
+      // Filter out shared, placeholder, and low-count packs
+      if (name.includes('Shared(') || 
+          name.includes('PLACEHOLDER') ||
+          name === 'Eevee Grove' ||
+          name.includes('Extra Dimensional') ||
+          name.includes('Space Time') ||
+          name.includes('Celestial Guardian') ||
+          cardCount < 70) {
+        return false;
+      }
+      
+      // Only keep main expansions with high card counts
+      return (
+        (name === 'Mewtwo' && cardCount >= 90) ||
+        (name === 'Charizard' && cardCount >= 90) ||
+        (name === 'Pikachu' && cardCount >= 85) ||
+        (name === 'Mythical Island' && cardCount >= 80) ||
+        (name === 'Dialga' && cardCount >= 75) ||
+        (name === 'Palkia' && cardCount >= 75) ||
+        (name === 'Triumphant Light' && cardCount >= 90) ||
+        (name === 'Shining Revelry' && cardCount >= 100) ||
+        (name === 'Solgaleo' && cardCount >= 90) ||
+        (name === 'Lunala' && cardCount >= 90) ||
+        (name === 'Extradimensional Crisis' && cardCount >= 90)
+      );
+    });
+    
+    return realExpansions
+    .filter(expansion => expansion.totalCards >= 70) // Only show high-quality sets
     .map(expansion => {
       // Get featured cards (rare cards for showcase)
       const rareCards = expansion.cards
@@ -93,13 +150,23 @@ export default function Expansions() {
         types: Array.from(expansion.types),
         rarities: Array.from(expansion.rarities),
         featuredCards,
+        displayName: getDisplayName(expansion.name),
+        setCode: getSetCode(expansion.name),
+        setName: getSetName(expansion.name),
         releaseDate: getExpansionReleaseDate(expansion.name),
         description: getExpansionDescription(expansion.name),
         theme: getExpansionTheme(expansion.name),
+        packImage: getExpansionPackImage(expansion.name),
         packPrice: 5,
         guaranteedRare: true
       };
-    }).sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate));
+    }).sort((a, b) => {
+      // Sort by set code order
+      const order = {
+        'A1': 1, 'A1a': 2, 'A2': 3, 'A2a': 4, 'A2b': 5, 'A3': 6, 'A3a': 7
+      };
+      return (order[a.setCode] || 999) - (order[b.setCode] || 999);
+    });
   }, [allCards]);
 
   // Helper functions for expansion metadata
@@ -112,11 +179,103 @@ export default function Expansions() {
     return releaseDates[name] || '2024-10-30';
   }
 
+  // Helper functions for clean expansion mapping
+  function getDisplayName(name) {
+    const displayNames = {
+      'Mewtwo': 'Mewtwo',
+      'Charizard': 'Charizard',
+      'Pikachu': 'Pikachu',
+      'Mythical Island': 'Mew',
+      'Dialga': 'Dialga',
+      'Palkia': 'Palkia',
+      'Triumphant Light': 'Arceus',
+      'Shining Revelry': 'Shiny Charizard',
+      'Solgaleo': 'Solgaleo',
+      'Lunala': 'Lunala',
+      'Extradimensional Crisis': 'Buzzwole'
+    };
+    return displayNames[name] || name;
+  }
+  
+  function getSetCode(name) {
+    const setCodes = {
+      'Mewtwo': 'A1',
+      'Charizard': 'A1',
+      'Pikachu': 'A1',
+      'Mythical Island': 'A1a',
+      'Dialga': 'A2',
+      'Palkia': 'A2',
+      'Triumphant Light': 'A2a',
+      'Shining Revelry': 'A2b',
+      'Solgaleo': 'A3',
+      'Lunala': 'A3',
+      'Extradimensional Crisis': 'A3a'
+    };
+    return setCodes[name] || '';
+  }
+  
+  function getSetName(name) {
+    const setNames = {
+      'Mewtwo': 'Genetic Apex',
+      'Charizard': 'Genetic Apex',
+      'Pikachu': 'Genetic Apex',
+      'Mythical Island': 'Mythical Island',
+      'Dialga': 'Space-Time Smackdown',
+      'Palkia': 'Space-Time Smackdown',
+      'Triumphant Light': 'Triumphant Light',
+      'Shining Revelry': 'Shining Revelry',
+      'Solgaleo': 'Celestial Guardians',
+      'Lunala': 'Celestial Guardians',
+      'Extradimensional Crisis': 'Extradimensional Crisis'
+    };
+    return setNames[name] || name;
+  }
+  
+  // Map expansion names to booster pack images - exact specifications only
+  function getExpansionPackImage(name) {
+    const packImages = {
+      // Genetic Apex (A1)
+      'Mewtwo': '/images/PocketBoosterPacks/apexmewtwo.png',
+      'Charizard': '/images/PocketBoosterPacks/apexcharizard.png', 
+      'Pikachu': '/images/PocketBoosterPacks/apexpikachu.png',
+      
+      // Mythical Island (A1a)
+      'Mythical Island': '/images/PocketBoosterPacks/mythicalisland.png',
+      
+      // Space-Time Smackdown (A2)
+      'Dialga': '/images/PocketBoosterPacks/spacetimedialga.png',
+      'Palkia': '/images/PocketBoosterPacks/spacetimepalkia.png',
+      
+      // Triumphant Light (A2a)
+      'Triumphant Light': '/images/PocketBoosterPacks/triumphantlight.png',
+      
+      // Shining Revelry (A2b)
+      'Shining Revelry': '/images/PocketBoosterPacks/shinningrivalrycharizard.png',
+      
+      // Celestial Guardians (A3)
+      'Solgaleo': '/images/PocketBoosterPacks/celestialguardiansol.png',
+      'Lunala': '/images/PocketBoosterPacks/celestialguardianlun.png',
+      
+      // Extradimensional Crisis (A3a)
+      'Extradimensional Crisis': '/images/PocketBoosterPacks/extradimensionalcrisis.png'
+    };
+    return packImages[name] || null;
+  }
+
   function getExpansionDescription(name) {
     const descriptions = {
       'Mewtwo': 'Harness the psychic powers of the legendary Mewtwo and dominate with mind-bending abilities.',
       'Charizard': 'Unleash the fiery fury of Charizard and incinerate your opponents with blazing attacks.',
-      'Pikachu': 'Channel the electric energy of Pikachu and shock your way to victory with lightning speed.'
+      'Pikachu': 'Channel the electric energy of Pikachu and shock your way to victory with lightning speed.',
+      'Space Time Dialga': 'Master time itself with the temporal powers of the legendary Dialga.',
+      'Space Time Palkia': 'Bend space and dimensions with the cosmic might of Palkia.',
+      'Celestial Guardian': 'Harness the radiant power of Solgaleo, guardian of the sun.',
+      'Celestial Guardian Luna': 'Embrace the mysterious lunar energy of Lunala, guardian of the moon.',
+      'Triumphant Light': 'Illuminate your path to victory with brilliant light-type Pokemon.',
+      'Shining Rivalry': 'Experience the ultimate rivalry with shining rare Pokemon cards.',
+      'Mythical Island': 'Discover mystical Pokemon from the legendary Mythical Island.',
+      'Eevee Grove': 'Explore the diverse evolutions of Eevee in this nature-themed expansion.',
+      'Extra Dimensional Crisis': 'Battle across dimensions with ultra-rare interdimensional Pokemon.'
     };
     return descriptions[name] || `Discover the incredible power of ${name} in this exciting expansion.`;
   }
@@ -143,6 +302,69 @@ export default function Expansions() {
         emoji: '⚡',
         bgPattern: 'radial-gradient(circle at 50% 80%, rgba(251, 191, 36, 0.3) 0%, transparent 50%)',
         glowColor: 'shadow-yellow-500/50'
+      },
+      'Space Time Dialga': {
+        gradient: 'from-blue-700 via-steel-600 to-blue-900',
+        accentColor: 'blue',
+        emoji: '⏰',
+        bgPattern: 'radial-gradient(circle at 30% 40%, rgba(59, 130, 246, 0.3) 0%, transparent 50%)',
+        glowColor: 'shadow-blue-500/50'
+      },
+      'Space Time Palkia': {
+        gradient: 'from-pink-600 via-purple-600 to-pink-800',
+        accentColor: 'pink',
+        emoji: '🌌',
+        bgPattern: 'radial-gradient(circle at 70% 30%, rgba(236, 72, 153, 0.3) 0%, transparent 50%)',
+        glowColor: 'shadow-pink-500/50'
+      },
+      'Celestial Guardian': {
+        gradient: 'from-orange-500 via-yellow-500 to-orange-700',
+        accentColor: 'orange',
+        emoji: '☀️',
+        bgPattern: 'radial-gradient(circle at 50% 30%, rgba(251, 146, 60, 0.3) 0%, transparent 50%)',
+        glowColor: 'shadow-orange-500/50'
+      },
+      'Celestial Guardian Luna': {
+        gradient: 'from-purple-800 via-indigo-700 to-purple-900',
+        accentColor: 'purple',
+        emoji: '🌙',
+        bgPattern: 'radial-gradient(circle at 40% 60%, rgba(147, 51, 234, 0.3) 0%, transparent 50%)',
+        glowColor: 'shadow-purple-500/50'
+      },
+      'Triumphant Light': {
+        gradient: 'from-yellow-300 via-white to-yellow-500',
+        accentColor: 'yellow',
+        emoji: '✨',
+        bgPattern: 'radial-gradient(circle at 50% 50%, rgba(251, 191, 36, 0.3) 0%, transparent 50%)',
+        glowColor: 'shadow-yellow-500/50'
+      },
+      'Shining Rivalry': {
+        gradient: 'from-red-500 via-orange-500 to-yellow-500',
+        accentColor: 'orange',
+        emoji: '⚔️',
+        bgPattern: 'radial-gradient(circle at 60% 40%, rgba(239, 68, 68, 0.3) 0%, transparent 50%)',
+        glowColor: 'shadow-red-500/50'
+      },
+      'Mythical Island': {
+        gradient: 'from-emerald-600 via-teal-600 to-emerald-800',
+        accentColor: 'emerald',
+        emoji: '🏝️',
+        bgPattern: 'radial-gradient(circle at 60% 40%, rgba(16, 185, 129, 0.3) 0%, transparent 50%)',
+        glowColor: 'shadow-emerald-500/50'
+      },
+      'Eevee Grove': {
+        gradient: 'from-green-500 via-emerald-500 to-green-700',
+        accentColor: 'green',
+        emoji: '🌳',
+        bgPattern: 'radial-gradient(circle at 40% 60%, rgba(34, 197, 94, 0.3) 0%, transparent 50%)',
+        glowColor: 'shadow-green-500/50'
+      },
+      'Extra Dimensional Crisis': {
+        gradient: 'from-violet-600 via-purple-600 to-indigo-800',
+        accentColor: 'violet',
+        emoji: '🌀',
+        bgPattern: 'radial-gradient(circle at 30% 70%, rgba(139, 92, 246, 0.3) 0%, transparent 50%)',
+        glowColor: 'shadow-violet-500/50'
       }
     };
     return themes[name] || {
@@ -305,7 +527,7 @@ export default function Expansions() {
               </div>
               <div className="flex items-center gap-2">
                 <span className="bg-pokemon-green/10 text-pokemon-green px-3 py-1 rounded-full text-sm font-medium border border-pokemon-green/20">
-                  {expansions.length} Expansions
+                  {expansions.length} Booster Packs
                 </span>
               </div>
             </div>
@@ -334,19 +556,22 @@ export default function Expansions() {
                 key={expansion.id}
                 className="group bg-white border border-border-color rounded-lg shadow-sm card-holographic overflow-hidden"
               >
-                {/* Pack Image */}
-                <div className="relative h-48 bg-light-grey rounded-t-lg overflow-hidden">
-                  {expansion.packArt || expansion.logoUrl ? (
-                    <Image
-                      src={expansion.packArt || expansion.logoUrl}
-                      alt={`${expansion.name} pack`}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
+                {/* Pack Image - Vertical Showcase */}
+                <div className="relative h-64 bg-light-grey rounded-t-lg overflow-hidden flex items-center justify-center">
+                  {expansion.packImage ? (
+                    <div className="relative w-32 h-48">
+                      <Image
+                        src={expansion.packImage}
+                        alt={`${expansion.name} pack`}
+                        fill
+                        className="object-contain drop-shadow-lg group-hover:scale-105 transition-transform duration-300"
+                        unoptimized={true} // Small pack images don't need optimization
+                      />
+                    </div>
                   ) : (
                     // Clean placeholder with rainbow indicator
-                    <div className="w-full h-full bg-gradient-to-br from-red-400 via-yellow-400 via-green-400 via-blue-400 to-purple-400 flex items-center justify-center relative">
-                      <div className="absolute inset-0 bg-white/20 backdrop-blur-sm"></div>
+                    <div className="w-32 h-48 bg-gradient-to-br from-red-400 via-yellow-400 via-green-400 via-blue-400 to-purple-400 flex items-center justify-center relative rounded-lg">
+                      <div className="absolute inset-0 bg-white/20 backdrop-blur-sm rounded-lg"></div>
                       <div className="relative z-10 text-center text-white">
                         <div className="w-12 h-12 bg-white/30 rounded-full flex items-center justify-center mb-2 mx-auto">
                           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

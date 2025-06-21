@@ -1,9 +1,12 @@
-// Enhanced Pocket Data utility with intelligent caching and error handling
+// Enhanced Pocket Data utility with intelligent caching and Supabase integration
+import { SupabaseCache } from '../lib/supabase';
+
 let pocketDataCache = null;
 let cacheTimestamp = null;
 let fetchPromise = null;
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes cache
+const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes cache (extended)
 const STORAGE_KEY = 'pocketDataCache';
+const SUPABASE_CACHE_KEY = 'pocket_data_full';
 
 export async function fetchPocketData() {
   const now = Date.now();
@@ -18,6 +21,18 @@ export async function fetchPocketData() {
     return fetchPromise;
   }
   
+  // Try Supabase cache first
+  try {
+    const supabaseCached = await SupabaseCache.getCachedPokemon(SUPABASE_CACHE_KEY);
+    if (supabaseCached) {
+      pocketDataCache = supabaseCached;
+      cacheTimestamp = now;
+      return supabaseCached;
+    }
+  } catch (error) {
+    console.warn('Failed to fetch from Supabase cache:', error);
+  }
+  
   // Create new fetch promise
   fetchPromise = fetch("https://raw.githubusercontent.com/chase-manning/pokemon-tcg-pocket-cards/refs/heads/main/v4.json")
     .then(res => {
@@ -26,10 +41,17 @@ export async function fetchPocketData() {
       }
       return res.json();
     })
-    .then(data => {
+    .then(async (data) => {
       pocketDataCache = data;
       cacheTimestamp = now;
       fetchPromise = null;
+      
+      // Cache in Supabase for 4 hours
+      try {
+        await SupabaseCache.setCachedPokemon(SUPABASE_CACHE_KEY, data, 'pocket_full_dataset', 4);
+      } catch (error) {
+        console.warn('Failed to cache in Supabase:', error);
+      }
       
       // Cache in localStorage for persistence across sessions
       try {
@@ -43,16 +65,29 @@ export async function fetchPocketData() {
       
       return data;
     })
-    .catch(error => {
+    .catch(async (error) => {
       fetchPromise = null;
       
-      // Try to use localStorage cache as fallback
+      // Try Supabase cache as fallback (even if expired)
+      try {
+        const supabaseFallback = await SupabaseCache.getCachedPokemon(SUPABASE_CACHE_KEY);
+        if (supabaseFallback) {
+          console.warn('Using Supabase fallback cache due to fetch error:', error);
+          pocketDataCache = supabaseFallback;
+          cacheTimestamp = now - (CACHE_DURATION / 2); // Mark as half-expired
+          return supabaseFallback;
+        }
+      } catch (supabaseError) {
+        console.warn('Supabase fallback failed:', supabaseError);
+      }
+      
+      // Try to use localStorage cache as final fallback
       try {
         const cached = localStorage.getItem(STORAGE_KEY);
         if (cached) {
           const { data, timestamp } = JSON.parse(cached);
           if (data && Array.isArray(data)) {
-            console.warn('Using cached Pocket data due to fetch error:', error);
+            console.warn('Using localStorage fallback due to fetch error:', error);
             pocketDataCache = data;
             cacheTimestamp = timestamp;
             return data;

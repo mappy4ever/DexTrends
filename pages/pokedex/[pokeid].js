@@ -1559,3 +1559,59 @@ export default function PokemonDetail() {
     </div>
   );
 }
+
+// ISR implementation for performance optimization
+export async function getStaticPaths() {
+  // Pre-generate popular Pokemon pages
+  const popularPokemonIds = [
+    1, 4, 7, 25, 39, 52, 54, 58, 104, 113, 122, 131, 133, 143, 150, 151, // Gen 1 favorites
+    155, 158, 161, 179, 196, 197, 212, 248, 249, 250, // Gen 2 favorites
+    255, 258, 261, 302, 380, 381, 384, // Gen 3 favorites
+    387, 390, 393, 448, 483, 484, 487, // Gen 4 favorites
+    495, 498, 501, 570, 635, 644, 645, 646, // Gen 5 favorites
+  ];
+
+  const paths = popularPokemonIds.map(id => ({
+    params: { pokeid: id.toString() }
+  }));
+
+  return {
+    paths,
+    fallback: 'blocking' // Generate other pages on-demand
+  };
+}
+
+export async function getStaticProps({ params }) {
+  const { pokeid } = params;
+  
+  try {
+    // Import caching utilities
+    const { fetchPokemonWithCache, fetchPokemonSpeciesWithCache } = await import('../../utils/cachedPokemonUtils');
+    
+    // Fetch basic Pokemon data with caching
+    const pokemonData = await fetchPokemonWithCache(pokeid);
+    const speciesData = await fetchPokemonSpeciesWithCache(pokeid);
+    
+    // Basic error handling
+    if (!pokemonData) {
+      return {
+        notFound: true
+      };
+    }
+
+    return {
+      props: {
+        pokemonData,
+        speciesData,
+        pokeid
+      },
+      revalidate: 3600 // Revalidate every hour (Pokemon data doesn't change often)
+    };
+  } catch (error) {
+    console.error(`Error generating static props for Pokemon ${pokeid}:`, error);
+    
+    return {
+      notFound: true
+    };
+  }
+}

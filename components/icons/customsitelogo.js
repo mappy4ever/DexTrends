@@ -12,6 +12,7 @@ export default function CustomSiteLogo({ size = 120, className = '', ...props })
         height={150}
         className={className}
         style={{ display: 'block', objectFit: 'contain' }}
+        unoptimized={true} // Small logo doesn't need optimization
         {...props}
       />
     </div>

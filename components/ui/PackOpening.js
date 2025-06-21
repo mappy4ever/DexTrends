@@ -35,13 +35,8 @@ export default function PackOpening({
       setCurrentCardIndex(0);
       setHasRareCard(false);
       
-      // Check if expansion has pack image from API
-      if (expansion?.packImage) {
-        setPackImage(expansion.packImage);
-      } else {
-        // Use placeholder with rainbow indicator
-        setPackImage(null);
-      }
+      // Use pack image from expansion data
+      setPackImage(expansion?.packImage || null);
     }
   }, [isOpen, expansion]);
 
@@ -199,17 +194,18 @@ export default function PackOpening({
         </div>
 
         {/* Pack Opening Area */}
-        <div className="p-8 text-center">
+        <div className="p-8 text-center min-h-[600px] flex flex-col justify-center">
           {packState === 'closed' && (
             <div className="space-y-6">
-              {/* Pack Image */}
-              <div className="relative mx-auto w-48 h-64 mb-6">
+              {/* Pack Image - Vertical Orientation - Larger Size */}
+              <div className="relative mx-auto w-80 h-96 mb-6">
                 {packImage ? (
                   <Image
                     src={packImage}
                     alt={`${expansion?.name} Pack`}
                     fill
-                    className="object-contain rounded-lg"
+                    className="object-contain rounded-lg drop-shadow-2xl"
+                    unoptimized={true} // Pack images are small and decorative
                   />
                 ) : (
                   // Placeholder pack with rainbow indicator
@@ -249,14 +245,15 @@ export default function PackOpening({
 
           {packState === 'shaking' && (
             <div className="space-y-6">
-              <div className="relative mx-auto w-48 h-64 animate-pulse">
+              <div className="relative mx-auto w-80 h-96 animate-pulse">
                 <div className={`w-full h-full ${packImage ? '' : 'bg-gradient-to-br from-red-400 via-yellow-400 via-green-400 via-blue-400 to-purple-400'} rounded-lg flex items-center justify-center animate-bounce`}>
                   {packImage ? (
                     <Image
                       src={packImage}
                       alt="Opening pack"
                       fill
-                      className="object-contain rounded-lg animate-shake"
+                      className="object-contain rounded-lg animate-shake drop-shadow-2xl"
+                      unoptimized={true} // Pack images are small and decorative
                     />
                   ) : (
                     <div className="text-white font-bold">OPENING...</div>
