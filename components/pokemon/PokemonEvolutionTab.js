@@ -5,7 +5,7 @@
 
 import React, { useState } from 'react';
 import { FadeIn } from '../ui/animations';
-import EvolutionStageCard from '../ui/EvolutionStageCard';
+import EvolutionTreeRenderer from '../ui/EvolutionTreeRenderer';
 
 const PokemonEvolutionTab = ({ pokemonDetails, processedEvolutions, formatEvolutionDetails }) => {
   const [showShinyEvolutionSprite, setShowShinyEvolutionSprite] = useState(false);
@@ -39,7 +39,7 @@ const PokemonEvolutionTab = ({ pokemonDetails, processedEvolutions, formatEvolut
         )}
         
         {processedEvolutions ? (
-          <EvolutionStageCard
+          <EvolutionTreeRenderer
             node={processedEvolutions}
             showShiny={showShinyEvolutionSprite}
             currentId={pokemonDetails?.id}

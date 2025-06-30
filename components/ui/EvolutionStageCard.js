@@ -5,7 +5,7 @@ import TypeBadge from './TypeBadge';
 
 // EvolutionStageCard: shows a Pokémon in the evolution chain with a black circle border and clickable name
 export default function EvolutionStageCard({
-  name,
+  name = '',
   id,
   spriteUrl,
   types = [],
@@ -13,6 +13,11 @@ export default function EvolutionStageCard({
   onClick = null,
   circleSize = "large",
 }) {
+  // Safety check for name
+  if (!name) {
+    console.warn('EvolutionStageCard: name prop is undefined or empty');
+    return null;
+  }
   // Circle size classes
   const sizeMap = {
     large: 'w-28 h-28',

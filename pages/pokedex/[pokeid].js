@@ -33,6 +33,7 @@ export default function PokemonDetail() {
   const [tcgCards, setTcgCards] = useState([]);
   const [pocketCards, setPocketCards] = useState([]);
   const [cardsLoading, setCardsLoading] = useState(false);
+  const [abilities, setAbilities] = useState({});
 
   useEffect(() => {
     // Wait for router to be ready and pokeid to be available
@@ -57,12 +58,17 @@ export default function PokemonDetail() {
         if (speciesData.evolution_chain?.url) {
           try {
             const evolutionData = await fetchData(speciesData.evolution_chain.url);
-            const processedEvolution = getEvolutionChain(evolutionData.chain);
+            // Build the evolution tree from the chain data
+            const { buildEvolutionTree } = await import('../../utils/evolutionUtils');
+            const processedEvolution = await buildEvolutionTree(evolutionData.chain, pokemonData.id);
             setEvolutionChain(processedEvolution);
           } catch (err) {
             console.error('Error loading evolution chain:', err);
           }
         }
+
+        // Load abilities
+        await loadAbilities(pokemonData.abilities);
 
         // Load TCG cards for this Pokemon
         await loadCards(pokemonData.name);
@@ -77,6 +83,37 @@ export default function PokemonDetail() {
 
     loadPokemon();
   }, [router.isReady, pokeid]);
+
+  // Load abilities data
+  const loadAbilities = async (abilitiesList) => {
+    if (!abilitiesList || abilitiesList.length === 0) return;
+    
+    const abilitiesData = {};
+    
+    for (const abilityInfo of abilitiesList) {
+      try {
+        const abilityData = await fetchData(abilityInfo.ability.url);
+        const englishEntry = abilityData.effect_entries.find(entry => entry.language.name === 'en');
+        
+        abilitiesData[abilityInfo.ability.name] = {
+          name: abilityInfo.ability.name,
+          isHidden: abilityInfo.is_hidden,
+          effect: englishEntry?.effect || 'No description available.',
+          shortEffect: englishEntry?.short_effect || 'No description available.'
+        };
+      } catch (err) {
+        console.error(`Error loading ability ${abilityInfo.ability.name}:`, err);
+        abilitiesData[abilityInfo.ability.name] = {
+          name: abilityInfo.ability.name,
+          isHidden: abilityInfo.is_hidden,
+          effect: 'Failed to load ability description.',
+          shortEffect: 'Failed to load ability description.'
+        };
+      }
+    }
+    
+    setAbilities(abilitiesData);
+  };
 
   // Load related cards
   const loadCards = async (pokemonName) => {
@@ -369,7 +406,7 @@ export default function PokemonDetail() {
                   {pokemon.stats.map((stat) => (
                     <div key={stat.stat.name} className="flex items-center">
                       <div className="w-32 text-sm font-medium text-gray-700 capitalize">
-                        {stat.stat.name.replace('-', ' ')}
+                        {stat.stat.name.replace(/-/g, ' ')}
                       </div>
                       <div className="w-16 text-sm text-gray-600 text-right mr-4">
                         {stat.base_stat}
@@ -401,19 +438,27 @@ export default function PokemonDetail() {
               <div>
                 <h3 className="text-xl font-bold text-gray-800 mb-4">Abilities</h3>
                 <div className="space-y-4">
-                  {pokemon.abilities.map((abilityInfo) => (
-                    <div key={abilityInfo.ability.name} className="p-4 bg-gray-50 rounded-lg">
-                      <h4 className="font-semibold text-gray-800 capitalize mb-2">
-                        {abilityInfo.ability.name.replace('-', ' ')}
-                        {abilityInfo.is_hidden && (
-                          <span className="ml-2 text-sm text-blue-600 font-normal">(Hidden Ability)</span>
+                  {pokemon.abilities.map((abilityInfo) => {
+                    const abilityData = abilities[abilityInfo.ability.name];
+                    return (
+                      <div key={abilityInfo.ability.name} className="p-4 bg-gray-50 rounded-lg">
+                        <h4 className="font-semibold text-gray-800 capitalize mb-2">
+                          {abilityInfo.ability.name.replace(/-/g, ' ')}
+                          {abilityInfo.is_hidden && (
+                            <span className="ml-2 text-sm text-blue-600 font-normal">(Hidden Ability)</span>
+                          )}
+                        </h4>
+                        <p className="text-gray-600 mb-2">
+                          {abilityData?.effect || 'Loading ability description...'}
+                        </p>
+                        {abilityData?.shortEffect && abilityData.shortEffect !== abilityData.effect && (
+                          <p className="text-sm text-gray-500 italic">
+                            {abilityData.shortEffect}
+                          </p>
                         )}
-                      </h4>
-                      <p className="text-gray-600">
-                        Ability details would be loaded here from the Pokemon API.
-                      </p>
-                    </div>
-                  ))}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -428,7 +473,7 @@ export default function PokemonDetail() {
                   {pokemon.moves.slice(0, 50).map((moveInfo) => (
                     <div key={moveInfo.move.name} className="p-3 bg-gray-50 rounded-lg">
                       <h5 className="font-medium text-gray-800 capitalize">
-                        {moveInfo.move.name.replace('-', ' ')}
+                        {moveInfo.move.name.replace(/-/g, ' ')}
                       </h5>
                       <p className="text-sm text-gray-600">
                         Learn method: {moveInfo.version_group_details[0]?.move_learn_method.name || 'Unknown'}
