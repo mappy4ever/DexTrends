@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import pokemon from "pokemontcgsdk";
 import Modal from "../../components/ui/Modal";
+import EnhancedCardModal from "../../components/ui/EnhancedCardModal";
 import { FadeIn, SlideUp } from "../../components/ui/animations";
 import PriceHistoryChart from "../../components/ui/PriceHistoryChart";
 import { useTheme } from "../../context/themecontext";
@@ -10,6 +11,10 @@ import { useFavorites } from "../../context/favoritescontext";
 import { TypeBadge } from "../../components/ui/TypeBadge";
 import Image from "next/image";
 import { getPrice as getCardPrice } from "../../utils/pokemonutils.js";
+import { CardLoadingScreen } from "../../components/ui/UnifiedLoadingScreen";
+import UnifiedCard from "../../components/ui/UnifiedCard";
+import StyledBackButton from "../../components/ui/StyledBackButton";
+import logger from "../../utils/logger";
 
 const pokemonKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
 if (!pokemonKey) {
@@ -68,7 +73,7 @@ export default function CardDetailPage() {
             const setData = await pokemon.set.find(cardData.set.id);
             setCardSet(setData);
           } catch (err) {
-            console.error("Error fetching set data:", err);
+            logger.error("Error fetching set data:", { error: err });
           }
         }
         
@@ -85,14 +90,14 @@ export default function CardDetailPage() {
             
             setRelatedCards(filtered);
           } catch (err) {
-            console.error("Error fetching related cards:", err);
+            logger.error("Error fetching related cards:", { error: err });
           }
         }
         
         setLoading(false);
       })
       .catch((err) => {
-        console.error("Error fetching card:", err);
+        logger.error("Error fetching card:", { error: err });
         setError("Failed to load card data. Please try again later.");
         setLoading(false);
       });
@@ -138,13 +143,10 @@ export default function CardDetailPage() {
   // Loading state
   if (loading) {
     return (
-      <div className="container mx-auto p-4 flex flex-col items-center justify-center min-h-screen">
-        <div className="animate-pulse flex flex-col items-center">
-          <div className="w-64 h-96 bg-gray-300 dark:bg-gray-700 rounded-md"></div>
-          <div className="h-6 w-48 bg-gray-300 dark:bg-gray-700 rounded-md mt-4"></div>
-          <div className="h-4 w-32 bg-gray-300 dark:bg-gray-700 rounded-md mt-2"></div>
-        </div>
-      </div>
+      <CardLoadingScreen 
+        message="Loading card details..."
+        preventFlash={true}
+      />
     );
   }
 
@@ -188,15 +190,7 @@ export default function CardDetailPage() {
     <div className="container mx-auto px-4 py-8 max-w-7xl">
       <FadeIn>
         <div className="mb-4">
-          <button 
-            onClick={() => router.back()}
-            className="flex items-center text-blue-600 hover:text-blue-800"
-          >
-            <svg className="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            Back
-          </button>
+          <StyledBackButton variant="tcg" />
         </div>
 
         {/* Main card content */}
@@ -255,7 +249,10 @@ export default function CardDetailPage() {
               <div className="mb-6 border-b border-gray-200 dark:border-gray-700 pb-4">
                 <h1 className="text-3xl font-bold mb-2">{card.name}</h1>
                 <div className="flex flex-wrap items-center gap-3">
-                  <Link href={`/TCGSets/${card.set.id}`} className="flex items-center">
+                  <Link
+                    href={`/TCGSets/${card.set.id}`}
+                    className="flex items-center">
+                    
                     {card.set.images?.symbol && (
                       <img 
                         src={card.set.images.symbol} 
@@ -309,7 +306,10 @@ export default function CardDetailPage() {
                     {card.evolvesFrom && (
                       <div className="flex justify-between">
                         <span className="text-gray-600 dark:text-gray-400">Evolves From:</span>
-                        <Link href={`/PokeDex/${card.evolvesFrom}`} className="font-medium text-blue-600 dark:text-blue-400 hover:underline">
+                        <Link
+                          href={`/PokeDex/${card.evolvesFrom}`}
+                          className="font-medium text-blue-600 dark:text-blue-400 hover:underline">
+                          
                           {card.evolvesFrom}
                         </Link>
                       </div>
@@ -451,43 +451,33 @@ export default function CardDetailPage() {
           <SlideUp delay={200}>
             <div className={`mt-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} p-6 rounded-xl shadow-lg`}>
               <h2 className="text-xl font-semibold mb-4">Related Cards</h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
                 {relatedCards.map(relatedCard => (
-                  <Link
+                  <UnifiedCard
                     key={relatedCard.id}
-                    href={`/cards/${relatedCard.id}`}
-                    className="block transform transition-transform hover:scale-105"
-                  >
-                    <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
-                      <img 
-                        src={relatedCard.images.small} 
-                        alt={relatedCard.name}
-                        className="w-full h-auto"
-                      />
-                      <div className="p-2 text-center text-sm truncate">
-                        {relatedCard.set.name} #{relatedCard.number}
-                      </div>
-                    </div>
-                  </Link>
+                    card={relatedCard}
+                    cardType="tcg"
+                    showSet={true}
+                    showTypes={false}
+                    showRarity={false}
+                    showPrice={false}
+                    imageWidth={160}
+                    imageHeight={224}
+                    className="transform transition-transform hover:scale-105"
+                  />
                 ))}
               </div>
             </div>
           </SlideUp>
         )}
       </FadeIn>
-
-      {/* Image magnifier modal */}
-      {magnifyImage && (
-        <Modal onClose={() => setMagnifyImage(false)} fullWidth>
-          <div className="max-w-3xl mx-auto">
-            <img
-              src={card.images.large}
-              alt={card.name}
-              className="w-full h-auto"
-            />
-          </div>
-        </Modal>
-      )}
+      {/* Enhanced card zoom modal */}
+      <EnhancedCardModal
+        card={card}
+        isOpen={magnifyImage}
+        onClose={() => setMagnifyImage(false)}
+        enablePinchZoom={true}
+      />
     </div>
   );
 }

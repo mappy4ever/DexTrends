@@ -30,7 +30,7 @@ export async function fetchPocketData() {
       return supabaseCached;
     }
   } catch (error) {
-    console.warn('Failed to fetch from Supabase cache:', error);
+    // Supabase cache unavailable, continue with fetch
   }
   
   // Create new fetch promise
@@ -50,7 +50,7 @@ export async function fetchPocketData() {
       try {
         await SupabaseCache.setCachedPokemon(SUPABASE_CACHE_KEY, data, 'pocket_full_dataset', 4);
       } catch (error) {
-        console.warn('Failed to cache in Supabase:', error);
+        // Failed to cache in Supabase, continue normally
       }
       
       // Cache in localStorage for persistence across sessions
@@ -60,7 +60,7 @@ export async function fetchPocketData() {
           timestamp: now
         }));
       } catch (e) {
-        console.warn('Could not cache to localStorage:', e);
+        // Could not cache to localStorage, continue normally
       }
       
       return data;
@@ -72,13 +72,13 @@ export async function fetchPocketData() {
       try {
         const supabaseFallback = await SupabaseCache.getCachedPokemon(SUPABASE_CACHE_KEY);
         if (supabaseFallback) {
-          console.warn('Using Supabase fallback cache due to fetch error:', error);
+          // Using Supabase fallback cache due to fetch error
           pocketDataCache = supabaseFallback;
           cacheTimestamp = now - (CACHE_DURATION / 2); // Mark as half-expired
           return supabaseFallback;
         }
       } catch (supabaseError) {
-        console.warn('Supabase fallback failed:', supabaseError);
+        // Supabase fallback also failed
       }
       
       // Try to use localStorage cache as final fallback
@@ -87,7 +87,7 @@ export async function fetchPocketData() {
         if (cached) {
           const { data, timestamp } = JSON.parse(cached);
           if (data && Array.isArray(data)) {
-            console.warn('Using localStorage fallback due to fetch error:', error);
+            // Using localStorage fallback due to fetch error
             pocketDataCache = data;
             cacheTimestamp = timestamp;
             return data;

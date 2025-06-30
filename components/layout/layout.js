@@ -13,7 +13,7 @@ export default function Layout({ children }) {
       <div className="flex flex-grow relative z-10">
         <main className="flex-grow transition-all duration-300 pt-16 pb-10">
           {children}
-          {/* Vercel Analytics and Speed Insights are good to have here for a full-app coverage. */}
+          {/* Vercel Analytics and Speed Insights re-enabled */}
           <Analytics />
           <SpeedInsights />
         </main>

@@ -11,15 +11,17 @@ import { useTheme } from "../context/themecontext";
 import { useFavorites } from "../context/favoritescontext";
 import Image from "next/image";
 import { toLowercaseUrl } from "../utils/formatters";
+import ClientOnly from "./ClientOnly";
 
 export default function Navbar() {
-  const { theme, toggleTheme } = useTheme();
+  const { theme, toggleTheme, mounted } = useTheme();
   const { favorites } = useFavorites();
   const [hoverExpanded, setHoverExpanded] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [tcgDropdownOpen, setTcgDropdownOpen] = useState(false);
+  const [dropdownStates, setDropdownStates] = useState({});
+  const [hoverTimeouts, setHoverTimeouts] = useState({});
   const menuWrapperRef = useRef(null);
-  const tcgDropdownRef = useRef(null);
+  const dropdownRefs = useRef({});
   const router = useRouter();
   const searchModalRef = useRef();
   
@@ -53,11 +55,13 @@ export default function Navbar() {
       hasDropdown: true,
       dropdownItems: [
         { href: "/pocketmode", label: "Cards", icon: <BsCardList size={18} />, description: "Browse Pocket cards" },
-        { href: "/pocketmode/decks", label: "Top Decks", icon: <BsGrid size={18} />, description: "Popular deck builds" },
-        { href: "/pocketmode/deckbuilder", label: "Deck Builder", icon: <BsGrid size={18} />, description: "Build custom decks" },
-        { href: "/pocketmode/expansions", label: "Booster Packs", icon: <FiShoppingBag size={18} />, description: "Open virtual packs" },
+        { href: "/pocketmode/expansions", label: "Expansions", icon: <BsGrid size={18} />, description: "Browse expansion sets" },
+        { href: "/pocketmode/packs", label: "Pack Opening", icon: <FiShoppingBag size={18} />, description: "Open virtual packs" },
+        { href: "/pocketmode/decks", label: "Top Decks", icon: <BsBook size={18} />, description: "Popular deck builds" },
+        { href: "/pocketmode?view=deckbuilder", label: "Deck Builder", icon: <GiPokerHand size={18} />, description: "Build custom decks" },
       ]
     },
+    { href: "/fun", label: "Fun", icon: <AiOutlineBulb size={22} />, color: "text-poke-psychic" },
   ];
 
   const pageTitles = navItems.reduce((acc, item) => {
@@ -66,6 +70,22 @@ export default function Navbar() {
   }, { "/": "Dashboard" }); // Ensure root path has a title
 
   const currentTitle = pageTitles[router.pathname] || "DexTrends"; // Updated title
+
+  // Debounced hover functions to prevent flashing
+  const handleDropdownEnter = (itemHref) => {
+    if (hoverTimeouts[itemHref]) {
+      clearTimeout(hoverTimeouts[itemHref]);
+      setHoverTimeouts(prev => ({ ...prev, [itemHref]: null }));
+    }
+    setDropdownStates(prev => ({ ...prev, [itemHref]: true }));
+  };
+
+  const handleDropdownLeave = (itemHref) => {
+    const timeout = setTimeout(() => {
+      setDropdownStates(prev => ({ ...prev, [itemHref]: false }));
+    }, 100); // Small delay to prevent rapid flickering
+    setHoverTimeouts(prev => ({ ...prev, [itemHref]: timeout }));
+  };
 
   // Click outside for mobile menu and dropdowns
   useEffect(() => {
@@ -78,14 +98,17 @@ export default function Navbar() {
         setMobileOpen(false);
       }
       
-      // Close TCG dropdown when clicking outside
-      if (tcgDropdownOpen && tcgDropdownRef.current && !tcgDropdownRef.current.contains(event.target)) {
-        setTcgDropdownOpen(false);
-      }
+      // Close dropdowns when clicking outside - simplified to prevent loops
+      setDropdownStates({});
     };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [mobileOpen, tcgDropdownOpen]);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      Object.values(hoverTimeouts).forEach(timeout => {
+        if (timeout) clearTimeout(timeout);
+      });
+    };
+  }, [mobileOpen, dropdownStates, hoverTimeouts]);
 
   const isDarkMode = theme === 'dark';
 
@@ -93,7 +116,9 @@ export default function Navbar() {
     <>
       {/* Clean Navbar */}
       <div className="fixed top-0 left-0 right-0 flex items-center justify-between px-4 h-16 z-40 bg-white border-b border-border-color shadow-sm">
-        <Link href="/" className="flex items-center gap-x-3 text-xl font-bold text-pokemon-red overflow-hidden hover:opacity-80 transition-opacity duration-300">
+        <Link
+          href="/"
+          className="flex items-center gap-x-3 text-xl font-bold text-pokemon-red overflow-hidden hover:opacity-80 transition-opacity duration-300">
           <div className="flex-shrink-0 w-8 h-8 bg-pokemon-red rounded-full flex items-center justify-center">
             <BsGrid size={20} className="text-white" />
           </div>
@@ -108,40 +133,39 @@ export default function Navbar() {
             
             if (item.hasDropdown) {
               return (
-                <div key={`topnav-${item.href}`} className="relative" ref={tcgDropdownRef}>
+                <div key={`topnav-${item.href}`} className="relative" ref={el => dropdownRefs.current[item.href] = el}>
                   <button
                     className={`group flex items-center gap-x-2 px-4 py-2 rounded-lg font-medium transition-all duration-300 cursor-pointer border-2
                       ${isActive
                         ? 'bg-pokemon-red text-white border-pokemon-red shadow-md'
                         : 'text-dark-text border-transparent hover:border-border-color hover:bg-light-grey'}`}
-                    onMouseEnter={() => setTcgDropdownOpen(true)}
-                    onMouseLeave={() => setTcgDropdownOpen(false)}
-                    onClick={() => setTcgDropdownOpen(!tcgDropdownOpen)}
+                    onMouseEnter={() => handleDropdownEnter(item.href)}
+                    onMouseLeave={() => handleDropdownLeave(item.href)}
+                    onClick={() => setDropdownStates(prev => ({ ...prev, [item.href]: !prev[item.href] }))}
                   >
                     <span className={`flex-shrink-0 w-5 h-5 transition-colors duration-300 ${isActive ? 'text-white' : 'text-pokemon-red'}`}>
                       {item.icon}
                     </span>
                     <span className="truncate text-sm font-semibold">{item.label}</span>
-                    <BsChevronDown className={`w-3 h-3 transition-transform duration-200 ${tcgDropdownOpen ? 'rotate-180' : ''}`} />
+                    <BsChevronDown className={`w-3 h-3 transition-transform duration-200 ${dropdownStates[item.href] ? 'rotate-180' : ''}`} />
                   </button>
-                  
                   {/* Dropdown Menu */}
                   <div 
                     className={`absolute top-full left-0 mt-1 w-64 bg-white border border-border-color rounded-lg shadow-lg z-50 transition-all duration-200 ${
-                      tcgDropdownOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
+                      dropdownStates[item.href] ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
                     }`}
-                    onMouseEnter={() => setTcgDropdownOpen(true)}
-                    onMouseLeave={() => setTcgDropdownOpen(false)}
+                    onMouseEnter={() => handleDropdownEnter(item.href)}
+                    onMouseLeave={() => handleDropdownLeave(item.href)}
                   >
                     <div className="p-2">
-                      {item.dropdownItems.map(dropdownItem => (
+                      {item.dropdownItems.map((dropdownItem, dropdownIndex) => (
                         <Link
-                          key={`dropdown-${dropdownItem.href}`}
+                          key={`dropdown-${item.href}-${dropdownIndex}-${dropdownItem.href}`}
                           href={dropdownItem.href}
                           className={`group flex items-start gap-3 p-3 rounded-lg transition-all duration-200 hover:bg-light-grey ${
                             router.pathname === dropdownItem.href ? 'bg-pokemon-red/10 border-l-4 border-pokemon-red' : ''
                           }`}
-                          onClick={() => setTcgDropdownOpen(false)}
+                          onClick={() => setDropdownStates(prev => ({ ...prev, [item.href]: false }))}
                         >
                           <span className="flex-shrink-0 w-5 h-5 mt-0.5 text-pokemon-red">
                             {dropdownItem.icon}
@@ -190,59 +214,60 @@ export default function Navbar() {
             <BsSearch size={18} />
           </button>
           
-          <Link href="/favorites" legacyBehavior>
-            <a
-              aria-label="View favorites"
-              title="View favorites"
-              className="relative p-3 rounded-lg bg-pokemon-yellow text-white hover:bg-yellow-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pokemon-yellow shadow-sm transition-all duration-300"
-              data-is-navbar="true"
-            >
-              <BsHeart size={18} />
+          <Link 
+            href="/favorites"
+            aria-label="View favorites"
+            title="View favorites"
+            className="relative p-3 rounded-lg bg-pokemon-yellow text-white hover:bg-yellow-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pokemon-yellow shadow-sm transition-all duration-300"
+            data-is-navbar="true"
+          >
+            <BsHeart size={18} />
+            <ClientOnly>
               {totalFavorites > 0 && (
                 <span className="absolute -top-1 -right-1 bg-pokemon-red text-white text-xs font-bold rounded-full min-w-5 h-5 flex items-center justify-center px-1 shadow-sm">
                   {totalFavorites > 99 ? '99+' : totalFavorites}
                 </span>
               )}
-            </a>
+            </ClientOnly>
           </Link>
           
-          <button
-            aria-label={theme === 'dark' ? "Activate light mode" : "Activate dark mode"}
-            title={theme === 'dark' ? "Activate light mode" : "Activate dark mode"}
-            className="p-3 rounded-lg border border-border-color bg-white text-dark-text hover:bg-light-grey focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pokemon-blue shadow-sm transition-all duration-300"
-            onClick={toggleTheme}
-          >
-            {theme === 'dark' ? 
-              <BsSun size={18} className="text-pokemon-yellow" /> : 
-              <BsMoon size={18} className="text-pokemon-blue" />
-            }
-          </button>
+          <ClientOnly>
+            <button
+              aria-label={theme === 'dark' ? "Activate light mode" : "Activate dark mode"}
+              title={theme === 'dark' ? "Activate light mode" : "Activate dark mode"}
+              className="p-3 rounded-lg border border-border-color bg-white text-dark-text hover:bg-light-grey focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pokemon-blue shadow-sm transition-all duration-300"
+              onClick={toggleTheme}
+            >
+              {theme === 'dark' ? 
+                <BsSun size={18} className="text-pokemon-yellow" /> : 
+                <BsMoon size={18} className="text-pokemon-blue" />
+              }
+            </button>
+          </ClientOnly>
           
           {/* Mobile Menu Button */}
-          <button
-            id="mobile-menu-button"
-            className="md:hidden p-3 rounded-lg bg-pokemon-red text-white hover:bg-red-700 shadow-sm transition-all duration-300 touch-manipulation"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle mobile menu"
-            style={{ minHeight: '48px', minWidth: '48px' }}
-          >
-            <div className="w-5 h-5 flex flex-col justify-center space-y-1">
-              <div className={`w-full h-0.5 bg-white transition-all duration-300 ${mobileOpen ? 'rotate-45 translate-y-1' : ''}`} />
-              <div className={`w-full h-0.5 bg-white transition-all duration-300 ${mobileOpen ? 'opacity-0' : ''}`} />
-              <div className={`w-full h-0.5 bg-white transition-all duration-300 ${mobileOpen ? '-rotate-45 -translate-y-1' : ''}`} />
-            </div>
-          </button>
+          <ClientOnly>
+            <button
+              id="mobile-menu-button"
+              className="md:hidden p-3 rounded-lg bg-pokemon-red text-white hover:bg-red-700 shadow-sm transition-all duration-300 touch-manipulation"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label="Toggle mobile menu"
+              style={{ minHeight: '48px', minWidth: '48px' }}
+            >
+              <div className="w-5 h-5 flex flex-col justify-center space-y-1">
+                <div className={`w-full h-0.5 bg-white transition-all duration-300 ${mobileOpen ? 'rotate-45 translate-y-1' : ''}`} />
+                <div className={`w-full h-0.5 bg-white transition-all duration-300 ${mobileOpen ? 'opacity-0' : ''}`} />
+                <div className={`w-full h-0.5 bg-white transition-all duration-300 ${mobileOpen ? '-rotate-45 -translate-y-1' : ''}`} />
+              </div>
+            </button>
+          </ClientOnly>
         </div>
       </div>
-      
       {/* Mobile Menu Overlay */}
       {mobileOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
           <div className="fixed inset-0 bg-black/50" onClick={() => setMobileOpen(false)} />
-          <div 
-            ref={menuWrapperRef}
-            className="fixed top-16 right-0 left-0 bg-white/95 backdrop-blur-sm border-t border-border-color p-4 shadow-lg"
-          >
+          <div ref={menuWrapperRef} className="fixed top-16 right-0 left-0 bg-white/95 backdrop-blur-sm border-t border-border-color p-4 shadow-lg">
             <nav className="flex flex-col space-y-2">
               {navItems.map(item => {
                 const isActive = router.pathname === item.href || 
@@ -264,9 +289,9 @@ export default function Navbar() {
                       </div>
                       {/* Mobile dropdown items */}
                       <div className="pl-6 space-y-1">
-                        {item.dropdownItems.map(dropdownItem => (
+                        {item.dropdownItems.map((dropdownItem, dropdownIndex) => (
                           <Link
-                            key={`mobile-dropdown-${dropdownItem.href}`}
+                            key={`mobile-dropdown-${item.href}-${dropdownIndex}-${dropdownItem.href}`}
                             href={dropdownItem.href}
                             className={`flex items-center gap-x-3 px-4 py-2 rounded-lg font-medium transition-all duration-300 border-2 touch-manipulation
                               ${router.pathname === dropdownItem.href
@@ -308,7 +333,6 @@ export default function Navbar() {
           </div>
         </div>
       )}
-      
       {/* Spacer for fixed navbar */}
       <div className="h-16" />
       <GlobalSearchModal ref={searchModalRef} />

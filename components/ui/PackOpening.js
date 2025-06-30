@@ -209,7 +209,7 @@ export default function PackOpening({
                   />
                 ) : (
                   // Placeholder pack with rainbow indicator
-                  <div className="w-full h-full bg-gradient-to-br from-red-400 via-yellow-400 via-green-400 via-blue-400 to-purple-400 rounded-lg flex items-center justify-center relative overflow-hidden">
+                  (<div className="w-full h-full bg-gradient-to-br from-red-400 via-yellow-400 via-green-400 via-blue-400 to-purple-400 rounded-lg flex items-center justify-center relative overflow-hidden">
                     <div className="absolute inset-0 bg-white/20 backdrop-blur-sm"></div>
                     <div className="relative z-10 text-center">
                       <div className="w-16 h-16 bg-white/30 rounded-full flex items-center justify-center mb-3 mx-auto">
@@ -220,7 +220,7 @@ export default function PackOpening({
                       <p className="text-white font-semibold text-sm">PLACEHOLDER</p>
                       <p className="text-white/80 text-xs">Rainbow = Temp</p>
                     </div>
-                  </div>
+                  </div>)
                 )}
               </div>
               
@@ -347,7 +347,6 @@ export default function PackOpening({
           )}
         </div>
       </div>
-      
       {/* Custom shake animation */}
       <style jsx>{`
         @keyframes shake {

@@ -37,12 +37,12 @@ const PokedexDisplay = ({ pokemon }) => {
       <img
         src="/images/pokedex_frame.png"
         alt="Pokédex Frame"
-        className="w-full block pointer-events-none select-none"
+        className="w-full block pointer-events-none select-none">
         draggable={false}
       />
       {/* Overlay: adjust top/left/width/height for your PNG's screen */}
       <div
-        className="absolute pokedex-screen flex flex-col items-center justify-center bg-gray-50/90 rounded-xl shadow-lg"
+        className="absolute pokedex-screen flex flex-col items-center justify-center bg-gray-50/90 rounded-xl shadow-lg">
         style={{
           top: '20%',
           left: '13%',
@@ -57,7 +57,7 @@ const PokedexDisplay = ({ pokemon }) => {
         <img
           src={pokemon.artUrl}
           alt={pokemon.name}
-          className="w-[100px] mb-2 drop-shadow-lg transition-transform duration-200 hover:scale-105"
+          className="w-[100px] mb-2 drop-shadow-lg transition-transform duration-200 hover:scale-105">
           style={{ objectFit: 'contain', maxHeight: '120px' }}
         />
         <div className="font-bold text-lg mb-1 text-center">

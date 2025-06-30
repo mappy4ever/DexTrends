@@ -3,21 +3,26 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-  // Check if we're in the browser and if there's a saved theme
-  const [theme, setTheme] = useState('light');
+  // Initialize with a function to ensure SSR compatibility
+  const [theme, setTheme] = useState(() => {
+    // Always return 'light' during SSR to match server
+    if (typeof window === 'undefined') {
+      return 'light';
+    }
+    // On client, check saved preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      return savedTheme;
+    }
+    // Check system preference
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return prefersDark ? 'dark' : 'light';
+  });
   const [mounted, setMounted] = useState(false);
 
   // Only run on client side
   useEffect(() => {
     setMounted(true);
-    const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    if (savedTheme) {
-      setTheme(savedTheme);
-    } else if (prefersDark) {
-      setTheme('dark');
-    }
   }, []);
 
   const toggleTheme = () => {
@@ -45,8 +50,9 @@ export function ThemeProvider({ children }) {
   }, [theme, mounted]);
 
   // Provide the theme context to children components
+  // Use 'light' theme until mounted to prevent hydration mismatch
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme: mounted ? theme : 'light', toggleTheme, mounted }}>
       {children}
     </ThemeContext.Provider>
   );

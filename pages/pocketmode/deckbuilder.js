@@ -5,6 +5,9 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { fetchPocketData } from '../../utils/pocketData';
 import { TypeBadge } from '../../components/ui/TypeBadge';
+import PocketCardList from '../../components/PocketCardList';
+import PokemonLoadingScreen from '../../components/ui/PokemonLoadingScreen';
+import logger from '../../utils/logger';
 
 export default function DeckBuilder() {
   const router = useRouter();
@@ -42,7 +45,7 @@ export default function DeckBuilder() {
         setAllCards(data || []);
       } catch (err) {
         setError('Failed to load cards');
-        console.error('Error loading pocket cards:', err);
+        logger.error('Error loading pocket cards:', { error: err });
       } finally {
         setLoading(false);
       }
@@ -206,7 +209,7 @@ export default function DeckBuilder() {
       setDeckDescription('');
     } catch (error) {
       alert('Failed to save deck');
-      console.error('Save error:', error);
+      logger.error('Save error:', { error });
     }
   }, [deckName, deckDescription, deck, deckStats]);
 
@@ -214,6 +217,13 @@ export default function DeckBuilder() {
   const getCardCountInDeck = useCallback((cardId) => {
     const entry = deck.find(entry => entry.card.id === cardId);
     return entry ? entry.count : 0;
+  }, [deck]);
+
+  // removeCardFromDeck function already exists above, removed duplicate
+
+  // Convert deck format for display
+  const deckCards = useMemo(() => {
+    return deck.map(entry => entry.card);
   }, [deck]);
 
   // Pokemon Pocket style rarity colors
@@ -228,16 +238,16 @@ export default function DeckBuilder() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 flex items-center justify-center">
+      <>
         <Head>
           <title>Deck Builder | Pokemon Pocket | DexTrends</title>
         </Head>
-        <div className="bg-black/50 backdrop-blur-lg rounded-2xl p-8 text-center border border-white/20">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-yellow-400 border-t-transparent mx-auto mb-4"></div>
-          <h3 className="text-2xl font-bold text-white mb-2">Loading Cards...</h3>
-          <p className="text-gray-300">Preparing the deck builder</p>
-        </div>
-      </div>
+        <PokemonLoadingScreen 
+          type="pokeball"
+          message="Loading Deck Builder..."
+          showFacts={false}
+        />
+      </>
     );
   }
 
@@ -320,14 +330,16 @@ export default function DeckBuilder() {
             <div className="bg-black/50 backdrop-blur-lg rounded-xl p-4 border border-white/20">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-bold text-white">Current Deck</h2>
-                {!deckStats.isEmpty && (
-                  <button
-                    onClick={clearDeck}
-                    className="text-red-400 hover:text-red-300 text-sm transition-colors"
-                  >
-                    🗑️ Clear
-                  </button>
-                )}
+                <div className="flex items-center gap-2">
+                  {!deckStats.isEmpty && (
+                    <button
+                      onClick={clearDeck}
+                      className="text-red-400 hover:text-red-300 text-sm transition-colors"
+                    >
+                      🗑️ Clear
+                    </button>
+                  )}
+                </div>
               </div>
 
               {deckStats.isEmpty ? (
@@ -336,52 +348,18 @@ export default function DeckBuilder() {
                   <p className="text-sm">Start building your deck!</p>
                 </div>
               ) : (
-                <div className="space-y-2 max-h-96 overflow-y-auto">
-                  {deck.map((entry, index) => (
-                    <div key={entry.card.id} className="bg-white/10 rounded-lg p-3 flex items-center gap-3">
-                      <div className="relative w-12 h-16 flex-shrink-0">
-                        <Image
-                          src={entry.card.image || "/dextrendslogo.png"}
-                          alt={entry.card.name}
-                          fill
-                          className="object-contain rounded"
-                          sizes="48px"
-                        />
-                      </div>
-                      
-                      <div className="flex-grow min-w-0">
-                        <div className="font-medium text-white text-sm truncate">{entry.card.name}</div>
-                        <div className="flex items-center gap-1 mt-1">
-                          <TypeBadge type={entry.card.type} size="sm" />
-                          <span className={`text-xs px-1.5 py-0.5 rounded ${getRarityColor(entry.card.rarity)}`}>
-                            {entry.card.rarity}
-                          </span>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center gap-2">
-                        <span className="bg-blue-600 text-white text-sm font-bold px-2 py-1 rounded">
-                          {entry.count}x
-                        </span>
-                        <div className="flex flex-col gap-1">
-                          <button
-                            onClick={() => addCardToDeck(entry.card)}
-                            disabled={entry.count >= MAX_COPIES_PER_CARD || deckStats.isFull}
-                            className="text-green-400 hover:text-green-300 disabled:text-gray-500 disabled:cursor-not-allowed text-xs transition-colors"
-                          >
-                            +
-                          </button>
-                          <button
-                            onClick={() => removeCardFromDeck(entry.card.id)}
-                            className="text-red-400 hover:text-red-300 text-xs transition-colors"
-                          >
-                            −
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <PocketCardList
+                  cards={deckCards}
+                  loading={false}
+                  error={null}
+                  emptyMessage="No cards in deck"
+                  showPack={false}
+                  showRarity={true}
+                  showHP={true}
+                  showSort={false}
+                  cardClassName="bg-white/10 border border-white/20 hover:bg-white/20 transition-all"
+                  gridClassName="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3"
+                />
               )}
 
               {/* Deck Stats */}
@@ -473,7 +451,7 @@ export default function DeckBuilder() {
             </div>
 
             {/* Card Grid - Pokemon Pocket Style */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
               {filteredCards.map((card) => {
                 const countInDeck = getCardCountInDeck(card.id);
                 const canAdd = countInDeck < MAX_COPIES_PER_CARD && !deckStats.isFull;
@@ -481,61 +459,72 @@ export default function DeckBuilder() {
                 return (
                   <div
                     key={card.id}
-                    className="group relative bg-black/40 backdrop-blur-sm rounded-xl p-2 border border-white/20 hover:border-white/40 transition-all duration-200 hover:scale-105 hover:bg-black/60"
+                    onClick={() => canAdd && addCardToDeck(card)}
+                    className={`group relative bg-black/40 backdrop-blur-sm rounded-xl p-3 border-2 transition-all duration-300 cursor-pointer ${
+                      !canAdd 
+                        ? 'border-gray-600 opacity-60 cursor-not-allowed' 
+                        : countInDeck > 0
+                          ? 'border-green-400 hover:border-green-300 hover:bg-green-900/20 hover:scale-[1.02] hover:shadow-lg hover:shadow-green-400/20'
+                          : 'border-blue-400 hover:border-blue-300 hover:bg-blue-900/20 hover:scale-[1.02] hover:shadow-lg hover:shadow-blue-400/20'
+                    }`}
                   >
                     {countInDeck > 0 && (
-                      <div className="absolute top-1 right-1 z-10 bg-blue-600 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
+                      <div className="absolute -top-2 -right-2 z-10 bg-green-500 text-white text-sm font-bold rounded-full w-7 h-7 flex items-center justify-center border-2 border-white shadow-lg">
                         {countInDeck}
                       </div>
                     )}
                     
-                    <div className="relative w-full aspect-[3/4] mb-2 overflow-hidden rounded-lg">
+                    <div className="relative w-full aspect-[3/4] mb-3 overflow-hidden rounded-lg bg-white/5">
                       <Image
                         src={card.image || "/dextrendslogo.png"}
                         alt={card.name}
                         fill
-                        className="object-contain transition-transform duration-200 group-hover:scale-110"
+                        className="object-contain transition-transform duration-300 group-hover:scale-110"
                         loading="lazy"
                         placeholder="blur"
                         blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Eve6J4HNvbzTe7+v1+8BvxRf4X3/f/9k="
                         sizes="(max-width: 640px) 150px, (max-width: 768px) 120px, 100px"
                       />
+                      
+                      {/* Add visual indicator for clickable state */}
+                      {canAdd && (
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
+                      )}
                     </div>
                     
-                    <div className="text-center">
-                      <h4 className="font-medium text-sm text-white mb-1 line-clamp-2">{card.name}</h4>
+                    <div className="text-center space-y-2">
+                      <h4 className="font-semibold text-sm text-white mb-1 line-clamp-2 group-hover:text-blue-300 transition-colors">
+                        {card.name}
+                      </h4>
                       
-                      <div className="flex items-center justify-center gap-1 mb-2">
+                      <div className="flex items-center justify-center gap-1">
                         <TypeBadge type={card.type} size="sm" />
                       </div>
                       
-                      <div className="text-xs mb-2">
+                      <div className="space-y-1">
                         <div className={`inline-block px-2 py-1 rounded text-xs font-medium ${getRarityColor(card.rarity)}`}>
                           {card.rarity}
                         </div>
                         {card.health && (
-                          <div className="text-gray-300 mt-1">HP: {card.health}</div>
+                          <div className="text-gray-300 text-xs">HP: {card.health}</div>
                         )}
                       </div>
                       
-                      <button
-                        onClick={() => addCardToDeck(card)}
-                        disabled={!canAdd}
-                        className={`w-full py-2 rounded-lg text-xs font-medium transition-all ${
-                          !canAdd 
-                            ? 'bg-gray-600 text-gray-400 cursor-not-allowed' 
-                            : countInDeck > 0
-                              ? 'bg-green-600 hover:bg-green-700 text-white transform hover:scale-105'
-                              : 'bg-blue-600 hover:bg-blue-700 text-white transform hover:scale-105'
-                        }`}
-                      >
+                      {/* Status indicator instead of button */}
+                      <div className={`w-full py-2 rounded-lg text-xs font-medium transition-all ${
+                        !canAdd 
+                          ? 'bg-gray-600/50 text-gray-400' 
+                          : countInDeck > 0
+                            ? 'bg-green-600/80 text-green-100'
+                            : 'bg-blue-600/80 text-blue-100 group-hover:bg-blue-500/80'
+                      }`}>
                         {!canAdd 
-                          ? (countInDeck >= MAX_COPIES_PER_CARD ? `Max ${MAX_COPIES_PER_CARD}x` : 'Deck Full')
+                          ? (countInDeck >= MAX_COPIES_PER_CARD ? `Max ${MAX_COPIES_PER_CARD}x Reached` : 'Deck Full')
                           : countInDeck > 0 
-                            ? `Add Another (${countInDeck}x)`
-                            : 'Add to Deck'
+                            ? `In Deck (${countInDeck}x) - Click to Add`
+                            : 'Click to Add to Deck'
                         }
-                      </button>
+                      </div>
                     </div>
                   </div>
                 );

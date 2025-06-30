@@ -43,7 +43,7 @@ export default function PriceIndicator({
           }
         }
       } catch (error) {
-        console.error('Error fetching price trend:', error);
+        // Error fetching price trend
       } finally {
         setLoading(false);
       }

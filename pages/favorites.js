@@ -6,11 +6,15 @@ import { useFavorites } from '../context/favoritescontext';
 import { FadeIn, SlideUp } from '../components/ui/animations';
 import { TypeBadge } from '../components/ui/TypeBadge'; // Updated path
 import { getGeneration } from '../utils/pokemonutils';
+import logger from '../utils/logger';
+import UnifiedLoadingScreen from '../components/ui/UnifiedLoadingScreen';
+import CollectionDashboard from '../components/ui/CollectionDashboard';
+import AchievementSystem from '../components/ui/AchievementSystem';
 
 export default function FavoritesPage() {
   const router = useRouter();
   const { favorites, togglePokemonFavorite, toggleCardFavorite } = useFavorites();
-  const [activeTab, setActiveTab] = useState('pokemon');
+  const [activeTab, setActiveTab] = useState('dashboard');
   const [pokemonData, setPokemonData] = useState([]);
   const [cardsData, setCardsData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -37,7 +41,7 @@ export default function FavoritesPage() {
               sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${data.id}.png`
             };
           } catch (err) {
-            console.error(`Error fetching Pokémon #${id}:`, err);
+            logger.error(`Error fetching Pokémon #${id}:`, { error: err, id });
             return null;
           }
         });
@@ -45,7 +49,7 @@ export default function FavoritesPage() {
         const results = await Promise.all(pokemonPromises);
         setPokemonData(results.filter(Boolean));
       } catch (err) {
-        console.error("Error fetching Pokémon data:", err);
+        logger.error("Error fetching Pokémon data:", { error: err });
       } finally {
         setLoading(false);
       }
@@ -71,7 +75,7 @@ export default function FavoritesPage() {
             const data = await res.json();
             return data.data;
           } catch (err) {
-            console.error(`Error fetching card ${id}:`, err);
+            logger.error(`Error fetching card ${id}:`, { error: err, id });
             return null;
           }
         });
@@ -79,7 +83,7 @@ export default function FavoritesPage() {
         const results = await Promise.all(cardsPromises);
         setCardsData(results.filter(Boolean));
       } catch (err) {
-        console.error("Error fetching cards data:", err);
+        logger.error("Error fetching cards data:", { error: err });
       } finally {
         setLoading(false);
       }
@@ -91,10 +95,21 @@ export default function FavoritesPage() {
   return (
     <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto px-2 sm:px-4 animate-fadeIn">
       <h1 className="text-3xl md:text-4xl font-bold text-center mb-8">Your Favorites</h1>
-      
       {/* Tabs */}
       <div className="flex justify-center mb-8">
         <div className="flex border border-gray-300 rounded-lg overflow-hidden">
+          <button 
+            className={`px-6 py-3 font-semibold ${activeTab === 'dashboard' ? 'bg-primary text-white' : 'bg-white hover:bg-gray-100'}`}
+            onClick={() => setActiveTab('dashboard')}
+          >
+            📊 Dashboard
+          </button>
+          <button 
+            className={`px-6 py-3 font-semibold ${activeTab === 'achievements' ? 'bg-primary text-white' : 'bg-white hover:bg-gray-100'}`}
+            onClick={() => setActiveTab('achievements')}
+          >
+            🏆 Achievements
+          </button>
           <button 
             className={`px-6 py-3 font-semibold ${activeTab === 'pokemon' ? 'bg-primary text-white' : 'bg-white hover:bg-gray-100'}`}
             onClick={() => setActiveTab('pokemon')}
@@ -109,20 +124,35 @@ export default function FavoritesPage() {
           </button>
         </div>
       </div>
-
       {/* Tab Content */}
       {loading ? (
-        <div className="text-center py-12">
-          <div className="inline-block animate-pulse">
-            <svg className="w-12 h-12 text-primary" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-            </svg>
-          </div>
-          <p className="mt-4 text-lg text-content-muted">Loading your favorites...</p>
-        </div>
+        <UnifiedLoadingScreen 
+          message="Loading your favorites..."
+          type="default"
+          preventFlash={true}
+          overlay={false}
+        />
       ) : (
         <>
+          {/* Dashboard Tab */}
+          {activeTab === 'dashboard' && (
+            <div className="animate-fadeIn">
+              <CollectionDashboard />
+            </div>
+          )}
+
+          {/* Achievements Tab */}
+          {activeTab === 'achievements' && (
+            <div className="animate-fadeIn">
+              <AchievementSystem 
+                onAchievementUnlocked={(achievement) => {
+                  console.log('New achievement unlocked:', achievement);
+                  // Could trigger notifications or other effects here
+                }}
+              />
+            </div>
+          )}
+
           {/* Pokémon Tab */}
           {activeTab === 'pokemon' && (
             <div className="animate-fadeIn">
@@ -134,7 +164,7 @@ export default function FavoritesPage() {
                       className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-gray-200 dark:border-gray-700 transition-all hover:shadow-lg hover:-translate-y-1"
                     >
                       <div className="relative">
-                        <Link href={`/pokedex/${pokemon.name}`}>
+                        <Link href={`/pokedex/${pokemon.id}`}>
                           <Image
                             src={pokemon.sprite}
                             alt={pokemon.name}
@@ -179,7 +209,7 @@ export default function FavoritesPage() {
                   <p className="text-gray-500 dark:text-gray-400 mb-6">
                     Add Pokémon to your favorites by clicking the heart icon on their page.
                   </p>
-                  <Link href="/pokedex" legacyBehavior>
+                  <Link href="/pokedex">
                     <a className="inline-block px-6 py-3 bg-primary text-white font-medium rounded-md hover:bg-primary-dark transition-colors">
                       Browse Pokédex
                     </a>
@@ -243,7 +273,7 @@ export default function FavoritesPage() {
                   <p className="text-gray-500 dark:text-gray-400 mb-6">
                     Add cards to your favorites by clicking the heart icon on card details.
                   </p>
-                  <Link href="/tcgsets" legacyBehavior>
+                  <Link href="/tcgsets">
                     <a className="inline-block px-6 py-3 bg-primary text-white font-medium rounded-md hover:bg-primary-dark transition-colors">
                       Browse TCG Sets
                     </a>

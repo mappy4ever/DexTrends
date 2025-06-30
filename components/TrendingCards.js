@@ -85,14 +85,14 @@ export default function TrendingCards({ cards }) {
               .map(card => (
                 <div 
                   key={card.id} 
-                  className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-all"
+                  className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-all">
                   onClick={() => navigateToCardDetails(card)}
                 >
                   {card.images?.small && (
                     <img 
                       src={card.images.small} 
                       alt={card.name}
-                      className="w-10 h-14 object-contain rounded"
+                      className="w-10 h-14 object-contain rounded">
                     />
                   )}
                   <div className="flex-1">
@@ -120,14 +120,14 @@ export default function TrendingCards({ cards }) {
               .map(card => (
                 <div 
                   key={card.id} 
-                  className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-all"
+                  className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-all">
                   onClick={() => navigateToCardDetails(card)}
                 >
                   {card.images?.small && (
                     <img 
                       src={card.images.small} 
                       alt={card.name}
-                      className="w-10 h-14 object-contain rounded"
+                      className="w-10 h-14 object-contain rounded">
                     />
                   )}
                   <div className="flex-1">

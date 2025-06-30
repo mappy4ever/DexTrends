@@ -3,6 +3,8 @@ import Link from 'next/link';
 import pokemon from "pokemontcgsdk";
 import CardList from '../components/CardList';
 import { useTheme } from '../context/themecontext';
+import { TrendingLoadingScreen } from '../components/ui/UnifiedLoadingScreen';
+import logger from '../utils/logger';
 
 const pokemonKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
 if (!pokemonKey) {
@@ -132,7 +134,7 @@ export default function TrendingPage() {
         setCards(processedCards);
         setLoading(false);
       } catch (err) {
-        console.error("Error fetching trending cards:", err);
+        logger.error("Error fetching trending cards:", { error: err });
         setError("Failed to load trending card data.");
         setLoading(false);
       }
@@ -152,16 +154,11 @@ export default function TrendingPage() {
         </div>
         <p className="text-gray-600 mt-2">Track cards with significant price changes in the market</p>
       </div>
-      
       {loading ? (
-        <div className="flex items-center justify-center h-64">
-          <div className="text-center">
-            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-500 border-r-transparent" role="status">
-              <span className="sr-only">Loading...</span>
-            </div>
-            <p className="mt-2">Analyzing market trends...</p>
-          </div>
-        </div>
+        <TrendingLoadingScreen 
+          message="Analyzing market trends..."
+          preventFlash={true}
+        />
       ) : error ? (
         <div className="bg-red-50 text-red-600 p-4 rounded-lg text-center">
           {error}
@@ -176,8 +173,8 @@ export default function TrendingPage() {
               {trendingData.rising.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   {trendingData.rising.map(card => (
-                    <Link 
-                      href={`/cards/${card.id}`} 
+                    <Link
+                      href={`/cards/${card.id}`}
                       key={card.id}
                       className={`block p-4 rounded-lg border ${
                         theme === 'dark' ? 'border-gray-700 hover:bg-gray-700' : 'border-gray-200 hover:bg-gray-50'
@@ -217,8 +214,8 @@ export default function TrendingPage() {
               {trendingData.falling.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   {trendingData.falling.map(card => (
-                    <Link 
-                      href={`/cards/${card.id}`} 
+                    <Link
+                      href={`/cards/${card.id}`}
                       key={card.id}
                       className={`block p-4 rounded-lg border ${
                         theme === 'dark' ? 'border-gray-700 hover:bg-gray-700' : 'border-gray-200 hover:bg-gray-50'

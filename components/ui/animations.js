@@ -85,13 +85,12 @@ export const CardHover = ({ children, className = '', onClick = () => {} }) => {
     <div 
       className={`transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg cursor-pointer ${className}`}
       onClick={(e) => {
-        // Log click events to help debug navigation
-        console.log('CardHover clicked:', e.target);
+        // Handle click events
         
         // Check if this is a navigation card
         const isCardNav = e.currentTarget.closest('[data-pokemon-card="true"]');
         if (isCardNav) {
-          console.log('Pokemon card clicked - navigation should happen:', isCardNav.getAttribute('href'));
+          // Pokemon card navigation
         }
         
         // Always call the onClick prop to maintain expected behavior

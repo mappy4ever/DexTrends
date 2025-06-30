@@ -27,7 +27,7 @@ const PokemonCardItem = ({
   if (viewMode === 'grid') {
     return (
       <CardHover
-        className="flex flex-col items-center rounded-xl bg-gradient-to-br p-4 border border-gray-200/60 dark:border-gray-700/60 shadow-sm hover:shadow-md group relative transition-all duration-300 overflow-hidden"
+        className="flex flex-col items-center rounded-xl bg-gradient-to-br p-4 border border-gray-200/60 dark:border-gray-700/60 shadow-sm hover:shadow-md group relative transition-all duration-300 overflow-hidden">
         onClick={() => onNavigate(pokeId)}
       >
         <button
@@ -79,7 +79,7 @@ const PokemonCardItem = ({
     const primaryType = poke.types && poke.types.length > 0 ? poke.types[0] : null;
     return (
       <div
-        className="group flex items-center bg-white dark:bg-gray-800 p-3 md:p-4 rounded-xl border border-gray-200/80 dark:border-gray-700/80 hover:border-primary/30 cursor-pointer hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-all duration-300 shadow-sm hover:shadow-md relative overflow-hidden"
+        className="group flex items-center bg-white dark:bg-gray-800 p-3 md:p-4 rounded-xl border border-gray-200/80 dark:border-gray-700/80 hover:border-primary/30 cursor-pointer hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-all duration-300 shadow-sm hover:shadow-md relative overflow-hidden">
         onClick={() => onNavigate(pokeId)}
       >
         {primaryType && (
@@ -95,7 +95,7 @@ const PokemonCardItem = ({
               alt={poke.name}
               width={80}
               height={80}
-              className="w-14 h-14 sm:w-16 sm:h-16 object-contain drop-shadow-sm transition-all duration-300 group-hover:scale-110"
+              className="w-14 h-14 sm:w-16 sm:h-16 object-contain drop-shadow-sm transition-all duration-300 group-hover:scale-110">
               onError={(e) => { e.currentTarget.src = "/back-card.png"; }}
             />
           </div>

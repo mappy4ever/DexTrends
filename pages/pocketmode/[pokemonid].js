@@ -8,6 +8,7 @@ import { TypeBadge } from "../../components/ui/TypeBadge"; // Updated path
 import { fetchPocketData } from "../../utils/pocketData";
 import PocketCardList from "../../components/PocketCardList";
 import Modal from "../../components/ui/Modal";
+import logger from "../../utils/logger";
 
 function PocketPokemonDetail() {
   const router = useRouter();
@@ -47,7 +48,7 @@ function PocketPokemonDetail() {
         
         setLoading(false);
       } catch (err) {
-        console.error("Failed to fetch Pokémon details:", err);
+        logger.error("Failed to fetch Pokémon details:", { error: err });
         setError(err.message || "Failed to load card details");
         setLoading(false);
       }
@@ -204,7 +205,6 @@ function PocketPokemonDetail() {
           </div>
         </div>
       </FadeIn>
-      
       <SlideUp delay={200}>
         {/* Mobile-optimized tab navigation - Fixed overlap issue */}
         <div className="mb-6">
@@ -440,7 +440,7 @@ function PocketPokemonDetail() {
                   showPack={true}
                   showRarity={true}
                   showHP={false}
-                  gridClassName="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
+                  gridClassName="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"
                 />
               </div>
             </FadeIn>
@@ -473,7 +473,6 @@ function PocketPokemonDetail() {
           )}
         </div>
       </SlideUp>
-
       {/* Enhanced Card Zoom Modal with Better Styling */}
       {zoomedCard && (
         <Modal 

@@ -31,7 +31,7 @@ export default function AdvancedSearchModal({ isOpen, onClose, onSearchResults }
         const setsData = await pokemon.set.all();
         setSets(setsData.sort((a, b) => a.name.localeCompare(b.name)));
       } catch (error) {
-        console.error('Error loading sets:', error);
+        // Error loading sets
       }
     };
     loadSets();
@@ -131,7 +131,7 @@ export default function AdvancedSearchModal({ isOpen, onClose, onSearchResults }
       setResults(searchResults);
       onSearchResults(searchResults);
     } catch (error) {
-      console.error('Search error:', error);
+      // Search error
     } finally {
       setIsLoading(false);
     }

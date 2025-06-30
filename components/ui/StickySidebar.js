@@ -131,7 +131,7 @@ export default function StickySidebar({
               </button>
             </div>
             {!collapsedSections[filter.id] && (
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 gap-3">
                 {[
                   'normal', 'fire', 'water', 'electric', 'grass', 'ice',
                   'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug',
@@ -150,7 +150,7 @@ export default function StickySidebar({
                       filter.value?.includes(type) ? 'scale-105 ring-2 ring-white/50' : 'opacity-80 hover:opacity-100'
                     }`}
                   >
-                    <TypeBadge type={type} size="sm" />
+                    <TypeBadge type={type} size="md" />
                   </button>
                 ))}
               </div>

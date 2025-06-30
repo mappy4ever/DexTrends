@@ -3,9 +3,51 @@ import Document, { Html, Head, Main, NextScript } from 'next/document';
 class MyDocument extends Document {
   render() {
     return (
-      <Html>
+      <Html lang="en">
         <Head>
-          {/* Add any global styles, meta tags, or scripts here */}
+          {/* PWA Meta Tags */}
+          <meta name="application-name" content="DexTrends" />
+          <meta name="apple-mobile-web-app-capable" content="yes" />
+          <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+          <meta name="apple-mobile-web-app-title" content="DexTrends" />
+          <meta name="description" content="Track Pokemon TCG card prices, market trends, and build your collection with real-time data and analytics." />
+          <meta name="format-detection" content="telephone=no" />
+          <meta name="mobile-web-app-capable" content="yes" />
+          <meta name="msapplication-TileColor" content="#3b82f6" />
+          <meta name="msapplication-tap-highlight" content="no" />
+          <meta name="theme-color" content="#3b82f6" />
+
+          {/* Viewport removed from _document.js - handled by Next.js automatically */}
+          
+          {/* PWA Manifest */}
+          <link rel="manifest" href="/manifest.json" />
+          
+          {/* Icons */}
+          <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico" />
+          <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico" />
+          <link rel="apple-touch-icon" href="/dextrendslogo.png" />
+          <link rel="apple-touch-icon" sizes="152x152" href="/dextrendslogo.png" />
+          <link rel="apple-touch-icon" sizes="180x180" href="/dextrendslogo.png" />
+          <link rel="apple-touch-icon" sizes="167x167" href="/dextrendslogo.png" />
+
+          {/* Open Graph / Social Media */}
+          <meta property="og:type" content="website" />
+          <meta property="og:title" content="DexTrends - Pokemon TCG Price Tracker" />
+          <meta property="og:description" content="Track Pokemon TCG card prices, market trends, and build your collection with real-time data and analytics." />
+          <meta property="og:site_name" content="DexTrends" />
+          <meta property="og:image" content="/dextrendslogo.png" />
+
+          {/* Twitter Card */}
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content="DexTrends - Pokemon TCG Price Tracker" />
+          <meta name="twitter:description" content="Track Pokemon TCG card prices, market trends, and build your collection with real-time data and analytics." />
+          <meta name="twitter:image" content="/dextrendslogo.png" />
+
+          {/* Performance and SEO */}
+          <link rel="preconnect" href="https://api.pokemontcg.io" />
+          <link rel="preconnect" href="https://images.pokemontcg.io" />
+          <link rel="dns-prefetch" href="https://api.pokemontcg.io" />
+          <link rel="dns-prefetch" href="https://images.pokemontcg.io" />
           
           {/* Google Fonts - Montserrat Black for Pokémon names */}
           <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -15,31 +57,34 @@ class MyDocument extends Document {
             rel="stylesheet" 
           />
           
-          {/* Preload the navigation fix script for faster loading */}
-          <link 
-            rel="preload" 
-            href="/js/fix-navigation.js" 
-            as="script" 
-            importance="high" 
+          {/* Navigation fix script DISABLED - was causing refresh loops */}
+
+          {/* Structured Data */}
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "WebApplication",
+                "name": "DexTrends",
+                "description": "Track Pokemon TCG card prices, market trends, and build your collection with real-time data and analytics.",
+                "applicationCategory": "GameApplication",
+                "operatingSystem": "All",
+                "browserRequirements": "Requires JavaScript. Requires HTML5.",
+                "softwareVersion": "1.0.0",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "0",
+                  "priceCurrency": "USD"
+                }
+              })
+            }}
           />
         </Head>
         <body>
           <Main />
           <NextScript />
-          {/* Inline script to ensure navigation fix is loaded as early as possible */}
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
-                (function() {
-                  // Load navigation fix script as early as possible
-                  var script = document.createElement('script');
-                  script.src = '/js/fix-navigation.js';
-                  script.id = 'navigation-fix-script';
-                  document.head.appendChild(script);
-                })();
-              `,
-            }}
-          />
+          {/* Navigation fix script loading DISABLED - was causing refresh loops */}
         </body>
       </Html>
     );

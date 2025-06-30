@@ -153,7 +153,7 @@ export default function PocketDeckBuilder({
             deck.cards.map(card => (
               <div
                 key={card.id}
-                className="group cursor-pointer bg-off-white border border-border-color rounded p-2 hover:bg-white transition-all flex items-center gap-3"
+                className="group cursor-pointer bg-off-white border border-border-color rounded p-2 hover:bg-white transition-all flex items-center gap-3">
                 onClick={() => removeCardFromDeck(card.id)}
               >
                 <div className="w-10 aspect-[2.5/3.5] relative bg-white rounded overflow-hidden flex-shrink-0">
@@ -161,7 +161,7 @@ export default function PocketDeckBuilder({
                     src={card.image || '/dextrendslogo.png'}
                     alt={card.name}
                     fill
-                    className="object-contain"
+                    className="object-contain">
                     sizes="40px"
                   />
                 </div>
@@ -202,7 +202,7 @@ export default function PocketDeckBuilder({
           deck.cards.map(card => (
             <div
               key={card.id}
-              className="group cursor-pointer bg-off-white border border-border-color rounded p-2 hover:bg-white transition-all text-center"
+              className="group cursor-pointer bg-off-white border border-border-color rounded p-2 hover:bg-white transition-all text-center">
               onClick={() => removeCardFromDeck(card.id)}
             >
               <div className="aspect-[2.5/3.5] relative mb-1 bg-white rounded overflow-hidden">
@@ -210,7 +210,7 @@ export default function PocketDeckBuilder({
                   src={card.image || '/dextrendslogo.png'}
                   alt={card.name}
                   fill
-                  className="object-contain"
+                  className="object-contain">
                   sizes="100px"
                 />
               </div>
@@ -256,7 +256,7 @@ export default function PocketDeckBuilder({
                 src={card.image || '/dextrendslogo.png'}
                 alt={card.name}
                 fill
-                className="object-contain"
+                className="object-contain">
                 sizes="32px"
               />
             </div>
@@ -276,7 +276,7 @@ export default function PocketDeckBuilder({
                 src={card.image || '/dextrendslogo.png'}
                 alt={card.name}
                 fill
-                className="object-contain"
+                className="object-contain">
                 sizes="60px"
               />
             </div>
@@ -303,13 +303,13 @@ export default function PocketDeckBuilder({
               <input
                 type="text"
                 placeholder="Search cards..."
-                className="input-clean w-full"
+                className="input-clean w-full">
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
             <select
-              className="select-clean w-full sm:w-auto"
+              className="select-clean w-full sm:w-auto">
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
             >
@@ -356,7 +356,7 @@ export default function PocketDeckBuilder({
                         src={card.image || '/dextrendslogo.png'}
                         alt={card.name}
                         fill
-                        className="object-contain group-hover:scale-105 transition-transform duration-300"
+                        className="object-contain group-hover:scale-105 transition-transform duration-300">
                         sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
                       />
                     </div>
@@ -399,7 +399,7 @@ export default function PocketDeckBuilder({
             <div className="p-4 text-center border-t border-border-color bg-light-grey/50">
               <button
                 onClick={loadMoreCards}
-                className="btn-secondary px-6 py-2 text-sm hover:bg-pokemon-blue hover:text-white transition-all"
+                className="btn-secondary px-6 py-2 text-sm hover:bg-pokemon-blue hover:text-white transition-all">
               >
                 Load More Cards ({filteredCards.length - visibleCardCount} remaining)
               </button>
@@ -426,7 +426,7 @@ export default function PocketDeckBuilder({
             type="text"
             value={deck.name}
             onChange={(e) => setDeck(prev => ({ ...prev, name: e.target.value }))}
-            className="w-full bg-white/10 border border-white/20 rounded px-3 py-2 text-white placeholder-white/70 focus:outline-none focus:bg-white/20"
+            className="w-full bg-white/10 border border-white/20 rounded px-3 py-2 text-white placeholder-white/70 focus:outline-none focus:bg-white/20">
             placeholder="Enter deck name..."
           />
 

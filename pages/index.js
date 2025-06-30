@@ -7,17 +7,27 @@ import CustomSiteLogo from "../components/icons/customsitelogo";
 import { getPrice, getRarityRank } from "../utils/pokemonutils.js";
 import { BsBook, BsCardList, BsGrid } from "react-icons/bs";
 import { GiCardPickup } from "react-icons/gi";
-import AdvancedSearchModal from "../components/AdvancedSearchModal";
-import MarketAnalytics from "../components/MarketAnalytics";
+import { DynamicAdvancedSearchModal, DynamicMarketAnalytics, preloadCriticalComponents } from "../components/dynamic/DynamicComponents";
+import dynamic from 'next/dynamic';
+import { toggleFeature, isFeatureEnabled } from "../utils/featureFlags";
+
+// Safe dynamic imports for enhanced components
+const VisualSearchFilters = dynamic(() => import('../components/ui/VisualSearchFilters'), {
+  ssr: false,
+  loading: () => <div className="text-center py-4">Loading visual filters...</div>
+});
+
+const CardComparisonTool = dynamic(() => import('../components/ui/CardComparisonTool'), {
+  ssr: false,
+  loading: () => <div className="text-center py-4">Loading comparison tool...</div>
+});
 
 const pokemonKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
-if (!pokemonKey) {
-  throw new Error(
-    "NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY environment variable is not set. Please set it to your .env.local."
-  );
-}
 
-pokemon.configure({ apiKey: pokemonKey });
+// Configure Pokemon SDK only if key is available
+if (pokemonKey) {
+  pokemon.configure({ apiKey: pokemonKey });
+}
 
 function getRarityGlow(rarity) {
   if (!rarity) return "";
@@ -42,6 +52,14 @@ export default function IndexPage() {
   // New advanced features state
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
   const [showMarketAnalytics, setShowMarketAnalytics] = useState(false);
+  const [showVisualFilters, setShowVisualFilters] = useState(false);
+  const [showComparisonTool, setShowComparisonTool] = useState(false);
+  const [enable3DCards, setEnable3DCards] = useState(false);
+
+  // Initialize 3D cards state on mount
+  useEffect(() => {
+    setEnable3DCards(isFeatureEnabled('ENABLE_3D_CARDS'));
+  }, []);
 
   // Ref to detect clicks outside expanded card modal
   const containerRef = useRef(null);
@@ -60,6 +78,12 @@ export default function IndexPage() {
 
   const handleSearch = async (e) => {
     e.preventDefault();
+    
+    if (!pokemonKey) {
+      setError("Pokemon TCG API key is not configured. Please check your environment variables.");
+      return;
+    }
+    
     setLoading(true);
     setError(null);
     setCards([]);
@@ -126,22 +150,34 @@ export default function IndexPage() {
         
         {/* Enhanced Quick Action Tiles with Descriptions */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-6xl mt-12">
-          <Link href="/pokedex" className="group bg-white border border-border-color p-6 rounded-xl shadow-sm card-hover text-center hover:shadow-lg transition-all duration-300">
+          <Link
+            href="/pokedex"
+            className="group bg-white border border-border-color p-6 rounded-xl shadow-sm card-hover text-center hover:shadow-lg transition-all duration-300">
+            
             <BsBook className="mx-auto mb-4 text-4xl text-pokemon-red group-hover:scale-110 transition-transform duration-300" />
             <h3 className="font-semibold text-lg text-dark-text mb-2">Pokédex</h3>
             <p className="text-sm text-text-grey">Browse all Pokémon with detailed stats and information</p>
           </Link>
-          <Link href="/tcgsets" className="group bg-white border border-border-color p-6 rounded-xl shadow-sm card-hover text-center hover:shadow-lg transition-all duration-300">
+          <Link
+            href="/tcgsets"
+            className="group bg-white border border-border-color p-6 rounded-xl shadow-sm card-hover text-center hover:shadow-lg transition-all duration-300">
+            
             <BsCardList className="mx-auto mb-4 text-4xl text-pokemon-blue group-hover:scale-110 transition-transform duration-300" />
             <h3 className="font-semibold text-lg text-dark-text mb-2">Pokémon TCG</h3>
             <p className="text-sm text-text-grey">Explore sets, track prices, and manage collections</p>
           </Link>
-          <Link href="/pocketmode" className="group bg-white border border-border-color p-6 rounded-xl shadow-sm card-hover text-center hover:shadow-lg transition-all duration-300">
+          <Link
+            href="/pocketmode"
+            className="group bg-white border border-border-color p-6 rounded-xl shadow-sm card-hover text-center hover:shadow-lg transition-all duration-300">
+            
             <GiCardPickup className="mx-auto mb-4 text-4xl text-pokemon-yellow group-hover:scale-110 transition-transform duration-300" />
             <h3 className="font-semibold text-lg text-dark-text mb-2">Pocket Mode</h3>
             <p className="text-sm text-text-grey">Mobile TCG format with streamlined gameplay</p>
           </Link>
-          <Link href="/leaderboard" className="group bg-white border border-border-color p-6 rounded-xl shadow-sm card-hover text-center hover:shadow-lg transition-all duration-300">
+          <Link
+            href="/leaderboard"
+            className="group bg-white border border-border-color p-6 rounded-xl shadow-sm card-hover text-center hover:shadow-lg transition-all duration-300">
+            
             <BsGrid className="mx-auto mb-4 text-4xl text-pokemon-green group-hover:scale-110 transition-transform duration-300" />
             <h3 className="font-semibold text-lg text-dark-text mb-2">Rankings</h3>
             <p className="text-sm text-text-grey">See top players and competitive statistics</p>
@@ -171,7 +207,7 @@ export default function IndexPage() {
           </div>
         </div>
       </div>
-      <form onSubmit={handleSearch} className="flex flex-col md:flex-row justify-center items-center gap-4 mb-8 w-full max-w-3xl">
+      <form onSubmit={handleSearch} className="flex flex-col md:flex-row justify-center items-center gap-4 mb-8 w-full max-w-3xl mx-auto">
         <div className="relative flex-1 w-full md:max-w-lg">
           <input
             type="text"
@@ -203,9 +239,8 @@ export default function IndexPage() {
           Advanced
         </button>
       </form>
-
-      {/* Market Analytics Toggle */}
-      <div className="w-full mb-8 flex justify-center">
+      {/* Enhanced Features Toggle Bar */}
+      <div className="w-full mb-8 flex flex-wrap justify-center gap-4">
         <button
           onClick={() => setShowMarketAnalytics(!showMarketAnalytics)}
           className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 flex items-center gap-2 shadow-lg"
@@ -215,12 +250,68 @@ export default function IndexPage() {
           </svg>
           {showMarketAnalytics ? 'Hide' : 'Show'} Market Analytics
         </button>
+        
+        <button
+          onClick={() => setShowVisualFilters(!showVisualFilters)}
+          className="bg-gradient-to-r from-green-600 to-teal-600 text-white px-6 py-3 rounded-lg hover:from-green-700 hover:to-teal-700 transition-all duration-300 flex items-center gap-2 shadow-lg"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+          </svg>
+          {showVisualFilters ? 'Hide' : 'Show'} Visual Filters
+        </button>
+        
+        <button
+          onClick={() => setShowComparisonTool(!showComparisonTool)}
+          className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300 flex items-center gap-2 shadow-lg"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM7 21h10a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a4 4 0 004 4z" />
+          </svg>
+          {showComparisonTool ? 'Hide' : 'Show'} Card Comparison
+        </button>
+        
+        <button
+          onClick={() => {
+            const newValue = !enable3DCards;
+            setEnable3DCards(newValue);
+            toggleFeature('ENABLE_3D_CARDS', newValue);
+            // Also toggle related features
+            toggleFeature('ENABLE_HOLOGRAPHIC_EFFECTS', newValue);
+            toggleFeature('ENABLE_MOUSE_TRACKING', newValue);
+          }}
+          className={`${enable3DCards 
+            ? 'bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700' 
+            : 'bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800'
+          } text-white px-6 py-3 rounded-lg transition-all duration-300 flex items-center gap-2 shadow-lg`}
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          {enable3DCards ? 'Disable' : 'Enable'} 3D Cards
+        </button>
       </div>
-
       {/* Market Analytics Section */}
       {showMarketAnalytics && (
         <div className="w-full mb-8">
-          <MarketAnalytics />
+          <DynamicMarketAnalytics />
+        </div>
+      )}
+      {/* Visual Search Filters Section */}
+      {showVisualFilters && (
+        <div className="w-full mb-8">
+          <VisualSearchFilters 
+            onFiltersChange={(filters) => {
+              // Apply visual filters to search
+              console.log('Visual filters applied:', filters);
+            }}
+          />
+        </div>
+      )}
+      {/* Card Comparison Tool Section */}
+      {showComparisonTool && (
+        <div className="w-full mb-8">
+          <CardComparisonTool />
         </div>
       )}
       <div className="w-full mb-8">
@@ -257,9 +348,8 @@ export default function IndexPage() {
           </div>
         </Modal>
       )}
-
       {/* Advanced Search Modal */}
-      <AdvancedSearchModal
+      <DynamicAdvancedSearchModal
         isOpen={showAdvancedSearch}
         onClose={() => setShowAdvancedSearch(false)}
         onSearchResults={(results) => {
@@ -267,7 +357,6 @@ export default function IndexPage() {
           setShowAdvancedSearch(false);
         }}
       />
-
       <style jsx global>{`
         .shadow-glow-rare {
           box-shadow: 0 0 14px 4px #ffe06655, 0 2px 8px 0 var(--color-shadow-default);

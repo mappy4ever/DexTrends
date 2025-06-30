@@ -46,7 +46,7 @@ export default function MarketAnalytics({ className = '' }) {
         recentActivity: recentData
       });
     } catch (error) {
-      console.error('Error loading analytics:', error);
+      // Error loading analytics
     } finally {
       setLoading(false);
     }
@@ -118,7 +118,6 @@ export default function MarketAnalytics({ className = '' }) {
           <option value="30d">30 Days</option>
         </select>
       </div>
-
       {/* Market Statistics Cards */}
       {analytics.marketStats && (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -165,7 +164,6 @@ export default function MarketAnalytics({ className = '' }) {
           </div>
         </div>
       )}
-
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Top Movers */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg">
@@ -183,7 +181,10 @@ export default function MarketAnalytics({ className = '' }) {
                       #{index + 1}
                     </div>
                     <div>
-                      <Link href={`/cards/${card.card_id}`} className="text-sm font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
+                      <Link
+                        href={`/cards/${card.card_id}`}
+                        className="text-sm font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
+                        
                         {card.card_name}
                       </Link>
                       <div className="text-xs text-gray-500 dark:text-gray-400">
@@ -221,7 +222,10 @@ export default function MarketAnalytics({ className = '' }) {
                       #{index + 1}
                     </div>
                     <div>
-                      <Link href={`/cards/${card.card_id}`} className="text-sm font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
+                      <Link
+                        href={`/cards/${card.card_id}`}
+                        className="text-sm font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
+                        
                         {card.card_name}
                       </Link>
                       <div className="text-xs text-gray-500 dark:text-gray-400">
@@ -242,7 +246,6 @@ export default function MarketAnalytics({ className = '' }) {
           </div>
         </div>
       </div>
-
       {/* Recent Market Activity */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg">
         <div className="p-4 border-b border-gray-200 dark:border-gray-700">

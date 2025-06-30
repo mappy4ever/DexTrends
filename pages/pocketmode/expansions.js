@@ -1,54 +1,62 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import Head from 'next/head';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
-import { fetchPocketData } from '../../utils/pocketData';
-import { TypeBadge } from '../../components/ui/TypeBadge';
-import PackOpening from '../../components/ui/PackOpening';
+import React, { useState, useEffect, useMemo } from "react";
+import { useRouter } from "next/router";
+import Image from "next/image";
+import Head from "next/head";
+import Link from "next/link";
+import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../../components/ui/animations";
+import { useTheme } from "../../context/themecontext";
+import { useInfiniteScroll } from "../../hooks/useInfiniteScroll";
+import { InlineLoadingSpinner } from "../../components/ui/LoadingSpinner";
+import { SetLoadingScreen } from "../../components/ui/UnifiedLoadingScreen";
+import StyledBackButton from "../../components/ui/StyledBackButton";
+import PocketCardList from "../../components/PocketCardList";
+import BackToTop from "../../components/ui/BackToTop";
+import { fetchPocketData } from "../../utils/pocketData";
 
-export default function Expansions() {
-  const router = useRouter();
-  
-  // Data state
+export default function PocketExpansions() {
   const [allCards, setAllCards] = useState([]);
+  const [expansions, setExpansions] = useState([]);
+  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  
-  // UI state
+  const [selectedExpansionId, setSelectedExpansionId] = useState(null);
   const [selectedExpansion, setSelectedExpansion] = useState(null);
-  const [showPackOpening, setShowPackOpening] = useState(false);
-  const [packOpenCount, setPackOpenCount] = useState(0);
-  const [lastOpenedCards, setLastOpenedCards] = useState([]);
-  
-  // Load cards on component mount
+  const [error, setError] = useState(null);
+  const router = useRouter();
+  const { theme } = useTheme();
+
+  // Filter options
+  const [filterSeries, setFilterSeries] = useState("");
+  const [sortOption, setSortOption] = useState("releaseDate");
+  const [sortDirection, setSortDirection] = useState("desc");
+
   useEffect(() => {
-    const loadCards = async () => {
+    async function fetchExpansions() {
+      setLoading(true);
+      setError(null);
       try {
-        setLoading(true);
-        const data = await fetchPocketData();
-        setAllCards(data || []);
+        const cards = await fetchPocketData();
+        setAllCards(cards || []);
+        
+        // Process cards into expansion structure
+        const expansionData = processCardsIntoExpansions(cards || []);
+        setExpansions(expansionData);
       } catch (err) {
-        setError('Failed to load expansions');
-        console.error('Error loading pocket cards:', err);
-      } finally {
-        setLoading(false);
+        setError("Failed to load Pocket expansions. Please try again later.");
+        setAllCards([]);
+        setExpansions([]);
       }
-    };
-    
-    loadCards();
+      setLoading(false);
+    }
+    fetchExpansions();
   }, []);
 
-  // Generate expansion data from cards - excluding promo sets
-  const expansions = useMemo(() => {
-    if (!allCards.length) return [];
-    
-    const expansionMap = {};
+  // Process cards into expansion structure similar to TCG Sets
+  const processCardsIntoExpansions = (cards) => {
+    if (!cards.length) return [];
     
     // Filter out promo cards and redistribute shared cards to individual packs
-    const mainSetCards = allCards.filter(card => {
+    const mainSetCards = cards.filter(card => {
       const packName = (card.pack || '').toLowerCase();
-      // Exclude promo packs and small sets
       return !packName.includes('promo') && 
              !packName.includes('promotional') && 
              !packName.includes('special') &&
@@ -65,7 +73,6 @@ export default function Expansions() {
       if (card.pack === 'Shared(Genetic Apex)') {
         const cardType = (card.type || '').toLowerCase();
         
-        // Redistribute based on type affinity
         if (['grass', 'psychic', 'darkness', 'dark'].includes(cardType)) {
           return { ...card, pack: 'Mewtwo' };
         } else if (['lightning', 'electric'].includes(cardType)) {
@@ -73,7 +80,6 @@ export default function Expansions() {
         } else if (['water', 'fighting', 'fire'].includes(cardType)) {
           return { ...card, pack: 'Charizard' };
         } else {
-          // Colorless and other types - distribute evenly
           const hash = card.name.charCodeAt(0) % 3;
           const packs = ['Mewtwo', 'Pikachu', 'Charizard'];
           return { ...card, pack: packs[hash] };
@@ -82,617 +88,441 @@ export default function Expansions() {
       return card;
     });
     
-    redistributedCards.forEach(card => {
-      const packName = card.pack || 'Unknown';
-      
-      if (!expansionMap[packName]) {
-        expansionMap[packName] = {
-          id: packName.toLowerCase().replace(/\s+/g, '-'),
-          name: packName,
-          cards: [],
-          types: new Set(),
-          rarities: new Set(),
-          totalCards: 0,
-          featuredCards: []
-        };
+    // Group cards by expansion series
+    const seriesGroups = {
+      'Genetic Apex': { 
+        code: 'A1', 
+        packs: ['Mewtwo', 'Charizard', 'Pikachu'], 
+        releaseDate: '2024-10-30',
+        description: 'The first expansion set for Pokémon TCG Pocket featuring legendary Pokémon.'
+      },
+      'Mythical Island': { 
+        code: 'A1a', 
+        packs: ['Mythical Island'], 
+        releaseDate: '2024-11-01',
+        description: 'Discover mystical Pokémon from the legendary Mythical Island.'
+      },
+      'Space-Time Smackdown': { 
+        code: 'A2', 
+        packs: ['Dialga', 'Palkia'], 
+        releaseDate: '2024-12-01',
+        description: 'Master time and space with the legendary powers of Dialga and Palkia.'
+      },
+      'Triumphant Light': { 
+        code: 'A2a', 
+        packs: ['Triumphant Light'], 
+        releaseDate: '2024-12-15',
+        description: 'Illuminate your path to victory with brilliant light-type Pokémon.'
+      },
+      'Shining Revelry': { 
+        code: 'A2b', 
+        packs: ['Shining Revelry'], 
+        releaseDate: '2024-12-30',
+        description: 'Experience the ultimate rivalry with shining rare Pokémon cards.'
+      },
+      'Celestial Guardians': { 
+        code: 'A3', 
+        packs: ['Solgaleo', 'Lunala'], 
+        releaseDate: '2025-01-15',
+        description: 'Harness the celestial powers of the sun and moon guardians.'
+      },
+      'Extradimensional Crisis': { 
+        code: 'A3a', 
+        packs: ['Extradimensional Crisis'], 
+        releaseDate: '2025-02-01',
+        description: 'Battle across dimensions with ultra-rare interdimensional Pokémon.'
       }
-      
-      expansionMap[packName].cards.push(card);
-      expansionMap[packName].types.add(card.type);
-      expansionMap[packName].rarities.add(card.rarity);
-      expansionMap[packName].totalCards++;
-    });
+    };
     
-    // Get only real expansions with high card counts and filter out shared/placeholder packs
-    const realExpansions = Object.values(expansionMap).filter(expansion => {
-      const name = expansion.name;
-      const cardCount = expansion.totalCards;
-      
-      // Filter out shared, placeholder, and low-count packs
-      if (name.includes('Shared(') || 
-          name.includes('PLACEHOLDER') ||
-          name === 'Eevee Grove' ||
-          name.includes('Extra Dimensional') ||
-          name.includes('Space Time') ||
-          name.includes('Celestial Guardian') ||
-          cardCount < 70) {
-        return false;
-      }
-      
-      // Only keep main expansions with high card counts
-      return (
-        (name === 'Mewtwo' && cardCount >= 90) ||
-        (name === 'Charizard' && cardCount >= 90) ||
-        (name === 'Pikachu' && cardCount >= 85) ||
-        (name === 'Mythical Island' && cardCount >= 80) ||
-        (name === 'Dialga' && cardCount >= 75) ||
-        (name === 'Palkia' && cardCount >= 75) ||
-        (name === 'Triumphant Light' && cardCount >= 90) ||
-        (name === 'Shining Revelry' && cardCount >= 100) ||
-        (name === 'Solgaleo' && cardCount >= 90) ||
-        (name === 'Lunala' && cardCount >= 90) ||
-        (name === 'Extradimensional Crisis' && cardCount >= 90)
+    // Build expansion data
+    const expansions = [];
+    
+    Object.entries(seriesGroups).forEach(([seriesName, seriesInfo]) => {
+      const seriesCards = redistributedCards.filter(card => 
+        seriesInfo.packs.includes(card.pack)
       );
+      
+      if (seriesCards.length < 50) return; // Only include series with significant card counts
+      
+      expansions.push({
+        id: seriesName.toLowerCase().replace(/\s+/g, '-'),
+        name: seriesName,
+        code: seriesInfo.code,
+        releaseDate: seriesInfo.releaseDate,
+        description: seriesInfo.description,
+        total: seriesCards.length,
+        series: 'Pokémon TCG Pocket',
+        cards: seriesCards,
+        images: {
+          symbol: getExpansionSymbol(seriesName),
+          logo: getExpansionLogo(seriesName)
+        }
+      });
     });
     
-    return realExpansions
-    .filter(expansion => expansion.totalCards >= 70) // Only show high-quality sets
-    .map(expansion => {
-      // Get featured cards (rare cards for showcase)
-      const rareCards = expansion.cards
-        .filter(card => card.rarity.includes('★') || card.rarity.includes('◊◊◊'))
-        .slice(0, 6);
-      
-      const featuredCards = rareCards.length > 0 ? rareCards : expansion.cards.slice(0, 6);
-      
-      return {
-        ...expansion,
-        types: Array.from(expansion.types),
-        rarities: Array.from(expansion.rarities),
-        featuredCards,
-        displayName: getDisplayName(expansion.name),
-        setCode: getSetCode(expansion.name),
-        setName: getSetName(expansion.name),
-        releaseDate: getExpansionReleaseDate(expansion.name),
-        description: getExpansionDescription(expansion.name),
-        theme: getExpansionTheme(expansion.name),
-        packImage: getExpansionPackImage(expansion.name),
-        packPrice: 5,
-        guaranteedRare: true
-      };
-    }).sort((a, b) => {
-      // Sort by set code order
-      const order = {
-        'A1': 1, 'A1a': 2, 'A2': 3, 'A2a': 4, 'A2b': 5, 'A3': 6, 'A3a': 7
-      };
-      return (order[a.setCode] || 999) - (order[b.setCode] || 999);
-    });
-  }, [allCards]);
+    return expansions;
+  };
 
   // Helper functions for expansion metadata
-  function getExpansionReleaseDate(name) {
-    const releaseDates = {
-      'Mewtwo': '2024-10-30',
-      'Charizard': '2024-10-30', 
-      'Pikachu': '2024-10-30'
+  function getExpansionSymbol(name) {
+    const symbols = {
+      'Genetic Apex': '/images/PocketSymbols/genetic-apex.png',
+      'Mythical Island': '/images/PocketSymbols/mythical-island.png',
+      'Space-Time Smackdown': '/images/PocketSymbols/space-time-smackdown.png',
+      'Triumphant Light': '/images/PocketSymbols/triumphant-light.png',
+      'Shining Revelry': '/images/PocketSymbols/shining-revelry.png',
+      'Celestial Guardians': '/images/PocketSymbols/celestial-guardians.png',
+      'Extradimensional Crisis': '/images/PocketSymbols/extradimensional-crisis.png'
     };
-    return releaseDates[name] || '2024-10-30';
+    return symbols[name] || null;
   }
 
-  // Helper functions for clean expansion mapping
-  function getDisplayName(name) {
-    const displayNames = {
-      'Mewtwo': 'Mewtwo',
-      'Charizard': 'Charizard',
-      'Pikachu': 'Pikachu',
-      'Mythical Island': 'Mew',
-      'Dialga': 'Dialga',
-      'Palkia': 'Palkia',
-      'Triumphant Light': 'Arceus',
-      'Shining Revelry': 'Shiny Charizard',
-      'Solgaleo': 'Solgaleo',
-      'Lunala': 'Lunala',
-      'Extradimensional Crisis': 'Buzzwole'
+  function getExpansionLogo(name) {
+    const logos = {
+      'Genetic Apex': '/images/PocketLogos/genetic-apex-logo.png',
+      'Mythical Island': '/images/PocketLogos/mythical-island-logo.png',
+      'Space-Time Smackdown': '/images/PocketLogos/space-time-smackdown-logo.png',
+      'Triumphant Light': '/images/PocketLogos/triumphant-light-logo.png',
+      'Shining Revelry': '/images/PocketLogos/shining-revelry-logo.png',
+      'Celestial Guardians': '/images/PocketLogos/celestial-guardians-logo.png',
+      'Extradimensional Crisis': '/images/PocketLogos/extradimensional-crisis-logo.png'
     };
-    return displayNames[name] || name;
-  }
-  
-  function getSetCode(name) {
-    const setCodes = {
-      'Mewtwo': 'A1',
-      'Charizard': 'A1',
-      'Pikachu': 'A1',
-      'Mythical Island': 'A1a',
-      'Dialga': 'A2',
-      'Palkia': 'A2',
-      'Triumphant Light': 'A2a',
-      'Shining Revelry': 'A2b',
-      'Solgaleo': 'A3',
-      'Lunala': 'A3',
-      'Extradimensional Crisis': 'A3a'
-    };
-    return setCodes[name] || '';
-  }
-  
-  function getSetName(name) {
-    const setNames = {
-      'Mewtwo': 'Genetic Apex',
-      'Charizard': 'Genetic Apex',
-      'Pikachu': 'Genetic Apex',
-      'Mythical Island': 'Mythical Island',
-      'Dialga': 'Space-Time Smackdown',
-      'Palkia': 'Space-Time Smackdown',
-      'Triumphant Light': 'Triumphant Light',
-      'Shining Revelry': 'Shining Revelry',
-      'Solgaleo': 'Celestial Guardians',
-      'Lunala': 'Celestial Guardians',
-      'Extradimensional Crisis': 'Extradimensional Crisis'
-    };
-    return setNames[name] || name;
-  }
-  
-  // Map expansion names to booster pack images - exact specifications only
-  function getExpansionPackImage(name) {
-    const packImages = {
-      // Genetic Apex (A1)
-      'Mewtwo': '/images/PocketBoosterPacks/apexmewtwo.png',
-      'Charizard': '/images/PocketBoosterPacks/apexcharizard.png', 
-      'Pikachu': '/images/PocketBoosterPacks/apexpikachu.png',
-      
-      // Mythical Island (A1a)
-      'Mythical Island': '/images/PocketBoosterPacks/mythicalisland.png',
-      
-      // Space-Time Smackdown (A2)
-      'Dialga': '/images/PocketBoosterPacks/spacetimedialga.png',
-      'Palkia': '/images/PocketBoosterPacks/spacetimepalkia.png',
-      
-      // Triumphant Light (A2a)
-      'Triumphant Light': '/images/PocketBoosterPacks/triumphantlight.png',
-      
-      // Shining Revelry (A2b)
-      'Shining Revelry': '/images/PocketBoosterPacks/shinningrivalrycharizard.png',
-      
-      // Celestial Guardians (A3)
-      'Solgaleo': '/images/PocketBoosterPacks/celestialguardiansol.png',
-      'Lunala': '/images/PocketBoosterPacks/celestialguardianlun.png',
-      
-      // Extradimensional Crisis (A3a)
-      'Extradimensional Crisis': '/images/PocketBoosterPacks/extradimensionalcrisis.png'
-    };
-    return packImages[name] || null;
+    return logos[name] || null;
   }
 
-  function getExpansionDescription(name) {
-    const descriptions = {
-      'Mewtwo': 'Harness the psychic powers of the legendary Mewtwo and dominate with mind-bending abilities.',
-      'Charizard': 'Unleash the fiery fury of Charizard and incinerate your opponents with blazing attacks.',
-      'Pikachu': 'Channel the electric energy of Pikachu and shock your way to victory with lightning speed.',
-      'Space Time Dialga': 'Master time itself with the temporal powers of the legendary Dialga.',
-      'Space Time Palkia': 'Bend space and dimensions with the cosmic might of Palkia.',
-      'Celestial Guardian': 'Harness the radiant power of Solgaleo, guardian of the sun.',
-      'Celestial Guardian Luna': 'Embrace the mysterious lunar energy of Lunala, guardian of the moon.',
-      'Triumphant Light': 'Illuminate your path to victory with brilliant light-type Pokemon.',
-      'Shining Rivalry': 'Experience the ultimate rivalry with shining rare Pokemon cards.',
-      'Mythical Island': 'Discover mystical Pokemon from the legendary Mythical Island.',
-      'Eevee Grove': 'Explore the diverse evolutions of Eevee in this nature-themed expansion.',
-      'Extra Dimensional Crisis': 'Battle across dimensions with ultra-rare interdimensional Pokemon.'
-    };
-    return descriptions[name] || `Discover the incredible power of ${name} in this exciting expansion.`;
-  }
-
-  function getExpansionTheme(name) {
-    const themes = {
-      'Mewtwo': {
-        gradient: 'from-purple-600 via-pink-600 to-purple-800',
-        accentColor: 'purple',
-        emoji: '🔮',
-        bgPattern: 'radial-gradient(circle at 20% 50%, rgba(147, 51, 234, 0.3) 0%, transparent 50%)',
-        glowColor: 'shadow-purple-500/50'
-      },
-      'Charizard': {
-        gradient: 'from-red-600 via-orange-600 to-red-800',
-        accentColor: 'red',
-        emoji: '🔥',
-        bgPattern: 'radial-gradient(circle at 80% 20%, rgba(239, 68, 68, 0.3) 0%, transparent 50%)',
-        glowColor: 'shadow-red-500/50'
-      },
-      'Pikachu': {
-        gradient: 'from-yellow-400 via-yellow-500 to-yellow-600',
-        accentColor: 'yellow',
-        emoji: '⚡',
-        bgPattern: 'radial-gradient(circle at 50% 80%, rgba(251, 191, 36, 0.3) 0%, transparent 50%)',
-        glowColor: 'shadow-yellow-500/50'
-      },
-      'Space Time Dialga': {
-        gradient: 'from-blue-700 via-steel-600 to-blue-900',
-        accentColor: 'blue',
-        emoji: '⏰',
-        bgPattern: 'radial-gradient(circle at 30% 40%, rgba(59, 130, 246, 0.3) 0%, transparent 50%)',
-        glowColor: 'shadow-blue-500/50'
-      },
-      'Space Time Palkia': {
-        gradient: 'from-pink-600 via-purple-600 to-pink-800',
-        accentColor: 'pink',
-        emoji: '🌌',
-        bgPattern: 'radial-gradient(circle at 70% 30%, rgba(236, 72, 153, 0.3) 0%, transparent 50%)',
-        glowColor: 'shadow-pink-500/50'
-      },
-      'Celestial Guardian': {
-        gradient: 'from-orange-500 via-yellow-500 to-orange-700',
-        accentColor: 'orange',
-        emoji: '☀️',
-        bgPattern: 'radial-gradient(circle at 50% 30%, rgba(251, 146, 60, 0.3) 0%, transparent 50%)',
-        glowColor: 'shadow-orange-500/50'
-      },
-      'Celestial Guardian Luna': {
-        gradient: 'from-purple-800 via-indigo-700 to-purple-900',
-        accentColor: 'purple',
-        emoji: '🌙',
-        bgPattern: 'radial-gradient(circle at 40% 60%, rgba(147, 51, 234, 0.3) 0%, transparent 50%)',
-        glowColor: 'shadow-purple-500/50'
-      },
-      'Triumphant Light': {
-        gradient: 'from-yellow-300 via-white to-yellow-500',
-        accentColor: 'yellow',
-        emoji: '✨',
-        bgPattern: 'radial-gradient(circle at 50% 50%, rgba(251, 191, 36, 0.3) 0%, transparent 50%)',
-        glowColor: 'shadow-yellow-500/50'
-      },
-      'Shining Rivalry': {
-        gradient: 'from-red-500 via-orange-500 to-yellow-500',
-        accentColor: 'orange',
-        emoji: '⚔️',
-        bgPattern: 'radial-gradient(circle at 60% 40%, rgba(239, 68, 68, 0.3) 0%, transparent 50%)',
-        glowColor: 'shadow-red-500/50'
-      },
-      'Mythical Island': {
-        gradient: 'from-emerald-600 via-teal-600 to-emerald-800',
-        accentColor: 'emerald',
-        emoji: '🏝️',
-        bgPattern: 'radial-gradient(circle at 60% 40%, rgba(16, 185, 129, 0.3) 0%, transparent 50%)',
-        glowColor: 'shadow-emerald-500/50'
-      },
-      'Eevee Grove': {
-        gradient: 'from-green-500 via-emerald-500 to-green-700',
-        accentColor: 'green',
-        emoji: '🌳',
-        bgPattern: 'radial-gradient(circle at 40% 60%, rgba(34, 197, 94, 0.3) 0%, transparent 50%)',
-        glowColor: 'shadow-green-500/50'
-      },
-      'Extra Dimensional Crisis': {
-        gradient: 'from-violet-600 via-purple-600 to-indigo-800',
-        accentColor: 'violet',
-        emoji: '🌀',
-        bgPattern: 'radial-gradient(circle at 30% 70%, rgba(139, 92, 246, 0.3) 0%, transparent 50%)',
-        glowColor: 'shadow-violet-500/50'
+  // Extract unique series for filtering
+  const uniqueSeries = useMemo(() => {
+    const seriesSet = new Set();
+    expansions.forEach(expansion => {
+      if (expansion.series) {
+        seriesSet.add(expansion.series);
       }
-    };
-    return themes[name] || {
-      gradient: 'from-blue-600 via-cyan-600 to-blue-800',
-      accentColor: 'blue',
-      emoji: '📦',
-      bgPattern: 'radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 50%)',
-      glowColor: 'shadow-blue-500/50'
-    };
-  }
+    });
+    return Array.from(seriesSet).sort();
+  }, [expansions]);
 
-  // Open pack with new clean component
-  const openBoosterPack = (expansion) => {
+  // Filter expansions by search query and series
+  const filteredExpansions = useMemo(() => {
+    return expansions.filter((expansion) => {
+      let matches = expansion.name.toLowerCase().includes(search.toLowerCase());
+      
+      if (filterSeries && expansion.series) {
+        matches = matches && expansion.series === filterSeries;
+      }
+      
+      return matches;
+    });
+  }, [expansions, search, filterSeries]);
+
+  // Sort the filtered expansions
+  const sortedExpansions = useMemo(() => {
+    return [...filteredExpansions].sort((a, b) => {
+      let comparison = 0;
+      
+      switch (sortOption) {
+        case "name":
+          comparison = a.name.localeCompare(b.name);
+          break;
+        case "releaseDate":
+          comparison = new Date(a.releaseDate || "1970-01-01") - new Date(b.releaseDate || "1970-01-01");
+          break;
+        case "cardCount":
+          comparison = (a.total || 0) - (b.total || 0);
+          break;
+        default:
+          comparison = 0;
+      }
+      
+      return sortDirection === "desc" ? -comparison : comparison;
+    });
+  }, [filteredExpansions, sortOption, sortDirection]);
+
+  // Infinite scroll for expansions
+  const { visibleItems: visibleExpansions, hasMore, isLoading: scrollLoading, sentinelRef } = useInfiniteScroll(
+    sortedExpansions, 
+    12, // Initial visible count
+    6   // Load 6 more at a time
+  );
+
+  // Handle expansion click to show cards
+  const handleExpansionClick = (expansion) => {
     setSelectedExpansion(expansion);
-    setShowPackOpening(true);
   };
 
-  // Handle pack opened callback
-  const handlePackOpened = (cards) => {
-    setLastOpenedCards(cards);
-    setPackOpenCount(prev => prev + 1);
-  };
-
-  // Close pack opening modal
-  const closePackOpening = () => {
-    setShowPackOpening(false);
-    setSelectedExpansion(null);
-  };
-
-  // Get rarity color and effects
-  const getRarityInfo = (rarity) => {
-    if (rarity.includes('★★')) return {
-      color: 'from-yellow-400 to-yellow-600',
-      textColor: 'text-black',
-      glow: 'drop-shadow-lg shadow-yellow-400/50',
-      border: 'border-yellow-400',
-      bg: 'bg-gradient-to-r from-yellow-400 to-yellow-600',
-      rarity: 'Crown Rare'
-    };
-    if (rarity.includes('★')) return {
-      color: 'from-purple-500 to-purple-700',
-      textColor: 'text-white',
-      glow: 'drop-shadow-lg shadow-purple-500/50',
-      border: 'border-purple-500',
-      bg: 'bg-gradient-to-r from-purple-500 to-purple-700',
-      rarity: 'EX Rare'
-    };
-    if (rarity.includes('◊◊◊◊')) return {
-      color: 'from-pink-500 to-pink-700',
-      textColor: 'text-white',
-      glow: 'drop-shadow-md shadow-pink-500/50',
-      border: 'border-pink-500',
-      bg: 'bg-gradient-to-r from-pink-500 to-pink-700',
-      rarity: 'Double Rare'
-    };
-    if (rarity.includes('◊◊◊')) return {
-      color: 'from-blue-500 to-blue-700',
-      textColor: 'text-white',
-      glow: 'drop-shadow-md shadow-blue-500/50',
-      border: 'border-blue-500',
-      bg: 'bg-gradient-to-r from-blue-500 to-blue-700',
-      rarity: 'Rare'
-    };
-    if (rarity.includes('◊◊')) return {
-      color: 'from-green-500 to-green-700',
-      textColor: 'text-white',
-      glow: 'drop-shadow-sm shadow-green-500/50',
-      border: 'border-green-500',
-      bg: 'bg-gradient-to-r from-green-500 to-green-700',
-      rarity: 'Uncommon'
-    };
-    return {
-      color: 'from-gray-400 to-gray-600',
-      textColor: 'text-white',
-      glow: 'drop-shadow-sm',
-      border: 'border-gray-400',
-      bg: 'bg-gradient-to-r from-gray-400 to-gray-600',
-      rarity: 'Common'
-    };
-  };
-
-  if (loading) {
+  // If showing cards for a specific expansion, render the card list
+  if (selectedExpansion) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 flex items-center justify-center">
+      <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto px-2 sm:px-4 animate-fadeIn">
         <Head>
-          <title>Expansions | Pokemon Pocket | DexTrends</title>
+          <title>{selectedExpansion.name} Cards | Pokémon Pocket | DexTrends</title>
+          <meta name="description" content={`Browse all cards from ${selectedExpansion.name} expansion in Pokémon TCG Pocket.`} />
         </Head>
-        <div className="bg-black/60 backdrop-blur-xl rounded-3xl p-12 text-center border border-white/20 shadow-2xl">
-          <div className="relative mb-8">
-            <div className="animate-spin rounded-full h-20 w-20 border-4 border-yellow-400 border-t-transparent mx-auto"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-2xl animate-pulse">📦</div>
+        
+        <FadeIn>
+          <div className="mb-6 flex items-center gap-4">
+            <StyledBackButton 
+              variant="pocket" 
+              text="Back to Expansions" 
+              onClick={() => setSelectedExpansion(null)} 
+            />
+            <div>
+              <h1 className="text-3xl font-bold">{selectedExpansion.name}</h1>
+              <p className="text-gray-600 dark:text-gray-400">{selectedExpansion.description}</p>
             </div>
           </div>
-          <h3 className="text-3xl font-bold text-white mb-4">Loading Expansions...</h3>
-          <p className="text-gray-300 text-lg">Preparing the ultimate pack opening experience</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 flex items-center justify-center">
-        <Head>
-          <title>Expansions | Pokemon Pocket | DexTrends</title>
-        </Head>
-        <div className="bg-black/60 backdrop-blur-xl rounded-3xl p-12 text-center border border-red-500/20 shadow-2xl">
-          <div className="text-6xl mb-6">❌</div>
-          <h2 className="text-3xl font-bold mb-4 text-red-400">Oops! Something went wrong</h2>
-          <p className="text-gray-300 mb-8 text-lg">{error}</p>
-          <button 
-            onClick={() => window.location.reload()}
-            className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105 shadow-lg"
-          >
-            🔄 Try Again
-          </button>
-        </div>
+          
+          <PocketCardList 
+            cards={selectedExpansion.cards}
+            loading={false}
+            error={null}
+            emptyMessage={`No cards found in ${selectedExpansion.name}.`}
+            showPack={true}
+            showRarity={true}
+            showHP={true}
+          />
+        </FadeIn>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-off-white">
+    <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto px-2 sm:px-4 animate-fadeIn">
       <Head>
-        <title>Pack Opening | Pokemon Pocket | DexTrends</title>
-        <meta name="description" content="Experience realistic Pokemon Pocket booster pack opening with authentic rarity rates" />
+        <title>Pokémon Pocket Expansions | DexTrends</title>
+        <meta name="description" content="Browse Pokémon TCG Pocket expansion sets and discover cards from each collection." />
       </Head>
-
-      {/* Clean Header */}
-      <div className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-border-color shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-6">
-              <Link 
-                href="/pocketmode" 
-                className="group flex items-center gap-3 text-pokemon-blue hover:text-blue-700 font-semibold transition-all"
-              >
-                <svg className="w-5 h-5 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+      
+      <FadeIn>
+        <div className="mb-6">
+          <StyledBackButton variant="pocket" text="Back to Pocket Mode" onClick={() => router.push('/pocketmode')} />
+        </div>
+        
+        <h1 className="text-3xl font-bold text-center mb-8">Pokémon Pocket Expansions</h1>
+        
+        <div className={`p-6 rounded-xl shadow-md mb-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+          {/* Search and Filters */}
+          <div className="flex flex-col md:flex-row gap-4 items-end">
+            <div className="flex-1">
+              <label htmlFor="searchInput" className="block text-sm font-medium mb-1">Search Expansions</label>
+              <div className="relative">
+                <input
+                  id="searchInput"
+                  type="text"
+                  className="w-full border border-gray-300 rounded-md pl-10 pr-4 py-2 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors"
+                  placeholder="Search for an expansion (e.g., Genetic Apex, Mythical Island)"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  className="h-5 w-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-                Back to Pocket Mode
-              </Link>
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-pokemon-red rounded-full flex items-center justify-center">
-                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                  </svg>
-                </div>
-                <h1 className="text-2xl font-bold text-dark-text">
-                  Pack Opening
-                </h1>
               </div>
             </div>
             
-            <div className="flex items-center gap-4">
-              <div className="bg-light-grey rounded-lg px-4 py-2 border border-border-color">
-                <span className="text-sm font-medium text-text-grey">Packs Opened: </span>
-                <span className="text-pokemon-red font-bold">{packOpenCount}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="bg-pokemon-green/10 text-pokemon-green px-3 py-1 rounded-full text-sm font-medium border border-pokemon-green/20">
-                  {expansions.length} Booster Packs
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        {/* Clean Hero Section */}
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-pokemon-red mb-4">
-            Booster Pack Opening
-          </h2>
-          <p className="text-lg text-text-grey max-w-2xl mx-auto leading-relaxed">
-            Experience realistic Pokémon TCG Pocket pack opening with authentic rarity rates, 
-            <span className="font-semibold text-dark-text"> guaranteed rare cards</span>, and 
-            <span className="font-semibold text-dark-text"> smooth animations</span>.
-          </p>
-        </div>
-
-        {/* Expansion Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {expansions.map((expansion, index) => {
-            return (
-              <div
-                key={expansion.id}
-                className="group bg-white border border-border-color rounded-lg shadow-sm card-holographic overflow-hidden"
+            <div className="w-full md:w-48">
+              <label htmlFor="seriesFilter" className="block text-sm font-medium mb-1">Filter by Series</label>
+              <select
+                id="seriesFilter"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors"
+                value={filterSeries}
+                onChange={(e) => setFilterSeries(e.target.value)}
               >
-                {/* Pack Image - Vertical Showcase */}
-                <div className="relative h-64 bg-light-grey rounded-t-lg overflow-hidden flex items-center justify-center">
-                  {expansion.packImage ? (
-                    <div className="relative w-32 h-48">
-                      <Image
-                        src={expansion.packImage}
-                        alt={`${expansion.name} pack`}
-                        fill
-                        className="object-contain drop-shadow-lg group-hover:scale-105 transition-transform duration-300"
-                        unoptimized={true} // Small pack images don't need optimization
-                      />
-                    </div>
-                  ) : (
-                    // Clean placeholder with rainbow indicator
-                    <div className="w-32 h-48 bg-gradient-to-br from-red-400 via-yellow-400 via-green-400 via-blue-400 to-purple-400 flex items-center justify-center relative rounded-lg">
-                      <div className="absolute inset-0 bg-white/20 backdrop-blur-sm rounded-lg"></div>
-                      <div className="relative z-10 text-center text-white">
-                        <div className="w-12 h-12 bg-white/30 rounded-full flex items-center justify-center mb-2 mx-auto">
-                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                          </svg>
-                        </div>
-                        <p className="font-semibold text-sm">PLACEHOLDER</p>
-                        <p className="text-xs opacity-80">Rainbow = Temp</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Pack Info */}
-                <div className="p-6">
-                  <div className="text-center mb-4">
-                    <h3 className="text-xl font-bold text-dark-text mb-2">{expansion.name}</h3>
-                    <p className="text-text-grey text-sm leading-relaxed">
-                      {expansion.description}
-                    </p>
-                  </div>
-
-                  {/* Stats */}
-                  <div className="grid grid-cols-2 gap-4 mb-4">
-                    <div className="bg-light-grey rounded-lg p-3 text-center border border-border-color">
-                      <div className="text-lg font-bold text-dark-text">
-                        {expansion.totalCards}
-                      </div>
-                      <div className="text-xs text-text-grey">Total Cards</div>
-                    </div>
-                    <div className="bg-light-grey rounded-lg p-3 text-center border border-border-color">
-                      <div className="text-lg font-bold text-dark-text">
-                        {expansion.types.length}
-                      </div>
-                      <div className="text-xs text-text-grey">Types</div>
-                    </div>
-                  </div>
-
-                  {/* Types Preview */}
-                  <div className="mb-6">
-                    <div className="text-sm font-semibold mb-2 text-dark-text">Featured Types</div>
-                    <div className="flex flex-wrap justify-center gap-1">
-                      {expansion.types.slice(0, 4).map(type => (
-                        <TypeBadge key={type} type={type} size="sm" />
-                      ))}
-                      {expansion.types.length > 4 && (
-                        <span className="bg-light-grey text-text-grey px-2 py-1 rounded-full text-xs border border-border-color">
-                          +{expansion.types.length - 4}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="space-y-3">
-                    <button
-                      onClick={() => openBoosterPack(expansion)}
-                      disabled={showPackOpening}
-                      className="w-full btn-primary py-3 font-semibold text-lg hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {showPackOpening ? 'Opening Pack...' : 'Open Pack'}
-                    </button>
-                    
-                    <Link href={`/pocketmode/set/${expansion.id}`}>
-                      <button className="w-full btn-clean py-2 font-medium">
-                        Browse All Cards
-                      </button>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Clean Feature Highlights */}
-        <div className="bg-white rounded-lg border border-border-color shadow-sm p-8 text-center">
-          <h3 className="text-2xl font-bold text-dark-text mb-6">
-            Pack Opening Features
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="group cursor-pointer hover:bg-light-grey p-4 rounded-lg transition-all">
-              <div className="w-12 h-12 bg-pokemon-blue text-white rounded-full flex items-center justify-center mx-auto mb-3">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-              </div>
-              <h4 className="text-lg font-semibold mb-2 text-dark-text">Authentic Experience</h4>
-              <p className="text-text-grey text-sm">Experience realistic pack opening with distribution matching Pokemon Pocket cards</p>
+                <option value="">All Series</option>
+                {uniqueSeries.map(series => (
+                  <option key={series} value={series}>{series}</option>
+                ))}
+              </select>
             </div>
-            <div className="group cursor-pointer hover:bg-light-grey p-4 rounded-lg transition-all">
-              <div className="w-12 h-12 bg-pokemon-green text-white rounded-full flex items-center justify-center mx-auto mb-3">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 0v1.5M9 21v-5a2 2 0 012-2h2a2 2 0 012 2v5" />
-                </svg>
-              </div>
-              <h4 className="text-lg font-semibold mb-2 text-dark-text">Free & Fun</h4>
-              <p className="text-text-grey text-sm">Open unlimited packs and discover new cards without any cost or limits</p>
+            
+            <div className="w-full md:w-48">
+              <label htmlFor="sortOption" className="block text-sm font-medium mb-1">Sort By</label>
+              <select
+                id="sortOption"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors"
+                value={sortOption}
+                onChange={(e) => setSortOption(e.target.value)}
+              >
+                <option value="releaseDate">Release Date</option>
+                <option value="name">Name</option>
+                <option value="cardCount">Card Count</option>
+              </select>
             </div>
-            <div className="group cursor-pointer hover:bg-light-grey p-4 rounded-lg transition-all">
-              <div className="w-12 h-12 bg-pokemon-yellow text-white rounded-full flex items-center justify-center mx-auto mb-3">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                </svg>
-              </div>
-              <h4 className="text-lg font-semibold mb-2 text-dark-text">Beautiful Animations</h4>
-              <p className="text-text-grey text-sm">Enjoy smooth animations and satisfying card reveals with special effects</p>
+            
+            <div className="w-full md:w-48">
+              <label htmlFor="sortDirection" className="block text-sm font-medium mb-1">Order</label>
+              <select
+                id="sortDirection"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors"
+                value={sortDirection}
+                onChange={(e) => setSortDirection(e.target.value)}
+              >
+                <option value="desc">Descending</option>
+                <option value="asc">Ascending</option>
+              </select>
             </div>
+            
+            <button 
+              className="w-full md:w-auto px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-md transition-colors"
+              onClick={() => {
+                setSearch("");
+                setFilterSeries("");
+                setSortOption("releaseDate");
+                setSortDirection("desc");
+              }}
+            >
+              Clear Filters
+            </button>
           </div>
         </div>
-      </div>
+      </FadeIn>
+      
+      {loading ? (
+        <SetLoadingScreen 
+          message="Loading Pocket expansions..."
+          preventFlash={true}
+        />
+      ) : error ? (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+          <h2 className="text-xl font-bold text-red-600">Error</h2>
+          <p className="text-red-600 mt-2">{error}</p>
+        </div>
+      ) : (
+        <StaggeredChildren className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+          {visibleExpansions.map((expansion) => (
+            <CardHover
+              key={expansion.id}
+              className="animate-fadeIn"
+              onClick={() => handleExpansionClick(expansion)}
+            >
+              <div 
+                className={`relative flex flex-col h-full rounded-xl overflow-hidden shadow-md border cursor-pointer ${
+                  selectedExpansionId === expansion.id 
+                    ? 'border-purple-500 ring-2 ring-purple-500' 
+                    : theme === 'dark' ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'
+                }`}
+              >
+                {/* Expansion Image Background */}
+                {expansion.images?.logo && (
+                  <div className="relative h-32 w-full bg-gradient-to-b from-purple-100 to-purple-200 flex items-center justify-center p-4 overflow-hidden">
+                    {expansion.images.symbol && (
+                      <div className="absolute opacity-10 w-full h-full flex items-center justify-center">
+                        <img
+                          src={expansion.images.symbol}
+                          alt=""
+                          className="w-32 h-32 object-contain"
+                        />
+                      </div>
+                    )}
+                    <img
+                      src={expansion.images.logo}
+                      alt={expansion.name}
+                      className="max-h-20 max-w-[80%] object-contain z-10"
+                      draggable="false"
+                    />
+                  </div>
+                )}
+                
+                {/* Expansion Info */}
+                <div className="p-4 flex-1 flex flex-col">
+                  <h2 className="font-bold text-lg">{expansion.name}</h2>
+                  
+                  {expansion.series && (
+                    <p className="text-sm text-gray-500 mb-2">{expansion.series}</p>
+                  )}
+                  
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
+                    {expansion.description}
+                  </p>
+                  
+                  <div className="mt-auto grid grid-cols-2 gap-2 text-sm">
+                    <div>
+                      <p className="text-gray-500">Released</p>
+                      <p className="font-medium">{expansion.releaseDate || "Unknown"}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-500">Cards</p>
+                      <p className="font-medium">{expansion.total || "?"}</p>
+                    </div>
+                  </div>
+                  
+                  {/* View Cards Button */}
+                  <div className="mt-4">
+                    <button 
+                      className="w-full py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-md transition-colors text-sm"
+                    >
+                      View Cards
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </CardHover>
+          ))}
+        </StaggeredChildren>
+      )}
 
-      {/* Pack Opening Modal */}
-      <PackOpening 
-        expansion={selectedExpansion}
-        availableCards={selectedExpansion?.cards || []}
-        onPackOpened={handlePackOpened}
-        onClose={closePackOpening}
-        isOpen={showPackOpening}
-      />
+      {/* Infinite scroll loading indicator */}
+      {hasMore && (
+        <div ref={sentinelRef} className="h-4 w-full flex items-center justify-center">
+          {scrollLoading && (
+            <InlineLoadingSpinner 
+              text="Loading more expansions..." 
+              className="mt-8"
+            />
+          )}
+        </div>
+      )}
 
+      {/* Show scroll hint */}
+      {!loading && !error && hasMore && (
+        <div className="text-center mt-4 text-sm text-gray-600 dark:text-gray-400">
+          Showing {visibleExpansions.length} of {sortedExpansions.length} expansions
+          <div className="text-xs text-primary mt-1">
+            Scroll down to load more...
+          </div>
+        </div>
+      )}
+
+      {!loading && !scrollLoading && !hasMore && sortedExpansions.length > 0 && (
+        <div className="text-center mt-4 text-sm text-gray-500 dark:text-gray-400">
+          All {sortedExpansions.length} expansions loaded
+        </div>
+      )}
+      
+      {!loading && !error && sortedExpansions.length === 0 && (
+        <div className="text-center py-16">
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            className="h-16 w-16 mx-auto text-gray-400" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M12 20h9a2 2 0 002-2V6a2 2 0 00-2-2h-1.064M12 20v-2m0 0c-2.761 0-5-2.239-5-5a5 5 0 0110 0c0 2.761-2.239 5-5 5z" />
+          </svg>
+          <h3 className="text-xl font-bold mt-4">No Expansions Found</h3>
+          <p className="text-gray-500 mt-2">Try adjusting your search or filters</p>
+          <button 
+            className="mt-4 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-md transition-colors"
+            onClick={() => {
+              setSearch("");
+              setFilterSeries("");
+              setSortOption("releaseDate");
+              setSortDirection("desc");
+            }}
+          >
+            Show All Expansions
+          </button>
+        </div>
+      )}
+      
+      {/* Back to Top Button */}
+      <BackToTop />
     </div>
   );
 }

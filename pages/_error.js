@@ -1,6 +1,6 @@
 import React from "react";
 
-function Error({ statusCode }) {
+function Error({ statusCode, hasGetInitialPropsRun, err }) {
   return (
     <div style={{ textAlign: "center", marginTop: 80 }}>
       <h1 style={{ fontSize: 48, color: "#e53e3e" }}>Error {statusCode || 404}</h1>
@@ -16,9 +16,6 @@ function Error({ statusCode }) {
   );
 }
 
-Error.getInitialProps = ({ res, err }) => {
-  const statusCode = res ? res.statusCode : err ? err.statusCode : 404;
-  return { statusCode };
-};
+// Removed getInitialProps to prevent Fast Refresh issues
 
 export default Error;

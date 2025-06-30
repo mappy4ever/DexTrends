@@ -1,0 +1,119 @@
+{
+  "name": "DexTrends - Pokemon TCG Price Tracker",
+  "short_name": "DexTrends",
+  "description": "Track Pokemon TCG card prices, market trends, and build your collection with real-time data and analytics.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-US",
+  "categories": ["games", "entertainment", "productivity"],
+  "icons": [
+    {
+      "src": "/dextrendslogo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/dextrendslogo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Search Cards",
+      "short_name": "Search",
+      "description": "Search for Pokemon TCG cards",
+      "url": "/cards?search=true",
+      "icons": [
+        {
+          "src": "/dextrendslogo.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Pokedex",
+      "short_name": "Pokedex",
+      "description": "Browse Pokemon database",
+      "url": "/pokedex",
+      "icons": [
+        {
+          "src": "/dextrendslogo.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Trending",
+      "short_name": "Trending",
+      "description": "View trending cards and market data",
+      "url": "/trending",
+      "icons": [
+        {
+          "src": "/dextrendslogo.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Pocket Mode",
+      "short_name": "Pocket",
+      "description": "Pokemon TCG Pocket cards",
+      "url": "/pocketmode",
+      "icons": [
+        {
+          "src": "/dextrendslogo.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/dextrendslogo.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "DexTrends desktop interface showing card price trends"
+    },
+    {
+      "src": "/dextrendslogo.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "DexTrends mobile interface for card browsing"
+    }
+  ],
+  "share_target": {
+    "action": "/cards",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
+  "protocol_handlers": [
+    {
+      "protocol": "web+pokemon",
+      "url": "/cards?pokemon=%s"
+    }
+  ],
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  }
+}

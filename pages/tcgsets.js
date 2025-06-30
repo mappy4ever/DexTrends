@@ -7,6 +7,7 @@ import { useTheme } from "../context/themecontext";
 import { useViewSettings } from "../context/viewsettingscontext";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import { InlineLoadingSpinner } from "../components/ui/LoadingSpinner";
+import { SetLoadingScreen } from "../components/ui/UnifiedLoadingScreen";
 
 const pokemonKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
 if (!pokemonKey) {
@@ -96,7 +97,7 @@ export default function TCGSets() {
   }, [filteredSets, sortOption, sortDirection]);
 
   // Infinite scroll for sets
-  const { visibleItems: visibleSets, hasMore, isLoading: scrollLoading } = useInfiniteScroll(
+  const { visibleItems: visibleSets, hasMore, isLoading: scrollLoading, sentinelRef } = useInfiniteScroll(
     sortedSets, 
     20, // Initial visible count
     10  // Load 10 more at a time
@@ -191,14 +192,10 @@ export default function TCGSets() {
       </FadeIn>
       
       {loading ? (
-        <div className="flex items-center justify-center min-h-[40vh]">
-          <div className="text-center">
-            <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-current border-r-transparent" role="status">
-              <span className="sr-only">Loading...</span>
-            </div>
-            <p className="mt-4 text-lg">Loading TCG sets...</p>
-          </div>
-        </div>
+        <SetLoadingScreen 
+          message="Loading TCG sets..."
+          preventFlash={true}
+        />
       ) : error ? (
         <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
           <h2 className="text-xl font-bold text-red-600">Error</h2>
@@ -277,12 +274,18 @@ export default function TCGSets() {
         </StaggeredChildren>
       )}
 
-      {/* Infinite scroll loading indicator */}
-      {scrollLoading && hasMore && (
-        <InlineLoadingSpinner 
-          text="Loading more sets..." 
-          className="mt-8"
-        />
+      {/* Infinite scroll sentinel */}
+      {hasMore && (
+        <div 
+          ref={sentinelRef} 
+          className="h-4 w-full flex items-center justify-center mt-8"
+        >
+          {scrollLoading && (
+            <InlineLoadingSpinner 
+              text="Loading more sets..." 
+            />
+          )}
+        </div>
       )}
 
       {/* Show scroll hint */}

@@ -21,7 +21,7 @@ export function ViewSettingsProvider({ children }) {
           ...JSON.parse(savedSettings)
         }));
       } catch (error) {
-        console.error("Could not parse saved view settings:", error);
+        // Silently ignore invalid saved settings and use defaults
       }
     }
   }, []);

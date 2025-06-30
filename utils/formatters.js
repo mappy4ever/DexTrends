@@ -14,7 +14,6 @@ export const formatDatePretty = (dateString) => {
   try {
     const date = new Date(dateString); // Assumes dateString is ISO-like and can be parsed
     if (isNaN(date.getTime())) {
-      // console.warn("Invalid date string provided to formatDatePretty:", dateString);
       return dateString; // Fallback for invalid dates
     }
     return date.toLocaleDateString('en-US', {
@@ -24,14 +23,12 @@ export const formatDatePretty = (dateString) => {
       timeZone: 'UTC' // Important if your input dates are UTC to prevent timezone shifts
     });
   } catch (e) {
-    // console.error("Error formatting date:", dateString, e);
     return dateString;
   }
 };
 
 export const toLowercaseUrl = (pathString) => {
   if (typeof pathString !== 'string') {
-    // console.warn('toLowercaseUrl expects a string, received:', pathString);
     return ''; // Or handle error as appropriate
   }
   return pathString.toLowerCase();

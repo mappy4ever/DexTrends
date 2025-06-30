@@ -1,7 +1,82 @@
 // This is a Next.js configuration file that sets environment variables
 // next.config.js
 module.exports = {
-  reactStrictMode: true, // Keep your reactStrictMode setting
+  reactStrictMode: true, // Re-enabled after fixing Fast Refresh issues
+  
+  // PWA handled by custom service worker
+
+  // Headers for PWA, mobile optimization, and security
+  async headers() {
+    return [
+      {
+        source: '/manifest.json',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable'
+          }
+        ]
+      },
+      {
+        source: '/sw.js',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-cache, no-store, must-revalidate'
+          },
+          {
+            key: 'Service-Worker-Allowed',
+            value: '/'
+          }
+        ]
+      },
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY'
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff'
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block'
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin'
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'
+          }
+        ]
+      },
+      {
+        source: '/api/(.*)',
+        headers: [
+          {
+            key: 'X-Robots-Tag',
+            value: 'noindex, nofollow'
+          },
+          {
+            key: 'Cache-Control',
+            value: 'no-cache, no-store, must-revalidate'
+          }
+        ]
+      }
+    ];
+  },
+  
+  // Remove console statements in production builds
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production' ? {
+      exclude: ['error'] // Keep console.error for debugging production issues
+    } : false,
+  },
 
   // Your environment variables go directly here
   // NEXT_PUBLIC_ prefixed variables are automatically exposed by Next.js
@@ -14,11 +89,6 @@ module.exports = {
     NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY: process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY,
   },
   images: {
-    domains: [
-      'images.pokemontcg.io',
-      'raw.githubusercontent.com',
-      'limitlesstcg.nyc3.cdn.digitaloceanspaces.com', // Added for Pocket card images
-    ],
     // Reduce transformations by limiting formats to just WebP
     formats: ['image/webp'],
     // Cache images for 31 days since they don't change often
@@ -28,12 +98,12 @@ module.exports = {
     // Limit image sizes to common breakpoints
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     // Set default quality to 75 to reduce file size (handled per-image basis)
-    // Restrict remote patterns to only optimize large card images
+    // Use modern remotePatterns instead of deprecated domains
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'images.pokemontcg.io',
-        pathname: '/*/cards/**', // Only optimize card images, not logos/icons
+        pathname: '/**', // Allow all paths from Pokemon TCG
       },
       {
         protocol: 'https',
@@ -42,9 +112,76 @@ module.exports = {
       },
       {
         protocol: 'https',
+        hostname: 'raw.githubusercontent.com',
+        pathname: '/PokeAPI/sprites/**', // Pokemon sprite images
+      },
+      {
+        protocol: 'https',
         hostname: 'limitlesstcg.nyc3.cdn.digitaloceanspaces.com',
-        pathname: '/pokemon/**', // Only Pokemon images
+        pathname: '/**', // Allow all paths including /pocket/
       }
     ],
+  },
+  
+  // Webpack configuration for additional optimizations
+  webpack: (config, { dev, isServer }) => {
+    // Only in production builds
+    if (!dev) {
+      // Additional console statement removal for any that slip through
+      config.optimization.minimize = true;
+      
+      // Split chunks for better caching
+      config.optimization.splitChunks = {
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\/]node_modules[\/]/,
+            name: 'vendors',
+            chunks: 'all',
+          },
+          common: {
+            name: 'common',
+            minChunks: 2,
+            chunks: 'all',
+          },
+          // Separate heavy libraries
+          echarts: {
+            test: /[\/]node_modules[\/](echarts|echarts-for-react)[\/]/,
+            name: 'echarts',
+            chunks: 'all',
+          },
+          leaflet: {
+            test: /[\/]node_modules[\/](leaflet|react-leaflet)[\/]/,
+            name: 'leaflet',
+            chunks: 'all',
+          },
+          framerMotion: {
+            test: /[\/]node_modules[\/]framer-motion[\/]/,
+            name: 'framer-motion',
+            chunks: 'all',
+          },
+          icons: {
+            test: /[\/]node_modules[\/](@fortawesome|react-icons)[\/]/,
+            name: 'icons',
+            chunks: 'all',
+          }
+        }
+      };
+    }
+    
+    // Optimize imports
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      // Tree shake lodash
+      'lodash': 'lodash-es',
+    };
+    
+    return config;
+  },
+  
+  // Experimental features - minimal config for compatibility
+  experimental: {
+    // Only enable stable experimental features
+    esmExternals: true,
   },
 };

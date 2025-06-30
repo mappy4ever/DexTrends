@@ -17,6 +17,7 @@ import {
   HoverCard,
   RevealElement 
 } from '../../components/ui/AnimationSystem';
+import logger from '../../utils/logger';
 
 export default function SavedDecks() {
   const router = useRouter();
@@ -34,7 +35,7 @@ export default function SavedDecks() {
       const decks = JSON.parse(localStorage.getItem('pocketDecks') || '[]');
       setSavedDecks(decks);
     } catch (error) {
-      console.error('Error loading saved decks:', error);
+      logger.error('Error loading saved decks:', { error });
     } finally {
       setLoading(false);
     }
@@ -48,7 +49,7 @@ export default function SavedDecks() {
       setSavedDecks(updatedDecks);
       setShowDeleteConfirm(null);
     } catch (error) {
-      console.error('Error deleting deck:', error);
+      logger.error('Error deleting deck:', { error });
       alert('Failed to delete deck');
     }
   };
@@ -67,7 +68,7 @@ export default function SavedDecks() {
       localStorage.setItem('pocketDecks', JSON.stringify(updatedDecks));
       setSavedDecks(updatedDecks);
     } catch (error) {
-      console.error('Error duplicating deck:', error);
+      logger.error('Error duplicating deck:', { error });
       alert('Failed to duplicate deck');
     }
   };
@@ -191,7 +192,7 @@ export default function SavedDecks() {
           </RevealElement>
         ) : (
           /* Decks Grid */
-          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          (<StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {savedDecks.map((deck, index) => (
               <StaggerItem key={deck.id}>
                 <HoverCard scale={1.02} y={-6}>
@@ -319,7 +320,7 @@ export default function SavedDecks() {
                 </HoverCard>
               </StaggerItem>
             ))}
-          </StaggerContainer>
+          </StaggerContainer>)
         )}
 
         {/* Deck Details Modal */}

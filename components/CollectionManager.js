@@ -46,7 +46,7 @@ export default function CollectionManager({ userId = null }) {
         setSelectedCollection(data[0]);
       }
     } catch (error) {
-      console.error('Error loading collections:', error);
+      // Error loading collections
     } finally {
       setLoading(false);
     }
@@ -112,7 +112,7 @@ export default function CollectionManager({ userId = null }) {
       setSelectedCollection(data);
       setShowCreateModal(false);
     } catch (error) {
-      console.error('Error creating collection:', error);
+      // Error creating collection
     }
   };
 
@@ -160,7 +160,7 @@ export default function CollectionManager({ userId = null }) {
       setSearchQuery('');
       setSearchResults([]);
     } catch (error) {
-      console.error('Error adding card to collection:', error);
+      // Error adding card to collection
     }
   };
 
@@ -183,7 +183,7 @@ export default function CollectionManager({ userId = null }) {
       setSelectedCollection(data);
       setCollections(prev => prev.map(c => c.id === data.id ? data : c));
     } catch (error) {
-      console.error('Error removing card from collection:', error);
+      // Error removing card from collection
     }
   };
 
@@ -212,7 +212,7 @@ export default function CollectionManager({ userId = null }) {
 
       setSearchResults(mockResults);
     } catch (error) {
-      console.error('Error searching cards:', error);
+      // Error searching cards
     }
   };
 
@@ -260,7 +260,6 @@ export default function CollectionManager({ userId = null }) {
           New Collection
         </button>
       </div>
-
       {/* Collection Selector */}
       {collections.length > 0 && (
         <div className="flex flex-wrap gap-2">
@@ -279,7 +278,6 @@ export default function CollectionManager({ userId = null }) {
           ))}
         </div>
       )}
-
       {selectedCollection ? (
         <>
           {/* Collection Stats */}
@@ -340,7 +338,10 @@ export default function CollectionManager({ userId = null }) {
                           />
                         )}
                         <div className="flex-1 min-w-0">
-                          <Link href={`/cards/${card.card_id}`} className="text-sm font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 block truncate">
+                          <Link
+                            href={`/cards/${card.card_id}`}
+                            className="text-sm font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 block truncate">
+                            
                             {card.card_name}
                           </Link>
                           <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
@@ -406,7 +407,6 @@ export default function CollectionManager({ userId = null }) {
           </button>
         </div>
       )}
-
       {/* Create Collection Modal */}
       <Modal isOpen={showCreateModal} onClose={() => setShowCreateModal(false)}>
         <CreateCollectionForm 
@@ -414,7 +414,6 @@ export default function CollectionManager({ userId = null }) {
           onCancel={() => setShowCreateModal(false)}
         />
       </Modal>
-
       {/* Add Card Modal */}
       <Modal isOpen={showAddCardModal} onClose={() => setShowAddCardModal(false)}>
         <AddCardForm

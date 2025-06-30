@@ -33,7 +33,6 @@ export default function PocketDeckViewer({ deck }) {
         </div>
         <p className="text-gray-600 dark:text-gray-400">{deck.description}</p>
       </div>
-
       {/* Key cards */}
       <div className="p-4">
         <h4 className="text-base font-medium mb-3">Key Cards</h4>
@@ -42,8 +41,8 @@ export default function PocketDeckViewer({ deck }) {
             <Link
               href={`/pocketmode/${card.id}`}
               key={card.id}
-              className="flex-shrink-0 relative group transform transition-all hover:scale-105"
-            >
+              className="flex-shrink-0 relative group transform transition-all hover:scale-105">
+              
               <div className="w-20 h-28 relative">
                 <Image
                   src={card.image || "/back-card.png"}
@@ -51,7 +50,7 @@ export default function PocketDeckViewer({ deck }) {
                   width={80}
                   height={112}
                   layout="responsive"
-                  className="rounded-md shadow-sm"
+                  className="rounded-md shadow-sm">
                   onError={(e) => {
                     e.currentTarget.src = "/back-card.png";
                   }}
@@ -70,7 +69,7 @@ export default function PocketDeckViewer({ deck }) {
         {/* Expand/collapse section */}
         <button
           onClick={() => setExpanded(!expanded)}
-          className="w-full py-2 text-sm text-gray-500 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
+          className="w-full py-2 text-sm text-gray-500 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors">
         >
           <span className="mr-1">{expanded ? "Hide" : "Show"} Details</span>
           <svg

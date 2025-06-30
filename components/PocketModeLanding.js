@@ -83,7 +83,7 @@ export default function PocketModeLanding() {
         {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           {features.map((feature, index) => (
-            <Link key={index} href={feature.href}>
+            <Link key={index} href={feature.href} 
               <div className="group bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer relative overflow-hidden">
                 {/* Badge */}
                 <div className="absolute top-4 right-4 bg-gradient-to-r from-purple-500 to-blue-500 text-white text-xs px-2 py-1 rounded-full font-medium">
@@ -166,12 +166,12 @@ export default function PocketModeLanding() {
           </div>
           
           <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/pocketmode/decks">
+            <Link href="/pocketmode/decks" 
               <button className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:scale-105">
                 View Top Decks
               </button>
             </Link>
-            <Link href="/pocketmode/deckbuilder">
+            <Link href="/pocketmode/deckbuilder" 
               <button className="bg-white text-purple-600 hover:bg-gray-100 px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:scale-105">
                 Build Your Own
               </button>
@@ -189,7 +189,7 @@ export default function PocketModeLanding() {
             and discover rare cards from different expansions.
           </p>
           
-          <Link href="/pocketmode/expansions">
+          <Link href="/pocketmode/expansions" 
             <button className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
               🎲 Open Booster Packs
             </button>

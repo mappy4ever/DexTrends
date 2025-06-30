@@ -1,5 +1,6 @@
 // components/ErrorBoundary.js
 import React from 'react';
+import { reportError } from '../../utils/logger';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -13,9 +14,10 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    // You can also log the error to an error reporting service
-    console.error("Uncaught error:", error, errorInfo);
+    // Log error using production-safe logger
+    reportError(error, { errorInfo, componentStack: errorInfo.componentStack });
     this.setState({ errorInfo });
+    // In production, you would send this to an error reporting service
     // Example: logErrorToMyService(error, errorInfo);
   }
 

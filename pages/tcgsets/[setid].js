@@ -10,15 +10,15 @@ import PriceHistoryChart from "../../components/ui/PriceHistoryChart"; // Update
 import { useTheme } from "../../context/themecontext";
 import { useFavorites } from "../../context/favoritescontext";
 import { useViewSettings } from "../../context/viewsettingscontext";
+import { SetLoadingScreen } from "../../components/ui/UnifiedLoadingScreen";
+import logger from "../../utils/logger";
 
 const pokemonKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
-if (!pokemonKey) {
-  throw new Error(
-    "NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY environment variable is not set. Please set it to your .env.local."
-  );
-}
 
-pokemon.configure({ apiKey: pokemonKey });
+// Configure SDK only if key is available, but don't throw error
+if (pokemonKey) {
+  pokemon.configure({ apiKey: pokemonKey });
+}
 
 export default function SetIdPage() {
   const router = useRouter();
@@ -63,13 +63,13 @@ export default function SetIdPage() {
     
     Promise.all([
       pokemon.set.find(setid).catch(err => { // Changed to setid
-        console.error("Error fetching set info:", err);
+        logger.error("Error fetching set info:", { error: err });
         setError("Failed to load set information");
         return null;
       }),
       
       pokemon.card.where({ q: `set.id:${setid}` }).catch(err => { // Changed to setid
-        console.error("Error fetching cards:", err);
+        logger.error("Error fetching cards:", { error: err });
         setError("Failed to load cards for this set");
         return { data: [] };
       })
@@ -135,7 +135,7 @@ export default function SetIdPage() {
         highestValueCards: topCards
       });
     } catch (err) {
-      console.error("Error calculating statistics:", err);
+      logger.error("Error calculating statistics:", { error: err });
     }
   };
 
@@ -274,14 +274,10 @@ export default function SetIdPage() {
   // Loading state
   if (loading) {
     return (
-      <div className="container section-spacing-y-default max-w-6xl mx-auto flex items-center justify-center min-h-[50vh]">
-        <div className="text-center">
-          <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-current border-r-transparent" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
-          <p className="mt-4 text-lg">Loading set information...</p>
-        </div>
-      </div>
+      <SetLoadingScreen 
+        message="Loading set information..."
+        preventFlash={true}
+      />
     );
   }
 

@@ -22,7 +22,6 @@ export async function fetchPokemonWithCache(pokemonId) {
     
     return pokemonData;
   } catch (error) {
-    console.error(`Error fetching Pokemon ${pokemonId}:`, error);
     throw error;
   }
 }
@@ -47,7 +46,6 @@ export async function fetchPokemonSpeciesWithCache(pokemonId) {
     
     return speciesData;
   } catch (error) {
-    console.error(`Error fetching Pokemon species ${pokemonId}:`, error);
     throw error;
   }
 }
@@ -73,7 +71,6 @@ export async function fetchPokemonListWithCache(limit = 1000, offset = 0) {
     
     return listData;
   } catch (error) {
-    console.error('Error fetching Pokemon list:', error);
     throw error;
   }
 }
@@ -98,7 +95,6 @@ export async function fetchPokemonCardWithCache(cardId) {
     
     return cardData;
   } catch (error) {
-    console.error(`Error fetching Pokemon card ${cardId}:`, error);
     throw error;
   }
 }
@@ -132,7 +128,6 @@ export async function searchPokemonCardsWithCache(query, filters = {}) {
     
     return searchData;
   } catch (error) {
-    console.error('Error searching Pokemon cards:', error);
     throw error;
   }
 }
@@ -141,9 +136,9 @@ export async function searchPokemonCardsWithCache(query, filters = {}) {
 export async function cleanupPokemonCache() {
   try {
     await SupabaseCache.cleanupExpiredCache();
-    console.log('Pokemon cache cleanup completed');
+    // Pokemon cache cleanup completed
   } catch (error) {
-    console.error('Error cleaning up Pokemon cache:', error);
+    // Error cleaning up Pokemon cache
   }
 }
 
@@ -158,12 +153,11 @@ export async function fetchMultiplePokemonWithCache(pokemonIds) {
       if (result.status === 'fulfilled') {
         return result.value;
       } else {
-        console.error(`Failed to fetch Pokemon ${pokemonIds[index]}:`, result.reason);
+        // Failed to fetch Pokemon, returning null
         return null;
       }
     }).filter(Boolean); // Remove null values
   } catch (error) {
-    console.error('Error in batch Pokemon fetch:', error);
     return [];
   }
 }
@@ -176,12 +170,10 @@ export async function precachePopularPokemon() {
     255, 258, 261, 302, 380, 381, 384, // Gen 3 favorites
   ];
   
-  console.log('Pre-caching popular Pokemon...');
-  
   try {
     await fetchMultiplePokemonWithCache(popularPokemonIds);
-    console.log('Popular Pokemon pre-cached successfully');
+    // Popular Pokemon pre-cached successfully
   } catch (error) {
-    console.error('Error pre-caching popular Pokemon:', error);
+    // Error pre-caching popular Pokemon
   }
 }

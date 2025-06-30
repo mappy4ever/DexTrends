@@ -1,33 +1,45 @@
-import { useEffect } from "react";
-import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
+import Head from "next/head";
+import { useRouter } from "next/router";
 import "../styles/globals.css";
+import "../styles/mobile.css";
+import "../styles/pokemon-animations.css";
 import "../styles/design-system.css";
-import "react-datepicker/dist/react-datepicker.css";
+import "../components/typebadge.css";
 import Layout from "../components/layout/layout";
 import ErrorBoundary from "../components/layout/errorboundary";
-import "../components/cardfeatures.css";
-import "../components/typebadge.css";
-
-// Dynamic imports for framer-motion to reduce initial bundle size
-const AnimatePresence = dynamic(
-  () => import("framer-motion").then((mod) => ({ default: mod.AnimatePresence })),
-  { ssr: false }
-);
-
-const MotionDiv = dynamic(
-  () => import("framer-motion").then((mod) => ({ default: mod.motion.div })),
-  { 
-    ssr: false,
-    loading: () => <div className="min-h-screen" /> // Fallback while loading
-  }
-);
 
 import { ThemeProvider } from '../context/themecontext';
 import { FavoritesProvider } from '../context/favoritescontext';
 import { ViewSettingsProvider } from '../context/viewsettingscontext';
 import { ModalProvider } from '../context/modalcontext';
 import { SortingProvider } from '../context/sortingcontext';
-import GlobalModal from '../components/GlobalModal'; // Updated path
+
+// Enhanced dynamic imports with comprehensive loading
+import dynamic from 'next/dynamic';
+import { initializeFeatureFlags, isFeatureEnabled } from '../utils/featureFlags';
+
+// Safe components - only load confirmed existing ones
+const SimpleBackToTop = dynamic(() => import('../components/ui/SimpleBackToTop'), {
+  ssr: false,
+  loading: () => null
+});
+
+// Core UX components that should be safe
+const AccessibilityProvider = dynamic(() => import('../components/ui/AccessibilityProvider'), {
+  ssr: false,
+  loading: () => null
+});
+
+const UnifiedLoadingScreen = dynamic(() => import('../components/ui/UnifiedLoadingScreen'), {
+  ssr: false,
+  loading: () => null
+});
+
+const PokemonLoadingScreen = dynamic(() => import('../components/ui/PokemonLoadingScreen'), {
+  ssr: false,
+  loading: () => null
+});
 
 // Simple throttle function
 const throttle = (func, limit) => {
@@ -44,100 +56,57 @@ const throttle = (func, limit) => {
 };
 
 function MyApp({ Component, pageProps, router }) {
+  const nextRouter = useRouter();
+  const [isClient, setIsClient] = useState(false);
+  const [featuresEnabled, setFeaturesEnabled] = useState({});
+  
+  // EMERGENCY: Minimal initialization only
   useEffect(() => {
-    const handleScroll = () => {
-      const headings = document.querySelectorAll(".parallax-heading"); // Class used for JS targeting
-      headings.forEach((heading) => {
-        const rect = heading.getBoundingClientRect();
-        // Check if element is in viewport or close to it
-        if (rect.bottom >= -window.innerHeight && rect.top <= 2 * window.innerHeight) { // Expanded check
-          const scrollAmount = Math.max(0, (window.innerHeight - rect.top) * 0.08);
-          // Apply transform and opacity directly for parallax effect
-          // Tailwind classes for this dynamic effect are less suitable here due to per-pixel updates
-          heading.style.transform = `translateY(${scrollAmount}px)`;
-          heading.style.opacity = Math.max(0, 1 - scrollAmount * 0.015).toString();
-        }
-      });
-    };
-
-    const throttledScrollHandler = throttle(handleScroll, 50); // Reduced throttle time for smoother parallax
-
-    window.addEventListener("scroll", throttledScrollHandler);
-    
-    // Load our navigation fix as early as possible to ensure all clicks are properly handled
-    const loadNavigationFix = () => {
-      console.log('Loading navigation fix script from _app.js');
-      
-      // Check if script already exists
-      if (document.querySelector('script[src="/js/fix-navigation.js"]')) {
-        console.log('Fix script already loaded, skipping');
-        return;
-      }
-      
-      // Create and load the script
-      const script = document.createElement('script');
-      script.src = '/js/fix-navigation.js';
-      script.async = true;
-      script.id = 'navigation-fix-script';
-      script.onload = () => console.log('Navigation fix script loaded successfully');
-      script.onerror = (e) => console.error('Error loading navigation fix script:', e);
-      
-      // Append to head for earlier execution
-      document.head.appendChild(script);
-    };
-    
-    // Load right away
-    loadNavigationFix();
-    
-    // Also run on route changes in Next.js to ensure script runs
-    // after client-side navigations
-    router.events.on('routeChangeComplete', loadNavigationFix);
-    
-    return () => {
-      window.removeEventListener("scroll", throttledScrollHandler);
-      router.events.off('routeChangeComplete', loadNavigationFix);
-      
-      // No need to clean up the script as it should persist across pages
-    };
-  }, [router.events]);
+    setIsClient(true);
+  }, []);
 
   return (
     <ErrorBoundary>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
+        <meta name="theme-color" content="#dc2626" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="format-detection" content="telephone=no" />
+        <link rel="preconnect" href="https://pokeapi.co" />
+        <link rel="preconnect" href="https://api.pokemontcg.io" />
+        <link rel="dns-prefetch" href="https://images.pokemontcg.io" />
+        <link rel="prefetch" href="/back-card.png" />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/icon-192x192.png" />
+        <meta name="description" content="Discover, track, and explore Pokémon TCG card prices and trends in a beautiful Pokédex-inspired experience." />
+        <meta name="keywords" content="Pokemon, TCG, cards, prices, trends, pokedex, collection, trading cards" />
+      </Head>
+      
+      {/* AccessibilityProvider disabled to stop refresh */}
+      
       <ThemeProvider>
         <FavoritesProvider>
           <ViewSettingsProvider>
             <SortingProvider>
               <ModalProvider>
-                  <Layout>
-                    <AnimatePresence mode="wait" initial={false}>
-                      <MotionDiv
-                        key={router.route}
-                        initial={{ opacity: 0, y: 24 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -24 }}
-                        transition={{ duration: 0.35, ease: "easeInOut" }}
-                        className="min-h-screen"
-                      >
-                        <Component {...pageProps} />
-                      </MotionDiv>
-                    </AnimatePresence>
-                    <GlobalModal />
-                  </Layout>
-                </ModalProvider>
-              </SortingProvider>
-            </ViewSettingsProvider>
-          </FavoritesProvider>
-        </ThemeProvider>
+                
+                <Layout>
+                  <Component {...pageProps} />
+                  
+                  {/* EMERGENCY: All enhancements disabled to stop refresh loop */}
+                </Layout>
+              </ModalProvider>
+            </SortingProvider>
+          </ViewSettingsProvider>
+        </FavoritesProvider>
+      </ThemeProvider>
     </ErrorBoundary>
   );
 }
 
 
-MyApp.getInitialProps = async (appContext) => {
-  const pageProps = appContext.Component.getInitialProps
-    ? await appContext.Component.getInitialProps(appContext.ctx)
-    : {};
-  return { pageProps };
-};
+// Removed getInitialProps to prevent refresh loops and improve performance
 
 export default MyApp;

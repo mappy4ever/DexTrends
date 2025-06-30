@@ -4,24 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { fetchData } from "../utils/apiutils";
-import { FadeIn, SlideUp } from "../components/ui/animations";
 import { TypeBadge } from "../components/ui/TypeBadge";
 import { getGeneration } from "../utils/pokemonutils";
-import { 
-  GlassCard, 
-  PremiumButton, 
-  PremiumInput, 
-  PremiumProgress,
-  PremiumBadge 
-} from "../components/ui/PremiumComponents";
-import { 
-  PageTransition, 
-  StaggerContainer, 
-  StaggerItem, 
-  HoverCard,
-  RevealElement 
-} from "../components/ui/AnimationSystem";
-import SidebarLayout from "../components/layout/SidebarLayout";
 
 export default function PokedexIndex() {
   const router = useRouter();
@@ -154,7 +138,7 @@ export default function PokedexIndex() {
                 }
               })
               .catch(err => {
-                console.error(`Error fetching pokemon ${i}:`, err);
+                // Error fetching pokemon
                 return {
                   id: i,
                   name: `pokemon-${i}`,
@@ -174,7 +158,7 @@ export default function PokedexIndex() {
         }
         return Promise.all(promises);
       } catch (err) {
-        console.error("Batch fetch error:", err);
+        // Batch fetch error
         return [];
       }
     };
@@ -372,50 +356,62 @@ export default function PokedexIndex() {
 
   if (loading) {
     return (
-      <PageTransition>
-        <div className="container max-w-6xl mx-auto py-12 text-center min-h-screen flex items-center justify-center">
-          <Head>
-            <title>Pokédex | DexTrends</title>
-          </Head>
-          <div className="max-w-md mx-auto p-6 bg-white border border-border-color rounded-lg shadow-sm">
-            <div className="space-y-6">
-              <div className="text-center">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-pokemon-red flex items-center justify-center">
-                  <div className="loading-spinner-lg" style={{borderColor: 'rgba(255,255,255,0.3)', borderTopColor: 'white'}}></div>
+      <>
+        <Head>
+          <title>Pokédex | DexTrends</title>
+        </Head>
+        <div className="min-h-screen bg-gradient-to-br from-red-50 to-blue-50 flex items-center justify-center">
+          <div className="text-center">
+            <div className="relative">
+              {/* Pokeball animation */}
+              <div className="w-24 h-24 mx-auto mb-6 relative">
+                <div className="w-24 h-24 border-8 border-gray-200 rounded-full animate-spin">
+                  <div className="absolute top-0 left-0 w-full h-1/2 bg-red-500 rounded-t-full"></div>
+                  <div className="absolute bottom-0 left-0 w-full h-1/2 bg-white rounded-b-full border-t-4 border-gray-800"></div>
+                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-white border-4 border-gray-800 rounded-full"></div>
                 </div>
               </div>
               
-              <div className="text-center space-y-2">
-                <h3 className="text-xl font-semibold text-dark-text">
-                  Loading Pokédex
-                </h3>
-                <p className="text-text-grey">
-                  Gathering all Pokémon data for comprehensive search...
-                </p>
-              </div>
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">Loading Pokédex...</h2>
+              <p className="text-gray-600 mb-4">
+                Gathering Pokemon data from all regions
+              </p>
               
-              <div className="w-full bg-light-grey rounded-full h-2">
-                <div 
-                  className="bg-pokemon-red h-2 rounded-full transition-all duration-300" 
-                  style={{width: `${loadingProgress}%`}}
-                ></div>
-              </div>
-              
-              <div className="text-center">
-                <div className="flex justify-between text-sm mb-1">
-                  <span className="text-text-grey">Progress</span>
-                  <span className="font-mono text-pokemon-red font-medium">
-                    {Math.round(loadingProgress * 10.1)}/1010
-                  </span>
+              {/* Progress bar */}
+              {loadingProgress > 0 && (
+                <div className="max-w-xs mx-auto">
+                  <div className="flex justify-between text-sm text-gray-600 mb-2">
+                    <span>Progress</span>
+                    <span>{loadingProgress}%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-3">
+                    <div 
+                      className="bg-gradient-to-r from-red-500 to-blue-500 h-3 rounded-full transition-all duration-300"
+                      style={{ width: `${loadingProgress}%` }}
+                    ></div>
+                  </div>
+                  <p className="text-sm text-gray-500 mt-2">
+                    Loading Pokemon {Math.ceil((loadingProgress / 100) * 1010)} of 1010
+                  </p>
                 </div>
-                <span className="inline-block bg-light-grey text-dark-text text-xs px-2 py-1 rounded">
-                  {loadingProgress}% Complete
-                </span>
+              )}
+              
+              {/* Fun facts */}
+              <div className="mt-8 max-w-md mx-auto">
+                <div className="bg-white/80 backdrop-blur rounded-lg p-4">
+                  <h3 className="font-semibold text-gray-700 mb-2">Did you know?</h3>
+                  <p className="text-sm text-gray-600">
+                    {loadingProgress < 25 && "There are over 1,000 different Pokémon species across all generations!"}
+                    {loadingProgress >= 25 && loadingProgress < 50 && "The first Pokémon games were released in 1996 in Japan."}
+                    {loadingProgress >= 50 && loadingProgress < 75 && "Pikachu wasn't originally planned to be the franchise mascot!"}
+                    {loadingProgress >= 75 && "Each Pokémon has unique stats, types, and abilities that make them special."}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </PageTransition>
+      </>
     );
   }
 
@@ -501,192 +497,274 @@ export default function PokedexIndex() {
   };
 
   return (
-    <PageTransition>
+    <div>
       <Head>
         <title>Pokédex | DexTrends</title>
         <meta name="description" content="Complete Pokédex with detailed information about all Pokémon" />
       </Head>
 
-      <SidebarLayout
-        sidebarFilters={sidebarFilters}
-        onFilterChange={handleSidebarFilterChange}
-        sidebarContent={
-          <div className="mt-6 space-y-4">
-            <div className="bg-blue-500 p-4 rounded-lg text-white text-center">
-              <h4 className="font-semibold mb-2">Quick Search</h4>
-              <button
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl md:text-5xl font-bold text-pokemon-red mb-4">
+            Pokédex
+          </h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-6">
+            Discover detailed information about all Pokémon species, including stats, types, and evolutions.
+          </p>
+          <div className="flex items-center justify-center gap-2 mb-6">
+            <span className="inline-block bg-gray-100 text-gray-800 text-sm px-3 py-1 rounded-full">
+              Advanced Search
+            </span>
+            <span className="inline-block bg-gray-100 text-gray-800 text-sm px-3 py-1 rounded-full">
+              Complete Data
+            </span>
+            <span className="inline-block bg-gray-100 text-gray-800 text-sm px-3 py-1 rounded-full">
+              Real-time Filtering
+            </span>
+          </div>
+        </div>
+
+        {/* Advanced Filters Panel */}
+        <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            
+            {/* Search */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Search Pokémon</label>
+              <input
+                type="text"
+                placeholder="Search by name..."
+                value={pendingSearchTerm}
+                onChange={(e) => setPendingSearchTerm(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-pokemon-red focus:border-transparent"
+              />
+            </div>
+
+            {/* Generation */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Generation</label>
+              <select
+                value={pendingGeneration}
+                onChange={(e) => setPendingGeneration(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-pokemon-red focus:border-transparent"
+              >
+                <option value="">All Generations</option>
+                {generations.map(gen => (
+                  <option key={gen.value} value={gen.value}>{gen.label}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Sort By */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Sort By</label>
+              <select
+                value={pendingSortBy}
+                onChange={(e) => setPendingSortBy(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-pokemon-red focus:border-transparent"
+              >
+                {sortOptions.map(option => (
+                  <option key={option.value} value={option.value}>{option.label}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Search & Clear Buttons */}
+            <div className="flex items-end gap-2">
+              <button 
                 onClick={handleSearch}
-                className="w-full px-4 py-2 bg-white/20 rounded-lg text-white font-semibold hover:bg-white/30 transition-all duration-300"
+                className="flex-1 px-4 py-2 bg-pokemon-red text-white rounded-md hover:bg-red-600 transition-colors"
               >
                 Apply Filters
               </button>
-            </div>
-            <div className="bg-white border border-border-color p-4 rounded-lg text-center">
-              <p className="text-sm text-dark-text mb-2">
-                Showing {sortedAndVisiblePokemon.length} of {filteredPokemon.length}
-              </p>
-              <p className="text-xs text-text-grey">
-                Total: {allPokemon.length}/1010
-              </p>
-            </div>
-          </div>
-        }
-      >
-        <div className="space-y-8">
-          <div className="text-center">
-            <div className="space-y-4 mb-8">
-              <h1 className="text-4xl md:text-5xl font-bold text-pokemon-red">
-                Pokédex
-              </h1>
-              <p className="text-lg text-text-grey max-w-2xl mx-auto">
-                Discover detailed information about all Pokémon species, including stats, types, and evolutions.
-              </p>
-              <div className="flex items-center justify-center gap-2">
-                <span className="inline-block bg-light-grey text-dark-text text-sm px-3 py-1 rounded-full">
-                  Advanced Search
-                </span>
-                <span className="inline-block bg-light-grey text-dark-text text-sm px-3 py-1 rounded-full">
-                  Complete Data
-                </span>
-                <span className="inline-block bg-light-grey text-dark-text text-sm px-3 py-1 rounded-full">
-                  Real-time Filtering
-                </span>
-              </div>
+              <button 
+                onClick={clearAllFilters}
+                className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition-colors"
+              >
+                Clear
+              </button>
             </div>
           </div>
 
-          {/* Results count and stats */}
-          <div className="text-center mb-6">
-            <div className="bg-white border border-border-color p-4 rounded-lg">
-              <div className="text-lg font-semibold text-pokemon-red mb-2">
-                Showing {sortedAndVisiblePokemon.length} of {filteredPokemon.length} Pokémon
-              </div>
-              <div className="text-sm text-text-grey">
-                Total Loaded: {allPokemon.length}/1010
-              </div>
-              {(pendingTypes.length > 0 || selectedType || selectedGeneration || pendingCategories.length > 0 || selectedCategory || pendingStages.length > 0 || selectedStage || searchTerm) && (
-                <div className="text-sm mt-1 text-pokemon-blue">
-                  {filteredPokemon.length} match your active filters
-                </div>
-              )}
-              {visibleCount < filteredPokemon.length && (
-                <div className="text-sm text-pokemon-yellow mt-2">
-                  ↓ Scroll down to load more...
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Enhanced Pokemon Grid - More Vertical Cards */}
-          <StaggerContainer className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mb-8" staggerDelay={0.05}>
-            {sortedAndVisiblePokemon.map((poke, index) => (
-              <StaggerItem key={poke.id}>
-                <div 
-                  onClick={() => handlePokemonClick(poke.id)}
-                  className="group cursor-pointer bg-neutral-100 dark:bg-neutral-900 border border-border-color rounded-lg shadow-sm card-holographic hover:shadow-lg transition-all duration-300 hover:-translate-y-1 min-h-[200px] flex flex-col relative overflow-hidden"
+          {/* Type Filters */}
+          <div className="mt-6">
+            <label className="block text-sm font-medium text-gray-700 mb-3">Types (click to toggle)</label>
+            <div className="flex flex-wrap gap-2">
+              {pokemonTypes.map(type => (
+                <button
+                  key={type}
+                  onClick={() => toggleType(type)}
+                  className={`px-3 py-1 rounded-full text-sm font-medium transition-all ${
+                    pendingTypes.includes(type)
+                      ? 'ring-2 ring-pokemon-red ring-offset-1'
+                      : 'opacity-70 hover:opacity-100'
+                  }`}
                 >
-                    {/* Large watermark Pokédex number */}
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <span className="text-gray-200 dark:text-gray-700 text-6xl font-bold opacity-30 select-none">
-                        #{String(poke.id).padStart(3, "0")}
-                      </span>
-                    </div>
-                    
-                    <div className="flex-1 flex flex-col text-center p-3 relative z-10">
-                      {/* Larger, more vertical image container with consistent background */}
-                      <div className="relative w-24 h-24 sm:w-28 sm:h-28 mx-auto mb-3 bg-neutral-100 dark:bg-neutral-900 rounded-xl p-3 overflow-hidden">
-                        <Image
-                          src={poke.sprite || "/dextrendslogo.png"}
-                          alt={poke.name}
-                          fill
-                          className="object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-sm"
-                          loading="lazy"
-                          placeholder="blur"
-                          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Eve6J4HNvbzTe7+v1+8BvxRf4X3/f/9k="
-                          sizes="(max-width: 640px) 96px, 112px"
-                        />
-                        {/* Subtle glow effect for legendary/mythical */}
-                        {(poke.isLegendary || poke.isMythical) && (
-                          <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-purple-400/20 rounded-xl"></div>
-                        )}
-                      </div>
-                      
-                      {/* Pokemon number */}
-                      <p className="text-xs text-text-grey mb-1 font-mono">
-                        #{String(poke.id).padStart(3, "0")}
-                      </p>
-                      
-                      {/* Pokemon name with better typography using Montserrat */}
-                      <h3 className="font-pokemon font-black text-base sm:text-lg capitalize text-dark-text dark:text-white mb-3 group-hover:text-pokemon-red transition-colors line-clamp-1">
-                        {poke.name.replace("-", " ")}
-                      </h3>
-                      
-                      {/* Types with better spacing */}
-                      <div className="flex justify-center gap-1 mb-2">
-                        {poke.types.map(type => (
-                          <TypeBadge key={type} type={type} size="sm" />
-                        ))}
-                      </div>
-
-                      {/* Special indicators for legendary/mythical */}
-                      {(poke.isLegendary || poke.isMythical || poke.isUltraBeast) && (
-                        <div className="flex justify-center">
-                          {poke.isLegendary && (
-                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-800 border border-yellow-300">
-                              ⭐ Legendary
-                            </span>
-                          )}
-                          {poke.isMythical && (
-                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-800 border border-purple-300">
-                              ✨ Mythical
-                            </span>
-                          )}
-                          {poke.isUltraBeast && (
-                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-indigo-100 text-indigo-800 border border-indigo-300">
-                              🌌 Ultra Beast
-                            </span>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                </div>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-
-          {/* Loading indicator for infinite scroll */}
-          {isLoadingMore && (
-            <div className="flex justify-center py-8">
-              <div className="flex items-center gap-3 text-text-grey">
-                <div className="loading-spinner-sm"></div>
-                <span>Loading more Pokémon...</span>
-              </div>
+                  <TypeBadge type={type} size="sm" />
+                </button>
+              ))}
             </div>
-          )}
-          
-          {/* No results message */}
-          {filteredPokemon.length === 0 && !loading && (
-            <div className="text-center py-12">
-              <div className="max-w-md mx-auto bg-white border border-border-color rounded-lg p-6">
-                <div className="space-y-4">
-                  <h3 className="text-xl font-semibold text-dark-text">
-                    No Pokémon Found
-                  </h3>
-                  <p className="text-text-grey">
-                    No Pokémon match your current search criteria. Try adjusting your filters.
-                  </p>
-                  <button 
-                    onClick={clearAllFilters} 
-                    className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700 transition-colors"
-                  >
-                    Clear All Filters
-                  </button>
-                </div>
-              </div>
+          </div>
+
+          {/* Categories */}
+          <div className="mt-6">
+            <label className="block text-sm font-medium text-gray-700 mb-3">Categories</label>
+            <div className="flex flex-wrap gap-2">
+              {categories.map(category => (
+                <button
+                  key={category.value}
+                  onClick={() => toggleCategory(category.value)}
+                  className={`px-3 py-2 rounded-md text-sm font-medium border transition-all ${
+                    pendingCategories.includes(category.value)
+                      ? 'bg-pokemon-red text-white border-pokemon-red'
+                      : 'bg-white text-gray-700 border-gray-300 hover:border-pokemon-red'
+                  }`}
+                >
+                  {category.label}
+                </button>
+              ))}
             </div>
-          )}
+          </div>
+
+          {/* Evolution Stages */}
+          <div className="mt-6">
+            <label className="block text-sm font-medium text-gray-700 mb-3">Evolution Stages</label>
+            <div className="flex flex-wrap gap-2">
+              {stages.map(stage => (
+                <button
+                  key={stage.value}
+                  onClick={() => toggleStage(stage.value)}
+                  className={`px-3 py-2 rounded-md text-sm font-medium border transition-all ${
+                    pendingStages.includes(stage.value)
+                      ? 'bg-blue-500 text-white border-blue-500'
+                      : 'bg-white text-gray-700 border-gray-300 hover:border-blue-500'
+                  }`}
+                >
+                  {stage.label}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
-      </SidebarLayout>
-    </PageTransition>
+
+        {/* Results count and stats */}
+        <div className="text-center mb-6">
+          <div className="bg-white border border-gray-200 p-4 rounded-lg">
+            <div className="text-lg font-semibold text-pokemon-red mb-2">
+              Showing {sortedAndVisiblePokemon.length} of {filteredPokemon.length} Pokémon
+            </div>
+            <div className="text-sm text-gray-600">
+              Total Loaded: {allPokemon.length}/1010
+            </div>
+            {(pendingTypes.length > 0 || selectedType || selectedGeneration || pendingCategories.length > 0 || selectedCategory || pendingStages.length > 0 || selectedStage || searchTerm) && (
+              <div className="text-sm mt-1 text-blue-600">
+                {filteredPokemon.length} match your active filters
+              </div>
+            )}
+            {visibleCount < filteredPokemon.length && (
+              <div className="text-sm text-yellow-600 mt-2">
+                ↓ Scroll down to load more...
+              </div>
+            )}
+            {loadingProgress > 0 && loadingProgress < 100 && (
+              <div className="text-sm text-blue-600 mt-2">
+                Loading progress: {loadingProgress}%
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Pokemon Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mb-8">
+          {sortedAndVisiblePokemon.map((poke) => (
+            <div 
+              key={poke.id}
+              onClick={() => handlePokemonClick(poke.id)}
+              className="group cursor-pointer bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 min-h-[200px] flex flex-col relative overflow-hidden"
+            >
+              {/* Pokemon number */}
+              <div className="absolute top-2 right-2 z-20">
+                <span className="text-sm font-mono font-bold text-gray-500">
+                  #{String(poke.id).padStart(3, "0")}
+                </span>
+              </div>
+              
+              <div className="flex-1 flex flex-col text-center p-3 relative z-10">
+                {/* Pokemon image */}
+                <div className="relative w-24 h-24 sm:w-28 sm:h-28 mx-auto mb-3 bg-gray-50 rounded-xl p-3 overflow-hidden">
+                  <Image
+                    src={poke.sprite || "/dextrendslogo.png"}
+                    alt={poke.name}
+                    fill
+                    className="object-contain group-hover:scale-110 transition-transform duration-300"
+                    loading="lazy"
+                    sizes="(max-width: 640px) 96px, 112px"
+                  />
+                  {/* Glow effect for special Pokemon */}
+                  {(poke.isLegendary || poke.isMythical) && (
+                    <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-purple-400/20 rounded-xl"></div>
+                  )}
+                </div>
+                
+                {/* Pokemon name */}
+                <h3 className="font-bold text-base sm:text-lg capitalize text-gray-800 mb-3 group-hover:text-pokemon-red transition-colors">
+                  {poke.name.replace("-", " ")}
+                </h3>
+                
+                {/* Types */}
+                <div className="flex justify-center gap-1 mb-2">
+                  {poke.types.map(type => (
+                    <TypeBadge key={type} type={type} size="sm" />
+                  ))}
+                </div>
+
+                {/* Special indicators */}
+                {(poke.isLegendary || poke.isMythical || poke.isUltraBeast) && (
+                  <div className="flex justify-center">
+                    {poke.isLegendary && (
+                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-800 border border-yellow-300">
+                        ⭐ Legendary
+                      </span>
+                    )}
+                    {poke.isMythical && (
+                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-800 border border-purple-300">
+                        ✨ Mythical
+                      </span>
+                    )}
+                    {poke.isUltraBeast && (
+                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-indigo-100 text-indigo-800 border border-indigo-300">
+                        🌌 Ultra Beast
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Loading indicator for infinite scroll */}
+        {isLoadingMore && (
+          <div className="flex justify-center py-8">
+            <div className="flex items-center gap-3 text-gray-600">
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-pokemon-red"></div>
+              <span>Loading more Pokémon...</span>
+            </div>
+          </div>
+        )}
+        
+        {/* Empty state */}
+        {filteredPokemon.length === 0 && !loading && (
+          <div className="text-center py-12">
+            <p className="text-gray-600 mb-4">No Pokémon found matching your search.</p>
+            <button 
+              onClick={clearAllFilters} 
+              className="px-6 py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium transition-all duration-300 hover:scale-105">
+              🧹 Clear All Filters
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

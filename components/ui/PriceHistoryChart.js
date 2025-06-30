@@ -80,7 +80,7 @@ export default function PriceHistoryChart({ cardId, initialPrice = 0, timeRange 
           }
         }
       } catch (error) {
-        console.error('Error fetching price data:', error);
+        // Error fetching price data
         // Fallback to initial price if there's an error
         if (initialPrice > 0) {
           const fallbackData = [{

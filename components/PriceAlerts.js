@@ -30,7 +30,7 @@ export default function PriceAlerts({ userId = null }) {
         }
       }
     } catch (error) {
-      console.error('Error loading alerts:', error);
+      // Failed to load alerts
     } finally {
       setLoading(false);
     }
@@ -68,7 +68,7 @@ export default function PriceAlerts({ userId = null }) {
 
       setShowCreateModal(false);
     } catch (error) {
-      console.error('Error creating alert:', error);
+      // Failed to create alert
     }
   };
 
@@ -86,7 +86,7 @@ export default function PriceAlerts({ userId = null }) {
       
       setAlerts(prev => prev.filter(alert => alert.id !== alertId));
     } catch (error) {
-      console.error('Error deleting alert:', error);
+      // Failed to delete alert
     }
   };
 
@@ -134,7 +134,7 @@ export default function PriceAlerts({ userId = null }) {
 
       setSearchResults(mockResults);
     } catch (error) {
-      console.error('Error searching cards:', error);
+      // Failed to search cards
     }
   };
 
@@ -178,7 +178,6 @@ export default function PriceAlerts({ userId = null }) {
           New Alert
         </button>
       </div>
-
       {/* Active Alerts */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg">
         <div className="p-4 border-b border-gray-200 dark:border-gray-700">
@@ -196,7 +195,10 @@ export default function PriceAlerts({ userId = null }) {
                     <div className="flex items-center gap-4">
                       <div className="text-2xl">{typeDisplay.icon}</div>
                       <div>
-                        <Link href={`/cards/${alert.card_id}`} className="font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
+                        <Link
+                          href={`/cards/${alert.card_id}`}
+                          className="font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
+                          
                           {alert.card_name}
                         </Link>
                         <div className="text-sm text-gray-500 dark:text-gray-400">
@@ -243,7 +245,6 @@ export default function PriceAlerts({ userId = null }) {
           )}
         </div>
       </div>
-
       {/* Triggered Alerts History */}
       {alerts.filter(a => a.triggered_at).length > 0 && (
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg">
@@ -274,7 +275,6 @@ export default function PriceAlerts({ userId = null }) {
           </div>
         </div>
       )}
-
       {/* Create Alert Modal */}
       <Modal isOpen={showCreateModal} onClose={() => setShowCreateModal(false)}>
         <CreateAlertForm

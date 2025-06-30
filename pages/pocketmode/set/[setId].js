@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { fetchPocketData } from '../../../utils/pocketData';
 import { TypeBadge } from '../../../components/ui/TypeBadge';
+import StyledBackButton from '../../../components/ui/StyledBackButton';
 
 export default function SetView() {
   const router = useRouter();
@@ -187,21 +188,17 @@ export default function SetView() {
         <title>{theme.name} | Pokemon Pocket | DexTrends</title>
         <meta name="description" content={`Browse all cards from ${theme.name} in Pokemon Pocket`} />
       </Head>
-
       {/* Header */}
       <div className="sticky top-0 z-50 bg-black/80 backdrop-blur-xl border-b border-white/20">
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-6">
-              <Link 
-                href="/pocketmode/expansions" 
-                className="group flex items-center gap-3 text-yellow-400 hover:text-yellow-300 font-semibold transition-all transform hover:scale-105"
-              >
-                <svg className="w-6 h-6 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-                Back to Packs
-              </Link>
+              <StyledBackButton 
+                variant="pocket" 
+                text="Back to Packs"
+                onClick={() => router.push('/pocketmode/expansions')}
+                className="text-yellow-400 hover:text-yellow-300"
+              />
               <div className="flex items-center gap-3">
                 <div className="text-4xl animate-bounce">{theme.emoji}</div>
                 <h1 className="text-3xl font-bold bg-gradient-to-r from-yellow-400 to-pink-400 bg-clip-text text-transparent">
@@ -223,7 +220,6 @@ export default function SetView() {
           </div>
         </div>
       </div>
-
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Set Description */}
         {setInfo && (

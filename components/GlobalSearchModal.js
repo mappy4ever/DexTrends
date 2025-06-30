@@ -69,8 +69,8 @@ const GlobalSearchModal = forwardRef(function GlobalSearchModal(_, ref) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm" onClick={close}>
       <div
         className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl p-6 w-full max-w-lg mx-auto relative flex flex-col items-center"
-        onClick={e => e.stopPropagation()} // Prevent modal close on input click
-        tabIndex={-1} // Ensure modal is focusable
+        onClick={e => e.stopPropagation()}
+        tabIndex={-1}
         style={{ outline: 'none' }}
       >
         <div className="w-full flex flex-col items-center mb-2">
@@ -99,11 +99,12 @@ const GlobalSearchModal = forwardRef(function GlobalSearchModal(_, ref) {
               <ul>
                 {results.cards.map((card) => (
                   <li key={card.id} className="py-2 px-2 rounded hover:bg-primary/10 cursor-pointer">
-                    <Link href={toLowercaseUrl(`/pokedex/${card.name}`)} passHref>
-                      <a className="text-primary font-semibold flex items-center gap-2">
-                        <img src={card.images?.small} alt={card.name} className="w-8 h-8 rounded shadow" />
-                        {card.name} <span className="text-xs text-gray-400">({card.set?.name})</span>
-                      </a>
+                    <Link
+                      href={toLowercaseUrl(`/pokedex/${card.name}`)}
+                      className="text-primary font-semibold flex items-center gap-2"
+                    >
+                      <img src={card.images?.small} alt={card.name} className="w-8 h-8 rounded shadow" />
+                      {card.name} <span className="text-xs text-gray-400">({card.set?.name})</span>
                     </Link>
                   </li>
                 ))}
@@ -116,11 +117,12 @@ const GlobalSearchModal = forwardRef(function GlobalSearchModal(_, ref) {
               <ul>
                 {results.sets.map((set) => (
                   <li key={set.id} className="py-2 px-2 rounded hover:bg-primary/10 cursor-pointer">
-                    <Link href={toLowercaseUrl(`/tcgsets/${set.id}`)} passHref>
-                      <a className="text-primary font-semibold flex items-center gap-2">
-                        {set.images?.logo && <img src={set.images.logo} alt={set.name} className="w-8 h-8 rounded" />}
-                        {set.name}
-                      </a>
+                    <Link
+                      href={toLowercaseUrl(`/tcgsets/${set.id}`)}
+                      className="text-primary font-semibold flex items-center gap-2"
+                    >
+                      {set.images?.logo && <img src={set.images.logo} alt={set.name} className="w-8 h-8 rounded" />}
+                      {set.name}
                     </Link>
                   </li>
                 ))}
@@ -133,10 +135,11 @@ const GlobalSearchModal = forwardRef(function GlobalSearchModal(_, ref) {
               <ul>
                 {results.pokemon.map((poke) => (
                   <li key={poke.name} className="py-2 px-2 rounded hover:bg-primary/10 cursor-pointer">
-                    <Link href={toLowercaseUrl(`/pokedex/${poke.name}`)} passHref>
-                      <a className="text-primary font-semibold flex items-center gap-2">
-                        <span className="capitalize">{poke.name}</span>
-                      </a>
+                    <Link
+                      href={toLowercaseUrl(`/pokedex/${poke.name}`)}
+                      className="text-primary font-semibold flex items-center gap-2"
+                    >
+                      <span className="capitalize">{poke.name}</span>
                     </Link>
                   </li>
                 ))}

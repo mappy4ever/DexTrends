@@ -1,11 +1,10 @@
 import React, { useState, useMemo } from "react";
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from "next/image";
 import Modal from "./ui/Modal";
+import UnifiedCard from "./ui/UnifiedCard";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import { InlineLoadingSpinner } from "./ui/LoadingSpinner";
-import { getHolographicEffect, getRarityGlowClass } from "../utils/cardEffects";
-import { CompactPriceIndicator } from "./ui/PriceIndicator";
+import { isFeatureEnabled } from "../utils/featureFlags";
 
 export default function CardList({
   cards = [],
@@ -42,7 +41,7 @@ export default function CardList({
   }, [cards, sortOption, getPrice, getReleaseDate, getRarityRank]);
 
   // Infinite scroll for cards
-  const { visibleItems: visibleCards, hasMore, isLoading: scrollLoading } = useInfiniteScroll(
+  const { visibleItems: visibleCards, hasMore, isLoading: scrollLoading, sentinelRef } = useInfiniteScroll(
     sortedCards, 
     24, // Initial visible count
     12  // Load 12 more at a time
@@ -68,198 +67,44 @@ export default function CardList({
       </div>
 
       {/* Card grid: always one big flex-wrap, not split by anything else */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-5 md:gap-7 justify-center">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4">
         {visibleCards.map((card) => {
-          const setLogo = card.set?.images?.logo;
-          const setId = card.set?.id;
-          const setName = card.set?.name;
-          const setRelease = card.set?.releaseDate ? new Date(card.set.releaseDate).getFullYear() : null;
-          const pokemonName = card.nationalPokedexNumbers && card.nationalPokedexNumbers.length > 0 ? card.name.split(' ')[0] : card.name;
-          const rarity = card.rarity || "N/A";
-          // Official TCG rarity short forms and colors
-          const rarityMap = {
-            'Common': { label: 'C', color: 'bg-gray-200 border border-gray-400 text-gray-700' },
-            'Uncommon': { label: 'U', color: 'bg-green-200 border border-green-500 text-green-900' },
-            'Rare': { label: 'R', color: 'bg-yellow-200 border border-yellow-500 text-yellow-900' },
-            'Rare Holo': { label: 'RH', color: 'bg-blue-100 border border-blue-400 text-blue-900' },
-            'Rare Holo GX': { label: 'GX', color: 'bg-blue-200 border border-blue-700 text-blue-900' },
-            'Rare Holo EX': { label: 'EX', color: 'bg-blue-50 border border-blue-400 text-blue-900' },
-            'Rare Holo V': { label: 'V', color: 'bg-red-100 border border-red-400 text-red-800' },
-            'Rare Holo VMAX': { label: 'VMAX', color: 'bg-red-200 border border-red-600 text-red-900' },
-            'Rare Ultra': { label: 'UR', color: 'bg-purple-200 border border-purple-600 text-purple-900' },
-            'Rare Secret': { label: 'SR', color: 'bg-pink-100 border border-pink-400 text-pink-800' },
-            'Rare Rainbow': { label: 'RR', color: 'bg-gradient-to-r from-pink-100 via-yellow-100 to-blue-100 border border-gray-300 text-gray-800' },
-            'Rare Full Art': { label: 'FA', color: 'bg-indigo-100 border border-indigo-400 text-indigo-900' },
-            'Rare Prism Star': { label: 'PR', color: 'bg-black border border-yellow-300 text-yellow-200' },
-            'Promo': { label: 'PR', color: 'bg-orange-100 border border-orange-400 text-orange-900' },
-            'Illustration Rare': { label: 'IR', color: 'bg-amber-100 border border-amber-400 text-amber-900' },
-            'Special Illustration Rare': { label: 'SIR', color: 'bg-fuchsia-100 border border-fuchsia-400 text-fuchsia-900' },
-            'Double Rare': { label: 'RR', color: 'bg-yellow-300 border border-yellow-600 text-yellow-900' },
-            'Hyper Rare': { label: 'HR', color: 'bg-cyan-100 border border-cyan-400 text-cyan-900' },
-            'Shiny Rare': { label: 'ShR', color: 'bg-sky-100 border border-sky-400 text-sky-900' },
-            'Trainer Gallery Rare': { label: 'TG', color: 'bg-rose-100 border border-rose-400 text-rose-900' },
-            'Radiant Rare': { label: 'Rad', color: 'bg-lime-100 border border-lime-400 text-lime-900' },
+          // Add current price to card object for UnifiedCard to access
+          const cardWithPrice = {
+            ...card,
+            currentPrice: getPrice(card)
           };
-          const rarityTag = rarityMap[rarity] || { label: '?', color: 'bg-gray-100 border border-gray-300 text-gray-400' };
-
-          // Use getPrice prop for price display with trend indicators
-          const currentPrice = getPrice(card); // getPrice already formats it as string "$X.XX" or "N/A"
-
-          const handleRarityClick = (e) => {
-            e.stopPropagation();
-            // Always navigate to a dedicated rarity page using the short label (e.g. /cards/rarity/SR)
-            if (typeof window !== 'undefined') {
-              window.location.href = `/cards/rarity/${encodeURIComponent(rarityTag.label)}`;
-            }
-          };
-
-          const handleCardClick = (e) => {
-            // Prevent navigation if a link or button was clicked
-            if (
-              e.target.closest('a') ||
-              e.target.closest('button') ||
-              e.target.closest('.magnifier-icon')
-            ) return;
-            window.location.href = `/cards/${card.id}`;
-          };
-
-          const holographicClass = getHolographicEffect(rarity);
-          const glowClass = getRarityGlowClass(rarity);
 
           return (
-            <div
+            <UnifiedCard
               key={card.id}
-              className={
-                `card p-3 md:p-4 flex flex-col items-center bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-200 dark:border-gray-700 transition-all duration-300 animate-fadeIn group ring-0 ${holographicClass} ${glowClass}
-                hover:border-primary/90 hover:ring-2 hover:ring-primary/60 hover:-translate-y-2 hover:bg-primary/5 hover:shadow-xl
-                focus-within:border-primary/90 focus-within:ring-2 focus-within:ring-primary/60 focus-within:-translate-y-2 focus-within:bg-primary/5 focus-within:shadow-xl
-                `
-              }
-              style={{ boxShadow: '0 4px 20px 0 rgba(0,0,0,0.08)', cursor: 'pointer' }}
-              tabIndex={0}
-              onClick={handleCardClick}
-            >
-              <div className="w-full flex flex-col items-center relative">
-                <Link href={`/cards/${card.id}`} legacyBehavior>
-                  <a
-                    className="block w-full"
-                    tabIndex={-1}
-                    onClick={e => e.stopPropagation()}
-                  >
-                    <Image
-                      src={card.images?.large || '/back-card.png'}
-                      alt={card.name}
-                      width={220}
-                      height={308}
-                      className="rounded-app-md mb-2 object-cover shadow-md hover:shadow-lg transition-all"
-                      loading="lazy"
-                      placeholder="blur"
-                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Eve6J4HNvbzTe7+v1+8BvxRf4X3/f/9k="
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      onError={(e) => {
-                        const target = e.target;
-                        if (target && target.src !== window.location.origin + '/back-card.png') {
-                          target.src = '/back-card.png';
-                        }
-                      }}
-                    />
-                  </a>
-                </Link>
-              </div>
-              <h3 className="text-lg font-bold text-text-heading text-center mb-1 group-hover:text-primary group-focus-within:text-primary transition-colors duration-200 flex items-center justify-center gap-2">
-                <Link href={`/cards/${card.id}`} legacyBehavior>
-                  <a className="text-blue-900 hover:text-blue-700 focus:text-blue-700 hover:underline focus:underline outline-none focus-visible:ring-2 focus-visible:ring-primary px-1 rounded" tabIndex={0} title={`View card details for ${card.name}`} onClick={e => e.stopPropagation()}>
-                    {card.name}
-                  </a>
-                </Link>
-                <button
-                  className="click-icon ml-1 p-1 rounded-full hover:bg-gray-200 focus:bg-gray-300 focus:outline-none"
-                  title="View card"
-                  tabIndex={0}
-                  onClick={e => { e.stopPropagation(); setZoomedCard(card); }}
-                  aria-label="View card"
-                  type="button"
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
-                </button>
-              </h3>
-              <div className="flex items-center gap-2 mb-1">
-                <Link href={`/tcgsets/${setId}`} legacyBehavior>
-                  <a
-                    className="text-blue-900 hover:text-blue-700 focus:text-blue-700 hover:underline focus:underline outline-none focus-visible:ring-2 focus-visible:ring-primary px-1 rounded"
-                    tabIndex={0}
-                    title={`View set ${setName}`}
-                    onClick={e => e.stopPropagation()}
-                    onFocus={e => e.currentTarget.closest('.card')?.classList.add('ring-4','ring-primary/60','border-primary/90','-translate-y-6','scale-110','shadow-2xl')}
-                    onBlur={e => e.currentTarget.closest('.card')?.classList.remove('ring-4','ring-primary/60','border-primary/90','-translate-y-6','scale-110','shadow-2xl')}
-                    onMouseEnter={e => e.currentTarget.closest('.card')?.classList.add('ring-4','ring-primary/60','border-primary/90','-translate-y-6','scale-110','shadow-2xl')}
-                    onMouseLeave={e => e.currentTarget.closest('.card')?.classList.remove('ring-4','ring-primary/60','border-primary/90','-translate-y-6','scale-110','shadow-2xl')}
-                  >
-                    {setName || "N/A"}
-                  </a>
-                </Link>
-              </div>
-              <div className="flex items-center gap-2 mb-1">
-                <button
-                  type="button"
-                  className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold uppercase focus:outline-none focus-visible:ring-2 focus-visible:ring-primary transition ${rarityTag.color}`}
-                  title={`Show all ${rarityTag.label} rarity cards`}
-                  aria-label={`Show all ${rarityTag.label} rarity cards`}
-                  tabIndex={0}
-                  onClick={handleRarityClick}
-                  style={{ minWidth: 32, cursor: 'pointer', background: 'inherit' }}
-                >
-                  {rarityTag.label}
-                </button>
-                <CompactPriceIndicator 
-                  cardId={card.id}
-                  currentPrice={currentPrice}
-                  variantType="holofoil"
-                />
-              </div>
-              <div className="text-content-default text-xs mb-1">
-                <b>Number:</b> {card.number}
-              </div>
-              {setRelease && (
-                <div className="text-xs text-gray-400 mt-1">{setRelease}</div>
-              )}
-
-              {/* External Links */}
-              <div className="mt-2 flex flex-wrap justify-center gap-x-3 gap-y-1 text-xs">
-                {card.tcgplayer?.url && (
-                  <a
-                    href={card.tcgplayer.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()} // Prevent card click when link is clicked
-                    className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:underline focus:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded"
-                  >
-                    TCGPlayer
-                  </a>
-                )}
-                {card.cardmarket?.url && (
-                  <a
-                    href={card.cardmarket.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()} // Prevent card click when link is clicked
-                    className="text-green-500 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300 hover:underline focus:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded"
-                  >
-                    CardMarket
-                  </a>
-                )}
-              </div>
-            </div>
+              card={cardWithPrice}
+              cardType="tcg"
+              showPrice={true}
+              showSet={true}
+              showTypes={true}
+              showRarity={true}
+              onMagnifyClick={(card) => setZoomedCard(card)}
+              onCardClick={(card) => onCardClick(card)}
+              className="animate-fadeIn"
+            />
           );
         })}
       </div>
 
-      {/* Infinite scroll loading indicator */}
-      {scrollLoading && hasMore && (
-        <InlineLoadingSpinner 
-          text="Loading more cards..." 
-          className="mt-8"
-        />
+      {/* Intersection Observer sentinel for infinite scroll */}
+      {hasMore && (
+        <div 
+          ref={sentinelRef} 
+          className="h-4 w-full flex items-center justify-center"
+        >
+          {scrollLoading && (
+            <InlineLoadingSpinner 
+              text="Loading more cards..." 
+              className="mt-2"
+            />
+          )}
+        </div>
       )}
 
       {!loading && !error && cards.length === 0 && (

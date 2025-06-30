@@ -174,7 +174,6 @@ export const PremiumModal = ({
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         aria-hidden="true"
       />
-      
       {/* Modal Content */}
       <GlassCard
         className={`

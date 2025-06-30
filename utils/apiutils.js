@@ -7,8 +7,7 @@ export async function fetchData(url, options = {}) {
       let errorInfo = `Request failed with status ${response.status}`;
       try {
         const errorBody = await response.text(); // Read as text first
-        // Log more detailed error if possible, without breaking if errorBody isn't JSON
-        console.error(`API Error ${response.status} for ${url}: ${errorBody}`);
+        // Store error body for structured error response
         // Try to parse as JSON for structured error, but don't fail if not JSON
         try {
           const jsonError = JSON.parse(errorBody);
@@ -27,10 +26,7 @@ export async function fetchData(url, options = {}) {
     }
     return await response.json();
   } catch (error) {
-    // Log the error before re-throwing, if not already an API error logged above
-    if (!error.status) { // Avoid double logging for API errors
-        console.error(`Fetch error for ${url}:`, error.message);
-    }
+    // Re-throw error for caller to handle
     throw error; // Re-throw to allow caller to handle
   }
 }
