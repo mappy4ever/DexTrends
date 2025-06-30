@@ -7,8 +7,7 @@ import { TypeBadge } from "../../components/ui/TypeBadge";
 import { useFavorites } from "../../context/favoritescontext";
 import { typeEffectiveness, getGeneration } from "../../utils/pokemonutils";
 import { fetchData } from "../../utils/apiutils";
-import PokemonEvolutionTab from "../../components/pokemon/PokemonEvolutionTab";
-import { getEvolutionChain, formatEvolutionDetails } from "../../utils/evolutionUtils";
+import SimpleEvolutionDisplay from "../../components/ui/SimpleEvolutionDisplay";
 import CardList from "../../components/CardList";
 import PocketCardList from "../../components/PocketCardList";
 import { fetchPocketData } from "../../utils/pocketData";
@@ -29,7 +28,6 @@ export default function PokemonDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('overview');
-  const [evolutionChain, setEvolutionChain] = useState(null);
   const [tcgCards, setTcgCards] = useState([]);
   const [pocketCards, setPocketCards] = useState([]);
   const [cardsLoading, setCardsLoading] = useState(false);
@@ -53,19 +51,6 @@ export default function PokemonDetail() {
         // Load species data
         const speciesData = await fetchData(pokemonData.species.url);
         setSpecies(speciesData);
-
-        // Load evolution chain
-        if (speciesData.evolution_chain?.url) {
-          try {
-            const evolutionData = await fetchData(speciesData.evolution_chain.url);
-            // Build the evolution tree from the chain data
-            const { buildEvolutionTree } = await import('../../utils/evolutionUtils');
-            const processedEvolution = await buildEvolutionTree(evolutionData.chain, pokemonData.id);
-            setEvolutionChain(processedEvolution);
-          } catch (err) {
-            console.error('Error loading evolution chain:', err);
-          }
-        }
 
         // Load abilities
         await loadAbilities(pokemonData.abilities);
@@ -391,10 +376,10 @@ export default function PokemonDetail() {
 
             {activeTab === 'evolution' && (
               <div>
-                <PokemonEvolutionTab
-                  pokemonDetails={pokemon}
-                  processedEvolutions={evolutionChain}
-                  formatEvolutionDetails={formatEvolutionDetails}
+                <h3 className="text-xl font-bold text-gray-800 mb-4">Evolution Chain</h3>
+                <SimpleEvolutionDisplay 
+                  speciesUrl={pokemon.species.url}
+                  currentPokemonId={pokemon.id}
                 />
               </div>
             )}

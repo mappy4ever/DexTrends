@@ -8,7 +8,10 @@ export default function EvolutionTreeRenderer({
   currentId = null, 
   formatEvolutionDetails 
 }) {
+  console.log('EvolutionTreeRenderer received node:', node);
+  
   if (!node || !node.name) {
+    console.warn('EvolutionTreeRenderer: Invalid node data', node);
     return null;
   }
 
@@ -40,7 +43,7 @@ export default function EvolutionTreeRenderer({
           circleSize={isCurrent ? "large" : "medium"}
         />
         
-        {node.children && node.children.length > 0 && (
+        {node.children && Array.isArray(node.children) && node.children.length > 0 && (
           <>
             {/* Evolution details */}
             {node.children[0]?.evolutionDetails && renderEvolutionDetails(node.children[0].evolutionDetails)}
@@ -54,7 +57,7 @@ export default function EvolutionTreeRenderer({
             
             {/* Children */}
             <div className={`flex ${node.children.length > 1 ? 'gap-8' : ''}`}>
-              {node.children.map((child, index) => (
+              {node.children.filter(child => child && child.name).map((child, index) => (
                 <EvolutionTreeRenderer
                   key={child.id || index}
                   node={child}
