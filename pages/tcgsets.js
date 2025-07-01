@@ -18,7 +18,7 @@ if (!pokemonKey) {
 
 pokemon.configure({ apiKey: pokemonKey });
 
-export default function TCGSets() {
+export default function tcgsets() {
   const [sets, setSets] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
@@ -51,6 +51,7 @@ export default function TCGSets() {
 
   // Extract unique series for filtering
   const uniqueSeries = useMemo(() => {
+    if (!sets || !Array.isArray(sets)) return [];
     const seriesSet = new Set();
     sets.forEach(set => {
       if (set.series) {
@@ -62,6 +63,7 @@ export default function TCGSets() {
 
   // Filter sets by search query and series
   const filteredSets = useMemo(() => {
+    if (!sets || !Array.isArray(sets)) return [];
     return sets.filter((set) => {
       let matches = set.name.toLowerCase().includes(search.toLowerCase());
       

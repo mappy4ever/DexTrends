@@ -32,8 +32,15 @@ export default function TrendingCards({ cards }) {
         
         if (currentPrice === 0) return null; // Skip cards without prices
         
-        // Generate simulated previous price (between -30% and +30% different from current)
-        const volatilityFactor = Math.random() * 0.6 - 0.3; // -30% to +30%
+        // Use deterministic hash based on card ID for consistent "trending" data
+        // This creates a pseudo-random but consistent value for each card
+        const hashCode = card.id.split('').reduce((acc, char) => {
+          return char.charCodeAt(0) + ((acc << 5) - acc);
+        }, 0);
+        
+        // Generate deterministic volatility factor between -30% and +30%
+        const normalizedHash = (Math.abs(hashCode) % 1000) / 1000; // 0 to 0.999
+        const volatilityFactor = (normalizedHash * 0.6) - 0.3; // -0.3 to +0.3
         const previousPrice = currentPrice * (1 - volatilityFactor);
         
         // Calculate percent change

@@ -14,10 +14,18 @@ export default function CollectionManager({ userId = null }) {
   const [searchResults, setSearchResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [portfolioValue, setPortfolioValue] = useState(0);
+  const [mounted, setMounted] = useState(false);
+
+  // Handle mounting
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
-    loadCollections();
-  }, [userId]);
+    if (mounted) {
+      loadCollections();
+    }
+  }, [userId, mounted]);
 
   useEffect(() => {
     if (selectedCollection) {
@@ -54,12 +62,26 @@ export default function CollectionManager({ userId = null }) {
 
   const getSessionId = () => {
     if (typeof window === 'undefined') return null;
-    let sessionId = localStorage.getItem('dextrends_session_id');
-    if (!sessionId) {
-      sessionId = 'session_' + Math.random().toString(36).substr(2, 9) + Date.now();
-      localStorage.setItem('dextrends_session_id', sessionId);
+    
+    try {
+      let sessionId = localStorage.getItem('dextrends_session_id');
+      if (!sessionId) {
+        // Use crypto.randomUUID if available, otherwise use a timestamp-based ID
+        if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+          sessionId = 'session_' + crypto.randomUUID();
+        } else {
+          // Fallback: use timestamp + performance counter for uniqueness
+          const timestamp = Date.now();
+          const counter = typeof performance !== 'undefined' ? performance.now() : 0;
+          sessionId = 'session_' + timestamp + '_' + Math.floor(counter);
+        }
+        localStorage.setItem('dextrends_session_id', sessionId);
+      }
+      return sessionId;
+    } catch (error) {
+      // If localStorage is not available, return a temporary session ID
+      return 'session_temp_' + Date.now();
     }
-    return sessionId;
   };
 
   const calculatePortfolioValue = async () => {
@@ -77,8 +99,14 @@ export default function CollectionManager({ userId = null }) {
   const getCurrentCardPrice = async (cardId) => {
     try {
       // In a real implementation, this would fetch from Pokemon TCG API or local cache
-      // For now, return a simulated price
-      return Math.random() * 100 + 5; // $5-$105 range
+      // Use deterministic price based on card ID for consistency
+      const hashCode = cardId.split('').reduce((acc, char) => {
+        return char.charCodeAt(0) + ((acc << 5) - acc);
+      }, 0);
+      
+      // Generate price between $5-$105 based on hash
+      const normalizedHash = (Math.abs(hashCode) % 1000) / 1000;
+      return (normalizedHash * 100) + 5;
     } catch (error) {
       return 0;
     }
@@ -97,7 +125,9 @@ export default function CollectionManager({ userId = null }) {
       };
 
       if (!userId) {
-        newCollection.expires_at = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(); // 30 days
+        const expiryDate = new Date();
+        expiryDate.setDate(expiryDate.getDate() + 30);
+        newCollection.expires_at = expiryDate.toISOString(); // 30 days
       }
 
       const { data, error } = await supabase

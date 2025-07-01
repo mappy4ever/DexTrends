@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { fetchData } from "../utils/apiutils";
 import { TypeBadge } from "../components/ui/TypeBadge";
 import { getGeneration } from "../utils/pokemonutils";
+import PokeballLoader from "../components/ui/PokeballLoader";
 
 export default function PokedexIndex() {
   const router = useRouter();
@@ -192,6 +193,10 @@ export default function PokedexIndex() {
           }
         }
         
+        // After loading regular Pokemon, fetch mega evolutions
+        const megaEvolutions = await fetchMegaEvolutions();
+        allPokemonData = [...allPokemonData, ...megaEvolutions];
+        
         // Store all Pokemon data and make it available for scrolling
         setAllPokemon(allPokemonData);
         setPokemon(allPokemonData);
@@ -204,6 +209,74 @@ export default function PokedexIndex() {
 
     loadAllPokemon();
   }, []);
+
+  // Fetch mega evolutions separately
+  const fetchMegaEvolutions = async () => {
+    const megaForms = [];
+    const megaPokemon = [
+      { id: 10033, name: 'venusaur-mega' },
+      { id: 10034, name: 'charizard-mega-x' },
+      { id: 10035, name: 'charizard-mega-y' },
+      { id: 10036, name: 'blastoise-mega' },
+      { id: 10037, name: 'alakazam-mega' },
+      { id: 10038, name: 'gengar-mega' },
+      { id: 10039, name: 'kangaskhan-mega' },
+      { id: 10040, name: 'pinsir-mega' },
+      { id: 10041, name: 'gyarados-mega' },
+      { id: 10042, name: 'aerodactyl-mega' },
+      { id: 10043, name: 'mewtwo-mega-x' },
+      { id: 10044, name: 'mewtwo-mega-y' },
+      { id: 10045, name: 'ampharos-mega' },
+      { id: 10046, name: 'scizor-mega' },
+      { id: 10047, name: 'heracross-mega' },
+      { id: 10048, name: 'houndoom-mega' },
+      { id: 10049, name: 'tyranitar-mega' },
+      { id: 10050, name: 'blaziken-mega' },
+      { id: 10051, name: 'gardevoir-mega' },
+      { id: 10052, name: 'mawile-mega' },
+      { id: 10053, name: 'aggron-mega' },
+      { id: 10054, name: 'medicham-mega' },
+      { id: 10055, name: 'manectric-mega' },
+      { id: 10056, name: 'banette-mega' },
+      { id: 10057, name: 'absol-mega' },
+      { id: 10058, name: 'garchomp-mega' },
+      { id: 10059, name: 'lucario-mega' },
+      { id: 10060, name: 'abomasnow-mega' },
+      { id: 10062, name: 'beedrill-mega' },
+      { id: 10063, name: 'pidgeot-mega' },
+      { id: 10064, name: 'slowbro-mega' },
+      { id: 10065, name: 'steelix-mega' },
+      { id: 10066, name: 'sceptile-mega' },
+      { id: 10067, name: 'swampert-mega' },
+      { id: 10068, name: 'sableye-mega' },
+      { id: 10069, name: 'sharpedo-mega' },
+      { id: 10070, name: 'camerupt-mega' },
+      { id: 10071, name: 'altaria-mega' },
+      { id: 10072, name: 'glalie-mega' },
+      { id: 10073, name: 'salamence-mega' },
+      { id: 10074, name: 'metagross-mega' },
+      { id: 10075, name: 'latias-mega' },
+      { id: 10076, name: 'latios-mega' },
+      { id: 10077, name: 'lopunny-mega' },
+      { id: 10078, name: 'gallade-mega' },
+      { id: 10079, name: 'audino-mega' },
+      { id: 10087, name: 'diancie-mega' },
+      { id: 10090, name: 'rayquaza-mega' }
+    ];
+
+    for (const mega of megaPokemon) {
+      try {
+        const details = await fetchData(`https://pokeapi.co/api/v2/pokemon/${mega.id}`);
+        const speciesData = await fetchData(details.species.url);
+        const enhancedData = enhancePokemonData(details, speciesData);
+        megaForms.push(enhancedData);
+      } catch (err) {
+        console.error(`Failed to fetch mega evolution: ${mega.name}`, err);
+      }
+    }
+
+    return megaForms;
+  };
 
   // Enhanced filtering with multiple criteria and multi-select support
   const filteredPokemon = useMemo(() => {
@@ -227,7 +300,8 @@ export default function PokedexIndex() {
           if (category === 'legendary') return poke.isLegendary;
           if (category === 'mythical') return poke.isMythical;
           if (category === 'ultra-beast') return poke.isUltraBeast;
-          if (category === 'normal') return !poke.isLegendary && !poke.isMythical && !poke.isUltraBeast;
+          if (category === 'mega') return poke.stage === 'mega' || poke.name.includes('-mega');
+          if (category === 'normal') return !poke.isLegendary && !poke.isMythical && !poke.isUltraBeast && poke.stage !== 'mega';
           if (category === 'multi-type') return poke.types.length > 1;
           if (category === 'single-type') return poke.types.length === 1;
           return false;
@@ -332,6 +406,7 @@ export default function PokedexIndex() {
     { value: "legendary", label: "Legendary" },
     { value: "mythical", label: "Mythical" },
     { value: "ultra-beast", label: "Ultra Beast" },
+    { value: "mega", label: "Mega Evolution" },
     { value: "normal", label: "Normal Pokémon" },
     { value: "multi-type", label: "Multi-Type" },
     { value: "single-type", label: "Single-Type" }
@@ -691,7 +766,7 @@ export default function PokedexIndex() {
               
               <div className="flex-1 flex flex-col text-center p-3 relative z-10">
                 {/* Pokemon image */}
-                <div className="relative w-24 h-24 sm:w-28 sm:h-28 mx-auto mb-3 bg-gray-50 rounded-xl p-3 overflow-hidden">
+                <div className="relative w-24 h-24 sm:w-28 sm:h-28 mx-auto mb-3 bg-transparent rounded-xl p-3 overflow-hidden">
                   <Image
                     src={poke.sprite || "/dextrendslogo.png"}
                     alt={poke.name}
@@ -700,10 +775,6 @@ export default function PokedexIndex() {
                     loading="lazy"
                     sizes="(max-width: 640px) 96px, 112px"
                   />
-                  {/* Glow effect for special Pokemon */}
-                  {(poke.isLegendary || poke.isMythical) && (
-                    <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-purple-400/20 rounded-xl"></div>
-                  )}
                 </div>
                 
                 {/* Pokemon name */}
@@ -718,26 +789,6 @@ export default function PokedexIndex() {
                   ))}
                 </div>
 
-                {/* Special indicators */}
-                {(poke.isLegendary || poke.isMythical || poke.isUltraBeast) && (
-                  <div className="flex justify-center">
-                    {poke.isLegendary && (
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-800 border border-yellow-300">
-                        ⭐ Legendary
-                      </span>
-                    )}
-                    {poke.isMythical && (
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-800 border border-purple-300">
-                        ✨ Mythical
-                      </span>
-                    )}
-                    {poke.isUltraBeast && (
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-indigo-100 text-indigo-800 border border-indigo-300">
-                        🌌 Ultra Beast
-                      </span>
-                    )}
-                  </div>
-                )}
               </div>
             </div>
           ))}
@@ -745,11 +796,8 @@ export default function PokedexIndex() {
 
         {/* Loading indicator for infinite scroll */}
         {isLoadingMore && (
-          <div className="flex justify-center py-8">
-            <div className="flex items-center gap-3 text-gray-600">
-              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-pokemon-red"></div>
-              <span>Loading more Pokémon...</span>
-            </div>
+          <div className="py-8">
+            <PokeballLoader size="small" text="Loading more Pokémon..." />
           </div>
         )}
         

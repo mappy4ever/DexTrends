@@ -12,7 +12,7 @@ import { fetchPocketData } from "../utils/pocketData";
 import BackToTop from "../components/ui/BackToTop";
 
 // Dynamic imports for components that might cause SSR issues
-const PokemonLoadingScreen = dynamic(() => import("../components/ui/PokemonLoadingScreen"), { ssr: false });
+import PokeballLoader from "../components/ui/PokeballLoader";
 const PokemonEmptyState = dynamic(() => import("../components/ui/PokemonEmptyState"), { ssr: false });
 
 export default function PocketMode() {
@@ -25,15 +25,10 @@ export default function PocketMode() {
     pokemon: null
   });
   const [search, setSearch] = useState("");
-  const [currentView, setCurrentView] = useState("cards"); // cards, deckbuilder
+  // Removed deck builder - use /pocketmode/deckbuilder instead
   const [typeFilter, setTypeFilter] = useState("all");
   const [rarityFilter, setRarityFilter] = useState("all");
   const [sortBy, setSortBy] = useState("name"); // name, rarity
-  
-  // Simple deck builder state
-  const [currentDeck, setCurrentDeck] = useState([]);
-  const [deckName, setDeckName] = useState("My Pocket Deck");
-  const [showDeckBuilder, setShowDeckBuilder] = useState(false);
   
   // Replace fetchPokemonData to use the live Pocket API
   const fetchPokemonData = async () => {
@@ -57,21 +52,9 @@ export default function PocketMode() {
   useEffect(() => {
     fetchPokemonData();
     
-    // Check URL query parameter for view
+    // Redirect to proper deck builder if old URL is used
     if (router.query.view === 'deckbuilder') {
-      setCurrentView('deckbuilder');
-    }
-    
-    // Auto-load saved deck if available
-    const savedDeck = localStorage.getItem('pocket-deck');
-    if (savedDeck) {
-      try {
-        const deckData = JSON.parse(savedDeck);
-        setCurrentDeck(deckData.cards || []);
-        setDeckName(deckData.name || 'My Pocket Deck');
-      } catch (error) {
-        console.error('Error loading saved deck:', error);
-      }
+      router.replace('/pocketmode/deckbuilder');
     }
   }, [router.query.view]);
 
@@ -94,20 +77,7 @@ export default function PocketMode() {
         }
       }
       
-      // Switch between views with 1 and 2 keys
-      if (e.key === '1' && !e.ctrlKey && !e.metaKey && !e.altKey && !e.shiftKey) {
-        const activeElement = document.activeElement;
-        if (activeElement.tagName !== 'INPUT' && activeElement.tagName !== 'TEXTAREA') {
-          setCurrentView('cards');
-        }
-      }
-      
-      if (e.key === '2' && !e.ctrlKey && !e.metaKey && !e.altKey && !e.shiftKey) {
-        const activeElement = document.activeElement;
-        if (activeElement.tagName !== 'INPUT' && activeElement.tagName !== 'TEXTAREA') {
-          setCurrentView('deckbuilder');
-        }
-      }
+      // Removed view switching - deck builder is now at /pocketmode/deckbuilder
       
       // Clear search with Escape
       if (e.key === 'Escape') {
@@ -123,65 +93,81 @@ export default function PocketMode() {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Simple deck builder functions
-  const addCardToDeck = (card) => {
-    const cardCount = currentDeck.filter(c => c.id === card.id).length;
-    if (cardCount < 2 && currentDeck.length < 20) { // Pokemon Pocket rules: max 2 copies, 20 card deck
-      setCurrentDeck([...currentDeck, card]);
-    }
-  };
 
-  const removeCardFromDeck = (card) => {
-    const cardIndex = currentDeck.findIndex(c => c.id === card.id);
-    if (cardIndex !== -1) {
-      const newDeck = [...currentDeck];
-      newDeck.splice(cardIndex, 1);
-      setCurrentDeck(newDeck);
-    }
-  };
-
-  const clearDeck = () => {
-    setCurrentDeck([]);
-    localStorage.removeItem('pocket-deck');
-  };
-
-  const saveDeck = () => {
-    if (currentDeck.length === 0) return;
-    const deckData = {
-      name: deckName,
-      cards: currentDeck,
-      createdAt: new Date().toISOString()
-    };
-    localStorage.setItem('pocket-deck', JSON.stringify(deckData));
-    alert('Deck saved successfully!');
-  };
-
-  const loadDeck = () => {
-    const savedDeck = localStorage.getItem('pocket-deck');
-    if (savedDeck) {
-      try {
-        const deckData = JSON.parse(savedDeck);
-        setCurrentDeck(deckData.cards || []);
-        setDeckName(deckData.name || 'My Pocket Deck');
-        alert('Deck loaded successfully!');
-      } catch (error) {
-        alert('Error loading deck');
+  // Helper function to get display type for filtering (same logic as UnifiedCard)
+  const getCardDisplayType = (type, card) => {
+    const lowerType = type?.toLowerCase() || '';
+    
+    if (lowerType === 'trainer') {
+      const name = card.name?.toLowerCase() || '';
+      
+      const fossilPatterns = [/^helix fossil$/, /^dome fossil$/, /^old amber$/];
+      const toolPatterns = [
+        /tool$/, 
+        // Equipment and gear
+        /^rocky helmet/, /^muscle band/, /^leftovers/, /^float stone/, /^choice band/, /^focus sash/, /^weakness policy/, /^air balloon/,
+        // Berries (tools in Pocket)
+        /berry$/, /^lam berry/, /^oran berry/, /^sitrus berry/, /^pecha berry/, /^cheri berry/, /^aspear berry/,
+        // Capes and clothing
+        /cape$/, /^giant cape/, /^rescue cape/,
+        // Bands and accessories  
+        /band$/, /^poison band/, /^expert band/, /^team band/,
+        // Barbs and spikes
+        /barb$/, /^poison barb/, /^toxic barb/,
+        // Cords and cables
+        /cord$/, /^electrical cord/, /^power cord/,
+        // Stones and items that modify Pokemon
+        /stone$/, /^evolution stone/, /^fire stone/, /^water stone/, /^thunder stone/, /^leaf stone/,
+        // Protection items
+        /^protective/, /^defense/, /^shield/,
+        // Energy modifying tools
+        /^energy/, /^double colorless energy/, /^rainbow energy/,
+        // Other common tool patterns
+        /^lucky/, /^amulet/, /^charm/, /^crystal/, /^scope/, /^specs/, /^goggles/
+      ];
+      const supporterPatterns = [/^professor/, /^dr\./, /^mr\./, /^ms\./, /^mrs\./, /^captain/, /^gym leader/, /^elite/, /^team .* (grunt|admin|boss|leader)/, /grunt$/, /admin$/, /boss$/, /'s (advice|training|encouragement|help|research|orders|conviction|dedication|determination|resolve)$/, /research$/, /analysis$/, /theory$/, /^(erika|misty|blaine|koga|giovanni|brock|lt\. surge|sabrina|bill|oak|red)$/, /^(blue|green|yellow|gold|silver|crystal|ruby|sapphire)$/, /^(cynthia|lance|steven|wallace|diantha|iris|alder)$/, /^team/, /rocket/, /aqua/, /magma/, /galactic/, /plasma/, /flare/];
+      
+      const itemPatterns = [
+        /potion$/, /^potion$/, /^super potion/, /^hyper potion/, /^max potion/,
+        /ball$/, /^poke ball/, /^great ball/, /^ultra ball/,
+        /^x /, // X Speed, X Attack, etc.
+        /^switch/, /^rope/, /candy$/, /^rare candy/
+      ];
+      
+      if (fossilPatterns.some(pattern => pattern.test(name))) return 'Fossil';
+      if (toolPatterns.some(pattern => pattern.test(name))) return 'Tool';
+      if (itemPatterns.some(pattern => pattern.test(name))) return 'Item';
+      if (supporterPatterns.some(pattern => pattern.test(name))) return 'Supporter';
+      
+      const words = card.name?.split(' ') || [];
+      if (words.length <= 3 && words[0] && /^[A-Z]/.test(words[0])) {
+        const personIndicators = ['grunt', 'admin', 'boss', 'leader', 'trainer', 'champion', 'rival'];
+        if (personIndicators.some(indicator => name.includes(indicator))) return 'Supporter';
+        if (words.length === 1 && /^[A-Z][a-z]+$/.test(words[0])) return 'Supporter';
       }
-    } else {
-      alert('No saved deck found');
+      
+      return 'Item'; // Default for trainer cards (includes fossils not matching specific patterns)
     }
-  };
-
-  const getCardCountInDeck = (card) => {
-    return currentDeck.filter(c => c.id === card.id).length;
+    
+    return type?.charAt(0).toUpperCase() + type?.slice(1).toLowerCase();
   };
 
   // Filter and sort Pokémon by search term, type, rarity, and sort order
   const filteredPokemon = pokemon
     .filter(poke => 
       poke.name.toLowerCase().includes(search.toLowerCase()) &&
-      (typeFilter === "all" || (poke.type && poke.type.toLowerCase() === typeFilter.toLowerCase()) || (poke.types && poke.types.includes(typeFilter))) &&
-      (rarityFilter === "all" || poke.rarity === rarityFilter)
+      (typeFilter === "all" || 
+       (poke.type && poke.type.toLowerCase() === typeFilter.toLowerCase()) || 
+       (poke.types && poke.types.includes(typeFilter)) ||
+       (typeFilter === "item" && poke.type && (getCardDisplayType(poke.type, poke).toLowerCase() === "item" || getCardDisplayType(poke.type, poke).toLowerCase() === "fossil")) ||
+       (typeFilter === "supporter" && poke.type && getCardDisplayType(poke.type, poke).toLowerCase() === "supporter") ||
+       (typeFilter === "tool" && poke.type && getCardDisplayType(poke.type, poke).toLowerCase() === "tool")) &&
+      (rarityFilter === "all" || 
+       poke.rarity === rarityFilter || 
+       (rarityFilter === "★" && poke.ex === "Yes" && poke.fullart === "Yes") ||
+       (rarityFilter === "★★" && poke.rarity === "♕") ||
+       (rarityFilter === "fullart" && poke.fullart === "Yes") ||
+       (rarityFilter === "immersive" && poke.rarity === "☆☆☆"))
     )
     .sort((a, b) => {
       if (sortBy === "name") {
@@ -203,7 +189,9 @@ export default function PocketMode() {
     });
   
   // Get unique types and rarities from all Pokémon cards for filter options
-  const uniqueTypes = [...new Set(pokemon.flatMap(p => p.type ? [p.type.toLowerCase()] : (p.types || []).map(t => t.toLowerCase())))];
+  const baseTypes = [...new Set(pokemon.flatMap(p => p.type ? [p.type.toLowerCase()] : (p.types || []).map(t => t.toLowerCase())))];
+  // Add trainer subtypes to the type filter
+  const uniqueTypes = [...baseTypes, 'item', 'supporter', 'tool'].filter(type => type !== 'trainer');
   const uniqueRarities = [...new Set(pokemon.map(p => p.rarity).filter(Boolean))];
   
   // Use pokemon loading/error states
@@ -228,105 +216,174 @@ export default function PocketMode() {
           </p>
           <div className="w-32 h-1 bg-gradient-to-r from-transparent via-primary to-transparent rounded"></div>
           
-          {/* Simple View Toggle */}
-          <div className="flex gap-2 mt-6 bg-light-grey rounded-lg p-1">
-            <button
-              onClick={() => setCurrentView("cards")}
-              className={`px-6 py-2 rounded-md font-medium transition-all ${
-                currentView === "cards"
-                  ? "bg-pokemon-red text-white shadow-md"
-                  : "text-gray-600 hover:text-gray-800"
-              }`}
-            >
-              Browse Cards <span className="text-xs opacity-70 ml-1">(1)</span>
-            </button>
-            <button
-              onClick={() => setCurrentView("deckbuilder")}
-              className={`px-6 py-2 rounded-md font-medium transition-all ${
-                currentView === "deckbuilder"
-                  ? "bg-pokemon-red text-white shadow-md"
-                  : "text-gray-600 hover:text-gray-800"
-              }`}
-            >
-              Deck Builder <span className="text-xs opacity-70 ml-1">(2)</span>
-            </button>
-          </div>
-          
           {/* Keyboard Shortcuts Help */}
-          <div className="mt-4 text-center">
+          <div className="mt-6 text-center">
             <p className="text-xs text-gray-500">
               Press <kbd className="px-1 py-0.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded">/ or Cmd+K</kbd> to search, 
-              <kbd className="px-1 py-0.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded ml-1">1-2</kbd> to switch views,
               <kbd className="px-1 py-0.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded ml-1">Esc</kbd> to clear
             </p>
           </div>
         </div>
         
-        {/* Filters for Cards View */}
-        {currentView === "cards" && (
+        {/* Filters */}
+        {(
           <div className="mb-4 px-4">
-            {/* Search and Sort - Mobile Stack */}
-            <div className="space-y-3 mb-4">
-              {/* Search input */}
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <svg className="w-4 h-4 text-text-grey" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            {/* Enhanced Search and Filters */}
+            <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 mb-6">
+              {/* Search Bar */}
+              <div className="relative mb-6">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+                  <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </div>
                 <input
                   type="text"
-                  className="input-clean w-full pl-10 pr-10 focus:ring-2 focus:ring-pokemon-red/20 focus:border-pokemon-red transition-all duration-300"
-                  placeholder="Search cards... (Press / to focus)"
+                  className="w-full pl-12 pr-12 py-4 text-lg border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-pokemon-red/20 focus:border-pokemon-red transition-all duration-300 placeholder-gray-400"
+                  placeholder="Search Pocket cards... (Press / to focus)"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                 />
                 {search && (
                   <button 
-                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-text-grey hover:text-dark-text"
+                    className="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-400 hover:text-gray-600 transition-colors"
                     onClick={() => setSearch('')}
                   >
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
                 )}
               </div>
               
-              {/* Sort and Rarity Filter dropdowns */}
-              <div className="flex gap-3">
-                <select
-                  className="select-clean flex-1"
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                >
-                  <option value="name">Sort by Name</option>
-                  <option value="rarity">Sort by Rarity</option>
-                </select>
-                <select
-                  className="select-clean flex-1"
-                  value={rarityFilter}
-                  onChange={(e) => setRarityFilter(e.target.value)}
-                >
-                  <option value="all">All Rarities</option>
-                  {uniqueRarities.map(rarity => (
-                    <option key={rarity} value={rarity}>
-                      {rarity === '◊' ? 'Common (◊)' : 
-                       rarity === '◊◊' ? 'Uncommon (◊◊)' : 
-                       rarity === '◊◊◊' ? 'Rare (◊◊◊)' : 
-                       rarity === '◊◊◊◊' ? 'Double Rare (◊◊◊◊)' : 
-                       rarity === '★' ? 'EX (★)' : 
-                       rarity === '★★' ? 'Crown (★★)' : 
-                       rarity}
-                    </option>
-                  ))}
-                </select>
+              {/* Filter Pills */}
+              <div className="space-y-4">
+                {/* Rarity Filter - Simplified */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-3">Rarity</label>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={() => setRarityFilter('all')}
+                      className={`px-4 py-2 rounded-full font-medium transition-all ${
+                        rarityFilter === 'all'
+                          ? 'bg-pokemon-red text-white shadow-md'
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      }`}
+                    >
+                      All
+                    </button>
+                    <button
+                      onClick={() => setRarityFilter('◊')}
+                      className={`px-4 py-2 rounded-full font-medium transition-all ${
+                        rarityFilter === '◊'
+                          ? 'bg-gray-500 text-white shadow-md'
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      }`}
+                    >
+                      ◊ Common
+                    </button>
+                    <button
+                      onClick={() => setRarityFilter('◊◊')}
+                      className={`px-4 py-2 rounded-full font-medium transition-all ${
+                        rarityFilter === '◊◊'
+                          ? 'bg-green-500 text-white shadow-md'
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      }`}
+                    >
+                      ◊◊ Uncommon
+                    </button>
+                    <button
+                      onClick={() => setRarityFilter('◊◊◊')}
+                      className={`px-4 py-2 rounded-full font-medium transition-all ${
+                        rarityFilter === '◊◊◊'
+                          ? 'bg-blue-500 text-white shadow-md'
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      }`}
+                    >
+                      ◊◊◊ Rare
+                    </button>
+                    <button
+                      onClick={() => setRarityFilter('◊◊◊◊')}
+                      className={`px-4 py-2 rounded-full font-medium transition-all ${
+                        rarityFilter === '◊◊◊◊'
+                          ? 'bg-purple-500 text-white shadow-md'
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      }`}
+                    >
+                      ◊◊◊◊ Double Rare
+                    </button>
+                    <button
+                      onClick={() => setRarityFilter('★')}
+                      className={`px-4 py-2 rounded-full font-medium transition-all ${
+                        rarityFilter === '★'
+                          ? 'bg-yellow-500 text-white shadow-md'
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      }`}
+                    >
+                      ★ EX
+                    </button>
+                    <button
+                      onClick={() => setRarityFilter('immersive')}
+                      className={`px-4 py-2 rounded-full font-medium transition-all ${
+                        rarityFilter === 'immersive'
+                          ? 'bg-pink-500 text-white shadow-md'
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      }`}
+                    >
+                      ★★★ Immersive
+                    </button>
+                    <button
+                      onClick={() => setRarityFilter('★★')}
+                      className={`px-4 py-2 rounded-full font-medium transition-all ${
+                        rarityFilter === '★★'
+                          ? 'bg-red-500 text-white shadow-md'
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      }`}
+                    >
+                      ★★ Crown
+                    </button>
+                    <button
+                      onClick={() => setRarityFilter('fullart')}
+                      className={`px-4 py-2 rounded-full font-medium transition-all ${
+                        rarityFilter === 'fullart'
+                          ? 'bg-indigo-500 text-white shadow-md'
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      }`}
+                    >
+                      Full Art
+                    </button>
+                  </div>
+                </div>
+
+                {/* Type Filter */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-3">Type</label>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={() => setTypeFilter('all')}
+                      className={`transition-all ${
+                        typeFilter === 'all'
+                          ? 'ring-2 ring-offset-1 scale-105 shadow-lg ring-red-500 shadow-red-500/25'
+                          : 'opacity-70 hover:opacity-100 hover:scale-105'
+                      }`}
+                      title="Filter by all types"
+                    >
+                      <span className="type-badge size-md bg-red-500">All Types</span>
+                    </button>
+                    <TypeFilter 
+                      types={uniqueTypes} 
+                      selectedType={typeFilter} 
+                      onTypeChange={setTypeFilter}
+                      isPocketCard={true}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
 
             {/* Results counter */}
             {filteredPokemon.length !== pokemon.length && (
-              <div className="bg-pokemon-red/10 border border-pokemon-red/20 rounded-lg p-3 text-center">
+              <div className="bg-pokemon-red/10 border border-pokemon-red/20 rounded-xl p-4 text-center mb-4">
                 <p className="text-sm text-pokemon-red font-medium">
                   Showing {filteredPokemon.length} of {pokemon.length} cards
                   {(search || typeFilter !== 'all' || rarityFilter !== 'all') && (
@@ -335,179 +392,17 @@ export default function PocketMode() {
                 </p>
               </div>
             )}
-
-            {/* Type filter - Mobile Horizontal Scroll */}
-            <div className="bg-light-grey rounded-lg p-3">
-              <h3 className="text-sm font-medium mb-2 text-text-grey">Filter by Type</h3>
-              <TypeFilter 
-                types={uniqueTypes} 
-                selectedType={typeFilter} 
-                onTypeChange={setTypeFilter}
-                isPocketCard={true}
-              />
-            </div>
           </div>
         )}
         
-        {/* Deck Builder Interface */}
-        {currentView === "deckbuilder" && (
-          <div className="mb-6 px-4">
-            {/* Deck Info */}
-            <div className="bg-white rounded-lg border border-border-color p-4 mb-4">
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <input
-                    type="text"
-                    value={deckName}
-                    onChange={(e) => setDeckName(e.target.value)}
-                    className="text-xl font-bold bg-transparent border-none outline-none focus:ring-2 focus:ring-pokemon-red/20 rounded px-2"
-                  />
-                  <p className="text-sm text-gray-600">Pokémon TCG Pocket Deck</p>
-                </div>
-                <div className="text-right">
-                  <div className={`text-2xl font-bold ${
-                    currentDeck.length === 20 ? 'text-green-600' : 
-                    currentDeck.length > 20 ? 'text-red-600' : 'text-gray-600'
-                  }`}>
-                    {currentDeck.length}/20
-                  </div>
-                  <div className="text-sm text-gray-500">Cards</div>
-                  {currentDeck.length === 20 && (
-                    <div className="text-xs text-green-600 font-medium">✓ Deck Complete!</div>
-                  )}
-                  {currentDeck.length > 20 && (
-                    <div className="text-xs text-red-600 font-medium">Too many cards</div>
-                  )}
-                </div>
-              </div>
-              
-              {/* Deck Statistics */}
-              {currentDeck.length > 0 && (
-                <div className="grid grid-cols-3 gap-4 mb-4 p-3 bg-gray-50 rounded-lg">
-                  <div className="text-center">
-                    <div className="text-lg font-bold text-gray-800">
-                      {[...new Set(currentDeck.map(c => c.type))].length}
-                    </div>
-                    <div className="text-xs text-gray-500">Types</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-lg font-bold text-gray-800">
-                      {[...new Set(currentDeck.map(c => c.rarity))].length}
-                    </div>
-                    <div className="text-xs text-gray-500">Rarities</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-lg font-bold text-gray-800">
-                      {new Set(currentDeck.map(c => c.id)).size}
-                    </div>
-                    <div className="text-xs text-gray-500">Unique Cards</div>
-                  </div>
-                </div>
-              )}
-              
-              {/* Deck Actions */}
-              <div className="grid grid-cols-2 gap-2">
-                <div className="flex gap-2">
-                  <button
-                    onClick={saveDeck}
-                    disabled={currentDeck.length === 0}
-                    className="px-3 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white rounded-md font-medium transition-colors text-sm flex-1"
-                  >
-                    Save
-                  </button>
-                  <button
-                    onClick={loadDeck}
-                    className="px-3 py-2 bg-pokemon-blue hover:bg-blue-700 text-white rounded-md font-medium transition-colors text-sm flex-1"
-                  >
-                    Load
-                  </button>
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    onClick={clearDeck}
-                    className="px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md font-medium transition-colors text-sm flex-1"
-                  >
-                    Clear
-                  </button>
-                  <button
-                    onClick={() => setShowDeckBuilder(!showDeckBuilder)}
-                    className="px-3 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-md font-medium transition-colors text-sm flex-1"
-                  >
-                    {showDeckBuilder ? 'Hide' : 'Show'}
-                  </button>
-                </div>
-              </div>
-              
-              {/* Current Deck Display */}
-              {showDeckBuilder && currentDeck.length > 0 && (
-                <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-                  <h4 className="font-semibold mb-3">Current Deck ({currentDeck.length}/20)</h4>
-                  <div className="grid grid-cols-1 gap-2 max-h-60 overflow-y-auto">
-                    {Object.entries(
-                      currentDeck.reduce((acc, card) => {
-                        acc[card.id] = (acc[card.id] || 0) + 1;
-                        return acc;
-                      }, {})
-                    ).map(([cardId, count]) => {
-                      const card = currentDeck.find(c => c.id === cardId);
-                      return (
-                        <div key={cardId} className="flex items-center justify-between bg-white p-2 rounded border">
-                          <div className="flex items-center gap-3">
-                            <Image
-                              src={card.image || '/back-card.png'}
-                              alt={card.name}
-                              width={40}
-                              height={56}
-                              className="rounded"
-                            />
-                            <div>
-                              <div className="font-medium text-sm">{card.name}</div>
-                              <div className="text-xs text-gray-500">{card.type} • {card.rarity}</div>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm font-medium">{count}x</span>
-                            <button
-                              onClick={() => removeCardFromDeck(card)}
-                              className="px-2 py-1 bg-red-100 hover:bg-red-200 text-red-600 rounded text-xs"
-                            >
-                              Remove
-                            </button>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-            </div>
-            
-            {/* Search for deck building */}
-            <div className="bg-light-grey rounded-lg p-3 mb-4">
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <svg className="w-4 h-4 text-text-grey" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                </div>
-                <input
-                  type="text"
-                  className="input-clean w-full pl-10 pr-4 focus:ring-2 focus:ring-pokemon-red/20 focus:border-pokemon-red transition-all duration-300"
-                  placeholder="Search cards to add to deck..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                />
-              </div>
-            </div>
-          </div>
-        )}
+        {/* Deck builder has been moved to /pocketmode/deckbuilder */}
       
         {/* Main content with enhanced loading */}
         {isViewLoading ? (
-          <div className="relative">
-            <PokemonLoadingScreen 
-              type="silhouette" 
-              message="Preparing Pocket Mode..."
+          <div className="min-h-[400px] flex items-center justify-center">
+            <PokeballLoader 
+              size="large" 
+              text="Loading Pocket cards..."
             />
           </div>
         ) : viewError ? (
@@ -526,7 +421,7 @@ export default function PocketMode() {
               </button>
             }
           />
-        ) : currentView === "cards" ? (
+        ) : (
           <PocketCardList 
             cards={filteredPokemon}
             loading={loading.pokemon}
@@ -535,86 +430,9 @@ export default function PocketMode() {
             showPack={true}
             showRarity={true}
             showHP={true}
+            imageWidth={110}
+            imageHeight={154}
           />
-        ) : (
-          /* Deck Builder Cards View */
-          (<div className="px-4">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-              {filteredPokemon.map((card) => {
-                const cardCount = getCardCountInDeck(card);
-                const canAdd = cardCount < 2 && currentDeck.length < 20;
-                
-                return (
-                  <div key={card.id} className="relative group">
-                    {/* Card Image */}
-                    <div className="relative bg-white rounded-lg border border-border-color overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                      <div className="aspect-[3/4] relative">
-                        <Image
-                          src={card.image || '/back-card.png'}
-                          alt={card.name}
-                          fill
-                          className="object-contain"
-                          sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, (max-width: 1280px) 20vw, 16.67vw"
-                        />
-                        
-                        {/* Card count badge */}
-                        {cardCount > 0 && (
-                          <div className="absolute top-2 right-2 bg-pokemon-red text-white text-sm font-bold rounded-full w-6 h-6 flex items-center justify-center shadow-lg">
-                            {cardCount}
-                          </div>
-                        )}
-                      </div>
-                      
-                      {/* Card Info */}
-                      <div className="p-3">
-                        <h3 className="font-medium text-sm mb-1 line-clamp-2">{card.name}</h3>
-                        <div className="flex items-center justify-between text-xs text-gray-500">
-                          <span>{card.type}</span>
-                          <span>{card.rarity}</span>
-                        </div>
-                      </div>
-                      
-                      {/* Add/Remove Buttons */}
-                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                        <button
-                          onClick={() => addCardToDeck(card)}
-                          disabled={!canAdd}
-                          className={`px-3 py-1 text-sm font-medium rounded transition-all transform hover:scale-105 ${
-                            canAdd
-                              ? 'bg-green-600 hover:bg-green-700 text-white shadow-lg'
-                              : 'bg-gray-400 text-gray-200 cursor-not-allowed'
-                          }`}
-                          title={!canAdd ? (cardCount >= 2 ? 'Max 2 copies allowed' : 'Deck is full (20 cards)') : 'Add to deck'}
-                        >
-                          {canAdd ? '+Add' : (cardCount >= 2 ? 'Max' : 'Full')}
-                        </button>
-                        {cardCount > 0 && (
-                          <button
-                            onClick={() => removeCardFromDeck(card)}
-                            className="px-3 py-1 text-sm font-medium rounded bg-red-600 hover:bg-red-700 text-white transition-all transform hover:scale-105 shadow-lg"
-                            title="Remove from deck"
-                          >
-                            Remove
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-            {filteredPokemon.length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-gray-500 mb-4">No cards found matching your search.</p>
-                <button
-                  onClick={() => setSearch('')}
-                  className="px-4 py-2 bg-pokemon-red hover:bg-red-700 text-white rounded-md font-medium transition-colors"
-                >
-                  Clear Search
-                </button>
-              </div>
-            )}
-          </div>)
         )}
       </FadeIn>
       {/* Back to Top Button */}

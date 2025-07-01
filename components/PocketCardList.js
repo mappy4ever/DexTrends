@@ -51,7 +51,8 @@ export default function PocketCardList({
   cards, 
   loading, 
   error, 
-  emptyMessage = "No Pocket cards found.", 
+  emptyMessage = "No Pocket cards found.",
+  hideCardCount = false, 
   cardClassName = "", 
   gridClassName = "",
   showPack = true,
@@ -59,11 +60,32 @@ export default function PocketCardList({
   showHP = true,
   showSort = true,
   itemsPerPage = 48, // 6 columns x 8 rows = reasonable page size
-  imageWidth = 220, // Default UnifiedCard size
-  imageHeight = 308 // Default UnifiedCard size
+  imageWidth = 110, // 50% smaller than 220
+  imageHeight = 154 // 50% smaller than 308
 }) {
   const [zoomedCard, setZoomedCard] = useState(null);
-  const [sortOption, setSortOption] = useState("name");
+  const [sortOption, setSortOption] = useState("number");
+
+  // Helper function to parse set code and number for sorting
+  const parseCardId = (cardId) => {
+    if (!cardId) return { setCode: 'zzz', number: 9999, isPromo: false };
+    
+    const id = cardId.toLowerCase();
+    
+    // Check if it's a promo card
+    const isPromo = id.includes('promo') || id.includes('p-') || id.includes('-p');
+    
+    // Parse set code and number (e.g., "a1-001", "a2b-045")
+    const parts = id.split('-');
+    if (parts.length >= 2) {
+      const setCode = parts[0];
+      const number = parseInt(parts[1]) || 0;
+      return { setCode, number, isPromo };
+    }
+    
+    // Fallback for cards without proper format
+    return { setCode: 'zzz', number: 9999, isPromo };
+  };
 
   // Sorting logic for Pocket cards
   const sortedCards = useMemo(() => {
@@ -71,6 +93,23 @@ export default function PocketCardList({
       switch (sortOption) {
         case "name":
           return a.name.localeCompare(b.name);
+        case "number":
+          const parsedA = parseCardId(a.id);
+          const parsedB = parseCardId(b.id);
+          
+          // Promos go to the end
+          if (parsedA.isPromo !== parsedB.isPromo) {
+            return parsedA.isPromo ? 1 : -1;
+          }
+          
+          // Sort by set code first (A1, A1a, A2, A2a, A2b, etc.)
+          const setCompare = parsedA.setCode.localeCompare(parsedB.setCode);
+          if (setCompare !== 0) {
+            return setCompare;
+          }
+          
+          // Then by number within the set
+          return parsedA.number - parsedB.number;
         case "hp":
           const hpA = parseInt(a.health) || 0;
           const hpB = parseInt(b.health) || 0;
@@ -152,26 +191,26 @@ export default function PocketCardList({
     <>
     {/* Sort Controls */}
     {showSort && cards.length > 0 && (
-      <div className="flex justify-center mb-6">
-        <label htmlFor="pocket-sort" className="mr-2 font-semibold">Sort by:</label>
+      <div className="flex justify-end mb-4">
         <select
           id="pocket-sort"
           value={sortOption}
           onChange={(e) => handleSortChange(e.target.value)}
-          className="input"
+          className="px-2 py-1 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-pokemon-red focus:border-transparent bg-white"
         >
-          <option value="name">Name</option>
-          <option value="hp">HP (Highest First)</option>
-          <option value="rarity">Rarity</option>
-          <option value="type">Type</option>
-          <option value="pack">Pack</option>
-          <option value="ex">EX Cards First</option>
-          <option value="fullart">Full Art First</option>
+          <option value="name">Sort: Name</option>
+          <option value="number">Sort: #</option>
+          <option value="hp">Sort: HP</option>
+          <option value="rarity">Sort: Rarity</option>
+          <option value="type">Sort: Type</option>
+          <option value="pack">Sort: Pack</option>
+          <option value="ex">Sort: EX First</option>
+          <option value="fullart">Sort: Full Art</option>
         </select>
       </div>
     )}
     
-    <div className={gridClassName || "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"}>
+    <div className={gridClassName || "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4"}>
       {displayedCards.map(card => {
         return (
           <PocketCard
@@ -192,19 +231,22 @@ export default function PocketCardList({
     {hasMore && (
       <div 
         ref={sentinelRef} 
-        className="h-4 w-full flex items-center justify-center"
+        className="h-20 w-full flex items-center justify-center transition-all duration-300"
+        style={{ minHeight: '80px' }}
       >
-        {scrollLoading && (
+        {scrollLoading ? (
           <InlineLoadingSpinner 
             text="Loading more cards..." 
-            className="mt-2"
+            className="py-4"
           />
+        ) : (
+          <div className="h-20" /> 
         )}
       </div>
     )}
 
     {/* Cards Count Info */}
-    {sortedCards.length > 0 && (
+    {!hideCardCount && sortedCards.length > 0 && (
       <div className="text-center mt-4 text-sm text-gray-600 dark:text-gray-400">
         Showing {displayedCards.length} of {sortedCards.length} cards
         {hasMore && !scrollLoading && (
@@ -215,7 +257,7 @@ export default function PocketCardList({
       </div>
     )}
 
-    {!scrollLoading && !hasMore && sortedCards.length > 0 && (
+    {!hideCardCount && !scrollLoading && !hasMore && sortedCards.length > 0 && (
       <div className="text-center mt-4 text-sm text-gray-500 dark:text-gray-400">
         All {sortedCards.length} cards loaded
       </div>

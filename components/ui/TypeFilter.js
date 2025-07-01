@@ -15,8 +15,41 @@ export function TypeFilter({ types = [], selectedType, onTypeChange, compact = f
     return null;
   }
 
-  // Make sure "all" is always the first option
-  const sortedTypes = ["all", ...types.filter(t => t !== "all")];
+  // Filter out "all" type and sort the remaining types
+  const sortedTypes = types.filter(t => t !== "all");
+
+  // Get type-specific ring color for selected state
+  const getTypeRingColor = (type) => {
+    const typeColors = {
+      fire: 'ring-red-500 shadow-red-500/25',
+      water: 'ring-blue-500 shadow-blue-500/25',
+      grass: 'ring-green-500 shadow-green-500/25',
+      electric: 'ring-yellow-400 shadow-yellow-400/25',
+      lightning: 'ring-yellow-400 shadow-yellow-400/25',
+      psychic: 'ring-pink-500 shadow-pink-500/25',
+      ice: 'ring-cyan-400 shadow-cyan-400/25',
+      dragon: 'ring-indigo-600 shadow-indigo-600/25',
+      dark: 'ring-gray-800 shadow-gray-800/25',
+      darkness: 'ring-gray-800 shadow-gray-800/25',
+      fairy: 'ring-pink-400 shadow-pink-400/25',
+      normal: 'ring-gray-400 shadow-gray-400/25',
+      fighting: 'ring-orange-600 shadow-orange-600/25',
+      flying: 'ring-indigo-400 shadow-indigo-400/25',
+      poison: 'ring-purple-500 shadow-purple-500/25',
+      ground: 'ring-yellow-600 shadow-yellow-600/25',
+      rock: 'ring-stone-500 shadow-stone-500/25',
+      bug: 'ring-lime-400 shadow-lime-400/25',
+      ghost: 'ring-purple-600 shadow-purple-600/25',
+      steel: 'ring-slate-500 shadow-slate-500/25',
+      metal: 'ring-slate-500 shadow-slate-500/25',
+      colorless: 'ring-gray-300 shadow-gray-300/25',
+      trainer: 'ring-emerald-500 shadow-emerald-500/25',
+      item: 'ring-blue-500 shadow-blue-500/25',
+      supporter: 'ring-orange-500 shadow-orange-500/25',
+      tool: 'ring-purple-500 shadow-purple-500/25'
+    };
+    return typeColors[type.toLowerCase()] || 'ring-red-500 shadow-red-500/25';
+  };
 
   return (
     <div className={`flex ${compact ? 'flex-wrap gap-1.5' : 'gap-2 overflow-x-auto py-2 px-1'}`}>
@@ -28,20 +61,12 @@ export function TypeFilter({ types = [], selectedType, onTypeChange, compact = f
             compact ? 'scale-90' : ''
           } ${
             selectedType === type
-              ? 'ring-2 ring-red-500 ring-offset-1 scale-105 shadow-lg shadow-red-500/25'
+              ? `ring-2 ring-offset-1 scale-105 shadow-lg ${getTypeRingColor(type)}`
               : 'opacity-70 hover:opacity-100 hover:scale-105'
           }`}
-          title={`Filter by ${type === 'all' ? 'all types' : type + ' type'}`}
+          title={`Filter by ${type + ' type'}`}
         >
-          {type === "all" ? (
-            <div className={`px-3 py-1.5 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-medium flex items-center justify-center ${
-              compact ? 'h-6' : 'h-7'
-            }`}>
-              All Types
-            </div>
-          ) : (
-            <TypeBadge type={type} size={compact ? "sm" : "md"} isPocketCard={isPocketCard} />
-          )}
+          <TypeBadge type={type} size={compact ? "sm" : "md"} isPocketCard={isPocketCard} />
         </button>
       ))}
     </div>

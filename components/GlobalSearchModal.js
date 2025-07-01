@@ -66,19 +66,24 @@ const GlobalSearchModal = forwardRef(function GlobalSearchModal(_, ref) {
   }, [open]);
 
   return open ? (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm" onClick={close}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm safe-area-padding" onClick={close}>
       <div
-        className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl p-6 w-full max-w-lg mx-auto relative flex flex-col items-center"
+        className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl p-6 w-full max-w-lg mx-auto relative flex flex-col items-center modal-content"
         onClick={e => e.stopPropagation()}
         tabIndex={-1}
-        style={{ outline: 'none' }}
+        style={{ outline: 'none', maxHeight: 'calc(90vh - env(safe-area-inset-top) - env(safe-area-inset-bottom))' }}
       >
         <div className="w-full flex flex-col items-center mb-2">
           <input
             ref={inputRef}
             autoFocus
             className="w-full max-w-md px-5 py-3 rounded-xl border-2 border-primary focus:ring-4 focus:ring-primary/30 text-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-lg mb-2 outline-none transition-all duration-200 placeholder-gray-400 caret-primary"
-            style={{ boxShadow: '0 4px 24px 0 rgba(0,0,0,0.10)', background: 'rgba(255,255,255,0.98)' }}
+            style={{ 
+              boxShadow: '0 4px 24px 0 rgba(0,0,0,0.10)', 
+              background: 'rgba(255,255,255,0.98)',
+              fontSize: '16px',
+              minHeight: '44px'
+            }}
             placeholder="Search cards, Pokémon, sets..."
             value={query}
             onChange={e => setQuery(e.target.value)}

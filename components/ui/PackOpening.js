@@ -26,6 +26,12 @@ export default function PackOpening({
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [packImage, setPackImage] = useState(null);
   const [hasRareCard, setHasRareCard] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // Handle mounting
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Reset when pack opens
   useEffect(() => {
@@ -166,7 +172,8 @@ export default function PackOpening({
     onPackOpened(cards);
   };
 
-  if (!isOpen) return null;
+  // Don't render until mounted to prevent hydration issues
+  if (!isOpen || !mounted) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">

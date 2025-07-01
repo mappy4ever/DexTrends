@@ -20,11 +20,15 @@ const typeColors = {
   ground: 'bg-yellow-600',
   rock: 'bg-stone-500',
   bug: 'bg-lime-400',
-  ghost: 'bg-purple-600',
+  ghost: 'bg-purple-800',
   steel: 'bg-slate-500',
   metal: 'bg-slate-500', // Pocket alias for steel
   colorless: 'bg-gray-300',
-  trainer: 'bg-emerald-500'
+  trainer: 'bg-emerald-500',
+  // Trainer subtypes (matching pocket card colors)
+  item: 'bg-blue-500',
+  supporter: 'bg-orange-500 text-white',
+  tool: 'bg-purple-500'
 };
 
 // Type badge component for consistent display of Pokémon types
@@ -38,6 +42,8 @@ export function TypeBadge({ type, className = '', size = 'md', onClick = null, i
   
   // Size classes
   const sizeClass = {
+    'xxs': 'size-xxs',
+    'xs': 'size-xs',
     'list': 'size-list',
     'sm': 'size-sm',
     'md': 'size-md',

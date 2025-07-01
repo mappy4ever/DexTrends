@@ -89,8 +89,14 @@ export const useInfiniteScroll = (
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries;
-        if (entry.isIntersecting && hasMore && !isLoading) {
-          loadMore();
+        // Add additional check to prevent shaking at the end
+        if (entry.isIntersecting && hasMore && !isLoading && visibleCount < items.length) {
+          // Small delay to prevent rapid triggering
+          setTimeout(() => {
+            if (hasMore && !isLoading) {
+              loadMore();
+            }
+          }, 50);
         }
       },
       {
@@ -107,7 +113,7 @@ export const useInfiniteScroll = (
         observerRef.current.disconnect();
       }
     };
-  }, [hasMore, isLoading, loadMore, rootMargin, useIntersectionObserver]);
+  }, [hasMore, isLoading, loadMore, rootMargin, useIntersectionObserver, visibleCount, items.length]);
 
   // Fallback scroll listener with throttling
   useEffect(() => {

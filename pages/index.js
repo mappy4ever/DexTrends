@@ -54,12 +54,6 @@ export default function IndexPage() {
   const [showMarketAnalytics, setShowMarketAnalytics] = useState(false);
   const [showVisualFilters, setShowVisualFilters] = useState(false);
   const [showComparisonTool, setShowComparisonTool] = useState(false);
-  const [enable3DCards, setEnable3DCards] = useState(false);
-
-  // Initialize 3D cards state on mount
-  useEffect(() => {
-    setEnable3DCards(isFeatureEnabled('ENABLE_3D_CARDS'));
-  }, []);
 
   // Ref to detect clicks outside expanded card modal
   const containerRef = useRef(null);
@@ -271,25 +265,6 @@ export default function IndexPage() {
           {showComparisonTool ? 'Hide' : 'Show'} Card Comparison
         </button>
         
-        <button
-          onClick={() => {
-            const newValue = !enable3DCards;
-            setEnable3DCards(newValue);
-            toggleFeature('ENABLE_3D_CARDS', newValue);
-            // Also toggle related features
-            toggleFeature('ENABLE_HOLOGRAPHIC_EFFECTS', newValue);
-            toggleFeature('ENABLE_MOUSE_TRACKING', newValue);
-          }}
-          className={`${enable3DCards 
-            ? 'bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700' 
-            : 'bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800'
-          } text-white px-6 py-3 rounded-lg transition-all duration-300 flex items-center gap-2 shadow-lg`}
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-          </svg>
-          {enable3DCards ? 'Disable' : 'Enable'} 3D Cards
-        </button>
       </div>
       {/* Market Analytics Section */}
       {showMarketAnalytics && (

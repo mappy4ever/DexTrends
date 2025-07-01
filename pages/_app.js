@@ -5,9 +5,12 @@ import "../styles/globals.css";
 import "../styles/mobile.css";
 import "../styles/pokemon-animations.css";
 import "../styles/design-system.css";
+import "../styles/animations.css";
 import "../components/typebadge.css";
 import Layout from "../components/layout/layout";
 import ErrorBoundary from "../components/layout/errorboundary";
+import { PageTransition } from "../components/ui/animations";
+import applyIOSFixes from "../utils/iosFixes";
 
 import { ThemeProvider } from '../context/themecontext';
 import { FavoritesProvider } from '../context/favoritescontext';
@@ -59,16 +62,46 @@ function MyApp({ Component, pageProps, router }) {
   const nextRouter = useRouter();
   const [isClient, setIsClient] = useState(false);
   const [featuresEnabled, setFeaturesEnabled] = useState({});
+  const [isScrolling, setIsScrolling] = useState(false);
   
   // EMERGENCY: Minimal initialization only
   useEffect(() => {
     setIsClient(true);
-  }, []);
+    
+    // Apply iOS-specific fixes
+    import('../utils/iosFixes').then(({ applyIOSFixes }) => {
+      applyIOSFixes();
+    }).catch(err => {
+      console.warn('iOS fixes failed to load:', err);
+    });
+    
+    // iOS scroll performance optimization
+    let scrollTimer;
+    const handleScroll = () => {
+      if (!isScrolling) {
+        document.body.classList.add('is-scrolling');
+        setIsScrolling(true);
+      }
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(() => {
+        document.body.classList.remove('is-scrolling');
+        setIsScrolling(false);
+      }, 150);
+    };
+    
+    // Use passive event listener for better performance
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(scrollTimer);
+    };
+  }, []); // Remove isScrolling dependency to prevent re-renders
 
   return (
     <ErrorBoundary>
       <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
         <meta name="theme-color" content="#dc2626" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -93,7 +126,9 @@ function MyApp({ Component, pageProps, router }) {
               <ModalProvider>
                 
                 <Layout>
-                  <Component {...pageProps} />
+                  <PageTransition key={nextRouter.asPath}>
+                    <Component {...pageProps} />
+                  </PageTransition>
                   
                   {/* EMERGENCY: All enhancements disabled to stop refresh loop */}
                 </Layout>

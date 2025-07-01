@@ -1,764 +1,378 @@
-/* DexTrends Clean Classic Design System */
+/* Design System for DexTrends - iPhone Optimized */
 
-/* Import Clean, Readable Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
+/* Typography Scale - Mobile First */
 :root {
-  /* === CLEAN CLASSIC COLOR PALETTE === */
+  /* Font sizes optimized for iPhone readability */
+  --text-xs: 12px;    /* Small labels */
+  --text-sm: 14px;    /* Secondary text */
+  --text-base: 16px;  /* Body text - prevents iOS zoom */
+  --text-lg: 18px;    /* Subheadings */
+  --text-xl: 20px;    /* Section headings */
+  --text-2xl: 24px;   /* Page headings */
+  --text-3xl: 30px;   /* Hero text */
+  --text-4xl: 36px;   /* Display text */
   
-  /* Base Clean Colors - Primary Palette */
-  --white: #FFFFFF;
-  --off-white: #FAFAFA;
-  --light-grey: #F5F5F5;
-  --mid-grey: #E5E7EB;
-  --border-grey: #D1D5DB;
-  --text-grey: #6B7280;
-  --dark-text: #374151;
-  --charcoal: #1F2937;
-  --black: #111827;
+  /* Line heights */
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose: 1.75;
   
-  /* Strategic Pokémon Colors - Used Sparingly */
-  --pokemon-red: #DC2626;
-  --pokemon-blue: #2563EB;
-  --pokemon-yellow: #F59E0B;
-  --pokemon-green: #059669;
-  
-  /* Subtle Backgrounds */
-  --card-bg: var(--white);
-  --card-bg-hover: var(--off-white);
-  --sidebar-bg: var(--white);
-  --page-bg: var(--off-white);
-  
-  /* Clean Borders & Shadows */
-  --border-color: var(--border-grey);
-  --border-light: var(--mid-grey);
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  --shadow-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
-  
-  /* Minimal Glass Effect (when needed) */
-  --glass-minimal: rgba(255, 255, 255, 0.95);
-  --glass-border: rgba(0, 0, 0, 0.08);
-  
-  /* === TYPOGRAPHY SYSTEM === */
-  
-  /* Font Families */
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-heading: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'JetBrains Mono', Consolas, monospace;
-  
-  /* Font Weights */
+  /* Font weights */
   --font-light: 300;
   --font-normal: 400;
   --font-medium: 500;
   --font-semibold: 600;
   --font-bold: 700;
+  --font-extrabold: 800;
   
-  /* Font Sizes */
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.25rem;
-  --text-2xl: 1.5rem;
-  --text-3xl: 1.875rem;
-  --text-4xl: 2.25rem;
-  --text-5xl: 3rem;
+  /* Letter spacing */
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.025em;
+  --tracking-wider: 0.05em;
+  --tracking-widest: 0.1em;
+}
+
+/* Spacing System - 4px grid */
+:root {
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-9: 36px;
+  --space-10: 40px;
+  --space-11: 44px;  /* iOS touch target */
+  --space-12: 48px;
+  --space-14: 56px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
   
-  /* Line Heights */
-  --leading-tight: 1.25;
-  --leading-normal: 1.5;
-  --leading-relaxed: 1.625;
+  /* Container padding for safe areas */
+  --container-padding: max(var(--space-4), env(safe-area-inset-left));
+  --container-padding-lg: max(var(--space-6), env(safe-area-inset-left));
+}
+
+/* iOS-optimized shadows */
+:root {
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+  --shadow-none: none;
   
-  /* === SPACING SYSTEM === */
-  
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 0.75rem;
-  --space-4: 1rem;
-  --space-5: 1.25rem;
-  --space-6: 1.5rem;
-  --space-8: 2rem;
-  --space-10: 2.5rem;
-  --space-12: 3rem;
-  --space-16: 4rem;
-  --space-20: 5rem;
-  
-  /* === BORDER RADIUS === */
-  
-  --radius-sm: 0.125rem;
-  --radius-md: 0.375rem;
-  --radius-lg: 0.5rem;
-  --radius-xl: 0.75rem;
-  --radius-2xl: 1rem;
+  /* Card shadows */
+  --shadow-card: var(--shadow-sm);
+  --shadow-card-hover: var(--shadow-md);
+  --shadow-card-active: var(--shadow-lg);
+}
+
+/* Border Radius */
+:root {
+  --radius-none: 0;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 24px;
   --radius-full: 9999px;
   
-  /* === TRANSITIONS === */
-  
-  --transition-fast: 150ms ease-out;
-  --transition-normal: 250ms ease-out;
-  --transition-slow: 350ms ease-out;
-  
-  /* === Z-INDEX SCALE === */
-  
-  --z-dropdown: 1000;
-  --z-sticky: 1100;
-  --z-modal: 1400;
-  --z-tooltip: 1800;
+  /* Component specific */
+  --radius-button: var(--radius-md);
+  --radius-card: var(--radius-lg);
+  --radius-modal: var(--radius-xl);
+  --radius-input: var(--radius-md);
 }
 
-/* Dark Mode */
-.dark {
-  --white: #1F2937;
-  --off-white: #374151;
-  --light-grey: #4B5563;
-  --mid-grey: #6B7280;
-  --border-grey: #9CA3AF;
-  --text-grey: #D1D5DB;
-  --dark-text: #F9FAFB;
-  --charcoal: #E5E7EB;
-  --black: #FFFFFF;
-  
-  --card-bg: #1F2937;
-  --card-bg-hover: #374151;
-  --sidebar-bg: #1F2937;
-  --page-bg: #111827;
-  
-  --border-color: #374151;
-  --border-light: #4B5563;
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-  --shadow-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.6);
-  
-  --glass-minimal: rgba(31, 41, 55, 0.95);
-  --glass-border: rgba(255, 255, 255, 0.1);
+/* Z-index scale */
+:root {
+  --z-0: 0;
+  --z-10: 10;
+  --z-20: 20;
+  --z-30: 30;
+  --z-40: 40;
+  --z-50: 50;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal-backdrop: 400;
+  --z-modal: 500;
+  --z-popover: 600;
+  --z-tooltip: 700;
+  --z-notification: 800;
+  --z-max: 999;
 }
 
-/* === UTILITY CLASSES === */
-
-/* Clean Card Styles */
-.card-clean {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  transition: all var(--transition-normal);
+/* Transitions */
+:root {
+  --transition-none: none;
+  --transition-all: all var(--animation-normal) ease-out;
+  --transition-opacity: opacity var(--animation-normal) ease-out;
+  --transition-transform: transform var(--animation-normal) ease-out;
+  --transition-colors: background-color var(--animation-fast) ease-out, 
+                       border-color var(--animation-fast) ease-out, 
+                       color var(--animation-fast) ease-out;
+  --transition-shadow: box-shadow var(--animation-normal) ease-out;
 }
 
-.card-clean:hover {
-  background: var(--card-bg-hover);
-  box-shadow: var(--shadow-hover);
-  transform: translateY(-1px);
+/* iPhone-specific breakpoints */
+:root {
+  --screen-iphone-se: 375px;
+  --screen-iphone-12-mini: 375px;
+  --screen-iphone-standard: 390px;
+  --screen-iphone-plus: 428px;
+  --screen-iphone-max: 430px;
+  --screen-sm: 640px;
+  --screen-md: 768px;
+  --screen-lg: 1024px;
+  --screen-xl: 1280px;
+  --screen-2xl: 1536px;
 }
 
-/* Minimal Glass Effect (only when absolutely needed) */
-.glass-minimal {
-  background: var(--glass-minimal);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--glass-border);
-}
+/* Component Classes */
 
-/* Clean Button Styles */
-.btn-clean {
+/* Buttons - iOS optimized */
+.btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
-  padding: var(--space-3) var(--space-4);
-  font-family: var(--font-body);
+  font-size: var(--text-base);
   font-weight: var(--font-medium);
-  font-size: var(--text-sm);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-color);
-  background: var(--white);
-  color: var(--dark-text);
+  padding: var(--space-3) var(--space-4);
+  min-height: var(--space-11); /* 44px iOS touch target */
+  min-width: var(--space-11);
+  border-radius: var(--radius-button);
+  transition: var(--transition-all);
   cursor: pointer;
-  transition: all var(--transition-normal);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  position: relative;
+  overflow: hidden;
 }
 
-.btn-clean:hover {
-  background: var(--off-white);
-  border-color: var(--text-grey);
+.btn-primary {
+  background-color: var(--pokemon-red);
+  color: var(--white);
+  border: 1px solid var(--pokemon-red);
+}
+
+.btn-primary:hover {
+  background-color: #b91c1c;
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
 
-.btn-primary {
-  background: var(--pokemon-red);
-  border-color: var(--pokemon-red);
-  color: white;
-}
-
-.btn-primary:hover {
-  background: #B91C1C;
-  border-color: #B91C1C;
-}
-
-/* Typography Classes */
-.font-body {
-  font-family: var(--font-body);
-}
-
-.font-heading {
-  font-family: var(--font-heading);
-  font-weight: var(--font-semibold);
-}
-
-.font-mono {
-  font-family: var(--font-mono);
-}
-
-/* Text Colors */
-.text-primary {
-  color: var(--dark-text);
-}
-
-.text-secondary {
-  color: var(--text-grey);
-}
-
-.text-pokemon-red {
-  color: var(--pokemon-red);
-}
-
-.text-pokemon-blue {
-  color: var(--pokemon-blue);
-}
-
-.text-pokemon-yellow {
-  color: var(--pokemon-yellow);
-}
-
-/* Clean Animations (subtle and smooth) */
-.animate-fade-in {
-  animation: clean-fade-in 0.3s ease-out;
-}
-
-.animate-slide-up {
-  animation: clean-slide-up 0.4s ease-out;
-}
-
-.hover-lift:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-hover);
-  transition: all var(--transition-normal);
-}
-
-/* Enhanced Card Animations */
-.card-hover {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.card-hover:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: var(--shadow-lg);
-}
-
-/* Smooth Scale Animation */
-.scale-hover {
-  transition: transform 0.2s ease-out;
-}
-
-.scale-hover:hover {
-  transform: scale(1.05);
-}
-
-/* Subtle Glow Effect */
-.glow-hover {
-  transition: all 0.3s ease-out;
-}
-
-.glow-hover:hover {
-  box-shadow: 0 0 20px rgba(220, 38, 38, 0.3);
-}
-
-/* === HOLOGRAPHIC CARD EFFECTS === */
-
-/* Holographic Rainbow Gradient Background */
-.holographic-bg {
-  background: linear-gradient(
-    45deg,
-    #ff0000,
-    #ff7f00,
-    #ffff00,
-    #00ff00,
-    #0000ff,
-    #4b0082,
-    #9400d3,
-    #ff0000
-  );
-  background-size: 400% 400%;
-  animation: holographic-shift 8s ease-in-out infinite;
-}
-
-/* Holographic Foil Effect */
-.holographic-foil {
-  position: relative;
-  overflow: hidden;
-}
-
-.holographic-foil::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    45deg,
-    transparent 30%,
-    rgba(255, 255, 255, 0.1) 40%,
-    rgba(255, 255, 255, 0.3) 50%,
-    rgba(255, 255, 255, 0.1) 60%,
-    transparent 70%
-  );
-  transform: rotate(45deg);
-  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
-  opacity: 0;
-  pointer-events: none;
-}
-
-.holographic-foil:hover::before {
-  opacity: 1;
-  animation: holographic-sweep 0.8s ease-out;
-}
-
-/* Holographic Border Effect */
-.holographic-border {
-  position: relative;
-  border: 2px solid transparent;
-  background: linear-gradient(white, white) padding-box,
-              linear-gradient(45deg, #ff0080, #ff8c00, #40e0d0, #ff0080) border-box;
-  transition: all 0.3s ease;
-}
-
-.holographic-border:hover {
-  background: linear-gradient(white, white) padding-box,
-              linear-gradient(45deg, #ff8c00, #40e0d0, #ff0080, #ff8c00) border-box;
-}
-
-/* Holographic Text Effect */
-.holographic-text {
-  background: linear-gradient(
-    45deg,
-    #ff0080,
-    #ff8c00,
-    #40e0d0,
-    #ff0080
-  );
-  background-size: 300% 300%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: holographic-text-shift 3s ease-in-out infinite;
-}
-
-/* Subtle Holographic Card Enhancement */
-.card-holographic {
-  position: relative;
-  background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
-}
-
-.card-holographic::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 0, 128, 0.05) 0%,
-    rgba(255, 140, 0, 0.05) 25%,
-    rgba(64, 224, 208, 0.05) 50%,
-    rgba(255, 0, 128, 0.05) 75%,
-    rgba(255, 140, 0, 0.05) 100%
-  );
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
-  border-radius: inherit;
-}
-
-.card-holographic:hover::after {
-  opacity: 1;
-}
-
-.card-holographic:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.1),
-    0 0 0 1px rgba(255, 255, 255, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
-}
-
-/* Rare Card Glow Effects */
-.card-rare-glow {
-  box-shadow: 0 0 20px rgba(255, 223, 0, 0.4);
-}
-
-.card-ultra-glow {
-  box-shadow: 0 0 25px rgba(138, 43, 226, 0.5);
-}
-
-.card-secret-glow {
-  box-shadow: 0 0 30px rgba(255, 20, 147, 0.6);
-}
-
-/* Interactive States */
-.interactive {
-  cursor: pointer;
-  transition: all var(--transition-normal);
-}
-
-.interactive:hover {
-  transform: translateY(-1px);
-}
-
-/* Clean Loading States */
-.loading-clean {
-  background: linear-gradient(90deg, 
-    var(--light-grey) 25%, 
-    var(--mid-grey) 50%, 
-    var(--light-grey) 75%
-  );
-  background-size: 200% 100%;
-  animation: clean-shimmer 1.5s infinite;
-}
-
-/* Professional Loading Spinner */
-.loading-spinner {
-  display: inline-block;
-  width: 2rem;
-  height: 2rem;
-  border: 3px solid var(--light-grey);
-  border-radius: 50%;
-  border-top-color: var(--pokemon-red);
-  animation: spin 1s linear infinite;
-}
-
-.loading-spinner-sm {
-  width: 1.5rem;
-  height: 1.5rem;
-  border-width: 2px;
-}
-
-.loading-spinner-lg {
-  width: 3rem;
-  height: 3rem;
-  border-width: 4px;
-}
-
-/* Loading Dots */
-.loading-dots {
-  display: inline-flex;
-  gap: 0.25rem;
-}
-
-.loading-dots span {
-  display: inline-block;
-  width: 0.5rem;
-  height: 0.5rem;
-  background-color: var(--pokemon-red);
-  border-radius: 50%;
-  animation: loading-dots-bounce 1.4s infinite ease-in-out both;
-}
-
-.loading-dots span:nth-child(1) { animation-delay: -0.32s; }
-.loading-dots span:nth-child(2) { animation-delay: -0.16s; }
-.loading-dots span:nth-child(3) { animation-delay: 0s; }
-
-/* Loading Progress Bar */
-.loading-progress {
-  width: 100%;
-  height: 0.5rem;
-  background-color: var(--light-grey);
-  border-radius: var(--radius-full);
-  overflow: hidden;
-}
-
-.loading-progress-bar {
-  height: 100%;
-  background-color: var(--pokemon-red);
-  border-radius: var(--radius-full);
-  transition: width 0.3s ease-out;
-}
-
-.loading-progress-indeterminate {
-  background: linear-gradient(90deg, 
-    transparent, 
-    var(--pokemon-red), 
-    transparent
-  );
-  background-size: 50% 100%;
-  animation: loading-progress-slide 2s infinite;
-}
-
-/* Loading Card Skeleton */
-.loading-skeleton {
-  background: var(--light-grey);
-  border-radius: var(--radius-md);
-  animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-.loading-skeleton-text {
-  height: 1rem;
-  background: var(--light-grey);
-  border-radius: var(--radius-sm);
-  animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-.loading-skeleton-circle {
-  background: var(--light-grey);
-  border-radius: 50%;
-  animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-/* === KEYFRAME ANIMATIONS === */
-
-@keyframes clean-fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes clean-slide-up {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes clean-shimmer {
-  0% {
-    background-position: -200px 0;
-  }
-  100% {
-    background-position: calc(200px + 100%) 0;
-  }
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes loading-dots-bounce {
-  0%, 80%, 100% {
-    transform: scale(0);
-  }
-  40% {
-    transform: scale(1);
-  }
-}
-
-@keyframes loading-progress-slide {
-  0% {
-    background-position: -50% 0;
-  }
-  100% {
-    background-position: 150% 0;
-  }
-}
-
-@keyframes skeleton-pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
-
-@keyframes holographic-shift {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
-@keyframes holographic-sweep {
-  0% {
-    transform: translateX(-100%) translateY(-100%) rotate(45deg);
-  }
-  100% {
-    transform: translateX(100%) translateY(100%) rotate(45deg);
-  }
-}
-
-@keyframes holographic-text-shift {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
-/* === COMPONENT STYLES === */
-
-/* Clean Sidebar */
-.sidebar-clean {
-  background: var(--sidebar-bg);
-  border-right: 1px solid var(--border-color);
+.btn-primary:active {
+  transform: translateY(0);
   box-shadow: var(--shadow-sm);
 }
 
-/* Clean Input */
-.input-clean {
-  width: 100%;
-  padding: var(--space-3);
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  background: var(--white);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
+.btn-secondary {
+  background-color: var(--white);
   color: var(--dark-text);
-  transition: all var(--transition-normal);
+  border: 1px solid var(--border-color);
 }
 
-.input-clean:focus {
+.btn-secondary:hover {
+  background-color: var(--off-white);
+  border-color: var(--border-grey);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--dark-text);
+  border: 1px solid transparent;
+}
+
+.btn-ghost:hover {
+  background-color: var(--light-grey);
+}
+
+/* Cards */
+.card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-card);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-card);
+  transition: var(--transition-all);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.card-compact {
+  padding: var(--space-3);
+}
+
+.card-large {
+  padding: var(--space-6);
+}
+
+/* Forms - iOS optimized */
+.input,
+.select,
+.textarea {
+  width: 100%;
+  padding: var(--space-3);
+  font-size: var(--text-base) !important; /* Prevent iOS zoom */
+  line-height: var(--leading-normal);
+  color: var(--dark-text);
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-input);
+  transition: var(--transition-colors);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  min-height: var(--space-11); /* 44px touch target */
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
   outline: none;
   border-color: var(--pokemon-blue);
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
-/* Clean Select */
-.select-clean {
-  width: 100%;
-  padding: var(--space-3);
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  background: var(--white);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
+.input::placeholder,
+.textarea::placeholder {
+  color: var(--text-grey);
+  opacity: 1;
+}
+
+/* Typography utilities */
+.text-xs { font-size: var(--text-xs); }
+.text-sm { font-size: var(--text-sm); }
+.text-base { font-size: var(--text-base); }
+.text-lg { font-size: var(--text-lg); }
+.text-xl { font-size: var(--text-xl); }
+.text-2xl { font-size: var(--text-2xl); }
+.text-3xl { font-size: var(--text-3xl); }
+.text-4xl { font-size: var(--text-4xl); }
+
+.font-light { font-weight: var(--font-light); }
+.font-normal { font-weight: var(--font-normal); }
+.font-medium { font-weight: var(--font-medium); }
+.font-semibold { font-weight: var(--font-semibold); }
+.font-bold { font-weight: var(--font-bold); }
+.font-extrabold { font-weight: var(--font-extrabold); }
+
+.leading-tight { line-height: var(--leading-tight); }
+.leading-snug { line-height: var(--leading-snug); }
+.leading-normal { line-height: var(--leading-normal); }
+.leading-relaxed { line-height: var(--leading-relaxed); }
+.leading-loose { line-height: var(--leading-loose); }
+
+/* Spacing utilities */
+.p-1 { padding: var(--space-1); }
+.p-2 { padding: var(--space-2); }
+.p-3 { padding: var(--space-3); }
+.p-4 { padding: var(--space-4); }
+.p-5 { padding: var(--space-5); }
+.p-6 { padding: var(--space-6); }
+.p-8 { padding: var(--space-8); }
+
+.px-1 { padding-left: var(--space-1); padding-right: var(--space-1); }
+.px-2 { padding-left: var(--space-2); padding-right: var(--space-2); }
+.px-3 { padding-left: var(--space-3); padding-right: var(--space-3); }
+.px-4 { padding-left: var(--space-4); padding-right: var(--space-4); }
+.px-5 { padding-left: var(--space-5); padding-right: var(--space-5); }
+.px-6 { padding-left: var(--space-6); padding-right: var(--space-6); }
+
+.py-1 { padding-top: var(--space-1); padding-bottom: var(--space-1); }
+.py-2 { padding-top: var(--space-2); padding-bottom: var(--space-2); }
+.py-3 { padding-top: var(--space-3); padding-bottom: var(--space-3); }
+.py-4 { padding-top: var(--space-4); padding-bottom: var(--space-4); }
+.py-5 { padding-top: var(--space-5); padding-bottom: var(--space-5); }
+.py-6 { padding-top: var(--space-6); padding-bottom: var(--space-6); }
+
+/* Gap utilities */
+.gap-1 { gap: var(--space-1); }
+.gap-2 { gap: var(--space-2); }
+.gap-3 { gap: var(--space-3); }
+.gap-4 { gap: var(--space-4); }
+.gap-5 { gap: var(--space-5); }
+.gap-6 { gap: var(--space-6); }
+
+/* Shadow utilities */
+.shadow-xs { box-shadow: var(--shadow-xs); }
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow-md { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+.shadow-xl { box-shadow: var(--shadow-xl); }
+.shadow-2xl { box-shadow: var(--shadow-2xl); }
+.shadow-none { box-shadow: var(--shadow-none); }
+
+/* Border radius utilities */
+.rounded-none { border-radius: var(--radius-none); }
+.rounded-sm { border-radius: var(--radius-sm); }
+.rounded { border-radius: var(--radius-md); }
+.rounded-lg { border-radius: var(--radius-lg); }
+.rounded-xl { border-radius: var(--radius-xl); }
+.rounded-2xl { border-radius: var(--radius-2xl); }
+.rounded-full { border-radius: var(--radius-full); }
+
+/* iPhone-specific responsive utilities */
+@media (max-width: 375px) {
+  /* iPhone SE, 12 mini */
+  .iphone-se\:hidden { display: none; }
+  .iphone-se\:text-sm { font-size: var(--text-sm); }
+  .iphone-se\:p-2 { padding: var(--space-2); }
+}
+
+@media (min-width: 390px) {
+  /* iPhone 13, 14, 15 */
+  .iphone\:block { display: block; }
+  .iphone\:text-base { font-size: var(--text-base); }
+  .iphone\:p-3 { padding: var(--space-3); }
+}
+
+@media (min-width: 428px) {
+  /* iPhone Plus models */
+  .iphone-plus\:flex { display: flex; }
+  .iphone-plus\:text-lg { font-size: var(--text-lg); }
+  .iphone-plus\:p-4 { padding: var(--space-4); }
+}
+
+/* Dark mode adjustments - only when explicitly set */
+.dark .card {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+.dark .btn-secondary {
+  background-color: var(--card-bg);
   color: var(--dark-text);
-  cursor: pointer;
-  transition: all var(--transition-normal);
+  border-color: var(--border-color);
 }
 
-.select-clean:focus {
-  outline: none;
-  border-color: var(--pokemon-blue);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+.dark .btn-secondary:hover {
+  background-color: var(--charcoal);
+  border-color: var(--text-grey);
 }
 
-/* === RESPONSIVE DESIGN === */
-
-/* Mobile-Optimized Animations */
-@media (max-width: 768px) {
-  /* Reduce animation complexity on mobile for better performance */
-  .card-holographic::after {
-    display: none; /* Disable complex gradients on mobile */
-  }
-  
-  .holographic-foil::before {
-    opacity: 0.3; /* Reduce foil intensity on mobile */
-  }
-  
-  /* Simplify hover effects for touch devices */
-  .card-hover:hover {
-    transform: translateY(-2px) scale(1.01); /* Less dramatic scale */
-  }
-  
-  /* Optimize loading spinners for mobile */
-  .loading-spinner {
-    border-width: 2px; /* Thinner borders for better mobile performance */
-  }
-  
-  /* Reduce backdrop blur intensity on mobile for performance */
-  .glass-minimal {
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-  }
-}
-
-/* Touch-specific optimizations */
-@media (hover: none) and (pointer: coarse) {
-  /* Touch devices - optimize interactions */
-  .card-holographic:active {
-    transform: scale(0.98);
-    transition: transform 0.1s ease-out;
-  }
-  
-  .btn-clean:active,
-  .btn-primary:active {
-    transform: scale(0.98);
-    transition: transform 0.1s ease-out;
-  }
-  
-  /* Remove hover effects that don't work well on touch */
-  .holographic-foil:hover::before {
-    opacity: 0;
-  }
-  
-  /* Simplify touch interactions */
-  .interactive:active {
-    transform: scale(0.98);
-  }
-}
-
-/* High-performance mobile optimizations */
-@media (max-width: 480px) {
-  /* Disable expensive animations on small screens */
-  .holographic-bg,
-  .holographic-text {
-    animation: none;
-    background: var(--pokemon-red); /* Fallback solid color */
-  }
-  
-  /* Optimize card grids for mobile */
-  .card-holographic {
-    background: var(--white); /* Solid background on small screens */
-  }
-  
-  /* Reduce shadow complexity */
-  .card-hover:hover {
-    box-shadow: var(--shadow-md);
-  }
-}
-
-/* Landscape mobile optimizations */
-@media (max-width: 768px) and (orientation: landscape) {
-  /* Optimize for mobile landscape */
-  .sidebar-clean {
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  :root {
-    --border-color: #000000;
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
-  }
-  
-  .dark {
-    --border-color: #FFFFFF;
-  }
+.dark .input,
+.dark .select,
+.dark .textarea {
+  background-color: var(--card-bg);
+  color: var(--dark-text);
+  border-color: var(--border-color);
 }

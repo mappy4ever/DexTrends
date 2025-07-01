@@ -11,10 +11,17 @@ export default function PriceAlerts({ userId = null }) {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    loadAlerts();
-  }, [userId]);
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (mounted) {
+      loadAlerts();
+    }
+  }, [userId, mounted]);
 
   const loadAlerts = async () => {
     setLoading(true);
@@ -24,9 +31,11 @@ export default function PriceAlerts({ userId = null }) {
         setAlerts(alertsData);
       } else {
         // For non-authenticated users, load from localStorage
-        const localAlerts = localStorage.getItem('dextrends_price_alerts');
-        if (localAlerts) {
-          setAlerts(JSON.parse(localAlerts));
+        if (typeof window !== 'undefined' && window.localStorage) {
+          const localAlerts = localStorage.getItem('dextrends_price_alerts');
+          if (localAlerts) {
+            setAlerts(JSON.parse(localAlerts));
+          }
         }
       }
     } catch (error) {
@@ -39,7 +48,7 @@ export default function PriceAlerts({ userId = null }) {
   const createAlert = async (cardId, cardName, alertType, targetPrice = null, percentageChange = null) => {
     try {
       const newAlert = {
-        id: Date.now().toString(), // Simple ID for demo
+        id: `alert_${Date.now()}_${cardId}`, // Use cardId for uniqueness
         card_id: cardId,
         card_name: cardName,
         alert_type: alertType,
@@ -60,10 +69,12 @@ export default function PriceAlerts({ userId = null }) {
         }
       } else {
         // Save to localStorage
-        const existingAlerts = JSON.parse(localStorage.getItem('dextrends_price_alerts') || '[]');
-        const updatedAlerts = [newAlert, ...existingAlerts];
-        localStorage.setItem('dextrends_price_alerts', JSON.stringify(updatedAlerts));
-        setAlerts(updatedAlerts);
+        if (typeof window !== 'undefined' && window.localStorage) {
+          const existingAlerts = JSON.parse(localStorage.getItem('dextrends_price_alerts') || '[]');
+          const updatedAlerts = [newAlert, ...existingAlerts];
+          localStorage.setItem('dextrends_price_alerts', JSON.stringify(updatedAlerts));
+          setAlerts(updatedAlerts);
+        }
       }
 
       setShowCreateModal(false);
@@ -79,9 +90,11 @@ export default function PriceAlerts({ userId = null }) {
         // await PriceHistoryManager.deletePriceAlert(alertId);
       } else {
         // Delete from localStorage
-        const existingAlerts = JSON.parse(localStorage.getItem('dextrends_price_alerts') || '[]');
-        const updatedAlerts = existingAlerts.filter(alert => alert.id !== alertId);
-        localStorage.setItem('dextrends_price_alerts', JSON.stringify(updatedAlerts));
+        if (typeof window !== 'undefined' && window.localStorage) {
+          const existingAlerts = JSON.parse(localStorage.getItem('dextrends_price_alerts') || '[]');
+          const updatedAlerts = existingAlerts.filter(alert => alert.id !== alertId);
+          localStorage.setItem('dextrends_price_alerts', JSON.stringify(updatedAlerts));
+        }
       }
       
       setAlerts(prev => prev.filter(alert => alert.id !== alertId));

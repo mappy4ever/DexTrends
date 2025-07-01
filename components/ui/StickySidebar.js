@@ -12,8 +12,16 @@ export default function StickySidebar({
 }) {
   const [isMobile, setIsMobile] = useState(false);
   const [collapsedSections, setCollapsedSections] = useState({});
+  const [mounted, setMounted] = useState(false);
+
+  // Handle mounting
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
+    if (!mounted || typeof window === 'undefined') return;
+
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -21,7 +29,7 @@ export default function StickySidebar({
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  }, [mounted]);
 
   const toggleSection = (sectionId) => {
     setCollapsedSections(prev => ({
@@ -189,8 +197,8 @@ export default function StickySidebar({
 
   return (
     <>
-      {/* Mobile Toggle Button */}
-      {isMobile && (
+      {/* Mobile Toggle Button - only render when mounted */}
+      {mounted && isMobile && (
         <button
           onClick={onToggle}
           className="fixed bottom-6 right-6 z-50 p-4 bg-pokemon-red rounded-full shadow-lg text-white hover:scale-110 transition-all duration-300 touch-manipulation"
@@ -251,8 +259,8 @@ export default function StickySidebar({
         )}
       </div>
 
-      {/* Mobile Overlay */}
-      {isMobile && isOpen && (
+      {/* Mobile Overlay - only render when mounted */}
+      {mounted && isMobile && isOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-30"
           onClick={onToggle}

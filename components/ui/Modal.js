@@ -22,13 +22,14 @@ export default function Modal({ isOpen, onClose, title, children, size = "md" })
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm transition-opacity duration-300 ease-in-out" // Using Tailwind opacity shorthand
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm transition-opacity duration-300 ease-in-out safe-area-padding" // Using Tailwind opacity shorthand
       onClick={onClose}
       aria-modal="true"
       role="dialog"
     >
       <div
-        className={`bg-card text-card-foreground rounded-app-lg shadow-2xl m-4 w-full ${resolvedSizeClass} transform transition-all duration-300 ease-in-out scale-100 opacity-100 animate-fadeIn overflow-y-auto max-h-[90vh]`} // Added overflow and max-height
+        className={`bg-card text-card-foreground rounded-app-lg shadow-2xl m-4 w-full ${resolvedSizeClass} transform transition-all duration-300 ease-in-out scale-100 opacity-100 animate-fadeIn overflow-y-auto`} // Added overflow
+        style={{ maxHeight: 'calc(90vh - env(safe-area-inset-top) - env(safe-area-inset-bottom))' }}
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal content
       >
         <div className="flex items-center justify-between p-4 md:p-6 border-b border-border"> {/* Standardized padding */}
@@ -41,8 +42,9 @@ export default function Modal({ isOpen, onClose, title, children, size = "md" })
           )}
           <button
             onClick={onClose}
-            className="text-foreground-muted hover:text-foreground transition-colors rounded-full p-1 -mr-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" // Improved focus and spacing
+            className="text-foreground-muted hover:text-foreground transition-colors rounded-full p-2 -mr-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring touch-target" // Improved focus and spacing
             aria-label="Close modal"
+            style={{ minWidth: '44px', minHeight: '44px' }}
           >
             <FaTimes size={20} />
           </button>

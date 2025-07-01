@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import Enhanced3DCard from './Enhanced3DCard';
 
 const DeckStackDisplay = ({ 
   deck = [], 
@@ -108,7 +107,7 @@ const DeckStackDisplay = ({
           {groupedCards.map(({ card, count }, index) => (
             <div key={`${card.id}-${index}`} className="expanded-card-item">
               <div className="card-wrapper">
-                <Enhanced3DCard
+                <div
                   card={card}
                   onClick={onCardClick}
                   showEffects={true}
@@ -251,7 +250,7 @@ const DeckStackDisplay = ({
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
           >
-            <Enhanced3DCard
+            <div
               card={card}
               onClick={(e) => {
                 e.stopPropagation();

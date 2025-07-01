@@ -8,7 +8,6 @@ export const FEATURE_FLAGS = {
   ENABLE_RESOURCE_OPTIMIZER: false, // Disabled for stability
   
   // Visual features
-  ENABLE_3D_CARDS: false, // Disabled for uniform pocket card style
   ENABLE_HOLOGRAPHIC_EFFECTS: true, // Holographic card animations
   ENABLE_MOUSE_TRACKING: true, // Mouse tracking for 3D effects
   ENABLE_CARD_FLIP: true, // Card flip animations

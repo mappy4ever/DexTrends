@@ -96,7 +96,8 @@ export default function CardList({
       {hasMore && (
         <div 
           ref={sentinelRef} 
-          className="h-4 w-full flex items-center justify-center"
+          className="h-20 w-full flex items-center justify-center mt-4"
+          style={{ minHeight: '80px' }}
         >
           {scrollLoading && (
             <InlineLoadingSpinner 

@@ -1,7 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FaPlay, FaStop, FaBug, FaCheckCircle, FaExclamationTriangle, FaDownload } from 'react-icons/fa';
+import { FaPlay, FaStop, FaBug, FaCheckCircle, FaExclamationTriangle, FaDownload, FaApple } from 'react-icons/fa';
+import dynamic from 'next/dynamic';
+
+// Dynamic import of iPhone QA Tests
+const IPhoneQATests = dynamic(() => import('./iPhoneQATests'), {
+  ssr: false,
+  loading: () => <div className="text-center p-4">Loading iPhone tests...</div>
+});
 
 const QATestingSuite = ({ isVisible = false, onToggle }) => {
+  const [showIPhoneTests, setShowIPhoneTests] = useState(false);
   const [testResults, setTestResults] = useState([]);
   const [isRunning, setIsRunning] = useState(false);
   const [selectedTestSuite, setSelectedTestSuite] = useState('all');
@@ -545,12 +553,16 @@ const QATestingSuite = ({ isVisible = false, onToggle }) => {
     return (
       <button
         onClick={onToggle}
-        className="fixed bottom-4 right-4 p-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 z-50">
+        className="fixed bottom-4 right-4 p-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 z-50"
         title="Open QA Testing Suite"
       >
         <FaBug className="w-5 h-5" />
       </button>
     );
+  }
+
+  if (showIPhoneTests) {
+    return <IPhoneQATests onClose={() => setShowIPhoneTests(false)} />;
   }
 
   return (
@@ -602,15 +614,25 @@ const QATestingSuite = ({ isVisible = false, onToggle }) => {
               </button>
             </div>
 
-            {testResults.length > 0 && (
+            <div className="flex items-center space-x-2">
+              {testResults.length > 0 && (
+                <button
+                  onClick={generateReport}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center space-x-2"
+                >
+                  <FaDownload />
+                  <span>Export Report</span>
+                </button>
+              )}
+              
               <button
-                onClick={generateReport}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center space-x-2">
+                onClick={() => setShowIPhoneTests(true)}
+                className="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-900 flex items-center space-x-2"
               >
-                <FaDownload />
-                <span>Export Report</span>
+                <FaApple />
+                <span>iPhone Tests</span>
               </button>
-            )}
+            </div>
           </div>
 
           {/* Test Configuration */}

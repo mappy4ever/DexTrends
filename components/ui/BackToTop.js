@@ -2,9 +2,17 @@ import React, { useState, useEffect } from 'react';
 
 export default function BackToTop() {
   const [isVisible, setIsVisible] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // Handle mounting
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Show button when user scrolls down 400px
   useEffect(() => {
+    if (!mounted || typeof window === 'undefined') return;
+
     const toggleVisibility = () => {
       if (window.pageYOffset > 400) {
         setIsVisible(true);
@@ -13,19 +21,25 @@ export default function BackToTop() {
       }
     };
 
+    // Check initial scroll position
+    toggleVisibility();
+
     window.addEventListener('scroll', toggleVisibility);
 
     return () => window.removeEventListener('scroll', toggleVisibility);
-  }, []);
+  }, [mounted]);
 
   const scrollToTop = () => {
+    if (typeof window === 'undefined') return;
+    
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     });
   };
 
-  if (!isVisible) {
+  // Don't render until mounted to prevent hydration mismatch
+  if (!mounted || !isVisible) {
     return null;
   }
 

@@ -58,7 +58,7 @@ export default function Navbar() {
         { href: "/pocketmode/expansions", label: "Expansions", icon: <BsGrid size={18} />, description: "Browse expansion sets" },
         { href: "/pocketmode/packs", label: "Pack Opening", icon: <FiShoppingBag size={18} />, description: "Open virtual packs" },
         { href: "/pocketmode/decks", label: "Top Decks", icon: <BsBook size={18} />, description: "Popular deck builds" },
-        { href: "/pocketmode?view=deckbuilder", label: "Deck Builder", icon: <GiPokerHand size={18} />, description: "Build custom decks" },
+        { href: "/pocketmode/deckbuilder", label: "Deck Builder", icon: <GiPokerHand size={18} />, description: "Build custom decks" },
       ]
     },
     { href: "/fun", label: "Fun", icon: <AiOutlineBulb size={22} />, color: "text-poke-psychic" },
@@ -89,6 +89,8 @@ export default function Navbar() {
 
   // Click outside for mobile menu and dropdowns
   useEffect(() => {
+    if (typeof document === 'undefined') return;
+
     const handleClickOutside = (event) => {
       if (mobileOpen && menuWrapperRef.current && !menuWrapperRef.current.contains(event.target)) {
         const mobileToggle = document.getElementById("mobile-menu-button");
@@ -114,8 +116,8 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Clean Navbar */}
-      <div className="fixed top-0 left-0 right-0 flex items-center justify-between px-4 h-16 z-40 bg-white border-b border-border-color shadow-sm">
+      {/* Clean Navbar with iOS Safe Area Support */}
+      <div className="fixed top-0 left-0 right-0 flex items-center justify-between px-4 h-16 z-40 bg-white border-b border-border-color shadow-sm safe-area-padding-top navbar-ios">
         <Link
           href="/"
           className="flex items-center gap-x-3 text-xl font-bold text-pokemon-red overflow-hidden hover:opacity-80 transition-opacity duration-300">
@@ -267,7 +269,7 @@ export default function Navbar() {
       {mobileOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
           <div className="fixed inset-0 bg-black/50" onClick={() => setMobileOpen(false)} />
-          <div ref={menuWrapperRef} className="fixed top-16 right-0 left-0 bg-white/95 backdrop-blur-sm border-t border-border-color p-4 shadow-lg">
+          <div ref={menuWrapperRef} className="fixed right-0 left-0 bg-white/95 backdrop-blur-sm border-t border-border-color p-4 shadow-lg safe-area-padding-x" style={{ top: 'calc(64px + env(safe-area-inset-top))' }}>
             <nav className="flex flex-col space-y-2">
               {navItems.map(item => {
                 const isActive = router.pathname === item.href || 
@@ -333,8 +335,8 @@ export default function Navbar() {
           </div>
         </div>
       )}
-      {/* Spacer for fixed navbar */}
-      <div className="h-16" />
+      {/* Spacer for fixed navbar with iOS Safe Area */}
+      <div className="h-16 navbar-spacer-ios" />
       <GlobalSearchModal ref={searchModalRef} />
     </>
   );

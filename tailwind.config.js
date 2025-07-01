@@ -47,6 +47,14 @@ module.exports = {
         'pokemon-yellow': 'var(--pokemon-yellow)',
         'pokemon-green': 'var(--pokemon-green)',
         
+        // Layout colors
+        'page-bg': 'var(--page-bg)',
+        'card-bg': 'var(--card-bg)',
+        'sidebar-bg': 'var(--sidebar-bg)',
+        'border-color': 'var(--border-color)',
+        'navbar-scrolled': 'var(--navbar-scrolled)',
+        'text-navbar': 'var(--text-navbar)',
+        
         // Clean semantic colors
         primary: {
           DEFAULT: 'var(--pokemon-red)',

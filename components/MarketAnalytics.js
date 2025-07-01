@@ -30,9 +30,11 @@ export default function MarketAnalytics({ className = '' }) {
       ]);
 
       // Simulate some additional analytics (in real app, these would be from database)
+      // Use deterministic values based on data length for consistency
+      const dataHash = recentData.length % 100;
       const marketStats = {
         totalCardsTracked: recentData.length * 50, // Simulate larger dataset
-        avgPriceChange: ((Math.random() - 0.5) * 10).toFixed(2),
+        avgPriceChange: ((dataHash / 100 - 0.5) * 10).toFixed(2), // Deterministic based on data
         topGainers: 15,
         topLosers: 8,
         marketCap: 1250000,
@@ -53,18 +55,28 @@ export default function MarketAnalytics({ className = '' }) {
   };
 
   const generateTopMovers = (cards) => {
-    // Simulate price changes for demo purposes
-    return cards.slice(0, 10).map(card => {
+    // Simulate price changes for demo purposes using deterministic values
+    return cards.slice(0, 10).map((card, index) => {
       const currentPrice = parseFloat(card.price_market || 0);
-      const changePercent = (Math.random() - 0.5) * 30; // -15% to +15%
+      
+      // Use card ID hash for deterministic "random" values
+      const hashCode = (card.card_id || '').split('').reduce((acc, char) => {
+        return char.charCodeAt(0) + ((acc << 5) - acc);
+      }, 0);
+      
+      const normalizedHash = (Math.abs(hashCode) % 1000) / 1000;
+      const changePercent = (normalizedHash - 0.5) * 30; // -15% to +15%
       const isPositive = changePercent > 0;
+      
+      // Use index and hash for volume
+      const volumeHash = Math.abs(hashCode + index) % 900;
       
       return {
         ...card,
         priceChange: changePercent,
         priceChangeAbs: Math.abs(currentPrice * changePercent / 100),
         isPositive,
-        volume: Math.floor(Math.random() * 1000) + 100
+        volume: volumeHash + 100 // 100-1000 range
       };
     }).sort((a, b) => Math.abs(b.priceChange) - Math.abs(a.priceChange));
   };
@@ -271,7 +283,12 @@ export default function MarketAnalytics({ className = '' }) {
                       variantType={card.variant_type}
                     />
                     <div className="text-xs text-gray-400">
-                      {new Date(card.collected_at).toLocaleDateString()}
+                      {new Date(card.collected_at).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                        timeZone: 'UTC'
+                      })}
                     </div>
                   </div>
                 </Link>

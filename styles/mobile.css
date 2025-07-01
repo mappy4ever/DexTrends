@@ -1,6 +1,9 @@
 /* Mobile-first responsive styles for DexTrends */
+/* This file extends the design-system.css with mobile-specific implementations */
 
-/* CSS Custom Properties for mobile */
+@import url('./design-system.css');
+
+/* CSS Custom Properties for mobile - extending design system */
 :root {
   --mobile-header-height: 3.5rem;
   --mobile-nav-height: 4rem;
@@ -8,7 +11,7 @@
   --mobile-safe-area-right: env(safe-area-inset-right, 0px);
   --mobile-safe-area-bottom: env(safe-area-inset-bottom, 0px);
   --mobile-safe-area-left: env(safe-area-inset-left, 0px);
-  --vh: 1vh; /* Will be set by JavaScript */
+  --vh: 1vh; /* Will be set by JavaScript for proper viewport height */
 }
 
 /* Safe area utilities */
@@ -46,7 +49,51 @@
   height: calc(var(--vh) * 100);
 }
 
-/* Touch device optimizations */
+/* === iOS FORM INPUT FIXES === */
+@supports (-webkit-touch-callout: none) {
+  /* Prevent zoom on all form inputs - critical for iOS */
+  input, textarea, select {
+    font-size: 16px !important;
+    -webkit-text-size-adjust: 100%;
+  }
+  
+  /* Specific input type fixes */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="tel"],
+  input[type="url"],
+  input[type="search"],
+  input[type="date"],
+  input[type="datetime-local"],
+  input[type="month"],
+  input[type="time"],
+  input[type="week"],
+  textarea {
+    font-size: 16px !important;
+    -webkit-appearance: none;
+    border-radius: 0;
+  }
+  
+  /* Fix select dropdowns */
+  select {
+    font-size: 16px !important;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+  }
+  
+  /* Focus states */
+  input:focus, textarea:focus, select:focus {
+    font-size: 16px !important;
+  }
+}
+
+/* Touch device optimizations - extends design system */
 .touch-device {
   /* Improve touch responsiveness */
   touch-action: manipulation;
@@ -69,37 +116,42 @@
   user-select: text;
 }
 
-/* Touch target improvements */
+/* Touch target improvements - inherits from design system */
 .touch-target {
-  min-height: 44px;
-  min-width: 44px;
+  min-height: var(--touch-target, 44px);
+  min-width: var(--touch-target, 44px);
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Mobile button enhancements */
+/* Mobile button enhancements - extends btn-ios from design system */
 .mobile-button {
   touch-action: manipulation;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
-  transition: transform 0.1s ease;
+  transition: transform var(--transition-fast);
+  min-height: var(--touch-target);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--ios-button);
 }
 
 .mobile-button:active {
-  transform: scale(0.95);
+  transform: scale(0.97);
 }
 
-/* Card interactions */
+/* Card interactions - extends card-ios from design system */
 .mobile-card {
   touch-action: manipulation;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
   cursor: pointer;
+  border-radius: var(--ios-corner);
+  box-shadow: var(--elevation-1);
 }
 
 .mobile-card:active {
   transform: scale(0.98);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--elevation-3);
 }
 
 /* Swipe gesture feedback */
@@ -115,12 +167,13 @@
   transform: translateX(100%);
 }
 
-/* Mobile navigation styles */
+/* Mobile navigation styles - uses iOS design tokens */
 .mobile-nav {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  background: rgba(255, 255, 255, 0.9);
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  background: var(--glass-minimal);
+  border-top: 1px solid var(--glass-border);
+  box-shadow: var(--elevation-2);
 }
 
 .mobile-nav-item {
@@ -198,18 +251,22 @@
   transform: translateY(0);
 }
 
-/* Mobile form improvements */
+/* Mobile form improvements - uses design system tokens */
 .mobile-form-input {
-  font-size: 16px; /* Prevent zoom on iOS */
-  padding: 12px 16px;
-  border-radius: 8px;
-  border: 2px solid #e5e7eb;
-  transition: border-color 0.2s ease;
+  font-size: 16px !important; /* Prevent zoom on iOS */
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--ios-button);
+  border: 1px solid var(--border-color);
+  transition: border-color var(--transition-fast);
+  min-height: var(--touch-target); /* iOS touch target */
+  background: var(--white);
+  color: var(--dark-text);
 }
 
 .mobile-form-input:focus {
-  border-color: #3b82f6;
+  border-color: var(--pokemon-blue);
   outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 /* Optimized scrolling */
@@ -225,11 +282,12 @@
   height: 100%;
 }
 
-/* Loading states */
+/* Loading states - uses design system colors */
 .mobile-skeleton {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background: linear-gradient(90deg, var(--light-grey) 25%, var(--mid-grey) 50%, var(--light-grey) 75%);
   background-size: 200% 100%;
   animation: skeleton-loading 1.5s infinite;
+  border-radius: var(--radius-md);
 }
 
 @keyframes skeleton-loading {
@@ -412,11 +470,11 @@
   }
 }
 
-/* Dark mode mobile adjustments */
+/* Dark mode mobile adjustments - uses design system dark tokens */
 @media (prefers-color-scheme: dark) {
   .mobile-nav {
-    background: rgba(0, 0, 0, 0.9);
-    border-top-color: rgba(255, 255, 255, 0.1);
+    background: var(--glass-minimal);
+    border-top-color: var(--glass-border);
   }
   
   .mobile-modal {
@@ -424,18 +482,18 @@
   }
   
   .mobile-modal-content {
-    background: #1f2937;
-    color: white;
+    background: var(--card-bg);
+    color: var(--dark-text);
   }
   
   .mobile-form-input {
-    background: #374151;
-    border-color: #4b5563;
-    color: white;
+    background: var(--card-bg);
+    border-color: var(--border-color);
+    color: var(--dark-text);
   }
   
   .mobile-skeleton {
-    background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+    background: linear-gradient(90deg, var(--light-grey) 25%, var(--mid-grey) 50%, var(--light-grey) 75%);
     background-size: 200% 100%;
   }
 }
@@ -454,5 +512,170 @@
   
   .mobile-form-input {
     border-width: 3px;
+  }
+}
+
+/* === iOS TOUCH TARGET REQUIREMENTS === */
+@media (max-width: 768px) {
+  /* All interactive elements must meet 44x44px minimum */
+  button, 
+  a, 
+  [role="button"], 
+  input[type="submit"], 
+  input[type="button"],
+  input[type="reset"],
+  .btn,
+  .button,
+  .clickable,
+  .touch-target,
+  .nav-link,
+  .tab-button,
+  .dropdown-item,
+  .card-clickable {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 12px;
+  }
+  
+  /* Small icons need expanded tap area */
+  .icon-button,
+  .btn-sm,
+  .btn-icon {
+    position: relative;
+  }
+  
+  .icon-button::before,
+  .btn-sm::before,
+  .btn-icon::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    bottom: -8px;
+    left: -8px;
+    z-index: -1;
+  }
+  
+  /* Form controls touch targets */
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: 24px;
+    height: 24px;
+    margin: 10px;
+    cursor: pointer;
+  }
+  
+  /* Labels for checkboxes and radios */
+  label:has(input[type="checkbox"]),
+  label:has(input[type="radio"]) {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  /* Navigation items */
+  .nav-item a,
+  .mobile-nav-item {
+    min-height: 48px;
+    padding: 14px 16px;
+    width: 100%;
+  }
+  
+  /* Card touch areas */
+  .card {
+    cursor: pointer;
+    min-height: 80px;
+  }
+  
+  /* Dropdown items */
+  .dropdown-item,
+  select option {
+    min-height: 44px;
+    padding: 12px 16px;
+  }
+  
+  /* Close buttons */
+  .close-button,
+  .modal-close,
+  .drawer-close {
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* === iOS VIEWPORT FIXES === */
+@supports (-webkit-touch-callout: none) {
+  /* Prevent horizontal overflow */
+  #__next,
+  body {
+    overflow-x: hidden;
+    position: relative;
+  }
+  
+  /* Fix position fixed elements */
+  .fixed {
+    position: -webkit-sticky;
+    position: sticky;
+  }
+  
+  /* Navbar specific iOS fixes */
+  .navbar,
+  .mobile-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding-top: env(safe-area-inset-top);
+    z-index: 50;
+  }
+  
+  /* Bottom navigation iOS fixes */
+  .bottom-nav,
+  .mobile-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding-bottom: env(safe-area-inset-bottom);
+    z-index: 50;
+  }
+  
+  /* Modal and drawer safe areas */
+  .modal-content,
+  .drawer-content {
+    padding-top: max(1rem, env(safe-area-inset-top));
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+  
+  /* Full screen modals on iOS */
+  .modal-fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 0;
+  }
+  
+  .modal-fullscreen .modal-content {
+    position: absolute;
+    top: env(safe-area-inset-top);
+    left: env(safe-area-inset-left);
+    right: env(safe-area-inset-right);
+    bottom: env(safe-area-inset-bottom);
+    max-height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 0;
   }
 }

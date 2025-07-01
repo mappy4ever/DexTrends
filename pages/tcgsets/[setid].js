@@ -400,13 +400,10 @@ export default function SetIdPage() {
               {statistics.highestValueCards.length > 0 ? (
                 <div className="space-y-3">
                   {statistics.highestValueCards.map(card => (
-                    <div 
+                    <Link
                       key={card.id} 
-                      className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 cursor-pointer"
-                      onClick={() => {
-                        const fullCard = cards.find(c => c.id === card.id);
-                        if (fullCard) openModal(fullCard);
-                      }}
+                      href={`/cards/${card.id}`}
+                      className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-colors w-full text-left block"
                     >
                       {card.image && (
                         <img 
@@ -420,7 +417,7 @@ export default function SetIdPage() {
                         <p className="text-sm text-gray-500">{card.rarity} · #{card.number}</p>
                       </div>
                       <div className="text-green-600 font-bold">${card.price.toFixed(2)}</div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               ) : (
@@ -432,7 +429,8 @@ export default function SetIdPage() {
       </SlideUp>
 
       {/* Card Filtering */}
-      <div className={`p-6 rounded-xl shadow-lg mb-8 ${theme === 'dark' ? 'bg-gray-800/95' : 'bg-white'}`}>
+      <div className={`p-6 rounded-xl shadow-lg mb-8 ${theme === 'dark' ? 'bg-gray-800/95' : 'bg-white'}`}
+           style={{ position: 'relative', zIndex: 1 }}>
         <h2 className="text-xl font-bold mb-4">Browse Cards</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -529,16 +527,18 @@ export default function SetIdPage() {
           </Link>
         </div>
         
-        <CardList
-          cards={filteredCards}
-          loading={loading}
-          error={error}
-          initialSortOption="number"
-          onCardClick={openModal}
-          getPrice={getPrice}
-          getReleaseDate={(card) => card.set?.releaseDate || "0000-00-00"}
-          getRarityRank={getRarityRank}
-        />
+        <div style={{ position: 'relative', zIndex: 0 }}>
+          <CardList
+            cards={filteredCards}
+            loading={loading}
+            error={error}
+            initialSortOption="number"
+            onCardClick={openModal}
+            getPrice={getPrice}
+            getReleaseDate={(card) => card.set?.releaseDate || "0000-00-00"}
+            getRarityRank={getRarityRank}
+          />
+        </div>
         
         {filteredCards.length === 0 && !loading && (
           <div className="text-center py-10">
