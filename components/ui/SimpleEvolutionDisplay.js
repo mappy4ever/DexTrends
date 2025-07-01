@@ -127,29 +127,31 @@ export default function SimpleEvolutionDisplay({ speciesUrl, currentPokemonId })
             
             <div className={`flex flex-col gap-4 ${stage.length > 1 ? 'border-2 border-dashed border-gray-300 rounded-lg p-3' : ''}`}>
               {stage.map((pokemon) => (
-                <Link key={pokemon.id} href={`/pokedex/${pokemon.id}`}>
-                  <a className={`flex flex-col items-center p-3 rounded-lg transition-all hover:bg-gray-50 ${
+                <Link 
+                  key={pokemon.id} 
+                  href={`/pokedex/${pokemon.id}`}
+                  className={`flex flex-col items-center p-3 rounded-lg transition-all hover:bg-gray-50 ${
                     parseInt(pokemon.id) === parseInt(currentPokemonId) ? 'ring-2 ring-blue-500 bg-blue-50' : ''
-                  }`}>
-                    <div className="relative w-24 h-24 mb-2">
-                      <Image
-                        src={pokemon.sprite}
-                        alt={pokemon.name}
-                        fill
-                        className="object-contain"
-                        onError={(e) => {
-                          e.currentTarget.src = '/dextrendslogo.png';
-                        }}
-                      />
-                    </div>
-                    <p className="font-medium capitalize">{pokemon.name.replace(/-/g, ' ')}</p>
-                    <p className="text-sm text-gray-500">#{pokemon.id.padStart(3, '0')}</p>
-                    <div className="flex gap-1 mt-1">
-                      {pokemon.types.map(type => (
-                        <TypeBadge key={type} type={type} size="sm" />
-                      ))}
-                    </div>
-                  </a>
+                  }`}
+                >
+                  <div className="relative w-24 h-24 mb-2">
+                    <Image
+                      src={pokemon.sprite}
+                      alt={pokemon.name}
+                      fill
+                      className="object-contain"
+                      onError={(e) => {
+                        e.currentTarget.src = '/dextrendslogo.png';
+                      }}
+                    />
+                  </div>
+                  <p className="font-medium capitalize">{pokemon.name.replace(/-/g, ' ')}</p>
+                  <p className="text-sm text-gray-500">#{pokemon.id.padStart(3, '0')}</p>
+                  <div className="flex gap-1 mt-1">
+                    {pokemon.types.map(type => (
+                      <TypeBadge key={type} type={type} size="sm" />
+                    ))}
+                  </div>
                 </Link>
               ))}
             </div>

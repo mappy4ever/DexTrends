@@ -57,12 +57,12 @@ export default function EvolutionStageCard({
           />
         </div>
       </div>
-      <Link href={`/pokedex/${id}`}>
-        <a className={`capitalize font-semibold text-blue-900 dark:text-blue-200 mb-1 hover:underline focus:underline outline-none ${isCurrent ? 'text-primary' : ''}`}
-          tabIndex={0}
-        >
-          {name.replace(/-/g, ' ')}
-        </a>
+      <Link 
+        href={`/pokedex/${id}`}
+        className={`capitalize font-semibold text-blue-900 dark:text-blue-200 mb-1 hover:underline focus:underline outline-none ${isCurrent ? 'text-primary' : ''}`}
+        tabIndex={0}
+      >
+        {name.replace(/-/g, ' ')}
       </Link>
       <div className="flex gap-1 mt-1">
         {types.map(type => (
