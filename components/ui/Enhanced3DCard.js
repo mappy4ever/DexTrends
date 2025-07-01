@@ -374,44 +374,47 @@ const Enhanced3DCard = ({
         {/* Card Front */}
         <div className="card-front">
           <div className="w-full flex flex-col items-center relative">
-            <Link href={`/${isPocketCard ? 'pocketmode' : 'cards'}/${card.id}`}>
-              <a
-                className="block w-full"
-                tabIndex={-1}
-                onClick={e => e.stopPropagation()}
-              >
-                <div className="relative">
-                  <Image
-                    src={card.images?.large || card.image || "/back-card.png"}
-                    alt={card.name || "Pokemon Card"}
-                    width={220}
-                    height={308}
-                    className="rounded-app-md mb-2 object-cover shadow-md hover:shadow-lg transition-all"
-                    priority={false}
-                    loading="lazy"
-                    placeholder="blur"
-                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Eve6J4HNvbzTe7+v1+8BvxRf4X3/f/9k="
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    onError={(e) => {
-                      const target = e.target;
-                      if (target && target.src !== window.location.origin + '/back-card.png') {
-                        target.src = '/back-card.png';
-                      }
-                    }}
-                  />
-                  {/* Texture Overlay for added depth */}
-                  <div className="texture-overlay" />
-                </div>
-              </a>
+            <Link 
+              href={`/${isPocketCard ? 'pocketmode' : 'cards'}/${card.id}`}
+              className="block w-full"
+              tabIndex={-1}
+              onClick={e => e.stopPropagation()}
+            >
+              <div className="relative">
+                <Image
+                  src={card.images?.large || card.image || "/back-card.png"}
+                  alt={card.name || "Pokemon Card"}
+                  width={220}
+                  height={308}
+                  className="rounded-app-md mb-2 object-cover shadow-md hover:shadow-lg transition-all"
+                  priority={false}
+                  loading="lazy"
+                  placeholder="blur"
+                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Eve6J4HNvbzTe7+v1+8BvxRf4X3/f/9k="
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  onError={(e) => {
+                    const target = e.target;
+                    if (target && target.src !== window.location.origin + '/back-card.png') {
+                      target.src = '/back-card.png';
+                    }
+                  }}
+                />
+                {/* Texture Overlay for added depth */}
+                <div className="texture-overlay" />
+              </div>
             </Link>
           </div>
           
           {/* Card Info */}
           <h3 className="text-lg font-bold text-text-heading text-center mb-1 group-hover:text-primary group-focus-within:text-primary transition-colors duration-200 flex items-center justify-center gap-2">
-            <Link href={`/${isPocketCard ? 'pocketmode' : 'cards'}/${card.id}`}>
-              <a className="text-blue-900 hover:text-blue-700 focus:text-blue-700 hover:underline focus:underline outline-none focus-visible:ring-2 focus-visible:ring-primary px-1 rounded" tabIndex={0} title={`View card details for ${card.name || 'Pokemon Card'}`} onClick={e => e.stopPropagation()}>
-                {card.name || 'Unknown Card'}
-              </a>
+            <Link 
+              href={`/${isPocketCard ? 'pocketmode' : 'cards'}/${card.id}`}
+              className="text-blue-900 hover:text-blue-700 focus:text-blue-700 hover:underline focus:underline outline-none focus-visible:ring-2 focus-visible:ring-primary px-1 rounded" 
+              tabIndex={0} 
+              title={`View card details for ${card.name || 'Pokemon Card'}`} 
+              onClick={e => e.stopPropagation()}
+            >
+              {card.name || 'Unknown Card'}
             </Link>
             {setZoomedCard && (
               <button

@@ -147,11 +147,12 @@ const BreadcrumbNavigation = ({
                 <span>{crumb.title}</span>
               </span>
             ) : (
-              <Link href={crumb.href} 
-                <a className="flex items-center space-x-1 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200">
-                  <span role="img" aria-hidden="true">{crumb.icon}</span>
-                  <span className="hover:underline">{crumb.title}</span>
-                </a>
+              <Link 
+                href={crumb.href}
+                className="flex items-center space-x-1 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200"
+              >
+                <span role="img" aria-hidden="true">{crumb.icon}</span>
+                <span className="hover:underline">{crumb.title}</span>
               </Link>
             )}
           </React.Fragment>
@@ -281,22 +282,24 @@ export const QuickNavigation = ({ currentPage, relatedPages = [], className = ''
       </h3>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
         {relatedPages.map((page, index) => (
-          <Link key={index} href={page.href} 
-            <a className="flex items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 group">
-              <span className="text-2xl mr-3 group-hover:scale-110 transition-transform duration-200" role="img" aria-hidden="true">
-                {page.icon}
-              </span>
-              <div>
-                <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                  {page.title}
-                </div>
-                {page.description && (
-                  <div className="text-xs text-gray-500 dark:text-gray-400">
-                    {page.description}
-                  </div>
-                )}
+          <Link 
+            key={index} 
+            href={page.href}
+            className="flex items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 group"
+          >
+            <span className="text-2xl mr-3 group-hover:scale-110 transition-transform duration-200" role="img" aria-hidden="true">
+              {page.icon}
+            </span>
+            <div>
+              <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                {page.title}
               </div>
-            </a>
+              {page.description && (
+                <div className="text-xs text-gray-500 dark:text-gray-400">
+                  {page.description}
+                </div>
+              )}
+            </div>
           </Link>
         ))}
       </div>
