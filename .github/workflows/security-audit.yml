@@ -1,0 +1,372 @@
+name: Security Audit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Run security audit daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
+jobs:
+  # Job 1: NPM Audit
+  npm-audit:
+    name: NPM Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit
+        id: npm-audit
+        run: |
+          npm audit --json > npm-audit-results.json || true
+          
+          # Parse audit results
+          CRITICAL=$(jq '.metadata.vulnerabilities.critical // 0' npm-audit-results.json)
+          HIGH=$(jq '.metadata.vulnerabilities.high // 0' npm-audit-results.json)
+          MODERATE=$(jq '.metadata.vulnerabilities.moderate // 0' npm-audit-results.json)
+          LOW=$(jq '.metadata.vulnerabilities.low // 0' npm-audit-results.json)
+          
+          echo "critical=$CRITICAL" >> $GITHUB_OUTPUT
+          echo "high=$HIGH" >> $GITHUB_OUTPUT
+          echo "moderate=$MODERATE" >> $GITHUB_OUTPUT
+          echo "low=$LOW" >> $GITHUB_OUTPUT
+          
+          # Create summary
+          echo "## NPM Security Audit Results" >> audit-summary.md
+          echo "" >> audit-summary.md
+          echo "| Severity | Count |" >> audit-summary.md
+          echo "|----------|-------|" >> audit-summary.md
+          echo "| Critical | $CRITICAL |" >> audit-summary.md
+          echo "| High | $HIGH |" >> audit-summary.md
+          echo "| Moderate | $MODERATE |" >> audit-summary.md
+          echo "| Low | $LOW |" >> audit-summary.md
+
+      - name: Upload npm audit results
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-audit-results
+          path: |
+            npm-audit-results.json
+            audit-summary.md
+          retention-days: 30
+
+      - name: Fail if critical or high vulnerabilities
+        if: steps.npm-audit.outputs.critical != '0' || steps.npm-audit.outputs.high != '0'
+        run: |
+          echo "Critical vulnerabilities: ${{ steps.npm-audit.outputs.critical }}"
+          echo "High vulnerabilities: ${{ steps.npm-audit.outputs.high }}"
+          exit 1
+
+  # Job 2: Secret Detection with Gitleaks
+  secret-scan:
+    name: Secret Detection
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+
+      - name: Upload Gitleaks results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gitleaks-results
+          path: results.sarif
+          retention-days: 30
+
+  # Job 3: OWASP Dependency Check
+  dependency-check:
+    name: OWASP Dependency Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run OWASP Dependency Check
+        uses: dependency-check/Dependency-Check_Action@main
+        with:
+          project: 'DexTrends'
+          path: '.'
+          format: 'ALL'
+          args: >
+            --enableRetired
+            --enableExperimental
+            --nvdApiKey ${{ secrets.NVD_API_KEY }}
+          
+      - name: Upload OWASP results
+        uses: actions/upload-artifact@v4
+        with:
+          name: owasp-dependency-check-results
+          path: reports/
+          retention-days: 30
+
+      - name: Parse OWASP results
+        id: parse-owasp
+        run: |
+          if [ -f "reports/dependency-check-report.json" ]; then
+            VULN_COUNT=$(jq '.dependencies[].vulnerabilities | length' reports/dependency-check-report.json | awk '{sum+=$1} END {print sum}')
+            echo "vulnerabilities=$VULN_COUNT" >> $GITHUB_OUTPUT
+            
+            if [ "$VULN_COUNT" -gt 0 ]; then
+              echo "Found $VULN_COUNT vulnerabilities in dependencies"
+            fi
+          fi
+
+  # Job 4: CodeQL Analysis
+  codeql:
+    name: CodeQL Security Analysis
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['javascript', 'typescript']
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          queries: security-and-quality
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{ matrix.language }}"
+
+  # Job 5: Security Headers Check
+  security-headers:
+    name: Security Headers Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+
+      - name: Start server
+        run: |
+          npm run start &
+          sleep 10
+
+      - name: Check security headers
+        run: |
+          # Check for security headers
+          echo "## Security Headers Check" > headers-report.md
+          echo "" >> headers-report.md
+          
+          # Test critical security headers
+          HEADERS=(
+            "Strict-Transport-Security"
+            "X-Frame-Options"
+            "X-Content-Type-Options"
+            "Content-Security-Policy"
+            "X-XSS-Protection"
+            "Referrer-Policy"
+            "Permissions-Policy"
+          )
+          
+          for header in "${HEADERS[@]}"; do
+            if curl -s -I http://localhost:3000 | grep -i "^$header:" > /dev/null; then
+              echo "✅ $header: Present" >> headers-report.md
+            else
+              echo "❌ $header: Missing" >> headers-report.md
+            fi
+          done
+
+      - name: Upload headers report
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-headers-report
+          path: headers-report.md
+          retention-days: 30
+
+  # Job 6: License Compliance Check
+  license-check:
+    name: License Compliance
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install license checker
+        run: npm install -g license-checker
+
+      - name: Check licenses
+        run: |
+          license-checker --production --csv > licenses.csv
+          
+          # Check for problematic licenses
+          echo "## License Compliance Report" > license-report.md
+          echo "" >> license-report.md
+          
+          # List of problematic licenses to check
+          PROBLEMATIC_LICENSES=(
+            "GPL"
+            "AGPL"
+            "LGPL"
+            "SSPL"
+            "Commons Clause"
+          )
+          
+          FOUND_ISSUES=false
+          for license in "${PROBLEMATIC_LICENSES[@]}"; do
+            if grep -i "$license" licenses.csv > /dev/null; then
+              echo "⚠️ Found packages with $license license" >> license-report.md
+              grep -i "$license" licenses.csv >> license-report.md
+              FOUND_ISSUES=true
+            fi
+          done
+          
+          if [ "$FOUND_ISSUES" = false ]; then
+            echo "✅ No problematic licenses found" >> license-report.md
+          fi
+
+      - name: Upload license report
+        uses: actions/upload-artifact@v4
+        with:
+          name: license-compliance-report
+          path: |
+            licenses.csv
+            license-report.md
+          retention-days: 30
+
+  # Job 7: Security Summary
+  security-summary:
+    name: Security Summary
+    runs-on: ubuntu-latest
+    needs: [npm-audit, secret-scan, dependency-check, codeql, security-headers, license-check]
+    if: always()
+    steps:
+      - name: Download all security reports
+        uses: actions/download-artifact@v4
+        with:
+          path: security-reports
+
+      - name: Generate security summary
+        run: |
+          echo "# Security Audit Summary" > security-summary.md
+          echo "" >> security-summary.md
+          echo "Date: $(date)" >> security-summary.md
+          echo "" >> security-summary.md
+          
+          # Check job statuses
+          echo "## Job Status" >> security-summary.md
+          echo "| Check | Status |" >> security-summary.md
+          echo "|-------|--------|" >> security-summary.md
+          echo "| NPM Audit | ${{ needs.npm-audit.result }} |" >> security-summary.md
+          echo "| Secret Scan | ${{ needs.secret-scan.result }} |" >> security-summary.md
+          echo "| Dependency Check | ${{ needs.dependency-check.result }} |" >> security-summary.md
+          echo "| CodeQL | ${{ needs.codeql.result }} |" >> security-summary.md
+          echo "| Security Headers | ${{ needs.security-headers.result }} |" >> security-summary.md
+          echo "| License Check | ${{ needs.license-check.result }} |" >> security-summary.md
+          
+          # Add individual reports if they exist
+          if [ -f "security-reports/npm-audit-results/audit-summary.md" ]; then
+            echo "" >> security-summary.md
+            cat "security-reports/npm-audit-results/audit-summary.md" >> security-summary.md
+          fi
+          
+          if [ -f "security-reports/security-headers-report/headers-report.md" ]; then
+            echo "" >> security-summary.md
+            cat "security-reports/security-headers-report/headers-report.md" >> security-summary.md
+          fi
+          
+          if [ -f "security-reports/license-compliance-report/license-report.md" ]; then
+            echo "" >> security-summary.md
+            cat "security-reports/license-compliance-report/license-report.md" >> security-summary.md
+          fi
+
+      - name: Upload security summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-audit-summary
+          path: security-summary.md
+          retention-days: 30
+
+      - name: Comment security summary on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            if (fs.existsSync('security-summary.md')) {
+              const summary = fs.readFileSync('security-summary.md', 'utf8');
+              
+              // Find existing comment
+              const comments = await github.rest.issues.listComments({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo
+              });
+              
+              const botComment = comments.data.find(comment => 
+                comment.user.type === 'Bot' && 
+                comment.body.includes('Security Audit Summary')
+              );
+              
+              if (botComment) {
+                await github.rest.issues.updateComment({
+                  comment_id: botComment.id,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  body: summary
+                });
+              } else {
+                await github.rest.issues.createComment({
+                  issue_number: context.issue.number,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  body: summary
+                });
+              }
+            }

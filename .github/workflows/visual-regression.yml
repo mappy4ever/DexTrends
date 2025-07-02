@@ -1,0 +1,261 @@
+name: Visual Regression Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    paths:
+      - 'components/**'
+      - 'pages/**'
+      - 'styles/**'
+      - 'tailwind.config.js'
+      - 'tests/visual/**'
+
+concurrency:
+  group: visual-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+env:
+  PLAYWRIGHT_BROWSERS_PATH: ~/.cache/ms-playwright
+
+jobs:
+  visual-regression:
+    name: Visual Regression Testing
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        browser: [chromium, webkit, firefox]
+        include:
+          - browser: chromium
+            name: Chrome
+          - browser: webkit
+            name: Safari
+          - browser: firefox
+            name: Firefox
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            node_modules
+          key: ${{ runner.os }}-node-visual-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-visual-
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}-${{ matrix.browser }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-${{ matrix.browser }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browser
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+
+      - name: Build application
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+
+      - name: Run visual tests - ${{ matrix.name }}
+        id: visual-tests
+        run: |
+          npx playwright test tests/visual --project=${{ matrix.browser }} --reporter=json --reporter=html
+        continue-on-error: true
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-results-${{ matrix.browser }}
+          path: |
+            playwright-report/
+            test-results/
+            tests/visual/**/*-diff.png
+            tests/visual/**/*-actual.png
+          retention-days: 30
+
+      - name: Upload baseline screenshots
+        if: github.ref == 'refs/heads/main' && steps.visual-tests.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-baseline-${{ matrix.browser }}
+          path: tests/visual/**/*-expected.png
+          retention-days: 90
+
+  visual-diff-comment:
+    name: Visual Diff Report
+    runs-on: ubuntu-latest
+    needs: visual-regression
+    if: github.event_name == 'pull_request' && always()
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all visual results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: visual-results-*
+          path: visual-results
+
+      - name: Generate visual diff report
+        id: generate-report
+        run: |
+          # Create a report of visual changes
+          echo "## Visual Regression Report" > visual-report.md
+          echo "" >> visual-report.md
+          
+          # Check for any visual differences
+          DIFF_COUNT=0
+          if find visual-results -name "*-diff.png" -type f | grep -q .; then
+            DIFF_COUNT=$(find visual-results -name "*-diff.png" -type f | wc -l)
+            echo "### ⚠️ Visual differences detected: $DIFF_COUNT" >> visual-report.md
+            echo "" >> visual-report.md
+            
+            # List changed screenshots
+            echo "#### Changed Screenshots:" >> visual-report.md
+            find visual-results -name "*-diff.png" -type f | while read diff; do
+              TEST_NAME=$(basename "$diff" | sed 's/-diff.png//')
+              BROWSER=$(echo "$diff" | grep -oP 'visual-results-\K[^/]+')
+              echo "- **$TEST_NAME** ($BROWSER)" >> visual-report.md
+            done
+            echo "" >> visual-report.md
+            
+            echo "diff_found=true" >> $GITHUB_OUTPUT
+          else
+            echo "### ✅ No visual differences detected" >> visual-report.md
+            echo "All visual tests passed without changes." >> visual-report.md
+            echo "diff_found=false" >> $GITHUB_OUTPUT
+          fi
+          
+          # Add browser test summary
+          echo "" >> visual-report.md
+          echo "### Browser Test Summary" >> visual-report.md
+          echo "| Browser | Status |" >> visual-report.md
+          echo "|---------|--------|" >> visual-report.md
+          
+          for browser in chromium webkit firefox; do
+            if [ -d "visual-results/visual-results-$browser" ]; then
+              if find "visual-results/visual-results-$browser" -name "*-diff.png" -type f | grep -q .; then
+                echo "| $browser | ⚠️ Differences found |" >> visual-report.md
+              else
+                echo "| $browser | ✅ Passed |" >> visual-report.md
+              fi
+            else
+              echo "| $browser | ❌ No results |" >> visual-report.md
+            fi
+          done
+          
+          echo "" >> visual-report.md
+          echo "**View full report:** Check the artifacts in the [Actions tab](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> visual-report.md
+
+      - name: Comment PR with visual diff report
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('visual-report.md', 'utf8');
+            
+            // Find existing comment
+            const comments = await github.rest.issues.listComments({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+            
+            const botComment = comments.data.find(comment => 
+              comment.user.type === 'Bot' && 
+              comment.body.includes('Visual Regression Report')
+            );
+            
+            if (botComment) {
+              // Update existing comment
+              await github.rest.issues.updateComment({
+                comment_id: botComment.id,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: report
+              });
+            } else {
+              // Create new comment
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: report
+              });
+            }
+
+      - name: Fail if visual differences found
+        if: steps.generate-report.outputs.diff_found == 'true'
+        run: |
+          echo "Visual differences detected. Please review the changes."
+          echo "To update baselines, run: npm run test:visual:update"
+          exit 1
+
+  update-baselines:
+    name: Update Visual Baselines
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: visual-regression
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download baseline screenshots
+        uses: actions/download-artifact@v4
+        with:
+          pattern: visual-baseline-*
+          path: visual-baselines
+
+      - name: Update baseline screenshots
+        run: |
+          # Copy new baselines to the repository
+          find visual-baselines -name "*-expected.png" -type f | while read baseline; do
+            DEST_PATH=$(echo "$baseline" | sed 's|visual-baselines/visual-baseline-[^/]*/||')
+            mkdir -p "$(dirname "$DEST_PATH")"
+            cp "$baseline" "$DEST_PATH"
+          done
+
+      - name: Check for baseline changes
+        id: check-changes
+        run: |
+          if git diff --quiet; then
+            echo "No baseline changes"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Baseline changes detected"
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit baseline updates
+        if: steps.check-changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add tests/visual/**/*-expected.png
+          git commit -m "chore: update visual regression baselines [skip ci]"
+          git push

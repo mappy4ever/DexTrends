@@ -30,6 +30,14 @@ yarn-error.log*
 *.swo
 *.tmp*
 
+# TypeScript
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
+# Testing
+coverage/
+.nyc_output/
+
 # Git related files
 *.lock
 *.bak
