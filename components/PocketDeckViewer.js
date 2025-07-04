@@ -50,7 +50,7 @@ export default function PocketDeckViewer({ deck }) {
                   width={80}
                   height={112}
                   layout="responsive"
-                  className="rounded-md shadow-sm">
+                  className="rounded-md shadow-sm"
                   onError={(e) => {
                     e.currentTarget.src = "/back-card.png";
                   }}
