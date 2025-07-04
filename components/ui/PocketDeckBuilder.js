@@ -161,9 +161,9 @@ export default function PocketDeckBuilder({
                     src={card.image || '/dextrendslogo.png'}
                     alt={card.name}
                     fill
-                    className="object-contain">
-                    sizes="40px"
-                  />
+                    className="object-contain"
+                      sizes="40px"
+                    />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-dark-text line-clamp-1">
@@ -210,9 +210,9 @@ export default function PocketDeckBuilder({
                   src={card.image || '/dextrendslogo.png'}
                   alt={card.name}
                   fill
-                  className="object-contain">
-                  sizes="100px"
-                />
+                  className="object-contain"
+                      sizes="100px"
+                    />
               </div>
               <p className="text-xs font-medium text-dark-text line-clamp-1">
                 {card.name}
@@ -256,9 +256,9 @@ export default function PocketDeckBuilder({
                 src={card.image || '/dextrendslogo.png'}
                 alt={card.name}
                 fill
-                className="object-contain">
-                sizes="32px"
-              />
+                className="object-contain"
+                      sizes="32px"
+                    />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-xs font-medium text-dark-text line-clamp-1">
@@ -276,9 +276,9 @@ export default function PocketDeckBuilder({
                 src={card.image || '/dextrendslogo.png'}
                 alt={card.name}
                 fill
-                className="object-contain">
-                sizes="60px"
-              />
+                className="object-contain"
+                      sizes="60px"
+                    />
             </div>
             <div className="absolute top-0 right-0 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
               −
@@ -356,9 +356,9 @@ export default function PocketDeckBuilder({
                         src={card.image || '/dextrendslogo.png'}
                         alt={card.name}
                         fill
-                        className="object-contain group-hover:scale-105 transition-transform duration-300">
-                        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
-                      />
+                        className="object-contain group-hover:scale-105 transition-transform duration-300"
+                      sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
+                    />
                     </div>
 
                     {/* Card Info */}

@@ -67,7 +67,7 @@ export default function PocketExpansionViewer({ expansion }) {
                       alt={pokemon.name}
                       layout="fill"
                       objectFit="contain"
-                      className="transition-all duration-300 hover:scale-110">
+                      className="transition-all duration-300 hover:scale-110"
                       onError={(e) => {
                         e.currentTarget.src = "/back-card.png";
                       }}
@@ -85,7 +85,6 @@ export default function PocketExpansionViewer({ expansion }) {
         <button
           onClick={() => setExpanded(!expanded)}
           className="w-full mt-5 py-2 text-sm text-gray-500 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors">
-        >
           <span className="mr-1">{expanded ? "Hide" : "Show"} More Details</span>
           <svg
             width="16"

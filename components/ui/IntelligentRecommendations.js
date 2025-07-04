@@ -458,8 +458,7 @@ const IntelligentRecommendations = ({
                       alt={card.name}
                       width={150}
                       height={210}
-                      className="rounded-lg object-cover">
-                    />
+                      className="rounded-lg object-cover" />
                   </div>
                   {/* Card Info */}
                   <div className="space-y-2">

@@ -95,9 +95,9 @@ const PokemonCardItem = ({
               alt={poke.name}
               width={80}
               height={80}
-              className="w-14 h-14 sm:w-16 sm:h-16 object-contain drop-shadow-sm transition-all duration-300 group-hover:scale-110">
-              onError={(e) => { e.currentTarget.src = "/back-card.png"; }}
-            />
+              className="w-14 h-14 sm:w-16 sm:h-16 object-contain drop-shadow-sm transition-all duration-300 group-hover:scale-110"
+                      onError={(e) => { e.currentTarget.src = "/back-card.png"; }}
+                    />
           </div>
           <div className="absolute -bottom-1 -right-1 bg-gradient-to-br from-blue-500 to-blue-600 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center shadow-md border border-white dark:border-gray-800">
             {generation}
