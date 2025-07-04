@@ -7,6 +7,7 @@ import "../styles/ios-scrolling-fix.css";
 import "../styles/mobile-visual-fixes.css";
 import "../styles/mobile-pokedex-fixes.css";
 import "../styles/mobile-complete-fixes.css";
+import "../styles/pokeid-mobile-fix.css";
 import "../styles/desktop-tabs.css";
 import "../styles/pokemon-animations.css";
 import "../styles/design-system.css";

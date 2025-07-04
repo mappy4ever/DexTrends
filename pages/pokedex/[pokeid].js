@@ -424,10 +424,10 @@ export default function PokemonDetail() {
 
               {/* Basic Info - Enhanced Grid */}
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
-                <div className="bg-gray-50 p-3 rounded">
-                  <h4 className="font-semibold text-gray-700 text-sm">Height</h4>
-                  <p className="text-gray-900 text-lg font-medium">{(pokemon.height / 10).toFixed(1)} m</p>
-                  <p className="text-gray-500 text-xs">{((pokemon.height / 10) * 3.281).toFixed(1)} ft</p>
+                <div className="bg-gray-50 p-2 sm:p-3 rounded">
+                  <h4 className="font-semibold text-gray-700 text-xs sm:text-sm">Height</h4>
+                  <p className="text-gray-900 text-base sm:text-lg font-medium">{(pokemon.height / 10).toFixed(1)} m</p>
+                  <p className="text-gray-500 text-[10px] sm:text-xs">{((pokemon.height / 10) * 3.281).toFixed(1)} ft</p>
                 </div>
                 <div className="bg-gray-50 p-3 rounded">
                   <h4 className="font-semibold text-gray-700 text-sm">Weight</h4>
