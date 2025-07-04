@@ -408,14 +408,13 @@ const PerformanceDashboard = ({ isOpen = false, onClose = () => {} }) => {
                       type="checkbox"
                       checked={autoRefresh}
                       onChange={(e) => setAutoRefresh(e.target.checked)}
-                      className="mr-2">
-                    />
+                      className="mr-2" />
                     <span className="text-sm">Auto-refresh</span>
                   </label>
                   <button
                     onClick={() => setIsVisible(false)}
                     className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
-                  >
+
                     ✕
                   </button>
                 </div>

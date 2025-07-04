@@ -341,7 +341,7 @@ const PortfolioManager = ({ userCards = [], onUpdateCard }) => {
               setSelectedPortfolio(portfolio);
             }}
             className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-          >
+
             {portfolios.map(portfolio => (
               <option key={portfolio.id} value={portfolio.id}>
                 {portfolio.name}
@@ -352,7 +352,7 @@ const PortfolioManager = ({ userCards = [], onUpdateCard }) => {
           <button
             onClick={() => setShowCreateModal(true)}
             className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 flex items-center space-x-2">
-          >
+
             <PlusIcon className="h-4 w-4" />
             <span>New Portfolio</span>
           </button>
@@ -471,7 +471,7 @@ const PortfolioManager = ({ userCards = [], onUpdateCard }) => {
             <button
               onClick={() => setShowAddCardModal(true)}
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center space-x-2">
-            >
+
               <PlusIcon className="h-4 w-4" />
               <span>Add Card</span>
             </button>
@@ -555,7 +555,7 @@ const PortfolioManager = ({ userCards = [], onUpdateCard }) => {
                             <button
                               onClick={() => removeCardFromPortfolio(card.id)}
                               className="text-red-600 hover:text-red-900">
-                            >
+
                               <TrashIcon className="h-4 w-4" />
                             </button>
                           </td>
@@ -578,7 +578,7 @@ const PortfolioManager = ({ userCards = [], onUpdateCard }) => {
               <button
                 onClick={() => setShowAddCardModal(true)}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-              >
+
                 Add Your First Card
               </button>
             </div>
@@ -767,7 +767,7 @@ const PortfolioManager = ({ userCards = [], onUpdateCard }) => {
               value={newPortfolio.type}
               onChange={(e) => setNewPortfolio(prev => ({ ...prev, type: e.target.value }))}
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-            >
+
               <option value="collection">Collection</option>
               <option value="investment">Investment</option>
               <option value="trading">Trading</option>
@@ -779,13 +779,13 @@ const PortfolioManager = ({ userCards = [], onUpdateCard }) => {
             <button
               onClick={() => setShowCreateModal(false)}
               className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
-            >
+
               Cancel
             </button>
             <button
               onClick={createPortfolio}
               className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
-            >
+
               Create Portfolio
             </button>
           </div>
@@ -806,7 +806,7 @@ const PortfolioManager = ({ userCards = [], onUpdateCard }) => {
                   setSelectedCard(card);
                 }}
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-              >
+
                 <option value="">Select a card...</option>
                 {userCards.map(card => (
                   <option key={card.id} value={card.id}>
@@ -829,7 +829,7 @@ const PortfolioManager = ({ userCards = [], onUpdateCard }) => {
                 <button
                   onClick={() => setSelectedCard(null)}
                   className="ml-auto text-gray-500 hover:text-gray-700">
-                >
+
                   ✕
                 </button>
               </div>
@@ -872,8 +872,7 @@ const PortfolioManager = ({ userCards = [], onUpdateCard }) => {
                     type="date"
                     value={cardEntry.purchaseDate}
                     onChange={(e) => setCardEntry(prev => ({ ...prev, purchaseDate: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-                  />
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800" />
                 </div>
                 
                 <div>
@@ -884,7 +883,7 @@ const PortfolioManager = ({ userCards = [], onUpdateCard }) => {
                     value={cardEntry.condition}
                     onChange={(e) => setCardEntry(prev => ({ ...prev, condition: e.target.value }))}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-                  >
+
                     <option value="Mint">Mint</option>
                     <option value="Near Mint">Near Mint</option>
                     <option value="Excellent">Excellent</option>
@@ -915,14 +914,14 @@ const PortfolioManager = ({ userCards = [], onUpdateCard }) => {
             <button
               onClick={() => setShowAddCardModal(false)}
               className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
-            >
+
               Cancel
             </button>
             <button
               onClick={addCardToPortfolio}
               disabled={!selectedCard || !cardEntry.purchasePrice}
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed">
-            >
+
               Add to Portfolio
             </button>
           </div>

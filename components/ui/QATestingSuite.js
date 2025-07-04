@@ -577,7 +577,7 @@ const QATestingSuite = ({ isVisible = false, onToggle }) => {
           <button
             onClick={onToggle}
             className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full">
-          >
+
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -644,8 +644,7 @@ const QATestingSuite = ({ isVisible = false, onToggle }) => {
                   checked={value}
                   onChange={(e) => setTestConfig(prev => ({ ...prev, [key]: e.target.checked }))}
                   disabled={isRunning}
-                  className="rounded">
-                />
+                  className="rounded" />
                 <span className="text-sm capitalize">
                   {key.replace('include', '').replace(/([A-Z])/g, ' $1').trim()}
                 </span>
@@ -701,7 +700,7 @@ const QATestingSuite = ({ isVisible = false, onToggle }) => {
                   <div
                     key={result.id}
                     className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
-                  >
+
                     <div
                       className="p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700" onClick={() => setExpandedResult(expandedResult === result.id ? null : result.id)}>
                       <div className="flex items-center justify-between">

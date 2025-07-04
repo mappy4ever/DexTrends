@@ -356,7 +356,7 @@ const MobileIntegration = ({
               url: window.location.href
             })}
             className="w-full p-3 bg-blue-500 text-white rounded-lg font-medium">
-          >
+
             Share App
           </button>
           
@@ -367,7 +367,7 @@ const MobileIntegration = ({
               url: window.location.href
             })}
             className="w-full p-3 bg-green-500 text-white rounded-lg font-medium">
-          >
+
             Share Current Page
           </button>
         </div>

@@ -517,7 +517,7 @@ export const SortableList = ({
               item={item} 
               containerId="sortable-list"
               className="w-full">
-            >
+
               {renderItem(item, index)}
             </DraggableItem>
             
@@ -662,7 +662,7 @@ export const DragDropCollectionManager = ({
                       item={card}
                       containerId={collectionId}
                       className="collection-card">
-                    >
+
                       <div className="card-mini bg-white rounded p-2 shadow-sm hover:shadow-md transition-shadow">
                         <img 
                           src={card.image || card.images?.small} 

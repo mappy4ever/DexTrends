@@ -139,7 +139,7 @@ const DataAnalyticsDashboard = () => {
             value={timeRange}
             onChange={(e) => setTimeRange(e.target.value)}
             className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
-          >
+
             <option value="24h">Last 24 hours</option>
             <option value="7d">Last 7 days</option>
             <option value="30d">Last 30 days</option>

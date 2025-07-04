@@ -225,8 +225,7 @@ export default function VisualCardSearch({ onSearchResults, onImageProcessed }) 
           type="file"
           accept="image/*"
           onChange={(e) => handleFileSelect(e.target.files)}
-          className="hidden">
-        />
+          className="hidden" />
       </div>
 
       {/* Camera View */}

@@ -494,7 +494,7 @@ export default function GameficationSystem({ userId, onRewardEarned, onLevelUp }
                         <button
                           onClick={() => claimDailyReward(task.id)}
                           className="mt-2 px-3 py-1 bg-green-600 text-white rounded text-xs hover:bg-green-700">
-                        >
+
                           Claim
                         </button>
                       )}

@@ -68,8 +68,7 @@ const VirtualizedCardGrid = ({
             showRarity={showRarity}
             onCardClick={onCardClick}
             onMagnifyClick={onMagnifyClick}
-            className="h-full">
-          />
+            className="h-full" />
         </div>
       </div>
     );

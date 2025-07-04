@@ -396,7 +396,7 @@ export default function PocketDeckBuilder({
               <button
                 onClick={loadMoreCards}
                 className="btn-secondary px-6 py-2 text-sm hover:bg-pokemon-blue hover:text-white transition-all">
-              >
+
                 Load More Cards ({filteredCards.length - visibleCardCount} remaining)
               </button>
               <p className="text-xs text-text-grey mt-2">

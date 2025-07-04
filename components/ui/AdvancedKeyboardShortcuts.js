@@ -445,7 +445,7 @@ const AdvancedKeyboardShortcuts = ({
             <button
               onClick={stopMacroRecording}
               className="ml-2 text-white hover:text-gray-200">
-            >
+
               Stop
             </button>
           </div>
@@ -509,8 +509,7 @@ const AdvancedKeyboardShortcuts = ({
                     activeMode === 'search' ? 'Search cards, sets, or use filters...' :
                     'Select or create a macro...'
                   }
-                  className="w-full pl-10 pr-4 py-2 border-none outline-none bg-transparent text-gray-900 dark:text-gray-100">
-                />
+                  className="w-full pl-10 pr-4 py-2 border-none outline-none bg-transparent text-gray-900 dark:text-gray-100" />
               </div>
             </div>
 
@@ -528,7 +527,7 @@ const AdvancedKeyboardShortcuts = ({
                           key={index}
                           onClick={() => executeCommand(command)}
                           className="w-full text-left px-3 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center space-x-3 rounded">
-                        >
+
                           {command.icon}
                           <div className="flex-1">
                             <div className="font-medium text-gray-900 dark:text-gray-100">
@@ -560,7 +559,7 @@ const AdvancedKeyboardShortcuts = ({
                           key={command.id}
                           onClick={() => executeCommand(command)}
                           className="w-full text-left px-3 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center space-x-3 rounded">
-                        >
+
                           {command.icon}
                           <div className="flex-1">
                             <div className="font-medium text-gray-900 dark:text-gray-100">
@@ -600,7 +599,7 @@ const AdvancedKeyboardShortcuts = ({
                         key={key}
                         onClick={() => executeMacro(macro)}
                         className="w-full text-left px-3 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center space-x-3 rounded">
-                      >
+
                         <CogIcon className="h-4 w-4" />
                         <div className="flex-1">
                           <div className="font-medium text-gray-900 dark:text-gray-100">

@@ -297,7 +297,7 @@ const PushNotifications = ({
               <button
                 onClick={requestPermission}
                 className="px-4 py-2 bg-blue-500 text-white text-sm rounded-lg hover:bg-blue-600 transition-colors">
-              >
+
                 Enable
               </button>
             )}
@@ -306,7 +306,7 @@ const PushNotifications = ({
               <button
                 onClick={sendTestNotification}
                 className="px-3 py-1 bg-gray-200 text-gray-700 text-xs rounded hover:bg-gray-300 transition-colors">
-              >
+
                 Test
               </button>
             )}
@@ -331,8 +331,7 @@ const PushNotifications = ({
                   type="checkbox"
                   checked={systemAlerts}
                   onChange={(e) => setSystemAlerts(e.target.checked)}
-                  className="sr-only peer">
-                />
+                  className="sr-only peer" />
                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
               </label>
             </div>
@@ -354,8 +353,7 @@ const PushNotifications = ({
                       setMarketAlerts([]);
                     }
                   }}
-                  className="sr-only peer">
-                />
+                  className="sr-only peer" />
                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
               </label>
             </div>
@@ -374,7 +372,7 @@ const PushNotifications = ({
                 addPriceAlert('charizard-base-4', 'Charizard Base Set', 1000, 'below');
               }}
               className="px-3 py-1 bg-green-500 text-white text-sm rounded hover:bg-green-600 transition-colors">
-            >
+
               + Add Alert
             </button>
           </div>
@@ -416,7 +414,7 @@ const PushNotifications = ({
                     <button
                       onClick={() => removePriceAlert(alert.id)}
                       className="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-sm hover:bg-red-200 transition-colors">
-                    >
+
                       ×
                     </button>
                   </div>

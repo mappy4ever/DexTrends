@@ -284,22 +284,20 @@ export default function AdvancedDeckBuilder({ initialDeck = null, onSaveDeck, us
               value={deck.name}
               onChange={(e) => setDeck(prev => ({ ...prev, name: e.target.value }))}
               placeholder="Deck Name"
-              className="text-2xl font-bold bg-transparent border-none outline-none text-gray-900 dark:text-white placeholder-gray-500 w-full">
-            />
+              className="text-2xl font-bold bg-transparent border-none outline-none text-gray-900 dark:text-white placeholder-gray-500 w-full" />
             <input
               type="text"
               value={deck.description}
               onChange={(e) => setDeck(prev => ({ ...prev, description: e.target.value }))}
               placeholder="Deck description..."
-              className="text-gray-600 dark:text-gray-400 bg-transparent border-none outline-none w-full mt-1">
-            />
+              className="text-gray-600 dark:text-gray-400 bg-transparent border-none outline-none w-full mt-1" />
           </div>
           <div className="flex items-center space-x-3">
             <select
               value={deck.format}
               onChange={(e) => setDeck(prev => ({ ...prev, format: e.target.value }))}
               className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white">
-            >
+
               <option value="standard">Standard</option>
               <option value="expanded">Expanded</option>
               <option value="unlimited">Unlimited</option>
@@ -307,14 +305,14 @@ export default function AdvancedDeckBuilder({ initialDeck = null, onSaveDeck, us
             <button
               onClick={() => onSaveDeck?.(deck)}
               className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center space-x-2">
-            >
+
               <FaSave />
               <span>Save</span>
             </button>
             <button
               onClick={exportDeck}
               className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 flex items-center space-x-2">
-            >
+
               <FaDownload />
               <span>Export</span>
             </button>
@@ -382,8 +380,7 @@ export default function AdvancedDeckBuilder({ initialDeck = null, onSaveDeck, us
                       searchCards(e.target.value);
                     }}
                     placeholder="Search for cards..."
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white">
-                  />
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white" />
                   <FaSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 </div>
 
@@ -414,7 +411,7 @@ export default function AdvancedDeckBuilder({ initialDeck = null, onSaveDeck, us
                           <button
                             onClick={() => addCardToDeck(card)}
                             className="p-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                          >
+
                             <FaPlus className="w-3 h-3" />
                           </button>
                         </div>
@@ -675,13 +672,13 @@ export default function AdvancedDeckBuilder({ initialDeck = null, onSaveDeck, us
                           <button
                             onClick={() => removeCardFromDeck(card.id)}
                             className="p-1 text-red-500 hover:bg-red-100 dark:hover:bg-red-900/20 rounded">
-                          >
+
                             <FaMinus className="w-3 h-3" />
                           </button>
                           <button
                             onClick={() => addCardToDeck(card)}
                             className="p-1 text-green-500 hover:bg-green-100 dark:hover:bg-green-900/20 rounded">
-                          >
+
                             <FaPlus className="w-3 h-3" />
                           </button>
                         </div>

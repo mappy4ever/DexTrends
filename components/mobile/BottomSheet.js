@@ -209,7 +209,7 @@ const BottomSheet = ({
             
             <button
               onClick={onClose}
-              className="bottom-sheet-close">
+              className="bottom-sheet-close"
               aria-label="Close"
             >
               ×

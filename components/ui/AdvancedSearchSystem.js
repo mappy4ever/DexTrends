@@ -387,8 +387,7 @@ const AdvancedSearchSystem = ({ onResults, onLoading, className = "" }) => {
           onFilterChange={handleFilterChange}
           enableVoiceSearch={true}
           enableAdvancedFilters={false} // We handle filters separately
-          className="w-full">
-        />
+          className="w-full" />
       </div>
 
       {/* Quick Filters Bar */}
@@ -438,7 +437,7 @@ const AdvancedSearchSystem = ({ onResults, onLoading, className = "" }) => {
           <button
             onClick={clearFilters}
             className="px-3 py-1 rounded-full text-sm text-red-600 bg-red-100 dark:bg-red-900 dark:text-red-200 hover:bg-red-200 dark:hover:bg-red-800">
-          >
+
             Clear Filters ({getSearchSummary.activeFilterCount})
           </button>
         )}
@@ -455,7 +454,7 @@ const AdvancedSearchSystem = ({ onResults, onLoading, className = "" }) => {
                 value={filters.cardType}
                 onChange={(e) => handleFilterChange('cardType', e.target.value)}
                 className="w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700">
-              >
+
                 <option value="all">All Cards</option>
                 <option value="tcg">TCG Cards</option>
                 <option value="pocket">Pocket Cards</option>
@@ -469,7 +468,7 @@ const AdvancedSearchSystem = ({ onResults, onLoading, className = "" }) => {
                 value={filters.set}
                 onChange={(e) => handleFilterChange('set', e.target.value)}
                 className="w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700">
-              >
+
                 <option value="">All Sets</option>
                 <option value="base1">Base Set</option>
                 <option value="jungle">Jungle</option>
@@ -485,8 +484,7 @@ const AdvancedSearchSystem = ({ onResults, onLoading, className = "" }) => {
                 value={filters.artist}
                 onChange={(e) => handleFilterChange('artist', e.target.value)}
                 placeholder="Artist name"
-                className="w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700">
-              />
+                className="w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700" />
             </div>
 
             {/* Release Year */}
@@ -499,8 +497,7 @@ const AdvancedSearchSystem = ({ onResults, onLoading, className = "" }) => {
                 placeholder="1999"
                 min="1996"
                 max="2024"
-                className="w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700">
-              />
+                className="w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700" />
             </div>
 
             {/* HP Range */}
@@ -512,15 +509,13 @@ const AdvancedSearchSystem = ({ onResults, onLoading, className = "" }) => {
                   value={filters.hp.min}
                   onChange={(e) => handleFilterChange('hp', { ...filters.hp, min: e.target.value })}
                   placeholder="Min"
-                  className="w-1/2 px-3 py-2 border rounded-md bg-white dark:bg-gray-700">
-                />
+                  className="w-1/2 px-3 py-2 border rounded-md bg-white dark:bg-gray-700" />
                 <input
                   type="number"
                   value={filters.hp.max}
                   onChange={(e) => handleFilterChange('hp', { ...filters.hp, max: e.target.value })}
                   placeholder="Max"
-                  className="w-1/2 px-3 py-2 border rounded-md bg-white dark:bg-gray-700">
-                />
+                  className="w-1/2 px-3 py-2 border rounded-md bg-white dark:bg-gray-700" />
               </div>
             </div>
 
@@ -536,8 +531,7 @@ const AdvancedSearchSystem = ({ onResults, onLoading, className = "" }) => {
                 step="10"
                 value={filters.priceRange[1]}
                 onChange={(e) => handleFilterChange('priceRange', [filters.priceRange[0], parseInt(e.target.value)])}
-                className="w-full">
-              />
+                className="w-full" />
             </div>
           </div>
         </div>
@@ -551,7 +545,7 @@ const AdvancedSearchSystem = ({ onResults, onLoading, className = "" }) => {
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
             className="px-3 py-1 border rounded bg-white dark:bg-gray-700 text-sm">
-          >
+
             <option value="relevance">Relevance</option>
             <option value="name">Name</option>
             <option value="price">Price</option>
@@ -562,7 +556,7 @@ const AdvancedSearchSystem = ({ onResults, onLoading, className = "" }) => {
           <button
             onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
             className="px-3 py-1 border rounded bg-white dark:bg-gray-700 text-sm">
-          >
+
             {sortOrder === 'asc' ? '↑' : '↓'}
           </button>
         </div>
@@ -581,7 +575,7 @@ const AdvancedSearchSystem = ({ onResults, onLoading, className = "" }) => {
                   key={index}
                   onClick={() => loadFromHistory(item)}
                   className="block w-full text-left px-3 py-2 text-sm rounded hover:bg-gray-100 dark:hover:bg-gray-700">
-                >
+
                   <span className="font-medium">{item.query}</span>
                   <span className="text-gray-500 ml-2">({item.resultCount} results)</span>
                 </button>

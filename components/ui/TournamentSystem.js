@@ -360,7 +360,7 @@ export default function TournamentSystem({ userId, onTournamentJoin, onCreateTou
           <button
             onClick={() => onTournamentJoin?.(tournament)}
             className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-          >
+
             Join Tournament
           </button>
         )}
@@ -372,7 +372,7 @@ export default function TournamentSystem({ userId, onTournamentJoin, onCreateTou
               setShowBracket(true);
             }}
             className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-          >
+
             View Live Bracket
           </button>
         )}
@@ -402,7 +402,7 @@ export default function TournamentSystem({ userId, onTournamentJoin, onCreateTou
           <button
             onClick={() => setShowBracket(false)}
             className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
-          >
+
             ✕
           </button>
         </div>
@@ -461,7 +461,7 @@ export default function TournamentSystem({ userId, onTournamentJoin, onCreateTou
             <button
               onClick={() => onCreateTournament?.()}
               className="px-4 py-2 bg-white text-purple-600 rounded-lg font-medium hover:bg-gray-100 transition-colors">
-            >
+
               Create Tournament
             </button>
           </div>

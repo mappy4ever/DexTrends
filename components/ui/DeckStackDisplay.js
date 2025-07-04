@@ -98,7 +98,7 @@ const DeckStackDisplay = ({
           <button 
             onClick={() => setExpandedView(false)}
             className="collapse-btn">
-          >
+
             Collapse
           </button>
         </div>
@@ -113,8 +113,7 @@ const DeckStackDisplay = ({
                   showEffects={true}
                   showHolographic={true}
                   enableMouseTracking={true}
-                  className="deck-card">
-                />
+                  className="deck-card" />
                 {showCounts && count > 1 && (
                   <div className="card-count-badge">
                     {count}x
@@ -259,8 +258,7 @@ const DeckStackDisplay = ({
               showEffects={hoveredIndex === index}
               showHolographic={true}
               enableMouseTracking={hoveredIndex === index}
-              className="stack-card">
-            />
+              className="stack-card" />
             
             {showCounts && count > 1 && (
               <div className="stack-count-badge">

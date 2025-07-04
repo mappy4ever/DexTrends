@@ -152,7 +152,7 @@ const AppUpdateNotification = () => {
             <button
               onClick={handleDismissUpdateSuccess}
               className="ml-4 text-white hover:text-green-200 transition-colors">
-            >
+
               ×
             </button>
           </div>
@@ -190,7 +190,7 @@ const AppUpdateNotification = () => {
             <button
               onClick={() => setShowChangeLog(!showChangeLog)}
               className="text-blue-600 text-sm font-medium hover:text-blue-700 transition-colors">
-            >
+
               {showChangeLog ? '📖 Hide' : '📋 View'} What's New
             </button>
             
@@ -232,7 +232,7 @@ const AppUpdateNotification = () => {
               onClick={handleDismissUpdate}
               disabled={isInstalling}
               className="px-4 py-3 text-gray-600 font-medium border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50">
-            >
+
               Later
             </button>
           </div>

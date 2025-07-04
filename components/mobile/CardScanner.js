@@ -346,7 +346,7 @@ const CardScanner = ({
             <button
               onClick={startCamera}
               className="retry-button">
-            >
+
               Grant Permission
             </button>
           )}

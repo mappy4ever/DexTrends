@@ -263,7 +263,7 @@ const BulkCardOperations = ({
           <button
             onClick={() => quickSelect.none()}
             className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400">
-          >
+
             Clear selection
           </button>
         </div>
@@ -300,19 +300,19 @@ const BulkCardOperations = ({
                 <button
                   onClick={quickSelect.all}
                   className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                >
+
                   Select All
                 </button>
                 <button
                   onClick={quickSelect.none}
                   className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
-                >
+
                   Select None
                 </button>
                 <button
                   onClick={quickSelect.invert}
                   className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
-                >
+
                   Invert Selection
                 </button>
               </div>
@@ -327,7 +327,7 @@ const BulkCardOperations = ({
                   value={rarityFilter}
                   onChange={(e) => setRarityFilter(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-                >
+
                   <option value="">Choose a rarity...</option>
                   {[...new Set(cards.map(card => card.rarity))].filter(Boolean).map(rarity => (
                     <option key={rarity} value={rarity}>{rarity}</option>
@@ -337,7 +337,7 @@ const BulkCardOperations = ({
                   <button
                     onClick={() => quickSelect.byRarity(rarityFilter)}
                     className="mt-2 w-full px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-                  >
+
                     Add {rarityFilter} Cards
                   </button>
                 )}
@@ -352,26 +352,25 @@ const BulkCardOperations = ({
                     value={priceThreshold}
                     onChange={(e) => setPriceThreshold(e.target.value)}
                     placeholder="Price threshold..."
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-                  />
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800" />
                   {priceThreshold && (
                     <div className="grid grid-cols-3 gap-2">
                       <button
                         onClick={() => quickSelect.byPrice('above', parseFloat(priceThreshold))}
                         className="px-2 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700 transition-colors">
-                      >
+
                         Above ${priceThreshold}
                       </button>
                       <button
                         onClick={() => quickSelect.byPrice('below', parseFloat(priceThreshold))}
                         className="px-2 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700 transition-colors">
-                      >
+
                         Below ${priceThreshold}
                       </button>
                       <button
                         onClick={() => quickSelect.byPrice('equal', parseFloat(priceThreshold))}
                         className="px-2 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 transition-colors">
-                      >
+
                         Equal ${priceThreshold}
                       </button>
                     </div>
@@ -401,14 +400,14 @@ const BulkCardOperations = ({
                       onClick={bulkActions.addToFavorites}
                       disabled={actionInProgress}
                       className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors disabled:opacity-50">
-                    >
+
                       Add to Favorites
                     </button>
                     <button
                       onClick={bulkActions.removeFromFavorites}
                       disabled={actionInProgress}
                       className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors disabled:opacity-50">
-                    >
+
                       Remove from Favorites
                     </button>
                   </div>
@@ -426,13 +425,12 @@ const BulkCardOperations = ({
                       value={targetCollection}
                       onChange={(e) => setTargetCollection(e.target.value)}
                       placeholder="Collection name..."
-                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-                    />
+                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800" />
                     <button
                       onClick={() => bulkActions.addToCollection(targetCollection)}
                       disabled={actionInProgress || !targetCollection.trim()}
                       className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50">
-                    >
+
                       Add to Collection
                     </button>
                   </div>
@@ -457,7 +455,7 @@ const BulkCardOperations = ({
                     <button
                       onClick={addCustomTag}
                       className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-                    >
+
                       Add Tag
                     </button>
                   </div>
@@ -472,7 +470,7 @@ const BulkCardOperations = ({
                             <button
                               onClick={() => removeCustomTag(tag)}
                               className="ml-2 text-gray-500 hover:text-red-500">
-                            >
+
                               <XMarkIcon className="h-4 w-4" />
                             </button>
                           </div>
@@ -482,7 +480,7 @@ const BulkCardOperations = ({
                         onClick={() => bulkActions.addTags(customTags)}
                         disabled={actionInProgress}
                         className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50">
-                      >
+
                         Apply All Tags to Selected Cards
                       </button>
                     </div>
@@ -500,28 +498,28 @@ const BulkCardOperations = ({
                       onClick={() => bulkActions.exportCards('csv')}
                       disabled={actionInProgress}
                       className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50">
-                    >
+
                       CSV
                     </button>
                     <button
                       onClick={() => bulkActions.exportCards('json')}
                       disabled={actionInProgress}
                       className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50">
-                    >
+
                       JSON
                     </button>
                     <button
                       onClick={() => bulkActions.exportCards('pdf')}
                       disabled={actionInProgress}
                       className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50">
-                    >
+
                       PDF
                     </button>
                     <button
                       onClick={() => bulkActions.exportCards('xlsx')}
                       disabled={actionInProgress}
                       className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50">
-                    >
+
                       Excel
                     </button>
                   </div>

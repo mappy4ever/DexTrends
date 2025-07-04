@@ -567,8 +567,7 @@ const PrintableCardLists = ({
                         ...prev,
                         [option.key]: e.target.checked
                       }))}
-                      className="mr-2">
-                    />
+                      className="mr-2" />
                     <span className="text-sm text-gray-700 dark:text-gray-300">
                       {option.label}
                     </span>
@@ -591,7 +590,7 @@ const PrintableCardLists = ({
                     value={printOptions.sortBy}
                     onChange={(e) => setPrintOptions(prev => ({ ...prev, sortBy: e.target.value }))}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-                  >
+
                     <option value="name">Name</option>
                     <option value="price">Price</option>
                     <option value="rarity">Rarity</option>
@@ -607,7 +606,7 @@ const PrintableCardLists = ({
                     value={printOptions.groupBy}
                     onChange={(e) => setPrintOptions(prev => ({ ...prev, groupBy: e.target.value }))}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-                  >
+
                     <option value="none">No grouping</option>
                     <option value="rarity">Rarity</option>
                     <option value="set">Set</option>
@@ -631,7 +630,7 @@ const PrintableCardLists = ({
                     value={printOptions.paperSize}
                     onChange={(e) => setPrintOptions(prev => ({ ...prev, paperSize: e.target.value }))}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-                  >
+
                     <option value="A4">A4</option>
                     <option value="Letter">Letter</option>
                     <option value="Legal">Legal</option>
@@ -646,7 +645,7 @@ const PrintableCardLists = ({
                     value={printOptions.pageOrientation}
                     onChange={(e) => setPrintOptions(prev => ({ ...prev, pageOrientation: e.target.value }))}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-                  >
+
                     <option value="portrait">Portrait</option>
                     <option value="landscape">Landscape</option>
                   </select>
@@ -660,7 +659,7 @@ const PrintableCardLists = ({
                     value={printOptions.colorMode}
                     onChange={(e) => setPrintOptions(prev => ({ ...prev, colorMode: e.target.value }))}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-                  >
+
                     <option value="color">Color</option>
                     <option value="bw">Black & White</option>
                   </select>
@@ -696,7 +695,7 @@ const PrintableCardLists = ({
                 onClick={handlePrint}
                 disabled={isGenerating}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center space-x-2 disabled:opacity-50">
-              >
+
                 <PrinterIcon className="h-4 w-4" />
                 <span>{isGenerating ? 'Preparing...' : 'Print'}</span>
               </button>
@@ -705,7 +704,7 @@ const PrintableCardLists = ({
                 onClick={handlePDFExport}
                 disabled={isGenerating}
                 className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center space-x-2 disabled:opacity-50">
-              >
+
                 <DocumentArrowDownIcon className="h-4 w-4" />
                 <span>Export PDF</span>
               </button>

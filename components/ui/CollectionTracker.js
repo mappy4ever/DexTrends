@@ -581,7 +581,7 @@ const CollectionTracker = ({
                 value={selectedSet}
                 onChange={(e) => setSelectedSet(e.target.value)}
                 className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-              >
+
                 <option value="all">All Sets</option>
                 <option value="completed">Completed Sets</option>
                 <option value="in-progress">In Progress</option>
@@ -649,7 +649,7 @@ const CollectionTracker = ({
               <button
                 onClick={() => setShowCreateGoal(true)}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center space-x-2">
-              >
+
                 <PlusIcon className="h-4 w-4" />
                 <span>Create Goal</span>
               </button>
@@ -715,7 +715,7 @@ const CollectionTracker = ({
                 <button
                   onClick={() => setShowCreateGoal(true)}
                   className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                >
+
                   Create Your First Goal
                 </button>
               </div>
@@ -836,7 +836,7 @@ const CollectionTracker = ({
               value={newGoal.type}
               onChange={(e) => setNewGoal(prev => ({ ...prev, type: e.target.value }))}
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-            >
+
               <option value="set">Complete a specific set</option>
               <option value="count">Collect a certain number of cards</option>
               <option value="rarity">Collect cards of specific rarity</option>
@@ -852,7 +852,7 @@ const CollectionTracker = ({
                 value={newGoal.target}
                 onChange={(e) => setNewGoal(prev => ({ ...prev, target: e.target.value }))}
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-              >
+
                 <option value="">Select a set...</option>
                 {Object.values(collectionAnalysis.setAnalysis).map(set => (
                   <option key={set.id} value={set.name}>{set.name}</option>
@@ -877,21 +877,20 @@ const CollectionTracker = ({
               type="date"
               value={newGoal.deadline}
               onChange={(e) => setNewGoal(prev => ({ ...prev, deadline: e.target.value }))}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-            />
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800" />
           </div>
           
           <div className="flex justify-end space-x-3">
             <button
               onClick={() => setShowCreateGoal(false)}
               className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
-            >
+
               Cancel
             </button>
             <button
               onClick={createGoal}
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-            >
+
               Create Goal
             </button>
           </div>

@@ -424,7 +424,7 @@ const MarketInsightsDashboard = ({ cards = [], userPortfolio = [] }) => {
             value={timeframe}
             onChange={(e) => setTimeframe(e.target.value)}
             className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
-          >
+
             <option value="7d">7 Days</option>
             <option value="30d">30 Days</option>
             <option value="90d">90 Days</option>

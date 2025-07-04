@@ -252,7 +252,7 @@ const GestureCardSorting = ({
           <button
             onClick={() => setFilterMode(filterMode === 'all' ? 'favorites' : 'all')}
             className="px-3 py-1 text-xs bg-gray-100 rounded-full">
-          >
+
             {filterMode === 'all' ? 'Show Favorites' : 'Show All'}
           </button>
         </div>
@@ -270,7 +270,7 @@ const GestureCardSorting = ({
         enableDoubleTap={true}
         enableLongPress={true}
         className="cards-container">
-      >
+
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {filteredCards.map((card) => (
             <div

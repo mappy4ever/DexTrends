@@ -147,8 +147,7 @@ export const CardSkeleton = ({
         <Skeleton
           height={imageHeight}
           variant="rounded"
-          className="mb-4">
-        />
+          className="mb-4" />
       )}
       
       {/* Title Skeleton */}
@@ -157,8 +156,7 @@ export const CardSkeleton = ({
           height="1.5rem"
           width="75%"
           variant="text"
-          className="mb-2">
-        />
+          className="mb-2" />
       )}
       
       {/* Subtitle Skeleton */}
@@ -167,8 +165,7 @@ export const CardSkeleton = ({
           height="1rem"
           width="50%"
           variant="text"
-          className="mb-3">
-        />
+          className="mb-3" />
       )}
       
       {/* Content Skeleton */}
@@ -219,16 +216,14 @@ export const PokemonCardSkeleton = ({
         <Skeleton
           height="200px"
           variant="rounded"
-          className="mb-3 aspect-[3/4]">
-        />
+          className="mb-3 aspect-[3/4]" />
         
         {/* Name */}
         <Skeleton
           height="1.25rem"
           width="80%"
           variant="text"
-          className="mb-2 mx-auto">
-        />
+          className="mb-2 mx-auto" />
         
         {/* Type Badges */}
         {showType && (
@@ -285,8 +280,7 @@ export const PokemonCardSkeleton = ({
       <Skeleton
         height="280px"
         variant="rounded"
-        className="mb-4">
-      />
+        className="mb-4" />
       
       {/* Stats Grid */}
       {showStats && (
@@ -297,14 +291,12 @@ export const PokemonCardSkeleton = ({
                 height="0.875rem"
                 width="4rem"
                 variant="text"
-                className="mb-1 mx-auto">
-              />
+                className="mb-1 mx-auto" />
               <Skeleton
                 height="1.25rem"
                 width="3rem"
                 variant="text"
-                className="mx-auto">
-              />
+                className="mx-auto" />
             </div>
           ))}
         </div>
@@ -340,8 +332,7 @@ export const ListSkeleton = ({
               width={avatarSize}
               height={avatarSize}
               variant="circular"
-              className="mr-4 flex-shrink-0">
-            />
+              className="mr-4 flex-shrink-0" />
           )}
           
           {/* Content */}
@@ -350,8 +341,7 @@ export const ListSkeleton = ({
               height="1.25rem"
               width="60%"
               variant="text"
-              className="mb-1">
-            />
+              className="mb-1" />
             {showSecondaryText && (
               <Skeleton
                 height="1rem"
@@ -367,8 +357,7 @@ export const ListSkeleton = ({
               width="2rem"
               height="2rem"
               variant="circular"
-              className="ml-4 flex-shrink-0">
-            />
+              className="ml-4 flex-shrink-0" />
           )}
         </div>
       ))}
@@ -443,8 +432,7 @@ export const ChartSkeleton = ({
                 height="0.75rem"
                 width="1.5rem"
                 variant="text"
-                className="ml-auto">
-              />
+                className="ml-auto" />
             ))}
           </div>
         )}
@@ -459,8 +447,7 @@ export const ChartSkeleton = ({
                 width="2rem"
                 height={`${20 + Math.random() * 60}%`}
                 variant="rectangular"
-                className="mx-1">
-              />
+                className="mx-1" />
             )))
           ) : (
             // Line Chart
@@ -478,8 +465,7 @@ export const ChartSkeleton = ({
                   stroke="url(#skeleton-gradient)"
                   strokeWidth="3"
                   fill="none"
-                  className="animate-pulse">
-                />
+                  className="animate-pulse" />
                 <path
                   d="M 0 60 Q 50 40 100 50 T 200 45 T 300 55 T 400 40"
                   stroke="url(#skeleton-gradient)"
@@ -546,8 +532,7 @@ export const FormSkeleton = ({
           height="2rem"
           width="60%"
           variant="text"
-          className="mb-6">
-        />
+          className="mb-6" />
       )}
       
       {/* Form Fields */}
@@ -559,8 +544,7 @@ export const FormSkeleton = ({
               height="1rem"
               width="25%"
               variant="text"
-              className="mb-2">
-            />
+              className="mb-2" />
             
             {/* Input Field */}
             <Skeleton
@@ -578,8 +562,7 @@ export const FormSkeleton = ({
           height="2.5rem"
           width="8rem"
           variant="rounded"
-          className="mt-6">
-        />
+          className="mt-6" />
       )}
     </div>
   );
@@ -603,8 +586,7 @@ export const NavigationSkeleton = ({
             height="2rem"
             width="60%"
             variant="rounded"
-            className="mb-8">
-          />
+            className="mb-8" />
         )}
         
         {/* Navigation Items */}
@@ -639,8 +621,7 @@ export const NavigationSkeleton = ({
                   height="1rem"
                   width="80%"
                   variant="text"
-                  className="mb-1">
-                />
+                  className="mb-1" />
                 <Skeleton
                   height="0.75rem"
                   width="60%"

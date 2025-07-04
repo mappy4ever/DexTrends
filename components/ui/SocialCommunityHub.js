@@ -404,7 +404,7 @@ const SocialCommunityHub = () => {
                       <button
                         onClick={() => handleShare(post)}
                         className="flex items-center space-x-2 text-gray-500 hover:text-green-500">
-                      >
+
                         <BsShare />
                         <span className="text-sm">{post.shares}</span>
                       </button>

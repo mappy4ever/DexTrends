@@ -61,7 +61,7 @@ function SimpleLineChart({ data, title, height = 200 }) {
                   cy={y}
                   r="1.5"
                   fill="#3b82f6"
-                  className="hover:r-2 transition-all">
+                  className="hover:r-2 transition-all"
                 />
               );
             })}
@@ -221,7 +221,7 @@ export default function PriceHistory({ cardId, cardName, variantType = 'holofoil
           <select
             value={daysBack}
             onChange={(e) => setDaysBack(parseInt(e.target.value))}
-            className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-1 text-sm">
+            className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-1 text-sm"
           >
             <option value={7}>7 days</option>
             <option value={30}>30 days</option>
@@ -233,7 +233,7 @@ export default function PriceHistory({ cardId, cardName, variantType = 'holofoil
             value={variantType}
             onChange={(e) => setError(null) || setPriceHistory([])}
             className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-1 text-sm">
-          >
+
             <option value="holofoil">Holofoil</option>
             <option value="normal">Normal</option>
             <option value="reverse_holofoil">Reverse Holo</option>

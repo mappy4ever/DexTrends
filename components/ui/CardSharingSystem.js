@@ -465,7 +465,7 @@ const CardSharingSystem = ({
                     <button
                       onClick={() => copyToClipboard(generatedLink)}
                       className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                    >
+
                       {copied ? <CheckIcon className="h-4 w-4" /> : <ClipboardDocumentIcon className="h-4 w-4" />}
                     </button>
                   </div>
@@ -491,8 +491,7 @@ const CardSharingSystem = ({
                       type="checkbox"
                       checked={exportOptions.includePrices}
                       onChange={(e) => setExportOptions(prev => ({ ...prev, includePrices: e.target.checked }))}
-                      className="mr-2">
-                    />
+                      className="mr-2" />
                     Include card prices
                   </label>
                   <label className="flex items-center">
@@ -500,8 +499,7 @@ const CardSharingSystem = ({
                       type="checkbox"
                       checked={exportOptions.includeStats}
                       onChange={(e) => setExportOptions(prev => ({ ...prev, includeStats: e.target.checked }))}
-                      className="mr-2">
-                    />
+                      className="mr-2" />
                     Include card statistics
                   </label>
                   <label className="flex items-center">
@@ -509,8 +507,7 @@ const CardSharingSystem = ({
                       type="checkbox"
                       checked={exportOptions.includeImages}
                       onChange={(e) => setExportOptions(prev => ({ ...prev, includeImages: e.target.checked }))}
-                      className="mr-2">
-                    />
+                      className="mr-2" />
                     Include card images
                   </label>
                 </div>
@@ -520,7 +517,7 @@ const CardSharingSystem = ({
                 onClick={handleShare}
                 disabled={isGenerating}
                 className="w-full px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-              >
+
                 {isGenerating ? 'Generating...' : `Generate ${shareFormat === 'link' ? 'Share Link' : shareFormat === 'qr' ? 'QR Code' : shareFormat === 'image' ? 'Image' : 'Social Share'}`}
               </button>
             </div>
@@ -596,8 +593,7 @@ const CardSharingSystem = ({
                         type="checkbox"
                         checked={exportOptions.includeImages}
                         onChange={(e) => setExportOptions(prev => ({ ...prev, includeImages: e.target.checked }))}
-                        className="mr-2">
-                      />
+                        className="mr-2" />
                       Include card images
                     </label>
                     <label className="flex items-center">
@@ -605,8 +601,7 @@ const CardSharingSystem = ({
                         type="checkbox"
                         checked={exportOptions.includePrices}
                         onChange={(e) => setExportOptions(prev => ({ ...prev, includePrices: e.target.checked }))}
-                        className="mr-2">
-                      />
+                        className="mr-2" />
                       Include pricing data
                     </label>
                   </div>
@@ -616,8 +611,7 @@ const CardSharingSystem = ({
                         type="checkbox"
                         checked={exportOptions.includeDescription}
                         onChange={(e) => setExportOptions(prev => ({ ...prev, includeDescription: e.target.checked }))}
-                        className="mr-2">
-                      />
+                        className="mr-2" />
                       Include descriptions
                     </label>
                     <label className="flex items-center">
@@ -625,8 +619,7 @@ const CardSharingSystem = ({
                         type="checkbox"
                         checked={exportOptions.includeStats}
                         onChange={(e) => setExportOptions(prev => ({ ...prev, includeStats: e.target.checked }))}
-                        className="mr-2">
-                      />
+                        className="mr-2" />
                       Include card statistics
                     </label>
                   </div>
@@ -641,7 +634,7 @@ const CardSharingSystem = ({
                       value={exportOptions.templateStyle}
                       onChange={(e) => setExportOptions(prev => ({ ...prev, templateStyle: e.target.value }))}
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-                    >
+
                       <option value="modern">Modern</option>
                       <option value="classic">Classic</option>
                       <option value="minimal">Minimal</option>
@@ -654,7 +647,7 @@ const CardSharingSystem = ({
                 onClick={handleExport}
                 disabled={isGenerating}
                 className="w-full px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-              >
+
                 {isGenerating ? 'Exporting...' : `Export as ${exportFormat.toUpperCase()}`}
               </button>
             </div>

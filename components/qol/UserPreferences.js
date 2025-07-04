@@ -228,7 +228,7 @@ export const PreferencesPanel = ({ isOpen, onClose }) => {
                 value={preferences.language}
                 onChange={(e) => updatePreference('language', e.target.value)}
                 className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-              >
+
                 <option value="en">English</option>
                 <option value="es">Español</option>
                 <option value="fr">Français</option>
@@ -248,7 +248,7 @@ export const PreferencesPanel = ({ isOpen, onClose }) => {
                 value={preferences.theme}
                 onChange={(e) => updatePreference('theme', e.target.value)}
                 className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-              >
+
                 <option value="auto">Auto (System)</option>
                 <option value="light">Light</option>
                 <option value="dark">Dark</option>
@@ -261,7 +261,7 @@ export const PreferencesPanel = ({ isOpen, onClose }) => {
                 value={preferences.cardDisplayMode}
                 onChange={(e) => updatePreference('cardDisplayMode', e.target.value)}
                 className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-              >
+
                 <option value="grid">Grid</option>
                 <option value="list">List</option>
               </select>
@@ -273,7 +273,7 @@ export const PreferencesPanel = ({ isOpen, onClose }) => {
                 value={preferences.cardsPerPage}
                 onChange={(e) => updatePreference('cardsPerPage', parseInt(e.target.value))}
                 className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-              >
+
                 <option value={10}>10</option>
                 <option value={20}>20</option>
                 <option value={50}>50</option>
@@ -287,8 +287,7 @@ export const PreferencesPanel = ({ isOpen, onClose }) => {
                   type="checkbox"
                   checked={preferences.showPrices}
                   onChange={(e) => updatePreference('showPrices', e.target.checked)}
-                  className="mr-2">
-                />
+                  className="mr-2" />
                 Show card prices
               </label>
 
@@ -297,8 +296,7 @@ export const PreferencesPanel = ({ isOpen, onClose }) => {
                   type="checkbox"
                   checked={preferences.showRarity}
                   onChange={(e) => updatePreference('showRarity', e.target.checked)}
-                  className="mr-2">
-                />
+                  className="mr-2" />
                 Show card rarity
               </label>
 
@@ -307,8 +305,7 @@ export const PreferencesPanel = ({ isOpen, onClose }) => {
                   type="checkbox"
                   checked={preferences.animationsEnabled}
                   onChange={(e) => updatePreference('animationsEnabled', e.target.checked)}
-                  className="mr-2">
-                />
+                  className="mr-2" />
                 Enable animations
               </label>
             </div>
@@ -323,8 +320,7 @@ export const PreferencesPanel = ({ isOpen, onClose }) => {
                 type="checkbox"
                 checked={preferences.enableNotifications}
                 onChange={(e) => updatePreference('enableNotifications', e.target.checked)}
-                className="mr-2">
-              />
+                className="mr-2" />
               Enable notifications
             </label>
 
@@ -346,8 +342,7 @@ export const PreferencesPanel = ({ isOpen, onClose }) => {
                 type="checkbox"
                 checked={preferences.soundEnabled}
                 onChange={(e) => updatePreference('soundEnabled', e.target.checked)}
-                className="mr-2">
-              />
+                className="mr-2" />
               Enable notification sounds
             </label>
           </div>
@@ -361,8 +356,7 @@ export const PreferencesPanel = ({ isOpen, onClose }) => {
                 type="checkbox"
                 checked={preferences.highContrastMode}
                 onChange={(e) => updatePreference('highContrastMode', e.target.checked)}
-                className="mr-2">
-              />
+                className="mr-2" />
               High contrast mode
             </label>
 
@@ -371,8 +365,7 @@ export const PreferencesPanel = ({ isOpen, onClose }) => {
                 type="checkbox"
                 checked={preferences.reducedMotion}
                 onChange={(e) => updatePreference('reducedMotion', e.target.checked)}
-                className="mr-2">
-              />
+                className="mr-2" />
               Reduce motion and animations
             </label>
 
@@ -381,8 +374,7 @@ export const PreferencesPanel = ({ isOpen, onClose }) => {
                 type="checkbox"
                 checked={preferences.largeText}
                 onChange={(e) => updatePreference('largeText', e.target.checked)}
-                className="mr-2">
-              />
+                className="mr-2" />
               Large text
             </label>
 
@@ -391,8 +383,7 @@ export const PreferencesPanel = ({ isOpen, onClose }) => {
                 type="checkbox"
                 checked={preferences.screenReaderOptimized}
                 onChange={(e) => updatePreference('screenReaderOptimized', e.target.checked)}
-                className="mr-2">
-              />
+                className="mr-2" />
               Screen reader optimized
             </label>
           </div>
@@ -406,8 +397,7 @@ export const PreferencesPanel = ({ isOpen, onClose }) => {
                 type="checkbox"
                 checked={preferences.enableImageOptimization}
                 onChange={(e) => updatePreference('enableImageOptimization', e.target.checked)}
-                className="mr-2">
-              />
+                className="mr-2" />
               Enable image optimization
             </label>
 
@@ -416,8 +406,7 @@ export const PreferencesPanel = ({ isOpen, onClose }) => {
                 type="checkbox"
                 checked={preferences.enableCaching}
                 onChange={(e) => updatePreference('enableCaching', e.target.checked)}
-                className="mr-2">
-              />
+                className="mr-2" />
               Enable caching
             </label>
 
@@ -426,8 +415,7 @@ export const PreferencesPanel = ({ isOpen, onClose }) => {
                 type="checkbox"
                 checked={preferences.lowDataMode}
                 onChange={(e) => updatePreference('lowDataMode', e.target.checked)}
-                className="mr-2">
-              />
+                className="mr-2" />
               Low data mode
             </label>
           </div>
@@ -441,8 +429,7 @@ export const PreferencesPanel = ({ isOpen, onClose }) => {
                 type="checkbox"
                 checked={preferences.enableBetaFeatures}
                 onChange={(e) => updatePreference('enableBetaFeatures', e.target.checked)}
-                className="mr-2">
-              />
+                className="mr-2" />
               Enable beta features
             </label>
 
@@ -451,8 +438,7 @@ export const PreferencesPanel = ({ isOpen, onClose }) => {
                 type="checkbox"
                 checked={preferences.debugMode}
                 onChange={(e) => updatePreference('debugMode', e.target.checked)}
-                className="mr-2">
-              />
+                className="mr-2" />
               Debug mode
             </label>
 
@@ -462,7 +448,7 @@ export const PreferencesPanel = ({ isOpen, onClose }) => {
                 <button
                   onClick={exportPreferences}
                   className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
-                >
+
                   Export Preferences
                 </button>
                 
@@ -471,13 +457,12 @@ export const PreferencesPanel = ({ isOpen, onClose }) => {
                   type="file"
                   accept=".json"
                   onChange={handleFileImport}
-                  className="hidden">
-                />
+                  className="hidden" />
                 
                 <button
                   onClick={() => fileInputRef.current?.click()}
                   className="w-full px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors">
-                >
+
                   Import Preferences
                 </button>
               </div>
@@ -529,7 +514,7 @@ export const PreferencesPanel = ({ isOpen, onClose }) => {
               <button
                 onClick={onClose}
                 className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
-              >
+
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -544,13 +529,13 @@ export const PreferencesPanel = ({ isOpen, onClose }) => {
               <button
                 onClick={resetPreferences}
                 className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors">
-              >
+
                 Reset to Defaults
               </button>
               <button
                 onClick={onClose}
                 className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
-              >
+
                 Close
               </button>
             </div>

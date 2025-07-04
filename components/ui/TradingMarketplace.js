@@ -332,7 +332,7 @@ export default function TradingMarketplace({ userId, onTradeRequest, onPurchase 
               <button
                 onClick={() => onPurchase?.(listing)}
                 className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-              >
+
                 Buy Now
               </button>
             </div>
@@ -354,7 +354,7 @@ export default function TradingMarketplace({ userId, onTradeRequest, onPurchase 
               <button
                 onClick={() => handleTradeRequest(listing)}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-              >
+
                 Make Offer
               </button>
             </div>
@@ -375,7 +375,7 @@ export default function TradingMarketplace({ userId, onTradeRequest, onPurchase 
                   <button
                     onClick={() => onPurchase?.(listing, listing.buyItNow)}
                     className="px-3 py-2 bg-green-600 text-white rounded text-sm hover:bg-green-700">
-                  >
+
                     Buy ${listing.buyItNow}
                   </button>
                 )}
@@ -462,8 +462,7 @@ export default function TradingMarketplace({ userId, onTradeRequest, onPurchase 
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Search cards..."
-                  className="w-full px-4 py-2 pl-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white">
-                />
+                  className="w-full px-4 py-2 pl-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white" />
                 <BsSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               </div>
 
@@ -473,7 +472,7 @@ export default function TradingMarketplace({ userId, onTradeRequest, onPurchase 
                   value={filters.type}
                   onChange={(e) => setFilters(prev => ({ ...prev, type: e.target.value }))}
                   className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white">
-                >
+
                   <option value="all">All Types</option>
                   <option value="sale">For Sale</option>
                   <option value="trade">For Trade</option>
@@ -484,7 +483,7 @@ export default function TradingMarketplace({ userId, onTradeRequest, onPurchase 
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
                   className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white">
-                >
+
                   <option value="newest">Newest First</option>
                   <option value="price-low">Price: Low to High</option>
                   <option value="price-high">Price: High to Low</option>
@@ -644,7 +643,7 @@ export default function TradingMarketplace({ userId, onTradeRequest, onPurchase 
                   <button
                     onClick={() => setShowTradeModal(false)}
                     className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
-                  >
+
                     Cancel
                   </button>
                   <button
@@ -653,7 +652,7 @@ export default function TradingMarketplace({ userId, onTradeRequest, onPurchase 
                       setShowTradeModal(false);
                     }}
                     className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                  >
+
                     Send Offer
                   </button>
                 </div>

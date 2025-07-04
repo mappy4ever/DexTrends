@@ -314,7 +314,7 @@ const MobileShare = ({
             <button
               onClick={() => setShowShareMenu(false)}
               className="share-menu-close">
-            >
+
               Cancel
             </button>
           </div>
