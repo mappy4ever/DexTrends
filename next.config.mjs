@@ -80,14 +80,14 @@ const nextConfig = {
     } : false,
   },
   
-  // COMPLETELY DISABLE ESLint during builds
+  // ESLint configuration - re-enabled after fixing JSX syntax errors
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
   },
   
-  // Also disable TypeScript type checking during builds
+  // TypeScript configuration - re-enabled after fixing syntax errors
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
 
   // Your environment variables go directly here
