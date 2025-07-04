@@ -369,7 +369,7 @@ export default function CollectionManager({ userId = null }) {
                         )}
                         <div className="flex-1 min-w-0">
                           <Link
-                            href={`/cards/${card.card_id}`}
+                            href={`/cards/${card.card_id}`}>
                             className="text-sm font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 block truncate">
                             
                             {card.card_name}

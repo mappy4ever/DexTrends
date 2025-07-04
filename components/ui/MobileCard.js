@@ -145,7 +145,7 @@ const MobileCard = ({
         {/* Action Button */}
         {variant === 'detailed' && (
           <Link 
-            href={`/cards/${card.id}`}
+            href={`/cards/${card.id}`}>
             className="btn-ios btn-ios-secondary w-full mt-3 text-sm"
             onClick={(e) => e.stopPropagation()}
           >

@@ -319,7 +319,7 @@ const EnhancedCardModal = ({ card, isOpen, onClose, enablePinchZoom = true }) =>
                   <div className="text-lg font-bold">{card.hp} HP</div>
                 )}
                 <Link 
-                  href={`/cards/${card.id}`}
+                  href={`/cards/${card.id}`}>
                   className="text-sm text-blue-300 hover:text-blue-100 underline"
                   onClick={onClose}
                 >

@@ -194,7 +194,7 @@ export default function MarketAnalytics({ className = '' }) {
                     </div>
                     <div>
                       <Link
-                        href={`/cards/${card.card_id}`}
+                        href={`/cards/${card.card_id}`}>
                         className="text-sm font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
                         
                         {card.card_name}
@@ -235,7 +235,7 @@ export default function MarketAnalytics({ className = '' }) {
                     </div>
                     <div>
                       <Link
-                        href={`/cards/${card.card_id}`}
+                        href={`/cards/${card.card_id}`}>
                         className="text-sm font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
                         
                         {card.card_name}

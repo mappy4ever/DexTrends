@@ -412,7 +412,7 @@ export default function DeckBuilder() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Link 
-                href="/pocketmode" 
+                href="/pocketmode">
                 className="flex items-center gap-2 text-pokemon-blue hover:text-blue-700 font-medium transition-colors"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -434,7 +434,7 @@ export default function DeckBuilder() {
                     Save Deck
                   </button>
                   <Link
-                    href="/pocketmode/decks"
+                    href="/pocketmode/decks">
                     className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-medium transition-colors"
                   >
                     My Decks

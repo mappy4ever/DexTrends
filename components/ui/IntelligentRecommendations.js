@@ -448,7 +448,7 @@ const IntelligentRecommendations = ({
             {getRecommendations().map((card) => (
               <div key={card.id} className="group relative">
                 <Link
-                  href={`/cards/${card.id}`}
+                  href={`/cards/${card.id}`}>
                   className="block bg-gray-50 dark:bg-gray-700 rounded-lg p-4 transition-all hover:shadow-lg hover:scale-105">
 
                   {/* Card Image */}

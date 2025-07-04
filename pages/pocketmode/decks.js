@@ -142,7 +142,7 @@ export default function SavedDecks() {
           <div className="space-y-4 mb-8">
             <div className="flex items-center justify-center gap-4">
               <Link 
-                href="/pocketmode" 
+                href="/pocketmode">
                 className="text-primary hover:text-primary-hover font-medium flex items-center gap-2"
               >
                 ← Back to Pocket Mode

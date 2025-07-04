@@ -39,8 +39,8 @@ export default function PocketDeckViewer({ deck }) {
         <div className="flex mb-4 overflow-x-auto gap-3 pb-2">
           {deck.keyCards.map(card => (
             <Link
-              href={`/pocketmode/${card.id}`}
               key={card.id}
+              href={`/pocketmode/${card.id}`}
               className="flex-shrink-0 relative group transform transition-all hover:scale-105">
               
               <div className="w-20 h-28 relative">

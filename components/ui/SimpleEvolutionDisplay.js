@@ -115,7 +115,7 @@ export default function SimpleEvolutionDisplay({ speciesUrl, currentPokemonId })
           {eevee && (
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
               <Link 
-                href={`/pokedex/${eevee.id}`}
+                href={`/pokedex/${eevee.id}`}>
                 className={`flex flex-col items-center p-2 transition-all hover:scale-110 ${
                   parseInt(eevee.id) === parseInt(currentPokemonId) ? 'scale-110' : ''
                 }`}
@@ -163,7 +163,7 @@ export default function SimpleEvolutionDisplay({ speciesUrl, currentPokemonId })
                   }}
                 >
                   <Link 
-                    href={`/pokedex/${evolution.id}`}
+                    href={`/pokedex/${evolution.id}`}>
                     className={`flex flex-col items-center p-2 transition-all hover:scale-110 ${
                       parseInt(evolution.id) === parseInt(currentPokemonId) ? 'scale-110' : ''
                     }`}
@@ -260,7 +260,7 @@ export default function SimpleEvolutionDisplay({ speciesUrl, currentPokemonId })
             <div className={`flex flex-col gap-4 ${stage.length > 1 ? 'border-2 border-dashed border-gray-300 rounded-lg p-3' : ''}`}>
               {stage.map((pokemon) => (
                 <Link 
-                  key={pokemon.id} 
+                  key={pokemon.id}>
                   href={`/pokedex/${pokemon.id}`}
                   className={`flex flex-col items-center p-3 m-1 transition-all hover:scale-110 ${
                     parseInt(pokemon.id) === parseInt(currentPokemonId) ? 'scale-110' : ''

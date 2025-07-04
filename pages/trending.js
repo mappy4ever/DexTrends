@@ -174,7 +174,7 @@ export default function TrendingPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   {trendingData.rising.map(card => (
                     <Link
-                      href={`/cards/${card.id}`}
+                      href={`/cards/${card.id}`}>
                       key={card.id}
                       className={`block p-4 rounded-lg border ${
                         theme === 'dark' ? 'border-gray-700 hover:bg-gray-700' : 'border-gray-200 hover:bg-gray-50'
@@ -215,7 +215,7 @@ export default function TrendingPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   {trendingData.falling.map(card => (
                     <Link
-                      href={`/cards/${card.id}`}
+                      href={`/cards/${card.id}`}>
                       key={card.id}
                       className={`block p-4 rounded-lg border ${
                         theme === 'dark' ? 'border-gray-700 hover:bg-gray-700' : 'border-gray-200 hover:bg-gray-50'

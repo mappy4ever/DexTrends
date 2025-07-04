@@ -401,7 +401,7 @@ export default function SetIdPage() {
                 <div className="space-y-3">
                   {statistics.highestValueCards.map(card => (
                     <Link
-                      key={card.id} 
+                      key={card.id}>
                       href={`/cards/${card.id}`}
                       className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-colors w-full text-left block"
                     >

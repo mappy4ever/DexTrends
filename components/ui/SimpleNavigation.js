@@ -36,7 +36,7 @@ const SimpleNavigation = () => {
           <div className="hidden md:flex items-center space-x-1">
             {navItems.map((item) => (
               <Link
-                key={item.href}
+                key={item.href}>
                 href={item.href}
                 className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                   isActive(item.href)

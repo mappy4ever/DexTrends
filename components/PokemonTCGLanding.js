@@ -64,7 +64,7 @@ export default function PokemonTCGLanding() {
         {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           {features.map((feature, index) => (
-            <Link key={index} href={feature.href} 
+            <Link key={index} href={feature.href}>
               <div className="group bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer">
                 <div className={`${feature.color} ${feature.hoverColor} w-16 h-16 rounded-xl flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform duration-300`}>
                   {feature.icon}
@@ -98,7 +98,7 @@ export default function PokemonTCGLanding() {
                 Stay updated with the hottest cards in the market. Track price movements, 
                 identify investment opportunities, and never miss a trend.
               </p>
-              <Link href="/trending" 
+              <Link href="/trending">
                 <button className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
                   View Trends
                 </button>
@@ -113,7 +113,7 @@ export default function PokemonTCGLanding() {
                 Organize your collection like never before. Track values, set alerts, 
                 and get insights into your portfolio's performance.
               </p>
-              <Link href="/collections" 
+              <Link href="/collections">
                 <button className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
                   Manage Collection
                 </button>
@@ -130,7 +130,7 @@ export default function PokemonTCGLanding() {
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
             Join thousands of collectors and traders in the ultimate TCG experience.
           </p>
-          <Link href="/tcgsets" 
+          <Link href="/tcgsets">
             <button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
               Explore All Sets
             </button>

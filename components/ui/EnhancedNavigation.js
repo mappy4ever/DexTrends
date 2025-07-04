@@ -107,7 +107,7 @@ const EnhancedNavigation = () => {
         <div className="flex items-center space-x-1">
           {navigationItems.map((item) => (
             <Link
-              key={item.name}
+              key={item.name}>
               href={item.href}
               className={`
                 relative flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-all duration-200
@@ -179,7 +179,7 @@ const EnhancedNavigation = () => {
             <div className="px-4 py-2 space-y-1">
               {navigationItems.map((item) => (
                 <Link
-                  key={item.name}
+                  key={item.name}>
                   href={item.href}
                   className={`
                     flex items-center justify-between p-3 rounded-lg font-medium transition-all duration-200
@@ -237,7 +237,7 @@ const EnhancedNavigation = () => {
         <div className="grid grid-cols-4 gap-1 p-2">
           {navigationItems.slice(0, 4).map((item) => (
             <Link
-              key={item.name}
+              key={item.name}>
               href={item.href}
               className={`
                 relative flex flex-col items-center justify-center p-2 rounded-lg transition-colors

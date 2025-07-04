@@ -71,7 +71,7 @@ const MobileNavigation = () => {
         <div className="flex justify-around items-center h-16 px-2">
           {navigationItems.slice(0, 5).map((item) => (
             <Link
-              key={item.href}
+              key={item.href}>
               href={item.href}
               className={`flex flex-col items-center justify-center min-w-0 flex-1 py-1 px-1 rounded-lg transition-all duration-200 ${
                 activeTab === item.href
@@ -114,7 +114,7 @@ const MobileNavigation = () => {
             <div className="grid grid-cols-2 gap-3">
               {navigationItems.slice(5).map((item) => (
                 <Link
-                  key={item.href}
+                  key={item.href}>
                   href={item.href}
                   className={`flex items-center p-3 rounded-lg transition-all duration-200 ${
                     activeTab === item.href

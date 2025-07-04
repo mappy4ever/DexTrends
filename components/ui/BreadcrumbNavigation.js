@@ -148,7 +148,7 @@ const BreadcrumbNavigation = ({
               </span>
             ) : (
               <Link 
-                href={crumb.href}
+                href={crumb.href}>
                 className="flex items-center space-x-1 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200"
               >
                 <span role="img" aria-hidden="true">{crumb.icon}</span>
@@ -283,7 +283,7 @@ export const QuickNavigation = ({ currentPage, relatedPages = [], className = ''
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
         {relatedPages.map((page, index) => (
           <Link 
-            key={index} 
+            key={index}>
             href={page.href}
             className="flex items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 group"
           >
