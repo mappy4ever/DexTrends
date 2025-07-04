@@ -34,7 +34,7 @@ export default function PocketExpansionViewer({ expansion }) {
                   width={48}
                   height={48}
                   layout="fixed"
-                  className="object-contain">
+                  className="object-contain"
                 />
               </div>
             )}
