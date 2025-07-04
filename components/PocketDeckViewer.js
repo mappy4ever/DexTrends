@@ -70,7 +70,6 @@ export default function PocketDeckViewer({ deck }) {
         <button
           onClick={() => setExpanded(!expanded)}
           className="w-full py-2 text-sm text-gray-500 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors">
-        >
           <span className="mr-1">{expanded ? "Hide" : "Show"} Details</span>
           <svg
             width="16"
