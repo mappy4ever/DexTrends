@@ -1,0 +1,587 @@
+/* World-Class Mobile Design System for PokeID Page */
+
+/* Design tokens for consistent spacing and sizing */
+:root {
+  --mobile-spacing-xs: 4px;
+  --mobile-spacing-sm: 8px;
+  --mobile-spacing-md: 12px;
+  --mobile-spacing-lg: 16px;
+  --mobile-spacing-xl: 24px;
+  --mobile-spacing-xxl: 32px;
+  
+  --mobile-radius-sm: 4px;
+  --mobile-radius-md: 8px;
+  --mobile-radius-lg: 12px;
+  --mobile-radius-xl: 16px;
+  --mobile-radius-full: 9999px;
+  
+  --mobile-font-xs: 11px;
+  --mobile-font-sm: 13px;
+  --mobile-font-md: 15px;
+  --mobile-font-lg: 17px;
+  --mobile-font-xl: 20px;
+  --mobile-font-xxl: 24px;
+  
+  --mobile-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --mobile-shadow-md: 0 2px 4px rgba(0, 0, 0, 0.08);
+  --mobile-shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.12);
+  
+  --mobile-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Global mobile optimizations */
+@media (max-width: 640px) {
+  /* Reset and base styles */
+  * {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background: #f8f9fa;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Main container - full viewport */
+  #__next {
+    min-height: 100vh;
+    width: 100vw;
+    position: relative;
+  }
+
+  /* Remove all default spacing and borders */
+  .max-w-7xl {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Clean header with sticky positioning */
+  .pokemon-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+    padding: var(--mobile-spacing-md) var(--mobile-spacing-lg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  /* Header actions - floating style */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--mobile-spacing-md);
+  }
+
+  .back-button {
+    display: flex;
+    align-items: center;
+    gap: var(--mobile-spacing-xs);
+    color: #dc2626;
+    font-size: var(--mobile-font-md);
+    font-weight: 500;
+    padding: var(--mobile-spacing-sm) 0;
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .favorite-button {
+    background: #ffffff;
+    border-radius: var(--mobile-radius-full);
+    padding: var(--mobile-spacing-sm) var(--mobile-spacing-lg);
+    font-size: var(--mobile-font-sm);
+    font-weight: 600;
+    box-shadow: var(--mobile-shadow-md);
+    min-height: 44px;
+    transition: var(--mobile-transition);
+    border: none;
+  }
+
+  .favorite-button:active {
+    transform: scale(0.95);
+    box-shadow: var(--mobile-shadow-sm);
+  }
+
+  /* Pokemon main info - hero section */
+  .pokemon-hero {
+    background: linear-gradient(135deg, #f3f4f6 0%, #ffffff 100%);
+    padding: 0;
+    margin: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Pokemon image - floating effect */
+  .pokemon-image-container {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--mobile-spacing-xl);
+  }
+
+  .pokemon-image-wrapper {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.15));
+  }
+
+  /* Remove all circular borders */
+  .rounded-full.bg-gray-300,
+  .rounded-full.bg-white {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Pokemon details - card style */
+  .pokemon-details {
+    background: #ffffff;
+    border-radius: var(--mobile-radius-xl) var(--mobile-radius-xl) 0 0;
+    margin-top: -var(--mobile-spacing-xl);
+    padding: var(--mobile-spacing-xl);
+    position: relative;
+    z-index: 10;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Pokemon name and number */
+  .pokemon-title {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: var(--mobile-spacing-lg);
+  }
+
+  .pokemon-name {
+    font-size: var(--mobile-font-xxl);
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1.2;
+  }
+
+  .pokemon-number {
+    background: #f3f4f6;
+    padding: var(--mobile-spacing-xs) var(--mobile-spacing-md);
+    border-radius: var(--mobile-radius-full);
+    font-size: var(--mobile-font-sm);
+    font-weight: 600;
+    color: #6b7280;
+  }
+
+  /* Type badges - inline with proper spacing */
+  .type-badges-container {
+    display: flex;
+    gap: var(--mobile-spacing-sm);
+    margin-bottom: var(--mobile-spacing-xl);
+    flex-wrap: wrap;
+  }
+
+  /* Info grid - responsive columns */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--mobile-spacing-md);
+    margin-bottom: var(--mobile-spacing-xl);
+  }
+
+  .info-card {
+    background: #f8f9fa;
+    padding: var(--mobile-spacing-md);
+    border-radius: var(--mobile-radius-md);
+    border: none;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .info-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: #dc2626;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .info-card:active::before {
+    opacity: 1;
+  }
+
+  .info-label {
+    font-size: var(--mobile-font-xs);
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: var(--mobile-spacing-xs);
+  }
+
+  .info-value {
+    font-size: var(--mobile-font-lg);
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  .info-subvalue {
+    font-size: var(--mobile-font-xs);
+    color: #9ca3af;
+    margin-top: 2px;
+  }
+
+  /* Tab navigation - Material Design style */
+  .tab-navigation {
+    background: #ffffff;
+    position: sticky;
+    top: 60px;
+    z-index: 90;
+    border-bottom: 1px solid #e5e7eb;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .tab-navigation::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tab-list {
+    display: flex;
+    padding: 0 var(--mobile-spacing-md);
+    min-width: min-content;
+  }
+
+  .tab-button {
+    position: relative;
+    padding: var(--mobile-spacing-lg) var(--mobile-spacing-lg);
+    font-size: var(--mobile-font-sm);
+    font-weight: 500;
+    color: #6b7280;
+    white-space: nowrap;
+    border: none;
+    background: none;
+    transition: color 0.2s;
+    min-width: auto;
+    flex-shrink: 0;
+  }
+
+  .tab-button.active {
+    color: #dc2626;
+  }
+
+  .tab-button::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #dc2626;
+    transform: scaleX(0);
+    transition: transform 0.2s;
+  }
+
+  .tab-button.active::after {
+    transform: scaleX(1);
+  }
+
+  /* Tab content - clean sections */
+  .tab-content {
+    padding: var(--mobile-spacing-lg);
+    background: #f8f9fa;
+    min-height: calc(100vh - 300px);
+  }
+
+  .section-title {
+    font-size: var(--mobile-font-lg);
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: var(--mobile-spacing-md);
+  }
+
+  /* Type effectiveness - pill style */
+  .type-effectiveness-section {
+    background: #ffffff;
+    padding: var(--mobile-spacing-lg);
+    border-radius: var(--mobile-radius-lg);
+    margin-bottom: var(--mobile-spacing-lg);
+  }
+
+  .effectiveness-group {
+    margin-bottom: var(--mobile-spacing-md);
+  }
+
+  .effectiveness-label {
+    font-size: var(--mobile-font-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #6b7280;
+    margin-bottom: var(--mobile-spacing-sm);
+  }
+
+  .effectiveness-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--mobile-spacing-xs);
+  }
+
+  /* Evolution display - horizontal scroll */
+  .evolution-container {
+    background: #ffffff;
+    padding: var(--mobile-spacing-lg);
+    border-radius: var(--mobile-radius-lg);
+    margin-bottom: var(--mobile-spacing-lg);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Stats display - modern bars */
+  .stat-bars {
+    background: #ffffff;
+    padding: var(--mobile-spacing-lg);
+    border-radius: var(--mobile-radius-lg);
+  }
+
+  .stat-item {
+    margin-bottom: var(--mobile-spacing-lg);
+  }
+
+  .stat-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--mobile-spacing-sm);
+  }
+
+  .stat-name {
+    font-size: var(--mobile-font-sm);
+    font-weight: 500;
+    color: #4b5563;
+  }
+
+  .stat-value {
+    font-size: var(--mobile-font-sm);
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  .stat-bar-container {
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: var(--mobile-radius-full);
+    overflow: hidden;
+  }
+
+  .stat-bar {
+    height: 100%;
+    background: linear-gradient(to right, #dc2626, #ef4444);
+    border-radius: var(--mobile-radius-full);
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Moves grid - card based */
+  .moves-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--mobile-spacing-md);
+  }
+
+  .move-card {
+    background: #ffffff;
+    padding: var(--mobile-spacing-lg);
+    border-radius: var(--mobile-radius-lg);
+    box-shadow: var(--mobile-shadow-sm);
+    transition: var(--mobile-transition);
+  }
+
+  .move-card:active {
+    transform: translateY(-2px);
+    box-shadow: var(--mobile-shadow-md);
+  }
+
+  /* Bottom navigation */
+  .bottom-navigation {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    padding: var(--mobile-spacing-md);
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
+    display: flex;
+    justify-content: space-between;
+    gap: var(--mobile-spacing-md);
+    z-index: 100;
+  }
+
+  .nav-button {
+    flex: 1;
+    padding: var(--mobile-spacing-md);
+    border-radius: var(--mobile-radius-md);
+    font-size: var(--mobile-font-sm);
+    font-weight: 500;
+    text-align: center;
+    background: #f3f4f6;
+    color: #4b5563;
+    border: none;
+    transition: var(--mobile-transition);
+  }
+
+  .nav-button:active {
+    background: #e5e7eb;
+    transform: scale(0.98);
+  }
+
+  /* Remove all unnecessary borders and shadows */
+  .border,
+  .border-b,
+  .border-t,
+  .border-l,
+  .border-r,
+  .shadow-lg,
+  .shadow-md,
+  .shadow-sm {
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Clean backgrounds */
+  .bg-white,
+  .bg-gray-50,
+  .bg-gray-100 {
+    background: transparent !important;
+  }
+
+  /* Responsive text sizing */
+  h1 { font-size: var(--mobile-font-xxl) !important; }
+  h2 { font-size: var(--mobile-font-xl) !important; }
+  h3 { font-size: var(--mobile-font-lg) !important; }
+  h4 { font-size: var(--mobile-font-md) !important; }
+  p { font-size: var(--mobile-font-sm) !important; }
+
+  /* Safe area padding for modern phones */
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Small phone optimization (iPhone SE, etc) */
+@media (max-width: 375px) {
+  :root {
+    --mobile-font-xs: 10px;
+    --mobile-font-sm: 12px;
+    --mobile-font-md: 14px;
+    --mobile-font-lg: 16px;
+    --mobile-font-xl: 18px;
+    --mobile-font-xxl: 22px;
+  }
+
+  .pokemon-image-wrapper {
+    width: 160px;
+    height: 160px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Landscape orientation fixes */
+@media (max-height: 500px) and (orientation: landscape) {
+  .pokemon-image-container {
+    height: 180px;
+  }
+
+  .pokemon-image-wrapper {
+    width: 120px;
+    height: 120px;
+  }
+
+  .tab-content {
+    min-height: auto;
+  }
+}
+
+/* Performance optimizations */
+@media (max-width: 640px) {
+  /* Use GPU acceleration */
+  .tab-navigation,
+  .evolution-container,
+  .move-card,
+  .stat-bar {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+
+  /* Reduce motion for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Dark mode support */
+@media (max-width: 640px) and (prefers-color-scheme: dark) {
+  body {
+    background: #0f0f0f;
+  }
+
+  .pokemon-header,
+  .pokemon-hero {
+    background: linear-gradient(to bottom, #1a1a1a, #0f0f0f);
+  }
+
+  .pokemon-details,
+  .tab-navigation,
+  .type-effectiveness-section,
+  .evolution-container,
+  .stat-bars,
+  .move-card,
+  .bottom-navigation {
+    background: #1a1a1a;
+  }
+
+  .info-card {
+    background: #262626;
+  }
+
+  .pokemon-name,
+  .info-value,
+  .section-title {
+    color: #ffffff;
+  }
+
+  .pokemon-number,
+  .info-label,
+  .tab-button,
+  .stat-name {
+    color: #9ca3af;
+  }
+
+  .stat-bar-container {
+    background: #374151;
+  }
+}
