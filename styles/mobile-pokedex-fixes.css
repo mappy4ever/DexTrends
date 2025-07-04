@@ -1,0 +1,171 @@
+/* Mobile Pokedex Page Fixes - Vertical Display Optimization */
+
+/* FORCE NAVBAR TO BE SOLID ON ALL DEVICES */
+.navbar-ios,
+.fixed.top-0.left-0.right-0 {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  opacity: 1 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* MOBILE ONLY STYLES */
+@media (max-width: 768px) {
+  /* Container optimization for mobile */
+  .max-w-7xl {
+    max-width: 100% !important;
+    padding: 0.5rem !important;
+  }
+  
+  /* Pokemon Info Section - Make it fit on vertical display */
+  .bg-white.rounded-lg.shadow-lg.p-8.mb-8 {
+    padding: 1rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  /* Make image section smaller on mobile */
+  .relative.w-80.h-80.lg\\:w-96.lg\\:h-96 {
+    width: 200px !important;
+    height: 200px !important;
+    margin: 0 auto !important;
+  }
+  
+  /* Overview content fix */
+  #overview-content,
+  .tab-content {
+    width: 100% !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+  }
+  
+  /* Fix grids to be single column on mobile */
+  .grid.grid-cols-2.gap-3,
+  .grid.grid-cols-2.md\\:grid-cols-3,
+  .grid.grid-cols-1.md\\:grid-cols-2 {
+    grid-template-columns: 1fr !important;
+    gap: 0.5rem !important;
+  }
+  
+  /* Tab Navigation - Make it SUPER VISIBLE */
+  .bg-white.rounded-lg.shadow-lg .border-b.border-gray-200 {
+    position: relative !important;
+    background: #f3f4f6 !important;
+    border-bottom: 2px solid #dc2626 !important;
+    margin: 0 -1rem !important;
+    padding: 0 1rem !important;
+  }
+  
+  /* Tab buttons - High contrast and visibility */
+  .tab-navigation button {
+    background: white !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 0.5rem !important;
+    margin: 0.5rem 0.25rem !important;
+    padding: 0.75rem 1.25rem !important;
+    font-weight: 600 !important;
+    color: #374151 !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+  }
+  
+  /* Active tab */
+  .tab-navigation button.border-pokemon-red {
+    background: #dc2626 !important;
+    color: white !important;
+    border-color: #dc2626 !important;
+    box-shadow: 0 2px 4px rgba(220, 38, 38, 0.3) !important;
+  }
+  
+  /* Tab content area */
+  .bg-white.rounded-lg.shadow-lg > .p-4.md\\:p-8 {
+    padding: 1rem !important;
+  }
+  
+  /* Fix text sizes for mobile */
+  .text-4xl {
+    font-size: 1.75rem !important;
+  }
+  
+  .text-2xl {
+    font-size: 1.25rem !important;
+  }
+  
+  .text-xl {
+    font-size: 1.125rem !important;
+  }
+  
+  .text-lg {
+    font-size: 1rem !important;
+  }
+  
+  /* Type effectiveness containers */
+  .flex.items-center.gap-3.bg-red-50,
+  .flex.items-center.gap-3.bg-green-50,
+  .flex.items-center.gap-3.bg-gray-100 {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    padding: 0.75rem !important;
+  }
+  
+  /* Evolution display optimization */
+  .evolution-display h4 {
+    position: sticky !important;
+    left: 0 !important;
+    background: white !important;
+    z-index: 10 !important;
+  }
+  
+  /* Stats section */
+  .grid.grid-cols-1.lg\\:grid-cols-2.gap-6 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Hide desktop-only elements */
+  .hidden.md\\:flex {
+    display: none !important;
+  }
+}
+
+/* iPhone specific fixes */
+@supports (-webkit-touch-callout: none) {
+  @media (max-width: 428px) {
+    /* Even more compact for iPhone */
+    .relative.w-80.h-80.lg\\:w-96.lg\\:h-96 {
+      width: 150px !important;
+      height: 150px !important;
+    }
+    
+    /* Smaller padding */
+    .bg-gray-50.p-3.rounded {
+      padding: 0.5rem !important;
+    }
+    
+    /* Tab navigation full width */
+    .tab-navigation {
+      margin: 0 -1rem !important;
+      padding: 0 0.5rem !important;
+    }
+  }
+}
+
+/* Fix for Overview content specifically */
+@media (max-width: 768px) {
+  /* Biology section */
+  div[id*="overview"] .grid,
+  div[class*="overview"] .grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+  
+  /* Description box */
+  .bg-gray-50.p-4.rounded-lg {
+    padding: 0.75rem !important;
+  }
+  
+  /* Ensure all text is readable */
+  .text-gray-600.leading-relaxed {
+    font-size: 0.875rem !important;
+    line-height: 1.5 !important;
+  }
+}

@@ -1,6 +1,7 @@
 import React from "react";
+import Link from "next/link";
 
-function Error({ statusCode, hasGetInitialPropsRun, err }) {
+function Error({ statusCode }) {
   return (
     <div style={{ textAlign: "center", marginTop: 80 }}>
       <h1 style={{ fontSize: 48, color: "#e53e3e" }}>Error {statusCode || 404}</h1>
@@ -9,9 +10,9 @@ function Error({ statusCode, hasGetInitialPropsRun, err }) {
           ? `An error ${statusCode} occurred on server.`
           : "An error occurred on client."}
       </p>
-      <a href="/" style={{ color: "#3182ce", textDecoration: "underline", marginTop: 24, display: "inline-block" }}>
+      <Link href="/" style={{ color: "#3182ce", textDecoration: "underline", marginTop: 24, display: "inline-block" }}>
         Go Home
-      </a>
+      </Link>
     </div>
   );
 }

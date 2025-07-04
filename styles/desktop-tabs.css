@@ -1,0 +1,121 @@
+/* Desktop Tab Button Styling for Pokedex Pages */
+
+/* Desktop only - make tabs look like buttons */
+@media (min-width: 769px) {
+  /* Tab navigation container */
+  nav.tab-navigation,
+  .tab-navigation {
+    display: flex !important;
+    gap: 0.375rem !important;
+    padding: 0.75rem !important;
+    background: #f9fafb !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    align-items: center !important;
+  }
+  
+  /* Override space classes on desktop */
+  .tab-navigation.space-x-4,
+  .tab-navigation.md\:space-x-8 {
+    gap: 0.375rem !important;
+  }
+  
+  .tab-navigation.space-x-4 > *,
+  .tab-navigation.md\:space-x-8 > * {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  
+  /* Tab buttons - smaller button appearance */
+  .tab-navigation button,
+  nav.tab-navigation button {
+    position: relative !important;
+    background: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 0.5rem !important;
+    padding: 0.375rem 0.75rem !important;
+    font-weight: 500 !important;
+    font-size: 0.75rem !important;
+    color: #6b7280 !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    white-space: nowrap !important;
+  }
+  
+  /* Hover state */
+  .tab-navigation button:hover:not(.border-pokemon-red),
+  nav.tab-navigation button:hover:not(.text-pokemon-red) {
+    background: #f9fafb !important;
+    border-color: #d1d5db !important;
+    color: #374151 !important;
+    transform: translateY(-0.5px) !important;
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  }
+  
+  /* Active/Selected tab */
+  .tab-navigation button.border-pokemon-red,
+  .tab-navigation button.text-pokemon-red,
+  nav.tab-navigation button.border-pokemon-red,
+  nav.tab-navigation button.text-pokemon-red {
+    background: #dc2626 !important;
+    color: #ffffff !important;
+    border: 1px solid #b91c1c !important;
+    border-bottom: 1px solid #991b1b !important;
+    box-shadow: 0 2px 4px -1px rgba(220, 38, 38, 0.2) !important;
+    transform: translateY(-1px) !important;
+    font-weight: 600 !important;
+  }
+  
+  /* Active tab indicator */
+  .tab-navigation button.border-pokemon-red::after,
+  .tab-navigation button.text-pokemon-red::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: -10px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 0 !important;
+    height: 0 !important;
+    border-style: solid !important;
+    border-width: 4px 4px 0 4px !important;
+    border-color: #dc2626 transparent transparent transparent !important;
+  }
+  
+  /* Remove underline styling */
+  .tab-navigation button {
+    border-bottom-width: 2px !important;
+    border-bottom-style: solid !important;
+  }
+  
+  /* Tab container border */
+  .border-b.border-gray-200:has(.tab-navigation) {
+    border-bottom: none !important;
+    background: #f9fafb !important;
+    padding: 0 !important;
+  }
+  
+  /* Focus state for accessibility */
+  .tab-navigation button:focus,
+  nav.tab-navigation button:focus {
+    outline: none !important;
+    ring: 2px !important;
+    ring-color: #3b82f6 !important;
+    ring-offset: 2px !important;
+  }
+  
+  /* Pressed state */
+  .tab-navigation button:active:not(.border-pokemon-red),
+  nav.tab-navigation button:active:not(.text-pokemon-red) {
+    transform: translateY(0) !important;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+  }
+}
+
+/* Ensure proper spacing on larger screens */
+@media (min-width: 1024px) {
+  .tab-navigation button,
+  nav.tab-navigation button {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.8125rem !important;
+  }
+}

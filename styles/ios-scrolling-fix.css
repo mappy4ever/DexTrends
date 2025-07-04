@@ -1,0 +1,313 @@
+/* iOS Scrolling Fix - Critical viewport and scrolling improvements */
+
+/* Reset problematic styles on iOS */
+@supports (-webkit-touch-callout: none) {
+  /* Fix viewport constraints */
+  html {
+    height: 100%;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  body {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+    /* Remove problematic styles */
+    overscroll-behavior: auto;
+  }
+  
+  /* Fix the main app container */
+  #__next {
+    min-height: 100%;
+    position: relative;
+    overflow: visible;
+  }
+  
+  /* Fix layout container */
+  .flex.flex-col.min-h-screen {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    position: relative;
+    overflow: visible;
+  }
+  
+  /* Ensure main content can scroll */
+  main {
+    overflow: visible !important;
+    position: relative !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Fix navbar positioning */
+  nav, .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  
+  /* Add padding to account for fixed navbar */
+  .pt-16 {
+    padding-top: calc(64px + env(safe-area-inset-top)) !important;
+  }
+  
+  /* Fix modal/popup positioning */
+  .fixed {
+    position: fixed;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  
+  /* Ensure proper scrolling for all scrollable containers */
+  .overflow-auto,
+  .overflow-y-auto,
+  .overflow-scroll,
+  .overflow-y-scroll {
+    -webkit-overflow-scrolling: touch !important;
+    overflow-scrolling: touch !important;
+  }
+  
+  /* Remove height constraints that prevent scrolling */
+  .h-screen {
+    height: 100vh;
+    height: -webkit-fill-available;
+  }
+  
+  .max-h-screen {
+    max-height: 100vh;
+    max-height: -webkit-fill-available;
+  }
+  
+  /* Fix bottom navigation if present */
+  .bottom-nav,
+  .mobile-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  
+  /* Ensure content behind fixed elements can scroll */
+  .pb-10 {
+    padding-bottom: calc(40px + env(safe-area-inset-bottom)) !important;
+  }
+  
+  /* Fix for iOS rubber band scrolling */
+  .scrollable-content {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: scroll;
+    height: 100%;
+  }
+  
+  /* Prevent iOS zoom on form inputs */
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+    -webkit-appearance: none;
+    zoom: 1;
+  }
+  
+  /* Safe area adjustments */
+  .safe-area-padding {
+    padding-top: env(safe-area-inset-top);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+  }
+  
+  /* Fix position sticky elements */
+  .sticky {
+    position: -webkit-sticky;
+    position: sticky;
+  }
+  
+  /* Ensure touch events work properly */
+  * {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
+  
+  /* Re-enable text selection for inputs */
+  input,
+  textarea {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+}
+
+/* Additional mobile viewport fixes */
+@media (max-width: 768px) {
+  /* Remove any height constraints on mobile */
+  .min-h-screen {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+  
+  /* Ensure body can scroll */
+  body {
+    height: auto;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+  
+  /* Fix container constraints */
+  .container,
+  .max-w-7xl,
+  .max-w-6xl,
+  .max-w-5xl,
+  .max-w-4xl,
+  .max-w-3xl,
+  .max-w-2xl,
+  .max-w-xl {
+    max-width: 100%;
+    overflow: visible;
+  }
+  
+  /* Ensure main content area can expand */
+  .flex-grow {
+    flex-grow: 1;
+    min-height: 0;
+    overflow: visible;
+  }
+}
+
+/* Emergency iOS scrolling fix */
+@supports (-webkit-touch-callout: none) {
+  /* Force proper document flow */
+  html, body, #__next {
+    position: relative !important;
+    height: auto !important;
+    min-height: 100% !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+  }
+  
+  /* Remove transforms that break scrolling but keep animations */
+  body > div,
+  main,
+  .flex.flex-col.min-h-screen {
+    -webkit-transform: none !important;
+    transform: none !important;
+  }
+}
+
+/* Specific fixes for Pokemon detail pages */
+@media (max-width: 768px) {
+  /* Fix for content being cut off */
+  .container,
+  main > div,
+  [class*="max-w-"] {
+    overflow: visible !important;
+    height: auto !important;
+    min-height: auto !important;
+  }
+  
+  /* Ensure proper spacing for fixed navbar */
+  .pt-16 {
+    padding-top: calc(64px + env(safe-area-inset-top)) !important;
+  }
+  
+  /* Fix for footer positioning */
+  footer {
+    position: relative !important;
+    margin-top: auto !important;
+  }
+  
+  /* Ensure modals and popups work properly */
+  .fixed.inset-0 {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    height: 100% !important;
+  }
+}
+
+/* Additional fix for iOS Safari viewport bugs */
+@supports (-webkit-touch-callout: none) {
+  @media (orientation: portrait) {
+    /* Portrait mode specific fixes */
+    html, body {
+      height: 100% !important;
+      max-height: none !important;
+      overflow-y: auto !important;
+    }
+    
+    #__next {
+      min-height: 100% !important;
+      height: auto !important;
+    }
+  }
+}
+
+/* Fix navbar dropdown overlap on mobile */
+@media (max-width: 768px) {
+  /* Navbar dropdowns should have proper z-index */
+  .navbar-ios {
+    z-index: 999 !important;
+  }
+  
+  /* Dropdown menus */
+  .absolute.top-full {
+    z-index: 1000 !important;
+    background: white !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  }
+  
+  /* Fix tab navigation on mobile */
+  .flex.overflow-x-auto {
+    -webkit-overflow-scrolling: touch !important;
+    scroll-snap-type: x mandatory !important;
+  }
+  
+  .flex.overflow-x-auto > button {
+    scroll-snap-align: center !important;
+    flex-shrink: 0 !important;
+    min-width: fit-content !important;
+  }
+  
+  /* Fix pokeball loader */
+  .animate-spin {
+    -webkit-animation: spin 1s linear infinite !important;
+    animation: spin 1s linear infinite !important;
+  }
+  
+  @-webkit-keyframes spin {
+    from {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    to {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Fix evolution display layout */
+  .evolution-container {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  
+  /* Fix modal/popup centering */
+  .fixed.inset-0.flex.items-center.justify-center {
+    padding: 1rem !important;
+  }
+  
+  .modal-content,
+  .popup-content {
+    max-height: calc(100vh - 2rem) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+}

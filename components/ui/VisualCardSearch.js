@@ -208,7 +208,6 @@ export default function VisualCardSearch({ onSearchResults, onImageProcessed }) 
           <button
             onClick={() => fileInputRef.current?.click()}
             className="flex items-center justify-center space-x-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-          >
             <FaUpload />
             <span>Upload Image</span>
           </button>
@@ -216,7 +215,6 @@ export default function VisualCardSearch({ onSearchResults, onImageProcessed }) 
           <button
             onClick={startCamera}
             className="flex items-center justify-center space-x-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-          >
             <FaCamera />
             <span>Use Camera</span>
           </button>
@@ -238,7 +236,7 @@ export default function VisualCardSearch({ onSearchResults, onImageProcessed }) 
           autoPlay
           playsInline
           muted
-          className="w-full max-w-md mx-auto rounded-lg hidden">
+          className="w-full max-w-md mx-auto rounded-lg hidden"
           onLoadedMetadata={() => {
             if (videoRef.current) {
               videoRef.current.classList.remove('hidden');
@@ -252,13 +250,11 @@ export default function VisualCardSearch({ onSearchResults, onImageProcessed }) 
               <button
                 onClick={captureFromCamera}
                 className="p-4 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors shadow-lg">
-              >
                 <BsViewfinder className="w-6 h-6" />
               </button>
               <button
                 onClick={stopCamera}
                 className="p-4 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors shadow-lg">
-              >
                 Stop
               </button>
             </div>
@@ -284,7 +280,7 @@ export default function VisualCardSearch({ onSearchResults, onImageProcessed }) 
           <img 
             src={previewImage} 
             alt="Card preview" 
-            className="max-w-xs mx-auto rounded-lg shadow-md">
+            className="max-w-xs mx-auto rounded-lg shadow-md"
           />
         </div>
       )}
@@ -318,7 +314,7 @@ export default function VisualCardSearch({ onSearchResults, onImageProcessed }) 
                   <img 
                     src={card.images.small} 
                     alt={card.name}
-                    className="w-20 h-28 object-cover rounded">
+                    className="w-20 h-28 object-cover rounded"
                   />
                   
                   <div className="flex-1">
@@ -352,7 +348,6 @@ export default function VisualCardSearch({ onSearchResults, onImageProcessed }) 
                             <span 
                               key={idx}
                               className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded">
-                            >
                               {feature}
                             </span>
                           ))}
@@ -362,7 +357,7 @@ export default function VisualCardSearch({ onSearchResults, onImageProcessed }) 
 
                     <div className="mt-3 flex space-x-2">
                       <button 
-                        className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center space-x-1">
+                        className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center space-x-1"
                         onClick={() => onSearchResults?.([card])}
                       >
                         <FaSearch className="w-3 h-3" />

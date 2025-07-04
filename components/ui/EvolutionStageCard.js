@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import TypeBadge from './TypeBadge';
+import { TypeBadge } from './TypeBadge';
 
 // EvolutionStageCard: shows a Pokémon in the evolution chain with a black circle border and clickable name
 export default function EvolutionStageCard({

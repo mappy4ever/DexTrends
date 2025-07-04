@@ -1,0 +1,549 @@
+/* Complete Mobile Fixes for iPhone */
+
+/* FORCE OPAQUE NAVBAR EVERYWHERE */
+nav.navbar-ios,
+.fixed.top-0.left-0.right-0,
+div[class*="navbar"] {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  opacity: 1 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-bottom: 2px solid #e5e7eb !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Mobile specific overrides */
+@media (max-width: 768px) {
+  /* Fix Pokedex page layout */
+  .max-w-7xl.mx-auto.px-4.py-8 {
+    padding: 0.5rem !important;
+    max-width: 100% !important;
+  }
+  
+  /* Header improvements */
+  .flex.items-center.justify-between.mb-8 {
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  .flex.items-center.justify-between.mb-8 > * {
+    width: 100% !important;
+  }
+  
+  /* Pokemon info section */
+  .bg-white.rounded-lg.shadow-lg.p-8.mb-8,
+  .bg-white.rounded-lg.shadow-lg {
+    padding: 0.75rem !important;
+    margin-bottom: 0.75rem !important;
+    overflow: visible !important;
+    position: relative !important;
+    z-index: 1 !important;
+  }
+  
+  /* Pokemon image container */
+  .relative.w-80.h-80.lg\\:w-96.lg\\:h-96 {
+    width: 180px !important;
+    height: 180px !important;
+  }
+  
+  /* Grid fixes */
+  .grid.grid-cols-1.lg\\:grid-cols-2.gap-8,
+  .grid.lg\\:grid-cols-2 {
+    gap: 1rem !important;
+    display: block !important;
+  }
+  
+  .grid.lg\\:grid-cols-2 > div {
+    margin-bottom: 1rem !important;
+  }
+  
+  /* Biology grid - single column */
+  .grid.grid-cols-2.gap-3,
+  .grid.grid-cols-2.md\\:grid-cols-3 {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+  
+  /* Container boxes */
+  .bg-gray-50.p-3.rounded {
+    padding: 0.75rem !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+  
+  /* Force tab container to be fully opaque on mobile */
+  .tab-container,
+  .tabs-container,
+  [role="tablist"],
+  .flex.overflow-x-auto:has(button) {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    opacity: 1 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  
+  /* Tab container positioning */
+  .bg-white.rounded-lg.shadow-lg:has(.tab-navigation) {
+    margin-top: 1rem !important;
+  }
+  
+  /* Tab navigation container - FULLY VISIBLE */
+  .border-b.border-gray-200,
+  .tab-navigation,
+  div:has(.tab-navigation),
+  .flex.overflow-x-auto,
+  .overflow-x-auto.flex,
+  .flex.gap-2.overflow-x-auto {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    opacity: 1 !important;
+    padding: 0.75rem !important;
+    border-bottom: 4px solid #dc2626 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    position: relative !important;
+    z-index: 50 !important;
+    display: flex !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    width: 100% !important;
+  }
+  
+  /* Tab buttons enhancement - FULLY VISIBLE */
+  .tab-navigation button,
+  .flex.gap-2.overflow-x-auto button,
+  .overflow-x-auto button[role="tab"],
+  button.px-4.py-2,
+  button.px-6.py-3 {
+    background: #f3f4f6 !important;
+    background-color: #f3f4f6 !important;
+    border: 3px solid #374151 !important;
+    padding: 0.875rem 1.25rem !important;
+    margin: 0.25rem !important;
+    border-radius: 0.75rem !important;
+    font-weight: 700 !important;
+    color: #111827 !important;
+    min-width: 90px !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+    opacity: 1 !important;
+    transition: all 0.2s ease !important;
+    flex-shrink: 0 !important;
+    display: inline-block !important;
+  }
+  
+  /* Hover state for inactive tabs */
+  .tab-navigation button:not(.border-pokemon-red):hover {
+    background: #e5e7eb !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25) !important;
+  }
+  
+  /* Active tab state - HIGHLY VISIBLE */
+  .tab-navigation button.border-pokemon-red,
+  .tab-navigation button[class*="border-pokemon-red"],
+  .tab-navigation button.active,
+  .tab-navigation button[aria-selected="true"] {
+    background: #dc2626 !important;
+    background-color: #dc2626 !important;
+    color: #ffffff !important;
+    border: 3px solid #b91c1c !important;
+    font-weight: 800 !important;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4) !important;
+    transform: scale(1.05) !important;
+    position: relative !important;
+    z-index: 10 !important;
+  }
+  
+  /* Active tab indicator on top */
+  .tab-navigation button.border-pokemon-red::before,
+  .tab-navigation button[class*="border-pokemon-red"]::before {
+    content: '' !important;
+    position: absolute !important;
+    top: -8px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 40px !important;
+    height: 4px !important;
+    background: #dc2626 !important;
+    border-radius: 2px !important;
+    box-shadow: 0 0 8px rgba(220, 38, 38, 0.6) !important;
+  }
+  
+  /* Fix stat bars and content overlap */
+  .space-y-3 > div,
+  .space-y-4 > div {
+    margin-bottom: 0.75rem !important;
+  }
+  
+  /* Fix stats container specifically */
+  .bg-gray-50.rounded-lg.p-4:has(.space-y-3) {
+    padding: 1rem !important;
+  }
+  
+  /* Individual stat rows */
+  .flex.items-center.justify-between.text-xs {
+    margin-bottom: 0.5rem !important;
+  }
+  
+  /* Stat name and value spacing */
+  .flex.items-center.justify-between.mb-1 {
+    gap: 1rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+  
+  /* Stat bar containers */
+  .flex.items-center.justify-between {
+    flex-wrap: nowrap !important;
+    gap: 0.5rem !important;
+  }
+  
+  /* Stat values alignment */
+  .text-right {
+    min-width: 3rem !important;
+    text-align: right !important;
+  }
+  
+  /* Progress bars */
+  .w-full.bg-gray-200.rounded-full,
+  .bg-gray-200.rounded-full.h-3 {
+    height: 0.75rem !important;
+    margin: 0.25rem 0 !important;
+  }
+  
+  /* Text size adjustments */
+  .text-4xl {
+    font-size: 1.5rem !important;
+    line-height: 1.2 !important;
+  }
+  
+  .text-2xl {
+    font-size: 1.25rem !important;
+  }
+  
+  .text-xl {
+    font-size: 1.125rem !important;
+  }
+  
+  .text-lg {
+    font-size: 1rem !important;
+  }
+  
+  /* Type effectiveness mobile layout */
+  .flex.items-center.gap-3.bg-red-50,
+  .flex.items-center.gap-3.bg-green-50,
+  .flex.items-center.gap-3.bg-gray-100 {
+    flex-wrap: wrap !important;
+    padding: 0.75rem !important;
+  }
+  
+  /* Evolution container fix */
+  .evolution-container {
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding-bottom: 0.5rem !important;
+  }
+  
+  /* Move selector fixes */
+  .move-selector-modal {
+    max-height: 80vh !important;
+    overflow-y: auto !important;
+  }
+  
+  /* Battle simulator fixes */
+  .battle-simulator-container {
+    padding: 0.5rem !important;
+  }
+}
+
+/* Fix Pokemon detail page tabs specifically */
+@media (max-width: 768px) {
+  /* Tab navigation container */
+  nav.tab-navigation,
+  .tab-navigation,
+  .scrollbar-hide.tab-navigation {
+    display: flex !important;
+    gap: 0.5rem !important;
+    padding: 0 0.5rem !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    background: #ffffff !important;
+    min-height: 60px !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+  
+  /* Remove scrollbar-hide class effects */
+  .scrollbar-hide {
+    scrollbar-width: auto !important;
+    -ms-overflow-style: auto !important;
+  }
+  
+  /* Remove conflicting space-x classes */
+  .space-x-4,
+  .md\\:space-x-8 {
+    gap: 0.5rem !important;
+  }
+  
+  .space-x-4 > *,
+  .md\\:space-x-8 > * {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  
+  /* Tab buttons in pokedex page */
+  .tab-navigation button,
+  nav.tab-navigation button {
+    flex-shrink: 0 !important;
+    background: #e5e7eb !important;
+    border: 2px solid #6b7280 !important;
+    border-radius: 0.5rem !important;
+    padding: 0.75rem 1rem !important;
+    margin: 0.5rem 0.25rem !important;
+    font-weight: 600 !important;
+    color: #1f2937 !important;
+    min-width: fit-content !important;
+    white-space: nowrap !important;
+    border-bottom: 2px solid #6b7280 !important;
+  }
+  
+  /* Active tab */
+  .tab-navigation button.border-pokemon-red,
+  .tab-navigation button.text-pokemon-red,
+  nav.tab-navigation button.border-pokemon-red,
+  nav.tab-navigation button.text-pokemon-red {
+    background: #dc2626 !important;
+    color: #ffffff !important;
+    border-color: #b91c1c !important;
+    border-bottom-color: #b91c1c !important;
+  }
+  
+  /* Tab container wrapper */
+  .bg-white.rounded-lg.shadow-lg:has(.tab-navigation) {
+    overflow: visible !important;
+  }
+  
+  /* Border container */
+  .border-b.border-gray-200:has(.tab-navigation) {
+    border-bottom: none !important;
+    padding: 0.5rem !important;
+    background: #f3f4f6 !important;
+  }
+}
+
+/* Force tab visibility on mobile */
+@media (max-width: 768px) {
+  /* Target all possible tab containers */
+  .flex[role="tablist"],
+  div[role="tablist"],
+  .flex.gap-2,
+  .flex.overflow-x-auto,
+  .border-b {
+    background: #ffffff !important;
+    min-height: 60px !important;
+    padding: 0.75rem !important;
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  /* Target all tab buttons */
+  button[role="tab"],
+  .flex.gap-2 > button,
+  .overflow-x-auto button,
+  button[class*="px-"][class*="py-"],
+  button.font-medium {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    background: #e5e7eb !important;
+    color: #1f2937 !important;
+    border: 2px solid #6b7280 !important;
+    padding: 0.75rem 1rem !important;
+    margin: 0.25rem !important;
+    border-radius: 0.5rem !important;
+    font-weight: 600 !important;
+    min-width: 80px !important;
+    flex-shrink: 0 !important;
+  }
+  
+  /* Active tab buttons */
+  button[aria-selected="true"],
+  button.text-pokemon-red,
+  button.border-b-2.border-pokemon-red,
+  button[class*="border-pokemon-red"] {
+    background: #dc2626 !important;
+    color: #ffffff !important;
+    border-color: #b91c1c !important;
+    transform: scale(1.05) !important;
+  }
+}
+
+/* Additional mobile tab fixes for better visibility */
+@media (max-width: 768px) {
+  /* Ensure horizontal scrolling for tabs with solid background */
+  .overflow-x-auto:has(.tab-navigation),
+  .tab-navigation-container {
+    background: #ffffff !important;
+    padding: 0.75rem !important;
+    margin: 0 -0.75rem !important;
+    width: calc(100% + 1.5rem) !important;
+    box-shadow: inset 0 -4px 0 0 #dc2626 !important;
+  }
+  
+  /* Visual scroll indicators for tab area */
+  .overflow-x-auto:has(.tab-navigation)::before,
+  .overflow-x-auto:has(.tab-navigation)::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 20px !important;
+    pointer-events: none !important;
+    z-index: 10 !important;
+  }
+  
+  .overflow-x-auto:has(.tab-navigation)::before {
+    left: 0 !important;
+    background: linear-gradient(to right, white, transparent) !important;
+  }
+  
+  .overflow-x-auto:has(.tab-navigation)::after {
+    right: 0 !important;
+    background: linear-gradient(to left, white, transparent) !important;
+  }
+}
+
+/* iPhone specific */
+@supports (-webkit-touch-callout: none) {
+  @media (max-width: 428px) {
+    /* Even smaller image on iPhone */
+    .relative.w-80.h-80.lg\\:w-96.lg\\:h-96 {
+      width: 150px !important;
+      height: 150px !important;
+    }
+    
+    /* Tighter spacing */
+    .bg-gray-50.p-3.rounded {
+      padding: 0.5rem !important;
+      font-size: 0.875rem !important;
+    }
+    
+    /* Smaller text */
+    .text-lg {
+      font-size: 0.875rem !important;
+    }
+    
+    .text-sm {
+      font-size: 0.75rem !important;
+    }
+  }
+}
+
+/* Fix for dynamic content */
+.tab-content > div {
+  width: 100% !important;
+  overflow-x: hidden !important;
+}
+
+/* Ensure content doesn't get cut off */
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden !important;
+  }
+  
+  #__next {
+    overflow-x: hidden !important;
+  }
+  
+  main {
+    overflow-x: hidden !important;
+  }
+}
+
+/* Fix Pokemon name display */
+h1.capitalize {
+  text-transform: none !important;
+}
+
+/* Reduce spacing in Biology/Overview/Breeding sections - DESKTOP AND MOBILE */
+.bg-gray-50.p-3.rounded h4,
+.bg-gray-50.p-4.rounded-lg h4,
+.bg-gray-50.p-4.rounded-lg h5 {
+  margin-bottom: 0.25rem !important;
+}
+
+.bg-gray-50.p-3.rounded p,
+.bg-gray-50.p-4.rounded-lg p {
+  margin-top: 0 !important;
+}
+
+/* Compact spacing for all devices */
+.text-lg.font-semibold.text-gray-700.mb-2,
+.font-semibold.text-gray-700.mb-3,
+.font-semibold.text-gray-700.mb-2,
+.font-semibold.text-gray-700.text-sm {
+  margin-bottom: 0.25rem !important;
+}
+
+/* Tighter padding on all devices */
+.bg-gray-50.p-3.rounded {
+  padding: 0.625rem !important;
+}
+
+.bg-gray-50.p-4.rounded-lg {
+  padding: 0.875rem !important;
+}
+
+/* Remove ALL scrollbars from entire app */
+::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Hide scrollbars for Firefox */
+* {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+/* Ensure scrolling still works but bars are hidden */
+html, body, div, main, section, article, aside, nav {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+/* Hide scrollbars on all scrollable elements */
+.overflow-auto::-webkit-scrollbar,
+.overflow-scroll::-webkit-scrollbar,
+.overflow-x-auto::-webkit-scrollbar,
+.overflow-y-auto::-webkit-scrollbar,
+.overflow-x-scroll::-webkit-scrollbar,
+.overflow-y-scroll::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Fix shiny button positioning */
+.flex.items-start.justify-between > button[class*="ml-4"] {
+  margin-left: 0.5rem !important;
+}
+
+/* Mobile specific fix for shiny button */
+@media (max-width: 768px) {
+  .flex.items-start.justify-between {
+    position: relative !important;
+  }
+  
+  .flex.items-start.justify-between > button {
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    margin-left: 0 !important;
+    z-index: 10 !important;
+  }
+}

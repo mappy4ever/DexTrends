@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { RiGovernmentFill } from "react-icons/ri";
 import { AiOutlineBulb } from "react-icons/ai";
 import { BsSun, BsMoon, BsGlobeEuropeAfrica, BsHeart, BsSearch, BsCardList, BsGrid, BsBook, BsChevronDown } from "react-icons/bs";
-import { GiPokerHand, GiCardPickup } from "react-icons/gi";
+import { GiPokerHand, GiCardPickup, GiCrossedSwords } from "react-icons/gi";
 import { FiTrendingUp, FiShoppingBag } from "react-icons/fi";
 import GlobalSearchModal from "./GlobalSearchModal";
 import { useTheme } from "../context/themecontext";
@@ -45,8 +45,20 @@ export default function Navbar() {
         { href: "/collections", label: "Collections", icon: <BsHeart size={18} />, description: "Manage your collection" },
       ]
     },
-    { href: "/leaderboard", label: "Leaderboard", icon: <BsGrid size={22} />, color: "text-ultraball-yellow" },
     { href: "/pokedex", label: "Pokédex", icon: <BsBook size={22} />, color: "text-poke-fairy" },
+    {
+      href: "/battle-simulator",
+      label: "Battle",
+      icon: <GiCrossedSwords size={22} />,
+      color: "text-poke-fighting",
+      hasDropdown: true,
+      dropdownItems: [
+        { href: "/battle-simulator", label: "Battle Simulator", icon: <GiCrossedSwords size={18} />, description: "Simulate Pokemon battles" },
+        { href: "/battle-simulator/team-builder", label: "Team Builder", icon: <BsGrid size={18} />, description: "Build competitive teams" },
+        { href: "/battle-simulator/damage-calc", label: "Damage Calculator", icon: <FiTrendingUp size={18} />, description: "Calculate move damage" },
+        { href: "/type-effectiveness", label: "Type Effectiveness", icon: <BsBook size={18} />, description: "Interactive type chart" },
+      ]
+    },
     { 
       href: "/pocketmode", 
       label: "Pocket", 

@@ -1,6 +1,4 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { FavoritesManager } from '../lib/supabase';
-import logger from '../utils/logger';
 
 const FavoritesContext = createContext();
 
@@ -17,23 +15,16 @@ export function FavoritesProvider({ children }) {
   
   // Load favorites on mount
   useEffect(() => {
-    loadFavorites();
+    if (typeof window !== 'undefined') {
+      loadFavorites();
+    }
   }, [userId]);
 
   const loadFavorites = async () => {
     try {
       setLoading(true);
       
-      // First, try to migrate any existing localStorage favorites
-      await FavoritesManager.migrateLocalStorageFavorites();
-      
-      // Then load from Supabase
-      const supabaseFavorites = await FavoritesManager.getFavorites(userId);
-      setFavorites(supabaseFavorites);
-    } catch (error) {
-      // Handle loading error by falling back to localStorage
-      
-      // Fallback to localStorage if Supabase fails
+      // For now, just use localStorage
       const savedFavorites = localStorage.getItem('favorites');
       if (savedFavorites) {
         try {
@@ -44,15 +35,28 @@ export function FavoritesProvider({ children }) {
             decks: parsed.decks || []
           });
         } catch (parseError) {
-          // Invalid saved favorites, use defaults
+          console.warn('Failed to parse saved favorites');
         }
       }
+    } catch (error) {
+      console.error('Error loading favorites:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  // Toggle a Pokémon as favorite with Supabase integration
+  // Save favorites to localStorage
+  const saveFavoritesToStorage = (newFavorites) => {
+    try {
+      localStorage.setItem('favorites', JSON.stringify(newFavorites));
+      return true;
+    } catch (error) {
+      console.error('Failed to save favorites:', error);
+      return false;
+    }
+  };
+
+  // Toggle a Pokémon as favorite
   const togglePokemonFavorite = async (pokemonData) => {
     if (!pokemonData || !pokemonData.id) return false;
     
@@ -60,48 +64,44 @@ export function FavoritesProvider({ children }) {
     const isCurrentlyFavorite = favorites.pokemon.some(p => p.id === normalizedId);
     
     try {
+      let newFavorites;
       if (isCurrentlyFavorite) {
         // Remove from favorites
-        const success = await FavoritesManager.removeFavorite('pokemon', normalizedId, userId);
-        if (success) {
-          setFavorites(prev => ({
-            ...prev,
-            pokemon: prev.pokemon.filter(p => p.id !== normalizedId)
-          }));
-          
-          // Trigger notification if available
-          if (typeof window !== 'undefined' && window.showNotification) {
-            window.showNotification('success', `${pokemonData.name} removed from favorites`);
-          }
+        newFavorites = {
+          ...favorites,
+          pokemon: favorites.pokemon.filter(p => p.id !== normalizedId)
+        };
+        
+        // Trigger notification if available
+        if (typeof window !== 'undefined' && window.showNotification) {
+          window.showNotification('success', `${pokemonData.name} removed from favorites`);
         }
-        return success;
       } else {
         // Add to favorites
-        const success = await FavoritesManager.addFavorite('pokemon', normalizedId, pokemonData, userId);
-        if (success) {
-          setFavorites(prev => ({
-            ...prev,
-            pokemon: [...prev.pokemon, { id: normalizedId, ...pokemonData }]
-          }));
-          
-          // Trigger notification if available
-          if (typeof window !== 'undefined' && window.showNotification) {
-            window.showNotification('success', `${pokemonData.name} added to favorites!`, {
-              actions: [
-                {
-                  label: 'View Favorites',
-                  handler: () => {
-                    window.location.href = '/favorites';
-                  }
+        newFavorites = {
+          ...favorites,
+          pokemon: [...favorites.pokemon, { id: normalizedId, ...pokemonData }]
+        };
+        
+        // Trigger notification if available
+        if (typeof window !== 'undefined' && window.showNotification) {
+          window.showNotification('success', `${pokemonData.name} added to favorites!`, {
+            actions: [
+              {
+                label: 'View Favorites',
+                handler: () => {
+                  window.location.href = '/favorites';
                 }
-              ]
-            });
-          }
+              }
+            ]
+          });
         }
-        return success;
       }
+      
+      setFavorites(newFavorites);
+      return saveFavoritesToStorage(newFavorites);
     } catch (error) {
-      logger.error('Failed to toggle Pokemon favorite', { error, pokemonId: normalizedId });
+      console.error('Failed to toggle Pokemon favorite:', error);
       
       // Show error notification if available
       if (typeof window !== 'undefined' && window.showNotification) {
@@ -111,7 +111,7 @@ export function FavoritesProvider({ children }) {
     }
   };
 
-  // Toggle a card as favorite with Supabase integration
+  // Toggle a card as favorite
   const toggleCardFavorite = async (cardData) => {
     if (!cardData || !cardData.id) return false;
     
@@ -119,39 +119,35 @@ export function FavoritesProvider({ children }) {
     const isCurrentlyFavorite = favorites.cards.some(c => c.id === cardId);
     
     try {
+      let newFavorites;
       if (isCurrentlyFavorite) {
         // Remove from favorites
-        const success = await FavoritesManager.removeFavorite('card', cardId, userId);
-        if (success) {
-          setFavorites(prev => ({
-            ...prev,
-            cards: prev.cards.filter(c => c.id !== cardId)
-          }));
-          
-          // Trigger notification if available
-          if (typeof window !== 'undefined' && window.showNotification) {
-            window.showNotification('success', `${cardData.name} removed from favorites`);
-          }
+        newFavorites = {
+          ...favorites,
+          cards: favorites.cards.filter(c => c.id !== cardId)
+        };
+        
+        // Trigger notification if available
+        if (typeof window !== 'undefined' && window.showNotification) {
+          window.showNotification('success', `${cardData.name} removed from favorites`);
         }
-        return success;
       } else {
         // Add to favorites
-        const success = await FavoritesManager.addFavorite('card', cardId, cardData, userId);
-        if (success) {
-          setFavorites(prev => ({
-            ...prev,
-            cards: [...prev.cards, { id: cardId, ...cardData }]
-          }));
-          
-          // Trigger notification if available
-          if (typeof window !== 'undefined' && window.showNotification) {
-            window.showNotification('cardAdded', cardData.name);
-          }
+        newFavorites = {
+          ...favorites,
+          cards: [...favorites.cards, { id: cardId, ...cardData }]
+        };
+        
+        // Trigger notification if available
+        if (typeof window !== 'undefined' && window.showNotification) {
+          window.showNotification('cardAdded', cardData.name);
         }
-        return success;
       }
+      
+      setFavorites(newFavorites);
+      return saveFavoritesToStorage(newFavorites);
     } catch (error) {
-      logger.error('Failed to toggle card favorite', { error, cardId });
+      console.error('Failed to toggle card favorite:', error);
       
       // Show error notification if available
       if (typeof window !== 'undefined' && window.showNotification) {

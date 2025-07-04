@@ -11,6 +11,8 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isShiny, setIsShiny] = useState(false);
+  const [hasRegionalVariants, setHasRegionalVariants] = useState(false);
+  const [detectedVariants, setDetectedVariants] = useState([]);
 
   // Helper to check if a form is a regional variant
   const isRegionalForm = useCallback((name) => {
@@ -41,7 +43,11 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }) {
     if (fullName.includes('-galar')) return 'Galarian Form';
     if (fullName.includes('-hisui')) return 'Hisuian Form';
     if (fullName.includes('-paldea')) return 'Paldean Form';
-    if (fullName.includes('-mega')) return fullName.replace(baseName + '-', '').replace(/-/g, ' ');
+    if (fullName.includes('-mega')) {
+      // Keep the full mega form name for proper display
+      const megaPart = fullName.replace(baseName + '-', '');
+      return megaPart.charAt(0).toUpperCase() + megaPart.slice(1).replace(/-/g, ' ');
+    }
     return fullName.replace(baseName + '-', '').replace(/-/g, ' ');
   }, []);
 
@@ -190,6 +196,22 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }) {
           if (node.evolves_to && node.evolves_to.length > 0) {
             for (let i = 0; i < node.evolves_to.length; i++) {
               const evolution = node.evolves_to[i];
+              const evolutionSpeciesName = evolution.species.name;
+              
+              // Skip regional variant evolutions for base forms
+              const regionalExclusions = {
+                'meowth': ['perrserker'], // Galarian Meowth evolves to Perrserker
+                'corsola': ['cursola'], // Galarian Corsola evolves to Cursola
+                'farfetchd': ['sirfetchd'], // Galarian Farfetch'd evolves to Sirfetch'd
+                'linoone': ['obstagoon'], // Galarian Linoone evolves to Obstagoon
+                'yamask': ['runerigus'], // Galarian Yamask evolves to Runerigus
+                'mr-mime': ['mr-rime'], // Galarian Mr. Mime evolves to Mr. Rime
+              };
+              
+              if (regionalExclusions[node.species.name] && regionalExclusions[node.species.name].includes(evolutionSpeciesName)) {
+                continue;
+              }
+              
               const evolutionDetails = evolution.evolution_details?.[0] || null;
               const childNode = await parseEvolutionNode(evolution, speciesId, level + 1);
               if (childNode) {
@@ -249,6 +271,40 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }) {
     };
   }, [speciesUrl, currentPokemonId, isRegionalForm, isMegaEvolution, isValidForm, formatFormName]);
 
+  // Check if base Pokemon has regional variants (automated detection)
+  useEffect(() => {
+    // Reset state when evolutionData changes
+    setHasRegionalVariants(false);
+    setDetectedVariants([]);
+    
+    const checkForRegionalVariants = async () => {
+      if (!evolutionData || !evolutionData.structure || !evolutionData.structure.name) return;
+      
+      try {
+        // Get species data to check varieties
+        const speciesUrl = `https://pokeapi.co/api/v2/pokemon-species/${evolutionData.structure.name}`;
+        const speciesData = await fetchData(speciesUrl);
+        
+        if (speciesData.varieties && speciesData.varieties.length > 1) {
+          // Filter for regional variants using naming pattern
+          const regionalPattern = /-(alola|galar|hisui|paldea)($|-)/;
+          const variants = speciesData.varieties
+            .filter(v => !v.is_default && regionalPattern.test(v.pokemon.name))
+            .map(v => v.pokemon.name);
+          
+          if (variants.length > 0) {
+            setHasRegionalVariants(true);
+            setDetectedVariants(variants);
+          }
+        }
+      } catch (error) {
+        console.error('Error checking for regional variants:', error);
+      }
+    };
+    
+    checkForRegionalVariants();
+  }, [evolutionData]);
+
   if (loading) {
     return <div className="text-center py-4">Loading evolution data...</div>;
   }
@@ -276,10 +332,27 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }) {
   // Regular evolution display with split evolution support
   return (
     <div className="w-full">
-      <div className="flex justify-end mb-4">
+      <div className="flex items-start justify-between">
+        <div className="space-y-8 flex-1">
+          {/* Main evolution chain */}
+          <EvolutionTreeDisplay 
+            node={evolutionData.structure}
+            currentPokemonId={currentPokemonId}
+            isShiny={isShiny}
+          />
+          
+          {/* Regional variant chains */}
+          {hasRegionalVariants && <RegionalVariantEvolutions 
+            basePokemonName={evolutionData.structure?.name}
+            detectedVariants={detectedVariants}
+            currentPokemonId={currentPokemonId}
+            isShiny={isShiny}
+          />}
+        </div>
+        
         <button
           onClick={() => setIsShiny(!isShiny)}
-          className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
+          className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-sm font-medium transition-all ml-4 ${
             isShiny 
               ? 'bg-purple-600 text-white' 
               : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
@@ -291,12 +364,6 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }) {
           <span>Shiny</span>
         </button>
       </div>
-      
-      <EvolutionTreeDisplay 
-        node={evolutionData.structure}
-        currentPokemonId={currentPokemonId}
-        isShiny={isShiny}
-      />
     </div>
   );
 }
@@ -317,59 +384,6 @@ function EvolutionTreeDisplay({ node, currentPokemonId, isShiny, parentPosition 
           isShiny={isShiny}
         />
         
-        {/* Show forms if available */}
-        {node.forms && node.forms.length > 0 && (
-          <div className="mt-2 space-y-2">
-            {/* Regular forms */}
-            {node.forms.filter(f => !f.isMega).length > 0 && (
-              <div className="flex flex-wrap gap-2 justify-center">
-                {node.forms.filter(f => !f.isMega).map((form, index) => (
-                  <Link
-                    key={form.id}
-                    href={`/pokedex/${form.id}`}
-                    className={`text-xs px-2 py-1 rounded-full transition-colors ${
-                      form.hasOwnEvolution 
-                        ? 'bg-blue-100 hover:bg-blue-200 text-blue-700' 
-                        : 'bg-gray-100 hover:bg-gray-200'
-                    }`}
-                    title={form.hasOwnEvolution ? 'Has unique evolution chain' : ''}
-                  >
-                    {form.displayName}
-                  </Link>
-                ))}
-              </div>
-            )}
-            
-            {/* Mega Evolutions */}
-            {node.forms.filter(f => f.isMega).length > 0 && (
-              <div className="mt-4">
-                <p className="text-xs text-gray-500 text-center mb-2">Mega Evolution{node.forms.filter(f => f.isMega).length > 1 ? 's' : ''}</p>
-                <div className="flex flex-wrap gap-2 justify-center">
-                  {node.forms.filter(f => f.isMega).map((mega) => (
-                    <Link
-                      key={mega.id}
-                      href={`/pokedex/${mega.id}`}
-                      className="flex flex-col items-center p-2 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors"
-                    >
-                      <div className="relative w-16 h-16 mb-1">
-                        <Image
-                          src={mega.sprite || isShiny ? mega.shinySprite : mega.sprite}
-                          alt={mega.name}
-                          fill
-                          className="object-contain"
-                          onError={(e) => {
-                            e.currentTarget.src = '/dextrendslogo.png';
-                          }}
-                        />
-                      </div>
-                      <span className="text-xs font-medium text-purple-700">{mega.displayName}</span>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        )}
       </div>
 
       {/* Evolution branches */}
@@ -401,23 +415,88 @@ function EvolutionTreeDisplay({ node, currentPokemonId, isShiny, parentPosition 
           </div>
         </>
       )}
+
+      {/* Mega Evolutions - shown after the Pokemon, not as forms */}
+      {node.forms && node.forms.filter(f => f.isMega).length > 0 && !node.evolutions?.length && (
+        <>
+          {/* Special Mega Evolution Arrow */}
+          <div className="mx-4 flex flex-col items-center">
+            <svg className="w-8 h-8 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+            <div className="text-xs text-purple-600 mt-1 text-center font-medium">
+              Mega
+            </div>
+          </div>
+
+          {/* Mega Evolution Forms */}
+          <div className="flex flex-col gap-4">
+            {node.forms.filter(f => f.isMega).map((mega) => {
+              // Extract base Pokemon name and format Mega name properly
+              const baseName = node.name.charAt(0).toUpperCase() + node.name.slice(1);
+              const megaFormName = mega.displayName.toLowerCase().includes('mega-x') ? 'Mega X' : 
+                                   mega.displayName.toLowerCase().includes('mega-y') ? 'Mega Y' : 'Mega';
+              const fullMegaName = `${megaFormName} ${baseName}`;
+              
+              return (
+                <Link
+                  key={mega.id}
+                  href={`/pokedex/${mega.id}`}
+                  className={`flex flex-col items-center p-3 transition-all hover:scale-110 ${
+                    parseInt(mega.id) === parseInt(currentPokemonId) ? 'scale-110' : ''
+                  }`}
+                  style={{ minWidth: '160px' }}
+                >
+                  <div className="relative w-32 h-32 mb-6">
+                    <Image
+                      src={isShiny ? mega.shinySprite : mega.sprite}
+                      alt={mega.name}
+                      fill
+                      className="object-contain"
+                      onError={(e) => {
+                        e.currentTarget.src = '/dextrendslogo.png';
+                      }}
+                    />
+                  </div>
+                  <p className="font-medium capitalize text-center w-full px-2">{fullMegaName}</p>
+                  <p className="text-sm text-gray-500">#{mega.id.toString().padStart(3, '0')}</p>
+                  <div className="flex gap-1 mt-1 justify-center">
+                    {mega.types.map(type => (
+                      <TypeBadge key={type} type={type} size="sm" />
+                    ))}
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </>
+      )}
     </div>
   );
 }
 
 // Pokemon card component
 function PokemonCard({ pokemon, currentPokemonId, isShiny }) {
+  // Safety checks
+  if (!pokemon) return null;
+  
+  const pokemonId = pokemon.id || '000';
+  const pokemonName = pokemon.name || 'Unknown';
+  const pokemonTypes = pokemon.types || [];
+  const pokemonSprite = isShiny ? pokemon.shinySprite : pokemon.sprite;
+  
   return (
     <Link 
-      href={`/pokedex/${pokemon.id}`}
+      href={`/pokedex/${pokemonId}`}
       className={`flex flex-col items-center p-3 transition-all hover:scale-110 ${
-        parseInt(pokemon.id) === parseInt(currentPokemonId) ? 'scale-110' : ''
+        parseInt(pokemonId) === parseInt(currentPokemonId) ? 'scale-110' : ''
       }`}
+      style={{ minWidth: '160px' }}
     >
-      <div className="relative w-32 h-32 mb-2">
+      <div className="relative w-32 h-32 mb-6">
         <Image
-          src={isShiny ? pokemon.shinySprite : pokemon.sprite}
-          alt={pokemon.name}
+          src={pokemonSprite || '/dextrendslogo.png'}
+          alt={pokemonName}
           fill
           className="object-contain"
           onError={(e) => {
@@ -425,10 +504,10 @@ function PokemonCard({ pokemon, currentPokemonId, isShiny }) {
           }}
         />
       </div>
-      <p className="font-medium capitalize">{pokemon.name.replace(/-/g, ' ')}</p>
-      <p className="text-sm text-gray-500">#{pokemon.id.padStart(3, '0')}</p>
-      <div className="flex gap-1 mt-1">
-        {pokemon.types.map(type => (
+      <p className="font-medium capitalize text-center w-full px-2">{pokemonName.replace(/-/g, ' ')}</p>
+      <p className="text-sm text-gray-500">#{pokemonId.toString().padStart(3, '0')}</p>
+      <div className="flex gap-1 mt-1 justify-center">
+        {pokemonTypes.map(type => (
           <TypeBadge key={type} type={type} size="sm" />
         ))}
       </div>
@@ -443,10 +522,50 @@ function EeveeEvolutionDisplay({ evolutionData, currentPokemonId, isShiny, setIs
   
   return (
     <div className="w-full">
-      <div className="flex justify-end mb-4">
+      <div className="flex items-start justify-between">
+        <div className="relative flex justify-center items-center mx-auto flex-1" style={{ height: '650px', width: '100%', maxWidth: '850px' }}>
+          {/* Eevee in the center */}
+          {eevee && (
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
+              <PokemonCard 
+                pokemon={eevee}
+                currentPokemonId={currentPokemonId}
+                isShiny={isShiny}
+              />
+            </div>
+          )}
+          
+          {/* Evolutions arranged in a circle */}
+          {evolutions.map((evolution, index) => {
+            const angle = (360 / evolutions.length) * index - 90;
+            const radian = (angle * Math.PI) / 180;
+            const radius = 230;
+            const x = Math.cos(radian) * radius;
+            const y = Math.sin(radian) * radius;
+            
+            return (
+              <div
+                key={evolution.id}
+                className="absolute"
+                style={{
+                  left: `calc(50% + ${x}px)`,
+                  top: `calc(50% + ${y}px)`,
+                  transform: 'translate(-50%, -50%)'
+                }}
+              >
+                <PokemonCard 
+                  pokemon={evolution}
+                  currentPokemonId={currentPokemonId}
+                  isShiny={isShiny}
+                />
+              </div>
+            );
+          })}
+        </div>
+        
         <button
           onClick={() => setIsShiny(!isShiny)}
-          className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
+          className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-sm font-medium transition-all ml-4 ${
             isShiny 
               ? 'bg-purple-600 text-white' 
               : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
@@ -457,46 +576,6 @@ function EeveeEvolutionDisplay({ evolutionData, currentPokemonId, isShiny, setIs
           </svg>
           <span>Shiny</span>
         </button>
-      </div>
-      
-      <div className="relative flex justify-center items-center mx-auto" style={{ height: '650px', width: '100%', maxWidth: '850px' }}>
-        {/* Eevee in the center */}
-        {eevee && (
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
-            <PokemonCard 
-              pokemon={eevee}
-              currentPokemonId={currentPokemonId}
-              isShiny={isShiny}
-            />
-          </div>
-        )}
-        
-        {/* Evolutions arranged in a circle */}
-        {evolutions.map((evolution, index) => {
-          const angle = (360 / evolutions.length) * index - 90;
-          const radian = (angle * Math.PI) / 180;
-          const radius = 230;
-          const x = Math.cos(radian) * radius;
-          const y = Math.sin(radian) * radius;
-          
-          return (
-            <div
-              key={evolution.id}
-              className="absolute"
-              style={{
-                left: `calc(50% + ${x}px)`,
-                top: `calc(50% + ${y}px)`,
-                transform: 'translate(-50%, -50%)'
-              }}
-            >
-              <PokemonCard 
-                pokemon={evolution}
-                currentPokemonId={currentPokemonId}
-                isShiny={isShiny}
-              />
-            </div>
-          );
-        })}
       </div>
     </div>
   );
@@ -541,6 +620,86 @@ function formatEvolutionMethod(details) {
   }
   
   return parts.join(', ') || 'Evolves';
+}
+
+// Component to display regional variant evolution chains
+function RegionalVariantEvolutions({ basePokemonName, detectedVariants, currentPokemonId, isShiny }) {
+  const [regionalChains, setRegionalChains] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadRegionalChains = async () => {
+      const chains = [];
+      
+      // Use the automatically detected variants instead of hardcoded list
+      const variants = detectedVariants || [];
+      
+      for (const variant of variants) {
+        try {
+          const chain = await getRegionalEvolutionChain(variant);
+          if (chain && chain.length > 0) {
+            chains.push({
+              variant: variant,
+              chain: chain
+            });
+          }
+        } catch (error) {
+          console.error(`Failed to load evolution chain for ${variant}:`, error);
+        }
+      }
+      
+      setRegionalChains(chains);
+      setLoading(false);
+    };
+
+    loadRegionalChains();
+  }, [basePokemonName]);
+
+  if (loading) return null;
+  if (regionalChains.length === 0) return null;
+
+  return (
+    <div className="space-y-6">
+      {regionalChains.map(({ variant, chain }) => (
+        <div key={variant} className="border-t pt-6">
+          <h4 className="text-sm font-semibold text-gray-600 mb-4">
+            {(() => {
+              const baseName = variant.split('-')[0];
+              const capitalizedName = baseName.charAt(0).toUpperCase() + baseName.slice(1);
+              if (variant.includes('alola')) return `Alolan ${capitalizedName}`;
+              if (variant.includes('galar')) return `Galarian ${capitalizedName}`;
+              if (variant.includes('hisui')) return `Hisuian ${capitalizedName}`;
+              if (variant.includes('paldea')) return `Paldean ${capitalizedName}`;
+              return `Regional ${capitalizedName}`;
+            })()}
+          </h4>
+          <div className="flex items-center">
+            {chain.map((pokemon, index) => (
+              <React.Fragment key={pokemon.id}>
+                <PokemonCard 
+                  pokemon={pokemon}
+                  currentPokemonId={currentPokemonId}
+                  isShiny={isShiny}
+                />
+                {index < chain.length - 1 && (
+                  <div className="mx-4 flex flex-col items-center">
+                    <svg className="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                    {chain[index + 1].evolutionMethod && (
+                      <div className="text-xs text-gray-500 mt-1 text-center max-w-[100px]">
+                        {chain[index + 1].evolutionMethod}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 }
 
 export default EnhancedEvolutionDisplay;

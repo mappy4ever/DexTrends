@@ -5,6 +5,7 @@ import { fetchData } from '../../utils/apiutils';
 const VALID_FORM_PATTERNS = [
   'alola', 'galar', 'hisui', 'paldea', // Regional forms
   'mega', 'primal', // Mega evolutions
+  'gmax', 'dmax', 'dynamax', 'gigantamax', 'eternamax', // Dynamax forms
   'origin', 'altered', 'sky', 'land', // Giratina, Shaymin
   'therian', 'incarnate', // Forces of Nature
   'unbound', 'confined', // Hoopa
@@ -22,7 +23,6 @@ const VALID_FORM_PATTERNS = [
   'school', 'solo', // Wishiwashi
   'meteor', 'core', // Minior
   'crowned', 'hero', // Zacian/Zamazenta
-  'eternamax', // Eternatus
   'low-key', 'amped', // Toxtricity
   'noice', 'ice-face', // Eiscue
   'full-belly', 'hangry', // Morpeko
@@ -61,7 +61,7 @@ export default function PokemonFormSelector({ pokemon, species, onFormChange }) 
             // Always include the default form
             validForms.push({
               name: formName,
-              displayName: 'Standard Form',
+              displayName: 'Base',
               url: variety.pokemon.url,
               isDefault: true
             });
@@ -103,21 +103,31 @@ export default function PokemonFormSelector({ pokemon, species, onFormChange }) 
   };
 
   const getFormDisplayName = (formName, baseName) => {
+    const capitalizedBaseName = baseName.charAt(0).toUpperCase() + baseName.slice(1);
+    
     // Regional forms
-    if (formName.includes('-alola')) return 'Alolan Form';
-    if (formName.includes('-galar')) return 'Galarian Form';
-    if (formName.includes('-hisui')) return 'Hisuian Form';
-    if (formName.includes('-paldea')) return 'Paldean Form';
+    if (formName.includes('-alola')) return `Alolan ${capitalizedBaseName}`;
+    if (formName.includes('-galar')) return `Galarian ${capitalizedBaseName}`;
+    if (formName.includes('-hisui')) return `Hisuian ${capitalizedBaseName}`;
+    if (formName.includes('-paldea')) return `Paldean ${capitalizedBaseName}`;
     
     // Mega evolutions
     if (formName.includes('-mega')) {
-      if (formName.includes('-x')) return 'Mega X';
-      if (formName.includes('-y')) return 'Mega Y';
-      return 'Mega Evolution';
+      if (formName.includes('-x')) return `Mega ${capitalizedBaseName} X`;
+      if (formName.includes('-y')) return `Mega ${capitalizedBaseName} Y`;
+      return `Mega ${capitalizedBaseName}`;
     }
     
+    // Primal forms
+    if (formName.includes('-primal')) return `Primal ${capitalizedBaseName}`;
+    
+    // Dynamax forms
+    if (formName.includes('-gmax') || formName.includes('-gigantamax')) return `Gigantamax ${capitalizedBaseName}`;
+    if (formName.includes('-eternamax')) return `Eternamax ${capitalizedBaseName}`;
+    if (formName.includes('-dmax') || formName.includes('-dynamax')) return `Dynamax ${capitalizedBaseName}`;
+    
     // Special cases
-    if (formName === baseName) return 'Standard Form';
+    if (formName === baseName) return 'Base';
     
     // Format the remaining part
     const suffix = formName.replace(baseName + '-', '');

@@ -1,0 +1,10 @@
+{
+  "hooks": {
+    "enabled": true,
+    "pre-bash": ".claude-code/hooks/pre-bash.sh",
+    "post-bash": ".claude-code/hooks/post-bash.sh",
+    "pre-write": ".claude-code/hooks/pre-write.sh",
+    "post-write": ".claude-code/hooks/post-write.sh",
+    "pre-edit": ".claude-code/hooks/pre-edit.sh"
+  }
+}

@@ -722,29 +722,27 @@ export default function PokedexIndex() {
           </div>
         </div>
 
-        {/* Results count and stats */}
-        <div className="text-center mb-6">
-          <div className="bg-white border border-gray-200 p-4 rounded-lg">
-            <div className="text-lg font-semibold text-pokemon-red mb-2">
-              Showing {sortedAndVisiblePokemon.length} of {filteredPokemon.length} Pokémon
-            </div>
-            <div className="text-sm text-gray-600">
-              Total Loaded: {allPokemon.length}/1010
-            </div>
+        {/* Seamless results indicator */}
+        <div className="text-center mb-4">
+          <div className="inline-flex items-center gap-3 text-sm text-gray-500">
+            <span>
+              Showing <span className="font-medium text-gray-700">{sortedAndVisiblePokemon.length}</span> of <span className="font-medium text-gray-700">{filteredPokemon.length}</span> Pokémon
+            </span>
+            {allPokemon.length < 1025 && (
+              <>
+                <span className="text-gray-400">•</span>
+                <span className="text-xs">
+                  {allPokemon.length}/1025 loaded
+                </span>
+              </>
+            )}
             {(pendingTypes.length > 0 || selectedType || selectedGeneration || pendingCategories.length > 0 || selectedCategory || pendingStages.length > 0 || selectedStage || searchTerm) && (
-              <div className="text-sm mt-1 text-blue-600">
-                {filteredPokemon.length} match your active filters
-              </div>
-            )}
-            {visibleCount < filteredPokemon.length && (
-              <div className="text-sm text-yellow-600 mt-2">
-                ↓ Scroll down to load more...
-              </div>
-            )}
-            {loadingProgress > 0 && loadingProgress < 100 && (
-              <div className="text-sm text-blue-600 mt-2">
-                Loading progress: {loadingProgress}%
-              </div>
+              <>
+                <span className="text-gray-400">•</span>
+                <span className="text-xs text-blue-600">
+                  Filtered
+                </span>
+              </>
             )}
           </div>
         </div>
@@ -794,10 +792,17 @@ export default function PokedexIndex() {
           ))}
         </div>
 
-        {/* Loading indicator for infinite scroll */}
-        {isLoadingMore && (
-          <div className="py-8">
-            <PokeballLoader size="small" text="Loading more Pokémon..." />
+        {/* Seamless loading indicator */}
+        {visibleCount < filteredPokemon.length && (
+          <div className="flex justify-center py-8">
+            <div className="flex flex-col items-center gap-2">
+              <div className="flex gap-1">
+                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+              </div>
+              <span className="text-xs text-gray-500">Loading more...</span>
+            </div>
           </div>
         )}
         

@@ -47,7 +47,8 @@ export function TypeBadge({ type, className = '', size = 'md', onClick = null, i
     'list': 'size-list',
     'sm': 'size-sm',
     'md': 'size-md',
-    'lg': 'size-lg'
+    'lg': 'size-lg',
+    'xl': 'size-xl'
   }[size] || 'size-md';
 
   const interactiveClasses = onClick ? 'cursor-pointer hover:scale-105' : 'hover:scale-105';

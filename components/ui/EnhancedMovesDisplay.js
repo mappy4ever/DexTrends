@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchData } from '../../utils/apiutils';
+import { TypeBadge } from './TypeBadge';
 
 // Sample moves data for testing/demo purposes
 const SAMPLE_MOVES_DATA = {
@@ -207,31 +208,6 @@ function MoveCard({ moveInfo, moveData }) {
     return category ? category.toUpperCase() : 'STATUS';
   };
   
-  // Get type colors for better visual distinction
-  const getTypeColors = (type) => {
-    const lowerType = type?.toLowerCase();
-    switch (lowerType) {
-      case 'normal': return 'bg-gray-200 text-gray-800';
-      case 'fire': return 'bg-orange-100 text-orange-800';
-      case 'water': return 'bg-blue-100 text-blue-800';
-      case 'electric': return 'bg-yellow-100 text-yellow-800';
-      case 'grass': return 'bg-green-100 text-green-800';
-      case 'ice': return 'bg-cyan-100 text-cyan-800';
-      case 'fighting': return 'bg-red-100 text-red-800';
-      case 'poison': return 'bg-purple-100 text-purple-800';
-      case 'ground': return 'bg-amber-100 text-amber-800';
-      case 'flying': return 'bg-sky-100 text-sky-800';
-      case 'psychic': return 'bg-pink-100 text-pink-800';
-      case 'bug': return 'bg-lime-100 text-lime-800';
-      case 'rock': return 'bg-stone-100 text-stone-800';
-      case 'ghost': return 'bg-indigo-100 text-indigo-800';
-      case 'dragon': return 'bg-violet-100 text-violet-800';
-      case 'dark': return 'bg-gray-700 text-gray-100';
-      case 'steel': return 'bg-slate-200 text-slate-800';
-      case 'fairy': return 'bg-rose-100 text-rose-800';
-      default: return 'bg-gray-200 text-gray-800';
-    }
-  };
   
   // Get category colors
   const getCategoryColors = (category) => {
@@ -259,9 +235,11 @@ function MoveCard({ moveInfo, moveData }) {
         </div>
         {moveData && (
           <div className="flex gap-1 flex-wrap justify-end">
-            <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${getTypeColors(moveData.type?.name)}`}>
-              {formatType(moveData.type?.name)}
-            </span>
+            <TypeBadge 
+              type={moveData.type?.name} 
+              size="xs"
+              className="!w-16"
+            />
             <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${getCategoryColors(moveData.damage_class?.name)}`}>
               {formatCategory(moveData.damage_class?.name)}
             </span>

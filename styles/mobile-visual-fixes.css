@@ -1,0 +1,380 @@
+/* Mobile Visual Fixes for iPhone */
+
+/* Fix main layout issues on mobile */
+@media (max-width: 768px) {
+  /* Fix the main container to allow proper scrolling */
+  #__next > div {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Fix navbar on mobile - SOLID AND VISIBLE */
+  .navbar-ios {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: auto !important;
+    padding-top: env(safe-area-inset-top) !important;
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    z-index: 999 !important;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.15) !important;
+    border-bottom: 1px solid #e5e7eb !important;
+  }
+  
+  /* Add spacing after navbar */
+  main {
+    padding-top: calc(64px + env(safe-area-inset-top)) !important;
+    min-height: calc(100vh - 64px - env(safe-area-inset-top)) !important;
+  }
+  
+  /* Fix dropdown overlap and visibility */
+  .navbar-ios .absolute {
+    position: fixed !important;
+    top: calc(64px + env(safe-area-inset-top)) !important;
+    right: 1rem !important;
+    left: 1rem !important;
+    max-width: calc(100vw - 2rem) !important;
+    z-index: 1001 !important;
+    background: white !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 0.5rem !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+  }
+  
+  /* Fix navbar button visibility - STRONG CONTRAST */
+  .navbar-ios button,
+  .navbar-ios a {
+    color: #111827 !important;
+    font-weight: 700 !important;
+    text-shadow: 0 0 1px rgba(0,0,0,0.1) !important;
+  }
+  
+  .navbar-ios button:hover,
+  .navbar-ios a:hover {
+    color: #dc2626 !important;
+    background-color: #fef2f2 !important;
+  }
+  
+  /* Active state */
+  .navbar-ios .bg-pokemon-red {
+    background-color: #dc2626 !important;
+    color: white !important;
+    box-shadow: 0 2px 4px rgba(220, 38, 38, 0.3) !important;
+  }
+  
+  /* Logo and branding */
+  .navbar-ios .text-pokemon-red {
+    color: #dc2626 !important;
+    font-weight: 800 !important;
+  }
+  
+  /* Make mobile menu visible */
+  .navbar-ios .md\\:hidden {
+    background: #dc2626 !important;
+    color: white !important;
+    border-radius: 0.5rem !important;
+    padding: 0.5rem !important;
+  }
+  
+  /* Fix tab navigation in pokedex - horizontal scroll only */
+  .tab-navigation {
+    display: flex !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    scroll-snap-type: x mandatory !important;
+    scroll-behavior: smooth !important;
+    gap: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    touch-action: pan-x !important;
+  }
+  
+  .tab-navigation::-webkit-scrollbar {
+    display: none !important;
+  }
+  
+  .tab-navigation button {
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+    padding: 1rem 1.25rem !important;
+    min-height: 48px !important;
+    scroll-snap-align: center !important;
+    font-size: 0.875rem !important;
+  }
+  
+  /* Add scroll hint gradient */
+  .border-b.border-gray-200 {
+    position: relative !important;
+    overflow: hidden !important;
+  }
+  
+  .border-b.border-gray-200::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 2rem !important;
+    background: linear-gradient(to right, transparent, white) !important;
+    pointer-events: none !important;
+    z-index: 10 !important;
+  }
+  
+  /* Fix evolution display - horizontal scroll only */
+  .evolution-display {
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding-bottom: 1rem !important;
+    touch-action: pan-x !important;
+  }
+  
+  .evolution-container {
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-x !important;
+  }
+  
+  .evolution-chain {
+    display: flex !important;
+    gap: 1rem !important;
+    padding: 1rem !important;
+    min-width: fit-content !important;
+  }
+  
+  /* Fix pokeball loader animation */
+  .animate-spin {
+    -webkit-animation: pokeball-spin 1s linear infinite !important;
+    animation: pokeball-spin 1s linear infinite !important;
+    will-change: transform !important;
+  }
+  
+  /* Pokeball specific animation fix */
+  .border-8.border-gray-200.rounded-full.animate-spin {
+    -webkit-animation: pokeball-spin 1s linear infinite !important;
+    animation: pokeball-spin 1s linear infinite !important;
+    -webkit-transform-origin: center center !important;
+    transform-origin: center center !important;
+  }
+  
+  /* Ensure spin animation works on iOS */
+  @-webkit-keyframes pokeball-spin {
+    from {
+      -webkit-transform: rotate(0deg);
+    }
+    to {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+  
+  @keyframes pokeball-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Fix loading screen centering */
+  .min-h-screen.flex.items-center.justify-center {
+    position: fixed !important;
+    inset: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  
+  /* Fix card grids on mobile */
+  .grid {
+    display: grid !important;
+    gap: 1rem !important;
+  }
+  
+  .grid-cols-1 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Fix Pokemon info section being cut off */
+  .bg-white.rounded-lg.shadow-lg.p-8 {
+    padding: 1rem !important;
+    overflow: visible !important;
+  }
+  
+  .grid.grid-cols-1.lg\\:grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Fix Biology section visibility */
+  .grid.grid-cols-2.gap-3,
+  .grid.grid-cols-2.md\\:grid-cols-3 {
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important;
+  }
+  
+  /* Ensure all content is visible */
+  .bg-gray-50.p-3.rounded {
+    min-height: auto !important;
+    overflow: visible !important;
+  }
+  
+  /* Fix modal/popup visibility */
+  .fixed.z-50 {
+    z-index: 9999 !important;
+  }
+  
+  /* Fix type badges wrapping */
+  .flex.flex-wrap {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 0.5rem !important;
+  }
+  
+  /* Fix stats calculator modal */
+  .stats-calculator-modal {
+    position: fixed !important;
+    inset: 1rem !important;
+    max-height: calc(100vh - 2rem) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  
+  /* Fix move list display */
+  .moves-list {
+    max-height: 400px !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  
+  /* Fix bottom padding for iOS home indicator */
+  body {
+    padding-bottom: env(safe-area-inset-bottom) !important;
+  }
+  
+  footer {
+    padding-bottom: env(safe-area-inset-bottom) !important;
+  }
+}
+
+/* iOS specific overrides */
+@supports (-webkit-touch-callout: none) {
+  /* Remove any transform that breaks layout */
+  .navbar-ios * {
+    -webkit-transform: none !important;
+    transform: none !important;
+  }
+  
+  /* Fix position sticky fallback */
+  .sticky {
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: calc(64px + env(safe-area-inset-top)) !important;
+  }
+  
+  /* Ensure proper touch targets */
+  button, a, [role="button"] {
+    min-height: 44px !important;
+    min-width: 44px !important;
+  }
+  
+  /* Fix tab scrolling */
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch !important;
+    overflow-scrolling: touch !important;
+  }
+  
+  /* Fix dropdown positioning */
+  .absolute.top-full {
+    position: fixed !important;
+    -webkit-transform: translateZ(0) !important;
+    transform: translateZ(0) !important;
+  }
+}
+
+/* Emergency fixes for vertical iPhone layout */
+@media (max-width: 428px) and (orientation: portrait) {
+  /* Ensure content is not cut off */
+  html, body, #__next {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+  
+  /* Fix container widths */
+  .container, .max-w-7xl, .max-w-6xl {
+    max-width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  /* Fix navbar mobile menu */
+  .navbar-ios nav {
+    display: none !important;
+  }
+  
+  /* Show mobile menu button */
+  .md\\:hidden {
+    display: flex !important;
+  }
+  
+  /* Mobile menu button styling */
+  button#mobile-menu-button {
+    background: #dc2626 !important;
+    color: white !important;
+    padding: 0.5rem !important;
+    border-radius: 0.5rem !important;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+  }
+  
+  /* Mobile menu panel */
+  .fixed.inset-y-0.right-0.z-50 {
+    background: white !important;
+    box-shadow: -4px 0 6px -1px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  /* Mobile menu items */
+  .mobile-menu-item {
+    color: #374151 !important;
+    font-weight: 600 !important;
+    padding: 1rem !important;
+    border-bottom: 1px solid #e5e7eb !important;
+  }
+  
+  .mobile-menu-item:hover {
+    background: #f3f4f6 !important;
+    color: #dc2626 !important;
+  }
+  
+  /* Fix grid layouts */
+  .grid-cols-2,
+  .grid-cols-3,
+  .grid-cols-4 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Fix card sizes */
+  .w-full {
+    width: 100% !important;
+  }
+  
+  /* Fix text sizes */
+  .text-2xl {
+    font-size: 1.5rem !important;
+  }
+  
+  .text-xl {
+    font-size: 1.25rem !important;
+  }
+  
+  .text-lg {
+    font-size: 1.125rem !important;
+  }
+}

@@ -7,12 +7,14 @@ import React from "react"; // Ensuring React is imported if it was implicitly us
 
 export default function Layout({ children }) {
   return (
-    <div className="flex flex-col min-h-screen text-card-foreground transition-colors duration-300 relative overflow-x-hidden safe-area-padding">
+    <div className="flex flex-col min-h-screen text-card-foreground transition-colors duration-300 relative">
       {/* Removed glassy, layered background effect overlay */}
       <Navbar />
       <div className="flex flex-grow relative z-10">
-        <main className="flex-grow transition-all duration-300 pt-16 pb-10 safe-area-padding-x">
-          {children}
+        <main className="flex-grow transition-all duration-300 pt-16 pb-10 px-4 md:px-6 lg:px-8">
+          <div className="max-w-full mx-auto">
+            {children}
+          </div>
           {/* Vercel Analytics and Speed Insights re-enabled */}
           <Analytics />
           <SpeedInsights />

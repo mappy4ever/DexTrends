@@ -59,106 +59,206 @@
   transition: transform var(--transition-fast);
 }
 
-/* Fire Type - WCAG AA compliant */
-.type-badge.bg-red-500 {
-  background-color: #ef4444;
+/* Normal Type */
+.type-badge.bg-gray-400 {
+  background-color: #A8A77A;
   color: white;
-  border-color: #dc2626;
+  border-color: #969168;
+}
+.type-badge.bg-gray-400:hover {
+  background-color: #969168;
+}
+
+/* Fire Type */
+.type-badge.bg-red-500 {
+  background-color: #EE8130;
+  color: white;
+  border-color: #D66B1E;
 }
 .type-badge.bg-red-500:hover {
-  background-color: #dc2626;
+  background-color: #D66B1E;
   box-shadow: var(--shadow-red);
 }
 .type-badge.bg-red-500:active {
-  background-color: #b91c1c;
+  background-color: #C25A1A;
 }
 
 /* Water Type */
 .type-badge.bg-blue-500 {
-  background-color: #3b82f6;
+  background-color: #6390F0;
   color: white;
-  border-color: #2563eb;
+  border-color: #4B7ADE;
 }
 .type-badge.bg-blue-500:hover {
-  background-color: #2563eb;
-}
-
-/* Grass Type */
-.type-badge.bg-green-500 {
-  background-color: #22c55e;
-  color: white;
-  border-color: #16a34a;
-}
-.type-badge.bg-green-500:hover {
-  background-color: #16a34a;
+  background-color: #4B7ADE;
 }
 
 /* Electric/Lightning Type */
 .type-badge.bg-yellow-400 {
-  background-color: #facc15;
+  background-color: #F7D02C;
   color: black;
-  border-color: #eab308;
+  border-color: #F5C61A;
 }
 .type-badge.bg-yellow-400:hover {
-  background-color: #eab308;
+  background-color: #F5C61A;
 }
 
-/* Psychic Type */
-.type-badge.bg-pink-400,
-.type-badge.bg-pink-500 {
-  background-color: #ec4899;
+/* Grass Type */
+.type-badge.bg-green-500 {
+  background-color: #7AC74C;
   color: white;
-  border-color: #db2777;
+  border-color: #68B53A;
 }
-.type-badge.bg-pink-400:hover,
-.type-badge.bg-pink-500:hover {
-  background-color: #db2777;
+.type-badge.bg-green-500:hover {
+  background-color: #68B53A;
+}
+
+/* Ice Type */
+.type-badge.bg-blue-200,
+.type-badge.bg-cyan-400 {
+  background-color: #96D9D6;
+  color: black;
+  border-color: #7CCCC8;
+}
+.type-badge.bg-blue-200:hover,
+.type-badge.bg-cyan-400:hover {
+  background-color: #7CCCC8;
 }
 
 /* Fighting Type */
 .type-badge.bg-red-700,
 .type-badge.bg-orange-600 {
-  background-color: #ea580c;
+  background-color: #C22E28;
   color: white;
-  border-color: #c2410c;
+  border-color: #A8251F;
 }
 .type-badge.bg-red-700:hover,
 .type-badge.bg-orange-600:hover {
-  background-color: #c2410c;
+  background-color: #A8251F;
+}
+
+/* Poison Type */
+.type-badge.bg-purple-400,
+.type-badge.bg-purple-500 {
+  background-color: #A33EA1;
+  color: white;
+  border-color: #8B3489;
+}
+.type-badge.bg-purple-400:hover,
+.type-badge.bg-purple-500:hover {
+  background-color: #8B3489;
+}
+
+/* Ground Type */
+.type-badge.bg-yellow-600 {
+  background-color: #E2BF65;
+  color: black;
+  border-color: #D4AB53;
+}
+.type-badge.bg-yellow-600:hover {
+  background-color: #D4AB53;
+}
+
+/* Flying Type */
+.type-badge.bg-blue-300,
+.type-badge.bg-indigo-400 {
+  background-color: #A98FF3;
+  color: white;
+  border-color: #967DE1;
+}
+.type-badge.bg-blue-300:hover,
+.type-badge.bg-indigo-400:hover {
+  background-color: #967DE1;
+}
+
+/* Psychic Type */
+.type-badge.bg-pink-400,
+.type-badge.bg-pink-500 {
+  background-color: #F95587;
+  color: white;
+  border-color: #F73E75;
+}
+.type-badge.bg-pink-400:hover,
+.type-badge.bg-pink-500:hover {
+  background-color: #F73E75;
+}
+
+/* Bug Type */
+.type-badge.bg-green-600,
+.type-badge.bg-lime-500 {
+  background-color: #A6B91A;
+  color: white;
+  border-color: #8FA515;
+}
+.type-badge.bg-green-600:hover,
+.type-badge.bg-lime-500:hover {
+  background-color: #8FA515;
+}
+
+/* Rock Type */
+.type-badge.bg-yellow-700,
+.type-badge.bg-stone-500 {
+  background-color: #B6A136;
+  color: white;
+  border-color: #A0902F;
+}
+.type-badge.bg-yellow-700:hover,
+.type-badge.bg-stone-500:hover {
+  background-color: #A0902F;
+}
+
+/* Ghost Type */
+.type-badge.bg-purple-800 {
+  background-color: #735797;
+  color: white;
+  border-color: #614B7F;
+}
+.type-badge.bg-purple-800:hover {
+  background-color: #614B7F;
 }
 
 /* Dragon Type */
 .type-badge.bg-purple-600,
 .type-badge.bg-indigo-600 {
-  background-color: #4f46e5;
+  background-color: #6F35FC;
   color: white;
-  border-color: #4338ca;
+  border-color: #5B2BD4;
 }
 .type-badge.bg-purple-600:hover,
 .type-badge.bg-indigo-600:hover {
-  background-color: #4338ca;
+  background-color: #5B2BD4;
 }
 
 /* Dark/Darkness Type */
 .type-badge.bg-gray-800 {
-  background-color: #1f2937;
+  background-color: #705746;
   color: white;
-  border-color: #111827;
+  border-color: #5D493A;
 }
 .type-badge.bg-gray-800:hover {
-  background-color: #111827;
+  background-color: #5D493A;
 }
 
 /* Steel/Metal Type */
 .type-badge.bg-gray-500,
 .type-badge.bg-slate-500 {
-  background-color: #64748b;
-  color: white;
-  border-color: #475569;
+  background-color: #B7B7CE;
+  color: black;
+  border-color: #A1A1BC;
 }
 .type-badge.bg-gray-500:hover,
 .type-badge.bg-slate-500:hover {
-  background-color: #475569;
+  background-color: #A1A1BC;
+}
+
+/* Fairy Type */
+.type-badge.bg-pink-200 {
+  background-color: #D685AD;
+  color: white;
+  border-color: #C5739A;
+}
+.type-badge.bg-pink-200:hover {
+  background-color: #C5739A;
 }
 
 /* Colorless Type */
@@ -191,142 +291,55 @@
   background-color: #ea580c;
 }
 
-/* Normal Type */
-.type-badge.bg-gray-400 {
-  background-color: #9ca3af;
-  color: white;
-  border-color: #6b7280;
-}
-.type-badge.bg-gray-400:hover {
-  background-color: #6b7280;
-}
-
-/* Ice Type */
-.type-badge.bg-blue-200,
-.type-badge.bg-cyan-400 {
-  background-color: #22d3ee;
-  color: white;
-  border-color: #06b6d4;
-}
-.type-badge.bg-blue-200:hover,
-.type-badge.bg-cyan-400:hover {
-  background-color: #06b6d4;
-}
-
-/* Fairy Type */
-.type-badge.bg-pink-200 {
-  background-color: #f9a8d4;
-  color: white;
-  border-color: #f472b6;
-}
-.type-badge.bg-pink-200:hover {
-  background-color: #f472b6;
-}
-
-/* Flying Type */
-.type-badge.bg-blue-300,
-.type-badge.bg-indigo-400 {
-  background-color: #818cf8;
-  color: white;
-  border-color: #6366f1;
-}
-.type-badge.bg-blue-300:hover,
-.type-badge.bg-indigo-400:hover {
-  background-color: #6366f1;
-}
-
-/* Poison Type */
-.type-badge.bg-purple-400,
-.type-badge.bg-purple-500 {
-  background-color: #a855f7;
-  color: white;
-  border-color: #9333ea;
-}
-.type-badge.bg-purple-400:hover,
-.type-badge.bg-purple-500:hover {
-  background-color: #9333ea;
-}
-
-/* Ground Type */
-.type-badge.bg-yellow-600 {
-  background-color: #ca8a04;
-  color: white;
-  border-color: #a16207;
-}
-.type-badge.bg-yellow-600:hover {
-  background-color: #a16207;
-}
-
-/* Rock Type */
-.type-badge.bg-yellow-700,
-.type-badge.bg-stone-500 {
-  background-color: #78716c;
-  color: white;
-  border-color: #57534e;
-}
-.type-badge.bg-yellow-700:hover,
-.type-badge.bg-stone-500:hover {
-  background-color: #57534e;
-}
-
-/* Bug Type */
-.type-badge.bg-green-600,
-.type-badge.bg-lime-500 {
-  background-color: #84cc16;
-  color: white;
-  border-color: #65a30d;
-}
-.type-badge.bg-green-600:hover,
-.type-badge.bg-lime-500:hover {
-  background-color: #65a30d;
-}
-
-/* Ghost Type */
-.type-badge.bg-purple-800 {
-  background-color: #6b21a8;
-  color: white;
-  border-color: #581c87;
-}
-.type-badge.bg-purple-800:hover {
-  background-color: #581c87;
-}
-
-/* Size variants - Mobile-optimized with 4px grid */
+/* Fixed size variants - 10% larger for better type name fitting, fonts slightly reduced */
 .type-badge.size-xxs {
-  padding: 2px 7px;
-  font-size: 10px;
-  min-height: 18px;
+  padding: 2px 2px;
+  font-size: 6.5px;
+  height: 18px;
+  width: 51px;
   box-shadow: none;
 }
 
 .type-badge.size-xs {
-  padding: var(--space-1) var(--space-3);
-  font-size: var(--text-xs);
-  min-height: 22px;
+  padding: 3px 2px;
+  font-size: 8.5px;
+  height: 22px;
+  width: 64px;
 }
 
 .type-badge.size-sm {
-  padding: var(--space-2) var(--space-4);
-  font-size: var(--text-sm);
-  min-height: 26px;
+  padding: 4px 2px;
+  font-size: 10.5px;
+  height: 25px;
+  width: 76px;
 }
 
 .type-badge.size-md {
-  padding: var(--space-3) var(--space-5);
-  font-size: var(--text-base);
-  min-height: 32px;
+  padding: 6px 2px;
+  font-size: 11.5px;
+  height: 31px;
+  width: 89px;
 }
 
 .type-badge.size-lg {
-  padding: var(--space-4) var(--space-6);
-  font-size: var(--text-lg);
-  min-height: 40px;
+  padding: 8px 2px;
+  font-size: 13.5px;
+  height: 39px;
+  width: 101px;
+}
+
+.type-badge.size-xl {
+  padding: 10px 2px;
+  font-size: 15.5px;
+  height: 44px;
+  width: 111px;
 }
 
 .type-badge.size-list {
-  padding: var(--space-1) var(--space-3);
-  font-size: var(--text-xs);
-  min-height: 20px;
+  padding: 3px 2px;
+  font-size: 8.5px;
+  height: 19px;
+  width: 64px;
 }
 
 /* iPhone-specific adjustments */

@@ -92,7 +92,6 @@ body {
   /* Mobile performance optimizations */
   -webkit-overflow-scrolling: touch;
   -webkit-tap-highlight-color: transparent;
-  overscroll-behavior: none;
   touch-action: manipulation;
 }
 
@@ -465,6 +464,8 @@ button, a, [role="button"], input, select, textarea {
   html, body {
     position: relative;
     overflow-x: hidden;
+    height: auto;
+    min-height: 100%;
   }
   
   /* Safe area handling for notched devices */
@@ -537,6 +538,40 @@ button, a, [role="button"], input, select, textarea {
   .card-holographic, .btn-clean, .input-clean {
     border-width: 0.5px;
   }
+}
+
+/* Custom slider styles */
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  opacity: 0.9;
+  transition: opacity 0.2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #dc2626;
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #dc2626;
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  border: none;
 }
 
 .dark {
