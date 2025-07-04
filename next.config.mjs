@@ -96,16 +96,10 @@ const nextConfig = {
     NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY: process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY,
   },
   images: {
-    // Reduce transformations by limiting formats to just WebP
-    formats: ['image/webp'],
-    // Cache images for 31 days since they don't change often
-    minimumCacheTTL: 2678400,
-    // Limit device sizes to reduce transformations
-    deviceSizes: [640, 750, 828, 1080, 1200],
-    // Limit image sizes to common breakpoints
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    // Set default quality to 75 to reduce file size (handled per-image basis)
-    // Use modern remotePatterns instead of deprecated domains
+    // DISABLE VERCEL IMAGE OPTIMIZATION to avoid quota limits
+    loader: 'custom',
+    loaderFile: './utils/imageLoader.js',
+    // Keep remote patterns for security
     remotePatterns: [
       {
         protocol: 'https',
