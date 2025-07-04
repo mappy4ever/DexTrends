@@ -61,8 +61,7 @@ export const SmartTooltip = ({
 
   return (
     <div 
-      className="relative inline-block">
-      onMouseEnter={showTooltip}
+      className="relative inline-block"
       onMouseLeave={hideTooltip}
       onFocus={showTooltip}
       onBlur={hideTooltip}

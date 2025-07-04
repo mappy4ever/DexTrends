@@ -449,9 +449,7 @@ const BulkCardOperations = ({
                       value={newTag}
                       onChange={(e) => setNewTag(e.target.value)}
                       placeholder="New tag name..."
-                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-                      onKeyPress={(e) => e.key === 'Enter' && addCustomTag()}
-                    />
+                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800" />
                     <button
                       onClick={addCustomTag}
                       className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">

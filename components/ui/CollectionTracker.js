@@ -810,9 +810,7 @@ const CollectionTracker = ({
               type="text"
               value={newGoal.name}
               onChange={(e) => setNewGoal(prev => ({ ...prev, name: e.target.value }))}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-              placeholder="Complete Base Set"
-            />
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800" />
           </div>
           
           <div>
@@ -823,7 +821,6 @@ const CollectionTracker = ({
               value={newGoal.description}
               onChange={(e) => setNewGoal(prev => ({ ...prev, description: e.target.value }))}
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-              rows={3}
               placeholder="Goal description..."
             />
           </div>
@@ -863,9 +860,7 @@ const CollectionTracker = ({
                 type={newGoal.type === 'count' ? 'number' : 'text'}
                 value={newGoal.target}
                 onChange={(e) => setNewGoal(prev => ({ ...prev, target: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-                placeholder={newGoal.type === 'count' ? '100' : 'Rare'}
-              />
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800" />
             )}
           </div>
           

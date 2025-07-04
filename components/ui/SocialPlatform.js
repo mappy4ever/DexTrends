@@ -466,9 +466,7 @@ export default function SocialPlatform({ currentUserId = null }) {
                 <div className="flex-1">
                   <textarea 
                     placeholder="Share your latest card pull, collection update, or deck tech..."
-                    className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white">
-                    rows={3}
-                  />
+                    className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white" />
                   <div className="flex justify-between items-center mt-3">
                     <div className="flex space-x-2">
                       <button className="p-2 text-gray-500 hover:text-blue-500 transition-colors">

@@ -219,10 +219,7 @@ const AdvancedSearchInterface = ({
             onBlur={handleInputBlur}
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
-            className="w-full pl-10 pr-20 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200">
-            aria-label="Search"
-            aria-expanded={showSuggestionsPanel}
-            aria-haspopup="listbox"
+            className="w-full pl-10 pr-20 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200">            aria-haspopup="listbox"
             role="combobox"
             aria-activedescendant={suggestionIndex >= 0 ? `suggestion-${suggestionIndex}` : undefined}
           />
@@ -232,8 +229,6 @@ const AdvancedSearchInterface = ({
               <button
                 onClick={clearSearch}
                 className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
-                aria-label="Clear search"
-              >
                 <XMarkIcon className="h-4 w-4" />
               </button>
             )}
@@ -264,8 +259,6 @@ const AdvancedSearchInterface = ({
           <div
             ref={suggestionsRef}
             className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg z-50 max-h-80 overflow-y-auto">
-            role="listbox"
-          >
             {filteredSuggestions.map((suggestion, index) => (
               <button
                 key={index}

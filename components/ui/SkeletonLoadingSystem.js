@@ -471,9 +471,7 @@ export const ChartSkeleton = ({
                   stroke="url(#skeleton-gradient)"
                   strokeWidth="3"
                   fill="none"
-                  className="animate-pulse">
-                  opacity="0.7"
-                />
+                  className="animate-pulse" />
               </svg>
             </div>)
           )}

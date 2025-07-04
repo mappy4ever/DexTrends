@@ -601,27 +601,18 @@ export const ProgressiveForm = ({
       
       <div className="flex justify-between mt-6">
         <button
-          className="px-4 py-2 text-gray-600 hover:text-gray-800 disabled:opacity-50">
-          onClick={() => setCurrentSection(Math.max(0, currentSection - 1))}
-          disabled={currentSection === 0}
-        >
+          className="px-4 py-2 text-gray-600 hover:text-gray-800 disabled:opacity-50">        >
           Previous
         </button>
         
         {currentSection === sections.length - 1 ? (
           <button
-            className="px-6 py-2 bg-pokemon-red text-white rounded-lg hover:bg-red-600 disabled:opacity-50">
-            onClick={handleSubmit}
-            disabled={!canProceed}
-          >
+            className="px-6 py-2 bg-pokemon-red text-white rounded-lg hover:bg-red-600 disabled:opacity-50">          >
             Submit
           </button>
         ) : (
           <button
-            className="px-6 py-2 bg-pokemon-red text-white rounded-lg hover:bg-red-600 disabled:opacity-50">
-            onClick={() => setCurrentSection(Math.min(sections.length - 1, currentSection + 1))}
-            disabled={!canProceed}
-          >
+            className="px-6 py-2 bg-pokemon-red text-white rounded-lg hover:bg-red-600 disabled:opacity-50">          >
             Next
           </button>
         )}

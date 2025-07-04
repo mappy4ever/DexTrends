@@ -236,7 +236,6 @@ const MobileCardGrid = ({
               utils.hapticFeedback('light');
             }}
             className="p-2 text-gray-600 hover:text-red-500 transition-colors">
-            aria-label="Show favorites"
           >
             ❤️
           </button>

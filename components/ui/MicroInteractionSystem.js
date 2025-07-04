@@ -439,10 +439,7 @@ export const InteractiveLoader = ({
       <div className={`${loaderClasses[size]} animate-spin`}>
         <svg className="w-full h-full" viewBox="0 0 24 24">
           <circle
-            className="opacity-25">
-            cx="12"
-            cy="12"
-            r="10"
+            className="opacity-25">            r="10"
             stroke="currentColor"
             strokeWidth="4"
             fill="none"

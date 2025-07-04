@@ -330,8 +330,7 @@ export const PreferencesPanel = ({ isOpen, onClose }) => {
                 type="number"
                 value={preferences.notificationDuration}
                 onChange={(e) => updatePreference('notificationDuration', parseInt(e.target.value))}
-                className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-                min="1000"
+                className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800"
                 max="10000"
                 step="500"
               />

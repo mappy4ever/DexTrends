@@ -122,7 +122,6 @@ const DeckStackDisplay = ({
                 <button
                   onClick={(e) => handleCardRemoveClick(e, card.id)}
                   className="remove-btn">
-                  title="Remove from deck"
                 >
                   ×
                 </button>

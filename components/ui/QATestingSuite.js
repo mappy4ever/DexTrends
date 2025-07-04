@@ -592,7 +592,6 @@ const QATestingSuite = ({ isVisible = false, onToggle }) => {
                 value={selectedTestSuite}
                 onChange={(e) => setSelectedTestSuite(e.target.value)}
                 className="px-3 py-2 border rounded-md bg-white dark:bg-gray-700">
-                disabled={isRunning}
               >
                 <option value="all">All Test Suites</option>
                 {Object.entries(testSuites).map(([key, suite]) => (

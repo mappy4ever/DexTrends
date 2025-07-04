@@ -275,7 +275,7 @@ const CardScanner = ({
           autoPlay
           playsInline
           muted
-          className="camera-video">
+          className="camera-video"
           style={{
             display: isScanning ? 'block' : 'none'
           }}
@@ -309,8 +309,6 @@ const CardScanner = ({
             onClick={manualCapture}
             disabled={!isScanning}
             className="capture-button">
-            aria-label="Capture card"
-          >
             📸
           </button>
           
@@ -326,8 +324,6 @@ const CardScanner = ({
             <button
               onClick={clearDetected}
               className="clear-button">
-              aria-label="Clear detected cards"
-            >
               🗑️
             </button>
           )}
@@ -366,7 +362,7 @@ const CardScanner = ({
                   <p className="card-rarity">{card.rarity}</p>
                   <div className="confidence-bar">
                     <div 
-                      className="confidence-fill">
+                      className="confidence-fill"
                       style={{ width: `${card.confidence * 100}%` }}
                     ></div>
                     <span className="confidence-text">

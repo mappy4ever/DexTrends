@@ -741,9 +741,7 @@ const PortfolioManager = ({ userCards = [], onUpdateCard }) => {
               type="text"
               value={newPortfolio.name}
               onChange={(e) => setNewPortfolio(prev => ({ ...prev, name: e.target.value }))}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-              placeholder="My Investment Portfolio"
-            />
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800" />
           </div>
           
           <div>
@@ -754,7 +752,6 @@ const PortfolioManager = ({ userCards = [], onUpdateCard }) => {
               value={newPortfolio.description}
               onChange={(e) => setNewPortfolio(prev => ({ ...prev, description: e.target.value }))}
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-              rows={3}
               placeholder="Portfolio description..."
             />
           </div>
@@ -843,9 +840,7 @@ const PortfolioManager = ({ userCards = [], onUpdateCard }) => {
                     type="number"
                     value={cardEntry.quantity}
                     onChange={(e) => setCardEntry(prev => ({ ...prev, quantity: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-                    min="1"
-                  />
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800" />
                 </div>
                 
                 <div>
@@ -857,7 +852,6 @@ const PortfolioManager = ({ userCards = [], onUpdateCard }) => {
                     value={cardEntry.purchasePrice}
                     onChange={(e) => setCardEntry(prev => ({ ...prev, purchasePrice: e.target.value }))}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-                    step="0.01"
                     min="0"
                   />
                 </div>
@@ -903,7 +897,6 @@ const PortfolioManager = ({ userCards = [], onUpdateCard }) => {
                   value={cardEntry.notes}
                   onChange={(e) => setCardEntry(prev => ({ ...prev, notes: e.target.value }))}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-                  rows={2}
                   placeholder="Any additional notes..."
                 />
               </div>

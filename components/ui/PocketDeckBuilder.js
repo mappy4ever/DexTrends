@@ -299,16 +299,10 @@ export default function PocketDeckBuilder({
               <input
                 type="text"
                 placeholder="Search cards..."
-                className="input-clean w-full">
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
+                className="input-clean w-full">              />
             </div>
             <select
-              className="select-clean w-full sm:w-auto">
-              value={typeFilter}
-              onChange={(e) => setTypeFilter(e.target.value)}
-            >
+              className="select-clean w-full sm:w-auto">            >
               <option value="all">All Types</option>
               <option value="fire">Fire</option>
               <option value="water">Water</option>
@@ -422,9 +416,7 @@ export default function PocketDeckBuilder({
             type="text"
             value={deck.name}
             onChange={(e) => setDeck(prev => ({ ...prev, name: e.target.value }))}
-            className="w-full bg-white/10 border border-white/20 rounded px-3 py-2 text-white placeholder-white/70 focus:outline-none focus:bg-white/20">
-            placeholder="Enter deck name..."
-          />
+            className="w-full bg-white/10 border border-white/20 rounded px-3 py-2 text-white placeholder-white/70 focus:outline-none focus:bg-white/20" />
 
           {/* Deck Stats */}
           <div className="flex gap-4 text-xs mt-2 opacity-90">

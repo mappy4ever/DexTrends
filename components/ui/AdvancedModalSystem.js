@@ -316,10 +316,7 @@ const Modal = ({
           {/* Close Button */}
           {options.closable && (
             <button
-              className="absolute top-4 right-4 z-10 p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-pokemon-blue">
-              onClick={handleClose}
-              aria-label="Close modal"
-            >
+              className="absolute top-4 right-4 z-10 p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-pokemon-blue" aria-label="Close modal">
               <svg className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
                 <path
                   fillRule="evenodd"
@@ -555,19 +552,13 @@ export const LoadingModal = ({
         <div className="w-12 h-12 animate-spin">
           <svg className="w-full h-full text-pokemon-red" viewBox="0 0 24 24">
             <circle
-              className="opacity-25">
-              cx="12"
-              cy="12"
-              r="10"
+              className="opacity-25">              r="10"
               stroke="currentColor"
               strokeWidth="4"
               fill="none"
             />
             <path
-              className="opacity-75">
-              fill="currentColor"
-              d="M4,12a8,8,0,0,1,8-8V0A12,12,0,0,0,0,12Z"
-            />
+              className="opacity-75">            />
           </svg>
         </div>
         <p className="text-gray-700 dark:text-gray-300">{message}</p>
