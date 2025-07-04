@@ -751,8 +751,8 @@ const PortfolioManager = ({ userCards = [], onUpdateCard }) => {
             <textarea
               value={newPortfolio.description}
               onChange={(e) => setNewPortfolio(prev => ({ ...prev, description: e.target.value }))}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-              placeholder="Portfolio description..."
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800"
+        placeholder="Portfolio description..."
             />
           </div>
           
@@ -851,8 +851,8 @@ const PortfolioManager = ({ userCards = [], onUpdateCard }) => {
                     type="number"
                     value={cardEntry.purchasePrice}
                     onChange={(e) => setCardEntry(prev => ({ ...prev, purchasePrice: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-                    min="0"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800"
+        min="0"
                   />
                 </div>
               </div>
@@ -896,8 +896,8 @@ const PortfolioManager = ({ userCards = [], onUpdateCard }) => {
                 <textarea
                   value={cardEntry.notes}
                   onChange={(e) => setCardEntry(prev => ({ ...prev, notes: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-                  placeholder="Any additional notes..."
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800"
+        placeholder="Any additional notes..."
                 />
               </div>
             </>

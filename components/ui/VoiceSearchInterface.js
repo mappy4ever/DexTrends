@@ -267,8 +267,8 @@ export default function VoiceSearchInterface({ onSearchResults, onTranscript, is
           {/* Audio level indicator */}
           {isListening && (
             <div 
-              className="absolute inset-0 rounded-full border-4 border-red-300 animate-pulse">
-              style={{
+              className="absolute inset-0 rounded-full border-4 border-red-300 animate-pulse"
+        style={{
                 transform: `scale(${1 + audioLevel * 0.3})`,
                 opacity: 0.6
               }}

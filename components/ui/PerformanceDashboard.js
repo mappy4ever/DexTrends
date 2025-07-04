@@ -382,7 +382,7 @@ const PerformanceDashboard = ({ isOpen = false, onClose = () => {} }) => {
       <div className="fixed bottom-4 right-4 z-50">
         <button
           onClick={() => setIsVisible(true)}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-lg transition-colors">
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-lg transition-colors"
         >
           📊 Performance
         </button>

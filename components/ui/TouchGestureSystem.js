@@ -758,7 +758,7 @@ export const SwipeableListItem = ({
       {/* Main Content */}
       <div
         ref={itemRef}
-        className="relative bg-white z-10">
+        className="relative bg-white z-10"
         {...swipeGestures}
       >
         {children}

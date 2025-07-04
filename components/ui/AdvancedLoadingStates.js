@@ -388,9 +388,9 @@ export const ProgressiveLoader = ({
         <div className="progress-container">
           <div className="progress-bar">
             <div 
-              className="progress-fill">
-              style={{ width: `${progress}%` }}
-            ></div>
+              className="progress-fill"
+        style={{ width: `${progress}%` }}
+      ></div>
           </div>
           
           {showPercentage && (

@@ -392,7 +392,9 @@ const CardScanner = ({
             </p>
             <button
               onClick={startCamera}
-              className="start-button" disabled={disabled}>
+              className="start-button"
+              disabled={disabled}
+            >
               Start Scanning
             </button>
           </div>

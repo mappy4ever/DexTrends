@@ -537,7 +537,7 @@ export const PullToRefresh = ({
     >
       {/* Refresh Indicator */}
       <div 
-        className="refresh-indicator">
+        className="refresh-indicator"
         style={{
           opacity: getRefreshOpacity(),
           transform: `translateY(${pullState.pullDistance > 0 ? 0 : -threshold}px)`
@@ -562,7 +562,7 @@ export const PullToRefresh = ({
       
       {/* Content */}
       <div 
-        className="pull-content">
+        className="pull-content"
         style={{
           transform: getTransform(),
           transition: pullState.isPulling ? 'none' : 'transform 0.3s ease'

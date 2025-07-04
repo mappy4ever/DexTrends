@@ -57,7 +57,9 @@ const PokedexDisplay = ({ pokemon }) => {
         <img
           src={pokemon.artUrl}
           alt={pokemon.name}
-          className="w-[100px] mb-2 drop-shadow-lg transition-transform duration-200 hover:scale-105" style={{ objectFit: 'contain', maxHeight: '120px' }} />
+          className="w-[100px] mb-2 drop-shadow-lg transition-transform duration-200 hover:scale-105"
+          style={{ objectFit: 'contain', maxHeight: '120px' }}
+        />
         <div className="font-bold text-lg mb-1 text-center">
           #{pokemon.number} <span className="capitalize">{pokemon.name}</span>
         </div>

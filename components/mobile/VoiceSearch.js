@@ -248,7 +248,7 @@ const VoiceSearch = ({
         {/* Microphone Icon with Audio Visualization */}
         <div className="microphone-container">
           <div 
-            className="microphone-icon">
+            className="microphone-icon"
             style={{
               transform: `scale(${1 + audioLevel * 0.3})`
             }}
@@ -262,7 +262,7 @@ const VoiceSearch = ({
               {[...Array(3)].map((_, i) => (
                 <div
                   key={i}
-                  className="audio-wave">
+                  className="audio-wave"
                   style={{
                     height: `${20 + audioLevel * 30}px`,
                     animationDelay: `${i * 0.1}s`

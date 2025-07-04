@@ -10,7 +10,6 @@ import { FiTrendingUp, FiShoppingBag } from "react-icons/fi";
 import GlobalSearchModal from "./GlobalSearchModal";
 import { useTheme } from "../context/themecontext";
 import { useFavorites } from "../context/favoritescontext";
-import Image from "next/image";
 import { toLowercaseUrl } from "../utils/formatters";
 import ClientOnly from "./ClientOnly";
 

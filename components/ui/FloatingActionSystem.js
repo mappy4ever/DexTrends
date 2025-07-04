@@ -370,8 +370,8 @@ export const FloatingActionButton = ({
       {/* Backdrop for expanded state */}
       {isExpanded && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm">
-          style={{ zIndex: -1 }}
+          className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm"
+        style={{ zIndex: -1 }}
           onClick={() => setIsExpanded(false)}
         />
       )}

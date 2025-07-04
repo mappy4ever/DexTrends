@@ -121,7 +121,7 @@ const DeckStackDisplay = ({
                 )}
                 <button
                   onClick={(e) => handleCardRemoveClick(e, card.id)}
-                  className="remove-btn">
+                  className="remove-btn"
                 >
                   ×
                 </button>

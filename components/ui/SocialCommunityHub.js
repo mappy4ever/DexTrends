@@ -437,9 +437,9 @@ const SocialCommunityHub = () => {
                   </div>
                   <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                     <div 
-                      className="bg-blue-600 h-2 rounded-full">
-                      style={{ width: `${(socialData.userProfile.xp / socialData.userProfile.nextLevelXp) * 100}%` }}
-                    ></div>
+                      className="bg-blue-600 h-2 rounded-full"
+        style={{ width: `${(socialData.userProfile.xp / socialData.userProfile.nextLevelXp) * 100}%` }}
+      ></div>
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4 text-center">
@@ -538,9 +538,9 @@ const SocialCommunityHub = () => {
                 </div>
                 <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
                   <div 
-                    className="bg-blue-600 h-2 rounded-full">
-                    style={{ width: `${(achievement.progress / achievement.maxProgress) * 100}%` }}
-                  ></div>
+                    className="bg-blue-600 h-2 rounded-full"
+        style={{ width: `${(achievement.progress / achievement.maxProgress) * 100}%` }}
+      ></div>
                 </div>
               </div>
               

@@ -316,7 +316,7 @@ export const StepByStepDisclosure = ({
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
             <div
-              className="bg-pokemon-red h-2 rounded-full transition-all duration-500">
+              className="bg-pokemon-red h-2 rounded-full transition-all duration-500"
               style={{
                 width: `${((completedSteps.size + (activeStep > 0 ? 1 : 0)) / steps.length) * 100}%`
               }}
@@ -581,7 +581,7 @@ export const ProgressiveForm = ({
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
             <div
-              className="bg-pokemon-red h-2 rounded-full transition-all duration-500">
+              className="bg-pokemon-red h-2 rounded-full transition-all duration-500"
               style={{ width: `${(completedSections.size / sections.length) * 100}%` }}
             />
           </div>
@@ -601,18 +601,27 @@ export const ProgressiveForm = ({
       
       <div className="flex justify-between mt-6">
         <button
-          className="px-4 py-2 text-gray-600 hover:text-gray-800 disabled:opacity-50">        >
+          className="px-4 py-2 text-gray-600 hover:text-gray-800 disabled:opacity-50"
+          disabled={currentSection === 0}
+          onClick={() => setCurrentSection(currentSection - 1)}
+        >
           Previous
         </button>
         
         {currentSection === sections.length - 1 ? (
           <button
-            className="px-6 py-2 bg-pokemon-red text-white rounded-lg hover:bg-red-600 disabled:opacity-50">          >
+            className="px-6 py-2 bg-pokemon-red text-white rounded-lg hover:bg-red-600 disabled:opacity-50"
+            disabled={!canProceed}
+            onClick={handleSubmit}
+          >
             Submit
           </button>
         ) : (
           <button
-            className="px-6 py-2 bg-pokemon-red text-white rounded-lg hover:bg-red-600 disabled:opacity-50">          >
+            className="px-6 py-2 bg-pokemon-red text-white rounded-lg hover:bg-red-600 disabled:opacity-50"
+            disabled={!canProceed}
+            onClick={() => setCurrentSection(currentSection + 1)}
+          >
             Next
           </button>
         )}

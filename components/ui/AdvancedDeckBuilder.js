@@ -530,7 +530,7 @@ export default function AdvancedDeckBuilder({ initialDeck = null, onSaveDeck, us
                           <span className="text-gray-900 dark:text-white">{type}</span>
                           <div className="flex-1 bg-gray-200 dark:bg-gray-600 rounded-full h-2">
                             <div 
-                              className="h-2 bg-blue-500 rounded-full">
+                              className="h-2 bg-blue-500 rounded-full"
                               style={{ width: `${(count / Math.max(...Object.values(metaAnalysis.typeDistribution))) * 100}%` }}
                             />
                           </div>

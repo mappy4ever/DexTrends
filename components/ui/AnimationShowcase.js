@@ -280,9 +280,9 @@ export default function AnimationShowcase() {
                   currentStage={evolutionStage}
                   onStageChange={setEvolutionStage}
                   stages={[
-                    <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">1</div>,
-                    <div className="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">2</div>,
-                    <div className="w-20 h-20 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold">3</div>,
+                    <div key="stage-1" className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">1</div>,
+                    <div key="stage-2" className="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">2</div>,
+                    <div key="stage-3" className="w-20 h-20 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold">3</div>,
                   ]}
                 />
               </div>

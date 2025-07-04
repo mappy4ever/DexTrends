@@ -299,7 +299,7 @@ const MobileShare = ({
                   <button
                     key={option.action}
                     onClick={() => shareFallback(option.action)}
-                    className="share-option">
+                    className="share-option"
                     style={{ '--option-color': option.color }}
                     disabled={isSharing}
                   >

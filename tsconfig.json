@@ -80,6 +80,9 @@
     "build",
     "dist",
     "scripts/**/*",
-    "tests/**/*"
+    "tests/**/*",
+    "test/**/*",
+    "playwright.config.ts",
+    "vitest.config.ts"
   ]
 }

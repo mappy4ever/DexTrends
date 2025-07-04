@@ -96,7 +96,7 @@ const VirtualizedCardGrid = ({
     <div className={`w-full ${className}`}>
       <div
         ref={setContainerRef}
-        className="w-full">
+        className="w-full"
         style={{ height: gridHeight }}
       >
         {containerRef && (

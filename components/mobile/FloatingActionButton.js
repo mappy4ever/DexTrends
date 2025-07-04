@@ -181,7 +181,7 @@ const FloatingActionButton = ({
           {actions.map((action, index) => (
             <div
               key={index}
-              className="fab-action-item">
+              className="fab-action-item"
               style={{
                 animationDelay: `${index * 50}ms`
               }}

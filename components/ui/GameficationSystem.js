@@ -293,8 +293,8 @@ export default function GameficationSystem({ userId, onRewardEarned, onLevelUp }
             </div>
             <div className="w-48 bg-white/20 rounded-full h-3">
               <div 
-                className="bg-white rounded-full h-3 transition-all duration-300">
-                style={{ width: `${(userProfile.experience / userProfile.experienceToNext) * 100}%` }}
+                className="bg-white rounded-full h-3 transition-all duration-300"
+        style={{ width: `${(userProfile.experience / userProfile.experienceToNext) * 100}%` }}
               />
             </div>
           </div>

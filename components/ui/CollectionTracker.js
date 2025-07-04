@@ -622,8 +622,8 @@ const CollectionTracker = ({
                       
                       <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                         <div 
-                          className="bg-blue-500 h-2 rounded-full transition-all duration-500">
-                          style={{ width: `${set.completionRate}%` }}
+                          className="bg-blue-500 h-2 rounded-full transition-all duration-500"
+        style={{ width: `${set.completionRate}%` }}
                         />
                       </div>
                       
@@ -740,8 +740,8 @@ const CollectionTracker = ({
               </div>
               <div className="mt-4 w-full bg-yellow-300 rounded-full h-2">
                 <div 
-                  className="bg-white h-2 rounded-full transition-all duration-500">
-                  style={{ 
+                  className="bg-white h-2 rounded-full transition-all duration-500"
+        style={{ 
                     width: `${(achievements.length / achievementDefinitions.length) * 100}%` 
                   }}
                 />
@@ -820,8 +820,8 @@ const CollectionTracker = ({
             <textarea
               value={newGoal.description}
               onChange={(e) => setNewGoal(prev => ({ ...prev, description: e.target.value }))}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-              placeholder="Goal description..."
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800"
+        placeholder="Goal description..."
             />
           </div>
           

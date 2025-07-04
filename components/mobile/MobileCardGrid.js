@@ -221,7 +221,7 @@ const MobileCardGrid = ({
           {/* View mode toggle */}
           <button
             onClick={toggleViewMode}
-            className="p-2 text-gray-600 hover:text-pokemon-blue transition-colors">
+            className="p-2 text-gray-600 hover:text-pokemon-blue transition-colors"
             aria-label={`Switch to ${viewMode === 'grid' ? 'list' : viewMode === 'list' ? 'compact' : 'grid'} view`}
           >
             {viewMode === 'grid' && '⊞'}
@@ -235,7 +235,7 @@ const MobileCardGrid = ({
               // TODO: Implement favorites filter
               utils.hapticFeedback('light');
             }}
-            className="p-2 text-gray-600 hover:text-red-500 transition-colors">
+            className="p-2 text-gray-600 hover:text-red-500 transition-colors"
           >
             ❤️
           </button>

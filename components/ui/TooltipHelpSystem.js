@@ -134,12 +134,12 @@ const TooltipRenderer = () => {
   
   const tooltipContent = (
     <div
-      className="tooltip-container fixed z-50 pointer-events-none">
-      style={{
+      className="tooltip-container fixed z-50 pointer-events-none"
+        style={{
         left: tooltipPosition.x,
         top: tooltipPosition.y
       }}
-    >
+      >
       <div className="tooltip-content bg-gray-900 text-white text-sm px-3 py-2 rounded-lg shadow-lg max-w-xs animate-in fade-in slide-in-from-bottom-1 duration-200">
         {typeof activeTooltip.content === 'string' ? (
           <span>{activeTooltip.content}</span>
@@ -149,8 +149,8 @@ const TooltipRenderer = () => {
         
         {/* Tooltip Arrow */}
         <div
-          className="tooltip-arrow absolute w-2 h-2 bg-gray-900 transform rotate-45">
-          style={{
+          className="tooltip-arrow absolute w-2 h-2 bg-gray-900 transform rotate-45"
+        style={{
             left: '50%',
             transform: 'translateX(-50%) rotate(45deg)',
             bottom: '-4px'
@@ -429,7 +429,7 @@ const HelpOverlay = ({
       
       {/* Tooltip */}
       <div
-        className="absolute transform -translate-x-1/2 z-10">
+        className="absolute transform -translate-x-1/2 z-10"
         style={{
           left: tooltipPosition.x,
           top: tooltipPosition.y
@@ -563,12 +563,16 @@ export const QuickHelpButton = ({
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="absolute inset-0 bg-black bg-opacity-50">
+            className="absolute inset-0 bg-black bg-opacity-50"
+            onClick={() => setIsOpen(false)}
+          />
           <div className="relative bg-white rounded-lg shadow-xl max-w-md w-full p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
               <button
-                className="text-gray-400 hover:text-gray-600" onClick={() => setIsOpen(false)}>
+                className="text-gray-400 hover:text-gray-600"
+                onClick={() => setIsOpen(false)}
+              >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>

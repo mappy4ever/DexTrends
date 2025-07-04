@@ -309,14 +309,14 @@ const GestureCardSorting = ({
               {/* Swipe Action Indicator */}
               {activeCard === card.id && swipeDirection && (
                 <div 
-                  className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  className="absolute inset-0 flex items-center justify-center pointer-events-none"
                   style={{
                     background: `${swipeActions[swipeDirection]?.color}20`,
                     backdropFilter: 'blur(2px)'
                   }}
                 >
                   <div 
-                    className="text-2xl p-4 rounded-full">
+                    className="text-2xl p-4 rounded-full"
                     style={{ 
                       background: swipeActions[swipeDirection]?.color,
                       color: 'white'

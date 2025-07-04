@@ -567,8 +567,8 @@ const BulkCardOperations = ({
                           <div className="flex items-center space-x-2">
                             <div className="w-20 h-2 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
                               <div 
-                                className="h-full bg-blue-500 rounded-full">
-                                style={{ width: `${(count / selectionAnalytics.count) * 100}%` }}
+                                className="h-full bg-blue-500 rounded-full"
+        style={{ width: `${(count / selectionAnalytics.count) * 100}%` }}
                               />
                             </div>
                             <span className="text-sm font-medium text-gray-900 dark:text-white w-8 text-right">

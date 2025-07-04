@@ -176,7 +176,7 @@ const PullToRefresh = ({
     >
       {/* Pull-to-refresh indicator */}
       <div 
-        className="pull-refresh-indicator">
+        className="pull-refresh-indicator"
         style={{
           position: 'absolute',
           top: -80,
@@ -207,7 +207,7 @@ const PullToRefresh = ({
         </div>
         
         <div 
-          className="indicator-text">
+          className="indicator-text"
           style={{
             fontSize: '14px',
             fontWeight: '500',
@@ -228,7 +228,7 @@ const PullToRefresh = ({
         
         {/* Progress indicator */}
         <div 
-          className="progress-bar">
+          className="progress-bar"
           style={{
             position: 'absolute',
             bottom: 0,

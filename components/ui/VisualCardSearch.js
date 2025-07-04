@@ -207,14 +207,16 @@ export default function VisualCardSearch({ onSearchResults, onImageProcessed }) 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="flex items-center justify-center space-x-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+            className="flex items-center justify-center space-x-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
             <FaUpload />
             <span>Upload Image</span>
           </button>
 
           <button
             onClick={startCamera}
-            className="flex items-center justify-center space-x-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+            className="flex items-center justify-center space-x-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+          >
             <FaCamera />
             <span>Use Camera</span>
           </button>
@@ -225,7 +227,8 @@ export default function VisualCardSearch({ onSearchResults, onImageProcessed }) 
           type="file"
           accept="image/*"
           onChange={(e) => handleFileSelect(e.target.files)}
-          className="hidden" />
+          className="hidden"
+        />
       </div>
 
       {/* Camera View */}
@@ -248,12 +251,14 @@ export default function VisualCardSearch({ onSearchResults, onImageProcessed }) 
             <div className="flex space-x-4">
               <button
                 onClick={captureFromCamera}
-                className="p-4 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors shadow-lg">
+                className="p-4 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors shadow-lg"
+              >
                 <BsViewfinder className="w-6 h-6" />
               </button>
               <button
                 onClick={stopCamera}
-                className="p-4 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors shadow-lg">
+                className="p-4 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors shadow-lg"
+              >
                 Stop
               </button>
             </div>

@@ -411,8 +411,8 @@ export default function PriceIntelligenceSystem({ cardId, onPredictionUpdate }) 
                 <div className="flex items-center space-x-2">
                   <div className="w-20 bg-gray-200 dark:bg-gray-600 rounded-full h-2">
                     <div 
-                      className="h-2 bg-blue-500 rounded-full">
-                      style={{ width: `${marketAnalysis.strength * 100}%` }}
+                      className="h-2 bg-blue-500 rounded-full"
+        style={{ width: `${marketAnalysis.strength * 100}%` }}
                     />
                   </div>
                   <span className="text-sm font-medium text-gray-900 dark:text-white">
