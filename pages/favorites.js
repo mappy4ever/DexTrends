@@ -210,8 +210,8 @@ export default function FavoritesPage() {
                     Add Pokémon to your favorites by clicking the heart icon on their page.
                   </p>
                   <Link 
-                    href="/pokedex">
-                    className="inline-block px-6 py-3 bg-primary text-white font-medium rounded-md hover:bg-primary-dark transition-colors"
+                    href="/pokedex"
+                            className="inline-block px-6 py-3 bg-primary text-white font-medium rounded-md hover:bg-primary-dark transition-colors"
                   >
                     Browse Pokédex
                   </Link>
@@ -275,8 +275,8 @@ export default function FavoritesPage() {
                     Add cards to your favorites by clicking the heart icon on card details.
                   </p>
                   <Link 
-                    href="/tcgsets">
-                    className="inline-block px-6 py-3 bg-primary text-white font-medium rounded-md hover:bg-primary-dark transition-colors"
+                    href="/tcgsets"
+                            className="inline-block px-6 py-3 bg-primary text-white font-medium rounded-md hover:bg-primary-dark transition-colors"
                   >
                     Browse TCG Sets
                   </Link>

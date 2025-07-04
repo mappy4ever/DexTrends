@@ -209,9 +209,9 @@ export default function PriceAlerts({ userId = null }) {
                       <div className="text-2xl">{typeDisplay.icon}</div>
                       <div>
                         <Link
-                          href={`/cards/${alert.card_id}`}>
-                          className="font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
-                          
+                          href={`/cards/${alert.card_id}`}
+                          className="font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400"
+                        >
                           {alert.card_name}
                         </Link>
                         <div className="text-sm text-gray-500 dark:text-gray-400">

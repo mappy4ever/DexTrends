@@ -18,7 +18,7 @@ if (!pokemonKey) {
 
 pokemon.configure({ apiKey: pokemonKey });
 
-export default function tcgsets() {
+export default function TcgSets() {
   const [sets, setSets] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);

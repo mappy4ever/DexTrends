@@ -326,8 +326,7 @@ const SocialCommunityHub = () => {
                       <img
                         src={post.user.avatar}
                         alt={post.user.username}
-                        className="w-10 h-10 rounded-full">
-                      />
+                        className="w-10 h-10 rounded-full"  />
                       <div>
                         <div className="flex items-center space-x-2">
                           <span className="font-medium text-gray-900 dark:text-white">
@@ -355,8 +354,7 @@ const SocialCommunityHub = () => {
                       <img
                         src={post.image}
                         alt="Post image"
-                        className="w-full max-w-md rounded-lg">
-                      />
+                        className="w-full max-w-md rounded-lg"  />
                     )}
                     
                     {post.card && (
@@ -364,8 +362,7 @@ const SocialCommunityHub = () => {
                         <img
                           src={post.card.image}
                           alt={post.card.name}
-                          className="w-16 h-20 object-cover rounded">
-                        />
+                          className="w-16 h-20 object-cover rounded"  />
                         <div>
                           <div className="font-medium text-gray-900 dark:text-white">{post.card.name}</div>
                           <div className="text-sm text-gray-500">Featured Card</div>
@@ -495,8 +492,7 @@ const SocialCommunityHub = () => {
                   <img
                     src={entry.user.avatar}
                     alt={entry.user.username}
-                    className="w-12 h-12 rounded-full">
-                  />
+                    className="w-12 h-12 rounded-full"  />
                   <div>
                     <div className="font-medium text-gray-900 dark:text-white">
                       {entry.user.username}

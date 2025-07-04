@@ -255,19 +255,19 @@ export default function FunPage() {
             </h2>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-gradient-to-br from-yellow-400 to-orange-500 text-white p-6 rounded-xl">
-                <h3 className="font-bold mb-2">Why don't you ever see Pikachu in a restaurant?</h3>
-                <p className="text-sm">Because it's always shocking to get the bill! ⚡</p>
+                <h3 className="font-bold mb-2">Why don&apos;t you ever see Pikachu in a restaurant?</h3>
+                <p className="text-sm">Because it&apos;s always shocking to get the bill! ⚡</p>
               </div>
               <div className="bg-gradient-to-br from-green-400 to-blue-500 text-white p-6 rounded-xl">
-                <h3 className="font-bold mb-2">What do you call a Pokémon that can't move very fast?</h3>
+                <h3 className="font-bold mb-2">What do you call a Pokémon that can&apos;t move very fast?</h3>
                 <p className="text-sm">A Slowpoke! 🐌</p>
               </div>
               <div className="bg-gradient-to-br from-purple-400 to-pink-500 text-white p-6 rounded-xl">
                 <h3 className="font-bold mb-2">Why did Team Rocket blast off again?</h3>
-                <p className="text-sm">Because they're always reaching for the stars! 🚀</p>
+                <p className="text-sm">Because they&apos;re always reaching for the stars! 🚀</p>
               </div>
               <div className="bg-gradient-to-br from-red-400 to-pink-500 text-white p-6 rounded-xl">
-                <h3 className="font-bold mb-2">What's a Pokémon's favorite type of music?</h3>
+                <h3 className="font-bold mb-2">What&apos;s a Pokémon&apos;s favorite type of music?</h3>
                 <p className="text-sm">Rock type! 🎸</p>
               </div>
             </div>

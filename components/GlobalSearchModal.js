@@ -105,8 +105,8 @@ const GlobalSearchModal = forwardRef(function GlobalSearchModal(_, ref) {
                 {results.cards.map((card) => (
                   <li key={card.id} className="py-2 px-2 rounded hover:bg-primary/10 cursor-pointer">
                     <Link
-                      href={toLowercaseUrl(`/pokedex/${card.name}`)}>
-                      className="text-primary font-semibold flex items-center gap-2"
+                      href={toLowercaseUrl(`/pokedex/${card.name}`)}
+                            className="text-primary font-semibold flex items-center gap-2"
                     >
                       <img src={card.images?.small} alt={card.name} className="w-8 h-8 rounded shadow" />
                       {card.name} <span className="text-xs text-gray-400">({card.set?.name})</span>
@@ -123,8 +123,8 @@ const GlobalSearchModal = forwardRef(function GlobalSearchModal(_, ref) {
                 {results.sets.map((set) => (
                   <li key={set.id} className="py-2 px-2 rounded hover:bg-primary/10 cursor-pointer">
                     <Link
-                      href={toLowercaseUrl(`/tcgsets/${set.id}`)}>
-                      className="text-primary font-semibold flex items-center gap-2"
+                      href={toLowercaseUrl(`/tcgsets/${set.id}`)}
+                            className="text-primary font-semibold flex items-center gap-2"
                     >
                       {set.images?.logo && <img src={set.images.logo} alt={set.name} className="w-8 h-8 rounded" />}
                       {set.name}
@@ -141,8 +141,8 @@ const GlobalSearchModal = forwardRef(function GlobalSearchModal(_, ref) {
                 {results.pokemon.map((poke) => (
                   <li key={poke.name} className="py-2 px-2 rounded hover:bg-primary/10 cursor-pointer">
                     <Link
-                      href={toLowercaseUrl(`/pokedex/${poke.name}`)}>
-                      className="text-primary font-semibold flex items-center gap-2"
+                      href={toLowercaseUrl(`/pokedex/${poke.name}`)}
+                            className="text-primary font-semibold flex items-center gap-2"
                     >
                       <span className="capitalize">{poke.name}</span>
                     </Link>

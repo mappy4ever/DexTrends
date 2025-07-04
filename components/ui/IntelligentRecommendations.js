@@ -448,8 +448,9 @@ const IntelligentRecommendations = ({
             {getRecommendations().map((card) => (
               <div key={card.id} className="group relative">
                 <Link
-                  href={`/cards/${card.id}`}>
-                  className="block bg-gray-50 dark:bg-gray-700 rounded-lg p-4 transition-all hover:shadow-lg hover:scale-105">
+                  href={`/cards/${card.id}`}
+                  className="block bg-gray-50 dark:bg-gray-700 rounded-lg p-4 transition-all hover:shadow-lg hover:scale-105"
+                >
 
                   {/* Card Image */}
                   <div className="aspect-w-3 aspect-h-4 mb-3">
@@ -504,7 +505,7 @@ const IntelligentRecommendations = ({
                         </div>
                         <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
                           <div 
-                            className="bg-purple-500 h-2 rounded-full">
+                            className="bg-purple-500 h-2 rounded-full"
                             style={{ width: `${card.completion}%` }}
                           />
                         </div>
@@ -534,13 +535,13 @@ const IntelligentRecommendations = ({
                 <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   <div className="flex space-x-1">
                     <button 
-                      className="p-1 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                      className="p-1 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:bg-gray-100 dark:hover:bg-gray-700"
                       title="Add to favorites"
                     >
                       <HeartIcon className="h-4 w-4 text-red-500" />
                     </button>
                     <button 
-                      className="p-1 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                      className="p-1 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:bg-gray-100 dark:hover:bg-gray-700"
                       title="Add to collection"
                     >
                       <StarIcon className="h-4 w-4 text-yellow-500" />

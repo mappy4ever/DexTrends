@@ -821,8 +821,7 @@ const PortfolioManager = ({ userCards = [], onUpdateCard }) => {
                 <img 
                   src={selectedCard.images?.small || '/back-card.png'} 
                   alt={selectedCard.name}
-                  className="w-12 h-16 object-cover rounded">
-                />
+                  className="w-12 h-16 object-cover rounded"  />
                 <div>
                   <div className="font-medium text-gray-900 dark:text-white">{selectedCard.name}</div>
                   <div className="text-sm text-gray-600 dark:text-gray-400">{selectedCard.set?.name}</div>

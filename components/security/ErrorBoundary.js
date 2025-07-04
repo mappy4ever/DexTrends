@@ -300,27 +300,21 @@ class SecurityErrorBoundary extends Component {
             <div className="error-actions">
               {canRetry && (
                 <button
-                  className="error-button error-button-primary">
-                  onClick={this.handleRetry}
-                >
+                  className="error-button error-button-primary" onClick={this.handleRetry}>
                   Try Again {retryCount > 0 && `(${retryCount}/${maxRetries})`}
                 </button>
               )}
               
               {allowRefresh && (
                 <button
-                  className="error-button error-button-secondary">
-                  onClick={this.handleRefresh}
-                >
+                  className="error-button error-button-secondary" onClick={this.handleRefresh}>
                   Refresh Page
                 </button>
               )}
               
               {allowFeedback && (
                 <button
-                  className="error-button error-button-tertiary">
-                  onClick={this.handleFeedback}
-                >
+                  className="error-button error-button-tertiary" onClick={this.handleFeedback}>
                   Report Issue
                 </button>
               )}

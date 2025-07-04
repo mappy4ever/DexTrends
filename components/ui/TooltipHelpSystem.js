@@ -250,9 +250,7 @@ export const RichTooltip = ({
       {action && (
         <div className="flex justify-end">
           <button
-            className="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors">
-            onClick={action.onClick}
-          >
+            className="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors" onClick={action.onClick}>
             {action.label}
           </button>
         </div>
@@ -426,9 +424,7 @@ const HelpOverlay = ({
       {/* Element Highlight */}
       {highlightedElement && (
         <div
-          className="absolute border-2 border-blue-500 rounded-lg bg-white bg-opacity-10 animate-pulse">
-          style={highlightStyle}
-        />
+          className="absolute border-2 border-blue-500 rounded-lg bg-white bg-opacity-10 animate-pulse" style={highlightStyle} />
       )}
       
       {/* Tooltip */}
@@ -470,25 +466,19 @@ const HelpOverlay = ({
           {/* Actions */}
           <div className="flex items-center justify-between">
             <button
-              className="text-gray-500 hover:text-gray-700 text-sm">
-              onClick={onSkip}
-            >
+              className="text-gray-500 hover:text-gray-700 text-sm" onClick={onSkip}>
               Skip Tour
             </button>
             
             <div className="flex gap-2">
               {currentStep > 0 && (
                 <button
-                  className="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 rounded hover:bg-gray-50">
-                  onClick={onPrevious}
-                >
+                  className="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 rounded hover:bg-gray-50" onClick={onPrevious}>
                   Previous
                 </button>
               )}
               <button
-                className="px-3 py-1.5 text-sm bg-blue-500 text-white rounded hover:bg-blue-600">
-                onClick={onNext}
-              >
+                className="px-3 py-1.5 text-sm bg-blue-500 text-white rounded hover:bg-blue-600" onClick={onNext}>
                 {currentStep === totalSteps - 1 ? 'Finish' : 'Next'}
               </button>
             </div>
@@ -580,9 +570,7 @@ export const QuickHelpButton = ({
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
               <button
-                className="text-gray-400 hover:text-gray-600">
-                onClick={() => setIsOpen(false)}
-              >
+                className="text-gray-400 hover:text-gray-600" onClick={() => setIsOpen(false)}>
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>

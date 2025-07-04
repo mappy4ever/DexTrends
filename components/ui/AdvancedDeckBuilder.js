@@ -395,8 +395,7 @@ export default function AdvancedDeckBuilder({ initialDeck = null, onSaveDeck, us
                           <img
                             src={card.images.small}
                             alt={card.name}
-                            className="w-12 h-16 object-cover rounded">
-                          />
+                            className="w-12 h-16 object-cover rounded"  />
                           <div className="flex-1">
                             <div className="font-medium text-gray-900 dark:text-white text-sm">
                               {card.name}

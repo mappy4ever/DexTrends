@@ -253,8 +253,7 @@ const CardSharingSystem = ({
                   <img 
                     src={card.images.small} 
                     alt={card.name}
-                    className="w-full h-32 object-contain mx-auto">
-                  />
+                    className="w-full h-32 object-contain mx-auto"  />
                 ) : (
                   <div className="w-full h-32 bg-gray-200 rounded flex items-center justify-center">
                     <PhotoIcon className="h-8 w-8 text-gray-400" />

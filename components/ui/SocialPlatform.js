@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { FaUser, FaUsers, FaHeart, FaComment, FaShare, FaTrophy, FaEye, FaPlus, FaUserPlus, FaUserMinus } from 'react-icons/fa';
 import { BsCardList, BsGrid3X3Gap, BsChat, BsStar, BsFire } from 'react-icons/bs';
 import { supabase } from '../../lib/supabase';
@@ -238,8 +239,7 @@ export default function SocialPlatform({ currentUserId = null }) {
         <img 
           src={post.user.avatar} 
           alt={post.user.username}
-          className="w-10 h-10 rounded-full object-cover">
-        />
+          className="w-10 h-10 rounded-full object-cover"  />
         <div className="flex-1">
           <div className="flex items-center space-x-2">
             <span className="font-semibold text-gray-900 dark:text-white">
@@ -282,8 +282,7 @@ export default function SocialPlatform({ currentUserId = null }) {
                 key={index}
                 src={image} 
                 alt="Post image"
-                className="rounded-lg object-cover max-h-80 w-full">
-              />
+                className="rounded-lg object-cover max-h-80 w-full"  />
             ))}
           </div>
         </div>
@@ -346,8 +345,7 @@ export default function SocialPlatform({ currentUserId = null }) {
         <img 
           src={user.avatar} 
           alt={user.username}
-          className="w-16 h-16 rounded-full object-cover">
-        />
+          className="w-16 h-16 rounded-full object-cover"  />
         <div className="flex-1">
           <div className="flex items-center space-x-2 mb-1">
             <h3 className="font-semibold text-gray-900 dark:text-white">
@@ -464,8 +462,7 @@ export default function SocialPlatform({ currentUserId = null }) {
                 <img 
                   src={userProfile?.avatar || '/api/placeholder/40/40'} 
                   alt="Your avatar"
-                  className="w-10 h-10 rounded-full object-cover">
-                />
+                  className="w-10 h-10 rounded-full object-cover"  />
                 <div className="flex-1">
                   <textarea 
                     placeholder="Share your latest card pull, collection update, or deck tech..."
@@ -552,8 +549,7 @@ export default function SocialPlatform({ currentUserId = null }) {
                       <img 
                         src={user.avatar} 
                         alt={user.username}
-                        className="w-8 h-8 rounded-full object-cover">
-                      />
+                        className="w-8 h-8 rounded-full object-cover"  />
                       <div className="flex-1">
                         <div className="font-medium text-gray-900 dark:text-white">
                           {user.username}

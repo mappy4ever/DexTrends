@@ -291,9 +291,7 @@ const GestureCardSorting = ({
                 <img
                   src={card.image}
                   alt={card.name}
-                  className="w-full h-full object-cover">
-                  loading="lazy"
-                />
+                  className="w-full h-full object-cover" loading="lazy" />
               </div>
               
               {/* Card Info */}

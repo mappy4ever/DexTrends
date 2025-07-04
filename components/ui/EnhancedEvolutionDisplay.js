@@ -439,8 +439,7 @@ function EvolutionTreeDisplay({ node, currentPokemonId, isShiny, parentPosition 
               const fullMegaName = `${megaFormName} ${baseName}`;
               
               return (
-                <Link
-                  key={mega.id}
+                <Link key={mega.id}
                   href={`/pokedex/${mega.id}`}
                   className={`flex flex-col items-center p-3 transition-all hover:scale-110 ${
                     parseInt(mega.id) === parseInt(currentPokemonId) ? 'scale-110' : ''

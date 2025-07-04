@@ -532,8 +532,7 @@ export default function GameficationSystem({ userId, onRewardEarned, onLevelUp }
                 <img 
                   src={player.avatar} 
                   alt={player.username}
-                  className="w-10 h-10 rounded-full object-cover">
-                />
+                  className="w-10 h-10 rounded-full object-cover"  />
                 
                 <div className="flex-1">
                   <div className="font-medium text-gray-900 dark:text-white">

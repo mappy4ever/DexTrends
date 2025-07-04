@@ -703,9 +703,7 @@ const QATestingSuite = ({ isVisible = false, onToggle }) => {
                     className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
                   >
                     <div
-                      className="p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                      onClick={() => setExpandedResult(expandedResult === result.id ? null : result.id)}
-                    >
+                      className="p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700" onClick={() => setExpandedResult(expandedResult === result.id ? null : result.id)}>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-3">
                           {getStatusIcon(result.status)}

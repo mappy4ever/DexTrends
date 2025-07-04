@@ -262,8 +262,7 @@ export default function TradingMarketplace({ userId, onTradeRequest, onPurchase 
           <img
             src={listing.card.image}
             alt={listing.card.name}
-            className="w-24 h-32 object-cover rounded-lg">
-          />
+            className="w-24 h-32 object-cover rounded-lg"  />
           <div className="absolute top-2 left-2">
             {getTypeIcon(listing.type)}
           </div>
@@ -299,8 +298,7 @@ export default function TradingMarketplace({ userId, onTradeRequest, onPurchase 
             <img
               src={listing.seller.avatar}
               alt={listing.seller.username}
-              className="w-6 h-6 rounded-full">
-            />
+              className="w-6 h-6 rounded-full"  />
             <span className="text-sm text-gray-700 dark:text-gray-300">
               {listing.seller.username}
             </span>
@@ -526,8 +524,7 @@ export default function TradingMarketplace({ userId, onTradeRequest, onPurchase 
                       <img
                         src={trade.otherUser.avatar}
                         alt={trade.otherUser.username}
-                        className="w-8 h-8 rounded-full">
-                      />
+                        className="w-8 h-8 rounded-full"  />
                       <div>
                         <div className="font-medium text-gray-900 dark:text-white">
                           Trade with {trade.otherUser.username}
@@ -556,8 +553,7 @@ export default function TradingMarketplace({ userId, onTradeRequest, onPurchase 
                       <img
                         src={trade.myCard.image}
                         alt={trade.myCard.name}
-                        className="w-20 h-28 object-cover rounded mx-auto mb-2">
-                      />
+                        className="w-20 h-28 object-cover rounded mx-auto mb-2"  />
                       <div className="text-sm font-medium text-gray-900 dark:text-white">
                         Your: {trade.myCard.name}
                       </div>
@@ -571,8 +567,7 @@ export default function TradingMarketplace({ userId, onTradeRequest, onPurchase 
                           <img
                             src={trade.theirCard.image}
                             alt={trade.theirCard.name}
-                            className="w-20 h-28 object-cover rounded mx-auto mb-2">
-                          />
+                            className="w-20 h-28 object-cover rounded mx-auto mb-2"  />
                           <div className="text-sm font-medium text-gray-900 dark:text-white">
                             Their: {trade.theirCard.name}
                           </div>

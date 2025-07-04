@@ -458,8 +458,8 @@ const UnifiedCard = memo(({
       {/* Card Image */}
       <div className="relative w-full">
         <Link 
-          href={normalizedCard.linkPath}>
-          className="block w-full"
+          href={normalizedCard.linkPath}
+                            className="block w-full"
           tabIndex={-1}
           onClick={e => e.stopPropagation()}
         >

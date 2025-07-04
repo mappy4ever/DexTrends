@@ -636,9 +636,7 @@ export const PullToRefresh = ({
     >
       {/* Refresh Indicator */}
       <div
-        className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full z-10 flex flex-col items-center p-4">
-        style={getRefreshIndicatorStyle()}
-      >
+        className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full z-10 flex flex-col items-center p-4" style={getRefreshIndicatorStyle()}>
         {loadingComponent || (
           <div className="flex flex-col items-center gap-2">
             <div className={`w-8 h-8 border-2 border-pokemon-red border-t-transparent rounded-full ${

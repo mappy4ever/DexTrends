@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useTheme } from '../context/ThemeContext';
 
@@ -75,8 +76,8 @@ export default function TrendingCards({ cards }) {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold">Trending Cards</h2>
         <Link href="/trending" className="text-blue-600 hover:underline text-sm">
-          View All Trends
-        </Link>
+View All Trends
+</Link>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -92,15 +93,12 @@ export default function TrendingCards({ cards }) {
               .map(card => (
                 <div 
                   key={card.id} 
-                  className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-all">
-                  onClick={() => navigateToCardDetails(card)}
-                >
+                  className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-all" onClick={() => navigateToCardDetails(card)}>
                   {card.images?.small && (
                     <img 
                       src={card.images.small} 
                       alt={card.name}
-                      className="w-10 h-14 object-contain rounded">
-                    />
+                      className="w-10 h-14 object-contain rounded"  />
                   )}
                   <div className="flex-1">
                     <p className="font-medium">{card.name}</p>
@@ -127,15 +125,12 @@ export default function TrendingCards({ cards }) {
               .map(card => (
                 <div 
                   key={card.id} 
-                  className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-all">
-                  onClick={() => navigateToCardDetails(card)}
-                >
+                  className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-all" onClick={() => navigateToCardDetails(card)}>
                   {card.images?.small && (
                     <img 
                       src={card.images.small} 
                       alt={card.name}
-                      className="w-10 h-14 object-contain rounded">
-                    />
+                      className="w-10 h-14 object-contain rounded"  />
                   )}
                   <div className="flex-1">
                     <p className="font-medium">{card.name}</p>

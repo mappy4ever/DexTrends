@@ -505,9 +505,7 @@ export const ConfirmationModal = ({
       </p>
       <div className="flex gap-3 justify-end">
         <button
-          className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500">
-          onClick={handleCancel}
-        >
+          className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500" onClick={handleCancel}>
           {cancelText}
         </button>
         <button
@@ -539,9 +537,7 @@ export const ImageModal = ({
         <img
           src={src}
           alt={alt}
-          className="max-w-full max-h-[80vh] object-contain rounded-lg shadow-lg">
-          loading="lazy"
-        />
+          className="max-w-full max-h-[80vh] object-contain rounded-lg shadow-lg" loading="lazy" />
       </div>
     </div>
   );

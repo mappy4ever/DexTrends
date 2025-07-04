@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
+import Image from 'next/image';
 import { useRouter } from "next/router";
 import { RiGovernmentFill } from "react-icons/ri";
 import { AiOutlineBulb } from "react-icons/ai";
@@ -131,8 +132,8 @@ export default function Navbar() {
       {/* Clean Navbar with iOS Safe Area Support */}
       <div className="fixed top-0 left-0 right-0 flex items-center justify-between px-4 h-16 z-40 bg-white border-b border-border-color shadow-sm safe-area-padding-top navbar-ios">
         <Link
-          href="/">
-          className="flex items-center gap-x-3 text-xl font-bold text-pokemon-red overflow-hidden hover:opacity-80 transition-opacity duration-300">
+          href="/"
+                            className="flex items-center gap-x-3 text-xl font-bold text-pokemon-red overflow-hidden hover:opacity-80 transition-opacity duration-300">
           <div className="flex-shrink-0 w-8 h-8 bg-pokemon-red rounded-full flex items-center justify-center">
             <BsGrid size={20} className="text-white" />
           </div>
@@ -173,9 +174,8 @@ export default function Navbar() {
                   >
                     <div className="p-2">
                       {item.dropdownItems.map((dropdownItem, dropdownIndex) => (
-                        <Link
-                          key={`dropdown-${item.href}-${dropdownIndex}-${dropdownItem.href}`}>
-                          href={dropdownItem.href}
+                        <Link key={`dropdown-${item.href}-${dropdownIndex}-${dropdownItem.href}`}
+                            href={dropdownItem.href}
                           className={`group flex items-start gap-3 p-3 rounded-lg transition-all duration-200 hover:bg-light-grey ${
                             router.pathname === dropdownItem.href ? 'bg-pokemon-red/10 border-l-4 border-pokemon-red' : ''
                           }`}
@@ -201,9 +201,8 @@ export default function Navbar() {
             }
             
             return (
-              <Link
-                key={`topnav-${item.href}`}>
-                href={item.href}
+              <Link key={`topnav-${item.href}`}
+                            href={item.href}
                 className={`group flex items-center gap-x-2 px-4 py-2 rounded-lg font-medium transition-all duration-300 cursor-pointer border-2
                   ${isActive
                     ? 'bg-pokemon-red text-white border-pokemon-red shadow-md'
@@ -229,7 +228,7 @@ export default function Navbar() {
           </button>
           
           <Link 
-            href="/favorites">
+            href="/favorites"
             aria-label="View favorites"
             title="View favorites"
             className="relative p-3 rounded-lg bg-pokemon-yellow text-white hover:bg-yellow-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pokemon-yellow shadow-sm transition-all duration-300"
@@ -304,8 +303,7 @@ export default function Navbar() {
                       {/* Mobile dropdown items */}
                       <div className="pl-6 space-y-1">
                         {item.dropdownItems.map((dropdownItem, dropdownIndex) => (
-                          <Link
-                            key={`mobile-dropdown-${item.href}-${dropdownIndex}-${dropdownItem.href}`}>
+                          <Link key={`mobile-dropdown-${item.href}-${dropdownIndex}-${dropdownItem.href}`}
                             href={dropdownItem.href}
                             className={`flex items-center gap-x-3 px-4 py-2 rounded-lg font-medium transition-all duration-300 border-2 touch-manipulation
                               ${router.pathname === dropdownItem.href
@@ -326,9 +324,8 @@ export default function Navbar() {
                 }
                 
                 return (
-                  <Link
-                    key={`mobile-${item.href}`}>
-                    href={item.href}
+                  <Link key={`mobile-${item.href}`}
+                            href={item.href}
                     className={`flex items-center gap-x-3 px-4 py-3 rounded-lg font-medium transition-all duration-300 border-2 touch-manipulation
                       ${isActive
                         ? 'bg-pokemon-red text-white border-pokemon-red'

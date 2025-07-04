@@ -27,9 +27,7 @@ const PokemonCardItem = ({
   if (viewMode === 'grid') {
     return (
       <CardHover
-        className="flex flex-col items-center rounded-xl bg-gradient-to-br p-4 border border-gray-200/60 dark:border-gray-700/60 shadow-sm hover:shadow-md group relative transition-all duration-300 overflow-hidden">
-        onClick={() => onNavigate(pokeId)}
-      >
+        className="flex flex-col items-center rounded-xl bg-gradient-to-br p-4 border border-gray-200/60 dark:border-gray-700/60 shadow-sm hover:shadow-md group relative transition-all duration-300 overflow-hidden" onClick={() => onNavigate(pokeId)}>
         <button
           className={`absolute top-2 right-2 z-10 p-1.5 rounded-full transition-all transform ${
             isFavorite
@@ -79,9 +77,7 @@ const PokemonCardItem = ({
     const primaryType = poke.types && poke.types.length > 0 ? poke.types[0] : null;
     return (
       <div
-        className="group flex items-center bg-white dark:bg-gray-800 p-3 md:p-4 rounded-xl border border-gray-200/80 dark:border-gray-700/80 hover:border-primary/30 cursor-pointer hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-all duration-300 shadow-sm hover:shadow-md relative overflow-hidden">
-        onClick={() => onNavigate(pokeId)}
-      >
+        className="group flex items-center bg-white dark:bg-gray-800 p-3 md:p-4 rounded-xl border border-gray-200/80 dark:border-gray-700/80 hover:border-primary/30 cursor-pointer hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-all duration-300 shadow-sm hover:shadow-md relative overflow-hidden" onClick={() => onNavigate(pokeId)}>
         {primaryType && (
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-transparent group-hover:to-primary/5 transition-colors duration-500"></div>
         )}

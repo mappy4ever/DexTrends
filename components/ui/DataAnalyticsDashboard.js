@@ -289,8 +289,7 @@ const DataAnalyticsDashboard = () => {
                 <img
                   src={card.image}
                   alt={card.name}
-                  className="w-12 h-16 object-cover rounded">
-                />
+                  className="w-12 h-16 object-cover rounded"  />
                 <div className="flex-1">
                   <p className="font-medium text-gray-900 dark:text-white">{card.name}</p>
                   <div className="flex items-center space-x-1 text-sm text-gray-500">

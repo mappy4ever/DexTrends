@@ -145,32 +145,32 @@ export default function IndexPage() {
         {/* Enhanced Quick Action Tiles with Descriptions */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-6xl mt-12">
           <Link
-            href="/pokedex">
-            className="group bg-white border border-border-color p-6 rounded-xl shadow-sm card-hover text-center hover:shadow-lg transition-all duration-300">
+            href="/pokedex"
+                            className="group bg-white border border-border-color p-6 rounded-xl shadow-sm card-hover text-center hover:shadow-lg transition-all duration-300">
             
             <BsBook className="mx-auto mb-4 text-4xl text-pokemon-red group-hover:scale-110 transition-transform duration-300" />
             <h3 className="font-semibold text-lg text-dark-text mb-2">Pokédex</h3>
             <p className="text-sm text-text-grey">Browse all Pokémon with detailed stats and information</p>
           </Link>
           <Link
-            href="/tcgsets">
-            className="group bg-white border border-border-color p-6 rounded-xl shadow-sm card-hover text-center hover:shadow-lg transition-all duration-300">
+            href="/tcgsets"
+                            className="group bg-white border border-border-color p-6 rounded-xl shadow-sm card-hover text-center hover:shadow-lg transition-all duration-300">
             
             <BsCardList className="mx-auto mb-4 text-4xl text-pokemon-blue group-hover:scale-110 transition-transform duration-300" />
             <h3 className="font-semibold text-lg text-dark-text mb-2">Pokémon TCG</h3>
             <p className="text-sm text-text-grey">Explore sets, track prices, and manage collections</p>
           </Link>
           <Link
-            href="/pocketmode">
-            className="group bg-white border border-border-color p-6 rounded-xl shadow-sm card-hover text-center hover:shadow-lg transition-all duration-300">
+            href="/pocketmode"
+                            className="group bg-white border border-border-color p-6 rounded-xl shadow-sm card-hover text-center hover:shadow-lg transition-all duration-300">
             
             <GiCardPickup className="mx-auto mb-4 text-4xl text-pokemon-yellow group-hover:scale-110 transition-transform duration-300" />
             <h3 className="font-semibold text-lg text-dark-text mb-2">Pocket Mode</h3>
             <p className="text-sm text-text-grey">Mobile TCG format with streamlined gameplay</p>
           </Link>
           <Link
-            href="/leaderboard">
-            className="group bg-white border border-border-color p-6 rounded-xl shadow-sm card-hover text-center hover:shadow-lg transition-all duration-300">
+            href="/leaderboard"
+                            className="group bg-white border border-border-color p-6 rounded-xl shadow-sm card-hover text-center hover:shadow-lg transition-all duration-300">
             
             <BsGrid className="mx-auto mb-4 text-4xl text-pokemon-green group-hover:scale-110 transition-transform duration-300" />
             <h3 className="font-semibold text-lg text-dark-text mb-2">Rankings</h3>

@@ -153,9 +153,7 @@ export default function PocketDeckBuilder({
             deck.cards.map(card => (
               <div
                 key={card.id}
-                className="group cursor-pointer bg-off-white border border-border-color rounded p-2 hover:bg-white transition-all flex items-center gap-3">
-                onClick={() => removeCardFromDeck(card.id)}
-              >
+                className="group cursor-pointer bg-off-white border border-border-color rounded p-2 hover:bg-white transition-all flex items-center gap-3" onClick={() => removeCardFromDeck(card.id)}>
                 <div className="w-10 aspect-[2.5/3.5] relative bg-white rounded overflow-hidden flex-shrink-0">
                   <Image
                     src={card.image || '/dextrendslogo.png'}
@@ -202,9 +200,7 @@ export default function PocketDeckBuilder({
           deck.cards.map(card => (
             <div
               key={card.id}
-              className="group cursor-pointer bg-off-white border border-border-color rounded p-2 hover:bg-white transition-all text-center">
-              onClick={() => removeCardFromDeck(card.id)}
-            >
+              className="group cursor-pointer bg-off-white border border-border-color rounded p-2 hover:bg-white transition-all text-center" onClick={() => removeCardFromDeck(card.id)}>
               <div className="aspect-[2.5/3.5] relative mb-1 bg-white rounded overflow-hidden">
                 <Image
                   src={card.image || '/dextrendslogo.png'}

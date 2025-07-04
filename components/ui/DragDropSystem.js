@@ -315,9 +315,7 @@ export const DraggableItem = ({
       {/* Drag Preview */}
       {isDraggedItem && (
         <div
-          className="drag-preview pointer-events-none">
-          style={getDragStyles()}
-        >
+          className="drag-preview pointer-events-none" style={getDragStyles()}>
           {preview || children}
         </div>
       )}
@@ -584,8 +582,7 @@ export const DraggableCardGrid = ({
                 <img 
                   src={card.image || card.images?.large} 
                   alt={card.name} 
-                  className="w-full h-auto rounded">
-                />
+                  className="w-full h-auto rounded"  />
                 <h3 className="mt-2 font-medium text-center">{card.name}</h3>
               </div>
             )}
@@ -657,9 +654,7 @@ export const DragDropCollectionManager = ({
               
               <DropZone
                 id={collectionId}
-                className="collection-drop-zone min-h-40 p-4 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200">
-                accepts={['card']}
-              >
+                className="collection-drop-zone min-h-40 p-4 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200" accepts={['card']}>
                 <div className="grid grid-cols-2 gap-2">
                   {cards.map((card) => (
                     <DraggableItem
@@ -672,8 +667,7 @@ export const DragDropCollectionManager = ({
                         <img 
                           src={card.image || card.images?.small} 
                           alt={card.name}
-                          className="w-full h-20 object-cover rounded mb-1">
-                        />
+                          className="w-full h-20 object-cover rounded mb-1"  />
                         <p className="text-xs text-center truncate">{card.name}</p>
                       </div>
                     </DraggableItem>

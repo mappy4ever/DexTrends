@@ -267,8 +267,7 @@ const PrintableCardLists = ({
                 <img 
                   src={card.images?.small || '/back-card.png'} 
                   alt={card.name}
-                  className="card-image mx-auto">
-                />
+                  className="card-image mx-auto"  />
               </div>
             )}
             <h3 className="font-bold text-center mb-1">{card.name}</h3>
@@ -299,8 +298,7 @@ const PrintableCardLists = ({
               <img 
                 src={card.images?.small || '/back-card.png'} 
                 alt={card.name}
-                className="card-image flex-shrink-0">
-              />
+                className="card-image flex-shrink-0"  />
             )}
             <div className="flex-1">
               <h3 className="font-bold">{card.name}</h3>
@@ -359,8 +357,7 @@ const PrintableCardLists = ({
               <img 
                 src={card.images?.small || '/back-card.png'} 
                 alt={card.name}
-                className="w-full max-w-20 mx-auto mb-1">
-              />
+                className="w-full max-w-20 mx-auto mb-1"  />
             )}
             <div className="text-xs">
               <div className="font-semibold truncate">{card.name}</div>
