@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useTheme } from '../context/themecontext';
 import CollectionManager from '../components/CollectionManager';
 import PriceAlerts from '../components/PriceAlerts';
+import { FullBleedWrapper } from '../components/ui/FullBleedWrapper';
 
 export default function CollectionsPage() {
   const { theme } = useTheme();
@@ -14,7 +15,7 @@ export default function CollectionsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <FullBleedWrapper gradient="collections">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-8">
@@ -67,7 +68,7 @@ export default function CollectionsPage() {
           )}
         </div>
       </div>
-    </div>
+    </FullBleedWrapper>
   );
 }
 

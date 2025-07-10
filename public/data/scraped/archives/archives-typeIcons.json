@@ -1,0 +1,379 @@
+{
+  "category": "Type Icons",
+  "totalFiles": 654,
+  "matchedFiles": 88,
+  "downloadedFiles": 53,
+  "files": [
+    {
+      "original": "File:Battrio Bug type.png",
+      "local": "battrio-bug-type.png",
+      "path": "/images/scraped/type-icons/battrio-bug-type.png",
+      "width": 145,
+      "height": 145
+    },
+    {
+      "original": "File:Battrio Dark type.png",
+      "local": "battrio-dark-type.png",
+      "path": "/images/scraped/type-icons/battrio-dark-type.png",
+      "width": 145,
+      "height": 145
+    },
+    {
+      "original": "File:Battrio Dragon type.png",
+      "local": "battrio-dragon-type.png",
+      "path": "/images/scraped/type-icons/battrio-dragon-type.png",
+      "width": 145,
+      "height": 145
+    },
+    {
+      "original": "File:Battrio Electric type.png",
+      "local": "battrio-electric-type.png",
+      "path": "/images/scraped/type-icons/battrio-electric-type.png",
+      "width": 145,
+      "height": 145
+    },
+    {
+      "original": "File:Battrio Fighting type.png",
+      "local": "battrio-fighting-type.png",
+      "path": "/images/scraped/type-icons/battrio-fighting-type.png",
+      "width": 145,
+      "height": 145
+    },
+    {
+      "original": "File:Battrio Fire type.png",
+      "local": "battrio-fire-type.png",
+      "path": "/images/scraped/type-icons/battrio-fire-type.png",
+      "width": 145,
+      "height": 145
+    },
+    {
+      "original": "File:Battrio Flying type.png",
+      "local": "battrio-flying-type.png",
+      "path": "/images/scraped/type-icons/battrio-flying-type.png",
+      "width": 145,
+      "height": 145
+    },
+    {
+      "original": "File:Battrio Ghost type.png",
+      "local": "battrio-ghost-type.png",
+      "path": "/images/scraped/type-icons/battrio-ghost-type.png",
+      "width": 145,
+      "height": 145
+    },
+    {
+      "original": "File:Battrio Grass type.png",
+      "local": "battrio-grass-type.png",
+      "path": "/images/scraped/type-icons/battrio-grass-type.png",
+      "width": 145,
+      "height": 145
+    },
+    {
+      "original": "File:Battrio Ground type.png",
+      "local": "battrio-ground-type.png",
+      "path": "/images/scraped/type-icons/battrio-ground-type.png",
+      "width": 145,
+      "height": 145
+    },
+    {
+      "original": "File:Battrio Ice type.png",
+      "local": "battrio-ice-type.png",
+      "path": "/images/scraped/type-icons/battrio-ice-type.png",
+      "width": 145,
+      "height": 145
+    },
+    {
+      "original": "File:Battrio Normal type.png",
+      "local": "battrio-normal-type.png",
+      "path": "/images/scraped/type-icons/battrio-normal-type.png",
+      "width": 145,
+      "height": 145
+    },
+    {
+      "original": "File:Battrio Poison type.png",
+      "local": "battrio-poison-type.png",
+      "path": "/images/scraped/type-icons/battrio-poison-type.png",
+      "width": 145,
+      "height": 145
+    },
+    {
+      "original": "File:Battrio Psychic type.png",
+      "local": "battrio-psychic-type.png",
+      "path": "/images/scraped/type-icons/battrio-psychic-type.png",
+      "width": 145,
+      "height": 145
+    },
+    {
+      "original": "File:Battrio Rock type.png",
+      "local": "battrio-rock-type.png",
+      "path": "/images/scraped/type-icons/battrio-rock-type.png",
+      "width": 145,
+      "height": 145
+    },
+    {
+      "original": "File:Battrio Steel type.png",
+      "local": "battrio-steel-type.png",
+      "path": "/images/scraped/type-icons/battrio-steel-type.png",
+      "width": 145,
+      "height": 145
+    },
+    {
+      "original": "File:Battrio Water type.png",
+      "local": "battrio-water-type.png",
+      "path": "/images/scraped/type-icons/battrio-water-type.png",
+      "width": 145,
+      "height": 145
+    },
+    {
+      "original": "File:TP Bug type SV.png",
+      "local": "tp-bug-type-sv.png",
+      "path": "/images/scraped/type-icons/tp-bug-type-sv.png",
+      "width": 240,
+      "height": 240
+    },
+    {
+      "original": "File:TP Dark type SV.png",
+      "local": "tp-dark-type-sv.png",
+      "path": "/images/scraped/type-icons/tp-dark-type-sv.png",
+      "width": 240,
+      "height": 240
+    },
+    {
+      "original": "File:TP Dragon type SV.png",
+      "local": "tp-dragon-type-sv.png",
+      "path": "/images/scraped/type-icons/tp-dragon-type-sv.png",
+      "width": 240,
+      "height": 240
+    },
+    {
+      "original": "File:TP Electric type SV.png",
+      "local": "tp-electric-type-sv.png",
+      "path": "/images/scraped/type-icons/tp-electric-type-sv.png",
+      "width": 240,
+      "height": 240
+    },
+    {
+      "original": "File:TP Fairy type SV.png",
+      "local": "tp-fairy-type-sv.png",
+      "path": "/images/scraped/type-icons/tp-fairy-type-sv.png",
+      "width": 240,
+      "height": 240
+    },
+    {
+      "original": "File:TP Fighting type SV.png",
+      "local": "tp-fighting-type-sv.png",
+      "path": "/images/scraped/type-icons/tp-fighting-type-sv.png",
+      "width": 240,
+      "height": 240
+    },
+    {
+      "original": "File:TP Fire type SV.png",
+      "local": "tp-fire-type-sv.png",
+      "path": "/images/scraped/type-icons/tp-fire-type-sv.png",
+      "width": 240,
+      "height": 240
+    },
+    {
+      "original": "File:TP Flying type SV.png",
+      "local": "tp-flying-type-sv.png",
+      "path": "/images/scraped/type-icons/tp-flying-type-sv.png",
+      "width": 240,
+      "height": 240
+    },
+    {
+      "original": "File:TP Ghost type SV.png",
+      "local": "tp-ghost-type-sv.png",
+      "path": "/images/scraped/type-icons/tp-ghost-type-sv.png",
+      "width": 240,
+      "height": 240
+    },
+    {
+      "original": "File:TP Grass type SV.png",
+      "local": "tp-grass-type-sv.png",
+      "path": "/images/scraped/type-icons/tp-grass-type-sv.png",
+      "width": 240,
+      "height": 240
+    },
+    {
+      "original": "File:TP Ground type SV.png",
+      "local": "tp-ground-type-sv.png",
+      "path": "/images/scraped/type-icons/tp-ground-type-sv.png",
+      "width": 240,
+      "height": 240
+    },
+    {
+      "original": "File:TP Ice type SV.png",
+      "local": "tp-ice-type-sv.png",
+      "path": "/images/scraped/type-icons/tp-ice-type-sv.png",
+      "width": 240,
+      "height": 240
+    },
+    {
+      "original": "File:TP Normal type SV.png",
+      "local": "tp-normal-type-sv.png",
+      "path": "/images/scraped/type-icons/tp-normal-type-sv.png",
+      "width": 240,
+      "height": 240
+    },
+    {
+      "original": "File:TP Poison type SV.png",
+      "local": "tp-poison-type-sv.png",
+      "path": "/images/scraped/type-icons/tp-poison-type-sv.png",
+      "width": 240,
+      "height": 240
+    },
+    {
+      "original": "File:TP Psychic type SV.png",
+      "local": "tp-psychic-type-sv.png",
+      "path": "/images/scraped/type-icons/tp-psychic-type-sv.png",
+      "width": 240,
+      "height": 240
+    },
+    {
+      "original": "File:TP Rock type SV.png",
+      "local": "tp-rock-type-sv.png",
+      "path": "/images/scraped/type-icons/tp-rock-type-sv.png",
+      "width": 240,
+      "height": 240
+    },
+    {
+      "original": "File:TP Steel type SV.png",
+      "local": "tp-steel-type-sv.png",
+      "path": "/images/scraped/type-icons/tp-steel-type-sv.png",
+      "width": 240,
+      "height": 240
+    },
+    {
+      "original": "File:TP Water type SV.png",
+      "local": "tp-water-type-sv.png",
+      "path": "/images/scraped/type-icons/tp-water-type-sv.png",
+      "width": 240,
+      "height": 240
+    },
+    {
+      "original": "File:Tretta Bug type.png",
+      "local": "tretta-bug-type.png",
+      "path": "/images/scraped/type-icons/tretta-bug-type.png",
+      "width": 136,
+      "height": 136
+    },
+    {
+      "original": "File:Tretta Dark type.png",
+      "local": "tretta-dark-type.png",
+      "path": "/images/scraped/type-icons/tretta-dark-type.png",
+      "width": 136,
+      "height": 136
+    },
+    {
+      "original": "File:Tretta Dragon type.png",
+      "local": "tretta-dragon-type.png",
+      "path": "/images/scraped/type-icons/tretta-dragon-type.png",
+      "width": 136,
+      "height": 136
+    },
+    {
+      "original": "File:Tretta Electric type.png",
+      "local": "tretta-electric-type.png",
+      "path": "/images/scraped/type-icons/tretta-electric-type.png",
+      "width": 136,
+      "height": 136
+    },
+    {
+      "original": "File:Tretta Fairy type.png",
+      "local": "tretta-fairy-type.png",
+      "path": "/images/scraped/type-icons/tretta-fairy-type.png",
+      "width": 136,
+      "height": 136
+    },
+    {
+      "original": "File:Tretta Fighting type.png",
+      "local": "tretta-fighting-type.png",
+      "path": "/images/scraped/type-icons/tretta-fighting-type.png",
+      "width": 136,
+      "height": 136
+    },
+    {
+      "original": "File:Tretta Fire type.png",
+      "local": "tretta-fire-type.png",
+      "path": "/images/scraped/type-icons/tretta-fire-type.png",
+      "width": 136,
+      "height": 136
+    },
+    {
+      "original": "File:Tretta Flying type.png",
+      "local": "tretta-flying-type.png",
+      "path": "/images/scraped/type-icons/tretta-flying-type.png",
+      "width": 136,
+      "height": 136
+    },
+    {
+      "original": "File:Tretta Ghost type.png",
+      "local": "tretta-ghost-type.png",
+      "path": "/images/scraped/type-icons/tretta-ghost-type.png",
+      "width": 136,
+      "height": 136
+    },
+    {
+      "original": "File:Tretta Grass type.png",
+      "local": "tretta-grass-type.png",
+      "path": "/images/scraped/type-icons/tretta-grass-type.png",
+      "width": 136,
+      "height": 136
+    },
+    {
+      "original": "File:Tretta Ground type.png",
+      "local": "tretta-ground-type.png",
+      "path": "/images/scraped/type-icons/tretta-ground-type.png",
+      "width": 136,
+      "height": 136
+    },
+    {
+      "original": "File:Tretta Ice type.png",
+      "local": "tretta-ice-type.png",
+      "path": "/images/scraped/type-icons/tretta-ice-type.png",
+      "width": 136,
+      "height": 136
+    },
+    {
+      "original": "File:Tretta Normal type.png",
+      "local": "tretta-normal-type.png",
+      "path": "/images/scraped/type-icons/tretta-normal-type.png",
+      "width": 136,
+      "height": 136
+    },
+    {
+      "original": "File:Tretta Poison type.png",
+      "local": "tretta-poison-type.png",
+      "path": "/images/scraped/type-icons/tretta-poison-type.png",
+      "width": 136,
+      "height": 136
+    },
+    {
+      "original": "File:Tretta Psychic type.png",
+      "local": "tretta-psychic-type.png",
+      "path": "/images/scraped/type-icons/tretta-psychic-type.png",
+      "width": 136,
+      "height": 136
+    },
+    {
+      "original": "File:Tretta Rock type.png",
+      "local": "tretta-rock-type.png",
+      "path": "/images/scraped/type-icons/tretta-rock-type.png",
+      "width": 136,
+      "height": 136
+    },
+    {
+      "original": "File:Tretta Steel type.png",
+      "local": "tretta-steel-type.png",
+      "path": "/images/scraped/type-icons/tretta-steel-type.png",
+      "width": 136,
+      "height": 136
+    },
+    {
+      "original": "File:Tretta Water type.png",
+      "local": "tretta-water-type.png",
+      "path": "/images/scraped/type-icons/tretta-water-type.png",
+      "width": 136,
+      "height": 136
+    }
+  ]
+}

@@ -171,7 +171,7 @@ export default function PocketCardList({
           </svg>
         </div>
         <h3 className="text-xl font-bold text-red-600">Error Loading Cards</h3>
-        <p className="text-gray-600 mt-2">{error}</p>
+        <p className="text-gray-600 dark:text-gray-400 mt-2">{error}</p>
       </div>
     );
   }
@@ -179,10 +179,10 @@ export default function PocketCardList({
   if (!cards || cards.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-12">
-        <svg className="w-16 h-16 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="w-16 h-16 text-gray-400 dark:text-gray-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        <h3 className="text-xl font-medium text-gray-600">{emptyMessage}</h3>
+        <h3 className="text-xl font-medium text-gray-600 dark:text-gray-400">{emptyMessage}</h3>
       </div>
     );
   }
@@ -196,7 +196,7 @@ export default function PocketCardList({
           id="pocket-sort"
           value={sortOption}
           onChange={(e) => handleSortChange(e.target.value)}
-          className="px-2 py-1 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-pokemon-red focus:border-transparent bg-white"
+          className="px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-1 focus:ring-pokemon-red focus:border-transparent bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300"
         >
           <option value="name">Sort: Name</option>
           <option value="number">Sort: #</option>
@@ -210,7 +210,7 @@ export default function PocketCardList({
       </div>
     )}
     
-    <div className={gridClassName || "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4"}>
+    <div className={gridClassName || "pocket-cards-grid"}>
       {displayedCards.map(card => {
         return (
           <PocketCard

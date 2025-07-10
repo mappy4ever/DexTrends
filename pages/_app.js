@@ -15,10 +15,11 @@ import "../styles/desktop-tabs.css";
 import "../styles/pokemon-animations.css";
 import "../styles/design-system.css";
 import "../styles/animations.css";
+import "../styles/card-types.css";
 import "../components/typebadge.css";
 import Layout from "../components/layout/layout";
 import ErrorBoundary from "../components/layout/errorboundary";
-import { PageTransition } from "../components/ui/animations";
+import { PageTransition } from "../components/ui/animations.js";
 import applyIOSFixes from "../utils/iosFixes";
 
 import { ThemeProvider } from '../context/themecontext';
@@ -132,7 +133,7 @@ function MyApp({ Component, pageProps, router }) {
             <SortingProvider>
               <ModalProvider>
                 
-                <Layout>
+                <Layout fullBleed={Component.fullBleed}>
                   <PageTransition key={nextRouter.asPath}>
                     <Component {...pageProps} />
                   </PageTransition>

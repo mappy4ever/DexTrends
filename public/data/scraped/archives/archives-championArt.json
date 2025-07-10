@@ -1,0 +1,22 @@
+{
+  "category": "Champion Artwork",
+  "totalFiles": 75,
+  "matchedFiles": 2,
+  "downloadedFiles": 2,
+  "files": [
+    {
+      "original": "File:ProfessorKukuiSunMoon148.jpg",
+      "local": "professorkukuisunmoon148.jpg",
+      "path": "/images/scraped/champions/professorkukuisunmoon148.jpg",
+      "width": 748,
+      "height": 1044
+    },
+    {
+      "original": "File:Red's counterparts.png",
+      "local": "red-s-counterparts.png",
+      "path": "/images/scraped/champions/red-s-counterparts.png",
+      "width": 800,
+      "height": 377
+    }
+  ]
+}

@@ -198,7 +198,7 @@ const BreadcrumbNavigation = ({
  * Page Header with Breadcrumbs
  * Combines breadcrumbs with page actions
  */
-export const PageHeader = ({ 
+const PageHeader = ({ 
   title,
   description,
   actions = [],
@@ -272,7 +272,7 @@ export const PageHeader = ({
  * Quick Navigation Component
  * Shows related pages and quick actions
  */
-export const QuickNavigation = ({ currentPage, relatedPages = [], className = '' }) => {
+const QuickNavigation = ({ currentPage, relatedPages = [], className = '' }) => {
   if (relatedPages.length === 0) return null;
 
   return (

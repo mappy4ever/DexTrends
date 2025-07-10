@@ -1,0 +1,886 @@
+{
+  "totalCharacters": 14,
+  "totalDownloaded": 110,
+  "files": [
+    {
+      "character": "Lance",
+      "original": "File:FireRed LeafGreen Lance.png",
+      "local": "lance-1.png",
+      "path": "/images/scraped/champions/lance-1.png",
+      "width": 415,
+      "height": 820
+    },
+    {
+      "character": "Lance",
+      "original": "File:HeartGold SoulSilver Lance.png",
+      "local": "lance-2.png",
+      "path": "/images/scraped/champions/lance-2.png",
+      "width": 2064,
+      "height": 3243
+    },
+    {
+      "character": "Lance",
+      "original": "File:Red Blue Lance.png",
+      "local": "lance-3.png",
+      "path": "/images/scraped/champions/lance-3.png",
+      "width": 217,
+      "height": 540
+    },
+    {
+      "character": "Lance",
+      "original": "File:LanceSilverTempest159.jpg",
+      "local": "lance-4.jpg",
+      "path": "/images/scraped/champions/lance-4.jpg",
+      "width": 660,
+      "height": 920
+    },
+    {
+      "character": "Lance",
+      "original": "File:LanceSilverTempest192.jpg",
+      "local": "lance-5.jpg",
+      "path": "/images/scraped/champions/lance-5.jpg",
+      "width": 660,
+      "height": 920
+    },
+    {
+      "character": "Lance",
+      "original": "File:LanceSilverTempest206.jpg",
+      "local": "lance-6.jpg",
+      "path": "/images/scraped/champions/lance-6.jpg",
+      "width": 734,
+      "height": 1024
+    },
+    {
+      "character": "Lance",
+      "original": "File:Crystal Lance.png",
+      "local": "lance-7.png",
+      "path": "/images/scraped/champions/lance-7.png",
+      "width": 1500,
+      "height": 2480
+    },
+    {
+      "character": "Lance",
+      "original": "File:Lance JN.png",
+      "local": "lance-8.png",
+      "path": "/images/scraped/champions/lance-8.png",
+      "width": 1204,
+      "height": 1280
+    },
+    {
+      "character": "Lance",
+      "original": "File:Lance M8.png",
+      "local": "lance-9.png",
+      "path": "/images/scraped/champions/lance-9.png",
+      "width": 543,
+      "height": 1000
+    },
+    {
+      "character": "Lance",
+      "original": "File:Lets Go Pikachu Eevee Lance.png",
+      "local": "lance-10.png",
+      "path": "/images/scraped/champions/lance-10.png",
+      "width": 3128,
+      "height": 3750
+    },
+    {
+      "character": "Steven_Stone",
+      "original": "File:Steven Stone JN 2.png",
+      "local": "steven-stone-1.png",
+      "path": "/images/scraped/champions/steven-stone-1.png",
+      "width": 535,
+      "height": 1000
+    },
+    {
+      "character": "Steven_Stone",
+      "original": "File:Steven Stone M8 JN.png",
+      "local": "steven-stone-2.png",
+      "path": "/images/scraped/champions/steven-stone-2.png",
+      "width": 297,
+      "height": 1000
+    },
+    {
+      "character": "Steven_Stone",
+      "original": "File:CoroCoro ORAS Steven Stone.jpg",
+      "local": "steven-stone-3.jpg",
+      "path": "/images/scraped/champions/steven-stone-3.jpg",
+      "width": 960,
+      "height": 956
+    },
+    {
+      "character": "Steven_Stone",
+      "original": "File:Steven Stone anime AG.png",
+      "local": "steven-stone-4.png",
+      "path": "/images/scraped/champions/steven-stone-4.png",
+      "width": 680,
+      "height": 990
+    },
+    {
+      "character": "Steven_Stone",
+      "original": "File:Steven Stone anime XY.png",
+      "local": "steven-stone-5.png",
+      "path": "/images/scraped/champions/steven-stone-5.png",
+      "width": 1280,
+      "height": 1094
+    },
+    {
+      "character": "Steven_Stone",
+      "original": "File:Steven Stone CPIW.png",
+      "local": "steven-stone-6.png",
+      "path": "/images/scraped/champions/steven-stone-6.png",
+      "width": 357,
+      "height": 603
+    },
+    {
+      "character": "Steven_Stone",
+      "original": "File:Steven Stone JN.png",
+      "local": "steven-stone-7.png",
+      "path": "/images/scraped/champions/steven-stone-7.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Steven_Stone",
+      "original": "File:Steven Stone M8 poster.png",
+      "local": "steven-stone-8.png",
+      "path": "/images/scraped/champions/steven-stone-8.png",
+      "width": 1457,
+      "height": 2048
+    },
+    {
+      "character": "Steven_Stone",
+      "original": "File:Steven Stone ORAS Trailer.png",
+      "local": "steven-stone-9.png",
+      "path": "/images/scraped/champions/steven-stone-9.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Steven_Stone",
+      "original": "File:Trainer Collection Steven Stone Artwork.png",
+      "local": "steven-stone-10.png",
+      "path": "/images/scraped/champions/steven-stone-10.png",
+      "width": 551,
+      "height": 734
+    },
+    {
+      "character": "Wallace",
+      "original": "File:Omega Ruby Alpha Sapphire Wallace.png",
+      "local": "wallace-1.png",
+      "path": "/images/scraped/champions/wallace-1.png",
+      "width": 2157,
+      "height": 2925
+    },
+    {
+      "character": "Wallace",
+      "original": "File:Ruby Sapphire Wallace.png",
+      "local": "wallace-2.png",
+      "path": "/images/scraped/champions/wallace-2.png",
+      "width": 300,
+      "height": 324
+    },
+    {
+      "character": "Wallace",
+      "original": "File:WallaceSilverTempest166.jpg",
+      "local": "wallace-3.jpg",
+      "path": "/images/scraped/champions/wallace-3.jpg",
+      "width": 660,
+      "height": 920
+    },
+    {
+      "character": "Wallace",
+      "original": "File:WallaceSilverTempest194.jpg",
+      "local": "wallace-4.jpg",
+      "path": "/images/scraped/champions/wallace-4.jpg",
+      "width": 660,
+      "height": 920
+    },
+    {
+      "character": "Wallace",
+      "original": "File:WallaceSilverTempest208.jpg",
+      "local": "wallace-5.jpg",
+      "path": "/images/scraped/champions/wallace-5.jpg",
+      "width": 734,
+      "height": 1024
+    },
+    {
+      "character": "Wallace",
+      "original": "File:Emerald Wallace.png",
+      "local": "wallace-6.png",
+      "path": "/images/scraped/champions/wallace-6.png",
+      "width": 246,
+      "height": 458
+    },
+    {
+      "character": "Wallace",
+      "original": "File:Wallace ORAS OD.png",
+      "local": "wallace-7.png",
+      "path": "/images/scraped/champions/wallace-7.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Wallace",
+      "original": "File:Ash and Wallace.png",
+      "local": "wallace-8.png",
+      "path": "/images/scraped/champions/wallace-8.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Wallace",
+      "original": "File:GymBadgeXYPromoWallace.jpg",
+      "local": "wallace-9.jpg",
+      "path": "/images/scraped/champions/wallace-9.jpg",
+      "width": 748,
+      "height": 1044
+    },
+    {
+      "character": "Wallace",
+      "original": "File:Jessilina and Wallace.png",
+      "local": "wallace-10.png",
+      "path": "/images/scraped/champions/wallace-10.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Cynthia",
+      "original": "File:Brilliant Diamond Shining Pearl Cynthia.png",
+      "local": "cynthia-1.png",
+      "path": "/images/scraped/champions/cynthia-1.png",
+      "width": 2136,
+      "height": 4061
+    },
+    {
+      "character": "Cynthia",
+      "original": "File:Diamond Pearl Cynthia.png",
+      "local": "cynthia-2.png",
+      "path": "/images/scraped/champions/cynthia-2.png",
+      "width": 1288,
+      "height": 2578
+    },
+    {
+      "character": "Cynthia",
+      "original": "File:Diamond and Pearl Cynthia production art.png",
+      "local": "cynthia-3.png",
+      "path": "/images/scraped/champions/cynthia-3.png",
+      "width": 755,
+      "height": 1167
+    },
+    {
+      "character": "Cynthia",
+      "original": "File:Official Cynthia Gold Version Sleeves.jpg",
+      "local": "cynthia-4.jpg",
+      "path": "/images/scraped/champions/cynthia-4.jpg",
+      "width": 792,
+      "height": 687
+    },
+    {
+      "character": "Cynthia",
+      "original": "File:Cynthia JN.png",
+      "local": "cynthia-5.png",
+      "path": "/images/scraped/champions/cynthia-5.png",
+      "width": 563,
+      "height": 1000
+    },
+    {
+      "character": "Cynthia",
+      "original": "File:Cynthia BDSP OD.png",
+      "local": "cynthia-6.png",
+      "path": "/images/scraped/champions/cynthia-6.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Cynthia",
+      "original": "File:Alder and Cynthia.png",
+      "local": "cynthia-7.png",
+      "path": "/images/scraped/champions/cynthia-7.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Cynthia",
+      "original": "File:Art Life 20230519 Cynthia.jpg",
+      "local": "cynthia-8.jpg",
+      "path": "/images/scraped/champions/cynthia-8.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Cynthia",
+      "original": "File:Art Life 20231027 Cynthia.jpg",
+      "local": "cynthia-9.jpg",
+      "path": "/images/scraped/champions/cynthia-9.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Cynthia",
+      "original": "File:Ash Vs Cynthia DP191.png",
+      "local": "cynthia-10.png",
+      "path": "/images/scraped/champions/cynthia-10.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Alder",
+      "original": "File:Black White Alder.png",
+      "local": "alder-1.png",
+      "path": "/images/scraped/champions/alder-1.png",
+      "width": 760,
+      "height": 1200
+    },
+    {
+      "character": "Alder",
+      "original": "File:Alder Adventures.png",
+      "local": "alder-2.png",
+      "path": "/images/scraped/champions/alder-2.png",
+      "width": 890,
+      "height": 815
+    },
+    {
+      "character": "Alder",
+      "original": "File:Alder and Bouffalant.png",
+      "local": "alder-3.png",
+      "path": "/images/scraped/champions/alder-3.png",
+      "width": 1016,
+      "height": 551
+    },
+    {
+      "character": "Alder",
+      "original": "File:Alder and Cynthia.png",
+      "local": "alder-4.png",
+      "path": "/images/scraped/champions/alder-4.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Alder",
+      "original": "File:Alder anime.png",
+      "local": "alder-5.png",
+      "path": "/images/scraped/champions/alder-5.png",
+      "width": 1280,
+      "height": 1203
+    },
+    {
+      "character": "Alder",
+      "original": "File:Alder Evolutions.png",
+      "local": "alder-6.png",
+      "path": "/images/scraped/champions/alder-6.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Alder",
+      "original": "File:Alder FAT.png",
+      "local": "alder-7.png",
+      "path": "/images/scraped/champions/alder-7.png",
+      "width": 367,
+      "height": 463
+    },
+    {
+      "character": "Alder",
+      "original": "File:Alder PMBW.png",
+      "local": "alder-8.png",
+      "path": "/images/scraped/champions/alder-8.png",
+      "width": 372,
+      "height": 470
+    },
+    {
+      "character": "Alder",
+      "original": "File:Alder Volcarona FAT.png",
+      "local": "alder-9.png",
+      "path": "/images/scraped/champions/alder-9.png",
+      "width": 584,
+      "height": 386
+    },
+    {
+      "character": "Alder",
+      "original": "File:Spr Masters Alder 2.png",
+      "local": "alder-10.png",
+      "path": "/images/scraped/champions/alder-10.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Iris",
+      "original": "File:Black 2 White 2 Iris.png",
+      "local": "iris-1.png",
+      "path": "/images/scraped/champions/iris-1.png",
+      "width": 433,
+      "height": 442
+    },
+    {
+      "character": "Iris",
+      "original": "File:Black White Iris.png",
+      "local": "iris-2.png",
+      "path": "/images/scraped/champions/iris-2.png",
+      "width": 578,
+      "height": 531
+    },
+    {
+      "character": "Iris",
+      "original": "File:Iris BW character sheet.png",
+      "local": "iris-3.png",
+      "path": "/images/scraped/champions/iris-3.png",
+      "width": 525,
+      "height": 374
+    },
+    {
+      "character": "Iris",
+      "original": "File:Iris BW1.png",
+      "local": "iris-4.png",
+      "path": "/images/scraped/champions/iris-4.png",
+      "width": 301,
+      "height": 396
+    },
+    {
+      "character": "Iris",
+      "original": "File:Iris JN.png",
+      "local": "iris-5.png",
+      "path": "/images/scraped/champions/iris-5.png",
+      "width": 772,
+      "height": 1000
+    },
+    {
+      "character": "Iris",
+      "original": "File:Ash and Iris in Luke movie.png",
+      "local": "iris-6.png",
+      "path": "/images/scraped/champions/iris-6.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Iris",
+      "original": "File:Ash and Iris.png",
+      "local": "iris-7.png",
+      "path": "/images/scraped/champions/iris-7.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Iris",
+      "original": "File:Axew Iris hair.png",
+      "local": "iris-8.png",
+      "path": "/images/scraped/champions/iris-8.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Iris",
+      "original": "File:BW Prerelease Iris game.png",
+      "local": "iris-9.png",
+      "path": "/images/scraped/champions/iris-9.png",
+      "width": 455,
+      "height": 339
+    },
+    {
+      "character": "Iris",
+      "original": "File:Clair Iris Journeys.png",
+      "local": "iris-10.png",
+      "path": "/images/scraped/champions/iris-10.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Diantha",
+      "original": "File:Diantha JN.png",
+      "local": "diantha-1.png",
+      "path": "/images/scraped/champions/diantha-1.png",
+      "width": 666,
+      "height": 1000
+    },
+    {
+      "character": "Diantha",
+      "original": "File:XY Diantha.png",
+      "local": "diantha-2.png",
+      "path": "/images/scraped/champions/diantha-2.png",
+      "width": 781,
+      "height": 1280
+    },
+    {
+      "character": "Diantha",
+      "original": "File:Ash and Diantha.png",
+      "local": "diantha-3.png",
+      "path": "/images/scraped/champions/diantha-3.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Diantha",
+      "original": "File:Diantha Adventures.png",
+      "local": "diantha-4.png",
+      "path": "/images/scraped/champions/diantha-4.png",
+      "width": 895,
+      "height": 1280
+    },
+    {
+      "character": "Diantha",
+      "original": "File:Diantha and Gardevoir.png",
+      "local": "diantha-5.png",
+      "path": "/images/scraped/champions/diantha-5.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Diantha",
+      "original": "File:Diantha and Steven.png",
+      "local": "diantha-6.png",
+      "path": "/images/scraped/champions/diantha-6.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Diantha",
+      "original": "File:Diantha anime.png",
+      "local": "diantha-7.png",
+      "path": "/images/scraped/champions/diantha-7.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Diantha",
+      "original": "File:Diantha Battle XY.png",
+      "local": "diantha-8.png",
+      "path": "/images/scraped/champions/diantha-8.png",
+      "width": 400,
+      "height": 240
+    },
+    {
+      "character": "Diantha",
+      "original": "File:Diantha Cover Magazine JN026.png",
+      "local": "diantha-9.png",
+      "path": "/images/scraped/champions/diantha-9.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Diantha",
+      "original": "File:Diantha Evolutions.png",
+      "local": "diantha-10.png",
+      "path": "/images/scraped/champions/diantha-10.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Hau",
+      "original": "File:Sun Moon Hau.png",
+      "local": "hau-1.png",
+      "path": "/images/scraped/champions/hau-1.png",
+      "width": 1149,
+      "height": 3297
+    },
+    {
+      "character": "Hau",
+      "original": "File:HauSunMoon120.jpg",
+      "local": "hau-2.jpg",
+      "path": "/images/scraped/champions/hau-2.jpg",
+      "width": 748,
+      "height": 1044
+    },
+    {
+      "character": "Hau",
+      "original": "File:USUM Hau.png",
+      "local": "hau-3.png",
+      "path": "/images/scraped/champions/hau-3.png",
+      "width": 438,
+      "height": 1277
+    },
+    {
+      "character": "Hau",
+      "original": "File:Art Life 20230814 Hau.jpg",
+      "local": "hau-4.jpg",
+      "path": "/images/scraped/champions/hau-4.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Hau",
+      "original": "File:Ash and Hau.png",
+      "local": "hau-5.png",
+      "path": "/images/scraped/champions/hau-5.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Hau",
+      "original": "File:Hala and Hau.png",
+      "local": "hau-6.png",
+      "path": "/images/scraped/champions/hau-6.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Hau",
+      "original": "File:Hau Adventures.png",
+      "local": "hau-7.png",
+      "path": "/images/scraped/champions/hau-7.png",
+      "width": 500,
+      "height": 582
+    },
+    {
+      "character": "Hau",
+      "original": "File:Hau and Dartrix.png",
+      "local": "hau-8.png",
+      "path": "/images/scraped/champions/hau-8.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Hau",
+      "original": "File:Hau anime.png",
+      "local": "hau-9.png",
+      "path": "/images/scraped/champions/hau-9.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Hau",
+      "original": "File:Hau Brionne Adventures.png",
+      "local": "hau-10.png",
+      "path": "/images/scraped/champions/hau-10.png",
+      "width": 236,
+      "height": 299
+    },
+    {
+      "character": "Leon",
+      "original": "File:Sword Shield Leon.png",
+      "local": "leon-1.png",
+      "path": "/images/scraped/champions/leon-1.png",
+      "width": 2899,
+      "height": 3535
+    },
+    {
+      "character": "Leon",
+      "original": "File:Leon and Charizard Pokemon Sword Shield.png",
+      "local": "leon-2.png",
+      "path": "/images/scraped/champions/leon-2.png",
+      "width": 1384,
+      "height": 776
+    },
+    {
+      "character": "Leon",
+      "original": "File:Sword Shield Leon and Charizard artwork.png",
+      "local": "leon-3.png",
+      "path": "/images/scraped/champions/leon-3.png",
+      "width": 707,
+      "height": 1000
+    },
+    {
+      "character": "Leon",
+      "original": "File:Ash Leon Goh JN anime.png",
+      "local": "leon-4.png",
+      "path": "/images/scraped/champions/leon-4.png",
+      "width": 1436,
+      "height": 862
+    },
+    {
+      "character": "Leon",
+      "original": "File:Leon anime JN.png",
+      "local": "leon-5.png",
+      "path": "/images/scraped/champions/leon-5.png",
+      "width": 835,
+      "height": 1000
+    },
+    {
+      "character": "Leon",
+      "original": "File:Leon M8.png",
+      "local": "leon-6.png",
+      "path": "/images/scraped/champions/leon-6.png",
+      "width": 663,
+      "height": 1000
+    },
+    {
+      "character": "Leon",
+      "original": "File:Alain and Leon.png",
+      "local": "leon-7.png",
+      "path": "/images/scraped/champions/leon-7.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Leon",
+      "original": "File:Art Life 20230519 Leon.jpg",
+      "local": "leon-8.jpg",
+      "path": "/images/scraped/champions/leon-8.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Leon",
+      "original": "File:Ash Leon Goh Raihan Artwork.png",
+      "local": "leon-9.png",
+      "path": "/images/scraped/champions/leon-9.png",
+      "width": 843,
+      "height": 1200
+    },
+    {
+      "character": "Leon",
+      "original": "File:Ash Leon Hop Artwork.png",
+      "local": "leon-10.png",
+      "path": "/images/scraped/champions/leon-10.png",
+      "width": 720,
+      "height": 492
+    },
+    {
+      "character": "Geeta",
+      "original": "File:Scarlet Violet Geeta.png",
+      "local": "geeta-1.png",
+      "path": "/images/scraped/champions/geeta-1.png",
+      "width": 1990,
+      "height": 4772
+    },
+    {
+      "character": "Geeta",
+      "original": "File:Geeta Glimmora Spiky Shield.png",
+      "local": "geeta-2.png",
+      "path": "/images/scraped/champions/geeta-2.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Geeta",
+      "original": "File:Masters Champion Silver and Geeta Debut.png",
+      "local": "geeta-3.png",
+      "path": "/images/scraped/champions/geeta-3.png",
+      "width": 1000,
+      "height": 1225
+    },
+    {
+      "character": "Geeta",
+      "original": "File:Geeta HZ.png",
+      "local": "geeta-4.png",
+      "path": "/images/scraped/champions/geeta-4.png",
+      "width": 400,
+      "height": 964
+    },
+    {
+      "character": "Geeta",
+      "original": "File:Art Life 20231027 Geeta.jpg",
+      "local": "geeta-5.jpg",
+      "path": "/images/scraped/champions/geeta-5.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Geeta",
+      "original": "File:Clavell Geeta Tera Orb.png",
+      "local": "geeta-6.png",
+      "path": "/images/scraped/champions/geeta-6.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Geeta",
+      "original": "File:Geeta Adventures.png",
+      "local": "geeta-7.png",
+      "path": "/images/scraped/champions/geeta-7.png",
+      "width": 453,
+      "height": 953
+    },
+    {
+      "character": "Geeta",
+      "original": "File:Geeta Anime Expression Sheet.png",
+      "local": "geeta-8.png",
+      "path": "/images/scraped/champions/geeta-8.png",
+      "width": 900,
+      "height": 546
+    },
+    {
+      "character": "Geeta",
+      "original": "File:Geeta anime.png",
+      "local": "geeta-9.png",
+      "path": "/images/scraped/champions/geeta-9.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Geeta",
+      "original": "File:Geeta concept art.jpg",
+      "local": "geeta-10.jpg",
+      "path": "/images/scraped/champions/geeta-10.jpg",
+      "width": 1095,
+      "height": 807
+    },
+    {
+      "character": "Nemona",
+      "original": "File:Scarlet Violet Nemona.png",
+      "local": "nemona-1.png",
+      "path": "/images/scraped/champions/nemona-1.png",
+      "width": 1305,
+      "height": 3551
+    },
+    {
+      "character": "Nemona",
+      "original": "File:Masters Nemona meets Red comic.jpg",
+      "local": "nemona-2.jpg",
+      "path": "/images/scraped/champions/nemona-2.jpg",
+      "width": 2944,
+      "height": 4096
+    },
+    {
+      "character": "Nemona",
+      "original": "File:Nemona Sunflora.png",
+      "local": "nemona-3.png",
+      "path": "/images/scraped/champions/nemona-3.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Nemona",
+      "original": "File:NemonaScarletViolet180.jpg",
+      "local": "nemona-4.jpg",
+      "path": "/images/scraped/champions/nemona-4.jpg",
+      "width": 740,
+      "height": 1040
+    },
+    {
+      "character": "Nemona",
+      "original": "File:Scarlet and Nemona.png",
+      "local": "nemona-5.png",
+      "path": "/images/scraped/champions/nemona-5.png",
+      "width": 1221,
+      "height": 685
+    },
+    {
+      "character": "Nemona",
+      "original": "File:Violet Nemona concept art.jpg",
+      "local": "nemona-6.jpg",
+      "path": "/images/scraped/champions/nemona-6.jpg",
+      "width": 1092,
+      "height": 804
+    },
+    {
+      "character": "Nemona",
+      "original": "File:Nemona HZ.png",
+      "local": "nemona-7.png",
+      "path": "/images/scraped/champions/nemona-7.png",
+      "width": 329,
+      "height": 858
+    },
+    {
+      "character": "Nemona",
+      "original": "File:Art Life 20240119 Nemona.jpg",
+      "local": "nemona-8.jpg",
+      "path": "/images/scraped/champions/nemona-8.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Nemona",
+      "original": "File:Controlled Nemona and Pecharunt.png",
+      "local": "nemona-9.png",
+      "path": "/images/scraped/champions/nemona-9.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Nemona",
+      "original": "File:HZ eyecatch Nemona Pawmo.png",
+      "local": "nemona-10.png",
+      "path": "/images/scraped/champions/nemona-10.png",
+      "width": 1920,
+      "height": 1080
+    }
+  ]
+}

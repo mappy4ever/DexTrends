@@ -1,0 +1,2406 @@
+{
+  "totalCharacters": 33,
+  "totalDownloaded": 300,
+  "files": [
+    {
+      "character": "Lorelei",
+      "original": "File:FireRed LeafGreen Lorelei.png",
+      "local": "lorelei-1.png",
+      "path": "/images/scraped/elite-four/lorelei-1.png",
+      "width": 334,
+      "height": 751
+    },
+    {
+      "character": "Lorelei",
+      "original": "File:Lets Go Pikachu Eevee Lorelei.png",
+      "local": "lorelei-2.png",
+      "path": "/images/scraped/elite-four/lorelei-2.png",
+      "width": 1945,
+      "height": 3568
+    },
+    {
+      "character": "Lorelei",
+      "original": "File:ODLorelei PE.png",
+      "local": "lorelei-3.png",
+      "path": "/images/scraped/elite-four/lorelei-3.png",
+      "width": 376,
+      "height": 1080
+    },
+    {
+      "character": "Lorelei",
+      "original": "File:Indigo Plateau Lorelei Room LGPE Concept Art.jpg",
+      "local": "lorelei-4.jpg",
+      "path": "/images/scraped/elite-four/lorelei-4.jpg",
+      "width": 960,
+      "height": 683
+    },
+    {
+      "character": "Lorelei",
+      "original": "File:Lorelei 2 PM.png",
+      "local": "lorelei-5.png",
+      "path": "/images/scraped/elite-four/lorelei-5.png",
+      "width": 221,
+      "height": 327
+    },
+    {
+      "character": "Lorelei",
+      "original": "File:Lorelei Adventures.png",
+      "local": "lorelei-6.png",
+      "path": "/images/scraped/elite-four/lorelei-6.png",
+      "width": 1057,
+      "height": 919
+    },
+    {
+      "character": "Lorelei",
+      "original": "File:Lorelei and Cloyster Adventures.png",
+      "local": "lorelei-7.png",
+      "path": "/images/scraped/elite-four/lorelei-7.png",
+      "width": 898,
+      "height": 625
+    },
+    {
+      "character": "Lorelei",
+      "original": "File:Lorelei and Cloyster.png",
+      "local": "lorelei-8.png",
+      "path": "/images/scraped/elite-four/lorelei-8.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Lorelei",
+      "original": "File:Lorelei anime.png",
+      "local": "lorelei-9.png",
+      "path": "/images/scraped/elite-four/lorelei-9.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Lorelei",
+      "original": "File:Lorelei Cloyster Aurora Beam Adventures.png",
+      "local": "lorelei-10.png",
+      "path": "/images/scraped/elite-four/lorelei-10.png",
+      "width": 538,
+      "height": 862
+    },
+    {
+      "character": "Bruno",
+      "original": "File:FireRed LeafGreen Bruno.png",
+      "local": "bruno-1.png",
+      "path": "/images/scraped/elite-four/bruno-1.png",
+      "width": 382,
+      "height": 566
+    },
+    {
+      "character": "Bruno",
+      "original": "File:HeartGold SoulSilver Bruno.png",
+      "local": "bruno-2.png",
+      "path": "/images/scraped/elite-four/bruno-2.png",
+      "width": 1169,
+      "height": 1280
+    },
+    {
+      "character": "Bruno",
+      "original": "File:Lets Go Pikachu Eevee Bruno.png",
+      "local": "bruno-3.png",
+      "path": "/images/scraped/elite-four/bruno-3.png",
+      "width": 2172,
+      "height": 2553
+    },
+    {
+      "character": "Bruno",
+      "original": "File:ODBruno PE.png",
+      "local": "bruno-4.png",
+      "path": "/images/scraped/elite-four/bruno-4.png",
+      "width": 579,
+      "height": 1080
+    },
+    {
+      "character": "Bruno",
+      "original": "File:Bruno Adventures.png",
+      "local": "bruno-5.png",
+      "path": "/images/scraped/elite-four/bruno-5.png",
+      "width": 1358,
+      "height": 968
+    },
+    {
+      "character": "Bruno",
+      "original": "File:Bruno and Onix.png",
+      "local": "bruno-6.png",
+      "path": "/images/scraped/elite-four/bruno-6.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Bruno",
+      "original": "File:Bruno anime.png",
+      "local": "bruno-7.png",
+      "path": "/images/scraped/elite-four/bruno-7.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Bruno",
+      "original": "File:Bruno EP001.png",
+      "local": "bruno-8.png",
+      "path": "/images/scraped/elite-four/bruno-8.png",
+      "width": 1280,
+      "height": 924
+    },
+    {
+      "character": "Bruno",
+      "original": "File:Bruno Hitmonchan Adventures.png",
+      "local": "bruno-9.png",
+      "path": "/images/scraped/elite-four/bruno-9.png",
+      "width": 505,
+      "height": 392
+    },
+    {
+      "character": "Bruno",
+      "original": "File:Bruno Hitmonchan Fire Punch Adventures.png",
+      "local": "bruno-10.png",
+      "path": "/images/scraped/elite-four/bruno-10.png",
+      "width": 375,
+      "height": 389
+    },
+    {
+      "character": "Agatha",
+      "original": "File:FireRed LeafGreen Agatha.png",
+      "local": "agatha-1.png",
+      "path": "/images/scraped/elite-four/agatha-1.png",
+      "width": 352,
+      "height": 719
+    },
+    {
+      "character": "Agatha",
+      "original": "File:Lets Go Pikachu Eevee Agatha.png",
+      "local": "agatha-2.png",
+      "path": "/images/scraped/elite-four/agatha-2.png",
+      "width": 2068,
+      "height": 2816
+    },
+    {
+      "character": "Agatha",
+      "original": "File:ODAgatha PE.png",
+      "local": "agatha-3.png",
+      "path": "/images/scraped/elite-four/agatha-3.png",
+      "width": 522,
+      "height": 1107
+    },
+    {
+      "character": "Agatha",
+      "original": "File:Agatha Adventures.png",
+      "local": "agatha-4.png",
+      "path": "/images/scraped/elite-four/agatha-4.png",
+      "width": 1145,
+      "height": 950
+    },
+    {
+      "character": "Agatha",
+      "original": "File:Agatha AG132.png",
+      "local": "agatha-5.png",
+      "path": "/images/scraped/elite-four/agatha-5.png",
+      "width": 960,
+      "height": 720
+    },
+    {
+      "character": "Agatha",
+      "original": "File:Agatha and Gengar Adventures.png",
+      "local": "agatha-6.png",
+      "path": "/images/scraped/elite-four/agatha-6.png",
+      "width": 1252,
+      "height": 829
+    },
+    {
+      "character": "Agatha",
+      "original": "File:Agatha and Gengar.png",
+      "local": "agatha-7.png",
+      "path": "/images/scraped/elite-four/agatha-7.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Agatha",
+      "original": "File:Agatha anime.png",
+      "local": "agatha-8.png",
+      "path": "/images/scraped/elite-four/agatha-8.png",
+      "width": 500,
+      "height": 700
+    },
+    {
+      "character": "Agatha",
+      "original": "File:Agatha Gastly Adventures.png",
+      "local": "agatha-9.png",
+      "path": "/images/scraped/elite-four/agatha-9.png",
+      "width": 339,
+      "height": 455
+    },
+    {
+      "character": "Agatha",
+      "original": "File:Agatha Gengar PG.png",
+      "local": "agatha-10.png",
+      "path": "/images/scraped/elite-four/agatha-10.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Lance",
+      "original": "File:FireRed LeafGreen Lance.png",
+      "local": "lance-1.png",
+      "path": "/images/scraped/elite-four/lance-1.png",
+      "width": 415,
+      "height": 820
+    },
+    {
+      "character": "Lance",
+      "original": "File:HeartGold SoulSilver Lance.png",
+      "local": "lance-2.png",
+      "path": "/images/scraped/elite-four/lance-2.png",
+      "width": 2064,
+      "height": 3243
+    },
+    {
+      "character": "Lance",
+      "original": "File:Red Blue Lance.png",
+      "local": "lance-3.png",
+      "path": "/images/scraped/elite-four/lance-3.png",
+      "width": 217,
+      "height": 540
+    },
+    {
+      "character": "Lance",
+      "original": "File:LanceSilverTempest159.jpg",
+      "local": "lance-4.jpg",
+      "path": "/images/scraped/elite-four/lance-4.jpg",
+      "width": 660,
+      "height": 920
+    },
+    {
+      "character": "Lance",
+      "original": "File:LanceSilverTempest192.jpg",
+      "local": "lance-5.jpg",
+      "path": "/images/scraped/elite-four/lance-5.jpg",
+      "width": 660,
+      "height": 920
+    },
+    {
+      "character": "Lance",
+      "original": "File:LanceSilverTempest206.jpg",
+      "local": "lance-6.jpg",
+      "path": "/images/scraped/elite-four/lance-6.jpg",
+      "width": 734,
+      "height": 1024
+    },
+    {
+      "character": "Lance",
+      "original": "File:Crystal Lance.png",
+      "local": "lance-7.png",
+      "path": "/images/scraped/elite-four/lance-7.png",
+      "width": 1500,
+      "height": 2480
+    },
+    {
+      "character": "Lance",
+      "original": "File:Lance JN.png",
+      "local": "lance-8.png",
+      "path": "/images/scraped/elite-four/lance-8.png",
+      "width": 1204,
+      "height": 1280
+    },
+    {
+      "character": "Lance",
+      "original": "File:Lance M8.png",
+      "local": "lance-9.png",
+      "path": "/images/scraped/elite-four/lance-9.png",
+      "width": 543,
+      "height": 1000
+    },
+    {
+      "character": "Lance",
+      "original": "File:Lets Go Pikachu Eevee Lance.png",
+      "local": "lance-10.png",
+      "path": "/images/scraped/elite-four/lance-10.png",
+      "width": 3128,
+      "height": 3750
+    },
+    {
+      "character": "Will",
+      "original": "File:HeartGold SoulSilver Will.png",
+      "local": "will-1.png",
+      "path": "/images/scraped/elite-four/will-1.png",
+      "width": 1704,
+      "height": 2924
+    },
+    {
+      "character": "Will",
+      "original": "File:Will TCG VS.png",
+      "local": "will-2.png",
+      "path": "/images/scraped/elite-four/will-2.png",
+      "width": 1059,
+      "height": 1826
+    },
+    {
+      "character": "Will",
+      "original": "File:Masters Dream Team Maker Will and Xatu.png",
+      "local": "will-3.png",
+      "path": "/images/scraped/elite-four/will-3.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Will",
+      "original": "File:Spr Masters Will 2.png",
+      "local": "will-4.png",
+      "path": "/images/scraped/elite-four/will-4.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Will",
+      "original": "File:Spr Masters Will EX.png",
+      "local": "will-5.png",
+      "path": "/images/scraped/elite-four/will-5.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Will",
+      "original": "File:Spr Masters Will.png",
+      "local": "will-6.png",
+      "path": "/images/scraped/elite-four/will-6.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Will",
+      "original": "File:VSWill EX Masters.png",
+      "local": "will-7.png",
+      "path": "/images/scraped/elite-four/will-7.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Will",
+      "original": "File:VSWill Masters.png",
+      "local": "will-8.png",
+      "path": "/images/scraped/elite-four/will-8.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Will",
+      "original": "File:Will Adventures.png",
+      "local": "will-9.png",
+      "path": "/images/scraped/elite-four/will-9.png",
+      "width": 262,
+      "height": 443
+    },
+    {
+      "character": "Will",
+      "original": "File:Will Exeggutor Adventures.png",
+      "local": "will-10.png",
+      "path": "/images/scraped/elite-four/will-10.png",
+      "width": 248,
+      "height": 372
+    },
+    {
+      "character": "Karen",
+      "original": "File:Gold Silver Karen.png",
+      "local": "karen-1.png",
+      "path": "/images/scraped/elite-four/karen-1.png",
+      "width": 733,
+      "height": 1792
+    },
+    {
+      "character": "Karen",
+      "original": "File:HeartGold SoulSilver Karen.png",
+      "local": "karen-2.png",
+      "path": "/images/scraped/elite-four/karen-2.png",
+      "width": 1360,
+      "height": 3128
+    },
+    {
+      "character": "Karen",
+      "original": "File:Karen Umbreon Moonlight Adventures.png",
+      "local": "karen-3.png",
+      "path": "/images/scraped/elite-four/karen-3.png",
+      "width": 425,
+      "height": 690
+    },
+    {
+      "character": "Karen",
+      "original": "File:Karen Adventures.png",
+      "local": "karen-4.png",
+      "path": "/images/scraped/elite-four/karen-4.png",
+      "width": 300,
+      "height": 367
+    },
+    {
+      "character": "Karen",
+      "original": "File:Karen Eevee Adventures.png",
+      "local": "karen-5.png",
+      "path": "/images/scraped/elite-four/karen-5.png",
+      "width": 329,
+      "height": 397
+    },
+    {
+      "character": "Karen",
+      "original": "File:Karen Murkrow Adventures.png",
+      "local": "karen-6.png",
+      "path": "/images/scraped/elite-four/karen-6.png",
+      "width": 297,
+      "height": 401
+    },
+    {
+      "character": "Karen",
+      "original": "File:Karen PM.png",
+      "local": "karen-7.png",
+      "path": "/images/scraped/elite-four/karen-7.png",
+      "width": 358,
+      "height": 708
+    },
+    {
+      "character": "Karen",
+      "original": "File:Karen Room HGSS.png",
+      "local": "karen-8.png",
+      "path": "/images/scraped/elite-four/karen-8.png",
+      "width": 298,
+      "height": 354
+    },
+    {
+      "character": "Karen",
+      "original": "File:Karen Umbreon Mean Look PM.png",
+      "local": "karen-9.png",
+      "path": "/images/scraped/elite-four/karen-9.png",
+      "width": 720,
+      "height": 704
+    },
+    {
+      "character": "Karen",
+      "original": "File:Karen Umbreon Sand-Attack PM.png",
+      "local": "karen-10.png",
+      "path": "/images/scraped/elite-four/karen-10.png",
+      "width": 696,
+      "height": 524
+    },
+    {
+      "character": "Sidney",
+      "original": "File:Omega Ruby Alpha Sapphire Sidney.png",
+      "local": "sidney-1.png",
+      "path": "/images/scraped/elite-four/sidney-1.png",
+      "width": 764,
+      "height": 1280
+    },
+    {
+      "character": "Sidney",
+      "original": "File:Ruby Sapphire Sidney.png",
+      "local": "sidney-2.png",
+      "path": "/images/scraped/elite-four/sidney-2.png",
+      "width": 300,
+      "height": 575
+    },
+    {
+      "character": "Sidney",
+      "original": "File:Sidney ORAS OD.png",
+      "local": "sidney-3.png",
+      "path": "/images/scraped/elite-four/sidney-3.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Sidney",
+      "original": "File:Sidney Adventures.png",
+      "local": "sidney-4.png",
+      "path": "/images/scraped/elite-four/sidney-4.png",
+      "width": 346,
+      "height": 414
+    },
+    {
+      "character": "Sidney",
+      "original": "File:Sidney ORAS.png",
+      "local": "sidney-5.png",
+      "path": "/images/scraped/elite-four/sidney-5.png",
+      "width": 400,
+      "height": 240
+    },
+    {
+      "character": "Sidney",
+      "original": "File:Sidney room ORAS.png",
+      "local": "sidney-6.png",
+      "path": "/images/scraped/elite-four/sidney-6.png",
+      "width": 400,
+      "height": 240
+    },
+    {
+      "character": "Sidney",
+      "original": "File:SidneyFusionStrike241.jpg",
+      "local": "sidney-7.jpg",
+      "path": "/images/scraped/elite-four/sidney-7.jpg",
+      "width": 868,
+      "height": 1212
+    },
+    {
+      "character": "Sidney",
+      "original": "File:SidneyFusionStrike264.jpg",
+      "local": "sidney-8.jpg",
+      "path": "/images/scraped/elite-four/sidney-8.jpg",
+      "width": 868,
+      "height": 1212
+    },
+    {
+      "character": "Sidney",
+      "original": "File:SidneyFusionStrike279.jpg",
+      "local": "sidney-9.jpg",
+      "path": "/images/scraped/elite-four/sidney-9.jpg",
+      "width": 732,
+      "height": 1032
+    },
+    {
+      "character": "Sidney",
+      "original": "File:SidneyStadiumEXPowerKeepers82.jpg",
+      "local": "sidney-10.jpg",
+      "path": "/images/scraped/elite-four/sidney-10.jpg",
+      "width": 350,
+      "height": 495
+    },
+    {
+      "character": "Phoebe",
+      "original": "File:Omega Ruby Alpha Sapphire Phoebe.png",
+      "local": "phoebe-1.png",
+      "path": "/images/scraped/elite-four/phoebe-1.png",
+      "width": 766,
+      "height": 1280
+    },
+    {
+      "character": "Phoebe",
+      "original": "File:Ruby Sapphire Phoebe.png",
+      "local": "phoebe-2.png",
+      "path": "/images/scraped/elite-four/phoebe-2.png",
+      "width": 300,
+      "height": 555
+    },
+    {
+      "character": "Phoebe",
+      "original": "File:Phoebe ORAS OD.png",
+      "local": "phoebe-3.png",
+      "path": "/images/scraped/elite-four/phoebe-3.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Phoebe",
+      "original": "File:Masters Dream Team Maker Phoebe and Dusclops.png",
+      "local": "phoebe-4.png",
+      "path": "/images/scraped/elite-four/phoebe-4.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Phoebe",
+      "original": "File:Phoebe Adventures.png",
+      "local": "phoebe-5.png",
+      "path": "/images/scraped/elite-four/phoebe-5.png",
+      "width": 292,
+      "height": 419
+    },
+    {
+      "character": "Phoebe",
+      "original": "File:Phoebe Dusclops Adventures.png",
+      "local": "phoebe-6.png",
+      "path": "/images/scraped/elite-four/phoebe-6.png",
+      "width": 262,
+      "height": 300
+    },
+    {
+      "character": "Phoebe",
+      "original": "File:Phoebe room ORAS.png",
+      "local": "phoebe-7.png",
+      "path": "/images/scraped/elite-four/phoebe-7.png",
+      "width": 400,
+      "height": 240
+    },
+    {
+      "character": "Phoebe",
+      "original": "File:PhoebeBattleStyles130.jpg",
+      "local": "phoebe-8.jpg",
+      "path": "/images/scraped/elite-four/phoebe-8.jpg",
+      "width": 868,
+      "height": 1212
+    },
+    {
+      "character": "Phoebe",
+      "original": "File:PhoebeBattleStyles161.jpg",
+      "local": "phoebe-9.jpg",
+      "path": "/images/scraped/elite-four/phoebe-9.jpg",
+      "width": 868,
+      "height": 1212
+    },
+    {
+      "character": "Phoebe",
+      "original": "File:PhoebeBattleStyles175.jpg",
+      "local": "phoebe-10.jpg",
+      "path": "/images/scraped/elite-four/phoebe-10.jpg",
+      "width": 571,
+      "height": 800
+    },
+    {
+      "character": "Glacia",
+      "original": "File:Omega Ruby Alpha Sapphire Glacia.png",
+      "local": "glacia-1.png",
+      "path": "/images/scraped/elite-four/glacia-1.png",
+      "width": 437,
+      "height": 940
+    },
+    {
+      "character": "Glacia",
+      "original": "File:Ruby Sapphire Glacia.png",
+      "local": "glacia-2.png",
+      "path": "/images/scraped/elite-four/glacia-2.png",
+      "width": 300,
+      "height": 550
+    },
+    {
+      "character": "Glacia",
+      "original": "File:Glacia ORAS OD.png",
+      "local": "glacia-3.png",
+      "path": "/images/scraped/elite-four/glacia-3.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Glacia",
+      "original": "File:Glacia Adventures.png",
+      "local": "glacia-4.png",
+      "path": "/images/scraped/elite-four/glacia-4.png",
+      "width": 346,
+      "height": 532
+    },
+    {
+      "character": "Glacia",
+      "original": "File:Glacia ORAS.png",
+      "local": "glacia-5.png",
+      "path": "/images/scraped/elite-four/glacia-5.png",
+      "width": 400,
+      "height": 240
+    },
+    {
+      "character": "Glacia",
+      "original": "File:Glacia room ORAS.png",
+      "local": "glacia-6.png",
+      "path": "/images/scraped/elite-four/glacia-6.png",
+      "width": 400,
+      "height": 240
+    },
+    {
+      "character": "Glacia",
+      "original": "File:GlaciaStadiumEXPowerKeepers76.jpg",
+      "local": "glacia-7.jpg",
+      "path": "/images/scraped/elite-four/glacia-7.jpg",
+      "width": 344,
+      "height": 476
+    },
+    {
+      "character": "Glacia",
+      "original": "File:Masters Dream Team Maker Glacia and Glalie.png",
+      "local": "glacia-8.png",
+      "path": "/images/scraped/elite-four/glacia-8.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Glacia",
+      "original": "File:Spr Masters Glacia 2.png",
+      "local": "glacia-9.png",
+      "path": "/images/scraped/elite-four/glacia-9.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Glacia",
+      "original": "File:Spr Masters Glacia EX.png",
+      "local": "glacia-10.png",
+      "path": "/images/scraped/elite-four/glacia-10.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Bertha",
+      "original": "File:Bertha BDSP OD.png",
+      "local": "bertha-1.png",
+      "path": "/images/scraped/elite-four/bertha-1.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Bertha",
+      "original": "File:Bertha Adventures.png",
+      "local": "bertha-2.png",
+      "path": "/images/scraped/elite-four/bertha-2.png",
+      "width": 301,
+      "height": 385
+    },
+    {
+      "character": "Bertha",
+      "original": "File:Bertha anime.png",
+      "local": "bertha-3.png",
+      "path": "/images/scraped/elite-four/bertha-3.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Bertha",
+      "original": "File:BerthaWarmthRisingRivals90.jpg",
+      "local": "bertha-4.jpg",
+      "path": "/images/scraped/elite-four/bertha-4.jpg",
+      "width": 343,
+      "height": 474
+    },
+    {
+      "character": "Bertha",
+      "original": "File:Spr Masters Bertha 2.png",
+      "local": "bertha-5.png",
+      "path": "/images/scraped/elite-four/bertha-5.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Bertha",
+      "original": "File:Spr Masters Bertha EX.png",
+      "local": "bertha-6.png",
+      "path": "/images/scraped/elite-four/bertha-6.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Bertha",
+      "original": "File:Spr Masters Bertha.png",
+      "local": "bertha-7.png",
+      "path": "/images/scraped/elite-four/bertha-7.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Bertha",
+      "original": "File:Sticker Template Bertha Background.png",
+      "local": "bertha-8.png",
+      "path": "/images/scraped/elite-four/bertha-8.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Bertha",
+      "original": "File:VSBertha 2 BDSP.png",
+      "local": "bertha-9.png",
+      "path": "/images/scraped/elite-four/bertha-9.png",
+      "width": 512,
+      "height": 512
+    },
+    {
+      "character": "Bertha",
+      "original": "File:VSBertha BDSP.png",
+      "local": "bertha-10.png",
+      "path": "/images/scraped/elite-four/bertha-10.png",
+      "width": 360,
+      "height": 360
+    },
+    {
+      "character": "Lucian",
+      "original": "File:Diamond Pearl Lucian.png",
+      "local": "lucian-1.png",
+      "path": "/images/scraped/elite-four/lucian-1.png",
+      "width": 494,
+      "height": 701
+    },
+    {
+      "character": "Lucian",
+      "original": "File:Lucian BDSP OD.png",
+      "local": "lucian-2.png",
+      "path": "/images/scraped/elite-four/lucian-2.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Lucian",
+      "original": "File:Lucian Adventures.png",
+      "local": "lucian-3.png",
+      "path": "/images/scraped/elite-four/lucian-3.png",
+      "width": 282,
+      "height": 516
+    },
+    {
+      "character": "Lucian",
+      "original": "File:Lucian anime.png",
+      "local": "lucian-4.png",
+      "path": "/images/scraped/elite-four/lucian-4.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Lucian",
+      "original": "File:Lucian Buizel.png",
+      "local": "lucian-5.png",
+      "path": "/images/scraped/elite-four/lucian-5.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Lucian",
+      "original": "File:Lucian Girafarig.png",
+      "local": "lucian-6.png",
+      "path": "/images/scraped/elite-four/lucian-6.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Lucian",
+      "original": "File:LucianAssignmentRisingRivals92.jpg",
+      "local": "lucian-7.jpg",
+      "path": "/images/scraped/elite-four/lucian-7.jpg",
+      "width": 342,
+      "height": 476
+    },
+    {
+      "character": "Lucian",
+      "original": "File:LucianTwilightMasquerade157.jpg",
+      "local": "lucian-8.jpg",
+      "path": "/images/scraped/elite-four/lucian-8.jpg",
+      "width": 660,
+      "height": 920
+    },
+    {
+      "character": "Lucian",
+      "original": "File:LucianTwilightMasquerade208.jpg",
+      "local": "lucian-9.jpg",
+      "path": "/images/scraped/elite-four/lucian-9.jpg",
+      "width": 660,
+      "height": 920
+    },
+    {
+      "character": "Lucian",
+      "original": "File:Spr Masters Lucian 2.png",
+      "local": "lucian-10.png",
+      "path": "/images/scraped/elite-four/lucian-10.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Shauntal",
+      "original": "File:Masters Dream Team Maker Shauntal and Chandelure.png",
+      "local": "shauntal-1.png",
+      "path": "/images/scraped/elite-four/shauntal-1.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Shauntal",
+      "original": "File:Shauntal Adventures.png",
+      "local": "shauntal-2.png",
+      "path": "/images/scraped/elite-four/shauntal-2.png",
+      "width": 266,
+      "height": 418
+    },
+    {
+      "character": "Shauntal",
+      "original": "File:Shauntal Golurk Adventures.png",
+      "local": "shauntal-3.png",
+      "path": "/images/scraped/elite-four/shauntal-3.png",
+      "width": 362,
+      "height": 465
+    },
+    {
+      "character": "Shauntal",
+      "original": "File:Shauntal Golurk Heavy Slam Adventures.png",
+      "local": "shauntal-4.png",
+      "path": "/images/scraped/elite-four/shauntal-4.png",
+      "width": 498,
+      "height": 386
+    },
+    {
+      "character": "Shauntal",
+      "original": "File:Shauntal Room B2W2.png",
+      "local": "shauntal-5.png",
+      "path": "/images/scraped/elite-four/shauntal-5.png",
+      "width": 467,
+      "height": 905
+    },
+    {
+      "character": "Shauntal",
+      "original": "File:Shauntal Room BW.png",
+      "local": "shauntal-6.png",
+      "path": "/images/scraped/elite-four/shauntal-6.png",
+      "width": 713,
+      "height": 927
+    },
+    {
+      "character": "Shauntal",
+      "original": "File:ShauntalParadoxRift174.jpg",
+      "local": "shauntal-7.jpg",
+      "path": "/images/scraped/elite-four/shauntal-7.jpg",
+      "width": 660,
+      "height": 920
+    },
+    {
+      "character": "Shauntal",
+      "original": "File:ShauntalParadoxRift243.jpg",
+      "local": "shauntal-8.jpg",
+      "path": "/images/scraped/elite-four/shauntal-8.jpg",
+      "width": 660,
+      "height": 920
+    },
+    {
+      "character": "Shauntal",
+      "original": "File:Spr Masters Shauntal 2.png",
+      "local": "shauntal-9.png",
+      "path": "/images/scraped/elite-four/shauntal-9.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Shauntal",
+      "original": "File:Spr Masters Shauntal EX.png",
+      "local": "shauntal-10.png",
+      "path": "/images/scraped/elite-four/shauntal-10.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Grimsley",
+      "original": "File:Sun Moon Grimsley.png",
+      "local": "grimsley-1.png",
+      "path": "/images/scraped/elite-four/grimsley-1.png",
+      "width": 317,
+      "height": 598
+    },
+    {
+      "character": "Grimsley",
+      "original": "File:Grimsley Adventures.png",
+      "local": "grimsley-2.png",
+      "path": "/images/scraped/elite-four/grimsley-2.png",
+      "width": 521,
+      "height": 498
+    },
+    {
+      "character": "Grimsley",
+      "original": "File:Grimsley Bisharp Fury Cutter Adventures.png",
+      "local": "grimsley-3.png",
+      "path": "/images/scraped/elite-four/grimsley-3.png",
+      "width": 1256,
+      "height": 1020
+    },
+    {
+      "character": "Grimsley",
+      "original": "File:Grimsley FAT.png",
+      "local": "grimsley-4.png",
+      "path": "/images/scraped/elite-four/grimsley-4.png",
+      "width": 240,
+      "height": 269
+    },
+    {
+      "character": "Grimsley",
+      "original": "File:Grimsley Room B2W2.png",
+      "local": "grimsley-5.png",
+      "path": "/images/scraped/elite-four/grimsley-5.png",
+      "width": 603,
+      "height": 659
+    },
+    {
+      "character": "Grimsley",
+      "original": "File:Grimsley Room BW.png",
+      "local": "grimsley-6.png",
+      "path": "/images/scraped/elite-four/grimsley-6.png",
+      "width": 817,
+      "height": 1010
+    },
+    {
+      "character": "Grimsley",
+      "original": "File:Grimsley SM concept art details.jpg",
+      "local": "grimsley-7.jpg",
+      "path": "/images/scraped/elite-four/grimsley-7.jpg",
+      "width": 2824,
+      "height": 2054
+    },
+    {
+      "character": "Grimsley",
+      "original": "File:Grimsley SM concept art english.jpg",
+      "local": "grimsley-8.jpg",
+      "path": "/images/scraped/elite-four/grimsley-8.jpg",
+      "width": 1456,
+      "height": 1062
+    },
+    {
+      "character": "Grimsley",
+      "original": "File:Grimsley SM concept art.jpg",
+      "local": "grimsley-9.jpg",
+      "path": "/images/scraped/elite-four/grimsley-9.jpg",
+      "width": 4096,
+      "height": 2305
+    },
+    {
+      "character": "Grimsley",
+      "original": "File:Grimsley SM OD.png",
+      "local": "grimsley-10.png",
+      "path": "/images/scraped/elite-four/grimsley-10.png",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "character": "Caitlin",
+      "original": "File:Black White Caitlin.png",
+      "local": "caitlin-1.png",
+      "path": "/images/scraped/elite-four/caitlin-1.png",
+      "width": 549,
+      "height": 385
+    },
+    {
+      "character": "Caitlin",
+      "original": "File:Platinum Caitlin.png",
+      "local": "caitlin-2.png",
+      "path": "/images/scraped/elite-four/caitlin-2.png",
+      "width": 1174,
+      "height": 2694
+    },
+    {
+      "character": "Caitlin",
+      "original": "File:Platinum Darach Caitlin.png",
+      "local": "caitlin-3.png",
+      "path": "/images/scraped/elite-four/caitlin-3.png",
+      "width": 1400,
+      "height": 1897
+    },
+    {
+      "character": "Caitlin",
+      "original": "File:BWS2 Caitlin.png",
+      "local": "caitlin-4.png",
+      "path": "/images/scraped/elite-four/caitlin-4.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Caitlin",
+      "original": "File:Caitlin BW chapter.png",
+      "local": "caitlin-5.png",
+      "path": "/images/scraped/elite-four/caitlin-5.png",
+      "width": 999,
+      "height": 601
+    },
+    {
+      "character": "Caitlin",
+      "original": "File:Caitlin Pt Adventures.png",
+      "local": "caitlin-6.png",
+      "path": "/images/scraped/elite-four/caitlin-6.png",
+      "width": 490,
+      "height": 719
+    },
+    {
+      "character": "Caitlin",
+      "original": "File:Caitlin Room B2W2.png",
+      "local": "caitlin-7.png",
+      "path": "/images/scraped/elite-four/caitlin-7.png",
+      "width": 876,
+      "height": 1127
+    },
+    {
+      "character": "Caitlin",
+      "original": "File:Caitlin Room BW.png",
+      "local": "caitlin-8.png",
+      "path": "/images/scraped/elite-four/caitlin-8.png",
+      "width": 703,
+      "height": 1621
+    },
+    {
+      "character": "Caitlin",
+      "original": "File:CaitlinChillingReign132.jpg",
+      "local": "caitlin-9.jpg",
+      "path": "/images/scraped/elite-four/caitlin-9.jpg",
+      "width": 868,
+      "height": 1212
+    },
+    {
+      "character": "Caitlin",
+      "original": "File:CaitlinChillingReign189.jpg",
+      "local": "caitlin-10.jpg",
+      "path": "/images/scraped/elite-four/caitlin-10.jpg",
+      "width": 868,
+      "height": 1212
+    },
+    {
+      "character": "Marshal",
+      "original": "File:Black White Marshal.png",
+      "local": "marshal-1.png",
+      "path": "/images/scraped/elite-four/marshal-1.png",
+      "width": 267,
+      "height": 379
+    },
+    {
+      "character": "Marshal",
+      "original": "File:Marshal Adventures.png",
+      "local": "marshal-2.png",
+      "path": "/images/scraped/elite-four/marshal-2.png",
+      "width": 1185,
+      "height": 922
+    },
+    {
+      "character": "Marshal",
+      "original": "File:Marshal Room B2W2.png",
+      "local": "marshal-3.png",
+      "path": "/images/scraped/elite-four/marshal-3.png",
+      "width": 836,
+      "height": 1095
+    },
+    {
+      "character": "Marshal",
+      "original": "File:Marshal Room BW.png",
+      "local": "marshal-4.png",
+      "path": "/images/scraped/elite-four/marshal-4.png",
+      "width": 933,
+      "height": 1000
+    },
+    {
+      "character": "Marshal",
+      "original": "File:Marshal Tirtouga Adventures.png",
+      "local": "marshal-5.png",
+      "path": "/images/scraped/elite-four/marshal-5.png",
+      "width": 719,
+      "height": 754
+    },
+    {
+      "character": "Marshal",
+      "original": "File:Masters Dream Team Maker Marshal and Conkeldurr.png",
+      "local": "marshal-6.png",
+      "path": "/images/scraped/elite-four/marshal-6.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Marshal",
+      "original": "File:Spr Masters Marshal 2.png",
+      "local": "marshal-7.png",
+      "path": "/images/scraped/elite-four/marshal-7.png",
+      "width": 800,
+      "height": 800
+    },
+    {
+      "character": "Marshal",
+      "original": "File:Spr Masters Marshal EX.png",
+      "local": "marshal-8.png",
+      "path": "/images/scraped/elite-four/marshal-8.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Marshal",
+      "original": "File:Spr Masters Marshal.png",
+      "local": "marshal-9.png",
+      "path": "/images/scraped/elite-four/marshal-9.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Marshal",
+      "original": "File:VSMarshal EX Masters.png",
+      "local": "marshal-10.png",
+      "path": "/images/scraped/elite-four/marshal-10.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Malva",
+      "original": "File:Alain and Malva.png",
+      "local": "malva-1.png",
+      "path": "/images/scraped/elite-four/malva-1.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Malva",
+      "original": "File:Lysandre Malva Adventures.png",
+      "local": "malva-2.png",
+      "path": "/images/scraped/elite-four/malva-2.png",
+      "width": 682,
+      "height": 960
+    },
+    {
+      "character": "Malva",
+      "original": "File:Malva Adventures.png",
+      "local": "malva-3.png",
+      "path": "/images/scraped/elite-four/malva-3.png",
+      "width": 247,
+      "height": 557
+    },
+    {
+      "character": "Malva",
+      "original": "File:Malva and Braixen Adventures.png",
+      "local": "malva-4.png",
+      "path": "/images/scraped/elite-four/malva-4.png",
+      "width": 709,
+      "height": 632
+    },
+    {
+      "character": "Malva",
+      "original": "File:Malva anime.png",
+      "local": "malva-5.png",
+      "path": "/images/scraped/elite-four/malva-5.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Malva",
+      "original": "File:Malva Battle XY.png",
+      "local": "malva-6.png",
+      "path": "/images/scraped/elite-four/malva-6.png",
+      "width": 400,
+      "height": 240
+    },
+    {
+      "character": "Malva",
+      "original": "File:Malva Braixen Fire Spin Adventures.png",
+      "local": "malva-7.png",
+      "path": "/images/scraped/elite-four/malva-7.png",
+      "width": 294,
+      "height": 450
+    },
+    {
+      "character": "Malva",
+      "original": "File:Malva Braixen Magic Room Adventures.png",
+      "local": "malva-8.png",
+      "path": "/images/scraped/elite-four/malva-8.png",
+      "width": 596,
+      "height": 950
+    },
+    {
+      "character": "Malva",
+      "original": "File:Malva Braixen vs Diantha Mega Gardevoir.png",
+      "local": "malva-9.png",
+      "path": "/images/scraped/elite-four/malva-9.png",
+      "width": 288,
+      "height": 665
+    },
+    {
+      "character": "Malva",
+      "original": "File:Malva Evolutions.png",
+      "local": "malva-10.png",
+      "path": "/images/scraped/elite-four/malva-10.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Siebold",
+      "original": "File:Art Life 20240122 Siebold.jpg",
+      "local": "siebold-1.jpg",
+      "path": "/images/scraped/elite-four/siebold-1.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Siebold",
+      "original": "File:Masters Dream Team Maker Siebold and Clawitzer.png",
+      "local": "siebold-2.png",
+      "path": "/images/scraped/elite-four/siebold-2.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Siebold",
+      "original": "File:Masters Dream Team Maker Siebold and Octillery.png",
+      "local": "siebold-3.png",
+      "path": "/images/scraped/elite-four/siebold-3.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Siebold",
+      "original": "File:Masters Siebold Clawitzer.png",
+      "local": "siebold-4.png",
+      "path": "/images/scraped/elite-four/siebold-4.png",
+      "width": 375,
+      "height": 394
+    },
+    {
+      "character": "Siebold",
+      "original": "File:Siebold anime.png",
+      "local": "siebold-5.png",
+      "path": "/images/scraped/elite-four/siebold-5.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Siebold",
+      "original": "File:Siebold Battle XY.png",
+      "local": "siebold-6.png",
+      "path": "/images/scraped/elite-four/siebold-6.png",
+      "width": 400,
+      "height": 240
+    },
+    {
+      "character": "Siebold",
+      "original": "File:Siebold Blastoise.png",
+      "local": "siebold-7.png",
+      "path": "/images/scraped/elite-four/siebold-7.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Siebold",
+      "original": "File:Siebold Key Stone.png",
+      "local": "siebold-8.png",
+      "path": "/images/scraped/elite-four/siebold-8.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Siebold",
+      "original": "File:Siebold XY OD.png",
+      "local": "siebold-9.png",
+      "path": "/images/scraped/elite-four/siebold-9.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Siebold",
+      "original": "File:SieboldChillingReign153.jpg",
+      "local": "siebold-10.jpg",
+      "path": "/images/scraped/elite-four/siebold-10.jpg",
+      "width": 868,
+      "height": 1212
+    },
+    {
+      "character": "Wikstrom",
+      "original": "File:XY Wikstrom.png",
+      "local": "wikstrom-1.png",
+      "path": "/images/scraped/elite-four/wikstrom-1.png",
+      "width": 300,
+      "height": 468
+    },
+    {
+      "character": "Wikstrom",
+      "original": "File:Masters Dream Team Maker Wikstrom and Aegislash.png",
+      "local": "wikstrom-2.png",
+      "path": "/images/scraped/elite-four/wikstrom-2.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Wikstrom",
+      "original": "File:Spr Masters Wikstrom 2.png",
+      "local": "wikstrom-3.png",
+      "path": "/images/scraped/elite-four/wikstrom-3.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Wikstrom",
+      "original": "File:Spr Masters Wikstrom EX.png",
+      "local": "wikstrom-4.png",
+      "path": "/images/scraped/elite-four/wikstrom-4.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Wikstrom",
+      "original": "File:Spr Masters Wikstrom.png",
+      "local": "wikstrom-5.png",
+      "path": "/images/scraped/elite-four/wikstrom-5.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Wikstrom",
+      "original": "File:VSWikstrom EX Masters.png",
+      "local": "wikstrom-6.png",
+      "path": "/images/scraped/elite-four/wikstrom-6.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Wikstrom",
+      "original": "File:VSWikstrom Masters.png",
+      "local": "wikstrom-7.png",
+      "path": "/images/scraped/elite-four/wikstrom-7.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Wikstrom",
+      "original": "File:VSWikstrom.png",
+      "local": "wikstrom-8.png",
+      "path": "/images/scraped/elite-four/wikstrom-8.png",
+      "width": 512,
+      "height": 256
+    },
+    {
+      "character": "Wikstrom",
+      "original": "File:Wikstrom Adventures.png",
+      "local": "wikstrom-9.png",
+      "path": "/images/scraped/elite-four/wikstrom-9.png",
+      "width": 218,
+      "height": 276
+    },
+    {
+      "character": "Wikstrom",
+      "original": "File:Wikstrom and Drasna.png",
+      "local": "wikstrom-10.png",
+      "path": "/images/scraped/elite-four/wikstrom-10.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Drasna",
+      "original": "File:XY Drasna.png",
+      "local": "drasna-1.png",
+      "path": "/images/scraped/elite-four/drasna-1.png",
+      "width": 578,
+      "height": 861
+    },
+    {
+      "character": "Drasna",
+      "original": "File:Drasna and Ash.png",
+      "local": "drasna-2.png",
+      "path": "/images/scraped/elite-four/drasna-2.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Drasna",
+      "original": "File:Drasna anime.png",
+      "local": "drasna-3.png",
+      "path": "/images/scraped/elite-four/drasna-3.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Drasna",
+      "original": "File:Drasna Battle XY.png",
+      "local": "drasna-4.png",
+      "path": "/images/scraped/elite-four/drasna-4.png",
+      "width": 400,
+      "height": 240
+    },
+    {
+      "character": "Drasna",
+      "original": "File:Drasna Dragalge.png",
+      "local": "drasna-5.png",
+      "path": "/images/scraped/elite-four/drasna-5.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Drasna",
+      "original": "File:Drasna Pokemon.png",
+      "local": "drasna-6.png",
+      "path": "/images/scraped/elite-four/drasna-6.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Drasna",
+      "original": "File:Drasna ranking WCS.png",
+      "local": "drasna-7.png",
+      "path": "/images/scraped/elite-four/drasna-7.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Drasna",
+      "original": "File:Drasna XY OD.png",
+      "local": "drasna-8.png",
+      "path": "/images/scraped/elite-four/drasna-8.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Drasna",
+      "original": "File:DrasnaSurgingSparks173.jpg",
+      "local": "drasna-9.jpg",
+      "path": "/images/scraped/elite-four/drasna-9.jpg",
+      "width": 734,
+      "height": 1024
+    },
+    {
+      "character": "Drasna",
+      "original": "File:DrasnaSurgingSparks231.jpg",
+      "local": "drasna-10.jpg",
+      "path": "/images/scraped/elite-four/drasna-10.jpg",
+      "width": 734,
+      "height": 1024
+    },
+    {
+      "character": "Hala",
+      "original": "File:Sun Moon Hala.png",
+      "local": "hala-1.png",
+      "path": "/images/scraped/elite-four/hala-1.png",
+      "width": 915,
+      "height": 1280
+    },
+    {
+      "character": "Hala",
+      "original": "File:GuzmaHalaCosmicEclipse193.jpg",
+      "local": "hala-2.jpg",
+      "path": "/images/scraped/elite-four/hala-2.jpg",
+      "width": 748,
+      "height": 1044
+    },
+    {
+      "character": "Hala",
+      "original": "File:GuzmaHalaCosmicEclipse229.jpg",
+      "local": "hala-3.jpg",
+      "path": "/images/scraped/elite-four/hala-3.jpg",
+      "width": 748,
+      "height": 1044
+    },
+    {
+      "character": "Hala",
+      "original": "File:Hala Adventures.png",
+      "local": "hala-4.png",
+      "path": "/images/scraped/elite-four/hala-4.png",
+      "width": 883,
+      "height": 517
+    },
+    {
+      "character": "Hala",
+      "original": "File:Hala All-Out Pummeling pose.png",
+      "local": "hala-5.png",
+      "path": "/images/scraped/elite-four/hala-5.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Hala",
+      "original": "File:Hala and Hau.png",
+      "local": "hala-6.png",
+      "path": "/images/scraped/elite-four/hala-6.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Hala",
+      "original": "File:Hala anime.png",
+      "local": "hala-7.png",
+      "path": "/images/scraped/elite-four/hala-7.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Hala",
+      "original": "File:Hala Bewear Adventures.png",
+      "local": "hala-8.png",
+      "path": "/images/scraped/elite-four/hala-8.png",
+      "width": 363,
+      "height": 503
+    },
+    {
+      "character": "Hala",
+      "original": "File:Hala concept art.png",
+      "local": "hala-9.png",
+      "path": "/images/scraped/elite-four/hala-9.png",
+      "width": 1280,
+      "height": 891
+    },
+    {
+      "character": "Hala",
+      "original": "File:Hala PMSM.png",
+      "local": "hala-10.png",
+      "path": "/images/scraped/elite-four/hala-10.png",
+      "width": 460,
+      "height": 214
+    },
+    {
+      "character": "Olivia",
+      "original": "File:Sun Moon Olivia.png",
+      "local": "olivia-1.png",
+      "path": "/images/scraped/elite-four/olivia-1.png",
+      "width": 656,
+      "height": 1280
+    },
+    {
+      "character": "Olivia",
+      "original": "File:Masters Dream Team Maker Olivia and Lycanroc.png",
+      "local": "olivia-2.png",
+      "path": "/images/scraped/elite-four/olivia-2.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Olivia",
+      "original": "File:Olivia Adventures.png",
+      "local": "olivia-3.png",
+      "path": "/images/scraped/elite-four/olivia-3.png",
+      "width": 357,
+      "height": 876
+    },
+    {
+      "character": "Olivia",
+      "original": "File:Olivia anime.png",
+      "local": "olivia-4.png",
+      "path": "/images/scraped/elite-four/olivia-4.png",
+      "width": 993,
+      "height": 1280
+    },
+    {
+      "character": "Olivia",
+      "original": "File:Olivia concept art.png",
+      "local": "olivia-5.png",
+      "path": "/images/scraped/elite-four/olivia-5.png",
+      "width": 1280,
+      "height": 895
+    },
+    {
+      "character": "Olivia",
+      "original": "File:Olivia Continental Crush pose.png",
+      "local": "olivia-6.png",
+      "path": "/images/scraped/elite-four/olivia-6.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Olivia",
+      "original": "File:Olivia Horizon.png",
+      "local": "olivia-7.png",
+      "path": "/images/scraped/elite-four/olivia-7.png",
+      "width": 791,
+      "height": 1111
+    },
+    {
+      "character": "Olivia",
+      "original": "File:Olivia Probopass.png",
+      "local": "olivia-8.png",
+      "path": "/images/scraped/elite-four/olivia-8.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Olivia",
+      "original": "File:Olivia SM OD.png",
+      "local": "olivia-9.png",
+      "path": "/images/scraped/elite-four/olivia-9.png",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "character": "Olivia",
+      "original": "File:OliviaBurningShadows119.jpg",
+      "local": "olivia-10.jpg",
+      "path": "/images/scraped/elite-four/olivia-10.jpg",
+      "width": 748,
+      "height": 1044
+    },
+    {
+      "character": "Nanu",
+      "original": "File:Sun Moon Nanu.png",
+      "local": "nanu-1.png",
+      "path": "/images/scraped/elite-four/nanu-1.png",
+      "width": 430,
+      "height": 1280
+    },
+    {
+      "character": "Nanu",
+      "original": "File:Nanu Black Hole Eclipse pose.png",
+      "local": "nanu-2.png",
+      "path": "/images/scraped/elite-four/nanu-2.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Nanu",
+      "original": "File:Masters Dream Team Maker Nanu and Persian.png",
+      "local": "nanu-3.png",
+      "path": "/images/scraped/elite-four/nanu-3.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Nanu",
+      "original": "File:Nanu Adventures.png",
+      "local": "nanu-4.png",
+      "path": "/images/scraped/elite-four/nanu-4.png",
+      "width": 545,
+      "height": 397
+    },
+    {
+      "character": "Nanu",
+      "original": "File:Nanu anime.png",
+      "local": "nanu-5.png",
+      "path": "/images/scraped/elite-four/nanu-5.png",
+      "width": 1280,
+      "height": 1481
+    },
+    {
+      "character": "Nanu",
+      "original": "File:Nanu concept art.png",
+      "local": "nanu-6.png",
+      "path": "/images/scraped/elite-four/nanu-6.png",
+      "width": 1280,
+      "height": 891
+    },
+    {
+      "character": "Nanu",
+      "original": "File:Nanu Grimsley Masters Trailer.png",
+      "local": "nanu-7.png",
+      "path": "/images/scraped/elite-four/nanu-7.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Nanu",
+      "original": "File:Nanu Krookodile Intimidate.png",
+      "local": "nanu-8.png",
+      "path": "/images/scraped/elite-four/nanu-8.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Nanu",
+      "original": "File:Nanu Sleeves.jpg",
+      "local": "nanu-9.jpg",
+      "path": "/images/scraped/elite-four/nanu-9.jpg",
+      "width": 1657,
+      "height": 1446
+    },
+    {
+      "character": "Nanu",
+      "original": "File:Nanu SM OD.png",
+      "local": "nanu-10.png",
+      "path": "/images/scraped/elite-four/nanu-10.png",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "character": "Hapu",
+      "original": "File:Sun Moon Hapu.png",
+      "local": "hapu-1.png",
+      "path": "/images/scraped/elite-four/hapu-1.png",
+      "width": 378,
+      "height": 680
+    },
+    {
+      "character": "Hapu",
+      "original": "File:Hapu Adventures.png",
+      "local": "hapu-2.png",
+      "path": "/images/scraped/elite-four/hapu-2.png",
+      "width": 618,
+      "height": 841
+    },
+    {
+      "character": "Hapu",
+      "original": "File:Hapu and Tapu Fini.png",
+      "local": "hapu-3.png",
+      "path": "/images/scraped/elite-four/hapu-3.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Hapu",
+      "original": "File:Hapu anime.png",
+      "local": "hapu-4.png",
+      "path": "/images/scraped/elite-four/hapu-4.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Hapu",
+      "original": "File:Hapu concept art USUM Art Book.jpg",
+      "local": "hapu-5.jpg",
+      "path": "/images/scraped/elite-four/hapu-5.jpg",
+      "width": 3859,
+      "height": 2601
+    },
+    {
+      "character": "Hapu",
+      "original": "File:Hapu concept art.png",
+      "local": "hapu-6.png",
+      "path": "/images/scraped/elite-four/hapu-6.png",
+      "width": 1280,
+      "height": 891
+    },
+    {
+      "character": "Hapu",
+      "original": "File:Hapu dress.png",
+      "local": "hapu-7.png",
+      "path": "/images/scraped/elite-four/hapu-7.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Hapu",
+      "original": "File:Hapu Mudsdale Mega Kick Adventures.png",
+      "local": "hapu-8.png",
+      "path": "/images/scraped/elite-four/hapu-8.png",
+      "width": 543,
+      "height": 548
+    },
+    {
+      "character": "Hapu",
+      "original": "File:Hapu Mudsdale Stamina.png",
+      "local": "hapu-9.png",
+      "path": "/images/scraped/elite-four/hapu-9.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Hapu",
+      "original": "File:Hapu SM OD.png",
+      "local": "hapu-10.png",
+      "path": "/images/scraped/elite-four/hapu-10.png",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "character": "Acerola",
+      "original": "File:Sun Moon Acerola.png",
+      "local": "acerola-1.png",
+      "path": "/images/scraped/elite-four/acerola-1.png",
+      "width": 784,
+      "height": 1280
+    },
+    {
+      "character": "Acerola",
+      "original": "File:Acerola Adventures.png",
+      "local": "acerola-2.png",
+      "path": "/images/scraped/elite-four/acerola-2.png",
+      "width": 714,
+      "height": 1027
+    },
+    {
+      "character": "Acerola",
+      "original": "File:Acerola anime.png",
+      "local": "acerola-3.png",
+      "path": "/images/scraped/elite-four/acerola-3.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Acerola",
+      "original": "File:Acerola Concept Art SM 2.jpg",
+      "local": "acerola-4.jpg",
+      "path": "/images/scraped/elite-four/acerola-4.jpg",
+      "width": 3663,
+      "height": 2522
+    },
+    {
+      "character": "Acerola",
+      "original": "File:Acerola concept art.png",
+      "local": "acerola-5.png",
+      "path": "/images/scraped/elite-four/acerola-5.png",
+      "width": 1280,
+      "height": 878
+    },
+    {
+      "character": "Acerola",
+      "original": "File:Acerola Dhelmise Adventures.png",
+      "local": "acerola-6.png",
+      "path": "/images/scraped/elite-four/acerola-6.png",
+      "width": 413,
+      "height": 503
+    },
+    {
+      "character": "Acerola",
+      "original": "File:Acerola Sleeves.jpg",
+      "local": "acerola-7.jpg",
+      "path": "/images/scraped/elite-four/acerola-7.jpg",
+      "width": 595,
+      "height": 515
+    },
+    {
+      "character": "Acerola",
+      "original": "File:Acerola SM OD.png",
+      "local": "acerola-8.png",
+      "path": "/images/scraped/elite-four/acerola-8.png",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "character": "Acerola",
+      "original": "File:AcerolaBurningShadows112.jpg",
+      "local": "acerola-9.jpg",
+      "path": "/images/scraped/elite-four/acerola-9.jpg",
+      "width": 866,
+      "height": 1206
+    },
+    {
+      "character": "Acerola",
+      "original": "File:AcerolaBurningShadows112a.jpg",
+      "local": "acerola-10.jpg",
+      "path": "/images/scraped/elite-four/acerola-10.jpg",
+      "width": 748,
+      "height": 1044
+    },
+    {
+      "character": "Kahili",
+      "original": "File:Sun Moon Kahili.png",
+      "local": "kahili-1.png",
+      "path": "/images/scraped/elite-four/kahili-1.png",
+      "width": 493,
+      "height": 766
+    },
+    {
+      "character": "Kahili",
+      "original": "File:Kahili Adventures.png",
+      "local": "kahili-2.png",
+      "path": "/images/scraped/elite-four/kahili-2.png",
+      "width": 417,
+      "height": 880
+    },
+    {
+      "character": "Kahili",
+      "original": "File:Kahili anime.png",
+      "local": "kahili-3.png",
+      "path": "/images/scraped/elite-four/kahili-3.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Kahili",
+      "original": "File:Kahili concept art.jpg",
+      "local": "kahili-4.jpg",
+      "path": "/images/scraped/elite-four/kahili-4.jpg",
+      "width": 3720,
+      "height": 2609
+    },
+    {
+      "character": "Kahili",
+      "original": "File:Kahili SM OD.png",
+      "local": "kahili-5.png",
+      "path": "/images/scraped/elite-four/kahili-5.png",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "character": "Kahili",
+      "original": "File:Kahili Touckey Beak Blast.png",
+      "local": "kahili-6.png",
+      "path": "/images/scraped/elite-four/kahili-6.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Kahili",
+      "original": "File:Kahili Touckey Tailwind.png",
+      "local": "kahili-7.png",
+      "path": "/images/scraped/elite-four/kahili-7.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Kahili",
+      "original": "File:KahiliLostThunder179.jpg",
+      "local": "kahili-8.jpg",
+      "path": "/images/scraped/elite-four/kahili-8.jpg",
+      "width": 748,
+      "height": 1044
+    },
+    {
+      "character": "Kahili",
+      "original": "File:KahiliLostThunder210.jpg",
+      "local": "kahili-9.jpg",
+      "path": "/images/scraped/elite-four/kahili-9.jpg",
+      "width": 748,
+      "height": 1044
+    },
+    {
+      "character": "Kahili",
+      "original": "File:Masters Dream Team Maker Kahili and Toucannon.png",
+      "local": "kahili-10.png",
+      "path": "/images/scraped/elite-four/kahili-10.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Molayne",
+      "original": "File:Molayne Adventures.png",
+      "local": "molayne-1.png",
+      "path": "/images/scraped/elite-four/molayne-1.png",
+      "width": 393,
+      "height": 688
+    },
+    {
+      "character": "Molayne",
+      "original": "File:Molayne anime.png",
+      "local": "molayne-2.png",
+      "path": "/images/scraped/elite-four/molayne-2.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Molayne",
+      "original": "File:Molayne SM concept art.png",
+      "local": "molayne-3.png",
+      "path": "/images/scraped/elite-four/molayne-3.png",
+      "width": 1280,
+      "height": 888
+    },
+    {
+      "character": "Molayne",
+      "original": "File:Molayne SM OD.png",
+      "local": "molayne-4.png",
+      "path": "/images/scraped/elite-four/molayne-4.png",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "character": "Molayne",
+      "original": "File:MolayneUnbrokenBonds181.jpg",
+      "local": "molayne-5.jpg",
+      "path": "/images/scraped/elite-four/molayne-5.jpg",
+      "width": 748,
+      "height": 1044
+    },
+    {
+      "character": "Molayne",
+      "original": "File:MolayneUnbrokenBonds212.jpg",
+      "local": "molayne-6.jpg",
+      "path": "/images/scraped/elite-four/molayne-6.jpg",
+      "width": 748,
+      "height": 1044
+    },
+    {
+      "character": "Molayne",
+      "original": "File:Sophocles and Molayne anime.png",
+      "local": "molayne-7.png",
+      "path": "/images/scraped/elite-four/molayne-7.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Molayne",
+      "original": "File:Spr Masters Molayne.png",
+      "local": "molayne-8.png",
+      "path": "/images/scraped/elite-four/molayne-8.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Molayne",
+      "original": "File:Spr SM Molayne.png",
+      "local": "molayne-9.png",
+      "path": "/images/scraped/elite-four/molayne-9.png",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "character": "Molayne",
+      "original": "File:VSMolayne Masters.png",
+      "local": "molayne-10.png",
+      "path": "/images/scraped/elite-four/molayne-10.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Rika",
+      "original": "File:Scarlet Violet Rika.png",
+      "local": "rika-1.png",
+      "path": "/images/scraped/elite-four/rika-1.png",
+      "width": 386,
+      "height": 1134
+    },
+    {
+      "character": "Rika",
+      "original": "File:Rika HZ.png",
+      "local": "rika-2.png",
+      "path": "/images/scraped/elite-four/rika-2.png",
+      "width": 433,
+      "height": 1061
+    },
+    {
+      "character": "Rika",
+      "original": "File:Animedia September 2024 Rika HZ Anime.png",
+      "local": "rika-3.png",
+      "path": "/images/scraped/elite-four/rika-3.png",
+      "width": 1000,
+      "height": 1291
+    },
+    {
+      "character": "Rika",
+      "original": "File:Art Life 20231001 Rika.jpg",
+      "local": "rika-4.jpg",
+      "path": "/images/scraped/elite-four/rika-4.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Rika",
+      "original": "File:Art Life 20240622 Rika.jpg",
+      "local": "rika-5.jpg",
+      "path": "/images/scraped/elite-four/rika-5.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Rika",
+      "original": "File:Horizons OP3 Rika.png",
+      "local": "rika-6.png",
+      "path": "/images/scraped/elite-four/rika-6.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Rika",
+      "original": "File:Horizons Rika concept art.png",
+      "local": "rika-7.png",
+      "path": "/images/scraped/elite-four/rika-7.png",
+      "width": 892,
+      "height": 623
+    },
+    {
+      "character": "Rika",
+      "original": "File:HZ eyecatch Rika Clodsire.png",
+      "local": "rika-8.png",
+      "path": "/images/scraped/elite-four/rika-8.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Rika",
+      "original": "File:Masters EX Rika Debut Artwork.png",
+      "local": "rika-9.png",
+      "path": "/images/scraped/elite-four/rika-9.png",
+      "width": 1040,
+      "height": 1380
+    },
+    {
+      "character": "Rika",
+      "original": "File:Masters EX Rika Shorts.png",
+      "local": "rika-10.png",
+      "path": "/images/scraped/elite-four/rika-10.png",
+      "width": 2160,
+      "height": 2160
+    },
+    {
+      "character": "Poppy",
+      "original": "File:Scarlet Violet Poppy.png",
+      "local": "poppy-1.png",
+      "path": "/images/scraped/elite-four/poppy-1.png",
+      "width": 330,
+      "height": 762
+    },
+    {
+      "character": "Poppy",
+      "original": "File:Poppy HZ.png",
+      "local": "poppy-2.png",
+      "path": "/images/scraped/elite-four/poppy-2.png",
+      "width": 356,
+      "height": 1007
+    },
+    {
+      "character": "Poppy",
+      "original": "File:Art Life 20240622 Poppy.jpg",
+      "local": "poppy-3.jpg",
+      "path": "/images/scraped/elite-four/poppy-3.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Poppy",
+      "original": "File:Horizons OP3 Poppy.png",
+      "local": "poppy-4.png",
+      "path": "/images/scraped/elite-four/poppy-4.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Poppy",
+      "original": "File:Horizons Poppy concept art.png",
+      "local": "poppy-5.png",
+      "path": "/images/scraped/elite-four/poppy-5.png",
+      "width": 884,
+      "height": 640
+    },
+    {
+      "character": "Poppy",
+      "original": "File:HZ eyecatch Poppy Tinkie.png",
+      "local": "poppy-6.png",
+      "path": "/images/scraped/elite-four/poppy-6.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Poppy",
+      "original": "File:Masters EX Poppy Debut Artwork.png",
+      "local": "poppy-7.png",
+      "path": "/images/scraped/elite-four/poppy-7.png",
+      "width": 1040,
+      "height": 1380
+    },
+    {
+      "character": "Poppy",
+      "original": "File:NSO SV DLC1 Week 3 - Character - Poppy.png",
+      "local": "poppy-8.png",
+      "path": "/images/scraped/elite-four/poppy-8.png",
+      "width": 512,
+      "height": 512
+    },
+    {
+      "character": "Poppy",
+      "original": "File:NSO SV DLC2 Rayquaza Week 2 - Character - Poppy02.png",
+      "local": "poppy-9.png",
+      "path": "/images/scraped/elite-four/poppy-9.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Poppy",
+      "original": "File:Poppy Adventures.png",
+      "local": "poppy-10.png",
+      "path": "/images/scraped/elite-four/poppy-10.png",
+      "width": 218,
+      "height": 336
+    },
+    {
+      "character": "Larry",
+      "original": "File:Scarlet Violet Larry.png",
+      "local": "larry-1.png",
+      "path": "/images/scraped/elite-four/larry-1.png",
+      "width": 1826,
+      "height": 4781
+    },
+    {
+      "character": "Larry",
+      "original": "File:Larry Anime Expression Sheet.png",
+      "local": "larry-2.png",
+      "path": "/images/scraped/elite-four/larry-2.png",
+      "width": 900,
+      "height": 545
+    },
+    {
+      "character": "Larry",
+      "original": "File:Larry HZ.png",
+      "local": "larry-3.png",
+      "path": "/images/scraped/elite-four/larry-3.png",
+      "width": 374,
+      "height": 1004
+    },
+    {
+      "character": "Larry",
+      "original": "File:Horizons Larry concept art.png",
+      "local": "larry-4.png",
+      "path": "/images/scraped/elite-four/larry-4.png",
+      "width": 834,
+      "height": 580
+    },
+    {
+      "character": "Larry",
+      "original": "File:Horizons OP3 Larry.png",
+      "local": "larry-5.png",
+      "path": "/images/scraped/elite-four/larry-5.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Larry",
+      "original": "File:HZ eyecatch Larry Staraptor.png",
+      "local": "larry-6.png",
+      "path": "/images/scraped/elite-four/larry-6.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Larry",
+      "original": "File:Larry Adventures.png",
+      "local": "larry-7.png",
+      "path": "/images/scraped/elite-four/larry-7.png",
+      "width": 652,
+      "height": 1190
+    },
+    {
+      "character": "Larry",
+      "original": "File:Larry anime.png",
+      "local": "larry-8.png",
+      "path": "/images/scraped/elite-four/larry-8.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Larry",
+      "original": "File:Larry concept art.jpg",
+      "local": "larry-9.jpg",
+      "path": "/images/scraped/elite-four/larry-9.jpg",
+      "width": 1096,
+      "height": 805
+    },
+    {
+      "character": "Larry",
+      "original": "File:Larry gym badge.png",
+      "local": "larry-10.png",
+      "path": "/images/scraped/elite-four/larry-10.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Hassel",
+      "original": "File:Scarlet Violet Hassel.png",
+      "local": "hassel-1.png",
+      "path": "/images/scraped/elite-four/hassel-1.png",
+      "width": 460,
+      "height": 1136
+    },
+    {
+      "character": "Hassel",
+      "original": "File:Hassel Anime Expression Sheet.png",
+      "local": "hassel-2.png",
+      "path": "/images/scraped/elite-four/hassel-2.png",
+      "width": 900,
+      "height": 543
+    },
+    {
+      "character": "Hassel",
+      "original": "File:Hassel HZ.png",
+      "local": "hassel-3.png",
+      "path": "/images/scraped/elite-four/hassel-3.png",
+      "width": 333,
+      "height": 1016
+    },
+    {
+      "character": "Hassel",
+      "original": "File:Hassel Adventures.png",
+      "local": "hassel-4.png",
+      "path": "/images/scraped/elite-four/hassel-4.png",
+      "width": 357,
+      "height": 709
+    },
+    {
+      "character": "Hassel",
+      "original": "File:Hassel anime.png",
+      "local": "hassel-5.png",
+      "path": "/images/scraped/elite-four/hassel-5.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Hassel",
+      "original": "File:Hassel concept art.jpg",
+      "local": "hassel-6.jpg",
+      "path": "/images/scraped/elite-four/hassel-6.jpg",
+      "width": 1091,
+      "height": 803
+    },
+    {
+      "character": "Hassel",
+      "original": "File:Hassel Gible.png",
+      "local": "hassel-7.png",
+      "path": "/images/scraped/elite-four/hassel-7.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Hassel",
+      "original": "File:Hassel Paldean Winds.png",
+      "local": "hassel-8.png",
+      "path": "/images/scraped/elite-four/hassel-8.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Hassel",
+      "original": "File:HasselTwilightMasquerade151.jpg",
+      "local": "hassel-9.jpg",
+      "path": "/images/scraped/elite-four/hassel-9.jpg",
+      "width": 660,
+      "height": 920
+    },
+    {
+      "character": "Hassel",
+      "original": "File:HasselTwilightMasquerade205.jpg",
+      "local": "hassel-10.jpg",
+      "path": "/images/scraped/elite-four/hassel-10.jpg",
+      "width": 660,
+      "height": 920
+    }
+  ]
+}

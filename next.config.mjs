@@ -125,6 +125,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'limitlesstcg.nyc3.cdn.digitaloceanspaces.com',
         pathname: '/**', // Allow all paths including /pocket/
+      },
+      {
+        protocol: 'https',
+        hostname: 'archives.bulbagarden.net',
+        pathname: '/**', // Allow all paths for Bulbapedia images
       }
     ],
   },
@@ -189,6 +194,14 @@ const nextConfig = {
   experimental: {
     // Only enable stable experimental features
     esmExternals: true,
+  },
+  
+  // Re-enable linting and type checking during build
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
+  typescript: {
+    ignoreBuildErrors: false,
   },
 };
 

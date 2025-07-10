@@ -17,6 +17,8 @@ import { fetchPocketData } from "../../utils/pocketData";
 import pokemonTCG from "pokemontcgsdk";
 import PokeballLoader from "../../components/ui/PokeballLoader";
 import Modal from "../../components/ui/Modal";
+import { FullBleedWrapper } from "../../components/ui/FullBleedWrapper";
+import { getTypeUIColors } from "../../utils/pokemonTypeGradients";
 
 // Initialize Pokemon TCG SDK at module level
 if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY) {
@@ -291,6 +293,9 @@ export default function PokemonDetail() {
   }
 
   const generation = getGeneration(pokemon.id);
+  
+  // Get type-based UI colors
+  const typeColors = getTypeUIColors(pokemon.types);
 
   return (
     <div>
@@ -316,46 +321,93 @@ export default function PokemonDetail() {
         <meta name="description" content={`Detailed information about ${pokemon.name} including stats, types, and abilities.`} />
       </Head>
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <FullBleedWrapper gradient="pokemon-type" pokemonTypes={pokemon.types}>
+        <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <Link href="/pokedex" className="text-pokemon-red hover:underline flex items-center">
-            ← Back to Pokédex
+          <Link href="/pokedex" className={`group flex items-center gap-2 px-6 py-3 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-md hover:shadow-lg transition-all duration-300 border border-${typeColors.border}/30 dark:border-${typeColors.borderDark}/30`}>
+            <svg className={`w-5 h-5 text-${typeColors.button} group-hover:-translate-x-1 transition-transform duration-300`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            <span className="font-semibold text-gray-700 dark:text-gray-200">Back to Pokédex</span>
           </Link>
           <button
             onClick={toggleFavorite}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+            className={`group flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg backdrop-blur-sm border border-${typeColors.border}/30 dark:border-${typeColors.borderDark}/30 ${
               isFavorite 
-                ? 'bg-red-500 text-white hover:bg-red-600' 
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                ? `bg-gradient-to-r from-${typeColors.button} to-${typeColors.buttonHover} text-white hover:from-${typeColors.buttonHover} hover:to-${typeColors.button}` 
+                : `bg-white/80 dark:bg-gray-800/80 text-gray-700 dark:text-gray-200 hover:bg-gradient-to-r hover:from-${typeColors.bg} hover:to-${typeColors.glass} dark:hover:from-${typeColors.bgDark} dark:hover:to-${typeColors.glassDark}`
             }`}
           >
-            {isFavorite ? '❤️ Remove from Favorites' : '🤍 Add to Favorites'}
+            <span className="text-lg">{isFavorite ? '❤️' : '🤍'}</span>
+            <span>{isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}</span>
           </button>
         </div>
 
         {/* Pokemon Info */}
-        <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
+        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/30 dark:border-gray-700/30 p-8 mb-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Image */}
             <div className="flex flex-col justify-center items-center">
               <div className="relative mb-4">
-                {/* Circular border container */}
-                <div className="relative w-80 h-80 lg:w-96 lg:h-96">
-                  {/* Simple gray border */}
-                  <div className="absolute inset-0 rounded-full bg-gray-300 p-1">
-                    <div className="w-full h-full rounded-full bg-white p-4">
-                      {/* Inner circle with subtle shadow */}
-                      <div className="relative w-full h-full rounded-full bg-gray-50 shadow-inner overflow-hidden">
-                        <Image
-                          src={pokemon.sprites?.other?.["official-artwork"]?.front_default || pokemon.sprites?.front_default || "/dextrendslogo.png"}
-                          alt={pokemon.name}
-                          fill
-                          className="object-contain p-4"
-                          priority
-                        />
-                      </div>
-                    </div>
+                {/* Circular border container with extra space for ring */}
+                <div className="relative w-96 h-96 lg:w-[28rem] lg:h-[28rem]">
+                  {/* Outer ring with darker color - using gradient background for dual types */}
+                  <div className={`absolute inset-0 rounded-full ${(() => {
+                    const types = pokemon.types;
+                    const primaryType = types[0].type.name;
+                    const secondaryType = types.length > 1 ? types[1].type.name : null;
+                    
+                    // For dual types, create gradient ring
+                    if (secondaryType) {
+                      const typeToColorMap = {
+                        normal: 'amber', fire: 'red', water: 'blue', electric: 'yellow', grass: 'green',
+                        ice: 'cyan', fighting: 'red', poison: 'purple', ground: 'yellow', flying: 'sky',
+                        psychic: 'pink', bug: 'lime', rock: 'stone', ghost: 'purple', dragon: 'indigo',
+                        dark: 'gray', steel: 'slate', fairy: 'pink'
+                      };
+                      
+                      const primaryColor = typeToColorMap[primaryType] || 'purple';
+                      const secondaryColor = typeToColorMap[secondaryType] || 'purple';
+                      
+                      return `bg-gradient-to-br from-${primaryColor}-500/20 to-${secondaryColor}-500/20 dark:from-${primaryColor}-600/25 dark:to-${secondaryColor}-600/25`;
+                    }
+                    
+                    // Single type solid colors - 15% opacity for outer ring (extremely subtle)
+                    const singleTypeRings = {
+                      normal: 'bg-amber-500/15 dark:bg-amber-600/20',
+                      fire: 'bg-red-500/15 dark:bg-red-600/20',
+                      water: 'bg-blue-500/15 dark:bg-blue-600/20',
+                      electric: 'bg-yellow-500/15 dark:bg-yellow-600/20',
+                      grass: 'bg-green-500/15 dark:bg-green-600/20',
+                      ice: 'bg-cyan-500/15 dark:bg-cyan-600/20',
+                      fighting: 'bg-red-500/15 dark:bg-red-600/20',
+                      poison: 'bg-purple-500/15 dark:bg-purple-600/20',
+                      ground: 'bg-yellow-500/15 dark:bg-yellow-600/20',
+                      flying: 'bg-sky-500/15 dark:bg-sky-600/20',
+                      psychic: 'bg-pink-500/15 dark:bg-pink-600/20',
+                      bug: 'bg-lime-500/15 dark:bg-lime-600/20',
+                      rock: 'bg-stone-500/15 dark:bg-stone-600/20',
+                      ghost: 'bg-purple-500/15 dark:bg-purple-600/20',
+                      dragon: 'bg-indigo-500/15 dark:bg-indigo-600/20',
+                      dark: 'bg-gray-500/15 dark:bg-gray-600/20',
+                      steel: 'bg-slate-500/15 dark:bg-slate-600/20',
+                      fairy: 'bg-pink-500/15 dark:bg-pink-600/20'
+                    };
+                    
+                    return singleTypeRings[primaryType] || 'bg-purple-500/15 dark:bg-purple-600/20';
+                  })()} shadow-xl`}></div>
+                  
+                  {/* Inner circle with solid light grey background */}
+                  <div className="absolute inset-8 rounded-full bg-gray-100 dark:bg-gray-900 shadow-2xl">
+                    {/* Pokemon image directly on gradient background */}
+                    <Image
+                      src={pokemon.sprites?.other?.["official-artwork"]?.front_default || pokemon.sprites?.front_default || "/dextrendslogo.png"}
+                      alt={pokemon.name}
+                      fill
+                      className="object-contain p-8 relative z-10"
+                      priority
+                    />
                   </div>
                 </div>
               </div>
@@ -395,9 +447,9 @@ export default function PokemonDetail() {
                     return capitalizedBase;
                   })()}
                 </h1>
-                <div className="flex items-center bg-gradient-to-r from-gray-100 to-gray-200 px-4 py-2 rounded-full border border-gray-300">
-                  <span className="text-sm font-medium text-gray-600">No.</span>
-                  <span className="text-xl font-bold text-gray-800 ml-1 font-mono">
+                <div className={`flex items-center ${typeColors.cardBg} px-4 py-2 rounded-full border ${typeColors.cardBorder}`}>
+                  <span className={`text-sm font-medium text-${typeColors.text} dark:text-${typeColors.textDark}`}>No.</span>
+                  <span className={`text-xl font-bold text-${typeColors.text} dark:text-${typeColors.textDark} ml-1 font-mono`}>
                     {pokemon.id.toString().padStart(3, '0')}
                   </span>
                 </div>
@@ -414,7 +466,7 @@ export default function PokemonDetail() {
 
               {/* Types */}
               <div className="mb-4">
-                <h3 className="text-lg font-semibold text-gray-700 mb-2">Types</h3>
+                <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">Types</h3>
                 <div className="flex gap-2">
                   {pokemon.types.map((typeInfo) => (
                     <TypeBadge key={typeInfo.type.name} type={typeInfo.type.name} size="md" />
@@ -424,59 +476,59 @@ export default function PokemonDetail() {
 
               {/* Basic Info - Enhanced Grid */}
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
-                <div className="bg-gray-50 p-2 sm:p-3 rounded">
-                  <h4 className="font-semibold text-gray-700 text-xs sm:text-sm">Height</h4>
-                  <p className="text-gray-900 text-base sm:text-lg font-medium">{(pokemon.height / 10).toFixed(1)} m</p>
-                  <p className="text-gray-500 text-[10px] sm:text-xs">{((pokemon.height / 10) * 3.281).toFixed(1)} ft</p>
+                <div className={`bg-gradient-to-br from-${typeColors.bg} to-${typeColors.glass} dark:from-${typeColors.bgDark}/30 dark:to-${typeColors.glassDark}/30 p-2 sm:p-3 rounded-2xl border border-${typeColors.border}/50 dark:border-${typeColors.borderDark}/50 shadow-lg`}>
+                  <h4 className={`font-semibold text-${typeColors.text} dark:text-${typeColors.textDark} text-xs sm:text-sm`}>Height</h4>
+                  <p className={`text-${typeColors.text} dark:text-${typeColors.textDark} text-base sm:text-lg font-medium`}>{(pokemon.height / 10).toFixed(1)} m</p>
+                  <p className={`text-${typeColors.button} dark:text-${typeColors.textDark} text-[10px] sm:text-xs opacity-75`}>{((pokemon.height / 10) * 3.281).toFixed(1)} ft</p>
                 </div>
-                <div className="bg-gray-50 p-3 rounded">
-                  <h4 className="font-semibold text-gray-700 text-sm">Weight</h4>
-                  <p className="text-gray-900 text-lg font-medium">{(pokemon.weight / 10).toFixed(1)} kg</p>
-                  <p className="text-gray-500 text-xs">{((pokemon.weight / 10) * 2.205).toFixed(1)} lbs</p>
+                <div className={`${typeColors.cardBg} p-3 rounded-2xl border ${typeColors.cardBorder} shadow-lg`}>
+                  <h4 className={`font-semibold text-${typeColors.text} dark:text-${typeColors.textDark} text-sm`}>Weight</h4>
+                  <p className={`text-${typeColors.text} dark:text-${typeColors.textDark} text-lg font-medium`}>{(pokemon.weight / 10).toFixed(1)} kg</p>
+                  <p className={`text-${typeColors.button} dark:text-${typeColors.textDark} text-xs opacity-75`}>{((pokemon.weight / 10) * 2.205).toFixed(1)} lbs</p>
                 </div>
-                <div className="bg-gray-50 p-3 rounded">
-                  <h4 className="font-semibold text-gray-700 text-sm">Generation</h4>
-                  <p className="text-gray-900 text-lg font-medium">Gen {generation}</p>
+                <div className={`${typeColors.cardBg} p-3 rounded-2xl border ${typeColors.cardBorder} shadow-lg`}>
+                  <h4 className={`font-semibold text-${typeColors.text} dark:text-${typeColors.textDark} text-sm`}>Generation</h4>
+                  <p className={`text-${typeColors.text} dark:text-${typeColors.textDark} text-lg font-medium`}>Gen {generation}</p>
                 </div>
               </div>
 
               {/* Species Info Row */}
               {species && (
                 <div className="grid grid-cols-2 gap-3 mb-4">
-                  <div className="bg-gray-50 p-3 rounded">
-                    <h4 className="font-semibold text-gray-700 text-sm">Species</h4>
-                    <p className="text-gray-900 text-sm capitalize">
+                  <div className={`${typeColors.cardBg} p-3 rounded-2xl border ${typeColors.cardBorder} shadow-lg`}>
+                    <h4 className={`font-semibold text-${typeColors.text} dark:text-${typeColors.textDark} text-sm`}>Species</h4>
+                    <p className={`text-${typeColors.text} dark:text-${typeColors.textDark} text-sm capitalize`}>
                       {species.genera?.find(g => g.language.name === 'en')?.genus || 'Unknown'}
                     </p>
                   </div>
-                  <div className="bg-gray-50 p-3 rounded">
-                    <h4 className="font-semibold text-gray-700 text-sm">Shape</h4>
-                    <p className="text-gray-900 text-sm capitalize">{species.shape?.name?.replace('-', ' ') || 'Unknown'}</p>
+                  <div className={`${typeColors.cardBg} p-3 rounded-2xl border ${typeColors.cardBorder} shadow-lg`}>
+                    <h4 className={`font-semibold text-${typeColors.text} dark:text-${typeColors.textDark} text-sm`}>Shape</h4>
+                    <p className={`text-${typeColors.text} dark:text-${typeColors.textDark} text-sm capitalize`}>{species.shape?.name?.replace('-', ' ') || 'Unknown'}</p>
                   </div>
-                  <div className="bg-gray-50 p-3 rounded">
-                    <h4 className="font-semibold text-gray-700 text-sm">Habitat</h4>
-                    <p className="text-gray-900 text-sm capitalize">{species.habitat?.name?.replace('-', ' ') || 'Unknown'}</p>
+                  <div className={`bg-gradient-to-br from-${typeColors.bg} to-${typeColors.glass} dark:from-${typeColors.bgDark}/30 dark:to-${typeColors.glassDark}/30 p-3 rounded-2xl border border-emerald-200/50 dark:border-emerald-700/50 shadow-lg`}>
+                    <h4 className={`font-semibold text-${typeColors.text} dark:text-${typeColors.textDark} text-sm`}>Habitat</h4>
+                    <p className={`text-${typeColors.text} dark:text-${typeColors.textDark} text-sm capitalize`}>{species.habitat?.name?.replace('-', ' ') || 'Unknown'}</p>
                   </div>
-                  <div className="bg-gray-50 p-3 rounded">
-                    <h4 className="font-semibold text-gray-700 text-sm">Color</h4>
-                    <p className="text-gray-900 text-sm capitalize">{species.color?.name || 'Unknown'}</p>
+                  <div className={`${typeColors.cardBg} p-3 rounded-2xl border ${typeColors.cardBorder} shadow-lg`}>
+                    <h4 className={`font-semibold text-${typeColors.text} dark:text-${typeColors.textDark} text-sm`}>Color</h4>
+                    <p className={`text-${typeColors.text} dark:text-${typeColors.textDark} text-sm capitalize`}>{species.color?.name || 'Unknown'}</p>
                   </div>
                 </div>
               )}
 
               {/* Stats Row with Visual Elements */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div className="bg-gray-50 p-3 rounded">
-                  <h4 className="font-semibold text-gray-700 text-sm">Base Exp</h4>
-                  <p className="text-gray-900 text-lg font-medium">{pokemon.base_experience || 'N/A'}</p>
+                <div className="bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-900/20 dark:to-blue-900/20 p-3 rounded-2xl border border-indigo-200/50 dark:border-indigo-700/50">
+                  <h4 className="font-semibold text-indigo-700 dark:text-indigo-300 text-sm">Base Exp</h4>
+                  <p className="text-indigo-900 dark:text-indigo-100 text-lg font-medium">{pokemon.base_experience || 'N/A'}</p>
                 </div>
-                <div className="bg-gray-50 p-3 rounded">
-                  <h4 className="font-semibold text-gray-700 text-sm">Base Happiness</h4>
-                  <p className="text-gray-900 text-lg font-medium">{species?.base_happiness || 'N/A'}</p>
+                <div className="bg-gradient-to-br from-violet-50 to-purple-50 dark:from-violet-900/20 dark:to-purple-900/20 p-3 rounded-2xl border border-violet-200/50 dark:border-violet-700/50">
+                  <h4 className="font-semibold text-violet-700 dark:text-violet-300 text-sm">Base Happiness</h4>
+                  <p className="text-violet-900 dark:text-violet-100 text-lg font-medium">{species?.base_happiness || 'N/A'}</p>
                 </div>
                 {/* Visual Catch Rate */}
-                <div className="bg-gray-50 p-3 rounded col-span-1 md:col-span-2">
-                  <h4 className="font-semibold text-gray-700 text-sm mb-2">Catch Rate</h4>
+                <div className="bg-gradient-to-br from-slate-50 to-gray-50 dark:from-slate-900/20 dark:to-gray-900/20 p-3 rounded-2xl border border-slate-200/50 dark:border-slate-700/50 col-span-1 md:col-span-2">
+                  <h4 className="font-semibold text-slate-700 dark:text-slate-300 text-sm mb-2">Catch Rate</h4>
                   <div className="flex items-center gap-3">
                     <div className="relative w-14 h-14">
                       <svg className="w-14 h-14 transform -rotate-90">
@@ -506,8 +558,8 @@ export default function PokemonDetail() {
                       </div>
                     </div>
                     <div>
-                      <p className="text-gray-900 font-medium text-sm">{species?.capture_rate ? `${((species.capture_rate / 255) * 100).toFixed(1)}%` : 'Unknown'}</p>
-                      <p className="text-gray-500 text-xs">
+                      <p className="text-slate-900 dark:text-slate-100 font-medium text-sm">{species?.capture_rate ? `${((species.capture_rate / 255) * 100).toFixed(1)}%` : 'Unknown'}</p>
+                      <p className="text-slate-600 dark:text-slate-400 text-xs">
                         {species?.capture_rate > 200 ? 'Very Easy' : 
                          species?.capture_rate > 150 ? 'Easy' :
                          species?.capture_rate > 100 ? 'Medium' :
@@ -521,11 +573,11 @@ export default function PokemonDetail() {
 
               {/* Special Status */}
               {species && (species.is_legendary || species.is_mythical) && (
-                <div className="mb-4">
-                  <h4 className="font-semibold text-gray-700 text-lg mb-1">Category</h4>
-                  <p className="text-gray-600 text-lg">
-                    {species.is_legendary && 'Legendary Pokémon'}
-                    {species.is_mythical && 'Mythical Pokémon'}
+                <div className="mb-4 bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20 p-4 rounded-2xl border border-amber-200/50 dark:border-amber-700/50">
+                  <h4 className="font-semibold text-amber-700 dark:text-amber-300 text-lg mb-1">Category</h4>
+                  <p className="text-amber-800 dark:text-amber-200 text-lg font-medium">
+                    {species.is_legendary && '✨ Legendary Pokémon'}
+                    {species.is_mythical && '🌟 Mythical Pokémon'}
                   </p>
                 </div>
               )}
@@ -535,9 +587,9 @@ export default function PokemonDetail() {
 
 
         {/* Tabs */}
-        <div className="bg-white rounded-lg shadow-lg">
-          <div className="border-b border-gray-200">
-            <nav className="flex space-x-4 md:space-x-8 px-4 md:px-8 overflow-x-auto scrollbar-hide tab-navigation">
+        <div className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl shadow-xl border ${typeColors.cardBorder}`}>
+          <div className="p-4 md:p-6">
+            <nav className="flex flex-wrap gap-2 md:gap-3">
               {[
                 { id: 'overview', name: 'Overview' },
                 { id: 'stats', name: 'Stats' },
@@ -553,10 +605,10 @@ export default function PokemonDetail() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
+                  className={`px-4 py-2 rounded-full font-medium text-sm transition-all duration-300 transform hover:scale-105 ${
                     activeTab === tab.id
-                      ? 'border-pokemon-red text-pokemon-red'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                      ? typeColors.tabActive + ' text-white shadow-lg'
+                      : `bg-white/60 dark:bg-gray-700/60 text-gray-700 dark:text-gray-300 ${typeColors.tabHover} border border-gray-200/50 dark:border-gray-600/50`
                   }`}
                 >
                   {tab.name}
@@ -568,14 +620,14 @@ export default function PokemonDetail() {
           <div className="p-4 md:p-8 tab-content">
             {activeTab === 'overview' && (
               <div id="overview-content">
-                <h3 className="text-xl font-bold text-gray-800 mb-4">Overview</h3>
+                <h3 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">Overview</h3>
                 
                 {/* Enhanced Description with multiple entries */}
                 {species?.flavor_text_entries && (
                   <div className="mb-6">
-                    <h4 className="font-semibold text-gray-700 mb-2 text-lg">Pokédex Description</h4>
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <p className="text-gray-600 leading-relaxed text-base">
+                    <h4 className="font-semibold text-gray-700 dark:text-gray-300 mb-2 text-lg">Pokédex Description</h4>
+                    <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-4 rounded-2xl border border-purple-200/50 dark:border-purple-700/50">
+                      <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-base">
                         {species.flavor_text_entries
                           .find(entry => entry.language.name === 'en')
                           ?.flavor_text.replace(/\f/g, ' ') || 'No description available.'}
@@ -586,11 +638,11 @@ export default function PokemonDetail() {
 
                 {/* Biology Section */}
                 <div className="mb-6">
-                  <h4 className="font-semibold text-gray-700 mb-3 text-lg">Biology</h4>
+                  <h4 className="font-semibold text-gray-700 dark:text-gray-300 mb-3 text-lg">Biology</h4>
                   <div className="space-y-3">
-                    <div className="flex justify-between py-2 border-b border-gray-200">
-                      <span className="text-gray-600">Species</span>
-                      <span className="font-medium text-gray-900">
+                    <div className="flex justify-between py-2 border-b border-gray-200 dark:border-gray-700">
+                      <span className="text-gray-600 dark:text-gray-400">Species</span>
+                      <span className="font-medium text-gray-900 dark:text-gray-100">
                         {species?.genera?.find(g => g.language.name === 'en')?.genus || 'Unknown'}
                       </span>
                     </div>
@@ -1332,8 +1384,8 @@ export default function PokemonDetail() {
                       onClick={() => setCardType('tcg')}
                       className={`px-6 py-3 rounded-lg font-medium transition-all ${
                         cardType === 'tcg'
-                          ? 'bg-pokemon-red text-white'
-                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                          ? `bg-gradient-to-r from-${typeColors.button} to-${typeColors.buttonHover} text-white shadow-lg`
+                          : `bg-${typeColors.bg} dark:bg-${typeColors.bgDark}/30 text-${typeColors.text} dark:text-${typeColors.textDark} hover:bg-${typeColors.glass} dark:hover:bg-${typeColors.glassDark}/40 border border-${typeColors.border}/50 dark:border-${typeColors.borderDark}/50`
                       }`}
                     >
                       TCG
@@ -1342,8 +1394,8 @@ export default function PokemonDetail() {
                       onClick={() => setCardType('pocket')}
                       className={`px-6 py-3 rounded-lg font-medium transition-all ${
                         cardType === 'pocket'
-                          ? 'bg-pokemon-red text-white'
-                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                          ? `bg-gradient-to-r from-${typeColors.button} to-${typeColors.buttonHover} text-white shadow-lg`
+                          : `bg-${typeColors.bg} dark:bg-${typeColors.bgDark}/30 text-${typeColors.text} dark:text-${typeColors.textDark} hover:bg-${typeColors.glass} dark:hover:bg-${typeColors.glassDark}/40 border border-${typeColors.border}/50 dark:border-${typeColors.borderDark}/50`
                       }`}
                     >
                       Pocket
@@ -1413,22 +1465,26 @@ export default function PokemonDetail() {
             )}
           </div>
         </div>
-      </div>
+        </div>
 
-      {/* Modal for zoomed card */}
-      {zoomedCard && (
-        <Modal onClose={() => setZoomedCard(null)}>
-          <div className="flex justify-center">
-            <Image
-              src={zoomedCard.image}
-              alt={zoomedCard.name}
-              width={400}
-              height={560}
-              className="rounded-lg"
-            />
-          </div>
-        </Modal>
-      )}
+        {/* Modal for zoomed card */}
+        {zoomedCard && (
+          <Modal onClose={() => setZoomedCard(null)}>
+            <div className="flex justify-center">
+              <Image
+                src={zoomedCard.image}
+                alt={zoomedCard.name}
+                width={400}
+                height={560}
+                className="rounded-lg"
+              />
+            </div>
+          </Modal>
+        )}
+      </FullBleedWrapper>
     </div>
   );
 }
+
+// Mark this page as fullBleed
+PokemonDetail.fullBleed = true;

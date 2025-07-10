@@ -10,6 +10,7 @@ import PocketCardList from "../../components/PocketCardList";
 import Modal from "../../components/ui/Modal";
 import logger from "../../utils/logger";
 import { getEvolutionChain } from "../../utils/evolutionUtils";
+import { FullBleedWrapper } from "../../components/ui/FullBleedWrapper";
 
 // Helper function to map Pocket card names to PokeAPI IDs
 const mapPocketCardNameToPokeId = (cardName) => {
@@ -460,45 +461,49 @@ function PocketPokemonDetail() {
   
   if (loading) {
     return (
-      <div className="container section-spacing-y-default max-w-6xl mx-auto px-4">
-        <div className="flex flex-col items-center justify-center py-16">
-          <div className="relative">
-            <div className="absolute inset-0 rounded-full bg-primary/10 animate-ping"></div>
-            <div className="w-20 h-20 rounded-full border-4 border-t-primary border-r-primary/70 border-b-primary/40 border-l-transparent animate-spin"></div>
+      <FullBleedWrapper gradient="pocket">
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="flex flex-col items-center justify-center">
+            <div className="relative">
+              <div className="absolute inset-0 rounded-full bg-yellow-400/20 animate-ping"></div>
+              <div className="w-20 h-20 rounded-full border-4 border-t-yellow-400 border-r-yellow-400/70 border-b-yellow-400/40 border-l-transparent animate-spin"></div>
+            </div>
+            <h3 className="mt-6 text-xl font-semibold text-white">Loading card details...</h3>
           </div>
-          <h3 className="mt-6 text-xl font-semibold">Loading card details...</h3>
         </div>
-      </div>
+      </FullBleedWrapper>
     );
   }
   
   if (error || !pokemonDetails) {
     return (
-      <div className="container section-spacing-y-default max-w-6xl mx-auto px-4">
-        <div className="flex flex-col items-center justify-center py-12">
-          <div className="relative w-24 h-24 mb-6">
-            <div className="absolute inset-0 bg-red-100 dark:bg-red-900/30 opacity-30 rounded-full"></div>
-            <svg className="w-24 h-24 text-red-500 mx-auto relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
+      <FullBleedWrapper gradient="pocket">
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="flex flex-col items-center justify-center bg-black/50 backdrop-blur-lg rounded-2xl p-8 border border-white/20">
+            <div className="relative w-24 h-24 mb-6">
+              <div className="absolute inset-0 bg-red-500/20 opacity-30 rounded-full animate-pulse"></div>
+              <svg className="w-24 h-24 text-red-400 mx-auto relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-bold text-red-400">Error Loading Card</h3>
+            <p className="text-gray-300 mt-2 max-w-md text-center">
+              {error || "Card not found or unavailable at this time."}
+            </p>
+            <button 
+              onClick={() => router.push('/pocketmode', undefined, { shallow: false })}
+              className="mt-6 px-6 py-2.5 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-full transition-all"
+            >
+              Back to Pocket Mode
+            </button>
           </div>
-          <h3 className="text-xl font-bold text-red-600 dark:text-red-500">Error Loading Card</h3>
-          <p className="text-gray-600 dark:text-gray-400 mt-2 max-w-md text-center">
-            {error || "Card not found or unavailable at this time."}
-          </p>
-          <button 
-            onClick={() => router.push('/pocketmode', undefined, { shallow: false })}
-            className="mt-6 px-6 py-2.5 bg-primary text-white rounded-lg hover:bg-primary-dark transition-all"
-          >
-            Back to Pocket Mode
-          </button>
         </div>
-      </div>
+      </FullBleedWrapper>
     );
   }
   
   return (
-    <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto px-2 sm:px-4 animate-fadeIn">
+    <>
       <Head>
         <title>{pokemonDetails.name} | Pokémon TCG Pocket Card | DexTrends</title>
         <meta name="description" content={`View detailed information about ${pokemonDetails.name} Pokémon TCG Pocket card, including attacks, abilities, and market prices.`} />
@@ -508,241 +513,386 @@ function PocketPokemonDetail() {
         {pokemonDetails.image && <meta property="og:image" content={pokemonDetails.image} />}
         <meta name="keywords" content={`Pokemon TCG Pocket, ${pokemonDetails.name}, Pokemon card, ${pokemonDetails.types?.join(', ')}`} />
       </Head>
-      <FadeIn>
-        <div className="mb-8">
-          {/* Unified Layout - Mobile and Desktop */}
-          <div className="flex flex-col lg:flex-row items-center lg:items-start gap-6">
-            <Scale className="relative flex-shrink-0">
-              <div className="relative w-64 h-96 lg:w-80 lg:h-120 cursor-pointer group" style={{ width: '256px', height: '384px' }}>
-                <Image 
-                  src={pokemonDetails.image || "/back-card.png"} 
-                  alt={pokemonDetails.name}
-                  fill
-                  className="drop-shadow-xl object-contain group-hover:scale-105 transition-transform duration-300 rounded-lg"
-                  onClick={() => setZoomedCard(pokemonDetails)}
-                  priority
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100">
-                  <div className="bg-white/90 p-2 rounded-full shadow-lg">
-                    <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
+      <FullBleedWrapper gradient="pocket" className="text-white">
+        <div className="max-w-7xl mx-auto">
+          <FadeIn>
+            {/* Back Button */}
+            <div className="mb-6">
+              <Link href="/pocketmode">
+                <button className="group flex items-center gap-2 px-4 py-2 bg-black/30 hover:bg-black/50 backdrop-blur-sm rounded-full transition-all duration-300 border border-white/20">
+                  <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                  <span className="font-medium">Back to Collection</span>
+                </button>
+              </Link>
+            </div>
+
+            {/* Main Content */}
+            <div className="grid lg:grid-cols-2 gap-8 mb-12">
+              {/* Card Image Section */}
+              <div className="flex justify-center lg:justify-start">
+                <Scale className="relative">
+                  <div 
+                    className="relative cursor-pointer group transform hover:scale-105 transition-all duration-300"
+                    onClick={() => setZoomedCard(pokemonDetails)}
+                  >
+                    <div className="relative w-80 h-[480px] rounded-2xl overflow-hidden shadow-2xl">
+                      <Image 
+                        src={pokemonDetails.image || "/back-card.png"} 
+                        alt={pokemonDetails.name}
+                        fill
+                        className="object-contain"
+                        priority
+                      />
+                      {/* Hover Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-8">
+                        <div className="flex items-center gap-2 text-white">
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                          </svg>
+                          <span className="font-medium">Click to zoom</span>
+                        </div>
+                      </div>
+                    </div>
+                    {/* Glow Effect */}
+                    <div className="absolute -inset-1 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-2xl blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-300"></div>
                   </div>
-                </div>
+                </Scale>
               </div>
-            </Scale>
-            
-            <div className="flex-1 text-center lg:text-left">
-              <div className="flex justify-between items-start">
-                <div className="flex-1">
-                  <h1 className="text-2xl lg:text-3xl xl:text-4xl font-bold capitalize">
+
+              {/* Card Info Section */}
+              <div className="space-y-6">
+                {/* Title and Type */}
+                <div>
+                  <h1 className="text-4xl md:text-5xl font-bold mb-2 capitalize bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
                     {pokemonDetails.name}
+                  </h1>
+                  <div className="flex flex-wrap items-center gap-3">
+                    {pokemonDetails.type && (
+                      <TypeBadge 
+                        type={pokemonDetails.type} 
+                        size="lg" 
+                        isPocketCard={true}
+                      />
+                    )}
                     {pokemonDetails.supertype && (
-                      <span className="block lg:inline lg:ml-2 mt-1 lg:mt-0 text-sm lg:text-lg px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                      <span className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-sm font-medium">
                         {pokemonDetails.supertype}
                       </span>
                     )}
-                  </h1>
+                  </div>
                 </div>
-                <Link href="/pocketmode">
-                  <button className="p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700">
-                    <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                </Link>
-              </div>
-              
-              <div className="flex justify-center lg:justify-start gap-2 mt-3">
-                {pokemonDetails.type && (
-                  <TypeBadge 
-                    type={pokemonDetails.type} 
-                    size="lg" 
-                    isPocketCard={true}
-                  />
-                )}
-              </div>
-              
-              {/* Card Details - Always Visible */}
-              <div className="mt-6 bg-white/70 dark:bg-gray-800/70 p-6 rounded-lg backdrop-blur-sm">
-                <h2 className="text-xl font-bold mb-4 text-gray-800 dark:text-gray-200">Card Details</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+                {/* Key Stats - Prominent Display */}
+                <div className="flex flex-wrap gap-3">
                   {pokemonDetails.health && (
-                    <div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow-sm">
-                      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">HP</h3>
-                      <p className="text-lg font-semibold text-gray-800 dark:text-gray-200">{pokemonDetails.health}</p>
-                    </div>
-                  )}
-                  {pokemonDetails.pack && (
-                    <div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow-sm">
-                      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Pack</h3>
-                      <p className="text-lg font-semibold text-gray-800 dark:text-gray-200">{pokemonDetails.pack}</p>
+                    <div className="bg-gradient-to-br from-red-500/20 to-red-600/10 backdrop-blur-sm rounded-xl p-3 border border-red-400/20 flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center">
+                        <svg className="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-xs uppercase tracking-wider text-white/60">HP</p>
+                        <p className="text-xl font-bold">{pokemonDetails.health}</p>
+                      </div>
                     </div>
                   )}
                   {pokemonDetails.rarity && (
-                    <div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow-sm">
-                      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Rarity</h3>
-                      <p className="text-lg font-semibold text-gray-800 dark:text-gray-200">{pokemonDetails.rarity}</p>
-                    </div>
-                  )}
-                  {pokemonDetails.artist && (
-                    <div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow-sm">
-                      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Artist</h3>
-                      <p className="text-lg font-semibold text-gray-800 dark:text-gray-200">{pokemonDetails.artist}</p>
-                    </div>
-                  )}
-                  {pokemonDetails.ex && (
-                    <div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow-sm">
-                      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">EX Card</h3>
-                      <p className="text-lg font-semibold text-gray-800 dark:text-gray-200">{pokemonDetails.ex}</p>
-                    </div>
-                  )}
-                  {pokemonDetails.fullart && (
-                    <div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow-sm">
-                      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Full Art</h3>
-                      <p className="text-lg font-semibold text-gray-800 dark:text-gray-200">{pokemonDetails.fullart}</p>
+                    <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/10 backdrop-blur-sm rounded-xl p-3 border border-purple-400/20 flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center">
+                        <span className="text-lg">{pokemonDetails.rarity}</span>
+                      </div>
+                      <div>
+                        <p className="text-xs uppercase tracking-wider text-white/60">Rarity</p>
+                        <p className="text-sm font-medium">Tier</p>
+                      </div>
                     </div>
                   )}
                 </div>
+                
+                {/* Additional Info - Compact Display */}
+                <div className="bg-black/20 backdrop-blur-sm rounded-2xl p-4 border border-white/10">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    {pokemonDetails.pack && (
+                      <div>
+                        <p className="text-xs uppercase tracking-wider text-white/40 mb-1">Pack</p>
+                        <p className="text-sm font-semibold text-white/80">{pokemonDetails.pack}</p>
+                      </div>
+                    )}
+                    {pokemonDetails.artist && (
+                      <div>
+                        <p className="text-xs uppercase tracking-wider text-white/40 mb-1">Artist</p>
+                        <p className="text-sm font-semibold text-white/80">{pokemonDetails.artist}</p>
+                      </div>
+                    )}
+                    {pokemonDetails.set && (
+                      <div>
+                        <p className="text-xs uppercase tracking-wider text-white/40 mb-1">Set</p>
+                        <p className="text-sm font-semibold text-white/80">{pokemonDetails.set}</p>
+                      </div>
+                    )}
+                    {pokemonDetails.number && (
+                      <div>
+                        <p className="text-xs uppercase tracking-wider text-white/40 mb-1">Card #</p>
+                        <p className="text-sm font-semibold text-white/80">{pokemonDetails.number}</p>
+                      </div>
+                    )}
+                    {pokemonDetails.weakness && (
+                      <div>
+                        <p className="text-xs uppercase tracking-wider text-white/40 mb-1">Weakness</p>
+                        <p className="text-sm font-semibold text-white/80">{pokemonDetails.weakness}</p>
+                      </div>
+                    )}
+                    {pokemonDetails.retreatCost && (
+                      <div>
+                        <p className="text-xs uppercase tracking-wider text-white/40 mb-1">Retreat</p>
+                        <p className="text-sm font-semibold text-white/80">{pokemonDetails.retreatCost} ⚪</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Attacks Section */}
+                {pokemonDetails.attacks && pokemonDetails.attacks.length > 0 && (
+                  <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                    <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                      <svg className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" />
+                      </svg>
+                      Attacks
+                    </h3>
+                    <div className="space-y-3">
+                      {pokemonDetails.attacks.map((attack, index) => (
+                        <div key={index} className="bg-white/5 rounded-xl p-4">
+                          <div className="flex justify-between items-start mb-2">
+                            <h4 className="font-bold text-lg">{attack.name}</h4>
+                            {attack.damage && (
+                              <span className="text-2xl font-bold text-yellow-400">{attack.damage}</span>
+                            )}
+                          </div>
+                          {attack.cost && (
+                            <div className="flex gap-1 mb-2">
+                              {attack.cost.map((energy, i) => (
+                                <TypeBadge key={i} type={energy.toLowerCase()} size="sm" />
+                              ))}
+                            </div>
+                          )}
+                          {attack.text && (
+                            <p className="text-sm text-white/80">{attack.text}</p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Abilities Section */}
+                {pokemonDetails.abilities && pokemonDetails.abilities.length > 0 && (
+                  <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                    <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                      <svg className="w-5 h-5 text-purple-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M6.672 1.911a1 1 0 10-1.932.518l.259.966a1 1 0 001.932-.518l-.26-.966zM2.429 4.74a1 1 0 10-.517 1.932l.966.259a1 1 0 00.517-1.932l-.966-.26zm8.814-.569a1 1 0 00-1.415-1.414l-.707.707a1 1 0 101.415 1.414l.707-.707zm-7.071 7.072l.707-.707A1 1 0 003.465 9.12l-.708.707a1 1 0 001.415 1.415zm3.2-5.171a1 1 0 00-1.3 1.3l4 10a1 1 0 001.823.075l1.38-2.759 3.018 3.02a1 1 0 001.414-1.415l-3.019-3.02 2.76-1.379a1 1 0 00-.076-1.822l-10-4z" clipRule="evenodd" />
+                      </svg>
+                      Abilities
+                    </h3>
+                    <div className="space-y-3">
+                      {pokemonDetails.abilities.map((ability, index) => (
+                        <div key={index} className="bg-white/5 rounded-xl p-4">
+                          <h4 className="font-bold text-lg mb-2">{ability.name}</h4>
+                          <p className="text-sm text-white/80">{ability.text}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
-          </div>
-
-        </div>
-      </FadeIn>
+          </FadeIn>
       
-      <SlideUp delay={200}>
-        {/* Similar Cards - Always Visible */}
-        <div className="mt-8">
-          <div className="space-y-8">
-            <h2 className="text-xl font-bold mb-6">Similar Cards</h2>
-            
-            {/* Same Pokémon Cards Section */}
-            {relatedCards?.samePokemon && relatedCards.samePokemon.length > 0 && (
-              <div>
-                <h3 className="text-lg font-semibold mb-4 text-blue-600 dark:text-blue-400 border-b border-blue-200 dark:border-blue-700 pb-2">
-                  Other {pokemonDetails.name.split(' ')[0]} Cards
-                </h3>
-                <PocketCardList 
-                  cards={relatedCards.samePokemon}
-                  loading={false}
-                  error={null}
-                  showSort={false}
-                  hideCardCount={true}
-                  gridClassName="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4"
-                  imageWidth={110}
-                  imageHeight={154}
-                  emptyMessage={`No other ${pokemonDetails.name.split(' ')[0]} cards found.`}
-                />
-              </div>
-            )}
+          <SlideUp delay={200}>
+            {/* Similar Cards Section */}
+            <div className="space-y-12">
+              {/* Same Pokémon Cards Section */}
+              {relatedCards?.samePokemon && relatedCards.samePokemon.length > 0 && (
+                <div className="bg-black/20 backdrop-blur-sm rounded-3xl p-6 border border-white/10">
+                  <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+                      <svg className="w-6 h-6 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 2a2 2 0 00-2 2v8a2 2 0 002 2h6a2 2 0 002-2V6.414A2 2 0 0016.414 5L14 2.586A2 2 0 0012.586 2H9z" />
+                        <path d="M3 8a2 2 0 012-2v10h8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" />
+                      </svg>
+                    </div>
+                    Other {pokemonDetails.name.split(' ')[0]} Cards
+                  </h3>
+                  <PocketCardList 
+                    cards={relatedCards.samePokemon}
+                    loading={false}
+                    error={null}
+                    showSort={false}
+                    hideCardCount={true}
+                    gridClassName="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4"
+                    imageWidth={110}
+                    imageHeight={154}
+                    emptyMessage={`No other ${pokemonDetails.name.split(' ')[0]} cards found.`}
+                  />
+                </div>
+              )}
 
-            {/* Evolution Line Section */}
-            {relatedCards?.evolution && relatedCards.evolution.length > 0 && (
-              <div>
-                <h3 className="text-lg font-semibold mb-4 text-green-600 dark:text-green-400 border-b border-green-200 dark:border-green-700 pb-2">
-                  Evolution Line
-                </h3>
-                <PocketCardList 
-                  cards={relatedCards.evolution}
-                  loading={false}
-                  error={null}
-                  showSort={false}
-                  hideCardCount={true}
-                  gridClassName="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4"
-                  imageWidth={110}
-                  imageHeight={154}
-                  emptyMessage="No evolution cards found."
-                />
-              </div>
-            )}
+              {/* Evolution Line Section */}
+              {relatedCards?.evolution && relatedCards.evolution.length > 0 && (
+                <div className="bg-black/20 backdrop-blur-sm rounded-3xl p-6 border border-white/10">
+                  <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
+                      <svg className="w-6 h-6 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M3 4a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm2 2V5h1v1H5zM3 13a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1v-3zm2 2v-1h1v1H5zM13 3a1 1 0 00-1 1v3a1 1 0 001 1h3a1 1 0 001-1V4a1 1 0 00-1-1h-3zm1 2v1h1V5h-1z" clipRule="evenodd" />
+                        <path d="M11 4a1 1 0 10-2 0v1a1 1 0 002 0V4zM10 7a1 1 0 011 1v1h2a1 1 0 110 2h-2v2a1 1 0 11-2 0v-2H7a1 1 0 110-2h2V8a1 1 0 011-1zM9 15a1 1 0 102 0v1a1 1 0 11-2 0v-1z" />
+                      </svg>
+                    </div>
+                    Evolution Line
+                  </h3>
+                  <PocketCardList 
+                    cards={relatedCards.evolution}
+                    loading={false}
+                    error={null}
+                    showSort={false}
+                    hideCardCount={true}
+                    gridClassName="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4"
+                    imageWidth={110}
+                    imageHeight={154}
+                    emptyMessage="No evolution cards found."
+                  />
+                </div>
+              )}
 
-            {/* Related Cards Section */}
-            {relatedCards?.related && relatedCards.related.length > 0 && (
-              <div>
-                <h3 className="text-lg font-semibold mb-4 text-purple-600 dark:text-purple-400 border-b border-purple-200 dark:border-purple-700 pb-2">
-                  Related Cards
-                </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                  Other {pokemonDetails.type} type cards from the {pokemonDetails.pack} pack
-                </p>
-                <PocketCardList 
-                  cards={relatedCards.related}
-                  loading={false}
-                  error={null}
-                  showSort={false}
-                  hideCardCount={true}
-                  gridClassName="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4"
-                  imageWidth={110}
-                  imageHeight={154}
-                  emptyMessage="No related cards found."
-                />
-              </div>
-            )}
+              {/* Related Cards Section */}
+              {relatedCards?.related && relatedCards.related.length > 0 && (
+                <div className="bg-black/20 backdrop-blur-sm rounded-3xl p-6 border border-white/10">
+                  <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center">
+                      <svg className="w-6 h-6 text-purple-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                    Related Cards
+                  </h3>
+                  <p className="text-sm text-white/60 mb-6">
+                    Other {pokemonDetails.type} type cards from the {pokemonDetails.pack} pack
+                  </p>
+                  <PocketCardList 
+                    cards={relatedCards.related}
+                    loading={false}
+                    error={null}
+                    showSort={false}
+                    hideCardCount={true}
+                    gridClassName="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4"
+                    imageWidth={110}
+                    imageHeight={154}
+                    emptyMessage="No related cards found."
+                  />
+                </div>
+              )}
 
-            {/* Fallback Similar Cards Section */}
-            {relatedCards?.fallback && relatedCards.fallback.length > 0 && (
-              <div>
-                <h3 className="text-lg font-semibold mb-4 text-gray-600 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700 pb-2">
-                  Other Similar Cards
-                </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                  Cards from the same pack or with similar type
-                </p>
-                <PocketCardList 
-                  cards={relatedCards.fallback}
-                  loading={false}
-                  error={null}
-                  showSort={false}
-                  hideCardCount={true}
-                  gridClassName="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4"
-                  imageWidth={110}
-                  imageHeight={154}
-                  emptyMessage="No similar cards found."
-                />
-              </div>
-            )}
+              {/* Fallback Similar Cards Section */}
+              {relatedCards?.fallback && relatedCards.fallback.length > 0 && (
+                <div className="bg-black/20 backdrop-blur-sm rounded-3xl p-6 border border-white/10">
+                  <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center">
+                      <svg className="w-6 h-6 text-orange-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                    Other Similar Cards
+                  </h3>
+                  <p className="text-sm text-white/60 mb-6">
+                    Cards from the same pack or with similar type
+                  </p>
+                  <PocketCardList 
+                    cards={relatedCards.fallback}
+                    loading={false}
+                    error={null}
+                    showSort={false}
+                    hideCardCount={true}
+                    gridClassName="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4"
+                    imageWidth={110}
+                    imageHeight={154}
+                    emptyMessage="No similar cards found."
+                  />
+                </div>
+              )}
 
-            {/* Empty state if no cards in any category */}
-            {(!relatedCards?.samePokemon || relatedCards.samePokemon.length === 0) &&
-             (!relatedCards?.evolution || relatedCards.evolution.length === 0) &&
-             (!relatedCards?.related || relatedCards.related.length === 0) &&
-             (!relatedCards?.fallback || relatedCards.fallback.length === 0) && (
-              <div className="text-center py-8">
-                <div className="text-gray-400 text-6xl mb-4">🔍</div>
-                <h3 className="text-lg font-semibold text-gray-600 dark:text-gray-400 mb-2">No Related Cards Found</h3>
-                <p className="text-gray-500 dark:text-gray-500">
-                  We couldn't find any other cards related to {pokemonDetails.name}.
-                </p>
-              </div>
-            )}
-          </div>
+              {/* Empty state if no cards in any category */}
+              {(!relatedCards?.samePokemon || relatedCards.samePokemon.length === 0) &&
+               (!relatedCards?.evolution || relatedCards.evolution.length === 0) &&
+               (!relatedCards?.related || relatedCards.related.length === 0) &&
+               (!relatedCards?.fallback || relatedCards.fallback.length === 0) && (
+                <div className="bg-black/20 backdrop-blur-sm rounded-3xl p-12 border border-white/10 text-center">
+                  <div className="w-20 h-20 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-6">
+                    <svg className="w-10 h-10 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-bold text-white/80 mb-2">No Related Cards Found</h3>
+                  <p className="text-white/60">
+                    We couldn't find any other cards related to {pokemonDetails.name}.
+                  </p>
+                </div>
+              )}
+            </div>
+          </SlideUp>
         </div>
-      </SlideUp>
+      </FullBleedWrapper>
       
       {/* Zoom Modal */}
       {zoomedCard && (
-        <Modal isOpen={true} onClose={() => setZoomedCard(null)}>
-          <div className="flex flex-col items-center">
-            <Image
-              src={zoomedCard.image || "/back-card.png"}
-              alt={zoomedCard.name}
-              width={400}
-              height={560}
-              className="rounded-lg shadow-lg"
-              placeholder="blur"
-              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Eve6J4HNvbzTe7+v1+8BvxRf4X3/f/9k="
-              sizes="400px"
-            />
-            <h3 className="mt-4 text-xl font-bold text-center">{zoomedCard.name}</h3>
-            {zoomedCard.pack && (
-              <p className="text-gray-600 dark:text-gray-400 mt-2">{zoomedCard.pack}</p>
-            )}
+        <Modal isOpen={true} onClose={() => setZoomedCard(null)} size="xl">
+          <div className="flex flex-col items-center p-4">
+            <div className="relative w-full max-w-md mx-auto">
+              <Image
+                src={zoomedCard.image || "/back-card.png"}
+                alt={zoomedCard.name}
+                width={600}
+                height={840}
+                className="rounded-2xl shadow-2xl w-full h-auto"
+                placeholder="blur"
+                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Eve6J4HNvbzTe7+v1+8BvxRf4X3/f/9k="
+                sizes="600px"
+              />
+              {/* Glow effect */}
+              <div className="absolute -inset-1 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-2xl blur-2xl opacity-20 -z-10"></div>
+            </div>
+            <div className="mt-6 text-center space-y-2">
+              <h3 className="text-2xl font-bold bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
+                {zoomedCard.name}
+              </h3>
+              <div className="flex items-center justify-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+                {zoomedCard.pack && (
+                  <span className="flex items-center gap-1">
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 011 1v10a1 1 0 01-1 1H5a1 1 0 01-1-1V7z" />
+                    </svg>
+                    {zoomedCard.pack}
+                  </span>
+                )}
+                {zoomedCard.rarity && (
+                  <span className="flex items-center gap-1">
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                    {zoomedCard.rarity}
+                  </span>
+                )}
+              </div>
+            </div>
           </div>
         </Modal>
       )}
-    </div>
+    </>
   );
 };
+
+// Mark this page as fullBleed
+PocketPokemonDetail.fullBleed = true;
 
 export default PocketPokemonDetail;

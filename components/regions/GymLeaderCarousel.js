@@ -1,16 +1,24 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import { getGymLeaderImage, getBadgeImage } from '../../utils/scrapedImageMapping';
 import { TypeBadge } from '../ui/TypeBadge';
-import { FadeIn, CardHover } from '../ui/animations';
+import { FadeIn } from '../ui/animations';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
+import { gymLeaderTeams, typeEffectiveness } from '../../data/gymLeaderTeams';
+import styles from '../../styles/FlipCard.module.css';
 
 const GymLeaderCarousel = ({ region, gymLeaders, theme }) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [flippedCards, setFlippedCards] = useState({});
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const carouselRef = useRef(null);
+
+  // Toggle card flip state
+  const toggleFlip = (leaderName) => {
+    setFlippedCards(prev => ({ ...prev, [leaderName]: !prev[leaderName] }));
+  };
 
   // Gym leader quotes/facts and signature Pokemon
   const gymLeaderData = {
@@ -70,8 +78,10 @@ const GymLeaderCarousel = ({ region, gymLeaders, theme }) => {
   // Handle carousel navigation
   const scrollToLeader = (index) => {
     if (carouselRef.current) {
-      const cardWidth = 600; // Updated card width
-      const scrollPosition = index * (cardWidth + 24); // 24px gap
+      const isMobile = window.innerWidth <= 850;
+      const cardWidth = isMobile ? (window.innerWidth - 64) : 900; // Updated for new card width
+      const gap = isMobile ? 16 : 32; // Responsive gap
+      const scrollPosition = index * (cardWidth + gap);
       carouselRef.current.scrollTo({
         left: scrollPosition,
         behavior: 'smooth'
@@ -123,21 +133,20 @@ const GymLeaderCarousel = ({ region, gymLeaders, theme }) => {
   };
 
   return (
-    <div className={`py-20 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
-      <div className="max-w-7xl mx-auto px-8">
-        <FadeIn>
-          <div className="text-center mb-12">
-            <h2 className="text-5xl font-bold mb-4">
-              Gym Leader Challenge
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400">
-              Defeat all {gymLeaders.length} Gym Leaders to become the Champion
-            </p>
-          </div>
-        </FadeIn>
+    <div>
+      <FadeIn>
+        <div className="text-center mb-8">
+          <h3 className="text-2xl font-bold mb-2">
+            Gym Leader Challenge
+          </h3>
+          <p className="text-base text-gray-600 dark:text-gray-400">
+            Defeat all {gymLeaders.length} Gym Leaders to earn their badges
+          </p>
+        </div>
+      </FadeIn>
 
-        {/* Carousel Container */}
-        <div className="relative">
+      {/* Carousel Container */}
+      <div className="relative">
           {/* Navigation Buttons */}
           <button
             onClick={handlePrev}
@@ -155,7 +164,7 @@ const GymLeaderCarousel = ({ region, gymLeaders, theme }) => {
           {/* Carousel */}
           <div
             ref={carouselRef}
-            className="flex gap-6 overflow-x-auto scrollbar-hide pb-8 cursor-grab active:cursor-grabbing"
+            className={`flex gap-8 overflow-x-auto ${styles.scrollbarHide} pb-8`}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleDragEnd}
@@ -169,138 +178,217 @@ const GymLeaderCarousel = ({ region, gymLeaders, theme }) => {
               WebkitOverflowScrolling: 'touch'
             }}
           >
-            {gymLeaders.map((leader, index) => (
-              <div
-                key={leader.name}
-                className="flex-shrink-0 w-[600px] relative"
-              >
-                <CardHover>
-                  <div className={`relative h-[900px] rounded-3xl overflow-hidden ${
-                    theme === 'dark' ? 'bg-gray-800' : 'bg-white'
-                  } shadow-2xl`}>
-                    {/* Type-themed background */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${getTypeGradient(leader.type)} opacity-20`} />
-                    
-                    {/* Leader Image */}
-                    <div className="relative h-[550px] overflow-hidden">
-                      <Image
-                        src={getGymLeaderImage(leader.name, 1)}
-                        alt={leader.name}
-                        fill
-                        className="object-contain"
-                        onError={(e) => {
-                          // Try different image numbers
-                          const currentSrc = e.target.src;
-                          const match = currentSrc.match(/-(\d+)\.(png|jpg)$/);
-                          if (match) {
-                            const num = parseInt(match[1]);
-                            if (num < 5) {
-                              e.target.src = getGymLeaderImage(leader.name, num + 1);
-                            } else {
-                              e.target.src = `/images/gym-leaders/${leader.name.toLowerCase()}.png`;
-                            }
-                          }
-                        }}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                      
-                      {/* Badge */}
-                      <div className="absolute top-4 right-4 w-28 h-28">
+            {gymLeaders.map((leader, index) => {
+              const teamData = gymLeaderTeams[leader.name];
+              const weaknesses = teamData?.weakAgainst || typeEffectiveness[leader.type]?.weakTo || [];
+              const isFlipped = flippedCards[leader.name];
+              
+              return (
+                <div
+                  key={leader.name}
+                  className={`flex-shrink-0 w-[900px] h-[700px] relative ${styles.carouselCard} ${styles.perspective1000}`}
+                  onClick={() => toggleFlip(leader.name)}
+                >
+                  <div className={`${styles.flipCard} ${isFlipped ? styles.flipped : ''}`}>
+                    {/* Front Side - Just the gym leader image */}
+                    <div className={styles.flipCardFront}>
+                      <div className={`relative h-full w-full rounded-3xl overflow-hidden cursor-pointer ${
+                        theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'
+                      } shadow-2xl`}>
                         <Image
-                          src={getBadgeImage(leader.badge, region.id)}
-                          alt={leader.badge}
+                          src={getGymLeaderImage(leader.name, 1)}
+                          alt={leader.name}
                           fill
-                          className="object-contain"
+                          className="object-cover"
                           onError={(e) => {
-                            e.target.style.display = 'none';
+                            const currentSrc = e.target.src;
+                            const match = currentSrc.match(/-(\d+)\.(png|jpg)$/);
+                            if (match) {
+                              const num = parseInt(match[1]);
+                              if (num < 5) {
+                                e.target.src = getGymLeaderImage(leader.name, num + 1);
+                              } else {
+                                e.target.src = `/images/gym-leaders/${leader.name.toLowerCase()}.png`;
+                              }
+                            }
                           }}
                         />
-                      </div>
-
-                      {/* Leader Number */}
-                      <div className="absolute top-4 left-4 w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                        <span className="text-white font-bold text-xl">#{index + 1}</span>
+                        {/* Subtle gradient overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+                        
+                        {/* Flip indicator */}
+                        <div className="absolute bottom-6 right-6 bg-white/90 backdrop-blur-sm rounded-full px-6 py-3 flex items-center gap-2 shadow-lg">
+                          <span className="text-gray-900 dark:text-gray-900 font-bold">Click to flip</span>
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                          </svg>
+                        </div>
                       </div>
                     </div>
 
-                    {/* Content */}
-                    <div className="relative p-6">
-                      <h3 className="text-4xl font-bold mb-2">{leader.name}</h3>
-                      <p className="text-xl text-gray-600 dark:text-gray-400 mb-3">{leader.city}</p>
-                      
-                      {/* Type Badge */}
-                      <div className="mb-4">
-                        <TypeBadge type={leader.type} size="lg" />
-                      </div>
-
-                      {/* Signature Pokemon Section */}
-                      {gymLeaderData[leader.name] && (
-                        <div className="mb-6 p-6 rounded-xl bg-white/10 dark:bg-black/10 backdrop-blur-sm">
-                          <div className="flex items-center gap-4">
-                            <div className="relative w-20 h-20 flex-shrink-0">
-                              <Image
-                                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${gymLeaderData[leader.name].signatureId}.png`}
-                                alt={gymLeaderData[leader.name].signature}
-                                fill
-                                className="object-contain"
-                              />
-                            </div>
-                            <div className="flex-1">
-                              <p className="text-sm font-semibold text-gray-500 dark:text-gray-400">Signature Pokémon</p>
-                              <p className="text-2xl font-bold">{gymLeaderData[leader.name].signature}</p>
-                              <p className="text-sm text-gray-600 dark:text-gray-400">{gymLeaderData[leader.name].strategy}</p>
-                            </div>
+                    {/* Back Side - Information with cutting through effect */}
+                    <div className={styles.flipCardBack}>
+                      <div className={`relative h-full w-full rounded-3xl overflow-hidden ${
+                        theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+                      } shadow-2xl`}>
+                        {/* Type-themed background */}
+                        <div className={`absolute inset-0 bg-gradient-to-br ${getTypeGradient(leader.type)} opacity-10`} />
+                        
+                        {/* Cutting through gym leader image */}
+                        <div className="absolute left-0 top-0 h-full w-[320px] z-10">
+                          <div className="relative h-full w-full">
+                            <Image
+                              src={getGymLeaderImage(leader.name, 1)}
+                              alt={leader.name}
+                              fill
+                              className="object-cover"
+                              style={{ 
+                                clipPath: 'polygon(0 0, 85% 0, 100% 100%, 0 100%)',
+                                filter: 'drop-shadow(10px 0 20px rgba(0,0,0,0.3))'
+                              }}
+                              onError={(e) => {
+                                const currentSrc = e.target.src;
+                                const match = currentSrc.match(/-(\d+)\.(png|jpg)$/);
+                                if (match) {
+                                  const num = parseInt(match[1]);
+                                  if (num < 5) {
+                                    e.target.src = getGymLeaderImage(leader.name, num + 1);
+                                  } else {
+                                    e.target.src = `/images/gym-leaders/${leader.name.toLowerCase()}.png`;
+                                  }
+                                }
+                              }}
+                            />
+                            {/* Edge gradient for blending */}
+                            <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-r from-transparent via-black/20 to-transparent" />
                           </div>
                         </div>
-                      )}
 
-                      {/* Quote */}
-                      <p className="text-base italic text-gray-600 dark:text-gray-400 mb-6">
-                        "{gymLeaderData[leader.name]?.quote || `Master of ${leader.type}-type Pokémon!`}"
-                      </p>
+                        {/* Content flowing around the image */}
+                        <div className="relative h-full pl-[280px] pr-8 py-8 overflow-y-auto">
+                          {/* Header section */}
+                          <div className="mb-6">
+                            {/* Leader Number Badge */}
+                            <div className="inline-flex items-center gap-2 mb-3">
+                              <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg">
+                                <span className="text-white font-black text-xl">#{index + 1}</span>
+                              </div>
+                              <div className="relative w-16 h-16">
+                                <Image
+                                  src={getBadgeImage(leader.badge, region.id)}
+                                  alt={leader.badge}
+                                  fill
+                                  className="object-contain"
+                                  onError={(e) => {
+                                    e.target.style.display = 'none';
+                                  }}
+                                />
+                              </div>
+                            </div>
+                            
+                            <h3 className="text-5xl font-black mb-2">{leader.name}</h3>
+                            <p className="text-xl text-gray-600 dark:text-gray-400 mb-3">{leader.city} Gym Leader</p>
+                            
+                            {/* Type Badge */}
+                            <div className="flex items-center gap-3 mb-4">
+                              <TypeBadge type={leader.type} size="lg" />
+                              <span className="text-lg font-bold text-gray-600 dark:text-gray-400">
+                                {leader.type.charAt(0).toUpperCase() + leader.type.slice(1)}-type Specialist
+                              </span>
+                            </div>
+                          </div>
 
-                      {/* Badge Name */}
-                      <div className={`inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r ${region.color} text-white font-semibold text-lg`}>
-                        <span>{leader.badge}</span>
-                      </div>
-                      
-                      {/* Challenge Button */}
-                      <div className="mt-6">
-                        <button className="w-full py-4 rounded-xl bg-gradient-to-r from-red-500 to-orange-500 text-white font-bold text-lg hover:from-red-600 hover:to-orange-600 transition-all duration-300 transform hover:scale-105">
-                          Challenge {leader.name}!
-                        </button>
+                          {/* Quote */}
+                          <div className="mb-5 p-4 rounded-xl bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600">
+                            <p className="text-lg italic text-gray-700 dark:text-gray-200">
+                              {gymLeaderData[leader.name]?.quote || `Master of ${leader.type}-type Pokémon!`}
+                            </p>
+                          </div>
+
+                          {/* Strategy & Badge */}
+                          <div className="mb-5 flex items-center justify-between">
+                            <div className={`inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r ${region.color} text-white font-bold shadow-lg`}>
+                              <span>{leader.badge}</span>
+                            </div>
+                            {gymLeaderData[leader.name] && (
+                              <p className="text-sm font-semibold text-gray-600 dark:text-gray-400">
+                                Strategy: {gymLeaderData[leader.name].strategy}
+                              </p>
+                            )}
+                          </div>
+
+                          {/* Weak Against Section */}
+                          {weaknesses.length > 0 && (
+                            <div className="mb-5 p-3 rounded-xl bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800">
+                              <p className="text-sm font-bold text-red-700 dark:text-red-400 mb-2">WEAK AGAINST:</p>
+                              <div className="flex flex-wrap gap-2">
+                                {weaknesses.map(type => (
+                                  <TypeBadge key={type} type={type} size="sm" />
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Pokemon Team Grid */}
+                          {teamData && (
+                            <div>
+                              <h4 className="text-xl font-bold mb-3 text-gray-800 dark:text-gray-200">
+                                Full Team
+                              </h4>
+                              <div className="grid grid-cols-2 gap-2">
+                                {teamData.team.map((pokemon, idx) => (
+                                  <div key={idx} className="bg-white/50 dark:bg-black/30 rounded-lg p-2 backdrop-blur-sm border border-gray-200 dark:border-gray-700">
+                                    <div className="flex items-center gap-2">
+                                      <div className="relative w-12 h-12 flex-shrink-0">
+                                        <Image
+                                          src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`}
+                                          alt={pokemon.name}
+                                          fill
+                                          className="object-contain"
+                                        />
+                                      </div>
+                                      <div className="flex-1 min-w-0">
+                                        <p className="font-bold text-sm truncate">{pokemon.name}</p>
+                                        <div className="flex items-center gap-1">
+                                          <span className="text-xs text-gray-600 dark:text-gray-400">Lv.{pokemon.level}</span>
+                                          {pokemon.types.map(type => (
+                                            <span key={type} className={`text-xs px-1.5 py-0.5 rounded bg-gradient-to-r ${getTypeGradient(type)} text-white`}>
+                                              {type}
+                                            </span>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
-
                   </div>
-                </CardHover>
-              </div>
-            ))}
+                </div>
+              );
+            })}
           </div>
 
           {/* Progress Indicators */}
-          <div className="flex justify-center gap-2 mt-8">
+          <div className="flex justify-center gap-3 mt-8">
             {gymLeaders.map((_, index) => (
               <button
                 key={index}
                 onClick={() => scrollToLeader(index)}
-                className={`w-2 h-2 rounded-full transition-all ${
+                className={`h-3 rounded-full transition-all ${
                   index === activeIndex 
-                    ? `w-8 bg-gradient-to-r ${region.color}` 
-                    : 'bg-gray-300 dark:bg-gray-600'
+                    ? `w-12 bg-gradient-to-r ${region.color}` 
+                    : 'w-3 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500'
                 }`}
               />
             ))}
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
-    </div>
   );
 };
 

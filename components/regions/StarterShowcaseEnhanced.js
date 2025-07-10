@@ -9,7 +9,6 @@ import { motion } from 'framer-motion';
 const StarterShowcaseEnhanced = ({ region, theme }) => {
   const [selectedStarter, setSelectedStarter] = useState(0);
   const [showEvolutions, setShowEvolutions] = useState(false);
-  const [flippedCards, setFlippedCards] = useState({});
 
   // Professor data
   const professorData = {
@@ -119,10 +118,6 @@ const StarterShowcaseEnhanced = ({ region, theme }) => {
     return gradients[type] || 'from-gray-400 to-gray-600';
   };
 
-  const handleCardFlip = (index) => {
-    setFlippedCards(prev => ({ ...prev, [index]: !prev[index] }));
-  };
-
   // Get evolution types based on Pokemon ID
   const getEvolutionTypes = (pokemonId, baseTypes) => {
     // Type data for evolutions
@@ -154,149 +149,180 @@ const StarterShowcaseEnhanced = ({ region, theme }) => {
   const professor = professorData[region.id];
 
   return (
-    <div className={`py-20 ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'} relative overflow-hidden`}>
-
-      <div className="max-w-7xl mx-auto px-8 relative z-10">
+    <div className="relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <FadeIn>
-          <div className="text-center mb-12">
-            <h2 className="text-5xl font-bold mb-4">
-              Choose Your Partner
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-bold mb-3">
+              Choose Your Starter
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 mb-6">
-              {professor?.name} will give you one of these starter Pokémon
+            <p className="text-lg text-gray-600 dark:text-gray-400">
+              {professor?.name} offers these starter Pokémon to new trainers
             </p>
           </div>
         </FadeIn>
 
-        {/* Starter Selection with Professor */}
-        <div className="flex items-start gap-24">
-          {/* Secondary Professor on the left (for regions with two professors) */}
-          {professor && professor.secondary && (
-            <div className="hidden xl:block w-72 h-[600px] flex-shrink-0 -ml-20">
-              <div className="relative w-full h-full">
-                <Image
-                  src={professor.secondary.image}
-                  alt={professor.secondary.name}
-                  layout="fill"
-                  objectFit="contain"
-                  className="drop-shadow-2xl"
-                />
-              </div>
-            </div>
-          )}
+        {/* Natural Starter Selection Scene */}
+        <div className="relative min-h-[700px] mb-12">
+          {/* Background gradient effect */}
+          <div className={`absolute inset-0 bg-gradient-to-b ${
+            theme === 'dark' 
+              ? 'from-gray-900/50 via-transparent to-gray-900/50' 
+              : 'from-white/50 via-transparent to-white/50'
+          }`} />
           
-          {/* Starter Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 flex-1">
-            {region.starterIds.map((id, index) => (
-            <SlideUp key={id} delay={index * 0.1}>
-              <div className="relative h-96 preserve-3d">
-                <motion.div
-                  className="relative w-full h-full preserve-3d"
-                  animate={{ rotateY: flippedCards[index] ? 180 : 0 }}
-                  transition={{ duration: 0.6 }}
-                >
-                  {/* Front of card */}
-                  <div className={`absolute inset-0 backface-hidden rounded-2xl overflow-hidden ${
-                    theme === 'dark' ? 'bg-gray-800' : 'bg-gray-50'
-                  } ${selectedStarter === index ? 'ring-4 ring-blue-500 shadow-2xl' : 'shadow-lg'}`}>
-                    {/* Type gradient background */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${
-                      getTypeGradient(region.starterTypes[index])
-                    } opacity-5`} />
-
-                    {/* Pokemon Image */}
-                    <div 
-                      className="relative h-64 p-8 cursor-pointer"
-                      onClick={() => setSelectedStarter(index)}
-                    >
-                      <Image
-                        src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`}
-                        alt={region.starters[index]}
-                        layout="fill"
-                        objectFit="contain"
-                        className="hover:scale-110 transition-transform duration-300"
-                      />
-                    </div>
-
-                    {/* Info */}
-                    <div className="relative p-6">
-                      <h3 className="text-2xl font-bold mb-2">{region.starters[index]}</h3>
-                      <div className="flex gap-2 mb-4">
-                        {region.starterTypes[index].map(type => (
-                          <TypeBadge key={type} type={type} size="md" />
-                        ))}
-                      </div>
-                      
-                      {/* Pokedex Number */}
-                      <div className="text-center">
-                        <span className="text-sm text-gray-500 dark:text-gray-400">
-                          #{String(id).padStart(3, '0')}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Flip indicator */}
-                    <div className="absolute top-4 right-4">
-                      <BsInfoCircle className="text-2xl text-gray-400" />
-                    </div>
-                  </div>
-
-                  {/* Back of card */}
-                  <div className={`absolute inset-0 backface-hidden rotate-y-180 rounded-3xl overflow-hidden ${
-                    theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
-                  } p-6`}>
-                    <h3 className="text-xl font-bold mb-4">{region.starters[index]} Stats</h3>
-                    
-                    {/* Stats */}
-                    {starterInfo[region.starters[index]] && (
-                      <>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                          {starterInfo[region.starters[index]].description}
-                        </p>
-                        
-                        <div className="space-y-2">
-                          {Object.entries(starterInfo[region.starters[index]].stats).map(([stat, value]) => (
-                            <div key={stat} className="flex items-center">
-                              <span className="text-sm font-medium w-16">{stat.toUpperCase()}</span>
-                              <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-2 ml-2">
-                                <div 
-                                  className={`h-2 rounded-full bg-gradient-to-r ${region.color}`}
-                                  style={{ width: `${(value / 100) * 100}%` }}
-                                />
-                              </div>
-                              <span className="text-sm ml-2 w-10 text-right">{value}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </>
-                    )}
-
-                    {/* Flip back indicator */}
-                    <button className="mt-6 text-sm text-pokemon-blue hover:underline">
-                      Flip to front →
-                    </button>
-                  </div>
-                </motion.div>
+          {/* Professor(s) positioned naturally */}
+          <div className="absolute inset-0 flex justify-between items-end px-4 pointer-events-none">
+            {/* Secondary Professor (left side) */}
+            {professor && professor.secondary && (
+              <div className="hidden xl:block w-80 h-[600px]">
+                <div className="relative w-full h-full">
+                  <Image
+                    src={professor.secondary.image}
+                    alt={professor.secondary.name}
+                    layout="fill"
+                    objectFit="contain"
+                    className="drop-shadow-2xl"
+                    priority
+                  />
+                </div>
               </div>
-            </SlideUp>
-          ))}
+            )}
+            
+            {/* Main Professor (right side) */}
+            {professor && (
+              <div className="hidden xl:block w-80 h-[600px] ml-auto">
+                <div className="relative w-full h-full">
+                  <Image
+                    src={professor.image}
+                    alt={professor.name}
+                    layout="fill"
+                    objectFit="contain"
+                    className="drop-shadow-2xl"
+                    priority
+                  />
+                </div>
+              </div>
+            )}
           </div>
           
-          {/* Professor on the right */}
-          {professor && (
-            <div className="hidden xl:block w-72 h-[600px] flex-shrink-0 -mr-20">
-              <div className="relative w-full h-full">
-                <Image
-                  src={professor.image}
-                  alt={professor.name}
-                  layout="fill"
-                  objectFit="contain"
-                  className="drop-shadow-2xl"
-                />
-              </div>
+          {/* Pokemon arranged in natural zigzag pattern */}
+          <div className="relative z-10 flex items-center justify-center pt-40">
+            <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
+              {region.starterIds.map((id, index) => {
+                // Create zigzag positioning
+                const yOffset = index === 1 ? -60 : 0; // Middle pokemon higher
+                const xOffset = index === 0 ? -20 : index === 2 ? 20 : 0; // Slight horizontal offset
+                
+                return (
+                  <motion.div
+                    key={id}
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: yOffset }}
+                    transition={{ delay: index * 0.2, duration: 0.6 }}
+                    className="relative group"
+                    style={{ marginTop: `${Math.abs(yOffset)}px` }}
+                  >
+                    {/* Subtle selection glow */}
+                    {selectedStarter === index && (
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        className={`absolute -inset-8 bg-gradient-to-r ${region.color} 
+                          opacity-20 blur-2xl rounded-full`}
+                      />
+                    )}
+                    
+                    {/* Pokemon sprite container */}
+                    <motion.div
+                      className="relative cursor-pointer"
+                      onClick={() => setSelectedStarter(index)}
+                      whileHover={{ scale: 1.1, y: -10 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                    >
+                      {/* Pokemon shadow */}
+                      <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-32 h-8 
+                        bg-black/10 dark:bg-black/20 rounded-full blur-2xl" />
+                      
+                      {/* Pokemon sprite */}
+                      <div className="relative w-48 h-48 md:w-56 md:h-56">
+                        <Image
+                          src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`}
+                          alt={region.starters[index]}
+                          layout="fill"
+                          objectFit="contain"
+                          className="drop-shadow-2xl"
+                          priority
+                        />
+                      </div>
+                    </motion.div>
+                    
+                    {/* Selection indicator */}
+                    {selectedStarter === index && (
+                      <motion.div
+                        initial={{ scale: 0, rotate: -180 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                        transition={{ type: "spring", stiffness: 200 }}
+                        className="absolute -top-8 left-1/2 transform -translate-x-1/2"
+                      >
+                        <div className={`w-0 h-0 border-l-[12px] border-r-[12px] 
+                          border-t-[20px] border-l-transparent border-r-transparent ${
+                          theme === 'dark' ? 'border-t-white' : 'border-t-gray-800'
+                        } animate-bounce`} />
+                      </motion.div>
+                    )}
+                  </motion.div>
+                );
+              })}
             </div>
-          )}
+          </div>
+          
+          {/* Mobile view - single column */}
+          <div className="md:hidden absolute bottom-8 left-0 right-0 flex justify-center gap-4">
+            {region.starterIds.map((id, index) => (
+              <button
+                key={id}
+                onClick={() => setSelectedStarter(index)}
+                className={`w-3 h-3 rounded-full transition-all ${
+                  selectedStarter === index 
+                    ? `bg-gradient-to-r ${region.color} scale-150` 
+                    : 'bg-gray-400 dark:bg-gray-600'
+                }`}
+              />
+            ))}
+          </div>
         </div>
+        
+        {/* Selected Pokemon Details */}
+        <FadeIn>
+          <div className={`max-w-2xl mx-auto mt-8 p-8 rounded-3xl ${
+            theme === 'dark' ? 'bg-gray-800/50' : 'bg-gray-100/50'
+          } backdrop-blur-sm`}>
+            <h3 className="text-3xl font-bold text-center mb-6">
+              {region.starters[selectedStarter]}
+            </h3>
+            
+            {starterInfo[region.starters[selectedStarter]] && (
+              <>
+                <p className="text-lg text-center mb-8 text-gray-600 dark:text-gray-400">
+                  {starterInfo[region.starters[selectedStarter]].description}
+                </p>
+                
+                {/* Stats Grid */}
+                <div className="grid grid-cols-3 gap-4">
+                  {Object.entries(starterInfo[region.starters[selectedStarter]].stats).map(([stat, value]) => (
+                    <div key={stat} className="text-center">
+                      <div className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
+                        {stat.toUpperCase()}
+                      </div>
+                      <div className="text-2xl font-bold">{value}</div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        </FadeIn>
 
         {/* Evolution Line Section */}
         <div className="text-center mb-8">
@@ -424,18 +450,6 @@ const StarterShowcaseEnhanced = ({ region, theme }) => {
           </FadeIn>
         </div>
       </div>
-
-      <style jsx>{`
-        .preserve-3d {
-          transform-style: preserve-3d;
-        }
-        .backface-hidden {
-          backface-visibility: hidden;
-        }
-        .rotate-y-180 {
-          transform: rotateY(180deg);
-        }
-      `}</style>
     </div>
   );
 };

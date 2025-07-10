@@ -5,11 +5,14 @@ import Modal from "../components/ui/Modal";
 import CardList from "../components/CardList";
 import CustomSiteLogo from "../components/icons/customsitelogo";
 import { getPrice, getRarityRank } from "../utils/pokemonutils.js";
-import { BsBook, BsCardList, BsGrid } from "react-icons/bs";
-import { GiCardPickup } from "react-icons/gi";
+import { BsBook, BsCardList, BsGrid, BsSearch, BsGlobeEuropeAfrica, BsTrophy, BsHeart, BsGraphUp } from "react-icons/bs";
+import { GiCardPickup, GiCrossedSwords, GiPokerHand } from "react-icons/gi";
+import { FiTrendingUp, FiShoppingBag } from "react-icons/fi";
+import { AiOutlineBulb } from "react-icons/ai";
 import { DynamicAdvancedSearchModal, DynamicMarketAnalytics, preloadCriticalComponents } from "../components/dynamic/DynamicComponents";
 import dynamic from 'next/dynamic';
 import { toggleFeature, isFeatureEnabled } from "../utils/featureFlags";
+import { FullBleedWrapper } from "../components/ui/FullBleedWrapper";
 
 // Safe dynamic imports for enhanced components
 const VisualSearchFilters = dynamic(() => import('../components/ui/VisualSearchFilters'), {
@@ -39,10 +42,12 @@ function getRarityGlow(rarity) {
 }
 
 export default function IndexPage() {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [globalSearchTerm, setGlobalSearchTerm] = useState("");
+  const [cardSearchTerm, setCardSearchTerm] = useState("");
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showCardSearch, setShowCardSearch] = useState(false);
 
   // State for modal and selected card
   const [modalOpen, setModalOpen] = useState(false);
@@ -57,6 +62,7 @@ export default function IndexPage() {
 
   // Ref to detect clicks outside expanded card modal
   const containerRef = useRef(null);
+  const globalSearchRef = useRef(null);
 
   function openModal(card) {
     setModalCard(card);
@@ -70,7 +76,7 @@ export default function IndexPage() {
     setSelectedCardId(null);
   }
 
-  const handleSearch = async (e) => {
+  const handleCardSearch = async (e) => {
     e.preventDefault();
     
     if (!pokemonKey) {
@@ -82,12 +88,19 @@ export default function IndexPage() {
     setError(null);
     setCards([]);
     try {
-      const result = await pokemon.card.where({ q: `name:${searchTerm}*` });
+      const result = await pokemon.card.where({ q: `name:${cardSearchTerm}*` });
       setCards(result.data);
     } catch (err) {
       setError("Failed to load cards.");
     }
     setLoading(false);
+  };
+
+  const handleGlobalSearch = (e) => {
+    e.preventDefault();
+    // Handle global search - could navigate to a search results page
+    // or filter content on the current page
+    console.log('Global search:', globalSearchTerm);
   };
 
   const renderEvolutionLine = (card) => (
@@ -125,147 +138,338 @@ export default function IndexPage() {
   }, [modalOpen]);
 
   return (
-    <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto px-2 sm:px-4 animate-fadeIn">
-      <div className="flex flex-col items-center mb-8 relative">
-        {/* Clean Logo Container */}
-        <div className="relative p-8 mb-6 transition-transform duration-300 hover:scale-105">
-          <CustomSiteLogo size={150} className="mx-auto" />
-        </div>
-        
-        {/* Clean Title */}
-        <h1 className="text-4xl md:text-6xl font-bold text-center mb-4 text-pokemon-red">
-          DexTrends
-        </h1>
-        
-        <p className="text-lg md:text-xl text-text-grey font-medium text-center mb-6 max-w-2xl">
-          Discover, track, and explore <span className="font-bold text-pokemon-red">Pokémon TCG</span> card prices and trends in a beautiful 
-          <span className="font-bold text-pokemon-blue"> Pokédex-inspired</span> experience.
-        </p>
-        
-        {/* Enhanced Quick Action Tiles with Descriptions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-6xl mt-12">
-          <Link
-            href="/pokedex"
-                            className="group bg-white border border-border-color p-6 rounded-xl shadow-sm card-hover text-center hover:shadow-lg transition-all duration-300">
-            
-            <BsBook className="mx-auto mb-4 text-4xl text-pokemon-red group-hover:scale-110 transition-transform duration-300" />
-            <h3 className="font-semibold text-lg text-dark-text mb-2">Pokédex</h3>
-            <p className="text-sm text-text-grey">Browse all Pokémon with detailed stats and information</p>
-          </Link>
-          <Link
-            href="/tcgsets"
-                            className="group bg-white border border-border-color p-6 rounded-xl shadow-sm card-hover text-center hover:shadow-lg transition-all duration-300">
-            
-            <BsCardList className="mx-auto mb-4 text-4xl text-pokemon-blue group-hover:scale-110 transition-transform duration-300" />
-            <h3 className="font-semibold text-lg text-dark-text mb-2">Pokémon TCG</h3>
-            <p className="text-sm text-text-grey">Explore sets, track prices, and manage collections</p>
-          </Link>
-          <Link
-            href="/pocketmode"
-                            className="group bg-white border border-border-color p-6 rounded-xl shadow-sm card-hover text-center hover:shadow-lg transition-all duration-300">
-            
-            <GiCardPickup className="mx-auto mb-4 text-4xl text-pokemon-yellow group-hover:scale-110 transition-transform duration-300" />
-            <h3 className="font-semibold text-lg text-dark-text mb-2">Pocket Mode</h3>
-            <p className="text-sm text-text-grey">Mobile TCG format with streamlined gameplay</p>
-          </Link>
-          <Link
-            href="/leaderboard"
-                            className="group bg-white border border-border-color p-6 rounded-xl shadow-sm card-hover text-center hover:shadow-lg transition-all duration-300">
-            
-            <BsGrid className="mx-auto mb-4 text-4xl text-pokemon-green group-hover:scale-110 transition-transform duration-300" />
-            <h3 className="font-semibold text-lg text-dark-text mb-2">Rankings</h3>
-            <p className="text-sm text-text-grey">See top players and competitive statistics</p>
-          </Link>
-        </div>
-        
-        {/* Features Preview Section */}
-        <div className="w-full max-w-6xl mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-xl border border-blue-100">
-            <h3 className="text-2xl font-bold text-dark-text mb-4">🎯 Smart Collection Management</h3>
-            <p className="text-text-grey mb-6">Track your card values, set price alerts, and get insights into market trends with our advanced collection tools.</p>
-            <Link href="/collections">
-              <button className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
-                Manage Collection
-              </button>
-            </Link>
+    <FullBleedWrapper gradient="pokedex">
+      {/* Pokemon-themed Background Elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-10 left-10 w-96 h-96 bg-gradient-to-br from-yellow-200/20 to-orange-200/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-10 right-10 w-96 h-96 bg-gradient-to-br from-blue-200/20 to-purple-200/20 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-br from-red-200/10 to-pink-200/10 rounded-full blur-3xl" />
+      </div>
+      
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
+        {/* Header with Global Search */}
+        <div className="text-center mb-12">
+          <div className="flex justify-center mb-6">
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-pink-500 rounded-3xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-300" />
+              <div className="relative bg-white rounded-3xl p-6 shadow-2xl transform group-hover:scale-105 transition-transform duration-300">
+                <CustomSiteLogo size={120} className="mx-auto" />
+              </div>
+            </div>
           </div>
           
-          <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-8 rounded-xl border border-purple-100">
-            <h3 className="text-2xl font-bold text-dark-text mb-4">⚡ Pocket Mode Experience</h3>
-            <p className="text-text-grey mb-6">Dive into the mobile-optimized TCG format with exclusive cards, quick battles, and streamlined rules.</p>
-            <Link href="/pocketmode">
-              <button className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
-                Explore Pocket
+          <h1 className="text-5xl md:text-7xl font-extrabold mb-4 bg-gradient-to-r from-red-600 via-pink-600 to-purple-600 bg-clip-text text-transparent animate-gradient">
+            DexTrends
+          </h1>
+          
+          <p className="text-xl text-gray-600 font-medium mb-8 max-w-3xl mx-auto">
+            Your ultimate destination for everything Pokémon - from TCG cards to game data, 
+            competitive battles to collection tracking.
+          </p>
+          
+          {/* Global Search Bar */}
+          <form onSubmit={handleGlobalSearch} className="max-w-2xl mx-auto mb-8">
+            <div className="relative group">
+              <input
+                ref={globalSearchRef}
+                type="text"
+                className="w-full px-6 py-4 pl-14 pr-32 bg-white/90 backdrop-blur-sm border-2 border-gray-200 rounded-full text-lg focus:outline-none focus:border-purple-400 focus:bg-white transition-all duration-300 shadow-lg group-hover:shadow-xl"
+                placeholder="Search Pokémon, cards, moves, items, regions..."
+                value={globalSearchTerm}
+                onChange={(e) => setGlobalSearchTerm(e.target.value)}
+              />
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <BsSearch className="h-5 w-5 text-gray-500" aria-hidden="true" />
+              </div>
+              <button
+                type="submit"
+                className="absolute right-2 top-1/2 -translate-y-1/2 px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold rounded-full transition-all duration-300 transform hover:scale-105"
+              >
+                Search
               </button>
+            </div>
+          </form>
+        </div>
+        
+        {/* Main Navigation Grid - 8 Key Sections */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          {/* Pokédex */}
+          <Link href="/pokedex" className="group relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform group-hover:scale-105 border border-white/50">
+              <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-pink-500 rounded-2xl flex items-center justify-center mb-4 group-hover:rotate-6 transition-transform duration-300">
+                <BsBook className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">Pokédex</h3>
+              <p className="text-sm text-gray-600 mb-4">Explore all 1000+ Pokémon with stats, evolutions, and abilities</p>
+              <div className="flex items-center text-red-600 font-semibold text-sm">
+                <span>Browse Now</span>
+                <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
+          </Link>
+
+          {/* TCG Sets */}
+          <Link href="/tcgsets" className="group relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform group-hover:scale-105 border border-white/50">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center mb-4 group-hover:rotate-6 transition-transform duration-300">
+                <BsCardList className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">TCG Sets</h3>
+              <p className="text-sm text-gray-600 mb-4">Browse all Pokémon TCG sets and expansions</p>
+              <div className="flex items-center text-blue-600 font-semibold text-sm">
+                <span>View Sets</span>
+                <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
+          </Link>
+
+          {/* Pokemon Regions */}
+          <Link href="/pokemon/regions" className="group relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-teal-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform group-hover:scale-105 border border-white/50">
+              <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-teal-500 rounded-2xl flex items-center justify-center mb-4 group-hover:rotate-6 transition-transform duration-300">
+                <BsGlobeEuropeAfrica className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">Regions</h3>
+              <p className="text-sm text-gray-600 mb-4">Journey through Kanto, Johto, Hoenn, and beyond</p>
+              <div className="flex items-center text-green-600 font-semibold text-sm">
+                <span>Explore</span>
+                <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
+          </Link>
+
+          {/* Battle Simulator */}
+          <Link href="/battle-simulator" className="group relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-red-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform group-hover:scale-105 border border-white/50">
+              <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl flex items-center justify-center mb-4 group-hover:rotate-6 transition-transform duration-300">
+                <GiCrossedSwords className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">Battle</h3>
+              <p className="text-sm text-gray-600 mb-4">Simulate battles and build competitive teams</p>
+              <div className="flex items-center text-orange-600 font-semibold text-sm">
+                <span>Battle Now</span>
+                <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
+          </Link>
+
+          {/* Collections */}
+          <Link href="/collections" className="group relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/10 to-amber-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform group-hover:scale-105 border border-white/50">
+              <div className="w-16 h-16 bg-gradient-to-br from-yellow-500 to-amber-500 rounded-2xl flex items-center justify-center mb-4 group-hover:rotate-6 transition-transform duration-300">
+                <BsHeart className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">My Collection</h3>
+              <p className="text-sm text-gray-600 mb-4">Track your cards, favorites, and collection value</p>
+              <div className="flex items-center text-yellow-600 font-semibold text-sm">
+                <span>Manage</span>
+                <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
+          </Link>
+
+          {/* Pocket Mode */}
+          <Link href="/pocketmode" className="group relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform group-hover:scale-105 border border-white/50">
+              <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mb-4 group-hover:rotate-6 transition-transform duration-300">
+                <GiCardPickup className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">Pocket TCG</h3>
+              <p className="text-sm text-gray-600 mb-4">Mobile-optimized TCG with exclusive cards</p>
+              <div className="flex items-center text-purple-600 font-semibold text-sm">
+                <span>Play Now</span>
+                <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
+          </Link>
+
+          {/* Price Tracker */}
+          <Link href="/trending" className="group relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-green-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform group-hover:scale-105 border border-white/50">
+              <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-green-500 rounded-2xl flex items-center justify-center mb-4 group-hover:rotate-6 transition-transform duration-300">
+                <FiTrendingUp className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">Price Tracker</h3>
+              <p className="text-sm text-gray-600 mb-4">Monitor card prices and market trends</p>
+              <div className="flex items-center text-emerald-600 font-semibold text-sm">
+                <span>Track Prices</span>
+                <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
+          </Link>
+
+          {/* Fun & Games */}
+          <Link href="/fun" className="group relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform group-hover:scale-105 border border-white/50">
+              <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center mb-4 group-hover:rotate-6 transition-transform duration-300">
+                <AiOutlineBulb className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">Fun Zone</h3>
+              <p className="text-sm text-gray-600 mb-4">Quizzes, games, and Pokémon trivia</p>
+              <div className="flex items-center text-indigo-600 font-semibold text-sm">
+                <span>Have Fun</span>
+                <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
+          </Link>
+        </div>
+        
+        {/* Pokemon Card Search Section */}
+        <div className="mb-12">
+          <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/30">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+                  Pokémon Card Search
+                </h2>
+                <p className="text-gray-600">Search any Pokémon TCG card from our extensive database</p>
+              </div>
+              <button
+                onClick={() => setShowCardSearch(!showCardSearch)}
+                className={`px-6 py-3 font-semibold rounded-full transition-all duration-300 transform hover:scale-105 ${
+                  showCardSearch 
+                    ? 'bg-gray-200 text-gray-700 hover:bg-gray-300' 
+                    : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 shadow-lg'
+                }`}
+              >
+                {showCardSearch ? 'Hide' : 'Show'} Card Search
+              </button>
+            </div>
+            
+            {showCardSearch && (
+              <div className="space-y-6">
+                <form onSubmit={handleCardSearch} className="flex flex-col md:flex-row gap-4">
+                  <div className="relative flex-1">
+                    <input
+                      type="text"
+                      className="w-full px-6 py-4 pl-14 bg-gray-50 border border-gray-200 rounded-full text-lg focus:outline-none focus:border-purple-400 focus:bg-white transition-all duration-300"
+                      placeholder="Search for Pokémon cards (e.g., Charizard, Pikachu)..."
+                      value={cardSearchTerm}
+                      onChange={(e) => setCardSearchTerm(e.target.value)}
+                    />
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <BsSearch className="h-5 w-5 text-gray-500" aria-hidden="true" />
+              </div>
+                  </div>
+                  <button
+                    type="submit"
+                    className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  >
+                    Search Cards
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowAdvancedSearch(true)}
+                    className="px-6 py-4 bg-white border-2 border-purple-300 text-purple-700 font-semibold rounded-full hover:bg-purple-50 transition-all duration-300 flex items-center gap-2"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
+                    </svg>
+                    Advanced
+                  </button>
+                </form>
+                
+                {/* Feature Toggle Pills */}
+                <div className="flex flex-wrap gap-3 justify-center">
+                  <button
+                    onClick={() => setShowMarketAnalytics(!showMarketAnalytics)}
+                    className={`px-5 py-2.5 rounded-full font-medium transition-all duration-300 ${
+                      showMarketAnalytics
+                        ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    <BsGraphUp className="inline-block w-4 h-4 mr-2" />
+                    Market Analytics
+                  </button>
+                  
+                  <button
+                    onClick={() => setShowVisualFilters(!showVisualFilters)}
+                    className={`px-5 py-2.5 rounded-full font-medium transition-all duration-300 ${
+                      showVisualFilters
+                        ? 'bg-gradient-to-r from-green-600 to-teal-600 text-white shadow-lg'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    <svg className="inline-block w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                    </svg>
+                    Visual Filters
+                  </button>
+                  
+                  <button
+                    onClick={() => setShowComparisonTool(!showComparisonTool)}
+                    className={`px-5 py-2.5 rounded-full font-medium transition-all duration-300 ${
+                      showComparisonTool
+                        ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    <svg className="inline-block w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM7 21h10a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a4 4 0 004 4z" />
+                    </svg>
+                    Compare Cards
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+        
+        {/* Quick Links Section */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Popular Destinations</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <Link href="/pokemon/starters" className="group">
+              <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-4 text-center hover:bg-white hover:shadow-lg transition-all duration-300 border border-white/50">
+                <GiPokerHand className="w-8 h-8 mx-auto mb-2 text-red-500 group-hover:scale-110 transition-transform" />
+                <span className="text-sm font-medium text-gray-700">Starter Pokémon</span>
+              </div>
+            </Link>
+            <Link href="/pokemon/moves" className="group">
+              <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-4 text-center hover:bg-white hover:shadow-lg transition-all duration-300 border border-white/50">
+                <BsBook className="w-8 h-8 mx-auto mb-2 text-blue-500 group-hover:scale-110 transition-transform" />
+                <span className="text-sm font-medium text-gray-700">Moves & TMs</span>
+              </div>
+            </Link>
+            <Link href="/pokemon/items" className="group">
+              <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-4 text-center hover:bg-white hover:shadow-lg transition-all duration-300 border border-white/50">
+                <FiShoppingBag className="w-8 h-8 mx-auto mb-2 text-green-500 group-hover:scale-110 transition-transform" />
+                <span className="text-sm font-medium text-gray-700">Items</span>
+              </div>
+            </Link>
+            <Link href="/type-effectiveness" className="group">
+              <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-4 text-center hover:bg-white hover:shadow-lg transition-all duration-300 border border-white/50">
+                <BsTrophy className="w-8 h-8 mx-auto mb-2 text-yellow-500 group-hover:scale-110 transition-transform" />
+                <span className="text-sm font-medium text-gray-700">Type Chart</span>
+              </div>
             </Link>
           </div>
         </div>
-      </div>
-      <form onSubmit={handleSearch} className="flex flex-col md:flex-row justify-center items-center gap-4 mb-8 w-full max-w-3xl mx-auto">
-        <div className="relative flex-1 w-full md:max-w-lg">
-          <input
-            type="text"
-            className="input-clean px-6 py-4 text-lg rounded-lg"
-            placeholder="Search for Pokémon cards..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-text-grey">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </div>
-        </div>
-        <button 
-          type="submit" 
-          className="btn-primary px-8 py-4 text-lg font-semibold rounded-lg hover:scale-105 transition-all duration-300"
-        >
-          Search
-        </button>
-        <button
-          type="button"
-          onClick={() => setShowAdvancedSearch(true)}
-          className="btn-secondary px-6 py-4 text-lg font-semibold rounded-lg hover:scale-105 transition-all duration-300 flex items-center gap-2"
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
-          </svg>
-          Advanced
-        </button>
-      </form>
-      {/* Enhanced Features Toggle Bar */}
-      <div className="w-full mb-8 flex flex-wrap justify-center gap-4">
-        <button
-          onClick={() => setShowMarketAnalytics(!showMarketAnalytics)}
-          className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 flex items-center gap-2 shadow-lg"
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-          </svg>
-          {showMarketAnalytics ? 'Hide' : 'Show'} Market Analytics
-        </button>
-        
-        <button
-          onClick={() => setShowVisualFilters(!showVisualFilters)}
-          className="bg-gradient-to-r from-green-600 to-teal-600 text-white px-6 py-3 rounded-lg hover:from-green-700 hover:to-teal-700 transition-all duration-300 flex items-center gap-2 shadow-lg"
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-          </svg>
-          {showVisualFilters ? 'Hide' : 'Show'} Visual Filters
-        </button>
-        
-        <button
-          onClick={() => setShowComparisonTool(!showComparisonTool)}
-          className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300 flex items-center gap-2 shadow-lg"
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM7 21h10a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a4 4 0 004 4z" />
-          </svg>
-          {showComparisonTool ? 'Hide' : 'Show'} Card Comparison
-        </button>
-        
-      </div>
       {/* Market Analytics Section */}
       {showMarketAnalytics && (
         <div className="w-full mb-8">
@@ -289,18 +493,23 @@ export default function IndexPage() {
           <CardComparisonTool />
         </div>
       )}
-      <div className="w-full mb-8">
-        <CardList
-          cards={cards}
-          loading={loading}
-          error={error}
-          initialSortOption="price"
-          onCardClick={openModal}
-          getPrice={getPrice}
-          getReleaseDate={(card) => card.set?.releaseDate || "0000-00-00"}
-          getRarityRank={getRarityRank}
-        />
+        {/* Card Results Section */}
+        {(showCardSearch && cards.length > 0) && (
+          <div className="w-full mb-8">
+            <CardList
+              cards={cards}
+              loading={loading}
+              error={error}
+              initialSortOption="price"
+              onCardClick={openModal}
+              getPrice={getPrice}
+              getReleaseDate={(card) => card.set?.releaseDate || "0000-00-00"}
+              getRarityRank={getRarityRank}
+            />
+          </div>
+        )}
       </div>
+      {/* Modals */}
       {modalOpen && modalCard && (
         <Modal onClose={closeModal}>
           <div className="flex flex-col items-center" ref={containerRef}>
@@ -323,6 +532,7 @@ export default function IndexPage() {
           </div>
         </Modal>
       )}
+      
       {/* Advanced Search Modal */}
       <DynamicAdvancedSearchModal
         isOpen={showAdvancedSearch}
@@ -330,9 +540,21 @@ export default function IndexPage() {
         onSearchResults={(results) => {
           setCards(results);
           setShowAdvancedSearch(false);
+          setShowCardSearch(true);
         }}
       />
+      
       <style jsx global>{`
+        @keyframes gradient {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        
+        .animate-gradient {
+          background-size: 200% 200%;
+          animation: gradient 3s ease infinite;
+        }
         .shadow-glow-rare {
           box-shadow: 0 0 14px 4px #ffe06655, 0 2px 8px 0 var(--color-shadow-default);
         }
@@ -356,6 +578,9 @@ export default function IndexPage() {
           animation: sparkleBurst 0.2s ease-out forwards;
         }
       `}</style>
-    </div>
+    </FullBleedWrapper>
   );
 }
+
+// Tell the layout this page uses full bleed
+IndexPage.fullBleed = true;

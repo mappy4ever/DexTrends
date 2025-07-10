@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { TypeBadge } from '../ui/TypeBadge';
-import { FadeIn, SlideUp, CardHover, Scale } from '../ui/animations';
+import { FadeIn, SlideUp, CardHover, Scale } from '../ui/animations/animations';
 import { BsArrowRight, BsController, BsCardList } from 'react-icons/bs';
 
 const StarterShowcase = ({ region, theme }) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { getBadgeImage } from '../../utils/scrapedImageMapping';
-import { FadeIn, SlideUp, Scale, StaggeredChildren } from '../ui/animations';
+import { FadeIn, SlideUp, Scale, StaggeredChildren } from '../ui/animations/animations';
 
 const BadgeCollection = ({ region, gymLeaders, theme }) => {
   return (

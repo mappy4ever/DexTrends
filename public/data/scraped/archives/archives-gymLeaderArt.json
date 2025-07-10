@@ -1,0 +1,22 @@
+{
+  "category": "Gym Leader Artwork",
+  "totalFiles": 75,
+  "matchedFiles": 2,
+  "downloadedFiles": 2,
+  "files": [
+    {
+      "original": "File:IlimaSunMoon121.jpg",
+      "local": "ilimasunmoon121.jpg",
+      "path": "/images/scraped/gym-leaders/ilimasunmoon121.jpg",
+      "width": 748,
+      "height": 1044
+    },
+    {
+      "original": "File:Ransei Greatest Beauty.png",
+      "local": "ransei-greatest-beauty.png",
+      "path": "/images/scraped/gym-leaders/ransei-greatest-beauty.png",
+      "width": 256,
+      "height": 192
+    }
+  ]
+}

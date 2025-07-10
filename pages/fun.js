@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTheme } from '../context/themecontext';
 import Head from 'next/head';
 import logger from '../utils/logger';
+import { FullBleedWrapper } from '../components/ui/FullBleedWrapper';
 
 export default function FunPage() {
   const { theme } = useTheme();
@@ -130,8 +131,8 @@ export default function FunPage() {
         <meta name="description" content="Fun Pokémon facts, quizzes, and trivia!" />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-purple-900 py-8">
-        <div className="max-w-6xl mx-auto px-4">
+      <FullBleedWrapper gradient="pokedex">
+        <div className="max-w-6xl mx-auto py-8">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-pokemon-red to-pokemon-blue bg-clip-text text-transparent">
               🎉 Fun Zone 🎉
@@ -273,7 +274,10 @@ export default function FunPage() {
             </div>
           </div>
         </div>
-      </div>
+      </FullBleedWrapper>
     </>
   );
 }
+
+// Mark this page as fullBleed to remove default padding
+FunPage.fullBleed = true;

@@ -1,0 +1,22 @@
+{
+  "category": "Elite Four Artwork",
+  "totalFiles": 75,
+  "matchedFiles": 2,
+  "downloadedFiles": 2,
+  "files": [
+    {
+      "original": "File:GO Professor Willow 2022.png",
+      "local": "go-professor-willow-2022.png",
+      "path": "/images/scraped/elite-four/go-professor-willow-2022.png",
+      "width": 445,
+      "height": 1023
+    },
+    {
+      "original": "File:GO Professor Willow.png",
+      "local": "go-professor-willow.png",
+      "path": "/images/scraped/elite-four/go-professor-willow.png",
+      "width": 415,
+      "height": 1124
+    }
+  ]
+}

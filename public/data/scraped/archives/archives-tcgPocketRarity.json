@@ -1,0 +1,15 @@
+{
+  "category": "TCG Pocket Rarity",
+  "totalFiles": 4,
+  "matchedFiles": 4,
+  "downloadedFiles": 1,
+  "files": [
+    {
+      "original": "File:TCG Pocket Rarity Star.png",
+      "local": "tcg-pocket-rarity-star.png",
+      "path": "/images/scraped/tcg-pocket/rarity/tcg-pocket-rarity-star.png",
+      "width": 106,
+      "height": 101
+    }
+  ]
+}

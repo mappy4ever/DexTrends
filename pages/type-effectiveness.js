@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { fetchData } from '../utils/apiutils';
 import { TypeBadge } from '../components/ui/TypeBadge';
 import { TypeAnalysisCard, DualTypeCalculator } from '../components/ui/TypeAnalysis';
+import { FullBleedWrapper } from '../components/ui/FullBleedWrapper';
 
 const TYPE_COLORS = {
   normal: '#A8A878',
@@ -610,12 +611,14 @@ export default function TypeEffectiveness() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading type effectiveness data...</p>
+      <FullBleedWrapper gradient="pokedex">
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading type effectiveness data...</p>
+          </div>
         </div>
-      </div>
+      </FullBleedWrapper>
     );
   }
 
@@ -626,8 +629,8 @@ export default function TypeEffectiveness() {
         <meta name="description" content="Complete Pokémon type effectiveness chart with interactive tools and detailed type analysis." />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 py-8">
-        <div className="max-w-7xl mx-auto px-4">
+      <FullBleedWrapper gradient="pokedex">
+        <div className="max-w-7xl mx-auto py-8">
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
@@ -680,7 +683,10 @@ export default function TypeEffectiveness() {
             />
           )}
         </div>
-      </div>
+      </FullBleedWrapper>
     </>
   );
 }
+
+// Mark this page as fullBleed to remove default padding
+TypeEffectiveness.fullBleed = true;

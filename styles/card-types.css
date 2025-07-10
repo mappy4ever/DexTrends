@@ -1,0 +1,206 @@
+/* Pokemon Card System - TCG and Pocket Cards */
+
+/* Grid layout optimizations for both TCG and Pocket cards */
+.pocket-cards-grid,
+.tcg-cards-grid {
+  display: grid;
+  gap: 1rem;
+  padding: 0.75rem;
+  
+  /* Responsive grid columns with better spacing */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* Responsive breakpoints */
+@media (min-width: 640px) {
+  .pocket-cards-grid,
+  .tcg-cards-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .pocket-cards-grid,
+  .tcg-cards-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .pocket-cards-grid,
+  .tcg-cards-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 1.75rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .pocket-cards-grid,
+  .tcg-cards-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 2rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  .pocket-cards-grid {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 2rem;
+  }
+  
+  .tcg-cards-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 2rem;
+  }
+}
+
+/* Base card styling - applies to both TCG and Pocket */
+.unified-card {
+  transform-origin: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: visible;
+}
+
+/* TCG Card specific styling */
+.tcg-card {
+  transform-origin: center;
+  transition: transform 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease;
+  overflow: visible;
+}
+
+.tcg-card:hover {
+  transform: scale(1.05) rotateX(5deg) rotateY(5deg);
+  filter: brightness(0.9);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+  z-index: 10;
+  transition: transform 0.3s ease, filter 0.3s ease, box-shadow 0.5s ease;
+}
+
+/* Pocket card specific styling - more subtle */
+.pocket-card {
+  transform-origin: center;
+  transition: all 0.2s ease-out;
+}
+
+.pocket-card:hover {
+  /* Very subtle hover effect to prevent overlap */
+  filter: brightness(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  position: relative;
+}
+
+/* Card selection states */
+.card-selected {
+  box-shadow: 0 0 15px 4px gold;
+  transform: scale(1.1);
+  z-index: 20;
+  animation: pulse-gold 2s infinite ease-in-out;
+}
+
+@keyframes pulse-gold {
+  0%, 100% {
+    box-shadow: 0 0 15px 4px gold;
+  }
+  50% {
+    box-shadow: 0 0 25px 8px gold;
+  }
+}
+
+/* Rare card enhancements */
+.pocket-card.rare-card,
+.tcg-card.rare-card {
+  overflow: hidden;
+}
+
+.pocket-card.rare-card:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.tcg-card.rare-card:hover {
+  transform: scale(1.08) rotateX(8deg) rotateY(8deg);
+  filter: brightness(0.85);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Card name overlay */
+.card-name-overlay {
+  position: absolute;
+  bottom: 6px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+  color: white;
+  text-shadow: 0 0 5px black;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  user-select: none;
+}
+
+.unified-card:hover .card-name-overlay,
+.tcg-card:hover .card-name-overlay,
+.pocket-card:hover .card-name-overlay,
+.card-selected .card-name-overlay {
+  opacity: 1;
+}
+
+/* Magnifier icon */
+.card-magnifier-icon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  cursor: pointer;
+  pointer-events: auto;
+  z-index: 15;
+}
+
+.unified-card:hover .card-magnifier-icon,
+.tcg-card:hover .card-magnifier-icon,
+.pocket-card:hover .card-magnifier-icon {
+  opacity: 1;
+}
+
+.card-magnifier-icon svg {
+  width: 16px;
+  height: 16px;
+  fill: #333;
+}
+
+/* Mobile optimizations */
+@media (max-width: 639px) {
+  .pocket-cards-grid,
+  .tcg-cards-grid {
+    gap: 0.75rem;
+    padding: 0.5rem;
+  }
+  
+  .pocket-card:hover {
+    /* Minimal hover effects on mobile to prevent layout shifts */
+    filter: brightness(1.02);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .tcg-card:hover {
+    /* Reduced hover effects on mobile */
+    transform: scale(1.02);
+    filter: brightness(0.95);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  }
+}

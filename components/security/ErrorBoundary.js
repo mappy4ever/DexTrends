@@ -17,6 +17,12 @@ class SecurityErrorBoundary extends Component {
       retryCount: 0,
       lastErrorTime: null
     };
+    
+    // Bind methods
+    this.handleRetry = this.handleRetry.bind(this);
+    this.retryComponent = this.retryComponent.bind(this);
+    this.handleRefresh = this.handleRefresh.bind(this);
+    this.handleFeedback = this.handleFeedback.bind(this);
   }
 
   static getDerivedStateFromError(error) {
@@ -162,7 +168,7 @@ class SecurityErrorBoundary extends Component {
   /**
    * Retry functionality with exponential backoff
    */
-  handleRetry = () => {
+  handleRetry() {
     const { maxRetries = 3, retryDelay = 1000 } = this.props;
     const { retryCount, lastErrorTime } = this.state;
     
@@ -188,7 +194,7 @@ class SecurityErrorBoundary extends Component {
     }
   };
 
-  retryComponent = () => {
+  retryComponent() {
     logger.info('Retrying component render', { 
       retryCount: this.state.retryCount + 1,
       errorId: this.state.errorId 
@@ -205,7 +211,7 @@ class SecurityErrorBoundary extends Component {
   /**
    * Refresh page as last resort
    */
-  handleRefresh = () => {
+  handleRefresh() {
     logger.info('User initiated page refresh after error', { 
       errorId: this.state.errorId 
     });
@@ -218,7 +224,7 @@ class SecurityErrorBoundary extends Component {
   /**
    * Send feedback about the error
    */
-  handleFeedback = () => {
+  handleFeedback() {
     const { onFeedback } = this.props;
     const { errorId } = this.state;
     

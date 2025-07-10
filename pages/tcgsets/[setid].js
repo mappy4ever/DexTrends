@@ -12,6 +12,7 @@ import { useFavorites } from "../../context/favoritescontext";
 import { useViewSettings } from "../../context/viewsettingscontext";
 import { SetLoadingScreen } from "../../components/ui/UnifiedLoadingScreen";
 import logger from "../../utils/logger";
+import { FullBleedWrapper } from "../../components/ui/FullBleedWrapper";
 
 const pokemonKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
 
@@ -300,60 +301,73 @@ export default function SetIdPage() {
   }
 
   return (
-    <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto px-2 sm:px-4 animate-fadeIn">
-      {/* Set Header */}
-      <FadeIn>
-        <div className={`p-6 rounded-xl shadow-lg mb-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
-          <div className="flex flex-col md:flex-row items-center gap-6">
-            {/* Set Logo */}
-            <div className="flex-shrink-0">
-              {setInfo?.images?.logo ? (
-                <div className="relative bg-gray-100 rounded-lg p-4">
-                  <img
-                    src={setInfo.images.logo}
-                    alt={setInfo.name}
-                    className="h-24 object-contain"
-                  />
-                </div>
-              ) : (
-                <div className="h-24 w-48 bg-gray-200 rounded-lg flex items-center justify-center">
-                  <span className="text-gray-500">{setInfo?.name || 'Loading...'}</span>
-                </div>
-              )}
-            </div>
+    <FullBleedWrapper gradient="tcg">
+      <div className="section-spacing-y-default max-w-7xl mx-auto animate-fadeIn pt-8">
+        {/* Set Header */}
+        <FadeIn>
+          {/* Back to Sets Button */}
+          <div className="mb-6">
+            <Link href="/tcgsets" className="inline-flex items-center gap-2 px-6 py-3 bg-white/80 backdrop-blur-sm rounded-full shadow-md hover:shadow-lg hover:bg-white transition-all duration-300 group">
+              <svg className="w-5 h-5 text-purple-600 group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              <span className="font-semibold text-gray-700">Back to Sets</span>
+            </Link>
+          </div>
+          
+          <div className="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-xl border border-white/30 mb-8">
+            <div className="flex flex-col md:flex-row items-center gap-8">
+              {/* Set Logo */}
+              <div className="flex-shrink-0">
+                {setInfo?.images?.logo ? (
+                  <div className="relative bg-gradient-to-br from-purple-100 via-pink-50 to-orange-50 rounded-3xl p-8 shadow-lg">
+                    <img
+                      src={setInfo.images.logo}
+                      alt={setInfo.name}
+                      className="h-32 max-w-xs object-contain drop-shadow-lg"
+                    />
+                  </div>
+                ) : (
+                  <div className="h-32 w-64 bg-gradient-to-br from-purple-100 to-pink-100 rounded-3xl flex items-center justify-center">
+                    <span className="text-gray-500 font-medium">{setInfo?.name || 'Loading...'}</span>
+                  </div>
+                )}
+              </div>
             
-            {/* Set Info */}
-            <div className="flex-1 text-center md:text-left">
-              <h1 className="text-3xl font-bold mb-2">{setInfo?.name}</h1>
-              <p className="text-gray-500 mb-2">{setInfo?.series}</p>
-              
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-                <div>
-                  <p className="text-sm text-gray-500">Released</p>
-                  <p className="font-semibold">{setInfo?.releaseDate || 'Unknown'}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Total Cards</p>
-                  <p className="font-semibold">{setInfo?.total || 'Unknown'}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Printed Total</p>
-                  <p className="font-semibold">{setInfo?.printedTotal || 'Unknown'}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Card Count</p>
-                  <p className="font-semibold">{cards.length}</p>
+              {/* Set Info */}
+              <div className="flex-1 text-center md:text-left">
+                <h1 className="text-4xl md:text-5xl font-extrabold mb-3 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 bg-clip-text text-transparent">
+                  {setInfo?.name}
+                </h1>
+                <p className="text-lg text-gray-600 font-medium mb-6">{setInfo?.series}</p>
+                
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-2xl p-4">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">Released</p>
+                    <p className="font-bold text-gray-800 dark:text-gray-200">{setInfo?.releaseDate || 'Unknown'}</p>
+                  </div>
+                  <div className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-2xl p-4">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">Total Cards</p>
+                    <p className="font-bold text-gray-800 dark:text-gray-200">{setInfo?.total || 'Unknown'}</p>
+                  </div>
+                  <div className="bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20 rounded-2xl p-4">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">Printed Total</p>
+                    <p className="font-bold text-gray-800 dark:text-gray-200">{setInfo?.printedTotal || 'Unknown'}</p>
+                  </div>
+                  <div className="bg-gradient-to-br from-orange-50 to-yellow-50 dark:from-orange-900/20 dark:to-yellow-900/20 rounded-2xl p-4">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">Cards Found</p>
+                    <p className="font-bold text-gray-800 dark:text-gray-200">{cards.length}</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </FadeIn>
+        </FadeIn>
 
       {/* Set Statistics */}
       <SlideUp delay={200}>
-        <div className={`p-6 rounded-xl shadow-lg mb-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
-          <h2 className="text-xl font-bold mb-4">Set Statistics</h2>
+        <div className="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-xl border border-white/30 mb-8">
+          <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Set Statistics</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Rarity Distribution */}
@@ -365,8 +379,8 @@ export default function SetIdPage() {
                     key={rarity} 
                     className={`flex justify-between items-center p-2 rounded-lg cursor-pointer transition-all ${
                       filterRarity === rarity 
-                        ? 'bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700'
-                        : 'hover:bg-gray-100 dark:hover:bg-gray-700 border border-transparent'
+                        ? 'bg-gradient-to-r from-purple-100 to-pink-100 border-2 border-purple-400'
+                        : 'hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 border border-transparent'
                     }`}
                     onClick={() => handleFilterByRarity(rarity)}
                     title={`Filter by ${rarity} cards`}
@@ -382,10 +396,10 @@ export default function SetIdPage() {
                       </svg>
                       <span className="font-medium">{rarity}</span>
                     </div>
-                    <span className={`px-2 py-1 rounded-full text-sm ${
+                    <span className={`px-3 py-1.5 rounded-full text-sm font-semibold ${
                       filterRarity === rarity
-                        ? 'bg-blue-500 text-white'
-                        : 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-100'
+                        ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-md'
+                        : 'bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700'
                     }`}>
                       {statistics.rarityDistribution[rarity]} cards
                     </span>
@@ -402,25 +416,25 @@ export default function SetIdPage() {
                   {statistics.highestValueCards.map(card => (
                     <Link key={card.id}
                             href={`/cards/${card.id}`}
-                      className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-colors w-full text-left block"
+                      className="flex items-center gap-3 p-3 rounded-2xl hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 dark:hover:from-purple-900/20 dark:hover:to-pink-900/20 cursor-pointer transition-all duration-300 w-full text-left block hover:shadow-md transform hover:scale-[1.02]"
                     >
                       {card.image && (
                         <img 
                           src={card.image} 
                           alt={card.name}
-                          className="w-10 h-14 object-contain rounded"
+                          className="w-12 h-16 object-contain rounded-lg shadow-sm"
                         />
                       )}
                       <div className="flex-1">
-                        <p className="font-medium">{card.name}</p>
-                        <p className="text-sm text-gray-500">{card.rarity} · #{card.number}</p>
+                        <p className="font-semibold text-gray-800 dark:text-gray-200">{card.name}</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">{card.rarity} · #{card.number}</p>
                       </div>
-                      <div className="text-green-600 font-bold">${card.price.toFixed(2)}</div>
+                      <div className="font-bold text-lg bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">${card.price.toFixed(2)}</div>
                     </Link>
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-500">No pricing data available</p>
+                <p className="text-gray-500 dark:text-gray-400">No pricing data available</p>
               )}
             </div>
           </div>
@@ -428,60 +442,80 @@ export default function SetIdPage() {
       </SlideUp>
 
       {/* Card Filtering */}
-      <div className={`p-6 rounded-xl shadow-lg mb-8 ${theme === 'dark' ? 'bg-gray-800/95' : 'bg-white'}`}
+      <div className="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-xl border border-white/30 mb-8"
            style={{ position: 'relative', zIndex: 1 }}>
-        <h2 className="text-xl font-bold mb-4">Browse Cards</h2>
+        <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Browse Cards</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
           {/* Search */}
           <div className="lg:col-span-2">
             <label htmlFor="cardSearch" className="block text-sm font-medium mb-1">Search Cards</label>
-            <input
-              id="cardSearch"
-              type="text"
-              placeholder="Card name, number..."
-              className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 dark:bg-gray-700 dark:text-white"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+            <div className="relative">
+              <input
+                id="cardSearch"
+                type="text"
+                placeholder="Search cards by name or number..."
+                className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-full text-base focus:outline-none focus:border-purple-400 focus:bg-white transition-all duration-300"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <svg className="h-5 w-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
           </div>
           
           {/* Rarity Filter */}
           <div>
             <label htmlFor="rarityFilter" className="block text-sm font-medium mb-1">Rarity</label>
-            <select
-              id="rarityFilter"
-              className="w-full border border-gray-300 rounded-md px-3 py-2"
-              value={filterRarity}
-              onChange={(e) => handleFilterByRarity(e.target.value)}
-            >
-              <option value="">All Rarities</option>
-              {filterOptions.rarities.map(rarity => (
-                <option key={rarity} value={rarity}>{rarity}</option>
-              ))}
-            </select>
+            <div className="relative">
+              <select
+                id="rarityFilter"
+                className="w-full px-4 py-2.5 pr-10 bg-white border border-gray-200 rounded-full appearance-none cursor-pointer hover:border-purple-300 focus:outline-none focus:border-purple-400 focus:bg-white transition-all duration-300 text-gray-700 text-sm"
+                value={filterRarity}
+                onChange={(e) => handleFilterByRarity(e.target.value)}
+              >
+                <option value="">All Rarities</option>
+                {filterOptions.rarities.map(rarity => (
+                  <option key={rarity} value={rarity}>{rarity}</option>
+                ))}
+              </select>
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
           </div>
           
           {/* Subtype Filter */}
           <div>
             <label htmlFor="subtypeFilter" className="block text-sm font-medium mb-1">Subtype</label>
-            <select
-              id="subtypeFilter"
-              className="w-full border border-gray-300 rounded-md px-3 py-2"
-              value={filterSubtype}
-              onChange={(e) => setFilterSubtype(e.target.value)}
-            >
-              <option value="">All Subtypes</option>
-              {filterOptions.subtypes.map(subtype => (
-                <option key={subtype} value={subtype}>{subtype}</option>
-              ))}
-            </select>
+            <div className="relative">
+              <select
+                id="subtypeFilter"
+                className="w-full px-4 py-2.5 pr-10 bg-white border border-gray-200 rounded-full appearance-none cursor-pointer hover:border-purple-300 focus:outline-none focus:border-purple-400 focus:bg-white transition-all duration-300 text-gray-700 text-sm"
+                value={filterSubtype}
+                onChange={(e) => setFilterSubtype(e.target.value)}
+              >
+                <option value="">All Subtypes</option>
+                {filterOptions.subtypes.map(subtype => (
+                  <option key={subtype} value={subtype}>{subtype}</option>
+                ))}
+              </select>
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
           </div>
           
           {/* Clear Filters */}
-          <div className="flex items-end">
+          <div>
+            <label className="block text-sm font-medium mb-1">&nbsp;</label>
             <button
-              className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md transition-colors"
+              className="w-full bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 hover:from-gray-200 hover:to-gray-300 dark:hover:from-gray-600 dark:hover:to-gray-500 text-gray-700 dark:text-gray-200 font-semibold py-2.5 px-6 rounded-full transition-all duration-300 transform hover:scale-105 shadow-md h-[42px]"
               onClick={clearFilters}
             >
               Clear Filters
@@ -504,14 +538,14 @@ export default function SetIdPage() {
               </span>
             </h2>
             {filterRarity && (
-              <div className="flex items-center mt-1 text-sm text-primary dark:text-primary-light">
-                <span>Filtered by rarity: </span>
-                <span className="font-medium ml-1 bg-primary/10 px-2 py-0.5 rounded-full">
+              <div className="flex items-center mt-2">
+                <span className="text-sm text-gray-600">Filtered by: </span>
+                <span className="ml-2 font-semibold text-sm bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 px-3 py-1 rounded-full">
                   {filterRarity}
                 </span>
                 <button 
                   onClick={() => setFilterRarity("")}
-                  className="ml-2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none"
+                  className="ml-2 text-gray-500 hover:text-red-600 transition-colors duration-200"
                   aria-label="Clear rarity filter"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -521,8 +555,11 @@ export default function SetIdPage() {
               </div>
             )}
           </div>
-          <Link href="/tcgsets" className="text-blue-600 hover:underline">
-            Back to Sets
+          <Link href="/tcgsets" className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/80 backdrop-blur-sm rounded-full shadow-md hover:shadow-lg hover:bg-white transition-all duration-300 group">
+            <svg className="w-4 h-4 text-purple-600 group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            <span className="text-sm font-semibold text-gray-700">Back to Sets</span>
           </Link>
         </div>
         
@@ -540,14 +577,22 @@ export default function SetIdPage() {
         </div>
         
         {filteredCards.length === 0 && !loading && (
-          <div className="text-center py-10">
-            <p className="text-lg text-gray-500">No cards found matching your filters</p>
-            <button 
-              className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors"
-              onClick={clearFilters}
-            >
-              Clear Filters
-            </button>
+          <div className="text-center py-20">
+            <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-12 max-w-md mx-auto shadow-xl">
+              <div className="w-20 h-20 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg className="h-10 w-10 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M12 20h9a2 2 0 002-2V6a2 2 0 00-2-2h-1.064M12 20v-2m0 0c-2.761 0-5-2.239-5-5a5 5 0 0110 0c0 2.761-2.239 5-5 5z" />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-800 mb-2">No Cards Found</h3>
+              <p className="text-gray-600 mb-6">Try adjusting your search or filters</p>
+              <button 
+                className="px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg"
+                onClick={clearFilters}
+              >
+                Clear All Filters
+              </button>
+            </div>
           </div>
         )}
       </div>
@@ -691,6 +736,10 @@ export default function SetIdPage() {
           </div>
         </Modal>
       )}
-    </div>
+      </div>
+    </FullBleedWrapper>
   );
 }
+
+// Mark this page as fullBleed to remove default padding
+SetIdPage.fullBleed = true;

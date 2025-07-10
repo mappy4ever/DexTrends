@@ -1,0 +1,792 @@
+{
+  "category": "Region Maps",
+  "totalFiles": 133,
+  "matchedFiles": 113,
+  "downloadedFiles": 112,
+  "files": [
+    {
+      "original": "File:Capsule Monsters map.jpg",
+      "local": "capsule-monsters-map.jpg",
+      "path": "/images/scraped/maps/capsule-monsters-map.jpg",
+      "width": 1419,
+      "height": 1920
+    },
+    {
+      "original": "File:FRLG Kanto.png",
+      "local": "frlg-kanto.png",
+      "path": "/images/scraped/maps/frlg-kanto.png",
+      "width": 1000,
+      "height": 750
+    },
+    {
+      "original": "File:Glitterati location map Kitakami.png",
+      "local": "glitterati-location-map-kitakami.png",
+      "path": "/images/scraped/maps/glitterati-location-map-kitakami.png",
+      "width": 1360,
+      "height": 1360
+    },
+    {
+      "original": "File:Glitterati location map Paldea.png",
+      "local": "glitterati-location-map-paldea.png",
+      "path": "/images/scraped/maps/glitterati-location-map-paldea.png",
+      "width": 1625,
+      "height": 1625
+    },
+    {
+      "original": "File:HGSS JohtoKanto.jpg",
+      "local": "hgss-johtokanto.jpg",
+      "path": "/images/scraped/maps/hgss-johtokanto.jpg",
+      "width": 3000,
+      "height": 1316
+    },
+    {
+      "original": "File:HGSS Kanto.png",
+      "local": "hgss-kanto.png",
+      "path": "/images/scraped/maps/hgss-kanto.png",
+      "width": 1594,
+      "height": 1215
+    },
+    {
+      "original": "File:Hoenn ORAS.png",
+      "local": "hoenn-oras.png",
+      "path": "/images/scraped/maps/hoenn-oras.png",
+      "width": 1250,
+      "height": 884
+    },
+    {
+      "original": "File:Hoenn RS.png",
+      "local": "hoenn-rs.png",
+      "path": "/images/scraped/maps/hoenn-rs.png",
+      "width": 1280,
+      "height": 724
+    },
+    {
+      "original": "File:Hoenn RSE Map.png",
+      "local": "hoenn-rse-map.png",
+      "path": "/images/scraped/maps/hoenn-rse-map.png",
+      "width": 257,
+      "height": 159
+    },
+    {
+      "original": "File:HoennIIIE.png",
+      "local": "hoenniiie.png",
+      "path": "/images/scraped/maps/hoenniiie.png",
+      "width": 1280,
+      "height": 833
+    },
+    {
+      "original": "File:Johto Room BDSP.png",
+      "local": "johto-room-bdsp.png",
+      "path": "/images/scraped/maps/johto-room-bdsp.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "original": "File:Johto-game-scan.jpg",
+      "local": "johto-game-scan.jpg",
+      "path": "/images/scraped/maps/johto-game-scan.jpg",
+      "width": 1337,
+      "height": 1013
+    },
+    {
+      "original": "File:Johto-Kanto.png",
+      "local": "johto-kanto.png",
+      "path": "/images/scraped/maps/johto-kanto.png",
+      "width": 362,
+      "height": 145
+    },
+    {
+      "original": "File:Johto-unmarked.jpg",
+      "local": "johto-unmarked.jpg",
+      "path": "/images/scraped/maps/johto-unmarked.jpg",
+      "width": 810,
+      "height": 514
+    },
+    {
+      "original": "File:JohtoAndKantoMap.png",
+      "local": "johtoandkantomap.png",
+      "path": "/images/scraped/maps/johtoandkantomap.png",
+      "width": 1390,
+      "height": 592
+    },
+    {
+      "original": "File:JohtoII.png",
+      "local": "johtoii.png",
+      "path": "/images/scraped/maps/johtoii.png",
+      "width": 425,
+      "height": 310
+    },
+    {
+      "original": "File:JohtoKantoGSC.png",
+      "local": "johtokantogsc.png",
+      "path": "/images/scraped/maps/johtokantogsc.png",
+      "width": 813,
+      "height": 323
+    },
+    {
+      "original": "File:JohtoMap.png",
+      "local": "johtomap.png",
+      "path": "/images/scraped/maps/johtomap.png",
+      "width": 1280,
+      "height": 859
+    },
+    {
+      "original": "File:Kanto.png",
+      "local": "kanto.png",
+      "path": "/images/scraped/maps/kanto.png",
+      "width": 192,
+      "height": 145
+    },
+    {
+      "original": "File:KantoII.png",
+      "local": "kantoii.png",
+      "path": "/images/scraped/maps/kantoii.png",
+      "width": 425,
+      "height": 310
+    },
+    {
+      "original": "File:KantoJohtoAreas.png",
+      "local": "kantojohtoareas.png",
+      "path": "/images/scraped/maps/kantojohtoareas.png",
+      "width": 360,
+      "height": 143
+    },
+    {
+      "original": "File:Kitakami Ogre Clan location map.png",
+      "local": "kitakami-ogre-clan-location-map.png",
+      "path": "/images/scraped/maps/kitakami-ogre-clan-location-map.png",
+      "width": 1360,
+      "height": 1360
+    },
+    {
+      "original": "File:Nintendo Power 2000 GS map.jpg",
+      "local": "nintendo-power-2000-gs-map.jpg",
+      "path": "/images/scraped/maps/nintendo-power-2000-gs-map.jpg",
+      "width": 1280,
+      "height": 837
+    },
+    {
+      "original": "File:Orange Islands map.png",
+      "local": "orange-islands-map.png",
+      "path": "/images/scraped/maps/orange-islands-map.png",
+      "width": 250,
+      "height": 250
+    },
+    {
+      "original": "File:Orre Agate Village Map.png",
+      "local": "orre-agate-village-map.png",
+      "path": "/images/scraped/maps/orre-agate-village-map.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "original": "File:Orre Cave Poké Spot Map.png",
+      "local": "orre-cave-pok--spot-map.png",
+      "path": "/images/scraped/maps/orre-cave-pok--spot-map.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "original": "File:Orre Cipher Lab Map.png",
+      "local": "orre-cipher-lab-map.png",
+      "path": "/images/scraped/maps/orre-cipher-lab-map.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "original": "File:Orre Kaminko's House Map.png",
+      "local": "orre-kaminko-s-house-map.png",
+      "path": "/images/scraped/maps/orre-kaminko-s-house-map.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "original": "File:Orre Map.png",
+      "local": "orre-map.png",
+      "path": "/images/scraped/maps/orre-map.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "original": "File:Orre Oasis Poké Spot Map.png",
+      "local": "orre-oasis-pok--spot-map.png",
+      "path": "/images/scraped/maps/orre-oasis-pok--spot-map.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "original": "File:Orre Orre Colosseum Map.png",
+      "local": "orre-orre-colosseum-map.png",
+      "path": "/images/scraped/maps/orre-orre-colosseum-map.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "original": "File:Orre Outskirt Stand Map.png",
+      "local": "orre-outskirt-stand-map.png",
+      "path": "/images/scraped/maps/orre-outskirt-stand-map.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "original": "File:Orre Phenac City Map.png",
+      "local": "orre-phenac-city-map.png",
+      "path": "/images/scraped/maps/orre-phenac-city-map.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "original": "File:Orre Pyrite Town Map Colo.png",
+      "local": "orre-pyrite-town-map-colo.png",
+      "path": "/images/scraped/maps/orre-pyrite-town-map-colo.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "original": "File:Orre Pyrite Town Map.png",
+      "local": "orre-pyrite-town-map.png",
+      "path": "/images/scraped/maps/orre-pyrite-town-map.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "original": "File:Orre Rock Poké Spot Map.png",
+      "local": "orre-rock-pok--spot-map.png",
+      "path": "/images/scraped/maps/orre-rock-pok--spot-map.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "original": "File:Orre S.S. Libra Map.png",
+      "local": "orre-s.s.-libra-map.png",
+      "path": "/images/scraped/maps/orre-s.s.-libra-map.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "original": "File:Orre The Under Map.png",
+      "local": "orre-the-under-map.png",
+      "path": "/images/scraped/maps/orre-the-under-map.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "original": "File:Pokemon to real world Orre Arizona.png",
+      "local": "pokemon-to-real-world-orre-arizona.png",
+      "path": "/images/scraped/maps/pokemon-to-real-world-orre-arizona.png",
+      "width": 640,
+      "height": 852
+    },
+    {
+      "original": "File:Pt Sinnoh.png",
+      "local": "pt-sinnoh.png",
+      "path": "/images/scraped/maps/pt-sinnoh.png",
+      "width": 1024,
+      "height": 724
+    },
+    {
+      "original": "File:RBY Kanto.png",
+      "local": "rby-kanto.png",
+      "path": "/images/scraped/maps/rby-kanto.png",
+      "width": 800,
+      "height": 553
+    },
+    {
+      "original": "File:RG Kanto.png",
+      "local": "rg-kanto.png",
+      "path": "/images/scraped/maps/rg-kanto.png",
+      "width": 936,
+      "height": 719
+    },
+    {
+      "original": "File:Sinnoh DP artwork alt.png",
+      "local": "sinnoh-dp-artwork-alt.png",
+      "path": "/images/scraped/maps/sinnoh-dp-artwork-alt.png",
+      "width": 1280,
+      "height": 905
+    },
+    {
+      "original": "File:Sinnoh DP artwork.png",
+      "local": "sinnoh-dp-artwork.png",
+      "path": "/images/scraped/maps/sinnoh-dp-artwork.png",
+      "width": 700,
+      "height": 499
+    },
+    {
+      "original": "File:Sinnoh DP Map.jpg",
+      "local": "sinnoh-dp-map.jpg",
+      "path": "/images/scraped/maps/sinnoh-dp-map.jpg",
+      "width": 2450,
+      "height": 1760
+    },
+    {
+      "original": "File:Sinnoh Floaroma Town Map.png",
+      "local": "sinnoh-floaroma-town-map.png",
+      "path": "/images/scraped/maps/sinnoh-floaroma-town-map.png",
+      "width": 216,
+      "height": 168
+    },
+    {
+      "original": "File:Sinnoh Flower Paradise Map.png",
+      "local": "sinnoh-flower-paradise-map.png",
+      "path": "/images/scraped/maps/sinnoh-flower-paradise-map.png",
+      "width": 216,
+      "height": 168
+    },
+    {
+      "original": "File:Sinnoh Jubilife City Map.png",
+      "local": "sinnoh-jubilife-city-map.png",
+      "path": "/images/scraped/maps/sinnoh-jubilife-city-map.png",
+      "width": 216,
+      "height": 168
+    },
+    {
+      "original": "File:Sinnoh Maniac Tunnel Map.png",
+      "local": "sinnoh-maniac-tunnel-map.png",
+      "path": "/images/scraped/maps/sinnoh-maniac-tunnel-map.png",
+      "width": 216,
+      "height": 168
+    },
+    {
+      "original": "File:Sinnoh Pal Park Map.png",
+      "local": "sinnoh-pal-park-map.png",
+      "path": "/images/scraped/maps/sinnoh-pal-park-map.png",
+      "width": 216,
+      "height": 168
+    },
+    {
+      "original": "File:Sinnoh Region.png",
+      "local": "sinnoh-region.png",
+      "path": "/images/scraped/maps/sinnoh-region.png",
+      "width": 496,
+      "height": 416
+    },
+    {
+      "original": "File:Sinnoh Route 201 Map.png",
+      "local": "sinnoh-route-201-map.png",
+      "path": "/images/scraped/maps/sinnoh-route-201-map.png",
+      "width": 216,
+      "height": 168
+    },
+    {
+      "original": "File:Sinnoh Route 205 Map.png",
+      "local": "sinnoh-route-205-map.png",
+      "path": "/images/scraped/maps/sinnoh-route-205-map.png",
+      "width": 216,
+      "height": 168
+    },
+    {
+      "original": "File:Sinnoh Route 227 Map.png",
+      "local": "sinnoh-route-227-map.png",
+      "path": "/images/scraped/maps/sinnoh-route-227-map.png",
+      "width": 216,
+      "height": 168
+    },
+    {
+      "original": "File:Sinnoh Route 228 Map.png",
+      "local": "sinnoh-route-228-map.png",
+      "path": "/images/scraped/maps/sinnoh-route-228-map.png",
+      "width": 216,
+      "height": 168
+    },
+    {
+      "original": "File:Sinnoh Route 229 Map.png",
+      "local": "sinnoh-route-229-map.png",
+      "path": "/images/scraped/maps/sinnoh-route-229-map.png",
+      "width": 216,
+      "height": 168
+    },
+    {
+      "original": "File:Sinnoh Route 230 Map.png",
+      "local": "sinnoh-route-230-map.png",
+      "path": "/images/scraped/maps/sinnoh-route-230-map.png",
+      "width": 216,
+      "height": 168
+    },
+    {
+      "original": "File:Sinnoh Turnback Cave Map.png",
+      "local": "sinnoh-turnback-cave-map.png",
+      "path": "/images/scraped/maps/sinnoh-turnback-cave-map.png",
+      "width": 216,
+      "height": 168
+    },
+    {
+      "original": "File:Stadium 2 Pokédex map details no time.png",
+      "local": "stadium-2-pok-dex-map-details-no-time.png",
+      "path": "/images/scraped/maps/stadium-2-pok-dex-map-details-no-time.png",
+      "width": 320,
+      "height": 237
+    },
+    {
+      "original": "File:Stadium 2 Pokédex map details.png",
+      "local": "stadium-2-pok-dex-map-details.png",
+      "path": "/images/scraped/maps/stadium-2-pok-dex-map-details.png",
+      "width": 320,
+      "height": 237
+    },
+    {
+      "original": "File:Stadium 2 Pokédex map generation 1 classic.png",
+      "local": "stadium-2-pok-dex-map-generation-1-classic.png",
+      "path": "/images/scraped/maps/stadium-2-pok-dex-map-generation-1-classic.png",
+      "width": 320,
+      "height": 237
+    },
+    {
+      "original": "File:Stadium 2 Pokédex map generation 1.png",
+      "local": "stadium-2-pok-dex-map-generation-1.png",
+      "path": "/images/scraped/maps/stadium-2-pok-dex-map-generation-1.png",
+      "width": 320,
+      "height": 237
+    },
+    {
+      "original": "File:Stadium 2 Pokédex map Johto classic.png",
+      "local": "stadium-2-pok-dex-map-johto-classic.png",
+      "path": "/images/scraped/maps/stadium-2-pok-dex-map-johto-classic.png",
+      "width": 320,
+      "height": 237
+    },
+    {
+      "original": "File:Stadium 2 Pokédex map Johto.png",
+      "local": "stadium-2-pok-dex-map-johto.png",
+      "path": "/images/scraped/maps/stadium-2-pok-dex-map-johto.png",
+      "width": 320,
+      "height": 237
+    },
+    {
+      "original": "File:Stadium 2 Pokédex map Kanto classic.png",
+      "local": "stadium-2-pok-dex-map-kanto-classic.png",
+      "path": "/images/scraped/maps/stadium-2-pok-dex-map-kanto-classic.png",
+      "width": 320,
+      "height": 237
+    },
+    {
+      "original": "File:Stadium 2 Pokédex map Kanto.png",
+      "local": "stadium-2-pok-dex-map-kanto.png",
+      "path": "/images/scraped/maps/stadium-2-pok-dex-map-kanto.png",
+      "width": 320,
+      "height": 237
+    },
+    {
+      "original": "File:Stadium Pokédex map details.png",
+      "local": "stadium-pok-dex-map-details.png",
+      "path": "/images/scraped/maps/stadium-pok-dex-map-details.png",
+      "width": 320,
+      "height": 237
+    },
+    {
+      "original": "File:Stadium Pokédex map generation 1 classic.png",
+      "local": "stadium-pok-dex-map-generation-1-classic.png",
+      "path": "/images/scraped/maps/stadium-pok-dex-map-generation-1-classic.png",
+      "width": 320,
+      "height": 237
+    },
+    {
+      "original": "File:Stadium Pokédex map.png",
+      "local": "stadium-pok-dex-map.png",
+      "path": "/images/scraped/maps/stadium-pok-dex-map.png",
+      "width": 320,
+      "height": 237
+    },
+    {
+      "original": "File:SV Bamboo Forest spawners map Blueberry.png",
+      "local": "sv-bamboo-forest-spawners-map-blueberry.png",
+      "path": "/images/scraped/maps/sv-bamboo-forest-spawners-map-blueberry.png",
+      "width": 1360,
+      "height": 1360
+    },
+    {
+      "original": "File:SV Bamboo Forest spawners map Kitakami.png",
+      "local": "sv-bamboo-forest-spawners-map-kitakami.png",
+      "path": "/images/scraped/maps/sv-bamboo-forest-spawners-map-kitakami.png",
+      "width": 1360,
+      "height": 1360
+    },
+    {
+      "original": "File:SV Bamboo Forest spawners map.png",
+      "local": "sv-bamboo-forest-spawners-map.png",
+      "path": "/images/scraped/maps/sv-bamboo-forest-spawners-map.png",
+      "width": 1625,
+      "height": 1625
+    },
+    {
+      "original": "File:SV Beach spawners map.png",
+      "local": "sv-beach-spawners-map.png",
+      "path": "/images/scraped/maps/sv-beach-spawners-map.png",
+      "width": 1625,
+      "height": 1625
+    },
+    {
+      "original": "File:SV Cave spawners map Blueberry.png",
+      "local": "sv-cave-spawners-map-blueberry.png",
+      "path": "/images/scraped/maps/sv-cave-spawners-map-blueberry.png",
+      "width": 1360,
+      "height": 1360
+    },
+    {
+      "original": "File:SV Cave spawners map Kitakami.png",
+      "local": "sv-cave-spawners-map-kitakami.png",
+      "path": "/images/scraped/maps/sv-cave-spawners-map-kitakami.png",
+      "width": 1360,
+      "height": 1360
+    },
+    {
+      "original": "File:SV Cave spawners map.png",
+      "local": "sv-cave-spawners-map.png",
+      "path": "/images/scraped/maps/sv-cave-spawners-map.png",
+      "width": 1625,
+      "height": 1625
+    },
+    {
+      "original": "File:SV Cave Water spawners map Kitakami.png",
+      "local": "sv-cave-water-spawners-map-kitakami.png",
+      "path": "/images/scraped/maps/sv-cave-water-spawners-map-kitakami.png",
+      "width": 1360,
+      "height": 1360
+    },
+    {
+      "original": "File:SV Chargestone spawners map Blueberry.png",
+      "local": "sv-chargestone-spawners-map-blueberry.png",
+      "path": "/images/scraped/maps/sv-chargestone-spawners-map-blueberry.png",
+      "width": 1360,
+      "height": 1360
+    },
+    {
+      "original": "File:SV Desert spawners map Blueberry.png",
+      "local": "sv-desert-spawners-map-blueberry.png",
+      "path": "/images/scraped/maps/sv-desert-spawners-map-blueberry.png",
+      "width": 1360,
+      "height": 1360
+    },
+    {
+      "original": "File:SV Desert spawners map Kitakami.png",
+      "local": "sv-desert-spawners-map-kitakami.png",
+      "path": "/images/scraped/maps/sv-desert-spawners-map-kitakami.png",
+      "width": 1360,
+      "height": 1360
+    },
+    {
+      "original": "File:SV Desert spawners map.png",
+      "local": "sv-desert-spawners-map.png",
+      "path": "/images/scraped/maps/sv-desert-spawners-map.png",
+      "width": 1625,
+      "height": 1625
+    },
+    {
+      "original": "File:SV Flower spawners map Blueberry.png",
+      "local": "sv-flower-spawners-map-blueberry.png",
+      "path": "/images/scraped/maps/sv-flower-spawners-map-blueberry.png",
+      "width": 1360,
+      "height": 1360
+    },
+    {
+      "original": "File:SV Flower spawners map Kitakami.png",
+      "local": "sv-flower-spawners-map-kitakami.png",
+      "path": "/images/scraped/maps/sv-flower-spawners-map-kitakami.png",
+      "width": 1360,
+      "height": 1360
+    },
+    {
+      "original": "File:SV Flower spawners map.png",
+      "local": "sv-flower-spawners-map.png",
+      "path": "/images/scraped/maps/sv-flower-spawners-map.png",
+      "width": 1625,
+      "height": 1625
+    },
+    {
+      "original": "File:SV Forest spawners map.png",
+      "local": "sv-forest-spawners-map.png",
+      "path": "/images/scraped/maps/sv-forest-spawners-map.png",
+      "width": 1625,
+      "height": 1625
+    },
+    {
+      "original": "File:SV Lake spawners map Blueberry.png",
+      "local": "sv-lake-spawners-map-blueberry.png",
+      "path": "/images/scraped/maps/sv-lake-spawners-map-blueberry.png",
+      "width": 1360,
+      "height": 1360
+    },
+    {
+      "original": "File:SV Lake spawners map Kitakami.png",
+      "local": "sv-lake-spawners-map-kitakami.png",
+      "path": "/images/scraped/maps/sv-lake-spawners-map-kitakami.png",
+      "width": 1360,
+      "height": 1360
+    },
+    {
+      "original": "File:SV Lake spawners map.png",
+      "local": "sv-lake-spawners-map.png",
+      "path": "/images/scraped/maps/sv-lake-spawners-map.png",
+      "width": 1625,
+      "height": 1625
+    },
+    {
+      "original": "File:SV Mine spawners map.png",
+      "local": "sv-mine-spawners-map.png",
+      "path": "/images/scraped/maps/sv-mine-spawners-map.png",
+      "width": 1625,
+      "height": 1625
+    },
+    {
+      "original": "File:SV Mountain spawners map.png",
+      "local": "sv-mountain-spawners-map.png",
+      "path": "/images/scraped/maps/sv-mountain-spawners-map.png",
+      "width": 1625,
+      "height": 1625
+    },
+    {
+      "original": "File:SV Ocean spawners map Blueberry.png",
+      "local": "sv-ocean-spawners-map-blueberry.png",
+      "path": "/images/scraped/maps/sv-ocean-spawners-map-blueberry.png",
+      "width": 1360,
+      "height": 1360
+    },
+    {
+      "original": "File:SV Ocean spawners map.png",
+      "local": "sv-ocean-spawners-map.png",
+      "path": "/images/scraped/maps/sv-ocean-spawners-map.png",
+      "width": 1625,
+      "height": 1625
+    },
+    {
+      "original": "File:SV Olive spawners map.png",
+      "local": "sv-olive-spawners-map.png",
+      "path": "/images/scraped/maps/sv-olive-spawners-map.png",
+      "width": 1625,
+      "height": 1625
+    },
+    {
+      "original": "File:SV Prairie spawners map Blueberry.png",
+      "local": "sv-prairie-spawners-map-blueberry.png",
+      "path": "/images/scraped/maps/sv-prairie-spawners-map-blueberry.png",
+      "width": 1360,
+      "height": 1360
+    },
+    {
+      "original": "File:SV Prairie spawners map Kitakami.png",
+      "local": "sv-prairie-spawners-map-kitakami.png",
+      "path": "/images/scraped/maps/sv-prairie-spawners-map-kitakami.png",
+      "width": 1360,
+      "height": 1360
+    },
+    {
+      "original": "File:SV Prairie spawners map.png",
+      "local": "sv-prairie-spawners-map.png",
+      "path": "/images/scraped/maps/sv-prairie-spawners-map.png",
+      "width": 1625,
+      "height": 1625
+    },
+    {
+      "original": "File:SV Riverside spawners map Blueberry.png",
+      "local": "sv-riverside-spawners-map-blueberry.png",
+      "path": "/images/scraped/maps/sv-riverside-spawners-map-blueberry.png",
+      "width": 1360,
+      "height": 1360
+    },
+    {
+      "original": "File:SV Riverside spawners map Kitakami.png",
+      "local": "sv-riverside-spawners-map-kitakami.png",
+      "path": "/images/scraped/maps/sv-riverside-spawners-map-kitakami.png",
+      "width": 1360,
+      "height": 1360
+    },
+    {
+      "original": "File:SV Riverside spawners map.png",
+      "local": "sv-riverside-spawners-map.png",
+      "path": "/images/scraped/maps/sv-riverside-spawners-map.png",
+      "width": 1625,
+      "height": 1625
+    },
+    {
+      "original": "File:SV Rocky Area spawners map Blueberry.png",
+      "local": "sv-rocky-area-spawners-map-blueberry.png",
+      "path": "/images/scraped/maps/sv-rocky-area-spawners-map-blueberry.png",
+      "width": 1360,
+      "height": 1360
+    },
+    {
+      "original": "File:SV Rocky Area spawners map Kitakami.png",
+      "local": "sv-rocky-area-spawners-map-kitakami.png",
+      "path": "/images/scraped/maps/sv-rocky-area-spawners-map-kitakami.png",
+      "width": 1360,
+      "height": 1360
+    },
+    {
+      "original": "File:SV Rocky Area spawners map.png",
+      "local": "sv-rocky-area-spawners-map.png",
+      "path": "/images/scraped/maps/sv-rocky-area-spawners-map.png",
+      "width": 1625,
+      "height": 1625
+    },
+    {
+      "original": "File:SV Ruins spawners map.png",
+      "local": "sv-ruins-spawners-map.png",
+      "path": "/images/scraped/maps/sv-ruins-spawners-map.png",
+      "width": 1625,
+      "height": 1625
+    },
+    {
+      "original": "File:SV Snowfield spawners map Blueberry.png",
+      "local": "sv-snowfield-spawners-map-blueberry.png",
+      "path": "/images/scraped/maps/sv-snowfield-spawners-map-blueberry.png",
+      "width": 1360,
+      "height": 1360
+    },
+    {
+      "original": "File:SV Snowfield spawners map.png",
+      "local": "sv-snowfield-spawners-map.png",
+      "path": "/images/scraped/maps/sv-snowfield-spawners-map.png",
+      "width": 1625,
+      "height": 1625
+    },
+    {
+      "original": "File:SV Swamp spawners map Blueberry.png",
+      "local": "sv-swamp-spawners-map-blueberry.png",
+      "path": "/images/scraped/maps/sv-swamp-spawners-map-blueberry.png",
+      "width": 1360,
+      "height": 1360
+    },
+    {
+      "original": "File:SV Swamp spawners map Kitakami.png",
+      "local": "sv-swamp-spawners-map-kitakami.png",
+      "path": "/images/scraped/maps/sv-swamp-spawners-map-kitakami.png",
+      "width": 1360,
+      "height": 1360
+    },
+    {
+      "original": "File:SV Swamp spawners map.png",
+      "local": "sv-swamp-spawners-map.png",
+      "path": "/images/scraped/maps/sv-swamp-spawners-map.png",
+      "width": 1625,
+      "height": 1625
+    },
+    {
+      "original": "File:SV Town spawners map.png",
+      "local": "sv-town-spawners-map.png",
+      "path": "/images/scraped/maps/sv-town-spawners-map.png",
+      "width": 1625,
+      "height": 1625
+    },
+    {
+      "original": "File:SV Volcano spawners map Blueberry.png",
+      "local": "sv-volcano-spawners-map-blueberry.png",
+      "path": "/images/scraped/maps/sv-volcano-spawners-map-blueberry.png",
+      "width": 1360,
+      "height": 1360
+    },
+    {
+      "original": "File:SV Wasteland spawners map Blueberry.png",
+      "local": "sv-wasteland-spawners-map-blueberry.png",
+      "path": "/images/scraped/maps/sv-wasteland-spawners-map-blueberry.png",
+      "width": 1360,
+      "height": 1360
+    },
+    {
+      "original": "File:Treat Legendary location map Paldea.png",
+      "local": "treat-legendary-location-map-paldea.png",
+      "path": "/images/scraped/maps/treat-legendary-location-map-paldea.png",
+      "width": 1625,
+      "height": 1625
+    }
+  ]
+}

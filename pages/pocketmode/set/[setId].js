@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { fetchPocketData } from '../../../utils/pocketData';
 import { TypeBadge } from '../../../components/ui/TypeBadge';
 import StyledBackButton from '../../../components/ui/StyledBackButton';
+import { FullBleedWrapper } from '../../../components/ui/FullBleedWrapper';
 
 export default function SetView() {
   const router = useRouter();
@@ -149,45 +150,54 @@ export default function SetView() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 flex items-center justify-center">
+      <>
         <Head>
           <title>Loading Set | Pokemon Pocket | DexTrends</title>
         </Head>
-        <div className="bg-black/50 backdrop-blur-lg rounded-2xl p-8 text-center border border-white/20">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-yellow-400 border-t-transparent mx-auto mb-4"></div>
-          <h3 className="text-2xl font-bold text-white mb-2">Loading Set...</h3>
-          <p className="text-gray-300">Preparing card collection</p>
-        </div>
-      </div>
+        <FullBleedWrapper gradient="pocket">
+          <div className="min-h-screen flex items-center justify-center">
+            <div className="bg-black/50 backdrop-blur-lg rounded-2xl p-8 text-center border border-white/20">
+              <div className="animate-spin rounded-full h-16 w-16 border-4 border-yellow-400 border-t-transparent mx-auto mb-4"></div>
+              <h3 className="text-2xl font-bold text-white mb-2">Loading Set...</h3>
+              <p className="text-gray-300">Preparing card collection</p>
+            </div>
+          </div>
+        </FullBleedWrapper>
+      </>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 flex items-center justify-center">
+      <>
         <Head>
           <title>Error | Pokemon Pocket | DexTrends</title>
         </Head>
-        <div className="bg-black/50 backdrop-blur-lg rounded-2xl p-8 text-center border border-white/20">
-          <h2 className="text-2xl font-bold mb-4 text-red-400">Error</h2>
-          <p className="text-gray-300 mb-4">{error}</p>
-          <button 
-            onClick={() => window.location.reload()}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors"
-          >
-            Try Again
-          </button>
-        </div>
-      </div>
+        <FullBleedWrapper gradient="pocket">
+          <div className="min-h-screen flex items-center justify-center">
+            <div className="bg-black/50 backdrop-blur-lg rounded-2xl p-8 text-center border border-white/20">
+              <h2 className="text-2xl font-bold mb-4 text-red-400">Error</h2>
+              <p className="text-gray-300 mb-4">{error}</p>
+              <button 
+                onClick={() => window.location.reload()}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors"
+              >
+                Try Again
+              </button>
+            </div>
+          </div>
+        </FullBleedWrapper>
+      </>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 text-white">
+    <>
       <Head>
         <title>{theme.name} | Pokemon Pocket | DexTrends</title>
         <meta name="description" content={`Browse all cards from ${theme.name} in Pokemon Pocket`} />
       </Head>
+      <FullBleedWrapper gradient="pocket" className="text-white">
       {/* Header */}
       <div className="sticky top-0 z-50 bg-black/80 backdrop-blur-xl border-b border-white/20">
         <div className="max-w-7xl mx-auto px-6 py-6">
@@ -400,6 +410,10 @@ export default function SetView() {
           </div>
         )}
       </div>
-    </div>
+    </FullBleedWrapper>
+    </>
   );
 }
+
+// Mark this page as fullBleed to remove default padding
+SetView.fullBleed = true;

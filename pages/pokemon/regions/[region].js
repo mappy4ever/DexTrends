@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
-import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../../../components/ui";
+import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../../../components/ui/animations";
 import { useTheme } from "../../../context/themecontext";
 import StyledBackButton from "../../../components/ui/StyledBackButton";
 import { TypeBadge } from "../../../components/ui/TypeBadge";
@@ -612,168 +612,206 @@ export default function RegionDetailPage() {
       {/* Enhanced Hero Section with Parallax */}
       <RegionHero region={region} theme={theme} />
 
-      {/* Region Info Section */}
-      <RegionInfo region={region} theme={theme} />
+      {/* Sticky Section Navigation */}
+      <div className={`sticky top-0 z-30 ${theme === 'dark' ? 'bg-gray-900/95' : 'bg-white/95'} backdrop-blur-md shadow-md`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-center space-x-1 sm:space-x-2 py-3 overflow-x-auto">
+            <button onClick={() => document.getElementById('region-info').scrollIntoView({ behavior: 'smooth' })} 
+              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
+              }`}>
+              Overview
+            </button>
+            <button onClick={() => document.getElementById('starters').scrollIntoView({ behavior: 'smooth' })} 
+              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
+              }`}>
+              Starters
+            </button>
+            <button onClick={() => document.getElementById('journey').scrollIntoView({ behavior: 'smooth' })} 
+              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
+              }`}>
+              Gym Leaders
+            </button>
+            <button onClick={() => document.getElementById('explore').scrollIntoView({ behavior: 'smooth' })} 
+              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
+              }`}>
+              Locations
+            </button>
+            <button onClick={() => document.getElementById('games').scrollIntoView({ behavior: 'smooth' })} 
+              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
+              }`}>
+              Games
+            </button>
+            {region.trivia && (
+              <button onClick={() => document.getElementById('trivia').scrollIntoView({ behavior: 'smooth' })} 
+                className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                  theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
+                }`}>
+                Trivia
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
 
-      {/* Starter Pokémon Showcase */}
-      <StarterShowcaseEnhanced region={region} theme={theme} />
+      {/* Main Content Container with Consistent Spacing */}
+      <div className="relative z-10">
+        {/* Region Info Section - Clean Overview */}
+        <section id="region-info" className="relative">
+          <RegionInfo region={region} theme={theme} />
+        </section>
 
-      {/* Gym Leaders Carousel */}
-      <GymLeaderCarousel region={region} gymLeaders={region.gymLeaders} theme={theme} />
+        {/* Starter Pokémon Section - Well Organized */}
+        <section id="starters" className={`py-16 ${theme === 'dark' ? 'bg-gray-900/50' : 'bg-gray-50'}`}>
+          <StarterShowcaseEnhanced region={region} theme={theme} />
+        </section>
 
-      {/* Elite Four & Champion Gallery */}
-      <EliteFourGallery region={region} eliteFour={region.eliteFour} champion={region.champion} theme={theme} />
-
-      {/* Games Showcase */}
-      <GameShowcase region={region} theme={theme} />
-
-      {/* Landmarks & Locations */}
-      <div className={`py-20 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
-        <div className="max-w-7xl mx-auto px-8">
-          <FadeIn>
+        {/* Journey Section - Gym Leaders & Elite Four */}
+        <section id="journey" className={`py-16 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-5xl font-bold mb-4">
-                Explore {region.name}
-              </h2>
+              <h2 className="text-4xl font-bold mb-4">Your Journey in {region.name}</h2>
               <p className="text-xl text-gray-600 dark:text-gray-400">
-                Discover iconic locations and landmarks
+                Challenge the strongest trainers on your path to becoming Champion
               </p>
             </div>
-          </FadeIn>
+            
+            {/* Gym Leaders */}
+            <div className="mb-16">
+              <GymLeaderCarousel region={region} gymLeaders={region.gymLeaders} theme={theme} />
+            </div>
+            
+            {/* Elite Four & Champion */}
+            <div>
+              <EliteFourGallery region={region} eliteFour={region.eliteFour} champion={region.champion} theme={theme} />
+            </div>
+          </div>
+        </section>
 
-          {/* Cities & Towns */}
-          {region.locations && (
-            <div className="mb-12">
-              <h3 className="text-2xl font-bold mb-6">Cities & Towns</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {region.locations.map((location, index) => (
-                  <CardHover key={index}>
-                    <div className={`p-6 rounded-xl ${
-                      theme === 'dark' ? 'bg-gray-800' : 'bg-white'
-                    } shadow-lg hover:shadow-xl transition-all`}>
-                      <div className="flex items-start gap-4">
-                        <div className={`p-3 rounded-lg bg-gradient-to-br ${region.color} text-white`}>
-                          {location.type === 'city' ? <GiModernCity size={24} /> : 
-                           location.type === 'island' ? <GiIsland size={24} /> :
-                           <BsGeoAlt size={24} />}
+        {/* Explore Section - Locations & Landmarks */}
+        <section id="explore" className={`py-16 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <FadeIn>
+              <div className="text-center mb-12">
+                <h2 className="text-4xl font-bold mb-4">Explore {region.name}</h2>
+                <p className="text-xl text-gray-600 dark:text-gray-400">
+                  Discover the diverse cities, towns, and landmarks
+                </p>
+              </div>
+            </FadeIn>
+
+            {/* Two Column Layout for Better Organization */}
+            <div className="grid lg:grid-cols-2 gap-12">
+              {/* Cities & Towns Column */}
+              {region.locations && (
+                <div>
+                  <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <BsGeoAlt className="text-3xl" />
+                    Cities & Towns
+                  </h3>
+                  <div className="space-y-4">
+                    {region.locations.map((location, index) => (
+                      <CardHover key={index}>
+                        <div className={`p-5 rounded-xl ${
+                          theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+                        } shadow-md hover:shadow-lg transition-all border ${
+                          theme === 'dark' ? 'border-gray-700' : 'border-gray-200'
+                        }`}>
+                          <div className="flex items-start gap-4">
+                            <div className={`p-2.5 rounded-lg bg-gradient-to-br ${region.color} text-white flex-shrink-0`}>
+                              {location.type === 'city' ? <GiModernCity size={20} /> : 
+                               location.type === 'island' ? <GiIsland size={20} /> :
+                               <BsGeoAlt size={20} />}
+                            </div>
+                            <div className="flex-1">
+                              <h4 className="font-bold text-base mb-1">{location.name}</h4>
+                              <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                                {location.description}
+                              </p>
+                            </div>
+                          </div>
                         </div>
-                        <div>
-                          <h4 className="font-bold text-lg">{location.name}</h4>
-                          <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">
-                            {location.description}
+                      </CardHover>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Landmarks Column */}
+              {region.landmarks && (
+                <div>
+                  <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <BsCompass className="text-3xl" />
+                    Notable Landmarks
+                  </h3>
+                  <div className="space-y-4">
+                    {region.landmarks.map((landmark, index) => (
+                      <SlideUp key={index} delay={index * 0.05}>
+                        <div className={`p-5 rounded-xl ${
+                          theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+                        } shadow-md hover:shadow-lg transition-all border-l-4 ${
+                          index % 3 === 0 ? 'border-l-red-500' :
+                          index % 3 === 1 ? 'border-l-blue-500' :
+                          'border-l-green-500'
+                        }`}>
+                          <h4 className="font-bold text-base mb-1">{landmark.name}</h4>
+                          <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                            {landmark.description}
                           </p>
                         </div>
+                      </SlideUp>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* Games Section */}
+        <section id="games" className={`py-16 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+          <GameShowcase region={region} theme={theme} />
+        </section>
+
+        {/* Trivia Section - More Compact */}
+        {region.trivia && (
+          <section id="trivia" className={`py-16 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <FadeIn>
+                <div className="text-center mb-10">
+                  <h2 className="text-3xl font-bold mb-3">Did You Know?</h2>
+                  <p className="text-lg text-gray-600 dark:text-gray-400">
+                    Interesting facts about {region.name}
+                  </p>
+                </div>
+              </FadeIn>
+              
+              <StaggeredChildren className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto">
+                {region.trivia.map((fact, index) => (
+                  <CardHover key={index}>
+                    <div className={`p-5 rounded-xl ${
+                      theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+                    } shadow-md hover:shadow-lg transition-all border ${
+                      theme === 'dark' ? 'border-gray-700' : 'border-gray-200'
+                    }`}>
+                      <div className="flex items-start gap-3">
+                        <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${region.color} flex items-center justify-center flex-shrink-0`}>
+                          <span className="text-white font-bold text-sm">{index + 1}</span>
+                        </div>
+                        <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">{fact}</p>
                       </div>
                     </div>
                   </CardHover>
                 ))}
-              </div>
+              </StaggeredChildren>
             </div>
-          )}
-
-          {/* Landmarks */}
-          {region.landmarks && (
-            <div>
-              <h3 className="text-2xl font-bold mb-6">Notable Landmarks</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {region.landmarks.map((landmark, index) => (
-                  <SlideUp key={index} delay={index * 0.1}>
-                    <div className={`p-6 rounded-xl ${
-                      theme === 'dark' ? 'bg-gray-800' : 'bg-white'
-                    } shadow-lg border-l-4 ${
-                      index % 3 === 0 ? 'border-red-500' :
-                      index % 3 === 1 ? 'border-blue-500' :
-                      'border-green-500'
-                    }`}>
-                      <h4 className="font-bold text-lg mb-2">{landmark.name}</h4>
-                      <p className="text-gray-600 dark:text-gray-400">
-                        {landmark.description}
-                      </p>
-                    </div>
-                  </SlideUp>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
+          </section>
+        )}
       </div>
-
-      {/* Regional Map Section */}
-      {region.map && (
-        <div className={`py-20 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'}`}>
-          <div className="max-w-7xl mx-auto px-8">
-            <FadeIn>
-              <div className="text-center mb-12">
-                <h2 className="text-5xl font-bold mb-4">
-                  {region.name} Map
-                </h2>
-                <p className="text-xl text-gray-600 dark:text-gray-400">
-                  Explore the full region
-                </p>
-              </div>
-            </FadeIn>
-            
-            <CardHover>
-              <div className={`rounded-xl overflow-hidden shadow-2xl ${
-                theme === 'dark' ? 'bg-gray-700' : 'bg-white'
-              }`}>
-                <div className="relative w-full" style={{ aspectRatio: '16/10' }}>
-                  <Image
-                    src={region.map}
-                    alt={`${region.name} Region Map`}
-                    fill
-                    style={{ objectFit: 'contain' }}
-                    className="p-4"
-                    priority
-                  />
-                </div>
-                <div className={`p-6 text-center ${
-                  theme === 'dark' ? 'bg-gray-800' : 'bg-gray-50'
-                }`}>
-                  <div className="flex items-center justify-center gap-2 text-gray-600 dark:text-gray-400">
-                    <BsMap size={20} />
-                    <span>Official {region.name} region map</span>
-                  </div>
-                </div>
-              </div>
-            </CardHover>
-          </div>
-        </div>
-      )}
-
-      {/* Trivia Section */}
-      {region.trivia && (
-        <div className={`py-20 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'}`}>
-          <div className="max-w-7xl mx-auto px-8">
-            <FadeIn>
-              <div className="text-center mb-12">
-                <h2 className="text-4xl font-bold mb-4">Did You Know?</h2>
-                <p className="text-xl text-gray-600 dark:text-gray-400">
-                  Interesting facts about {region.name}
-                </p>
-              </div>
-            </FadeIn>
-            
-            <StaggeredChildren className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-              {region.trivia.map((fact, index) => (
-                <CardHover key={index}>
-                  <div className={`p-6 rounded-xl ${
-                    theme === 'dark' ? 'bg-gray-700' : 'bg-white'
-                  } shadow-lg`}>
-                    <div className="flex items-start gap-4">
-                      <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${region.color} flex items-center justify-center flex-shrink-0`}>
-                        <span className="text-white font-bold">{index + 1}</span>
-                      </div>
-                      <p className="text-gray-700 dark:text-gray-300">{fact}</p>
-                    </div>
-                  </div>
-                </CardHover>
-              ))}
-            </StaggeredChildren>
-          </div>
-        </div>
-      )}
-
     </div>
   );
 }

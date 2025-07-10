@@ -2,9 +2,15 @@ import React, { useEffect, useState } from 'react';
 
 // Hook to detect reduced motion preference
 const useReducedMotion = () => {
+  // Initialize with false to ensure consistent hook count between SSR and client
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') {
+      return;
+    }
+    
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     
     // Set initial value
@@ -34,7 +40,8 @@ const useReducedMotion = () => {
 };
 
 // GPU-optimized fade-in animation
-export const FadeIn = ({ children, delay = 0, duration = 300, className = '', disabled = false }) => {
+export const FadeIn = React.memo(({ children, delay = 0, duration = 300, className = '', disabled = false }) => {
+  // Always call hooks in the same order
   const prefersReducedMotion = useReducedMotion();
   const [isVisible, setIsVisible] = useState(false);
 
@@ -66,10 +73,12 @@ export const FadeIn = ({ children, delay = 0, duration = 300, className = '', di
       {children}
     </div>
   );
-};
+});
+
+FadeIn.displayName = 'FadeIn';
 
 // GPU-optimized slide-up animation
-export const SlideUp = ({ children, delay = 0, duration = 400, distance = 20, className = '', disabled = false }) => {
+export const SlideUp = React.memo(({ children, delay = 0, duration = 400, distance = 20, className = '', disabled = false }) => {
   const prefersReducedMotion = useReducedMotion();
   const [isVisible, setIsVisible] = useState(false);
 
@@ -101,10 +110,12 @@ export const SlideUp = ({ children, delay = 0, duration = 400, distance = 20, cl
       {children}
     </div>
   );
-};
+});
+
+SlideUp.displayName = 'SlideUp';
 
 // GPU-optimized scale animation
-export const Scale = ({ children, delay = 0, duration = 300, fromScale = 0.95, className = '', disabled = false }) => {
+export const Scale = React.memo(({ children, delay = 0, duration = 300, fromScale = 0.95, className = '', disabled = false }) => {
   const prefersReducedMotion = useReducedMotion();
   const [isVisible, setIsVisible] = useState(false);
 
@@ -136,10 +147,12 @@ export const Scale = ({ children, delay = 0, duration = 300, fromScale = 0.95, c
       {children}
     </div>
   );
-};
+});
+
+Scale.displayName = 'Scale';
 
 // Optimized card hover effect for iOS
-export const CardHover = ({ children, className = '', onClick = () => {}, disabled = false }) => {
+export const CardHover = React.memo(({ children, className = '', onClick = () => {}, disabled = false }) => {
   const prefersReducedMotion = useReducedMotion();
   const [isHovered, setIsHovered] = useState(false);
   const [isTouched, setIsTouched] = useState(false);
@@ -190,7 +203,9 @@ export const CardHover = ({ children, className = '', onClick = () => {}, disabl
       {children}
     </div>
   );
-};
+});
+
+CardHover.displayName = 'CardHover';
 
 // Optimized pulse animation
 export const Pulse = ({ children, delay = 0, duration = 1500, className = '', disabled = false }) => {
@@ -235,7 +250,7 @@ export const Bounce = ({ children, delay = 0, duration = 1000, className = '', d
 };
 
 // Optimized staggered children animation
-export const StaggeredChildren = ({ children, baseDelay = 50, className = '', disabled = false }) => {
+export const StaggeredChildren = React.memo(({ children, baseDelay = 50, className = '', disabled = false }) => {
   const prefersReducedMotion = useReducedMotion();
 
   return (
@@ -263,21 +278,37 @@ export const StaggeredChildren = ({ children, baseDelay = 50, className = '', di
       })}
     </div>
   );
-};
+});
+
+StaggeredChildren.displayName = 'StaggeredChildren';
 
 // Page transition wrapper
 export const PageTransition = ({ children, className = '' }) => {
+  // Always call hooks in the same order
   const prefersReducedMotion = useReducedMotion();
   const [isVisible, setIsVisible] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // Handle mounting state to avoid SSR issues
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
+    if (!mounted) return;
+    
     // Use requestAnimationFrame for smoother transitions
     const raf = requestAnimationFrame(() => {
       setIsVisible(true);
     });
     
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [mounted]);
+
+  // During SSR, render with no animation
+  if (!mounted) {
+    return <div className={className}>{children}</div>;
+  }
 
   return (
     <div 

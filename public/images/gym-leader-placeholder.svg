@@ -1,0 +1,12 @@
+<svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="400" fill="url(#gradient)"/>
+  <path d="M200 120C166.863 120 140 146.863 140 180C140 213.137 166.863 240 200 240C233.137 240 260 213.137 260 180C260 146.863 233.137 120 200 120Z" fill="white" opacity="0.3"/>
+  <path d="M200 260C160 260 120 280 120 340V380H280V340C280 280 240 260 200 260Z" fill="white" opacity="0.3"/>
+  <text x="200" y="220" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="white" opacity="0.8">GYM LEADER</text>
+  <defs>
+    <linearGradient id="gradient" x1="0" y1="0" x2="400" y2="400" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#3B82F6"/>
+    </linearGradient>
+  </defs>
+</svg>

@@ -10,6 +10,7 @@ import { TypeFilter } from "../components/ui/TypeFilter";
 import PocketCardList from "../components/PocketCardList";
 import { fetchPocketData } from "../utils/pocketData";
 import BackToTop from "../components/ui/BackToTop";
+import { FullBleedWrapper } from "../components/ui/FullBleedWrapper";
 
 // Dynamic imports for components that might cause SSR issues
 import PokeballLoader from "../components/ui/PokeballLoader";
@@ -199,8 +200,9 @@ export default function PocketMode() {
   const viewError = error.pokemon;
 
   return (
-    <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto px-2 sm:px-4 animate-fadeIn">
-      <Head>
+    <FullBleedWrapper gradient="pocket">
+      <div className="section-spacing-y-default max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 animate-fadeIn">
+        <Head>
         <title>Pokémon TCG Pocket | DexTrends</title>
         <meta name="description" content="Explore the Pokémon Trading Card Game Pocket - the streamlined mobile version with simplified rules, exclusive cards, top decks, and expansions." />
         <meta property="og:title" content="Pokémon TCG Pocket | DexTrends" />
@@ -218,9 +220,9 @@ export default function PocketMode() {
           
           {/* Keyboard Shortcuts Help */}
           <div className="mt-6 text-center">
-            <p className="text-xs text-gray-500">
-              Press <kbd className="px-1 py-0.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded">/ or Cmd+K</kbd> to search, 
-              <kbd className="px-1 py-0.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded ml-1">Esc</kbd> to clear
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              Press <kbd className="px-1 py-0.5 text-xs font-semibold text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded">/ or Cmd+K</kbd> to search, 
+              <kbd className="px-1 py-0.5 text-xs font-semibold text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded ml-1">Esc</kbd> to clear
             </p>
           </div>
         </div>
@@ -233,7 +235,7 @@ export default function PocketMode() {
               {/* Search Bar */}
               <div className="relative mb-6">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
-                  <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-5 h-5 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </div>
@@ -246,7 +248,7 @@ export default function PocketMode() {
                 />
                 {search && (
                   <button 
-                    className="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-400 hover:text-gray-600 transition-colors"
+                    className="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
                     onClick={() => setSearch('')}
                   >
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -260,14 +262,14 @@ export default function PocketMode() {
               <div className="space-y-4">
                 {/* Rarity Filter - Simplified */}
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-3">Rarity</label>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Rarity</label>
                   <div className="flex flex-wrap gap-2">
                     <button
                       onClick={() => setRarityFilter('all')}
                       className={`px-4 py-2 rounded-full font-medium transition-all ${
                         rarityFilter === 'all'
                           ? 'bg-pokemon-red text-white shadow-md'
-                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                       }`}
                     >
                       All
@@ -277,7 +279,7 @@ export default function PocketMode() {
                       className={`px-4 py-2 rounded-full font-medium transition-all ${
                         rarityFilter === '◊'
                           ? 'bg-gray-500 text-white shadow-md'
-                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                       }`}
                     >
                       ◊ Common
@@ -287,7 +289,7 @@ export default function PocketMode() {
                       className={`px-4 py-2 rounded-full font-medium transition-all ${
                         rarityFilter === '◊◊'
                           ? 'bg-green-500 text-white shadow-md'
-                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                       }`}
                     >
                       ◊◊ Uncommon
@@ -297,7 +299,7 @@ export default function PocketMode() {
                       className={`px-4 py-2 rounded-full font-medium transition-all ${
                         rarityFilter === '◊◊◊'
                           ? 'bg-blue-500 text-white shadow-md'
-                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                       }`}
                     >
                       ◊◊◊ Rare
@@ -307,7 +309,7 @@ export default function PocketMode() {
                       className={`px-4 py-2 rounded-full font-medium transition-all ${
                         rarityFilter === '◊◊◊◊'
                           ? 'bg-purple-500 text-white shadow-md'
-                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                       }`}
                     >
                       ◊◊◊◊ Double Rare
@@ -317,7 +319,7 @@ export default function PocketMode() {
                       className={`px-4 py-2 rounded-full font-medium transition-all ${
                         rarityFilter === '★'
                           ? 'bg-yellow-500 text-white shadow-md'
-                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                       }`}
                     >
                       ★ EX
@@ -327,7 +329,7 @@ export default function PocketMode() {
                       className={`px-4 py-2 rounded-full font-medium transition-all ${
                         rarityFilter === 'immersive'
                           ? 'bg-pink-500 text-white shadow-md'
-                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                       }`}
                     >
                       ★★★ Immersive
@@ -337,7 +339,7 @@ export default function PocketMode() {
                       className={`px-4 py-2 rounded-full font-medium transition-all ${
                         rarityFilter === '★★'
                           ? 'bg-red-500 text-white shadow-md'
-                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                       }`}
                     >
                       ★★ Crown
@@ -347,7 +349,7 @@ export default function PocketMode() {
                       className={`px-4 py-2 rounded-full font-medium transition-all ${
                         rarityFilter === 'fullart'
                           ? 'bg-indigo-500 text-white shadow-md'
-                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                       }`}
                     >
                       Full Art
@@ -357,7 +359,7 @@ export default function PocketMode() {
 
                 {/* Type Filter */}
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-3">Type</label>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Type</label>
                   <div className="flex flex-wrap gap-2">
                     <button
                       onClick={() => setTypeFilter('all')}
@@ -437,6 +439,7 @@ export default function PocketMode() {
       </FadeIn>
       {/* Back to Top Button */}
       <BackToTop />
-    </div>
+      </div>
+    </FullBleedWrapper>
   );
 }

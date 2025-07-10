@@ -19,7 +19,6 @@ export default function Navbar() {
   const [hoverExpanded, setHoverExpanded] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dropdownStates, setDropdownStates] = useState({});
-  const [hoverTimeouts, setHoverTimeouts] = useState({});
   const menuWrapperRef = useRef(null);
   const dropdownRefs = useRef({});
   const router = useRouter();
@@ -46,6 +45,21 @@ export default function Navbar() {
       ]
     },
     { href: "/pokedex", label: "Pokédex", icon: <BsBook size={22} />, color: "text-poke-fairy" },
+    {
+      href: "/pokemon",
+      label: "Pokémon",
+      icon: <BsGlobeEuropeAfrica size={22} />,
+      color: "text-poke-grass",
+      hasDropdown: true,
+      dropdownItems: [
+        { href: "/pokemon/regions", label: "Regions", icon: <BsGlobeEuropeAfrica size={18} />, description: "Explore all regions" },
+        { href: "/pokemon/starters", label: "Starters", icon: <GiPokerHand size={18} />, description: "Regional starter Pokémon" },
+        { href: "/pokemon/moves", label: "Moves & TMs", icon: <BsBook size={18} />, description: "Complete moves database" },
+        { href: "/pokemon/games", label: "Games", icon: <GiCardPickup size={18} />, description: "All Pokémon games" },
+        { href: "/pokemon/items", label: "Items", icon: <FiShoppingBag size={18} />, description: "Items and their effects" },
+        { href: "/pokemon/abilities", label: "Abilities", icon: <AiOutlineBulb size={18} />, description: "Pokémon abilities list" },
+      ]
+    },
     {
       href: "/battle-simulator",
       label: "Battle",
@@ -83,20 +97,16 @@ export default function Navbar() {
 
   const currentTitle = pageTitles[router.pathname] || "DexTrends"; // Updated title
 
-  // Debounced hover functions to prevent flashing
-  const handleDropdownEnter = (itemHref) => {
-    if (hoverTimeouts[itemHref]) {
-      clearTimeout(hoverTimeouts[itemHref]);
-      setHoverTimeouts(prev => ({ ...prev, [itemHref]: null }));
-    }
-    setDropdownStates(prev => ({ ...prev, [itemHref]: true }));
-  };
-
-  const handleDropdownLeave = (itemHref) => {
-    const timeout = setTimeout(() => {
-      setDropdownStates(prev => ({ ...prev, [itemHref]: false }));
-    }, 100); // Small delay to prevent rapid flickering
-    setHoverTimeouts(prev => ({ ...prev, [itemHref]: timeout }));
+  // Simple dropdown toggle
+  const handleDropdownToggle = (itemHref) => {
+    setDropdownStates(prev => {
+      const newState = {};
+      // Close all other dropdowns
+      Object.keys(prev).forEach(key => {
+        newState[key] = key === itemHref ? !prev[key] : false;
+      });
+      return newState;
+    });
   };
 
   // Click outside for mobile menu and dropdowns
@@ -104,90 +114,144 @@ export default function Navbar() {
     if (typeof document === 'undefined') return;
 
     const handleClickOutside = (event) => {
+      // Don't close if clicking inside any dropdown
+      const clickedInsideDropdown = event.target.closest('.absolute.top-full');
+      if (clickedInsideDropdown) {
+        return;
+      }
+
+      // Don't close if clicking on a dropdown toggle button
+      const clickedToggle = event.target.closest('button[type="button"]');
+      if (clickedToggle && clickedToggle.querySelector('.transition-transform')) {
+        return;
+      }
+
       if (mobileOpen && menuWrapperRef.current && !menuWrapperRef.current.contains(event.target)) {
         const mobileToggle = document.getElementById("mobile-menu-button");
         if (mobileToggle && mobileToggle.contains(event.target)) {
-            return; // Don't close if clicking the toggle button itself
+            return;
         }
         setMobileOpen(false);
       }
       
-      // Close dropdowns when clicking outside - simplified to prevent loops
+      // Close all dropdowns
       setDropdownStates({});
     };
+    
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
-      Object.values(hoverTimeouts).forEach(timeout => {
-        if (timeout) clearTimeout(timeout);
-      });
     };
-  }, [mobileOpen, dropdownStates, hoverTimeouts]);
+  }, [mobileOpen]);
 
   const isDarkMode = theme === 'dark';
 
   return (
     <>
-      {/* Clean Navbar with iOS Safe Area Support */}
-      <div className="fixed top-0 left-0 right-0 flex items-center justify-between px-4 h-16 z-40 bg-white border-b border-border-color shadow-sm safe-area-padding-top navbar-ios">
+      {/* Redesigned Navbar with Gradient Glass Effect */}
+      <div className="fixed top-0 left-0 right-0 flex items-center justify-between px-4 md:px-6 h-20 z-40 bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-lg safe-area-padding-top navbar-ios">
         <Link
           href="/"
-                            className="flex items-center gap-x-3 text-xl font-bold text-pokemon-red overflow-hidden hover:opacity-80 transition-opacity duration-300">
-          <div className="flex-shrink-0 w-8 h-8 bg-pokemon-red rounded-full flex items-center justify-center">
-            <BsGrid size={20} className="text-white" />
+          className="flex items-center gap-x-3 text-xl font-bold overflow-hidden group"
+        >
+          <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-pokemon-red to-pink-500 rounded-2xl flex items-center justify-center shadow-md group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-105">
+            <BsGrid size={24} className="text-white" />
           </div>
-          <span className="truncate">
+          <span className="truncate bg-gradient-to-r from-pokemon-red to-pink-600 bg-clip-text text-transparent font-extrabold text-2xl">
             DexTrends
           </span>
         </Link>
-        <nav className="hidden md:flex items-center gap-x-2">
+        <nav className="hidden md:flex items-center gap-x-3">
           {navItems.map(item => {
             const isActive = router.pathname === item.href || 
               (item.dropdownItems && item.dropdownItems.some(subItem => router.pathname === subItem.href));
             
             if (item.hasDropdown) {
               return (
-                <div key={`topnav-${item.href}`} className="relative" ref={el => dropdownRefs.current[item.href] = el}>
-                  <button
-                    className={`group flex items-center gap-x-2 px-4 py-2 rounded-lg font-medium transition-all duration-300 cursor-pointer border-2
+                <div key={`topnav-${item.href}`} className="relative">
+                  <Link
+                    href={item.href}
+                    className={`flex items-center gap-x-2 px-5 py-3 rounded-full font-medium transition-all duration-300 cursor-pointer
                       ${isActive
-                        ? 'bg-pokemon-red text-white border-pokemon-red shadow-md'
-                        : 'text-dark-text border-transparent hover:border-border-color hover:bg-light-grey'}`}
-                    onMouseEnter={() => handleDropdownEnter(item.href)}
-                    onMouseLeave={() => handleDropdownLeave(item.href)}
-                    onClick={() => setDropdownStates(prev => ({ ...prev, [item.href]: !prev[item.href] }))}
+                        ? 'bg-gradient-to-r from-pokemon-red to-pink-500 text-white shadow-lg transform scale-105'
+                        : 'text-gray-700 dark:text-gray-300 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 dark:hover:from-red-900/20 dark:hover:to-pink-900/20 hover:border-pink-200 dark:hover:border-pink-700 hover:shadow-lg hover:scale-105 hover:text-red-700 dark:hover:text-red-300'}`}
+                    onMouseEnter={() => {
+                      // Close all other dropdowns first, then open this one
+                      setDropdownStates({ [item.href]: true });
+                    }}
+                    onMouseLeave={(e) => {
+                      // Check if we're moving to the dropdown menu
+                      const relatedTarget = e.relatedTarget;
+                      const isMovingToDropdown = relatedTarget && (
+                        relatedTarget.closest('.dropdown-menu') || 
+                        relatedTarget.closest('.invisible-bridge')
+                      );
+                      
+                      if (!isMovingToDropdown) {
+                        // Small delay to allow moving to dropdown
+                        setTimeout(() => {
+                          setDropdownStates(prev => ({ ...prev, [item.href]: false }));
+                        }, 100);
+                      }
+                    }}
                   >
-                    <span className={`flex-shrink-0 w-5 h-5 transition-colors duration-300 ${isActive ? 'text-white' : 'text-pokemon-red'}`}>
+                    <span className={`flex-shrink-0 w-5 h-5 transition-colors duration-300 ${isActive ? 'text-white' : item.color || 'text-gray-600'}`}>
                       {item.icon}
                     </span>
                     <span className="truncate text-sm font-semibold">{item.label}</span>
-                    <BsChevronDown className={`w-3 h-3 transition-transform duration-200 ${dropdownStates[item.href] ? 'rotate-180' : ''}`} />
-                  </button>
-                  {/* Dropdown Menu */}
+                    <BsChevronDown className={`w-3 h-3 transition-transform duration-300 ${dropdownStates[item.href] ? 'rotate-180' : ''} ${isActive ? 'text-white' : 'text-gray-400'}`} />
+                  </Link>
+                  
+                  {/* Invisible bridge to prevent gap */}
+                  {dropdownStates[item.href] && (
+                    <div className="invisible-bridge absolute top-full left-0 w-full h-3" />
+                  )}
+                  
+                  {/* Dropdown menu - redesigned with glass effect */}
                   <div 
-                    className={`absolute top-full left-0 mt-1 w-64 bg-white border border-border-color rounded-lg shadow-lg z-50 transition-all duration-200 ${
-                      dropdownStates[item.href] ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
-                    }`}
-                    onMouseEnter={() => handleDropdownEnter(item.href)}
-                    onMouseLeave={() => handleDropdownLeave(item.href)}
+                    className={`dropdown-menu absolute top-full left-0 mt-1 w-72 bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl border border-white/30 dark:border-gray-700/30 rounded-2xl shadow-2xl overflow-hidden ${
+                      dropdownStates[item.href] ? 'block opacity-100 translate-y-0' : 'hidden opacity-0 -translate-y-2'
+                    } transition-all duration-300`}
+                    style={{
+                      zIndex: 9999,
+                      pointerEvents: dropdownStates[item.href] ? 'auto' : 'none'
+                    }}
+                    onMouseEnter={() => {
+                      // Keep only this dropdown open when hovering over it
+                      setDropdownStates({ [item.href]: true });
+                    }}
+                    onMouseLeave={() => {
+                      // Close dropdown immediately when leaving
+                      setDropdownStates({});
+                    }}
                   >
-                    <div className="p-2">
+                    <div className="p-3">
                       {item.dropdownItems.map((dropdownItem, dropdownIndex) => (
-                        <Link key={`dropdown-${item.href}-${dropdownIndex}-${dropdownItem.href}`}
-                            href={dropdownItem.href}
-                          className={`group flex items-start gap-3 p-3 rounded-lg transition-all duration-200 hover:bg-light-grey ${
-                            router.pathname === dropdownItem.href ? 'bg-pokemon-red/10 border-l-4 border-pokemon-red' : ''
+                        <Link
+                          key={`dropdown-${item.href}-${dropdownIndex}`}
+                          href={dropdownItem.href}
+                          className={`group flex items-start gap-3 p-4 rounded-xl transition-all duration-200 cursor-pointer ${
+                            router.pathname === dropdownItem.href 
+                              ? 'bg-gradient-to-r from-pokemon-red/20 to-pink-500/20 border border-pokemon-red/30' 
+                              : 'hover:bg-gradient-to-r hover:from-red-50/80 hover:to-pink-50/80 hover:shadow-md hover:scale-[1.02]'
                           }`}
-                          onClick={() => setDropdownStates(prev => ({ ...prev, [item.href]: false }))}
+                          onClick={() => {
+                            console.log('Link clicked:', dropdownItem.href);
+                            setDropdownStates({});
+                          }}
                         >
-                          <span className="flex-shrink-0 w-5 h-5 mt-0.5 text-pokemon-red">
+                          <span className={`flex-shrink-0 w-6 h-6 p-1 rounded-lg mt-0.5 ${
+                            router.pathname === dropdownItem.href 
+                              ? 'bg-gradient-to-br from-pokemon-red to-pink-500 text-white' 
+                              : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 group-hover:bg-gradient-to-br group-hover:from-pokemon-red/80 group-hover:to-pink-500/80 group-hover:text-white'
+                          } transition-all duration-300`}>
                             {dropdownItem.icon}
                           </span>
                           <div className="flex-1 min-w-0">
-                            <div className="font-semibold text-sm text-dark-text truncate">
+                            <div className="font-semibold text-sm text-gray-800 dark:text-gray-200 truncate">
                               {dropdownItem.label}
                             </div>
-                            <div className="text-xs text-text-grey mt-0.5">
+                            <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                               {dropdownItem.description}
                             </div>
                           </div>
@@ -201,14 +265,14 @@ export default function Navbar() {
             
             return (
               <Link key={`topnav-${item.href}`}
-                            href={item.href}
-                className={`group flex items-center gap-x-2 px-4 py-2 rounded-lg font-medium transition-all duration-300 cursor-pointer border-2
+                href={item.href}
+                className={`group flex items-center gap-x-2 px-5 py-3 rounded-full font-medium transition-all duration-300 cursor-pointer
                   ${isActive
-                    ? 'bg-pokemon-red text-white border-pokemon-red shadow-md'
-                    : 'text-dark-text border-transparent hover:border-border-color hover:bg-light-grey'}`}
+                    ? 'bg-gradient-to-r from-pokemon-red to-pink-500 text-white shadow-lg transform scale-105'
+                    : 'text-gray-700 dark:text-gray-300 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 dark:hover:from-red-900/20 dark:hover:to-pink-900/20 hover:border-pink-200 dark:hover:border-pink-700 hover:shadow-lg hover:scale-105 hover:text-red-700 dark:hover:text-red-300'}`}
                 style={{ pointerEvents: 'auto' }}
               >
-                <span className={`flex-shrink-0 w-5 h-5 transition-colors duration-300 ${isActive ? 'text-white' : 'text-pokemon-red'}`}>
+                <span className={`flex-shrink-0 w-5 h-5 transition-all duration-300 ${isActive ? 'text-white' : item.color || 'text-gray-600'} group-hover:scale-110`}>
                   {item.icon}
                 </span>
                 <span className="truncate text-sm font-semibold">{item.label}</span>
@@ -220,20 +284,20 @@ export default function Navbar() {
           <button
             aria-label="Open global search"
             title="Search (Cmd+K)"
-            className="p-3 rounded-lg bg-pokemon-blue text-white hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pokemon-blue shadow-sm transition-all duration-300"
+            className="p-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
             onClick={() => searchModalRef.current?.open()}
           >
-            <BsSearch size={18} />
+            <BsSearch size={20} />
           </button>
           
           <Link 
             href="/favorites"
             aria-label="View favorites"
             title="View favorites"
-            className="relative p-3 rounded-lg bg-pokemon-yellow text-white hover:bg-yellow-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pokemon-yellow shadow-sm transition-all duration-300"
+            className="relative p-3 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 text-white hover:from-yellow-500 hover:to-orange-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
             data-is-navbar="true"
           >
-            <BsHeart size={18} />
+            <BsHeart size={20} />
             <ClientOnly>
               {totalFavorites > 0 && (
                 <span className="absolute -top-1 -right-1 bg-pokemon-red text-white text-xs font-bold rounded-full min-w-5 h-5 flex items-center justify-center px-1 shadow-sm">
@@ -247,12 +311,12 @@ export default function Navbar() {
             <button
               aria-label={theme === 'dark' ? "Activate light mode" : "Activate dark mode"}
               title={theme === 'dark' ? "Activate light mode" : "Activate dark mode"}
-              className="p-3 rounded-lg border border-border-color bg-white text-dark-text hover:bg-light-grey focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pokemon-blue shadow-sm transition-all duration-300"
+              className="p-3 rounded-full bg-white/60 backdrop-blur-sm border border-gray-200/50 text-gray-700 hover:bg-white/80 hover:border-gray-300/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
               onClick={toggleTheme}
             >
               {theme === 'dark' ? 
-                <BsSun size={18} className="text-pokemon-yellow" /> : 
-                <BsMoon size={18} className="text-pokemon-blue" />
+                <BsSun size={20} className="text-yellow-500" /> : 
+                <BsMoon size={20} className="text-blue-600" />
               }
             </button>
           </ClientOnly>
@@ -261,7 +325,7 @@ export default function Navbar() {
           <ClientOnly>
             <button
               id="mobile-menu-button"
-              className="md:hidden p-3 rounded-lg bg-pokemon-red text-white hover:bg-red-700 shadow-sm transition-all duration-300 touch-manipulation"
+              className="md:hidden p-3 rounded-full bg-gradient-to-r from-pokemon-red to-pink-500 text-white hover:from-red-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-300 touch-manipulation transform active:scale-95"
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="Toggle mobile menu"
               style={{ minHeight: '48px', minWidth: '48px' }}
@@ -278,8 +342,8 @@ export default function Navbar() {
       {/* Mobile Menu Overlay */}
       {mobileOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
-          <div className="fixed inset-0 bg-black/50" onClick={() => setMobileOpen(false)} />
-          <div ref={menuWrapperRef} className="fixed right-0 left-0 bg-white/95 backdrop-blur-sm border-t border-border-color p-4 shadow-lg safe-area-padding-x" style={{ top: 'calc(64px + env(safe-area-inset-top))' }}>
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
+          <div ref={menuWrapperRef} className="fixed right-0 left-0 bg-white/98 backdrop-blur-xl border-t border-white/30 p-6 shadow-2xl safe-area-padding-x rounded-t-3xl" style={{ top: 'calc(80px + env(safe-area-inset-top))' }}>
             <nav className="flex flex-col space-y-2">
               {navItems.map(item => {
                 const isActive = router.pathname === item.href || 
@@ -288,30 +352,33 @@ export default function Navbar() {
                 if (item.hasDropdown) {
                   return (
                     <div key={`mobile-${item.href}`} className="space-y-1">
-                      <div className={`flex items-center gap-x-3 px-4 py-3 rounded-lg font-medium border-2 touch-manipulation
-                        ${isActive
-                          ? 'bg-pokemon-red text-white border-pokemon-red'
-                          : 'text-dark-text border-transparent bg-light-grey'}`}
-                        style={{ minHeight: '48px' }}
+                      <Link
+                        href={item.href}
+                        className={`flex items-center gap-x-3 px-5 py-4 rounded-2xl font-medium touch-manipulation transition-all duration-300
+                          ${isActive
+                            ? 'bg-gradient-to-r from-pokemon-red to-pink-500 text-white shadow-lg'
+                            : 'text-gray-700 bg-gray-100/80 hover:bg-gray-200/80'}`}
+                        style={{ minHeight: '52px' }}
+                        onClick={() => setMobileOpen(false)}
                       >
-                        <span className={`flex-shrink-0 w-6 h-6 ${isActive ? 'text-white' : 'text-pokemon-red'}`}>
+                        <span className={`flex-shrink-0 w-7 h-7 ${isActive ? 'text-white' : item.color || 'text-gray-600'}`}>
                           {item.icon}
                         </span>
-                        <span className="font-semibold">{item.label}</span>
-                      </div>
+                        <span className="font-semibold text-base">{item.label}</span>
+                      </Link>
                       {/* Mobile dropdown items */}
                       <div className="pl-6 space-y-1">
                         {item.dropdownItems.map((dropdownItem, dropdownIndex) => (
                           <Link key={`mobile-dropdown-${item.href}-${dropdownIndex}-${dropdownItem.href}`}
                             href={dropdownItem.href}
-                            className={`flex items-center gap-x-3 px-4 py-2 rounded-lg font-medium transition-all duration-300 border-2 touch-manipulation
+                            className={`flex items-center gap-x-3 px-5 py-3 rounded-xl font-medium transition-all duration-300 touch-manipulation
                               ${router.pathname === dropdownItem.href
-                                ? 'bg-pokemon-blue text-white border-pokemon-blue'
-                                : 'text-dark-text border-transparent hover:border-border-color hover:bg-white'}`}
+                                ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-700 border border-blue-300/50'
+                                : 'text-gray-600 hover:bg-gray-100/80'}`}
                             onClick={() => setMobileOpen(false)}
-                            style={{ minHeight: '40px' }}
+                            style={{ minHeight: '44px' }}
                           >
-                            <span className={`flex-shrink-0 w-5 h-5 ${router.pathname === dropdownItem.href ? 'text-white' : 'text-pokemon-blue'}`}>
+                            <span className={`flex-shrink-0 w-5 h-5 ${router.pathname === dropdownItem.href ? 'text-blue-600' : 'text-gray-500'}`}>
                               {dropdownItem.icon}
                             </span>
                             <span className="font-medium text-sm">{dropdownItem.label}</span>
@@ -324,18 +391,18 @@ export default function Navbar() {
                 
                 return (
                   <Link key={`mobile-${item.href}`}
-                            href={item.href}
-                    className={`flex items-center gap-x-3 px-4 py-3 rounded-lg font-medium transition-all duration-300 border-2 touch-manipulation
+                    href={item.href}
+                    className={`flex items-center gap-x-3 px-5 py-4 rounded-2xl font-medium transition-all duration-300 touch-manipulation
                       ${isActive
-                        ? 'bg-pokemon-red text-white border-pokemon-red'
-                        : 'text-dark-text border-transparent hover:border-border-color hover:bg-light-grey'}`}
+                        ? 'bg-gradient-to-r from-pokemon-red to-pink-500 text-white shadow-lg'
+                        : 'text-gray-700 bg-gray-100/80 hover:bg-gray-200/80'}`}
                     onClick={() => setMobileOpen(false)}
-                    style={{ minHeight: '48px' }}
+                    style={{ minHeight: '52px' }}
                   >
-                    <span className={`flex-shrink-0 w-6 h-6 ${isActive ? 'text-white' : 'text-pokemon-red'}`}>
+                    <span className={`flex-shrink-0 w-7 h-7 ${isActive ? 'text-white' : item.color || 'text-gray-600'}`}>
                       {item.icon}
                     </span>
-                    <span className="font-semibold">{item.label}</span>
+                    <span className="font-semibold text-base">{item.label}</span>
                   </Link>
                 );
               })}
@@ -344,7 +411,7 @@ export default function Navbar() {
         </div>
       )}
       {/* Spacer for fixed navbar with iOS Safe Area */}
-      <div className="h-16 navbar-spacer-ios" />
+      <div className="h-20 navbar-spacer-ios" />
       <GlobalSearchModal ref={searchModalRef} />
     </>
   );

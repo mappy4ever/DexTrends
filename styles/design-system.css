@@ -140,6 +140,125 @@
   --screen-2xl: 1536px;
 }
 
+/* Unified Gradient System - Pastel Pokemon Theme */
+.gradient-pokedex {
+  background: linear-gradient(135deg, 
+    rgb(219 234 254) 0%,     /* blue-100 */
+    rgb(233 213 255) 50%,    /* purple-100 */
+    rgb(251 207 232) 100%    /* pink-100 */
+  );
+}
+
+.dark .gradient-pokedex {
+  background: linear-gradient(135deg,
+    rgb(17 24 39) 0%,       /* gray-900 */
+    rgb(15 23 42) 50%,      /* slate-900 */
+    rgb(24 24 27) 100%      /* zinc-900 */
+  );
+}
+
+.gradient-tcg {
+  background: linear-gradient(135deg,
+    rgb(233 213 255) 0%,     /* purple-100 */
+    rgb(251 207 232) 50%,    /* pink-100 */
+    rgb(254 215 170) 100%    /* orange-100 */
+  );
+}
+
+.dark .gradient-tcg {
+  background: linear-gradient(135deg,
+    rgb(59 7 100) 0%,       /* purple-950 */
+    rgb(80 7 36) 50%,       /* pink-950 */
+    rgb(67 20 7) 100%       /* orange-950 */
+  );
+}
+
+.gradient-regions {
+  background: linear-gradient(135deg,
+    rgb(209 250 229) 0%,     /* emerald-100 */
+    rgb(204 251 241) 50%,    /* teal-100 */
+    rgb(207 250 254) 100%    /* cyan-100 */
+  );
+}
+
+.dark .gradient-regions {
+  background: linear-gradient(135deg,
+    rgb(6 78 59) 0%,        /* emerald-950 */
+    rgb(4 47 46) 50%,       /* teal-950 */
+    rgb(8 51 68) 100%       /* cyan-950 */
+  );
+}
+
+.gradient-pocket {
+  background: linear-gradient(135deg,
+    rgb(254 249 195) 0%,     /* yellow-100 */
+    rgb(254 243 199) 50%,    /* amber-100 */
+    rgb(254 215 170) 100%    /* orange-100 */
+  );
+}
+
+.dark .gradient-pocket {
+  background: linear-gradient(135deg,
+    rgb(66 32 6) 0%,        /* yellow-950 */
+    rgb(69 26 3) 50%,       /* amber-950 */
+    rgb(67 20 7) 100%       /* orange-950 */
+  );
+}
+
+.gradient-collections {
+  background: linear-gradient(135deg,
+    rgb(241 245 249) 0%,     /* slate-100 */
+    rgb(249 250 251) 50%,    /* gray-100 */
+    rgb(250 250 250) 100%    /* zinc-100 */
+  );
+}
+
+.dark .gradient-collections {
+  background: linear-gradient(135deg,
+    rgb(15 23 42) 0%,       /* slate-900 */
+    rgb(17 24 39) 50%,      /* gray-900 */
+    rgb(24 24 27) 100%      /* zinc-900 */
+  );
+}
+
+/* Full-bleed utility classes */
+.full-bleed {
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  padding-left: calc(50vw - 50%);
+  padding-right: calc(50vw - 50%);
+}
+
+.full-bleed-with-nav {
+  margin-top: -4rem; /* Compensate for navbar height */
+  padding-top: 4rem;
+}
+
+/* Subtle grain texture overlay */
+.texture-grain::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.5' /%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Animated gradient backgrounds */
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.gradient-animated {
+  background-size: 200% 200%;
+  animation: gradient-shift 15s ease infinite;
+}
+
 /* Component Classes */
 
 /* Buttons - iOS optimized */

@@ -1,0 +1,6222 @@
+{
+  "totalCharacters": 81,
+  "totalDownloaded": 777,
+  "files": [
+    {
+      "character": "Brock",
+      "original": "File:FireRed LeafGreen Brock.png",
+      "local": "brock-1.png",
+      "path": "/images/scraped/gym-leaders/brock-1.png",
+      "width": 1406,
+      "height": 2755
+    },
+    {
+      "character": "Brock",
+      "original": "File:HeartGold SoulSilver Brock.png",
+      "local": "brock-2.png",
+      "path": "/images/scraped/gym-leaders/brock-2.png",
+      "width": 1444,
+      "height": 3045
+    },
+    {
+      "character": "Brock",
+      "original": "File:BrockNextQuest39Pearl.png",
+      "local": "brock-3.png",
+      "path": "/images/scraped/gym-leaders/brock-3.png",
+      "width": 251,
+      "height": 400
+    },
+    {
+      "character": "Brock",
+      "original": "File:DP087 Error Brock Miscolored Hair.png",
+      "local": "brock-4.png",
+      "path": "/images/scraped/gym-leaders/brock-4.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Brock",
+      "original": "File:Brock DP Anime art.png",
+      "local": "brock-5.png",
+      "path": "/images/scraped/gym-leaders/brock-5.png",
+      "width": 555,
+      "height": 1080
+    },
+    {
+      "character": "Brock",
+      "original": "File:Brock DP.png",
+      "local": "brock-6.png",
+      "path": "/images/scraped/gym-leaders/brock-6.png",
+      "width": 200,
+      "height": 400
+    },
+    {
+      "character": "Brock",
+      "original": "File:Brock Journeys.png",
+      "local": "brock-7.png",
+      "path": "/images/scraped/gym-leaders/brock-7.png",
+      "width": 430,
+      "height": 820
+    },
+    {
+      "character": "Brock",
+      "original": "File:Brock OS anime.png",
+      "local": "brock-8.png",
+      "path": "/images/scraped/gym-leaders/brock-8.png",
+      "width": 202,
+      "height": 500
+    },
+    {
+      "character": "Brock",
+      "original": "File:BrockAG.png",
+      "local": "brock-9.png",
+      "path": "/images/scraped/gym-leaders/brock-9.png",
+      "width": 395,
+      "height": 1080
+    },
+    {
+      "character": "Brock",
+      "original": "File:BrockDP.png",
+      "local": "brock-10.png",
+      "path": "/images/scraped/gym-leaders/brock-10.png",
+      "width": 596,
+      "height": 1080
+    },
+    {
+      "character": "Misty",
+      "original": "File:FireRed LeafGreen Misty.png",
+      "local": "misty-1.png",
+      "path": "/images/scraped/gym-leaders/misty-1.png",
+      "width": 1550,
+      "height": 2611
+    },
+    {
+      "character": "Misty",
+      "original": "File:HeartGold SoulSilver Misty.png",
+      "local": "misty-2.png",
+      "path": "/images/scraped/gym-leaders/misty-2.png",
+      "width": 1423,
+      "height": 2967
+    },
+    {
+      "character": "Misty",
+      "original": "File:Red Blue Misty.png",
+      "local": "misty-3.png",
+      "path": "/images/scraped/gym-leaders/misty-3.png",
+      "width": 244,
+      "height": 778
+    },
+    {
+      "character": "Misty",
+      "original": "File:DT Misty Jigglypuff white.jpg",
+      "local": "misty-4.jpg",
+      "path": "/images/scraped/gym-leaders/misty-4.jpg",
+      "width": 549,
+      "height": 583
+    },
+    {
+      "character": "Misty",
+      "original": "File:Misty and Goldeen.png",
+      "local": "misty-5.png",
+      "path": "/images/scraped/gym-leaders/misty-5.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Misty",
+      "original": "File:Misty Blue Bikini.png",
+      "local": "misty-6.png",
+      "path": "/images/scraped/gym-leaders/misty-6.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Misty",
+      "original": "File:Misty Daisy Violet Lily.png",
+      "local": "misty-7.png",
+      "path": "/images/scraped/gym-leaders/misty-7.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Misty",
+      "original": "File:Misty Goldeen Fury Attack.png",
+      "local": "misty-8.png",
+      "path": "/images/scraped/gym-leaders/misty-8.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Misty",
+      "original": "File:Misty Goldeen outfit.png",
+      "local": "misty-9.png",
+      "path": "/images/scraped/gym-leaders/misty-9.png",
+      "width": 640,
+      "height": 1309
+    },
+    {
+      "character": "Misty",
+      "original": "File:Misty Red Bikini.png",
+      "local": "misty-10.png",
+      "path": "/images/scraped/gym-leaders/misty-10.png",
+      "width": 320,
+      "height": 560
+    },
+    {
+      "character": "Lt._Surge",
+      "original": "File:Lt. Surge JNM.png",
+      "local": "lt.-surge-1.png",
+      "path": "/images/scraped/gym-leaders/lt.-surge-1.png",
+      "width": 210,
+      "height": 214
+    },
+    {
+      "character": "Lt._Surge",
+      "original": "File:Lt. Surge LGPE concept art.jpg",
+      "local": "lt.-surge-2.jpg",
+      "path": "/images/scraped/gym-leaders/lt.-surge-2.jpg",
+      "width": 1149,
+      "height": 805
+    },
+    {
+      "character": "Lt._Surge",
+      "original": "File:Lt. Surge Sabrina Adventures.png",
+      "local": "lt.-surge-3.png",
+      "path": "/images/scraped/gym-leaders/lt.-surge-3.png",
+      "width": 1032,
+      "height": 1280
+    },
+    {
+      "character": "Lt._Surge",
+      "original": "File:Pokémon Puzzle League Profile Lt. Surge.png",
+      "local": "lt.-surge-4.png",
+      "path": "/images/scraped/gym-leaders/lt.-surge-4.png",
+      "width": 320,
+      "height": 237
+    },
+    {
+      "character": "Erika",
+      "original": "File:FireRed LeafGreen Erika.png",
+      "local": "erika-1.png",
+      "path": "/images/scraped/gym-leaders/erika-1.png",
+      "width": 1100,
+      "height": 2131
+    },
+    {
+      "character": "Erika",
+      "original": "File:HeartGold SoulSilver Erika.png",
+      "local": "erika-2.png",
+      "path": "/images/scraped/gym-leaders/erika-2.png",
+      "width": 1206,
+      "height": 3087
+    },
+    {
+      "character": "Erika",
+      "original": "File:Red Blue Erika.png",
+      "local": "erika-3.png",
+      "path": "/images/scraped/gym-leaders/erika-3.png",
+      "width": 1088,
+      "height": 1920
+    },
+    {
+      "character": "Erika",
+      "original": "File:Lets Go Pikachu Eevee Erika.png",
+      "local": "erika-4.png",
+      "path": "/images/scraped/gym-leaders/erika-4.png",
+      "width": 1292,
+      "height": 3177
+    },
+    {
+      "character": "Erika",
+      "original": "File:Yellow Erika.png",
+      "local": "erika-5.png",
+      "path": "/images/scraped/gym-leaders/erika-5.png",
+      "width": 298,
+      "height": 1033
+    },
+    {
+      "character": "Erika",
+      "original": "File:ODErika PE.png",
+      "local": "erika-6.png",
+      "path": "/images/scraped/gym-leaders/erika-6.png",
+      "width": 372,
+      "height": 1080
+    },
+    {
+      "character": "Erika",
+      "original": "File:Art Life 20240304 Erika Invitation.jpg",
+      "local": "erika-7.jpg",
+      "path": "/images/scraped/gym-leaders/erika-7.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Erika",
+      "original": "File:Art Life 20240304 Erika Perfume.jpg",
+      "local": "erika-8.jpg",
+      "path": "/images/scraped/gym-leaders/erika-8.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Erika",
+      "original": "File:Brock Misty Erika Blaine Adventures.png",
+      "local": "erika-9.png",
+      "path": "/images/scraped/gym-leaders/erika-9.png",
+      "width": 1116,
+      "height": 1402
+    },
+    {
+      "character": "Erika",
+      "original": "File:Child Erika and Gloom.png",
+      "local": "erika-10.png",
+      "path": "/images/scraped/gym-leaders/erika-10.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Koga",
+      "original": "File:FireRed LeafGreen Koga.png",
+      "local": "koga-1.png",
+      "path": "/images/scraped/gym-leaders/koga-1.png",
+      "width": 1347,
+      "height": 2376
+    },
+    {
+      "character": "Koga",
+      "original": "File:HeartGold SoulSilver Koga.png",
+      "local": "koga-2.png",
+      "path": "/images/scraped/gym-leaders/koga-2.png",
+      "width": 1832,
+      "height": 2968
+    },
+    {
+      "character": "Koga",
+      "original": "File:Red Blue Koga.png",
+      "local": "koga-3.png",
+      "path": "/images/scraped/gym-leaders/koga-3.png",
+      "width": 247,
+      "height": 537
+    },
+    {
+      "character": "Koga",
+      "original": "File:Lets Go Pikachu Eevee Koga.png",
+      "local": "koga-4.png",
+      "path": "/images/scraped/gym-leaders/koga-4.png",
+      "width": 970,
+      "height": 1100
+    },
+    {
+      "character": "Koga",
+      "original": "File:Yellow Koga.png",
+      "local": "koga-5.png",
+      "path": "/images/scraped/gym-leaders/koga-5.png",
+      "width": 540,
+      "height": 1083
+    },
+    {
+      "character": "Koga",
+      "original": "File:ODKoga PE.png",
+      "local": "koga-6.png",
+      "path": "/images/scraped/gym-leaders/koga-6.png",
+      "width": 480,
+      "height": 1080
+    },
+    {
+      "character": "Koga",
+      "original": "File:Aya and Koga.png",
+      "local": "koga-7.png",
+      "path": "/images/scraped/gym-leaders/koga-7.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Koga",
+      "original": "File:Gym Challenge Booster Koga.jpg",
+      "local": "koga-8.jpg",
+      "path": "/images/scraped/gym-leaders/koga-8.jpg",
+      "width": 538,
+      "height": 1060
+    },
+    {
+      "character": "Koga",
+      "original": "File:GymBadgeXYPromoKoga.jpg",
+      "local": "koga-9.jpg",
+      "path": "/images/scraped/gym-leaders/koga-9.jpg",
+      "width": 748,
+      "height": 1044
+    },
+    {
+      "character": "Koga",
+      "original": "File:Koga and Articuno Adventures.png",
+      "local": "koga-10.png",
+      "path": "/images/scraped/gym-leaders/koga-10.png",
+      "width": 502,
+      "height": 615
+    },
+    {
+      "character": "Sabrina",
+      "original": "File:FireRed LeafGreen Sabrina.png",
+      "local": "sabrina-1.png",
+      "path": "/images/scraped/gym-leaders/sabrina-1.png",
+      "width": 1368,
+      "height": 2427
+    },
+    {
+      "character": "Sabrina",
+      "original": "File:HeartGold SoulSilver Sabrina.png",
+      "local": "sabrina-2.png",
+      "path": "/images/scraped/gym-leaders/sabrina-2.png",
+      "width": 1765,
+      "height": 3103
+    },
+    {
+      "character": "Sabrina",
+      "original": "File:Red Blue Sabrina.png",
+      "local": "sabrina-3.png",
+      "path": "/images/scraped/gym-leaders/sabrina-3.png",
+      "width": 254,
+      "height": 533
+    },
+    {
+      "character": "Sabrina",
+      "original": "File:SabrinaGolduckGymChallenge30.jpg",
+      "local": "sabrina-4.jpg",
+      "path": "/images/scraped/gym-leaders/sabrina-4.jpg",
+      "width": 852,
+      "height": 1200
+    },
+    {
+      "character": "Sabrina",
+      "original": "File:Lets Go Pikachu Eevee Sabrina.png",
+      "local": "sabrina-5.png",
+      "path": "/images/scraped/gym-leaders/sabrina-5.png",
+      "width": 775,
+      "height": 1100
+    },
+    {
+      "character": "Sabrina",
+      "original": "File:Yellow Sabrina.png",
+      "local": "sabrina-6.png",
+      "path": "/images/scraped/gym-leaders/sabrina-6.png",
+      "width": 879,
+      "height": 1754
+    },
+    {
+      "character": "Sabrina",
+      "original": "File:ODSabrina PE.png",
+      "local": "sabrina-7.png",
+      "path": "/images/scraped/gym-leaders/sabrina-7.png",
+      "width": 483,
+      "height": 1080
+    },
+    {
+      "character": "Sabrina",
+      "original": "File:Art Life 20231201 Sabrina Brycen.jpg",
+      "local": "sabrina-8.jpg",
+      "path": "/images/scraped/gym-leaders/sabrina-8.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Sabrina",
+      "original": "File:Gym Challenge Booster Sabrina.jpg",
+      "local": "sabrina-9.jpg",
+      "path": "/images/scraped/gym-leaders/sabrina-9.jpg",
+      "width": 518,
+      "height": 921
+    },
+    {
+      "character": "Sabrina",
+      "original": "File:GymBadgeXYPromoSabrina.jpg",
+      "local": "sabrina-10.jpg",
+      "path": "/images/scraped/gym-leaders/sabrina-10.jpg",
+      "width": 748,
+      "height": 1044
+    },
+    {
+      "character": "Blaine",
+      "original": "File:FireRed LeafGreen Blaine.png",
+      "local": "blaine-1.png",
+      "path": "/images/scraped/gym-leaders/blaine-1.png",
+      "width": 1603,
+      "height": 2251
+    },
+    {
+      "character": "Blaine",
+      "original": "File:HeartGold SoulSilver Blaine.png",
+      "local": "blaine-2.png",
+      "path": "/images/scraped/gym-leaders/blaine-2.png",
+      "width": 1373,
+      "height": 3131
+    },
+    {
+      "character": "Blaine",
+      "original": "File:Red Blue Blaine.png",
+      "local": "blaine-3.png",
+      "path": "/images/scraped/gym-leaders/blaine-3.png",
+      "width": 231,
+      "height": 527
+    },
+    {
+      "character": "Blaine",
+      "original": "File:Blue JP Manual Blaine.png",
+      "local": "blaine-4.png",
+      "path": "/images/scraped/gym-leaders/blaine-4.png",
+      "width": 238,
+      "height": 239
+    },
+    {
+      "character": "Blaine",
+      "original": "File:Lets Go Pikachu Eevee Blaine.png",
+      "local": "blaine-5.png",
+      "path": "/images/scraped/gym-leaders/blaine-5.png",
+      "width": 763,
+      "height": 1061
+    },
+    {
+      "character": "Blaine",
+      "original": "File:Yellow Blaine.png",
+      "local": "blaine-6.png",
+      "path": "/images/scraped/gym-leaders/blaine-6.png",
+      "width": 405,
+      "height": 1086
+    },
+    {
+      "character": "Blaine",
+      "original": "File:ODBlaine PE.png",
+      "local": "blaine-7.png",
+      "path": "/images/scraped/gym-leaders/blaine-7.png",
+      "width": 459,
+      "height": 1080
+    },
+    {
+      "character": "Blaine",
+      "original": "File:Blaine and Magmar.png",
+      "local": "blaine-8.png",
+      "path": "/images/scraped/gym-leaders/blaine-8.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Blaine",
+      "original": "File:Blaine and Mewtwo.png",
+      "local": "blaine-9.png",
+      "path": "/images/scraped/gym-leaders/blaine-9.png",
+      "width": 1500,
+      "height": 1371
+    },
+    {
+      "character": "Blaine",
+      "original": "File:Blaine anime.png",
+      "local": "blaine-10.png",
+      "path": "/images/scraped/gym-leaders/blaine-10.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Giovanni",
+      "original": "File:FireRed LeafGreen Giovanni Shadow.png",
+      "local": "giovanni-1.png",
+      "path": "/images/scraped/gym-leaders/giovanni-1.png",
+      "width": 1077,
+      "height": 2304
+    },
+    {
+      "character": "Giovanni",
+      "original": "File:FireRed LeafGreen Giovanni.png",
+      "local": "giovanni-2.png",
+      "path": "/images/scraped/gym-leaders/giovanni-2.png",
+      "width": 1077,
+      "height": 2304
+    },
+    {
+      "character": "Giovanni",
+      "original": "File:Giovanni Beedrill pinning Red.png",
+      "local": "giovanni-3.png",
+      "path": "/images/scraped/gym-leaders/giovanni-3.png",
+      "width": 457,
+      "height": 442
+    },
+    {
+      "character": "Giovanni",
+      "original": "File:Giovanni Sun and Moon series.png",
+      "local": "giovanni-4.png",
+      "path": "/images/scraped/gym-leaders/giovanni-4.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Giovanni",
+      "original": "File:Silver Ursaring helping Giovanni.png",
+      "local": "giovanni-5.png",
+      "path": "/images/scraped/gym-leaders/giovanni-5.png",
+      "width": 423,
+      "height": 331
+    },
+    {
+      "character": "Giovanni",
+      "original": "File:Lets Go Pikachu Eevee Giovanni.png",
+      "local": "giovanni-6.png",
+      "path": "/images/scraped/gym-leaders/giovanni-6.png",
+      "width": 559,
+      "height": 722
+    },
+    {
+      "character": "Giovanni",
+      "original": "File:USUM Giovanni.png",
+      "local": "giovanni-7.png",
+      "path": "/images/scraped/gym-leaders/giovanni-7.png",
+      "width": 553,
+      "height": 1280
+    },
+    {
+      "character": "Giovanni",
+      "original": "File:Yellow Giovanni.png",
+      "local": "giovanni-8.png",
+      "path": "/images/scraped/gym-leaders/giovanni-8.png",
+      "width": 475,
+      "height": 1078
+    },
+    {
+      "character": "Giovanni",
+      "original": "File:Giovanni USUM OD.png",
+      "local": "giovanni-9.png",
+      "path": "/images/scraped/gym-leaders/giovanni-9.png",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "character": "Giovanni",
+      "original": "File:ODGiovanni PE.png",
+      "local": "giovanni-10.png",
+      "path": "/images/scraped/gym-leaders/giovanni-10.png",
+      "width": 476,
+      "height": 1080
+    },
+    {
+      "character": "Falkner",
+      "original": "File:Gold Silver Falkner.png",
+      "local": "falkner-1.png",
+      "path": "/images/scraped/gym-leaders/falkner-1.png",
+      "width": 224,
+      "height": 240
+    },
+    {
+      "character": "Falkner",
+      "original": "File:HeartGold SoulSilver Falkner.png",
+      "local": "falkner-2.png",
+      "path": "/images/scraped/gym-leaders/falkner-2.png",
+      "width": 1880,
+      "height": 2951
+    },
+    {
+      "character": "Falkner",
+      "original": "File:Falkner Articuno Golden Boys.png",
+      "local": "falkner-3.png",
+      "path": "/images/scraped/gym-leaders/falkner-3.png",
+      "width": 494,
+      "height": 633
+    },
+    {
+      "character": "Falkner",
+      "original": "File:Falkner Golden Boys.png",
+      "local": "falkner-4.png",
+      "path": "/images/scraped/gym-leaders/falkner-4.png",
+      "width": 340,
+      "height": 414
+    },
+    {
+      "character": "Falkner",
+      "original": "File:Falkner Pidgeot Golden Boys.png",
+      "local": "falkner-5.png",
+      "path": "/images/scraped/gym-leaders/falkner-5.png",
+      "width": 586,
+      "height": 683
+    },
+    {
+      "character": "Falkner",
+      "original": "File:Falkner Pidgeot Wing Attack Golden Boys.png",
+      "local": "falkner-6.png",
+      "path": "/images/scraped/gym-leaders/falkner-6.png",
+      "width": 399,
+      "height": 473
+    },
+    {
+      "character": "Falkner",
+      "original": "File:Falkner Pidgey Pidgeotto Golden Boys.png",
+      "local": "falkner-7.png",
+      "path": "/images/scraped/gym-leaders/falkner-7.png",
+      "width": 782,
+      "height": 768
+    },
+    {
+      "character": "Falkner",
+      "original": "File:Crystal Falkner.png",
+      "local": "falkner-8.png",
+      "path": "/images/scraped/gym-leaders/falkner-8.png",
+      "width": 941,
+      "height": 1860
+    },
+    {
+      "character": "Falkner",
+      "original": "File:Falkner anime.png",
+      "local": "falkner-9.png",
+      "path": "/images/scraped/gym-leaders/falkner-9.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Falkner",
+      "original": "File:Falkner Bugsy Adventures.png",
+      "local": "falkner-10.png",
+      "path": "/images/scraped/gym-leaders/falkner-10.png",
+      "width": 1208,
+      "height": 1280
+    },
+    {
+      "character": "Bugsy",
+      "original": "File:HeartGold SoulSilver Bugsy.png",
+      "local": "bugsy-1.png",
+      "path": "/images/scraped/gym-leaders/bugsy-1.png",
+      "width": 1453,
+      "height": 2741
+    },
+    {
+      "character": "Bugsy",
+      "original": "File:Bugsy Golden Boys.png",
+      "local": "bugsy-2.png",
+      "path": "/images/scraped/gym-leaders/bugsy-2.png",
+      "width": 426,
+      "height": 801
+    },
+    {
+      "character": "Bugsy",
+      "original": "File:Bugsy Scyther Golden Boys.png",
+      "local": "bugsy-3.png",
+      "path": "/images/scraped/gym-leaders/bugsy-3.png",
+      "width": 465,
+      "height": 426
+    },
+    {
+      "character": "Bugsy",
+      "original": "File:Gold Silver Bugsy.png",
+      "local": "bugsy-4.png",
+      "path": "/images/scraped/gym-leaders/bugsy-4.png",
+      "width": 221,
+      "height": 233
+    },
+    {
+      "character": "Bugsy",
+      "original": "File:Crystal Bugsy.png",
+      "local": "bugsy-5.png",
+      "path": "/images/scraped/gym-leaders/bugsy-5.png",
+      "width": 1117,
+      "height": 1170
+    },
+    {
+      "character": "Bugsy",
+      "original": "File:Bugsy anime.png",
+      "local": "bugsy-6.png",
+      "path": "/images/scraped/gym-leaders/bugsy-6.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Bugsy",
+      "original": "File:Bugsy Heracross Endure Adventures.png",
+      "local": "bugsy-7.png",
+      "path": "/images/scraped/gym-leaders/bugsy-7.png",
+      "width": 318,
+      "height": 456
+    },
+    {
+      "character": "Bugsy",
+      "original": "File:Bugsy HGSS Adventures.png",
+      "local": "bugsy-8.png",
+      "path": "/images/scraped/gym-leaders/bugsy-8.png",
+      "width": 479,
+      "height": 787
+    },
+    {
+      "character": "Bugsy",
+      "original": "File:Bugsy Metapod Kakuna Adventures.png",
+      "local": "bugsy-9.png",
+      "path": "/images/scraped/gym-leaders/bugsy-9.png",
+      "width": 460,
+      "height": 334
+    },
+    {
+      "character": "Bugsy",
+      "original": "File:Bugsy PM.png",
+      "local": "bugsy-10.png",
+      "path": "/images/scraped/gym-leaders/bugsy-10.png",
+      "width": 238,
+      "height": 393
+    },
+    {
+      "character": "Whitney",
+      "original": "File:Gold Silver Whitney.png",
+      "local": "whitney-1.png",
+      "path": "/images/scraped/gym-leaders/whitney-1.png",
+      "width": 270,
+      "height": 243
+    },
+    {
+      "character": "Whitney",
+      "original": "File:HeartGold SoulSilver Whitney.png",
+      "local": "whitney-2.png",
+      "path": "/images/scraped/gym-leaders/whitney-2.png",
+      "width": 1928,
+      "height": 2903
+    },
+    {
+      "character": "Whitney",
+      "original": "File:Whitney Golden Boys.png",
+      "local": "whitney-3.png",
+      "path": "/images/scraped/gym-leaders/whitney-3.png",
+      "width": 404,
+      "height": 972
+    },
+    {
+      "character": "Whitney",
+      "original": "File:Crystal Whitney.png",
+      "local": "whitney-4.png",
+      "path": "/images/scraped/gym-leaders/whitney-4.png",
+      "width": 930,
+      "height": 1815
+    },
+    {
+      "character": "Whitney",
+      "original": "File:Game Freak Whitney Aipom.png",
+      "local": "whitney-5.png",
+      "path": "/images/scraped/gym-leaders/whitney-5.png",
+      "width": 480,
+      "height": 491
+    },
+    {
+      "character": "Whitney",
+      "original": "File:Game Freak Whitney Ethan.jpg",
+      "local": "whitney-6.jpg",
+      "path": "/images/scraped/gym-leaders/whitney-6.jpg",
+      "width": 300,
+      "height": 403
+    },
+    {
+      "character": "Whitney",
+      "original": "File:Game Freak Whitney.png",
+      "local": "whitney-7.png",
+      "path": "/images/scraped/gym-leaders/whitney-7.png",
+      "width": 431,
+      "height": 566
+    },
+    {
+      "character": "Whitney",
+      "original": "File:Masters Dream Team Maker Whitney and Miltank.png",
+      "local": "whitney-8.png",
+      "path": "/images/scraped/gym-leaders/whitney-8.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Whitney",
+      "original": "File:Masters Whitney Miltank.png",
+      "local": "whitney-9.png",
+      "path": "/images/scraped/gym-leaders/whitney-9.png",
+      "width": 328,
+      "height": 382
+    },
+    {
+      "character": "Whitney",
+      "original": "File:Spr Masters Whitney Holiday 2022 2.png",
+      "local": "whitney-10.png",
+      "path": "/images/scraped/gym-leaders/whitney-10.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Morty",
+      "original": "File:Gold Silver Morty.png",
+      "local": "morty-1.png",
+      "path": "/images/scraped/gym-leaders/morty-1.png",
+      "width": 219,
+      "height": 265
+    },
+    {
+      "character": "Morty",
+      "original": "File:HeartGold SoulSilver Morty.png",
+      "local": "morty-2.png",
+      "path": "/images/scraped/gym-leaders/morty-2.png",
+      "width": 1521,
+      "height": 2983
+    },
+    {
+      "character": "Morty",
+      "original": "File:Morty Gengar Golden Boys.png",
+      "local": "morty-3.png",
+      "path": "/images/scraped/gym-leaders/morty-3.png",
+      "width": 311,
+      "height": 336
+    },
+    {
+      "character": "Morty",
+      "original": "File:Morty Golden Boys.png",
+      "local": "morty-4.png",
+      "path": "/images/scraped/gym-leaders/morty-4.png",
+      "width": 428,
+      "height": 684
+    },
+    {
+      "character": "Morty",
+      "original": "File:Crystal Morty.png",
+      "local": "morty-5.png",
+      "path": "/images/scraped/gym-leaders/morty-5.png",
+      "width": 641,
+      "height": 1920
+    },
+    {
+      "character": "Morty",
+      "original": "File:Art Life 20240510 Morty Conviction.jpg",
+      "local": "morty-6.jpg",
+      "path": "/images/scraped/gym-leaders/morty-6.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Morty",
+      "original": "File:Clair Morty Adventures.png",
+      "local": "morty-7.png",
+      "path": "/images/scraped/gym-leaders/morty-7.png",
+      "width": 1280,
+      "height": 1209
+    },
+    {
+      "character": "Morty",
+      "original": "File:Game Freak Morty.jpg",
+      "local": "morty-8.jpg",
+      "path": "/images/scraped/gym-leaders/morty-8.jpg",
+      "width": 354,
+      "height": 536
+    },
+    {
+      "character": "Morty",
+      "original": "File:HGSS Prerelease Ecruteak Gym Morty.png",
+      "local": "morty-9.png",
+      "path": "/images/scraped/gym-leaders/morty-9.png",
+      "width": 328,
+      "height": 252
+    },
+    {
+      "character": "Morty",
+      "original": "File:Masters Dream Team Maker Morty and Drifblim.png",
+      "local": "morty-10.png",
+      "path": "/images/scraped/gym-leaders/morty-10.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Chuck",
+      "original": "File:HeartGold SoulSilver Chuck.png",
+      "local": "chuck-1.png",
+      "path": "/images/scraped/gym-leaders/chuck-1.png",
+      "width": 2634,
+      "height": 3021
+    },
+    {
+      "character": "Chuck",
+      "original": "File:Chuck Golden Boys.png",
+      "local": "chuck-2.png",
+      "path": "/images/scraped/gym-leaders/chuck-2.png",
+      "width": 434,
+      "height": 447
+    },
+    {
+      "character": "Chuck",
+      "original": "File:Chuck Poliwrath Golden Boys.png",
+      "local": "chuck-3.png",
+      "path": "/images/scraped/gym-leaders/chuck-3.png",
+      "width": 303,
+      "height": 522
+    },
+    {
+      "character": "Chuck",
+      "original": "File:Gold Silver Chuck.png",
+      "local": "chuck-4.png",
+      "path": "/images/scraped/gym-leaders/chuck-4.png",
+      "width": 215,
+      "height": 233
+    },
+    {
+      "character": "Chuck",
+      "original": "File:Crystal Chuck.png",
+      "local": "chuck-5.png",
+      "path": "/images/scraped/gym-leaders/chuck-5.png",
+      "width": 1500,
+      "height": 1892
+    },
+    {
+      "character": "Chuck",
+      "original": "File:Chuck anime.png",
+      "local": "chuck-6.png",
+      "path": "/images/scraped/gym-leaders/chuck-6.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Chuck",
+      "original": "File:Chuck HGSS Adventures.png",
+      "local": "chuck-7.png",
+      "path": "/images/scraped/gym-leaders/chuck-7.png",
+      "width": 596,
+      "height": 833
+    },
+    {
+      "character": "Chuck",
+      "original": "File:Chuck JN.png",
+      "local": "chuck-8.png",
+      "path": "/images/scraped/gym-leaders/chuck-8.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Chuck",
+      "original": "File:Chuck PM.png",
+      "local": "chuck-9.png",
+      "path": "/images/scraped/gym-leaders/chuck-9.png",
+      "width": 420,
+      "height": 307
+    },
+    {
+      "character": "Chuck",
+      "original": "File:Chuck Poliwrath Detect Adventures.png",
+      "local": "chuck-10.png",
+      "path": "/images/scraped/gym-leaders/chuck-10.png",
+      "width": 397,
+      "height": 374
+    },
+    {
+      "character": "Jasmine",
+      "original": "File:Gold Silver Jasmine.png",
+      "local": "jasmine-1.png",
+      "path": "/images/scraped/gym-leaders/jasmine-1.png",
+      "width": 240,
+      "height": 273
+    },
+    {
+      "character": "Jasmine",
+      "original": "File:HeartGold SoulSilver Jasmine.png",
+      "local": "jasmine-2.png",
+      "path": "/images/scraped/gym-leaders/jasmine-2.png",
+      "width": 1361,
+      "height": 3083
+    },
+    {
+      "character": "Jasmine",
+      "original": "File:Jasmine Golden Boys.png",
+      "local": "jasmine-3.png",
+      "path": "/images/scraped/gym-leaders/jasmine-3.png",
+      "width": 368,
+      "height": 656
+    },
+    {
+      "character": "Jasmine",
+      "original": "File:Jasmine Magneton Golden Boys.png",
+      "local": "jasmine-4.png",
+      "path": "/images/scraped/gym-leaders/jasmine-4.png",
+      "width": 294,
+      "height": 208
+    },
+    {
+      "character": "Jasmine",
+      "original": "File:Jasmine Steelix Golden Boys.png",
+      "local": "jasmine-5.png",
+      "path": "/images/scraped/gym-leaders/jasmine-5.png",
+      "width": 792,
+      "height": 998
+    },
+    {
+      "character": "Jasmine",
+      "original": "File:Silver and Jasmine MPJ.png",
+      "local": "jasmine-6.png",
+      "path": "/images/scraped/gym-leaders/jasmine-6.png",
+      "width": 922,
+      "height": 660
+    },
+    {
+      "character": "Jasmine",
+      "original": "File:Young Jasmine Golden Boys.png",
+      "local": "jasmine-7.png",
+      "path": "/images/scraped/gym-leaders/jasmine-7.png",
+      "width": 813,
+      "height": 582
+    },
+    {
+      "character": "Jasmine",
+      "original": "File:Crystal Jasmine.png",
+      "local": "jasmine-8.png",
+      "path": "/images/scraped/gym-leaders/jasmine-8.png",
+      "width": 922,
+      "height": 1780
+    },
+    {
+      "character": "Jasmine",
+      "original": "File:Jasmine BDSP OD.png",
+      "local": "jasmine-9.png",
+      "path": "/images/scraped/gym-leaders/jasmine-9.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Jasmine",
+      "original": "File:Janine Jasmine Adventures.png",
+      "local": "jasmine-10.png",
+      "path": "/images/scraped/gym-leaders/jasmine-10.png",
+      "width": 990,
+      "height": 1280
+    },
+    {
+      "character": "Pryce",
+      "original": "File:Gold Silver Pryce.png",
+      "local": "pryce-1.png",
+      "path": "/images/scraped/gym-leaders/pryce-1.png",
+      "width": 245,
+      "height": 245
+    },
+    {
+      "character": "Pryce",
+      "original": "File:HeartGold SoulSilver Pryce.png",
+      "local": "pryce-2.png",
+      "path": "/images/scraped/gym-leaders/pryce-2.png",
+      "width": 539,
+      "height": 1280
+    },
+    {
+      "character": "Pryce",
+      "original": "File:Crystal Pryce.png",
+      "local": "pryce-3.png",
+      "path": "/images/scraped/gym-leaders/pryce-3.png",
+      "width": 959,
+      "height": 1531
+    },
+    {
+      "character": "Pryce",
+      "original": "File:Masters Dream Team Maker Pryce and Seel.png",
+      "local": "pryce-4.png",
+      "path": "/images/scraped/gym-leaders/pryce-4.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Pryce",
+      "original": "File:Masters Pryce Seel.png",
+      "local": "pryce-5.png",
+      "path": "/images/scraped/gym-leaders/pryce-5.png",
+      "width": 329,
+      "height": 356
+    },
+    {
+      "character": "Pryce",
+      "original": "File:Pryce Adventures.png",
+      "local": "pryce-6.png",
+      "path": "/images/scraped/gym-leaders/pryce-6.png",
+      "width": 1059,
+      "height": 1280
+    },
+    {
+      "character": "Pryce",
+      "original": "File:Pryce and Piloswine.png",
+      "local": "pryce-7.png",
+      "path": "/images/scraped/gym-leaders/pryce-7.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Pryce",
+      "original": "File:Pryce anime.png",
+      "local": "pryce-8.png",
+      "path": "/images/scraped/gym-leaders/pryce-8.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Pryce",
+      "original": "File:Pryce HGSS chapter.png",
+      "local": "pryce-9.png",
+      "path": "/images/scraped/gym-leaders/pryce-9.png",
+      "width": 864,
+      "height": 783
+    },
+    {
+      "character": "Pryce",
+      "original": "File:Pryce La Glace.png",
+      "local": "pryce-10.png",
+      "path": "/images/scraped/gym-leaders/pryce-10.png",
+      "width": 221,
+      "height": 345
+    },
+    {
+      "character": "Clair",
+      "original": "File:Gold Silver Clair.png",
+      "local": "clair-1.png",
+      "path": "/images/scraped/gym-leaders/clair-1.png",
+      "width": 269,
+      "height": 252
+    },
+    {
+      "character": "Clair",
+      "original": "File:HeartGold SoulSilver Clair.png",
+      "local": "clair-2.png",
+      "path": "/images/scraped/gym-leaders/clair-2.png",
+      "width": 2248,
+      "height": 3137
+    },
+    {
+      "character": "Clair",
+      "original": "File:Crystal Clair.png",
+      "local": "clair-3.png",
+      "path": "/images/scraped/gym-leaders/clair-3.png",
+      "width": 1500,
+      "height": 1667
+    },
+    {
+      "character": "Clair",
+      "original": "File:Clair and Ash.png",
+      "local": "clair-4.png",
+      "path": "/images/scraped/gym-leaders/clair-4.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Clair",
+      "original": "File:Clair and Dragonair PM.png",
+      "local": "clair-5.png",
+      "path": "/images/scraped/gym-leaders/clair-5.png",
+      "width": 340,
+      "height": 220
+    },
+    {
+      "character": "Clair",
+      "original": "File:Clair and Dragonair.png",
+      "local": "clair-6.png",
+      "path": "/images/scraped/gym-leaders/clair-6.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Clair",
+      "original": "File:Clair anime.png",
+      "local": "clair-7.png",
+      "path": "/images/scraped/gym-leaders/clair-7.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Clair",
+      "original": "File:Clair AP.png",
+      "local": "clair-8.png",
+      "path": "/images/scraped/gym-leaders/clair-8.png",
+      "width": 430,
+      "height": 397
+    },
+    {
+      "character": "Clair",
+      "original": "File:Clair BW anime.png",
+      "local": "clair-9.png",
+      "path": "/images/scraped/gym-leaders/clair-9.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Clair",
+      "original": "File:Clair casual clothes anime.png",
+      "local": "clair-10.png",
+      "path": "/images/scraped/gym-leaders/clair-10.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Roxanne",
+      "original": "File:Omega Ruby Alpha Sapphire Roxanne.png",
+      "local": "roxanne-1.png",
+      "path": "/images/scraped/gym-leaders/roxanne-1.png",
+      "width": 676,
+      "height": 1280
+    },
+    {
+      "character": "Roxanne",
+      "original": "File:Ruby Sapphire Roxanne.png",
+      "local": "roxanne-2.png",
+      "path": "/images/scraped/gym-leaders/roxanne-2.png",
+      "width": 273,
+      "height": 699
+    },
+    {
+      "character": "Roxanne",
+      "original": "File:Roxanne ORAS OD.png",
+      "local": "roxanne-3.png",
+      "path": "/images/scraped/gym-leaders/roxanne-3.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Roxanne",
+      "original": "File:Art Life 20230417 Roxanne.jpg",
+      "local": "roxanne-4.jpg",
+      "path": "/images/scraped/gym-leaders/roxanne-4.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Roxanne",
+      "original": "File:GymBadgeXYPromoRoxanne.jpg",
+      "local": "roxanne-5.jpg",
+      "path": "/images/scraped/gym-leaders/roxanne-5.jpg",
+      "width": 748,
+      "height": 1044
+    },
+    {
+      "character": "Roxanne",
+      "original": "File:Masters Dream Team Maker Roxanne and Nosepass.png",
+      "local": "roxanne-6.png",
+      "path": "/images/scraped/gym-leaders/roxanne-6.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Roxanne",
+      "original": "File:ORAS Prerelease VS Roxanne.png",
+      "local": "roxanne-7.png",
+      "path": "/images/scraped/gym-leaders/roxanne-7.png",
+      "width": 500,
+      "height": 304
+    },
+    {
+      "character": "Roxanne",
+      "original": "File:Pokémon Scrap Roxanne.jpg",
+      "local": "roxanne-8.jpg",
+      "path": "/images/scraped/gym-leaders/roxanne-8.jpg",
+      "width": 384,
+      "height": 274
+    },
+    {
+      "character": "Roxanne",
+      "original": "File:Roxanne and Nosepass Adventures.png",
+      "local": "roxanne-9.png",
+      "path": "/images/scraped/gym-leaders/roxanne-9.png",
+      "width": 446,
+      "height": 605
+    },
+    {
+      "character": "Roxanne",
+      "original": "File:Roxanne and Nosepass.png",
+      "local": "roxanne-10.png",
+      "path": "/images/scraped/gym-leaders/roxanne-10.png",
+      "width": 320,
+      "height": 240
+    },
+    {
+      "character": "Brawly",
+      "original": "File:Omega Ruby Alpha Sapphire Brawly.png",
+      "local": "brawly-1.png",
+      "path": "/images/scraped/gym-leaders/brawly-1.png",
+      "width": 726,
+      "height": 1280
+    },
+    {
+      "character": "Brawly",
+      "original": "File:Ruby Sapphire Brawly.png",
+      "local": "brawly-2.png",
+      "path": "/images/scraped/gym-leaders/brawly-2.png",
+      "width": 251,
+      "height": 656
+    },
+    {
+      "character": "Brawly",
+      "original": "File:Brawly ORAS OD.png",
+      "local": "brawly-3.png",
+      "path": "/images/scraped/gym-leaders/brawly-3.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Brawly",
+      "original": "File:August 2014 CoroCoro Brawly.png",
+      "local": "brawly-4.png",
+      "path": "/images/scraped/gym-leaders/brawly-4.png",
+      "width": 600,
+      "height": 800
+    },
+    {
+      "character": "Brawly",
+      "original": "File:Brawly anime.png",
+      "local": "brawly-5.png",
+      "path": "/images/scraped/gym-leaders/brawly-5.png",
+      "width": 600,
+      "height": 1280
+    },
+    {
+      "character": "Brawly",
+      "original": "File:Brawly Machoke Adventures.png",
+      "local": "brawly-6.png",
+      "path": "/images/scraped/gym-leaders/brawly-6.png",
+      "width": 712,
+      "height": 494
+    },
+    {
+      "character": "Brawly",
+      "original": "File:Brawly Makuhita Adventures.png",
+      "local": "brawly-7.png",
+      "path": "/images/scraped/gym-leaders/brawly-7.png",
+      "width": 796,
+      "height": 445
+    },
+    {
+      "character": "Brawly",
+      "original": "File:Brawly ORAS concept art.png",
+      "local": "brawly-8.png",
+      "path": "/images/scraped/gym-leaders/brawly-8.png",
+      "width": 737,
+      "height": 861
+    },
+    {
+      "character": "Brawly",
+      "original": "File:Brawly ORAS.png",
+      "local": "brawly-9.png",
+      "path": "/images/scraped/gym-leaders/brawly-9.png",
+      "width": 400,
+      "height": 240
+    },
+    {
+      "character": "Brawly",
+      "original": "File:BrawlyChillingReign131.jpg",
+      "local": "brawly-10.jpg",
+      "path": "/images/scraped/gym-leaders/brawly-10.jpg",
+      "width": 868,
+      "height": 1212
+    },
+    {
+      "character": "Wattson",
+      "original": "File:Omega Ruby Alpha Sapphire Wattson.png",
+      "local": "wattson-1.png",
+      "path": "/images/scraped/gym-leaders/wattson-1.png",
+      "width": 677,
+      "height": 1280
+    },
+    {
+      "character": "Wattson",
+      "original": "File:Ruby Sapphire Wattson.png",
+      "local": "wattson-2.png",
+      "path": "/images/scraped/gym-leaders/wattson-2.png",
+      "width": 390,
+      "height": 613
+    },
+    {
+      "character": "Wattson",
+      "original": "File:Wattson ORAS OD.png",
+      "local": "wattson-3.png",
+      "path": "/images/scraped/gym-leaders/wattson-3.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Wattson",
+      "original": "File:GymBadgeXYPromoWattson.jpg",
+      "local": "wattson-4.jpg",
+      "path": "/images/scraped/gym-leaders/wattson-4.jpg",
+      "width": 748,
+      "height": 1044
+    },
+    {
+      "character": "Wattson",
+      "original": "File:Pokémon Scrap Wattson.jpg",
+      "local": "wattson-5.jpg",
+      "path": "/images/scraped/gym-leaders/wattson-5.jpg",
+      "width": 384,
+      "height": 274
+    },
+    {
+      "character": "Wattson",
+      "original": "File:VSWattson.png",
+      "local": "wattson-6.png",
+      "path": "/images/scraped/gym-leaders/wattson-6.png",
+      "width": 512,
+      "height": 256
+    },
+    {
+      "character": "Wattson",
+      "original": "File:Wattson and Electrike PMRS.png",
+      "local": "wattson-7.png",
+      "path": "/images/scraped/gym-leaders/wattson-7.png",
+      "width": 437,
+      "height": 399
+    },
+    {
+      "character": "Wattson",
+      "original": "File:Wattson and Manectric.png",
+      "local": "wattson-8.png",
+      "path": "/images/scraped/gym-leaders/wattson-8.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Wattson",
+      "original": "File:Wattson anime.png",
+      "local": "wattson-9.png",
+      "path": "/images/scraped/gym-leaders/wattson-9.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Wattson",
+      "original": "File:Wattson Flannery Adventures.png",
+      "local": "wattson-10.png",
+      "path": "/images/scraped/gym-leaders/wattson-10.png",
+      "width": 485,
+      "height": 598
+    },
+    {
+      "character": "Flannery",
+      "original": "File:Omega Ruby Alpha Sapphire Flannery.png",
+      "local": "flannery-1.png",
+      "path": "/images/scraped/gym-leaders/flannery-1.png",
+      "width": 649,
+      "height": 1280
+    },
+    {
+      "character": "Flannery",
+      "original": "File:Ruby Sapphire Flannery.png",
+      "local": "flannery-2.png",
+      "path": "/images/scraped/gym-leaders/flannery-2.png",
+      "width": 409,
+      "height": 530
+    },
+    {
+      "character": "Flannery",
+      "original": "File:Flannery ORAS OD.png",
+      "local": "flannery-3.png",
+      "path": "/images/scraped/gym-leaders/flannery-3.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Flannery",
+      "original": "File:Flannery Adventures.png",
+      "local": "flannery-4.png",
+      "path": "/images/scraped/gym-leaders/flannery-4.png",
+      "width": 276,
+      "height": 359
+    },
+    {
+      "character": "Flannery",
+      "original": "File:Flannery and Mr Moore.png",
+      "local": "flannery-5.png",
+      "path": "/images/scraped/gym-leaders/flannery-5.png",
+      "width": 960,
+      "height": 720
+    },
+    {
+      "character": "Flannery",
+      "original": "File:Flannery anime.png",
+      "local": "flannery-6.png",
+      "path": "/images/scraped/gym-leaders/flannery-6.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Flannery",
+      "original": "File:Flannery Grandfather BW2.png",
+      "local": "flannery-7.png",
+      "path": "/images/scraped/gym-leaders/flannery-7.png",
+      "width": 1091,
+      "height": 719
+    },
+    {
+      "character": "Flannery",
+      "original": "File:Flannery ORAS concept art.png",
+      "local": "flannery-8.png",
+      "path": "/images/scraped/gym-leaders/flannery-8.png",
+      "width": 942,
+      "height": 832
+    },
+    {
+      "character": "Flannery",
+      "original": "File:Flannery ORAS.png",
+      "local": "flannery-9.png",
+      "path": "/images/scraped/gym-leaders/flannery-9.png",
+      "width": 400,
+      "height": 240
+    },
+    {
+      "character": "Flannery",
+      "original": "File:Flannery Vulpix Grudge Adventures.png",
+      "local": "flannery-10.png",
+      "path": "/images/scraped/gym-leaders/flannery-10.png",
+      "width": 447,
+      "height": 436
+    },
+    {
+      "character": "Norman",
+      "original": "File:Omega Ruby Alpha Sapphire Norman.png",
+      "local": "norman-1.png",
+      "path": "/images/scraped/gym-leaders/norman-1.png",
+      "width": 434,
+      "height": 1280
+    },
+    {
+      "character": "Norman",
+      "original": "File:Ruby Sapphire Norman.png",
+      "local": "norman-2.png",
+      "path": "/images/scraped/gym-leaders/norman-2.png",
+      "width": 343,
+      "height": 683
+    },
+    {
+      "character": "Norman",
+      "original": "File:Norman ORAS OD.png",
+      "local": "norman-3.png",
+      "path": "/images/scraped/gym-leaders/norman-3.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Norman",
+      "original": "File:Brendan Norman Masters Trailer.png",
+      "local": "norman-4.png",
+      "path": "/images/scraped/gym-leaders/norman-4.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Norman",
+      "original": "File:Fofo saving Norman.png",
+      "local": "norman-5.png",
+      "path": "/images/scraped/gym-leaders/norman-5.png",
+      "width": 559,
+      "height": 574
+    },
+    {
+      "character": "Norman",
+      "original": "File:GymBadgeXYPromoNorman.jpg",
+      "local": "norman-6.jpg",
+      "path": "/images/scraped/gym-leaders/norman-6.jpg",
+      "width": 748,
+      "height": 1044
+    },
+    {
+      "character": "Norman",
+      "original": "File:Masters Dream Team Maker Norman and Slaking.png",
+      "local": "norman-7.png",
+      "path": "/images/scraped/gym-leaders/norman-7.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Norman",
+      "original": "File:Norman Adventures.png",
+      "local": "norman-8.png",
+      "path": "/images/scraped/gym-leaders/norman-8.png",
+      "width": 200,
+      "height": 270
+    },
+    {
+      "character": "Norman",
+      "original": "File:Norman and Rayquaza Adventures.png",
+      "local": "norman-9.png",
+      "path": "/images/scraped/gym-leaders/norman-9.png",
+      "width": 999,
+      "height": 596
+    },
+    {
+      "character": "Norman",
+      "original": "File:Norman angry.png",
+      "local": "norman-10.png",
+      "path": "/images/scraped/gym-leaders/norman-10.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Winona",
+      "original": "File:Omega Ruby Alpha Sapphire Winona.png",
+      "local": "winona-1.png",
+      "path": "/images/scraped/gym-leaders/winona-1.png",
+      "width": 720,
+      "height": 949
+    },
+    {
+      "character": "Winona",
+      "original": "File:Ruby Sapphire Winona.png",
+      "local": "winona-2.png",
+      "path": "/images/scraped/gym-leaders/winona-2.png",
+      "width": 549,
+      "height": 944
+    },
+    {
+      "character": "Winona",
+      "original": "File:Winona ORAS OD.png",
+      "local": "winona-3.png",
+      "path": "/images/scraped/gym-leaders/winona-3.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Winona",
+      "original": "File:GymBadgeXYPromoWinona.jpg",
+      "local": "winona-4.jpg",
+      "path": "/images/scraped/gym-leaders/winona-4.jpg",
+      "width": 748,
+      "height": 1044
+    },
+    {
+      "character": "Winona",
+      "original": "File:Masters Dream Team Maker Winona and Pelipper.png",
+      "local": "winona-5.png",
+      "path": "/images/scraped/gym-leaders/winona-5.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Winona",
+      "original": "File:Pokémon Scrap Winona.jpg",
+      "local": "winona-6.jpg",
+      "path": "/images/scraped/gym-leaders/winona-6.jpg",
+      "width": 384,
+      "height": 274
+    },
+    {
+      "character": "Winona",
+      "original": "File:Spr Masters Winona 2.png",
+      "local": "winona-7.png",
+      "path": "/images/scraped/gym-leaders/winona-7.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Winona",
+      "original": "File:Spr Masters Winona.png",
+      "local": "winona-8.png",
+      "path": "/images/scraped/gym-leaders/winona-8.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Winona",
+      "original": "File:VSWinona Masters.png",
+      "local": "winona-9.png",
+      "path": "/images/scraped/gym-leaders/winona-9.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Winona",
+      "original": "File:VSWinona.png",
+      "local": "winona-10.png",
+      "path": "/images/scraped/gym-leaders/winona-10.png",
+      "width": 512,
+      "height": 256
+    },
+    {
+      "character": "Wallace",
+      "original": "File:Omega Ruby Alpha Sapphire Wallace.png",
+      "local": "wallace-1.png",
+      "path": "/images/scraped/gym-leaders/wallace-1.png",
+      "width": 2157,
+      "height": 2925
+    },
+    {
+      "character": "Wallace",
+      "original": "File:Ruby Sapphire Wallace.png",
+      "local": "wallace-2.png",
+      "path": "/images/scraped/gym-leaders/wallace-2.png",
+      "width": 300,
+      "height": 324
+    },
+    {
+      "character": "Wallace",
+      "original": "File:WallaceSilverTempest166.jpg",
+      "local": "wallace-3.jpg",
+      "path": "/images/scraped/gym-leaders/wallace-3.jpg",
+      "width": 660,
+      "height": 920
+    },
+    {
+      "character": "Wallace",
+      "original": "File:WallaceSilverTempest194.jpg",
+      "local": "wallace-4.jpg",
+      "path": "/images/scraped/gym-leaders/wallace-4.jpg",
+      "width": 660,
+      "height": 920
+    },
+    {
+      "character": "Wallace",
+      "original": "File:WallaceSilverTempest208.jpg",
+      "local": "wallace-5.jpg",
+      "path": "/images/scraped/gym-leaders/wallace-5.jpg",
+      "width": 734,
+      "height": 1024
+    },
+    {
+      "character": "Wallace",
+      "original": "File:Emerald Wallace.png",
+      "local": "wallace-6.png",
+      "path": "/images/scraped/gym-leaders/wallace-6.png",
+      "width": 246,
+      "height": 458
+    },
+    {
+      "character": "Wallace",
+      "original": "File:Wallace ORAS OD.png",
+      "local": "wallace-7.png",
+      "path": "/images/scraped/gym-leaders/wallace-7.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Wallace",
+      "original": "File:Ash and Wallace.png",
+      "local": "wallace-8.png",
+      "path": "/images/scraped/gym-leaders/wallace-8.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Wallace",
+      "original": "File:GymBadgeXYPromoWallace.jpg",
+      "local": "wallace-9.jpg",
+      "path": "/images/scraped/gym-leaders/wallace-9.jpg",
+      "width": 748,
+      "height": 1044
+    },
+    {
+      "character": "Wallace",
+      "original": "File:Jessilina and Wallace.png",
+      "local": "wallace-10.png",
+      "path": "/images/scraped/gym-leaders/wallace-10.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Juan",
+      "original": "File:VSJuan.png",
+      "local": "juan-1.png",
+      "path": "/images/scraped/gym-leaders/juan-1.png",
+      "width": 400,
+      "height": 240
+    },
+    {
+      "character": "Juan",
+      "original": "File:Juan anime.png",
+      "local": "juan-2.png",
+      "path": "/images/scraped/gym-leaders/juan-2.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Juan",
+      "original": "File:Juan Luvdisc Adventures.png",
+      "local": "juan-3.png",
+      "path": "/images/scraped/gym-leaders/juan-3.png",
+      "width": 539,
+      "height": 323
+    },
+    {
+      "character": "Juan",
+      "original": "File:Juan Milotic.png",
+      "local": "juan-4.png",
+      "path": "/images/scraped/gym-leaders/juan-4.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Juan",
+      "original": "File:Norman Juan Adventures.png",
+      "local": "juan-5.png",
+      "path": "/images/scraped/gym-leaders/juan-5.png",
+      "width": 867,
+      "height": 1000
+    },
+    {
+      "character": "Roark",
+      "original": "File:Brilliant Diamond Shining Pearl Roark.png",
+      "local": "roark-1.png",
+      "path": "/images/scraped/gym-leaders/roark-1.png",
+      "width": 2034,
+      "height": 4040
+    },
+    {
+      "character": "Roark",
+      "original": "File:Diamond Pearl Roark.png",
+      "local": "roark-2.png",
+      "path": "/images/scraped/gym-leaders/roark-2.png",
+      "width": 630,
+      "height": 1425
+    },
+    {
+      "character": "Roark",
+      "original": "File:Roark BDSP OD.png",
+      "local": "roark-3.png",
+      "path": "/images/scraped/gym-leaders/roark-3.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Roark",
+      "original": "File:Badge Case Roark VIII.png",
+      "local": "roark-4.png",
+      "path": "/images/scraped/gym-leaders/roark-4.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Roark",
+      "original": "File:Masters Dream Team Maker Roark and Cranidos.png",
+      "local": "roark-5.png",
+      "path": "/images/scraped/gym-leaders/roark-5.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Roark",
+      "original": "File:Roark and Rampardos.png",
+      "local": "roark-6.png",
+      "path": "/images/scraped/gym-leaders/roark-6.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Roark",
+      "original": "File:Roark anime.png",
+      "local": "roark-7.png",
+      "path": "/images/scraped/gym-leaders/roark-7.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Roark",
+      "original": "File:Roark Cranidos Adventures.png",
+      "local": "roark-8.png",
+      "path": "/images/scraped/gym-leaders/roark-8.png",
+      "width": 397,
+      "height": 562
+    },
+    {
+      "character": "Roark",
+      "original": "File:Roark DPA.png",
+      "local": "roark-9.png",
+      "path": "/images/scraped/gym-leaders/roark-9.png",
+      "width": 265,
+      "height": 361
+    },
+    {
+      "character": "Roark",
+      "original": "File:Roark Evolutions.png",
+      "local": "roark-10.png",
+      "path": "/images/scraped/gym-leaders/roark-10.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Gardenia",
+      "original": "File:Brilliant Diamond Shining Pearl Gardenia.png",
+      "local": "gardenia-1.png",
+      "path": "/images/scraped/gym-leaders/gardenia-1.png",
+      "width": 1830,
+      "height": 4037
+    },
+    {
+      "character": "Gardenia",
+      "original": "File:Diamond Pearl Gardenia.png",
+      "local": "gardenia-2.png",
+      "path": "/images/scraped/gym-leaders/gardenia-2.png",
+      "width": 351,
+      "height": 607
+    },
+    {
+      "character": "Gardenia",
+      "original": "File:Gardenia BDSP OD.png",
+      "local": "gardenia-3.png",
+      "path": "/images/scraped/gym-leaders/gardenia-3.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Gardenia",
+      "original": "File:Art Life 20230807 Gardenia.jpg",
+      "local": "gardenia-4.jpg",
+      "path": "/images/scraped/gym-leaders/gardenia-4.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Gardenia",
+      "original": "File:Badge Case Gardenia VIII.png",
+      "local": "gardenia-5.png",
+      "path": "/images/scraped/gym-leaders/gardenia-5.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Gardenia",
+      "original": "File:Gardenia and Forest Badge.png",
+      "local": "gardenia-6.png",
+      "path": "/images/scraped/gym-leaders/gardenia-6.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Gardenia",
+      "original": "File:Gardenia anime.png",
+      "local": "gardenia-7.png",
+      "path": "/images/scraped/gym-leaders/gardenia-7.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Gardenia",
+      "original": "File:Gardenia Cacnea.png",
+      "local": "gardenia-8.png",
+      "path": "/images/scraped/gym-leaders/gardenia-8.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Gardenia",
+      "original": "File:Gardenia DP037.png",
+      "local": "gardenia-9.png",
+      "path": "/images/scraped/gym-leaders/gardenia-9.png",
+      "width": 640,
+      "height": 723
+    },
+    {
+      "character": "Gardenia",
+      "original": "File:Gardenia Roserade Flash.png",
+      "local": "gardenia-10.png",
+      "path": "/images/scraped/gym-leaders/gardenia-10.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Fantina",
+      "original": "File:Brilliant Diamond Shining Pearl Fantina.png",
+      "local": "fantina-1.png",
+      "path": "/images/scraped/gym-leaders/fantina-1.png",
+      "width": 426,
+      "height": 672
+    },
+    {
+      "character": "Fantina",
+      "original": "File:Diamond Pearl Fantina.png",
+      "local": "fantina-2.png",
+      "path": "/images/scraped/gym-leaders/fantina-2.png",
+      "width": 1527,
+      "height": 1920
+    },
+    {
+      "character": "Fantina",
+      "original": "File:Fantina BDSP OD.png",
+      "local": "fantina-3.png",
+      "path": "/images/scraped/gym-leaders/fantina-3.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Fantina",
+      "original": "File:Badge Case Fantina VIII.png",
+      "local": "fantina-4.png",
+      "path": "/images/scraped/gym-leaders/fantina-4.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Fantina",
+      "original": "File:Fantina and Drifblim.png",
+      "local": "fantina-5.png",
+      "path": "/images/scraped/gym-leaders/fantina-5.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Fantina",
+      "original": "File:Fantina anime.png",
+      "local": "fantina-6.png",
+      "path": "/images/scraped/gym-leaders/fantina-6.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Fantina",
+      "original": "File:Fantina Byron Adventures.png",
+      "local": "fantina-7.png",
+      "path": "/images/scraped/gym-leaders/fantina-7.png",
+      "width": 1179,
+      "height": 1139
+    },
+    {
+      "character": "Fantina",
+      "original": "File:Fantina Drifblim Fly.png",
+      "local": "fantina-8.png",
+      "path": "/images/scraped/gym-leaders/fantina-8.png",
+      "width": 416,
+      "height": 445
+    },
+    {
+      "character": "Fantina",
+      "original": "File:Fantina Duskull Adventures.png",
+      "local": "fantina-9.png",
+      "path": "/images/scraped/gym-leaders/fantina-9.png",
+      "width": 345,
+      "height": 548
+    },
+    {
+      "character": "Fantina",
+      "original": "File:FantinaLostOrigin157.jpg",
+      "local": "fantina-10.jpg",
+      "path": "/images/scraped/gym-leaders/fantina-10.jpg",
+      "width": 868,
+      "height": 1212
+    },
+    {
+      "character": "Maylene",
+      "original": "File:Brilliant Diamond Shining Pearl Maylene.png",
+      "local": "maylene-1.png",
+      "path": "/images/scraped/gym-leaders/maylene-1.png",
+      "width": 488,
+      "height": 672
+    },
+    {
+      "character": "Maylene",
+      "original": "File:Diamond Pearl Maylene.png",
+      "local": "maylene-2.png",
+      "path": "/images/scraped/gym-leaders/maylene-2.png",
+      "width": 323,
+      "height": 414
+    },
+    {
+      "character": "Maylene",
+      "original": "File:Maylene BDSP OD.png",
+      "local": "maylene-3.png",
+      "path": "/images/scraped/gym-leaders/maylene-3.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Maylene",
+      "original": "File:Badge Case Maylene VIII.png",
+      "local": "maylene-4.png",
+      "path": "/images/scraped/gym-leaders/maylene-4.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Maylene",
+      "original": "File:Masters Dream Team Maker Maylene and Meditite.png",
+      "local": "maylene-5.png",
+      "path": "/images/scraped/gym-leaders/maylene-5.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Maylene",
+      "original": "File:Maylene and Dawn.png",
+      "local": "maylene-6.png",
+      "path": "/images/scraped/gym-leaders/maylene-6.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Maylene",
+      "original": "File:Maylene and Lucario.png",
+      "local": "maylene-7.png",
+      "path": "/images/scraped/gym-leaders/maylene-7.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Maylene",
+      "original": "File:Maylene anime.png",
+      "local": "maylene-8.png",
+      "path": "/images/scraped/gym-leaders/maylene-8.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Maylene",
+      "original": "File:Maylene DPA.png",
+      "local": "maylene-9.png",
+      "path": "/images/scraped/gym-leaders/maylene-9.png",
+      "width": 216,
+      "height": 400
+    },
+    {
+      "character": "Maylene",
+      "original": "File:Maylene Lucario DPA.png",
+      "local": "maylene-10.png",
+      "path": "/images/scraped/gym-leaders/maylene-10.png",
+      "width": 238,
+      "height": 257
+    },
+    {
+      "character": "Crasher_Wake",
+      "original": "File:Brilliant Diamond Shining Pearl Crasher Wake.png",
+      "local": "crasher-wake-1.png",
+      "path": "/images/scraped/gym-leaders/crasher-wake-1.png",
+      "width": 569,
+      "height": 672
+    },
+    {
+      "character": "Crasher_Wake",
+      "original": "File:Diamond Pearl Crasher Wake.png",
+      "local": "crasher-wake-2.png",
+      "path": "/images/scraped/gym-leaders/crasher-wake-2.png",
+      "width": 363,
+      "height": 443
+    },
+    {
+      "character": "Crasher_Wake",
+      "original": "File:Crasher Wake BDSP OD.png",
+      "local": "crasher-wake-3.png",
+      "path": "/images/scraped/gym-leaders/crasher-wake-3.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Crasher_Wake",
+      "original": "File:Badge Case Crasher Wake VIII.png",
+      "local": "crasher-wake-4.png",
+      "path": "/images/scraped/gym-leaders/crasher-wake-4.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Crasher_Wake",
+      "original": "File:Crasher Wake anime.png",
+      "local": "crasher-wake-5.png",
+      "path": "/images/scraped/gym-leaders/crasher-wake-5.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Crasher_Wake",
+      "original": "File:Crasher Wake DPA.png",
+      "local": "crasher-wake-6.png",
+      "path": "/images/scraped/gym-leaders/crasher-wake-6.png",
+      "width": 327,
+      "height": 451
+    },
+    {
+      "character": "Crasher_Wake",
+      "original": "File:Crasher Wake unmasked Adventures.png",
+      "local": "crasher-wake-7.png",
+      "path": "/images/scraped/gym-leaders/crasher-wake-7.png",
+      "width": 426,
+      "height": 610
+    },
+    {
+      "character": "Crasher_Wake",
+      "original": "File:Crasher Wake Wulfric Masters Trailer.png",
+      "local": "crasher-wake-8.png",
+      "path": "/images/scraped/gym-leaders/crasher-wake-8.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Crasher_Wake",
+      "original": "File:CrasherWakeForbiddenLight104.jpg",
+      "local": "crasher-wake-9.jpg",
+      "path": "/images/scraped/gym-leaders/crasher-wake-9.jpg",
+      "width": 372,
+      "height": 519
+    },
+    {
+      "character": "Crasher_Wake",
+      "original": "File:CrasherWakeForbiddenLight129.jpg",
+      "local": "crasher-wake-10.jpg",
+      "path": "/images/scraped/gym-leaders/crasher-wake-10.jpg",
+      "width": 748,
+      "height": 1044
+    },
+    {
+      "character": "Byron",
+      "original": "File:Brilliant Diamond Shining Pearl Byron.png",
+      "local": "byron-1.png",
+      "path": "/images/scraped/gym-leaders/byron-1.png",
+      "width": 332,
+      "height": 671
+    },
+    {
+      "character": "Byron",
+      "original": "File:Diamond Pearl Byron.png",
+      "local": "byron-2.png",
+      "path": "/images/scraped/gym-leaders/byron-2.png",
+      "width": 221,
+      "height": 441
+    },
+    {
+      "character": "Byron",
+      "original": "File:Byron Shieldon Adventures.png",
+      "local": "byron-3.png",
+      "path": "/images/scraped/gym-leaders/byron-3.png",
+      "width": 449,
+      "height": 596
+    },
+    {
+      "character": "Byron",
+      "original": "File:Byron BDSP OD.png",
+      "local": "byron-4.png",
+      "path": "/images/scraped/gym-leaders/byron-4.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Byron",
+      "original": "File:Badge Case Byron VIII.png",
+      "local": "byron-5.png",
+      "path": "/images/scraped/gym-leaders/byron-5.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Byron",
+      "original": "File:Byron and Bastiodon.png",
+      "local": "byron-6.png",
+      "path": "/images/scraped/gym-leaders/byron-6.png",
+      "width": 307,
+      "height": 500
+    },
+    {
+      "character": "Byron",
+      "original": "File:Byron and Don.png",
+      "local": "byron-7.png",
+      "path": "/images/scraped/gym-leaders/byron-7.png",
+      "width": 449,
+      "height": 473
+    },
+    {
+      "character": "Byron",
+      "original": "File:Byron anime.png",
+      "local": "byron-8.png",
+      "path": "/images/scraped/gym-leaders/byron-8.png",
+      "width": 640,
+      "height": 480
+    },
+    {
+      "character": "Byron",
+      "original": "File:Byron Bronzong Adventures.png",
+      "local": "byron-9.png",
+      "path": "/images/scraped/gym-leaders/byron-9.png",
+      "width": 746,
+      "height": 490
+    },
+    {
+      "character": "Byron",
+      "original": "File:Byron Bronzor DPA.png",
+      "local": "byron-10.png",
+      "path": "/images/scraped/gym-leaders/byron-10.png",
+      "width": 278,
+      "height": 286
+    },
+    {
+      "character": "Candice",
+      "original": "File:Brilliant Diamond Shining Pearl Candice.png",
+      "local": "candice-1.png",
+      "path": "/images/scraped/gym-leaders/candice-1.png",
+      "width": 306,
+      "height": 672
+    },
+    {
+      "character": "Candice",
+      "original": "File:Diamond Pearl Candice.png",
+      "local": "candice-2.png",
+      "path": "/images/scraped/gym-leaders/candice-2.png",
+      "width": 307,
+      "height": 599
+    },
+    {
+      "character": "Candice",
+      "original": "File:CandiceSilverTempest152.jpg",
+      "local": "candice-3.jpg",
+      "path": "/images/scraped/gym-leaders/candice-3.jpg",
+      "width": 660,
+      "height": 920
+    },
+    {
+      "character": "Candice",
+      "original": "File:CandiceSilverTempest189.jpg",
+      "local": "candice-4.jpg",
+      "path": "/images/scraped/gym-leaders/candice-4.jpg",
+      "width": 660,
+      "height": 920
+    },
+    {
+      "character": "Candice",
+      "original": "File:CandiceSilverTempest204.jpg",
+      "local": "candice-5.jpg",
+      "path": "/images/scraped/gym-leaders/candice-5.jpg",
+      "width": 734,
+      "height": 1024
+    },
+    {
+      "character": "Candice",
+      "original": "File:Candice BDSP OD.png",
+      "local": "candice-6.png",
+      "path": "/images/scraped/gym-leaders/candice-6.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Candice",
+      "original": "File:Art Life 20240209 Candice.jpg",
+      "local": "candice-7.jpg",
+      "path": "/images/scraped/gym-leaders/candice-7.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Candice",
+      "original": "File:Badge Case Candice VIII.png",
+      "local": "candice-8.png",
+      "path": "/images/scraped/gym-leaders/candice-8.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Candice",
+      "original": "File:Candice Abomasnow Rock Climb Adventures.png",
+      "local": "candice-9.png",
+      "path": "/images/scraped/gym-leaders/candice-9.png",
+      "width": 385,
+      "height": 570
+    },
+    {
+      "character": "Candice",
+      "original": "File:Candice and Abomasnow.png",
+      "local": "candice-10.png",
+      "path": "/images/scraped/gym-leaders/candice-10.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Volkner",
+      "original": "File:Brilliant Diamond Shining Pearl Volkner.png",
+      "local": "volkner-1.png",
+      "path": "/images/scraped/gym-leaders/volkner-1.png",
+      "width": 222,
+      "height": 672
+    },
+    {
+      "character": "Volkner",
+      "original": "File:Diamond Pearl Volkner.png",
+      "local": "volkner-2.png",
+      "path": "/images/scraped/gym-leaders/volkner-2.png",
+      "width": 1340,
+      "height": 2528
+    },
+    {
+      "character": "Volkner",
+      "original": "File:Volkner anime.png",
+      "local": "volkner-3.png",
+      "path": "/images/scraped/gym-leaders/volkner-3.png",
+      "width": 305,
+      "height": 903
+    },
+    {
+      "character": "Volkner",
+      "original": "File:Volkner BDSP OD.png",
+      "local": "volkner-4.png",
+      "path": "/images/scraped/gym-leaders/volkner-4.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Volkner",
+      "original": "File:Badge Case Volkner VIII.png",
+      "local": "volkner-5.png",
+      "path": "/images/scraped/gym-leaders/volkner-5.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Volkner",
+      "original": "File:DP166 Ash Vs Volkner.png",
+      "local": "volkner-6.png",
+      "path": "/images/scraped/gym-leaders/volkner-6.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Volkner",
+      "original": "File:JN077 Ash VS Volkner.png",
+      "local": "volkner-7.png",
+      "path": "/images/scraped/gym-leaders/volkner-7.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Volkner",
+      "original": "File:Masters Volkner Friend Snapshot.png",
+      "local": "volkner-8.png",
+      "path": "/images/scraped/gym-leaders/volkner-8.png",
+      "width": 480,
+      "height": 420
+    },
+    {
+      "character": "Volkner",
+      "original": "File:Masters Volkner Plushie.png",
+      "local": "volkner-9.png",
+      "path": "/images/scraped/gym-leaders/volkner-9.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Volkner",
+      "original": "File:Masters Volkner Story Snapshot.png",
+      "local": "volkner-10.png",
+      "path": "/images/scraped/gym-leaders/volkner-10.png",
+      "width": 480,
+      "height": 420
+    },
+    {
+      "character": "Cilan",
+      "original": "File:Black White Chili Cilan Cress.png",
+      "local": "cilan-1.png",
+      "path": "/images/scraped/gym-leaders/cilan-1.png",
+      "width": 1280,
+      "height": 1114
+    },
+    {
+      "character": "Cilan",
+      "original": "File:Black White Cilan.png",
+      "local": "cilan-2.png",
+      "path": "/images/scraped/gym-leaders/cilan-2.png",
+      "width": 354,
+      "height": 1000
+    },
+    {
+      "character": "Cilan",
+      "original": "File:Cilan BW character sheet.png",
+      "local": "cilan-3.png",
+      "path": "/images/scraped/gym-leaders/cilan-3.png",
+      "width": 431,
+      "height": 416
+    },
+    {
+      "character": "Cilan",
+      "original": "File:CilanBW1.png",
+      "local": "cilan-4.png",
+      "path": "/images/scraped/gym-leaders/cilan-4.png",
+      "width": 220,
+      "height": 433
+    },
+    {
+      "character": "Cilan",
+      "original": "File:Ash Cilan crossdressing.png",
+      "local": "cilan-5.png",
+      "path": "/images/scraped/gym-leaders/cilan-5.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Cilan",
+      "original": "File:Ash Cilan pajamas.png",
+      "local": "cilan-6.png",
+      "path": "/images/scraped/gym-leaders/cilan-6.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Cilan",
+      "original": "File:Brock Cilan JN.png",
+      "local": "cilan-7.png",
+      "path": "/images/scraped/gym-leaders/cilan-7.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Cilan",
+      "original": "File:Burgundy and Cilan.png",
+      "local": "cilan-8.png",
+      "path": "/images/scraped/gym-leaders/cilan-8.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Cilan",
+      "original": "File:ChiliCilanCressFusionStrike227.jpg",
+      "local": "cilan-9.jpg",
+      "path": "/images/scraped/gym-leaders/cilan-9.jpg",
+      "width": 868,
+      "height": 1212
+    },
+    {
+      "character": "Cilan",
+      "original": "File:ChiliCilanCressFusionStrike258.jpg",
+      "local": "cilan-10.jpg",
+      "path": "/images/scraped/gym-leaders/cilan-10.jpg",
+      "width": 868,
+      "height": 1212
+    },
+    {
+      "character": "Chili",
+      "original": "File:Black White Chili.png",
+      "local": "chili-1.png",
+      "path": "/images/scraped/gym-leaders/chili-1.png",
+      "width": 656,
+      "height": 1000
+    },
+    {
+      "character": "Chili",
+      "original": "File:Black White Chili Cilan Cress.png",
+      "local": "chili-2.png",
+      "path": "/images/scraped/gym-leaders/chili-2.png",
+      "width": 1280,
+      "height": 1114
+    },
+    {
+      "character": "Chili",
+      "original": "File:Chili Adventures.png",
+      "local": "chili-3.png",
+      "path": "/images/scraped/gym-leaders/chili-3.png",
+      "width": 226,
+      "height": 619
+    },
+    {
+      "character": "Chili",
+      "original": "File:Chili and Pansear hug.png",
+      "local": "chili-4.png",
+      "path": "/images/scraped/gym-leaders/chili-4.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Chili",
+      "original": "File:Chili and Pansear.png",
+      "local": "chili-5.png",
+      "path": "/images/scraped/gym-leaders/chili-5.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Chili",
+      "original": "File:Chili anime.png",
+      "local": "chili-6.png",
+      "path": "/images/scraped/gym-leaders/chili-6.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Chili",
+      "original": "File:ChiliCilanCressFusionStrike227.jpg",
+      "local": "chili-7.jpg",
+      "path": "/images/scraped/gym-leaders/chili-7.jpg",
+      "width": 868,
+      "height": 1212
+    },
+    {
+      "character": "Chili",
+      "original": "File:ChiliCilanCressFusionStrike258.jpg",
+      "local": "chili-8.jpg",
+      "path": "/images/scraped/gym-leaders/chili-8.jpg",
+      "width": 868,
+      "height": 1212
+    },
+    {
+      "character": "Chili",
+      "original": "File:ChiliCilanCressFusionStrike273.jpg",
+      "local": "chili-9.jpg",
+      "path": "/images/scraped/gym-leaders/chili-9.jpg",
+      "width": 730,
+      "height": 1033
+    },
+    {
+      "character": "Chili",
+      "original": "File:Cilan Chili Cress young.png",
+      "local": "chili-10.png",
+      "path": "/images/scraped/gym-leaders/chili-10.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Cress",
+      "original": "File:Black White Cress.png",
+      "local": "cress-1.png",
+      "path": "/images/scraped/gym-leaders/cress-1.png",
+      "width": 544,
+      "height": 1000
+    },
+    {
+      "character": "Cress",
+      "original": "File:Black White Chili Cilan Cress.png",
+      "local": "cress-2.png",
+      "path": "/images/scraped/gym-leaders/cress-2.png",
+      "width": 1280,
+      "height": 1114
+    },
+    {
+      "character": "Cress",
+      "original": "File:ChiliCilanCressFusionStrike227.jpg",
+      "local": "cress-3.jpg",
+      "path": "/images/scraped/gym-leaders/cress-3.jpg",
+      "width": 868,
+      "height": 1212
+    },
+    {
+      "character": "Cress",
+      "original": "File:ChiliCilanCressFusionStrike258.jpg",
+      "local": "cress-4.jpg",
+      "path": "/images/scraped/gym-leaders/cress-4.jpg",
+      "width": 868,
+      "height": 1212
+    },
+    {
+      "character": "Cress",
+      "original": "File:ChiliCilanCressFusionStrike273.jpg",
+      "local": "cress-5.jpg",
+      "path": "/images/scraped/gym-leaders/cress-5.jpg",
+      "width": 730,
+      "height": 1033
+    },
+    {
+      "character": "Cress",
+      "original": "File:Cilan Chili Cress young.png",
+      "local": "cress-6.png",
+      "path": "/images/scraped/gym-leaders/cress-6.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Cress",
+      "original": "File:Cilan Cress Chili Adventures.png",
+      "local": "cress-7.png",
+      "path": "/images/scraped/gym-leaders/cress-7.png",
+      "width": 1057,
+      "height": 1211
+    },
+    {
+      "character": "Cress",
+      "original": "File:Cress Adventures.png",
+      "local": "cress-8.png",
+      "path": "/images/scraped/gym-leaders/cress-8.png",
+      "width": 286,
+      "height": 502
+    },
+    {
+      "character": "Cress",
+      "original": "File:Cress and Panpour.png",
+      "local": "cress-9.png",
+      "path": "/images/scraped/gym-leaders/cress-9.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Cress",
+      "original": "File:Cress anime.png",
+      "local": "cress-10.png",
+      "path": "/images/scraped/gym-leaders/cress-10.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Lenora",
+      "original": "File:Black White Lenora 2.png",
+      "local": "lenora-1.png",
+      "path": "/images/scraped/gym-leaders/lenora-1.png",
+      "width": 501,
+      "height": 1000
+    },
+    {
+      "character": "Lenora",
+      "original": "File:Lenora anime.png",
+      "local": "lenora-2.png",
+      "path": "/images/scraped/gym-leaders/lenora-2.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Lenora",
+      "original": "File:Lenora Burgh Adventures.png",
+      "local": "lenora-3.png",
+      "path": "/images/scraped/gym-leaders/lenora-3.png",
+      "width": 955,
+      "height": 732
+    },
+    {
+      "character": "Lenora",
+      "original": "File:Lenora Herdier Protect.png",
+      "local": "lenora-4.png",
+      "path": "/images/scraped/gym-leaders/lenora-4.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Lenora",
+      "original": "File:Lenora no apron.png",
+      "local": "lenora-5.png",
+      "path": "/images/scraped/gym-leaders/lenora-5.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Lenora",
+      "original": "File:Lenora PG.png",
+      "local": "lenora-6.png",
+      "path": "/images/scraped/gym-leaders/lenora-6.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Lenora",
+      "original": "File:Lenora PMBW.png",
+      "local": "lenora-7.png",
+      "path": "/images/scraped/gym-leaders/lenora-7.png",
+      "width": 424,
+      "height": 529
+    },
+    {
+      "character": "Lenora",
+      "original": "File:Lenora Stoutland Adventures.png",
+      "local": "lenora-8.png",
+      "path": "/images/scraped/gym-leaders/lenora-8.png",
+      "width": 800,
+      "height": 630
+    },
+    {
+      "character": "Lenora",
+      "original": "File:Spr Masters Lenora 2.png",
+      "local": "lenora-9.png",
+      "path": "/images/scraped/gym-leaders/lenora-9.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Lenora",
+      "original": "File:Spr Masters Lenora EX.png",
+      "local": "lenora-10.png",
+      "path": "/images/scraped/gym-leaders/lenora-10.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Burgh",
+      "original": "File:Black White Burgh.png",
+      "local": "burgh-1.png",
+      "path": "/images/scraped/gym-leaders/burgh-1.png",
+      "width": 539,
+      "height": 844
+    },
+    {
+      "character": "Burgh",
+      "original": "File:Burgh anime.png",
+      "local": "burgh-2.png",
+      "path": "/images/scraped/gym-leaders/burgh-2.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Burgh",
+      "original": "File:Burgh Leavanny PG.png",
+      "local": "burgh-3.png",
+      "path": "/images/scraped/gym-leaders/burgh-3.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Burgh",
+      "original": "File:Burgh PG.png",
+      "local": "burgh-4.png",
+      "path": "/images/scraped/gym-leaders/burgh-4.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Burgh",
+      "original": "File:Burgh PMBW.png",
+      "local": "burgh-5.png",
+      "path": "/images/scraped/gym-leaders/burgh-5.png",
+      "width": 225,
+      "height": 435
+    },
+    {
+      "character": "Burgh",
+      "original": "File:Burgh Sewaddle.png",
+      "local": "burgh-6.png",
+      "path": "/images/scraped/gym-leaders/burgh-6.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Burgh",
+      "original": "File:Burgh Whirlipede Iron Defense.png",
+      "local": "burgh-7.png",
+      "path": "/images/scraped/gym-leaders/burgh-7.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Burgh",
+      "original": "File:Burgh Whirlipede Poison Sting.png",
+      "local": "burgh-8.png",
+      "path": "/images/scraped/gym-leaders/burgh-8.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Burgh",
+      "original": "File:Lenora Burgh Adventures.png",
+      "local": "burgh-9.png",
+      "path": "/images/scraped/gym-leaders/burgh-9.png",
+      "width": 955,
+      "height": 732
+    },
+    {
+      "character": "Burgh",
+      "original": "File:Masters Dream Team Maker Burgh and Leavanny.png",
+      "local": "burgh-10.png",
+      "path": "/images/scraped/gym-leaders/burgh-10.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Elesa",
+      "original": "File:Black 2 White 2 Elesa.png",
+      "local": "elesa-1.png",
+      "path": "/images/scraped/gym-leaders/elesa-1.png",
+      "width": 1630,
+      "height": 2285
+    },
+    {
+      "character": "Elesa",
+      "original": "File:Black White Elesa.png",
+      "local": "elesa-2.png",
+      "path": "/images/scraped/gym-leaders/elesa-2.png",
+      "width": 236,
+      "height": 391
+    },
+    {
+      "character": "Elesa",
+      "original": "File:Elesa White Day Illustration.png",
+      "local": "elesa-3.png",
+      "path": "/images/scraped/gym-leaders/elesa-3.png",
+      "width": 565,
+      "height": 800
+    },
+    {
+      "character": "Elesa",
+      "original": "File:Art Life 20230623 Elesa.jpg",
+      "local": "elesa-4.jpg",
+      "path": "/images/scraped/gym-leaders/elesa-4.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Elesa",
+      "original": "File:Elesa and Emolga Kotobukiya Figure Promo Piece.jpg",
+      "local": "elesa-5.jpg",
+      "path": "/images/scraped/gym-leaders/elesa-5.jpg",
+      "width": 765,
+      "height": 600
+    },
+    {
+      "character": "Elesa",
+      "original": "File:Elesa and her Zebstrika.png",
+      "local": "elesa-6.png",
+      "path": "/images/scraped/gym-leaders/elesa-6.png",
+      "width": 1428,
+      "height": 1884
+    },
+    {
+      "character": "Elesa",
+      "original": "File:Elesa anime.png",
+      "local": "elesa-7.png",
+      "path": "/images/scraped/gym-leaders/elesa-7.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Elesa",
+      "original": "File:Elesa B2W2 chapter.png",
+      "local": "elesa-8.png",
+      "path": "/images/scraped/gym-leaders/elesa-8.png",
+      "width": 485,
+      "height": 616
+    },
+    {
+      "character": "Elesa",
+      "original": "File:Elesa B2W2 Concept Art.png",
+      "local": "elesa-9.png",
+      "path": "/images/scraped/gym-leaders/elesa-9.png",
+      "width": 635,
+      "height": 910
+    },
+    {
+      "character": "Elesa",
+      "original": "File:Elesa B2W2 Trailer.png",
+      "local": "elesa-10.png",
+      "path": "/images/scraped/gym-leaders/elesa-10.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Clay",
+      "original": "File:Black White Clay.png",
+      "local": "clay-1.png",
+      "path": "/images/scraped/gym-leaders/clay-1.png",
+      "width": 210,
+      "height": 292
+    },
+    {
+      "character": "Clay",
+      "original": "File:Clay anime.png",
+      "local": "clay-2.png",
+      "path": "/images/scraped/gym-leaders/clay-2.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Clay",
+      "original": "File:Clay Excadrill.png",
+      "local": "clay-3.png",
+      "path": "/images/scraped/gym-leaders/clay-3.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Clay",
+      "original": "File:Clay Krokorok Sand Tomb Adventures.png",
+      "local": "clay-4.png",
+      "path": "/images/scraped/gym-leaders/clay-4.png",
+      "width": 601,
+      "height": 350
+    },
+    {
+      "character": "Clay",
+      "original": "File:Clay PG.png",
+      "local": "clay-5.png",
+      "path": "/images/scraped/gym-leaders/clay-5.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Clay",
+      "original": "File:Clay PMBW.png",
+      "local": "clay-6.png",
+      "path": "/images/scraped/gym-leaders/clay-6.png",
+      "width": 386,
+      "height": 269
+    },
+    {
+      "character": "Clay",
+      "original": "File:Clay young.png",
+      "local": "clay-7.png",
+      "path": "/images/scraped/gym-leaders/clay-7.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Clay",
+      "original": "File:ClayCosmicEclipse188.jpg",
+      "local": "clay-8.jpg",
+      "path": "/images/scraped/gym-leaders/clay-8.jpg",
+      "width": 748,
+      "height": 1044
+    },
+    {
+      "character": "Clay",
+      "original": "File:ClayTagAllStars199.jpg",
+      "local": "clay-9.jpg",
+      "path": "/images/scraped/gym-leaders/clay-9.jpg",
+      "width": 748,
+      "height": 1044
+    },
+    {
+      "character": "Clay",
+      "original": "File:Elesa Clay Adventures.png",
+      "local": "clay-10.png",
+      "path": "/images/scraped/gym-leaders/clay-10.png",
+      "width": 1280,
+      "height": 1208
+    },
+    {
+      "character": "Skyla",
+      "original": "File:Black White Skyla.png",
+      "local": "skyla-1.png",
+      "path": "/images/scraped/gym-leaders/skyla-1.png",
+      "width": 216,
+      "height": 348
+    },
+    {
+      "character": "Skyla",
+      "original": "File:Cilan Skyla anime.png",
+      "local": "skyla-2.png",
+      "path": "/images/scraped/gym-leaders/skyla-2.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Skyla",
+      "original": "File:Kotobukiya ArtFX J Figure Skyla Swanna.jpg",
+      "local": "skyla-3.jpg",
+      "path": "/images/scraped/gym-leaders/skyla-3.jpg",
+      "width": 847,
+      "height": 1200
+    },
+    {
+      "character": "Skyla",
+      "original": "File:Kotobukiya Skyla and Swanna Figure.jpg",
+      "local": "skyla-4.jpg",
+      "path": "/images/scraped/gym-leaders/skyla-4.jpg",
+      "width": 667,
+      "height": 1000
+    },
+    {
+      "character": "Skyla",
+      "original": "File:Masters Dream Team Maker Skyla and Swanna.png",
+      "local": "skyla-5.png",
+      "path": "/images/scraped/gym-leaders/skyla-5.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Skyla",
+      "original": "File:Masters Dressed-Up Details Summer Skyla.jpg",
+      "local": "skyla-6.jpg",
+      "path": "/images/scraped/gym-leaders/skyla-6.jpg",
+      "width": 3840,
+      "height": 3840
+    },
+    {
+      "character": "Skyla",
+      "original": "File:Masters Skyla and Cynthia Summer 2025 artwork.png",
+      "local": "skyla-7.png",
+      "path": "/images/scraped/gym-leaders/skyla-7.png",
+      "width": 1048,
+      "height": 1314
+    },
+    {
+      "character": "Skyla",
+      "original": "File:Masters Skyla Friend Snapshot.png",
+      "local": "skyla-8.png",
+      "path": "/images/scraped/gym-leaders/skyla-8.png",
+      "width": 480,
+      "height": 420
+    },
+    {
+      "character": "Skyla",
+      "original": "File:Masters Skyla Story Snapshot.png",
+      "local": "skyla-9.png",
+      "path": "/images/scraped/gym-leaders/skyla-9.png",
+      "width": 480,
+      "height": 420
+    },
+    {
+      "character": "Skyla",
+      "original": "File:Masters Skyla Swanna.png",
+      "local": "skyla-10.png",
+      "path": "/images/scraped/gym-leaders/skyla-10.png",
+      "width": 472,
+      "height": 532
+    },
+    {
+      "character": "Brycen",
+      "original": "File:Black White Brycen.png",
+      "local": "brycen-1.png",
+      "path": "/images/scraped/gym-leaders/brycen-1.png",
+      "width": 606,
+      "height": 1280
+    },
+    {
+      "character": "Brycen",
+      "original": "File:Art Life 20231201 Bellelba Brycen-Man.jpg",
+      "local": "brycen-2.jpg",
+      "path": "/images/scraped/gym-leaders/brycen-2.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Brycen",
+      "original": "File:Art Life 20231201 Sabrina Brycen.jpg",
+      "local": "brycen-3.jpg",
+      "path": "/images/scraped/gym-leaders/brycen-3.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Brycen",
+      "original": "File:BellelbaBrycen-ManTagAllStars152.jpg",
+      "local": "brycen-4.jpg",
+      "path": "/images/scraped/gym-leaders/brycen-4.jpg",
+      "width": 748,
+      "height": 1044
+    },
+    {
+      "character": "Brycen",
+      "original": "File:BellelbaBrycen-ManTagAllStars194.jpg",
+      "local": "brycen-5.jpg",
+      "path": "/images/scraped/gym-leaders/brycen-5.jpg",
+      "width": 748,
+      "height": 1044
+    },
+    {
+      "character": "Brycen",
+      "original": "File:Brycen anime.png",
+      "local": "brycen-6.png",
+      "path": "/images/scraped/gym-leaders/brycen-6.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Brycen",
+      "original": "File:Brycen Beartic Scene.png",
+      "local": "brycen-7.png",
+      "path": "/images/scraped/gym-leaders/brycen-7.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Brycen",
+      "original": "File:Brycen PG.png",
+      "local": "brycen-8.png",
+      "path": "/images/scraped/gym-leaders/brycen-8.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Brycen",
+      "original": "File:Brycen-Man Adventures.png",
+      "local": "brycen-9.png",
+      "path": "/images/scraped/gym-leaders/brycen-9.png",
+      "width": 255,
+      "height": 473
+    },
+    {
+      "character": "Brycen",
+      "original": "File:Masters Dream Team Maker Brycen and Cryogonal.png",
+      "local": "brycen-10.png",
+      "path": "/images/scraped/gym-leaders/brycen-10.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Drayden",
+      "original": "File:Black White Drayden.png",
+      "local": "drayden-1.png",
+      "path": "/images/scraped/gym-leaders/drayden-1.png",
+      "width": 578,
+      "height": 1078
+    },
+    {
+      "character": "Drayden",
+      "original": "File:Drayden and Kimi.png",
+      "local": "drayden-2.png",
+      "path": "/images/scraped/gym-leaders/drayden-2.png",
+      "width": 548,
+      "height": 393
+    },
+    {
+      "character": "Drayden",
+      "original": "File:Drayden anime.png",
+      "local": "drayden-3.png",
+      "path": "/images/scraped/gym-leaders/drayden-3.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Drayden",
+      "original": "File:Drayden Druddigon.png",
+      "local": "drayden-4.png",
+      "path": "/images/scraped/gym-leaders/drayden-4.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Drayden",
+      "original": "File:Drayden Haxorus PG.png",
+      "local": "drayden-5.png",
+      "path": "/images/scraped/gym-leaders/drayden-5.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Drayden",
+      "original": "File:Drayden JNM.png",
+      "local": "drayden-6.png",
+      "path": "/images/scraped/gym-leaders/drayden-6.png",
+      "width": 907,
+      "height": 1076
+    },
+    {
+      "character": "Drayden",
+      "original": "File:Drayden PG.png",
+      "local": "drayden-7.png",
+      "path": "/images/scraped/gym-leaders/drayden-7.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Drayden",
+      "original": "File:Iris Drayden Adventures.png",
+      "local": "drayden-8.png",
+      "path": "/images/scraped/gym-leaders/drayden-8.png",
+      "width": 577,
+      "height": 430
+    },
+    {
+      "character": "Iris",
+      "original": "File:Black 2 White 2 Iris.png",
+      "local": "iris-1.png",
+      "path": "/images/scraped/gym-leaders/iris-1.png",
+      "width": 433,
+      "height": 442
+    },
+    {
+      "character": "Iris",
+      "original": "File:Black White Iris.png",
+      "local": "iris-2.png",
+      "path": "/images/scraped/gym-leaders/iris-2.png",
+      "width": 578,
+      "height": 531
+    },
+    {
+      "character": "Iris",
+      "original": "File:Iris BW character sheet.png",
+      "local": "iris-3.png",
+      "path": "/images/scraped/gym-leaders/iris-3.png",
+      "width": 525,
+      "height": 374
+    },
+    {
+      "character": "Iris",
+      "original": "File:Iris BW1.png",
+      "local": "iris-4.png",
+      "path": "/images/scraped/gym-leaders/iris-4.png",
+      "width": 301,
+      "height": 396
+    },
+    {
+      "character": "Iris",
+      "original": "File:Iris JN.png",
+      "local": "iris-5.png",
+      "path": "/images/scraped/gym-leaders/iris-5.png",
+      "width": 772,
+      "height": 1000
+    },
+    {
+      "character": "Iris",
+      "original": "File:Ash and Iris in Luke movie.png",
+      "local": "iris-6.png",
+      "path": "/images/scraped/gym-leaders/iris-6.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Iris",
+      "original": "File:Ash and Iris.png",
+      "local": "iris-7.png",
+      "path": "/images/scraped/gym-leaders/iris-7.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Iris",
+      "original": "File:Axew Iris hair.png",
+      "local": "iris-8.png",
+      "path": "/images/scraped/gym-leaders/iris-8.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Iris",
+      "original": "File:BW Prerelease Iris game.png",
+      "local": "iris-9.png",
+      "path": "/images/scraped/gym-leaders/iris-9.png",
+      "width": 455,
+      "height": 339
+    },
+    {
+      "character": "Iris",
+      "original": "File:Clair Iris Journeys.png",
+      "local": "iris-10.png",
+      "path": "/images/scraped/gym-leaders/iris-10.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Cheren",
+      "original": "File:Black 2 White 2 Cheren.png",
+      "local": "cheren-1.png",
+      "path": "/images/scraped/gym-leaders/cheren-1.png",
+      "width": 454,
+      "height": 1200
+    },
+    {
+      "character": "Cheren",
+      "original": "File:Black White Cheren.png",
+      "local": "cheren-2.png",
+      "path": "/images/scraped/gym-leaders/cheren-2.png",
+      "width": 323,
+      "height": 1000
+    },
+    {
+      "character": "Cheren",
+      "original": "File:Black Cheren Bianca Gym Battle.png",
+      "local": "cheren-3.png",
+      "path": "/images/scraped/gym-leaders/cheren-3.png",
+      "width": 578,
+      "height": 480
+    },
+    {
+      "character": "Cheren",
+      "original": "File:Black vs Cheren Adventures.png",
+      "local": "cheren-4.png",
+      "path": "/images/scraped/gym-leaders/cheren-4.png",
+      "width": 823,
+      "height": 324
+    },
+    {
+      "character": "Cheren",
+      "original": "File:CherenWhiteFlare84.jpg",
+      "local": "cheren-5.jpg",
+      "path": "/images/scraped/gym-leaders/cheren-5.jpg",
+      "width": 868,
+      "height": 1212
+    },
+    {
+      "character": "Cheren",
+      "original": "File:Young Black Cheren Bianca.png",
+      "local": "cheren-6.png",
+      "path": "/images/scraped/gym-leaders/cheren-6.png",
+      "width": 759,
+      "height": 616
+    },
+    {
+      "character": "Cheren",
+      "original": "File:Art Life 20230623 Cheren.jpg",
+      "local": "cheren-7.jpg",
+      "path": "/images/scraped/gym-leaders/cheren-7.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Cheren",
+      "original": "File:Bianca and Cheren Concept Art BW.png",
+      "local": "cheren-8.png",
+      "path": "/images/scraped/gym-leaders/cheren-8.png",
+      "width": 536,
+      "height": 368
+    },
+    {
+      "character": "Cheren",
+      "original": "File:BW PS Bianca Cheren.png",
+      "local": "cheren-9.png",
+      "path": "/images/scraped/gym-leaders/cheren-9.png",
+      "width": 772,
+      "height": 439
+    },
+    {
+      "character": "Cheren",
+      "original": "File:Cheren Adventures.png",
+      "local": "cheren-10.png",
+      "path": "/images/scraped/gym-leaders/cheren-10.png",
+      "width": 438,
+      "height": 746
+    },
+    {
+      "character": "Roxie",
+      "original": "File:Black 2 White 2 Roxie.png",
+      "local": "roxie-1.png",
+      "path": "/images/scraped/gym-leaders/roxie-1.png",
+      "width": 1054,
+      "height": 1200
+    },
+    {
+      "character": "Roxie",
+      "original": "File:CoroCoro B2W2 Roxie.png",
+      "local": "roxie-2.png",
+      "path": "/images/scraped/gym-leaders/roxie-2.png",
+      "width": 422,
+      "height": 476
+    },
+    {
+      "character": "Roxie",
+      "original": "File:Masters Dream Team Maker Roxie and Whirlipede.png",
+      "local": "roxie-3.png",
+      "path": "/images/scraped/gym-leaders/roxie-3.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Roxie",
+      "original": "File:Roxie Adventures.png",
+      "local": "roxie-4.png",
+      "path": "/images/scraped/gym-leaders/roxie-4.png",
+      "width": 451,
+      "height": 393
+    },
+    {
+      "character": "Roxie",
+      "original": "File:Roxie anime.png",
+      "local": "roxie-5.png",
+      "path": "/images/scraped/gym-leaders/roxie-5.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Roxie",
+      "original": "File:Roxie ANL.png",
+      "local": "roxie-6.png",
+      "path": "/images/scraped/gym-leaders/roxie-6.png",
+      "width": 503,
+      "height": 647
+    },
+    {
+      "character": "Roxie",
+      "original": "File:Roxie Concept art B2W2.jpg",
+      "local": "roxie-7.jpg",
+      "path": "/images/scraped/gym-leaders/roxie-7.jpg",
+      "width": 1003,
+      "height": 696
+    },
+    {
+      "character": "Roxie",
+      "original": "File:Roxie Koffing ANL.png",
+      "local": "roxie-8.png",
+      "path": "/images/scraped/gym-leaders/roxie-8.png",
+      "width": 341,
+      "height": 348
+    },
+    {
+      "character": "Roxie",
+      "original": "File:Roxie Koffing.png",
+      "local": "roxie-9.png",
+      "path": "/images/scraped/gym-leaders/roxie-9.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Roxie",
+      "original": "File:Roxie Marlon Adventures.png",
+      "local": "roxie-10.png",
+      "path": "/images/scraped/gym-leaders/roxie-10.png",
+      "width": 1280,
+      "height": 1353
+    },
+    {
+      "character": "Marlon",
+      "original": "File:Black 2 White 2 Marlon.png",
+      "local": "marlon-1.png",
+      "path": "/images/scraped/gym-leaders/marlon-1.png",
+      "width": 622,
+      "height": 1200
+    },
+    {
+      "character": "Marlon",
+      "original": "File:Marlon anime.png",
+      "local": "marlon-2.png",
+      "path": "/images/scraped/gym-leaders/marlon-2.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Marlon",
+      "original": "File:Marlon Frillish Adventures.png",
+      "local": "marlon-3.png",
+      "path": "/images/scraped/gym-leaders/marlon-3.png",
+      "width": 203,
+      "height": 221
+    },
+    {
+      "character": "Marlon",
+      "original": "File:Marlon Jellicent Cursed Body Adventures.png",
+      "local": "marlon-4.png",
+      "path": "/images/scraped/gym-leaders/marlon-4.png",
+      "width": 374,
+      "height": 389
+    },
+    {
+      "character": "Marlon",
+      "original": "File:Marlon OPJ15.png",
+      "local": "marlon-5.png",
+      "path": "/images/scraped/gym-leaders/marlon-5.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Marlon",
+      "original": "File:Marlon Wailord.png",
+      "local": "marlon-6.png",
+      "path": "/images/scraped/gym-leaders/marlon-6.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Marlon",
+      "original": "File:Masters Dream Team Maker Marlon and Carracosta.png",
+      "local": "marlon-7.png",
+      "path": "/images/scraped/gym-leaders/marlon-7.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Marlon",
+      "original": "File:Roxie Marlon Adventures.png",
+      "local": "marlon-8.png",
+      "path": "/images/scraped/gym-leaders/marlon-8.png",
+      "width": 1280,
+      "height": 1353
+    },
+    {
+      "character": "Marlon",
+      "original": "File:Spr Masters Marlon.png",
+      "local": "marlon-9.png",
+      "path": "/images/scraped/gym-leaders/marlon-9.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Marlon",
+      "original": "File:VSMarlon Masters.png",
+      "local": "marlon-10.png",
+      "path": "/images/scraped/gym-leaders/marlon-10.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Viola",
+      "original": "File:XY Viola.png",
+      "local": "viola-1.png",
+      "path": "/images/scraped/gym-leaders/viola-1.png",
+      "width": 454,
+      "height": 1280
+    },
+    {
+      "character": "Viola",
+      "original": "File:Masters Dream Team Maker Viola and Surskit.png",
+      "local": "viola-2.png",
+      "path": "/images/scraped/gym-leaders/viola-2.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Viola",
+      "original": "File:PokéTV XY135 Viola.png",
+      "local": "viola-3.png",
+      "path": "/images/scraped/gym-leaders/viola-3.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Viola",
+      "original": "File:Spr Masters Viola 2.png",
+      "local": "viola-4.png",
+      "path": "/images/scraped/gym-leaders/viola-4.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Viola",
+      "original": "File:Spr Masters Viola EX.png",
+      "local": "viola-5.png",
+      "path": "/images/scraped/gym-leaders/viola-5.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Viola",
+      "original": "File:Spr Masters Viola Holiday 2023 2.png",
+      "local": "viola-6.png",
+      "path": "/images/scraped/gym-leaders/viola-6.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Viola",
+      "original": "File:Spr Masters Viola Holiday 2023 EX.png",
+      "local": "viola-7.png",
+      "path": "/images/scraped/gym-leaders/viola-7.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Viola",
+      "original": "File:Spr Masters Viola Holiday 2023.png",
+      "local": "viola-8.png",
+      "path": "/images/scraped/gym-leaders/viola-8.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Viola",
+      "original": "File:Spr Masters Viola.png",
+      "local": "viola-9.png",
+      "path": "/images/scraped/gym-leaders/viola-9.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Viola",
+      "original": "File:Viola Adventures.png",
+      "local": "viola-10.png",
+      "path": "/images/scraped/gym-leaders/viola-10.png",
+      "width": 600,
+      "height": 1059
+    },
+    {
+      "character": "Grant",
+      "original": "File:XY Grant.png",
+      "local": "grant-1.png",
+      "path": "/images/scraped/gym-leaders/grant-1.png",
+      "width": 955,
+      "height": 1280
+    },
+    {
+      "character": "Grant",
+      "original": "File:Grant Adventures.png",
+      "local": "grant-2.png",
+      "path": "/images/scraped/gym-leaders/grant-2.png",
+      "width": 325,
+      "height": 505
+    },
+    {
+      "character": "Grant",
+      "original": "File:Grant anime.png",
+      "local": "grant-3.png",
+      "path": "/images/scraped/gym-leaders/grant-3.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Grant",
+      "original": "File:Grant Aurorus Adventures.png",
+      "local": "grant-4.png",
+      "path": "/images/scraped/gym-leaders/grant-4.png",
+      "width": 412,
+      "height": 595
+    },
+    {
+      "character": "Grant",
+      "original": "File:Grant Clemont Adventures.png",
+      "local": "grant-5.png",
+      "path": "/images/scraped/gym-leaders/grant-5.png",
+      "width": 709,
+      "height": 860
+    },
+    {
+      "character": "Grant",
+      "original": "File:Grant concept art.png",
+      "local": "grant-6.png",
+      "path": "/images/scraped/gym-leaders/grant-6.png",
+      "width": 908,
+      "height": 634
+    },
+    {
+      "character": "Grant",
+      "original": "File:Grant Duke anime.png",
+      "local": "grant-7.png",
+      "path": "/images/scraped/gym-leaders/grant-7.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Grant",
+      "original": "File:Grant Gym Battle XY.png",
+      "local": "grant-8.png",
+      "path": "/images/scraped/gym-leaders/grant-8.png",
+      "width": 400,
+      "height": 240
+    },
+    {
+      "character": "Grant",
+      "original": "File:Grant XY OD.png",
+      "local": "grant-9.png",
+      "path": "/images/scraped/gym-leaders/grant-9.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Grant",
+      "original": "File:GrantAstralRadiance144.jpg",
+      "local": "grant-10.jpg",
+      "path": "/images/scraped/gym-leaders/grant-10.jpg",
+      "width": 660,
+      "height": 920
+    },
+    {
+      "character": "Korrina",
+      "original": "File:XY Korrina.png",
+      "local": "korrina-1.png",
+      "path": "/images/scraped/gym-leaders/korrina-1.png",
+      "width": 1041,
+      "height": 1280
+    },
+    {
+      "character": "Korrina",
+      "original": "File:Alain defeating Korrina.png",
+      "local": "korrina-2.png",
+      "path": "/images/scraped/gym-leaders/korrina-2.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Korrina",
+      "original": "File:Ash and Korrina JNM.png",
+      "local": "korrina-3.png",
+      "path": "/images/scraped/gym-leaders/korrina-3.png",
+      "width": 703,
+      "height": 440
+    },
+    {
+      "character": "Korrina",
+      "original": "File:Bea and Korrina.png",
+      "local": "korrina-4.png",
+      "path": "/images/scraped/gym-leaders/korrina-4.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Korrina",
+      "original": "File:Bea Korrina JN130.png",
+      "local": "korrina-5.png",
+      "path": "/images/scraped/gym-leaders/korrina-5.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Korrina",
+      "original": "File:Korrina Adventures.png",
+      "local": "korrina-6.png",
+      "path": "/images/scraped/gym-leaders/korrina-6.png",
+      "width": 342,
+      "height": 1000
+    },
+    {
+      "character": "Korrina",
+      "original": "File:Korrina and Ash friends.png",
+      "local": "korrina-7.png",
+      "path": "/images/scraped/gym-leaders/korrina-7.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Korrina",
+      "original": "File:Korrina and Lucario.png",
+      "local": "korrina-8.png",
+      "path": "/images/scraped/gym-leaders/korrina-8.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Korrina",
+      "original": "File:Korrina anime.png",
+      "local": "korrina-9.png",
+      "path": "/images/scraped/gym-leaders/korrina-9.png",
+      "width": 1431,
+      "height": 1900
+    },
+    {
+      "character": "Korrina",
+      "original": "File:Korrina Ash Pokemon Journeys.png",
+      "local": "korrina-10.png",
+      "path": "/images/scraped/gym-leaders/korrina-10.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Ramos",
+      "original": "File:XY Ramos.png",
+      "local": "ramos-1.png",
+      "path": "/images/scraped/gym-leaders/ramos-1.png",
+      "width": 215,
+      "height": 382
+    },
+    {
+      "character": "Ramos",
+      "original": "File:Masters Dream Team Maker Ramos and Weepinbell.png",
+      "local": "ramos-2.png",
+      "path": "/images/scraped/gym-leaders/ramos-2.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Ramos",
+      "original": "File:OPJ18 Ramos and Gogoat Variant 1.png",
+      "local": "ramos-3.png",
+      "path": "/images/scraped/gym-leaders/ramos-3.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Ramos",
+      "original": "File:OPJ18 Ramos and Gogoat Variant 2.png",
+      "local": "ramos-4.png",
+      "path": "/images/scraped/gym-leaders/ramos-4.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Ramos",
+      "original": "File:OPJ18 Ramos Gogoat variant 1.png",
+      "local": "ramos-5.png",
+      "path": "/images/scraped/gym-leaders/ramos-5.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Ramos",
+      "original": "File:OPJ18 Ramos Gogoat variant 3.png",
+      "local": "ramos-6.png",
+      "path": "/images/scraped/gym-leaders/ramos-6.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Ramos",
+      "original": "File:Pokémon Fan issue 39 Ash vs Ramos.jpg",
+      "local": "ramos-7.jpg",
+      "path": "/images/scraped/gym-leaders/ramos-7.jpg",
+      "width": 1280,
+      "height": 960
+    },
+    {
+      "character": "Ramos",
+      "original": "File:PokéTV XY135 Ramos.png",
+      "local": "ramos-8.png",
+      "path": "/images/scraped/gym-leaders/ramos-8.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Ramos",
+      "original": "File:Ramos Adventures.png",
+      "local": "ramos-9.png",
+      "path": "/images/scraped/gym-leaders/ramos-9.png",
+      "width": 395,
+      "height": 843
+    },
+    {
+      "character": "Ramos",
+      "original": "File:Ramos anime.png",
+      "local": "ramos-10.png",
+      "path": "/images/scraped/gym-leaders/ramos-10.png",
+      "width": 1280,
+      "height": 1194
+    },
+    {
+      "character": "Clemont",
+      "original": "File:Clemont XY 2.png",
+      "local": "clemont-1.png",
+      "path": "/images/scraped/gym-leaders/clemont-1.png",
+      "width": 267,
+      "height": 369
+    },
+    {
+      "character": "Clemont",
+      "original": "File:Clemont XY 3.png",
+      "local": "clemont-2.png",
+      "path": "/images/scraped/gym-leaders/clemont-2.png",
+      "width": 348,
+      "height": 506
+    },
+    {
+      "character": "Clemont",
+      "original": "File:Clemont XY 5.png",
+      "local": "clemont-3.png",
+      "path": "/images/scraped/gym-leaders/clemont-3.png",
+      "width": 531,
+      "height": 1280
+    },
+    {
+      "character": "Clemont",
+      "original": "File:Clemont XY 6.png",
+      "local": "clemont-4.png",
+      "path": "/images/scraped/gym-leaders/clemont-4.png",
+      "width": 355,
+      "height": 354
+    },
+    {
+      "character": "Clemont",
+      "original": "File:Clemont XY character sheet.png",
+      "local": "clemont-5.png",
+      "path": "/images/scraped/gym-leaders/clemont-5.png",
+      "width": 706,
+      "height": 532
+    },
+    {
+      "character": "Clemont",
+      "original": "File:Clemont XYZ.png",
+      "local": "clemont-6.png",
+      "path": "/images/scraped/gym-leaders/clemont-6.png",
+      "width": 462,
+      "height": 486
+    },
+    {
+      "character": "Clemont",
+      "original": "File:XY Clemont.png",
+      "local": "clemont-7.png",
+      "path": "/images/scraped/gym-leaders/clemont-7.png",
+      "width": 921,
+      "height": 1280
+    },
+    {
+      "character": "Clemont",
+      "original": "File:Ash hugging Clemont.png",
+      "local": "clemont-8.png",
+      "path": "/images/scraped/gym-leaders/clemont-8.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Clemont",
+      "original": "File:Bonnie and Clemont.png",
+      "local": "clemont-9.png",
+      "path": "/images/scraped/gym-leaders/clemont-9.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Clemont",
+      "original": "File:Bonnie Clemont Deck Case.jpg",
+      "local": "clemont-10.jpg",
+      "path": "/images/scraped/gym-leaders/clemont-10.jpg",
+      "width": 700,
+      "height": 843
+    },
+    {
+      "character": "Valerie",
+      "original": "File:XY Valerie.png",
+      "local": "valerie-1.png",
+      "path": "/images/scraped/gym-leaders/valerie-1.png",
+      "width": 604,
+      "height": 421
+    },
+    {
+      "character": "Valerie",
+      "original": "File:Masters Dream Team Maker Valerie and Sylveon.png",
+      "local": "valerie-2.png",
+      "path": "/images/scraped/gym-leaders/valerie-2.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Valerie",
+      "original": "File:OPJ18 Valerie and Spritzee Variant 1.png",
+      "local": "valerie-3.png",
+      "path": "/images/scraped/gym-leaders/valerie-3.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Valerie",
+      "original": "File:OPJ18 Valerie and Spritzee Variant 2.png",
+      "local": "valerie-4.png",
+      "path": "/images/scraped/gym-leaders/valerie-4.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Valerie",
+      "original": "File:OPJ18 Valerie Spritzee variant 1.png",
+      "local": "valerie-5.png",
+      "path": "/images/scraped/gym-leaders/valerie-5.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Valerie",
+      "original": "File:OPJ18 Valerie Spritzee variant 3.png",
+      "local": "valerie-6.png",
+      "path": "/images/scraped/gym-leaders/valerie-6.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Valerie",
+      "original": "File:PokéTV XY135 Valerie.png",
+      "local": "valerie-7.png",
+      "path": "/images/scraped/gym-leaders/valerie-7.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Valerie",
+      "original": "File:Spr Masters Valerie EX.png",
+      "local": "valerie-8.png",
+      "path": "/images/scraped/gym-leaders/valerie-8.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Valerie",
+      "original": "File:Spr Masters Valerie.png",
+      "local": "valerie-9.png",
+      "path": "/images/scraped/gym-leaders/valerie-9.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Valerie",
+      "original": "File:Valerie Adventures.png",
+      "local": "valerie-10.png",
+      "path": "/images/scraped/gym-leaders/valerie-10.png",
+      "width": 463,
+      "height": 1183
+    },
+    {
+      "character": "Olympia",
+      "original": "File:XY Olympia.png",
+      "local": "olympia-1.png",
+      "path": "/images/scraped/gym-leaders/olympia-1.png",
+      "width": 470,
+      "height": 441
+    },
+    {
+      "character": "Olympia",
+      "original": "File:Olympia anime.png",
+      "local": "olympia-2.png",
+      "path": "/images/scraped/gym-leaders/olympia-2.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Olympia",
+      "original": "File:Olympia concept art.png",
+      "local": "olympia-3.png",
+      "path": "/images/scraped/gym-leaders/olympia-3.png",
+      "width": 911,
+      "height": 653
+    },
+    {
+      "character": "Olympia",
+      "original": "File:Olympia Gym XY.png",
+      "local": "olympia-4.png",
+      "path": "/images/scraped/gym-leaders/olympia-4.png",
+      "width": 400,
+      "height": 240
+    },
+    {
+      "character": "Olympia",
+      "original": "File:Olympia XY OD.png",
+      "local": "olympia-5.png",
+      "path": "/images/scraped/gym-leaders/olympia-5.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Olympia",
+      "original": "File:OlympiaGenerations66.jpg",
+      "local": "olympia-6.jpg",
+      "path": "/images/scraped/gym-leaders/olympia-6.jpg",
+      "width": 499,
+      "height": 692
+    },
+    {
+      "character": "Olympia",
+      "original": "File:OPJ18 Olympia and Meowstic Variant 1.png",
+      "local": "olympia-7.png",
+      "path": "/images/scraped/gym-leaders/olympia-7.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Olympia",
+      "original": "File:OPJ18 Olympia and Meowstic Variant 2.png",
+      "local": "olympia-8.png",
+      "path": "/images/scraped/gym-leaders/olympia-8.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Olympia",
+      "original": "File:OPJ18 Olympia Male and Female Meowstic variant 1.png",
+      "local": "olympia-9.png",
+      "path": "/images/scraped/gym-leaders/olympia-9.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Olympia",
+      "original": "File:OPJ18 Olympia Male and Female Meowstic variant 3.png",
+      "local": "olympia-10.png",
+      "path": "/images/scraped/gym-leaders/olympia-10.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Wulfric",
+      "original": "File:XY Wulfric.png",
+      "local": "wulfric-1.png",
+      "path": "/images/scraped/gym-leaders/wulfric-1.png",
+      "width": 415,
+      "height": 396
+    },
+    {
+      "character": "Wulfric",
+      "original": "File:Crasher Wake Wulfric Masters Trailer.png",
+      "local": "wulfric-2.png",
+      "path": "/images/scraped/gym-leaders/wulfric-2.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Wulfric",
+      "original": "File:Masters Dream Team Maker Wulfric and Avalugg.png",
+      "local": "wulfric-3.png",
+      "path": "/images/scraped/gym-leaders/wulfric-3.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Wulfric",
+      "original": "File:OPJ19 Wulfric variant 1.png",
+      "local": "wulfric-4.png",
+      "path": "/images/scraped/gym-leaders/wulfric-4.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Wulfric",
+      "original": "File:PokéTV XY135 Wulfric.png",
+      "local": "wulfric-5.png",
+      "path": "/images/scraped/gym-leaders/wulfric-5.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Wulfric",
+      "original": "File:Ramos Wulfric Adventures.png",
+      "local": "wulfric-6.png",
+      "path": "/images/scraped/gym-leaders/wulfric-6.png",
+      "width": 475,
+      "height": 487
+    },
+    {
+      "character": "Wulfric",
+      "original": "File:Spr Masters Wulfric.png",
+      "local": "wulfric-7.png",
+      "path": "/images/scraped/gym-leaders/wulfric-7.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Wulfric",
+      "original": "File:VSWulfric.png",
+      "local": "wulfric-8.png",
+      "path": "/images/scraped/gym-leaders/wulfric-8.png",
+      "width": 512,
+      "height": 256
+    },
+    {
+      "character": "Wulfric",
+      "original": "File:Wulfric Abomasnow.png",
+      "local": "wulfric-9.png",
+      "path": "/images/scraped/gym-leaders/wulfric-9.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Wulfric",
+      "original": "File:Wulfric Adventures.png",
+      "local": "wulfric-10.png",
+      "path": "/images/scraped/gym-leaders/wulfric-10.png",
+      "width": 221,
+      "height": 226
+    },
+    {
+      "character": "Ilima",
+      "original": "File:Sun Moon Ilima.png",
+      "local": "ilima-1.png",
+      "path": "/images/scraped/gym-leaders/ilima-1.png",
+      "width": 417,
+      "height": 1280
+    },
+    {
+      "character": "Ilima",
+      "original": "File:IlimaSunMoon121.jpg",
+      "local": "ilima-2.jpg",
+      "path": "/images/scraped/gym-leaders/ilima-2.jpg",
+      "width": 748,
+      "height": 1044
+    },
+    {
+      "character": "Ilima",
+      "original": "File:IlimaSunMoon146.jpg",
+      "local": "ilima-3.jpg",
+      "path": "/images/scraped/gym-leaders/ilima-3.jpg",
+      "width": 748,
+      "height": 1044
+    },
+    {
+      "character": "Ilima",
+      "original": "File:Captain no Akashi Ilima pin.jpg",
+      "local": "ilima-4.jpg",
+      "path": "/images/scraped/gym-leaders/ilima-4.jpg",
+      "width": 400,
+      "height": 399
+    },
+    {
+      "character": "Ilima",
+      "original": "File:Ilima Adventures.png",
+      "local": "ilima-5.png",
+      "path": "/images/scraped/gym-leaders/ilima-5.png",
+      "width": 352,
+      "height": 596
+    },
+    {
+      "character": "Ilima",
+      "original": "File:Ilima anime.png",
+      "local": "ilima-6.png",
+      "path": "/images/scraped/gym-leaders/ilima-6.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Ilima",
+      "original": "File:Ilima Eevee Extreme Evoboost Eeveelutions.png",
+      "local": "ilima-7.png",
+      "path": "/images/scraped/gym-leaders/ilima-7.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Ilima",
+      "original": "File:Ilima Eevee Extreme Evoboost.png",
+      "local": "ilima-8.png",
+      "path": "/images/scraped/gym-leaders/ilima-8.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Ilima",
+      "original": "File:Ilima Extreme Evoboost pose.png",
+      "local": "ilima-9.png",
+      "path": "/images/scraped/gym-leaders/ilima-9.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Ilima",
+      "original": "File:Ilima Gumshoos Adventures.png",
+      "local": "ilima-10.png",
+      "path": "/images/scraped/gym-leaders/ilima-10.png",
+      "width": 317,
+      "height": 267
+    },
+    {
+      "character": "Lana",
+      "original": "File:Sun Moon Lana.png",
+      "local": "lana-1.png",
+      "path": "/images/scraped/gym-leaders/lana-1.png",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "character": "Lana",
+      "original": "File:Lana SM.png",
+      "local": "lana-2.png",
+      "path": "/images/scraped/gym-leaders/lana-2.png",
+      "width": 294,
+      "height": 800
+    },
+    {
+      "character": "Lana",
+      "original": "File:Art Life 20240122 Mallow Lana.jpg",
+      "local": "lana-3.jpg",
+      "path": "/images/scraped/gym-leaders/lana-3.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Lana",
+      "original": "File:Captain no Akashi Lana pin.jpg",
+      "local": "lana-4.jpg",
+      "path": "/images/scraped/gym-leaders/lana-4.jpg",
+      "width": 400,
+      "height": 400
+    },
+    {
+      "character": "Lana",
+      "original": "File:Lana Adventures.png",
+      "local": "lana-5.png",
+      "path": "/images/scraped/gym-leaders/lana-5.png",
+      "width": 255,
+      "height": 551
+    },
+    {
+      "character": "Lana",
+      "original": "File:Lana and Brionne.png",
+      "local": "lana-6.png",
+      "path": "/images/scraped/gym-leaders/lana-6.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Lana",
+      "original": "File:Lana and her Pokémon.png",
+      "local": "lana-7.png",
+      "path": "/images/scraped/gym-leaders/lana-7.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Lana",
+      "original": "File:Lana and Lillie catching Xurkitree and Blacephalon.png",
+      "local": "lana-8.png",
+      "path": "/images/scraped/gym-leaders/lana-8.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Lana",
+      "original": "File:Lana and Misty.png",
+      "local": "lana-9.png",
+      "path": "/images/scraped/gym-leaders/lana-9.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Lana",
+      "original": "File:Lana and Popplio.png",
+      "local": "lana-10.png",
+      "path": "/images/scraped/gym-leaders/lana-10.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Kiawe",
+      "original": "File:Sun Moon Kiawe.png",
+      "local": "kiawe-1.png",
+      "path": "/images/scraped/gym-leaders/kiawe-1.png",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "character": "Kiawe",
+      "original": "File:Kiawe SM.png",
+      "local": "kiawe-2.png",
+      "path": "/images/scraped/gym-leaders/kiawe-2.png",
+      "width": 368,
+      "height": 800
+    },
+    {
+      "character": "Kiawe",
+      "original": "File:Art Life 20230429 Kiawe.jpg",
+      "local": "kiawe-3.jpg",
+      "path": "/images/scraped/gym-leaders/kiawe-3.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Kiawe",
+      "original": "File:Ash and Kiawe.png",
+      "local": "kiawe-4.png",
+      "path": "/images/scraped/gym-leaders/kiawe-4.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Kiawe",
+      "original": "File:Ash Kiawe Tauros.png",
+      "local": "kiawe-5.png",
+      "path": "/images/scraped/gym-leaders/kiawe-5.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Kiawe",
+      "original": "File:Brock and Kiawe.png",
+      "local": "kiawe-6.png",
+      "path": "/images/scraped/gym-leaders/kiawe-6.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Kiawe",
+      "original": "File:Captain no Akashi Kiawe pin.jpg",
+      "local": "kiawe-7.jpg",
+      "path": "/images/scraped/gym-leaders/kiawe-7.jpg",
+      "width": 400,
+      "height": 399
+    },
+    {
+      "character": "Kiawe",
+      "original": "File:Kiawe Adventures.png",
+      "local": "kiawe-8.png",
+      "path": "/images/scraped/gym-leaders/kiawe-8.png",
+      "width": 402,
+      "height": 496
+    },
+    {
+      "character": "Kiawe",
+      "original": "File:Kiawe Akala Grand Trial.png",
+      "local": "kiawe-9.png",
+      "path": "/images/scraped/gym-leaders/kiawe-9.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Kiawe",
+      "original": "File:Kiawe and Charizard.png",
+      "local": "kiawe-10.png",
+      "path": "/images/scraped/gym-leaders/kiawe-10.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Mallow",
+      "original": "File:Sun Moon Mallow.png",
+      "local": "mallow-1.png",
+      "path": "/images/scraped/gym-leaders/mallow-1.png",
+      "width": 639,
+      "height": 1280
+    },
+    {
+      "character": "Mallow",
+      "original": "File:Mallow SM.png",
+      "local": "mallow-2.png",
+      "path": "/images/scraped/gym-leaders/mallow-2.png",
+      "width": 408,
+      "height": 797
+    },
+    {
+      "character": "Mallow",
+      "original": "File:Art Life 20240122 Mallow Lana.jpg",
+      "local": "mallow-3.jpg",
+      "path": "/images/scraped/gym-leaders/mallow-3.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Mallow",
+      "original": "File:Captain no Akashi Mallow pin.jpg",
+      "local": "mallow-4.jpg",
+      "path": "/images/scraped/gym-leaders/mallow-4.jpg",
+      "width": 400,
+      "height": 399
+    },
+    {
+      "character": "Mallow",
+      "original": "File:Lana Lillie Mallow Nurse Outfit.png",
+      "local": "mallow-5.png",
+      "path": "/images/scraped/gym-leaders/mallow-5.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Mallow",
+      "original": "File:Lana Mallow Lillie School Uniform.png",
+      "local": "mallow-6.png",
+      "path": "/images/scraped/gym-leaders/mallow-6.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Mallow",
+      "original": "File:Lana Mallow Lillie Swimwear.png",
+      "local": "mallow-7.png",
+      "path": "/images/scraped/gym-leaders/mallow-7.png",
+      "width": 1439,
+      "height": 1051
+    },
+    {
+      "character": "Mallow",
+      "original": "File:Lillie Mallow Lana Cascade Badge.png",
+      "local": "mallow-8.png",
+      "path": "/images/scraped/gym-leaders/mallow-8.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Mallow",
+      "original": "File:Lillie Mallow Mantine.png",
+      "local": "mallow-9.png",
+      "path": "/images/scraped/gym-leaders/mallow-9.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Mallow",
+      "original": "File:Mallow & Lana kirisAki.jpg",
+      "local": "mallow-10.jpg",
+      "path": "/images/scraped/gym-leaders/mallow-10.jpg",
+      "width": 1294,
+      "height": 1798
+    },
+    {
+      "character": "Sophocles",
+      "original": "File:Sun Moon Sophocles.png",
+      "local": "sophocles-1.png",
+      "path": "/images/scraped/gym-leaders/sophocles-1.png",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "character": "Sophocles",
+      "original": "File:Sophocles SM.png",
+      "local": "sophocles-2.png",
+      "path": "/images/scraped/gym-leaders/sophocles-2.png",
+      "width": 516,
+      "height": 716
+    },
+    {
+      "character": "Sophocles",
+      "original": "File:Captain no Akashi Sophocles pin.jpg",
+      "local": "sophocles-3.jpg",
+      "path": "/images/scraped/gym-leaders/sophocles-3.jpg",
+      "width": 399,
+      "height": 400
+    },
+    {
+      "character": "Sophocles",
+      "original": "File:Kiawe Sophocles Boulder Badge.png",
+      "local": "sophocles-4.png",
+      "path": "/images/scraped/gym-leaders/sophocles-4.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Sophocles",
+      "original": "File:Masters Dream Team Maker Sophocles and Togedemaru.png",
+      "local": "sophocles-5.png",
+      "path": "/images/scraped/gym-leaders/sophocles-5.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Sophocles",
+      "original": "File:OPJ20 Attack Scene Sophocles 1.png",
+      "local": "sophocles-6.png",
+      "path": "/images/scraped/gym-leaders/sophocles-6.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Sophocles",
+      "original": "File:OPJ20 Attack Scene Sophocles 2.png",
+      "local": "sophocles-7.png",
+      "path": "/images/scraped/gym-leaders/sophocles-7.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Sophocles",
+      "original": "File:OPJ20 Sophocles.png",
+      "local": "sophocles-8.png",
+      "path": "/images/scraped/gym-leaders/sophocles-8.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Sophocles",
+      "original": "File:OPJ23 Sophocles Party 1.png",
+      "local": "sophocles-9.png",
+      "path": "/images/scraped/gym-leaders/sophocles-9.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Sophocles",
+      "original": "File:OPJ23 Sophocles Party 2.png",
+      "local": "sophocles-10.png",
+      "path": "/images/scraped/gym-leaders/sophocles-10.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Acerola",
+      "original": "File:Sun Moon Acerola.png",
+      "local": "acerola-1.png",
+      "path": "/images/scraped/gym-leaders/acerola-1.png",
+      "width": 784,
+      "height": 1280
+    },
+    {
+      "character": "Acerola",
+      "original": "File:Acerola Adventures.png",
+      "local": "acerola-2.png",
+      "path": "/images/scraped/gym-leaders/acerola-2.png",
+      "width": 714,
+      "height": 1027
+    },
+    {
+      "character": "Acerola",
+      "original": "File:Acerola anime.png",
+      "local": "acerola-3.png",
+      "path": "/images/scraped/gym-leaders/acerola-3.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Acerola",
+      "original": "File:Acerola Concept Art SM 2.jpg",
+      "local": "acerola-4.jpg",
+      "path": "/images/scraped/gym-leaders/acerola-4.jpg",
+      "width": 3663,
+      "height": 2522
+    },
+    {
+      "character": "Acerola",
+      "original": "File:Acerola concept art.png",
+      "local": "acerola-5.png",
+      "path": "/images/scraped/gym-leaders/acerola-5.png",
+      "width": 1280,
+      "height": 878
+    },
+    {
+      "character": "Acerola",
+      "original": "File:Acerola Dhelmise Adventures.png",
+      "local": "acerola-6.png",
+      "path": "/images/scraped/gym-leaders/acerola-6.png",
+      "width": 413,
+      "height": 503
+    },
+    {
+      "character": "Acerola",
+      "original": "File:Acerola Sleeves.jpg",
+      "local": "acerola-7.jpg",
+      "path": "/images/scraped/gym-leaders/acerola-7.jpg",
+      "width": 595,
+      "height": 515
+    },
+    {
+      "character": "Acerola",
+      "original": "File:Acerola SM OD.png",
+      "local": "acerola-8.png",
+      "path": "/images/scraped/gym-leaders/acerola-8.png",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "character": "Acerola",
+      "original": "File:AcerolaBurningShadows112.jpg",
+      "local": "acerola-9.jpg",
+      "path": "/images/scraped/gym-leaders/acerola-9.jpg",
+      "width": 866,
+      "height": 1206
+    },
+    {
+      "character": "Acerola",
+      "original": "File:AcerolaBurningShadows112a.jpg",
+      "local": "acerola-10.jpg",
+      "path": "/images/scraped/gym-leaders/acerola-10.jpg",
+      "width": 748,
+      "height": 1044
+    },
+    {
+      "character": "Mina",
+      "original": "File:Sun Moon Mina.png",
+      "local": "mina-1.png",
+      "path": "/images/scraped/gym-leaders/mina-1.png",
+      "width": 438,
+      "height": 1308
+    },
+    {
+      "character": "Mina",
+      "original": "File:Lets Go Pikachu Eevee Mina.png",
+      "local": "mina-2.png",
+      "path": "/images/scraped/gym-leaders/mina-2.png",
+      "width": 825,
+      "height": 674
+    },
+    {
+      "character": "Mina",
+      "original": "File:Captain no Akashi Mina pin.jpg",
+      "local": "mina-3.jpg",
+      "path": "/images/scraped/gym-leaders/mina-3.jpg",
+      "width": 398,
+      "height": 399
+    },
+    {
+      "character": "Mina",
+      "original": "File:Masters Dream Team Maker Mina and Granbull.png",
+      "local": "mina-4.png",
+      "path": "/images/scraped/gym-leaders/mina-4.png",
+      "width": 1125,
+      "height": 1125
+    },
+    {
+      "character": "Mina",
+      "original": "File:Mina Adventures.png",
+      "local": "mina-5.png",
+      "path": "/images/scraped/gym-leaders/mina-5.png",
+      "width": 293,
+      "height": 635
+    },
+    {
+      "character": "Mina",
+      "original": "File:Mina anime.png",
+      "local": "mina-6.png",
+      "path": "/images/scraped/gym-leaders/mina-6.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Mina",
+      "original": "File:Mina concept art.png",
+      "local": "mina-7.png",
+      "path": "/images/scraped/gym-leaders/mina-7.png",
+      "width": 1280,
+      "height": 887
+    },
+    {
+      "character": "Mina",
+      "original": "File:Mina LGPE concept art.png",
+      "local": "mina-8.png",
+      "path": "/images/scraped/gym-leaders/mina-8.png",
+      "width": 1149,
+      "height": 809
+    },
+    {
+      "character": "Mina",
+      "original": "File:Mina Ride Mantine Adventures.png",
+      "local": "mina-9.png",
+      "path": "/images/scraped/gym-leaders/mina-9.png",
+      "width": 383,
+      "height": 312
+    },
+    {
+      "character": "Mina",
+      "original": "File:Mina SM OD.png",
+      "local": "mina-10.png",
+      "path": "/images/scraped/gym-leaders/mina-10.png",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "character": "Milo",
+      "original": "File:Sword Shield Milo.png",
+      "local": "milo-1.png",
+      "path": "/images/scraped/gym-leaders/milo-1.png",
+      "width": 2064,
+      "height": 3934
+    },
+    {
+      "character": "Milo",
+      "original": "File:League Card Milo rare.png",
+      "local": "milo-2.png",
+      "path": "/images/scraped/gym-leaders/milo-2.png",
+      "width": 800,
+      "height": 960
+    },
+    {
+      "character": "Milo",
+      "original": "File:League Card Milo.png",
+      "local": "milo-3.png",
+      "path": "/images/scraped/gym-leaders/milo-3.png",
+      "width": 800,
+      "height": 960
+    },
+    {
+      "character": "Milo",
+      "original": "File:Milo Adventures.png",
+      "local": "milo-4.png",
+      "path": "/images/scraped/gym-leaders/milo-4.png",
+      "width": 835,
+      "height": 826
+    },
+    {
+      "character": "Milo",
+      "original": "File:Milo Eldegoss Adventures.png",
+      "local": "milo-5.png",
+      "path": "/images/scraped/gym-leaders/milo-5.png",
+      "width": 785,
+      "height": 951
+    },
+    {
+      "character": "Milo",
+      "original": "File:Milo SwSh concept art.jpg",
+      "local": "milo-6.jpg",
+      "path": "/images/scraped/gym-leaders/milo-6.jpg",
+      "width": 4096,
+      "height": 2602
+    },
+    {
+      "character": "Milo",
+      "original": "File:Milo TW.png",
+      "local": "milo-7.png",
+      "path": "/images/scraped/gym-leaders/milo-7.png",
+      "width": 882,
+      "height": 1280
+    },
+    {
+      "character": "Milo",
+      "original": "File:Milo Twilight Wings.png",
+      "local": "milo-8.png",
+      "path": "/images/scraped/gym-leaders/milo-8.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Milo",
+      "original": "File:MiloAstralRadianceTG27.jpg",
+      "local": "milo-9.jpg",
+      "path": "/images/scraped/gym-leaders/milo-9.jpg",
+      "width": 660,
+      "height": 920
+    },
+    {
+      "character": "Milo",
+      "original": "File:MiloRebelClash161.jpg",
+      "local": "milo-10.jpg",
+      "path": "/images/scraped/gym-leaders/milo-10.jpg",
+      "width": 748,
+      "height": 1044
+    },
+    {
+      "character": "Nessa",
+      "original": "File:Sword Shield Nessa.png",
+      "local": "nessa-1.png",
+      "path": "/images/scraped/gym-leaders/nessa-1.png",
+      "width": 2296,
+      "height": 4152
+    },
+    {
+      "character": "Nessa",
+      "original": "File:Nessa Drednaw Adventures.png",
+      "local": "nessa-2.png",
+      "path": "/images/scraped/gym-leaders/nessa-2.png",
+      "width": 506,
+      "height": 270
+    },
+    {
+      "character": "Nessa",
+      "original": "File:Nessa Gigantamax Drednaw Adventures.png",
+      "local": "nessa-3.png",
+      "path": "/images/scraped/gym-leaders/nessa-3.png",
+      "width": 722,
+      "height": 1000
+    },
+    {
+      "character": "Nessa",
+      "original": "File:NSSVS Blue Nessa Coin.png",
+      "local": "nessa-4.png",
+      "path": "/images/scraped/gym-leaders/nessa-4.png",
+      "width": 500,
+      "height": 500
+    },
+    {
+      "character": "Nessa",
+      "original": "File:Art Life 20230409 Nessa S8b.jpg",
+      "local": "nessa-5.jpg",
+      "path": "/images/scraped/gym-leaders/nessa-5.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Nessa",
+      "original": "File:Art Life 20230409 Nessa.jpg",
+      "local": "nessa-6.jpg",
+      "path": "/images/scraped/gym-leaders/nessa-6.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Nessa",
+      "original": "File:League Card Nessa rare.png",
+      "local": "nessa-7.png",
+      "path": "/images/scraped/gym-leaders/nessa-7.png",
+      "width": 800,
+      "height": 960
+    },
+    {
+      "character": "Nessa",
+      "original": "File:League Card Nessa.png",
+      "local": "nessa-8.png",
+      "path": "/images/scraped/gym-leaders/nessa-8.png",
+      "width": 800,
+      "height": 960
+    },
+    {
+      "character": "Nessa",
+      "original": "File:Nessa Adventures.png",
+      "local": "nessa-9.png",
+      "path": "/images/scraped/gym-leaders/nessa-9.png",
+      "width": 389,
+      "height": 945
+    },
+    {
+      "character": "Nessa",
+      "original": "File:Nessa and Chinchou TW.png",
+      "local": "nessa-10.png",
+      "path": "/images/scraped/gym-leaders/nessa-10.png",
+      "width": 1218,
+      "height": 1057
+    },
+    {
+      "character": "Kabu",
+      "original": "File:Sword Shield Kabu.png",
+      "local": "kabu-1.png",
+      "path": "/images/scraped/gym-leaders/kabu-1.png",
+      "width": 1461,
+      "height": 4082
+    },
+    {
+      "character": "Kabu",
+      "original": "File:Kabu HZ.png",
+      "local": "kabu-2.png",
+      "path": "/images/scraped/gym-leaders/kabu-2.png",
+      "width": 321,
+      "height": 801
+    },
+    {
+      "character": "Kabu",
+      "original": "File:HZ eyecatch Kabu Centiskorch.png",
+      "local": "kabu-3.png",
+      "path": "/images/scraped/gym-leaders/kabu-3.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Kabu",
+      "original": "File:Kabu Adventures.png",
+      "local": "kabu-4.png",
+      "path": "/images/scraped/gym-leaders/kabu-4.png",
+      "width": 435,
+      "height": 999
+    },
+    {
+      "character": "Kabu",
+      "original": "File:Kabu and Wakaba.png",
+      "local": "kabu-5.png",
+      "path": "/images/scraped/gym-leaders/kabu-5.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Kabu",
+      "original": "File:Kabu anime.png",
+      "local": "kabu-6.png",
+      "path": "/images/scraped/gym-leaders/kabu-6.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Kabu",
+      "original": "File:Kabu Dynamax Band.png",
+      "local": "kabu-7.png",
+      "path": "/images/scraped/gym-leaders/kabu-7.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Kabu",
+      "original": "File:Kabu Gigantamax Centiskorch Adventures.png",
+      "local": "kabu-8.png",
+      "path": "/images/scraped/gym-leaders/kabu-8.png",
+      "width": 979,
+      "height": 817
+    },
+    {
+      "character": "Kabu",
+      "original": "File:Kabu HZ expression sheet.png",
+      "local": "kabu-9.png",
+      "path": "/images/scraped/gym-leaders/kabu-9.png",
+      "width": 1280,
+      "height": 998
+    },
+    {
+      "character": "Kabu",
+      "original": "File:Kabu HZ key artwork.png",
+      "local": "kabu-10.png",
+      "path": "/images/scraped/gym-leaders/kabu-10.png",
+      "width": 1500,
+      "height": 1875
+    },
+    {
+      "character": "Bea",
+      "original": "File:Sword Shield Bea.png",
+      "local": "bea-1.png",
+      "path": "/images/scraped/gym-leaders/bea-1.png",
+      "width": 1712,
+      "height": 4184
+    },
+    {
+      "character": "Bea",
+      "original": "File:Art Life 20230502 Bea.jpg",
+      "local": "bea-2.jpg",
+      "path": "/images/scraped/gym-leaders/bea-2.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Bea",
+      "original": "File:Ash Bea rivalry JNM.png",
+      "local": "bea-3.png",
+      "path": "/images/scraped/gym-leaders/bea-3.png",
+      "width": 994,
+      "height": 1105
+    },
+    {
+      "character": "Bea",
+      "original": "File:Bea Adventures.png",
+      "local": "bea-4.png",
+      "path": "/images/scraped/gym-leaders/bea-4.png",
+      "width": 277,
+      "height": 791
+    },
+    {
+      "character": "Bea",
+      "original": "File:Bea After School Card File.jpg",
+      "local": "bea-5.jpg",
+      "path": "/images/scraped/gym-leaders/bea-5.jpg",
+      "width": 944,
+      "height": 1276
+    },
+    {
+      "character": "Bea",
+      "original": "File:Bea After School Trainer Card Collection.jpg",
+      "local": "bea-6.jpg",
+      "path": "/images/scraped/gym-leaders/bea-6.jpg",
+      "width": 888,
+      "height": 1352
+    },
+    {
+      "character": "Bea",
+      "original": "File:Bea and Allister.png",
+      "local": "bea-7.png",
+      "path": "/images/scraped/gym-leaders/bea-7.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Bea",
+      "original": "File:Bea and Ash.png",
+      "local": "bea-8.png",
+      "path": "/images/scraped/gym-leaders/bea-8.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Bea",
+      "original": "File:Bea and Korrina.png",
+      "local": "bea-9.png",
+      "path": "/images/scraped/gym-leaders/bea-9.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Bea",
+      "original": "File:Bea and Machamp.png",
+      "local": "bea-10.png",
+      "path": "/images/scraped/gym-leaders/bea-10.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Allister",
+      "original": "File:Sword Shield Allister.png",
+      "local": "allister-1.png",
+      "path": "/images/scraped/gym-leaders/allister-1.png",
+      "width": 1741,
+      "height": 2807
+    },
+    {
+      "character": "Allister",
+      "original": "File:Allister Adventures.png",
+      "local": "allister-2.png",
+      "path": "/images/scraped/gym-leaders/allister-2.png",
+      "width": 386,
+      "height": 742
+    },
+    {
+      "character": "Allister",
+      "original": "File:Allister anime.png",
+      "local": "allister-3.png",
+      "path": "/images/scraped/gym-leaders/allister-3.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Allister",
+      "original": "File:Allister Cursola TW.png",
+      "local": "allister-4.png",
+      "path": "/images/scraped/gym-leaders/allister-4.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Allister",
+      "original": "File:Allister Cursola.png",
+      "local": "allister-5.png",
+      "path": "/images/scraped/gym-leaders/allister-5.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Allister",
+      "original": "File:Allister face.png",
+      "local": "allister-6.png",
+      "path": "/images/scraped/gym-leaders/allister-6.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Allister",
+      "original": "File:Allister Gigantamax Gengar Adventures.png",
+      "local": "allister-7.png",
+      "path": "/images/scraped/gym-leaders/allister-7.png",
+      "width": 877,
+      "height": 829
+    },
+    {
+      "character": "Allister",
+      "original": "File:Allister Journeys Artwork.png",
+      "local": "allister-8.png",
+      "path": "/images/scraped/gym-leaders/allister-8.png",
+      "width": 1520,
+      "height": 1920
+    },
+    {
+      "character": "Allister",
+      "original": "File:Allister Journeys.png",
+      "local": "allister-9.png",
+      "path": "/images/scraped/gym-leaders/allister-9.png",
+      "width": 495,
+      "height": 871
+    },
+    {
+      "character": "Allister",
+      "original": "File:Allister Rotom Phone.png",
+      "local": "allister-10.png",
+      "path": "/images/scraped/gym-leaders/allister-10.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Opal",
+      "original": "File:Sword Shield Opal.png",
+      "local": "opal-1.png",
+      "path": "/images/scraped/gym-leaders/opal-1.png",
+      "width": 2069,
+      "height": 3754
+    },
+    {
+      "character": "Opal",
+      "original": "File:Casey battling Opal.png",
+      "local": "opal-2.png",
+      "path": "/images/scraped/gym-leaders/opal-2.png",
+      "width": 581,
+      "height": 415
+    },
+    {
+      "character": "Opal",
+      "original": "File:Henry battling Opal.png",
+      "local": "opal-3.png",
+      "path": "/images/scraped/gym-leaders/opal-3.png",
+      "width": 1294,
+      "height": 853
+    },
+    {
+      "character": "Opal",
+      "original": "File:JN082 Ash Vs Opal.png",
+      "local": "opal-4.png",
+      "path": "/images/scraped/gym-leaders/opal-4.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Opal",
+      "original": "File:League Card Opal rare.png",
+      "local": "opal-5.png",
+      "path": "/images/scraped/gym-leaders/opal-5.png",
+      "width": 800,
+      "height": 960
+    },
+    {
+      "character": "Opal",
+      "original": "File:League Card Opal.png",
+      "local": "opal-6.png",
+      "path": "/images/scraped/gym-leaders/opal-6.png",
+      "width": 800,
+      "height": 960
+    },
+    {
+      "character": "Opal",
+      "original": "File:Opal Adventures.png",
+      "local": "opal-7.png",
+      "path": "/images/scraped/gym-leaders/opal-7.png",
+      "width": 387,
+      "height": 751
+    },
+    {
+      "character": "Opal",
+      "original": "File:Opal and Hatterene TW.png",
+      "local": "opal-8.png",
+      "path": "/images/scraped/gym-leaders/opal-8.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Opal",
+      "original": "File:Opal anime.png",
+      "local": "opal-9.png",
+      "path": "/images/scraped/gym-leaders/opal-9.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Opal",
+      "original": "File:Opal Dynamax Band.png",
+      "local": "opal-10.png",
+      "path": "/images/scraped/gym-leaders/opal-10.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Gordie",
+      "original": "File:GordieSilverTempestTG24.jpg",
+      "local": "gordie-1.jpg",
+      "path": "/images/scraped/gym-leaders/gordie-1.jpg",
+      "width": 786,
+      "height": 1094
+    },
+    {
+      "character": "Gordie",
+      "original": "File:Gordie Adventures.png",
+      "local": "gordie-2.png",
+      "path": "/images/scraped/gym-leaders/gordie-2.png",
+      "width": 441,
+      "height": 984
+    },
+    {
+      "character": "Gordie",
+      "original": "File:Gordie SwSh concept art.jpg",
+      "local": "gordie-3.jpg",
+      "path": "/images/scraped/gym-leaders/gordie-3.jpg",
+      "width": 4096,
+      "height": 2565
+    },
+    {
+      "character": "Gordie",
+      "original": "File:Gordie Twilight Wings.png",
+      "local": "gordie-4.png",
+      "path": "/images/scraped/gym-leaders/gordie-4.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Gordie",
+      "original": "File:GordieEvolvingSkies149.jpg",
+      "local": "gordie-5.jpg",
+      "path": "/images/scraped/gym-leaders/gordie-5.jpg",
+      "width": 733,
+      "height": 1020
+    },
+    {
+      "character": "Gordie",
+      "original": "File:GordieEvolvingSkies201.jpg",
+      "local": "gordie-6.jpg",
+      "path": "/images/scraped/gym-leaders/gordie-6.jpg",
+      "width": 733,
+      "height": 1020
+    },
+    {
+      "character": "Gordie",
+      "original": "File:GordieEvolvingSkies223.jpg",
+      "local": "gordie-7.jpg",
+      "path": "/images/scraped/gym-leaders/gordie-7.jpg",
+      "width": 733,
+      "height": 1020
+    },
+    {
+      "character": "Gordie",
+      "original": "File:League Card Gordie rare.png",
+      "local": "gordie-8.png",
+      "path": "/images/scraped/gym-leaders/gordie-8.png",
+      "width": 800,
+      "height": 960
+    },
+    {
+      "character": "Gordie",
+      "original": "File:League Card Gordie.png",
+      "local": "gordie-9.png",
+      "path": "/images/scraped/gym-leaders/gordie-9.png",
+      "width": 800,
+      "height": 960
+    },
+    {
+      "character": "Gordie",
+      "original": "File:Spr Masters Gordie 2.png",
+      "local": "gordie-10.png",
+      "path": "/images/scraped/gym-leaders/gordie-10.png",
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "character": "Melony",
+      "original": "File:Sword Shield Melony.png",
+      "local": "melony-1.png",
+      "path": "/images/scraped/gym-leaders/melony-1.png",
+      "width": 2479,
+      "height": 4110
+    },
+    {
+      "character": "Melony",
+      "original": "File:Art Life 20230514 Melony.jpg",
+      "local": "melony-2.jpg",
+      "path": "/images/scraped/gym-leaders/melony-2.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Melony",
+      "original": "File:League Card Melony rare.png",
+      "local": "melony-3.png",
+      "path": "/images/scraped/gym-leaders/melony-3.png",
+      "width": 800,
+      "height": 960
+    },
+    {
+      "character": "Melony",
+      "original": "File:League Card Melony.png",
+      "local": "melony-4.png",
+      "path": "/images/scraped/gym-leaders/melony-4.png",
+      "width": 800,
+      "height": 960
+    },
+    {
+      "character": "Melony",
+      "original": "File:Melony Adventures.png",
+      "local": "melony-5.png",
+      "path": "/images/scraped/gym-leaders/melony-5.png",
+      "width": 556,
+      "height": 1002
+    },
+    {
+      "character": "Melony",
+      "original": "File:Melony and Mr Rime.png",
+      "local": "melony-6.png",
+      "path": "/images/scraped/gym-leaders/melony-6.png",
+      "width": 637,
+      "height": 478
+    },
+    {
+      "character": "Melony",
+      "original": "File:Melony Darmanitan Frosmoth TW.png",
+      "local": "melony-7.png",
+      "path": "/images/scraped/gym-leaders/melony-7.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Melony",
+      "original": "File:Melony Deck Case.jpg",
+      "local": "melony-8.jpg",
+      "path": "/images/scraped/gym-leaders/melony-8.jpg",
+      "width": 2080,
+      "height": 2578
+    },
+    {
+      "character": "Melony",
+      "original": "File:Melony Sleeves.jpg",
+      "local": "melony-9.jpg",
+      "path": "/images/scraped/gym-leaders/melony-9.jpg",
+      "width": 1238,
+      "height": 1079
+    },
+    {
+      "character": "Melony",
+      "original": "File:Melony SwSh concept art.jpg",
+      "local": "melony-10.jpg",
+      "path": "/images/scraped/gym-leaders/melony-10.jpg",
+      "width": 4096,
+      "height": 2652
+    },
+    {
+      "character": "Piers",
+      "original": "File:Sword Shield Piers.png",
+      "local": "piers-1.png",
+      "path": "/images/scraped/gym-leaders/piers-1.png",
+      "width": 2177,
+      "height": 4285
+    },
+    {
+      "character": "Piers",
+      "original": "File:League Card Piers rare.png",
+      "local": "piers-2.png",
+      "path": "/images/scraped/gym-leaders/piers-2.png",
+      "width": 800,
+      "height": 960
+    },
+    {
+      "character": "Piers",
+      "original": "File:League Card Piers.png",
+      "local": "piers-3.png",
+      "path": "/images/scraped/gym-leaders/piers-3.png",
+      "width": 800,
+      "height": 960
+    },
+    {
+      "character": "Piers",
+      "original": "File:Marnie and Piers anime.png",
+      "local": "piers-4.png",
+      "path": "/images/scraped/gym-leaders/piers-4.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Piers",
+      "original": "File:Marnie and Piers PASH Artwork.png",
+      "local": "piers-5.png",
+      "path": "/images/scraped/gym-leaders/piers-5.png",
+      "width": 462,
+      "height": 768
+    },
+    {
+      "character": "Piers",
+      "original": "File:Marnie Piers Adventures.png",
+      "local": "piers-6.png",
+      "path": "/images/scraped/gym-leaders/piers-6.png",
+      "width": 841,
+      "height": 581
+    },
+    {
+      "character": "Piers",
+      "original": "File:Marnie Piers Concept Art Opening.png",
+      "local": "piers-7.png",
+      "path": "/images/scraped/gym-leaders/piers-7.png",
+      "width": 1018,
+      "height": 720
+    },
+    {
+      "character": "Piers",
+      "original": "File:NM SwSh Battle Gym Leader Piers.png",
+      "local": "piers-8.png",
+      "path": "/images/scraped/gym-leaders/piers-8.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Piers",
+      "original": "File:Piers Adventures.png",
+      "local": "piers-9.png",
+      "path": "/images/scraped/gym-leaders/piers-9.png",
+      "width": 912,
+      "height": 906
+    },
+    {
+      "character": "Piers",
+      "original": "File:Piers anime.png",
+      "local": "piers-10.png",
+      "path": "/images/scraped/gym-leaders/piers-10.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Raihan",
+      "original": "File:Sword Shield Raihan.png",
+      "local": "raihan-1.png",
+      "path": "/images/scraped/gym-leaders/raihan-1.png",
+      "width": 2454,
+      "height": 4172
+    },
+    {
+      "character": "Raihan",
+      "original": "File:RaihanSilverTempestTG27.jpg",
+      "local": "raihan-2.jpg",
+      "path": "/images/scraped/gym-leaders/raihan-2.jpg",
+      "width": 660,
+      "height": 920
+    },
+    {
+      "character": "Raihan",
+      "original": "File:Raihan anime JN 2.png",
+      "local": "raihan-3.png",
+      "path": "/images/scraped/gym-leaders/raihan-3.png",
+      "width": 451,
+      "height": 1000
+    },
+    {
+      "character": "Raihan",
+      "original": "File:Raihan anime JN.png",
+      "local": "raihan-4.png",
+      "path": "/images/scraped/gym-leaders/raihan-4.png",
+      "width": 465,
+      "height": 995
+    },
+    {
+      "character": "Raihan",
+      "original": "File:Art Life 20231115 Raihan.jpg",
+      "local": "raihan-5.jpg",
+      "path": "/images/scraped/gym-leaders/raihan-5.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Raihan",
+      "original": "File:Ash Leon Goh Raihan Artwork.png",
+      "local": "raihan-6.png",
+      "path": "/images/scraped/gym-leaders/raihan-6.png",
+      "width": 843,
+      "height": 1200
+    },
+    {
+      "character": "Raihan",
+      "original": "File:Figma Raihan and Duraludon.jpg",
+      "local": "raihan-7.jpg",
+      "path": "/images/scraped/gym-leaders/raihan-7.jpg",
+      "width": 800,
+      "height": 700
+    },
+    {
+      "character": "Raihan",
+      "original": "File:Figma Raihan Ultra Ball.jpg",
+      "local": "raihan-8.jpg",
+      "path": "/images/scraped/gym-leaders/raihan-8.jpg",
+      "width": 550,
+      "height": 800
+    },
+    {
+      "character": "Raihan",
+      "original": "File:Figma Raihan.jpg",
+      "local": "raihan-9.jpg",
+      "path": "/images/scraped/gym-leaders/raihan-9.jpg",
+      "width": 550,
+      "height": 800
+    },
+    {
+      "character": "Raihan",
+      "original": "File:League Card Raihan rare.png",
+      "local": "raihan-10.png",
+      "path": "/images/scraped/gym-leaders/raihan-10.png",
+      "width": 800,
+      "height": 960
+    },
+    {
+      "character": "Katy",
+      "original": "File:Scarlet Violet Katy.png",
+      "local": "katy-1.png",
+      "path": "/images/scraped/gym-leaders/katy-1.png",
+      "width": 1533,
+      "height": 3656
+    },
+    {
+      "character": "Katy",
+      "original": "File:KatyScarletViolet177.jpg",
+      "local": "katy-2.jpg",
+      "path": "/images/scraped/gym-leaders/katy-2.jpg",
+      "width": 660,
+      "height": 920
+    },
+    {
+      "character": "Katy",
+      "original": "File:KatyScarletViolet237.jpg",
+      "local": "katy-3.jpg",
+      "path": "/images/scraped/gym-leaders/katy-3.jpg",
+      "width": 660,
+      "height": 920
+    },
+    {
+      "character": "Katy",
+      "original": "File:Katy HZ.png",
+      "local": "katy-4.png",
+      "path": "/images/scraped/gym-leaders/katy-4.png",
+      "width": 319,
+      "height": 777
+    },
+    {
+      "character": "Katy",
+      "original": "File:Horizons OP3 Katy.png",
+      "local": "katy-5.png",
+      "path": "/images/scraped/gym-leaders/katy-5.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Katy",
+      "original": "File:HZ eyecatch Katy Teddy Lokix.png",
+      "local": "katy-6.png",
+      "path": "/images/scraped/gym-leaders/katy-6.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Katy",
+      "original": "File:HZ eyecatch Katy Teddy.png",
+      "local": "katy-7.png",
+      "path": "/images/scraped/gym-leaders/katy-7.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Katy",
+      "original": "File:Katy Adventures.png",
+      "local": "katy-8.png",
+      "path": "/images/scraped/gym-leaders/katy-8.png",
+      "width": 749,
+      "height": 930
+    },
+    {
+      "character": "Katy",
+      "original": "File:Katy angry.png",
+      "local": "katy-9.png",
+      "path": "/images/scraped/gym-leaders/katy-9.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Katy",
+      "original": "File:Katy Anime Expression Sheet.png",
+      "local": "katy-10.png",
+      "path": "/images/scraped/gym-leaders/katy-10.png",
+      "width": 1280,
+      "height": 998
+    },
+    {
+      "character": "Brassius",
+      "original": "File:Scarlet Violet Brassius.png",
+      "local": "brassius-1.png",
+      "path": "/images/scraped/gym-leaders/brassius-1.png",
+      "width": 1290,
+      "height": 3557
+    },
+    {
+      "character": "Brassius",
+      "original": "File:Brassius HZ.png",
+      "local": "brassius-2.png",
+      "path": "/images/scraped/gym-leaders/brassius-2.png",
+      "width": 352,
+      "height": 1003
+    },
+    {
+      "character": "Brassius",
+      "original": "File:Brassius Adventures.png",
+      "local": "brassius-3.png",
+      "path": "/images/scraped/gym-leaders/brassius-3.png",
+      "width": 755,
+      "height": 971
+    },
+    {
+      "character": "Brassius",
+      "original": "File:Brassius and Iono Sky tower.png",
+      "local": "brassius-4.png",
+      "path": "/images/scraped/gym-leaders/brassius-4.png",
+      "width": 805,
+      "height": 534
+    },
+    {
+      "character": "Brassius",
+      "original": "File:Brassius anime expression sheet.png",
+      "local": "brassius-5.png",
+      "path": "/images/scraped/gym-leaders/brassius-5.png",
+      "width": 600,
+      "height": 352
+    },
+    {
+      "character": "Brassius",
+      "original": "File:Brassius anime.png",
+      "local": "brassius-6.png",
+      "path": "/images/scraped/gym-leaders/brassius-6.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Brassius",
+      "original": "File:Brassius concept art.jpg",
+      "local": "brassius-7.jpg",
+      "path": "/images/scraped/gym-leaders/brassius-7.jpg",
+      "width": 1096,
+      "height": 806
+    },
+    {
+      "character": "Brassius",
+      "original": "File:Brassius Dolliv cheerful.png",
+      "local": "brassius-8.png",
+      "path": "/images/scraped/gym-leaders/brassius-8.png",
+      "width": 898,
+      "height": 504
+    },
+    {
+      "character": "Brassius",
+      "original": "File:Brassius Eyecatch Artwork.png",
+      "local": "brassius-9.png",
+      "path": "/images/scraped/gym-leaders/brassius-9.png",
+      "width": 958,
+      "height": 1014
+    },
+    {
+      "character": "Brassius",
+      "original": "File:Brassius gym badge.png",
+      "local": "brassius-10.png",
+      "path": "/images/scraped/gym-leaders/brassius-10.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Iono",
+      "original": "File:Scarlet Violet Iono.png",
+      "local": "iono-1.png",
+      "path": "/images/scraped/gym-leaders/iono-1.png",
+      "width": 3309,
+      "height": 3501
+    },
+    {
+      "character": "Iono",
+      "original": "File:Iono HZ.png",
+      "local": "iono-2.png",
+      "path": "/images/scraped/gym-leaders/iono-2.png",
+      "width": 673,
+      "height": 786
+    },
+    {
+      "character": "Iono",
+      "original": "File:Art Life 20240207 Iono SV2D.jpg",
+      "local": "iono-3.jpg",
+      "path": "/images/scraped/gym-leaders/iono-3.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Iono",
+      "original": "File:Art Life 20240207 Iono SV4a.jpg",
+      "local": "iono-4.jpg",
+      "path": "/images/scraped/gym-leaders/iono-4.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Iono",
+      "original": "File:Brassius and Iono Sky tower.png",
+      "local": "iono-5.png",
+      "path": "/images/scraped/gym-leaders/iono-5.png",
+      "width": 805,
+      "height": 534
+    },
+    {
+      "character": "Iono",
+      "original": "File:Company PhoneCase Iono Zone.png",
+      "local": "iono-6.png",
+      "path": "/images/scraped/gym-leaders/iono-6.png",
+      "width": 256,
+      "height": 256
+    },
+    {
+      "character": "Iono",
+      "original": "File:Dot and Iono.png",
+      "local": "iono-7.png",
+      "path": "/images/scraped/gym-leaders/iono-7.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Iono",
+      "original": "File:Horizons OP3 Iono.png",
+      "local": "iono-8.png",
+      "path": "/images/scraped/gym-leaders/iono-8.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Iono",
+      "original": "File:HZ eyecatch Iono Bellibolt.png",
+      "local": "iono-9.png",
+      "path": "/images/scraped/gym-leaders/iono-9.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Iono",
+      "original": "File:HZ015 Iono Liko Roy.png",
+      "local": "iono-10.png",
+      "path": "/images/scraped/gym-leaders/iono-10.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Kofu",
+      "original": "File:Scarlet Violet Kofu.png",
+      "local": "kofu-1.png",
+      "path": "/images/scraped/gym-leaders/kofu-1.png",
+      "width": 1865,
+      "height": 3666
+    },
+    {
+      "character": "Kofu",
+      "original": "File:Kofu HZ.png",
+      "local": "kofu-2.png",
+      "path": "/images/scraped/gym-leaders/kofu-2.png",
+      "width": 467,
+      "height": 677
+    },
+    {
+      "character": "Kofu",
+      "original": "File:Coral and Kofu.png",
+      "local": "kofu-3.png",
+      "path": "/images/scraped/gym-leaders/kofu-3.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Kofu",
+      "original": "File:Horizons OP3 Kofu.png",
+      "local": "kofu-4.png",
+      "path": "/images/scraped/gym-leaders/kofu-4.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Kofu",
+      "original": "File:Kofu anime.png",
+      "local": "kofu-5.png",
+      "path": "/images/scraped/gym-leaders/kofu-5.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Kofu",
+      "original": "File:Kofu concept art.jpg",
+      "local": "kofu-6.jpg",
+      "path": "/images/scraped/gym-leaders/kofu-6.jpg",
+      "width": 1093,
+      "height": 804
+    },
+    {
+      "character": "Kofu",
+      "original": "File:Kofu gym badge.png",
+      "local": "kofu-7.png",
+      "path": "/images/scraped/gym-leaders/kofu-7.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Kofu",
+      "original": "File:Kofu Paldean Winds.png",
+      "local": "kofu-8.png",
+      "path": "/images/scraped/gym-leaders/kofu-8.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Kofu",
+      "original": "File:Kofu PT.png",
+      "local": "kofu-9.png",
+      "path": "/images/scraped/gym-leaders/kofu-9.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Kofu",
+      "original": "File:KofuStellarCrown138.jpg",
+      "local": "kofu-10.jpg",
+      "path": "/images/scraped/gym-leaders/kofu-10.jpg",
+      "width": 735,
+      "height": 1024
+    },
+    {
+      "character": "Larry",
+      "original": "File:Scarlet Violet Larry.png",
+      "local": "larry-1.png",
+      "path": "/images/scraped/gym-leaders/larry-1.png",
+      "width": 1826,
+      "height": 4781
+    },
+    {
+      "character": "Larry",
+      "original": "File:Larry Anime Expression Sheet.png",
+      "local": "larry-2.png",
+      "path": "/images/scraped/gym-leaders/larry-2.png",
+      "width": 900,
+      "height": 545
+    },
+    {
+      "character": "Larry",
+      "original": "File:Larry HZ.png",
+      "local": "larry-3.png",
+      "path": "/images/scraped/gym-leaders/larry-3.png",
+      "width": 374,
+      "height": 1004
+    },
+    {
+      "character": "Larry",
+      "original": "File:Horizons Larry concept art.png",
+      "local": "larry-4.png",
+      "path": "/images/scraped/gym-leaders/larry-4.png",
+      "width": 834,
+      "height": 580
+    },
+    {
+      "character": "Larry",
+      "original": "File:Horizons OP3 Larry.png",
+      "local": "larry-5.png",
+      "path": "/images/scraped/gym-leaders/larry-5.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Larry",
+      "original": "File:HZ eyecatch Larry Staraptor.png",
+      "local": "larry-6.png",
+      "path": "/images/scraped/gym-leaders/larry-6.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Larry",
+      "original": "File:Larry Adventures.png",
+      "local": "larry-7.png",
+      "path": "/images/scraped/gym-leaders/larry-7.png",
+      "width": 652,
+      "height": 1190
+    },
+    {
+      "character": "Larry",
+      "original": "File:Larry anime.png",
+      "local": "larry-8.png",
+      "path": "/images/scraped/gym-leaders/larry-8.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Larry",
+      "original": "File:Larry concept art.jpg",
+      "local": "larry-9.jpg",
+      "path": "/images/scraped/gym-leaders/larry-9.jpg",
+      "width": 1096,
+      "height": 805
+    },
+    {
+      "character": "Larry",
+      "original": "File:Larry gym badge.png",
+      "local": "larry-10.png",
+      "path": "/images/scraped/gym-leaders/larry-10.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Ryme",
+      "original": "File:Scarlet Violet Ryme.png",
+      "local": "ryme-1.png",
+      "path": "/images/scraped/gym-leaders/ryme-1.png",
+      "width": 1821,
+      "height": 3577
+    },
+    {
+      "character": "Ryme",
+      "original": "File:Ryme HZ.png",
+      "local": "ryme-2.png",
+      "path": "/images/scraped/gym-leaders/ryme-2.png",
+      "width": 383,
+      "height": 912
+    },
+    {
+      "character": "Ryme",
+      "original": "File:Horizons OP3 Ryme.png",
+      "local": "ryme-3.png",
+      "path": "/images/scraped/gym-leaders/ryme-3.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Ryme",
+      "original": "File:HZ eyecatch Ryme Houndstone.png",
+      "local": "ryme-4.png",
+      "path": "/images/scraped/gym-leaders/ryme-4.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Ryme",
+      "original": "File:Let me battle Ryme.png",
+      "local": "ryme-5.png",
+      "path": "/images/scraped/gym-leaders/ryme-5.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Ryme",
+      "original": "File:Ryme Anime Concept Art.png",
+      "local": "ryme-6.png",
+      "path": "/images/scraped/gym-leaders/ryme-6.png",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "character": "Ryme",
+      "original": "File:Ryme anime.png",
+      "local": "ryme-7.png",
+      "path": "/images/scraped/gym-leaders/ryme-7.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Ryme",
+      "original": "File:Ryme concept art.jpg",
+      "local": "ryme-8.jpg",
+      "path": "/images/scraped/gym-leaders/ryme-8.jpg",
+      "width": 1092,
+      "height": 802
+    },
+    {
+      "character": "Ryme",
+      "original": "File:Ryme gym badge.png",
+      "local": "ryme-9.png",
+      "path": "/images/scraped/gym-leaders/ryme-9.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Ryme",
+      "original": "File:Ryme Paldean Winds.png",
+      "local": "ryme-10.png",
+      "path": "/images/scraped/gym-leaders/ryme-10.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Tulip",
+      "original": "File:Scarlet Violet Tulip.png",
+      "local": "tulip-1.png",
+      "path": "/images/scraped/gym-leaders/tulip-1.png",
+      "width": 1673,
+      "height": 3730
+    },
+    {
+      "character": "Tulip",
+      "original": "File:Tulip HZ.png",
+      "local": "tulip-2.png",
+      "path": "/images/scraped/gym-leaders/tulip-2.png",
+      "width": 362,
+      "height": 753
+    },
+    {
+      "character": "Tulip",
+      "original": "File:Art Life 20240622 Tulip.jpg",
+      "local": "tulip-3.jpg",
+      "path": "/images/scraped/gym-leaders/tulip-3.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Tulip",
+      "original": "File:Horizons OP3 Tulip.png",
+      "local": "tulip-4.png",
+      "path": "/images/scraped/gym-leaders/tulip-4.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Tulip",
+      "original": "File:Tulip anime.png",
+      "local": "tulip-5.png",
+      "path": "/images/scraped/gym-leaders/tulip-5.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Tulip",
+      "original": "File:Tulip concept art.jpg",
+      "local": "tulip-6.jpg",
+      "path": "/images/scraped/gym-leaders/tulip-6.jpg",
+      "width": 1094,
+      "height": 806
+    },
+    {
+      "character": "Tulip",
+      "original": "File:Tulip gym badge.png",
+      "local": "tulip-7.png",
+      "path": "/images/scraped/gym-leaders/tulip-7.png",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "character": "Tulip",
+      "original": "File:Tulip Paldean Winds.png",
+      "local": "tulip-8.png",
+      "path": "/images/scraped/gym-leaders/tulip-8.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Tulip",
+      "original": "File:Tulip PT.png",
+      "local": "tulip-9.png",
+      "path": "/images/scraped/gym-leaders/tulip-9.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Tulip",
+      "original": "File:TulipParadoxRift181.jpg",
+      "local": "tulip-10.jpg",
+      "path": "/images/scraped/gym-leaders/tulip-10.jpg",
+      "width": 660,
+      "height": 920
+    },
+    {
+      "character": "Grusha",
+      "original": "File:Scarlet Violet Grusha.png",
+      "local": "grusha-1.png",
+      "path": "/images/scraped/gym-leaders/grusha-1.png",
+      "width": 1125,
+      "height": 2999
+    },
+    {
+      "character": "Grusha",
+      "original": "File:Grusha HZ 2.png",
+      "local": "grusha-2.png",
+      "path": "/images/scraped/gym-leaders/grusha-2.png",
+      "width": 243,
+      "height": 577
+    },
+    {
+      "character": "Grusha",
+      "original": "File:Grusha HZ 3.png",
+      "local": "grusha-3.png",
+      "path": "/images/scraped/gym-leaders/grusha-3.png",
+      "width": 576,
+      "height": 866
+    },
+    {
+      "character": "Grusha",
+      "original": "File:Grusha HZ.png",
+      "local": "grusha-4.png",
+      "path": "/images/scraped/gym-leaders/grusha-4.png",
+      "width": 307,
+      "height": 901
+    },
+    {
+      "character": "Grusha",
+      "original": "File:Art Life 20231213 Grusha.jpg",
+      "local": "grusha-5.jpg",
+      "path": "/images/scraped/gym-leaders/grusha-5.jpg",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "character": "Grusha",
+      "original": "File:Grusha & Cetitan Sleeves.png",
+      "local": "grusha-6.png",
+      "path": "/images/scraped/gym-leaders/grusha-6.png",
+      "width": 947,
+      "height": 1332
+    },
+    {
+      "character": "Grusha",
+      "original": "File:Grusha Anime Expression Sheet.png",
+      "local": "grusha-7.png",
+      "path": "/images/scraped/gym-leaders/grusha-7.png",
+      "width": 1280,
+      "height": 1280
+    },
+    {
+      "character": "Grusha",
+      "original": "File:Grusha anime.png",
+      "local": "grusha-8.png",
+      "path": "/images/scraped/gym-leaders/grusha-8.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Grusha",
+      "original": "File:Grusha Cetitan.png",
+      "local": "grusha-9.png",
+      "path": "/images/scraped/gym-leaders/grusha-9.png",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "character": "Grusha",
+      "original": "File:Grusha concept art.jpg",
+      "local": "grusha-10.jpg",
+      "path": "/images/scraped/gym-leaders/grusha-10.jpg",
+      "width": 1094,
+      "height": 804
+    }
+  ]
+}
