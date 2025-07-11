@@ -41,8 +41,8 @@ const RegionInfo = ({ region, theme }) => {
               <div className={`w-16 h-16 mx-auto mb-3 rounded-full bg-gradient-to-br ${region.color} flex items-center justify-center`}>
                 <BsGlobe className="text-2xl text-white" />
               </div>
-              <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Generation</h3>
-              <p className="text-3xl font-bold">{region.generation}</p>
+              <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1 text-center">Generation</h3>
+              <p className="text-3xl font-bold text-center">{region.generation}</p>
             </div>
           </SlideUp>
 
@@ -97,12 +97,18 @@ const RegionInfo = ({ region, theme }) => {
                 </div>
                 <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
                   <span className="text-gray-600 dark:text-gray-400 text-sm">
-                    {region.gymLeaders ? 'Gym Leaders' : 'Trial Captains'}
+                    {region.gymLeaders ? 'Gym Leaders' : region.trialCaptains ? 'Trial Captains' : 'Leaders'}
                   </span>
                   <span className="text-lg font-bold">
                     {region.gymLeaders?.length || region.trialCaptains?.length || 0}
                   </span>
                 </div>
+                {region.islandKahunas && (
+                  <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600">
+                    <span className="text-gray-600 dark:text-gray-400 text-sm">Island Kahunas</span>
+                    <span className="text-lg font-bold">{region.islandKahunas.length}</span>
+                  </div>
+                )}
                 <div className="flex justify-between items-center py-2">
                   <span className="text-gray-600 dark:text-gray-400 text-sm">Legendary Pokémon</span>
                   <span className="text-lg font-bold">{region.legendaries.length}</span>

@@ -212,7 +212,7 @@ export default function PocketMode() {
       </Head>
       <FadeIn>
         <div className="flex flex-col items-center justify-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-center mb-3">Pokémon TCG Pocket</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-center mb-3">Pokémon TCG Pocket</h1>
           <p className="text-lg text-center text-gray-600 dark:text-gray-400 max-w-2xl mb-4">
             Explore the streamlined mobile version of the Pokémon Trading Card Game with simplified rules and unique cards.
           </p>

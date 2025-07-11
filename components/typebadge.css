@@ -22,6 +22,9 @@
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
   user-select: none;
+  text-align: center !important;
+  white-space: nowrap;
+  box-sizing: border-box;
 }
 
 .type-badge.clickable {
@@ -298,55 +301,55 @@
   background-color: #ea580c;
 }
 
-/* Fixed size variants - increased for better visibility and thick borders */
+/* Fixed size variants - consistent dimensions for all type badges */
 .type-badge.size-xxs {
-  padding: 3px 4px;
+  padding: 3px 8px;
   font-size: 7.5px;
   height: 22px;
-  width: 58px;
+  min-width: 58px;
   box-shadow: none;
 }
 
 .type-badge.size-xs {
-  padding: 4px 6px;
+  padding: 4px 10px;
   font-size: 9.5px;
   height: 26px;
-  width: 72px;
+  min-width: 72px;
 }
 
 .type-badge.size-sm {
-  padding: 5px 8px;
+  padding: 5px 12px;
   font-size: 11.5px;
   height: 30px;
-  width: 84px;
+  min-width: 84px;
 }
 
 .type-badge.size-md {
-  padding: 7px 10px;
+  padding: 7px 14px;
   font-size: 12.5px;
   height: 36px;
-  width: 98px;
+  min-width: 98px;
 }
 
 .type-badge.size-lg {
-  padding: 9px 12px;
+  padding: 9px 16px;
   font-size: 14.5px;
   height: 44px;
-  width: 112px;
+  min-width: 112px;
 }
 
 .type-badge.size-xl {
-  padding: 11px 14px;
+  padding: 11px 18px;
   font-size: 16.5px;
   height: 50px;
-  width: 124px;
+  min-width: 124px;
 }
 
 .type-badge.size-list {
-  padding: 4px 6px;
+  padding: 4px 10px;
   font-size: 9.5px;
   height: 24px;
-  width: 72px;
+  min-width: 72px;
 }
 
 /* iPhone-specific adjustments */

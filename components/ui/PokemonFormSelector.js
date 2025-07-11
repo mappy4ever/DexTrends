@@ -53,20 +53,24 @@ export default function PokemonFormSelector({ pokemon, species, onFormChange }) 
       try {
         const validForms = [];
         
+        // Use the species name as the base name for consistent form naming
+        const baseName = species.name;
+        
         for (const variety of species.varieties) {
           const formName = variety.pokemon.name;
           
-          // Check if this is a valid form
-          if (!isValidForm(formName) && variety.is_default) {
-            // Always include the default form
+          // Always include the default form, but check if it's actually a base form
+          if (variety.is_default) {
+            const displayName = getFormDisplayName(formName, baseName);
             validForms.push({
               name: formName,
-              displayName: 'Base',
+              displayName,
               url: variety.pokemon.url,
               isDefault: true
             });
           } else if (isValidForm(formName)) {
-            const displayName = getFormDisplayName(formName, pokemon.name);
+            // Only include non-default forms if they're valid
+            const displayName = getFormDisplayName(formName, baseName);
             validForms.push({
               name: formName,
               displayName,
@@ -103,7 +107,12 @@ export default function PokemonFormSelector({ pokemon, species, onFormChange }) 
   };
 
   const getFormDisplayName = (formName, baseName) => {
-    const capitalizedBaseName = baseName.charAt(0).toUpperCase() + baseName.slice(1);
+    // Get the base Pokemon name (first part before any hyphens)
+    const baseSpeciesName = baseName.includes('-') ? baseName.split('-')[0] : baseName;
+    const capitalizedBaseName = baseSpeciesName.charAt(0).toUpperCase() + baseSpeciesName.slice(1);
+    
+    // If the form name is the same as base species name (no suffixes), it's the base form
+    if (formName === baseSpeciesName) return 'Base';
     
     // Regional forms
     if (formName.includes('-alola')) return `Alolan ${capitalizedBaseName}`;
@@ -126,11 +135,24 @@ export default function PokemonFormSelector({ pokemon, species, onFormChange }) 
     if (formName.includes('-eternamax')) return `Eternamax ${capitalizedBaseName}`;
     if (formName.includes('-dmax') || formName.includes('-dynamax')) return `Dynamax ${capitalizedBaseName}`;
     
-    // Special cases
-    if (formName === baseName) return 'Base';
+    // Try to extract the form suffix
+    let suffix = '';
+    if (formName.includes(baseSpeciesName + '-')) {
+      suffix = formName.replace(baseSpeciesName + '-', '');
+    } else {
+      // Handle cases where the form name structure is different
+      const parts = formName.split('-');
+      if (parts.length > 1) {
+        suffix = parts.slice(1).join('-');
+      }
+    }
     
-    // Format the remaining part
-    const suffix = formName.replace(baseName + '-', '');
+    // If we couldn't extract a suffix, return a fallback
+    if (!suffix) {
+      return formName.charAt(0).toUpperCase() + formName.slice(1);
+    }
+    
+    // Format the suffix
     return suffix.split('-').map(word => 
       word.charAt(0).toUpperCase() + word.slice(1)
     ).join(' ');
@@ -139,14 +161,22 @@ export default function PokemonFormSelector({ pokemon, species, onFormChange }) 
   const handleFormChange = async (form) => {
     if (form.name === selectedForm?.name) return;
     
+    console.log('Switching to form:', form.name, 'from:', selectedForm?.name);
     setSelectedForm(form);
     
     try {
       // Load the form's data
       const formData = await fetchData(form.url);
-      onFormChange(formData);
+      console.log('Form data loaded:', formData.name);
+      
+      // Call the parent callback with the form data
+      if (onFormChange) {
+        await onFormChange(formData);
+      }
     } catch (error) {
       console.error('Error loading form data:', error);
+      // Revert the selection if loading fails
+      setSelectedForm(selectedForm);
     }
   };
 

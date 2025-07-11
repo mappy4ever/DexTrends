@@ -542,16 +542,6 @@ export default function RegionDetailPage() {
   const router = useRouter();
   const { region: regionId } = router.query;
   const { theme } = useTheme();
-  
-  // Handle page transition zoom effect
-  useEffect(() => {
-    // Clean up the zoom transition class when the page loads
-    const timer = setTimeout(() => {
-      document.body.classList.remove('region-zoom-transition');
-    }, 100);
-    
-    return () => clearTimeout(timer);
-  }, []);
 
   // Handle loading state
   if (!regionId) {
@@ -585,7 +575,7 @@ export default function RegionDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-page-bg page-zoom-enter">
+    <div className="min-h-screen">
       <Head>
         <title>{region.name} Region | Pokémon | DexTrends</title>
         <meta name="description" content={region.description} />
@@ -597,51 +587,32 @@ export default function RegionDetailPage() {
         <StyledBackButton 
           text="Back to Regions" 
           onClick={() => router.push('/pokemon/regions')} 
-          className="glass-morphism hover:glass-morphism-hover transition-all duration-300 hover:scale-105 hover:shadow-lg"
         />
         
         {/* Region Navigation Arrows */}
         <div className="flex items-center gap-4">
           {regionOrder[currentRegionIndex - 1] && (
-            <div className="relative group">
-              <button
-                onClick={() => router.push(`/pokemon/regions/${regionOrder[currentRegionIndex - 1]}`)}
-                className="glass-morphism dark:glass-morphism-dark rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 hover:-translate-y-1"
-                aria-label="Previous region"
-              >
-                <BsChevronLeft className="w-6 h-6 text-gray-700 dark:text-gray-300" />
-              </button>
-              {/* Hover Tooltip */}
-              <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-                <div className="bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap shadow-xl">
-                  {regionsData[regionOrder[currentRegionIndex - 1]]?.name || regionOrder[currentRegionIndex - 1]}
-                  <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-900 dark:bg-gray-100 rotate-45"></div>
-                </div>
-              </div>
-            </div>
+            <button
+              onClick={() => router.push(`/pokemon/regions/${regionOrder[currentRegionIndex - 1]}`)}
+              className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
+              aria-label="Previous region"
+            >
+              <BsChevronLeft className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+            </button>
           )}
           
-          <div className="glass-morphism dark:glass-morphism-dark rounded-full px-6 py-3 shadow-lg">
-            <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">Region {currentRegionIndex + 1} of {regionOrder.length}</span>
+          <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full px-6 py-3 shadow-lg">
+            <span className="text-sm text-gray-600 dark:text-gray-400">Region {currentRegionIndex + 1} of {regionOrder.length}</span>
           </div>
           
           {regionOrder[currentRegionIndex + 1] && (
-            <div className="relative group">
-              <button
-                onClick={() => router.push(`/pokemon/regions/${regionOrder[currentRegionIndex + 1]}`)}
-                className="glass-morphism dark:glass-morphism-dark rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 hover:-translate-y-1"
-                aria-label="Next region"
-              >
-                <BsChevronRight className="w-6 h-6 text-gray-700 dark:text-gray-300" />
-              </button>
-              {/* Hover Tooltip */}
-              <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-                <div className="bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap shadow-xl">
-                  {regionsData[regionOrder[currentRegionIndex + 1]]?.name || regionOrder[currentRegionIndex + 1]}
-                  <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-900 dark:bg-gray-100 rotate-45"></div>
-                </div>
-              </div>
-            </div>
+            <button
+              onClick={() => router.push(`/pokemon/regions/${regionOrder[currentRegionIndex + 1]}`)}
+              className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
+              aria-label="Next region"
+            >
+              <BsChevronRight className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+            </button>
           )}
         </div>
       </div>
@@ -650,62 +621,62 @@ export default function RegionDetailPage() {
       <RegionHero region={region} theme={theme} />
 
       {/* Sticky Section Navigation */}
-      <div className={`sticky top-16 z-30 ${theme === 'dark' ? 'glass-morphism-dark' : 'glass-morphism'} backdrop-blur-md shadow-lg border-b border-gray-200/20 dark:border-gray-800/20`}>
+      <div className={`sticky top-16 z-30 ${theme === 'dark' ? 'bg-gray-900/95' : 'bg-white/95'} backdrop-blur-md shadow-md`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-center space-x-1 sm:space-x-2 py-3 overflow-x-auto scrollbar-hide">
+          <div className="flex items-center justify-center space-x-1 sm:space-x-2 py-3 overflow-x-auto">
             <button onClick={() => document.getElementById('region-info').scrollIntoView({ behavior: 'smooth' })} 
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105 hover:shadow-md ${
-                theme === 'dark' ? 'hover:bg-gray-800/50 hover:text-white' : 'hover:bg-gray-100/50 hover:text-gray-900'
-              } backdrop-blur-sm`}>
+              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
+              }`}>
               Overview
             </button>
             <button onClick={() => document.getElementById('professor').scrollIntoView({ behavior: 'smooth' })} 
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105 hover:shadow-md ${
-                theme === 'dark' ? 'hover:bg-gray-800/50 hover:text-white' : 'hover:bg-gray-100/50 hover:text-gray-900'
-              } backdrop-blur-sm`}>
+              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
+              }`}>
               Professor
             </button>
             <button onClick={() => document.getElementById('starters').scrollIntoView({ behavior: 'smooth' })} 
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105 hover:shadow-md ${
-                theme === 'dark' ? 'hover:bg-gray-800/50 hover:text-white' : 'hover:bg-gray-100/50 hover:text-gray-900'
-              } backdrop-blur-sm`}>
+              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
+              }`}>
               Starters
             </button>
             <button onClick={() => document.getElementById('special-pokemon').scrollIntoView({ behavior: 'smooth' })} 
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105 hover:shadow-md ${
-                theme === 'dark' ? 'hover:bg-gray-800/50 hover:text-white' : 'hover:bg-gray-100/50 hover:text-gray-900'
-              } backdrop-blur-sm`}>
+              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
+              }`}>
               Special Pokémon
             </button>
             <button onClick={() => document.getElementById('journey').scrollIntoView({ behavior: 'smooth' })} 
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105 hover:shadow-md ${
-                theme === 'dark' ? 'hover:bg-gray-800/50 hover:text-white' : 'hover:bg-gray-100/50 hover:text-gray-900'
-              } backdrop-blur-sm`}>
+              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
+              }`}>
               {region.gymLeaders ? 'Gym Leaders' : region.trialCaptains ? 'Island Challenge' : 'Leaders'}
             </button>
             <button onClick={() => document.getElementById('explore').scrollIntoView({ behavior: 'smooth' })} 
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105 hover:shadow-md ${
-                theme === 'dark' ? 'hover:bg-gray-800/50 hover:text-white' : 'hover:bg-gray-100/50 hover:text-gray-900'
-              } backdrop-blur-sm`}>
+              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
+              }`}>
               Locations
             </button>
             <button onClick={() => document.getElementById('games').scrollIntoView({ behavior: 'smooth' })} 
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105 hover:shadow-md ${
-                theme === 'dark' ? 'hover:bg-gray-800/50 hover:text-white' : 'hover:bg-gray-100/50 hover:text-gray-900'
-              } backdrop-blur-sm`}>
+              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
+              }`}>
               Games
             </button>
             <button onClick={() => document.getElementById('evil-teams').scrollIntoView({ behavior: 'smooth' })} 
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105 hover:shadow-md ${
-                theme === 'dark' ? 'hover:bg-gray-800/50 hover:text-white' : 'hover:bg-gray-100/50 hover:text-gray-900'
-              } backdrop-blur-sm`}>
+              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
+              }`}>
               Villains
             </button>
             {region.trivia && (
               <button onClick={() => document.getElementById('trivia').scrollIntoView({ behavior: 'smooth' })} 
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105 hover:shadow-md ${
-                  theme === 'dark' ? 'hover:bg-gray-800/50 hover:text-white' : 'hover:bg-gray-100/50 hover:text-gray-900'
-                } backdrop-blur-sm`}>
+                className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                  theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
+                }`}>
                 Trivia
               </button>
             )}
@@ -721,25 +692,25 @@ export default function RegionDetailPage() {
         </section>
 
         {/* Professor Section - New Enhanced */}
-        <section id="professor" className={`section-spacing ${theme === 'dark' ? 'bg-gray-900/50' : 'bg-gray-50/50'} backdrop-blur-sm`}>
+        <section id="professor" className={`py-16 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
           <ProfessorShowcase region={region} professor={region.professor} theme={theme} />
         </section>
 
         {/* Starter Pokémon Section - Well Organized */}
-        <section id="starters" className={`section-spacing ${theme === 'dark' ? 'bg-gray-800/50' : 'bg-white/80'} backdrop-blur-sm`}>
+        <section id="starters" className={`py-16 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
           <StarterPokemonShowcase region={region} starters={region.starters} theme={theme} />
         </section>
 
         {/* Special Pokémon Section (Variants & Legendaries) */}
-        <section id="special-pokemon" className={`section-spacing ${theme === 'dark' ? 'bg-gray-900/50' : 'bg-gray-50/50'} backdrop-blur-sm`}>
+        <section id="special-pokemon" className={`py-16 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
           <SpecialPokemonShowcase region={region} theme={theme} />
         </section>
 
         {/* Journey Section - Gym Leaders & Elite Four */}
-        <section id="journey" className={`section-spacing ${theme === 'dark' ? 'bg-gray-800/50' : 'bg-white/80'} backdrop-blur-sm`}>
+        <section id="journey" className={`py-16 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold mb-4 text-gray-900 dark:text-white">Your Journey in {region.name}</h2>
+              <h2 className="text-4xl font-bold mb-4">Your Journey in {region.name}</h2>
               <p className="text-xl text-gray-600 dark:text-gray-400">
                 {region.trialCaptains 
                   ? 'Complete trials and face Island Kahunas to become Champion'
@@ -770,11 +741,11 @@ export default function RegionDetailPage() {
         </section>
 
         {/* Explore Section - Locations & Landmarks */}
-        <section id="explore" className={`section-spacing ${theme === 'dark' ? 'bg-gray-900/50' : 'bg-gray-50/50'} backdrop-blur-sm`}>
+        <section id="explore" className={`py-16 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <FadeIn>
               <div className="text-center mb-12">
-                <h2 className="text-4xl font-bold mb-4 text-gray-900 dark:text-white">Explore {region.name}</h2>
+                <h2 className="text-4xl font-bold mb-4">Explore {region.name}</h2>
                 <p className="text-xl text-gray-600 dark:text-gray-400">
                   Discover the diverse cities, towns, and landmarks
                 </p>
@@ -793,19 +764,19 @@ export default function RegionDetailPage() {
                   <div className="space-y-4">
                     {region.locations.map((location, index) => (
                       <CardHover key={index}>
-                        <div className={`card hover:hover-lift ${
-                          theme === 'dark' ? 'bg-gray-800/50 backdrop-blur-sm' : 'bg-white/80 backdrop-blur-sm'
-                        } shadow-md hover:shadow-xl transition-all duration-300 border ${
-                          theme === 'dark' ? 'border-gray-700/50' : 'border-gray-200/50'
-                        } hover:border-gray-400/30 dark:hover:border-gray-600/30`}>
+                        <div className={`p-5 rounded-xl ${
+                          theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+                        } shadow-md hover:shadow-lg transition-all border ${
+                          theme === 'dark' ? 'border-gray-700' : 'border-gray-200'
+                        }`}>
                           <div className="flex items-start gap-4">
-                            <div className={`p-2.5 rounded-lg bg-gradient-to-br ${region.color} text-white flex-shrink-0 shadow-lg`}>
+                            <div className={`p-2.5 rounded-lg bg-gradient-to-br ${region.color} text-white flex-shrink-0`}>
                               {location.type === 'city' ? <GiModernCity size={20} /> : 
                                location.type === 'island' ? <GiIsland size={20} /> :
                                <BsGeoAlt size={20} />}
                             </div>
                             <div className="flex-1">
-                              <h4 className="font-bold text-base mb-1 text-gray-900 dark:text-white">{location.name}</h4>
+                              <h4 className="font-bold text-base mb-1">{location.name}</h4>
                               <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
                                 {location.description}
                               </p>
@@ -828,14 +799,14 @@ export default function RegionDetailPage() {
                   <div className="space-y-4">
                     {region.landmarks.map((landmark, index) => (
                       <SlideUp key={index} delay={index * 0.05}>
-                        <div className={`card hover:hover-lift ${
-                          theme === 'dark' ? 'bg-gray-800/50 backdrop-blur-sm' : 'bg-white/80 backdrop-blur-sm'
-                        } shadow-md hover:shadow-xl transition-all duration-300 border-l-4 ${
+                        <div className={`p-5 rounded-xl ${
+                          theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+                        } shadow-md hover:shadow-lg transition-all border-l-4 ${
                           index % 3 === 0 ? 'border-l-red-500' :
                           index % 3 === 1 ? 'border-l-blue-500' :
                           'border-l-green-500'
-                        } hover:border-gray-400/30 dark:hover:border-gray-600/30`}>
-                          <h4 className="font-bold text-base mb-1 text-gray-900 dark:text-white">{landmark.name}</h4>
+                        }`}>
+                          <h4 className="font-bold text-base mb-1">{landmark.name}</h4>
                           <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
                             {landmark.description}
                           </p>
@@ -850,23 +821,23 @@ export default function RegionDetailPage() {
         </section>
 
         {/* Games Section */}
-        <section id="games" className={`section-spacing ${theme === 'dark' ? 'bg-gray-800/50' : 'bg-white/80'} backdrop-blur-sm`}>
+        <section id="games" className={`py-16 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
           <GameShowcase region={region} theme={theme} />
         </section>
 
         {/* Evil Teams Section */}
-        <section id="evil-teams" className={`section-spacing ${theme === 'dark' ? 'bg-gray-900/50' : 'bg-gray-50/50'} backdrop-blur-sm`}>
+        <section id="evil-teams" className={`py-16 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
           <EvilTeamShowcase region={region} theme={theme} />
         </section>
 
 
         {/* Trivia Section - More Compact */}
         {region.trivia && (
-          <section id="trivia" className={`section-spacing ${theme === 'dark' ? 'bg-gray-900/50' : 'bg-gray-50/50'} backdrop-blur-sm`}>
+          <section id="trivia" className={`py-16 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <FadeIn>
                 <div className="text-center mb-10">
-                  <h2 className="text-3xl font-bold mb-3 text-gray-900 dark:text-white">Did You Know?</h2>
+                  <h2 className="text-3xl font-bold mb-3">Did You Know?</h2>
                   <p className="text-lg text-gray-600 dark:text-gray-400">
                     Interesting facts about {region.name}
                   </p>
@@ -876,13 +847,13 @@ export default function RegionDetailPage() {
               <StaggeredChildren className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto">
                 {region.trivia.map((fact, index) => (
                   <CardHover key={index}>
-                    <div className={`card hover:hover-lift ${
-                      theme === 'dark' ? 'bg-gray-800/50 backdrop-blur-sm' : 'bg-white/80 backdrop-blur-sm'
-                    } shadow-md hover:shadow-xl transition-all duration-300 border ${
-                      theme === 'dark' ? 'border-gray-700/50' : 'border-gray-200/50'
-                    } hover:border-gray-400/30 dark:hover:border-gray-600/30`}>
+                    <div className={`p-5 rounded-xl ${
+                      theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+                    } shadow-md hover:shadow-lg transition-all border ${
+                      theme === 'dark' ? 'border-gray-700' : 'border-gray-200'
+                    }`}>
                       <div className="flex items-start gap-3">
-                        <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${region.color} flex items-center justify-center flex-shrink-0 shadow-lg`}>
+                        <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${region.color} flex items-center justify-center flex-shrink-0`}>
                           <span className="text-white font-bold text-sm">{index + 1}</span>
                         </div>
                         <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">{fact}</p>
@@ -895,29 +866,6 @@ export default function RegionDetailPage() {
           </section>
         )}
       </div>
-      
-      <style jsx global>{`
-        /* Page entrance zoom effect */
-        .page-zoom-enter {
-          animation: pageZoomIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-        }
-        
-        @keyframes pageZoomIn {
-          from {
-            opacity: 0.8;
-            transform: scale(1.1);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-        
-        /* Clean up transition effect */
-        .region-zoom-transition {
-          overflow: hidden;
-        }
-      `}</style>
     </div>
   );
 }

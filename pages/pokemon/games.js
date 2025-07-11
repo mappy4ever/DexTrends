@@ -205,7 +205,7 @@ export default function GamesPage() {
         {/* Content */}
         <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-8">
           <FadeIn>
-            <h1 className="text-7xl md:text-8xl font-black mb-6 tracking-tight">
+            <h1 className="text-5xl md:text-6xl font-black mb-6 tracking-tight">
               <span className="bg-gradient-to-r from-yellow-300 to-red-400 bg-clip-text text-transparent">
                 POKÉMON
               </span>

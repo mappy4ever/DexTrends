@@ -143,7 +143,7 @@ export default function MovesPage() {
           </div>
 
           <div className="text-center mb-12">
-            <h1 className="text-5xl font-bold mb-4 flex items-center justify-center gap-3">
+            <h1 className="text-4xl font-bold mb-4 flex items-center justify-center gap-3">
               <BsBook className="text-blue-400" />
               <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
                 Moves & TMs

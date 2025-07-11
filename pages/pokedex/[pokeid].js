@@ -263,11 +263,32 @@ export default function PokemonDetail() {
 
   // Handle form changes
   const handleFormChange = async (formData) => {
-    setPokemon(formData);
-    // Update abilities for the new form
-    await loadAbilities(formData.abilities);
-    // Update cards for the new form
-    await loadCards(formData.name);
+    try {
+      console.log('Form change requested:', formData.name);
+      
+      // Update the main Pokemon data
+      setPokemon(formData);
+      
+      // Update abilities for the new form
+      await loadAbilities(formData.abilities);
+      
+      // Update cards for the new form
+      await loadCards(formData.name);
+      
+      // Update the URL to reflect the form change (optional - preserves browsing experience)
+      const formId = formData.name.includes('-') ? formData.name : formData.id;
+      const currentUrl = window.location.pathname;
+      const newUrl = `/pokedex/${formId}`;
+      
+      // Only update URL if it's different to avoid unnecessary history entries
+      if (currentUrl !== newUrl) {
+        window.history.replaceState(null, '', newUrl);
+      }
+      
+    } catch (error) {
+      console.error('Error handling form change:', error);
+      // Don't break the UI if form change fails
+    }
   };
 
   if (loading) {

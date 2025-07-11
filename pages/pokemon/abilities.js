@@ -322,7 +322,7 @@ export default function AbilitiesPage() {
           </div>
 
           <div className="text-center mb-12">
-            <h1 className="text-5xl font-bold mb-4 flex items-center justify-center gap-3">
+            <h1 className="text-4xl font-bold mb-4 flex items-center justify-center gap-3">
               <AiOutlineBulb className="text-pokemon-indigo" />
               <span className="bg-gradient-to-r from-pokemon-indigo to-pokemon-violet bg-clip-text text-transparent">
                 Pokémon Abilities

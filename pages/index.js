@@ -3,7 +3,7 @@ import Link from "next/link";
 import pokemon from "pokemontcgsdk";
 import Modal from "../components/ui/Modal";
 import CardList from "../components/CardList";
-import CustomSiteLogo from "../components/icons/customsitelogo";
+import Image from 'next/image';
 import { getPrice, getRarityRank } from "../utils/pokemonutils.js";
 import { BsBook, BsCardList, BsGrid, BsSearch, BsGlobeEuropeAfrica, BsTrophy, BsHeart, BsGraphUp } from "react-icons/bs";
 import { GiCardPickup, GiCrossedSwords, GiPokerHand } from "react-icons/gi";
@@ -146,29 +146,27 @@ export default function IndexPage() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-br from-red-200/10 to-pink-200/10 rounded-full blur-3xl" />
       </div>
       
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-12">
         {/* Header with Global Search */}
-        <div className="text-center mb-12">
-          <div className="flex justify-center mb-6">
-            <div className="relative group">
-              <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-pink-500 rounded-3xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-300" />
-              <div className="relative bg-white rounded-3xl p-6 shadow-2xl transform group-hover:scale-105 transition-transform duration-300">
-                <CustomSiteLogo size={120} className="mx-auto" />
-              </div>
-            </div>
+        <div className="text-center mb-8">
+          <div className="flex justify-center mb-1">
+            <Image
+              src="/images/dextrends-vertical-logo.png"
+              alt="DexTrends"
+              width={500}
+              height={600}
+              className="h-72 md:h-80 lg:h-96 w-auto mx-auto transform hover:scale-105 transition-transform duration-300 filter contrast-200 saturate-140 brightness-90 drop-shadow-2xl"
+              priority
+            />
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-extrabold mb-4 bg-gradient-to-r from-red-600 via-pink-600 to-purple-600 bg-clip-text text-transparent animate-gradient">
-            DexTrends
-          </h1>
-          
-          <p className="text-xl text-gray-600 font-medium mb-8 max-w-3xl mx-auto">
+          <p className="text-lg text-gray-600 font-medium mb-4 max-w-3xl mx-auto">
             Your ultimate destination for everything Pokémon - from TCG cards to game data, 
             competitive battles to collection tracking.
           </p>
           
           {/* Global Search Bar */}
-          <form onSubmit={handleGlobalSearch} className="max-w-2xl mx-auto mb-8">
+          <form onSubmit={handleGlobalSearch} className="max-w-2xl mx-auto mb-6">
             <div className="relative group">
               <input
                 ref={globalSearchRef}
@@ -192,7 +190,7 @@ export default function IndexPage() {
         </div>
         
         {/* Main Navigation Grid - 8 Key Sections */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {/* Pokédex */}
           <Link href="/pokedex" className="group relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -339,7 +337,7 @@ export default function IndexPage() {
         </div>
         
         {/* Pokemon Card Search Section */}
-        <div className="mb-12">
+        <div className="mb-8">
           <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/30">
             <div className="flex items-center justify-between mb-6">
               <div>
@@ -441,7 +439,7 @@ export default function IndexPage() {
         </div>
         
         {/* Quick Links Section */}
-        <div className="mb-12">
+        <div className="mb-8">
           <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Popular Destinations</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <Link href="/pokemon/starters" className="group">

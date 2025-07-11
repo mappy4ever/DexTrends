@@ -1,21 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import { getEliteFourImage, getChampionImage } from '../../utils/scrapedImageMapping';
 import { TypeBadge } from '../ui/TypeBadge';
 import { FadeIn, SlideUp, CardHover, StaggeredChildren } from '../ui/animations';
-import { BsTrophy, BsShieldFill, BsStar, BsLightning } from 'react-icons/bs';
+import { BsTrophy, BsShieldFill, BsStar, BsLightning, BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { typeEffectiveness } from '../../data/gymLeaderTeams';
-import styles from '../../styles/FlipCard.module.css';
+import { EliteFourCard, ChampionCard } from '../ui/cards';
 
 const EliteFourGallery = ({ region, eliteFour, champion, theme }) => {
   const [revealChampion, setRevealChampion] = useState(false);
-  const [flippedCards, setFlippedCards] = useState({});
-  const [championFlipped, setChampionFlipped] = useState(false);
-
-  // Toggle card flip state
-  const toggleFlip = (memberName) => {
-    setFlippedCards(prev => ({ ...prev, [memberName]: !prev[memberName] }));
-  };
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+  const carouselRef = useRef(null);
 
   // Elite Four team data with full Pokemon teams
   const eliteFourData = {
@@ -131,6 +129,47 @@ const EliteFourGallery = ({ region, eliteFour, champion, theme }) => {
         { name: 'Flygon', id: 330, level: 53, types: ['ground', 'dragon'] },
         { name: 'Salamence', id: 373, level: 55, types: ['dragon', 'flying'] }
       ]
+    },
+    // Kalos Elite Four
+    'Malva': {
+      quote: "I was a member of Team Flare, so I’m used to heated battles!",
+      strategy: "Scorching Fire-type offense with media flair",
+      team: [
+        { name: 'Pyroar', id: 668, level: 63, types: ['fire', 'normal'] },
+        { name: 'Torkoal', id: 324, level: 63, types: ['fire'] },
+        { name: 'Chandelure', id: 609, level: 63, types: ['ghost', 'fire'] },
+        { name: 'Talonflame', id: 663, level: 65, types: ['fire', 'flying'] }
+      ]
+    },
+    'Siebold': {
+      quote: "Cooking is subtle! You must discern flavors that only you can sense!",
+      strategy: "Elegant Water-type cuisine with refined technique",
+      team: [
+        { name: 'Clawitzer', id: 693, level: 63, types: ['water'] },
+        { name: 'Gyarados', id: 130, level: 63, types: ['water', 'flying'] },
+        { name: 'Barbaracle', id: 689, level: 63, types: ['rock', 'water'] },
+        { name: 'Starmie', id: 121, level: 65, types: ['water', 'psychic'] }
+      ]
+    },
+    'Wikstrom': {
+      quote: "Chivalrous knights and Pokémon come together as one!",
+      strategy: "Noble Steel-type defense with knightly honor",
+      team: [
+        { name: 'Klefki', id: 707, level: 63, types: ['steel', 'fairy'] },
+        { name: 'Probopass', id: 476, level: 63, types: ['rock', 'steel'] },
+        { name: 'Scizor', id: 212, level: 63, types: ['bug', 'steel'] },
+        { name: 'Aegislash', id: 681, level: 65, types: ['steel', 'ghost'] }
+      ]
+    },
+    'Drasna': {
+      quote: "Oh, dear! You’re quite the adorable Trainer, but you’ve also got a fierce side to you!",
+      strategy: "Mystical Dragon-type wisdom with ancient power",
+      team: [
+        { name: 'Dragalge', id: 691, level: 63, types: ['poison', 'dragon'] },
+        { name: 'Druddigon', id: 621, level: 63, types: ['dragon'] },
+        { name: 'Altaria', id: 334, level: 63, types: ['dragon', 'flying'] },
+        { name: 'Noivern', id: 715, level: 65, types: ['flying', 'dragon'] }
+      ]
     }
   };
 
@@ -139,6 +178,12 @@ const EliteFourGallery = ({ region, eliteFour, champion, theme }) => {
     'Blue': {
       quote: "I'm the most powerful trainer in the world!",
       strategy: "Balanced team with no weaknesses",
+      achievements: [
+        "Youngest Gym Leader in Kanto history",
+        "Former Pokémon League Champion",
+        "Grandson of Professor Oak",
+        "Viridian City Gym Leader"
+      ],
       team: [
         { name: 'Pidgeot', id: 18, level: 59, types: ['normal', 'flying'] },
         { name: 'Alakazam', id: 65, level: 57, types: ['psychic'] },
@@ -146,11 +191,18 @@ const EliteFourGallery = ({ region, eliteFour, champion, theme }) => {
         { name: 'Exeggutor', id: 103, level: 59, types: ['grass', 'psychic'] },
         { name: 'Gyarados', id: 130, level: 59, types: ['water', 'flying'] },
         { name: 'Arcanine', id: 59, level: 61, types: ['fire'] }
-      ]
+      ],
+      funFact: "Blue was the Champion for only a few minutes before being defeated by Red. Despite this, he remains one of the strongest trainers in the Pokémon world."
     },
     'Lance': {
       quote: "I still can't believe my dragons lost to you!",
       strategy: "Dragon mastery and overwhelming force",
+      achievements: [
+        "Dragon Master of the Elite Four",
+        "Johto League Champion",
+        "Leader of the G-Men",
+        "Protector of Dragon's Den"
+      ],
       team: [
         { name: 'Gyarados', id: 130, level: 44, types: ['water', 'flying'] },
         { name: 'Dragonite', id: 149, level: 47, types: ['dragon', 'flying'] },
@@ -158,11 +210,18 @@ const EliteFourGallery = ({ region, eliteFour, champion, theme }) => {
         { name: 'Aerodactyl', id: 142, level: 48, types: ['rock', 'flying'] },
         { name: 'Charizard', id: 6, level: 48, types: ['fire', 'flying'] },
         { name: 'Dragonite', id: 149, level: 50, types: ['dragon', 'flying'] }
-      ]
+      ],
+      funFact: "Lance owns multiple Dragonite that know illegal moves. His Dragonite can use Barrier and Hyper Beam at levels where they shouldn't know these moves!"
     },
     'Steven': {
       quote: "I, the Champion, fall in defeat... ",
       strategy: "Steel-type defense and strategic offense",
+      achievements: [
+        "Hoenn League Champion",
+        "Stone collector and researcher",
+        "Son of Devon Corporation president",
+        "Mentor to many trainers"
+      ],
       team: [
         { name: 'Skarmory', id: 227, level: 57, types: ['steel', 'flying'] },
         { name: 'Claydol', id: 344, level: 55, types: ['ground', 'psychic'] },
@@ -170,11 +229,18 @@ const EliteFourGallery = ({ region, eliteFour, champion, theme }) => {
         { name: 'Cradily', id: 346, level: 56, types: ['rock', 'grass'] },
         { name: 'Armaldo', id: 348, level: 56, types: ['rock', 'bug'] },
         { name: 'Metagross', id: 376, level: 58, types: ['steel', 'psychic'] }
-      ]
+      ],
+      funFact: "Steven's hobby is collecting rare stones. He can often be found in caves searching for rare minerals, and his villa is filled with his stone collection."
     },
     'Wallace': {
       quote: "I, the Champion, fall in defeat... Congratulations!",
       strategy: "Water elegance and type coverage",
+      achievements: [
+        "Sootopolis City Gym Leader",
+        "Hoenn League Champion",
+        "Contest Master",
+        "Mentor to his niece Lisia"
+      ],
       team: [
         { name: 'Wailord', id: 321, level: 57, types: ['water'] },
         { name: 'Tentacruel', id: 73, level: 55, types: ['water', 'poison'] },
@@ -182,11 +248,18 @@ const EliteFourGallery = ({ region, eliteFour, champion, theme }) => {
         { name: 'Whiscash', id: 340, level: 56, types: ['water', 'ground'] },
         { name: 'Gyarados', id: 130, level: 56, types: ['water', 'flying'] },
         { name: 'Milotic', id: 350, level: 58, types: ['water'] }
-      ]
+      ],
+      funFact: "Wallace is not just a powerful trainer but also an artist. He's a top Pokémon Coordinator and views battles as a form of art, emphasizing beauty in combat."
     },
     'Cynthia': {
       quote: "I won't lose!",
       strategy: "Perfect team composition and tactics",
+      achievements: [
+        "Sinnoh League Champion",
+        "Mythology researcher",
+        "Undefeated for years",
+        "Archaeological discoveries"
+      ],
       team: [
         { name: 'Spiritomb', id: 442, level: 58, types: ['ghost', 'dark'] },
         { name: 'Roserade', id: 407, level: 58, types: ['grass', 'poison'] },
@@ -194,33 +267,217 @@ const EliteFourGallery = ({ region, eliteFour, champion, theme }) => {
         { name: 'Lucario', id: 448, level: 60, types: ['fighting', 'steel'] },
         { name: 'Milotic', id: 350, level: 58, types: ['water'] },
         { name: 'Garchomp', id: 445, level: 62, types: ['dragon', 'ground'] }
-      ]
+      ],
+      funFact: "Cynthia is fascinated by mythology and spends her free time researching ancient ruins. She's particularly interested in the mythology surrounding the creation of the Sinnoh region."
+    },
+    'Alder': {
+      quote: "Unbelievable! You're more than just talented!",
+      strategy: "Diverse team with unique moves",
+      achievements: [
+        "Unova League Champion",
+        "Wandering trainer",
+        "Mentor to young trainers",
+        "Bug-type enthusiast"
+      ],
+      team: [
+        { name: 'Accelgor', id: 617, level: 75, types: ['bug'] },
+        { name: 'Bouffalant', id: 626, level: 75, types: ['normal'] },
+        { name: 'Druddigon', id: 621, level: 75, types: ['dragon'] },
+        { name: 'Vanilluxe', id: 584, level: 75, types: ['ice'] },
+        { name: 'Escavalier', id: 589, level: 75, types: ['bug', 'steel'] },
+        { name: 'Volcarona', id: 637, level: 77, types: ['bug', 'fire'] }
+      ],
+      funFact: "Alder travels the region with his Pokémon instead of staying at the Pokémon League. He believes that bonding with Pokémon is more important than just being strong."
+    },
+    'Diantha': {
+      quote: "Witnessing the noble spirits of you and your Pokémon in battle has really touched my heart.",
+      strategy: "Mega Evolution mastery",
+      achievements: [
+        "Kalos League Champion",
+        "Famous movie star",
+        "Fashion icon",
+        "Mega Evolution expert"
+      ],
+      team: [
+        { name: 'Hawlucha', id: 701, level: 64, types: ['fighting', 'flying'] },
+        { name: 'Tyrantrum', id: 697, level: 65, types: ['rock', 'dragon'] },
+        { name: 'Aurorus', id: 699, level: 65, types: ['rock', 'ice'] },
+        { name: 'Gourgeist', id: 711, level: 65, types: ['ghost', 'grass'] },
+        { name: 'Goodra', id: 706, level: 66, types: ['dragon'] },
+        { name: 'Gardevoir', id: 282, level: 68, types: ['psychic', 'fairy'] }
+      ],
+      funFact: "Diantha is a famous movie star when she's not defending her Champion title. She's known for her elegance both in battle and on the silver screen."
+    },
+    'Professor Kukui': {
+      quote: "I'm so glad I got to meet you and your Pokémon!",
+      strategy: "Type diversity and Z-Moves",
+      achievements: [
+        "Pokémon Professor",
+        "Alola League founder",
+        "First Alola Champion",
+        "Masked Royal wrestler"
+      ],
+      team: [
+        { name: 'Lycanroc', id: 745, level: 57, types: ['rock'] },
+        { name: 'Braviary', id: 628, level: 56, types: ['normal', 'flying'] },
+        { name: 'Magnezone', id: 462, level: 56, types: ['electric', 'steel'] },
+        { name: 'Snorlax', id: 143, level: 56, types: ['normal'] },
+        { name: 'Primarina', id: 730, level: 58, types: ['water', 'fairy'] },
+        { name: 'Incineroar', id: 727, level: 58, types: ['fire', 'dark'] }
+      ],
+      funFact: "Professor Kukui has a secret identity as the Masked Royal, a famous Battle Royal wrestler. His wife Burnet is one of the few who knows his secret!"
+    },
+    'Leon': {
+      quote: "My time as Champion is over... But what a champion time it's been!",
+      strategy: "Gigantamax Charizard sweep",
+      achievements: [
+        "Undefeated Champion for years",
+        "Youngest Champion in Galar history",
+        "Battle Tower founder",
+        "Terrible sense of direction"
+      ],
+      team: [
+        { name: 'Aegislash', id: 681, level: 62, types: ['steel', 'ghost'] },
+        { name: 'Dragapult', id: 887, level: 62, types: ['dragon', 'ghost'] },
+        { name: 'Haxorus', id: 612, level: 63, types: ['dragon'] },
+        { name: 'Seismitoad', id: 537, level: 64, types: ['water', 'ground'] },
+        { name: 'Mr. Rime', id: 866, level: 64, types: ['ice', 'psychic'] },
+        { name: 'Charizard', id: 6, level: 65, types: ['fire', 'flying'] }
+      ],
+      funFact: "Despite being an undefeated Champion, Leon has a terrible sense of direction and often gets lost even in familiar places. His Charizard often has to guide him!"
+    },
+    'Geeta': {
+      quote: "I look forward to news of all your future successes!",
+      strategy: "Strategic field control",
+      achievements: [
+        "Top Champion of Paldea",
+        "Pokémon League Chairwoman",
+        "Academy collaborator",
+        "Paldea's strongest trainer"
+      ],
+      team: [
+        { name: 'Espathra', id: 956, level: 61, types: ['psychic'] },
+        { name: 'Avalugg', id: 713, level: 61, types: ['ice'] },
+        { name: 'Kingambit', id: 983, level: 61, types: ['dark', 'steel'] },
+        { name: 'Veluza', id: 976, level: 61, types: ['water', 'psychic'] },
+        { name: 'Gogoat', id: 673, level: 61, types: ['grass'] },
+        { name: 'Glimmora', id: 970, level: 62, types: ['rock', 'poison'] }
+      ],
+      funFact: "Geeta leads with her ace Glimmora to set up Toxic Spikes, showing her strategic approach. However, many trainers consider her team composition questionable for a Champion."
+    },
+    // Adding champion data here
+    'Blue': {
+      quote: "I can't believe I lost again! Unbelievable! I picked the wrong Pokémon!",
+      strategy: "Varied team composition based on starter choice",
+      achievements: [
+        "Kanto League Champion",
+        "Gym Leader of Viridian City",
+        "Professor Oak's grandson",
+        "Pokédex holder"
+      ],
+      team: [
+        { name: 'Pidgeot', id: 18, level: 59, types: ['normal', 'flying'] },
+        { name: 'Alakazam', id: 65, level: 57, types: ['psychic'] },
+        { name: 'Rhydon', id: 112, level: 59, types: ['ground', 'rock'] },
+        { name: 'Gyarados', id: 130, level: 58, types: ['water', 'flying'] },
+        { name: 'Arcanine', id: 59, level: 59, types: ['fire'] },
+        { name: 'Venusaur', id: 3, level: 63, types: ['grass', 'poison'] }
+      ],
+      funFact: "Blue's team varies depending on the starter you chose, showing his strategic adaptability."
+    },
+    'Diantha': {
+      quote: "I suppose a Champion's path is never easy...",
+      strategy: "Elegant battle style with perfect coordination",
+      achievements: [
+        "Kalos Champion",
+        "Famous actress and movie star",
+        "Fashion icon of Kalos",
+        "Master of Mega Evolution"
+      ],
+      team: [
+        { name: 'Hawlucha', id: 701, level: 64, types: ['fighting', 'flying'] },
+        { name: 'Tyrantrum', id: 697, level: 65, types: ['rock', 'dragon'] },
+        { name: 'Aurorus', id: 699, level: 65, types: ['rock', 'ice'] },
+        { name: 'Gourgeist', id: 711, level: 65, types: ['ghost', 'grass'] },
+        { name: 'Goodra', id: 706, level: 66, types: ['dragon'] },
+        { name: 'Gardevoir', id: 282, level: 68, types: ['psychic', 'fairy'], mega: true }
+      ],
+      funFact: "Diantha is not only a Champion but also a world-famous actress, starring in movies across the Kalos region and beyond."
     }
   };
 
-  const getTypeGradient = (type) => {
-    const gradients = {
-      normal: 'from-gray-400 to-gray-600',
-      fire: 'from-red-400 to-orange-600',
-      water: 'from-blue-400 to-blue-600',
-      electric: 'from-yellow-300 to-yellow-600',
-      grass: 'from-green-400 to-green-600',
-      ice: 'from-blue-300 to-cyan-500',
-      fighting: 'from-red-600 to-red-800',
-      poison: 'from-purple-400 to-purple-600',
-      ground: 'from-yellow-600 to-yellow-800',
-      flying: 'from-blue-300 to-indigo-400',
-      psychic: 'from-pink-400 to-pink-600',
-      bug: 'from-green-300 to-green-500',
-      rock: 'from-yellow-700 to-yellow-900',
-      ghost: 'from-purple-600 to-purple-800',
-      dragon: 'from-indigo-600 to-purple-700',
-      dark: 'from-gray-700 to-gray-900',
-      steel: 'from-gray-400 to-gray-600',
-      fairy: 'from-pink-300 to-pink-500'
-    };
-    return gradients[type] || 'from-gray-400 to-gray-600';
+  // Use eliteFourData as championData as well - merging the data
+  Object.assign(championData, {
+    'Cynthia': eliteFourData['Cynthia'],
+    'Alder': eliteFourData['Alder'],
+    'Diantha': eliteFourData['Diantha'],
+    'Professor Kukui': eliteFourData['Professor Kukui'],
+    'Leon': eliteFourData['Leon'],
+    'Geeta': eliteFourData['Geeta']
+  });
+
+  // Handle carousel navigation
+  const scrollToMember = (index) => {
+    if (carouselRef.current) {
+      const isMobile = window.innerWidth <= 850;
+      const cardWidth = isMobile ? (window.innerWidth - 64) : 900; // Match actual card width
+      const gap = isMobile ? 24 : 48; // Gap between cards (gap-12 = 48px)
+      const cushionPadding = isMobile ? 32 : 200; // Cushion padding for first/last cards
+      
+      // Calculate scroll position to center the card
+      const containerWidth = carouselRef.current.offsetWidth;
+      const scrollPosition = index * (cardWidth + gap) + cushionPadding - (containerWidth - cardWidth) / 2;
+      
+      carouselRef.current.scrollTo({
+        left: Math.max(0, scrollPosition), // Ensure we don't scroll past the beginning
+        behavior: 'smooth'
+      });
+      setActiveIndex(index);
+    }
   };
+
+  const handlePrev = () => {
+    const newIndex = activeIndex > 0 ? activeIndex - 1 : eliteFour.length - 1;
+    scrollToMember(newIndex);
+  };
+
+  const handleNext = () => {
+    const newIndex = activeIndex < eliteFour.length - 1 ? activeIndex + 1 : 0;
+    scrollToMember(newIndex);
+  };
+
+  // Touch/Mouse drag handling
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setStartX(e.pageX - carouselRef.current.offsetLeft);
+    setScrollLeft(carouselRef.current.scrollLeft);
+  };
+
+  const handleTouchStart = (e) => {
+    setIsDragging(true);
+    setStartX(e.touches[0].pageX - carouselRef.current.offsetLeft);
+    setScrollLeft(carouselRef.current.scrollLeft);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - carouselRef.current.offsetLeft;
+    const walk = (x - startX) * 2;
+    carouselRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDragging) return;
+    const x = e.touches[0].pageX - carouselRef.current.offsetLeft;
+    const walk = (x - startX) * 2;
+    carouselRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
+  };
+
 
   // Don't render if no Elite Four data
   if (!eliteFour || eliteFour.length === 0) {
@@ -229,421 +486,199 @@ const EliteFourGallery = ({ region, eliteFour, champion, theme }) => {
 
   return (
     <div className="mt-12">
+      {/* Elite Four Special Header with Effects */}
       <FadeIn>
-        <div className="text-center mb-8">
-          <h3 className="text-2xl font-bold mb-2">
-            Elite Four & Champion
-          </h3>
-          <p className="text-base text-gray-600 dark:text-gray-400">
-            The ultimate challenge awaits at the Pokémon League
-          </p>
+        <div className="text-center mb-8 relative">
+          {/* Background glow effect */}
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-yellow-500/20 to-purple-500/20 blur-3xl -z-10"></div>
+          
+          {/* Main title with special styling */}
+          <div className="relative">
+            <h3 className="text-4xl font-black mb-4 bg-gradient-to-r from-purple-400 via-yellow-400 to-purple-400 bg-clip-text text-transparent animate-pulse">
+              ⚡ ELITE FOUR & CHAMPION ⚡
+            </h3>
+            <div className="flex items-center justify-center gap-4 mb-2">
+              <BsLightning className="text-yellow-400 text-xl animate-bounce" />
+              <BsShieldFill className="text-purple-400 text-xl animate-pulse" />
+              <BsTrophy className="text-yellow-400 text-xl animate-bounce" />
+              <BsShieldFill className="text-purple-400 text-xl animate-pulse" />
+              <BsLightning className="text-yellow-400 text-xl animate-bounce" />
+            </div>
+            <p className="text-lg text-gray-600 dark:text-gray-300 font-semibold">
+              The ultimate challenge awaits at the Pokémon League
+            </p>
+            <div className="mt-4 w-32 h-1 bg-gradient-to-r from-purple-500 to-yellow-500 mx-auto rounded-full"></div>
+          </div>
         </div>
       </FadeIn>
 
-      {/* Elite Four Cards - Flip cards matching gym leader design */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
-        {eliteFour.map((member, index) => {
+      {/* Elite Four Carousel */}
+      <div className="relative mb-16 px-20">
+        {/* Navigation Buttons - Enhanced Elite Four Style */}
+        <button
+          onClick={handlePrev}
+          className="absolute -left-20 top-1/2 -translate-y-1/2 z-20 bg-gradient-to-r from-purple-900 via-purple-800 to-indigo-800 backdrop-blur-sm rounded-full p-4 shadow-2xl hover:scale-110 transition-all duration-300 border-2 border-yellow-400/50 group hover:shadow-purple-500/50"
+        >
+          <BsChevronLeft className="text-2xl text-yellow-300 group-hover:-translate-x-1 transition-transform group-hover:text-yellow-100" />
+        </button>
+        <button
+          onClick={handleNext}
+          className="absolute -right-20 top-1/2 -translate-y-1/2 z-20 bg-gradient-to-l from-purple-900 via-purple-800 to-indigo-800 backdrop-blur-sm rounded-full p-4 shadow-2xl hover:scale-110 transition-all duration-300 border-2 border-yellow-400/50 group hover:shadow-purple-500/50"
+        >
+          <BsChevronRight className="text-2xl text-yellow-300 group-hover:translate-x-1 transition-transform group-hover:text-yellow-100" />
+        </button>
+
+        {/* Carousel */}
+        <div
+          ref={carouselRef}
+          className="flex gap-12 overflow-x-auto scrollbar-hide pb-12"
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleDragEnd}
+          onMouseLeave={handleDragEnd}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleDragEnd}
+          style={{
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+            WebkitOverflowScrolling: 'touch',
+            paddingLeft: window.innerWidth <= 850 ? '32px' : '200px', // Left cushion for first card
+            paddingRight: window.innerWidth <= 850 ? '32px' : '200px' // Right cushion for last card
+          }}
+        >
+          {eliteFour.map((member, index) => {
             const memberData = eliteFourData[member.name] || {};
             const weaknesses = typeEffectiveness[member.type]?.weakTo || [];
-            const isFlipped = flippedCards[member.name];
+            
+            // Transform team data to match EliteFourCard format
+            const transformedTeam = memberData.team?.map(pokemon => ({
+              name: pokemon.name,
+              sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`
+            })) || [];
             
             return (
-              <SlideUp key={member.name}>
-                <div 
-                  className={`relative h-[700px] ${styles.perspective1000} cursor-pointer`}
-                  onClick={() => toggleFlip(member.name)}
-                >
-                  <div className={`${styles.flipCard} ${isFlipped ? styles.flipped : ''}`}>
-                    {/* Front Side - Just the Elite Four member image */}
-                    <div className={styles.flipCardFront}>
-                      <div className={`relative h-full w-full rounded-3xl overflow-hidden ${
-                        theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'
-                      } shadow-2xl`}>
-                        <Image
-                          src={getEliteFourImage(member.name, 1)}
-                          alt={member.name}
-                          fill
-                          className="object-cover"
-                          onError={(e) => {
-                            const currentSrc = e.target.src;
-                            if (currentSrc.includes('-1.png')) {
-                              e.target.src = `/images/scraped/elite-four/${member.name.toLowerCase()}-2.png`;
-                            } else if (currentSrc.includes('-2.png')) {
-                              e.target.src = `/images/scraped/elite-four/${member.name.toLowerCase()}-3.png`;
-                            } else {
-                              e.target.src = `/images/elite-four/${member.name.toLowerCase()}.png`;
-                            }
-                          }}
-                        />
-                        {/* Subtle gradient overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                        
-                        {/* Elite Four indicator */}
-                        <div className="absolute top-6 left-6 flex items-center gap-3">
-                          <div className="w-20 h-20 bg-gradient-to-br from-purple-600 to-purple-800 rounded-full flex items-center justify-center shadow-xl border-4 border-white/30">
-                            <span className="text-white font-black text-3xl">E{index + 1}</span>
-                          </div>
-                          <BsShieldFill className="text-5xl text-purple-400/80" />
-                        </div>
-                        
-                        {/* Flip indicator */}
-                        <div className="absolute bottom-6 right-6 bg-white/90 backdrop-blur-sm rounded-full px-6 py-3 flex items-center gap-2 shadow-lg">
-                          <span className="text-gray-900 font-bold">Click to flip</span>
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                          </svg>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Back Side - Information with cutting through effect */}
-                    <div className={styles.flipCardBack}>
-                      <div className={`relative h-full w-full rounded-3xl overflow-hidden ${
-                        theme === 'dark' ? 'bg-gray-800' : 'bg-white'
-                      } shadow-2xl`}>
-                        {/* Type-themed background */}
-                        <div className={`absolute inset-0 bg-gradient-to-br ${getTypeGradient(member.type)} opacity-10`} />
-                        
-                        {/* Cutting through Elite Four member image */}
-                        <div className="absolute left-0 top-0 h-full w-[280px] z-10">
-                          <div className="relative h-full w-full">
-                            <Image
-                              src={getEliteFourImage(member.name, 1)}
-                              alt={member.name}
-                              fill
-                              className="object-cover"
-                              style={{ 
-                                clipPath: 'polygon(0 0, 85% 0, 100% 100%, 0 100%)',
-                                filter: 'drop-shadow(10px 0 20px rgba(0,0,0,0.3))'
-                              }}
-                              onError={(e) => {
-                                const currentSrc = e.target.src;
-                                if (currentSrc.includes('-1.png')) {
-                                  e.target.src = `/images/scraped/elite-four/${member.name.toLowerCase()}-2.png`;
-                                } else if (currentSrc.includes('-2.png')) {
-                                  e.target.src = `/images/scraped/elite-four/${member.name.toLowerCase()}-3.png`;
-                                } else {
-                                  e.target.src = `/images/elite-four/${member.name.toLowerCase()}.png`;
-                                }
-                              }}
-                            />
-                            {/* Edge gradient for blending */}
-                            <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-r from-transparent via-black/20 to-transparent" />
-                          </div>
-                        </div>
-
-                        {/* Content flowing around the image */}
-                        <div className="relative h-full pl-[250px] pr-8 py-8 overflow-y-auto">
-                          {/* Header section */}
-                          <div className="mb-6">
-                            {/* Elite Four Number Badge */}
-                            <div className="inline-flex items-center gap-2 mb-3">
-                              <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-purple-800 rounded-full flex items-center justify-center shadow-xl">
-                                <span className="text-white font-black text-2xl">E{index + 1}</span>
-                              </div>
-                              <BsShieldFill className="text-4xl text-purple-400" />
-                            </div>
-                            
-                            <h3 className="text-4xl font-black mb-2" style={{ fontFamily: '"Comic Sans MS", "Marker Felt", fantasy' }}>
-                              {member.name}
-                            </h3>
-                            <p className="text-xl text-gray-600 dark:text-gray-400 mb-3">Elite Four Member</p>
-                            
-                            {/* Type Badge */}
-                            <div className="flex items-center gap-3 mb-4">
-                              <TypeBadge type={member.type} size="lg" />
-                              <span className="text-lg font-bold text-gray-600 dark:text-gray-400">
-                                {member.type.charAt(0).toUpperCase() + member.type.slice(1)}-type Specialist
-                              </span>
-                            </div>
-                          </div>
-
-                          {/* Quote */}
-                          <div className="mb-5 p-4 rounded-xl bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30">
-                            <p className="text-lg italic text-gray-700 dark:text-gray-300">
-                              "{memberData.quote || `Master of ${member.type}-type Pokémon!`}"
-                            </p>
-                          </div>
-
-                          {/* Strategy & Signature */}
-                          <div className="mb-5 grid grid-cols-2 gap-4">
-                            <div>
-                              <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-1">Battle Strategy</p>
-                              <p className="text-base font-bold">{memberData.strategy || 'Type mastery'}</p>
-                            </div>
-                            <div>
-                              <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-1">Signature Pokémon</p>
-                              <p className="text-base font-bold">{member.signature}</p>
-                            </div>
-                          </div>
-
-                          {/* Weak Against Section */}
-                          {weaknesses.length > 0 && (
-                            <div className="mb-5 p-3 rounded-xl bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800">
-                              <p className="text-sm font-bold text-red-700 dark:text-red-400 mb-2">WEAK AGAINST:</p>
-                              <div className="flex flex-wrap gap-2">
-                                {weaknesses.map(type => (
-                                  <TypeBadge key={type} type={type} size="sm" />
-                                ))}
-                              </div>
-                            </div>
-                          )}
-
-                          {/* Pokemon Team Grid */}
-                          {memberData.team && (
-                            <div>
-                              <h4 className="text-xl font-bold mb-3 text-gray-800 dark:text-gray-200">
-                                Full Team
-                              </h4>
-                              <div className="grid grid-cols-2 gap-2">
-                                {memberData.team.map((pokemon, idx) => (
-                                  <div key={idx} className="bg-white/50 dark:bg-black/30 rounded-lg p-2 backdrop-blur-sm border border-gray-200 dark:border-gray-700">
-                                    <div className="flex items-center gap-2">
-                                      <div className="relative w-12 h-12 flex-shrink-0">
-                                        <Image
-                                          src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`}
-                                          alt={pokemon.name}
-                                          fill
-                                          className="object-contain"
-                                        />
-                                      </div>
-                                      <div className="flex-1 min-w-0">
-                                        <p className="font-bold text-sm truncate">{pokemon.name}</p>
-                                        <div className="flex items-center gap-1">
-                                          <span className="text-xs text-gray-600 dark:text-gray-400">Lv.{pokemon.level}</span>
-                                          {pokemon.types.map(type => (
-                                            <span key={type} className={`text-xs px-1.5 py-0.5 rounded bg-gradient-to-r ${getTypeGradient(type)} text-white`}>
-                                              {type}
-                                            </span>
-                                          ))}
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </SlideUp>
+              <div
+                key={member.name}
+                className="flex-shrink-0"
+                style={{ width: '900px' }}
+              >
+                <EliteFourCard
+                  name={member.name}
+                  region={region.id}
+                  type={member.type}
+                  rank={index + 1}
+                  image={getEliteFourImage(member.name, 1)}
+                  team={transformedTeam}
+                  signature={member.signature}
+                  strengths={typeEffectiveness[member.type]?.strongAgainst || []}
+                  weaknesses={weaknesses}
+                  quote={memberData.quote || `Master of ${member.type}-type Pokémon!`}
+                  strategy={memberData.strategy || `Elite Four member specializing in ${member.type}-type Pokémon.`}
+                  difficulty={4}
+                />
+              </div>
             );
           })}
+        </div>
+        
+        {/* Progress Indicators - Elite Four Style */}
+        <div className="flex justify-center gap-3 mt-8">
+          {eliteFour.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => scrollToMember(index)}
+              className={`h-4 rounded-full transition-all duration-300 ${
+                index === activeIndex 
+                  ? 'w-16 bg-gradient-to-r from-purple-500 via-yellow-500 to-purple-500 shadow-lg animate-pulse' 
+                  : 'w-4 bg-gradient-to-r from-purple-800 to-indigo-800 hover:from-purple-600 hover:to-indigo-600 hover:scale-110'
+              }`}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Champion Section */}
       {champion && (
           <div className="relative">
-            {/* Reveal Button */}
+            {/* Reveal Button - Enhanced */}
             {!revealChampion && (
               <FadeIn>
-                <div className="text-center mb-12">
+                <div className="text-center mb-12 relative">
+                  {/* Champion aura background */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/30 via-amber-500/30 to-yellow-500/30 blur-3xl -z-10 animate-pulse"></div>
+                  
+                  {/* Champion title */}
+                  <div className="mb-6">
+                    <h4 className="text-3xl font-black bg-gradient-to-r from-yellow-400 to-amber-400 bg-clip-text text-transparent mb-2">
+                      THE FINAL CHALLENGE
+                    </h4>
+                    <div className="flex items-center justify-center gap-2 text-yellow-500">
+                      <BsStar className="animate-spin" />
+                      <BsStar className="animate-pulse" />
+                      <BsStar className="animate-spin" />
+                    </div>
+                  </div>
+                  
                   <button
                     onClick={() => setRevealChampion(true)}
-                    className={`px-12 py-6 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-gray-900 font-black text-2xl hover:scale-110 transition-all duration-300 shadow-2xl animate-pulse`}
+                    className={`px-16 py-8 rounded-full bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 text-gray-900 font-black text-3xl hover:scale-110 transition-all duration-300 shadow-2xl animate-pulse border-4 border-amber-300/50 hover:border-amber-200 relative overflow-hidden`}
                   >
-                    <div className="flex items-center gap-3">
-                      <BsTrophy className="text-3xl" />
+                    {/* Button glow effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-yellow-300/50 to-amber-300/50 animate-pulse"></div>
+                    
+                    <div className="flex items-center gap-4 relative z-10">
+                      <BsTrophy className="text-4xl animate-bounce" />
                       <span>REVEAL THE CHAMPION</span>
-                      <BsTrophy className="text-3xl" />
+                      <BsTrophy className="text-4xl animate-bounce" />
                     </div>
                   </button>
+                  
+                  <p className="mt-4 text-lg text-gray-600 dark:text-gray-300 font-semibold">
+                    Face the ultimate test of your skills
+                  </p>
                 </div>
               </FadeIn>
             )}
 
-            {/* Champion Card - Flippable design */}
-            {revealChampion && (
+            {/* Champion Card - Using new ChampionCard component */}
+            {revealChampion && champion && championData[champion.name] && (
               <SlideUp>
-                <div 
-                  className={`relative h-[1000px] ${styles.perspective1000} cursor-pointer`}
-                  onClick={() => setChampionFlipped(!championFlipped)}
-                >
-                  <div className={`${styles.flipCard} ${championFlipped ? styles.flipped : ''}`}>
-                    {/* Front Side - Just the champion image with effects */}
-                    <div className={styles.flipCardFront}>
-                      <div className={`relative h-full w-full rounded-3xl overflow-hidden ${
-                        theme === 'dark' ? 'bg-gray-900' : 'bg-white'
-                      } shadow-2xl`}>
-                        {/* Animated gradient background with stars */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 via-orange-500/20 to-red-500/20">
-                          <div className="absolute inset-0 bg-gradient-to-tr from-yellow-400/30 to-transparent animate-pulse" />
-                          {/* Sparkle effects */}
-                          <div className="absolute top-10 left-10">
-                            <BsStar className="text-4xl text-yellow-400/50 animate-ping" />
-                          </div>
-                          <div className="absolute top-20 right-20">
-                            <BsStar className="text-3xl text-yellow-400/40 animate-ping animation-delay-200" />
-                          </div>
-                          <div className="absolute bottom-20 left-20">
-                            <BsStar className="text-5xl text-yellow-400/30 animate-ping animation-delay-400" />
-                          </div>
-                        </div>
-
-                        {/* Champion Image */}
-                        <Image
-                          src={getChampionImage(champion.name, 1)}
-                          alt={champion.name}
-                          fill
-                          className="object-cover"
-                          onError={(e) => {
-                            const currentSrc = e.target.src;
-                            if (currentSrc.includes('-1.png')) {
-                              e.target.src = `/images/scraped/champions/${champion.name.toLowerCase()}-2.png`;
-                            } else if (currentSrc.includes('-2.png')) {
-                              e.target.src = `/images/scraped/champions/${champion.name.toLowerCase()}-3.png`;
-                            } else {
-                              e.target.src = `/images/champions/${champion.name.toLowerCase()}.png`;
-                            }
-                          }}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                        
-                        {/* Champion Crown Animation */}
-                        <div className="absolute top-8 left-1/2 -translate-x-1/2 animate-bounce">
-                          <BsTrophy className="text-8xl text-yellow-400 drop-shadow-2xl" />
-                        </div>
-
-                        {/* Champion Title */}
-                        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-center">
-                          <h3 className="text-7xl font-black mb-2 bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-500 bg-clip-text text-transparent animate-pulse" style={{ fontFamily: '"Comic Sans MS", "Marker Felt", fantasy' }}>
-                            CHAMPION
-                          </h3>
-                          <h4 className="text-5xl font-bold text-white drop-shadow-2xl">{champion.name}</h4>
-                        </div>
-                        
-                        {/* Flip indicator */}
-                        <div className="absolute bottom-6 right-6 bg-white/90 backdrop-blur-sm rounded-full px-6 py-3 flex items-center gap-2 shadow-lg">
-                          <span className="text-gray-900 font-bold">Click to flip</span>
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                          </svg>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Back Side - Information with cutting through effect */}
-                    <div className={styles.flipCardBack}>
-                      <div className={`relative h-full w-full rounded-3xl overflow-hidden ${
-                        theme === 'dark' ? 'bg-gray-800' : 'bg-white'
-                      } shadow-2xl`}>
-                        {/* Golden background */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 via-orange-500/10 to-red-500/10" />
-                        
-                        {/* Cutting through champion image */}
-                        <div className="absolute left-0 top-0 h-full w-[400px] z-10">
-                          <div className="relative h-full w-full">
-                            <Image
-                              src={getChampionImage(champion.name, 1)}
-                              alt={champion.name}
-                              fill
-                              className="object-cover"
-                              style={{ 
-                                clipPath: 'polygon(0 0, 85% 0, 100% 100%, 0 100%)',
-                                filter: 'drop-shadow(10px 0 20px rgba(0,0,0,0.3))'
-                              }}
-                              onError={(e) => {
-                                const currentSrc = e.target.src;
-                                if (currentSrc.includes('-1.png')) {
-                                  e.target.src = `/images/scraped/champions/${champion.name.toLowerCase()}-2.png`;
-                                } else if (currentSrc.includes('-2.png')) {
-                                  e.target.src = `/images/scraped/champions/${champion.name.toLowerCase()}-3.png`;
-                                } else {
-                                  e.target.src = `/images/champions/${champion.name.toLowerCase()}.png`;
-                                }
-                              }}
-                            />
-                            {/* Edge gradient for blending */}
-                            <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-r from-transparent via-black/20 to-transparent" />
-                          </div>
-                        </div>
-
-                        {/* Content flowing around the image */}
-                        <div className="relative h-full pl-[380px] pr-8 py-8 overflow-y-auto">
-                          {/* Header section */}
-                          <div className="mb-6">
-                            {/* Champion Badge */}
-                            <div className="inline-flex items-center gap-2 mb-3">
-                              <BsTrophy className="text-6xl text-yellow-400" />
-                            </div>
-                            
-                            <h3 className="text-6xl font-black mb-2 bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-500 bg-clip-text text-transparent" style={{ fontFamily: '"Comic Sans MS", "Marker Felt", fantasy' }}>
-                              CHAMPION
-                            </h3>
-                            <h4 className="text-4xl font-bold mb-4">{champion.name}</h4>
-                          </div>
-
-                          {championData[champion.name] && (
-                            <>
-                              {/* Quote Section */}
-                              <div className="mb-6 p-5 rounded-2xl bg-gradient-to-r from-yellow-100 to-orange-100 dark:from-yellow-900/30 dark:to-orange-900/30 border-2 border-yellow-400/30">
-                                <p className="text-xl italic font-semibold text-gray-800 dark:text-gray-200">
-                                  "{championData[champion.name].quote}"
-                                </p>
-                              </div>
-
-                              {/* Strategy and Info Grid */}
-                              <div className="grid grid-cols-2 gap-6 mb-6">
-                                <div>
-                                  <p className="text-sm font-bold text-gray-600 dark:text-gray-400 mb-1">Battle Strategy</p>
-                                  <p className="text-xl font-black">{championData[champion.name].strategy}</p>
-                                </div>
-                                <div>
-                                  <p className="text-sm font-bold text-gray-600 dark:text-gray-400 mb-1">Signature Pokémon</p>
-                                  <p className="text-xl font-black">{champion.signature}</p>
-                                </div>
-                              </div>
-
-                              {/* Full Champion Team */}
-                              <div className="mb-6">
-                                <h4 className="text-2xl font-black mb-4">Champion's Elite Team</h4>
-                                <div className="grid grid-cols-2 gap-3">
-                                  {championData[champion.name].team.map((pokemon, idx) => (
-                                    <div key={idx} className="bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 rounded-xl p-3 border-2 border-yellow-400/30">
-                                      <div className="flex items-center gap-3">
-                                        <div className="relative w-16 h-16 flex-shrink-0">
-                                          <Image
-                                            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`}
-                                            alt={pokemon.name}
-                                            fill
-                                            className="object-contain"
-                                          />
-                                        </div>
-                                        <div className="flex-1">
-                                          <p className="font-black text-base">{pokemon.name}</p>
-                                          <p className="text-sm text-gray-600 dark:text-gray-400 font-bold">Lv. {pokemon.level}</p>
-                                          <div className="flex gap-1 mt-1">
-                                            {pokemon.types.map(type => (
-                                              <span key={type} className={`text-xs px-2 py-0.5 rounded bg-gradient-to-r ${getTypeGradient(type)} text-white font-semibold`}>
-                                                {type}
-                                              </span>
-                                            ))}
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-
-                              {/* Type Coverage Analysis */}
-                              <div className="p-4 rounded-xl bg-gradient-to-r from-red-50 to-pink-50 dark:from-red-900/20 dark:to-pink-900/20 border-2 border-red-200 dark:border-red-800">
-                                <p className="text-sm font-bold text-red-700 dark:text-red-400 mb-2">CHAMPION'S TYPE COVERAGE</p>
-                                <div className="flex flex-wrap gap-2">
-                                  {[...new Set(championData[champion.name].team.flatMap(p => p.types))].map(type => (
-                                    <TypeBadge key={type} type={type} size="sm" />
-                                  ))}
-                                </div>
-                              </div>
-                            </>
-                          )}
-                        </div>
-                      </div>
-                    </div>
+                <div className="flex justify-center relative">
+                  {/* Champion aura effects */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/20 via-amber-500/30 to-yellow-500/20 blur-3xl animate-pulse -z-10"></div>
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-amber-500/10 to-transparent blur-2xl animate-pulse -z-10"></div>
+                  
+                  {/* Champion sparkle effects */}
+                  <div className="absolute -top-4 -left-4 text-yellow-400 animate-ping">
+                    <BsStar className="text-2xl" />
                   </div>
+                  <div className="absolute -top-4 -right-4 text-amber-400 animate-ping" style={{ animationDelay: '0.5s' }}>
+                    <BsStar className="text-2xl" />
+                  </div>
+                  <div className="absolute -bottom-4 -left-4 text-yellow-400 animate-ping" style={{ animationDelay: '1s' }}>
+                    <BsStar className="text-2xl" />
+                  </div>
+                  <div className="absolute -bottom-4 -right-4 text-amber-400 animate-ping" style={{ animationDelay: '1.5s' }}>
+                    <BsStar className="text-2xl" />
+                  </div>
+                  
+                  <ChampionCard
+                    name={champion.name}
+                    region={region.id}
+                    title={`${region.name} League Champion`}
+                    image={getChampionImage(champion.name, 1)}
+                    team={championData[champion.name].team.map(pokemon => ({
+                      name: pokemon.name,
+                      sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`,
+                      level: pokemon.level
+                    }))}
+                    signature={champion.signature}
+                    achievements={championData[champion.name].achievements}
+                    quote={championData[champion.name].quote}
+                    strategy={championData[champion.name].funFact}
+                    difficulty={5}
+                  />
                 </div>
               </SlideUp>
             )}

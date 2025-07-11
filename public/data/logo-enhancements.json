@@ -1,0 +1,32 @@
+{
+  "enhancements": {
+    "contrast": 2.0,
+    "saturation": 1.5,
+    "brightness": 0.75,
+    "hue-rotate": 0,
+    "vibrance": "high",
+    "drop-shadow": "2xl"
+  },
+  "filters": {
+    "homepage": {
+      "contrast": "200%",
+      "saturate": "150%",
+      "brightness": "75%",
+      "drop-shadow": "0 25px 25px rgb(0 0 0 / 0.15)"
+    },
+    "navbar": {
+      "contrast": "150%",
+      "saturate": "130%",
+      "brightness": "80%"
+    }
+  },
+  "css_classes": {
+    "vibrant": "filter contrast-125 saturate-120 brightness-110",
+    "super_vibrant": "filter contrast-150 saturate-150 brightness-115",
+    "dark_vibrant": "filter contrast-200 saturate-150 brightness-75",
+    "pastel_dark": "filter contrast-175 saturate-110 brightness-80",
+    "ultra_dark": "filter contrast-250 saturate-200 brightness-60",
+    "soft_dark": "filter contrast-160 saturate-100 brightness-85",
+    "subtle": "filter contrast-110 saturate-105 brightness-102"
+  }
+}

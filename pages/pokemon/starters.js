@@ -452,7 +452,7 @@ export default function StartersPage() {
           </div>
 
           <div className="text-center mb-12">
-            <h1 className="text-5xl font-bold mb-4 flex items-center justify-center gap-3">
+            <h1 className="text-4xl font-bold mb-4 flex items-center justify-center gap-3">
               <GiPokerHand className="text-red-400" />
               <span className="bg-gradient-to-r from-red-400 to-pink-400 bg-clip-text text-transparent">
                 Starter Pokémon

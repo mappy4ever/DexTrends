@@ -114,7 +114,7 @@ export default function TcgSets() {
           <FadeIn>
             {/* Hero Section */}
             <div className="text-center mb-12">
-              <h1 className="text-5xl md:text-6xl font-extrabold mb-4 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 bg-clip-text text-transparent">
+              <h1 className="text-4xl md:text-5xl font-extrabold mb-4 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 bg-clip-text text-transparent">
                 Pokémon TCG Sets
               </h1>
               <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">

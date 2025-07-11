@@ -1,24 +1,28 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { getGymLeaderImage, getBadgeImage } from '../../utils/scrapedImageMapping';
 import { TypeBadge } from '../ui/TypeBadge';
 import { FadeIn } from '../ui/animations';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { gymLeaderTeams, typeEffectiveness } from '../../data/gymLeaderTeams';
-import styles from '../../styles/FlipCard.module.css';
+import { GymLeaderCard } from '../ui/cards';
 
 const GymLeaderCarousel = ({ region, gymLeaders, theme }) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [flippedCards, setFlippedCards] = useState({});
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const carouselRef = useRef(null);
 
-  // Toggle card flip state
-  const toggleFlip = (leaderName) => {
-    setFlippedCards(prev => ({ ...prev, [leaderName]: !prev[leaderName] }));
-  };
+  // Initialize carousel to center first card on mount
+  useEffect(() => {
+    if (carouselRef.current) {
+      // Small delay to ensure DOM is fully rendered
+      setTimeout(() => {
+        scrollToLeader(0);
+      }, 100);
+    }
+  }, []);
 
   // Gym leader quotes/facts and signature Pokemon
   const gymLeaderData = {
@@ -49,41 +53,32 @@ const GymLeaderCarousel = ({ region, gymLeaders, theme }) => {
     'Liza': { quote: "...Any attack ineffective!", signature: "Lunatone", signatureId: 337, strategy: "Psychic twin power" },
     'Juan': { quote: "Please, you shall bear witness to our artistry!", signature: "Kingdra", signatureId: 230, strategy: "Water elegance" },
     'Wallace': { quote: "I, the Champion, shall show you the power of my Water types!", signature: "Milotic", signatureId: 350, strategy: "Beauty and power" },
+    // Kalos Gym Leaders
+    'Viola': { quote: "Whether it's the tears of frustration that follow or the blossoming of joy that awaits us...the outcome will be decided by this match!", signature: "Vivillon", signatureId: 666, strategy: "Bug-type photography" },
+    'Grant': { quote: "I never lose when it comes to rock climbing! That's because I scale the wall of each and every challenge I face!", signature: "Tyrunt", signatureId: 696, strategy: "Fossil resurrection" },
+    'Korrina': { quote: "Time for Lady Korrina's big appearance!", signature: "Lucario", signatureId: 448, strategy: "Mega Evolution mastery" },
+    'Ramos': { quote: "Hohoho! So, you’ve come to challenge me! It has been quite some time since we’ve had a child around.", signature: "Gogoat", signatureId: 673, strategy: "Grass-type gardening" },
+    'Clemont': { quote: "My invention to measure the bond between Pokémon and Trainer says that you’re bonded incredible well!", signature: "Heliolisk", signatureId: 695, strategy: "Electric innovation" },
+    'Valerie': { quote: "Oh, if it isn’t a young Trainer... You seem to possess a silver tongue. I can tell, for I am also a believer in the power of words.", signature: "Sylveon", signatureId: 700, strategy: "Fairy-type mystique" },
+    'Olympia': { quote: "I can see it! What you wish for! You want to be the Champion!", signature: "Meowstic", signatureId: 678, strategy: "Psychic foresight" },
+    'Wulfric': { quote: "You and your Pokémon's power are a thing of beauty! I can feel it.", signature: "Avalugg", signatureId: 713, strategy: "Ice wall tactics" },
   };
 
-  const getTypeGradient = (type) => {
-    const gradients = {
-      normal: 'from-gray-400 to-gray-600',
-      fire: 'from-red-400 to-orange-600',
-      water: 'from-blue-400 to-blue-600',
-      electric: 'from-yellow-300 to-yellow-600',
-      grass: 'from-green-400 to-green-600',
-      ice: 'from-blue-300 to-cyan-500',
-      fighting: 'from-red-600 to-red-800',
-      poison: 'from-purple-400 to-purple-600',
-      ground: 'from-yellow-600 to-yellow-800',
-      flying: 'from-blue-300 to-indigo-400',
-      psychic: 'from-pink-400 to-pink-600',
-      bug: 'from-green-300 to-green-500',
-      rock: 'from-yellow-700 to-yellow-900',
-      ghost: 'from-purple-600 to-purple-800',
-      dragon: 'from-indigo-600 to-purple-700',
-      dark: 'from-gray-700 to-gray-900',
-      steel: 'from-gray-400 to-gray-600',
-      fairy: 'from-pink-300 to-pink-500'
-    };
-    return gradients[type] || 'from-gray-400 to-gray-600';
-  };
 
   // Handle carousel navigation
   const scrollToLeader = (index) => {
     if (carouselRef.current) {
       const isMobile = window.innerWidth <= 850;
-      const cardWidth = isMobile ? (window.innerWidth - 64) : 900; // Updated for new card width
-      const gap = isMobile ? 16 : 32; // Responsive gap
-      const scrollPosition = index * (cardWidth + gap);
+      const cardWidth = isMobile ? (window.innerWidth - 64) : 900; // Match actual card width
+      const gap = isMobile ? 24 : 48; // Gap between cards (gap-12 = 48px)
+      const cushionPadding = isMobile ? 32 : 200; // Cushion padding for first/last cards
+      
+      // Calculate scroll position to center the card
+      const containerWidth = carouselRef.current.offsetWidth;
+      const scrollPosition = index * (cardWidth + gap) + cushionPadding - (containerWidth - cardWidth) / 2;
+      
       carouselRef.current.scrollTo({
-        left: scrollPosition,
+        left: Math.max(0, scrollPosition), // Ensure we don't scroll past the beginning
         behavior: 'smooth'
       });
       setActiveIndex(index);
@@ -146,25 +141,25 @@ const GymLeaderCarousel = ({ region, gymLeaders, theme }) => {
       </FadeIn>
 
       {/* Carousel Container */}
-      <div className="relative">
-          {/* Navigation Buttons */}
+      <div className="relative px-20">
+          {/* Navigation Buttons - Enhanced Design */}
           <button
             onClick={handlePrev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full p-4 shadow-xl hover:scale-110 transition-transform"
+            className="absolute -left-20 top-1/2 -translate-y-1/2 z-20 bg-gradient-to-r from-white to-gray-100 dark:from-gray-800 dark:to-gray-700 backdrop-blur-sm rounded-full p-4 shadow-2xl hover:scale-110 transition-all duration-300 border-2 border-gray-200 dark:border-gray-600 group"
           >
-            <BsChevronLeft className="text-2xl" />
+            <BsChevronLeft className="text-2xl text-gray-700 dark:text-gray-200 group-hover:-translate-x-1 transition-transform" />
           </button>
           <button
             onClick={handleNext}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full p-4 shadow-xl hover:scale-110 transition-transform"
+            className="absolute -right-20 top-1/2 -translate-y-1/2 z-20 bg-gradient-to-l from-white to-gray-100 dark:from-gray-800 dark:to-gray-700 backdrop-blur-sm rounded-full p-4 shadow-2xl hover:scale-110 transition-all duration-300 border-2 border-gray-200 dark:border-gray-600 group"
           >
-            <BsChevronRight className="text-2xl" />
+            <BsChevronRight className="text-2xl text-gray-700 dark:text-gray-200 group-hover:translate-x-1 transition-transform" />
           </button>
 
           {/* Carousel */}
           <div
             ref={carouselRef}
-            className={`flex gap-8 overflow-x-auto ${styles.scrollbarHide} pb-8`}
+            className={`flex gap-12 overflow-x-auto scrollbar-hide pb-12`}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleDragEnd}
@@ -175,199 +170,69 @@ const GymLeaderCarousel = ({ region, gymLeaders, theme }) => {
             style={{
               scrollbarWidth: 'none',
               msOverflowStyle: 'none',
-              WebkitOverflowScrolling: 'touch'
+              WebkitOverflowScrolling: 'touch',
+              paddingLeft: window.innerWidth <= 850 ? '32px' : '200px', // Left cushion for first card
+              paddingRight: window.innerWidth <= 850 ? '32px' : '200px' // Right cushion for last card
             }}
           >
             {gymLeaders.map((leader, index) => {
-              const teamData = gymLeaderTeams[leader.name];
+              // Handle special case for Tate & Liza (twin gym leaders)
+              let teamData;
+              if (leader.name === 'Tate & Liza') {
+                // Combine both Tate and Liza's teams
+                const tateData = gymLeaderTeams['Tate'];
+                const lizaData = gymLeaderTeams['Liza'];
+                if (tateData && lizaData) {
+                  teamData = {
+                    ...tateData,
+                    team: [...(tateData.team || []), ...(lizaData.team || [])]
+                  };
+                }
+              } else {
+                teamData = gymLeaderTeams[leader.name];
+              }
+              
               const weaknesses = teamData?.weakAgainst || typeEffectiveness[leader.type]?.weakTo || [];
-              const isFlipped = flippedCards[leader.name];
+              const leaderData = gymLeaderData[leader.name] || {};
+              
+              // Transform team data to match GymLeaderCard format
+              const transformedTeam = teamData?.team?.map(pokemon => ({
+                name: pokemon.name,
+                sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`
+              })) || [
+                // Fallback team data for testing
+                { name: 'Geodude', sprite: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/74.png' },
+                { name: 'Onix', sprite: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/95.png' },
+                { name: 'Graveler', sprite: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/75.png' },
+                { name: 'Golem', sprite: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/76.png' }
+              ];
+
+              // Calculate recommended level (average of team levels)
+              const recommendedLevel = teamData?.team?.length > 0 
+                ? Math.round(teamData.team.reduce((sum, pokemon) => sum + pokemon.level, 0) / teamData.team.length)
+                : undefined;
               
               return (
                 <div
                   key={leader.name}
-                  className={`flex-shrink-0 w-[900px] h-[700px] relative ${styles.carouselCard} ${styles.perspective1000}`}
-                  onClick={() => toggleFlip(leader.name)}
+                  className="flex-shrink-0"
+                  style={{ width: '900px' }} // Reduced to match smaller card width
                 >
-                  <div className={`${styles.flipCard} ${isFlipped ? styles.flipped : ''}`}>
-                    {/* Front Side - Just the gym leader image */}
-                    <div className={styles.flipCardFront}>
-                      <div className={`relative h-full w-full rounded-3xl overflow-hidden cursor-pointer ${
-                        theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'
-                      } shadow-2xl`}>
-                        <Image
-                          src={getGymLeaderImage(leader.name, 1)}
-                          alt={leader.name}
-                          fill
-                          className="object-cover"
-                          onError={(e) => {
-                            const currentSrc = e.target.src;
-                            const match = currentSrc.match(/-(\d+)\.(png|jpg)$/);
-                            if (match) {
-                              const num = parseInt(match[1]);
-                              if (num < 5) {
-                                e.target.src = getGymLeaderImage(leader.name, num + 1);
-                              } else {
-                                e.target.src = `/images/gym-leaders/${leader.name.toLowerCase()}.png`;
-                              }
-                            }
-                          }}
-                        />
-                        {/* Subtle gradient overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
-                        
-                        {/* Flip indicator */}
-                        <div className="absolute bottom-6 right-6 bg-white/90 backdrop-blur-sm rounded-full px-6 py-3 flex items-center gap-2 shadow-lg">
-                          <span className="text-gray-900 dark:text-gray-900 font-bold">Click to flip</span>
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                          </svg>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Back Side - Information with cutting through effect */}
-                    <div className={styles.flipCardBack}>
-                      <div className={`relative h-full w-full rounded-3xl overflow-hidden ${
-                        theme === 'dark' ? 'bg-gray-800' : 'bg-white'
-                      } shadow-2xl`}>
-                        {/* Type-themed background */}
-                        <div className={`absolute inset-0 bg-gradient-to-br ${getTypeGradient(leader.type)} opacity-10`} />
-                        
-                        {/* Cutting through gym leader image */}
-                        <div className="absolute left-0 top-0 h-full w-[320px] z-10">
-                          <div className="relative h-full w-full">
-                            <Image
-                              src={getGymLeaderImage(leader.name, 1)}
-                              alt={leader.name}
-                              fill
-                              className="object-cover"
-                              style={{ 
-                                clipPath: 'polygon(0 0, 85% 0, 100% 100%, 0 100%)',
-                                filter: 'drop-shadow(10px 0 20px rgba(0,0,0,0.3))'
-                              }}
-                              onError={(e) => {
-                                const currentSrc = e.target.src;
-                                const match = currentSrc.match(/-(\d+)\.(png|jpg)$/);
-                                if (match) {
-                                  const num = parseInt(match[1]);
-                                  if (num < 5) {
-                                    e.target.src = getGymLeaderImage(leader.name, num + 1);
-                                  } else {
-                                    e.target.src = `/images/gym-leaders/${leader.name.toLowerCase()}.png`;
-                                  }
-                                }
-                              }}
-                            />
-                            {/* Edge gradient for blending */}
-                            <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-r from-transparent via-black/20 to-transparent" />
-                          </div>
-                        </div>
-
-                        {/* Content flowing around the image */}
-                        <div className="relative h-full pl-[280px] pr-8 py-8 overflow-y-auto">
-                          {/* Header section */}
-                          <div className="mb-6">
-                            {/* Leader Number Badge */}
-                            <div className="inline-flex items-center gap-2 mb-3">
-                              <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg">
-                                <span className="text-white font-black text-xl">#{index + 1}</span>
-                              </div>
-                              <div className="relative w-16 h-16">
-                                <Image
-                                  src={getBadgeImage(leader.badge, region.id)}
-                                  alt={leader.badge}
-                                  fill
-                                  className="object-contain"
-                                  onError={(e) => {
-                                    e.target.style.display = 'none';
-                                  }}
-                                />
-                              </div>
-                            </div>
-                            
-                            <h3 className="text-5xl font-black mb-2">{leader.name}</h3>
-                            <p className="text-xl text-gray-600 dark:text-gray-400 mb-3">{leader.city} Gym Leader</p>
-                            
-                            {/* Type Badge */}
-                            <div className="flex items-center gap-3 mb-4">
-                              <TypeBadge type={leader.type} size="lg" />
-                              <span className="text-lg font-bold text-gray-600 dark:text-gray-400">
-                                {leader.type.charAt(0).toUpperCase() + leader.type.slice(1)}-type Specialist
-                              </span>
-                            </div>
-                          </div>
-
-                          {/* Quote */}
-                          <div className="mb-5 p-4 rounded-xl bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600">
-                            <p className="text-lg italic text-gray-700 dark:text-gray-200">
-                              {gymLeaderData[leader.name]?.quote || `Master of ${leader.type}-type Pokémon!`}
-                            </p>
-                          </div>
-
-                          {/* Strategy & Badge */}
-                          <div className="mb-5 flex items-center justify-between">
-                            <div className={`inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r ${region.color} text-white font-bold shadow-lg`}>
-                              <span>{leader.badge}</span>
-                            </div>
-                            {gymLeaderData[leader.name] && (
-                              <p className="text-sm font-semibold text-gray-600 dark:text-gray-400">
-                                Strategy: {gymLeaderData[leader.name].strategy}
-                              </p>
-                            )}
-                          </div>
-
-                          {/* Weak Against Section */}
-                          {weaknesses.length > 0 && (
-                            <div className="mb-5 p-3 rounded-xl bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800">
-                              <p className="text-sm font-bold text-red-700 dark:text-red-400 mb-2">WEAK AGAINST:</p>
-                              <div className="flex flex-wrap gap-2">
-                                {weaknesses.map(type => (
-                                  <TypeBadge key={type} type={type} size="sm" />
-                                ))}
-                              </div>
-                            </div>
-                          )}
-
-                          {/* Pokemon Team Grid */}
-                          {teamData && (
-                            <div>
-                              <h4 className="text-xl font-bold mb-3 text-gray-800 dark:text-gray-200">
-                                Full Team
-                              </h4>
-                              <div className="grid grid-cols-2 gap-2">
-                                {teamData.team.map((pokemon, idx) => (
-                                  <div key={idx} className="bg-white/50 dark:bg-black/30 rounded-lg p-2 backdrop-blur-sm border border-gray-200 dark:border-gray-700">
-                                    <div className="flex items-center gap-2">
-                                      <div className="relative w-12 h-12 flex-shrink-0">
-                                        <Image
-                                          src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`}
-                                          alt={pokemon.name}
-                                          fill
-                                          className="object-contain"
-                                        />
-                                      </div>
-                                      <div className="flex-1 min-w-0">
-                                        <p className="font-bold text-sm truncate">{pokemon.name}</p>
-                                        <div className="flex items-center gap-1">
-                                          <span className="text-xs text-gray-600 dark:text-gray-400">Lv.{pokemon.level}</span>
-                                          {pokemon.types.map(type => (
-                                            <span key={type} className={`text-xs px-1.5 py-0.5 rounded bg-gradient-to-r ${getTypeGradient(type)} text-white`}>
-                                              {type}
-                                            </span>
-                                          ))}
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <GymLeaderCard
+                    name={leader.name}
+                    region={region.id}
+                    type={leader.type}
+                    badge={leader.badge}
+                    badgeImage={getBadgeImage(leader.badge)}
+                    image={getGymLeaderImage(leader.name, 1)}
+                    team={transformedTeam}
+                    strengths={typeEffectiveness[leader.type]?.strongAgainst || []}
+                    weaknesses={weaknesses}
+                    quote={leaderData.quote || `Master of ${leader.type}-type Pokémon!`}
+                    funFact={leaderData.strategy || `${leader.name} is the ${leader.city} Gym Leader specializing in ${leader.type}-type Pokémon.`}
+                    gymTown={leader.city}
+                    recommendedLevel={recommendedLevel}
+                  />
                 </div>
               );
             })}

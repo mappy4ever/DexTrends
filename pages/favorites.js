@@ -94,7 +94,7 @@ export default function FavoritesPage() {
 
   return (
     <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto px-2 sm:px-4 animate-fadeIn">
-      <h1 className="text-3xl md:text-4xl font-bold text-center mb-8">Your Favorites</h1>
+      <h1 className="text-2xl md:text-3xl font-bold text-center mb-8">Your Favorites</h1>
       {/* Tabs */}
       <div className="flex justify-center mb-8">
         <div className="flex border border-gray-300 rounded-lg overflow-hidden">

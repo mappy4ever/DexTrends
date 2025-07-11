@@ -1,0 +1,872 @@
+.cardWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 900px; /* Reduced for better container fit */
+  margin: 1.5rem auto;
+  perspective: 1000px;
+  overflow: visible;
+}
+
+/* Gym Leader Image - Positioned Inside Card */
+.leaderImageContainer {
+  position: absolute;
+  left: 15px;
+  bottom: 15px;
+  top: 15px;
+  width: 260px;
+  max-width: 260px;
+  z-index: 40;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.5));
+  animation: none;
+  transition: transform 0.3s ease;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.cardWrapper:hover .leaderImage {
+  transform: translateY(-35px) scale(1.05);
+  animation: elevatedFloatAnimation 4s ease-in-out infinite;
+}
+
+.cardWrapper:hover .chuckImage {
+  transform: scale(1.35) translateY(-40px);
+  animation: chuckFloatAnimation 4s ease-in-out infinite;
+}
+
+.cardWrapper:hover .clairImage {
+  transform: scale(1.3) translateY(-35px);
+  animation: clairFloatAnimation 4s ease-in-out infinite;
+}
+
+@keyframes floatAnimation {
+  0%, 100% { transform: translateY(0px) rotateY(-5deg); }
+  50% { transform: translateY(-20px) rotateY(-5deg); }
+}
+
+@keyframes elevatedFloatAnimation {
+  0%, 100% { transform: translateY(-30px) rotateY(-5deg); }
+  50% { transform: translateY(-50px) rotateY(-5deg); }
+}
+
+@keyframes chuckFloatAnimation {
+  0%, 100% { transform: scale(1.3) translateY(-40px) rotateY(-5deg); }
+  50% { transform: scale(1.3) translateY(-60px) rotateY(-5deg); }
+}
+
+@keyframes clairFloatAnimation {
+  0%, 100% { transform: scale(1.25) translateY(-35px) rotateY(-5deg); }
+  50% { transform: scale(1.25) translateY(-55px) rotateY(-5deg); }
+}
+
+.leaderImage {
+  object-fit: contain;
+  height: 100%;
+  max-height: 420px;
+  width: 100%;
+  max-width: 100%;
+  filter: contrast(1.1) saturate(1.2);
+  opacity: 0.95;
+  object-position: bottom center;
+  transform: translateY(-30px);
+  z-index: 50;
+  position: relative;
+  animation: none;
+}
+
+/* Chuck-specific styling for larger appearance */
+.chuckImage {
+  transform: scale(1.3) translateY(-40px);
+  object-position: bottom center;
+  z-index: 50;
+  position: relative;
+  animation: none;
+}
+
+/* Clair-specific styling for larger appearance */
+.clairImage {
+  transform: scale(1.25) translateY(-35px);
+  object-position: bottom center;
+  z-index: 50;
+  position: relative;
+  animation: none;
+}
+
+/* Main Card - Enhanced with 3D effect */
+.card {
+  position: relative;
+  background: linear-gradient(135deg, rgba(248, 249, 250, 0.95) 0%, rgba(233, 236, 239, 0.95) 100%);
+  backdrop-filter: blur(10px);
+  border-radius: 32px;
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.5) inset,
+    0 0 120px rgba(var(--type-rgb), 0.1);
+  overflow: hidden;
+  height: 580px; /* Increased to prevent content cutoff */
+  padding: 2.5rem;
+  padding-left: 300px; /* Space for character image on left */
+  border: 2px solid rgba(var(--type-rgb), 0.3);
+  transform-style: preserve-3d;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, transparent, rgba(var(--type-rgb), 0.4), transparent);
+  border-radius: 24px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.cardWrapper:hover .card {
+  transform: rotateY(2deg) rotateX(-2deg);
+  box-shadow: 
+    0 30px 80px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.8) inset,
+    0 0 150px rgba(var(--type-rgb), 0.2);
+}
+
+.cardWrapper:hover .card::before {
+  opacity: 1;
+}
+
+/* Type-based card themes with RGB values */
+.card[data-type="fire"] {
+  --type-rgb: 255, 107, 107;
+  background: linear-gradient(135deg, rgba(255, 229, 229, 0.95) 0%, rgba(255, 204, 204, 0.95) 100%);
+  border-color: rgba(255, 107, 107, 0.4);
+}
+
+.card[data-type="water"] {
+  --type-rgb: 77, 171, 247;
+  background: linear-gradient(135deg, rgba(229, 243, 255, 0.95) 0%, rgba(204, 231, 255, 0.95) 100%);
+  border-color: rgba(77, 171, 247, 0.4);
+}
+
+.card[data-type="grass"] {
+  --type-rgb: 81, 207, 102;
+  background: linear-gradient(135deg, rgba(229, 255, 229, 0.95) 0%, rgba(204, 255, 204, 0.95) 100%);
+  border-color: rgba(81, 207, 102, 0.4);
+}
+
+.card[data-type="electric"] {
+  --type-rgb: 255, 212, 59;
+  background: linear-gradient(135deg, rgba(255, 249, 229, 0.95) 0%, rgba(255, 243, 204, 0.95) 100%);
+  border-color: rgba(255, 212, 59, 0.4);
+}
+
+.card[data-type="psychic"] {
+  --type-rgb: 240, 101, 149;
+  background: linear-gradient(135deg, rgba(255, 229, 241, 0.95) 0%, rgba(255, 204, 236, 0.95) 100%);
+  border-color: rgba(240, 101, 149, 0.4);
+}
+
+.card[data-type="ice"] {
+  --type-rgb: 102, 217, 232;
+  background: linear-gradient(135deg, rgba(229, 249, 255, 0.95) 0%, rgba(204, 244, 255, 0.95) 100%);
+  border-color: rgba(102, 217, 232, 0.4);
+}
+
+.card[data-type="dragon"] {
+  --type-rgb: 151, 117, 250;
+  background: linear-gradient(135deg, rgba(243, 229, 255, 0.95) 0%, rgba(229, 204, 255, 0.95) 100%);
+  border-color: rgba(151, 117, 250, 0.4);
+}
+
+.card[data-type="dark"] {
+  --type-rgb: 73, 80, 87;
+  background: linear-gradient(135deg, rgba(241, 243, 245, 0.95) 0%, rgba(222, 226, 230, 0.95) 100%);
+  border-color: rgba(73, 80, 87, 0.4);
+}
+
+.card[data-type="steel"] {
+  --type-rgb: 173, 181, 189;
+  background: linear-gradient(135deg, rgba(248, 249, 250, 0.95) 0%, rgba(233, 236, 239, 0.95) 100%);
+  border-color: rgba(173, 181, 189, 0.4);
+}
+
+.card[data-type="fairy"] {
+  --type-rgb: 247, 131, 172;
+  background: linear-gradient(135deg, rgba(255, 229, 248, 0.95) 0%, rgba(255, 204, 245, 0.95) 100%);
+  border-color: rgba(247, 131, 172, 0.4);
+}
+
+.card[data-type="fighting"] {
+  --type-rgb: 194, 46, 40;
+  background: linear-gradient(135deg, rgba(255, 229, 229, 0.95) 0%, rgba(255, 204, 204, 0.95) 100%);
+  border-color: rgba(194, 46, 40, 0.4);
+}
+
+.card[data-type="poison"] {
+  --type-rgb: 163, 62, 161;
+  background: linear-gradient(135deg, rgba(243, 229, 243, 0.95) 0%, rgba(229, 204, 229, 0.95) 100%);
+  border-color: rgba(163, 62, 161, 0.4);
+}
+
+.card[data-type="ground"] {
+  --type-rgb: 226, 191, 101;
+  background: linear-gradient(135deg, rgba(255, 249, 229, 0.95) 0%, rgba(255, 243, 204, 0.95) 100%);
+  border-color: rgba(226, 191, 101, 0.4);
+}
+
+.card[data-type="rock"] {
+  --type-rgb: 182, 161, 54;
+  background: linear-gradient(135deg, rgba(249, 246, 229, 0.95) 0%, rgba(243, 237, 204, 0.95) 100%);
+  border-color: rgba(182, 161, 54, 0.4);
+}
+
+.card[data-type="bug"] {
+  --type-rgb: 166, 185, 26;
+  background: linear-gradient(135deg, rgba(243, 249, 229, 0.95) 0%, rgba(237, 243, 204, 0.95) 100%);
+  border-color: rgba(166, 185, 26, 0.4);
+}
+
+.card[data-type="ghost"] {
+  --type-rgb: 115, 87, 151;
+  background: linear-gradient(135deg, rgba(237, 229, 243, 0.95) 0%, rgba(225, 204, 237, 0.95) 100%);
+  border-color: rgba(115, 87, 151, 0.4);
+}
+
+.card[data-type="flying"] {
+  --type-rgb: 169, 143, 243;
+  background: linear-gradient(135deg, rgba(243, 237, 255, 0.95) 0%, rgba(229, 219, 255, 0.95) 100%);
+  border-color: rgba(169, 143, 243, 0.4);
+}
+
+.card[data-type="normal"] {
+  --type-rgb: 168, 167, 122;
+  background: linear-gradient(135deg, rgba(249, 249, 243, 0.95) 0%, rgba(243, 243, 229, 0.95) 100%);
+  border-color: rgba(168, 167, 122, 0.4);
+}
+
+/* Tag - Black with white text */
+.tag {
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 0.35rem 1rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+  backdrop-filter: blur(10px);
+  z-index: 10;
+}
+
+
+.typeSpecLabel {
+  font-size: 0.875rem;
+  color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+
+.typeInfo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Content Area */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Leader Info - Enhanced typography */
+.leaderInfo {
+  border-bottom: 2px solid rgba(var(--type-rgb), 0.2);
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  width: 100%;
+}
+
+.leaderName {
+  font-size: 2.5rem; /* Proportionally reduced */
+  font-weight: 900;
+  color: #374151;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.gymLocation {
+  font-size: 1.35rem;
+  color: #6c757d;
+  margin: 0.5rem 0 0 0;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Top Right Section - Contains level and type specialist */
+.topRightSection {
+  position: absolute;
+  top: 4rem;
+  right: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  z-index: 20;
+}
+
+.recommendedLevelPill {
+  background: rgba(107, 114, 128, 0.9);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  white-space: nowrap;
+}
+
+.typeSpecialization {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  text-align: right;
+  z-index: 10;
+}
+
+/* Bottom Right Section - Contains Gym Leader tag and level */
+.bottomRightSection {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.75rem;
+  align-items: center;
+  z-index: 10;
+}
+
+.bottomRightSection .recommendedLevelPill {
+  background: rgba(107, 114, 128, 0.9);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  white-space: nowrap;
+}
+
+/* Name Section - Badge and Name Side by Side */
+.nameSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.nameInfo {
+  flex: 1;
+}
+
+.nameInfo .leaderName {
+  margin: 0;
+}
+
+.nameInfo .gymLocation {
+  margin: 0.5rem 0 0 0;
+}
+
+/* Badge Container - Left aligned with name */
+.badgeContainer {
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.6));
+  border-radius: 50%;
+  box-shadow: 
+    0 4px 20px rgba(var(--type-rgb), 0.3),
+    0 0 0 2px rgba(var(--type-rgb), 0.2);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  margin-left: 4px;
+}
+
+.cardWrapper:hover .badgeContainer {
+  transform: rotate(360deg) scale(1.1);
+  box-shadow: 
+    0 6px 30px rgba(var(--type-rgb), 0.5),
+    0 0 0 3px rgba(var(--type-rgb), 0.3);
+}
+
+.badge {
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2));
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+}
+
+
+/* Team Section - Enhanced with glass effect */
+.teamSection {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.6));
+  border-radius: 12px;
+  padding: 1rem;
+  backdrop-filter: blur(20px);
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.05) inset,
+    0 0 0 1px rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(var(--type-rgb), 0.1);
+  height: 140px;
+  overflow: visible;
+  position: relative;
+  z-index: 5;
+  margin-top: 2rem;
+}
+
+.teamSection::-webkit-scrollbar {
+  width: 4px;
+}
+
+.teamSection::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+.teamSection::-webkit-scrollbar-thumb {
+  background: rgba(var(--type-rgb), 0.3);
+  border-radius: 2px;
+}
+
+.teamSection::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--type-rgb), 0.5);
+}
+
+.sectionTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #495057;
+  margin: 0 0 0.25rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pokemonGrid {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  gap: 0;
+}
+
+.pokemonItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  padding: 0;
+  border: none;
+  transition: all 0.3s ease;
+  width: calc(100% / 6);
+  height: 100%;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.pokemonItem:hover {
+  transform: translateY(-10px) scale(1.25);
+  background: transparent;
+  border: 2px solid transparent;
+  box-shadow: none;
+  z-index: 20;
+}
+
+.pokemonItem:active {
+  transform: translateY(-8px) scale(1.2);
+}
+
+.pokemonSprite {
+  width: 100px !important;
+  height: 100px !important;
+  object-fit: contain;
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.pokemonName {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #495057;
+}
+
+/* Battle Info */
+.battleInfo {
+  display: flex;
+  align-items: center;
+}
+
+.weaknessesOnly {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+}
+
+.label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6c757d;
+  white-space: nowrap;
+}
+
+.typeIcons {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.typeIcon {
+  font-size: 0.7rem !important;
+}
+
+.mainTypeBadge {
+  font-size: 1.2rem !important;
+  font-weight: 800 !important;
+}
+
+/* Quote - Enhanced with gradient border */
+.quote {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3));
+  border-left: 3px solid rgba(var(--type-rgb), 0.5);
+  padding: 0.75rem 1rem;
+  border-radius: 0 8px 8px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) inset;
+  position: relative;
+  overflow: hidden;
+}
+
+.quote::before {
+  content: '"';
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  font-size: 3rem;
+  opacity: 0.1;
+  font-weight: 900;
+  color: rgb(var(--type-rgb));
+}
+
+.quote p {
+  margin: 0;
+  font-style: italic;
+  font-size: 0.8rem;
+  color: #495057;
+  line-height: 1.4;
+}
+
+/* Fun Fact */
+.funFact {
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+  font-size: 0.8rem;
+  color: #6c757d;
+}
+
+.funFactLabel {
+  font-weight: 700;
+  color: #495057;
+  white-space: nowrap;
+}
+
+.funFact p {
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .cardWrapper {
+    max-width: 100%;
+    margin: 1rem;
+  }
+  
+  .card {
+    padding-left: 260px;
+  }
+  
+  .leaderImageContainer {
+    width: 220px;
+    left: 15px;
+  }
+  
+  .leaderImage {
+    max-height: 500px;
+  }
+}
+
+@media (max-width: 768px) {
+  .cardWrapper {
+    max-width: 100%;
+    margin: 1rem;
+  }
+
+  .leaderImageContainer {
+    width: 200px;
+    left: 10px;
+    top: 10px;
+    bottom: 10px;
+  }
+
+  .leaderImage {
+    max-height: 350px;
+  }
+
+  .card {
+    padding: 1.5rem;
+    padding-left: 220px;
+    height: 500px;
+  }
+
+  .leaderName {
+    font-size: 2rem;
+    color: #374151;
+  }
+  
+  .typeName {
+    font-size: 1.25rem;
+  }
+  
+  .badgeContainer {
+    width: 72px;
+    height: 72px;
+  }
+  
+  .badge {
+    width: 56px;
+    height: 56px;
+  }
+
+  .pokemonItem {
+    width: calc(100% / 6);
+    height: 100%;
+  }
+  
+  .pokemonSprite {
+    width: 80px !important;
+    height: 80px !important;
+    max-width: 90%;
+    max-height: 90%;
+  }
+  
+  .teamSection {
+    height: 120px;
+  }
+
+  .topRightSection {
+    top: 3.5rem;
+    right: 1rem;
+    gap: 0.5rem;
+  }
+
+  .recommendedLevelPill {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.7rem;
+  }
+
+  .badgeRightContainer {
+    right: -60px;
+    width: 50px;
+    height: 50px;
+  }
+
+  .badgeRight {
+    width: 40px;
+    height: 40px;
+  }
+
+  .weaknessesOnly {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cardWrapper {
+    max-width: 100%;
+    margin: 0.5rem;
+  }
+
+  .leaderImageContainer {
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    top: auto;
+    margin-top: 1rem;
+    text-align: center;
+    width: 100%;
+    max-width: 100%;
+    height: 300px;
+  }
+
+  .leaderImage {
+    max-height: 300px;
+  }
+
+  .card {
+    padding: 1.5rem;
+    padding-left: 1.5rem;
+    height: auto;
+    min-height: 450px;
+  }
+  
+  .header {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .leaderName {
+    font-size: 1.75rem;
+    color: #374151;
+  }
+  
+  .typeName {
+    font-size: 1rem;
+  }
+
+  .tag {
+    font-size: 0.625rem;
+    padding: 0.2rem 0.5rem;
+  }
+
+  .pokemonItem {
+    width: calc(100% / 6);
+    height: 100%;
+  }
+  
+  .pokemonSprite {
+    width: 70px !important;
+    height: 70px !important;
+    max-width: 85%;
+    max-height: 85%;
+  }
+  
+  .teamSection {
+    height: 100px;
+  }
+
+  .topRightSection {
+    position: relative;
+    top: auto;
+    right: auto;
+    margin: 1rem 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .badgeRightContainer {
+    position: relative;
+    top: auto;
+    right: auto;
+    margin: 0.5rem 0;
+  }
+
+}
+
+/* Fantina-specific styling for larger appearance */
+.fantinaImage {
+  transform: scale(1.3) translateY(-40px) translateX(15px);
+  object-position: bottom center;
+  z-index: 50;
+  position: relative;
+  animation: none;
+}
+
+.cardWrapper:hover .fantinaImage {
+  transform: scale(1.35) translateY(-45px) translateX(15px);
+  animation: fantinaFloatAnimation 4s ease-in-out infinite;
+}
+
+@keyframes fantinaFloatAnimation {
+  0%, 100% { transform: scale(1.35) translateY(-45px) translateX(15px) rotateY(-5deg); }
+  50% { transform: scale(1.35) translateY(-55px) translateX(15px) rotateY(-5deg); }
+}
+
+/* Crasher Wake-specific styling for larger appearance */
+.crasherWakeImage {
+  transform: scale(1.35) translateY(-45px) translateX(15px);
+  object-position: bottom center;
+  z-index: 50;
+  position: relative;
+  animation: none;
+}
+
+.cardWrapper:hover .crasherWakeImage {
+  transform: scale(1.4) translateY(-50px) translateX(15px);
+  animation: crasherWakeFloatAnimation 4s ease-in-out infinite;
+}
+
+@keyframes crasherWakeFloatAnimation {
+  0%, 100% { transform: scale(1.4) translateY(-50px) translateX(15px) rotateY(-5deg); }
+  50% { transform: scale(1.4) translateY(-60px) translateX(15px) rotateY(-5deg); }
+}
+
+/* Maylene-specific styling for larger appearance */
+.mayleneImage {
+  transform: scale(1.3) translateY(-40px) translateX(15px);
+  object-position: bottom center;
+  z-index: 50;
+  position: relative;
+  animation: none;
+}
+
+.cardWrapper:hover .mayleneImage {
+  transform: scale(1.35) translateY(-45px) translateX(15px);
+  animation: mayleneFloatAnimation 4s ease-in-out infinite;
+}
+
+@keyframes mayleneFloatAnimation {
+  0%, 100% { transform: scale(1.35) translateY(-45px) translateX(15px) rotateY(-5deg); }
+  50% { transform: scale(1.35) translateY(-55px) translateX(15px) rotateY(-5deg); }
+}

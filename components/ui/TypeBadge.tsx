@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { typeColors, tcgTypeColors } from '../../utils/pokemonutils';
-import { getTypeIcon } from '../../utils/scrapedImageMapping';
+// import { getTypeIcon } from '../../utils/scrapedImageMapping';
 import { getTypeStyle } from '../../utils/pokemonTypeColors';
 
 // Type badge component for consistent display of Pokémon types
@@ -49,19 +49,19 @@ export function TypeBadge({
     'xl': 'size-xl'
   }[size] || 'size-md';
 
-  // Size configurations for icon variant
+  // Size configurations for icon variant - consistent with CSS sizing
   const sizeConfig = {
-    'xxs': { badge: 'h-5 text-xs px-2', icon: 14 },
-    'xs': { badge: 'h-6 text-xs px-2', icon: 16 },
-    'list': { badge: 'h-7 text-sm px-2.5', icon: 18 },
-    'sm': { badge: 'h-8 text-sm px-3', icon: 20 },
-    'md': { badge: 'h-10 text-base px-4', icon: 24 },
-    'lg': { badge: 'h-12 text-lg px-5', icon: 28 },
-    'xl': { badge: 'h-14 text-xl px-6', icon: 32 }
+    'xxs': { badge: 'h-5 text-xs px-2 min-w-[58px]', icon: 14 },
+    'xs': { badge: 'h-6 text-xs px-2.5 min-w-[72px]', icon: 16 },
+    'list': { badge: 'h-6 text-sm px-2.5 min-w-[72px]', icon: 18 },
+    'sm': { badge: 'h-8 text-sm px-3 min-w-[84px]', icon: 20 },
+    'md': { badge: 'h-9 text-base px-3.5 min-w-[98px]', icon: 24 },
+    'lg': { badge: 'h-11 text-lg px-4 min-w-[112px]', icon: 28 },
+    'xl': { badge: 'h-12 text-xl px-4.5 min-w-[124px]', icon: 32 }
   };
   
   const config = sizeConfig[size] || sizeConfig['md'];
-  const iconPaths = showIcon ? getTypeIcon(lowerType, iconStyle) : [];
+  const iconPaths = showIcon ? [`/images/types/${lowerType}.svg`] : [];
 
   const interactiveClasses = onClick ? 'cursor-pointer hover:scale-105' : 'hover:scale-105';
 
@@ -76,8 +76,8 @@ export function TypeBadge({
   if (showIcon) {
     return (
       <div
-        className={`inline-flex items-center gap-2 rounded-full font-semibold ${config.badge} ${interactiveClasses} transition-transform duration-200 ${className}`}
-        style={typeStyle}
+        className={`inline-flex items-center justify-center gap-2 rounded-full font-semibold ${config.badge} ${interactiveClasses} transition-transform duration-200 ${className}`}
+        style={{...typeStyle, textAlign: 'center'}}
         onClick={handleClick}
         role={onClick ? "button" : undefined}
         tabIndex={onClick ? 0 : undefined}
@@ -104,7 +104,7 @@ export function TypeBadge({
         )}
         
         {/* Type Name */}
-        <span className="capitalize">
+        <span className="capitalize" style={{textAlign: 'center', flex: 1}}>
           {displayType}
         </span>
       </div>
