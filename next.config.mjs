@@ -57,17 +57,13 @@ const nextConfig = {
           }
         ]
       },
-      // Compression headers for static assets
+      // Cache headers for static assets (removed Content-Encoding header which was causing issues)
       {
         source: '/:path*.(js|css|woff|woff2|ttf|eot)',
         headers: [
           {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable'
-          },
-          {
-            key: 'Content-Encoding',
-            value: 'gzip'
           }
         ]
       },

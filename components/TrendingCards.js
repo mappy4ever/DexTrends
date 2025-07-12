@@ -1,73 +1,86 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, memo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useTheme } from '../context/UnifiedAppContext';
 
-export default function TrendingCards({ cards }) {
+// Memoized function to calculate price from card data
+const calculateCardPrice = (card) => {
+  if (!card.tcgplayer?.prices) return 0;
+  
+  const prices = card.tcgplayer.prices;
+  return prices.holofoil?.market || 
+         prices.normal?.market || 
+         prices.reverseHolofoil?.market || 
+         prices.firstEditionHolofoil?.market ||
+         prices.unlimitedHolofoil?.market || 0;
+};
+
+// Memoized function to calculate trending data
+const calculateTrendingData = (card, currentPrice) => {
+  // Use deterministic hash based on card ID for consistent "trending" data
+  const hashCode = card.id.split('').reduce((acc, char) => {
+    return char.charCodeAt(0) + ((acc << 5) - acc);
+  }, 0);
+  
+  // Generate deterministic volatility factor between -30% and +30%
+  const normalizedHash = (Math.abs(hashCode) % 1000) / 1000;
+  const volatilityFactor = (normalizedHash * 0.6) - 0.3;
+  const previousPrice = currentPrice * (1 - volatilityFactor);
+  
+  // Calculate percent change
+  const percentChange = ((currentPrice - previousPrice) / previousPrice) * 100;
+  
+  return {
+    previousPrice,
+    percentChange: parseFloat(percentChange.toFixed(2)),
+    isRising: percentChange > 0
+  };
+};
+
+const TrendingCards = memo(({ cards }) => {
   const { theme } = useTheme();
   const router = useRouter();
-  const [trendingCards, setTrendingCards] = useState([]);
-
-  useEffect(() => {
-    if (!cards || cards.length === 0) return;
-
-    // Process cards to identify trending ones (both up and down)
-    const processCards = () => {
-      // In a real application, this would be based on actual price history data
-      // Here we're simulating trending cards based on price volatility
-      
-      // Calculate price trend for each card
-      const processedCards = cards.map(card => {
-        // Get the current price
-        let currentPrice = 0;
-        
-        if (card.tcgplayer?.prices) {
-          const prices = card.tcgplayer.prices;
-          currentPrice = prices.holofoil?.market || 
-                         prices.normal?.market || 
-                         prices.reverseHolofoil?.market || 
-                         prices.firstEditionHolofoil?.market ||
-                         prices.unlimitedHolofoil?.market || 0;
-        }
-        
-        if (currentPrice === 0) return null; // Skip cards without prices
-        
-        // Use deterministic hash based on card ID for consistent "trending" data
-        // This creates a pseudo-random but consistent value for each card
-        const hashCode = card.id.split('').reduce((acc, char) => {
-          return char.charCodeAt(0) + ((acc << 5) - acc);
-        }, 0);
-        
-        // Generate deterministic volatility factor between -30% and +30%
-        const normalizedHash = (Math.abs(hashCode) % 1000) / 1000; // 0 to 0.999
-        const volatilityFactor = (normalizedHash * 0.6) - 0.3; // -0.3 to +0.3
-        const previousPrice = currentPrice * (1 - volatilityFactor);
-        
-        // Calculate percent change
-        const percentChange = ((currentPrice - previousPrice) / previousPrice) * 100;
-        
-        return {
-          ...card,
-          currentPrice,
-          previousPrice,
-          percentChange: parseFloat(percentChange.toFixed(2)),
-          isRising: percentChange > 0
-        };
-      }).filter(Boolean); // Remove null values
-      
-      // Sort by absolute value of percent change (highest volatility first)
-      return processedCards.sort((a, b) => 
-        Math.abs(b.percentChange) - Math.abs(a.percentChange)
-      ).slice(0, 8); // Take top 8 trending cards
-    };
+  // Memoize trending cards calculation
+  const trendingCards = useMemo(() => {
+    if (!cards || cards.length === 0) return [];
     
-    setTrendingCards(processCards());
+    // Process cards to identify trending ones
+    const processedCards = cards.map(card => {
+      const currentPrice = calculateCardPrice(card);
+      
+      if (currentPrice === 0) return null; // Skip cards without prices
+      
+      const trendingData = calculateTrendingData(card, currentPrice);
+      
+      return {
+        ...card,
+        currentPrice,
+        ...trendingData
+      };
+    }).filter(Boolean); // Remove null values
+    
+    // Sort by absolute value of percent change (highest volatility first)
+    return processedCards.sort((a, b) => 
+      Math.abs(b.percentChange) - Math.abs(a.percentChange)
+    ).slice(0, 8); // Take top 8 trending cards
   }, [cards]);
   
-  const navigateToCardDetails = (card) => {
+  // Memoize rising and falling cards
+  const risingCards = useMemo(() => 
+    trendingCards.filter(card => card.percentChange > 0).slice(0, 4),
+    [trendingCards]
+  );
+  
+  const fallingCards = useMemo(() => 
+    trendingCards.filter(card => card.percentChange < 0).slice(0, 4),
+    [trendingCards]
+  );
+  
+  // Memoize navigation callback
+  const navigateToCardDetails = useCallback((card) => {
     router.push(`/cards/${card.id}`);
-  };
+  }, [router]);
   
   if (trendingCards.length === 0) return null;
   
@@ -87,10 +100,7 @@ View All Trends
             <span className="text-green-500 mr-2">▲</span> Rising Prices
           </h3>
           <div className="space-y-3">
-            {trendingCards
-              .filter(card => card.percentChange > 0)
-              .slice(0, 4)
-              .map(card => (
+            {risingCards.map(card => (
                 <div 
                   key={card.id} 
                   className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-all" onClick={() => navigateToCardDetails(card)}>
@@ -119,10 +129,7 @@ View All Trends
             <span className="text-red-500 mr-2">▼</span> Falling Prices
           </h3>
           <div className="space-y-3">
-            {trendingCards
-              .filter(card => card.percentChange < 0)
-              .slice(0, 4)
-              .map(card => (
+            {fallingCards.map(card => (
                 <div 
                   key={card.id} 
                   className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-all" onClick={() => navigateToCardDetails(card)}>
@@ -151,4 +158,8 @@ View All Trends
       </div>
     </div>
   );
-}
+});
+
+TrendingCards.displayName = 'TrendingCards';
+
+export default TrendingCards;

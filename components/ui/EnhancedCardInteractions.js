@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback, memo } from 'react';
 import { useFavorites } from '../../context/UnifiedAppContext';
 import logger from '../../utils/logger';
 
@@ -357,7 +357,7 @@ export const useCardInteractions = ({ card, onCardClick, enableAdvancedInteracti
 /**
  * Card Interaction Wrapper Component
  */
-export const InteractiveCard = ({ 
+export const InteractiveCard = memo(({ 
   children, 
   card, 
   onCardClick, 
@@ -414,13 +414,26 @@ export const InteractiveCard = ({
       `}</style>
     </div>
   );
-};
+}, (prevProps, nextProps) => {
+  // Custom comparison for better performance
+  return (
+    prevProps.card?.id === nextProps.card?.id &&
+    prevProps.className === nextProps.className &&
+    prevProps.enableAdvancedInteractions === nextProps.enableAdvancedInteractions &&
+    prevProps.onCardClick === nextProps.onCardClick &&
+    React.isValidElement(prevProps.children) && 
+    React.isValidElement(nextProps.children) &&
+    prevProps.children.key === nextProps.children.key
+  );
+});
+
+InteractiveCard.displayName = 'InteractiveCard';
 
 /**
  * Card Interaction Indicator
  * Shows visual feedback for interaction states
  */
-export const CardInteractionIndicator = ({ interactionState, className = '' }) => {
+export const CardInteractionIndicator = memo(({ interactionState, className = '' }) => {
   if (!interactionState.lastInteraction) return null;
 
   return (
@@ -468,6 +481,13 @@ export const CardInteractionIndicator = ({ interactionState, className = '' }) =
       `}</style>
     </div>
   );
-};
+}, (prevProps, nextProps) => {
+  return (
+    prevProps.interactionState?.lastInteraction === nextProps.interactionState?.lastInteraction &&
+    prevProps.className === nextProps.className
+  );
+});
+
+CardInteractionIndicator.displayName = 'CardInteractionIndicator';
 
 export default { useCardInteractions, InteractiveCard, CardInteractionIndicator };

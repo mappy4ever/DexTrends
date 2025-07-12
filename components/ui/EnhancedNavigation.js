@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo, memo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useFavorites } from '../../context/UnifiedAppContext';
 import ComparisonFAB from './ComparisonFAB';
 
-const EnhancedNavigation = () => {
+const EnhancedNavigation = memo(() => {
   const router = useRouter();
   const { favorites } = useFavorites();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const navigationItems = [
+  const favoritesCount = useMemo(() => 
+    (favorites?.cards?.length || 0) + (favorites?.pokemon?.length || 0),
+    [favorites]
+  );
+
+  const navigationItems = useMemo(() => [
     {
       name: 'Home',
       href: '/',
@@ -32,7 +37,7 @@ const EnhancedNavigation = () => {
       name: 'Favorites',
       href: '/favorites',
       icon: '⭐',
-      badge: (favorites?.cards?.length || 0) + (favorites?.pokemon?.length || 0),
+      badge: favoritesCount,
       description: 'Your saved cards and Pokemon'
     },
     {
@@ -47,45 +52,56 @@ const EnhancedNavigation = () => {
       icon: '🏆',
       description: 'Top collectors and rankings'
     }
-  ];
+  ], [favoritesCount]);
 
-  const quickActions = [
+  const handleCompareCards = useCallback(() => {
+    const event = new CustomEvent('openComparison');
+    window.dispatchEvent(event);
+  }, []);
+
+  const handlePriceAlerts = useCallback(() => {
+    router.push('/alerts');
+  }, [router]);
+
+  const handleRandomCard = useCallback(() => {
+    router.push('/cards?random=true');
+  }, [router]);
+
+  const toggleMenu = useCallback(() => {
+    setIsMenuOpen(prev => !prev);
+  }, []);
+
+  const closeMenu = useCallback(() => {
+    setIsMenuOpen(false);
+  }, []);
+
+  const quickActions = useMemo(() => [
     {
       name: 'Compare Cards',
       icon: '⚖️',
-      action: () => {
-        // This would open the comparison tool
-        const event = new CustomEvent('openComparison');
-        window.dispatchEvent(event);
-      },
+      action: handleCompareCards,
       description: 'Side-by-side card analysis'
     },
     {
       name: 'Price Alerts',
       icon: '🔔',
-      action: () => {
-        // This would open price alerts
-        router.push('/alerts');
-      },
+      action: handlePriceAlerts,
       description: 'Set up price notifications'
     },
     {
       name: 'Random Card',
       icon: '🎲',
-      action: () => {
-        // Random card discovery
-        router.push('/cards?random=true');
-      },
+      action: handleRandomCard,
       description: 'Discover a random card'
     }
-  ];
+  ], [handleCompareCards, handlePriceAlerts, handleRandomCard]);
 
-  const isActive = (href) => {
+  const isActive = useCallback((href) => {
     if (href === '/') {
       return router.pathname === '/';
     }
     return router.pathname.startsWith(href);
-  };
+  }, [router.pathname]);
 
   return (
     <>
@@ -159,7 +175,7 @@ const EnhancedNavigation = () => {
 
           {/* Mobile Menu Button */}
           <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            onClick={toggleMenu}
             className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -186,7 +202,7 @@ const EnhancedNavigation = () => {
                       : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                     }
                   `}
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={closeMenu}
                 >
                   <div className="flex items-center space-x-3">
                     <span className="text-xl">{item.icon}</span>
@@ -212,7 +228,7 @@ const EnhancedNavigation = () => {
                     key={action.name}
                     onClick={() => {
                       action.action();
-                      setIsMenuOpen(false);
+                      closeMenu();
                     }}
                     className="w-full flex items-center space-x-3 p-3 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                   >
@@ -259,6 +275,8 @@ const EnhancedNavigation = () => {
       <div className="lg:hidden h-16"></div>
     </>
   );
-};
+});
+
+EnhancedNavigation.displayName = 'EnhancedNavigation';
 
 export default EnhancedNavigation;

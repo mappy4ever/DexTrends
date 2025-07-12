@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, memo } from 'react';
 import { supabase } from '../lib/supabase';
 import { CompactPriceIndicator } from './ui/PriceIndicator';
 import Modal from './ui/modals/Modal';
 import Link from 'next/link';
 
 // Advanced collection management with portfolio tracking
-export default function CollectionManager({ userId = null }) {
+const CollectionManager = memo(({ userId = null }) => {
   const [collections, setCollections] = useState([]);
   const [selectedCollection, setSelectedCollection] = useState(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -33,7 +33,7 @@ export default function CollectionManager({ userId = null }) {
     }
   }, [selectedCollection]);
 
-  const loadCollections = async () => {
+  const loadCollections = useCallback(async () => {
     setLoading(true);
     try {
       // Get user collections (if userId is provided) or session collections
@@ -58,9 +58,9 @@ export default function CollectionManager({ userId = null }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId, getSessionId, selectedCollection]);
 
-  const getSessionId = () => {
+  const getSessionId = useCallback(() => {
     if (typeof window === 'undefined') return null;
     
     try {
@@ -82,7 +82,7 @@ export default function CollectionManager({ userId = null }) {
       // If localStorage is not available, return a temporary session ID
       return 'session_temp_' + Date.now();
     }
-  };
+  }, []);
 
   const calculatePortfolioValue = async () => {
     if (!selectedCollection?.cards) return;
@@ -246,7 +246,7 @@ export default function CollectionManager({ userId = null }) {
     }
   };
 
-  const getCollectionStats = () => {
+  const getCollectionStats = useMemo(() => {
     if (!selectedCollection?.cards) return { totalCards: 0, uniqueCards: 0, totalValue: 0 };
 
     const cards = selectedCollection.cards;
@@ -258,7 +258,7 @@ export default function CollectionManager({ userId = null }) {
       uniqueCards,
       totalValue: portfolioValue
     };
-  };
+  }, [selectedCollection, portfolioValue]);
 
   if (loading) {
     return (
@@ -271,7 +271,7 @@ export default function CollectionManager({ userId = null }) {
     );
   }
 
-  const stats = getCollectionStats();
+  const stats = getCollectionStats;
 
   return (
     <div className="space-y-6">
@@ -457,19 +457,25 @@ export default function CollectionManager({ userId = null }) {
       </Modal>
     </div>
   );
-}
+}, (prevProps, nextProps) => {
+  return prevProps.userId === nextProps.userId;
+});
+
+CollectionManager.displayName = 'CollectionManager';
+
+export default CollectionManager;
 
 // Create Collection Form Component
-function CreateCollectionForm({ onSubmit, onCancel }) {
+const CreateCollectionForm = memo(({ onSubmit, onCancel }) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = useCallback((e) => {
     e.preventDefault();
     if (name.trim()) {
       onSubmit(name.trim(), description.trim());
     }
-  };
+  }, [name, description, onSubmit]);
 
   return (
     <div className="p-6">
@@ -520,10 +526,12 @@ function CreateCollectionForm({ onSubmit, onCancel }) {
       </form>
     </div>
   );
-}
+});
+
+CreateCollectionForm.displayName = 'CreateCollectionForm';
 
 // Add Card Form Component
-function AddCardForm({ searchQuery, setSearchQuery, searchResults, onSearch, onAddCard, onCancel }) {
+const AddCardForm = memo(({ searchQuery, setSearchQuery, searchResults, onSearch, onAddCard, onCancel }) => {
   const [selectedCard, setSelectedCard] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [condition, setCondition] = useState('Near Mint');
@@ -539,12 +547,12 @@ function AddCardForm({ searchQuery, setSearchQuery, searchResults, onSearch, onA
     return () => clearTimeout(timeoutId);
   }, [searchQuery, onSearch]);
 
-  const handleAddCard = (e) => {
+  const handleAddCard = useCallback((e) => {
     e.preventDefault();
     if (selectedCard) {
       onAddCard(selectedCard, quantity, condition, notes);
     }
-  };
+  }, [selectedCard, quantity, condition, notes, onAddCard]);
 
   const conditions = [
     'Mint', 'Near Mint', 'Excellent', 'Good', 'Light Play', 'Moderate Play', 'Heavy Play', 'Damaged'
@@ -685,4 +693,6 @@ function AddCardForm({ searchQuery, setSearchQuery, searchResults, onSearch, onA
       )}
     </div>
   );
-}
+});
+
+AddCardForm.displayName = 'AddCardForm';

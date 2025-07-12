@@ -82,7 +82,7 @@ export const FullBleedWrapper: React.FC<FullBleedWrapperProps> = ({
     <div className={`relative ${disablePadding ? '' : 'min-h-screen'} ${className}`}>
       {/* Fallback background layer that grows with content */}
       <div 
-        className={`absolute inset-0 w-full h-full z-[-1] ${gradients[gradient]}`}
+        className={`absolute inset-0 w-full h-full z-[-1] ${getGradientClasses()}`}
         style={{ 
           position: 'absolute',
           top: 0,

@@ -535,8 +535,12 @@ class PerformanceMonitor {
 // Create global instance
 const performanceMonitor = new PerformanceMonitor();
 
+// Store for tracking component render counts
+const componentRenderCounts = new Map();
+const componentRenderTimings = new Map();
+
 // React hook for performance monitoring
-export const usePerformanceMonitor = () => {
+export const usePerformanceMonitor = (componentName) => {
   if (typeof window === 'undefined') {
     return {
       vitals: {},
@@ -546,14 +550,48 @@ export const usePerformanceMonitor = () => {
       measureFunction: (fn) => fn(),
       measureAsyncFunction: async (fn) => await fn(),
       generateReport: () => null,
-      getMetrics: () => ({})
+      getMetrics: () => ({}),
+      renderCount: 0,
+      logPerformance: () => {}
     };
   }
   
   const React = require('react');
-  const { useState, useEffect } = React;
+  const { useState, useEffect, useRef } = React;
   const [vitals, setVitals] = useState({});
   const [isSupported, setIsSupported] = useState(performanceMonitor.isSupported);
+  const renderCount = useRef(0);
+  const renderStartTime = useRef(null);
+
+  // Track component renders
+  useEffect(() => {
+    if (componentName) {
+      renderCount.current++;
+      const totalRenders = (componentRenderCounts.get(componentName) || 0) + 1;
+      componentRenderCounts.set(componentName, totalRenders);
+
+      // Track render timing
+      if (renderStartTime.current) {
+        const renderTime = performance.now() - renderStartTime.current;
+        const timings = componentRenderTimings.get(componentName) || [];
+        timings.push(renderTime);
+        componentRenderTimings.set(componentName, timings);
+
+        // Warn about slow renders
+        if (renderTime > 16) { // 16ms = 60fps threshold
+          logger.warn(`Slow render detected: ${componentName} took ${renderTime.toFixed(2)}ms`);
+        }
+
+        // Record as custom metric
+        performanceMonitor.recordMetric(`react-render-${componentName}`, renderTime, {
+          renderCount: renderCount.current,
+          totalRenders
+        });
+      }
+
+      renderStartTime.current = performance.now();
+    }
+  });
 
   useEffect(() => {
     if (!performanceMonitor.isSupported) return;
@@ -568,6 +606,22 @@ export const usePerformanceMonitor = () => {
     return unsubscribe;
   }, []);
 
+  const logPerformance = () => {
+    if (componentName) {
+      const timings = componentRenderTimings.get(componentName) || [];
+      const avgRenderTime = timings.length > 0 
+        ? timings.reduce((a, b) => a + b, 0) / timings.length 
+        : 0;
+
+      logger.info(`Performance metrics for ${componentName}:`, {
+        renderCount: renderCount.current,
+        totalRenders: componentRenderCounts.get(componentName) || 0,
+        averageRenderTime: avgRenderTime,
+        lastRenderTime: timings[timings.length - 1] || 0
+      });
+    }
+  };
+
   return {
     vitals,
     isSupported,
@@ -576,7 +630,9 @@ export const usePerformanceMonitor = () => {
     measureFunction: performanceMonitor.measureFunction.bind(performanceMonitor),
     measureAsyncFunction: performanceMonitor.measureAsyncFunction.bind(performanceMonitor),
     generateReport: performanceMonitor.generateReport.bind(performanceMonitor),
-    getMetrics: performanceMonitor.getMetrics.bind(performanceMonitor)
+    getMetrics: performanceMonitor.getMetrics.bind(performanceMonitor),
+    renderCount: renderCount.current,
+    logPerformance
   };
 };
 

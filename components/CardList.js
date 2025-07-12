@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useCallback, memo } from "react";
 import Image from "next/image";
 import Modal from "./ui/modals/Modal";
 import UnifiedCard from "./ui/UnifiedCard";
@@ -6,7 +6,33 @@ import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import { InlineLoadingSpinner } from "./ui/loading/LoadingSpinner";
 import { isFeatureEnabled } from "../utils/featureFlags";
 
-export default function CardList({
+// Custom comparison function for React.memo
+const arePropsEqual = (prevProps, nextProps) => {
+  // Check if cards array length changed
+  if (prevProps.cards?.length !== nextProps.cards?.length) return false;
+  
+  // Check if loading/error states changed
+  if (prevProps.loading !== nextProps.loading) return false;
+  if (prevProps.error !== nextProps.error) return false;
+  
+  // Check if sort option changed
+  if (prevProps.initialSortOption !== nextProps.initialSortOption) return false;
+  
+  // For cards array, only check if the array reference changed
+  // Individual card updates will be handled by UnifiedCard's own memoization
+  if (prevProps.cards !== nextProps.cards) return false;
+  
+  // Check if callback functions changed (they should be stable with useCallback)
+  if (prevProps.onCardClick !== nextProps.onCardClick) return false;
+  if (prevProps.onRarityClick !== nextProps.onRarityClick) return false;
+  if (prevProps.getPrice !== nextProps.getPrice) return false;
+  if (prevProps.getReleaseDate !== nextProps.getReleaseDate) return false;
+  if (prevProps.getRarityRank !== nextProps.getRarityRank) return false;
+  
+  return true;
+};
+
+const CardList = memo(({
   cards = [],
   loading = false,
   error = null,
@@ -16,10 +42,27 @@ export default function CardList({
   getPrice = () => 0,
   getReleaseDate = () => "0000-00-00",
   getRarityRank = () => 0,
-}) {
+}) => {
   // Local sort state
   const [sortOption, setSortOption] = useState(initialSortOption);
   const [zoomedCard, setZoomedCard] = useState(null);
+  
+  // Memoized callbacks to prevent unnecessary re-renders
+  const handleSortChange = useCallback((e) => {
+    setSortOption(e.target.value);
+  }, []);
+  
+  const handleMagnifyClick = useCallback((card) => {
+    setZoomedCard(card);
+  }, []);
+  
+  const handleCloseModal = useCallback(() => {
+    setZoomedCard(null);
+  }, []);
+  
+  const handleCardClick = useCallback((card) => {
+    onCardClick(card);
+  }, [onCardClick]);
 
   // Sorting logic
   const sortedCards = useMemo(() => {
@@ -57,7 +100,7 @@ export default function CardList({
         <select
           id="sort"
           value={sortOption}
-          onChange={(e) => setSortOption(e.target.value)}
+          onChange={handleSortChange}
           className="border border-gray-300 rounded px-3 py-1"
         >
           <option value="price">Price</option>
@@ -84,8 +127,8 @@ export default function CardList({
               showSet={true}
               showTypes={true}
               showRarity={true}
-              onMagnifyClick={(card) => setZoomedCard(card)}
-              onCardClick={(card) => onCardClick(card)}
+              onMagnifyClick={handleMagnifyClick}
+              onCardClick={handleCardClick}
               className="animate-fadeIn"
             />
           );
@@ -122,7 +165,7 @@ export default function CardList({
 
       {/* Modal for zoomed card */}
       {zoomedCard && (
-        <Modal isOpen={!!zoomedCard} onClose={() => setZoomedCard(null)}>
+        <Modal isOpen={!!zoomedCard} onClose={handleCloseModal}>
           <div className="flex flex-col items-center p-4">
             <Image
               src={zoomedCard.images?.large || '/back-card.png'}
@@ -136,7 +179,7 @@ export default function CardList({
             />
             <button
               className="mt-2 px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark"
-              onClick={() => setZoomedCard(null)}
+              onClick={handleCloseModal}
             >
               Close
             </button>
@@ -145,4 +188,8 @@ export default function CardList({
       )}
     </div>
   );
-}
+}, arePropsEqual);
+
+CardList.displayName = 'CardList';
+
+export default CardList;
