@@ -148,7 +148,7 @@ export default function Navbar() {
   // const isDarkMode = theme === 'dark';
 
   return (
-    <ClientOnly>
+    <>
       {/* Redesigned Navbar with Gradient Glass Effect */}
       <div className="fixed top-0 left-0 right-0 flex items-center justify-between px-4 md:px-6 h-20 z-40 bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-lg safe-area-padding-top navbar-ios">
         <Link
@@ -414,6 +414,6 @@ export default function Navbar() {
       {/* Spacer for fixed navbar with iOS Safe Area */}
       <div className="h-20 navbar-spacer-ios" />
       <GlobalSearchModal ref={searchModalRef} />
-    </ClientOnly>
+    </>
   );
 }
