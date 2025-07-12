@@ -28,7 +28,7 @@ if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API
 export default function PokemonDetailEnhanced() {
   const router = useRouter();
   const { pokeid = "25" } = router.query; // Default to Pikachu for testing
-  const { favorites, togglePokemonFavorite, isPokemonFavorite } = useFavorites();
+  const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
   
   const [pokemon, setPokemon] = useState(null);
   const [species, setSpecies] = useState(null);
@@ -245,7 +245,7 @@ export default function PokemonDetailEnhanced() {
     }
   };
 
-  const isFavorite = pokemon && isPokemonFavorite(pokemon.id);
+  const isFavorite = pokemon && favorites.pokemon.some(p => p.id === String(pokemon.id));
 
   const toggleFavorite = () => {
     if (!pokemon) return;
@@ -258,7 +258,11 @@ export default function PokemonDetailEnhanced() {
       type: 'pokemon'
     };
 
-    togglePokemonFavorite(favoriteData);
+    if (isFavorite) {
+      removeFromFavorites('pokemon', pokemon.id);
+    } else {
+      addToFavorites('pokemon', favoriteData);
+    }
   };
 
   // Handle form changes

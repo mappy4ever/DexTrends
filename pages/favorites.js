@@ -13,7 +13,7 @@ import AchievementSystem from '../components/ui/AchievementSystem';
 
 export default function FavoritesPage() {
   const router = useRouter();
-  const { favorites, togglePokemonFavorite, toggleCardFavorite } = useFavorites();
+  const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [pokemonData, setPokemonData] = useState([]);
   const [cardsData, setCardsData] = useState([]);
@@ -175,7 +175,7 @@ export default function FavoritesPage() {
                         </Link>
                         <button
                           className="absolute top-2 right-2 p-1.5 bg-white/80 dark:bg-gray-800/80 rounded-full shadow-md text-red-500"
-                          onClick={() => togglePokemonFavorite(pokemon.id)}
+                          onClick={() => removeFromFavorites('pokemon', pokemon.id)}
                           title="Remove from favorites"
                         >
                           <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
@@ -245,7 +245,7 @@ export default function FavoritesPage() {
                         />
                         <button
                           className="absolute top-2 right-2 p-1.5 bg-white/80 dark:bg-gray-800/80 rounded-full shadow-md text-red-500"
-                          onClick={() => toggleCardFavorite(card.id)}
+                          onClick={() => removeFromFavorites('cards', card.id)}
                           title="Remove from favorites"
                         >
                           <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">

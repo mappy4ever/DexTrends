@@ -6,7 +6,7 @@ import pokemon from "pokemontcgsdk";
 import Modal from "../../components/ui/modals/Modal";
 import CardList from "../../components/CardList";
 import { FadeIn, SlideUp } from "../../components/ui/animations";
-import PriceHistoryChart from "../../components/ui/PriceHistoryChart"; // Updated path
+import { DynamicPriceHistoryChart } from "../../components/dynamic/DynamicComponents";
 import { useTheme } from "../../context/UnifiedAppContext";
 import { useFavorites } from "../../context/UnifiedAppContext";
 import { useViewSettings } from "../../context/UnifiedAppContext";
@@ -25,7 +25,7 @@ export default function SetIdPage() {
   const router = useRouter();
   const { setid } = router.query; // Changed to setid
   const { theme } = useTheme();
-  const { toggleCardFavorite, isCardFavorite } = useFavorites();
+  const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
   const { viewSettings } = useViewSettings();
   
   // Create refs for scrolling
@@ -727,7 +727,7 @@ export default function SetIdPage() {
               {/* Price History Chart */}
               <div className="mt-8">
                 <h4 className="font-bold text-lg mb-4">Price History</h4>
-                <PriceHistoryChart 
+                <DynamicPriceHistoryChart 
                   cardId={modalCard.id} 
                   initialPrice={getPrice(modalCard)} 
                 />

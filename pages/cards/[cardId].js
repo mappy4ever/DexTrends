@@ -5,7 +5,7 @@ import pokemon from "pokemontcgsdk";
 import Modal from "../../components/ui/modals/Modal";
 import EnhancedCardModal from "../../components/ui/EnhancedCardModal";
 import { FadeIn, SlideUp } from "../../components/ui/animations";
-import PriceHistoryChart from "../../components/ui/PriceHistoryChart";
+import { DynamicPriceHistoryChart } from "../../components/dynamic/DynamicComponents";
 import { useTheme } from "../../context/UnifiedAppContext";
 import { useFavorites } from "../../context/UnifiedAppContext";
 import { TypeBadge } from "../../components/ui/TypeBadge";
@@ -45,7 +45,7 @@ export default function CardDetailPage() {
   const router = useRouter();
   const { cardId } = router.query;
   const { theme } = useTheme();
-  const { toggleCardFavorite, isCardFavorite } = useFavorites();
+  const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
   
   // State variables
   const [card, setCard] = useState(null);
@@ -106,7 +106,12 @@ export default function CardDetailPage() {
   // Handle toggling favorite status
   const handleToggleFavorite = () => {
     if (card) {
-      toggleCardFavorite(card);
+      const isCurrentlyFavorite = favorites.cards.some(c => c.id === card.id);
+      if (isCurrentlyFavorite) {
+        removeFromFavorites('cards', card.id);
+      } else {
+        addToFavorites('cards', card);
+      }
     }
   };
 
@@ -217,7 +222,7 @@ export default function CardDetailPage() {
                 {/* Favorite button */}
                 <button 
                   className={`w-full py-2.5 px-4 rounded-lg flex items-center justify-center transition-colors ${
-                    isCardFavorite(card.id) 
+                    favorites.cards.some(c => c.id === card.id) 
                       ? 'bg-red-100 dark:bg-red-900/30 text-red-500 hover:bg-red-200 dark:hover:bg-red-900/40' 
                       : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
@@ -225,18 +230,18 @@ export default function CardDetailPage() {
                 >
                   <svg 
                     className="w-5 h-5 mr-2" 
-                    fill={isCardFavorite(card.id) ? "currentColor" : "none"} 
+                    fill={favorites.cards.some(c => c.id === card.id) ? "currentColor" : "none"} 
                     viewBox="0 0 24 24" 
                     stroke="currentColor"
                   >
                     <path 
                       strokeLinecap="round" 
                       strokeLinejoin="round" 
-                      strokeWidth={isCardFavorite(card.id) ? 0 : 2} 
+                      strokeWidth={favorites.cards.some(c => c.id === card.id) ? 0 : 2} 
                       d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" 
                     />
                   </svg>
-                  {isCardFavorite(card.id) ? 'Remove from Favorites' : 'Add to Favorites'}
+                  {favorites.cards.some(c => c.id === card.id) ? 'Remove from Favorites' : 'Add to Favorites'}
                 </button>
               </div>
             </div>
@@ -383,7 +388,7 @@ export default function CardDetailPage() {
             {getCardPrice(card) !== 'N/A' && (
               <div className={`mt-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} p-6 rounded-xl shadow-lg`}>
                 <h2 className="text-xl font-semibold mb-4">Price History</h2>
-                <PriceHistoryChart 
+                <DynamicPriceHistoryChart 
                   cardId={card.id} 
                   initialPrice={parseFloat(getCardPrice(card).substring(1))}
                   timeRange="1y"

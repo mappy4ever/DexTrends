@@ -57,6 +57,20 @@ const nextConfig = {
           }
         ]
       },
+      // Compression headers for static assets
+      {
+        source: '/:path*.(js|css|woff|woff2|ttf|eot)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable'
+          },
+          {
+            key: 'Content-Encoding',
+            value: 'gzip'
+          }
+        ]
+      },
       {
         source: '/api/(.*)',
         headers: [
@@ -195,6 +209,9 @@ const nextConfig = {
     // Only enable stable experimental features
     esmExternals: true,
   },
+  
+  // Enable compression
+  compress: true,
   
   // Re-enable linting and type checking during build
   eslint: {

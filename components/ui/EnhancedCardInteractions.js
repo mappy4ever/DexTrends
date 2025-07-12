@@ -27,7 +27,7 @@ export const useCardInteractions = ({ card, onCardClick, enableAdvancedInteracti
   const cardRef = useRef(null);
   const timeoutRef = useRef(null);
   const animationFrameRef = useRef(null);
-  const { toggleCardFavorite, isCardFavorite } = useFavorites();
+  const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
 
   // Enhanced hover effect with 3D tilt
   const handleMouseMove = useCallback((e) => {
@@ -216,7 +216,12 @@ export const useCardInteractions = ({ card, onCardClick, enableAdvancedInteracti
     if (timeSinceLastTap < 300) {
       // Double tap detected - toggle favorite
       if (card) {
-        toggleCardFavorite(card);
+        const isCurrentlyFavorite = favorites.cards.some(c => c.id === card.id);
+        if (isCurrentlyFavorite) {
+          removeFromFavorites('cards', card.id);
+        } else {
+          addToFavorites('cards', card);
+        }
         
         // Special animation for favorite action
         setAnimation(prev => ({
@@ -243,7 +248,7 @@ export const useCardInteractions = ({ card, onCardClick, enableAdvancedInteracti
     }
     
     lastTapRef.current = now;
-  }, [card, toggleCardFavorite]);
+  }, [card, favorites, addToFavorites, removeFromFavorites]);
 
   // Keyboard interactions
   const handleKeyDown = useCallback((e) => {
@@ -261,12 +266,17 @@ export const useCardInteractions = ({ card, onCardClick, enableAdvancedInteracti
         if (e.ctrlKey || e.metaKey) {
           e.preventDefault();
           if (card) {
-            toggleCardFavorite(card);
+            const isCurrentlyFavorite = favorites.cards.some(c => c.id === card.id);
+            if (isCurrentlyFavorite) {
+              removeFromFavorites('cards', card.id);
+            } else {
+              addToFavorites('cards', card);
+            }
           }
         }
         break;
     }
-  }, [card, onCardClick, handleDoubleInteraction, toggleCardFavorite]);
+  }, [card, onCardClick, handleDoubleInteraction, favorites, addToFavorites, removeFromFavorites]);
 
   // Cleanup effects
   useEffect(() => {
@@ -282,7 +292,7 @@ export const useCardInteractions = ({ card, onCardClick, enableAdvancedInteracti
 
   // Generate dynamic styles based on animation state
   const getCardStyles = useCallback(() => {
-    const isFavorite = card && isCardFavorite(card.id);
+    const isFavorite = card && favorites.cards.some(c => c.id === card.id);
     
     return {
       transform: `
@@ -304,7 +314,7 @@ export const useCardInteractions = ({ card, onCardClick, enableAdvancedInteracti
         borderWidth: '2px'
       })
     };
-  }, [animation, interactionState, card, isCardFavorite]);
+  }, [animation, interactionState, card, favorites]);
 
   // Dynamic shadow based on interaction state
   const getCardShadow = useCallback(() => {

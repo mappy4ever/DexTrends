@@ -12,7 +12,7 @@ import { BsArrowLeft, BsHeart, BsHeartFill, BsShare, BsStar, BsStarFill } from "
 export default function PokeIDTestPage() {
   const router = useRouter();
   const { pokeid = "25" } = router.query; // Default to Pikachu for testing
-  const { favorites, togglePokemonFavorite, isPokemonFavorite } = useFavorites();
+  const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
   
   const [pokemon, setPokemon] = useState(null);
   const [species, setSpecies] = useState(null);
@@ -98,7 +98,7 @@ export default function PokeIDTestPage() {
     );
   }
 
-  const isFavorite = isPokemonFavorite(pokemon.id);
+  const isFavorite = favorites.pokemon.some(p => p.id === String(pokemon.id));
 
   return (
     <div className="min-h-screen gradient-pokedex gradient-animated texture-grain relative">
@@ -118,7 +118,13 @@ export default function PokeIDTestPage() {
         
         <div className="flex gap-3">
           <button
-            onClick={() => togglePokemonFavorite(pokemon.id)}
+            onClick={() => {
+              if (isFavorite) {
+                removeFromFavorites('pokemon', pokemon.id);
+              } else {
+                addToFavorites('pokemon', { id: String(pokemon.id), name: pokemon.name, sprite: pokemon.sprites.front_default });
+              }
+            }}
             className="w-12 h-12 bg-white/20 hover:bg-white/30 backdrop-blur-md rounded-full flex items-center justify-center border border-white/30 transition-all duration-300 hover:scale-110 text-white"
           >
             {isFavorite ? <BsHeartFill className="w-5 h-5 text-red-400" /> : <BsHeart className="w-5 h-5" />}

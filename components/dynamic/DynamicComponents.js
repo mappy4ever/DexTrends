@@ -61,11 +61,54 @@ export const DynamicMarketAnalytics = dynamic(
   }
 );
 
+// Dashboard components (heavy with charts)
+// Commented out due to missing dependencies - these components are not currently used
+// export const DynamicMarketInsightsDashboard = dynamic(
+//   () => import('../ui/MarketInsightsDashboard'),
+//   {
+//     loading: () => <DynamicLoader>Loading market insights...</DynamicLoader>,
+//     ssr: false
+//   }
+// );
+
+// export const DynamicDataAnalyticsDashboard = dynamic(
+//   () => import('../ui/DataAnalyticsDashboard'),
+//   {
+//     loading: () => <DynamicLoader>Loading data analytics...</DynamicLoader>,
+//     ssr: false
+//   }
+// );
+
 // Collection manager (heavy component)
 export const DynamicCollectionManager = dynamic(
   () => import('../CollectionManager'),
   {
     loading: () => <DynamicLoader>Loading collection...</DynamicLoader>
+  }
+);
+
+// Advanced features (currently unused but available for future)
+export const DynamicAdvancedDeckBuilder = dynamic(
+  () => import('../ui/AdvancedDeckBuilder'),
+  {
+    loading: () => <DynamicLoader>Loading deck builder...</DynamicLoader>,
+    ssr: false
+  }
+);
+
+export const DynamicTradingMarketplace = dynamic(
+  () => import('../ui/TradingMarketplace'),
+  {
+    loading: () => <DynamicLoader>Loading marketplace...</DynamicLoader>,
+    ssr: false
+  }
+);
+
+export const DynamicTournamentSystem = dynamic(
+  () => import('../ui/TournamentSystem'),
+  {
+    loading: () => <DynamicLoader>Loading tournament system...</DynamicLoader>,
+    ssr: false
   }
 );
 
@@ -215,7 +258,12 @@ export default {
   DynamicReactLeaflet,
   DynamicAdvancedSearchModal,
   DynamicMarketAnalytics,
+  // DynamicMarketInsightsDashboard, // Commented out - missing dependencies
+  // DynamicDataAnalyticsDashboard, // Commented out - missing dependencies
   DynamicCollectionManager,
+  DynamicAdvancedDeckBuilder,
+  DynamicTradingMarketplace,
+  DynamicTournamentSystem,
   DynamicPriceAlerts,
   DynamicFontAwesome,
   DynamicDatePicker,
