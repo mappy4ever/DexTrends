@@ -247,6 +247,18 @@ export function UnifiedAppProvider({ children }) {
     }
   }, []);
 
+  // Apply theme class on mount and when theme changes
+  useEffect(() => {
+    if (mounted && typeof window !== 'undefined') {
+      const currentTheme = state.user.preferences.theme;
+      if (currentTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+  }, [mounted, state.user.preferences.theme]);
+
   // Persist state to localStorage
   const persistState = useCallback((key, value) => {
     if (typeof window !== 'undefined') {
@@ -271,6 +283,15 @@ export function UnifiedAppProvider({ children }) {
       }
     }));
     persistState('theme', newTheme);
+    
+    // Apply theme class to document
+    if (typeof window !== 'undefined') {
+      if (newTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
   }, [persistState]);
 
   const toggleTheme = useCallback(() => {

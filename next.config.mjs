@@ -3,7 +3,7 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true, // Re-enabled after fixing Fast Refresh issues
+  reactStrictMode: false, // Temporarily disabled to fix Fast Refresh loop
   
   // PWA handled by custom service worker
 

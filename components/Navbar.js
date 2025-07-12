@@ -144,10 +144,11 @@ export default function Navbar() {
     };
   }, [mobileOpen]);
 
-  const isDarkMode = theme === 'dark';
+  // Remove unused variable that causes hydration issues
+  // const isDarkMode = theme === 'dark';
 
   return (
-    <>
+    <ClientOnly>
       {/* Redesigned Navbar with Gradient Glass Effect */}
       <div className="fixed top-0 left-0 right-0 flex items-center justify-between px-4 md:px-6 h-20 z-40 bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-lg safe-area-padding-top navbar-ios">
         <Link
@@ -307,40 +308,39 @@ export default function Navbar() {
             </ClientOnly>
           </Link>
           
-          <ClientOnly>
-            <button
-              aria-label={theme === 'dark' ? "Activate light mode" : "Activate dark mode"}
-              title={theme === 'dark' ? "Activate light mode" : "Activate dark mode"}
-              className="p-3 rounded-full bg-white/60 backdrop-blur-sm border border-gray-200/50 text-gray-700 hover:bg-white/80 hover:border-gray-300/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
-              onClick={toggleTheme}
-            >
+          <button
+            aria-label={mounted && theme === 'dark' ? "Activate light mode" : "Activate dark mode"}
+            title={mounted && theme === 'dark' ? "Activate light mode" : "Activate dark mode"}
+            className="p-3 rounded-full bg-white/60 backdrop-blur-sm border border-gray-200/50 text-gray-700 hover:bg-white/80 hover:border-gray-300/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+            onClick={toggleTheme}
+          >
+            <ClientOnly fallback={<BsMoon size={20} className="text-blue-600" />}>
               {theme === 'dark' ? 
                 <BsSun size={20} className="text-yellow-500" /> : 
                 <BsMoon size={20} className="text-blue-600" />
               }
-            </button>
-          </ClientOnly>
+            </ClientOnly>
+          </button>
           
           {/* Mobile Menu Button */}
-          <ClientOnly>
-            <button
-              id="mobile-menu-button"
-              className="md:hidden p-3 rounded-full bg-gradient-to-r from-pokemon-red to-pink-500 text-white hover:from-red-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-300 touch-manipulation transform active:scale-95"
-              onClick={() => setMobileOpen(!mobileOpen)}
-              aria-label="Toggle mobile menu"
-              style={{ minHeight: '48px', minWidth: '48px' }}
-            >
-              <div className="w-5 h-5 flex flex-col justify-center space-y-1">
-                <div className={`w-full h-0.5 bg-white transition-all duration-300 ${mobileOpen ? 'rotate-45 translate-y-1' : ''}`} />
-                <div className={`w-full h-0.5 bg-white transition-all duration-300 ${mobileOpen ? 'opacity-0' : ''}`} />
-                <div className={`w-full h-0.5 bg-white transition-all duration-300 ${mobileOpen ? '-rotate-45 -translate-y-1' : ''}`} />
-              </div>
-            </button>
-          </ClientOnly>
+          <button
+            id="mobile-menu-button"
+            className="md:hidden p-3 rounded-full bg-gradient-to-r from-pokemon-red to-pink-500 text-white hover:from-red-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-300 touch-manipulation transform active:scale-95"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle mobile menu"
+            style={{ minHeight: '48px', minWidth: '48px' }}
+          >
+            <div className="w-5 h-5 flex flex-col justify-center space-y-1">
+              <div className={`w-full h-0.5 bg-white transition-all duration-300${mounted && mobileOpen ? ' rotate-45 translate-y-1' : ''}`} />
+              <div className={`w-full h-0.5 bg-white transition-all duration-300${mounted && mobileOpen ? ' opacity-0' : ''}`} />
+              <div className={`w-full h-0.5 bg-white transition-all duration-300${mounted && mobileOpen ? ' -rotate-45 -translate-y-1' : ''}`} />
+            </div>
+          </button>
         </div>
       </div>
       {/* Mobile Menu Overlay */}
-      {mobileOpen && (
+      <ClientOnly>
+        {mobileOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
           <div ref={menuWrapperRef} className="fixed right-0 left-0 bg-white/98 backdrop-blur-xl border-t border-white/30 p-6 shadow-2xl safe-area-padding-x rounded-t-3xl" style={{ top: 'calc(80px + env(safe-area-inset-top))' }}>
@@ -410,9 +410,10 @@ export default function Navbar() {
           </div>
         </div>
       )}
+      </ClientOnly>
       {/* Spacer for fixed navbar with iOS Safe Area */}
       <div className="h-20 navbar-spacer-ios" />
       <GlobalSearchModal ref={searchModalRef} />
-    </>
+    </ClientOnly>
   );
 }

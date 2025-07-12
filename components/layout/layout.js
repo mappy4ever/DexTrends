@@ -7,7 +7,7 @@ import React from "react"; // Ensuring React is imported if it was implicitly us
 
 export default function Layout({ children, fullBleed = false }) {
   return (
-    <div className="flex flex-col min-h-screen bg-page-bg text-card-foreground transition-colors duration-300 relative">
+    <div className="flex flex-col min-h-screen text-card-foreground transition-colors duration-300 relative">
       {/* Removed glassy, layered background effect overlay */}
       <Navbar />
       <div className="flex flex-grow relative z-10">
