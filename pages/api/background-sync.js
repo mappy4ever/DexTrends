@@ -1,6 +1,6 @@
 // Enhanced Background Sync API for PWA
 import logger from '../../utils/logger';
-import { apiCache } from '../../utils/apiCache';
+import cacheManager from '../../utils/UnifiedCacheManager';
 
 export default async function handler(req, res) {
   const { method, query, body } = req;
@@ -185,11 +185,12 @@ async function checkTrendingUpdates(lastSync) {
 // Get cache status
 async function getCacheStatus() {
   try {
+    const stats = await cacheManager.getStats();
     return {
-      size: '2.5MB', // Mock data
-      entries: 150,
+      size: `${((stats.memory?.size || 0) + (stats.localStorage?.size || 0)) * 0.001}MB`, // Rough estimate
+      entries: (stats.memory?.size || 0) + (stats.localStorage?.size || 0) + (stats.database?.size || 0),
       lastCleanup: Date.now() - 2 * 60 * 60 * 1000, // 2 hours ago
-      hitRate: 0.85
+      hitRate: stats.overall?.hitRate || 0
     };
   } catch (error) {
     return { error: error.message };

@@ -103,8 +103,21 @@ class RequestCache {
   }
 }
 
-// Global cache instance
-const requestCache = new RequestCache();
+// Import unified cache manager
+import cacheManager from './UnifiedCacheManager';
+
+// Legacy RequestCache wrapper for backward compatibility
+const requestCache = {
+  get: (key) => cacheManager.get(key),
+  set: (key, data) => cacheManager.set(key, data),
+  generateKey: (url, options) => cacheManager.generateKey(url, options),
+  getStats: async () => {
+    const stats = await cacheManager.getStats();
+    return stats.overall;
+  },
+  cleanup: () => cacheManager.cleanup(),
+  clear: () => cacheManager.clear()
+};
 
 // Request batching utility
 class RequestBatcher {

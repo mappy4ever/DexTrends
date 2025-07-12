@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useTheme } from '../context/themecontext';
+import { useTheme } from '../context/UnifiedAppContext';
 import Head from 'next/head';
 import logger from '../utils/logger';
 import { FullBleedWrapper } from '../components/ui/FullBleedWrapper';

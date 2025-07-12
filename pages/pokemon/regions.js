@@ -4,7 +4,7 @@ import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 import { FadeIn, SlideUp } from "../../components/ui/animations";
-import { useTheme } from "../../context/themecontext";
+import { useTheme } from "../../context/UnifiedAppContext";
 import { BsGlobeEuropeAfrica } from "react-icons/bs";
 import { FullBleedWrapper } from "../../components/ui/FullBleedWrapper";
 

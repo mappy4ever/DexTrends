@@ -1,12 +1,12 @@
 // utils/apiutils.js
-import { cachedFetchData } from './cacheManager';
+import cacheManager, { cachedFetchData, pokemonCache, tcgCache, CONFIG } from './UnifiedCacheManager';
 
-// Legacy fetchData function (now with caching)
+// Legacy fetchData function (now with unified caching)
 export async function fetchData(url, options = {}) {
   try {
     // Use cached version for GET requests (most common)
     if (!options.method || options.method.toUpperCase() === 'GET') {
-      return await cachedFetchData(url);
+      return await cachedFetchData(url, options);
     }
     
     // For non-GET requests, use direct fetch
@@ -40,37 +40,59 @@ export async function fetchData(url, options = {}) {
   }
 }
 
-// Enhanced API utilities with specific caching strategies
-export { pokemonCache, tcgCache, cachedFetchData } from './cacheManager';
+// Export unified cache components
+export { cacheManager, pokemonCache, tcgCache, cachedFetchData, CONFIG };
 
 // Pokemon-specific fetch functions with optimized caching
 export const fetchPokemon = async (id) => {
-  const { pokemonCache } = await import('./cacheManager');
   return pokemonCache.getPokemon(id);
 };
 
 export const fetchPokemonSpecies = async (id) => {
-  const { pokemonCache } = await import('./cacheManager');
   return pokemonCache.getSpecies(id);
 };
 
 export const fetchNature = async (name) => {
-  const { pokemonCache } = await import('./cacheManager');
-  return pokemonCache.getNature(name);
+  const key = cacheManager.generateKey('nature', { name });
+  return cacheManager.cachedFetch(
+    `https://pokeapi.co/api/v2/nature/${name}`,
+    async () => {
+      const response = await fetch(`https://pokeapi.co/api/v2/nature/${name}`);
+      if (!response.ok) throw new Error(`Failed to fetch nature ${name}`);
+      return response.json();
+    },
+    { priority: CONFIG.PRIORITY.HIGH }
+  );
 };
 
 export const fetchMove = async (name) => {
-  const { pokemonCache } = await import('./cacheManager');
-  return pokemonCache.getMove(name);
+  const key = cacheManager.generateKey('move', { name });
+  return cacheManager.cachedFetch(
+    `https://pokeapi.co/api/v2/move/${name}`,
+    async () => {
+      const response = await fetch(`https://pokeapi.co/api/v2/move/${name}`);
+      if (!response.ok) throw new Error(`Failed to fetch move ${name}`);
+      return response.json();
+    },
+    { priority: CONFIG.PRIORITY.HIGH }
+  );
 };
 
 // TCG-specific fetch functions with aggressive caching
 export const fetchTCGCards = async (pokemonName) => {
-  const { tcgCache } = await import('./cacheManager');
   return tcgCache.getCards(pokemonName);
 };
 
 export const fetchPocketCards = async (pokemonName) => {
-  const { tcgCache } = await import('./cacheManager');
-  return tcgCache.getPocketCards(pokemonName);
+  const key = cacheManager.generateKey('pocket-cards', { name: pokemonName });
+  return cacheManager.cachedFetch(
+    `pocket-${pokemonName}`,
+    async () => {
+      // Implementation for pocket cards fetch
+      const response = await fetch(`/api/pocket-cards?name=${encodeURIComponent(pokemonName)}`);
+      if (!response.ok) throw new Error(`Failed to fetch pocket cards for ${pokemonName}`);
+      return response.json();
+    },
+    { priority: CONFIG.PRIORITY.CRITICAL, ttl: CONFIG.DB_TTL }
+  );
 };

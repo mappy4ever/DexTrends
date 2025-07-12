@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { CompactPriceIndicator } from './ui/PriceIndicator';
-import Modal from './ui/Modal';
+import Modal from './ui/modals/Modal';
 import Link from 'next/link';
 
 // Advanced collection management with portfolio tracking

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useFavorites } from '../../../context/favoritescontext';
+import { useFavorites } from '../../../context/UnifiedAppContext';
 import { KeyboardNavigation, useFocusTrap } from '../KeyboardNavigation';
 import { useAnnouncer } from '../AriaLiveAnnouncer';
 import ComparisonFAB from '../ComparisonFAB';

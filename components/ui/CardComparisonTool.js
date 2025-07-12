@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import UnifiedCard from './UnifiedCard';
-import Modal from './Modal';
+import Modal from './modals/Modal';
 
 /**
  * Advanced card comparison tool for side-by-side analysis

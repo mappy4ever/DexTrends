@@ -13,7 +13,7 @@ import {
   AdjustmentsHorizontalIcon
 } from '@heroicons/react/24/outline';
 import { Doughnut, Bar, Line } from 'react-chartjs-2';
-import Modal from './Modal';
+import Modal from './modals/Modal';
 import { useNotifications } from '../qol/NotificationSystem';
 
 /**

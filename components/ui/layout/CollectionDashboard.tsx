@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useFavorites } from '../../../context/favoritescontext';
+import { useFavorites } from '../../../context/UnifiedAppContext';
 
 // Type definition
 interface PokemonTCGCard {

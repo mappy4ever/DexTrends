@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { fetchData } from '../utils/apiutils';
 import { TypeBadge } from '../components/ui/TypeBadge';
 import { EnhancedPokemonSelector } from '../components/ui/EnhancedPokemonSelector';
-import Modal from '../components/ui/Modal';
+import Modal from '../components/ui/modals/Modal';
 import { FullBleedWrapper } from '../components/ui/FullBleedWrapper';
 
 // Enhanced Pokemon selection component with type colors

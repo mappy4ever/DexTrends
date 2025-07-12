@@ -4,13 +4,13 @@ import Image from "next/image";
 import Head from "next/head";
 import Link from "next/link";
 import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../../components/ui/animations";
-import { useTheme } from "../../context/themecontext";
+import { useTheme } from "../../context/UnifiedAppContext";
 import { useInfiniteScroll } from "../../hooks/useInfiniteScroll";
-import { InlineLoadingSpinner } from "../../components/ui/LoadingSpinner";
+import { InlineLoadingSpinner } from "../../components/ui/loading/LoadingSpinner";
 import { SetLoadingScreen } from "../../components/ui/UnifiedLoadingScreen";
 import StyledBackButton from "../../components/ui/StyledBackButton";
 import PocketCardList from "../../components/PocketCardList";
-import BackToTop from "../../components/ui/BackToTop";
+import BackToTop from "../../components/ui/SimpleBackToTop";
 import { fetchPocketData } from "../../utils/pocketData";
 import { FullBleedWrapper } from "../../components/ui/FullBleedWrapper";
 

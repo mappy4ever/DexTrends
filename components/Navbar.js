@@ -8,8 +8,8 @@ import { BsSun, BsMoon, BsGlobeEuropeAfrica, BsHeart, BsSearch, BsCardList, BsGr
 import { GiPokerHand, GiCardPickup, GiCrossedSwords } from "react-icons/gi";
 import { FiTrendingUp, FiShoppingBag } from "react-icons/fi";
 import GlobalSearchModal from "./GlobalSearchModal";
-import { useTheme } from "../context/themecontext";
-import { useFavorites } from "../context/favoritescontext";
+import { useTheme } from "../context/UnifiedAppContext";
+import { useFavorites } from "../context/UnifiedAppContext";
 import { toLowercaseUrl } from "../utils/formatters";
 import ClientOnly from "./ClientOnly";
 

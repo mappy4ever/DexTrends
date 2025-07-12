@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useFavorites } from '../../context/favoritescontext';
+import { useFavorites } from '../../context/UnifiedAppContext';
 
 // Extend Window interface for showNotification
 declare global {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useTheme } from '../context/ThemeContext';
+import { useTheme } from '../context/UnifiedAppContext';
 
 export default function TrendingCards({ cards }) {
   const { theme } = useTheme();

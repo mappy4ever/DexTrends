@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useTheme } from '../../context/themecontext';
+import { useTheme } from '../../context/UnifiedAppContext';
 import { BsStars, BsDiamond, BsHexagon } from 'react-icons/bs';
 
 const RegionHeader = ({ region, regionData, leaderCount, isActive, onClick }) => {

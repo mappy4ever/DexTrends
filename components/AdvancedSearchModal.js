@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Modal from './ui/Modal';
+import Modal from './ui/modals/Modal';
 import { CompactPriceIndicator } from './ui/PriceIndicator';
 import pokemon from 'pokemontcgsdk';
 

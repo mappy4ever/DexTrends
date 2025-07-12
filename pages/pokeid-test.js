@@ -5,7 +5,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { TypeBadge } from "../components/ui/TypeBadge";
 import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../components/ui/animations/animations";
-import { useFavorites } from "../context/favoritescontext";
+import { useFavorites } from "../context/UnifiedAppContext";
 import { fetchData, fetchPokemon, fetchPokemonSpecies } from "../utils/apiutils";
 import { BsArrowLeft, BsHeart, BsHeartFill, BsShare, BsStar, BsStarFill } from "react-icons/bs";
 

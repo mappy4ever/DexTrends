@@ -5,7 +5,7 @@
 
 import { supabase } from '../lib/supabase';
 import logger from './logger';
-import apiCache from './apiCache';
+import cacheManager from './UnifiedCacheManager';
 
 class EnhancedPriceCollector {
   constructor() {

@@ -5,7 +5,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { TypeBadge } from "../components/ui/TypeBadge";
 import { TypeEffectivenessBadge } from "../components/ui/TypeEffectivenessBadge";
-import { useFavorites } from "../context/favoritescontext";
+import { useFavorites } from "../context/UnifiedAppContext";
 import { typeEffectiveness, getGeneration } from "../utils/pokemonutils";
 import { fetchData, fetchPokemon, fetchPokemonSpecies, fetchNature, fetchTCGCards, fetchPocketCards } from "../utils/apiutils";
 import EnhancedEvolutionDisplay from "../components/ui/EnhancedEvolutionDisplay";
@@ -16,7 +16,7 @@ import PocketCardList from "../components/PocketCardList";
 import { fetchPocketData } from "../utils/pocketData";
 import pokemonTCG from "pokemontcgsdk";
 import PokeballLoader from "../components/ui/PokeballLoader";
-import Modal from "../components/ui/Modal";
+import Modal from "../components/ui/modals/Modal";
 import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../components/ui/animations/animations";
 import { BsArrowLeft, BsHeart, BsHeartFill, BsShare, BsStar, BsStarFill } from "react-icons/bs";
 

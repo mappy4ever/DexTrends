@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useFavorites } from '../../context/favoritescontext';
+import { useFavorites } from '../../context/UnifiedAppContext';
 import ComparisonFAB from './ComparisonFAB';
 
 const EnhancedNavigation = () => {

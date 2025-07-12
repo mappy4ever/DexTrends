@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { useFavorites } from '../../context/favoritescontext';
+import { useFavorites } from '../../context/UnifiedAppContext';
 import logger from '../../utils/logger';
 
 /**

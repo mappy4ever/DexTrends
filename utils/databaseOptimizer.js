@@ -5,7 +5,7 @@
 
 import { supabase } from '../lib/supabase';
 import logger from './logger';
-import apiCache from './apiCache';
+import cacheManager from './UnifiedCacheManager';
 
 class DatabaseOptimizer {
   constructor() {
@@ -37,7 +37,7 @@ class DatabaseOptimizer {
     try {
       // Check cache first
       if (enableCache && cacheKey) {
-        const cachedResult = this.getFromCache(cacheKey, cacheTTL);
+        const cachedResult = await cacheManager.get(cacheKey);
         if (cachedResult) {
           logger.debug('Query cache hit', { tableName, cacheKey });
           return cachedResult;
@@ -52,7 +52,10 @@ class DatabaseOptimizer {
           
           // Cache successful result
           if (enableCache && cacheKey && !result.error) {
-            this.setCache(cacheKey, result, cacheTTL);
+            await cacheManager.set(cacheKey, result, { 
+              ttl: cacheTTL,
+              priority: cacheManager.CONFIG.PRIORITY.HIGH
+            });
           }
 
           // Record performance metrics

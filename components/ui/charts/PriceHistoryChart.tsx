@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useTheme } from '../../../context/themecontext';
+import { useTheme } from '../../../context/UnifiedAppContext';
 import { PriceHistoryManager } from '../../../lib/supabase';
 
 // A component to show REAL price history for TCG cards

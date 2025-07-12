@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { TypeBadge } from './TypeBadge';
-import Modal from './Modal';
+import Modal from './modals/Modal';
 
 const VisualSearchFilters = ({ 
   onFiltersChange = () => {}, 

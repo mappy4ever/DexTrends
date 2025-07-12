@@ -9,7 +9,7 @@ import { TypeBadge } from "../components/ui/TypeBadge";
 import { TypeFilter } from "../components/ui/TypeFilter";
 import PocketCardList from "../components/PocketCardList";
 import { fetchPocketData } from "../utils/pocketData";
-import BackToTop from "../components/ui/BackToTop";
+import BackToTop from "../components/ui/SimpleBackToTop";
 import { FullBleedWrapper } from "../components/ui/FullBleedWrapper";
 
 // Dynamic imports for components that might cause SSR issues

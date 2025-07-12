@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { pokemonCache, tcgCache } from '../../utils/cacheManager';
+import cacheManager from '../../utils/UnifiedCacheManager';
 
 // Developer/Admin component to show cache statistics
 export const CacheStatus = ({ showDetails = false }) => {
   const [stats, setStats] = useState({
-    pokemon: { memoryCache: 0, localStorage: 0, totalSize: '0 KB' },
-    tcg: { memoryCache: 0, localStorage: 0, totalSize: '0 KB' }
+    memory: {},
+    localStorage: {},
+    database: {},
+    overall: {}
   });
 
-  const updateStats = () => {
+  const updateStats = async () => {
     try {
-      setStats({
-        pokemon: pokemonCache.getStats(),
-        tcg: tcgCache.getStats()
-      });
+      const cacheStats = await cacheManager.getStats();
+      setStats(cacheStats);
     } catch (error) {
       console.warn('Failed to get cache stats:', error);
     }
@@ -25,18 +25,19 @@ export const CacheStatus = ({ showDetails = false }) => {
     return () => clearInterval(interval);
   }, []);
 
-  const clearAllCaches = () => {
+  const clearAllCaches = async () => {
     if (confirm('Are you sure you want to clear all cached data? This will require fresh API calls.')) {
-      pokemonCache.clearAll();
-      tcgCache.clearAll();
+      await cacheManager.clear();
       updateStats();
     }
   };
 
   if (!showDetails) {
     // Simple indicator
-    const totalCached = stats.pokemon.memoryCache + stats.pokemon.localStorage + 
-                       stats.tcg.memoryCache + stats.tcg.localStorage;
+    const totalCached = 
+      (stats.memory?.size || 0) + 
+      (stats.localStorage?.size || 0) + 
+      (stats.database?.size || 0);
     
     if (totalCached === 0) return null;
     
@@ -62,43 +63,52 @@ export const CacheStatus = ({ showDetails = false }) => {
       </div>
       
       <div className="space-y-3">
-        {/* Pokemon Cache */}
+        {/* Memory Cache */}
         <div className="bg-blue-50 rounded-lg p-3">
-          <h4 className="font-semibold text-blue-800 mb-2">Pokémon Cache</h4>
+          <h4 className="font-semibold text-blue-800 mb-2">Memory Cache</h4>
           <div className="grid grid-cols-2 gap-2 text-sm">
             <div>
-              <span className="text-gray-600">Memory:</span>
-              <span className="font-medium ml-1">{stats.pokemon.memoryCache}</span>
+              <span className="text-gray-600">Items:</span>
+              <span className="font-medium ml-1">{stats.memory?.size || 0}</span>
             </div>
             <div>
-              <span className="text-gray-600">Storage:</span>
-              <span className="font-medium ml-1">{stats.pokemon.localStorage}</span>
-            </div>
-            <div className="col-span-2">
-              <span className="text-gray-600">Size:</span>
-              <span className="font-medium ml-1">{stats.pokemon.totalSize}</span>
+              <span className="text-gray-600">Hit Rate:</span>
+              <span className="font-medium ml-1">{(stats.memory?.hitRate || 0).toFixed(1)}%</span>
             </div>
           </div>
         </div>
 
-        {/* TCG Cache */}
+        {/* LocalStorage Cache */}
         <div className="bg-purple-50 rounded-lg p-3">
-          <h4 className="font-semibold text-purple-800 mb-2">TCG Cache</h4>
+          <h4 className="font-semibold text-purple-800 mb-2">LocalStorage Cache</h4>
           <div className="grid grid-cols-2 gap-2 text-sm">
             <div>
-              <span className="text-gray-600">Memory:</span>
-              <span className="font-medium ml-1">{stats.tcg.memoryCache}</span>
+              <span className="text-gray-600">Items:</span>
+              <span className="font-medium ml-1">{stats.localStorage?.size || 0}</span>
             </div>
             <div>
-              <span className="text-gray-600">Storage:</span>
-              <span className="font-medium ml-1">{stats.tcg.localStorage}</span>
-            </div>
-            <div className="col-span-2">
               <span className="text-gray-600">Size:</span>
-              <span className="font-medium ml-1">{stats.tcg.totalSize}</span>
+              <span className="font-medium ml-1">{stats.localStorage?.sizeKB || '0'} KB</span>
             </div>
           </div>
         </div>
+
+        {/* Database Cache */}
+        {stats.database?.size > 0 && (
+          <div className="bg-green-50 rounded-lg p-3">
+            <h4 className="font-semibold text-green-800 mb-2">Database Cache</h4>
+            <div className="grid grid-cols-2 gap-2 text-sm">
+              <div>
+                <span className="text-gray-600">Items:</span>
+                <span className="font-medium ml-1">{stats.database?.size || 0}</span>
+              </div>
+              <div>
+                <span className="text-gray-600">Active:</span>
+                <span className="font-medium ml-1">{stats.database?.active || 0}</span>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Cache Benefits */}
         <div className="bg-green-50 rounded-lg p-3">

@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from "react";
 import Image from "next/image";
-import Modal from "./ui/Modal";
+import Modal from "./ui/modals/Modal";
 import UnifiedCard from "./ui/UnifiedCard";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
-import { InlineLoadingSpinner } from "./ui/LoadingSpinner";
+import { InlineLoadingSpinner } from "./ui/loading/LoadingSpinner";
 import { isFeatureEnabled } from "../utils/featureFlags";
 
 export default function CardList({

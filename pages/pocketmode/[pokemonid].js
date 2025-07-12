@@ -7,7 +7,7 @@ import { FadeIn, SlideUp, Scale } from "../../components/ui/animations";
 import { TypeBadge } from "../../components/ui/TypeBadge"; // Updated path
 import { fetchPocketData } from "../../utils/pocketData";
 import PocketCardList from "../../components/PocketCardList";
-import Modal from "../../components/ui/Modal";
+import Modal from "../../components/ui/modals/Modal";
 import logger from "../../utils/logger";
 import { getEvolutionChain } from "../../utils/evolutionUtils";
 import { FullBleedWrapper } from "../../components/ui/FullBleedWrapper";

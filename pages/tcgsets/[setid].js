@@ -3,13 +3,13 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
 import pokemon from "pokemontcgsdk";
-import Modal from "../../components/ui/Modal";
+import Modal from "../../components/ui/modals/Modal";
 import CardList from "../../components/CardList";
 import { FadeIn, SlideUp } from "../../components/ui/animations";
 import PriceHistoryChart from "../../components/ui/PriceHistoryChart"; // Updated path
-import { useTheme } from "../../context/themecontext";
-import { useFavorites } from "../../context/favoritescontext";
-import { useViewSettings } from "../../context/viewsettingscontext";
+import { useTheme } from "../../context/UnifiedAppContext";
+import { useFavorites } from "../../context/UnifiedAppContext";
+import { useViewSettings } from "../../context/UnifiedAppContext";
 import { SetLoadingScreen } from "../../components/ui/UnifiedLoadingScreen";
 import logger from "../../utils/logger";
 import { FullBleedWrapper } from "../../components/ui/FullBleedWrapper";

@@ -4,7 +4,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../../components/ui/animations";
-import { useTheme } from "../../context/themecontext";
+import { useTheme } from "../../context/UnifiedAppContext";
 import { pokemonTheme } from "../../utils/pokemonTheme";
 import StyledBackButton from "../../components/ui/StyledBackButton";
 import GameTimeline from "../../components/ui/GameTimeline";

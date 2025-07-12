@@ -2,15 +2,8 @@ import { useEffect, useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import "../styles/globals.css";
-import "../styles/mobile.css";
+import "../styles/unified-mobile.css";
 import "../styles/ios-scrolling-fix.css";
-import "../styles/mobile-visual-fixes.css";
-import "../styles/mobile-pokedex-fixes.css";
-import "../styles/mobile-complete-fixes.css";
-import "../styles/pokeid-mobile-fix.css";
-import "../styles/pokeid-clean-mobile.css";
-import "../styles/pokeid-mobile-premium.css";
-import "../styles/mobile-pokemon-components.css";
 import "../styles/desktop-tabs.css";
 import "../styles/pokemon-animations.css";
 import "../styles/design-system.css";
@@ -22,11 +15,7 @@ import ErrorBoundary from "../components/layout/errorboundary";
 import { PageTransition } from "../components/ui/animations.js";
 import applyIOSFixes from "../utils/iosFixes";
 
-import { ThemeProvider } from '../context/themecontext';
-import { FavoritesProvider } from '../context/favoritescontext';
-import { ViewSettingsProvider } from '../context/viewsettingscontext';
-import { ModalProvider } from '../context/modalcontext';
-import { SortingProvider } from '../context/sortingcontext';
+import { UnifiedAppProvider } from '../context/UnifiedAppContext';
 
 // Enhanced dynamic imports with comprehensive loading
 import dynamic from 'next/dynamic';
@@ -127,24 +116,15 @@ function MyApp({ Component, pageProps, router }) {
       
       {/* AccessibilityProvider disabled to stop refresh */}
       
-      <ThemeProvider>
-        <FavoritesProvider>
-          <ViewSettingsProvider>
-            <SortingProvider>
-              <ModalProvider>
-                
-                <Layout fullBleed={Component.fullBleed}>
-                  <PageTransition key={nextRouter.asPath}>
-                    <Component {...pageProps} />
-                  </PageTransition>
-                  
-                  {/* EMERGENCY: All enhancements disabled to stop refresh loop */}
-                </Layout>
-              </ModalProvider>
-            </SortingProvider>
-          </ViewSettingsProvider>
-        </FavoritesProvider>
-      </ThemeProvider>
+      <UnifiedAppProvider>
+        <Layout fullBleed={Component.fullBleed}>
+          <PageTransition key={nextRouter.asPath}>
+            <Component {...pageProps} />
+          </PageTransition>
+          
+          {/* EMERGENCY: All enhancements disabled to stop refresh loop */}
+        </Layout>
+      </UnifiedAppProvider>
     </ErrorBoundary>
   );
 }

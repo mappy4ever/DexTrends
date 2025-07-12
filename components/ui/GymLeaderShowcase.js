@@ -4,7 +4,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { motion, useInView, useMotionValue, useSpring } from 'framer-motion';
-import { useTheme } from '../../context/themecontext';
+import { useTheme } from '../../context/UnifiedAppContext';
 import { TypeBadge } from './TypeBadge';
 import { 
   BsShieldCheck, 

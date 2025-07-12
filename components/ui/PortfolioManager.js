@@ -14,7 +14,7 @@ import {
   InformationCircleIcon
 } from '@heroicons/react/24/outline';
 import { Line, Doughnut, Bar } from 'react-chartjs-2';
-import Modal from './Modal';
+import Modal from './modals/Modal';
 import { useNotifications } from '../qol/NotificationSystem';
 
 /**

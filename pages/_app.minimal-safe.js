@@ -2,18 +2,14 @@ import { useEffect, useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import "../styles/globals.css";
-import "../styles/mobile.css";
+import "../styles/unified-mobile.css";
 import "../styles/pokemon-animations.css";
 import "../styles/design-system.css";
 import "../components/typebadge.css";
 import Layout from "../components/layout/layout";
 import ErrorBoundary from "../components/layout/errorboundary";
 
-import { ThemeProvider } from '../context/themecontext';
-import { FavoritesProvider } from '../context/favoritescontext';
-import { ViewSettingsProvider } from '../context/viewsettingscontext';
-import { ModalProvider } from '../context/modalcontext';
-import { SortingProvider } from '../context/sortingcontext';
+import UnifiedAppProvider from '../context/UnifiedAppContext';
 
 function MyApp({ Component, pageProps, router }) {
   const nextRouter = useRouter();
@@ -42,19 +38,11 @@ function MyApp({ Component, pageProps, router }) {
         <meta name="keywords" content="Pokemon, TCG, cards, prices, trends, pokedex, collection, trading cards" />
       </Head>
       
-      <ThemeProvider>
-        <FavoritesProvider>
-          <ViewSettingsProvider>
-            <SortingProvider>
-              <ModalProvider>
-                <Layout>
-                  <Component {...pageProps} />
-                </Layout>
-              </ModalProvider>
-            </SortingProvider>
-          </ViewSettingsProvider>
-        </FavoritesProvider>
-      </ThemeProvider>
+      <UnifiedAppProvider>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </UnifiedAppProvider>
     </ErrorBoundary>
   );
 }

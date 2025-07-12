@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { fetchPocketData } from '../../utils/pocketData';
 import { TypeBadge } from '../../components/ui/TypeBadge';
 import { FadeIn, SlideUp } from '../../components/ui/animations';
-import BackToTop from '../../components/ui/BackToTop';
+import BackToTop from '../../components/ui/SimpleBackToTop';
 
 export default function DeckBuilder() {
   const router = useRouter();

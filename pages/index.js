@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import pokemon from "pokemontcgsdk";
-import Modal from "../components/ui/Modal";
+import Modal from "../components/ui/modals/Modal";
 import CardList from "../components/CardList";
 import Image from 'next/image';
 import { getPrice, getRarityRank } from "../utils/pokemonutils.js";

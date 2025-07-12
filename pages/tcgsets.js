@@ -3,10 +3,10 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import pokemon from "pokemontcgsdk";
 import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../components/ui/animations";
-import { useTheme } from "../context/themecontext";
-import { useViewSettings } from "../context/viewsettingscontext";
+import { useTheme } from "../context/UnifiedAppContext";
+import { useViewSettings } from "../context/UnifiedAppContext";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
-import { InlineLoadingSpinner } from "../components/ui/LoadingSpinner";
+import { InlineLoadingSpinner } from "../components/ui/loading/LoadingSpinner";
 import { SetLoadingScreen } from "../components/ui/UnifiedLoadingScreen";
 import { FullBleedWrapper } from "../components/ui/FullBleedWrapper";
 

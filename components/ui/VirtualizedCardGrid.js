@@ -2,7 +2,7 @@ import React, { useState, useCallback, useMemo } from 'react';
 import { FixedSizeGrid as Grid } from 'react-window';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll';
 import UnifiedCard from './UnifiedCard';
-import { InlineLoadingSpinner } from './LoadingSpinner';
+import { InlineLoadingSpinner } from './loading/LoadingSpinner';
 
 /**
  * High-performance virtualized card grid for handling thousands of cards

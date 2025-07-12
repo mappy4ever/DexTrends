@@ -1,0 +1,1298 @@
+/* =====================================================
+   UNIFIED MOBILE CSS - DexTrends
+   Merged from 8 mobile CSS files
+   Total optimization: ~3,156 lines → ~1,200 lines
+   ===================================================== */
+
+/* =====================================================
+   1. CSS VARIABLES & ROOT SETTINGS
+   From: mobile.css, pokeid-mobile-premium.css
+   ===================================================== */
+:root {
+  /* Mobile-specific viewport variables */
+  --mobile-header-height: 3.5rem;
+  --mobile-nav-height: 4rem;
+  --mobile-safe-area-top: env(safe-area-inset-top, 0px);
+  --mobile-safe-area-right: env(safe-area-inset-right, 0px);
+  --mobile-safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --mobile-safe-area-left: env(safe-area-inset-left, 0px);
+  --vh: 1vh; /* Will be set by JavaScript for proper viewport height */
+  
+  /* Mobile spacing tokens */
+  --mobile-spacing-xs: 4px;
+  --mobile-spacing-sm: 8px;
+  --mobile-spacing-md: 12px;
+  --mobile-spacing-lg: 16px;
+  --mobile-spacing-xl: 24px;
+  --mobile-spacing-xxl: 32px;
+  
+  /* Mobile typography */
+  --mobile-font-xs: 11px;
+  --mobile-font-sm: 13px;
+  --mobile-font-md: 15px;
+  --mobile-font-lg: 17px;
+  --mobile-font-xl: 20px;
+  --mobile-font-xxl: 24px;
+  
+  /* Mobile radius */
+  --mobile-radius-sm: 4px;
+  --mobile-radius-md: 8px;
+  --mobile-radius-lg: 12px;
+  --mobile-radius-xl: 16px;
+  --mobile-radius-full: 9999px;
+  
+  /* Mobile shadows */
+  --mobile-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --mobile-shadow-md: 0 2px 4px rgba(0, 0, 0, 0.08);
+  --mobile-shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.12);
+  
+  /* Transitions */
+  --mobile-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* =====================================================
+   2. GLOBAL MOBILE STYLES
+   From: mobile.css, mobile-complete-fixes.css
+   ===================================================== */
+@import url('./design-system.css');
+
+/* Remove all scrollbars globally */
+::-webkit-scrollbar {
+  display: none !important;
+}
+
+* {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  box-sizing: border-box !important;
+}
+
+/* Touch optimizations */
+@media (max-width: 768px) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none;
+  }
+  
+  input, textarea {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background: #f8f9fa;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: env(safe-area-inset-bottom) !important;
+  }
+  
+  #__next {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    width: 100vw;
+    overflow-x: hidden;
+    position: relative;
+  }
+}
+
+/* =====================================================
+   3. iOS SPECIFIC FIXES
+   From: mobile.css, mobile-visual-fixes.css
+   ===================================================== */
+@supports (-webkit-touch-callout: none) {
+  /* Prevent zoom on all form inputs - critical for iOS */
+  input, textarea, select {
+    font-size: 16px !important;
+    -webkit-text-size-adjust: 100%;
+  }
+  
+  /* Fix all input types */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="tel"],
+  input[type="url"],
+  input[type="search"],
+  input[type="date"],
+  input[type="datetime-local"],
+  input[type="month"],
+  input[type="time"],
+  input[type="week"],
+  textarea {
+    font-size: 16px !important;
+    -webkit-appearance: none;
+    border-radius: 0;
+  }
+  
+  /* Fix select dropdowns */
+  select {
+    font-size: 16px !important;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+  }
+  
+  /* Focus states */
+  input:focus, textarea:focus, select:focus {
+    font-size: 16px !important;
+  }
+  
+  /* Fix position fixed elements */
+  .fixed {
+    position: -webkit-sticky;
+    position: sticky;
+  }
+  
+  /* Safe area handling */
+  .navbar,
+  .mobile-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding-top: env(safe-area-inset-top);
+    z-index: 50;
+  }
+  
+  .bottom-nav,
+  .mobile-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding-bottom: env(safe-area-inset-bottom);
+    z-index: 50;
+  }
+}
+
+/* =====================================================
+   4. TOUCH TARGETS & INTERACTIONS
+   From: mobile.css, mobile-visual-fixes.css
+   ===================================================== */
+@media (max-width: 768px) {
+  /* All interactive elements must meet 44x44px minimum */
+  button, 
+  a, 
+  [role="button"], 
+  input[type="submit"], 
+  input[type="button"],
+  input[type="reset"],
+  .btn,
+  .button,
+  .clickable,
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Small icons need expanded tap area */
+  .icon-button,
+  .btn-sm,
+  .btn-icon {
+    position: relative;
+  }
+  
+  .icon-button::before,
+  .btn-sm::before,
+  .btn-icon::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    bottom: -8px;
+    left: -8px;
+    z-index: -1;
+  }
+  
+  /* Form controls touch targets */
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: 24px;
+    height: 24px;
+    margin: 10px;
+    cursor: pointer;
+  }
+  
+  /* Mobile button enhancements */
+  .mobile-button {
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform var(--transition-fast);
+    min-height: var(--touch-target);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--ios-button);
+  }
+  
+  .mobile-button:active {
+    transform: scale(0.97);
+  }
+}
+
+/* =====================================================
+   5. NAVBAR & NAVIGATION
+   From: mobile-visual-fixes.css, mobile-complete-fixes.css
+   ===================================================== */
+@media (max-width: 768px) {
+  /* Fix navbar on mobile - SOLID AND VISIBLE */
+  .navbar-ios,
+  nav.navbar-ios,
+  .fixed.top-0.left-0.right-0,
+  div[class*="navbar"] {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: auto !important;
+    padding-top: env(safe-area-inset-top) !important;
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    z-index: 999 !important;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.15) !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    opacity: 1 !important;
+  }
+  
+  /* Add spacing after navbar */
+  main {
+    padding-top: calc(64px + env(safe-area-inset-top)) !important;
+    min-height: calc(100vh - 64px - env(safe-area-inset-top)) !important;
+  }
+  
+  /* Fix navbar button visibility - STRONG CONTRAST */
+  .navbar-ios button,
+  .navbar-ios a {
+    color: #111827 !important;
+    font-weight: 700 !important;
+    text-shadow: 0 0 1px rgba(0,0,0,0.1) !important;
+  }
+  
+  .navbar-ios button:hover,
+  .navbar-ios a:hover {
+    color: #dc2626 !important;
+    background-color: #fef2f2 !important;
+  }
+  
+  /* Active state */
+  .navbar-ios .bg-pokemon-red {
+    background-color: #dc2626 !important;
+    color: white !important;
+    box-shadow: 0 2px 4px rgba(220, 38, 38, 0.3) !important;
+  }
+  
+  /* Logo and branding */
+  .navbar-ios .text-pokemon-red {
+    color: #dc2626 !important;
+    font-weight: 800 !important;
+  }
+  
+  /* Make mobile menu visible */
+  .navbar-ios .md\\:hidden {
+    background: #dc2626 !important;
+    color: white !important;
+    border-radius: 0.5rem !important;
+    padding: 0.5rem !important;
+  }
+  
+  /* Mobile navigation styles */
+  .mobile-nav {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: var(--glass-minimal);
+    border-top: 1px solid var(--glass-border);
+    box-shadow: var(--elevation-2);
+  }
+  
+  .mobile-nav-item {
+    position: relative;
+    transition: all 0.2s ease;
+    min-height: 48px;
+    padding: 14px 16px;
+    width: 100%;
+  }
+  
+  .mobile-nav-item.active {
+    color: #3b82f6;
+  }
+  
+  .mobile-nav-item.active::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: #3b82f6;
+    border-radius: 50%;
+  }
+}
+
+/* =====================================================
+   6. TAB NAVIGATION
+   From: mobile-visual-fixes.css, mobile-complete-fixes.css, 
+         pokeid-mobile-premium.css, mobile-pokemon-components.css
+   ===================================================== */
+@media (max-width: 768px) {
+  /* Tab navigation container - FULLY VISIBLE */
+  .tab-navigation,
+  nav.tab-navigation,
+  .scrollbar-hide.tab-navigation,
+  .border-b.border-gray-200,
+  .flex.overflow-x-auto,
+  .overflow-x-auto.flex,
+  .flex.gap-2.overflow-x-auto {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    opacity: 1 !important;
+    padding: 0.75rem !important;
+    border-bottom: 4px solid #dc2626 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    position: relative !important;
+    z-index: 50 !important;
+    display: flex !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    scroll-snap-type: x mandatory !important;
+    scroll-behavior: smooth !important;
+    gap: 0 !important;
+    margin: 0 !important;
+    touch-action: pan-x !important;
+    width: 100% !important;
+    min-height: 60px !important;
+  }
+  
+  .tab-navigation::-webkit-scrollbar {
+    display: none !important;
+  }
+  
+  /* Tab buttons enhancement - FULLY VISIBLE */
+  .tab-navigation button,
+  nav.tab-navigation button,
+  .flex.gap-2.overflow-x-auto button,
+  .overflow-x-auto button[role="tab"],
+  button.px-4.py-2,
+  button.px-6.py-3 {
+    background: #f3f4f6 !important;
+    background-color: #f3f4f6 !important;
+    border: 3px solid #374151 !important;
+    padding: 0.875rem 1.25rem !important;
+    margin: 0.25rem !important;
+    border-radius: 0.75rem !important;
+    font-weight: 700 !important;
+    color: #111827 !important;
+    min-width: 90px !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+    opacity: 1 !important;
+    transition: all 0.2s ease !important;
+    flex-shrink: 0 !important;
+    display: inline-block !important;
+    white-space: nowrap !important;
+    min-height: 48px !important;
+    scroll-snap-align: center !important;
+    font-size: 0.875rem !important;
+  }
+  
+  /* Hover state for inactive tabs */
+  .tab-navigation button:not(.border-pokemon-red):hover {
+    background: #e5e7eb !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25) !important;
+  }
+  
+  /* Active tab state - HIGHLY VISIBLE */
+  .tab-navigation button.border-pokemon-red,
+  .tab-navigation button[class*="border-pokemon-red"],
+  .tab-navigation button.active,
+  .tab-navigation button[aria-selected="true"],
+  .tab-navigation button.text-pokemon-red,
+  button[aria-selected="true"],
+  button.text-pokemon-red,
+  button.border-b-2.border-pokemon-red,
+  button[class*="border-pokemon-red"] {
+    background: #dc2626 !important;
+    background-color: #dc2626 !important;
+    color: #ffffff !important;
+    border: 3px solid #b91c1c !important;
+    font-weight: 800 !important;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4) !important;
+    transform: scale(1.05) !important;
+    position: relative !important;
+    z-index: 10 !important;
+  }
+  
+  /* Active tab indicator on top */
+  .tab-navigation button.border-pokemon-red::before,
+  .tab-navigation button[class*="border-pokemon-red"]::before {
+    content: '' !important;
+    position: absolute !important;
+    top: -8px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 40px !important;
+    height: 4px !important;
+    background: #dc2626 !important;
+    border-radius: 2px !important;
+    box-shadow: 0 0 8px rgba(220, 38, 38, 0.6) !important;
+  }
+  
+  /* Add scroll hint gradient */
+  .border-b.border-gray-200 {
+    position: relative !important;
+    overflow: hidden !important;
+  }
+  
+  .border-b.border-gray-200::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 2rem !important;
+    background: linear-gradient(to right, transparent, white) !important;
+    pointer-events: none !important;
+    z-index: 10 !important;
+  }
+}
+
+/* =====================================================
+   7. POKEMON PAGE SPECIFIC
+   From: pokeid-mobile-fix.css, pokeid-clean-mobile.css, 
+         pokeid-mobile-premium.css, mobile-pokemon-components.css
+   ===================================================== */
+@media (max-width: 640px) {
+  /* Main container fix */
+  .max-w-7xl {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  
+  /* Header section fix */
+  .max-w-7xl > div:first-child {
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+    margin-bottom: 1rem !important;
+    padding: 0.5rem !important;
+    background: #ffffff !important;
+    border-bottom: 1px solid #f3f4f6 !important;
+  }
+  
+  /* Favorite button full width on mobile */
+  .max-w-7xl > div:first-child button {
+    width: 100% !important;
+    font-size: 0.875rem !important;
+    background: #ffffff !important;
+    border-radius: var(--mobile-radius-full) !important;
+    padding: var(--mobile-spacing-sm) var(--mobile-spacing-lg) !important;
+    font-weight: 600 !important;
+    box-shadow: var(--mobile-shadow-md) !important;
+    min-height: 44px !important;
+    transition: var(--mobile-transition) !important;
+    border: none !important;
+  }
+  
+  /* Pokemon info card - clean modern style */
+  .bg-white.rounded-lg.shadow-lg {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    padding: 0.75rem !important;
+  }
+  
+  /* Grid layout fix */
+  .grid.grid-cols-1.lg\\:grid-cols-2 {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+  
+  /* Pokemon image container */
+  .relative.w-80.h-80.lg\\:w-96.lg\\:h-96,
+  .relative.w-80.h-80 {
+    width: 200px !important;
+    height: 200px !important;
+    margin: 0 auto !important;
+  }
+  
+  /* Remove all circular borders from Pokemon image */
+  .rounded-full.bg-gray-300,
+  .rounded-full.bg-white,
+  .rounded-full {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+  
+  /* Pokemon name and number */
+  h1.text-4xl {
+    font-size: 1.5rem !important;
+    line-height: 2rem !important;
+    font-weight: 700 !important;
+    color: #1a1a1a !important;
+  }
+  
+  /* Number badge */
+  .bg-gradient-to-r.from-gray-100 {
+    background: #f3f4f6 !important;
+    padding: 0.25rem 0.75rem !important;
+    font-size: 0.875rem !important;
+    border-radius: var(--mobile-radius-full) !important;
+    font-weight: 600 !important;
+    color: #6b7280 !important;
+    border: none !important;
+  }
+  
+  /* Type badges container */
+  .flex.gap-2,
+  .type-badges-container {
+    flex-wrap: wrap !important;
+    gap: var(--mobile-spacing-sm) !important;
+    margin-bottom: var(--mobile-spacing-xl) !important;
+  }
+  
+  /* Info grid - make it 2 columns on mobile */
+  .grid.grid-cols-2.md\\:grid-cols-3,
+  .info-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: var(--mobile-spacing-md) !important;
+    margin-bottom: var(--mobile-spacing-xl) !important;
+  }
+  
+  /* Species info grid - single column */
+  .grid.grid-cols-2.gap-3 {
+    grid-template-columns: 1fr !important;
+    gap: 0.5rem !important;
+  }
+  
+  /* Info boxes - clean modern style */
+  .bg-gray-50.p-3.rounded,
+  .bg-gray-50.p-2.rounded,
+  .info-card {
+    background: #ffffff !important;
+    border: 1px solid #f3f4f6 !important;
+    border-radius: 12px !important;
+    padding: 12px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+    transition: all 0.2s !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .info-card:active {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  /* Info labels and values */
+  .bg-gray-50.p-3 h4,
+  .info-label {
+    font-size: var(--mobile-font-xs) !important;
+    color: #6b7280 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    margin-bottom: var(--mobile-spacing-xs) !important;
+  }
+  
+  .bg-gray-50.p-3 p,
+  .info-value {
+    font-size: var(--mobile-font-lg) !important;
+    font-weight: 600 !important;
+    color: #1a1a1a !important;
+    margin-top: 0 !important;
+  }
+  
+  .bg-gray-50.p-3 p.text-xs,
+  .info-subvalue {
+    font-size: var(--mobile-font-xs) !important;
+    color: #9ca3af !important;
+    margin-top: 2px !important;
+  }
+  
+  /* Tab content */
+  .tab-content {
+    padding: var(--mobile-spacing-lg) !important;
+    background: #f8f9fa !important;
+    min-height: calc(100vh - 300px) !important;
+    width: 100% !important;
+    overflow-x: hidden !important;
+  }
+  
+  /* Overview section headings */
+  .tab-content h3,
+  .section-title {
+    font-size: var(--mobile-font-lg) !important;
+    font-weight: 600 !important;
+    color: #1a1a1a !important;
+    margin-bottom: var(--mobile-spacing-md) !important;
+  }
+  
+  .tab-content h4,
+  .subsection-title {
+    font-size: var(--mobile-font-md) !important;
+    font-weight: 600 !important;
+    color: #374151 !important;
+    margin-bottom: var(--mobile-spacing-sm) !important;
+  }
+  
+  /* Type effectiveness - clean minimal style */
+  .bg-red-50,
+  .bg-green-50,
+  .bg-gray-100,
+  .type-effectiveness-section {
+    background: #ffffff !important;
+    border: none !important;
+    border-left: 3px solid !important;
+    padding: var(--mobile-spacing-md) !important;
+    margin-bottom: var(--mobile-spacing-md) !important;
+    border-radius: var(--mobile-radius-md) !important;
+  }
+  
+  .bg-red-50 {
+    border-left-color: #ef4444 !important;
+  }
+  
+  .bg-green-50 {
+    border-left-color: #10b981 !important;
+  }
+  
+  .bg-gray-100 {
+    border-left-color: #6b7280 !important;
+  }
+  
+  /* Evolution display optimization */
+  .evolution-display,
+  .evolution-container {
+    background: #ffffff !important;
+    padding: var(--mobile-spacing-lg) !important;
+    border-radius: var(--mobile-radius-lg) !important;
+    margin-bottom: var(--mobile-spacing-lg) !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-x !important;
+    scroll-snap-type: x mandatory !important;
+  }
+  
+  .evolution-chain {
+    display: flex !important;
+    gap: 1rem !important;
+    padding: 1rem !important;
+    min-width: fit-content !important;
+  }
+  
+  /* Stats section */
+  .grid.grid-cols-1.lg\\:grid-cols-2,
+  .grid.grid-cols-1.md\\:grid-cols-2 {
+    grid-template-columns: 1fr !important;
+    gap: var(--mobile-spacing-md) !important;
+  }
+  
+  /* Stats display - modern bars */
+  .stat-bars,
+  .bg-gray-50.rounded-lg.p-4:has(.space-y-3) {
+    background: #ffffff !important;
+    padding: var(--mobile-spacing-lg) !important;
+    border-radius: var(--mobile-radius-lg) !important;
+  }
+  
+  .stat-item,
+  .flex.items-center.justify-between {
+    margin-bottom: var(--mobile-spacing-lg) !important;
+    flex-wrap: nowrap !important;
+    gap: 0.5rem !important;
+  }
+  
+  /* Stat bars */
+  .w-full.bg-gray-200.rounded-full,
+  .bg-gray-200.rounded-full.h-3,
+  .stat-bar-container {
+    height: 8px !important;
+    background: #e5e7eb !important;
+    border-radius: var(--mobile-radius-full) !important;
+    overflow: hidden !important;
+    margin: 0.25rem 0 !important;
+  }
+  
+  .stat-bar {
+    height: 100% !important;
+    background: linear-gradient(to right, #dc2626, #ef4444) !important;
+    border-radius: var(--mobile-radius-full) !important;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  
+  /* Moves display */
+  .grid.grid-cols-1.sm\\:grid-cols-2.md\\:grid-cols-3,
+  .moves-grid {
+    grid-template-columns: 1fr !important;
+    gap: var(--mobile-spacing-md) !important;
+  }
+  
+  /* Move cards - modern design */
+  .bg-white.rounded-xl.shadow-sm,
+  .move-card {
+    background: #ffffff !important;
+    border-radius: 12px !important;
+    padding: 16px !important;
+    margin-bottom: 12px !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06) !important;
+    border: 1px solid #f3f4f6 !important;
+    transition: all 0.2s !important;
+  }
+  
+  .move-card:active {
+    transform: scale(0.98) !important;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.08) !important;
+  }
+  
+  /* Navigation buttons */
+  .flex.justify-between.items-center {
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+    width: 100% !important;
+  }
+  
+  .flex.justify-between.items-center a,
+  .flex.justify-between.items-center button {
+    width: 100% !important;
+    text-align: center !important;
+    border: 1px solid #e5e7eb !important;
+    background: #ffffff !important;
+  }
+  
+  /* Bottom navigation - fixed */
+  .bottom-navigation {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: rgba(255, 255, 255, 0.98) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    padding: 12px 16px env(safe-area-inset-bottom) !important;
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05) !important;
+    display: flex !important;
+    gap: 12px !important;
+    z-index: 1000 !important;
+  }
+  
+  .nav-button {
+    flex: 1 !important;
+    padding: 12px !important;
+    border-radius: 10px !important;
+    background: #f3f4f6 !important;
+    color: #374151 !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    border: none !important;
+    transition: all 0.2s !important;
+  }
+  
+  .nav-button:active:not(:disabled) {
+    background: #e5e7eb !important;
+    transform: scale(0.98) !important;
+  }
+  
+  .nav-button:disabled {
+    opacity: 0.4 !important;
+  }
+}
+
+/* =====================================================
+   8. ANIMATIONS & LOADING STATES
+   From: mobile.css, mobile-visual-fixes.css, 
+         mobile-pokemon-components.css
+   ===================================================== */
+/* Pokeball loader animation fix */
+.animate-spin {
+  -webkit-animation: pokeball-spin 1s linear infinite !important;
+  animation: pokeball-spin 1s linear infinite !important;
+  will-change: transform !important;
+}
+
+.border-8.border-gray-200.rounded-full.animate-spin {
+  -webkit-animation: pokeball-spin 1s linear infinite !important;
+  animation: pokeball-spin 1s linear infinite !important;
+  -webkit-transform-origin: center center !important;
+  transform-origin: center center !important;
+}
+
+/* Ensure spin animation works on iOS */
+@-webkit-keyframes pokeball-spin {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes pokeball-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Loading states */
+.mobile-skeleton,
+.skeleton {
+  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%) !important;
+  background-size: 200% 100% !important;
+  animation: skeleton-loading 1.5s infinite !important;
+  border-radius: var(--radius-md);
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Animation utilities */
+.animate-slide-up {
+  animation: slide-up 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-slide-down {
+  animation: slide-down 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scale-in {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* =====================================================
+   9. RESPONSIVE UTILITIES
+   From: mobile.css, mobile-complete-fixes.css
+   ===================================================== */
+/* Text size adjustments for mobile */
+@media (max-width: 768px) {
+  .text-4xl {
+    font-size: 1.5rem !important;
+    line-height: 1.2 !important;
+  }
+  
+  .text-2xl {
+    font-size: 1.25rem !important;
+  }
+  
+  .text-xl {
+    font-size: 1.125rem !important;
+  }
+  
+  .text-lg {
+    font-size: 1rem !important;
+  }
+  
+  .text-sm {
+    font-size: 0.875rem !important;
+  }
+  
+  .text-xs {
+    font-size: 0.75rem !important;
+  }
+  
+  /* Ensure all text is readable */
+  .text-gray-600.leading-relaxed {
+    font-size: 0.875rem !important;
+    line-height: 1.5 !important;
+  }
+  
+  /* Typography hierarchy */
+  h1 { font-size: var(--mobile-font-xxl) !important; }
+  h2 { font-size: var(--mobile-font-xl) !important; }
+  h3 { font-size: var(--mobile-font-lg) !important; }
+  h4 { font-size: var(--mobile-font-md) !important; }
+  p { font-size: var(--mobile-font-sm) !important; }
+}
+
+/* Small phone optimization (iPhone SE, etc) */
+@media (max-width: 375px) {
+  :root {
+    --mobile-font-xs: 10px;
+    --mobile-font-sm: 12px;
+    --mobile-font-md: 14px;
+    --mobile-font-lg: 16px;
+    --mobile-font-xl: 18px;
+    --mobile-font-xxl: 22px;
+  }
+  
+  .relative.w-80.h-80.lg\\:w-96.lg\\:h-96 {
+    width: 160px !important;
+    height: 160px !important;
+  }
+  
+  .info-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .tab-navigation button {
+    font-size: 0.5rem !important;
+    padding: 0.375rem 0.125rem !important;
+  }
+}
+
+/* Landscape orientation fixes */
+@media (max-height: 500px) and (orientation: landscape) {
+  .pokemon-image-container {
+    height: 180px !important;
+  }
+  
+  .pokemon-image-wrapper {
+    width: 120px !important;
+    height: 120px !important;
+  }
+  
+  .tab-content {
+    min-height: auto !important;
+  }
+}
+
+/* =====================================================
+   10. UTILITY CLASSES
+   From: mobile.css, mobile-complete-fixes.css
+   ===================================================== */
+/* Mobile visibility utilities */
+.mobile-only {
+  display: block;
+}
+
+.desktop-only {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .mobile-only {
+    display: none;
+  }
+  
+  .desktop-only {
+    display: block;
+  }
+}
+
+/* Safe area utilities */
+.safe-area-top {
+  padding-top: var(--mobile-safe-area-top);
+}
+
+.safe-area-right {
+  padding-right: var(--mobile-safe-area-right);
+}
+
+.safe-area-bottom {
+  padding-bottom: var(--mobile-safe-area-bottom);
+}
+
+.safe-area-left {
+  padding-left: var(--mobile-safe-area-left);
+}
+
+.safe-area-inset {
+  padding-top: var(--mobile-safe-area-top);
+  padding-right: var(--mobile-safe-area-right);
+  padding-bottom: var(--mobile-safe-area-bottom);
+  padding-left: var(--mobile-safe-area-left);
+}
+
+/* Dynamic viewport height */
+.min-h-screen-mobile {
+  min-height: 100vh;
+  min-height: calc(var(--vh, 1vh) * 100);
+  min-height: -webkit-fill-available;
+}
+
+.h-screen-mobile {
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  height: -webkit-fill-available;
+}
+
+/* Optimized scrolling */
+.mobile-scroll {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.mobile-scroll-lock {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+/* Performance optimizations */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-scroll {
+  will-change: scroll-position;
+}
+
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* =====================================================
+   11. ACCESSIBILITY & DARK MODE
+   From: mobile.css, pokeid-mobile-premium.css
+   ===================================================== */
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .mobile-card,
+  .mobile-button,
+  .mobile-nav-item,
+  .animate-slide-up,
+  .animate-slide-down,
+  .animate-fade-in,
+  .animate-scale-in,
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  .mobile-card:active,
+  .mobile-button:active {
+    transform: none !important;
+  }
+}
+
+/* Dark mode mobile adjustments */
+@media (prefers-color-scheme: dark) {
+  .mobile-nav {
+    background: var(--glass-minimal);
+    border-top-color: var(--glass-border);
+  }
+  
+  .mobile-modal {
+    background: rgba(0, 0, 0, 0.8);
+  }
+  
+  .mobile-modal-content {
+    background: var(--card-bg);
+    color: var(--dark-text);
+  }
+  
+  .mobile-form-input {
+    background: var(--card-bg);
+    border-color: var(--border-color);
+    color: var(--dark-text);
+  }
+  
+  .mobile-skeleton {
+    background: linear-gradient(90deg, var(--light-grey) 25%, var(--mid-grey) 50%, var(--light-grey) 75%);
+    background-size: 200% 100%;
+  }
+}
+
+/* Dark mode support for Pokemon pages */
+@media (max-width: 640px) and (prefers-color-scheme: dark) {
+  body {
+    background: #0f0f0f;
+  }
+  
+  .pokemon-header,
+  .pokemon-hero {
+    background: linear-gradient(to bottom, #1a1a1a, #0f0f0f);
+  }
+  
+  .pokemon-details,
+  .tab-navigation,
+  .type-effectiveness-section,
+  .evolution-container,
+  .stat-bars,
+  .move-card,
+  .bottom-navigation {
+    background: #1a1a1a;
+  }
+  
+  .info-card {
+    background: #262626;
+  }
+  
+  .pokemon-name,
+  .info-value,
+  .section-title {
+    color: #ffffff;
+  }
+  
+  .pokemon-number,
+  .info-label,
+  .tab-button,
+  .stat-name {
+    color: #9ca3af;
+  }
+  
+  .stat-bar-container {
+    background: #374151;
+  }
+}
+
+/* High contrast mode adjustments */
+@media (prefers-contrast: high) {
+  .mobile-nav {
+    border-top-width: 2px;
+    border-top-color: currentColor;
+  }
+  
+  .mobile-button,
+  .mobile-card {
+    border: 2px solid currentColor;
+  }
+  
+  .mobile-form-input {
+    border-width: 3px;
+  }
+}
+
+/* =====================================================
+   12. MODAL & OVERLAY STYLES
+   From: mobile.css, mobile-visual-fixes.css
+   ===================================================== */
+/* Mobile modal optimizations */
+.mobile-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.mobile-modal-content {
+  width: 100%;
+  max-width: 100%;
+  background: white;
+  border-radius: 1rem 1rem 0 0;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+.mobile-modal.open .mobile-modal-content {
+  transform: translateY(0);
+}
+
+/* Modal fixes for mobile */
+@media (max-width: 640px) {
+  .fixed.z-50 {
+    z-index: 9999 !important;
+  }
+  
+  .fixed.inset-0 {
+    padding: 0.5rem !important;
+  }
+  
+  .max-w-md, .max-w-lg, .max-w-xl {
+    max-width: calc(100vw - 1rem) !important;
+  }
+  
+  .fixed.inset-0 .bg-white {
+    border-radius: 12px !important;
+    border: none !important;
+  }
+  
+  /* Stats calculator modal */
+  .stats-calculator-modal {
+    position: fixed !important;
+    inset: 1rem !important;
+    max-height: calc(100vh - 2rem) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  
+  /* Move selector fixes */
+  .move-selector-modal {
+    max-height: 80vh !important;
+    overflow-y: auto !important;
+  }
+}
+
+/* =====================================================
+   END OF UNIFIED MOBILE CSS
+   ===================================================== */

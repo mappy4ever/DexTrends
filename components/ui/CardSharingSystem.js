@@ -8,7 +8,7 @@ import {
   ClipboardDocumentIcon,
   CheckIcon
 } from '@heroicons/react/24/outline';
-import Modal from './Modal';
+import Modal from './modals/Modal';
 import { useNotifications } from '../qol/NotificationSystem';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';

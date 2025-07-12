@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useFavorites } from '../context/favoritescontext';
+import { useFavorites } from '../context/UnifiedAppContext';
 import { FadeIn, SlideUp } from '../components/ui/animations';
 import { TypeBadge } from '../components/ui/TypeBadge'; // Updated path
 import { getGeneration } from '../utils/pokemonutils';

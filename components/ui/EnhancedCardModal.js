@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useFavorites } from '../../context/favoritescontext';
+import { useFavorites } from '../../context/UnifiedAppContext';
 import { TypeBadge } from './TypeBadge';
 import Link from 'next/link';
 import logger from '../../utils/logger';

@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { useNotifications } from './NotificationSystem';
-import { useTheme } from '../../context/themecontext';
-import { useFavorites } from '../../context/favoritescontext';
+import { useTheme } from '../../context/UnifiedAppContext';
+import { useFavorites } from '../../context/UnifiedAppContext';
 import logger from '../../utils/logger';
 
 // Keyboard shortcuts manager

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import pokemon from "pokemontcgsdk";
 import CardList from '../components/CardList';
-import { useTheme } from '../context/themecontext';
+import { useTheme } from '../context/UnifiedAppContext';
 import { TrendingLoadingScreen } from '../components/ui/UnifiedLoadingScreen';
 import logger from '../utils/logger';
 
