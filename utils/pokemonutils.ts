@@ -1,8 +1,31 @@
 // Enhanced Pokémon utility functions with Supabase caching
 import { SupabaseCache } from '../lib/supabase';
+import type { TCGCard } from '../types/api/cards';
+
+// Type color configuration interface
+interface TypeColorConfig {
+  bg: string;
+  text: string;
+  border: string;
+  hover: string;
+}
+
+// Type effectiveness interface
+interface TypeEffectivenessConfig {
+  weakTo: string[];
+  resistantTo: string[];
+  immuneTo: string[];
+}
+
+// Pocket type mapping result
+interface PocketTypeMappingResult {
+  displayName: string;
+  standardType: string;
+  isPocketMapped: boolean;
+}
 
 // Type colors mapping for consistent usage across the app - with solid colors and white text like the GRASS example
-export const typeColors = {
+export const typeColors: Record<string, TypeColorConfig> = {
   normal: { bg: "bg-poke-normal", text: "text-white", border: "border-poke-normal", hover: "hover:bg-poke-normal" },
   fire: { bg: "bg-poke-fire", text: "text-white", border: "border-poke-fire", hover: "hover:bg-poke-fire" },
   water: { bg: "bg-poke-water", text: "text-white", border: "border-poke-water", hover: "hover:bg-poke-water" },
@@ -24,7 +47,7 @@ export const typeColors = {
 };
 
 // TCG-specific type colors for Pocket mode (more familiar to TCG players)
-export const tcgTypeColors = {
+export const tcgTypeColors: Record<string, TypeColorConfig> = {
   normal: { bg: "bg-gray-400", text: "text-white", border: "border-gray-500", hover: "hover:bg-gray-500" },
   fire: { bg: "bg-red-500", text: "text-white", border: "border-red-600", hover: "hover:bg-red-600" },
   water: { bg: "bg-blue-500", text: "text-white", border: "border-blue-600", hover: "hover:bg-blue-600" },
@@ -51,7 +74,7 @@ export const tcgTypeColors = {
 };
 
 // Complete type effectiveness chart
-export const typeEffectiveness = {
+export const typeEffectiveness: Record<string, TypeEffectivenessConfig> = {
   normal: {
     weakTo: ["fighting"],
     resistantTo: [],
@@ -145,8 +168,8 @@ export const typeEffectiveness = {
 };
 
 // Helper to get generation for a Pokémon by its ID
-export const getGeneration = (pokedexNumber) => {
-  const id = parseInt(pokedexNumber);
+export const getGeneration = (pokedexNumber: string | number): number => {
+  const id = parseInt(String(pokedexNumber));
   if (id <= 151) return 1; // Gen 1: Red, Blue, Yellow
   if (id <= 251) return 2; // Gen 2: Gold, Silver, Crystal
   if (id <= 386) return 3; // Gen 3: Ruby, Sapphire, Emerald
@@ -159,7 +182,7 @@ export const getGeneration = (pokedexNumber) => {
 };
 
 // Generation names for UI display
-export const generationNames = {
+export const generationNames: Record<number, string> = {
   1: "Generation I (Red, Blue, Yellow)",
   2: "Generation II (Gold, Silver, Crystal)",
   3: "Generation III (Ruby, Sapphire, Emerald)",
@@ -171,28 +194,30 @@ export const generationNames = {
   9: "Generation IX (Scarlet, Violet)"
 };
 
-export const getPrice = (card) => {
-  if (card && card.tcgplayer && card.tcgplayer.prices) {
+export const getPrice = (card: Partial<TCGCard> | null | undefined): string => {
+  if (card?.tcgplayer?.prices) {
     const prices = card.tcgplayer.prices;
     const priceOrder = [
       "holofoil",
       "normal",
       "reverseHolofoil",
-      "firstEditionHolofoil",
+      "1stEditionHolofoil",
       "unlimitedHolofoil",
-    ];
+    ] as const;
+    
     for (const type of priceOrder) {
-      if (prices[type] && prices[type].market) {
-        return `$${prices[type].market.toFixed(2)}`;
+      const priceData = prices[type];
+      if (priceData?.market) {
+        return `$${priceData.market.toFixed(2)}`;
       }
     }
   }
   return "N/A";
 };
 
-export const getRarityRank = (card) => {
-  const rarity = card && card.rarity;
-  const rarityMap = {
+export const getRarityRank = (card: Partial<TCGCard> | null | undefined): number => {
+  const rarity = card?.rarity;
+  const rarityMap: Record<string, number> = {
     Common: 1,
     Uncommon: 2,
     Rare: 3,
@@ -207,11 +232,11 @@ export const getRarityRank = (card) => {
     "Rare Holo V": 12,
     "Rare Holo VMAX": 13,
   };
-  return rarityMap[rarity] || 0;
+  return rarityMap[rarity || ''] || 0;
 };
 
 // Pocket TCG type mapping - maps Pocket-specific type names to standard TCG types
-export const pocketTypeMapping = {
+export const pocketTypeMapping: Record<string, string> = {
   'lighting': 'lightning', // Common typo
   'lightning': 'lightning', // Direct mapping for consistency
   'electric': 'lightning', // Map electric to lightning for pocket
@@ -240,7 +265,7 @@ export const pocketTypeMapping = {
 };
 
 // Helper to map Pocket type names to standard types for TCG colors
-export const mapPocketTypeToStandard = (pocketType) => {
+export const mapPocketTypeToStandard = (pocketType: string | null | undefined): PocketTypeMappingResult => {
   if (!pocketType || typeof pocketType !== 'string') {
     return {
       displayName: '',
@@ -268,15 +293,15 @@ export const mapPocketTypeToStandard = (pocketType) => {
 };
 
 // Helper to extract ID from a PokeAPI URL (e.g., "https://pokeapi.co/api/v2/pokemon/25/")
-export const extractIdFromUrl = (urlString) => {
+export const extractIdFromUrl = (urlString: string | null | undefined): string | null => {
   if (typeof urlString !== 'string' || !urlString) {
     return null;
   }
   const parts = urlString.split('/').filter(Boolean);
-  return parts.pop(); // The ID is usually the last part of the path
+  return parts.pop() || null; // The ID is usually the last part of the path
 };
 
-export const getOfficialArtworkSpriteUrl = (pokemonId) => {
+export const getOfficialArtworkSpriteUrl = (pokemonId: string | number | null | undefined): string => {
   if (!pokemonId) return "/dextrendslogo.png"; // Fallback image
   return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonId}.png`;
 };

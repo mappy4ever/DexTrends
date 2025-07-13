@@ -1,5 +1,22 @@
 // Logo configuration based on metadata
-export const logoConfig = {
+
+export interface LogoVariant {
+  src: string;
+  width: number;
+  height: number;
+  alt: string;
+  usage: string[];
+}
+
+export interface LogoConfig {
+  horizontal: LogoVariant;
+  vertical: LogoVariant;
+}
+
+export type LogoVariantType = keyof LogoConfig;
+export type LogoContext = 'navbar' | 'header' | 'tight-space' | 'homepage' | 'hero' | 'main';
+
+export const logoConfig: LogoConfig = {
   horizontal: {
     src: '/images/dextrends-horizontal-logo.png',
     width: 480,
@@ -16,12 +33,12 @@ export const logoConfig = {
   }
 };
 
-export const getLogoConfig = (variant = 'vertical') => {
+export const getLogoConfig = (variant: LogoVariantType = 'vertical'): LogoVariant => {
   return logoConfig[variant] || logoConfig.vertical;
 };
 
-export const getLogoForContext = (context) => {
-  const contextMap = {
+export const getLogoForContext = (context: LogoContext): LogoVariant => {
+  const contextMap: Record<LogoContext, LogoVariantType> = {
     navbar: 'horizontal',
     header: 'horizontal',
     'tight-space': 'horizontal',

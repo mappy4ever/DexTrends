@@ -10,7 +10,7 @@ import { useTheme } from "../../context/UnifiedAppContext";
 import { useFavorites } from "../../context/UnifiedAppContext";
 import { TypeBadge } from "../../components/ui/TypeBadge";
 import Image from "next/image";
-import { getPrice as getCardPrice } from "../../utils/pokemonutils.js";
+import { getPrice as getCardPrice } from "../../utils/pokemonutils";
 import { CardLoadingScreen } from "../../components/ui/UnifiedLoadingScreen";
 import UnifiedCard from "../../components/ui/UnifiedCard";
 import StyledBackButton from "../../components/ui/StyledBackButton";

@@ -1,7 +1,21 @@
 // Official Pokemon Type Colors - DexTrends
 // These are the EXACT colors specified for consistent usage across the application
 
-export const POKEMON_TYPE_COLORS = {
+import { CSSProperties } from 'react';
+
+// Type color classes interface
+interface TypeColorClasses {
+  bg: string;
+  text: string;
+  border: string;
+  hover: string;
+}
+
+// Type color mapping
+type TypeColorMap = Record<string, string>;
+type TypeClassMap = Record<string, TypeColorClasses>;
+
+export const POKEMON_TYPE_COLORS: TypeColorMap = {
   normal: '#A8A77A',
   fire: '#EE8130',
   water: '#6390F0',
@@ -23,7 +37,7 @@ export const POKEMON_TYPE_COLORS = {
 };
 
 // Pokemon TCG Pocket specific colors - slightly different from main game
-export const POKEMON_TCG_POCKET_COLORS = {
+export const POKEMON_TCG_POCKET_COLORS: TypeColorMap = {
   normal: '#A8A77A',
   fire: '#EE8130',
   water: '#6390F0',
@@ -52,7 +66,7 @@ export const POKEMON_TCG_POCKET_COLORS = {
 };
 
 // Text colors for each type - all white except electric and ice
-export const POKEMON_TYPE_TEXT_COLORS = {
+export const POKEMON_TYPE_TEXT_COLORS: TypeColorMap = {
   normal: '#FFFFFF',
   fire: '#FFFFFF',
   water: '#FFFFFF',
@@ -77,7 +91,7 @@ export const POKEMON_TYPE_TEXT_COLORS = {
 export const POKEMON_TYPE_BORDER_COLOR = '#6B7280'; // Standard grey with thicker border
 
 // Helper function to get type style
-export const getTypeStyle = (type, isPocketCard = false) => {
+export const getTypeStyle = (type: string | null | undefined, isPocketCard: boolean = false): CSSProperties => {
   const lowerType = type ? type.toLowerCase() : '';
   const colorSet = isPocketCard ? POKEMON_TCG_POCKET_COLORS : POKEMON_TYPE_COLORS;
   const backgroundColor = colorSet[lowerType] || colorSet.normal || POKEMON_TYPE_COLORS.normal;
@@ -92,13 +106,13 @@ export const getTypeStyle = (type, isPocketCard = false) => {
 };
 
 // Helper function to get inline style string
-export const getTypeStyleString = (type) => {
+export const getTypeStyleString = (type: string | null | undefined): string => {
   const style = getTypeStyle(type);
   return `background-color: ${style.backgroundColor} !important; color: ${style.color} !important; border: ${style.border} !important;`;
 };
 
 // Updated type colors mapping for React components
-export const typeColors = {
+export const typeColors: TypeClassMap = {
   normal: { bg: "bg-poke-normal", text: "text-white", border: "border-gray-500", hover: "hover:bg-poke-normal" },
   fire: { bg: "bg-poke-fire", text: "text-white", border: "border-gray-500", hover: "hover:bg-poke-fire" },
   water: { bg: "bg-poke-water", text: "text-white", border: "border-gray-500", hover: "hover:bg-poke-water" },
@@ -120,7 +134,7 @@ export const typeColors = {
 };
 
 // TCG-specific type colors for Pocket mode
-export const tcgTypeColors = {
+export const tcgTypeColors: TypeClassMap = {
   normal: { bg: "bg-tcg-normal", text: "text-white", border: "border-gray-500", hover: "hover:bg-tcg-normal" },
   fire: { bg: "bg-tcg-fire", text: "text-white", border: "border-gray-500", hover: "hover:bg-tcg-fire" },
   water: { bg: "bg-tcg-water", text: "text-white", border: "border-gray-500", hover: "hover:bg-tcg-water" },

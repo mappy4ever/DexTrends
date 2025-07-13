@@ -4,7 +4,7 @@ import pokemon from "pokemontcgsdk";
 import Modal from "../components/ui/modals/Modal";
 import CardList from "../components/CardList";
 import Image from 'next/image';
-import { getPrice, getRarityRank } from "../utils/pokemonutils.js";
+import { getPrice, getRarityRank } from "../utils/pokemonutils";
 import { BsBook, BsCardList, BsGrid, BsSearch, BsGlobeEuropeAfrica, BsTrophy, BsHeart, BsGraphUp } from "react-icons/bs";
 import { GiCardPickup, GiCrossedSwords, GiPokerHand } from "react-icons/gi";
 import { FiTrendingUp, FiShoppingBag } from "react-icons/fi";

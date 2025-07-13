@@ -9,7 +9,116 @@ import analyticsEngine from './analyticsEngine';
 import databaseOptimizer from './databaseOptimizer';
 import EnhancedPriceCollector from './enhancedPriceCollector';
 
+// Types
+interface ValidationRule {
+  type?: 'string' | 'number' | 'boolean' | 'array' | 'object';
+  pattern?: RegExp;
+  minLength?: number;
+  maxLength?: number;
+  min?: number;
+  max?: number;
+  enum?: string[];
+  minItems?: number;
+  maxItems?: number;
+  itemType?: string;
+  required?: string[];
+  format?: 'datetime';
+}
+
+interface ValidationRules {
+  required: string[];
+  fields: Record<string, ValidationRule>;
+}
+
+interface ValidationError {
+  field: string;
+  message: string;
+  value: any;
+}
+
+interface ValidationResult {
+  isValid: boolean;
+  errors: ValidationError[];
+  warnings: ValidationError[];
+}
+
+interface ImportOptions {
+  dataType?: 'card' | 'pokemon' | 'price';
+  batchSize?: number;
+  validateData?: boolean;
+  skipDuplicates?: boolean;
+  dryRun?: boolean;
+}
+
+interface ImportResult {
+  importId: string;
+  source: string;
+  dataType: string;
+  totalRecords: number;
+  validRecords: number;
+  invalidRecords: number;
+  insertedRecords: number;
+  skippedRecords: number;
+  errors: any[];
+  warnings: any[];
+  startTime: string;
+  endTime: string | null;
+}
+
+interface ExportOptions {
+  format?: 'json' | 'csv' | 'xlsx';
+  filters?: Record<string, any>;
+  limit?: number;
+  includeMetadata?: boolean;
+  compression?: boolean;
+}
+
+interface ExportResult {
+  success: boolean;
+  format: string;
+  recordCount: number;
+  exportedAt: string;
+  data?: any;
+  mimeType?: string;
+  filename?: string;
+  compressed?: boolean;
+}
+
+interface DashboardData {
+  overview: {
+    totalUsers: number;
+    totalSessions: number;
+    totalSearches: number;
+    totalCards: number;
+    totalPokemon: number;
+  };
+  charts: {
+    userActivity: Array<{ hour: number; count: number }>;
+    searchTrends: Array<{ date: string; searches: number }>;
+    priceVolatility: Array<{ cardName: string; volatility: number; priceChange: number }>;
+    popularCards: any[];
+  };
+  metrics: {
+    performance: any;
+    cacheHitRate: number;
+    averageResponseTime: number;
+    errorRate: number;
+  };
+  insights: Array<{
+    type: string;
+    level: string;
+    message: string;
+    details: string;
+  }>;
+  generatedAt: string;
+}
+
 class DataTools {
+  private importQueue: any[];
+  private validationRules: Map<string, ValidationRules>;
+  private exportFormats: string[];
+  private isProcessing: boolean;
+
   constructor() {
     this.importQueue = [];
     this.validationRules = new Map();
@@ -22,7 +131,7 @@ class DataTools {
   /**
    * Setup data validation rules
    */
-  setupValidationRules() {
+  setupValidationRules(): void {
     // Card validation rules
     this.validationRules.set('card', {
       required: ['id', 'name'],
@@ -67,7 +176,7 @@ class DataTools {
   /**
    * Import data from various sources
    */
-  async importData(source, data, options = {}) {
+  async importData(source: string, data: any[], options: ImportOptions = {}): Promise<ImportResult> {
     const {
       dataType = 'card',
       batchSize = 100,
@@ -85,7 +194,7 @@ class DataTools {
         recordCount: data.length 
       });
 
-      const importResult = {
+      const importResult: ImportResult = {
         importId,
         source,
         dataType,
@@ -140,7 +249,7 @@ class DataTools {
 
       return importResult;
 
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Data import failed: ${importId}`, error);
       throw new Error(`Import failed: ${error.message}`);
     }
@@ -149,16 +258,21 @@ class DataTools {
   /**
    * Validate bulk data against rules
    */
-  validateBulkData(data, dataType) {
+  validateBulkData(data: any[], dataType: string): {
+    validRecords: any[];
+    invalidRecords: any[];
+    errors: any[];
+    warnings: any[];
+  } {
     const rules = this.validationRules.get(dataType);
     if (!rules) {
       throw new Error(`No validation rules found for data type: ${dataType}`);
     }
 
-    const validRecords = [];
-    const invalidRecords = [];
-    const errors = [];
-    const warnings = [];
+    const validRecords: any[] = [];
+    const invalidRecords: any[] = [];
+    const errors: any[] = [];
+    const warnings: any[] = [];
 
     data.forEach((record, index) => {
       try {
@@ -193,7 +307,7 @@ class DataTools {
           });
         });
 
-      } catch (error) {
+      } catch (error: any) {
         invalidRecords.push({
           index,
           record,
@@ -213,9 +327,9 @@ class DataTools {
   /**
    * Validate individual record
    */
-  validateRecord(record, rules) {
-    const errors = [];
-    const warnings = [];
+  validateRecord(record: any, rules: ValidationRules): ValidationResult {
+    const errors: ValidationError[] = [];
+    const warnings: ValidationError[] = [];
 
     // Check required fields
     rules.required.forEach(field => {
@@ -273,7 +387,7 @@ class DataTools {
       }
 
       // Numeric validation
-      if (fieldRules.min && typeof value === 'number' && value < fieldRules.min) {
+      if (fieldRules.min !== undefined && typeof value === 'number' && value < fieldRules.min) {
         errors.push({
           field,
           message: `Field '${field}' must be at least ${fieldRules.min}`,
@@ -281,7 +395,7 @@ class DataTools {
         });
       }
 
-      if (fieldRules.max && typeof value === 'number' && value > fieldRules.max) {
+      if (fieldRules.max !== undefined && typeof value === 'number' && value > fieldRules.max) {
         errors.push({
           field,
           message: `Field '${field}' must be no more than ${fieldRules.max}`,
@@ -318,7 +432,7 @@ class DataTools {
 
         if (fieldRules.itemType) {
           value.forEach((item, index) => {
-            if (!this.validateFieldType(item, fieldRules.itemType)) {
+            if (!this.validateFieldType(item, fieldRules.itemType!)) {
               errors.push({
                 field: `${field}[${index}]`,
                 message: `Array item must be of type ${fieldRules.itemType}`,
@@ -365,7 +479,7 @@ class DataTools {
   /**
    * Validate field type
    */
-  validateFieldType(value, expectedType) {
+  validateFieldType(value: any, expectedType: string): boolean {
     switch (expectedType) {
       case 'string':
         return typeof value === 'string';
@@ -385,10 +499,15 @@ class DataTools {
   /**
    * Process batch insert with duplicate checking
    */
-  async processBatchInsert(data, dataType, batchSize, skipDuplicates) {
-    const successful = [];
-    const skipped = [];
-    const errors = [];
+  async processBatchInsert(
+    data: any[], 
+    dataType: string, 
+    batchSize: number, 
+    skipDuplicates: boolean
+  ): Promise<{ successful: any[]; skipped: any[]; errors: any[] }> {
+    const successful: any[] = [];
+    const skipped: any[] = [];
+    const errors: any[] = [];
 
     for (let i = 0; i < data.length; i += batchSize) {
       const batch = data.slice(i, i + batchSize);
@@ -405,7 +524,7 @@ class DataTools {
           await this.delay(100);
         }
 
-      } catch (error) {
+      } catch (error: any) {
         logger.error(`Batch insert failed for batch ${Math.floor(i / batchSize) + 1}:`, error);
         errors.push({
           batch: Math.floor(i / batchSize) + 1,
@@ -421,15 +540,19 @@ class DataTools {
   /**
    * Insert single batch of records
    */
-  async insertBatch(batch, dataType, skipDuplicates) {
+  async insertBatch(
+    batch: any[], 
+    dataType: string, 
+    skipDuplicates: boolean
+  ): Promise<{ successful: any[]; skipped: any[]; errors: any[] }> {
     const tableName = this.getTableName(dataType);
-    const successful = [];
-    const skipped = [];
-    const errors = [];
+    const successful: any[] = [];
+    const skipped: any[] = [];
+    const errors: any[] = [];
 
     // Check for duplicates if skip is enabled
     if (skipDuplicates) {
-      const processedBatch = [];
+      const processedBatch: any[] = [];
       
       for (const record of batch) {
         const exists = await this.checkRecordExists(record, dataType);
@@ -463,7 +586,7 @@ class DataTools {
         successful.push(...(data || batch));
       }
 
-    } catch (error) {
+    } catch (error: any) {
       errors.push({
         message: error.message,
         batch: batch
@@ -476,7 +599,7 @@ class DataTools {
   /**
    * Check if record already exists
    */
-  async checkRecordExists(record, dataType) {
+  async checkRecordExists(record: any, dataType: string): Promise<boolean> {
     const tableName = this.getTableName(dataType);
     const idField = this.getIdField(dataType);
     
@@ -497,7 +620,7 @@ class DataTools {
   /**
    * Transform record for database insertion
    */
-  transformRecordForInsert(record, dataType) {
+  transformRecordForInsert(record: any, dataType: string): any {
     switch (dataType) {
       case 'card':
         return {
@@ -529,7 +652,7 @@ class DataTools {
   /**
    * Export data in various formats
    */
-  async exportData(dataType, options = {}) {
+  async exportData(dataType: string, options: ExportOptions = {}): Promise<ExportResult> {
     const {
       format = 'json',
       filters = {},
@@ -571,7 +694,7 @@ class DataTools {
         ...exportData
       };
 
-    } catch (error) {
+    } catch (error: any) {
       logger.error('Data export failed:', error);
       throw new Error(`Export failed: ${error.message}`);
     }
@@ -580,7 +703,7 @@ class DataTools {
   /**
    * Fetch data for export based on type and filters
    */
-  async fetchDataForExport(dataType, filters, limit) {
+  async fetchDataForExport(dataType: string, filters: Record<string, any>, limit: number): Promise<any[]> {
     const tableName = this.getTableName(dataType);
     
     let queryBuilder = supabase
@@ -611,7 +734,7 @@ class DataTools {
   /**
    * Generate export in specified format
    */
-  async generateExport(data, format, includeMetadata) {
+  async generateExport(data: any[], format: string, includeMetadata: boolean): Promise<any> {
     switch (format) {
       case 'json':
         return {
@@ -649,11 +772,11 @@ class DataTools {
   /**
    * Convert data to CSV format
    */
-  convertToCSV(data) {
+  convertToCSV(data: any[]): string {
     if (!data.length) return '';
 
     // Get all unique keys
-    const allKeys = new Set();
+    const allKeys = new Set<string>();
     data.forEach(record => {
       Object.keys(record).forEach(key => allKeys.add(key));
     });
@@ -690,7 +813,7 @@ class DataTools {
   /**
    * Convert data to XLSX format (simplified)
    */
-  async convertToXLSX(data, includeMetadata) {
+  async convertToXLSX(data: any[], includeMetadata: boolean): Promise<any> {
     // This would typically use a library like xlsx or exceljs
     // For now, return a JSON representation that could be converted
     return {
@@ -714,7 +837,7 @@ class DataTools {
   /**
    * Compress data (simplified base64 encoding)
    */
-  compressData(data) {
+  compressData(data: any): string {
     try {
       const jsonString = typeof data === 'string' ? data : JSON.stringify(data);
       return Buffer.from(jsonString).toString('base64');
@@ -727,7 +850,7 @@ class DataTools {
   /**
    * Generate comprehensive analytics dashboard data
    */
-  async generateAnalyticsDashboard() {
+  async generateAnalyticsDashboard(): Promise<DashboardData> {
     try {
       logger.info('Generating analytics dashboard data');
 
@@ -743,7 +866,7 @@ class DataTools {
         this.getSystemMetrics()
       ]);
 
-      const dashboard = {
+      const dashboard: DashboardData = {
         overview: {
           totalUsers: userAnalytics?.overview?.uniqueUsers || 0,
           totalSessions: userAnalytics?.overview?.uniqueSessions || 0,
@@ -755,7 +878,7 @@ class DataTools {
           userActivity: this.prepareUserActivityChart(userAnalytics),
           searchTrends: this.prepareSearchTrendsChart(searchAnalytics),
           priceVolatility: this.preparePriceVolatilityChart(priceAnalytics),
-          popularCards: userAnalytics?.popularCards?.slice(0, 10) || []
+          popularCards: Array.isArray(userAnalytics?.popularCards) ? userAnalytics.popularCards.slice(0, 10) : []
         },
         metrics: {
           performance: systemMetrics.performance,
@@ -770,7 +893,7 @@ class DataTools {
       logger.info('Analytics dashboard generated successfully');
       return dashboard;
 
-    } catch (error) {
+    } catch (error: any) {
       logger.error('Failed to generate analytics dashboard:', error);
       throw new Error(`Dashboard generation failed: ${error.message}`);
     }
@@ -779,7 +902,7 @@ class DataTools {
   /**
    * Get price analytics data
    */
-  async getPriceAnalytics() {
+  async getPriceAnalytics(): Promise<any> {
     try {
       const priceCollector = new EnhancedPriceCollector();
       return await priceCollector.generateMarketTrendAnalysis(30);
@@ -792,7 +915,7 @@ class DataTools {
   /**
    * Get system metrics
    */
-  async getSystemMetrics() {
+  async getSystemMetrics(): Promise<any> {
     try {
       const [cardCount, pokemonCount, performanceMetrics] = await Promise.all([
         this.getTableCount('card_cache'),
@@ -824,13 +947,13 @@ class DataTools {
   /**
    * Get table count
    */
-  async getTableCount(tableName) {
+  async getTableCount(tableName: string): Promise<number> {
     try {
       const { count, error } = await supabase
         .from(tableName)
         .select('*', { count: 'exact', head: true });
 
-      return error ? 0 : count;
+      return error ? 0 : count || 0;
     } catch (error) {
       logger.warn(`Error getting count for table ${tableName}:`, error);
       return 0;
@@ -840,13 +963,13 @@ class DataTools {
   /**
    * Prepare chart data for user activity
    */
-  prepareUserActivityChart(userAnalytics) {
+  prepareUserActivityChart(userAnalytics: any): Array<{ hour: number; count: number }> {
     if (!userAnalytics?.hourlyDistribution) return [];
 
     return Object.entries(userAnalytics.hourlyDistribution)
       .map(([hour, count]) => ({
         hour: parseInt(hour),
-        count: count || 0
+        count: count as number || 0
       }))
       .sort((a, b) => a.hour - b.hour);
   }
@@ -854,26 +977,26 @@ class DataTools {
   /**
    * Prepare chart data for search trends
    */
-  prepareSearchTrendsChart(searchAnalytics) {
+  prepareSearchTrendsChart(searchAnalytics: any): Array<{ date: string; searches: number }> {
     if (!searchAnalytics?.trends?.byDay) return [];
 
     return Object.entries(searchAnalytics.trends.byDay)
       .map(([date, count]) => ({
         date,
-        searches: count || 0
+        searches: count as number || 0
       }))
-      .sort((a, b) => new Date(a.date) - new Date(b.date));
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   }
 
   /**
    * Prepare chart data for price volatility
    */
-  preparePriceVolatilityChart(priceAnalytics) {
+  preparePriceVolatilityChart(priceAnalytics: any): Array<{ cardName: string; volatility: number; priceChange: number }> {
     if (!priceAnalytics?.marketOverview?.mostVolatile) return [];
 
     return priceAnalytics.marketOverview.mostVolatile
       .slice(0, 10)
-      .map(card => ({
+      .map((card: any) => ({
         cardName: card.cardName,
         volatility: card.volatility || 0,
         priceChange: card.priceChangePercent || 0
@@ -883,8 +1006,18 @@ class DataTools {
   /**
    * Generate dashboard insights
    */
-  generateDashboardInsights(userAnalytics, searchAnalytics, priceAnalytics) {
-    const insights = [];
+  generateDashboardInsights(userAnalytics: any, searchAnalytics: any, priceAnalytics: any): Array<{
+    type: string;
+    level: string;
+    message: string;
+    details: string;
+  }> {
+    const insights: Array<{
+      type: string;
+      level: string;
+      message: string;
+      details: string;
+    }> = [];
 
     // User engagement insights
     if (userAnalytics?.overview?.averageEventsPerSession > 10) {
@@ -923,8 +1056,8 @@ class DataTools {
   /**
    * Utility methods
    */
-  getTableName(dataType) {
-    const tableMap = {
+  getTableName(dataType: string): string {
+    const tableMap: Record<string, string> = {
       'card': 'card_cache',
       'pokemon': 'pokemon_cache',
       'price': 'card_price_history'
@@ -933,8 +1066,8 @@ class DataTools {
     return tableMap[dataType] || dataType;
   }
 
-  getIdField(dataType) {
-    const idMap = {
+  getIdField(dataType: string): string {
+    const idMap: Record<string, string> = {
       'card': 'card_id',
       'pokemon': 'pokemon_id',
       'price': 'card_id'
@@ -943,7 +1076,7 @@ class DataTools {
     return idMap[dataType] || 'id';
   }
 
-  delay(ms) {
+  delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 }
