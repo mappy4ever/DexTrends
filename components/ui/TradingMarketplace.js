@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaExchangeAlt, FaShoppingCart, FaDollarSign, FaEye, FaHeart, FaFilter, FaSort, FaShield, FaClock, FaCheck, FaTimes } from 'react-icons/fa';
+import { FaExchangeAlt, FaShoppingCart, FaDollarSign, FaEye, FaHeart, FaFilter, FaSort, FaShieldAlt, FaClock, FaCheck, FaTimes } from 'react-icons/fa';
 import { BsCardList, BsSearch, BsGraphUp, BsStar, BsShieldCheck, BsChatDots } from 'react-icons/bs';
 import { GiTwoCoins, GiDiamonds } from 'react-icons/gi';
 
@@ -610,7 +610,7 @@ export default function TradingMarketplace({ userId, onTradeRequest, onPurchase 
       {/* Safety Notice */}
       <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
         <div className="flex items-start space-x-3">
-          <FaShield className="text-blue-600 dark:text-blue-400 mt-0.5" />
+          <FaShieldAlt className="text-blue-600 dark:text-blue-400 mt-0.5" />
           <div className="text-sm text-blue-700 dark:text-blue-300">
             <strong>Safety First:</strong> Always use our secure escrow service for high-value trades. 
             Report any suspicious activity to our support team. Trade with verified users when possible.

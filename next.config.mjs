@@ -113,7 +113,7 @@ const nextConfig = {
   images: {
     // DISABLE VERCEL IMAGE OPTIMIZATION to avoid quota limits
     loader: 'custom',
-    loaderFile: './utils/imageLoader.js',
+    loaderFile: './utils/imageLoader.ts',
     // Keep remote patterns for security
     remotePatterns: [
       {

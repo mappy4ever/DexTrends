@@ -33,6 +33,30 @@ const CollectionManager = memo(({ userId = null }) => {
     }
   }, [selectedCollection]);
 
+  const getSessionId = useCallback(() => {
+    if (typeof window === 'undefined') return null;
+    
+    try {
+      let sessionId = localStorage.getItem('dextrends_session_id');
+      if (!sessionId) {
+        // Use crypto.randomUUID if available, otherwise use a timestamp-based ID
+        if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+          sessionId = 'session_' + crypto.randomUUID();
+        } else {
+          // Fallback: use timestamp + performance counter for uniqueness
+          const timestamp = Date.now();
+          const counter = typeof performance !== 'undefined' ? performance.now() : 0;
+          sessionId = 'session_' + timestamp + '_' + Math.floor(counter);
+        }
+        localStorage.setItem('dextrends_session_id', sessionId);
+      }
+      return sessionId;
+    } catch (error) {
+      // If localStorage is not available, return a temporary session ID
+      return 'session_temp_' + Date.now();
+    }
+  }, []);
+
   const loadCollections = useCallback(async () => {
     setLoading(true);
     try {
@@ -59,30 +83,6 @@ const CollectionManager = memo(({ userId = null }) => {
       setLoading(false);
     }
   }, [userId, getSessionId, selectedCollection]);
-
-  const getSessionId = useCallback(() => {
-    if (typeof window === 'undefined') return null;
-    
-    try {
-      let sessionId = localStorage.getItem('dextrends_session_id');
-      if (!sessionId) {
-        // Use crypto.randomUUID if available, otherwise use a timestamp-based ID
-        if (typeof crypto !== 'undefined' && crypto.randomUUID) {
-          sessionId = 'session_' + crypto.randomUUID();
-        } else {
-          // Fallback: use timestamp + performance counter for uniqueness
-          const timestamp = Date.now();
-          const counter = typeof performance !== 'undefined' ? performance.now() : 0;
-          sessionId = 'session_' + timestamp + '_' + Math.floor(counter);
-        }
-        localStorage.setItem('dextrends_session_id', sessionId);
-      }
-      return sessionId;
-    } catch (error) {
-      // If localStorage is not available, return a temporary session ID
-      return 'session_temp_' + Date.now();
-    }
-  }, []);
 
   const calculatePortfolioValue = async () => {
     if (!selectedCollection?.cards) return;

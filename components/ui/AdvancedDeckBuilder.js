@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { FaPlus, FaMinus, FaSearch, FaChartBar, FaExclamationTriangle, FaCheckCircle, FaSave, FaShare, FaDownload } from 'react-icons/fa';
 import { BsCardList, BsLightning, BsDroplet, BsFire, BsSnow, BsFlower1, BsFillCircleFill } from 'react-icons/bs';
-import { GiGrassBeater, GiPsychicWaves, GiMetalBar, GiFairyWand, GiDragonHead } from 'react-icons/gi';
+import { GiHighGrass, GiPsychicWaves, GiMetalBar, GiFairyWand, GiDragonHead } from 'react-icons/gi';
 
 export default function AdvancedDeckBuilder({ initialDeck = null, onSaveDeck, userId = null }) {
   const [deck, setDeck] = useState({
@@ -251,7 +251,7 @@ export default function AdvancedDeckBuilder({ initialDeck = null, onSaveDeck, us
       Water: <BsDroplet className="text-blue-500" />,
       Lightning: <BsLightning className="text-yellow-500" />,
       Grass: <BsFlower1 className="text-green-500" />,
-      Fighting: <GiGrassBeater className="text-orange-600" />,
+      Fighting: <GiHighGrass className="text-orange-600" />,
       Psychic: <GiPsychicWaves className="text-purple-500" />,
       Darkness: <BsFillCircleFill className="text-gray-800" />,
       Metal: <GiMetalBar className="text-gray-500" />,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { FadeIn } from '../ui/animations';
-import { pokemonTheme, responsive } from '../../utils/pokemonThemes';
+import { pokemonTheme, responsive } from '../../utils/pokemonTheme';
 import StyledBackButton from '../ui/StyledBackButton';
 
 const PokemonHero = ({ 

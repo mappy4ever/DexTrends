@@ -123,11 +123,12 @@ All project documentation is in `project-resources/docs/`. Key files:
 - `TESTING_PROTOCOL.md` - Testing guidelines
 
 ## Current State
-- TypeScript migration IN PROGRESS (Phase 6 - Week 2)
+- TypeScript migration IN PROGRESS (Phase 6 - Week 3 started July 13)
 - ESLint and TypeScript checks re-enabled in build
 - Project structure cleaned and organized
 - Gym leader scraper optimized to exclude Pokemon images
 - All non-code files centralized in `project-resources/`
+- Build successful at 867 KB (First Load JS)
 
 ## Final Cleanup (Completed)
 - Removed 102 `.broken` files from `components/ui/`
@@ -372,7 +373,7 @@ The pocket cards functionality now works correctly on all PokeID pages!
 
 ## Phase 6: TypeScript Migration (July 13, 2025)
 
-### Current Status: Week 2 In Progress
+### Current Status: Week 3 In Progress
 
 #### Week 1 Completed ✅
 - **Created comprehensive type definitions** in `/types` directory:
@@ -382,54 +383,99 @@ The pocket cards functionality now works correctly on all PokeID pages!
   - Utility types: cache.d.ts, performance.d.ts
 - **Total**: 2,999 lines of type definitions across 13 files
 
-#### Week 2 Progress (Started July 13)
-**Utility Files Converted (5/64):**
+#### Week 2 Progress (Updated July 13)
+**Utility Files Converted (9/64):**
 1. `formatters.js → formatters.ts` - Currency, date, URL formatting
 2. `logoConfig.js → logoConfig.ts` - Logo configuration with interfaces
 3. `dataTools.js → dataTools.ts` - 954 lines, comprehensive validation/import/export
 4. `pokemonutils.js → pokemonutils.ts` - Pokemon utilities with type safety
 5. `pokemonTypeColors.js → pokemonTypeColors.ts` - Type color mappings
+6. `logger.js → logger.ts` - Production-safe logging utility (190 lines)
+7. `UnifiedCacheManager.js → UnifiedCacheManager.ts` - 3-tier caching system (660 lines)
+8. `apiutils.js → apiutils.ts` - Core API utilities (170 lines)
+   - Added Nature and Move interfaces to pokemon.d.ts
+   - Fixed type compatibility with UnifiedCacheManager
+9. `performanceMonitor.js → performanceMonitor.ts` - Performance monitoring (760 lines)
+   - Comprehensive Web Vitals tracking
+   - React component performance monitoring
+   - Fixed TypeScript issues with PerformanceEntry types
 
 **Key Achievements:**
 - Established TypeScript patterns for the project
 - Created 25+ interface definitions
-- ~1,600 lines of TypeScript converted
+- ~3,380 lines of TypeScript converted
 - Fixed TypeScript type errors with supabase imports
-- Created type declaration file for lib/supabase.js
+- Created type declaration files for lib/supabase.js and pokemontcgsdk
+- Successfully migrated high-impact utilities (logger used by 24 files, UnifiedCacheManager used by 6+ files)
+- Implemented proper TypeScript patterns: override modifiers, type-safe caching layers, generic types
 
-**Current Issues:**
-1. **Build Issue**: Page collection error for some routes (/pocketmode/[pokemonid], /battle-simulator)
-2. **Runtime Error #1**: Webpack module resolution error on PokeID page
-   - Error: Module resolution issue in webpack chunks
-   - Location: Appears when navigating to PokeID pages
-   - User can dismiss the error and page still functions
-   - Likely related to TypeScript migration and module imports
-3. **Runtime Error #2**: Mouse event error on Regions page
-   - Error: React Fiber error on onMouseLeave event
-   - Location: RegionHero.js navigation buttons
-   - Non-breaking: Visual effects still work
-   - Cause: Direct DOM style manipulation in event handlers
+**Build Issues Fixed (July 13):**
+1. **FullBleedWrapper.tsx**: Fixed dynamic require() causing "Cannot access 'N' before initialization"
+   - Solution: Removed dynamic import, simplified gradients
+2. **Icon Import Errors**: Fixed react-icons imports
+   - GiGrassBeater → GiHighGrass in AdvancedDeckBuilder.js
+   - FaShield → FaShieldAlt in TradingMarketplace.js
+3. **CollectionManager.js**: Fixed temporal dead zone issue
+   - Solution: Moved getSessionId function before loadCollections
+4. **logger.ts**: Fixed TypeScript strict checking issues with console methods
 
-### Migration Statistics
-- **Overall Progress**: 66/408 files in TypeScript (16.2%)
-- **Utility Files**: 5/64 converted (7.8%)
+#### Week 3 Progress (Started July 13)
+**High-Impact Utility Files Converted (3 files):**
+1. `bulbapediaApi.js → bulbapediaApi.ts` - MediaWiki API utility (321 lines)
+   - Complete interface definitions for all API responses
+   - Type-safe API methods with proper error handling
+   - Used by scraper functionality
+2. `localDataLoader.js → localDataLoader.ts` - Local data loading system (274 lines)
+   - React hooks for gym leaders and games data
+   - Comprehensive type definitions for all data structures
+   - Fallback data system with type safety
+3. `imageLoader.js → imageLoader.ts` - Custom image loader (14 lines)
+   - Simple but critical for bypassing Vercel optimization
+   - Updated next.config.mjs to use TypeScript version
+
+**Theme System Consolidation (4 files → 3 files):**
+1. `pokemonTheme.js → pokemonTheme.ts` - Unified theme system (760 lines)
+   - Consolidated pokemonTheme.js and pokemonThemes.js
+   - Complete type definitions for all theme properties
+   - Region themes, responsive utilities, and helper functions
+2. `pokemonTypeGradients.js → pokemonTypeGradients.ts` - Type-based gradients (550 lines)
+   - Extensive type-specific UI color mappings
+   - Re-exports shared functions from main theme
+3. `logoEnhancements.js → logoEnhancements.ts` - Logo filter utilities (93 lines)
+   - Type-safe filter configurations and presets
+   - HTML element manipulation with proper null checks
+
+**Current Status:**
+- Build succeeds with no errors ✅
+- Bundle size: 867 KB (First Load JS) - increased from 856 KB
+- CSS bundle: 52.6 KB
+- All routes build successfully
+- Removed duplicate pokemonThemes.js file
+- Updated imports in PokemonHero.js
+
+### Migration Statistics (Updated July 13)
+- **Overall Progress**: 76/408 files in TypeScript (18.6%)
+- **Utility Files**: 15/64 converted (23.4%) - 6 new files in Week 3
+- **Lines of TypeScript written**: ~5,588 lines (+2,208 lines in Week 3)
 - **Components**: 61/~347 files (mostly UI components already in TSX)
+- **Theme consolidation**: 4 files → 3 files (reduced duplication)
 
 ### Next Priority Tasks
-1. **Remaining Pokemon Utilities**:
-   - moveUtils.js
+1. **NEXT FILES**: High priority utilities
+   - cacheManager.js → cacheManager.ts (cache functionality)
+   - retryFetch.js → retryFetch.ts (imports logger)
+
+2. **Pokemon Utilities Suite**:
+   - moveUtils.js (imports apiutils)
    - evolutionUtils.js
    - cachedPokemonUtils.js
 
-2. **Critical Cache Utilities**:
-   - UnifiedCacheManager.js (HIGH PRIORITY - critical for performance)
-   - cacheManager.js
-   - apiCache.js
-
-3. **Performance Utilities**:
-   - performanceMonitor.js
+3. **Network & Analytics**:
+   - analyticsEngine.js (imports logger)
    - monitoring.js
-   - analyticsEngine.js
+
+### TypeScript Migration Progress Document
+See `/project-resources/docs/TYPESCRIPT_MIGRATION_PROGRESS.md` for detailed progress and next steps
 
 ### Important TypeScript Notes
 - Using `allowJs: true` during migration for gradual conversion

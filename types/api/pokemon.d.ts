@@ -319,3 +319,166 @@ export interface PokemonListResponse {
     url: string;
   }[];
 }
+
+// Nature interface
+export interface Nature {
+  id: number;
+  name: string;
+  decreased_stat: {
+    name: string;
+    url: string;
+  } | null;
+  increased_stat: {
+    name: string;
+    url: string;
+  } | null;
+  hates_flavor: {
+    name: string;
+    url: string;
+  } | null;
+  likes_flavor: {
+    name: string;
+    url: string;
+  } | null;
+  pokeathlon_stat_changes: {
+    max_change: number;
+    pokeathlon_stat: {
+      name: string;
+      url: string;
+    };
+  }[];
+  move_battle_style_preferences: {
+    low_hp_preference: number;
+    high_hp_preference: number;
+    move_battle_style: {
+      name: string;
+      url: string;
+    };
+  }[];
+  names: {
+    name: string;
+    language: {
+      name: string;
+      url: string;
+    };
+  }[];
+}
+
+// Move interface
+export interface Move {
+  id: number;
+  name: string;
+  accuracy: number | null;
+  effect_chance: number | null;
+  pp: number;
+  priority: number;
+  power: number | null;
+  contest_combos: {
+    normal: {
+      use_before: {
+        name: string;
+        url: string;
+      }[] | null;
+      use_after: {
+        name: string;
+        url: string;
+      }[] | null;
+    };
+    super: {
+      use_before: {
+        name: string;
+        url: string;
+      }[] | null;
+      use_after: {
+        name: string;
+        url: string;
+      }[] | null;
+    };
+  } | null;
+  contest_type: {
+    name: string;
+    url: string;
+  } | null;
+  contest_effect: {
+    url: string;
+  } | null;
+  damage_class: {
+    name: string;
+    url: string;
+  };
+  effect_entries: {
+    effect: string;
+    short_effect: string;
+    language: {
+      name: string;
+      url: string;
+    };
+  }[];
+  effect_changes: any[];
+  flavor_text_entries: {
+    flavor_text: string;
+    language: {
+      name: string;
+      url: string;
+    };
+    version_group: {
+      name: string;
+      url: string;
+    };
+  }[];
+  generation: {
+    name: string;
+    url: string;
+  };
+  machines: any[];
+  meta: {
+    ailment: {
+      name: string;
+      url: string;
+    };
+    category: {
+      name: string;
+      url: string;
+    };
+    min_hits: number | null;
+    max_hits: number | null;
+    min_turns: number | null;
+    max_turns: number | null;
+    drain: number;
+    healing: number;
+    crit_rate: number;
+    ailment_chance: number;
+    flinch_chance: number;
+    stat_chance: number;
+  } | null;
+  names: {
+    name: string;
+    language: {
+      name: string;
+      url: string;
+    };
+  }[];
+  past_values: any[];
+  stat_changes: {
+    change: number;
+    stat: {
+      name: string;
+      url: string;
+    };
+  }[];
+  super_contest_effect: {
+    url: string;
+  } | null;
+  target: {
+    name: string;
+    url: string;
+  };
+  type: {
+    name: string;
+    url: string;
+  };
+  learned_by_pokemon: {
+    name: string;
+    url: string;
+  }[];
+}

@@ -115,22 +115,13 @@ export const PageBackground: React.FC<FullBleedWrapperProps> = ({
   customGradient,
   pokemonTypes
 }) => {
-  // Import the type gradient function
-  const { generateTypeGradient } = React.useMemo(() => {
-    // Dynamic import to avoid SSR issues
-    if (typeof window !== 'undefined') {
-      return require('../../utils/pokemonTypeGradients');
-    }
-    return { generateTypeGradient: () => 'bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-slate-900 dark:to-zinc-900' };
-  }, []);
-
   const gradients = {
     pokedex: 'bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-slate-900 dark:to-zinc-900',
     tcg: 'bg-gradient-to-br from-gray-50 via-purple-50/30 to-pink-50/30 dark:from-gray-900 dark:via-purple-950/30 dark:to-pink-950/30',
     regions: 'bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 dark:from-emerald-950 dark:via-teal-950 dark:to-cyan-950',
     pocket: 'bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950 dark:via-amber-950 dark:to-orange-950',
     collections: 'bg-gradient-to-br from-slate-50 via-gray-50 to-zinc-50 dark:from-slate-900 dark:via-gray-900 dark:to-zinc-900',
-    'pokemon-type': pokemonTypes ? generateTypeGradient(pokemonTypes) : 'bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-slate-900 dark:to-zinc-900',
+    'pokemon-type': 'bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-slate-900 dark:to-zinc-900',
     custom: customGradient || ''
   };
 
