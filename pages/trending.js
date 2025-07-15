@@ -3,17 +3,10 @@ import Link from 'next/link';
 import pokemon from "pokemontcgsdk";
 import CardList from '../components/CardList';
 import { useTheme } from '../context/UnifiedAppContext';
-import { TrendingLoadingScreen } from '../components/ui/UnifiedLoadingScreen';
+import { TrendingLoadingScreen } from "../components/ui/loading/UnifiedLoadingScreen";
 import logger from '../utils/logger';
 
 const pokemonKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
-if (!pokemonKey) {
-  throw new Error(
-    "NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY environment variable is not set. Please set it to your .env.local."
-  );
-}
-
-pokemon.configure({ apiKey: pokemonKey });
 
 export default function TrendingPage() {
   const { theme } = useTheme();
@@ -68,6 +61,16 @@ export default function TrendingPage() {
       try {
         setLoading(true);
         setError(null);
+        
+        // Check if API key is available
+        if (!pokemonKey) {
+          setError("Pokemon TCG API key is not configured. Please check your environment variables.");
+          setLoading(false);
+          return;
+        }
+        
+        // Configure Pokemon SDK before use
+        pokemon.configure({ apiKey: pokemonKey });
         
         // In a real app, we would fetch cards with price history
         // Here we'll fetch a mix of popular cards and simulate trends

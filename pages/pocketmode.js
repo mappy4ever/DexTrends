@@ -4,17 +4,17 @@ import Link from "next/link";
 import Image from "next/image";
 import Head from "next/head";
 import dynamic from "next/dynamic";
-import { FadeIn, SlideUp } from "../components/ui/animations";
+import { FadeIn, SlideUp } from "../components/ui/animations/animations";
 import { TypeBadge } from "../components/ui/TypeBadge";
-import { TypeFilter } from "../components/ui/TypeFilter";
+import { TypeFilter } from "../components/ui/forms/TypeFilter";
 import PocketCardList from "../components/PocketCardList";
 import { fetchPocketData } from "../utils/pocketData";
 import BackToTop from "../components/ui/SimpleBackToTop";
-import { FullBleedWrapper } from "../components/ui/FullBleedWrapper";
+import FullBleedWrapper from "../components/ui/FullBleedWrapper";
 
 // Dynamic imports for components that might cause SSR issues
 import PokeballLoader from "../components/ui/PokeballLoader";
-const PokemonEmptyState = dynamic(() => import("../components/ui/PokemonEmptyState"), { ssr: false });
+const PokemonEmptyState = dynamic(() => import("../components/ui/loading/PokemonEmptyState"), { ssr: false });
 
 export default function PocketMode() {
   const router = useRouter();

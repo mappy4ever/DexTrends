@@ -1,5 +1,5 @@
 import React from 'react';
-import { FadeIn, SlideUp, StaggeredChildren } from '../ui/animations';
+import { FadeIn, SlideUp, StaggeredChildren } from '../ui/animations/animations';
 import { BsPerson, BsController, BsGlobe, BsBarChart } from 'react-icons/bs';
 
 const RegionInfo = ({ region, theme }) => {

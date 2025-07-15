@@ -1,25 +1,17 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import pokemon from "pokemontcgsdk";
-import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../components/ui/animations";
+import { getPokemonSDK } from "../utils/pokemonSDK";
+import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../components/ui/animations/animations";
 import { useTheme } from "../context/UnifiedAppContext";
 import { useViewSettings } from "../context/UnifiedAppContext";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import { InlineLoadingSpinner } from "../components/ui/loading/LoadingSpinner";
-import { SetLoadingScreen } from "../components/ui/UnifiedLoadingScreen";
-import { FullBleedWrapper } from "../components/ui/FullBleedWrapper";
+import { SetLoadingScreen } from "../components/ui/loading/UnifiedLoadingScreen";
+import FullBleedWrapper from "../components/ui/FullBleedWrapper";
+import TCGSetsErrorBoundary from "../components/TCGSetsErrorBoundary";
 
-const pokemonKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
-if (!pokemonKey) {
-  throw new Error(
-    "NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY environment variable is not set. Please set it to your .env.local."
-  );
-}
-
-pokemon.configure({ apiKey: pokemonKey });
-
-export default function TcgSets() {
+function TcgSetsContent() {
   const [sets, setSets] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
@@ -39,6 +31,7 @@ export default function TcgSets() {
       setLoading(true);
       setError(null);
       try {
+        const pokemon = getPokemonSDK();
         const res = await pokemon.set.all();
         setSets(res);
       } catch (err) {
@@ -109,8 +102,7 @@ export default function TcgSets() {
 
   return (
     <FullBleedWrapper gradient="tcg">
-      <div className="min-h-screen">
-        <div className="section-spacing-y-default max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 animate-fadeIn pt-8">
+      <div className="section-spacing-y-default max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 animate-fadeIn pt-8">
           <FadeIn>
             {/* Hero Section */}
             <div className="text-center mb-12">
@@ -367,11 +359,20 @@ export default function TcgSets() {
               </div>
             </div>
           )}
-        </div>
       </div>
     </FullBleedWrapper>
   );
 }
 
 // Tell the layout this page uses full bleed
+TcgSetsContent.fullBleed = true;
+
+export default function TcgSets(props) {
+  return (
+    <TCGSetsErrorBoundary>
+      <TcgSetsContent {...props} />
+    </TCGSetsErrorBoundary>
+  );
+}
+
 TcgSets.fullBleed = true;

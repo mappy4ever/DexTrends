@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FadeIn, SlideUp, CardHover } from '../ui/animations';
+import { FadeIn, SlideUp, CardHover } from '../ui/animations/animations';
 import { 
   BsExclamationTriangle,
   BsPerson,

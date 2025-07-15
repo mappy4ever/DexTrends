@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FadeIn, SlideUp, CardHover } from '../ui/animations.js';
+import { FadeIn, SlideUp, CardHover } from "../ui/animations/animations";
 import { TypeBadge } from '../ui/TypeBadge';
 import { BsArrowRepeat } from 'react-icons/bs';
 import { GiCrown } from 'react-icons/gi';

@@ -16,7 +16,7 @@ import {
   StaggerItem, 
   HoverCard,
   RevealElement 
-} from '../../components/ui/AnimationSystem';
+} from "../../components/ui/animations/AnimationSystem";
 import logger from '../../utils/logger';
 
 export default function SavedDecks() {

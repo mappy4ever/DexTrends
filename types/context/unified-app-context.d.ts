@@ -292,8 +292,9 @@ export interface SidebarState {
 }
 
 export interface ModalState {
-  activeModals: string[];
-  modalData: Record<string, any>;
+  isOpen: boolean;
+  type: string | null;
+  data: any;
 }
 
 export interface Toast {

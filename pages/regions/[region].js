@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
-import Layout from '../../components/layout/layout';
+import Layout from '../../components/layout/Layout';
 import styles from '../../styles/RegionPage.module.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BsChevronLeft as ChevronLeft, BsChevronRight as ChevronRight, BsAward as Award, BsGeoAlt as MapPin, BsStars as Sparkles, BsTrophy as Trophy, BsController as Gamepad2, BsShield as Shield, BsStar as Star } from 'react-icons/bs';

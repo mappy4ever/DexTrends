@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
-import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../../components/ui/animations";
+import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../../components/ui/animations/animations";
 import { useTheme } from "../../context/UnifiedAppContext";
 import { pokemonTheme } from "../../utils/pokemonTheme";
 import StyledBackButton from "../../components/ui/StyledBackButton";

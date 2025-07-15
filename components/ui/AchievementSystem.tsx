@@ -242,7 +242,7 @@ const AchievementSystem = ({ onAchievementUnlocked = () => {} }: AchievementSyst
   // Calculate collection statistics for achievement checking
   const calculateCollectionStats = (): AchievementData => {
     const stats: AchievementData = {
-      totalCards: favorites.length || 0,
+      totalCards: favorites.cards?.length || 0,
       totalPokemon: 0,
       rareCards: 0,
       holoCards: 0,
@@ -264,11 +264,11 @@ const AchievementSystem = ({ onAchievementUnlocked = () => {} }: AchievementSyst
     };
 
     // Mock calculations (in real app, this would use actual card data)
-    if (favorites.length > 0) {
+    if (favorites.cards && favorites.cards.length > 0) {
       // For now, mock the card data since we only have IDs
-      favorites.forEach((cardId: any) => {
+      favorites.cards.forEach((card: any) => {
         // Mock rarity detection based on ID patterns
-        const cardName = cardId.toLowerCase();
+        const cardName = (typeof card === 'string' ? card : card.id || '').toLowerCase();
         if (cardName.includes('rare') || cardName.includes('holo')) stats.rareCards++;
         if (cardName.includes('holo') || cardName.includes('holographic')) stats.holoCards++;
         if (cardName.includes('secret')) stats.secretRares++;
@@ -302,7 +302,7 @@ const AchievementSystem = ({ onAchievementUnlocked = () => {} }: AchievementSyst
 
   // Check for newly unlocked achievements (optimized to prevent loops)
   useEffect(() => {
-    if (!favorites || favorites.length === 0) {
+    if (!favorites?.cards || favorites.cards.length === 0) {
       setAchievements(achievementDefinitions);
       return;
     }
@@ -333,7 +333,7 @@ const AchievementSystem = ({ onAchievementUnlocked = () => {} }: AchievementSyst
     }
 
     setAchievements(achievementDefinitions);
-  }, [favorites.length]); // Only trigger on count changes
+  }, [favorites.cards?.length]); // Only trigger on count changes
 
   const showAchievementNotification = (achievement: Achievement) => {
     if (typeof window !== 'undefined' && window.showNotification) {

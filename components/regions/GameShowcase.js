@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getGameCoverArt, getGameLogo } from '../../utils/scrapedImageMapping';
-import { FadeIn, SlideUp, CardHover, StaggeredChildren } from '../ui/animations';
+import { FadeIn, SlideUp, CardHover, StaggeredChildren } from '../ui/animations/animations';
 import { BsArrowRight, BsStarFill, BsGeoAlt } from 'react-icons/bs';
 import { FaGamepad } from 'react-icons/fa';
 

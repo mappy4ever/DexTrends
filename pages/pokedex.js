@@ -7,7 +7,7 @@ import { fetchData } from "../utils/apiutils";
 import { TypeBadge } from "../components/ui/TypeBadge";
 import { getGeneration } from "../utils/pokemonutils";
 import PokeballLoader from "../components/ui/PokeballLoader";
-import { FullBleedWrapper } from "../components/ui/FullBleedWrapper";
+import FullBleedWrapper from "../components/ui/FullBleedWrapper";
 
 export default function PokedexIndex() {
   const router = useRouter();

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import Layout from '../../components/layout/layout';
+import Layout from '../../components/layout/Layout';
 import { motion } from 'framer-motion';
 import { BsGeoAlt as MapPin, BsTrophy as Trophy, BsShield as Shield, BsStars as Sparkles } from 'react-icons/bs';
 import styles from '../../styles/RegionsIndex.module.css';

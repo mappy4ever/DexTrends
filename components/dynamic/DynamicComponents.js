@@ -24,7 +24,7 @@ export const DynamicEchartsReact = dynamic(
 );
 
 export const DynamicPriceHistoryChart = dynamic(
-  () => import('../ui/PriceHistoryChart'),
+  () => import('../ui/charts/PriceHistoryChart'),
   {
     loading: () => <DynamicLoader>Loading price chart...</DynamicLoader>,
     ssr: false
@@ -217,7 +217,7 @@ export const DynamicSpeedInsights = dynamic(
 
 // Error boundary with dynamic loading
 export const DynamicErrorBoundary = dynamic(
-  () => import('../layout/errorboundary'),
+  () => import('../layout/ErrorBoundary'),
   {
     loading: () => <div>Loading error handler...</div>
   }
@@ -236,7 +236,7 @@ export const preloadCriticalComponents = () => {
   preloadComponent(() => import('../AdvancedSearchModal'));
   
   // Preload charts when user visits pages with data
-  preloadComponent(() => import('../ui/PriceHistoryChart'));
+  preloadComponent(() => import('../ui/charts/PriceHistoryChart'));
   
   // Preload analytics when user interacts with data
   preloadComponent(() => import('../MarketAnalytics'));

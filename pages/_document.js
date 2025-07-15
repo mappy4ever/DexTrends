@@ -80,6 +80,24 @@ class MyDocument extends Document {
               })
             }}
           />
+          {/* Theme initialization script to prevent flash */}
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                (function() {
+                  try {
+                    const theme = localStorage.getItem('theme');
+                    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                    const activeTheme = theme || systemTheme;
+                    
+                    if (activeTheme === 'dark') {
+                      document.documentElement.classList.add('dark');
+                    }
+                  } catch (e) {}
+                })();
+              `
+            }}
+          />
         </Head>
         <body>
           <Main />

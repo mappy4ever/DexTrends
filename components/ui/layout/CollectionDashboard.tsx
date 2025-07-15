@@ -39,7 +39,7 @@ const CollectionDashboard = () => {
 
   // Calculate analytics from favorites data without API calls
   useEffect(() => {
-    if (!favoriteIds || favoriteIds.length === 0) {
+    if (!favoriteIds?.cards || favoriteIds.cards.length === 0) {
       setLoadingStats(false);
       return;
     }
@@ -48,18 +48,18 @@ const CollectionDashboard = () => {
       setLoadingStats(true);
       
       // Mock stats calculation since we don't have the actual card data here
-      const mockValue = favoriteIds.length * 10;
+      const mockValue = favoriteIds.cards.length * 10;
       const stats: CollectionStats = {
-        totalCards: favoriteIds.length,
+        totalCards: favoriteIds.cards.length,
         totalValue: mockValue,
-        rareCards: Math.floor(favoriteIds.length * 0.2),
-        uniqueSets: Math.max(1, Math.floor(favoriteIds.length / 5)),
+        rareCards: Math.floor(favoriteIds.cards.length * 0.2),
+        uniqueSets: Math.max(1, Math.floor(favoriteIds.cards.length / 5)),
         typeDistribution: {},
         rarityDistribution: {},
-        averageValue: favoriteIds.length > 0 ? mockValue / favoriteIds.length : 0,
+        averageValue: favoriteIds.cards.length > 0 ? mockValue / favoriteIds.cards.length : 0,
         monthlyGrowth: 5.2, // Mock growth percentage
-        mostValuableCard: favoriteIds.length > 0 ? { name: 'Charizard', value: 250 } : null,
-        completionPercentage: Math.min(100, (favoriteIds.length / 150) * 100)
+        mostValuableCard: favoriteIds.cards.length > 0 ? { name: 'Charizard', value: 250 } : null,
+        completionPercentage: Math.min(100, (favoriteIds.cards.length / 150) * 100)
       };
       setCollectionStats(stats);
       
@@ -71,7 +71,7 @@ const CollectionDashboard = () => {
     } finally {
       setLoadingStats(false);
     }
-  }, [favoriteIds]); // Only trigger on favorites changes
+  }, [favoriteIds.cards]); // Only trigger on favorites changes
 
   const calculateCollectionStats = (cards: any[], pokemon: any[]) => {
     const stats: any = {

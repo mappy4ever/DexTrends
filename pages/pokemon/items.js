@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../../components/ui/animations";
+import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../../components/ui/animations/animations";
 import { useTheme } from "../../context/UnifiedAppContext";
 import StyledBackButton from "../../components/ui/StyledBackButton";
 import { FiShoppingBag } from "react-icons/fi";

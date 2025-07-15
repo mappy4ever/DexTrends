@@ -38,7 +38,7 @@ const EnhancedNavigation = (): any => {
       name: 'Favorites',
       href: '/favorites',
       icon: '⭐',
-      badge: favorites?.length || 0,
+      badge: (favorites?.cards?.length || 0) + (favorites?.pokemon?.length || 0),
       description: 'Your saved cards and Pokemon'
     },
     {

@@ -6,8 +6,8 @@ import "../styles/unified-mobile.css";
 import "../styles/pokemon-animations.css";
 import "../styles/design-system.css";
 import "../components/typebadge.css";
-import Layout from "../components/layout/layout";
-import ErrorBoundary from "../components/layout/errorboundary";
+import Layout from "../components/layout/Layout";
+import ErrorBoundary from "../components/layout/ErrorBoundary";
 
 import UnifiedAppProvider from '../context/UnifiedAppContext';
 

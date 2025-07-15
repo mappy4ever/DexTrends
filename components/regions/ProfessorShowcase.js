@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getProfessorImage } from '../../utils/scrapedImageMapping';
-import { FadeIn, SlideUp } from '../ui/animations';
+import { FadeIn, SlideUp } from '../ui/animations/animations';
 import { 
   BsBook, 
   BsTrophy, 

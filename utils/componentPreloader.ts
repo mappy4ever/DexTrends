@@ -212,14 +212,14 @@ class ComponentPreloader {
       ],
       '/pokedex': [
         () => import('../components/ui/TypeBadge'),
-        () => import('../components/ui/PokemonLoadingScreen'),
+        () => import('../components/ui/loading/PokemonLoadingScreen'),
       ],
       '/cards': [
-        () => import('../components/ui/PriceHistoryChart'),
+        () => import('../components/ui/charts/PriceHistoryChart'),
         () => import('../components/ui/PriceIndicator'),
       ],
       '/trending': [
-        () => import('../components/ui/PriceHistoryChart'),
+        () => import('../components/ui/charts/PriceHistoryChart'),
         () => import('echarts-for-react'),
       ],
       '/tcgsets': [

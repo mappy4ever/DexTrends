@@ -125,14 +125,5 @@ export function applyIOSFixes(): boolean {
   return isIOS;
 }
 
-// Apply fixes on DOM ready
-if (typeof window !== 'undefined') {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', applyIOSFixes);
-  } else {
-    applyIOSFixes();
-  }
-}
-
 // Export for use in React components
 export default applyIOSFixes;

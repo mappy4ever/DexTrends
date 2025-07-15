@@ -4,26 +4,19 @@ import Link from "next/link";
 import pokemon from "pokemontcgsdk";
 import Modal from "../../components/ui/modals/Modal";
 import EnhancedCardModal from "../../components/ui/EnhancedCardModal";
-import { FadeIn, SlideUp } from "../../components/ui/animations";
+import { FadeIn, SlideUp } from "../../components/ui/animations/animations";
 import { DynamicPriceHistoryChart } from "../../components/dynamic/DynamicComponents";
 import { useTheme } from "../../context/UnifiedAppContext";
 import { useFavorites } from "../../context/UnifiedAppContext";
 import { TypeBadge } from "../../components/ui/TypeBadge";
 import Image from "next/image";
 import { getPrice as getCardPrice } from "../../utils/pokemonutils";
-import { CardLoadingScreen } from "../../components/ui/UnifiedLoadingScreen";
-import UnifiedCard from "../../components/ui/UnifiedCard";
+import { CardLoadingScreen } from "../../components/ui/loading/UnifiedLoadingScreen";
+import UnifiedCard from "../../components/ui/cards/UnifiedCard";
 import StyledBackButton from "../../components/ui/StyledBackButton";
 import logger from "../../utils/logger";
 
 const pokemonKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
-if (!pokemonKey) {
-  throw new Error(
-    "NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY environment variable is not set. Please set it to your .env.local."
-  );
-}
-
-pokemon.configure({ apiKey: pokemonKey });
 
 // --- Add type color mapping and RGBA helpers (copied from pokedex.js) ---
 const typeHexColors = {
@@ -61,6 +54,16 @@ export default function CardDetailPage() {
 
     setLoading(true);
     setError(null);
+    
+    // Check if API key is available
+    if (!pokemonKey) {
+      setError("Pokemon TCG API key is not configured. Please check your environment variables.");
+      setLoading(false);
+      return;
+    }
+    
+    // Configure Pokemon SDK before use
+    pokemon.configure({ apiKey: pokemonKey });
     
     // Fetch card details
     pokemon.card.find(cardId)

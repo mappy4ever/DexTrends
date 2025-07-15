@@ -12,25 +12,20 @@ import { AiOutlineBulb } from "react-icons/ai";
 import { DynamicAdvancedSearchModal, DynamicMarketAnalytics, preloadCriticalComponents } from "../components/dynamic/DynamicComponents";
 import dynamic from 'next/dynamic';
 import { toggleFeature, isFeatureEnabled } from "../utils/featureFlags";
-import { FullBleedWrapper } from "../components/ui/FullBleedWrapper";
+import FullBleedWrapper from "../components/ui/FullBleedWrapper";
 
 // Safe dynamic imports for enhanced components
-const VisualSearchFilters = dynamic(() => import('../components/ui/VisualSearchFilters'), {
+const VisualSearchFilters = dynamic(() => import('../components/ui/forms/VisualSearchFilters'), {
   ssr: false,
   loading: () => <div className="text-center py-4">Loading visual filters...</div>
 });
 
-const CardComparisonTool = dynamic(() => import('../components/ui/CardComparisonTool'), {
+const CardComparisonTool = dynamic(() => import('../components/ui/cards/CardComparisonTool'), {
   ssr: false,
   loading: () => <div className="text-center py-4">Loading comparison tool...</div>
 });
 
 const pokemonKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
-
-// Configure Pokemon SDK only if key is available
-if (pokemonKey) {
-  pokemon.configure({ apiKey: pokemonKey });
-}
 
 function getRarityGlow(rarity) {
   if (!rarity) return "";
@@ -88,6 +83,8 @@ export default function IndexPage() {
     setError(null);
     setCards([]);
     try {
+      // Configure Pokemon SDK before use
+      pokemon.configure({ apiKey: pokemonKey });
       const result = await pokemon.card.where({ q: `name:${cardSearchTerm}*` });
       setCards(result.data);
     } catch (err) {

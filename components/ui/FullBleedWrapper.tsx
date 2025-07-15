@@ -20,8 +20,7 @@ interface FullBleedWrapperProps {
 
 /**
  * FullBleedWrapper - A robust component that provides full-bleed backgrounds
- * Automatically handles layout conflicts and ensures proper background coverage
- * Works by using viewport units and fixed positioning for true edge-to-edge coverage
+ * Simplified version that avoids SSR issues
  */
 export const FullBleedWrapper: React.FC<FullBleedWrapperProps> = ({ 
   children, 
@@ -31,8 +30,8 @@ export const FullBleedWrapper: React.FC<FullBleedWrapperProps> = ({
   pokemonTypes,
   disablePadding = false
 }) => {
-  // Get gradient classes
-  const getGradientClasses = () => {
+  // Get gradient classes based on the gradient type
+  const getGradientClasses = (): string => {
     if (gradient === 'custom') return customGradient || '';
     if (gradient === 'pokemon-type') {
       // For now, return default gradient for pokemon-type
@@ -41,65 +40,11 @@ export const FullBleedWrapper: React.FC<FullBleedWrapperProps> = ({
     return STABLE_GRADIENTS[gradient] || STABLE_GRADIENTS.pokedex;
   };
 
-  // Apply background to document body for complete coverage
-  React.useEffect(() => {
-    // Only run on client side
-    if (typeof window === 'undefined') return;
-    
-    const body = document.body;
-    const html = document.documentElement;
-    
-    // Get gradient classes
-    const gradientClassString = getGradientClasses();
-    const gradientClasses = gradientClassString.split(' ');
-    
-    // Add gradient classes to both body and html
-    gradientClasses.forEach((cls: string) => {
-      if (cls) {
-        body.classList.add(cls);
-        html.classList.add(cls);
-      }
-    });
-    
-    // Ensure minimum height
-    body.style.minHeight = '100vh';
-    html.style.minHeight = '100vh';
-    
-    // Cleanup function
-    return () => {
-      gradientClasses.forEach((cls: string) => {
-        if (cls) {
-          body.classList.remove(cls);
-          html.classList.remove(cls);
-        }
-      });
-      body.style.minHeight = '';
-      html.style.minHeight = '';
-    };
-  }, [gradient, customGradient]);
+  const gradientClasses = getGradientClasses();
 
   return (
-    <div className={`relative ${disablePadding ? '' : 'min-h-screen'} ${className}`}>
-      {/* Fallback background layer that grows with content */}
-      <div 
-        className={`absolute inset-0 w-full h-full z-[-1] ${getGradientClasses()}`}
-        style={{ 
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          width: '100%',
-          minHeight: '100vh',
-          height: '100%',
-          zIndex: -1
-        }}
-      />
-      
-      {/* Content */}
-      <div className="relative z-0">
-        {children}
-      </div>
+    <div className={`min-h-screen ${gradientClasses} ${className}`}>
+      {children}
     </div>
   );
 };
@@ -137,31 +82,60 @@ export const PageBackground: React.FC<FullBleedWrapperProps> = ({
  * Useful for pages that want to manage their own layout structure
  */
 export const BackgroundOnly: React.FC<{ 
-  gradient?: FullBleedWrapperProps['gradient']; 
+  gradient?: 'pokedex' | 'tcg' | 'regions' | 'pocket' | 'collections' | 'custom';
   customGradient?: string;
-  pokemonTypes?: Array<{ type: { name: string } }>;
-}> = ({ 
-  gradient = 'pokedex', 
-  customGradient,
-  pokemonTypes
-}) => {
-  // This component is deprecated - use FullBleedWrapper instead
+}> = ({ gradient = 'pokedex', customGradient }) => {
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    const body = document.body;
+    const html = document.documentElement;
+    
+    // Get gradient classes
+    const gradientClasses = gradient === 'custom' 
+      ? customGradient || '' 
+      : STABLE_GRADIENTS[gradient] || STABLE_GRADIENTS.pokedex;
+    
+    const classes = gradientClasses.split(' ');
+    
+    // Add gradient classes to both body and html
+    classes.forEach((cls: string) => {
+      if (cls) {
+        body.classList.add(cls);
+        html.classList.add(cls);
+      }
+    });
+    
+    // Ensure minimum height
+    body.style.minHeight = '100vh';
+    html.style.minHeight = '100vh';
+    
+    // Cleanup function
+    return () => {
+      classes.forEach((cls: string) => {
+        if (cls) {
+          body.classList.remove(cls);
+          html.classList.remove(cls);
+        }
+      });
+      body.style.minHeight = '';
+      html.style.minHeight = '';
+    };
+  }, [gradient, customGradient]);
+
   return null;
 };
 
 /**
- * USAGE GUIDE:
+ * Usage Guide:
  * 
- * 1. FullBleedWrapper: 
- *    - For pages that need true edge-to-edge backgrounds
- *    - Applies background to document body for complete coverage
- *    - Includes fallback absolute positioning for content overflow
- *    - Automatically handles cleanup on component unmount
- *    - Example: <FullBleedWrapper gradient="pokedex">{content}</FullBleedWrapper>
+ * 1. FullBleedWrapper (Recommended):
+ *    - Wraps content with full background
+ *    - Handles edge-to-edge coverage automatically
+ *    - Works with server-side rendering
  * 
  * 2. PageBackground:
- *    - For pages that want background but respect layout constraints
- *    - Uses standard div with min-height
+ *    - Similar to FullBleedWrapper but simpler
  *    - Good for pages with complex layouts
  * 
  * 3. BackgroundOnly:
@@ -172,13 +146,6 @@ export const BackgroundOnly: React.FC<{
  * Page Setup:
  * - Add `YourComponent.fullBleed = true;` to use with Layout's fullBleed prop
  * - This removes Layout's default padding for FullBleedWrapper pages
- * 
- * FIXED ISSUES:
- * - ✅ No more partial backgrounds at page bottom
- * - ✅ Complete coverage for long content pages
- * - ✅ Works with any layout structure
- * - ✅ Automatic cleanup prevents conflicts between pages
- * - ✅ Handles viewport and content height scenarios
  */
 
 export default FullBleedWrapper;

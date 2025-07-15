@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { FixedSizeGrid as Grid } from 'react-window';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll';
-import UnifiedCard from './UnifiedCard';
+import UnifiedCard from './cards/UnifiedCard';
 import { InlineLoadingSpinner } from './loading/LoadingSpinner';
 
 /**

@@ -1,0 +1,216 @@
+
+> my-bi-website@1.0.0 build
+> next build
+
+   ▲ Next.js 15.3.5
+   - Environments: .env.local
+
+   Linting and checking validity of types ...
+
+./pages/_app.js
+95:6  Warning: React Hook useEffect has a missing dependency: 'isScrolling'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./pages/battle-simulator.js
+184:6  Warning: React Hook useEffect has missing dependencies: 'calculateAllStats' and 'pokemon1Config'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+195:6  Warning: React Hook useEffect has missing dependencies: 'calculateAllStats' and 'pokemon2Config'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+439:6  Warning: React Hook useEffect has a missing dependency: 'loadMoveData'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+448:6  Warning: React Hook useEffect has a missing dependency: 'loadMoveData'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./pages/pocketmode/deckbuilder.js
+134:6  Warning: React Hook useMemo has a missing dependency: 'ALL_PACKS'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+183:6  Warning: React Hook useMemo has a missing dependency: 'getDisplayType'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./pages/pocketmode.js
+60:6  Warning: React Hook useEffect has a missing dependency: 'router'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./pages/pokedex/[pokeid].js
+98:6  Warning: React Hook useEffect has a missing dependency: 'loadAllNatures'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./pages/pokedex.js
+363:6  Warning: React Hook useEffect has missing dependencies: 'fetchMegaEvolutions' and 'fetchRegionalVariants'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+533:6  Warning: React Hook useMemo has a missing dependency: 'checkIfRegionalVariant'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./pages/pokeid-enhanced-test.js
+98:6  Warning: React Hook useEffect has a missing dependency: 'loadAllNatures'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./pages/pokemon/abilities.js
+250:6  Warning: React Hook useMemo has a missing dependency: 'abilities'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./pages/pokemon/items.js
+241:6  Warning: React Hook useMemo has a missing dependency: 'items'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./pages/tcgsets/[setid].js
+81:6  Warning: React Hook useEffect has a missing dependency: 'calculateSetStatistics'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./pages/test-maps.js
+42:6  Warning: React Hook useEffect has a missing dependency: 'maps'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./pages/type-effectiveness.js
+76:6  Warning: React Hook useEffect has a missing dependency: 'loadTypeData'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/CollectionManager.tsx
+63:6  Warning: React Hook useEffect has a missing dependency: 'loadCollections'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+69:6  Warning: React Hook useEffect has a missing dependency: 'calculatePortfolioValue'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/GlobalSearchModal.tsx
+65:20  Warning: React Hook useCallback received a function whose dependencies are unknown. Pass an inline function instead.  react-hooks/exhaustive-deps
+
+./components/MarketAnalytics.tsx
+58:6  Warning: React Hook useEffect has a missing dependency: 'loadAnalytics'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/mobile/CardScanner.js
+98:6  Warning: React Hook useCallback has a missing dependency: 'startAutoCapture'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+134:6  Warning: React Hook useCallback has a missing dependency: 'captureFrame'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+176:6  Warning: React Hook useCallback has a missing dependency: 'analyzeCardImage'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/mobile/GestureCardSorting.js
+29:9  Warning: The 'sortGestures' object makes the dependencies of useCallback Hook (at line 78) change on every render. Move it inside the useCallback callback. Alternatively, wrap the initialization of 'sortGestures' in its own useMemo() Hook.  react-hooks/exhaustive-deps
+107:6  Warning: React Hook useCallback has a missing dependency: 'showContextMenu'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/mobile/MobileIntegration.js
+153:6  Warning: React Hook useEffect has missing dependencies: 'handleShareReceived' and 'shareSheet'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/mobile/PushNotifications.js
+43:6  Warning: React Hook useEffect has a missing dependency: 'initializePushSubscription'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+72:6  Warning: React Hook useCallback has missing dependencies: 'initializePushSubscription' and 'showWelcomeNotification'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+104:6  Warning: React Hook useCallback has a missing dependency: 'sendSubscriptionToServer'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/mobile/VoiceSearch.js
+31:9  Warning: The 'voiceCommands' object makes the dependencies of useCallback Hook (at line 197) change on every render. Move it inside the useCallback callback. Alternatively, wrap the initialization of 'voiceCommands' in its own useMemo() Hook.  react-hooks/exhaustive-deps
+127:6  Warning: React Hook useEffect has missing dependencies: 'processVoiceCommand', 'startAudioVisualization', 'startListening', and 'stopAudioVisualization'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/providers/PerformanceProvider.tsx
+144:6  Warning: React Hook useEffect has missing dependencies: 'generatePerformanceReport' and 'updateSuggestions'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/qol/ContextualHelp.js
+177:6  Warning: React Hook useEffect has a missing dependency: 'toggleHelpMode'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+183:6  Warning: React Hook useEffect has a missing dependency: 'helpContent'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/qol/NotificationSystem.js
+82:6  Warning: React Hook useEffect has a missing dependency: 'handleDismiss'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+198:6  Warning: React Hook useEffect has a missing dependency: 'notify'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/qol/SmartSearchEnhancer.js
+33:6  Warning: React Hook useEffect has a missing dependency: 'generateSuggestions'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/qol/index.js
+250:32  Warning: The ref value 'ref.current' will likely have changed by the time this effect cleanup function runs. If this ref points to a node rendered by React, copy 'ref.current' to a variable inside the effect, and use that variable in the cleanup function.  react-hooks/exhaustive-deps
+
+./components/ui/AchievementSystem.tsx
+336:6  Warning: React Hook useEffect has missing dependencies: 'achievementDefinitions', 'calculateCollectionStats', 'favorites.cards', and 'onAchievementUnlocked'. Either include them or remove the dependency array. If 'onAchievementUnlocked' changes too often, find the parent component that defines it and wrap that definition in useCallback.  react-hooks/exhaustive-deps
+
+./components/ui/AdvancedDeckBuilder.js
+33:6  Warning: React Hook useEffect has missing dependencies: 'analyzeMetaGame', 'generateSuggestions', and 'validateDeck'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/AdvancedKeyboardShortcuts.js
+428:6  Warning: React Hook useEffect has missing dependencies: 'advancedCommands' and 'executeMacro'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/AdvancedModalSystem.js
+203:6  Warning: React Hook useEffect has a missing dependency: 'handleClose'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/AdvancedSearchSystem.js
+49:6  Warning: React Hook useEffect has missing dependencies: 'onResults' and 'performSearch'. Either include them or remove the dependency array. If 'onResults' changes too often, find the parent component that defines it and wrap that definition in useCallback.  react-hooks/exhaustive-deps
+92:6  Warning: React Hook useCallback has missing dependencies: 'applySorting' and 'saveToHistory'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/BreadcrumbNavigation.js
+124:6  Warning: React Hook useMemo has a missing dependency: 'routeMap'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/CollectionTracker.js
+57:6  Warning: React Hook useEffect has a missing dependency: 'checkAchievements'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+379:6  Warning: React Hook useEffect has a missing dependency: 'updateGoalProgress'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/EnhancedCardInteractions.tsx
+334:48  Warning: The ref value 'animationFrameRef.current' will likely have changed by the time this effect cleanup function runs. If this ref points to a node rendered by React, copy 'animationFrameRef.current' to a variable inside the effect, and use that variable in the cleanup function.  react-hooks/exhaustive-deps
+
+./components/ui/EnhancedCardModal.tsx
+85:6  Warning: React Hook useEffect has a missing dependency: 'toggleFullscreen'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/EnhancedEvolutionDisplay.js
+655:6  Warning: React Hook useEffect has a missing dependency: 'detectedVariants'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/EnhancedModal.js
+172:6  Warning: React Hook React.useEffect has a missing dependency: 'handleEscape'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/EnhancedMovesDisplay.js
+58:6  Warning: React Hook useEffect has a missing dependency: 'loadMovesData'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/EnhancedUXProvider.js
+61:6  Warning: React Hook useEffect has missing dependencies: 'saveBehaviorData' and 'setupAccessibilityDetection'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+352:6  Warning: React Hook useCallback has a missing dependency: 'userBehavior.interactionCount'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/IntelligentRecommendations.js
+333:6  Warning: React Hook useEffect has a missing dependency: 'generateSmartRecommendations'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/MarketInsightsDashboard.js
+352:6  Warning: React Hook useEffect has a missing dependency: 'generateInsights'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/OptimizedImageMobile.js
+78:6  Warning: React Hook useCallback has unnecessary dependencies: 'height' and 'src'. Either exclude them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/PokemonEasterEggs.tsx
+9:9  Warning: The 'konamiCode' array makes the dependencies of useEffect Hook (at line 35) change on every render. Move it inside the useEffect callback. Alternatively, wrap the initialization of 'konamiCode' in its own useMemo() Hook.  react-hooks/exhaustive-deps
+
+./components/ui/PokemonSoundEffects.tsx
+90:6  Warning: React Hook useEffect has a missing dependency: 'playPokemonSound'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/PortfolioManager.js
+64:6  Warning: React Hook useEffect has a missing dependency: 'selectedPortfolio'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/PriceIntelligenceSystem.js
+43:6  Warning: React Hook useEffect has a missing dependency: 'generatePricePredictions'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/SecurityProvider.js
+29:6  Warning: React Hook useEffect has missing dependencies: 'initializeSecurity' and 'runSecurityCheck'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/SimplifiedMovesDisplay.js
+14:6  Warning: React Hook useEffect has a missing dependency: 'loadMovesData'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/SmartRecommendationEngine.js
+17:6  Warning: React Hook useEffect has a missing dependency: 'generateRecommendations'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+42:6  Warning: React Hook useCallback has missing dependencies: 'getCollectionSuggestions', 'getPersonalizedPicks', 'getPriceAlerts', 'getSimilarCards', and 'getTrendingCards'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/SocialPlatform.js
+18:6  Warning: React Hook useEffect has a missing dependency: 'loadSocialData'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/TooltipHelpSystem.js
+292:6  Warning: React Hook useCallback has a missing dependency: 'highlightStep'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+303:6  Warning: React Hook useCallback has missing dependencies: 'completeTour' and 'highlightStep'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+312:6  Warning: React Hook useCallback has a missing dependency: 'highlightStep'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/TouchGestureSystem.js
+778:9  Warning: The 'combinedGestures' object makes the dependencies of useCallback Hook (at line 791) change on every render. To fix this, wrap the initialization of 'combinedGestures' in its own useMemo() Hook.  react-hooks/exhaustive-deps
+778:9  Warning: The 'combinedGestures' object makes the dependencies of useCallback Hook (at line 800) change on every render. To fix this, wrap the initialization of 'combinedGestures' in its own useMemo() Hook.  react-hooks/exhaustive-deps
+778:9  Warning: The 'combinedGestures' object makes the dependencies of useCallback Hook (at line 809) change on every render. To fix this, wrap the initialization of 'combinedGestures' in its own useMemo() Hook.  react-hooks/exhaustive-deps
+
+./components/ui/UserExperienceEnhancer.tsx
+115:6  Warning: React Hook useEffect has a missing dependency: 'pokemonSuggestions'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/VisualCardSearch.js
+172:6  Warning: React Hook useCallback has a missing dependency: 'handleFileSelect'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/VoiceSearchInterface.js
+89:6  Warning: React Hook useEffect has missing dependencies: 'handleVoiceSearch', 'onTranscript', and 'setupAudioAnalyzer'. Either include them or remove the dependency array. If 'onTranscript' changes too often, find the parent component that defines it and wrap that definition in useCallback.  react-hooks/exhaustive-deps
+
+./components/ui/cards/UnifiedCard.tsx
+447:6  Warning: React Hook useCallback has an unnecessary dependency: 'imageError'. Either exclude it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/forms/EnhancedSearchBox.tsx
+142:6  Warning: React Hook useEffect has a missing dependency: 'localValue'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/modals/EnhancedCardModal.tsx
+85:6  Warning: React Hook useEffect has missing dependencies: 'onClose' and 'toggleFullscreen'. Either include them or remove the dependency array. If 'onClose' changes too often, find the parent component that defines it and wrap that definition in useCallback.  react-hooks/exhaustive-deps
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+Failed to compile.
+
+./components/providers/PerformanceProvider.tsx:208:18
+Type error: Property 'gtag' does not exist on type 'Window & typeof globalThis'.
+
+[0m [90m 206 |[39m     [90m// For example, Google Analytics 4, Mixpanel, etc.[39m[0m
+[0m [90m 207 |[39m     [36mtry[39m {[0m
+[0m[31m[1m>[22m[39m[90m 208 |[39m       [36mif[39m (window[33m.[39mgtag) {[0m
+[0m [90m     |[39m                  [31m[1m^[22m[39m[0m
+[0m [90m 209 |[39m         [90m// Google Analytics 4 example[39m[0m
+[0m [90m 210 |[39m         window[33m.[39mgtag([32m'event'[39m[33m,[39m [32m'performance_report'[39m[33m,[39m {[0m
+[0m [90m 211 |[39m           custom_parameters[33m:[39m {[0m
+Next.js build worker exited with code: 1 and signal: null

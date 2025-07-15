@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { fetchPocketData } from '../../../utils/pocketData';
 import { TypeBadge } from '../../../components/ui/TypeBadge';
 import StyledBackButton from '../../../components/ui/StyledBackButton';
-import { FullBleedWrapper } from '../../../components/ui/FullBleedWrapper';
+import FullBleedWrapper from '../../../components/ui/FullBleedWrapper';
 
 export default function SetView() {
   const router = useRouter();

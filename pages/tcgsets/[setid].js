@@ -2,24 +2,17 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
-import pokemon from "pokemontcgsdk";
+import { getPokemonSDK } from "../../utils/pokemonSDK";
 import Modal from "../../components/ui/modals/Modal";
 import CardList from "../../components/CardList";
-import { FadeIn, SlideUp } from "../../components/ui/animations";
+import { FadeIn, SlideUp } from "../../components/ui/animations/animations";
 import { DynamicPriceHistoryChart } from "../../components/dynamic/DynamicComponents";
 import { useTheme } from "../../context/UnifiedAppContext";
 import { useFavorites } from "../../context/UnifiedAppContext";
 import { useViewSettings } from "../../context/UnifiedAppContext";
-import { SetLoadingScreen } from "../../components/ui/UnifiedLoadingScreen";
+import { SetLoadingScreen } from "../../components/ui/loading/UnifiedLoadingScreen";
 import logger from "../../utils/logger";
-import { FullBleedWrapper } from "../../components/ui/FullBleedWrapper";
-
-const pokemonKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
-
-// Configure SDK only if key is available, but don't throw error
-if (pokemonKey) {
-  pokemon.configure({ apiKey: pokemonKey });
-}
+import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
 
 export default function SetIdPage() {
   const router = useRouter();
@@ -61,6 +54,8 @@ export default function SetIdPage() {
 
     setLoading(true);
     setError(null);
+    
+    const pokemon = getPokemonSDK();
     
     Promise.all([
       pokemon.set.find(setid).catch(err => { // Changed to setid

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTheme } from '../context/UnifiedAppContext';
 import CollectionManager from '../components/CollectionManager';
 import PriceAlerts from '../components/PriceAlerts';
-import { FullBleedWrapper } from '../components/ui/FullBleedWrapper';
+import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 
 export default function CollectionsPage() {
   const { theme } = useTheme();

@@ -17,7 +17,7 @@ import { fetchPocketData } from "../../utils/pocketData";
 import pokemonTCG from "pokemontcgsdk";
 import PokeballLoader from "../../components/ui/PokeballLoader";
 import Modal from "../../components/ui/modals/Modal";
-import { FullBleedWrapper } from "../../components/ui/FullBleedWrapper";
+import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
 import { getTypeUIColors } from "../../utils/pokemonTypeGradients";
 
 // Initialize Pokemon TCG SDK at module level

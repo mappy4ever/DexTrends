@@ -3,10 +3,9 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
-import { FadeIn, SlideUp } from "../../components/ui/animations";
+import { FadeIn, SlideUp } from "../../components/ui/animations/animations";
 import { useTheme } from "../../context/UnifiedAppContext";
 import { BsGlobeEuropeAfrica } from "react-icons/bs";
-import { FullBleedWrapper } from "../../components/ui/FullBleedWrapper";
 
 // Region data with actual map images
 const regions = [

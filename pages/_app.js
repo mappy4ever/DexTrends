@@ -10,12 +10,11 @@ import "../styles/design-system.css";
 import "../styles/animations.css";
 import "../styles/card-types.css";
 import "../components/typebadge.css";
-import Layout from "../components/layout/layout";
-import ErrorBoundary from "../components/layout/errorboundary";
-import { PageTransition } from "../components/ui/animations.js";
-import applyIOSFixes from "../utils/iosFixes";
-
+import Layout from "../components/layout/Layout";
+import ErrorBoundary from "../components/layout/ErrorBoundary";
+import { PageTransition } from "../components/ui/animations/animations";
 import { UnifiedAppProvider } from '../context/UnifiedAppContext';
+import GlobalErrorHandler from '../components/GlobalErrorHandler';
 
 // Enhanced dynamic imports with comprehensive loading
 import dynamic from 'next/dynamic';
@@ -24,23 +23,23 @@ import { initializeFeatureFlags, isFeatureEnabled } from '../utils/featureFlags'
 // Safe components - only load confirmed existing ones
 const SimpleBackToTop = dynamic(() => import('../components/ui/SimpleBackToTop'), {
   ssr: false,
-  loading: () => null
+  loading: () => <div className="fixed bottom-4 right-4 w-12 h-12" />
 });
 
 // Core UX components that should be safe
 const AccessibilityProvider = dynamic(() => import('../components/ui/AccessibilityProvider'), {
   ssr: false,
-  loading: () => null
+  loading: () => <div />
 });
 
-const UnifiedLoadingScreen = dynamic(() => import('../components/ui/UnifiedLoadingScreen'), {
+const UnifiedLoadingScreen = dynamic(() => import('../components/ui/loading/UnifiedLoadingScreen'), {
   ssr: false,
-  loading: () => null
+  loading: () => <div className="fixed inset-0 bg-white dark:bg-gray-900 z-50" />
 });
 
-const PokemonLoadingScreen = dynamic(() => import('../components/ui/PokemonLoadingScreen'), {
+const PokemonLoadingScreen = dynamic(() => import('../components/ui/loading/PokemonLoadingScreen'), {
   ssr: false,
-  loading: () => null
+  loading: () => <div className="fixed inset-0 bg-white dark:bg-gray-900 z-50" />
 });
 
 // Simple throttle function
@@ -97,6 +96,7 @@ function MyApp({ Component, pageProps, router }) {
 
   return (
     <ErrorBoundary>
+      <GlobalErrorHandler />
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
         <meta name="theme-color" content="#dc2626" />

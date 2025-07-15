@@ -20,7 +20,7 @@ export async function fetchPokemonWithCache(pokemonId: string | number): Promise
     const pokemonData = await fetchData<Pokemon>(apiUrl);
     
     // Cache the result
-    await SupabaseCache.setCachedPokemon(pokemonId, pokemonData);
+    await SupabaseCache.setCachedPokemon(pokemonId, pokemonData, `pokemon_${pokemonId}`);
     
     return pokemonData;
   } catch (error) {
@@ -44,7 +44,7 @@ export async function fetchPokemonSpeciesWithCache(pokemonId: string | number): 
     const speciesData = await fetchData<PokemonSpecies>(apiUrl);
     
     // Cache the result
-    await SupabaseCache.setCachedPokemon(`species_${pokemonId}`, speciesData);
+    await SupabaseCache.setCachedPokemon(`species_${pokemonId}`, speciesData, `species_${pokemonId}`);
     
     return speciesData;
   } catch (error) {
@@ -69,7 +69,7 @@ export async function fetchPokemonListWithCache(limit = 1000, offset = 0): Promi
     const listData = await fetchData<PokemonListResponse>(apiUrl);
     
     // Cache the result for 12 hours (list doesn't change often)
-    await SupabaseCache.setCachedPokemon(pokemonListId, listData);
+    await SupabaseCache.setCachedPokemon(pokemonListId, listData, pokemonListId);
     
     return listData;
   } catch (error) {
@@ -93,7 +93,7 @@ export async function fetchPokemonCardWithCache(cardId: string): Promise<TCGCard
     const cardData = await pokemon.card.find(cardId);
     
     // Cache the result for 24 hours
-    await SupabaseCache.setCachedCard(cardId, cardData);
+    await SupabaseCache.setCachedCard(cardId, cardData, `card_${cardId}`);
     
     return cardData as TCGCard;
   } catch (error) {
@@ -131,7 +131,7 @@ export async function searchPokemonCardsWithCache(query: string, filters: Search
     const searchData = await pokemon.card.where(searchQuery);
     
     // Cache search results for 1 hour (searches change more frequently)
-    await SupabaseCache.setCachedCard(searchId, searchData);
+    await SupabaseCache.setCachedCard(searchId, searchData, searchId);
     
     return searchData as TCGCard[];
   } catch (error) {

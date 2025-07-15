@@ -1,4 +1,4 @@
-import { optimizedFetch as fetchData } from '../../utils/apiOptimizations.js';
+import { optimizedFetch as fetchData } from '../../utils/apiOptimizations';
 
 // Map of regional evolutions
 const REGIONAL_EVOLUTION_MAP: { [key: string]: string | string[] | null } = {

@@ -3,16 +3,16 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import Head from "next/head";
 import Link from "next/link";
-import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../../components/ui/animations";
+import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../../components/ui/animations/animations";
 import { useTheme } from "../../context/UnifiedAppContext";
 import { useInfiniteScroll } from "../../hooks/useInfiniteScroll";
 import { InlineLoadingSpinner } from "../../components/ui/loading/LoadingSpinner";
-import { SetLoadingScreen } from "../../components/ui/UnifiedLoadingScreen";
+import { SetLoadingScreen } from "../../components/ui/loading/UnifiedLoadingScreen";
 import StyledBackButton from "../../components/ui/StyledBackButton";
 import PocketCardList from "../../components/PocketCardList";
 import BackToTop from "../../components/ui/SimpleBackToTop";
 import { fetchPocketData } from "../../utils/pocketData";
-import { FullBleedWrapper } from "../../components/ui/FullBleedWrapper";
+import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
 
 export default function PocketExpansions() {
   const [allCards, setAllCards] = useState([]);

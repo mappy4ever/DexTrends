@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { fetchData } from '../utils/apiutils';
 import { TypeBadge } from '../components/ui/TypeBadge';
 import { TypeAnalysisCard, DualTypeCalculator } from '../components/ui/TypeAnalysis';
-import { FullBleedWrapper } from '../components/ui/FullBleedWrapper';
+import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 
 const TYPE_COLORS = {
   normal: '#A8A878',

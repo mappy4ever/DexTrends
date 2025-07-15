@@ -3,12 +3,12 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useFavorites } from '../context/UnifiedAppContext';
-import { FadeIn, SlideUp } from '../components/ui/animations';
+import { FadeIn, SlideUp } from '../components/ui/animations/animations';
 import { TypeBadge } from '../components/ui/TypeBadge'; // Updated path
 import { getGeneration } from '../utils/pokemonutils';
 import logger from '../utils/logger';
-import UnifiedLoadingScreen from '../components/ui/UnifiedLoadingScreen';
-import CollectionDashboard from '../components/ui/CollectionDashboard';
+import UnifiedLoadingScreen from "../components/ui/loading/UnifiedLoadingScreen";
+import CollectionDashboard from "../components/ui/layout/CollectionDashboard";
 import AchievementSystem from '../components/ui/AchievementSystem';
 
 export default function FavoritesPage() {

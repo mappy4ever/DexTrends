@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTheme } from '../context/UnifiedAppContext';
 import Head from 'next/head';
 import logger from '../utils/logger';
-import { FullBleedWrapper } from '../components/ui/FullBleedWrapper';
+import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 
 export default function FunPage() {
   const { theme } = useTheme();

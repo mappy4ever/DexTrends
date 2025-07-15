@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { fetchPocketData } from '../../utils/pocketData';
 import { TypeBadge } from '../../components/ui/TypeBadge';
-import { FadeIn, SlideUp } from '../../components/ui/animations';
+import { FadeIn, SlideUp } from '../../components/ui/animations/animations';
 import BackToTop from '../../components/ui/SimpleBackToTop';
 
 export default function DeckBuilder() {
