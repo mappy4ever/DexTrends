@@ -40,4 +40,12 @@ declare module 'pokemontcgsdk' {
     where(params: any): Promise<any[]>;
     all(): Promise<any[]>;
   };
+
+  const pokemon: {
+    configure(options: { apiKey: string }): void;
+    card: typeof card;
+    set: typeof set;
+  };
+
+  export default pokemon;
 }

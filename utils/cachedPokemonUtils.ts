@@ -10,7 +10,7 @@ export async function fetchPokemonWithCache(pokemonId: string | number): Promise
   
   try {
     // Try to get from cache first
-    const cachedData = await SupabaseCache.getCachedPokemon(pokemonId);
+    const cachedData = await SupabaseCache.getCachedPokemon(Number(pokemonId));
     if (cachedData) {
       return cachedData as Pokemon;
     }
@@ -20,7 +20,7 @@ export async function fetchPokemonWithCache(pokemonId: string | number): Promise
     const pokemonData = await fetchData<Pokemon>(apiUrl);
     
     // Cache the result
-    await SupabaseCache.setCachedPokemon(pokemonId, pokemonData, `pokemon_${pokemonId}`);
+    await SupabaseCache.setCachedPokemon(Number(pokemonId), pokemonData, `pokemon_${pokemonId}`);
     
     return pokemonData;
   } catch (error) {
@@ -34,7 +34,7 @@ export async function fetchPokemonSpeciesWithCache(pokemonId: string | number): 
   
   try {
     // Try to get from cache first
-    const cachedData = await SupabaseCache.getCachedPokemon(`species_${pokemonId}`);
+    const cachedData = await SupabaseCache.getCachedPokemon(Number(pokemonId));
     if (cachedData) {
       return cachedData as PokemonSpecies;
     }
@@ -44,7 +44,7 @@ export async function fetchPokemonSpeciesWithCache(pokemonId: string | number): 
     const speciesData = await fetchData<PokemonSpecies>(apiUrl);
     
     // Cache the result
-    await SupabaseCache.setCachedPokemon(`species_${pokemonId}`, speciesData, `species_${pokemonId}`);
+    await SupabaseCache.setCachedPokemon(Number(pokemonId), speciesData, `species_${pokemonId}`);
     
     return speciesData;
   } catch (error) {
@@ -55,11 +55,14 @@ export async function fetchPokemonSpeciesWithCache(pokemonId: string | number): 
 // Cached Pokemon list fetching
 export async function fetchPokemonListWithCache(limit = 1000, offset = 0): Promise<PokemonListResponse> {
   const cacheKey = `pokemon_list_${limit}_${offset}`;
-  const pokemonListId = `list_${limit}_${offset}`;
   
   try {
+    // For list caching, we'll use a special ID that represents the list
+    // Using a large number that's unlikely to conflict with actual Pokemon IDs
+    const listCacheId = 9999000 + (limit * 1000) + offset;
+    
     // Try to get from cache first
-    const cachedData = await SupabaseCache.getCachedPokemon(pokemonListId);
+    const cachedData = await SupabaseCache.getCachedPokemon(listCacheId);
     if (cachedData) {
       return cachedData as PokemonListResponse;
     }
@@ -69,7 +72,7 @@ export async function fetchPokemonListWithCache(limit = 1000, offset = 0): Promi
     const listData = await fetchData<PokemonListResponse>(apiUrl);
     
     // Cache the result for 12 hours (list doesn't change often)
-    await SupabaseCache.setCachedPokemon(pokemonListId, listData, pokemonListId);
+    await SupabaseCache.setCachedPokemon(listCacheId, listData, cacheKey);
     
     return listData;
   } catch (error) {

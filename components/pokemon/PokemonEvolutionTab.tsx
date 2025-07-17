@@ -19,7 +19,7 @@ interface ProcessedEvolutionNode {
 interface PokemonEvolutionTabProps {
   pokemonDetails: Pokemon | null;
   processedEvolutions: ProcessedEvolutionNode | null;
-  formatEvolutionDetails: (details: EvolutionDetail[]) => string;
+  formatEvolutionDetails: (detail: EvolutionDetail) => string;
 }
 
 const PokemonEvolutionTab: React.FC<PokemonEvolutionTabProps> = ({ 
@@ -28,6 +28,21 @@ const PokemonEvolutionTab: React.FC<PokemonEvolutionTabProps> = ({
   formatEvolutionDetails 
 }) => {
   const [showShinyEvolutionSprite, setShowShinyEvolutionSprite] = useState(false);
+
+  // Convert ProcessedEvolutionNode to EvolutionNode format
+  const convertToEvolutionNode = (node: ProcessedEvolutionNode): any => {
+    if (!node) return null;
+    
+    return {
+      name: node.name,
+      id: node.id,
+      spriteUrl: node.sprite,
+      evolutionDetails: node.evolutionDetails,
+      children: node.evolvesTo?.map(convertToEvolutionNode) || []
+    };
+  };
+
+  const evolutionNode = processedEvolutions ? convertToEvolutionNode(processedEvolutions) : null;
 
   return (
     <FadeIn>
@@ -57,11 +72,11 @@ const PokemonEvolutionTab: React.FC<PokemonEvolutionTabProps> = ({
           </div>
         )}
         
-        {processedEvolutions ? (
+        {evolutionNode ? (
           <EvolutionTreeRenderer
-            node={processedEvolutions}
+            node={evolutionNode}
             showShiny={showShinyEvolutionSprite}
-            currentId={pokemonDetails?.id?.toString() as any}
+            currentId={pokemonDetails?.id?.toString()}
             formatEvolutionDetails={formatEvolutionDetails}
           />
         ) : (

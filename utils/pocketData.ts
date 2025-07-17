@@ -8,6 +8,7 @@ let fetchPromise: Promise<PocketCard[]> | null = null;
 const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes cache (extended)
 const STORAGE_KEY = 'pocketDataCache';
 const SUPABASE_CACHE_KEY = 'pocket_data_full';
+const SUPABASE_CACHE_ID = 8888888; // Special ID for pocket data cache
 
 interface LocalStorageCache {
   data: PocketCard[];
@@ -29,7 +30,7 @@ export async function fetchPocketData(): Promise<PocketCard[]> {
   
   // Try Supabase cache first
   try {
-    const supabaseCached = await SupabaseCache.getCachedPokemon(SUPABASE_CACHE_KEY) as PocketCard[] | null;
+    const supabaseCached = await SupabaseCache.getCachedPokemon(SUPABASE_CACHE_ID) as PocketCard[] | null;
     if (supabaseCached) {
       pocketDataCache = supabaseCached;
       cacheTimestamp = now;
@@ -54,7 +55,7 @@ export async function fetchPocketData(): Promise<PocketCard[]> {
       
       // Cache in Supabase for 4 hours
       try {
-        await SupabaseCache.setCachedPokemon(SUPABASE_CACHE_KEY, data, 'pocket_full_dataset', 4);
+        await SupabaseCache.setCachedPokemon(SUPABASE_CACHE_ID, data, SUPABASE_CACHE_KEY, 4);
       } catch (error) {
         // Failed to cache in Supabase, continue normally
       }
@@ -77,7 +78,7 @@ export async function fetchPocketData(): Promise<PocketCard[]> {
       
       // Try Supabase cache as fallback (even if expired)
       try {
-        const supabaseFallback = await SupabaseCache.getCachedPokemon(SUPABASE_CACHE_KEY) as PocketCard[] | null;
+        const supabaseFallback = await SupabaseCache.getCachedPokemon(SUPABASE_CACHE_ID) as PocketCard[] | null;
         if (supabaseFallback) {
           // Using Supabase fallback cache due to fetch error
           pocketDataCache = supabaseFallback;

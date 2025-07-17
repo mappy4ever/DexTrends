@@ -13,12 +13,7 @@ import type { PerformanceMetrics as PerformanceMetric } from '../../types/utils/
 // Type for vitals change callback
 type VitalsChangeCallback = (vitals: Vital[]) => void;
 
-// Declare gtag on window
-declare global {
-  interface Window {
-    gtag?: (...args: any[]) => void;
-  }
-}
+// gtag types are declared in types/global.d.ts
 
 interface Vital {
   name: string;

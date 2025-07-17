@@ -4,7 +4,7 @@ import { getEliteFourImage, getChampionImage } from '../../utils/scrapedImageMap
 import { TypeBadge } from '../ui/TypeBadge';
 import { FadeIn, SlideUp, CardHover, StaggeredChildren } from '../ui/animations/animations';
 import { BsTrophy, BsShieldFill, BsStar, BsLightning, BsChevronLeft, BsChevronRight } from 'react-icons/bs';
-import { typeEffectiveness } from '../../data/gymLeaderTeams';
+import { typeEffectiveness } from '../../utils/pokemonutils';
 import EliteFourCard from '../ui/cards/EliteFourCard';
 import ChampionCard from '../ui/cards/ChampionCard';
 

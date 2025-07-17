@@ -4,7 +4,8 @@ import { getGymLeaderImage, getBadgeImage } from '../../utils/scrapedImageMappin
 import { TypeBadge } from '../ui/TypeBadge';
 import { FadeIn } from '../ui/animations/animations';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
-import { gymLeaderTeams, typeEffectiveness } from '../../data/gymLeaderTeams';
+import { gymLeaderTeams } from '../../data/gymLeaderTeams';
+import { typeEffectiveness } from '../../utils/pokemonutils';
 import GymLeaderCard from '../ui/cards/GymLeaderCard';
 
 // Type definitions

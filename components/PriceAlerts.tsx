@@ -69,7 +69,18 @@ export default function PriceAlerts({ userId = null }: PriceAlertsProps) {
     try {
       if (userId) {
         const alertsData = await PriceHistoryManager.getUserPriceAlerts(userId);
-        setAlerts(alertsData);
+        // Map database alerts to include triggered_at field
+        const mappedAlerts = alertsData.map(alert => ({
+          ...alert,
+          id: alert.id || `alert_${Date.now()}_${Math.random()}`,
+          alert_type: alert.alert_type as AlertType,
+          target_price: alert.target_price || null,
+          percentage_change: alert.percentage_change || null,
+          is_active: alert.is_active ?? true,
+          created_at: alert.created_at || new Date().toISOString(),
+          triggered_at: null
+        }));
+        setAlerts(mappedAlerts);
       } else {
         // For non-authenticated users, load from localStorage
         if (typeof window !== 'undefined' && window.localStorage) {
@@ -118,7 +129,17 @@ export default function PriceAlerts({ userId = null }: PriceAlertsProps) {
           userId, cardId, cardName, alertType, targetPrice, percentageChange
         );
         if (savedAlert) {
-          setAlerts(prev => [savedAlert, ...prev]);
+          const mappedAlert: PriceAlert = {
+            ...savedAlert,
+            id: savedAlert.id || `alert_${Date.now()}_${Math.random()}`,
+            alert_type: savedAlert.alert_type as AlertType,
+            target_price: savedAlert.target_price || null,
+            percentage_change: savedAlert.percentage_change || null,
+            is_active: savedAlert.is_active ?? true,
+            created_at: savedAlert.created_at || new Date().toISOString(),
+            triggered_at: null
+          };
+          setAlerts(prev => [mappedAlert, ...prev]);
         }
       } else {
         // Save to localStorage

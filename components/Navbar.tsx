@@ -170,7 +170,7 @@ export default function Navbar() {
   return (
     <>
       {/* Redesigned Navbar with Gradient Glass Effect */}
-      <div className="fixed top-0 left-0 right-0 flex items-center justify-between px-4 md:px-6 h-20 z-40 bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-lg safe-area-padding-top navbar-ios">
+      <div className="fixed top-0 left-0 right-0 flex items-center justify-between px-4 md:px-6 h-20 z-40 bg-white dark:bg-gray-900 backdrop-blur-xl border-b border-gray-200 dark:border-gray-700 shadow-lg safe-area-padding-top navbar-ios">
         <Link
           href="/"
           className="flex items-center gap-x-3 text-xl font-bold overflow-hidden group"
@@ -195,7 +195,7 @@ export default function Navbar() {
                     className={`flex items-center gap-x-2 px-5 py-3 rounded-full font-medium transition-all duration-300 cursor-pointer
                       ${isActive
                         ? 'bg-gradient-to-r from-pokemon-red to-pink-500 text-white shadow-lg transform scale-105'
-                        : 'text-gray-700 dark:text-gray-300 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 dark:hover:from-red-900/20 dark:hover:to-pink-900/20 hover:border-pink-200 dark:hover:border-pink-700 hover:shadow-lg hover:scale-105 hover:text-red-700 dark:hover:text-red-300'}`}
+                        : 'text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 dark:hover:from-red-900/50 dark:hover:to-pink-900/50 hover:border-pink-200 dark:hover:border-pink-700 hover:shadow-lg hover:scale-105 hover:text-red-700 dark:hover:text-red-300'}`}
                     onMouseEnter={() => {
                       // Close all other dropdowns first, then open this one
                       setDropdownStates({ [item.href]: true });
@@ -230,7 +230,7 @@ export default function Navbar() {
                   
                   {/* Dropdown menu - redesigned with glass effect */}
                   <div 
-                    className={`dropdown-menu absolute top-full left-0 mt-1 w-72 bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl border border-white/30 dark:border-gray-700/30 rounded-2xl shadow-2xl overflow-hidden ${
+                    className={`dropdown-menu absolute top-full left-0 mt-1 w-72 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl overflow-hidden ${
                       dropdownStates[item.href] ? 'block opacity-100 translate-y-0' : 'hidden opacity-0 -translate-y-2'
                     } transition-all duration-300`}
                     style={{
@@ -290,7 +290,7 @@ export default function Navbar() {
                 className={`group flex items-center gap-x-2 px-5 py-3 rounded-full font-medium transition-all duration-300 cursor-pointer
                   ${isActive
                     ? 'bg-gradient-to-r from-pokemon-red to-pink-500 text-white shadow-lg transform scale-105'
-                    : 'text-gray-700 dark:text-gray-300 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 dark:hover:from-red-900/20 dark:hover:to-pink-900/20 hover:border-pink-200 dark:hover:border-pink-700 hover:shadow-lg hover:scale-105 hover:text-red-700 dark:hover:text-red-300'}`}
+                    : 'text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 dark:hover:from-red-900/50 dark:hover:to-pink-900/50 hover:border-pink-200 dark:hover:border-pink-700 hover:shadow-lg hover:scale-105 hover:text-red-700 dark:hover:text-red-300'}`}
                 style={{ pointerEvents: 'auto' }}
               >
                 <span className={`flex-shrink-0 w-5 h-5 transition-all duration-300 ${isActive ? 'text-white' : item.color || 'text-gray-600'} group-hover:scale-110`}>
@@ -331,7 +331,7 @@ export default function Navbar() {
           <button
             aria-label={mounted && theme === 'dark' ? "Activate light mode" : "Activate dark mode"}
             title={mounted && theme === 'dark' ? "Activate light mode" : "Activate dark mode"}
-            className="p-3 rounded-full bg-white/60 backdrop-blur-sm border border-gray-200/50 text-gray-700 hover:bg-white/80 hover:border-gray-300/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300/50 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+            className="p-3 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-750 hover:border-gray-300 dark:hover:border-gray-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
             onClick={toggleTheme}
           >
             <ClientOnly>
@@ -363,7 +363,7 @@ export default function Navbar() {
         {mobileOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
-          <div ref={menuWrapperRef} className="fixed right-0 left-0 bg-white/98 backdrop-blur-xl border-t border-white/30 p-6 shadow-2xl safe-area-padding-x rounded-t-3xl" style={{ top: 'calc(80px + env(safe-area-inset-top))' }}>
+          <div ref={menuWrapperRef} className="fixed right-0 left-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 p-6 shadow-2xl safe-area-padding-x rounded-t-3xl" style={{ top: 'calc(80px + env(safe-area-inset-top))' }}>
             <nav className="flex flex-col space-y-2">
               {navItems.map(item => {
                 const isActive = router.pathname === item.href || 

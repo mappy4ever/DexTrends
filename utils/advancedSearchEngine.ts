@@ -341,7 +341,7 @@ class AdvancedSearchEngine {
     }
 
     // Process and score results
-    const results: SearchResultItem[] = (data || []).map(item => {
+    const results: SearchResultItem[] = (data || []).map((item: any) => {
       const cardData = typeof item.card_data === 'string' 
         ? JSON.parse(item.card_data) 
         : item.card_data;
@@ -397,7 +397,7 @@ class AdvancedSearchEngine {
       throw new Error(`Pokemon search failed: ${error.message}`);
     }
 
-    return (data || []).map(item => {
+    return (data || []).map((item: any) => {
       const pokemonData = typeof item.pokemon_data === 'string' 
         ? JSON.parse(item.pokemon_data) 
         : item.pokemon_data;
@@ -495,7 +495,7 @@ class AdvancedSearchEngine {
       }
 
       // Perform fuzzy matching
-      data.forEach(item => {
+      data.forEach((item: any) => {
         const cardData = typeof item.card_data === 'string' 
           ? JSON.parse(item.card_data) 
           : item.card_data;
