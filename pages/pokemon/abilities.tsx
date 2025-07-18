@@ -5,6 +5,7 @@ import { NextPage } from "next";
 import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../../components/ui/animations/animations";
 import { useTheme } from "../../context/UnifiedAppContext";
 import StyledBackButton from "../../components/ui/StyledBackButton";
+import { ListItemSkeleton } from "../../components/ui/SkeletonLoader";
 import { AiOutlineBulb } from "react-icons/ai";
 import { BsSearch, BsShield, BsLightning, BsDroplet, BsFire } from "react-icons/bs";
 import { GiPunch, GiHealing, GiSpeedometer, GiShieldBounces } from "react-icons/gi";
@@ -483,9 +484,15 @@ const AbilitiesPage: NextPage = () => {
 
           {/* Abilities List */}
           {loading ? (
-            <div className="text-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-4 border-indigo-400 border-t-transparent mx-auto mb-4"></div>
-              <p className="text-gray-600 dark:text-gray-400">Loading abilities from PokeAPI...</p>
+            <div className="space-y-4">
+              {[...Array(12)].map((_, index) => (
+                <ListItemSkeleton 
+                  key={index} 
+                  showAvatar={true} 
+                  showSecondaryText={true}
+                  className="bg-white dark:bg-gray-800 rounded-xl"
+                />
+              ))}
             </div>
           ) : error ? (
             <div className="text-center py-12">

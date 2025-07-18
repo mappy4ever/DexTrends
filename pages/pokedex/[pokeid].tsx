@@ -16,7 +16,8 @@ import CardList from "../../components/CardList";
 import PocketCardList from "../../components/PocketCardList";
 import { fetchPocketData } from "../../utils/pocketData";
 import { getPokemonSDK } from "../../utils/pokemonSDK";
-import PokeballLoader from "../../components/ui/PokeballLoader";
+import { PokemonLoadingScreen } from "../../components/ui/loading/UnifiedLoadingScreen";
+import { CardGridSkeleton } from "../../components/ui/SkeletonLoader";
 import Modal from "../../components/ui/modals/Modal";
 import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
 import { getTypeUIColors } from "../../utils/pokemonTypeGradients";
@@ -247,18 +248,32 @@ const PokemonDetail: NextPage = () => {
   };
 
   // Load cards for this Pokemon
+  // Sanitize Pokemon names for API calls
+  const sanitizePokemonName = (name: string): string => {
+    return name
+      .toLowerCase()
+      .replace(/♀/g, '-f')
+      .replace(/♂/g, '-m')
+      .replace(/[':.\s]/g, '-')
+      .replace(/--+/g, '-')
+      .replace(/-$/, '');
+  };
+
   const loadCards = async (pokemonName: string) => {
     if (!pokemonName) return;
     
     setCardsLoading(true);
     
     try {
+      // Sanitize the Pokemon name for API compatibility
+      const sanitizedName = sanitizePokemonName(pokemonName);
+      
       // Load TCG cards (cached)
-      const tcgCardsData = await fetchTCGCards(pokemonName);
+      const tcgCardsData = await fetchTCGCards(sanitizedName);
       setTcgCards(tcgCardsData || []);
       
       // Load Pocket cards (cached)
-      const pocketCardsData = await fetchPocketCards(pokemonName);
+      const pocketCardsData = await fetchPocketCards(sanitizedName);
       setPocketCards(pocketCardsData || []);
     } catch (err) {
       console.error('Error loading cards:', err);
@@ -791,14 +806,19 @@ const PokemonDetail: NextPage = () => {
           </div>
         
         {cardsLoading ? (
-          <div className="flex justify-center py-8">
-            <PokeballLoader size="large" />
-          </div>
+          <CardGridSkeleton 
+            count={12}
+            columns={6}
+            showPrice={true}
+            showSet={true}
+            showTypes={true}
+            className="animate-fadeIn mt-4"
+          />
         ) : displayCards.length > 0 ? (
           cardType === 'tcg' ? (
             <CardList 
               cards={tcgCards}
-              onCardClick={(card: TCGCard) => setZoomedCard(card)}
+              // CardList handles its own zoom modal internally
             />
           ) : (
             <PocketCardList 
@@ -824,9 +844,12 @@ const PokemonDetail: NextPage = () => {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <PokeballLoader size="large" />
-      </div>
+      <PokemonLoadingScreen
+        message="Loading Pokémon details..."
+        showFacts={true}
+        overlay={false}
+        preventFlash={true}
+      />
     );
   }
 
@@ -1167,9 +1190,35 @@ const PokemonDetail: NextPage = () => {
                       pokemon={pokemon}
                       species={species}
                       onFormChange={async (formData) => {
-                        // Extract the form ID from the form data URL
-                        const formId = formData.url.split('/').filter(Boolean).pop();
-                        router.push(`/pokedex/${formId}`);
+                        // Update the current Pokemon data with the new form data
+                        setPokemon(formData);
+                        
+                        // Update abilities for the new form
+                        const newAbilities: Record<string, AbilityData> = {};
+                        for (const ab of formData.abilities || []) {
+                          try {
+                            const abilityData = await fetchData(ab.ability.url);
+                            const englishEffect = abilityData.effect_entries?.find((e: any) => e.language.name === 'en');
+                            const englishShortEffect = abilityData.flavor_text_entries?.find((f: any) => f.language.name === 'en');
+                            
+                            newAbilities[ab.ability.name] = {
+                              name: ab.ability.name,
+                              isHidden: ab.is_hidden,
+                              effect: englishEffect?.effect || '',
+                              short_effect: englishShortEffect?.flavor_text || englishEffect?.short_effect || ''
+                            };
+                          } catch (error) {
+                            console.error(`Error loading ability ${ab.ability.name}:`, error);
+                          }
+                        }
+                        setAbilities(newAbilities);
+                        
+                        // Reload cards for the new form
+                        await loadCards(formData.name);
+                        
+                        // Update the URL without navigating
+                        const formId = formData.id || formData.name;
+                        window.history.replaceState({}, '', `/pokedex/${formId}`);
                       }}
                     />
                   )}

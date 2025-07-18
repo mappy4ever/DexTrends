@@ -8,6 +8,7 @@ import { TypeBadge } from "../components/ui/TypeBadge";
 import { getGeneration } from "../utils/pokemonutils";
 import PokeballLoader from "../components/ui/PokeballLoader";
 import FullBleedWrapper from "../components/ui/FullBleedWrapper";
+import CircularPokemonCard from "../components/ui/cards/CircularPokemonCard";
 import { NextPage } from "next";
 
 // Type definitions
@@ -760,48 +761,26 @@ const PokedexIndex: NextPage = () => {
     return `from-poke-${types[0]} to-poke-${types[1]}`;
   };
 
-  // Loading state with fun facts
+  // Loading state with pokeball loader
   if (loading) {
-    const funFacts = [
-      "Did you know? Rhydon was the first Pokémon ever created!",
-      "Pikachu wasn't originally planned to be the mascot - Clefairy was!",
-      "Arcanine was originally planned to be a Legendary Pokémon!",
-      "Ditto and Mew share the same weight and color scheme!",
-      "The Unown represent the 26 letters of the alphabet plus ! and ?",
-      "Wobbuffet's body is actually a decoy - its tail has the brain!",
-      "Azurill has a 25% chance of changing gender when evolving!",
-      "Hitmonchan and Hitmonlee are named after Jackie Chan and Bruce Lee!",
-    ];
-    
-    const currentFact = funFacts[Math.floor((loadingProgress / 12.5) % funFacts.length)];
-    
     return (
-      <FullBleedWrapper>
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-50 to-white">
-          <div className="text-center max-w-md px-4">
-            <div className="relative w-32 h-32 mx-auto mb-6">
-              <div className="absolute inset-0 rounded-full border-4 border-gray-200"></div>
-              <div 
-                className="absolute inset-0 rounded-full border-4 border-blue-500 border-t-transparent animate-spin"
-                style={{
-                  clipPath: `polygon(0 0, 100% 0, 100% ${loadingProgress}%, 0 ${loadingProgress}%)`
-                }}
-              ></div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-2xl font-bold text-blue-600">{loadingProgress}%</span>
-              </div>
-            </div>
-            <h2 className="text-xl font-semibold text-gray-800 mb-2">Loading all {TOTAL_POKEMON} Pokémon...</h2>
-            <p className="text-sm text-gray-600 mb-4">{currentFact}</p>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
+        <div className="text-center">
+          <PokeballLoader size="large" text={`Loading all ${TOTAL_POKEMON} Pokémon...`} />
+          
+          {/* Progress bar */}
+          <div className="mt-6 max-w-md mx-auto px-8">
+            <div className="text-sm text-gray-600 mb-2">Loading Pokemon data from PokeAPI...</div>
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div 
-                className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                className="bg-gradient-to-r from-blue-600 to-purple-600 h-2 rounded-full transition-all duration-300"
                 style={{ width: `${loadingProgress}%` }}
               ></div>
             </div>
+            <div className="text-sm text-gray-500 mt-1">{loadingProgress}% complete</div>
           </div>
         </div>
-      </FullBleedWrapper>
+      </div>
     );
   }
 
@@ -1042,85 +1021,16 @@ const PokedexIndex: NextPage = () => {
           {displayedPokemon.length > 0 ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 mb-8">
               {displayedPokemon.map((pokemon) => (
-                <div 
+                <CircularPokemonCard
                   key={pokemon.id}
-                  onClick={() => router.push(`/pokedex/${pokemon.id}`)}
-                  className="group cursor-pointer transition-all duration-300 hover:-translate-y-2 flex flex-col items-center"
-                >
-                  {/* Circular Pokemon Image Container */}
-                  <div className="relative mb-4">
-                    <div className="relative w-32 h-32 sm:w-36 sm:h-36">
-                      {/* White outer ring */}
-                      <div className="absolute inset-0 rounded-full bg-white dark:bg-gray-700 p-1 shadow-lg dark:shadow-2xl group-hover:shadow-xl dark:group-hover:shadow-2xl transition-shadow duration-300 group-hover:scale-105">
-                        {/* Circular border with Pokemon type colors */}
-                        <div className={`w-full h-full rounded-full bg-gradient-to-br ${
-                          pokemon.types.length > 1 
-                            ? `from-poke-${pokemon.types[0]} to-poke-${pokemon.types[1]}` 
-                            : `from-poke-${pokemon.types[0]} to-poke-${pokemon.types[0]}`
-                        } p-1`}>
-                          {/* Inner white ring */}
-                          <div className="w-full h-full rounded-full bg-white dark:bg-gray-700 p-2 transition-all duration-300 pokemon-card-shine">
-                            {/* Inner circle with subtle gradient background */}
-                            <div className="relative w-full h-full rounded-full bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-600 dark:to-gray-700 shadow-inner overflow-hidden group-hover:from-purple-100 group-hover:to-blue-100 dark:group-hover:from-purple-800 dark:group-hover:to-blue-800 transition-colors duration-300">
-                              {pokemon.sprite ? (
-                                <Image
-                                  src={pokemon.sprite}
-                                  alt={pokemon.name}
-                                  fill
-                                  className="object-contain p-3 group-hover:scale-110 transition-transform duration-300"
-                                  style={{transform: 'translateY(2px)'}}
-                                  loading="lazy"
-                                  sizes="(max-width: 640px) 128px, 144px"
-                                />
-                              ) : (
-                                <div className="w-full h-full flex items-center justify-center text-gray-400">
-                                  <span className="text-4xl">?</span>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      {/* Pokemon number badge */}
-                      <div className="absolute -top-2 -right-2 bg-gray-100 dark:bg-gray-600 rounded-full shadow-md border-2 border-gray-200 dark:border-gray-500 px-2 py-1 transition-all duration-300">
-                        <span className="text-xs font-mono font-bold text-gray-500 dark:text-gray-300 group-hover:text-purple-700 dark:group-hover:text-purple-400 transition-colors duration-300">
-                          #{String(pokemon.id).padStart(3, "0")}
-                        </span>
-                      </div>
-
-                      {/* Special status badges */}
-                      {(pokemon.isLegendary || pokemon.isMythical || pokemon.isStarter) && (
-                        <div className="absolute -bottom-2 -left-2 flex gap-1">
-                          {pokemon.isLegendary && (
-                            <span className="bg-yellow-500 text-white text-xs px-2 py-0.5 rounded-full shadow-md font-medium">L</span>
-                          )}
-                          {pokemon.isMythical && (
-                            <span className="bg-purple-500 text-white text-xs px-2 py-0.5 rounded-full shadow-md font-medium">M</span>
-                          )}
-                          {pokemon.isStarter && (
-                            <span className="bg-green-500 text-white text-xs px-2 py-0.5 rounded-full shadow-md font-medium">S</span>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  
-                  {/* Pokemon info below circle */}
-                  <div className="text-center">
-                    {/* Pokemon name */}
-                    <h3 className="font-bold text-sm sm:text-base capitalize text-gray-800 dark:text-gray-200 mb-2 group-hover:text-purple-700 dark:group-hover:text-purple-400 transition-colors duration-300">
-                      {pokemon.name.replace(/-/g, " ")}
-                    </h3>
-                    
-                    {/* Types */}
-                    <div className="flex justify-center gap-1">
-                      {pokemon.types.map((type) => (
-                        <TypeBadge key={type} type={type} size="sm" />
-                      ))}
-                    </div>
-                  </div>
-                </div>
+                  pokemon={{
+                    id: pokemon.id,
+                    name: pokemon.name,
+                    sprite: pokemon.sprite || undefined,
+                    types: pokemon.types.map(type => ({ type: { name: type } }))
+                  }}
+                  size="md"
+                />
               ))}
             </div>
           ) : (

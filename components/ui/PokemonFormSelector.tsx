@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchData } from '../../utils/apiutils';
+import type { Pokemon } from '../../types/api/pokemon';
 
 interface PokemonVariety {
   is_default: boolean;
@@ -14,10 +15,7 @@ interface Species {
   varieties?: PokemonVariety[];
 }
 
-interface Pokemon {
-  name: string;
-  [key: string]: any;
-}
+// Using the Pokemon type from types/api/pokemon.d.ts
 
 interface Form {
   name: string;
@@ -29,7 +27,7 @@ interface Form {
 interface PokemonFormSelectorProps {
   pokemon: Pokemon;
   species: Species;
-  onFormChange?: (formData: any) => Promise<void>;
+  onFormChange?: (formData: Pokemon) => Promise<void>;
 }
 
 // List of valid regional and battle-relevant forms
@@ -77,6 +75,7 @@ export default function PokemonFormSelector({
   const [forms, setForms] = useState<Form[]>([]);
   const [selectedForm, setSelectedForm] = useState<Form | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isChangingForm, setIsChangingForm] = useState(false);
 
   useEffect(() => {
     const loadForms = async () => {
@@ -194,15 +193,31 @@ export default function PokemonFormSelector({
   };
 
   const handleFormChange = async (form: Form): Promise<void> => {
-    if (form.name === selectedForm?.name) return;
+    if (form.name === selectedForm?.name || isChangingForm) return;
     
     console.log('Switching to form:', form.name, 'from:', selectedForm?.name);
-    setSelectedForm(form);
+    setIsChangingForm(true);
     
     try {
       // Load the form's data
-      const formData = await fetchData(form.url);
+      const formData = await fetchData<Pokemon>(form.url);
       console.log('Form data loaded:', formData.name);
+      
+      // Validate the form data has required fields
+      if (!formData || !formData.name) {
+        throw new Error('Invalid form data received');
+      }
+      
+      // Ensure formData has an id field (required by Pokemon type)
+      if (!formData.id && formData.name) {
+        // Extract ID from the URL if not present
+        const urlParts = form.url.split('/');
+        const possibleId = urlParts[urlParts.length - 1] || urlParts[urlParts.length - 2];
+        formData.id = parseInt(possibleId) || formData.name;
+      }
+      
+      // Update the selected form only after successful data load
+      setSelectedForm(form);
       
       // Call the parent callback with the form data
       if (onFormChange) {
@@ -210,8 +225,11 @@ export default function PokemonFormSelector({
       }
     } catch (error) {
       console.error('Error loading form data:', error);
-      // Revert the selection if loading fails
-      setSelectedForm(selectedForm);
+      // Show error to user with more detail
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      alert(`Failed to load form data: ${errorMessage}`);
+    } finally {
+      setIsChangingForm(false);
     }
   };
 
@@ -226,13 +244,21 @@ export default function PokemonFormSelector({
           <button
             key={form.name}
             onClick={() => handleFormChange(form)}
+            disabled={isChangingForm}
             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
               selectedForm?.name === form.name
                 ? 'bg-pokemon-red text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
+            } ${isChangingForm ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
-            {form.displayName}
+            {isChangingForm && selectedForm?.name !== form.name ? (
+              <span className="flex items-center gap-1">
+                <span className="animate-spin h-3 w-3 border-2 border-gray-500 border-t-transparent rounded-full inline-block"></span>
+                Loading...
+              </span>
+            ) : (
+              form.displayName
+            )}
           </button>
         ))}
       </div>

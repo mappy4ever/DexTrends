@@ -5,6 +5,7 @@ import { useTheme } from '../context/UnifiedAppContext';
 import { TrendingLoadingScreen } from "../components/ui/loading/UnifiedLoadingScreen";
 import logger from '../utils/logger';
 import { getPokemonSDK } from '../utils/pokemonSDK';
+import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import type { NextPage } from 'next';
 import type { TCGCard } from '../types/api/cards';
 
@@ -161,7 +162,8 @@ const TrendingPage: NextPage = () => {
   }, []);
   
   return (
-    <div className="container max-w-6xl mx-auto px-4 py-8">
+    <FullBleedWrapper gradient="tcg">
+      <div className="container max-w-6xl mx-auto px-4 py-8">
       <div className="mb-8">
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold">Trending Cards</h1>
@@ -269,7 +271,8 @@ const TrendingPage: NextPage = () => {
           </div>
         </>
       )}
-    </div>
+      </div>
+    </FullBleedWrapper>
   );
 };
 

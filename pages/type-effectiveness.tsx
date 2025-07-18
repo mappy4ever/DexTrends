@@ -4,6 +4,7 @@ import { fetchData } from '../utils/apiutils';
 import { TypeBadge } from '../components/ui/TypeBadge';
 import { TypeAnalysisCard, DualTypeCalculator } from '../components/ui/TypeAnalysis';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
+import { PokemonLoadingScreen } from '../components/ui/loading/UnifiedLoadingScreen';
 import { NextPage } from 'next';
 
 // Type definitions
@@ -649,14 +650,12 @@ const TypeEffectiveness: NextPage = () => {
 
   if (loading) {
     return (
-      <FullBleedWrapper gradient="pokedex">
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading type effectiveness data...</p>
-          </div>
-        </div>
-      </FullBleedWrapper>
+      <PokemonLoadingScreen
+        message="Loading type effectiveness data..."
+        showFacts={false}
+        overlay={false}
+        preventFlash={true}
+      />
     );
   }
 

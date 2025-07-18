@@ -5,6 +5,7 @@ import Modal from "./ui/modals/Modal";
 import UnifiedCard from "./ui/cards/UnifiedCard";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import { InlineLoadingSpinner } from "./ui/loading/LoadingSpinner";
+import { CardGridSkeleton } from "./ui/SkeletonLoader";
 import { isFeatureEnabled } from "../utils/featureFlags";
 import type { PocketCard } from "../types/api/pocket-cards";
 
@@ -37,6 +38,7 @@ interface PocketCardProps {
   setZoomedCard?: (card: ExtendedPocketCard | null) => void;
   imageWidth: number;
   imageHeight: number;
+  onCardClick?: (card: ExtendedPocketCard) => void;
 }
 
 // Pocket Card wrapper that uses UnifiedCard
@@ -49,7 +51,8 @@ const PocketCard = memo<PocketCardProps>(({
   cardFeatures, 
   setZoomedCard,
   imageWidth,
-  imageHeight
+  imageHeight,
+  onCardClick
 }) => {
   return (
     <UnifiedCard
@@ -60,7 +63,8 @@ const PocketCard = memo<PocketCardProps>(({
       showPack={true}
       showArtist={true}
       showTypes={true}
-      onMagnifyClick={setZoomedCard ? (card) => setZoomedCard(card as ExtendedPocketCard) : null}
+      onMagnifyClick={setZoomedCard ? (card) => setZoomedCard(card as ExtendedPocketCard) : undefined}
+      onCardClick={onCardClick}
       className={cardClassName}
       imageWidth={imageWidth}
       imageHeight={imageHeight}
@@ -86,6 +90,7 @@ interface PocketCardListProps {
   itemsPerPage?: number;
   imageWidth?: number;
   imageHeight?: number;
+  onCardClick?: (card: ExtendedPocketCard) => void;
 }
 
 // Helper interface for parsed card ID
@@ -110,7 +115,8 @@ export default function PocketCardList({
   showSort = true,
   itemsPerPage = 48, // 6 columns x 8 rows = reasonable page size
   imageWidth = 110, // 50% smaller than 220
-  imageHeight = 154 // 50% smaller than 308
+  imageHeight = 154, // 50% smaller than 308
+  onCardClick
 }: PocketCardListProps) {
   const [zoomedCard, setZoomedCard] = useState<ExtendedPocketCard | null>(null);
   const [sortOption, setSortOption] = useState<string>("number");
@@ -202,13 +208,15 @@ export default function PocketCardList({
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center py-16">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-full bg-primary/10 animate-ping"></div>
-          <div className="w-20 h-20 rounded-full border-4 border-t-primary border-r-primary/70 border-b-primary/40 border-l-transparent animate-spin"></div>
-        </div>
-        <h3 className="mt-6 text-xl font-semibold">Loading Pocket cards...</h3>
-      </div>
+      <CardGridSkeleton 
+        count={20}
+        columns={5}
+        showPrice={false}
+        showSet={false}
+        showTypes={true}
+        showHP={true}
+        className="animate-fadeIn"
+      />
     );
   }
   
@@ -272,6 +280,7 @@ export default function PocketCardList({
             setZoomedCard={setZoomedCard}
             imageWidth={imageWidth}
             imageHeight={imageHeight}
+            onCardClick={onCardClick}
           />
         );
       })}

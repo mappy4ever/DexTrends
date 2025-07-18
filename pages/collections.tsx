@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useTheme } from '../context/UnifiedAppContext';
-import CollectionManager from '../components/CollectionManager';
-import PriceAlerts from '../components/PriceAlerts';
+import { DynamicCollectionManager, DynamicPriceAlerts } from '../components/dynamic/DynamicComponents';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import type { NextPage } from 'next';
 
@@ -63,16 +62,16 @@ const CollectionsPage: NextPage = () => {
 
         {/* Tab Navigation */}
         <div className="flex justify-center mb-8">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-1">
+          <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-lg p-1">
             <div className="flex space-x-1">
               {tabs.map(tab => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`px-6 py-3 rounded-md font-medium transition-all duration-200 flex items-center gap-2 ${
+                  className={`px-6 py-3 rounded-full font-medium transition-all duration-200 flex items-center gap-2 transform hover:scale-105 ${
                     activeTab === tab.id
-                      ? 'bg-blue-600 text-white shadow-md'
-                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100/80 dark:hover:bg-gray-700/80'
                   }`}
                 >
                   <span className="text-lg">{tab.icon}</span>
@@ -87,13 +86,13 @@ const CollectionsPage: NextPage = () => {
         <div className="max-w-7xl mx-auto">
           {activeTab === 'collections' && (
             <div className="space-y-8">
-              <CollectionManager />
+              <DynamicCollectionManager />
             </div>
           )}
           
           {activeTab === 'alerts' && (
             <div className="space-y-8">
-              <PriceAlerts />
+              <DynamicPriceAlerts />
             </div>
           )}
           
@@ -143,7 +142,7 @@ const PortfolioOverview: React.FC = () => {
     <div className="space-y-6">
       {/* Portfolio Summary */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl shadow-lg p-6 hover:shadow-xl transition-all transform hover:scale-105">
           <div className="text-sm text-gray-500 dark:text-gray-400">Total Value</div>
           <div className="text-3xl font-bold text-green-600">
             {formatCurrency(portfolioData.totalValue)}
@@ -186,8 +185,8 @@ const PortfolioOverview: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Top Performing Cards */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg">
-          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all">
+          <div className="p-4">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
               Top Performing Cards
             </h3>
@@ -219,8 +218,8 @@ const PortfolioOverview: React.FC = () => {
         </div>
 
         {/* Recent Activity */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg">
-          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all">
+          <div className="p-4">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
               Recent Activity
             </h3>
@@ -248,8 +247,8 @@ const PortfolioOverview: React.FC = () => {
       </div>
 
       {/* Portfolio Distribution */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg">
-        <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+      <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all">
+        <div className="p-4">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
             Portfolio Distribution
           </h3>
@@ -339,8 +338,8 @@ const PortfolioOverview: React.FC = () => {
       </div>
 
       {/* Performance Chart Placeholder */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg">
-        <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+      <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all">
+        <div className="p-4 flex justify-between items-center">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
             Portfolio Performance
           </h3>

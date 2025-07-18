@@ -8,6 +8,7 @@ import { fetchPocketData } from '../../utils/pocketData';
 import { TypeBadge } from '../../components/ui/TypeBadge';
 import PackOpening from '../../components/ui/PackOpening';
 import StyledBackButton from '../../components/ui/StyledBackButton';
+import { PocketLoadingScreen } from '../../components/ui/loading/UnifiedLoadingScreen';
 import logger from '../../utils/logger';
 import type { PocketCard } from '../../types/api/pocket-cards';
 
@@ -505,21 +506,18 @@ const Expansions: NextPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 flex items-center justify-center">
+      <>
         <Head>
           <title>Expansions | Pokemon Pocket | DexTrends</title>
         </Head>
-        <div className="bg-black/60 backdrop-blur-xl rounded-3xl p-12 text-center border border-white/20 shadow-2xl">
-          <div className="relative mb-8">
-            <div className="animate-spin rounded-full h-20 w-20 border-4 border-yellow-400 border-t-transparent mx-auto"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-2xl animate-pulse">📦</div>
-            </div>
-          </div>
-          <h3 className="text-3xl font-bold text-white mb-4">Loading Expansions...</h3>
-          <p className="text-gray-300 text-lg">Preparing the ultimate pack opening experience</p>
-        </div>
-      </div>
+        <PocketLoadingScreen
+          message="Loading Expansions..."
+          customMessage="Preparing the ultimate pack opening experience"
+          showFacts={false}
+          overlay={false}
+          preventFlash={true}
+        />
+      </>
     );
   }
 

@@ -15,7 +15,8 @@ import { PocketCard } from "../types/api/pocket-cards";
 import { NextPage } from "next";
 
 // Dynamic imports for components that might cause SSR issues
-import PokeballLoader from "../components/ui/PokeballLoader";
+import { PocketLoadingScreen } from "../components/ui/loading/UnifiedLoadingScreen";
+import { CardGridSkeleton } from "../components/ui/SkeletonLoader";
 const PokemonEmptyState = dynamic(() => import("../components/ui/loading/PokemonEmptyState"), { ssr: false });
 
 // Extended PocketCard interface with additional properties from the actual data
@@ -422,9 +423,15 @@ const PocketMode: NextPage = () => {
         
         <SlideUp>
           {isViewLoading ? (
-            <div className="flex justify-center items-center h-64">
-              <PokeballLoader size="large" />
-            </div>
+            <CardGridSkeleton 
+              count={20}
+              columns={5}
+              showPrice={false}
+              showSet={false}
+              showTypes={true}
+              showHP={true}
+              className="animate-fadeIn"
+            />
           ) : viewError ? (
             <div className="flex flex-col items-center justify-center min-h-[400px] bg-white rounded-xl shadow-lg p-8">
               <div className="text-6xl mb-4">😕</div>

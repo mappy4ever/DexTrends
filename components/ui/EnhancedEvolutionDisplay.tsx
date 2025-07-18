@@ -162,6 +162,13 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }: EnhancedEvol
         // Get species data
         const speciesData = await fetchData(speciesUrl);
         
+        // Check if evolution chain URL exists
+        if (!speciesData.evolution_chain?.url) {
+          console.warn(`No evolution chain URL found for species ${currentPokemonId}`);
+          setEvolutionData({ chain: [], structure: null });
+          return;
+        }
+        
         // Get current Pokemon data to check if it's a regional form
         const currentPokemonData = await fetchData(`https://pokeapi.co/api/v2/pokemon/${currentPokemonId}`);
         const currentPokemonName = currentPokemonData.name;
@@ -225,7 +232,16 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }: EnhancedEvol
         }
         
         // Get evolution chain for non-regional forms
-        const evoData = await fetchData(speciesData.evolution_chain.url);
+        let evoData;
+        try {
+          evoData = await fetchData(speciesData.evolution_chain.url);
+        } catch (error) {
+          console.error('Failed to fetch evolution chain:', error);
+          if (isMounted) {
+            setEvolutionData({ chain: [], structure: null });
+          }
+          return;
+        }
         
         // Parse the chain into a tree structure
         const parseEvolutionNode = async (node: any, parentId: string | null = null, level: number = 0): Promise<EvolutionNode | null> => {

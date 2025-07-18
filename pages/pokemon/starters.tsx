@@ -9,6 +9,8 @@ import { useTheme } from "../../context/UnifiedAppContext";
 import { pokemonTheme } from "../../utils/pokemonTheme";
 import StyledBackButton from "../../components/ui/StyledBackButton";
 import { TypeBadge } from "../../components/ui/TypeBadge";
+import CircularPokemonCard from "../../components/ui/cards/CircularPokemonCard";
+import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
 import { GiPokerHand } from "react-icons/gi";
 import { BsChevronLeft, BsChevronRight, BsGrid3X3, BsList } from "react-icons/bs";
 
@@ -431,7 +433,7 @@ const StartersPage: NextPage = () => {
   const [selectedGen, setSelectedGen] = useState(0);
   const [viewMode, setViewMode] = useState<"single" | "comparison">("single");
   const [typeFilter, setTypeFilter] = useState("all");
-
+  
   const getPokemonImage = (pokemonId: number): string => {
     return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonId}.png`;
   };
@@ -467,7 +469,7 @@ const StartersPage: NextPage = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <FullBleedWrapper gradient="pokedex">
       <Head>
         <title>Starter Pokémon | DexTrends</title>
         <meta name="description" content="Meet all starter Pokémon from every generation" />
@@ -503,10 +505,10 @@ const StartersPage: NextPage = () => {
                 <button
                   key={type}
                   onClick={() => setTypeFilter(type)}
-                  className={`px-4 py-2 rounded-full font-semibold transition-all ${
+                  className={`px-4 py-2 rounded-full font-semibold transition-all transform hover:scale-105 ${
                     typeFilter === type
-                      ? 'bg-gradient-to-r from-red-400 to-pink-400 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      ? 'bg-gradient-to-r from-red-400 to-pink-400 text-white shadow-lg'
+                      : 'bg-white/80 dark:bg-gray-800/80 hover:bg-white dark:hover:bg-gray-700 backdrop-blur-sm shadow-md hover:shadow-lg'
                   }`}
                 >
                   {type.charAt(0).toUpperCase() + type.slice(1)}
@@ -518,20 +520,20 @@ const StartersPage: NextPage = () => {
             <div className="flex gap-2">
               <button
                 onClick={() => setViewMode("single")}
-                className={`px-4 py-2 rounded-lg font-semibold transition-all flex items-center gap-2 ${
+                className={`px-4 py-2 rounded-full font-semibold transition-all flex items-center gap-2 transform hover:scale-105 ${
                   viewMode === "single"
-                    ? 'bg-gradient-to-r from-red-400 to-pink-400 text-white'
-                    : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    ? 'bg-gradient-to-r from-red-400 to-pink-400 text-white shadow-lg'
+                    : 'bg-white/80 dark:bg-gray-800/80 hover:bg-white dark:hover:bg-gray-700 backdrop-blur-sm shadow-md hover:shadow-lg'
                 }`}
               >
                 <BsList /> Single View
               </button>
               <button
                 onClick={() => setViewMode("comparison")}
-                className={`px-4 py-2 rounded-lg font-semibold transition-all flex items-center gap-2 ${
+                className={`px-4 py-2 rounded-full font-semibold transition-all flex items-center gap-2 transform hover:scale-105 ${
                   viewMode === "comparison"
-                    ? 'bg-gradient-to-r from-red-400 to-pink-400 text-white'
-                    : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    ? 'bg-gradient-to-r from-red-400 to-pink-400 text-white shadow-lg'
+                    : 'bg-white/80 dark:bg-gray-800/80 hover:bg-white dark:hover:bg-gray-700 backdrop-blur-sm shadow-md hover:shadow-lg'
                 }`}
               >
                 <BsGrid3X3 /> Comparison
@@ -580,9 +582,29 @@ const StartersPage: NextPage = () => {
 
           {/* Content */}
           {viewMode === "single" && currentGen ? (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-8 justify-items-center">
               {currentGen.starters.map((starter) => (
-                <StarterCard key={starter.id} starter={starter} theme={theme} />
+                <div key={starter.id} className="text-center">
+                  <CircularPokemonCard 
+                    pokemon={{
+                      id: starter.id,
+                      name: starter.name,
+                      sprite: getPokemonImage(starter.id),
+                      types: starter.types.map(type => ({ type: { name: type } }))
+                    }}
+                    size="lg"
+                  />
+                  <div className="mt-4 space-y-2">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 max-w-xs mx-auto">
+                      {starter.description}
+                    </p>
+                    <div className="flex justify-center gap-1">
+                      {starter.types.map(type => (
+                        <TypeBadge key={type} type={type} size="sm" />
+                      ))}
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
           ) : (
@@ -599,8 +621,8 @@ const StartersPage: NextPage = () => {
                     </Link>
                   </h2>
                   {/* Comparison Table */}
-                  <div className={`rounded-xl overflow-hidden ${
-                    theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
+                  <div className={`rounded-3xl overflow-hidden shadow-xl backdrop-blur-sm ${
+                    theme === 'dark' ? 'bg-gray-800/80' : 'bg-white/80'
                   }`}>
                     <div className="overflow-x-auto">
                       <table className="w-full">
@@ -622,11 +644,11 @@ const StartersPage: NextPage = () => {
                         </thead>
                         <tbody>
                           {gen.starters.map((starter, idx) => (
-                            <tr key={starter.id} className={`border-t ${
-                              theme === 'dark' ? 'border-gray-700' : 'border-gray-300'
-                            } ${idx % 2 === 0 ? (
-                              theme === 'dark' ? 'bg-gray-800/50' : 'bg-white'
-                            ) : ''}`}>
+                            <tr key={starter.id} className={`${
+                              idx % 2 === 0 ? (
+                                theme === 'dark' ? 'bg-gray-900/30' : 'bg-gray-50/50'
+                              ) : ''
+                            } transition-all hover:bg-gray-100/50 dark:hover:bg-gray-700/50`}>
                               <td className="p-4">
                                 <div className="flex items-center gap-3">
                                   <div className="relative w-16 h-16">
@@ -697,9 +719,9 @@ const StartersPage: NextPage = () => {
                 <Link
                   key={gen.generation}
                   href={`/pokemon/starters/${gen.region.toLowerCase()}`}
-                  className={`p-4 rounded-xl text-center transition-all ${
-                    theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
-                  } hover:shadow-md border border-transparent hover:border-pink-200`}
+                  className={`p-4 rounded-full text-center transition-all transform hover:scale-105 ${
+                    theme === 'dark' ? 'bg-gray-800/80' : 'bg-white/80'
+                  } hover:shadow-lg backdrop-blur-sm shadow-md`}
                 >
                   <div className="text-lg font-bold">{gen.region}</div>
                   <div className="text-sm text-gray-600 dark:text-gray-400">Gen {gen.generation}</div>
@@ -709,7 +731,7 @@ const StartersPage: NextPage = () => {
           </div>
         </div>
       </FadeIn>
-    </div>
+    </FullBleedWrapper>
   );
 };
 

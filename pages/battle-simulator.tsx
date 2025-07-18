@@ -81,7 +81,7 @@ function PokemonSelectionItem({ pokemon, pokemonId, onSelect, allPokemonData = n
 
   // Get type colors for dual-type display
   const getTypeColors = (): TypeColors => {
-    if (!pokemonData?.types) return { single: 'bg-gray-200' };
+    if (!pokemonData?.types) return { single: '#A8A77A' }; // Default to normal type color
     
     const types = pokemonData.types;
     if (types.length === 1) {
@@ -125,21 +125,21 @@ function PokemonSelectionItem({ pokemon, pokemonId, onSelect, allPokemonData = n
           {/* Type Color Circle */}
           <div className="w-16 h-16 rounded-full flex items-center justify-center overflow-hidden relative">
             {colors.dual ? (
-              <>
+              <div className="absolute inset-0 rounded-full overflow-hidden">
                 <div 
                   className="absolute inset-0 w-1/2"
                   style={{ backgroundColor: colors.color1 }}
-                ></div>
+                />
                 <div 
                   className="absolute inset-0 w-1/2 left-1/2"
                   style={{ backgroundColor: colors.color2 }}
-                ></div>
-              </>
+                />
+              </div>
             ) : (
               <div 
                 className="absolute inset-0 rounded-full"
                 style={{ backgroundColor: colors.single }}
-              ></div>
+              />
             )}
             {loading ? (
               <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin relative z-10"></div>
@@ -598,7 +598,7 @@ const BattleSimulator: NextPage = () => {
         <meta name="description" content="Battle Pokemon with real damage calculations and type effectiveness" />
       </Head>
       
-      <FullBleedWrapper>
+      <FullBleedWrapper gradient="pokedex">
         {/* The rest of the JSX will be continued in the next part */}
         <div>Battle Simulator Component - To be completed</div>
       </FullBleedWrapper>

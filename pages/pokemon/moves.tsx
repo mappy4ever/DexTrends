@@ -8,6 +8,7 @@ import { useTheme } from "../../context/UnifiedAppContext";
 import { pokemonTheme } from "../../utils/pokemonTheme";
 import StyledBackButton from "../../components/ui/StyledBackButton";
 import { TypeBadge } from "../../components/ui/TypeBadge";
+import { TableSkeleton } from "../../components/ui/SkeletonLoader";
 import { BsBook, BsSearch, BsLightning, BsShield, BsQuestionCircle } from "react-icons/bs";
 import { fetchData } from "../../utils/apiutils";
 
@@ -237,9 +238,12 @@ const MovesPage: NextPage = () => {
 
           {/* Moves List */}
           {loading ? (
-            <div className="text-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-400 border-t-transparent mx-auto mb-4"></div>
-              <p className="text-gray-600 dark:text-gray-400">Loading moves from PokeAPI...</p>
+            <div className="w-full">
+              <TableSkeleton 
+                rows={10} 
+                columns={5}
+                className="bg-white dark:bg-gray-800 rounded-xl p-6"
+              />
             </div>
           ) : (
             <>

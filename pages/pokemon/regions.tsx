@@ -360,18 +360,16 @@ const RegionsPage: NextPage = () => {
                     </span>
                     <div className="flex gap-2 relative">
                       {region.starterIds && region.starterIds.map((id) => (
-                        <img
-                          key={id}
-                          src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`}
-                          alt={`Starter ${id}`}
-                          style={{
-                            width: '48px',
-                            height: '48px',
-                            imageRendering: 'pixelated',
-                            position: 'relative',
-                            top: '-2px'
-                          }}
-                        />
+                        <div key={id} className="relative group">
+                          <div className="w-10 h-10 rounded-full bg-white/90 p-1 shadow-md group-hover:shadow-lg transition-all transform group-hover:scale-110">
+                            <img
+                              src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`}
+                              alt={`Starter ${id}`}
+                              className="w-full h-full object-contain"
+                              style={{ imageRendering: 'pixelated' }}
+                            />
+                          </div>
+                        </div>
                       ))}
                     </div>
                   </div>

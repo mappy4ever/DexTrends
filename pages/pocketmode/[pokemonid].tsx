@@ -10,6 +10,7 @@ import PocketCardList from "../../components/PocketCardList";
 import Modal from "../../components/ui/modals/Modal";
 import logger from "../../utils/logger";
 import { getEvolutionChain } from "../../utils/evolutionUtils";
+import { PocketLoadingScreen } from "../../components/ui/loading/UnifiedLoadingScreen";
 import type { PocketCard } from "../../types/api/pocket-cards";
 // Define EvolutionTreeNode locally since it's not exported from types
 interface EvolutionTreeNode {
@@ -394,12 +395,12 @@ export default function PocketPokemonDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading Pokémon...</p>
-        </div>
-      </div>
+      <PocketLoadingScreen
+        message="Loading Pokémon..."
+        showFacts={false}
+        overlay={false}
+        preventFlash={true}
+      />
     );
   }
 

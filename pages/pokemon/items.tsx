@@ -5,6 +5,7 @@ import { NextPage } from "next";
 import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../../components/ui/animations/animations";
 import { useTheme } from "../../context/UnifiedAppContext";
 import StyledBackButton from "../../components/ui/StyledBackButton";
+import { ListItemSkeleton } from "../../components/ui/SkeletonLoader";
 import { FiShoppingBag } from "react-icons/fi";
 import { BsSearch, BsHeart, BsShield, BsLightning } from "react-icons/bs";
 import { GiPotionBall, GiSwordWound, GiStoneBlock, GiCrystalGrowth } from "react-icons/gi";
@@ -428,9 +429,16 @@ const ItemsPage: NextPage = () => {
 
           {/* Items Grid */}
           {loading ? (
-            <div className="text-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-4 border-pink-400 border-t-transparent mx-auto mb-4"></div>
-              <p className="text-gray-600 dark:text-gray-400">Loading items from PokeAPI...</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[...Array(12)].map((_, index) => (
+                <div key={index} className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden">
+                  <ListItemSkeleton 
+                    showAvatar={true} 
+                    showSecondaryText={true}
+                    className="h-24"
+                  />
+                </div>
+              ))}
             </div>
           ) : error ? (
             <div className="text-center py-12">

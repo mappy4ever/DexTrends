@@ -7,7 +7,7 @@ import { PokeballSVG } from '../PokeballSVG';
  */
 interface UnifiedLoadingScreenProps {
   message?: string;
-  type?: 'default' | 'pokemon' | 'cards' | 'trending' | 'sets';
+  type?: 'default' | 'pokemon' | 'cards' | 'trending' | 'sets' | 'pokedex' | 'pocket' | 'data';
   progress?: number | null;
   showFacts?: boolean;
   customMessage?: string | null;
@@ -90,6 +90,30 @@ export default function UnifiedLoadingScreen({
           pokeball: 'premier',
           icon: '📦',
           defaultMessage: 'Loading sets...'
+        };
+      case 'pokedex':
+        return {
+          background: 'bg-gradient-to-br from-blue-50 via-blue-100 to-indigo-100',
+          accent: 'text-blue-600',
+          pokeball: 'default',
+          icon: '📖',
+          defaultMessage: 'Loading Pokédex data...'
+        };
+      case 'pocket':
+        return {
+          background: 'bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900',
+          accent: 'text-yellow-400',
+          pokeball: 'ultra',
+          icon: '🎴',
+          defaultMessage: 'Loading Pocket mode...'
+        };
+      case 'data':
+        return {
+          background: 'bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900',
+          accent: 'text-cyan-400',
+          pokeball: 'default',
+          icon: '📊',
+          defaultMessage: 'Loading data...'
         };
       default:
         return {
@@ -268,16 +292,28 @@ export const SetLoadingScreen = (props: any) => (
   <UnifiedLoadingScreen {...props} type="sets" />
 );
 
+export const PokedexLoadingScreen = (props: any) => (
+  <UnifiedLoadingScreen {...props} type="pokedex" showFacts={true} />
+);
+
+export const PocketLoadingScreen = (props: any) => (
+  <UnifiedLoadingScreen {...props} type="pocket" />
+);
+
+export const DataLoadingScreen = (props: any) => (
+  <UnifiedLoadingScreen {...props} type="data" />
+);
+
 /**
  * Hook for managing loading states with unified loading screen
  */
 export function useUnifiedLoading(initialState = false) {
   const [isLoading, setIsLoading] = useState(initialState);
   const [loadingMessage, setLoadingMessage] = useState('');
-  const [loadingType, setLoadingType] = useState<'default' | 'pokemon' | 'cards' | 'trending' | 'sets'>('default');
+  const [loadingType, setLoadingType] = useState<'default' | 'pokemon' | 'cards' | 'trending' | 'sets' | 'pokedex' | 'pocket' | 'data'>('default');
   const [progress, setProgress] = useState<any>(null);
 
-  const startLoading = (message = 'Loading...', type: 'default' | 'pokemon' | 'cards' | 'trending' | 'sets' = 'default') => {
+  const startLoading = (message = 'Loading...', type: 'default' | 'pokemon' | 'cards' | 'trending' | 'sets' | 'pokedex' | 'pocket' | 'data' = 'default') => {
     setLoadingMessage(message);
     setLoadingType(type);
     setIsLoading(true);

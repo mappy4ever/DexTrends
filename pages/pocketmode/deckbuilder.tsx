@@ -7,6 +7,7 @@ import { fetchPocketData } from '../../utils/pocketData';
 import { TypeBadge } from '../../components/ui/TypeBadge';
 import { FadeIn, SlideUp } from '../../components/ui/animations';
 import BackToTop from '../../components/ui/SimpleBackToTop';
+import { CardLoadingScreen } from '../../components/ui/loading/UnifiedLoadingScreen';
 import type { PocketCard } from '../../types/api/pocket-cards';
 
 // Extended PocketCard type for deck builder specific fields
@@ -410,15 +411,17 @@ export default function DeckBuilder() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <>
         <Head>
           <title>Deck Builder | Pokemon Pocket | DexTrends</title>
         </Head>
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-pokemon-red border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-xl text-gray-600 dark:text-gray-400">Loading Deck Builder...</p>
-        </div>
-      </div>
+        <CardLoadingScreen
+          message="Loading Deck Builder..."
+          showFacts={false}
+          overlay={false}
+          preventFlash={true}
+        />
+      </>
     );
   }
 

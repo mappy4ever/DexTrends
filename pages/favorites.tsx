@@ -7,9 +7,11 @@ import { FadeIn, SlideUp } from '../components/ui/animations/animations';
 import { TypeBadge } from '../components/ui/TypeBadge';
 import { getGeneration } from '../utils/pokemonutils';
 import logger from '../utils/logger';
-import UnifiedLoadingScreen from "../components/ui/loading/UnifiedLoadingScreen";
+import PokeballLoader from '../components/ui/PokeballLoader';
 import CollectionDashboard from "../components/ui/layout/CollectionDashboard";
 import AchievementSystem from '../components/ui/AchievementSystem';
+import CircularPokemonCard from '../components/ui/cards/CircularPokemonCard';
+import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import { NextPage } from 'next';
 import { TCGCard } from '../types/api/cards';
 
@@ -109,47 +111,45 @@ const FavoritesPage: NextPage = () => {
   };
 
   return (
-    <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto px-2 sm:px-4 animate-fadeIn">
-      <h1 className="text-2xl md:text-3xl font-bold text-center mb-8">Your Favorites</h1>
+    <FullBleedWrapper gradient="pokedex">
+      <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto px-2 sm:px-4 animate-fadeIn">
+        <h1 className="text-2xl md:text-3xl font-bold text-center mb-8 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Your Favorites</h1>
       
-      {/* Tabs */}
-      <div className="flex justify-center mb-8">
-        <div className="flex border border-gray-300 rounded-lg overflow-hidden">
-          <button 
-            className={`px-6 py-3 font-semibold ${activeTab === 'dashboard' ? 'bg-primary text-white' : 'bg-white hover:bg-gray-100'}`}
-            onClick={() => setActiveTab('dashboard')}
-          >
-            📊 Dashboard
-          </button>
-          <button 
-            className={`px-6 py-3 font-semibold ${activeTab === 'achievements' ? 'bg-primary text-white' : 'bg-white hover:bg-gray-100'}`}
-            onClick={() => setActiveTab('achievements')}
-          >
-            🏆 Achievements
-          </button>
-          <button 
-            className={`px-6 py-3 font-semibold ${activeTab === 'pokemon' ? 'bg-primary text-white' : 'bg-white hover:bg-gray-100'}`}
-            onClick={() => setActiveTab('pokemon')}
-          >
-            Pokémon ({favorites?.pokemon?.length || 0})
-          </button>
-          <button 
-            className={`px-6 py-3 font-semibold ${activeTab === 'cards' ? 'bg-primary text-white' : 'bg-white hover:bg-gray-100'}`}
-            onClick={() => setActiveTab('cards')}
-          >
-            Cards ({favorites?.cards?.length || 0})
-          </button>
+        {/* Tabs */}
+        <div className="flex justify-center mb-8">
+          <div className="flex bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-lg p-1">
+            <button 
+              className={`px-6 py-3 font-semibold rounded-full transition-all transform hover:scale-105 ${activeTab === 'dashboard' ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg' : 'hover:bg-gray-100/80 dark:hover:bg-gray-700/80'}`}
+              onClick={() => setActiveTab('dashboard')}
+            >
+              📊 Dashboard
+            </button>
+            <button 
+              className={`px-6 py-3 font-semibold rounded-full transition-all transform hover:scale-105 ${activeTab === 'achievements' ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg' : 'hover:bg-gray-100/80 dark:hover:bg-gray-700/80'}`}
+              onClick={() => setActiveTab('achievements')}
+            >
+              🏆 Achievements
+            </button>
+            <button 
+              className={`px-6 py-3 font-semibold rounded-full transition-all transform hover:scale-105 ${activeTab === 'pokemon' ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg' : 'hover:bg-gray-100/80 dark:hover:bg-gray-700/80'}`}
+              onClick={() => setActiveTab('pokemon')}
+            >
+              Pokémon ({favorites?.pokemon?.length || 0})
+            </button>
+            <button 
+              className={`px-6 py-3 font-semibold rounded-full transition-all transform hover:scale-105 ${activeTab === 'cards' ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg' : 'hover:bg-gray-100/80 dark:hover:bg-gray-700/80'}`}
+              onClick={() => setActiveTab('cards')}
+            >
+              Cards ({favorites?.cards?.length || 0})
+            </button>
+          </div>
         </div>
-      </div>
       
       {/* Tab Content */}
       {loading ? (
-        <UnifiedLoadingScreen 
-          message="Loading your favorites..."
-          type="default"
-          preventFlash={true}
-          overlay={false}
-        />
+        <div className="flex items-center justify-center min-h-[400px]">
+          <PokeballLoader size="large" text="Loading your favorites..." />
+        </div>
       ) : (
         <>
           {/* Dashboard Tab */}
@@ -175,46 +175,27 @@ const FavoritesPage: NextPage = () => {
           {activeTab === 'pokemon' && (
             <div className="animate-fadeIn">
               {pokemonData.length > 0 ? (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 justify-items-center">
                   {pokemonData.map(pokemon => (
-                    <div 
-                      key={pokemon.id}
-                      className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-gray-200 dark:border-gray-700 transition-all hover:shadow-lg hover:-translate-y-1"
-                    >
-                      <div className="relative">
-                        <Link href={`/pokedex/${pokemon.id}`}>
-                          <Image
-                            src={pokemon.sprite}
-                            alt={pokemon.name}
-                            width={150}
-                            height={150}
-                            className="w-full h-40 object-contain p-2"
-                          />
-                        </Link>
-                        <button
-                          className="absolute top-2 right-2 p-1.5 bg-white/80 dark:bg-gray-800/80 rounded-full shadow-md text-red-500"
-                          onClick={() => removeFromFavorites('pokemon', pokemon.id)}
-                          title="Remove from favorites"
-                        >
-                          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                          </svg>
-                        </button>
-                      </div>
-                      <div className="p-4">
-                        <h3 className="text-lg font-semibold capitalize">{pokemon.name.replace(/-/g, ' ')}</h3>
-                        <div className="mt-2 flex gap-2">
-                          {pokemon.types.map(type => (
-                            <TypeBadge key={type} type={type} size="sm" />
-                          ))}
-                        </div>
-                        <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                          <span className="inline-block rounded-full bg-blue-100 dark:bg-blue-900 px-2 py-1 text-xs">
-                            Gen {getGeneration(pokemon.id)}
-                          </span>
-                          <span className="ml-2 font-mono">#{String(pokemon.id).padStart(3, '0')}</span>
-                        </div>
-                      </div>
+                    <div key={pokemon.id} className="relative">
+                      <CircularPokemonCard
+                        pokemon={{
+                          id: pokemon.id,
+                          name: pokemon.name,
+                          sprite: pokemon.sprite,
+                          types: pokemon.types.map(type => ({ type: { name: type } }))
+                        }}
+                        size="md"
+                      />
+                      <button
+                        onClick={() => removeFromFavorites('pokemon', pokemon.id)}
+                        className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full shadow-md hover:bg-red-600 transition-all transform hover:scale-110 z-10"
+                        title="Remove from favorites"
+                      >
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                        </svg>
+                      </button>
                     </div>
                   ))}
                 </div>
@@ -302,7 +283,8 @@ const FavoritesPage: NextPage = () => {
           )}
         </>
       )}
-    </div>
+      </div>
+    </FullBleedWrapper>
   );
 };
 

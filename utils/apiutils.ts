@@ -115,23 +115,36 @@ export const fetchMove = async (name: string): Promise<Move> => {
 
 // TCG-specific fetch functions with aggressive caching
 export const fetchTCGCards = async (pokemonName: string): Promise<TCGCard[]> => {
-  // The tcgCache returns Card[] from pokemontcgsdk, we need to cast to TCGCard[]
-  // In practice, the structure is compatible, just the type strictness differs
-  return tcgCache.getCards(pokemonName) as Promise<TCGCard[]>;
+  try {
+    // The tcgCache returns Card[] from pokemontcgsdk, we need to cast to TCGCard[]
+    // In practice, the structure is compatible, just the type strictness differs
+    const cards = await tcgCache.getCards(pokemonName) as TCGCard[];
+    return cards || [];
+  } catch (error) {
+    console.error(`Failed to fetch TCG cards for ${pokemonName}:`, error);
+    // Return empty array instead of throwing to prevent UI crashes
+    return [];
+  }
 };
 
 export const fetchPocketCards = async (pokemonName: string): Promise<PocketCard[]> => {
-  const key = cacheManager.generateKey('pocket-cards', { name: pokemonName });
-  return cacheManager.cachedFetch<PocketCard[]>(
-    `pocket-${pokemonName}`,
-    async () => {
-      // Implementation for pocket cards fetch
-      const response = await fetch(`/api/pocket-cards?name=${encodeURIComponent(pokemonName)}`);
-      if (!response.ok) throw new ApiError(`Failed to fetch pocket cards for ${pokemonName}`, response.status);
-      return response.json();
-    },
-    { priority: CONFIG.PRIORITY.CRITICAL, ttl: CONFIG.DB_TTL }
-  );
+  try {
+    const key = cacheManager.generateKey('pocket-cards', { name: pokemonName });
+    return await cacheManager.cachedFetch<PocketCard[]>(
+      `pocket-${pokemonName}`,
+      async () => {
+        // Implementation for pocket cards fetch
+        const response = await fetch(`/api/pocket-cards?name=${encodeURIComponent(pokemonName)}`);
+        if (!response.ok) throw new ApiError(`Failed to fetch pocket cards for ${pokemonName}`, response.status);
+        return response.json();
+      },
+      { priority: CONFIG.PRIORITY.CRITICAL, ttl: CONFIG.DB_TTL }
+    );
+  } catch (error) {
+    console.error(`Failed to fetch pocket cards for ${pokemonName}:`, error);
+    // Return empty array instead of throwing to prevent UI crashes
+    return [];
+  }
 };
 
 // Type guard for API errors

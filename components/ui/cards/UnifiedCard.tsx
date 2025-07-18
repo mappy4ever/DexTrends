@@ -1,6 +1,7 @@
 import React, { memo, useMemo, useState, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { TypeBadge } from "../TypeBadge";
 import { CompactPriceIndicator } from "../PriceIndicator";
 import { isFeatureEnabled } from "../../../utils/featureFlags";
@@ -304,6 +305,8 @@ const UnifiedCard = memo(({
   imageWidth = 220,
   imageHeight = 308
 }: UnifiedCardProps) => {
+  const router = useRouter();
+  
   // Optimized card data normalization with performance monitoring
   const normalizedCard = useSmartMemo(() => {
     const startTime = Date.now();
@@ -425,11 +428,11 @@ const UnifiedCard = memo(({
     if (onCardClick) {
       onCardClick(card);
     } else {
-      window.location.href = normalizedCard.linkPath;
+      router.push(normalizedCard.linkPath);
     }
     
     // performanceMonitor.endTiming('card-click');
-  }, [card, onCardClick, normalizedCard.linkPath]);
+  }, [card, onCardClick, normalizedCard.linkPath, router]);
 
   const handleMagnifyClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -469,23 +472,16 @@ const UnifiedCard = memo(({
       >
       {/* Card Image */}
       <div className="relative w-full">
-        <Link 
-          href={normalizedCard.linkPath}
-          className="block w-full"
-          tabIndex={-1}
-          onClick={e => e.stopPropagation()}
-        >
-            <OptimizedImage 
-              src={normalizedCard.image} 
-              alt={normalizedCard.name}
-              width={imageWidth}
-              height={imageHeight}
-              className="w-full h-auto object-cover"
-              placeholder="blur"
-              onError={handleImageError}
-              priority={card.priority || false}
-            />
-        </Link>
+        <OptimizedImage 
+          src={normalizedCard.image} 
+          alt={normalizedCard.name}
+          width={imageWidth}
+          height={imageHeight}
+          className="w-full h-auto object-cover"
+          placeholder="blur"
+          onError={handleImageError}
+          priority={card.priority || false}
+        />
 
         {/* Holographic Shine Overlay - Only for rare cards, more subtle for Pocket cards */}
         {shouldHaveHolographicEffect(normalizedCard.rarity) && cardType !== "pocket" && (

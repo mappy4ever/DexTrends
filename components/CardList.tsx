@@ -4,6 +4,7 @@ import Modal from "./ui/modals/Modal";
 import UnifiedCard from "./ui/cards/UnifiedCard";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import { InlineLoadingSpinner } from "./ui/loading/LoadingSpinner";
+import { CardGridSkeleton } from "./ui/SkeletonLoader";
 import { isFeatureEnabled } from "../utils/featureFlags";
 import { TCGCard } from "../types/api/cards";
 
@@ -111,25 +112,37 @@ const CardList = memo<CardListProps>(({
 
   return (
     <div className="w-full max-w-[1800px] mx-auto px-2 sm:px-4 transition-all duration-300 animate-fadeIn">
-      {loading && <p className="text-center text-content-muted">Loading cards...</p>}
       {error && <p className="text-center text-red-500">{error}</p>}
 
-      <div className="flex justify-center mb-6">
-        <label htmlFor="sort" className="mr-2 font-semibold">Sort by:</label>
-        <select
-          id="sort"
-          value={sortOption}
-          onChange={handleSortChange}
-          className="border border-gray-300 rounded px-3 py-1"
-        >
-          <option value="price">Price</option>
-          <option value="releaseDate">Release Date</option>
-          <option value="rarity">Rarity</option>
-        </select>
-      </div>
+      {!loading && (
+        <div className="flex justify-center mb-6">
+          <label htmlFor="sort" className="mr-2 font-semibold">Sort by:</label>
+          <select
+            id="sort"
+            value={sortOption}
+            onChange={handleSortChange}
+            className="border border-gray-300 rounded px-3 py-1"
+          >
+            <option value="price">Price</option>
+            <option value="releaseDate">Release Date</option>
+            <option value="rarity">Rarity</option>
+          </select>
+        </div>
+      )}
 
-      {/* Card grid: always one big flex-wrap, not split by anything else */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4">
+      {/* Show skeleton loading when loading */}
+      {loading ? (
+        <CardGridSkeleton 
+          count={24}
+          columns={8}
+          showPrice={true}
+          showSet={true}
+          showTypes={true}
+          className="animate-fadeIn"
+        />
+      ) : (
+        /* Card grid: always one big flex-wrap, not split by anything else */
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4">
         {visibleCards.map((card) => {
           // Add current price to card object for UnifiedCard to access
           const cardWithPrice: CardWithPrice = {
@@ -152,10 +165,11 @@ const CardList = memo<CardListProps>(({
             />
           );
         })}
-      </div>
+        </div>
+      )}
 
       {/* Intersection Observer sentinel for infinite scroll */}
-      {hasMore && (
+      {!loading && hasMore && (
         <div 
           ref={sentinelRef} 
           className="h-20 w-full flex items-center justify-center mt-4"
