@@ -43,7 +43,7 @@ export default function RegionNavigation({ currentRegion }: RegionNavigationProp
     <div className="fixed top-1/2 -translate-y-1/2 left-0 right-0 flex justify-between items-center px-4 md:px-8 pointer-events-none z-30">
       {/* Previous Region */}
       {prevRegion && (
-        <Link href={`/regions/${prevRegion}`}>
+        <Link href={`/pokemon/regions/${prevRegion}`}>
           <motion.div
             className="group flex items-center gap-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full px-4 py-3 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer pointer-events-auto"
             whileHover={{ x: -5 }}
@@ -65,7 +65,7 @@ export default function RegionNavigation({ currentRegion }: RegionNavigationProp
         <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full px-6 py-2 shadow-lg">
           <div className="flex items-center gap-2">
             {REGION_ORDER.map((region, index) => (
-              <Link key={region} href={`/regions/${region}`}>
+              <Link key={region} href={`/pokemon/regions/${region}`}>
                 <div
                   className={`w-2 h-2 rounded-full transition-all duration-300 cursor-pointer hover:scale-150 ${
                     region === currentRegion.toLowerCase()
@@ -82,7 +82,7 @@ export default function RegionNavigation({ currentRegion }: RegionNavigationProp
 
       {/* Next Region */}
       {nextRegion && (
-        <Link href={`/regions/${nextRegion}`}>
+        <Link href={`/pokemon/regions/${nextRegion}`}>
           <motion.div
             className="group flex items-center gap-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full px-4 py-3 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer pointer-events-auto"
             whileHover={{ x: 5 }}

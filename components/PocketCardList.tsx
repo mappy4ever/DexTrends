@@ -4,8 +4,8 @@ import Image from "next/image";
 import Modal from "./ui/modals/Modal";
 import UnifiedCard from "./ui/cards/UnifiedCard";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
-import { InlineLoadingSpinner } from "./ui/loading/LoadingSpinner";
-import { CardGridSkeleton } from "./ui/SkeletonLoader";
+import { InlineLoader } from "../utils/unifiedLoading";
+import { SmartSkeleton } from "./ui/SkeletonLoader";
 import { isFeatureEnabled } from "../utils/featureFlags";
 import type { PocketCard } from "../types/api/pocket-cards";
 
@@ -208,11 +208,10 @@ export default function PocketCardList({
 
   if (loading) {
     return (
-      <CardGridSkeleton 
+      <SmartSkeleton 
+        type="card-grid"
         count={20}
-        columns={5}
         showPrice={false}
-        showSet={false}
         showTypes={true}
         showHP={true}
         className="animate-fadeIn"
@@ -294,10 +293,7 @@ export default function PocketCardList({
         style={{ minHeight: '80px' }}
       >
         {scrollLoading ? (
-          <InlineLoadingSpinner 
-            text="Loading more cards..." 
-            className="py-4"
-          />
+          <InlineLoader text="Loading more cards..." />
         ) : (
           <div className="h-20" /> 
         )}

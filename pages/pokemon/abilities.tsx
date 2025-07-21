@@ -182,7 +182,7 @@ const AbilitiesPage: NextPage = () => {
         const response = await fetchData(`https://pokeapi.co/api/v2/ability?limit=350`) as { results: Array<{ name: string; url: string }> };
         
         // Fetch details for abilities
-        const abilityDetailsPromises = response.results.slice(0, 200).map(ability => 
+        const abilityDetailsPromises = (response?.results?.slice(0, 200) || []).map(ability => 
           fetchData(ability.url)
         );
         

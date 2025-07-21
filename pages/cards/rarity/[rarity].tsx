@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import CardList from "../../../components/CardList";
-import LoadingSpinner from "../../../components/ui/loading/LoadingSpinner";
+import { PageLoader } from "../../../utils/unifiedLoading";
 import { getPokemonSDK } from "../../../utils/pokemonSDK";
 import type { TCGCard } from "../../../types/api/cards";
 
@@ -62,7 +62,7 @@ export default function CardsByRarityPage() {
         Cards with Rarity: <span className="uppercase text-primary">{rarity}</span>
       </h1>
       {loading ? (
-        <LoadingSpinner />
+        <PageLoader text="Loading cards..." />
       ) : error ? (
         <div className="text-center text-red-500 my-8">{error}</div>
       ) : (

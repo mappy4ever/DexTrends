@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useTheme } from '../context/UnifiedAppContext';
 import { DynamicCollectionManager, DynamicPriceAlerts } from '../components/dynamic/DynamicComponents';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
+import PageErrorBoundary from '../components/ui/PageErrorBoundary';
 import type { NextPage } from 'next';
 
 interface Tab {
@@ -48,7 +49,8 @@ const CollectionsPage: NextPage = () => {
   ];
 
   return (
-    <FullBleedWrapper gradient="collections">
+    <PageErrorBoundary pageName="Collections">
+      <FullBleedWrapper gradient="collections">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-8">
@@ -68,11 +70,11 @@ const CollectionsPage: NextPage = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`px-6 py-3 rounded-full font-medium transition-all duration-200 flex items-center gap-2 transform hover:scale-105 ${
+                  className={`btn ${
                     activeTab === tab.id
-                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
-                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100/80 dark:hover:bg-gray-700/80'
-                  }`}
+                      ? 'btn-primary'
+                      : 'btn-ghost'
+                  } flex items-center gap-2`}
                 >
                   <span className="text-lg">{tab.icon}</span>
                   {tab.label}
@@ -101,7 +103,8 @@ const CollectionsPage: NextPage = () => {
           )}
         </div>
       </div>
-    </FullBleedWrapper>
+      </FullBleedWrapper>
+    </PageErrorBoundary>
   );
 };
 
@@ -142,7 +145,7 @@ const PortfolioOverview: React.FC = () => {
     <div className="space-y-6">
       {/* Portfolio Summary */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl shadow-lg p-6 hover:shadow-xl transition-all transform hover:scale-105">
+        <div className="card hover-enhance">
           <div className="text-sm text-gray-500 dark:text-gray-400">Total Value</div>
           <div className="text-3xl font-bold text-green-600">
             {formatCurrency(portfolioData.totalValue)}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FadeIn, SlideUp, CardHover } from '../ui/animations/animations';
 import { TypeBadge } from '../ui/TypeBadge';
@@ -48,6 +49,7 @@ interface RegionalVariantsProps {
 }
 
 const RegionalVariants: React.FC<RegionalVariantsProps> = ({ region, theme }) => {
+  const router = useRouter();
 
   // Regional variant data by region
   const regionalVariantsData: Record<string, RegionVariantData> = {
@@ -625,9 +627,70 @@ const RegionalVariants: React.FC<RegionalVariantsProps> = ({ region, theme }) =>
         {/* Simplified Variants Grid - Pokédex Style */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
           {filteredVariants.map((variant, index) => {
-            // Extract Pokémon ID from the variant image URL
-            const variantImageUrl = variant.variantImage;
-            const pokemonId = variantImageUrl.match(/\/(\d+)\.png$/)?.[1];
+            // Map variant names to their base Pokemon IDs for proper navigation
+            const pokemonIdMap: Record<string, string> = {
+              // Alolan Forms
+              'Rattata': '19',
+              'Raticate': '20',
+              'Raichu': '26',
+              'Sandshrew': '27',
+              'Sandslash': '28',
+              'Vulpix': '37',
+              'Ninetales': '38',
+              'Diglett': '50',
+              'Dugtrio': '51',
+              'Meowth': '52',
+              'Persian': '53',
+              'Geodude': '74',
+              'Graveler': '75',
+              'Golem': '76',
+              'Grimer': '88',
+              'Muk': '89',
+              'Exeggutor': '103',
+              'Marowak': '105',
+              // Galarian Forms
+              'Ponyta': '77',
+              'Rapidash': '78',
+              'Slowpoke': '79',
+              'Slowbro': '80',
+              "Farfetch'd": '83',
+              'Weezing': '110',
+              'Mr. Mime': '122',
+              'Articuno': '144',
+              'Zapdos': '145',
+              'Moltres': '146',
+              'Slowking': '199',
+              'Corsola': '222',
+              'Zigzagoon': '263',
+              'Linoone': '264',
+              'Darumaka': '554',
+              'Darmanitan': '555',
+              'Yamask': '562',
+              'Stunfisk': '618',
+              // Hisuian Forms
+              'Growlithe': '58',
+              'Arcanine': '59',
+              'Voltorb': '100',
+              'Electrode': '101',
+              'Typhlosion': '157',
+              'Qwilfish': '211',
+              'Sneasel': '215',
+              'Sliggoo': '705',
+              'Goodra': '706',
+              'Avalugg': '713',
+              'Decidueye': '724',
+              'Braviary': '628',
+              'Lilligant': '549',
+              'Zorua': '570',
+              'Zoroark': '571',
+              'Samurott': '503',
+              // Paldean Forms
+              'Wooper': '194',
+              'Tauros': '128',
+            };
+            
+            const basePokemonId = pokemonIdMap[variant.name];
+            const regionName = region.id.charAt(0).toUpperCase() + region.id.slice(1);
             
             return (
               <SlideUp key={variant.name} delay={index * 0.05}>
@@ -637,8 +700,9 @@ const RegionalVariants: React.FC<RegionalVariantsProps> = ({ region, theme }) =>
                       theme === 'dark' ? 'bg-gray-800' : 'bg-white'
                     } shadow-md hover:shadow-xl`}
                     onClick={() => {
-                      if (pokemonId) {
-                        window.location.href = `/pokedex/${pokemonId}`;
+                      if (basePokemonId) {
+                        // Navigate to base Pokemon with form parameter
+                        router.push(`/pokedex/${basePokemonId}?form=${regionName}`);
                       }
                     }}
                   >

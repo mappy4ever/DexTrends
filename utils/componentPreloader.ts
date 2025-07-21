@@ -212,7 +212,6 @@ class ComponentPreloader {
       ],
       '/pokedex': [
         () => import('../components/ui/TypeBadge'),
-        () => import('../components/ui/loading/PokemonLoadingScreen'),
       ],
       '/cards': [
         () => import('../components/ui/charts/PriceHistoryChart'),
@@ -220,7 +219,6 @@ class ComponentPreloader {
       ],
       '/trending': [
         () => import('../components/ui/charts/PriceHistoryChart'),
-        () => import('echarts-for-react'),
       ],
       '/tcgsets': [
         () => import('../components/CardList'),
@@ -243,11 +241,6 @@ class ComponentPreloader {
       {
         import: () => import('../components/ui/modals/Modal'),
         name: 'Modal',
-        priority: 'critical'
-      },
-      {
-        import: () => import('../components/ui/loading/LoadingSpinner'),
-        name: 'LoadingSpinner',
         priority: 'critical'
       },
       {

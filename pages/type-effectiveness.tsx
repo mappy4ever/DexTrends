@@ -4,7 +4,7 @@ import { fetchData } from '../utils/apiutils';
 import { TypeBadge } from '../components/ui/TypeBadge';
 import { TypeAnalysisCard, DualTypeCalculator } from '../components/ui/TypeAnalysis';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
-import { PokemonLoadingScreen } from '../components/ui/loading/UnifiedLoadingScreen';
+import { PageLoader } from '../utils/unifiedLoading';
 import { NextPage } from 'next';
 
 // Type definitions
@@ -118,8 +118,8 @@ const TypeEffectiveness: NextPage = () => {
         data[type] = {
           name: type,
           damageRelations: typeInfo.damage_relations,
-          pokemon: typeInfo.pokemon.slice(0, 10), // Get first 10 for examples
-          moves: typeInfo.moves.slice(0, 5), // Get first 5 moves
+          pokemon: typeInfo.pokemon?.slice(0, 10) || [], // Get first 10 for examples
+          moves: typeInfo.moves?.slice(0, 5) || [], // Get first 5 moves
           generation: typeInfo.generation
         };
       } catch (error) {
@@ -136,6 +136,7 @@ const TypeEffectiveness: NextPage = () => {
     if (!typeData[attackType]) return 1;
     
     const relations = typeData[attackType].damageRelations;
+    if (!relations) return 1;
     
     // Check for no effect
     if (relations.no_damage_to?.some(t => t.name === defendType)) return 0;
@@ -149,7 +150,18 @@ const TypeEffectiveness: NextPage = () => {
     return 1;
   };
 
-  const TypeChart = () => (
+  const TypeChart = () => {
+    // Don't render if type data is not loaded
+    if (Object.keys(typeData).length === 0) {
+      return (
+        <div className="bg-white rounded-xl shadow-lg p-6">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Type Effectiveness Chart</h2>
+          <p className="text-center text-gray-600">Loading type data...</p>
+        </div>
+      );
+    }
+    
+    return (
     <div className="bg-white rounded-xl shadow-lg p-6">
       <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Type Effectiveness Chart</h2>
       
@@ -187,7 +199,7 @@ const TypeEffectiveness: NextPage = () => {
                         }}
                         title={`${attackType.toUpperCase()} vs ${defendType.toUpperCase()}: ${style.text}`}
                     >
-                      {effectiveness === 1 ? '1' : effectiveness === 0 ? '0' : effectiveness}
+                      {effectiveness === 1 ? '1x' : effectiveness === 0 ? '0x' : `${effectiveness}x`}
                       
                       {/* Hover tooltip */}
                       <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity z-10 whitespace-nowrap">
@@ -212,7 +224,8 @@ const TypeEffectiveness: NextPage = () => {
         ))}
       </div>
     </div>
-  );
+    );
+  };
 
   const InteractiveSelector = () => (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -650,12 +663,7 @@ const TypeEffectiveness: NextPage = () => {
 
   if (loading) {
     return (
-      <PokemonLoadingScreen
-        message="Loading type effectiveness data..."
-        showFacts={false}
-        overlay={false}
-        preventFlash={true}
-      />
+      <PageLoader text="Loading type effectiveness data..." />
     );
   }
 

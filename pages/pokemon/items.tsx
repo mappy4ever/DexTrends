@@ -177,7 +177,7 @@ const ItemsPage: NextPage = () => {
         const response = await fetchData(`https://pokeapi.co/api/v2/item?limit=300`) as { results: Array<{ name: string; url: string }> };
         
         // Fetch details for first batch of items
-        const itemDetailsPromises = response.results.slice(0, 150).map(item => 
+        const itemDetailsPromises = (response?.results?.slice(0, 150) || []).map(item => 
           fetchData(item.url)
         );
         

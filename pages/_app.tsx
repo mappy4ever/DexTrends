@@ -6,16 +6,20 @@ import "../styles/globals.css";
 import "../styles/unified-mobile.css";
 import "../styles/ios-scrolling-fix.css";
 import "../styles/desktop-tabs.css";
+import "../styles/responsive-breakpoint-fixes.css";
 import "../styles/pokemon-animations.css";
 import "../styles/design-system.css";
 import "../styles/animations.css";
 import "../styles/card-types.css";
+import "../styles/unified-components.css";
 import "../components/typebadge.css";
 import Layout from "../components/layout/Layout";
 import ErrorBoundary from "../components/layout/ErrorBoundary";
+import { AnimatePresence } from "framer-motion";
 import { PageTransition } from "../components/ui/animations/AnimationSystem";
 import { UnifiedAppProvider } from '../context/UnifiedAppContext';
 import GlobalErrorHandler from '../components/GlobalErrorHandler';
+import { PWAProvider } from '../components/pwa/PWAProvider';
 
 // Enhanced dynamic imports with comprehensive loading
 import dynamic from 'next/dynamic';
@@ -33,14 +37,44 @@ const AccessibilityProvider = dynamic(() => import('../components/ui/Accessibili
   loading: () => <div />
 });
 
-const UnifiedLoadingScreen = dynamic(() => import('../components/ui/loading/UnifiedLoadingScreen'), {
+// Keyboard shortcuts manager
+const KeyboardShortcutsManager = dynamic(() => import('../components/qol/KeyboardShortcuts'), {
   ssr: false,
-  loading: () => <div className="fixed inset-0 bg-white dark:bg-gray-900 z-50" />
+  loading: () => null
 });
 
-const PokemonLoadingScreen = dynamic(() => import('../components/ui/loading/PokemonLoadingScreen'), {
+// Mobile push notifications
+const PushNotifications = dynamic(() => import('../components/mobile/PushNotifications'), {
   ssr: false,
-  loading: () => <div className="fixed inset-0 bg-white dark:bg-gray-900 z-50" />
+  loading: () => null
+});
+
+// Global search shortcuts with command palette
+const GlobalSearchShortcuts = dynamic(() => import('../components/qol/SmartSearchEnhancer').then(mod => ({ default: mod.GlobalSearchShortcuts })), {
+  ssr: false,
+  loading: () => null
+});
+
+// Preferences manager
+const PreferencesManager = dynamic(() => import('../components/qol/PreferencesManager'), {
+  ssr: false,
+  loading: () => null
+});
+
+// QOL Component System
+const NotificationProvider = dynamic(() => import('../components/qol/NotificationSystem'), {
+  ssr: false,
+  loading: () => null
+});
+
+const ContextualHelpProvider = dynamic(() => import('../components/qol/ContextualHelp'), {
+  ssr: false,
+  loading: () => null
+});
+
+const PreferencesProvider = dynamic(() => import('../components/qol/UserPreferences'), {
+  ssr: false,
+  loading: () => null
 });
 
 // Simple throttle function
@@ -104,34 +138,57 @@ function MyApp({ Component, pageProps, router }: MyAppProps) {
   return (
     <ErrorBoundary>
       <GlobalErrorHandler />
-      <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
-        <meta name="theme-color" content="#dc2626" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="format-detection" content="telephone=no" />
-        <link rel="preconnect" href="https://pokeapi.co" />
-        <link rel="preconnect" href="https://api.pokemontcg.io" />
-        <link rel="dns-prefetch" href="https://images.pokemontcg.io" />
-        <link rel="prefetch" href="/back-card.png" />
-        <link rel="manifest" href="/manifest.json" />
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/icon-192x192.png" />
-        <meta name="description" content="Discover, track, and explore Pokémon TCG card prices and trends in a beautiful Pokédex-inspired experience." />
-        <meta name="keywords" content="Pokemon, TCG, cards, prices, trends, pokedex, collection, trading cards" />
-      </Head>
-      
-      {/* AccessibilityProvider disabled to stop refresh */}
-      
-      <UnifiedAppProvider>
-        <Layout fullBleed={Component.fullBleed}>
-          <PageTransition key={nextRouter.asPath}>
-            <Component {...pageProps} />
-          </PageTransition>
-          
-          {/* EMERGENCY: All enhancements disabled to stop refresh loop */}
-        </Layout>
-      </UnifiedAppProvider>
+      <PWAProvider>
+        <Head>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
+          <meta name="theme-color" content="#dc2626" />
+          <meta name="apple-mobile-web-app-capable" content="yes" />
+          <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+          <meta name="format-detection" content="telephone=no" />
+          <link rel="preconnect" href="https://pokeapi.co" />
+          <link rel="preconnect" href="https://api.pokemontcg.io" />
+          <link rel="dns-prefetch" href="https://images.pokemontcg.io" />
+          <link rel="prefetch" href="/back-card.png" />
+          <link rel="manifest" href="/manifest.json" />
+          <link rel="icon" href="/favicon.ico" />
+          <link rel="apple-touch-icon" href="/icon-192x192.png" />
+          <meta name="description" content="Discover, track, and explore Pokémon TCG card prices and trends in a beautiful Pokédex-inspired experience." />
+          <meta name="keywords" content="Pokemon, TCG, cards, prices, trends, pokedex, collection, trading cards" />
+        </Head>
+        
+        {/* AccessibilityProvider disabled to stop refresh */}
+        
+        <UnifiedAppProvider>
+        {isClient && <NotificationProvider>
+          <ContextualHelpProvider>
+            <PreferencesProvider>
+              <Layout fullBleed={Component.fullBleed}>
+                <AnimatePresence mode="wait" initial={false}>
+                  <PageTransition key={nextRouter.asPath}>
+                    <Component {...pageProps} />
+                  </PageTransition>
+                </AnimatePresence>
+                
+                {/* QOL System Components */}
+                <KeyboardShortcutsManager />
+                <GlobalSearchShortcuts />
+                <PreferencesManager />
+                
+                {/* Mobile features */}
+                <PushNotifications />
+              </Layout>
+            </PreferencesProvider>
+          </ContextualHelpProvider>
+        </NotificationProvider>}
+        {!isClient && (
+          <Layout fullBleed={Component.fullBleed}>
+            <PageTransition key={nextRouter.asPath}>
+              <Component {...pageProps} />
+            </PageTransition>
+          </Layout>
+        )}
+        </UnifiedAppProvider>
+      </PWAProvider>
     </ErrorBoundary>
   );
 }

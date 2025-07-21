@@ -50,6 +50,8 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [portfolioValue, setPortfolioValue] = useState(0);
   const [mounted, setMounted] = useState(false);
+  const [showImportModal, setShowImportModal] = useState(false);
+  const [importError, setImportError] = useState<string | null>(null);
 
   // Handle mounting
   useEffect(() => {
@@ -315,6 +317,183 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
     }
   };
 
+  const exportCollection = useCallback((format: 'json' | 'csv' = 'json') => {
+    if (!selectedCollection) return;
+
+    if (format === 'json') {
+      // Export as JSON
+      const stats = {
+        totalCards: selectedCollection.cards.reduce((sum, card) => sum + (card.quantity || 1), 0),
+        uniqueCards: selectedCollection.cards.length,
+        totalValue: portfolioValue
+      };
+      
+      const exportData = {
+        name: selectedCollection.name,
+        description: selectedCollection.description,
+        exportDate: new Date().toISOString(),
+        cards: selectedCollection.cards,
+        stats
+      };
+
+      const dataStr = JSON.stringify(exportData, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${selectedCollection.name.replace(/[^a-z0-9]/gi, '_')}_collection.json`;
+      link.click();
+      URL.revokeObjectURL(url);
+    } else {
+      // Export as CSV
+      const headers = ['Card ID', 'Card Name', 'Set Name', 'Quantity', 'Condition', 'Purchase Price', 'Notes', 'Date Added'];
+      const rows = selectedCollection.cards.map(card => [
+        card.card_id,
+        card.card_name,
+        card.set_name,
+        card.quantity,
+        card.condition,
+        card.purchase_price || '',
+        card.notes || '',
+        card.date_added
+      ]);
+
+      const csvContent = [
+        headers.join(','),
+        ...rows.map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+      ].join('\n');
+
+      const dataBlob = new Blob([csvContent], { type: 'text/csv' });
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${selectedCollection.name.replace(/[^a-z0-9]/gi, '_')}_collection.csv`;
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+  }, [selectedCollection, portfolioValue]);
+
+  const updateCollection = async (collectionId: string, updates: Partial<Collection>) => {
+    try {
+      const sessionId = userId || getSessionId();
+      const table = userId ? 'user_collections' : 'session_collections';
+      const idField = userId ? 'user_id' : 'session_id';
+
+      const { data, error } = await supabase
+        .from(table)
+        .update(updates)
+        .eq('id', collectionId)
+        .eq(idField, sessionId!)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      setCollections(prev => prev.map(c => c.id === collectionId ? data : c));
+      if (selectedCollection?.id === collectionId) {
+        setSelectedCollection(data);
+      }
+    } catch (error) {
+      console.error('Error updating collection:', error);
+    }
+  };
+
+  const importCollection = useCallback(async (file: File) => {
+    setImportError(null);
+    
+    try {
+      const text = await file.text();
+      
+      if (file.name.endsWith('.json')) {
+        // Import JSON
+        const data = JSON.parse(text);
+        
+        // Validate structure
+        if (!data.cards || !Array.isArray(data.cards)) {
+          throw new Error('Invalid collection format: missing cards array');
+        }
+
+        // Create new collection or update existing
+        if (selectedCollection) {
+          // Merge with existing collection
+          const existingCardIds = new Set(selectedCollection.cards.map(c => c.card_id));
+          const newCards = data.cards.filter((card: CollectionCard) => !existingCardIds.has(card.card_id));
+          
+          const updatedCards = [...selectedCollection.cards, ...newCards];
+          await updateCollection(selectedCollection.id, { cards: updatedCards });
+        } else {
+          // Create new collection
+          await createCollection(
+            data.name || 'Imported Collection',
+            data.description || `Imported on ${new Date().toLocaleDateString()}`
+          );
+          
+          // Add cards to the newly created collection
+          if (collections.length > 0) {
+            const newCollection = collections[0];
+            await updateCollection(newCollection.id, { cards: data.cards });
+          }
+        }
+      } else if (file.name.endsWith('.csv')) {
+        // Import CSV
+        const lines = text.split('\n').filter(line => line.trim());
+        if (lines.length < 2) {
+          throw new Error('CSV file is empty or has no data rows');
+        }
+
+        // Parse headers
+        const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim().toLowerCase());
+        
+        // Map headers to expected fields
+        const cardIdIndex = headers.findIndex(h => h.includes('card') && h.includes('id'));
+        const nameIndex = headers.findIndex(h => h.includes('name') && !h.includes('set'));
+        const setIndex = headers.findIndex(h => h.includes('set'));
+        const quantityIndex = headers.findIndex(h => h.includes('quantity') || h.includes('qty'));
+        
+        if (cardIdIndex === -1 || nameIndex === -1) {
+          throw new Error('CSV must contain at least Card ID and Card Name columns');
+        }
+
+        // Parse rows
+        const cards: CollectionCard[] = [];
+        for (let i = 1; i < lines.length; i++) {
+          const values = lines[i].match(/(".*?"|[^,]+)/g) || [];
+          const cleanValues = values.map(v => v.replace(/^"|"$/g, '').replace(/""/g, '"'));
+          
+          if (cleanValues[cardIdIndex] && cleanValues[nameIndex]) {
+            cards.push({
+              card_id: cleanValues[cardIdIndex],
+              card_name: cleanValues[nameIndex],
+              set_name: setIndex >= 0 ? cleanValues[setIndex] : 'Unknown Set',
+              image_url: '', // Will be populated when adding to collection
+              quantity: quantityIndex >= 0 ? parseInt(cleanValues[quantityIndex]) || 1 : 1,
+              condition: 'Near Mint',
+              notes: '',
+              date_added: new Date().toISOString(),
+              purchase_price: null
+            });
+          }
+        }
+
+        if (cards.length === 0) {
+          throw new Error('No valid cards found in CSV');
+        }
+
+        // Create new collection with imported cards
+        await createCollection(
+          'Imported from CSV',
+          `Imported ${cards.length} cards on ${new Date().toLocaleDateString()}`
+        );
+      } else {
+        throw new Error('Unsupported file format. Please use JSON or CSV.');
+      }
+
+      setShowImportModal(false);
+    } catch (error) {
+      setImportError(error instanceof Error ? error.message : 'Failed to import collection');
+    }
+  }, [selectedCollection, collections, createCollection, updateCollection]);
+
   const getCollectionStats = useMemo((): CollectionStats => {
     if (!selectedCollection?.cards) return { totalCards: 0, uniqueCards: 0, totalValue: 0 };
 
@@ -414,14 +593,55 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
           {/* Collection Cards */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg">
             <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                {selectedCollection.name}
-              </h3>
-              {selectedCollection.description && (
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                  {selectedCollection.description}
-                </p>
-              )}
+              <div className="flex items-start justify-between">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    {selectedCollection.name}
+                  </h3>
+                  {selectedCollection.description && (
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                      {selectedCollection.description}
+                    </p>
+                  )}
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setShowImportModal(true)}
+                    className="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center gap-1"
+                    title="Import cards"
+                  >
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                    Import
+                  </button>
+                  <div className="relative group">
+                    <button
+                      className="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center gap-1"
+                      title="Export collection"
+                    >
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
+                      </svg>
+                      Export
+                    </button>
+                    <div className="absolute right-0 mt-1 w-32 bg-white dark:bg-gray-800 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
+                      <button
+                        onClick={() => exportCollection('json')}
+                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      >
+                        As JSON
+                      </button>
+                      <button
+                        onClick={() => exportCollection('csv')}
+                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      >
+                        As CSV
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="p-4">
               {selectedCollection.cards && selectedCollection.cards.length > 0 ? (
@@ -523,6 +743,66 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
           onAddCard={addCardToCollection}
           onCancel={() => setShowAddCardModal(false)}
         />
+      </Modal>
+
+      {/* Import Modal */}
+      <Modal
+        isOpen={showImportModal}
+        onClose={() => {
+          setShowImportModal(false);
+          setImportError(null);
+        }}
+        title="Import Collection"
+      >
+        <div className="space-y-4">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Import your collection from a JSON or CSV file. CSV files should include columns for Card ID, Card Name, Set Name, and Quantity.
+          </p>
+          
+          {importError && (
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md p-3">
+              <p className="text-sm text-red-600 dark:text-red-400">{importError}</p>
+            </div>
+          )}
+
+          <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center">
+            <input
+              type="file"
+              accept=".json,.csv"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  importCollection(file);
+                }
+              }}
+              className="hidden"
+              id="import-file-input"
+            />
+            <label
+              htmlFor="import-file-input"
+              className="cursor-pointer"
+            >
+              <svg className="w-12 h-12 text-gray-400 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+              </svg>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                Click to select a file or drag and drop
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-500">
+                Supported formats: JSON, CSV
+              </p>
+            </label>
+          </div>
+
+          <div className="bg-gray-50 dark:bg-gray-800 rounded-md p-3">
+            <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">CSV Format Example:</h4>
+            <pre className="text-xs text-gray-600 dark:text-gray-400 overflow-x-auto">
+Card ID,Card Name,Set Name,Quantity
+sm1-1,Bulbasaur,Sun & Moon,2
+xy1-54,Charizard,XY Base,1
+            </pre>
+          </div>
+        </div>
       </Modal>
     </div>
   );

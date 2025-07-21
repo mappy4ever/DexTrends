@@ -1,0 +1,114 @@
+# Page snapshot
+
+```yaml
+- link "DexTrends":
+  - /url: /
+  - img
+  - text: DexTrends
+- navigation:
+  - link "Home":
+    - /url: /
+    - img
+    - text: Home
+  - link "Pokémon TCG":
+    - /url: /tcgsets
+    - img
+    - text: Pokémon TCG
+    - img
+  - link "Pokédex":
+    - /url: /pokedex
+    - img
+    - text: Pokédex
+  - link "Pokémon":
+    - /url: /pokemon
+    - img
+    - text: Pokémon
+    - img
+  - link "Battle":
+    - /url: /battle-simulator
+    - img
+    - text: Battle
+    - img
+  - link "Pocket":
+    - /url: /pocketmode
+    - img
+    - text: Pocket
+    - img
+  - link "Fun":
+    - /url: /fun
+    - img
+    - text: Fun
+- button "Open global search":
+  - img
+- link "View favorites":
+  - /url: /favorites
+  - img
+- button "Activate dark mode":
+  - img
+- main:
+  - button "Back to Pokédex":
+    - img
+    - text: Back to Pokédex
+  - button "🤍 Add to Favorites"
+  - img "test-pokemon-83"
+  - heading "test-pokemon-83" [level=1]
+  - paragraph: Unknown Pokémon
+  - text: "Normal Height: 1.0m Weight: 10.0kg"
+  - heading "Description" [level=3]
+  - paragraph: Test flavor text for species 83
+  - heading "National №" [level=4]
+  - paragraph: "#0083"
+  - heading "Generation" [level=4]
+  - paragraph: "1"
+  - heading "Egg Groups" [level=4]
+  - paragraph: Unknown
+  - heading "Gender Ratio" [level=4]
+  - text: ♂ NaN% ♀ NaN%
+  - heading "Catch Rate" [level=4]
+  - img
+  - text: "?"
+  - paragraph: Unknown
+  - paragraph: Unknown
+  - heading "Base Stats Total" [level=4]
+  - paragraph: "300"
+  - button "📋 overview"
+  - button "📊 stats"
+  - button "🔄 evolution"
+  - button "⚔️ moves"
+  - button "🎴 cards"
+  - heading "Abilities" [level=3]
+  - heading "test ability" [level=4]
+  - heading "Evolution Chain" [level=3]
+  - 'link "farfetchd farfetchd #083 Normal"':
+    - /url: /pokedex/83
+    - img "farfetchd"
+    - paragraph: farfetchd
+    - paragraph: "#083"
+    - text: Normal
+  - button "Shiny":
+    - img
+    - text: Shiny
+  - heading "Type Effectiveness" [level=3]
+  - heading "Weak to (2x damage)" [level=4]
+  - text: fighting 2×
+  - heading "Immune to (0x damage)" [level=4]
+  - text: ghost 0× Press ? for shortcuts 🔕
+  - heading "Push Notifications" [level=3]
+  - paragraph: Blocked by user
+  - button "Enable"
+- contentinfo:
+  - paragraph:
+    - text: © 2025 DexTrends - A
+    - link "PakePoint":
+      - /url: https://www.pakepoint.com
+    - text: Project. All rights reserved.
+- button "Open card comparison tool":
+  - img
+- text: Compare Cards
+- button "💡"
+- button:
+  - img
+- alert: /pokedex/83
+- button "Open Next.js Dev Tools":
+  - img
+```

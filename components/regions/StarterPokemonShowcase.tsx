@@ -976,7 +976,7 @@ const StarterPokemonShowcase: React.FC<StarterPokemonShowcaseProps> = ({ region,
                               e.stopPropagation();
                               const firstEvolution = getEvolutionChain(starterName)[0];
                               if (firstEvolution) {
-                                window.location.href = `/pokedex/${firstEvolution.id}`;
+                                router.push(`/pokedex/${firstEvolution.id}`);
                               }
                             }}
                           >
@@ -1113,7 +1113,7 @@ const StarterPokemonShowcase: React.FC<StarterPokemonShowcaseProps> = ({ region,
                             onClick={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
-                              window.location.href = `/pokedex/${evo.id}`;
+                              router.push(`/pokedex/${evo.id}`);
                             }}
                           >
                             <div className="w-24 h-24 relative mx-auto mb-2 group-hover:drop-shadow-lg transition-all">

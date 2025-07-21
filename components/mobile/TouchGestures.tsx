@@ -56,6 +56,11 @@ interface TouchState {
   currentDistance: number;
   isScrolling: boolean;
   direction: 'horizontal' | 'vertical' | null;
+  velocityX: number;
+  velocityY: number;
+  lastMoveTime: number;
+  isDragging: boolean;
+  preventSwipe: boolean;
 }
 
 const TouchGestures: React.FC<TouchGesturesProps> = ({ 
@@ -88,8 +93,18 @@ const TouchGestures: React.FC<TouchGesturesProps> = ({
     initialDistance: 0,
     currentDistance: 0,
     isScrolling: false,
-    direction: null
+    direction: null,
+    velocityX: 0,
+    velocityY: 0,
+    lastMoveTime: 0,
+    isDragging: false,
+    preventSwipe: false
   });
+  
+  // Velocity threshold for distinguishing swipe from scroll
+  const VELOCITY_THRESHOLD = 0.5;
+  const DIRECTION_THRESHOLD = 5; // pixels before determining direction
+  const SCROLL_LOCK_ANGLE = 30; // degrees from vertical to lock as scroll
 
   const handleTouchStart = useCallback((e: TouchEvent) => {
     if (disabled || !isTouch) return;
@@ -97,14 +112,26 @@ const TouchGestures: React.FC<TouchGesturesProps> = ({
     const touches = e.touches;
     const touch = touches[0];
     
+    // Check if the target is scrollable
+    const target = e.target as HTMLElement;
+    const isScrollableElement = target.scrollHeight > target.clientHeight || 
+                              target.closest('.scrollable') !== null;
+    
     touchState.current = {
       ...touchState.current,
       startX: touch.clientX,
       startY: touch.clientY,
+      endX: touch.clientX,
+      endY: touch.clientY,
       startTime: Date.now(),
+      lastMoveTime: Date.now(),
       touchCount: touches.length,
       isScrolling: false,
-      direction: null
+      direction: null,
+      velocityX: 0,
+      velocityY: 0,
+      isDragging: false,
+      preventSwipe: isScrollableElement
     };
 
     // Handle pinch start
@@ -123,23 +150,54 @@ const TouchGestures: React.FC<TouchGesturesProps> = ({
   }, [disabled, isTouch, enablePinch]);
 
   const handleTouchMove = useCallback((e: TouchEvent) => {
-    if (disabled || !isTouch) return;
+    if (disabled || !isTouch || touchState.current.preventSwipe) return;
     
     const touches = e.touches;
     const touch = touches[0];
+    const now = Date.now();
     
     const deltaX = touch.clientX - touchState.current.startX;
     const deltaY = touch.clientY - touchState.current.startY;
-
+    const moveDeltaX = touch.clientX - touchState.current.endX;
+    const moveDeltaY = touch.clientY - touchState.current.endY;
+    const timeDelta = now - touchState.current.lastMoveTime;
+    
+    // Calculate instantaneous velocity
+    if (timeDelta > 0) {
+      touchState.current.velocityX = moveDeltaX / timeDelta;
+      touchState.current.velocityY = moveDeltaY / timeDelta;
+    }
+    
     // Determine scroll direction on first significant movement
-    if (!touchState.current.direction && (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10)) {
-      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+    if (!touchState.current.direction && 
+        (Math.abs(deltaX) > DIRECTION_THRESHOLD || Math.abs(deltaY) > DIRECTION_THRESHOLD)) {
+      
+      const angle = Math.abs(Math.atan2(deltaY, deltaX) * 180 / Math.PI);
+      
+      // Check if movement is mostly vertical (within SCROLL_LOCK_ANGLE degrees of vertical)
+      if (angle > (90 - SCROLL_LOCK_ANGLE) && angle < (90 + SCROLL_LOCK_ANGLE)) {
+        touchState.current.direction = 'vertical';
+        touchState.current.isScrolling = true;
+        touchState.current.preventSwipe = true;
+      } else if (Math.abs(touchState.current.velocityX) > VELOCITY_THRESHOLD) {
+        // Only consider horizontal if velocity is significant
         touchState.current.direction = 'horizontal';
+        touchState.current.isDragging = true;
+        // Prevent default to stop scrolling when swiping horizontally
+        if (enableSwipe) {
+          e.preventDefault();
+        }
       } else {
+        // Low velocity horizontal movement - likely scrolling
         touchState.current.direction = 'vertical';
         touchState.current.isScrolling = true;
       }
     }
+    
+    // Update position tracking
+    touchState.current.endX = touch.clientX;
+    touchState.current.endY = touch.clientY;
+    touchState.current.lastMoveTime = now;
 
     // Handle pinch
     if (enablePinch && touches.length === 2) {
@@ -196,30 +254,56 @@ const TouchGestures: React.FC<TouchGesturesProps> = ({
       touchState.current.lastTap = endTime;
     }
 
-    // Handle swipe
-    if (enableSwipe && !touchState.current.isScrolling && duration < 300) {
-      // Horizontal swipe
-      if (absDeltaX >= swipeThreshold && absDeltaX > absDeltaY * 2) {
-        utils.hapticFeedback('light');
-        
-        if (deltaX > 0) {
-          onSwipeRight && onSwipeRight({ distance: absDeltaX, duration });
-          logger.debug('Swipe right detected', { distance: absDeltaX });
-        } else {
-          onSwipeLeft && onSwipeLeft({ distance: absDeltaX, duration });
-          logger.debug('Swipe left detected', { distance: absDeltaX });
+    // Handle swipe with velocity-based detection
+    if (enableSwipe && !touchState.current.isScrolling && !touchState.current.preventSwipe) {
+      const velocityMagnitude = Math.sqrt(
+        touchState.current.velocityX ** 2 + touchState.current.velocityY ** 2
+      );
+      
+      // Check velocity threshold and gesture duration
+      if (velocityMagnitude > VELOCITY_THRESHOLD || (duration < 300 && duration > 50)) {
+        // Horizontal swipe
+        if (absDeltaX >= swipeThreshold && absDeltaX > absDeltaY * 1.5) {
+          utils.hapticFeedback('light');
+          
+          if (deltaX > 0) {
+            onSwipeRight && onSwipeRight({ distance: absDeltaX, duration });
+            logger.debug('Swipe right detected', { 
+              distance: absDeltaX, 
+              velocity: touchState.current.velocityX 
+            });
+          } else {
+            onSwipeLeft && onSwipeLeft({ distance: absDeltaX, duration });
+            logger.debug('Swipe left detected', { 
+              distance: absDeltaX, 
+              velocity: touchState.current.velocityX 
+            });
+          }
         }
-      }
-      // Vertical swipe
-      else if (absDeltaY >= swipeThreshold && absDeltaY > absDeltaX * 2) {
-        utils.hapticFeedback('light');
-        
-        if (deltaY > 0) {
-          onSwipeDown && onSwipeDown({ distance: absDeltaY, duration });
-          logger.debug('Swipe down detected', { distance: absDeltaY });
-        } else {
-          onSwipeUp && onSwipeUp({ distance: absDeltaY, duration });
-          logger.debug('Swipe up detected', { distance: absDeltaY });
+        // Vertical swipe (only if explicitly enabled and velocity is high)
+        else if (absDeltaY >= swipeThreshold && absDeltaY > absDeltaX * 1.5 && 
+                 Math.abs(touchState.current.velocityY) > VELOCITY_THRESHOLD * 1.5) {
+          utils.hapticFeedback('light');
+          
+          // Additional check to prevent accidental pull-to-refresh
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          
+          if (deltaY > 0 && scrollTop === 0) {
+            // Only trigger swipe down if not at top of page or velocity is very high
+            if (Math.abs(touchState.current.velocityY) > VELOCITY_THRESHOLD * 2) {
+              onSwipeDown && onSwipeDown({ distance: absDeltaY, duration });
+              logger.debug('Swipe down detected', { 
+                distance: absDeltaY, 
+                velocity: touchState.current.velocityY 
+              });
+            }
+          } else if (deltaY < 0) {
+            onSwipeUp && onSwipeUp({ distance: absDeltaY, duration });
+            logger.debug('Swipe up detected', { 
+              distance: absDeltaY, 
+              velocity: touchState.current.velocityY 
+            });
+          }
         }
       }
     }
@@ -245,7 +329,9 @@ const TouchGestures: React.FC<TouchGesturesProps> = ({
       ref={containerRef}
       className={`touch-gesture-container ${className}`}
       style={{
-        touchAction: disabled ? 'auto' : enableSwipe ? 'pan-y' : 'manipulation'
+        touchAction: disabled ? 'auto' : enableSwipe ? 'pan-y pinch-zoom' : 'manipulation',
+        WebkitUserSelect: 'none',
+        userSelect: 'none'
       }}
     >
       {children}

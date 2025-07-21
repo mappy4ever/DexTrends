@@ -1,0 +1,666 @@
+# Page snapshot
+
+```yaml
+- link "DexTrends":
+  - /url: /
+  - img
+  - text: DexTrends
+- navigation:
+  - link "Home":
+    - /url: /
+    - img
+    - text: Home
+  - link "Pokémon TCG":
+    - /url: /tcgsets
+    - img
+    - text: Pokémon TCG
+    - img
+  - link "Pokédex":
+    - /url: /pokedex
+    - img
+    - text: Pokédex
+  - link "Pokémon":
+    - /url: /pokemon
+    - img
+    - text: Pokémon
+    - img
+  - link "Battle":
+    - /url: /battle-simulator
+    - img
+    - text: Battle
+    - img
+  - link "Pocket":
+    - /url: /pocketmode
+    - img
+    - text: Pocket
+    - img
+  - link "Fun":
+    - /url: /fun
+    - img
+    - text: Fun
+- button "Open global search":
+  - img
+- link "View favorites":
+  - /url: /favorites
+  - img
+- button "Activate dark mode":
+  - img
+- main:
+  - button "Back to Regions":
+    - img
+    - text: Back to Regions
+  - button "Previous region":
+    - img
+  - text: Alola Region 8 of 9
+  - button "Next region":
+    - img
+  - text: Paldea
+  - img "Galar Map"
+  - heading "GALAR" [level=1]
+  - paragraph: An industrial region inspired by Great Britain, featuring Dynamax battles.
+  - button "Previous region":
+    - img
+  - button "Next region":
+    - img
+  - button "Overview"
+  - button "Professor"
+  - button "Starters"
+  - button "Special Pokémon"
+  - button "Gym Leaders"
+  - button "Locations"
+  - button "Games"
+  - button "Villains"
+  - button "Trivia"
+  - heading "About Galar" [level=2]
+  - paragraph: An industrial region inspired by Great Britain, featuring Dynamax battles.
+  - img
+  - heading "Professor" [level=3]
+  - paragraph: Professor Magnolia/Sonia
+  - img
+  - heading "Generation" [level=3]
+  - paragraph: "8"
+  - img
+  - heading "Pokédex" [level=3]
+  - paragraph: 810-898
+  - img
+  - heading "Games" [level=3]
+  - paragraph: "2"
+  - heading "Region Stats" [level=3]
+  - text: Total Cities 13 Total Routes 10 Gym Leaders 8 Legendary Pokémon 3
+  - heading "Available Games" [level=3]
+  - text: Pokémon Sword Pokémon Shield
+  - button "Switch professor version":
+    - img
+  - heading "Meet Professor Magnolia" [level=2]
+  - button "Switch professor version":
+    - img
+  - paragraph: Galar's Leading Pokémon Researcher
+  - img "Professor Magnolia"
+  - heading "Professor Magnolia" [level=3]
+  - paragraph: Dynamax Phenomenon
+  - heading "Quick Info" [level=4]:
+    - img
+    - text: Quick Info
+  - paragraph: Laboratory
+  - paragraph: Route 2, Galar
+  - paragraph: Age
+  - paragraph: 70-80
+  - paragraph: Known For
+  - paragraph: Dynamax research and Wishing Star studies
+  - heading "Biography" [level=4]:
+    - img
+    - text: Biography
+  - paragraph: Professor Magnolia is the eldest active regional professor and the leading authority on the Dynamax phenomenon unique to the Galar region. Her decades of research into Wishing Stars and power spots led to the understanding and harnessing of Dynamax energy. Despite her advanced age, Magnolia remains sharp and dedicated to her research. She lives a quiet life in her countryside laboratory, where she continues to study the mysterious energy that allows Pokémon to grow to enormous sizes. She is also a loving grandmother to Sonia, whom she mentored and eventually passed the professor title to. Her wisdom and experience make her a respected figure in the scientific community.
+  - heading "Major Achievements" [level=4]:
+    - img
+    - text: Major Achievements
+  - list:
+    - listitem:
+      - img
+      - text: Discovered Dynamax phenomenon
+    - listitem:
+      - img
+      - text: Wishing Star researcher
+    - listitem:
+      - img
+      - text: Grandmother and mentor to Sonia
+    - listitem:
+      - img
+      - text: Published Dynamax energy theory
+  - heading "Research Focus" [level=4]:
+    - img
+    - text: Research Focus
+  - img
+  - paragraph: Dynamax energy properties
+  - img
+  - paragraph: Power spot locations
+  - img
+  - paragraph: Wishing Star composition
+  - img
+  - paragraph: Gigantamax factors
+  - heading "Famous Quote" [level=4]:
+    - img
+    - text: Famous Quote
+  - blockquote:
+    - paragraph: "\"The Dynamax phenomenon... such a thing occurs only in Galar!\""
+  - heading "Choose Your Starter" [level=2]
+  - paragraph: Begin your journey with one of these three Pokémon
+  - text: "#810"
+  - img "Grookey"
+  - heading "Grookey" [level=3]
+  - paragraph: Chimp Pokémon
+  - text: Grass
+  - paragraph: Height
+  - paragraph: 0.3 m
+  - paragraph: Weight
+  - paragraph: 5.0 kg
+  - text: "#813"
+  - img "Scorbunny"
+  - heading "Scorbunny" [level=3]
+  - paragraph: Rabbit Pokémon
+  - text: Fire
+  - paragraph: Height
+  - paragraph: 0.3 m
+  - paragraph: Weight
+  - paragraph: 4.5 kg
+  - text: "#816"
+  - img "Sobble"
+  - heading "Sobble" [level=3]
+  - paragraph: Water Lizard Pokémon
+  - text: Water
+  - paragraph: Height
+  - paragraph: 0.3 m
+  - paragraph: Weight
+  - paragraph: 4.0 kg
+  - heading "Choosing Your Starter" [level=3]:
+    - img
+    - text: Choosing Your Starter
+  - paragraph: Your starter Pokémon will be your first partner on your journey. Consider their type advantages against early gym leaders, their evolution potential, and which one you connect with most!
+  - heading "Special Pokémon" [level=2]
+  - paragraph: Unique and legendary Pokémon of Galar
+  - button "Regional Variants":
+    - img
+    - text: Regional Variants
+  - button "Legendary Pokémon":
+    - img
+    - text: Legendary Pokémon
+  - heading "Galarian Forms" [level=3]:
+    - img
+    - text: Galarian Forms
+  - paragraph: Pokémon that evolved differently in Galar's unique environment
+  - img "Meowth"
+  - heading "Meowth" [level=3]
+  - text: Steel
+  - paragraph: Click to view in Pokédex
+  - img "Ponyta"
+  - heading "Ponyta" [level=3]
+  - text: Psychic
+  - paragraph: Click to view in Pokédex
+  - img "Rapidash"
+  - heading "Rapidash" [level=3]
+  - text: Psychic Fairy
+  - paragraph: Click to view in Pokédex
+  - img "Slowpoke"
+  - heading "Slowpoke" [level=3]
+  - text: Psychic
+  - paragraph: Click to view in Pokédex
+  - img "Slowbro"
+  - heading "Slowbro" [level=3]
+  - text: Poison Psychic
+  - paragraph: Click to view in Pokédex
+  - img "Farfetch'd"
+  - heading "Farfetch'd" [level=3]
+  - text: Fighting
+  - paragraph: Click to view in Pokédex
+  - img "Weezing"
+  - heading "Weezing" [level=3]
+  - text: Poison Fairy
+  - paragraph: Click to view in Pokédex
+  - img "Mr. Mime"
+  - heading "Mr. Mime" [level=3]
+  - text: Ice Psychic
+  - paragraph: Click to view in Pokédex
+  - img "Articuno"
+  - img
+  - text: Legendary
+  - heading "Articuno" [level=3]
+  - text: Psychic Flying
+  - paragraph: Click to view in Pokédex
+  - img "Zapdos"
+  - img
+  - text: Legendary
+  - heading "Zapdos" [level=3]
+  - text: Fighting Flying
+  - paragraph: Click to view in Pokédex
+  - img "Moltres"
+  - img
+  - text: Legendary
+  - heading "Moltres" [level=3]
+  - text: Dark Flying
+  - paragraph: Click to view in Pokédex
+  - img "Slowking"
+  - heading "Slowking" [level=3]
+  - text: Poison Psychic
+  - paragraph: Click to view in Pokédex
+  - img "Corsola"
+  - heading "Corsola" [level=3]
+  - text: Ghost
+  - paragraph: Click to view in Pokédex
+  - img "Zigzagoon"
+  - heading "Zigzagoon" [level=3]
+  - text: Dark Normal
+  - paragraph: Click to view in Pokédex
+  - img "Linoone"
+  - heading "Linoone" [level=3]
+  - text: Dark Normal
+  - paragraph: Click to view in Pokédex
+  - img "Darumaka"
+  - heading "Darumaka" [level=3]
+  - text: Ice
+  - paragraph: Click to view in Pokédex
+  - img "Darmanitan"
+  - heading "Darmanitan" [level=3]
+  - text: Ice
+  - paragraph: Click to view in Pokédex
+  - img "Yamask"
+  - heading "Yamask" [level=3]
+  - text: Ground Ghost
+  - paragraph: Click to view in Pokédex
+  - img "Stunfisk"
+  - heading "Stunfisk" [level=3]
+  - text: Ground Steel
+  - paragraph: Click to view in Pokédex
+  - heading "Your Journey in Galar" [level=2]
+  - paragraph: Challenge the strongest trainers on your path to becoming Champion
+  - heading "Gym Leader Challenge" [level=3]
+  - paragraph: Defeat all 8 Gym Leaders to earn their badges
+  - button:
+    - img
+  - button:
+    - img
+  - text: TYPE SPECIALIST
+  - img "grass type"
+  - text: Grass
+  - img "Grass Badge Badge"
+  - heading "Milo" [level=2]
+  - paragraph: Turffield
+  - link "Gossifleur":
+    - /url: /pokedex/gossifleur
+    - img "Gossifleur"
+  - link "Eldegoss":
+    - /url: /pokedex/eldegoss
+    - img "Eldegoss"
+  - text: "Weak to:"
+  - img "fire type"
+  - text: Fire
+  - img "ice type"
+  - text: Ice
+  - img "poison type"
+  - text: Poison
+  - img "flying type"
+  - text: Flying
+  - img "bug type"
+  - text: Bug "
+  - paragraph: “Master of grass-type Pokémon!”
+  - text: "Fun Fact:"
+  - paragraph: Milo is the Turffield Gym Leader specializing in grass-type Pokémon.
+  - text: "Recommended Level: 20+ GYM LEADER"
+  - img "Milo - galar Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "water type"
+  - text: Water
+  - img "Water Badge Badge"
+  - heading "Nessa" [level=2]
+  - paragraph: Hulbury
+  - link "Goldeen":
+    - /url: /pokedex/goldeen
+    - img "Goldeen"
+  - link "Arrokuda":
+    - /url: /pokedex/arrokuda
+    - img "Arrokuda"
+  - link "Drednaw":
+    - /url: /pokedex/drednaw
+    - img "Drednaw"
+  - text: "Weak to:"
+  - img "electric type"
+  - text: Electric
+  - img "grass type"
+  - text: Grass "
+  - paragraph: “Master of water-type Pokémon!”
+  - text: "Fun Fact:"
+  - paragraph: Nessa is the Hulbury Gym Leader specializing in water-type Pokémon.
+  - text: "Recommended Level: 23+ GYM LEADER"
+  - img "Nessa - galar Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "fire type"
+  - text: Fire
+  - img "Fire Badge Badge"
+  - heading "Kabu" [level=2]
+  - paragraph: Motostoke
+  - link "Ninetales":
+    - /url: /pokedex/ninetales
+    - img "Ninetales"
+  - link "Arcanine":
+    - /url: /pokedex/arcanine
+    - img "Arcanine"
+  - link "Centiskorch":
+    - /url: /pokedex/centiskorch
+    - img "Centiskorch"
+  - text: "Weak to:"
+  - img "water type"
+  - text: Water
+  - img "ground type"
+  - text: Ground
+  - img "rock type"
+  - text: Rock "
+  - paragraph: “Master of fire-type Pokémon!”
+  - text: "Fun Fact:"
+  - paragraph: Kabu is the Motostoke Gym Leader specializing in fire-type Pokémon.
+  - text: "Recommended Level: 26+ GYM LEADER"
+  - img "Kabu - galar Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "fighting/ghost type"
+  - text: Fighting/ghost
+  - img "Fighting/Ghost Badge Badge"
+  - heading "Bea/Allister" [level=2]
+  - paragraph: Stow-on-Side
+  - link "Geodude":
+    - /url: /pokedex/geodude
+    - img "Geodude"
+  - link "Onix":
+    - /url: /pokedex/onix
+    - img "Onix"
+  - link "Graveler":
+    - /url: /pokedex/graveler
+    - img "Graveler"
+  - link "Golem":
+    - /url: /pokedex/golem
+    - img "Golem"
+  - text: "Weak to: \""
+  - paragraph: “Master of fighting/ghost-type Pokémon!”
+  - text: "Fun Fact:"
+  - paragraph: Bea/Allister is the Stow-on-Side Gym Leader specializing in fighting/ghost-type Pokémon.
+  - text: GYM LEADER
+  - img "Bea/Allister - galar Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "fairy type"
+  - text: Fairy
+  - img "Fairy Badge Badge"
+  - heading "Opal" [level=2]
+  - paragraph: Ballonlea
+  - link "Weezing":
+    - /url: /pokedex/weezing
+    - img "Weezing"
+  - link "Mawile":
+    - /url: /pokedex/mawile
+    - img "Mawile"
+  - link "Togekiss":
+    - /url: /pokedex/togekiss
+    - img "Togekiss"
+  - link "Alcremie":
+    - /url: /pokedex/alcremie
+    - img "Alcremie"
+  - text: "Weak to:"
+  - img "poison type"
+  - text: Poison
+  - img "steel type"
+  - text: Steel "
+  - paragraph: “Master of fairy-type Pokémon!”
+  - text: "Fun Fact:"
+  - paragraph: Opal is the Ballonlea Gym Leader specializing in fairy-type Pokémon.
+  - text: "Recommended Level: 37+ GYM LEADER"
+  - img "Opal - galar Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "rock/ice type"
+  - text: Rock/ice
+  - img "Rock/Ice Badge Badge"
+  - heading "Gordie/Melony" [level=2]
+  - paragraph: Circhester
+  - link "Geodude":
+    - /url: /pokedex/geodude
+    - img "Geodude"
+  - link "Onix":
+    - /url: /pokedex/onix
+    - img "Onix"
+  - link "Graveler":
+    - /url: /pokedex/graveler
+    - img "Graveler"
+  - link "Golem":
+    - /url: /pokedex/golem
+    - img "Golem"
+  - text: "Weak to: \""
+  - paragraph: “Master of rock/ice-type Pokémon!”
+  - text: "Fun Fact:"
+  - paragraph: Gordie/Melony is the Circhester Gym Leader specializing in rock/ice-type Pokémon.
+  - text: GYM LEADER
+  - img "Gordie/Melony - galar Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "dark type"
+  - text: Dark
+  - img "Dark Badge Badge"
+  - heading "Piers" [level=2]
+  - paragraph: Spikemuth
+  - link "Scrafty":
+    - /url: /pokedex/scrafty
+    - img "Scrafty"
+  - link "Malamar":
+    - /url: /pokedex/malamar
+    - img "Malamar"
+  - link "Skuntank":
+    - /url: /pokedex/skuntank
+    - img "Skuntank"
+  - link "Obstagoon":
+    - /url: /pokedex/obstagoon
+    - img "Obstagoon"
+  - text: "Weak to:"
+  - img "fighting type"
+  - text: Fighting
+  - img "bug type"
+  - text: Bug
+  - img "fairy type"
+  - text: Fairy "
+  - paragraph: “Master of dark-type Pokémon!”
+  - text: "Fun Fact:"
+  - paragraph: Piers is the Spikemuth Gym Leader specializing in dark-type Pokémon.
+  - text: "Recommended Level: 45+ GYM LEADER"
+  - img "Piers - galar Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "dragon type"
+  - text: Dragon
+  - img "Dragon Badge Badge"
+  - heading "Raihan" [level=2]
+  - paragraph: Hammerlocke
+  - link "Gigalith":
+    - /url: /pokedex/gigalith
+    - img "Gigalith"
+  - link "Flygon":
+    - /url: /pokedex/flygon
+    - img "Flygon"
+  - link "Sandaconda":
+    - /url: /pokedex/sandaconda
+    - img "Sandaconda"
+  - link "Duraludon":
+    - /url: /pokedex/duraludon
+    - img "Duraludon"
+  - text: "Weak to:"
+  - img "ice type"
+  - text: Ice
+  - img "dragon type"
+  - text: Dragon
+  - img "fairy type"
+  - text: Fairy "
+  - paragraph: “Master of dragon-type Pokémon!”
+  - text: "Fun Fact:"
+  - paragraph: Raihan is the Hammerlocke Gym Leader specializing in dragon-type Pokémon.
+  - text: "Recommended Level: 47+ GYM LEADER"
+  - img "Raihan - galar Gym Leader"
+  - button
+  - button
+  - button
+  - button
+  - button
+  - button
+  - button
+  - button
+  - heading "⚡ ELITE FOUR & CHAMPION ⚡" [level=3]
+  - img
+  - img
+  - img
+  - img
+  - img
+  - paragraph: The ultimate challenge awaits at the Pokémon League
+  - button:
+    - img
+  - button:
+    - img
+  - text: ELITE TYPE SPECIALIST
+  - img "Tournament type"
+  - text: "Tournament #1"
+  - heading "Gym Leaders" [level=2]
+  - paragraph: Elite Four Member
+  - text: "No team data Weak to: \""
+  - paragraph: “Master of Tournament-type Pokémon!”
+  - text: "Battle Strategy:"
+  - paragraph: Elite Four member specializing in Tournament-type Pokémon.
+  - text: "Difficulty: ★★★★ ELITE FOUR"
+  - img "Gym Leaders - Elite Four"
+  - button
+  - heading "THE FINAL CHALLENGE" [level=4]
+  - img
+  - img
+  - img
+  - button "REVEAL THE CHAMPION":
+    - img
+    - text: REVEAL THE CHAMPION
+    - img
+  - paragraph: Face the ultimate test of your skills
+  - heading "Explore Galar" [level=2]
+  - paragraph: Discover the diverse cities, towns, and landmarks
+  - heading "Cities & Towns" [level=3]:
+    - img
+    - text: Cities & Towns
+  - img
+  - heading "Postwick" [level=4]
+  - paragraph: A farming town in the Galar countryside
+  - img
+  - heading "Motostoke" [level=4]
+  - paragraph: A city of steam and engines
+  - img
+  - heading "Hammerlocke" [level=4]
+  - paragraph: A city with a thousand-year history
+  - img
+  - heading "Circhester" [level=4]
+  - paragraph: A historic city covered in snow
+  - img
+  - heading "Wyndon" [level=4]
+  - paragraph: The largest city in Galar
+  - heading "Notable Landmarks" [level=3]:
+    - img
+    - text: Notable Landmarks
+  - heading "Wild Area" [level=4]
+  - paragraph: A vast expanse where wild Pokémon roam
+  - heading "Glimwood Tangle" [level=4]
+  - paragraph: A mysterious, glowing forest
+  - heading "Crown Tundra" [level=4]
+  - paragraph: A snowy wilderness full of legends
+  - heading "Isle of Armor" [level=4]
+  - paragraph: A training ground for aspiring champions
+  - heading "Energy Plant" [level=4]
+  - paragraph: Where Dynamax energy originates
+  - heading "Games in Galar" [level=2]
+  - paragraph: Experience the Galar region across different generations
+  - link "Pokémon Sword cover Pokémon Sword Explore More":
+    - /url: /pokemon/games/sword
+    - img "Pokémon Sword cover"
+    - heading "Pokémon Sword" [level=3]
+    - button "Explore More":
+      - text: Explore More
+      - img
+    - img
+    - img
+    - img
+  - link "Pokémon Shield cover Pokémon Shield Explore More":
+    - /url: /pokemon/games/shield
+    - img "Pokémon Shield cover"
+    - heading "Pokémon Shield" [level=3]
+    - button "Explore More":
+      - text: Explore More
+      - img
+    - img
+    - img
+    - img
+  - img
+  - text: Generation 8
+  - img
+  - text: 2 Games Released
+  - link "Explore All Pokémon Games":
+    - /url: /pokemon/games
+    - img
+    - text: Explore All Pokémon Games
+    - img
+  - heading "Villainous Organizations" [level=2]:
+    - img
+    - text: Villainous Organizations
+  - paragraph: The evil teams threatening Galar's peace
+  - heading "Macro Cosmos" [level=3]
+  - paragraph: "\"Ensure Galar's prosperity for a thousand years!\""
+  - paragraph: Leader
+  - paragraph: Chairman Rose
+  - paragraph: Chairman
+  - img "Chairman Rose"
+  - img
+  - heading "Did You Know?" [level=2]
+  - paragraph: Interesting facts about Galar
+  - text: "1"
+  - paragraph: Galar is based on Great Britain
+  - text: "2"
+  - paragraph: Features Dynamax and Gigantamax forms
+  - text: "3"
+  - paragraph: First region with version-exclusive gym leaders
+  - text: "4"
+  - paragraph: Introduced the Wild Area for open exploration
+  - text: Press ? for shortcuts 🔕
+  - heading "Push Notifications" [level=3]
+  - paragraph: Blocked by user
+  - button "Enable"
+- contentinfo:
+  - paragraph:
+    - text: © 2025 DexTrends - A
+    - link "PakePoint":
+      - /url: https://www.pakepoint.com
+    - text: Project. All rights reserved.
+- button "Open card comparison tool":
+  - img
+- text: Compare Cards
+- button "💡"
+- button:
+  - img
+- alert: /pokemon/regions/galar
+- button "Open Next.js Dev Tools":
+  - img
+- button "Open issues overlay": 1 Issue
+- button "Collapse issues badge":
+  - img
+- navigation:
+  - button "previous" [disabled]:
+    - img "previous"
+  - text: 1/1
+  - button "next" [disabled]:
+    - img "next"
+- img
+- link "Next.js 15.3.5 (stale) Webpack":
+  - /url: https://nextjs.org/docs/messages/version-staleness
+  - img
+  - text: Next.js 15.3.5 (stale) Webpack
+- img
+- dialog "Runtime Error":
+  - text: Runtime Error
+  - button "Copy Stack Trace":
+    - img
+  - button "No related documentation found" [disabled]:
+    - img
+  - link "Learn more about enabling Node.js inspector for server code with Chrome DevTools":
+    - /url: https://nextjs.org/docs/app/building-your-application/configuring/debugging#server-side-code
+    - img
+  - paragraph: "TypeError: Failed to register a ServiceWorker for scope ('http://localhost:3000/') with script ('http://localhost:3000/sw.js'): A bad HTTP response code (404) was received when fetching the script."
+```

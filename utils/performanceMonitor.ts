@@ -130,6 +130,9 @@ class PerformanceMonitor {
   private vitalsCallbacks: Set<VitalsCallback>;
   private customMetrics: Map<string, CustomMetric>;
   private isEnabled: boolean;
+  private eventListeners: Array<{ element: EventTarget; event: string; handler: EventListener }> = [];
+  private intervals: Array<NodeJS.Timeout> = [];
+  private scrollTimer: NodeJS.Timeout | null = null;
 
   constructor() {
     this.isClient = typeof window !== 'undefined';
@@ -314,22 +317,27 @@ class PerformanceMonitor {
     };
 
     // Track clicks
-    document.addEventListener('click', () => trackInteraction('click'), { passive: true });
+    const clickHandler = () => trackInteraction('click');
+    document.addEventListener('click', clickHandler, { passive: true });
+    this.eventListeners.push({ element: document, event: 'click', handler: clickHandler });
     
     // Track scrolling
-    let scrollTimer: NodeJS.Timeout;
-    document.addEventListener('scroll', () => {
-      clearTimeout(scrollTimer);
-      scrollTimer = setTimeout(() => trackInteraction('scroll'), 100);
-    }, { passive: true });
+    const scrollHandler = () => {
+      if (this.scrollTimer) clearTimeout(this.scrollTimer);
+      this.scrollTimer = setTimeout(() => trackInteraction('scroll'), 100);
+    };
+    document.addEventListener('scroll', scrollHandler, { passive: true });
+    this.eventListeners.push({ element: document, event: 'scroll', handler: scrollHandler });
     
     // Track keyboard interactions
-    document.addEventListener('keydown', () => trackInteraction('keyboard'), { passive: true });
+    const keyboardHandler = () => trackInteraction('keyboard');
+    document.addEventListener('keydown', keyboardHandler, { passive: true });
+    this.eventListeners.push({ element: document, event: 'keydown', handler: keyboardHandler });
   }
 
   private monitorMemoryUsage(): void {
     if ('memory' in performance) {
-      setInterval(() => {
+      const interval = setInterval(() => {
         const memory = performance.memory!;
         this.recordMetric('memory-usage', memory.usedJSHeapSize, {
           total: memory.totalJSHeapSize,
@@ -337,26 +345,32 @@ class PerformanceMonitor {
           percentage: (memory.usedJSHeapSize / memory.totalJSHeapSize) * 100
         });
       }, 30000); // Every 30 seconds
+      this.intervals.push(interval);
     }
   }
 
   private setupPeriodicReporting(): void {
     // Report metrics every 60 seconds
-    setInterval(() => {
+    const reportInterval = setInterval(() => {
       this.generateReport();
     }, 60000);
+    this.intervals.push(reportInterval);
 
     // Report on page unload
-    window.addEventListener('beforeunload', () => {
+    const unloadHandler = () => {
       this.generateReport();
-    });
+    };
+    window.addEventListener('beforeunload', unloadHandler);
+    this.eventListeners.push({ element: window, event: 'beforeunload', handler: unloadHandler });
 
     // Report on visibility change
-    document.addEventListener('visibilitychange', () => {
+    const visibilityHandler = () => {
       if (document.visibilityState === 'hidden') {
         this.generateReport();
       }
-    });
+    };
+    document.addEventListener('visibilitychange', visibilityHandler);
+    this.eventListeners.push({ element: document, event: 'visibilitychange', handler: visibilityHandler });
   }
 
   private observePerformanceEntry(type: string, callback: (entries: PerformanceEntryList) => void): void {
@@ -659,6 +673,29 @@ class PerformanceMonitor {
     
     // Clear callbacks
     this.vitalsCallbacks.clear();
+    
+    // Remove all event listeners
+    for (const { element, event, handler } of this.eventListeners) {
+      element.removeEventListener(event, handler);
+    }
+    this.eventListeners = [];
+    
+    // Clear all intervals
+    for (const interval of this.intervals) {
+      clearInterval(interval);
+    }
+    this.intervals = [];
+    
+    // Clear scroll timer if active
+    if (this.scrollTimer) {
+      clearTimeout(this.scrollTimer);
+      this.scrollTimer = null;
+    }
+    
+    // Clear custom metrics
+    this.customMetrics.clear();
+    
+    logger.debug('PerformanceMonitor destroyed and cleaned up');
   }
 }
 

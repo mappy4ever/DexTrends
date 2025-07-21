@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import the unified design system */
+@import './design-system.css';
+
 /* CSS Variables - Design System */
 :root {
   /* Base colors */

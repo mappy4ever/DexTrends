@@ -21,15 +21,7 @@ const DynamicLoader: React.FC<DynamicLoaderProps> = ({ children, ...props }) => 
   </div>
 );
 
-// Chart components (heavy dependencies)
-export const DynamicEchartsReact = dynamic(
-  () => import('echarts-for-react'),
-  {
-    loading: () => <DynamicLoader>Loading chart...</DynamicLoader>,
-    ssr: false // Charts don't need SSR
-  }
-);
-
+// Chart components
 export const DynamicPriceHistoryChart = dynamic(
   () => import('../ui/charts/PriceHistoryChart'),
   {
@@ -252,9 +244,7 @@ export const createDynamicComponent = (
 };
 
 export default {
-  DynamicEchartsReact,
   DynamicPriceHistoryChart,
-  // DynamicReactLeaflet, // Commented out - type issues with react-leaflet
   DynamicAdvancedSearchModal,
   DynamicMarketAnalytics,
   // DynamicMarketInsightsDashboard, // Commented out - missing dependencies

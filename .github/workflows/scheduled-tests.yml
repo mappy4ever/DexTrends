@@ -1,0 +1,116 @@
+name: Scheduled E2E Tests
+
+on:
+  schedule:
+    # Run at 2 AM UTC every day
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      test-all-browsers:
+        description: 'Test all browsers'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  test-production:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20.x
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Install Playwright Browsers
+      run: |
+        if [[ "${{ inputs.test-all-browsers }}" == "true" ]]; then
+          npx playwright install --with-deps
+        else
+          npx playwright install chromium --with-deps
+        fi
+    
+    - name: Run E2E tests against production
+      run: |
+        if [[ "${{ inputs.test-all-browsers }}" == "true" ]]; then
+          npm test
+        else
+          npm test -- --project=chromium
+        fi
+      env:
+        CI: true
+        BASE_URL: https://dextrends.vercel.app # Replace with your production URL
+        ASSERT_NO_CONSOLE_ERRORS: false # More lenient for production
+    
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: production-test-results
+        path: |
+          playwright-report/
+          test-results/
+        retention-days: 7
+        
+    - name: Send notification on failure
+      if: failure()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          await github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: `🚨 Scheduled E2E Tests Failed - ${new Date().toISOString().split('T')[0]}`,
+            body: `The scheduled E2E tests have failed. Please check the [workflow run](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}) for details.`,
+            labels: ['bug', 'testing', 'automated']
+          });
+
+  performance-monitoring:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20.x
+        
+    - name: Run Lighthouse performance test
+      uses: treosh/lighthouse-ci-action@v11
+      with:
+        urls: |
+          https://dextrends.vercel.app/
+          https://dextrends.vercel.app/pokedex
+          https://dextrends.vercel.app/battle-simulator
+        uploadArtifacts: true
+        temporaryPublicStorage: true
+        
+    - name: Save performance metrics
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          const results = JSON.parse(fs.readFileSync('./lighthouse-results.json', 'utf8'));
+          
+          // Create a summary
+          let summary = '## 📊 Performance Metrics\n\n';
+          summary += '| Page | Performance | Accessibility | Best Practices | SEO |\n';
+          summary += '|------|-------------|---------------|----------------|-----|\n';
+          
+          results.forEach(result => {
+            const scores = result.scores;
+            summary += `| ${result.url} | ${scores.performance} | ${scores.accessibility} | ${scores.bestPractices} | ${scores.seo} |\n`;
+          });
+          
+          // Save to summary
+          await core.summary.addRaw(summary).write();

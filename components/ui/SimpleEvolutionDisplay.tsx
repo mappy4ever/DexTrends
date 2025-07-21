@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { TypeBadge } from './TypeBadge';
-import { fetchData } from '../../utils/apiutils';
+import { fetchData, sanitizePokemonName } from '../../utils/apiutils';
 
 // Types
 interface EvolutionDetails {

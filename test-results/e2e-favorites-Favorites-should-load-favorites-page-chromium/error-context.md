@@ -1,0 +1,75 @@
+# Page snapshot
+
+```yaml
+- link "DexTrends":
+  - /url: /
+  - img
+  - text: DexTrends
+- navigation:
+  - link "Home":
+    - /url: /
+    - img
+    - text: Home
+  - link "Pokémon TCG":
+    - /url: /tcgsets
+    - img
+    - text: Pokémon TCG
+    - img
+  - link "Pokédex":
+    - /url: /pokedex
+    - img
+    - text: Pokédex
+  - link "Pokémon":
+    - /url: /pokemon
+    - img
+    - text: Pokémon
+    - img
+  - link "Battle":
+    - /url: /battle-simulator
+    - img
+    - text: Battle
+    - img
+  - link "Pocket":
+    - /url: /pocketmode
+    - img
+    - text: Pocket
+    - img
+  - link "Fun":
+    - /url: /fun
+    - img
+    - text: Fun
+- button "Open global search":
+  - img
+- link "View favorites":
+  - /url: /favorites
+  - img
+- button "Activate dark mode":
+  - img
+- main:
+  - heading "Your Favorites" [level=1]
+  - button "📊 Dashboard"
+  - button "🏆 Achievements"
+  - button "Pokémon (0)"
+  - button "Cards (0)"
+  - heading "Loading your favorites..." [level=2]
+  - paragraph: Even better success rate...
+  - text: Press ? for shortcuts 🔕
+  - heading "Push Notifications" [level=3]
+  - paragraph: Blocked by user
+  - button "Enable"
+- contentinfo:
+  - paragraph:
+    - text: © 2025 DexTrends - A
+    - link "PakePoint":
+      - /url: https://www.pakepoint.com
+    - text: Project. All rights reserved.
+- button "Open card comparison tool":
+  - img
+- text: Compare Cards
+- button "💡"
+- button:
+  - img
+- alert
+- button "Open Next.js Dev Tools":
+  - img
+```

@@ -378,6 +378,7 @@ class UnifiedCacheManager {
     hits: number;
     misses: number;
   };
+  private cleanupInterval: NodeJS.Timeout | null = null;
   
   constructor() {
     this.memory = new MemoryCache();
@@ -391,7 +392,7 @@ class UnifiedCacheManager {
     
     // Setup periodic cleanup
     if (typeof window !== 'undefined') {
-      setInterval(() => this.cleanup(), 5 * 60 * 1000); // Every 5 minutes
+      this.cleanupInterval = setInterval(() => this.cleanup(), 5 * 60 * 1000); // Every 5 minutes
     }
   }
   
@@ -587,6 +588,22 @@ class UnifiedCacheManager {
     const data = await this.get(key);
     return data !== null;
   }
+  
+  /**
+   * Destroy the cache manager and clean up resources
+   */
+  destroy(): void {
+    // Clear the cleanup interval
+    if (this.cleanupInterval) {
+      clearInterval(this.cleanupInterval);
+      this.cleanupInterval = null;
+    }
+    
+    // Clear all caches
+    this.clear().catch(error => {
+      console.warn('Error clearing caches during destroy:', error);
+    });
+  }
 }
 
 // Singleton instance
@@ -627,8 +644,32 @@ export const tcgCache = {
     return cacheManager.cachedFetch(
       `cards-${pokemonName}`,
       async () => {
-        const pokemon = await import('pokemontcgsdk');
-        return pokemon.card.where({ q: `name:${pokemonName}` });
+        // Use dynamic import to ensure proper loading
+        const pokemonModule = await import('pokemontcgsdk');
+        const pokemon = pokemonModule.default || pokemonModule;
+        
+        // Configure the SDK with API key if available
+        const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+        if (apiKey) {
+          try {
+            pokemon.configure({ apiKey });
+          } catch (e) {
+            console.warn('[TCG Cache] Failed to configure SDK:', e);
+          }
+        }
+        
+        console.log('[TCG Cache] Querying Pokemon TCG API for:', pokemonName);
+        try {
+          const result = await pokemon.card.where({ q: `name:${pokemonName}` });
+          console.log('[TCG Cache] API Response:', result);
+          // The SDK returns an object with data property containing the cards array
+          const cards = (result as any).data || [];
+          console.log('[TCG Cache] Extracted cards:', cards.length);
+          return cards;
+        } catch (error) {
+          console.error('[TCG Cache] API Error:', error);
+          return [];
+        }
       },
       { priority: CONFIG.PRIORITY.CRITICAL, ttl: CONFIG.DB_TTL }
     );
@@ -641,9 +682,29 @@ export default cacheManager;
 // Legacy API compatibility
 export const cachedFetchData = (url: string, options?: ExtendedCacheOptions) => {
   return cacheManager.cachedFetch(url, async () => {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    return response.json();
+    // Add timeout to prevent hanging requests
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+    
+    try {
+      const response = await fetch(url, {
+        signal: controller.signal,
+        headers: {
+          'Accept': 'application/json',
+          'Cache-Control': 'no-cache'
+        }
+      });
+      clearTimeout(timeoutId);
+      
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      return response.json();
+    } catch (error) {
+      clearTimeout(timeoutId);
+      if (error instanceof Error && error.name === 'AbortError') {
+        throw new Error(`Request timeout after 30 seconds: ${url}`);
+      }
+      throw error;
+    }
   }, options);
 };
 

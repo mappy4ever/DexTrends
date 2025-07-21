@@ -8,7 +8,7 @@ import PriceHistoryChart from "../../components/ui/charts/PriceHistoryChart";
 import { TypeBadge } from "../../components/ui/TypeBadge";
 import Image from "next/image";
 import { getPrice as getCardPrice } from "../../utils/pokemonutils";
-import { CardLoadingScreen } from "../../components/ui/loading/UnifiedLoadingScreen";
+import { PageLoader } from "../../utils/unifiedLoading";
 import UnifiedCard from "../../components/ui/cards/UnifiedCard";
 import StyledBackButton from "../../components/ui/StyledBackButton";
 import logger from "../../utils/logger";
@@ -149,10 +149,7 @@ export default function CardDetailPage() {
   // Loading state
   if (loading) {
     return (
-      <CardLoadingScreen 
-        message="Loading card details..."
-        preventFlash={true}
-      />
+      <PageLoader text="Loading card details..." />
     );
   }
 

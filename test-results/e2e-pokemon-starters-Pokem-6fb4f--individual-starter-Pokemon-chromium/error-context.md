@@ -1,0 +1,157 @@
+# Page snapshot
+
+```yaml
+- link "DexTrends":
+  - /url: /
+  - img
+  - text: DexTrends
+- navigation:
+  - link "Home":
+    - /url: /
+    - img
+    - text: Home
+  - link "Pokémon TCG":
+    - /url: /tcgsets
+    - img
+    - text: Pokémon TCG
+    - img
+  - link "Pokédex":
+    - /url: /pokedex
+    - img
+    - text: Pokédex
+  - link "Pokémon":
+    - /url: /pokemon
+    - img
+    - text: Pokémon
+    - img
+  - link "Battle":
+    - /url: /battle-simulator
+    - img
+    - text: Battle
+    - img
+  - link "Pocket":
+    - /url: /pocketmode
+    - img
+    - text: Pocket
+    - img
+  - link "Fun":
+    - /url: /fun
+    - img
+    - text: Fun
+- button "Open global search":
+  - img
+- link "View favorites":
+  - /url: /favorites
+  - img
+- button "Activate dark mode":
+  - img
+- main:
+  - button "Back to All Starters":
+    - img
+    - text: Back to All Starters
+  - heading "Alola Starters" [level=1]
+  - paragraph: Generation 7 • Sun, Moon, Ultra Sun, Ultra Moon
+  - paragraph: The Alola starters have unique type combinations and signature Z-Moves that showcase their personalities.
+  - heading "Rowlet" [level=2]
+  - paragraph: Grass Quill Pokémon
+  - img
+  - img "Rowlet"
+  - text: Grass Flying
+  - paragraph: This wary Pokémon uses photosynthesis to store up energy during the day, while becoming active at night.
+  - heading "Abilities" [level=3]
+  - text: Overgrow Long Reach (Hidden)
+  - heading "Evolution Chain" [level=3]
+  - img "Rowlet"
+  - img
+  - img "Dartrix"
+  - img
+  - img "Decidueye"
+  - button "View Full Details"
+  - heading "Litten" [level=2]
+  - paragraph: Fire Cat Pokémon
+  - img
+  - img "Litten"
+  - text: Fire
+  - paragraph: While grooming itself, it builds up fur inside its stomach. It sets the fur alight and spews fiery attacks.
+  - heading "Abilities" [level=3]
+  - text: Blaze Intimidate (Hidden)
+  - heading "Evolution Chain" [level=3]
+  - img "Litten"
+  - img
+  - img "Torracat"
+  - img
+  - img "Incineroar"
+  - button "View Full Details"
+  - heading "Popplio" [level=2]
+  - paragraph: Sea Lion Pokémon
+  - img
+  - img "Popplio"
+  - text: Water
+  - paragraph: This Pokémon snorts body fluids from its nose, blowing balloons to smash into its foes.
+  - heading "Abilities" [level=3]
+  - text: Torrent Liquid Voice (Hidden)
+  - heading "Evolution Chain" [level=3]
+  - img "Popplio"
+  - img
+  - img "Brionne"
+  - img
+  - img "Primarina"
+  - button "View Full Details"
+  - heading "Base Stats Comparison" [level=2]
+  - heading "Rowlet" [level=3]
+  - text: "320"
+  - img
+  - paragraph: Total Base Stats
+  - heading "Litten" [level=3]
+  - text: "320"
+  - img
+  - paragraph: Total Base Stats
+  - heading "Popplio" [level=3]
+  - text: "320"
+  - img
+  - paragraph: Total Base Stats
+  - text: Press ? for shortcuts 🔕
+  - heading "Push Notifications" [level=3]
+  - paragraph: Blocked by user
+  - button "Enable"
+- contentinfo:
+  - paragraph:
+    - text: © 2025 DexTrends - A
+    - link "PakePoint":
+      - /url: https://www.pakepoint.com
+    - text: Project. All rights reserved.
+- button "Open card comparison tool":
+  - img
+- text: Compare Cards
+- button "💡"
+- button:
+  - img
+- alert: /pokemon/starters/alola
+- button "Open Next.js Dev Tools":
+  - img
+- button "Open issues overlay": 1 Issue
+- button "Collapse issues badge":
+  - img
+- navigation:
+  - button "previous" [disabled]:
+    - img "previous"
+  - text: 1/1
+  - button "next" [disabled]:
+    - img "next"
+- img
+- link "Next.js 15.3.5 (stale) Webpack":
+  - /url: https://nextjs.org/docs/messages/version-staleness
+  - img
+  - text: Next.js 15.3.5 (stale) Webpack
+- img
+- dialog "Runtime Error":
+  - text: Runtime Error
+  - button "Copy Stack Trace":
+    - img
+  - button "No related documentation found" [disabled]:
+    - img
+  - link "Learn more about enabling Node.js inspector for server code with Chrome DevTools":
+    - /url: https://nextjs.org/docs/app/building-your-application/configuring/debugging#server-side-code
+    - img
+  - paragraph: "TypeError: Failed to register a ServiceWorker for scope ('http://localhost:3000/') with script ('http://localhost:3000/sw.js'): A bad HTTP response code (404) was received when fetching the script."
+```

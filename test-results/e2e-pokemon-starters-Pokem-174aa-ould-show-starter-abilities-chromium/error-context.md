@@ -1,0 +1,157 @@
+# Page snapshot
+
+```yaml
+- link "DexTrends":
+  - /url: /
+  - img
+  - text: DexTrends
+- navigation:
+  - link "Home":
+    - /url: /
+    - img
+    - text: Home
+  - link "Pokémon TCG":
+    - /url: /tcgsets
+    - img
+    - text: Pokémon TCG
+    - img
+  - link "Pokédex":
+    - /url: /pokedex
+    - img
+    - text: Pokédex
+  - link "Pokémon":
+    - /url: /pokemon
+    - img
+    - text: Pokémon
+    - img
+  - link "Battle":
+    - /url: /battle-simulator
+    - img
+    - text: Battle
+    - img
+  - link "Pocket":
+    - /url: /pocketmode
+    - img
+    - text: Pocket
+    - img
+  - link "Fun":
+    - /url: /fun
+    - img
+    - text: Fun
+- button "Open global search":
+  - img
+- link "View favorites":
+  - /url: /favorites
+  - img
+- button "Activate dark mode":
+  - img
+- main:
+  - button "Back to All Starters":
+    - img
+    - text: Back to All Starters
+  - heading "Unova Starters" [level=1]
+  - paragraph: Generation 5 • Black, White, Black 2, White 2
+  - paragraph: The Unova starters represent Western-inspired designs and have unique Hidden Abilities.
+  - heading "Snivy" [level=2]
+  - paragraph: Grass Snake Pokémon
+  - img
+  - img "Snivy"
+  - text: Grass
+  - paragraph: It is very intelligent and calm. Being exposed to lots of sunlight makes its movements swifter.
+  - heading "Abilities" [level=3]
+  - text: Overgrow Contrary (Hidden)
+  - heading "Evolution Chain" [level=3]
+  - img "Snivy"
+  - img
+  - img "Servine"
+  - img
+  - img "Serperior"
+  - button "View Full Details"
+  - heading "Tepig" [level=2]
+  - paragraph: Fire Pig Pokémon
+  - img
+  - img "Tepig"
+  - text: Fire
+  - paragraph: It can deftly dodge its foe's attacks while shooting fireballs from its nose.
+  - heading "Abilities" [level=3]
+  - text: Blaze Thick Fat (Hidden)
+  - heading "Evolution Chain" [level=3]
+  - img "Tepig"
+  - img
+  - img "Pignite"
+  - img
+  - img "Emboar"
+  - button "View Full Details"
+  - heading "Oshawott" [level=2]
+  - paragraph: Sea Otter Pokémon
+  - img
+  - img "Oshawott"
+  - text: Water
+  - paragraph: It fights using the scalchop on its stomach. In response to an attack, it retaliates immediately.
+  - heading "Abilities" [level=3]
+  - text: Torrent Shell Armor (Hidden)
+  - heading "Evolution Chain" [level=3]
+  - img "Oshawott"
+  - img
+  - img "Dewott"
+  - img
+  - img "Samurott"
+  - button "View Full Details"
+  - heading "Base Stats Comparison" [level=2]
+  - heading "Snivy" [level=3]
+  - text: "308"
+  - img
+  - paragraph: Total Base Stats
+  - heading "Tepig" [level=3]
+  - text: "308"
+  - img
+  - paragraph: Total Base Stats
+  - heading "Oshawott" [level=3]
+  - text: "308"
+  - img
+  - paragraph: Total Base Stats
+  - text: Press ? for shortcuts 🔕
+  - heading "Push Notifications" [level=3]
+  - paragraph: Blocked by user
+  - button "Enable"
+- contentinfo:
+  - paragraph:
+    - text: © 2025 DexTrends - A
+    - link "PakePoint":
+      - /url: https://www.pakepoint.com
+    - text: Project. All rights reserved.
+- button "Open card comparison tool":
+  - img
+- text: Compare Cards
+- button "💡"
+- button:
+  - img
+- alert: /pokemon/starters/unova
+- button "Open Next.js Dev Tools":
+  - img
+- button "Open issues overlay": 1 Issue
+- button "Collapse issues badge":
+  - img
+- navigation:
+  - button "previous" [disabled]:
+    - img "previous"
+  - text: 1/1
+  - button "next" [disabled]:
+    - img "next"
+- img
+- link "Next.js 15.3.5 (stale) Webpack":
+  - /url: https://nextjs.org/docs/messages/version-staleness
+  - img
+  - text: Next.js 15.3.5 (stale) Webpack
+- img
+- dialog "Runtime Error":
+  - text: Runtime Error
+  - button "Copy Stack Trace":
+    - img
+  - button "No related documentation found" [disabled]:
+    - img
+  - link "Learn more about enabling Node.js inspector for server code with Chrome DevTools":
+    - /url: https://nextjs.org/docs/app/building-your-application/configuring/debugging#server-side-code
+    - img
+  - paragraph: "TypeError: Failed to register a ServiceWorker for scope ('http://localhost:3000/') with script ('http://localhost:3000/sw.js'): A bad HTTP response code (404) was received when fetching the script."
+```

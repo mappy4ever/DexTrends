@@ -1,0 +1,89 @@
+# Page snapshot
+
+```yaml
+- link "DexTrends":
+  - /url: /
+  - img
+  - text: DexTrends
+- navigation:
+  - link "Home":
+    - /url: /
+    - img
+    - text: Home
+  - link "Pokémon TCG":
+    - /url: /tcgsets
+    - img
+    - text: Pokémon TCG
+    - img
+  - link "Pokédex":
+    - /url: /pokedex
+    - img
+    - text: Pokédex
+  - link "Pokémon":
+    - /url: /pokemon
+    - img
+    - text: Pokémon
+    - img
+  - link "Battle":
+    - /url: /battle-simulator
+    - img
+    - text: Battle
+    - img
+  - link "Pocket":
+    - /url: /pocketmode
+    - img
+    - text: Pocket
+    - img
+  - link "Fun":
+    - /url: /fun
+    - img
+    - text: Fun
+- button "Open global search":
+  - img
+- link "View favorites":
+  - /url: /favorites
+  - img
+- button "Activate dark mode":
+  - img
+- main:
+  - heading "My Collections" [level=1]
+  - paragraph: Manage your Pokemon card collection, track prices, and set alerts
+  - button "📚 My Collections"
+  - button "🔔 Price Alerts"
+  - button "📊 Portfolio"
+  - heading "My Collections" [level=2]
+  - button "New Collection":
+    - img
+    - text: New Collection
+  - text: No collections found. Create your first collection to start tracking your cards!
+  - button "Create Collection"
+  - dialog:
+    - button "Close modal":
+      - img
+    - heading "Create New Collection" [level=3]
+    - text: Collection Name *
+    - textbox "My Pokemon Collection"
+    - text: Description
+    - textbox "Describe your collection..."
+    - button "Cancel"
+    - button "Create Collection"
+  - text: Press ? for shortcuts 🔕
+  - heading "Push Notifications" [level=3]
+  - paragraph: Blocked by user
+  - button "Enable"
+- contentinfo:
+  - paragraph:
+    - text: © 2025 DexTrends - A
+    - link "PakePoint":
+      - /url: https://www.pakepoint.com
+    - text: Project. All rights reserved.
+- button "Open card comparison tool":
+  - img
+- text: Compare Cards
+- button "💡"
+- button:
+  - img
+- alert
+- button "Open Next.js Dev Tools":
+  - img
+```

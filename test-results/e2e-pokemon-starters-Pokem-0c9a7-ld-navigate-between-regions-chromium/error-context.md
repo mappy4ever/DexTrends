@@ -1,0 +1,132 @@
+# Page snapshot
+
+```yaml
+- link "DexTrends":
+  - /url: /
+  - img
+  - text: DexTrends
+- navigation:
+  - link "Home":
+    - /url: /
+    - img
+    - text: Home
+  - link "Pokémon TCG":
+    - /url: /tcgsets
+    - img
+    - text: Pokémon TCG
+    - img
+  - link "Pokédex":
+    - /url: /pokedex
+    - img
+    - text: Pokédex
+  - link "Pokémon":
+    - /url: /pokemon
+    - img
+    - text: Pokémon
+    - img
+  - link "Battle":
+    - /url: /battle-simulator
+    - img
+    - text: Battle
+    - img
+  - link "Pocket":
+    - /url: /pocketmode
+    - img
+    - text: Pocket
+    - img
+  - link "Fun":
+    - /url: /fun
+    - img
+    - text: Fun
+- button "Open global search":
+  - img
+- link "View favorites":
+  - /url: /favorites
+  - img
+- button "Activate dark mode":
+  - img
+- main:
+  - button "Back to All Starters":
+    - img
+    - text: Back to All Starters
+  - heading "Johto Starters" [level=1]
+  - paragraph: Generation 2 • Gold, Silver, Crystal, HeartGold, SoulSilver
+  - paragraph: The Johto starters introduced unique type combinations and continue to be fan favorites.
+  - heading "Chikorita" [level=2]
+  - paragraph: Leaf Pokémon
+  - img
+  - img "Chikorita"
+  - text: Grass
+  - paragraph: A sweet aroma gently wafts from the leaf on its head. It is docile and loves to soak up sunrays.
+  - heading "Abilities" [level=3]
+  - text: Overgrow Leaf Guard (Hidden)
+  - heading "Evolution Chain" [level=3]
+  - img "Chikorita"
+  - img
+  - img "Bayleef"
+  - img
+  - img "Meganium"
+  - button "View Full Details"
+  - heading "Cyndaquil" [level=2]
+  - paragraph: Fire Mouse Pokémon
+  - img
+  - img "Cyndaquil"
+  - text: Fire
+  - paragraph: It is timid and always curls itself up in a ball. If attacked, it flares up its back for protection.
+  - heading "Abilities" [level=3]
+  - text: Blaze Flash Fire (Hidden)
+  - heading "Evolution Chain" [level=3]
+  - img "Cyndaquil"
+  - img
+  - img "Quilava"
+  - img
+  - img "Typhlosion"
+  - button "View Full Details"
+  - heading "Totodile" [level=2]
+  - paragraph: Big Jaw Pokémon
+  - img
+  - img "Totodile"
+  - text: Water
+  - paragraph: Its well-developed jaws are powerful and capable of crushing anything. Even its trainer must be careful.
+  - heading "Abilities" [level=3]
+  - text: Torrent Sheer Force (Hidden)
+  - heading "Evolution Chain" [level=3]
+  - img "Totodile"
+  - img
+  - img "Croconaw"
+  - img
+  - img "Feraligatr"
+  - button "View Full Details"
+  - heading "Base Stats Comparison" [level=2]
+  - heading "Chikorita" [level=3]
+  - text: "318"
+  - img
+  - paragraph: Total Base Stats
+  - heading "Cyndaquil" [level=3]
+  - text: "309"
+  - img
+  - paragraph: Total Base Stats
+  - heading "Totodile" [level=3]
+  - text: "314"
+  - img
+  - paragraph: Total Base Stats
+  - text: Press ? for shortcuts 🔕
+  - heading "Push Notifications" [level=3]
+  - paragraph: Blocked by user
+  - button "Enable"
+- contentinfo:
+  - paragraph:
+    - text: © 2025 DexTrends - A
+    - link "PakePoint":
+      - /url: https://www.pakepoint.com
+    - text: Project. All rights reserved.
+- button "Open card comparison tool":
+  - img
+- text: Compare Cards
+- button "💡"
+- button:
+  - img
+- alert: /pokemon/starters/johto
+- button "Open Next.js Dev Tools":
+  - img
+```

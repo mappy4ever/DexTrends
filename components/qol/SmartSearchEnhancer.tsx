@@ -288,19 +288,140 @@ export const SmartSearchEnhancer: React.FC<SmartSearchEnhancerProps> = ({
   );
 };
 
-// Global search shortcut handler
+// Global command palette interface
+interface CommandPaletteProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose }) => {
+  const router = useRouter();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  // Available commands
+  const commands = [
+    { id: 'pokedex', label: 'Go to Pokedex', shortcut: 'Ctrl+Shift+P', action: () => router.push('/pokedex') },
+    { id: 'tcgsets', label: 'Go to TCG Sets', shortcut: 'Ctrl+Shift+C', action: () => router.push('/tcgsets') },
+    { id: 'fun', label: 'Go to Fun Page', shortcut: 'Ctrl+Shift+F', action: () => router.push('/fun') },
+    { id: 'home', label: 'Go to Home', shortcut: 'Ctrl+Shift+H', action: () => router.push('/') },
+    { id: 'pocketmode', label: 'Go to Pocket Mode', shortcut: '', action: () => router.push('/pocketmode') },
+    { id: 'battle', label: 'Go to Battle Simulator', shortcut: '', action: () => router.push('/battle-simulator') },
+    { id: 'preferences', label: 'Open Preferences', shortcut: 'Ctrl+,', action: () => {
+      // This will be handled by the preferences toggle mechanism
+      const event = new CustomEvent('togglePreferences');
+      window.dispatchEvent(event);
+    }},
+  ];
+
+  // Filter commands based on search term
+  const filteredCommands = commands.filter(cmd => 
+    cmd.label.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Handle keyboard navigation
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        setSelectedIndex(prev => (prev + 1) % filteredCommands.length);
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        setSelectedIndex(prev => (prev - 1 + filteredCommands.length) % filteredCommands.length);
+        break;
+      case 'Enter':
+        e.preventDefault();
+        if (filteredCommands[selectedIndex]) {
+          filteredCommands[selectedIndex].action();
+          onClose();
+        }
+        break;
+      case 'Escape':
+        e.preventDefault();
+        onClose();
+        break;
+    }
+  };
+
+  // Reset state when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setSearchTerm('');
+      setSelectedIndex(0);
+    }
+  }, [isOpen]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center pt-20 z-50">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4">
+        <div className="p-4">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Type a command or search..."
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            autoFocus
+          />
+        </div>
+        
+        <div className="max-h-64 overflow-y-auto">
+          {filteredCommands.map((command, index) => (
+            <div
+              key={command.id}
+              className={`px-4 py-2 cursor-pointer flex justify-between items-center ${
+                index === selectedIndex 
+                  ? 'bg-blue-500 text-white' 
+                  : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+              }`}
+              onClick={() => {
+                command.action();
+                onClose();
+              }}
+            >
+              <span>{command.label}</span>
+              {command.shortcut && (
+                <span className="text-sm opacity-60">{command.shortcut}</span>
+              )}
+            </div>
+          ))}
+          {filteredCommands.length === 0 && (
+            <div className="px-4 py-2 text-gray-500 text-center">
+              No commands found
+            </div>
+          )}
+        </div>
+        
+        <div className="px-4 py-2 text-xs text-gray-500 border-t border-gray-200 dark:border-gray-600">
+          Use ↑↓ to navigate, Enter to select, Esc to close
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Global search shortcut handler with command palette
 export const GlobalSearchShortcuts: React.FC = () => {
   const router = useRouter();
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Ctrl/Cmd + K to focus search
+      // Ctrl/Cmd + K to open command palette
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault();
-        const searchInput = document.querySelector<HTMLInputElement>('[placeholder*="Search"]');
-        if (searchInput) {
-          searchInput.focus();
-        }
+        setIsCommandPaletteOpen(true);
+      }
+      
+      // Ctrl/Cmd + , to open preferences
+      if ((e.ctrlKey || e.metaKey) && e.key === ',') {
+        e.preventDefault();
+        const event = new CustomEvent('togglePreferences');
+        window.dispatchEvent(event);
       }
       
       // Quick navigation shortcuts
@@ -312,11 +433,11 @@ export const GlobalSearchShortcuts: React.FC = () => {
             break;
           case 'C':
             e.preventDefault();
-            router.push('/cards');
+            router.push('/tcgsets');
             break;
           case 'F':
             e.preventDefault();
-            router.push('/favorites');
+            router.push('/fun');
             break;
           case 'H':
             e.preventDefault();
@@ -330,7 +451,12 @@ export const GlobalSearchShortcuts: React.FC = () => {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [router]);
 
-  return null;
+  return (
+    <CommandPalette 
+      isOpen={isCommandPaletteOpen} 
+      onClose={() => setIsCommandPaletteOpen(false)} 
+    />
+  );
 };
 
 export default SmartSearchEnhancer;

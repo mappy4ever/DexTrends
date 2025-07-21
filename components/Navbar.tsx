@@ -8,6 +8,7 @@ import { BsSun, BsMoon, BsGlobeEuropeAfrica, BsHeart, BsSearch, BsCardList, BsGr
 import { GiPokerHand, GiCardPickup, GiCrossedSwords } from "react-icons/gi";
 import { FiTrendingUp, FiShoppingBag } from "react-icons/fi";
 import GlobalSearchModal from "./GlobalSearchModal";
+import { DynamicAdvancedSearchModal } from "./dynamic/DynamicComponents";
 import { useAppContext, useTheme, useFavorites } from "../context/UnifiedAppContext";
 import { toLowercaseUrl } from "../utils/formatters";
 import ClientOnly from "./ClientOnly";
@@ -39,6 +40,7 @@ export default function Navbar() {
   const [hoverExpanded, setHoverExpanded] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dropdownStates, setDropdownStates] = useState<Record<string, boolean>>({});
+  const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
   const menuWrapperRef = useRef<HTMLDivElement>(null);
   const dropdownRefs = useRef<Record<string, HTMLDivElement>>({});
   const router = useRouter();
@@ -60,8 +62,11 @@ export default function Navbar() {
       hasDropdown: true,
       dropdownItems: [
         { href: "/tcgsets", label: "Sets", icon: <BsCardList size={18} />, description: "Browse all TCG sets" },
+        { href: "/cards", label: "Cards", icon: <BsCardList size={18} />, description: "Browse and search Pokemon cards" },
+        { href: "/market", label: "Market Analytics", icon: <FiTrendingUp size={18} />, description: "Market trends and insights" },
         { href: "/trending", label: "Price Tracker", icon: <FiTrendingUp size={18} />, description: "Track card prices" },
         { href: "/collections", label: "Collections", icon: <BsHeart size={18} />, description: "Manage your collection" },
+        { href: "/trending", label: "Leaderboard", icon: <RiGovernmentFill size={18} />, description: "Top collectors and rankings" },
       ]
     },
     { href: "/pokedex", label: "Pokédex", icon: <BsBook size={22} />, color: "text-poke-fairy" },
@@ -302,14 +307,43 @@ export default function Navbar() {
           })}
         </nav>
         <div className="flex items-center gap-x-3">
-          <button
-            aria-label="Open global search"
-            title="Search (Cmd+K)"
-            className="p-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-            onClick={() => searchModalRef.current?.open()}
-          >
-            <BsSearch size={20} />
-          </button>
+          {/* Search Dropdown */}
+          <div className="relative group">
+            <button
+              aria-label="Open search"
+              title="Search (Cmd+K)"
+              className="p-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+              onClick={() => searchModalRef.current?.open()}
+            >
+              <BsSearch size={20} />
+            </button>
+            
+            {/* Search Options Dropdown */}
+            <div className="absolute top-full right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+              <div className="p-2">
+                <button
+                  onClick={() => searchModalRef.current?.open()}
+                  className="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3 transition-colors"
+                >
+                  <BsSearch size={16} className="text-blue-500" />
+                  <div>
+                    <div className="font-medium text-gray-900 dark:text-white">Quick Search</div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400">Search cards and Pokémon</div>
+                  </div>
+                </button>
+                <button
+                  onClick={() => setShowAdvancedSearch(true)}
+                  className="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3 transition-colors"
+                >
+                  <FiTrendingUp size={16} className="text-purple-500" />
+                  <div>
+                    <div className="font-medium text-gray-900 dark:text-white">Advanced Search</div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400">Filters, price ranges & more</div>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
           
           <Link 
             href="/favorites"
@@ -362,7 +396,7 @@ export default function Navbar() {
       <ClientOnly>
         {mobileOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
-          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
+          <div className="fixed inset-0 bg-black/75 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
           <div ref={menuWrapperRef} className="fixed right-0 left-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 p-6 shadow-2xl safe-area-padding-x rounded-t-3xl" style={{ top: 'calc(80px + env(safe-area-inset-top))' }}>
             <nav className="flex flex-col space-y-2">
               {navItems.map(item => {
@@ -434,6 +468,17 @@ export default function Navbar() {
       {/* Spacer for fixed navbar with iOS Safe Area */}
       <div className="h-20 navbar-spacer-ios" />
       <GlobalSearchModal ref={searchModalRef} />
+      
+      {/* Advanced Search Modal */}
+      <DynamicAdvancedSearchModal
+        isOpen={showAdvancedSearch}
+        onClose={() => setShowAdvancedSearch(false)}
+        onSearchResults={(results) => {
+          setShowAdvancedSearch(false);
+          // Navigate to a search results page or handle results
+          router.push('/cards');
+        }}
+      />
     </>
   );
 }

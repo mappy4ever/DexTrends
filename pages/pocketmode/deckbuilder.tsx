@@ -7,7 +7,7 @@ import { fetchPocketData } from '../../utils/pocketData';
 import { TypeBadge } from '../../components/ui/TypeBadge';
 import { FadeIn, SlideUp } from '../../components/ui/animations';
 import BackToTop from '../../components/ui/SimpleBackToTop';
-import { CardLoadingScreen } from '../../components/ui/loading/UnifiedLoadingScreen';
+import { PageLoader } from '../../utils/unifiedLoading';
 import type { PocketCard } from '../../types/api/pocket-cards';
 
 // Extended PocketCard type for deck builder specific fields
@@ -75,6 +75,12 @@ export default function DeckBuilder() {
   const [sortBy, setSortBy] = useState<SortBy>('name');
   const [viewMode, setViewMode] = useState<ViewMode>('compact');
   const [deckViewMode, setDeckViewMode] = useState<DeckViewMode>('2x10');
+  
+  // Import/Export state
+  const [showImportModal, setShowImportModal] = useState<boolean>(false);
+  const [importText, setImportText] = useState<string>('');
+  const [importError, setImportError] = useState<string>('');
+  const [showExportModal, setShowExportModal] = useState<boolean>(false);
   
   // Constants matching Pokemon Pocket
   const MAX_DECK_SIZE = 20;
@@ -342,6 +348,205 @@ export default function DeckBuilder() {
     }
   }, [deck, deckName, deckStats]);
 
+  // Export deck to text format
+  const exportDeckToText = useCallback((): string => {
+    if (deck.length === 0) return '';
+    
+    const deckText = deck
+      .map(entry => `${entry.card.name} x${entry.count}`)
+      .join('\n');
+    
+    return `Deck Name: ${deckName}\nTotal Cards: ${deckStats.totalCards}\n\n${deckText}`;
+  }, [deck, deckName, deckStats]);
+
+  // Copy deck to clipboard
+  const copyDeckToClipboard = useCallback(async () => {
+    const deckText = exportDeckToText();
+    try {
+      await navigator.clipboard.writeText(deckText);
+      alert('Deck copied to clipboard!');
+    } catch (error) {
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = deckText;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-999999px';
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        alert('Deck copied to clipboard!');
+      } catch (err) {
+        alert('Failed to copy deck to clipboard');
+      }
+      document.body.removeChild(textArea);
+    }
+  }, [exportDeckToText]);
+
+  // Download deck as text file
+  const downloadDeck = useCallback(() => {
+    const deckText = exportDeckToText();
+    const blob = new Blob([deckText], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${deckName.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_deck.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, [exportDeckToText, deckName]);
+
+  // Parse deck from text
+  const parseDeckFromText = useCallback((text: string): { cards: DeckEntry[], errors: string[] } => {
+    const lines = text.trim().split('\n');
+    const parsedCards: DeckEntry[] = [];
+    const errors: string[] = [];
+    let skipHeader = true;
+    
+    for (const line of lines) {
+      const trimmedLine = line.trim();
+      if (!trimmedLine) continue;
+      
+      // Skip header lines
+      if (skipHeader && (trimmedLine.startsWith('Deck Name:') || trimmedLine.startsWith('Total Cards:'))) {
+        continue;
+      }
+      skipHeader = false;
+      
+      // Parse card line - supports various formats
+      const formats = [
+        /^(.+?)\s*x\s*(\d+)$/i,           // Card Name x2
+        /^(\d+)\s*x?\s*(.+)$/,             // 2x Card Name or 2 Card Name
+        /^(.+?)\s*\*\s*(\d+)$/,            // Card Name * 2
+        /^(.+?)\s+(\d+)$/,                 // Card Name 2
+      ];
+      
+      let matched = false;
+      for (const format of formats) {
+        const match = trimmedLine.match(format);
+        if (match) {
+          let cardName: string;
+          let count: number;
+          
+          // Determine which group is the card name and which is the count
+          if (formats.indexOf(format) === 1) {
+            // Format: 2x Card Name
+            count = parseInt(match[1]);
+            cardName = match[2];
+          } else {
+            // Other formats: Card Name x2
+            cardName = match[1];
+            count = parseInt(match[2]);
+          }
+          
+          cardName = cardName.trim();
+          
+          // Validate count
+          if (count < 1 || count > MAX_COPIES_PER_CARD) {
+            errors.push(`Invalid count for "${cardName}": ${count} (must be 1-${MAX_COPIES_PER_CARD})`);
+            continue;
+          }
+          
+          // Find the card
+          const card = allCards.find(c => 
+            c.name.toLowerCase() === cardName.toLowerCase() ||
+            c.name.toLowerCase().replace(/['']/g, "'") === cardName.toLowerCase().replace(/['']/g, "'") ||
+            c.name.toLowerCase().replace(/\s+/g, '') === cardName.toLowerCase().replace(/\s+/g, '')
+          );
+          
+          if (card) {
+            // Check if card already exists in parsed deck
+            const existingEntry = parsedCards.find(entry => entry.card.id === card.id);
+            if (existingEntry) {
+              existingEntry.count = Math.min(existingEntry.count + count, MAX_COPIES_PER_CARD);
+            } else {
+              parsedCards.push({ card: card as ExtendedPocketCard, count });
+            }
+          } else {
+            errors.push(`Card not found: "${cardName}"`);
+          }
+          
+          matched = true;
+          break;
+        }
+      }
+      
+      if (!matched && trimmedLine) {
+        // Try to match as just a card name (assume count of 1)
+        const card = allCards.find(c => 
+          c.name.toLowerCase() === trimmedLine.toLowerCase() ||
+          c.name.toLowerCase().replace(/['']/g, "'") === trimmedLine.toLowerCase().replace(/['']/g, "'")
+        );
+        
+        if (card) {
+          const existingEntry = parsedCards.find(entry => entry.card.id === card.id);
+          if (existingEntry) {
+            existingEntry.count = Math.min(existingEntry.count + 1, MAX_COPIES_PER_CARD);
+          } else {
+            parsedCards.push({ card: card as ExtendedPocketCard, count: 1 });
+          }
+        } else {
+          errors.push(`Invalid line or card not found: "${trimmedLine}"`);
+        }
+      }
+    }
+    
+    // Check total deck size
+    const totalCards = parsedCards.reduce((sum, entry) => sum + entry.count, 0);
+    if (totalCards > MAX_DECK_SIZE) {
+      errors.push(`Deck size exceeds maximum (${totalCards}/${MAX_DECK_SIZE}). Some cards may be excluded.`);
+    }
+    
+    return { cards: parsedCards, errors };
+  }, [allCards]);
+
+  // Import deck from text
+  const importDeck = useCallback(() => {
+    setImportError('');
+    
+    if (!importText.trim()) {
+      setImportError('Please enter a deck list');
+      return;
+    }
+    
+    const { cards, errors } = parseDeckFromText(importText);
+    
+    if (cards.length === 0) {
+      setImportError('No valid cards found in the deck list');
+      return;
+    }
+    
+    // Clear current deck and add imported cards
+    setDeck([]);
+    
+    // Add cards up to the deck limit
+    let totalAdded = 0;
+    const newDeck: DeckEntry[] = [];
+    
+    for (const entry of cards) {
+      if (totalAdded >= MAX_DECK_SIZE) break;
+      
+      const cardsToAdd = Math.min(entry.count, MAX_DECK_SIZE - totalAdded);
+      if (cardsToAdd > 0) {
+        newDeck.push({ ...entry, count: cardsToAdd });
+        totalAdded += cardsToAdd;
+      }
+    }
+    
+    setDeck(newDeck);
+    
+    // Show any errors as a summary
+    if (errors.length > 0) {
+      alert(`Deck imported with warnings:\n\n${errors.join('\n')}`);
+    } else {
+      alert('Deck imported successfully!');
+    }
+    
+    setShowImportModal(false);
+    setImportText('');
+  }, [importText, parseDeckFromText]);
+
   // Toggle filter selection
   const toggleFilter = useCallback((value: string, setFunction: React.Dispatch<React.SetStateAction<string[]>>) => {
     setFunction(prev => 
@@ -415,12 +620,7 @@ export default function DeckBuilder() {
         <Head>
           <title>Deck Builder | Pokemon Pocket | DexTrends</title>
         </Head>
-        <CardLoadingScreen
-          message="Loading Deck Builder..."
-          showFacts={false}
-          overlay={false}
-          preventFlash={true}
-        />
+        <PageLoader text="Loading Deck Builder..." />
       </>
     );
   }
@@ -471,8 +671,20 @@ export default function DeckBuilder() {
             </div>
             
             <div className="flex items-center gap-4">
+              <button
+                onClick={() => setShowImportModal(true)}
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+              >
+                Import
+              </button>
               {!deckStats.isEmpty && (
                 <>
+                  <button
+                    onClick={() => setShowExportModal(true)}
+                    className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition-colors"
+                  >
+                    Export
+                  </button>
                   <button
                     onClick={() => setShowSaveModal(true)}
                     className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors"
@@ -809,7 +1021,7 @@ export default function DeckBuilder() {
 
       {/* Save Modal */}
       {showSaveModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
           <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-md w-full shadow-2xl">
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Save Deck</h3>
             <input
@@ -834,6 +1046,92 @@ export default function DeckBuilder() {
                 Save
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Import Modal */}
+      {showImportModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-2xl w-full shadow-2xl">
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Import Deck</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+              Paste your deck list below. Supported formats:
+              <br />• Card Name x2
+              <br />• 2x Card Name
+              <br />• Card Name * 2
+              <br />• Card Name (one per line)
+            </p>
+            <textarea
+              value={importText}
+              onChange={(e) => setImportText(e.target.value)}
+              placeholder="Paste deck list here..."
+              className="w-full h-64 px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-pokemon-red text-gray-900 dark:text-white mb-4 font-mono text-sm"
+              autoFocus
+            />
+            {importError && (
+              <div className="mb-4 p-3 bg-red-100 dark:bg-red-900/20 border border-red-300 dark:border-red-700 rounded-lg">
+                <p className="text-sm text-red-700 dark:text-red-400">{importError}</p>
+              </div>
+            )}
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowImportModal(false);
+                  setImportText('');
+                  setImportError('');
+                }}
+                className="flex-1 px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={importDeck}
+                className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+              >
+                Import
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Export Modal */}
+      {showExportModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-2xl w-full shadow-2xl">
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Export Deck</h3>
+            <div className="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4 mb-4">
+              <pre className="text-sm font-mono text-gray-900 dark:text-white whitespace-pre-wrap">
+                {exportDeckToText()}
+              </pre>
+            </div>
+            <div className="grid grid-cols-2 gap-3 mb-4">
+              <button
+                onClick={copyDeckToClipboard}
+                className="px-4 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                </svg>
+                Copy to Clipboard
+              </button>
+              <button
+                onClick={downloadDeck}
+                className="px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Download
+              </button>
+            </div>
+            <button
+              onClick={() => setShowExportModal(false)}
+              className="w-full px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-colors"
+            >
+              Close
+            </button>
           </div>
         </div>
       )}
@@ -1040,7 +1338,7 @@ export default function DeckBuilder() {
 
       {/* Mobile Save/View Actions - Fixed at bottom */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-4 z-40">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-3">
             <h3 className="font-bold text-gray-900 dark:text-white">Actions</h3>
             <div className={`text-lg font-bold ${
@@ -1067,6 +1365,24 @@ export default function DeckBuilder() {
               </button>
             )}
           </div>
+        </div>
+        
+        {/* Import/Export buttons for mobile */}
+        <div className="flex gap-2 mb-2">
+          <button
+            onClick={() => setShowImportModal(true)}
+            className="flex-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg font-medium transition-colors"
+          >
+            Import
+          </button>
+          {!deckStats.isEmpty && (
+            <button
+              onClick={() => setShowExportModal(true)}
+              className="flex-1 px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-lg font-medium transition-colors"
+            >
+              Export
+            </button>
+          )}
         </div>
         
         {/* Horizontal scrolling deck preview */}

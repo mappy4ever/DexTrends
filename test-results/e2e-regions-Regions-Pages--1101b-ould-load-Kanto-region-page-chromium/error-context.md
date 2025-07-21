@@ -1,0 +1,769 @@
+# Page snapshot
+
+```yaml
+- link "DexTrends":
+  - /url: /
+  - img
+  - text: DexTrends
+- navigation:
+  - link "Home":
+    - /url: /
+    - img
+    - text: Home
+  - link "Pokémon TCG":
+    - /url: /tcgsets
+    - img
+    - text: Pokémon TCG
+    - img
+  - link "Pokédex":
+    - /url: /pokedex
+    - img
+    - text: Pokédex
+  - link "Pokémon":
+    - /url: /pokemon
+    - img
+    - text: Pokémon
+    - img
+  - link "Battle":
+    - /url: /battle-simulator
+    - img
+    - text: Battle
+    - img
+  - link "Pocket":
+    - /url: /pocketmode
+    - img
+    - text: Pocket
+    - img
+  - link "Fun":
+    - /url: /fun
+    - img
+    - text: Fun
+- button "Open global search":
+  - img
+- link "View favorites":
+  - /url: /favorites
+  - img
+- button "Activate dark mode":
+  - img
+- main:
+  - button "Back to Regions":
+    - img
+    - text: Back to Regions
+  - text: Region 1 of 9
+  - button "Next region":
+    - img
+  - text: Johto
+  - img "Kanto Map"
+  - heading "KANTO" [level=1]
+  - paragraph: The region where it all began. Home to the original 151 Pokémon.
+  - button "Next region":
+    - img
+  - button "Overview"
+  - button "Professor"
+  - button "Starters"
+  - button "Special Pokémon"
+  - button "Gym Leaders"
+  - button "Locations"
+  - button "Games"
+  - button "Villains"
+  - button "Trivia"
+  - heading "About Kanto" [level=2]
+  - paragraph: The region where it all began. Home to the original 151 Pokémon.
+  - img
+  - heading "Professor" [level=3]
+  - paragraph: Professor Oak
+  - img
+  - heading "Generation" [level=3]
+  - paragraph: "1"
+  - img
+  - heading "Pokédex" [level=3]
+  - paragraph: 001-151
+  - img
+  - heading "Games" [level=3]
+  - paragraph: "6"
+  - heading "Region Stats" [level=3]
+  - text: Total Cities 10 Total Routes 25 Gym Leaders 8 Legendary Pokémon 5
+  - heading "Available Games" [level=3]
+  - text: Pokémon Red Pokémon Blue Pokémon Yellow Pokémon FireRed Pokémon LeafGreen Pokémon Let's Go Pikachu/Eevee
+  - heading "Meet Professor Oak" [level=2]
+  - paragraph: Kanto's Leading Pokémon Researcher
+  - img "Professor Oak"
+  - heading "Professor Samuel Oak" [level=3]
+  - paragraph: Pokémon-Human Relationships
+  - heading "Quick Info" [level=4]:
+    - img
+    - text: Quick Info
+  - paragraph: Laboratory
+  - paragraph: Pallet Town, Kanto
+  - paragraph: Age
+  - paragraph: 60-65
+  - paragraph: Known For
+  - paragraph: Giving trainers their first Pokémon and Pokédex
+  - heading "Biography" [level=4]:
+    - img
+    - text: Biography
+  - paragraph: Professor Oak is one of the most renowned Pokémon researchers in the world. As a young man, he was a formidable Pokémon trainer and even served as the Champion of the Indigo League. After retiring from battling, he dedicated his life to studying Pokémon and their relationships with humans. He is famous for creating the Pokédex, a revolutionary device that automatically records data on Pokémon encountered by trainers. His research focuses on understanding the bonds between Pokémon and their trainers, and he has published numerous papers on Pokémon behavior and evolution. Professor Oak is also known for his poetry about Pokémon, often incorporating his observations into haiku and other forms of verse. He runs a large laboratory in Pallet Town where he cares for the Pokémon of traveling trainers and conducts his research.
+  - heading "Major Achievements" [level=4]:
+    - img
+    - text: Major Achievements
+  - list:
+    - listitem:
+      - img
+      - text: Created the first Pokédex
+    - listitem:
+      - img
+      - text: Former Pokémon League Champion
+    - listitem:
+      - img
+      - text: Renowned Pokémon poet
+    - listitem:
+      - img
+      - text: Discovered over 150 Pokémon species
+  - heading "Research Focus" [level=4]:
+    - img
+    - text: Research Focus
+  - img
+  - paragraph: Pokémon habitat and distribution
+  - img
+  - paragraph: Evolution triggers and conditions
+  - img
+  - paragraph: Trainer-Pokémon bond strengthening
+  - img
+  - paragraph: Regional Pokémon variations
+  - heading "Famous Quote" [level=4]:
+    - img
+    - text: Famous Quote
+  - blockquote:
+    - paragraph: "\"The world of Pokémon awaits! Let's go!\""
+  - heading "Choose Your Starter" [level=2]
+  - paragraph: Begin your journey with one of these three Pokémon
+  - text: "#001"
+  - img "Bulbasaur"
+  - heading "Bulbasaur" [level=3]
+  - paragraph: Seed Pokémon
+  - text: Grass Poison
+  - paragraph: Height
+  - paragraph: 0.7 m
+  - paragraph: Weight
+  - paragraph: 6.9 kg
+  - text: "#004"
+  - img "Charmander"
+  - heading "Charmander" [level=3]
+  - paragraph: Lizard Pokémon
+  - text: Fire
+  - paragraph: Height
+  - paragraph: 0.6 m
+  - paragraph: Weight
+  - paragraph: 8.5 kg
+  - text: "#007"
+  - img "Squirtle"
+  - heading "Squirtle" [level=3]
+  - paragraph: Tiny Turtle Pokémon
+  - text: Water
+  - paragraph: Height
+  - paragraph: 0.5 m
+  - paragraph: Weight
+  - paragraph: 9.0 kg
+  - heading "Choosing Your Starter" [level=3]:
+    - img
+    - text: Choosing Your Starter
+  - paragraph: Your starter Pokémon will be your first partner on your journey. Consider their type advantages against early gym leaders, their evolution potential, and which one you connect with most!
+  - heading "Special Pokémon" [level=2]
+  - paragraph: Unique and legendary Pokémon of Kanto
+  - heading "Legendary Pokémon" [level=3]:
+    - img
+    - text: Legendary Pokémon
+  - paragraph: The legendary and mythical Pokémon of Kanto
+  - img "Articuno"
+  - heading "Articuno" [level=3]
+  - paragraph: Freeze Pokémon
+  - text: Ice Flying
+  - paragraph: Seafoam Islands
+  - paragraph: Click to view in Pokédex
+  - img "Zapdos"
+  - heading "Zapdos" [level=3]
+  - paragraph: Electric Pokémon
+  - text: Electric Flying
+  - paragraph: Power Plant
+  - paragraph: Click to view in Pokédex
+  - img "Moltres"
+  - heading "Moltres" [level=3]
+  - paragraph: Flame Pokémon
+  - text: Fire Flying
+  - paragraph: Victory Road
+  - paragraph: Click to view in Pokédex
+  - img "Mewtwo"
+  - heading "Mewtwo" [level=3]
+  - paragraph: Genetic Pokémon
+  - text: Psychic
+  - paragraph: Cerulean Cave
+  - paragraph: Click to view in Pokédex
+  - img "Mew"
+  - heading "Mew" [level=3]
+  - paragraph: New Species Pokémon
+  - text: Psychic
+  - paragraph: Event Only
+  - paragraph: Click to view in Pokédex
+  - heading "Your Journey in Kanto" [level=2]
+  - paragraph: Challenge the strongest trainers on your path to becoming Champion
+  - heading "Gym Leader Challenge" [level=3]
+  - paragraph: Defeat all 8 Gym Leaders to earn their badges
+  - button:
+    - img
+  - button:
+    - img
+  - text: TYPE SPECIALIST
+  - img "rock type"
+  - text: Rock
+  - img "Boulder Badge Badge"
+  - heading "Brock" [level=2]
+  - paragraph: Pewter City
+  - link "Geodude":
+    - /url: /pokedex/geodude
+    - img "Geodude"
+  - link "Onix":
+    - /url: /pokedex/onix
+    - img "Onix"
+  - text: "Weak to:"
+  - img "water type"
+  - text: Water
+  - img "grass type"
+  - text: Grass
+  - img "fighting type"
+  - text: Fighting
+  - img "ground type"
+  - text: Ground
+  - img "steel type"
+  - text: Steel "
+  - paragraph: “I believe in rock-hard determination!”
+  - text: "Fun Fact:"
+  - paragraph: Defensive rock formations
+  - text: "Recommended Level: 13+ GYM LEADER"
+  - img "Brock - kanto Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "water type"
+  - text: Water
+  - img "Cascade Badge Badge"
+  - heading "Misty" [level=2]
+  - paragraph: Cerulean City
+  - link "Staryu":
+    - /url: /pokedex/staryu
+    - img "Staryu"
+  - link "Starmie":
+    - /url: /pokedex/starmie
+    - img "Starmie"
+  - text: "Weak to:"
+  - img "electric type"
+  - text: Electric
+  - img "grass type"
+  - text: Grass "
+  - paragraph: “My policy is an all-out offensive with water-type Pokémon!”
+  - text: "Fun Fact:"
+  - paragraph: Swift aquatic strikes
+  - text: "Recommended Level: 20+ GYM LEADER"
+  - img "Misty - kanto Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "electric type"
+  - text: Electric
+  - img "Thunder Badge Badge"
+  - heading "Lt. Surge" [level=2]
+  - paragraph: Vermilion City
+  - link "Voltorb":
+    - /url: /pokedex/voltorb
+    - img "Voltorb"
+  - link "Pikachu":
+    - /url: /pokedex/pikachu
+    - img "Pikachu"
+  - link "Raichu":
+    - /url: /pokedex/raichu
+    - img "Raichu"
+  - text: "Weak to:"
+  - img "ground type"
+  - text: Ground "
+  - paragraph: “I tell you, electric Pokémon saved me during the war!”
+  - text: "Fun Fact:"
+  - paragraph: High-voltage offense
+  - text: "Recommended Level: 21+ GYM LEADER"
+  - img "Lt. Surge - kanto Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "grass type"
+  - text: Grass
+  - img "Rainbow Badge Badge"
+  - heading "Erika" [level=2]
+  - paragraph: Celadon City
+  - link "Victreebel":
+    - /url: /pokedex/victreebel
+    - img "Victreebel"
+  - link "Tangela":
+    - /url: /pokedex/tangela
+    - img "Tangela"
+  - link "Vileplume":
+    - /url: /pokedex/vileplume
+    - img "Vileplume"
+  - text: "Weak to:"
+  - img "fire type"
+  - text: Fire
+  - img "ice type"
+  - text: Ice
+  - img "poison type"
+  - text: Poison
+  - img "flying type"
+  - text: Flying
+  - img "bug type"
+  - text: Bug "
+  - paragraph: “Oh... I must have dozed off. Welcome to Celadon Gym.”
+  - text: "Fun Fact:"
+  - paragraph: Status condition tactics
+  - text: "Recommended Level: 27+ GYM LEADER"
+  - img "Erika - kanto Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "poison type"
+  - text: Poison
+  - img "Soul Badge Badge"
+  - heading "Koga" [level=2]
+  - paragraph: Fuchsia City
+  - link "Koffing":
+    - /url: /pokedex/koffing
+    - img "Koffing"
+  - link "Muk":
+    - /url: /pokedex/muk
+    - img "Muk"
+  - link "Koffing":
+    - /url: /pokedex/koffing
+    - img "Koffing"
+  - link "Weezing":
+    - /url: /pokedex/weezing
+    - img "Weezing"
+  - text: "Weak to:"
+  - img "ground type"
+  - text: Ground
+  - img "psychic type"
+  - text: Psychic "
+  - paragraph: “A ninja should be able to track his prey through darkness!”
+  - text: "Fun Fact:"
+  - paragraph: Poison and evasion
+  - text: "Recommended Level: 39+ GYM LEADER"
+  - img "Koga - kanto Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "psychic type"
+  - text: Psychic
+  - img "Marsh Badge Badge"
+  - heading "Sabrina" [level=2]
+  - paragraph: Saffron City
+  - link "Kadabra":
+    - /url: /pokedex/kadabra
+    - img "Kadabra"
+  - link "Mr. Mime":
+    - /url: /pokedex/mr.%20mime
+    - img "Mr. Mime"
+  - link "Venomoth":
+    - /url: /pokedex/venomoth
+    - img "Venomoth"
+  - link "Alakazam":
+    - /url: /pokedex/alakazam
+    - img "Alakazam"
+  - text: "Weak to:"
+  - img "bug type"
+  - text: Bug
+  - img "ghost type"
+  - text: Ghost
+  - img "dark type"
+  - text: Dark "
+  - paragraph: “I had a vision of your arrival!”
+  - text: "Fun Fact:"
+  - paragraph: Psychic domination
+  - text: "Recommended Level: 39+ GYM LEADER"
+  - img "Sabrina - kanto Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "fire type"
+  - text: Fire
+  - img "Volcano Badge Badge"
+  - heading "Blaine" [level=2]
+  - paragraph: Cinnabar Island
+  - link "Growlithe":
+    - /url: /pokedex/growlithe
+    - img "Growlithe"
+  - link "Ponyta":
+    - /url: /pokedex/ponyta
+    - img "Ponyta"
+  - link "Rapidash":
+    - /url: /pokedex/rapidash
+    - img "Rapidash"
+  - link "Arcanine":
+    - /url: /pokedex/arcanine
+    - img "Arcanine"
+  - text: "Weak to:"
+  - img "water type"
+  - text: Water
+  - img "ground type"
+  - text: Ground
+  - img "rock type"
+  - text: Rock "
+  - paragraph: “Hah! Hope you brought Burn Heal!”
+  - text: "Fun Fact:"
+  - paragraph: Burning intensity
+  - text: "Recommended Level: 43+ GYM LEADER"
+  - img "Blaine - kanto Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "ground type"
+  - text: Ground
+  - img "Earth Badge Badge"
+  - heading "Giovanni" [level=2]
+  - paragraph: Viridian City
+  - link "Rhyhorn":
+    - /url: /pokedex/rhyhorn
+    - img "Rhyhorn"
+  - link "Dugtrio":
+    - /url: /pokedex/dugtrio
+    - img "Dugtrio"
+  - link "Nidoqueen":
+    - /url: /pokedex/nidoqueen
+    - img "Nidoqueen"
+  - link "Nidoking":
+    - /url: /pokedex/nidoking
+    - img "Nidoking"
+  - link "Rhydon":
+    - /url: /pokedex/rhydon
+    - img "Rhydon"
+  - text: "Weak to:"
+  - img "water type"
+  - text: Water
+  - img "grass type"
+  - text: Grass
+  - img "ice type"
+  - text: Ice "
+  - paragraph: “So! I must say, I am impressed you got here.”
+  - text: "Fun Fact:"
+  - paragraph: Ground-type supremacy
+  - text: "Recommended Level: 45+ GYM LEADER"
+  - img "Giovanni - kanto Gym Leader"
+  - button
+  - button
+  - button
+  - button
+  - button
+  - button
+  - button
+  - button
+  - heading "⚡ ELITE FOUR & CHAMPION ⚡" [level=3]
+  - img
+  - img
+  - img
+  - img
+  - img
+  - paragraph: The ultimate challenge awaits at the Pokémon League
+  - button:
+    - img
+  - button:
+    - img
+  - text: ELITE TYPE SPECIALIST
+  - img "ice type"
+  - text: "Ice #1"
+  - heading "Lorelei" [level=2]
+  - paragraph: Elite Four Member
+  - link "Dewgong":
+    - /url: /pokedex/dewgong
+    - img "Dewgong"
+  - link "Cloyster":
+    - /url: /pokedex/cloyster
+    - img "Cloyster"
+  - link "Slowbro":
+    - /url: /pokedex/slowbro
+    - img "Slowbro"
+  - link "Jynx":
+    - /url: /pokedex/jynx
+    - img "Jynx"
+  - link "Lapras":
+    - /url: /pokedex/lapras
+    - img "Lapras"
+  - text: "Weak to:"
+  - img "fire type"
+  - text: Fire
+  - img "fighting type"
+  - text: Fighting
+  - img "rock type"
+  - text: Rock
+  - img "steel type"
+  - text: Steel "
+  - paragraph: “Your Pokémon will be at my mercy when they are frozen solid!”
+  - text: "Battle Strategy:"
+  - paragraph: Freezing tactics with Ice-type precision
+  - text: "Difficulty: ★★★★ ELITE FOUR"
+  - img "Lorelei - Elite Four"
+  - text: ELITE TYPE SPECIALIST
+  - img "fighting type"
+  - text: "Fighting #2"
+  - heading "Bruno" [level=2]
+  - paragraph: Elite Four Member
+  - link "Onix":
+    - /url: /pokedex/onix
+    - img "Onix"
+  - link "Hitmonchan":
+    - /url: /pokedex/hitmonchan
+    - img "Hitmonchan"
+  - link "Hitmonlee":
+    - /url: /pokedex/hitmonlee
+    - img "Hitmonlee"
+  - link "Onix":
+    - /url: /pokedex/onix
+    - img "Onix"
+  - link "Machamp":
+    - /url: /pokedex/machamp
+    - img "Machamp"
+  - text: "Weak to:"
+  - img "flying type"
+  - text: Flying
+  - img "psychic type"
+  - text: Psychic
+  - img "fairy type"
+  - text: Fairy "
+  - paragraph: “We will grind you down with our superior power!”
+  - text: "Battle Strategy:"
+  - paragraph: Raw fighting power and physical dominance
+  - text: "Difficulty: ★★★★ ELITE FOUR"
+  - img "Bruno - Elite Four"
+  - text: ELITE TYPE SPECIALIST
+  - img "ghost type"
+  - text: "Ghost #3"
+  - heading "Agatha" [level=2]
+  - paragraph: Elite Four Member
+  - link "Gengar":
+    - /url: /pokedex/gengar
+    - img "Gengar"
+  - link "Golbat":
+    - /url: /pokedex/golbat
+    - img "Golbat"
+  - link "Haunter":
+    - /url: /pokedex/haunter
+    - img "Haunter"
+  - link "Arbok":
+    - /url: /pokedex/arbok
+    - img "Arbok"
+  - link "Gengar":
+    - /url: /pokedex/gengar
+    - img "Gengar"
+  - text: "Weak to:"
+  - img "ghost type"
+  - text: Ghost
+  - img "dark type"
+  - text: Dark "
+  - paragraph: “I'll show you how a real Trainer battles!”
+  - text: "Battle Strategy:"
+  - paragraph: Ghostly tricks and status conditions
+  - text: "Difficulty: ★★★★ ELITE FOUR"
+  - img "Agatha - Elite Four"
+  - text: ELITE TYPE SPECIALIST
+  - img "dragon type"
+  - text: "Dragon #4"
+  - heading "Lance" [level=2]
+  - paragraph: Elite Four Member
+  - link "Gyarados":
+    - /url: /pokedex/gyarados
+    - img "Gyarados"
+  - link "Dragonair":
+    - /url: /pokedex/dragonair
+    - img "Dragonair"
+  - link "Dragonair":
+    - /url: /pokedex/dragonair
+    - img "Dragonair"
+  - link "Aerodactyl":
+    - /url: /pokedex/aerodactyl
+    - img "Aerodactyl"
+  - link "Dragonite":
+    - /url: /pokedex/dragonite
+    - img "Dragonite"
+  - text: "Weak to:"
+  - img "ice type"
+  - text: Ice
+  - img "dragon type"
+  - text: Dragon
+  - img "fairy type"
+  - text: Fairy "
+  - paragraph: “You still need more training. Come back when you get stronger!”
+  - text: "Battle Strategy:"
+  - paragraph: Dragon supremacy and overwhelming force
+  - text: "Difficulty: ★★★★ ELITE FOUR"
+  - img "Lance - Elite Four"
+  - button
+  - button
+  - button
+  - button
+  - heading "THE FINAL CHALLENGE" [level=4]
+  - img
+  - img
+  - img
+  - button "REVEAL THE CHAMPION":
+    - img
+    - text: REVEAL THE CHAMPION
+    - img
+  - paragraph: Face the ultimate test of your skills
+  - heading "Explore Kanto" [level=2]
+  - paragraph: Discover the diverse cities, towns, and landmarks
+  - heading "Cities & Towns" [level=3]:
+    - img
+    - text: Cities & Towns
+  - img
+  - heading "Pallet Town" [level=4]
+  - paragraph: Your journey begins here
+  - img
+  - heading "Viridian City" [level=4]
+  - paragraph: The eternally green paradise
+  - img
+  - heading "Pewter City" [level=4]
+  - paragraph: A stone gray city
+  - img
+  - heading "Cerulean City" [level=4]
+  - paragraph: A mysterious blue aura surrounds it
+  - img
+  - heading "Vermilion City" [level=4]
+  - paragraph: The port of exquisite sunsets
+  - heading "Notable Landmarks" [level=3]:
+    - img
+    - text: Notable Landmarks
+  - heading "Mt. Moon" [level=4]
+  - paragraph: A mystical mountain known for Clefairy
+  - heading "Rock Tunnel" [level=4]
+  - paragraph: A pitch-black tunnel requiring Flash
+  - heading "Power Plant" [level=4]
+  - paragraph: Home to Electric-type Pokémon and Zapdos
+  - heading "Seafoam Islands" [level=4]
+  - paragraph: Twin islands home to Articuno
+  - heading "Victory Road" [level=4]
+  - paragraph: The final test before the Pokémon League
+  - heading "Games in Kanto" [level=2]
+  - paragraph: Experience the Kanto region across different generations
+  - link "Pokémon Red cover Pokémon Red Explore More":
+    - /url: /pokemon/games/red
+    - img "Pokémon Red cover"
+    - heading "Pokémon Red" [level=3]
+    - button "Explore More":
+      - text: Explore More
+      - img
+    - img
+    - img
+    - img
+  - link "Pokémon Blue cover Pokémon Blue Explore More":
+    - /url: /pokemon/games/blue
+    - img "Pokémon Blue cover"
+    - heading "Pokémon Blue" [level=3]
+    - button "Explore More":
+      - text: Explore More
+      - img
+    - img
+    - img
+    - img
+  - link "Pokémon Yellow cover Pokémon Yellow Explore More":
+    - /url: /pokemon/games/yellow
+    - img "Pokémon Yellow cover"
+    - heading "Pokémon Yellow" [level=3]
+    - button "Explore More":
+      - text: Explore More
+      - img
+    - img
+    - img
+    - img
+  - link "Pokémon FireRed cover Pokémon FireRed Explore More":
+    - /url: /pokemon/games/firered
+    - img "Pokémon FireRed cover"
+    - heading "Pokémon FireRed" [level=3]
+    - button "Explore More":
+      - text: Explore More
+      - img
+    - img
+    - img
+    - img
+  - link "Pokémon LeafGreen cover Pokémon LeafGreen Explore More":
+    - /url: /pokemon/games/leafgreen
+    - img "Pokémon LeafGreen cover"
+    - heading "Pokémon LeafGreen" [level=3]
+    - button "Explore More":
+      - text: Explore More
+      - img
+    - img
+    - img
+    - img
+  - link "Pokémon Let's Go Pikachu/Eevee cover Pokémon Let's Go Pikachu/Eevee Explore More":
+    - /url: /pokemon/games/let's-go-pikachu/eevee
+    - img "Pokémon Let's Go Pikachu/Eevee cover"
+    - heading "Pokémon Let's Go Pikachu/Eevee" [level=3]
+    - button "Explore More":
+      - text: Explore More
+      - img
+    - img
+    - img
+    - img
+  - img
+  - text: Generation 1
+  - img
+  - text: 6 Games Released
+  - link "Explore All Pokémon Games":
+    - /url: /pokemon/games
+    - img
+    - text: Explore All Pokémon Games
+    - img
+  - heading "Villainous Organizations" [level=2]:
+    - img
+    - text: Villainous Organizations
+  - paragraph: The evil teams threatening Kanto's peace
+  - heading "Team Rocket" [level=3]
+  - paragraph: "\"Steal Pokémon for profit. Exploit Pokémon for profit. All Pokémon exist for the glory of Team Rocket.\""
+  - paragraph: Leader
+  - paragraph: Giovanni
+  - paragraph: Boss
+  - img "Giovanni"
+  - img
+  - heading "Did You Know?" [level=2]
+  - paragraph: Interesting facts about Kanto
+  - text: "1"
+  - paragraph: Kanto is based on the real Kantō region of Japan
+  - text: "2"
+  - paragraph: It's the only region to appear in four different generations of games
+  - text: "3"
+  - paragraph: Team Rocket originated in this region
+  - text: "4"
+  - paragraph: Features the first Pokémon League ever introduced
+  - text: Press ? for shortcuts 🔕
+  - heading "Push Notifications" [level=3]
+  - paragraph: Blocked by user
+  - button "Enable"
+- contentinfo:
+  - paragraph:
+    - text: © 2025 DexTrends - A
+    - link "PakePoint":
+      - /url: https://www.pakepoint.com
+    - text: Project. All rights reserved.
+- button "Open card comparison tool":
+  - img
+- text: Compare Cards
+- button "💡"
+- button:
+  - img
+- alert: /pokemon/regions/kanto
+- button "Open Next.js Dev Tools":
+  - img
+- button "Open issues overlay": 1 Issue
+- button "Collapse issues badge":
+  - img
+- navigation:
+  - button "previous" [disabled]:
+    - img "previous"
+  - text: 1/1
+  - button "next" [disabled]:
+    - img "next"
+- img
+- link "Next.js 15.3.5 (stale) Webpack":
+  - /url: https://nextjs.org/docs/messages/version-staleness
+  - img
+  - text: Next.js 15.3.5 (stale) Webpack
+- img
+- dialog "Runtime Error":
+  - text: Runtime Error
+  - button "Copy Stack Trace":
+    - img
+  - button "No related documentation found" [disabled]:
+    - img
+  - link "Learn more about enabling Node.js inspector for server code with Chrome DevTools":
+    - /url: https://nextjs.org/docs/app/building-your-application/configuring/debugging#server-side-code
+    - img
+  - paragraph: "TypeError: Failed to register a ServiceWorker for scope ('http://localhost:3000/') with script ('http://localhost:3000/sw.js'): A bad HTTP response code (404) was received when fetching the script."
+```

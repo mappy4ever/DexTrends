@@ -308,4 +308,88 @@ TableSkeleton.displayName = 'TableSkeleton';
 PageSkeleton.displayName = 'PageSkeleton';
 ChartSkeleton.displayName = 'ChartSkeleton';
 
+interface SmartSkeletonProps {
+  type: 
+    | 'card' 
+    | 'card-grid' 
+    | 'pokemon-list' 
+    | 'card-detail' 
+    | 'search-results' 
+    | 'stats-card' 
+    | 'chart' 
+    | 'table'
+    | 'list'
+    | 'page';
+  count?: number;
+  className?: string;
+  showPrice?: boolean;
+  showTypes?: boolean;
+  showHP?: boolean;
+  rows?: number;
+  columns?: number;
+  height?: string;
+}
+
+/**
+ * Smart skeleton component that automatically selects the appropriate skeleton type
+ * Based on the QOL Components design for unified skeleton loading
+ */
+export const SmartSkeleton = memo<SmartSkeletonProps>(({ 
+  type,
+  count = 12,
+  className = "",
+  showPrice = false,
+  showTypes = true,
+  showHP = false,
+  rows = 5,
+  columns = 4,
+  height = "20rem"
+}) => {
+  switch (type) {
+    case 'card':
+      return <CardSkeleton className={className} showPrice={showPrice} showTypes={showTypes} showHP={showHP} />;
+    
+    case 'card-grid':
+    case 'pokemon-list':
+      return <CardGridSkeleton count={count} className={className} showPrice={showPrice} showTypes={showTypes} showHP={showHP} />;
+    
+    case 'card-detail':
+      return <CardSkeleton className={className} showPrice={true} showTypes={true} showHP={true} showRarity={true} showArtist={true} />;
+    
+    case 'search-results':
+      return <SearchSkeleton className={className} />;
+    
+    case 'stats-card':
+      return <div className={`bg-white dark:bg-gray-800 rounded-lg p-4 space-y-3 ${className}`}>
+        <Skeleton height="1.5rem" width="70%" />
+        <Skeleton height="3rem" />
+        <div className="flex justify-between">
+          <Skeleton height="1rem" width="30%" />
+          <Skeleton height="1rem" width="40%" />
+        </div>
+      </div>;
+    
+    case 'chart':
+      return <ChartSkeleton height={height} className={className} />;
+    
+    case 'table':
+      return <TableSkeleton rows={rows} columns={columns} className={className} />;
+    
+    case 'list':
+      return <div className={className}>
+        {Array.from({ length: count }, (_, i) => (
+          <ListItemSkeleton key={i} showSecondaryText={true} />
+        ))}
+      </div>;
+    
+    case 'page':
+      return <PageSkeleton className={className} />;
+    
+    default:
+      return <Skeleton className={className} />;
+  }
+});
+
+SmartSkeleton.displayName = 'SmartSkeleton';
+
 export default Skeleton;

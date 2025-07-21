@@ -1,0 +1,811 @@
+# Page snapshot
+
+```yaml
+- link "DexTrends":
+  - /url: /
+  - img
+  - text: DexTrends
+- navigation:
+  - link "Home":
+    - /url: /
+    - img
+    - text: Home
+  - link "Pokémon TCG":
+    - /url: /tcgsets
+    - img
+    - text: Pokémon TCG
+    - img
+  - link "Pokédex":
+    - /url: /pokedex
+    - img
+    - text: Pokédex
+  - link "Pokémon":
+    - /url: /pokemon
+    - img
+    - text: Pokémon
+    - img
+  - link "Battle":
+    - /url: /battle-simulator
+    - img
+    - text: Battle
+    - img
+  - link "Pocket":
+    - /url: /pocketmode
+    - img
+    - text: Pocket
+    - img
+  - link "Fun":
+    - /url: /fun
+    - img
+    - text: Fun
+- button "Open global search":
+  - img
+- link "View favorites":
+  - /url: /favorites
+  - img
+- button "Activate dark mode":
+  - img
+- main:
+  - button "Back to Regions":
+    - img
+    - text: Back to Regions
+  - button "Previous region":
+    - img
+  - text: Johto Region 3 of 9
+  - button "Next region":
+    - img
+  - text: Sinnoh
+  - img "Hoenn Map"
+  - heading "HOENN" [level=1]
+  - paragraph: A tropical region with diverse ecosystems and weather phenomena.
+  - button "Previous region":
+    - img
+  - button "Next region":
+    - img
+  - button "Overview"
+  - button "Professor"
+  - button "Starters"
+  - button "Special Pokémon"
+  - button "Gym Leaders"
+  - button "Locations"
+  - button "Games"
+  - button "Villains"
+  - button "Trivia"
+  - heading "About Hoenn" [level=2]
+  - paragraph: A tropical region with diverse ecosystems and weather phenomena.
+  - img
+  - heading "Professor" [level=3]
+  - paragraph: Professor Birch
+  - img
+  - heading "Generation" [level=3]
+  - paragraph: "3"
+  - img
+  - heading "Pokédex" [level=3]
+  - paragraph: 252-386
+  - img
+  - heading "Games" [level=3]
+  - paragraph: "5"
+  - heading "Region Stats" [level=3]
+  - text: Total Cities 16 Total Routes 34 Gym Leaders 8 Legendary Pokémon 8
+  - heading "Available Games" [level=3]
+  - text: Pokémon Ruby Pokémon Sapphire Pokémon Emerald Pokémon Omega Ruby Pokémon Alpha Sapphire
+  - heading "Meet Professor Birch" [level=2]
+  - paragraph: Hoenn's Leading Pokémon Researcher
+  - img "Professor Birch"
+  - heading "Professor Birch" [level=3]
+  - paragraph: Pokémon Habitats and Field Research
+  - heading "Quick Info" [level=4]:
+    - img
+    - text: Quick Info
+  - paragraph: Laboratory
+  - paragraph: Littleroot Town, Hoenn
+  - paragraph: Age
+  - paragraph: 40-45
+  - paragraph: Known For
+  - paragraph: Field research and habitat studies
+  - heading "Biography" [level=4]:
+    - img
+    - text: Biography
+  - paragraph: Professor Birch is renowned for his hands-on approach to Pokémon research. Unlike many professors who primarily work in laboratories, Birch spends most of his time in the field, observing Pokémon in their natural habitats. This approach has sometimes led to dangerous situations, including being chased by wild Pokémon. His field research has provided unprecedented insights into Pokémon behavior, migration patterns, and habitat preferences. He believes that to truly understand Pokémon, one must observe them in the wild rather than in controlled environments. Birch is also the father of Brendan/May, who becomes a rival to new trainers. He takes pride in his child's accomplishments and often speaks highly of their progress as a trainer.
+  - heading "Major Achievements" [level=4]:
+    - img
+    - text: Major Achievements
+  - list:
+    - listitem:
+      - img
+      - text: Leading field researcher
+    - listitem:
+      - img
+      - text: Documented numerous Pokémon in natural habitats
+    - listitem:
+      - img
+      - text: Established field research methodologies
+    - listitem:
+      - img
+      - text: Discovered habitat-based evolution factors
+  - heading "Research Focus" [level=4]:
+    - img
+    - text: Research Focus
+  - img
+  - paragraph: Wild Pokémon behavior patterns
+  - img
+  - paragraph: Habitat preferences by type
+  - img
+  - paragraph: Environmental factors in evolution
+  - img
+  - paragraph: Pokémon migration studies
+  - heading "Famous Quote" [level=4]:
+    - img
+    - text: Famous Quote
+  - blockquote:
+    - paragraph: "\"You never know what you'll encounter in tall grass!\""
+  - heading "Choose Your Starter" [level=2]
+  - paragraph: Begin your journey with one of these three Pokémon
+  - text: "#252"
+  - img "Treecko"
+  - heading "Treecko" [level=3]
+  - paragraph: Wood Gecko Pokémon
+  - text: Grass
+  - paragraph: Height
+  - paragraph: 0.5 m
+  - paragraph: Weight
+  - paragraph: 5.0 kg
+  - text: "#255"
+  - img "Torchic"
+  - heading "Torchic" [level=3]
+  - paragraph: Chick Pokémon
+  - text: Fire
+  - paragraph: Height
+  - paragraph: 0.4 m
+  - paragraph: Weight
+  - paragraph: 2.5 kg
+  - text: "#258"
+  - img "Mudkip"
+  - heading "Mudkip" [level=3]
+  - paragraph: Mud Fish Pokémon
+  - text: Water
+  - paragraph: Height
+  - paragraph: 0.4 m
+  - paragraph: Weight
+  - paragraph: 7.6 kg
+  - heading "Choosing Your Starter" [level=3]:
+    - img
+    - text: Choosing Your Starter
+  - paragraph: Your starter Pokémon will be your first partner on your journey. Consider their type advantages against early gym leaders, their evolution potential, and which one you connect with most!
+  - heading "Special Pokémon" [level=2]
+  - paragraph: Unique and legendary Pokémon of Hoenn
+  - heading "Legendary Pokémon" [level=3]:
+    - img
+    - text: Legendary Pokémon
+  - paragraph: The legendary and mythical Pokémon of Hoenn
+  - img "Regirock"
+  - heading "Regirock" [level=3]
+  - paragraph: Rock Peak Pokémon
+  - text: Rock
+  - paragraph: Desert Ruins
+  - paragraph: Click to view in Pokédex
+  - img "Regice"
+  - heading "Regice" [level=3]
+  - paragraph: Iceberg Pokémon
+  - text: Ice
+  - paragraph: Island Cave
+  - paragraph: Click to view in Pokédex
+  - img "Registeel"
+  - heading "Registeel" [level=3]
+  - paragraph: Iron Pokémon
+  - text: Steel
+  - paragraph: Ancient Tomb
+  - paragraph: Click to view in Pokédex
+  - img "Latias"
+  - heading "Latias" [level=3]
+  - paragraph: Eon Pokémon
+  - text: Dragon Psychic
+  - paragraph: Roaming
+  - paragraph: Click to view in Pokédex
+  - img "Latios"
+  - heading "Latios" [level=3]
+  - paragraph: Eon Pokémon
+  - text: Dragon Psychic
+  - paragraph: Roaming
+  - paragraph: Click to view in Pokédex
+  - img "Kyogre"
+  - heading "Kyogre" [level=3]
+  - paragraph: Sea Basin Pokémon
+  - text: Water
+  - paragraph: Cave of Origin
+  - paragraph: Click to view in Pokédex
+  - img "Groudon"
+  - heading "Groudon" [level=3]
+  - paragraph: Continent Pokémon
+  - text: Ground
+  - paragraph: Cave of Origin
+  - paragraph: Click to view in Pokédex
+  - img "Rayquaza"
+  - heading "Rayquaza" [level=3]
+  - paragraph: Sky High Pokémon
+  - text: Dragon Flying
+  - paragraph: Sky Pillar
+  - paragraph: Click to view in Pokédex
+  - img "Jirachi"
+  - heading "Jirachi" [level=3]
+  - paragraph: Wish Pokémon
+  - text: Steel Psychic
+  - paragraph: Event Only
+  - paragraph: Click to view in Pokédex
+  - img "Deoxys"
+  - heading "Deoxys" [level=3]
+  - paragraph: DNA Pokémon
+  - text: Psychic
+  - paragraph: Event Only
+  - paragraph: Click to view in Pokédex
+  - heading "Your Journey in Hoenn" [level=2]
+  - paragraph: Challenge the strongest trainers on your path to becoming Champion
+  - heading "Gym Leader Challenge" [level=3]
+  - paragraph: Defeat all 8 Gym Leaders to earn their badges
+  - button:
+    - img
+  - button:
+    - img
+  - text: TYPE SPECIALIST
+  - img "rock type"
+  - text: Rock
+  - img "Stone Badge Badge"
+  - heading "Roxanne" [level=2]
+  - paragraph: Rustboro City
+  - link "Geodude":
+    - /url: /pokedex/geodude
+    - img "Geodude"
+  - link "Geodude":
+    - /url: /pokedex/geodude
+    - img "Geodude"
+  - link "Nosepass":
+    - /url: /pokedex/nosepass
+    - img "Nosepass"
+  - text: "Weak to:"
+  - img "water type"
+  - text: Water
+  - img "grass type"
+  - text: Grass
+  - img "fighting type"
+  - text: Fighting
+  - img "ground type"
+  - text: Ground
+  - img "steel type"
+  - text: Steel "
+  - paragraph: “I became a Gym Leader so that I may apply what I learned at the Trainer's School.”
+  - text: "Fun Fact:"
+  - paragraph: Rock-solid defense
+  - text: "Recommended Level: 13+ GYM LEADER"
+  - img "Roxanne - hoenn Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "fighting type"
+  - text: Fighting
+  - img "Knuckle Badge Badge"
+  - heading "Brawly" [level=2]
+  - paragraph: Dewford Town
+  - link "Machop":
+    - /url: /pokedex/machop
+    - img "Machop"
+  - link "Meditite":
+    - /url: /pokedex/meditite
+    - img "Meditite"
+  - link "Makuhita":
+    - /url: /pokedex/makuhita
+    - img "Makuhita"
+  - text: "Weak to:"
+  - img "flying type"
+  - text: Flying
+  - img "psychic type"
+  - text: Psychic
+  - img "fairy type"
+  - text: Fairy "
+  - paragraph: “A big wave is coming! Let's see if you can ride it!”
+  - text: "Fun Fact:"
+  - paragraph: Fighting spirit
+  - text: "Recommended Level: 17+ GYM LEADER"
+  - img "Brawly - hoenn Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "electric type"
+  - text: Electric
+  - img "Dynamo Badge Badge"
+  - heading "Wattson" [level=2]
+  - paragraph: Mauville City
+  - link "Voltorb":
+    - /url: /pokedex/voltorb
+    - img "Voltorb"
+  - link "Electrike":
+    - /url: /pokedex/electrike
+    - img "Electrike"
+  - link "Magneton":
+    - /url: /pokedex/magneton
+    - img "Magneton"
+  - link "Manectric":
+    - /url: /pokedex/manectric
+    - img "Manectric"
+  - text: "Weak to:"
+  - img "ground type"
+  - text: Ground "
+  - paragraph: “Wahahahah! Now, that is amusing!”
+  - text: "Fun Fact:"
+  - paragraph: Electric personality
+  - text: "Recommended Level: 22+ GYM LEADER"
+  - img "Wattson - hoenn Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "fire type"
+  - text: Fire
+  - img "Heat Badge Badge"
+  - heading "Flannery" [level=2]
+  - paragraph: Lavaridge Town
+  - link "Numel":
+    - /url: /pokedex/numel
+    - img "Numel"
+  - link "Slugma":
+    - /url: /pokedex/slugma
+    - img "Slugma"
+  - link "Camerupt":
+    - /url: /pokedex/camerupt
+    - img "Camerupt"
+  - link "Torkoal":
+    - /url: /pokedex/torkoal
+    - img "Torkoal"
+  - text: "Weak to:"
+  - img "water type"
+  - text: Water
+  - img "ground type"
+  - text: Ground
+  - img "rock type"
+  - text: Rock "
+  - paragraph: “Welcome... Oh, wait. I'm the Gym Leader here!”
+  - text: "Fun Fact:"
+  - paragraph: Burning passion
+  - text: "Recommended Level: 26+ GYM LEADER"
+  - img "Flannery - hoenn Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "normal type"
+  - text: Normal
+  - img "Balance Badge Badge"
+  - heading "Norman" [level=2]
+  - paragraph: Petalburg City
+  - link "Spinda":
+    - /url: /pokedex/spinda
+    - img "Spinda"
+  - link "Vigoroth":
+    - /url: /pokedex/vigoroth
+    - img "Vigoroth"
+  - link "Linoone":
+    - /url: /pokedex/linoone
+    - img "Linoone"
+  - link "Slaking":
+    - /url: /pokedex/slaking
+    - img "Slaking"
+  - text: "Weak to:"
+  - img "fighting type"
+  - text: Fighting "
+  - paragraph: “I'm surprised you managed to get past my gym trainers.”
+  - text: "Fun Fact:"
+  - paragraph: Balanced power
+  - text: "Recommended Level: 29+ GYM LEADER"
+  - img "Norman - hoenn Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "flying type"
+  - text: Flying
+  - img "Feather Badge Badge"
+  - heading "Winona" [level=2]
+  - paragraph: Fortree City
+  - link "Swablu":
+    - /url: /pokedex/swablu
+    - img "Swablu"
+  - link "Tropius":
+    - /url: /pokedex/tropius
+    - img "Tropius"
+  - link "Pelipper":
+    - /url: /pokedex/pelipper
+    - img "Pelipper"
+  - link "Skarmory":
+    - /url: /pokedex/skarmory
+    - img "Skarmory"
+  - link "Altaria":
+    - /url: /pokedex/altaria
+    - img "Altaria"
+  - text: "Weak to:"
+  - img "electric type"
+  - text: Electric
+  - img "ice type"
+  - text: Ice
+  - img "rock type"
+  - text: Rock "
+  - paragraph: “I have become one with bird Pokémon and have soared the skies.”
+  - text: "Fun Fact:"
+  - paragraph: Graceful flight
+  - text: "Recommended Level: 30+ GYM LEADER"
+  - img "Winona - hoenn Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "psychic type"
+  - text: Psychic
+  - img "Mind Badge Badge"
+  - heading "Tate & Liza" [level=2]
+  - paragraph: Mossdeep City
+  - link "Geodude":
+    - /url: /pokedex/geodude
+    - img "Geodude"
+  - link "Onix":
+    - /url: /pokedex/onix
+    - img "Onix"
+  - link "Graveler":
+    - /url: /pokedex/graveler
+    - img "Graveler"
+  - link "Golem":
+    - /url: /pokedex/golem
+    - img "Golem"
+  - text: "Weak to:"
+  - img "bug type"
+  - text: Bug
+  - img "ghost type"
+  - text: Ghost
+  - img "dark type"
+  - text: Dark "
+  - paragraph: “Master of psychic-type Pokémon!”
+  - text: "Fun Fact:"
+  - paragraph: Tate & Liza is the Mossdeep City Gym Leader specializing in psychic-type Pokémon.
+  - text: GYM LEADER
+  - img "Tate & Liza - hoenn Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "water type"
+  - text: Water
+  - img "Rain Badge Badge"
+  - heading "Wallace" [level=2]
+  - paragraph: Sootopolis City
+  - link "Luvdisc":
+    - /url: /pokedex/luvdisc
+    - img "Luvdisc"
+  - link "Whiscash":
+    - /url: /pokedex/whiscash
+    - img "Whiscash"
+  - link "Sealeo":
+    - /url: /pokedex/sealeo
+    - img "Sealeo"
+  - link "Seaking":
+    - /url: /pokedex/seaking
+    - img "Seaking"
+  - link "Milotic":
+    - /url: /pokedex/milotic
+    - img "Milotic"
+  - text: "Weak to:"
+  - img "electric type"
+  - text: Electric
+  - img "grass type"
+  - text: Grass "
+  - paragraph: “I, the Champion, shall show you the power of my Water types!”
+  - text: "Fun Fact:"
+  - paragraph: Beauty and power
+  - text: "Recommended Level: 41+ GYM LEADER"
+  - img "Wallace - hoenn Gym Leader"
+  - button
+  - button
+  - button
+  - button
+  - button
+  - button
+  - button
+  - button
+  - heading "⚡ ELITE FOUR & CHAMPION ⚡" [level=3]
+  - img
+  - img
+  - img
+  - img
+  - img
+  - paragraph: The ultimate challenge awaits at the Pokémon League
+  - button:
+    - img
+  - button:
+    - img
+  - text: ELITE TYPE SPECIALIST
+  - img "dark type"
+  - text: "Dark #1"
+  - heading "Sidney" [level=2]
+  - paragraph: Elite Four Member
+  - link "Mightyena":
+    - /url: /pokedex/mightyena
+    - img "Mightyena"
+  - link "Shiftry":
+    - /url: /pokedex/shiftry
+    - img "Shiftry"
+  - link "Cacturne":
+    - /url: /pokedex/cacturne
+    - img "Cacturne"
+  - link "Crawdaunt":
+    - /url: /pokedex/crawdaunt
+    - img "Crawdaunt"
+  - link "Absol":
+    - /url: /pokedex/absol
+    - img "Absol"
+  - text: "Weak to:"
+  - img "fighting type"
+  - text: Fighting
+  - img "bug type"
+  - text: Bug
+  - img "fairy type"
+  - text: Fairy "
+  - paragraph: “I like that look you're giving me. I guess you'll give me a good match.”
+  - text: "Battle Strategy:"
+  - paragraph: Dark-type aggression and mind games
+  - text: "Difficulty: ★★★★ ELITE FOUR"
+  - img "Sidney - Elite Four"
+  - text: ELITE TYPE SPECIALIST
+  - img "ghost type"
+  - text: "Ghost #2"
+  - heading "Phoebe" [level=2]
+  - paragraph: Elite Four Member
+  - link "Dusclops":
+    - /url: /pokedex/dusclops
+    - img "Dusclops"
+  - link "Banette":
+    - /url: /pokedex/banette
+    - img "Banette"
+  - link "Sableye":
+    - /url: /pokedex/sableye
+    - img "Sableye"
+  - link "Banette":
+    - /url: /pokedex/banette
+    - img "Banette"
+  - link "Dusclops":
+    - /url: /pokedex/dusclops
+    - img "Dusclops"
+  - text: "Weak to:"
+  - img "ghost type"
+  - text: Ghost
+  - img "dark type"
+  - text: Dark "
+  - paragraph: “I did my training on Mt. Pyre. While I trained there, I gained the ability to commune with Ghost-type Pokémon.”
+  - text: "Battle Strategy:"
+  - paragraph: Ghostly tricks and spiritual power
+  - text: "Difficulty: ★★★★ ELITE FOUR"
+  - img "Phoebe - Elite Four"
+  - text: ELITE TYPE SPECIALIST
+  - img "ice type"
+  - text: "Ice #3"
+  - heading "Glacia" [level=2]
+  - paragraph: Elite Four Member
+  - link "Sealeo":
+    - /url: /pokedex/sealeo
+    - img "Sealeo"
+  - link "Glalie":
+    - /url: /pokedex/glalie
+    - img "Glalie"
+  - link "Sealeo":
+    - /url: /pokedex/sealeo
+    - img "Sealeo"
+  - link "Glalie":
+    - /url: /pokedex/glalie
+    - img "Glalie"
+  - link "Walrein":
+    - /url: /pokedex/walrein
+    - img "Walrein"
+  - text: "Weak to:"
+  - img "fire type"
+  - text: Fire
+  - img "fighting type"
+  - text: Fighting
+  - img "rock type"
+  - text: Rock
+  - img "steel type"
+  - text: Steel "
+  - paragraph: “I've traveled from afar to Hoenn so that I may hone my ice skills.”
+  - text: "Battle Strategy:"
+  - paragraph: Ice-cold precision and frozen battlefield
+  - text: "Difficulty: ★★★★ ELITE FOUR"
+  - img "Glacia - Elite Four"
+  - text: ELITE TYPE SPECIALIST
+  - img "dragon type"
+  - text: "Dragon #4"
+  - heading "Drake" [level=2]
+  - paragraph: Elite Four Member
+  - link "Shelgon":
+    - /url: /pokedex/shelgon
+    - img "Shelgon"
+  - link "Altaria":
+    - /url: /pokedex/altaria
+    - img "Altaria"
+  - link "Flygon":
+    - /url: /pokedex/flygon
+    - img "Flygon"
+  - link "Flygon":
+    - /url: /pokedex/flygon
+    - img "Flygon"
+  - link "Salamence":
+    - /url: /pokedex/salamence
+    - img "Salamence"
+  - text: "Weak to:"
+  - img "ice type"
+  - text: Ice
+  - img "dragon type"
+  - text: Dragon
+  - img "fairy type"
+  - text: Fairy "
+  - paragraph: “I am the last of the Pokémon League Elite Four. There is no turning back now!”
+  - text: "Battle Strategy:"
+  - paragraph: Dragon-type supremacy and aerial dominance
+  - text: "Difficulty: ★★★★ ELITE FOUR"
+  - img "Drake - Elite Four"
+  - button
+  - button
+  - button
+  - button
+  - heading "THE FINAL CHALLENGE" [level=4]
+  - img
+  - img
+  - img
+  - button "REVEAL THE CHAMPION":
+    - img
+    - text: REVEAL THE CHAMPION
+    - img
+  - paragraph: Face the ultimate test of your skills
+  - heading "Explore Hoenn" [level=2]
+  - paragraph: Discover the diverse cities, towns, and landmarks
+  - heading "Cities & Towns" [level=3]:
+    - img
+    - text: Cities & Towns
+  - img
+  - heading "Littleroot Town" [level=4]
+  - paragraph: A town that can't be shaded any hue
+  - img
+  - heading "Rustboro City" [level=4]
+  - paragraph: The city probing the integration of nature and science
+  - img
+  - heading "Slateport City" [level=4]
+  - paragraph: The port where people and Pokémon cross paths
+  - img
+  - heading "Mauville City" [level=4]
+  - paragraph: The bright and shiny city of fun
+  - img
+  - heading "Sootopolis City" [level=4]
+  - paragraph: The mystical city where history slumbers
+  - heading "Notable Landmarks" [level=3]:
+    - img
+    - text: Notable Landmarks
+  - heading "Petalburg Woods" [level=4]
+  - paragraph: A lush forest teeming with Bug Pokémon
+  - heading "Mt. Chimney" [level=4]
+  - paragraph: An active volcano and Team Magma/Aqua battleground
+  - heading "Safari Zone" [level=4]
+  - paragraph: A preserve for rare Pokémon
+  - heading "Seafloor Cavern" [level=4]
+  - paragraph: Where Kyogre or Groudon sleeps
+  - heading "Sky Pillar" [level=4]
+  - paragraph: An ancient tower where Rayquaza dwells
+  - heading "Games in Hoenn" [level=2]
+  - paragraph: Experience the Hoenn region across different generations
+  - link "Pokémon Ruby cover Pokémon Ruby Explore More":
+    - /url: /pokemon/games/ruby
+    - img "Pokémon Ruby cover"
+    - heading "Pokémon Ruby" [level=3]
+    - button "Explore More":
+      - text: Explore More
+      - img
+    - img
+    - img
+    - img
+  - link "Pokémon Sapphire cover Pokémon Sapphire Explore More":
+    - /url: /pokemon/games/sapphire
+    - img "Pokémon Sapphire cover"
+    - heading "Pokémon Sapphire" [level=3]
+    - button "Explore More":
+      - text: Explore More
+      - img
+    - img
+    - img
+    - img
+  - link "Pokémon Emerald cover Pokémon Emerald Explore More":
+    - /url: /pokemon/games/emerald
+    - img "Pokémon Emerald cover"
+    - heading "Pokémon Emerald" [level=3]
+    - button "Explore More":
+      - text: Explore More
+      - img
+    - img
+    - img
+    - img
+  - link "Pokémon Omega Ruby cover Pokémon Omega Ruby Explore More":
+    - /url: /pokemon/games/omega-ruby
+    - img "Pokémon Omega Ruby cover"
+    - heading "Pokémon Omega Ruby" [level=3]
+    - button "Explore More":
+      - text: Explore More
+      - img
+    - img
+    - img
+    - img
+  - link "Pokémon Alpha Sapphire cover Pokémon Alpha Sapphire Explore More":
+    - /url: /pokemon/games/alpha-sapphire
+    - img "Pokémon Alpha Sapphire cover"
+    - heading "Pokémon Alpha Sapphire" [level=3]
+    - button "Explore More":
+      - text: Explore More
+      - img
+    - img
+    - img
+    - img
+  - img
+  - text: Generation 3
+  - img
+  - text: 5 Games Released
+  - link "Explore All Pokémon Games":
+    - /url: /pokemon/games
+    - img
+    - text: Explore All Pokémon Games
+    - img
+  - heading "Villainous Organizations" [level=2]:
+    - img
+    - text: Villainous Organizations
+  - paragraph: The evil teams threatening Hoenn's peace
+  - heading "Team Aqua" [level=3]
+  - paragraph: "\"Expand the sea for the benefit of Water Pokémon!\""
+  - paragraph: Leader
+  - paragraph: Archie
+  - paragraph: Leader
+  - img "Archie"
+  - img
+  - heading "Team Magma" [level=3]
+  - paragraph: "\"Expand the land for the benefit of people and Pokémon!\""
+  - paragraph: Leader
+  - paragraph: Maxie
+  - paragraph: Leader
+  - img "Maxie"
+  - img
+  - heading "Did You Know?" [level=2]
+  - paragraph: Interesting facts about Hoenn
+  - text: "1"
+  - paragraph: Hoenn is based on the Kyushu region of Japan
+  - text: "2"
+  - paragraph: First region to feature double battles and abilities
+  - text: "3"
+  - paragraph: Has the most water routes of any region
+  - text: "4"
+  - paragraph: "Features two villainous teams: Team Aqua and Team Magma"
+  - text: "5"
+  - paragraph: Introduced weather-based legendary Pokémon
+  - text: Press ? for shortcuts 🔕
+  - heading "Push Notifications" [level=3]
+  - paragraph: Blocked by user
+  - button "Enable"
+- contentinfo:
+  - paragraph:
+    - text: © 2025 DexTrends - A
+    - link "PakePoint":
+      - /url: https://www.pakepoint.com
+    - text: Project. All rights reserved.
+- button "Open card comparison tool":
+  - img
+- text: Compare Cards
+- button "💡"
+- button:
+  - img
+- alert: /pokemon/regions/hoenn
+- button "Open Next.js Dev Tools":
+  - img
+- button "Open issues overlay": 1 Issue
+- button "Collapse issues badge":
+  - img
+- navigation:
+  - button "previous" [disabled]:
+    - img "previous"
+  - text: 1/1
+  - button "next" [disabled]:
+    - img "next"
+- img
+- link "Next.js 15.3.5 (stale) Webpack":
+  - /url: https://nextjs.org/docs/messages/version-staleness
+  - img
+  - text: Next.js 15.3.5 (stale) Webpack
+- img
+- dialog "Runtime Error":
+  - text: Runtime Error
+  - button "Copy Stack Trace":
+    - img
+  - button "No related documentation found" [disabled]:
+    - img
+  - link "Learn more about enabling Node.js inspector for server code with Chrome DevTools":
+    - /url: https://nextjs.org/docs/app/building-your-application/configuring/debugging#server-side-code
+    - img
+  - paragraph: "TypeError: Failed to register a ServiceWorker for scope ('http://localhost:3000/') with script ('http://localhost:3000/sw.js'): A bad HTTP response code (404) was received when fetching the script."
+```

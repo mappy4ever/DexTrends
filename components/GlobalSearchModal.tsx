@@ -36,12 +36,18 @@ type DebouncedFunction<T extends (...args: any[]) => any> = (
 function debounce<T extends (...args: any[]) => any>(
   fn: T,
   ms: number
-): DebouncedFunction<T> {
+): DebouncedFunction<T> & { cancel: () => void } {
   let timer: NodeJS.Timeout | undefined;
-  return (...args: Parameters<T>) => {
+  const debouncedFn = (...args: Parameters<T>) => {
     clearTimeout(timer);
     timer = setTimeout(() => fn(...args), ms);
   };
+  
+  debouncedFn.cancel = () => {
+    clearTimeout(timer);
+  };
+  
+  return debouncedFn;
 }
 
 const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSearchModal(_, ref) {
@@ -61,54 +67,64 @@ const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSea
     setResults({ cards: [], sets: [], pokemon: [] }); 
   }
 
-  // Debounced search
-  const doSearch = React.useCallback(
-    debounce(async (q: string) => {
-    if (!q) {
-      setResults({ cards: [], sets: [], pokemon: [] });
-      setLoading(false);
-      return;
-    }
-    setLoading(true);
-    
-    // Card search
-    let cards: TCGCard[] = [];
-    try {
-      const res = await pokemon.card.where({ q: `name:${q}*` });
-      cards = (res?.slice(0, 5) || []) as TCGCard[];
-    } catch {}
-    
-    // Set search
-    let sets: CardSet[] = [];
-    try {
-      const allSets = await pokemon.set.all();
-      sets = allSets
-        .filter((s: CardSet) => s.name.toLowerCase().includes(q.toLowerCase()))
-        .slice(0, 5) as CardSet[];
-    } catch {}
-    
-    // Pokémon search
-    let pokemonResults: PokemonResult[] = [];
-    try {
-      const pokeRes = await fetch(`${POKE_API}&name=${q.toLowerCase()}`);
-      if (pokeRes.ok) {
-        const pokeData: PokemonApiResponse = await pokeRes.json();
-        pokemonResults = pokeData.results
-          ?.filter(p => p.name.includes(q.toLowerCase()))
-          .slice(0, 5) || [];
+  // Create debounced search function
+  const debouncedSearchRef = useRef<ReturnType<typeof debounce> | null>(null);
+  
+  useEffect(() => {
+    const searchFn = async (q: string) => {
+      if (!q) {
+        setResults({ cards: [], sets: [], pokemon: [] });
+        setLoading(false);
+        return;
       }
-    } catch {}
+      setLoading(true);
+      
+      // Card search
+      let cards: TCGCard[] = [];
+      try {
+        const res = await pokemon.card.where({ q: `name:${q}*` });
+        cards = (res?.slice(0, 5) || []) as TCGCard[];
+      } catch {}
+      
+      // Set search
+      let sets: CardSet[] = [];
+      try {
+        const allSets = await pokemon.set.all();
+        sets = allSets
+          .filter((s: CardSet) => s.name.toLowerCase().includes(q.toLowerCase()))
+          .slice(0, 5) as CardSet[];
+      } catch {}
+      
+      // Pokémon search
+      let pokemonResults: PokemonResult[] = [];
+      try {
+        const pokeRes = await fetch(`${POKE_API}&name=${q.toLowerCase()}`);
+        if (pokeRes.ok) {
+          const pokeData: PokemonApiResponse = await pokeRes.json();
+          pokemonResults = pokeData.results
+            ?.filter(p => p.name.includes(q.toLowerCase()))
+            .slice(0, 5) || [];
+        }
+      } catch {}
+      
+      setResults({ cards, sets, pokemon: pokemonResults });
+      setLoading(false);
+    };
     
-    setResults({ cards, sets, pokemon: pokemonResults });
-    setLoading(false);
-  }, 350),
-    []
-  );
+    debouncedSearchRef.current = debounce(searchFn, 350);
+    
+    // Cleanup on unmount
+    return () => {
+      if (debouncedSearchRef.current) {
+        debouncedSearchRef.current.cancel();
+      }
+    };
+  }, []);
 
   useEffect(() => {
-    if (!open) return;
-    doSearch(query);
-  }, [query, open, doSearch]);
+    if (!open || !debouncedSearchRef.current) return;
+    debouncedSearchRef.current(query);
+  }, [query, open]);
 
   useEffect(() => {
     if (open && inputRef.current) inputRef.current.focus();
@@ -116,7 +132,7 @@ const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSea
 
   return open ? (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm safe-area-padding" 
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm safe-area-padding" 
       onClick={close}
     >
       <div

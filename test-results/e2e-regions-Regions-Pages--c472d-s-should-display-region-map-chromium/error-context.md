@@ -1,0 +1,744 @@
+# Page snapshot
+
+```yaml
+- link "DexTrends":
+  - /url: /
+  - img
+  - text: DexTrends
+- navigation:
+  - link "Home":
+    - /url: /
+    - img
+    - text: Home
+  - link "Pokémon TCG":
+    - /url: /tcgsets
+    - img
+    - text: Pokémon TCG
+    - img
+  - link "Pokédex":
+    - /url: /pokedex
+    - img
+    - text: Pokédex
+  - link "Pokémon":
+    - /url: /pokemon
+    - img
+    - text: Pokémon
+    - img
+  - link "Battle":
+    - /url: /battle-simulator
+    - img
+    - text: Battle
+    - img
+  - link "Pocket":
+    - /url: /pocketmode
+    - img
+    - text: Pocket
+    - img
+  - link "Fun":
+    - /url: /fun
+    - img
+    - text: Fun
+- button "Open global search":
+  - img
+- link "View favorites":
+  - /url: /favorites
+  - img
+- button "Activate dark mode":
+  - img
+- main:
+  - button "Back to Regions":
+    - img
+    - text: Back to Regions
+  - button "Previous region":
+    - img
+  - text: Hoenn Region 4 of 9
+  - button "Next region":
+    - img
+  - text: Unova
+  - img "Sinnoh Map"
+  - heading "SINNOH" [level=1]
+  - paragraph: A region rich in mythology, featuring Mt. Coronet at its center.
+  - button "Previous region":
+    - img
+  - button "Next region":
+    - img
+  - button "Overview"
+  - button "Professor"
+  - button "Starters"
+  - button "Special Pokémon"
+  - button "Gym Leaders"
+  - button "Locations"
+  - button "Games"
+  - button "Villains"
+  - button "Trivia"
+  - heading "About Sinnoh" [level=2]
+  - paragraph: A region rich in mythology, featuring Mt. Coronet at its center.
+  - img
+  - heading "Professor" [level=3]
+  - paragraph: Professor Rowan
+  - img
+  - heading "Generation" [level=3]
+  - paragraph: "4"
+  - img
+  - heading "Pokédex" [level=3]
+  - paragraph: 387-493
+  - img
+  - heading "Games" [level=3]
+  - paragraph: "5"
+  - heading "Region Stats" [level=3]
+  - text: Total Cities 14 Total Routes 30 Gym Leaders 8 Legendary Pokémon 8
+  - heading "Available Games" [level=3]
+  - text: Pokémon Diamond Pokémon Pearl Pokémon Platinum Pokémon Brilliant Diamond Pokémon Shining Pearl
+  - heading "Meet Professor Rowan" [level=2]
+  - paragraph: Sinnoh's Leading Pokémon Researcher
+  - img "Professor Rowan"
+  - heading "Professor Rowan" [level=3]
+  - paragraph: Pokémon Evolution
+  - heading "Quick Info" [level=4]:
+    - img
+    - text: Quick Info
+  - paragraph: Laboratory
+  - paragraph: Sandgem Town, Sinnoh
+  - paragraph: Age
+  - paragraph: 60-70
+  - paragraph: Known For
+  - paragraph: Evolution research and stern guidance
+  - heading "Biography" [level=4]:
+    - img
+    - text: Biography
+  - paragraph: Professor Rowan is the most senior and perhaps most respected of all regional professors. His stern demeanor and no-nonsense approach to research have earned him both fear and respect from aspiring trainers and fellow researchers alike. With over 40 years dedicated to studying Pokémon evolution, Rowan has become the world's foremost authority on the subject. His research has identified numerous evolution methods, including location-based evolutions, item-induced evolutions, and time-based evolutions. Despite his intimidating presence, Rowan deeply cares about Pokémon and trainers. He believes in tough love and pushes trainers to reach their full potential. He was also the mentor to Professor Sycamore, passing on his knowledge to the next generation.
+  - heading "Major Achievements" [level=4]:
+    - img
+    - text: Major Achievements
+  - list:
+    - listitem:
+      - img
+      - text: World's leading evolution expert
+    - listitem:
+      - img
+      - text: Mentor to Professor Sycamore
+    - listitem:
+      - img
+      - text: Published definitive evolution encyclopedia
+    - listitem:
+      - img
+      - text: Discovered 90% of Sinnoh evolutions
+  - heading "Research Focus" [level=4]:
+    - img
+    - text: Research Focus
+  - img
+  - paragraph: Evolution methods and triggers
+  - img
+  - paragraph: Sinnoh-specific evolutions
+  - img
+  - paragraph: Ancient Pokémon evolution
+  - img
+  - paragraph: Evolution stone properties
+  - heading "Famous Quote" [level=4]:
+    - img
+    - text: Famous Quote
+  - blockquote:
+    - paragraph: "\"If you've got a Pokémon with you, you're a Pokémon Trainer!\""
+  - heading "Choose Your Starter" [level=2]
+  - paragraph: Begin your journey with one of these three Pokémon
+  - text: "#387"
+  - img "Turtwig"
+  - heading "Turtwig" [level=3]
+  - paragraph: Tiny Leaf Pokémon
+  - text: Grass
+  - paragraph: Height
+  - paragraph: 0.4 m
+  - paragraph: Weight
+  - paragraph: 10.2 kg
+  - text: "#390"
+  - img "Chimchar"
+  - heading "Chimchar" [level=3]
+  - paragraph: Chimp Pokémon
+  - text: Fire
+  - paragraph: Height
+  - paragraph: 0.5 m
+  - paragraph: Weight
+  - paragraph: 6.2 kg
+  - text: "#393"
+  - img "Piplup"
+  - heading "Piplup" [level=3]
+  - paragraph: Penguin Pokémon
+  - text: Water
+  - paragraph: Height
+  - paragraph: 0.4 m
+  - paragraph: Weight
+  - paragraph: 5.2 kg
+  - heading "Choosing Your Starter" [level=3]:
+    - img
+    - text: Choosing Your Starter
+  - paragraph: Your starter Pokémon will be your first partner on your journey. Consider their type advantages against early gym leaders, their evolution potential, and which one you connect with most!
+  - heading "Special Pokémon" [level=2]
+  - paragraph: Unique and legendary Pokémon of Sinnoh
+  - heading "Legendary Pokémon" [level=3]:
+    - img
+    - text: Legendary Pokémon
+  - paragraph: The legendary and mythical Pokémon of Sinnoh
+  - img "Uxie"
+  - heading "Uxie" [level=3]
+  - paragraph: Knowledge Pokémon
+  - text: Psychic
+  - paragraph: Lake Acuity
+  - paragraph: Click to view in Pokédex
+  - img "Mesprit"
+  - heading "Mesprit" [level=3]
+  - paragraph: Emotion Pokémon
+  - text: Psychic
+  - paragraph: Lake Verity
+  - paragraph: Click to view in Pokédex
+  - img "Azelf"
+  - heading "Azelf" [level=3]
+  - paragraph: Willpower Pokémon
+  - text: Psychic
+  - paragraph: Lake Valor
+  - paragraph: Click to view in Pokédex
+  - img "Dialga"
+  - heading "Dialga" [level=3]
+  - paragraph: Temporal Pokémon
+  - text: Steel Dragon
+  - paragraph: Spear Pillar
+  - paragraph: Click to view in Pokédex
+  - img "Palkia"
+  - heading "Palkia" [level=3]
+  - paragraph: Spatial Pokémon
+  - text: Water Dragon
+  - paragraph: Spear Pillar
+  - paragraph: Click to view in Pokédex
+  - img "Heatran"
+  - heading "Heatran" [level=3]
+  - paragraph: Lava Dome Pokémon
+  - text: Fire Steel
+  - paragraph: Stark Mountain
+  - paragraph: Click to view in Pokédex
+  - img "Regigigas"
+  - heading "Regigigas" [level=3]
+  - paragraph: Colossal Pokémon
+  - text: Normal
+  - paragraph: Snowpoint Temple
+  - paragraph: Click to view in Pokédex
+  - img "Giratina"
+  - heading "Giratina" [level=3]
+  - paragraph: Renegade Pokémon
+  - text: Ghost Dragon
+  - paragraph: Distortion World
+  - paragraph: Click to view in Pokédex
+  - img "Cresselia"
+  - heading "Cresselia" [level=3]
+  - paragraph: Lunar Pokémon
+  - text: Psychic
+  - paragraph: Fullmoon Island
+  - paragraph: Click to view in Pokédex
+  - img "Darkrai"
+  - heading "Darkrai" [level=3]
+  - paragraph: Pitch-Black Pokémon
+  - text: Dark
+  - paragraph: Event Only
+  - paragraph: Click to view in Pokédex
+  - img "Shaymin"
+  - heading "Shaymin" [level=3]
+  - paragraph: Gratitude Pokémon
+  - text: Grass
+  - paragraph: Event Only
+  - paragraph: Click to view in Pokédex
+  - img "Arceus"
+  - heading "Arceus" [level=3]
+  - paragraph: Alpha Pokémon
+  - text: Normal
+  - paragraph: Event Only
+  - paragraph: Click to view in Pokédex
+  - heading "Your Journey in Sinnoh" [level=2]
+  - paragraph: Challenge the strongest trainers on your path to becoming Champion
+  - heading "Gym Leader Challenge" [level=3]
+  - paragraph: Defeat all 8 Gym Leaders to earn their badges
+  - button:
+    - img
+  - button:
+    - img
+  - text: TYPE SPECIALIST
+  - img "rock type"
+  - text: Rock
+  - img "Coal Badge Badge"
+  - heading "Roark" [level=2]
+  - paragraph: Oreburgh City
+  - link "Geodude":
+    - /url: /pokedex/geodude
+    - img "Geodude"
+  - link "Onix":
+    - /url: /pokedex/onix
+    - img "Onix"
+  - link "Cranidos":
+    - /url: /pokedex/cranidos
+    - img "Cranidos"
+  - text: "Weak to:"
+  - img "water type"
+  - text: Water
+  - img "grass type"
+  - text: Grass
+  - img "fighting type"
+  - text: Fighting
+  - img "ground type"
+  - text: Ground
+  - img "steel type"
+  - text: Steel "
+  - paragraph: “Master of rock-type Pokémon!”
+  - text: "Fun Fact:"
+  - paragraph: Roark is the Oreburgh City Gym Leader specializing in rock-type Pokémon.
+  - text: "Recommended Level: 13+ GYM LEADER"
+  - img "Roark - sinnoh Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "grass type"
+  - text: Grass
+  - img "Forest Badge Badge"
+  - heading "Gardenia" [level=2]
+  - paragraph: Eterna City
+  - link "Cherubi":
+    - /url: /pokedex/cherubi
+    - img "Cherubi"
+  - link "Turtwig":
+    - /url: /pokedex/turtwig
+    - img "Turtwig"
+  - link "Roserade":
+    - /url: /pokedex/roserade
+    - img "Roserade"
+  - text: "Weak to:"
+  - img "fire type"
+  - text: Fire
+  - img "ice type"
+  - text: Ice
+  - img "poison type"
+  - text: Poison
+  - img "flying type"
+  - text: Flying
+  - img "bug type"
+  - text: Bug "
+  - paragraph: “Master of grass-type Pokémon!”
+  - text: "Fun Fact:"
+  - paragraph: Gardenia is the Eterna City Gym Leader specializing in grass-type Pokémon.
+  - text: "Recommended Level: 20+ GYM LEADER"
+  - img "Gardenia - sinnoh Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "fighting type"
+  - text: Fighting
+  - img "Cobble Badge Badge"
+  - heading "Maylene" [level=2]
+  - paragraph: Veilstone City
+  - link "Meditite":
+    - /url: /pokedex/meditite
+    - img "Meditite"
+  - link "Machoke":
+    - /url: /pokedex/machoke
+    - img "Machoke"
+  - link "Lucario":
+    - /url: /pokedex/lucario
+    - img "Lucario"
+  - text: "Weak to:"
+  - img "flying type"
+  - text: Flying
+  - img "psychic type"
+  - text: Psychic
+  - img "fairy type"
+  - text: Fairy "
+  - paragraph: “Master of fighting-type Pokémon!”
+  - text: "Fun Fact:"
+  - paragraph: Maylene is the Veilstone City Gym Leader specializing in fighting-type Pokémon.
+  - text: "Recommended Level: 28+ GYM LEADER"
+  - img "Maylene - sinnoh Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "water type"
+  - text: Water
+  - img "Fen Badge Badge"
+  - heading "Crasher Wake" [level=2]
+  - paragraph: Pastoria City
+  - link "Gyarados":
+    - /url: /pokedex/gyarados
+    - img "Gyarados"
+  - link "Quagsire":
+    - /url: /pokedex/quagsire
+    - img "Quagsire"
+  - link "Floatzel":
+    - /url: /pokedex/floatzel
+    - img "Floatzel"
+  - text: "Weak to:"
+  - img "electric type"
+  - text: Electric
+  - img "grass type"
+  - text: Grass "
+  - paragraph: “Master of water-type Pokémon!”
+  - text: "Fun Fact:"
+  - paragraph: Crasher Wake is the Pastoria City Gym Leader specializing in water-type Pokémon.
+  - text: "Recommended Level: 28+ GYM LEADER"
+  - img "Crasher Wake - sinnoh Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "ghost type"
+  - text: Ghost
+  - img "Relic Badge Badge"
+  - heading "Fantina" [level=2]
+  - paragraph: Hearthome City
+  - link "Duskull":
+    - /url: /pokedex/duskull
+    - img "Duskull"
+  - link "Haunter":
+    - /url: /pokedex/haunter
+    - img "Haunter"
+  - link "Mismagius":
+    - /url: /pokedex/mismagius
+    - img "Mismagius"
+  - text: "Weak to:"
+  - img "ghost type"
+  - text: Ghost
+  - img "dark type"
+  - text: Dark "
+  - paragraph: “Master of ghost-type Pokémon!”
+  - text: "Fun Fact:"
+  - paragraph: Fantina is the Hearthome City Gym Leader specializing in ghost-type Pokémon.
+  - text: "Recommended Level: 25+ GYM LEADER"
+  - img "Fantina - sinnoh Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "steel type"
+  - text: Steel
+  - img "Mine Badge Badge"
+  - heading "Byron" [level=2]
+  - paragraph: Canalave City
+  - link "Bronzor":
+    - /url: /pokedex/bronzor
+    - img "Bronzor"
+  - link "Steelix":
+    - /url: /pokedex/steelix
+    - img "Steelix"
+  - link "Bastiodon":
+    - /url: /pokedex/bastiodon
+    - img "Bastiodon"
+  - text: "Weak to:"
+  - img "fire type"
+  - text: Fire
+  - img "fighting type"
+  - text: Fighting
+  - img "ground type"
+  - text: Ground "
+  - paragraph: “Master of steel-type Pokémon!”
+  - text: "Fun Fact:"
+  - paragraph: Byron is the Canalave City Gym Leader specializing in steel-type Pokémon.
+  - text: "Recommended Level: 37+ GYM LEADER"
+  - img "Byron - sinnoh Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "ice type"
+  - text: Ice
+  - img "Icicle Badge Badge"
+  - heading "Candice" [level=2]
+  - paragraph: Snowpoint City
+  - link "Sneasel":
+    - /url: /pokedex/sneasel
+    - img "Sneasel"
+  - link "Piloswine":
+    - /url: /pokedex/piloswine
+    - img "Piloswine"
+  - link "Abomasnow":
+    - /url: /pokedex/abomasnow
+    - img "Abomasnow"
+  - link "Froslass":
+    - /url: /pokedex/froslass
+    - img "Froslass"
+  - text: "Weak to:"
+  - img "fire type"
+  - text: Fire
+  - img "fighting type"
+  - text: Fighting
+  - img "rock type"
+  - text: Rock
+  - img "steel type"
+  - text: Steel "
+  - paragraph: “Master of ice-type Pokémon!”
+  - text: "Fun Fact:"
+  - paragraph: Candice is the Snowpoint City Gym Leader specializing in ice-type Pokémon.
+  - text: "Recommended Level: 40+ GYM LEADER"
+  - img "Candice - sinnoh Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "electric type"
+  - text: Electric
+  - img "Beacon Badge Badge"
+  - heading "Volkner" [level=2]
+  - paragraph: Sunyshore City
+  - link "Raichu":
+    - /url: /pokedex/raichu
+    - img "Raichu"
+  - link "Octillery":
+    - /url: /pokedex/octillery
+    - img "Octillery"
+  - link "Ambipom":
+    - /url: /pokedex/ambipom
+    - img "Ambipom"
+  - link "Luxray":
+    - /url: /pokedex/luxray
+    - img "Luxray"
+  - text: "Weak to:"
+  - img "ground type"
+  - text: Ground "
+  - paragraph: “Master of electric-type Pokémon!”
+  - text: "Fun Fact:"
+  - paragraph: Volkner is the Sunyshore City Gym Leader specializing in electric-type Pokémon.
+  - text: "Recommended Level: 47+ GYM LEADER"
+  - img "Volkner - sinnoh Gym Leader"
+  - button
+  - button
+  - button
+  - button
+  - button
+  - button
+  - button
+  - button
+  - heading "⚡ ELITE FOUR & CHAMPION ⚡" [level=3]
+  - img
+  - img
+  - img
+  - img
+  - img
+  - paragraph: The ultimate challenge awaits at the Pokémon League
+  - button:
+    - img
+  - button:
+    - img
+  - text: ELITE TYPE SPECIALIST
+  - img "bug type"
+  - text: "Bug #1"
+  - heading "Aaron" [level=2]
+  - paragraph: Elite Four Member
+  - text: "No team data Weak to:"
+  - img "fire type"
+  - text: Fire
+  - img "flying type"
+  - text: Flying
+  - img "rock type"
+  - text: Rock "
+  - paragraph: “Master of bug-type Pokémon!”
+  - text: "Battle Strategy:"
+  - paragraph: Elite Four member specializing in bug-type Pokémon.
+  - text: "Difficulty: ★★★★ ELITE FOUR"
+  - img "Aaron - Elite Four"
+  - text: ELITE TYPE SPECIALIST
+  - img "ground type"
+  - text: "Ground #2"
+  - heading "Bertha" [level=2]
+  - paragraph: Elite Four Member
+  - text: "No team data Weak to:"
+  - img "water type"
+  - text: Water
+  - img "grass type"
+  - text: Grass
+  - img "ice type"
+  - text: Ice "
+  - paragraph: “Master of ground-type Pokémon!”
+  - text: "Battle Strategy:"
+  - paragraph: Elite Four member specializing in ground-type Pokémon.
+  - text: "Difficulty: ★★★★ ELITE FOUR"
+  - img "Bertha - Elite Four"
+  - text: ELITE TYPE SPECIALIST
+  - img "fire type"
+  - text: "Fire #3"
+  - heading "Flint" [level=2]
+  - paragraph: Elite Four Member
+  - text: "No team data Weak to:"
+  - img "water type"
+  - text: Water
+  - img "ground type"
+  - text: Ground
+  - img "rock type"
+  - text: Rock "
+  - paragraph: “Master of fire-type Pokémon!”
+  - text: "Battle Strategy:"
+  - paragraph: Elite Four member specializing in fire-type Pokémon.
+  - text: "Difficulty: ★★★★ ELITE FOUR"
+  - img "Flint - Elite Four"
+  - text: ELITE TYPE SPECIALIST
+  - img "psychic type"
+  - text: "Psychic #4"
+  - heading "Lucian" [level=2]
+  - paragraph: Elite Four Member
+  - text: "No team data Weak to:"
+  - img "bug type"
+  - text: Bug
+  - img "ghost type"
+  - text: Ghost
+  - img "dark type"
+  - text: Dark "
+  - paragraph: “Master of psychic-type Pokémon!”
+  - text: "Battle Strategy:"
+  - paragraph: Elite Four member specializing in psychic-type Pokémon.
+  - text: "Difficulty: ★★★★ ELITE FOUR"
+  - img "Lucian - Elite Four"
+  - button
+  - button
+  - button
+  - button
+  - heading "THE FINAL CHALLENGE" [level=4]
+  - img
+  - img
+  - img
+  - button "REVEAL THE CHAMPION":
+    - img
+    - text: REVEAL THE CHAMPION
+    - img
+  - paragraph: Face the ultimate test of your skills
+  - heading "Explore Sinnoh" [level=2]
+  - paragraph: Discover the diverse cities, towns, and landmarks
+  - heading "Cities & Towns" [level=3]:
+    - img
+    - text: Cities & Towns
+  - img
+  - heading "Twinleaf Town" [level=4]
+  - paragraph: Fresh and Free!
+  - img
+  - heading "Jubilife City" [level=4]
+  - paragraph: City of Joy
+  - img
+  - heading "Oreburgh City" [level=4]
+  - paragraph: City of Energy
+  - img
+  - heading "Eterna City" [level=4]
+  - paragraph: History Living
+  - img
+  - heading "Hearthome City" [level=4]
+  - paragraph: Warm & Kind
+  - heading "Notable Landmarks" [level=3]:
+    - img
+    - text: Notable Landmarks
+  - heading "Mt. Coronet" [level=4]
+  - paragraph: The sacred mountain dividing Sinnoh
+  - heading "Spear Pillar" [level=4]
+  - paragraph: Where time and space converge
+  - heading "Great Marsh" [level=4]
+  - paragraph: Sinnoh's Safari Zone
+  - heading "Distortion World" [level=4]
+  - paragraph: Giratina's reversed dimension
+  - heading "Fullmoon Island" [level=4]
+  - paragraph: Where Cresselia resides
+  - heading "Games in Sinnoh" [level=2]
+  - paragraph: Experience the Sinnoh region across different generations
+  - link "Pokémon Diamond cover Pokémon Diamond Explore More":
+    - /url: /pokemon/games/diamond
+    - img "Pokémon Diamond cover"
+    - heading "Pokémon Diamond" [level=3]
+    - button "Explore More":
+      - text: Explore More
+      - img
+    - img
+    - img
+    - img
+  - link "Pokémon Pearl cover Pokémon Pearl Explore More":
+    - /url: /pokemon/games/pearl
+    - img "Pokémon Pearl cover"
+    - heading "Pokémon Pearl" [level=3]
+    - button "Explore More":
+      - text: Explore More
+      - img
+    - img
+    - img
+    - img
+  - link "Pokémon Platinum cover Pokémon Platinum Explore More":
+    - /url: /pokemon/games/platinum
+    - img "Pokémon Platinum cover"
+    - heading "Pokémon Platinum" [level=3]
+    - button "Explore More":
+      - text: Explore More
+      - img
+    - img
+    - img
+    - img
+  - link "Pokémon Brilliant Diamond cover Pokémon Brilliant Diamond Explore More":
+    - /url: /pokemon/games/brilliant-diamond
+    - img "Pokémon Brilliant Diamond cover"
+    - heading "Pokémon Brilliant Diamond" [level=3]
+    - button "Explore More":
+      - text: Explore More
+      - img
+    - img
+    - img
+    - img
+  - link "Pokémon Shining Pearl cover Pokémon Shining Pearl Explore More":
+    - /url: /pokemon/games/shining-pearl
+    - img "Pokémon Shining Pearl cover"
+    - heading "Pokémon Shining Pearl" [level=3]
+    - button "Explore More":
+      - text: Explore More
+      - img
+    - img
+    - img
+    - img
+  - img
+  - text: Generation 4
+  - img
+  - text: 5 Games Released
+  - link "Explore All Pokémon Games":
+    - /url: /pokemon/games
+    - img
+    - text: Explore All Pokémon Games
+    - img
+  - heading "Villainous Organizations" [level=2]:
+    - img
+    - text: Villainous Organizations
+  - paragraph: The evil teams threatening Sinnoh's peace
+  - heading "Team Galactic" [level=3]
+  - paragraph: "\"Create a new world without spirit!\""
+  - paragraph: Leader
+  - paragraph: Cyrus
+  - paragraph: Boss
+  - img "Cyrus"
+  - img
+  - heading "Did You Know?" [level=2]
+  - paragraph: Interesting facts about Sinnoh
+  - text: "1"
+  - paragraph: Sinnoh is based on the Hokkaido region of Japan
+  - text: "2"
+  - paragraph: "Features the creation trio: Dialga, Palkia, and Giratina"
+  - text: "3"
+  - paragraph: First region to have the Battle Frontier in the initial paired versions
+  - text: "4"
+  - paragraph: Home to many evolutions of previous generation Pokémon
+  - text: Press ? for shortcuts 🔕
+  - heading "Push Notifications" [level=3]
+  - paragraph: Blocked by user
+  - button "Enable"
+- contentinfo:
+  - paragraph:
+    - text: © 2025 DexTrends - A
+    - link "PakePoint":
+      - /url: https://www.pakepoint.com
+    - text: Project. All rights reserved.
+- button "Open card comparison tool":
+  - img
+- text: Compare Cards
+- button "💡"
+- button:
+  - img
+- alert: /pokemon/regions/sinnoh
+- button "Open Next.js Dev Tools":
+  - img
+- button "Open issues overlay": 1 Issue
+- button "Collapse issues badge":
+  - img
+- navigation:
+  - button "previous" [disabled]:
+    - img "previous"
+  - text: 1/1
+  - button "next" [disabled]:
+    - img "next"
+- img
+- link "Next.js 15.3.5 (stale) Webpack":
+  - /url: https://nextjs.org/docs/messages/version-staleness
+  - img
+  - text: Next.js 15.3.5 (stale) Webpack
+- img
+- dialog "Runtime Error":
+  - text: Runtime Error
+  - button "Copy Stack Trace":
+    - img
+  - button "No related documentation found" [disabled]:
+    - img
+  - link "Learn more about enabling Node.js inspector for server code with Chrome DevTools":
+    - /url: https://nextjs.org/docs/app/building-your-application/configuring/debugging#server-side-code
+    - img
+  - paragraph: "TypeError: Failed to register a ServiceWorker for scope ('http://localhost:3000/') with script ('http://localhost:3000/sw.js'): A bad HTTP response code (404) was received when fetching the script."
+```

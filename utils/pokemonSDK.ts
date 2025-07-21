@@ -7,11 +7,6 @@ let isConfigured = false;
  * This ensures the SDK is only configured once and handles SSR properly
  */
 export function configurePokemonSDK(): void {
-  // Only configure on client side
-  if (typeof window === 'undefined') {
-    return;
-  }
-
   // Only configure once
   if (isConfigured) {
     return;
@@ -23,9 +18,12 @@ export function configurePokemonSDK(): void {
     try {
       pokemon.configure({ apiKey });
       isConfigured = true;
+      console.log('[Pokemon SDK] Configured successfully');
     } catch (error) {
-      console.warn('Failed to configure Pokemon SDK:', error);
+      console.warn('[Pokemon SDK] Failed to configure:', error);
     }
+  } else {
+    console.warn('[Pokemon SDK] No API key found');
   }
 }
 

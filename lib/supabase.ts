@@ -4,28 +4,54 @@ import logger from '../utils/logger';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-// Create a mock client for build time if env vars are missing
-let supabase: SupabaseClient | any;
+// Log environment variable status for debugging
+if (typeof window !== 'undefined') {
+  console.log('[Supabase] Environment check:', {
+    hasUrl: !!supabaseUrl,
+    hasKey: !!supabaseAnonKey,
+    url: supabaseUrl ? 'URL is set' : 'URL is missing'
+  });
+}
 
-if (supabaseUrl && supabaseAnonKey) {
-  supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Create Supabase client with proper error handling
+let supabase: SupabaseClient;
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  // Log warning but create a proper client that will fail gracefully
+  logger.warn('[Supabase] Missing environment variables. Features requiring database will not work.', {
+    hasUrl: !!supabaseUrl,
+    hasKey: !!supabaseAnonKey
+  });
+  
+  // Still create a client to avoid type errors, but it will fail on actual requests
+  supabase = createClient(
+    supabaseUrl || 'https://placeholder.supabase.co',
+    supabaseAnonKey || 'placeholder-key',
+    {
+      auth: {
+        persistSession: false
+      }
+    }
+  );
 } else {
-  // Mock client for build/development
-  // Supabase environment variables not found. Using mock client.
-  supabase = {
-    from: () => ({
-      select: () => ({ 
-        eq: () => ({ 
-          single: () => Promise.resolve({ data: null, error: { code: 'PGRST116' } }),
-          gt: () => ({ single: () => Promise.resolve({ data: null, error: { code: 'PGRST116' } }) })
-        }),
-        gt: () => ({ single: () => Promise.resolve({ data: null, error: { code: 'PGRST116' } }) })
-      }),
-      upsert: () => Promise.resolve({ error: null }),
-      delete: () => Promise.resolve({ error: null })
-    }),
-    rpc: () => Promise.resolve({ data: [], error: null })
-  };
+  // Create real Supabase client with proper configuration
+  supabase = createClient(supabaseUrl, supabaseAnonKey, {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true
+    },
+    db: {
+      schema: 'public'
+    },
+    realtime: {
+      params: {
+        eventsPerSecond: 10
+      }
+    }
+  });
+  
+  logger.info('[Supabase] Client initialized successfully');
 }
 
 export { supabase };
@@ -81,38 +107,76 @@ export interface PriceAlert {
 
 // Utility functions for database operations
 export class SupabaseCache {
+  // Check if Supabase is properly configured
+  private static isConfigured(): boolean {
+    return !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+  }
+
   // Pokemon cache operations
   static async getCachedPokemon(pokemonId: number): Promise<any | null> {
-    const { data, error } = await supabase
-      .from('pokemon_cache')
-      .select('pokemon_data')
-      .eq('pokemon_id', pokemonId)
-      .gt('expires_at', new Date().toISOString())
-      .single();
-
-    if (error && error.code !== 'PGRST116') {
-      // Error fetching cached Pokemon
+    if (!this.isConfigured()) {
+      logger.debug('[SupabaseCache] Skipping cache lookup - Supabase not configured');
       return null;
     }
 
-    return data?.pokemon_data || null;
+    try {
+      const { data, error } = await supabase
+        .from('pokemon_cache')
+        .select('pokemon_data')
+        .eq('pokemon_id', pokemonId)
+        .gt('expires_at', new Date().toISOString())
+        .single();
+
+      if (error) {
+        if (error.code === 'PGRST116') {
+          // No data found - this is normal
+          return null;
+        }
+        logger.error('[SupabaseCache] Error fetching cached Pokemon:', { 
+          pokemonId, 
+          error: error.message,
+          code: error.code 
+        });
+        return null;
+      }
+
+      return data?.pokemon_data || null;
+    } catch (error) {
+      logger.error('[SupabaseCache] Unexpected error:', { pokemonId, error });
+      return null;
+    }
   }
 
   static async setCachedPokemon(pokemonId: number, pokemonData: any, cacheKey: string, expiryHours: number = 24): Promise<void> {
-    const expiresAt = new Date();
-    expiresAt.setHours(expiresAt.getHours() + expiryHours);
+    if (!this.isConfigured()) {
+      logger.debug('[SupabaseCache] Skipping cache write - Supabase not configured');
+      return;
+    }
 
-    const { error } = await supabase
-      .from('pokemon_cache')
-      .upsert({
-        pokemon_id: pokemonId,
-        pokemon_data: pokemonData,
-        cache_key: cacheKey,
-        expires_at: expiresAt.toISOString()
-      });
+    try {
+      const expiresAt = new Date();
+      expiresAt.setHours(expiresAt.getHours() + expiryHours);
 
-    if (error) {
-      // Error caching Pokemon
+      const { error } = await supabase
+        .from('pokemon_cache')
+        .upsert({
+          pokemon_id: pokemonId,
+          pokemon_data: pokemonData,
+          cache_key: cacheKey,
+          expires_at: expiresAt.toISOString()
+        });
+
+      if (error) {
+        logger.error('[SupabaseCache] Error caching Pokemon:', { 
+          pokemonId, 
+          error: error.message,
+          code: error.code 
+        });
+      } else {
+        logger.debug('[SupabaseCache] Successfully cached Pokemon:', { pokemonId });
+      }
+    } catch (error) {
+      logger.error('[SupabaseCache] Unexpected error during cache write:', { pokemonId, error });
     }
   }
 
@@ -349,36 +413,82 @@ export class FavoritesManager {
 export class PriceHistoryManager {
   // Get price history for a specific card
   static async getCardPriceHistory(cardId: string, variantType: string = 'holofoil', daysBack: number = 30): Promise<any[]> {
-    const { data, error } = await supabase
-      .rpc('get_card_price_trend', {
-        input_card_id: cardId,
-        input_variant_type: variantType,
-        days_back: daysBack
-      });
+    try {
+      // First try RPC function if it exists
+      const { data: rpcData, error: rpcError } = await supabase
+        .rpc('get_card_price_trend', {
+          input_card_id: cardId,
+          input_variant_type: variantType,
+          days_back: daysBack
+        });
 
-    if (error) {
-      logger.error('Error fetching price trend:', { error });
+      if (!rpcError && rpcData) {
+        return rpcData;
+      }
+      
+      // Fallback to direct query if RPC doesn't exist
+      const startDate = new Date();
+      startDate.setDate(startDate.getDate() - daysBack);
+      
+      const { data, error } = await supabase
+        .from('card_price_history')
+        .select('*')
+        .eq('card_id', cardId)
+        .gte('collected_at', startDate.toISOString())
+        .order('collected_at', { ascending: true });
+
+      if (error) {
+        logger.error('Error fetching price history:', { error });
+        return [];
+      }
+
+      return data || [];
+    } catch (error) {
+      logger.error('Error in getCardPriceHistory:', { error });
       return [];
     }
-
-    return data || [];
   }
 
   // Get price statistics for a card
   static async getCardPriceStats(cardId: string, variantType: string = 'holofoil', daysBack: number = 30): Promise<any | null> {
-    const { data, error } = await supabase
-      .rpc('get_card_price_stats', {
-        input_card_id: cardId,
-        input_variant_type: variantType,
-        days_back: daysBack
-      });
+    try {
+      // First try RPC function if it exists
+      const { data: rpcData, error: rpcError } = await supabase
+        .rpc('get_card_price_stats', {
+          input_card_id: cardId,
+          input_variant_type: variantType,
+          days_back: daysBack
+        });
 
-    if (error) {
-      logger.error('Error fetching price stats:', { error });
+      if (!rpcError && rpcData && rpcData.length > 0) {
+        return rpcData[0];
+      }
+      
+      // Fallback to manual calculation if RPC doesn't exist
+      const history = await this.getCardPriceHistory(cardId, variantType, daysBack);
+      
+      if (!history || history.length === 0) {
+        return null;
+      }
+      
+      // Calculate stats manually
+      const prices = history.map(h => h.price_market || 0).filter(p => p > 0);
+      
+      if (prices.length === 0) {
+        return null;
+      }
+      
+      return {
+        highest_price: Math.max(...prices),
+        lowest_price: Math.min(...prices),
+        average_price: prices.reduce((sum, p) => sum + p, 0) / prices.length,
+        price_change: prices[prices.length - 1] - prices[0],
+        price_change_percentage: ((prices[prices.length - 1] - prices[0]) / prices[0]) * 100
+      };
+    } catch (error) {
+      logger.error('Error in getCardPriceStats:', { error });
       return null;
     }
-
-    return data && data.length > 0 ? data[0] : null;
   }
 
   // Get recent price collection jobs

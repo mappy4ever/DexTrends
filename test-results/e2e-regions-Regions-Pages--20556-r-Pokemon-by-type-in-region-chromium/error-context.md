@@ -1,0 +1,687 @@
+# Page snapshot
+
+```yaml
+- link "DexTrends":
+  - /url: /
+  - img
+  - text: DexTrends
+- navigation:
+  - link "Home":
+    - /url: /
+    - img
+    - text: Home
+  - link "Pokémon TCG":
+    - /url: /tcgsets
+    - img
+    - text: Pokémon TCG
+    - img
+  - link "Pokédex":
+    - /url: /pokedex
+    - img
+    - text: Pokédex
+  - link "Pokémon":
+    - /url: /pokemon
+    - img
+    - text: Pokémon
+    - img
+  - link "Battle":
+    - /url: /battle-simulator
+    - img
+    - text: Battle
+    - img
+  - link "Pocket":
+    - /url: /pocketmode
+    - img
+    - text: Pocket
+    - img
+  - link "Fun":
+    - /url: /fun
+    - img
+    - text: Fun
+- button "Open global search":
+  - img
+- link "View favorites":
+  - /url: /favorites
+  - img
+- button "Activate dark mode":
+  - img
+- main:
+  - button "Back to Regions":
+    - img
+    - text: Back to Regions
+  - button "Previous region":
+    - img
+  - text: Galar Region 9 of 9
+  - img "Paldea Map"
+  - heading "PALDEA" [level=1]
+  - paragraph: An open-world region inspired by Spain and Portugal.
+  - button "Previous region":
+    - img
+  - button "Overview"
+  - button "Professor"
+  - button "Starters"
+  - button "Special Pokémon"
+  - button "Gym Leaders"
+  - button "Locations"
+  - button "Games"
+  - button "Villains"
+  - button "Trivia"
+  - heading "About Paldea" [level=2]
+  - paragraph: An open-world region inspired by Spain and Portugal.
+  - img
+  - heading "Professor" [level=3]
+  - paragraph: Professor Sada/Turo
+  - img
+  - heading "Generation" [level=3]
+  - paragraph: "9"
+  - img
+  - heading "Pokédex" [level=3]
+  - paragraph: 906-1025
+  - img
+  - heading "Games" [level=3]
+  - paragraph: "3"
+  - heading "Region Stats" [level=3]
+  - text: Total Cities 10 Total Routes 15 Gym Leaders 8 Legendary Pokémon 6
+  - heading "Available Games" [level=3]
+  - text: Pokémon Scarlet Pokémon Violet Pokémon The Hidden Treasure of Area Zero
+  - button "Switch professor version":
+    - img
+  - heading "Meet Professor Sada" [level=2]
+  - text: Scarlet Exclusive
+  - button "Switch professor version":
+    - img
+  - paragraph: Paldea's Leading Pokémon Researcher
+  - img "Professor Sada"
+  - heading "Professor Sada" [level=3]
+  - paragraph: Ancient Paradox Pokémon
+  - heading "Quick Info" [level=4]:
+    - img
+    - text: Quick Info
+  - paragraph: Laboratory
+  - paragraph: Area Zero Research Station, Paldea
+  - paragraph: Age
+  - paragraph: 35-40
+  - paragraph: Known For
+  - paragraph: Ancient Paradox Pokémon and time research
+  - heading "Biography" [level=4]:
+    - img
+    - text: Biography
+  - paragraph: Professor Sada is one of two professors in Paldea, representing the Scarlet version. Her research focuses on ancient Paradox Pokémon from the distant past. Her obsession with bringing these prehistoric Pokémon to the present led to groundbreaking but controversial research. Working in the mysterious Area Zero, Sada developed technology capable of bringing Pokémon from different time periods into the present. Her research station deep within the Great Crater of Paldea became her life's work. Her dedication to her research was absolute, leading to both incredible discoveries and personal sacrifices. The full extent of her research and its implications continue to impact the Paldea region.
+  - heading "Major Achievements" [level=4]:
+    - img
+    - text: Major Achievements
+  - list:
+    - listitem:
+      - img
+      - text: Discovered Paradox Pokémon
+    - listitem:
+      - img
+      - text: Time machine inventor
+    - listitem:
+      - img
+      - text: Area Zero explorer
+    - listitem:
+      - img
+      - text: Ancient Pokémon researcher
+  - heading "Research Focus" [level=4]:
+    - img
+    - text: Research Focus
+  - img
+  - paragraph: Paradox Pokémon from the past
+  - img
+  - paragraph: Time manipulation technology
+  - img
+  - paragraph: Area Zero phenomena
+  - img
+  - paragraph: Ancient Pokémon restoration
+  - heading "Famous Quote" [level=4]:
+    - img
+    - text: Famous Quote
+  - blockquote:
+    - paragraph: "\"The ancient past holds the key to Pokémon's true power!\""
+  - heading "Choose Your Starter" [level=2]
+  - paragraph: Begin your journey with one of these three Pokémon
+  - text: "#906"
+  - img "Sprigatito"
+  - heading "Sprigatito" [level=3]
+  - paragraph: Grass Cat Pokémon
+  - text: Grass
+  - paragraph: Height
+  - paragraph: 0.4 m
+  - paragraph: Weight
+  - paragraph: 4.1 kg
+  - text: "#909"
+  - img "Fuecoco"
+  - heading "Fuecoco" [level=3]
+  - paragraph: Fire Croc Pokémon
+  - text: Fire
+  - paragraph: Height
+  - paragraph: 0.4 m
+  - paragraph: Weight
+  - paragraph: 9.8 kg
+  - text: "#912"
+  - img "Quaxly"
+  - heading "Quaxly" [level=3]
+  - paragraph: Duckling Pokémon
+  - text: Water
+  - paragraph: Height
+  - paragraph: 0.5 m
+  - paragraph: Weight
+  - paragraph: 6.1 kg
+  - heading "Choosing Your Starter" [level=3]:
+    - img
+    - text: Choosing Your Starter
+  - paragraph: Your starter Pokémon will be your first partner on your journey. Consider their type advantages against early gym leaders, their evolution potential, and which one you connect with most!
+  - heading "Special Pokémon" [level=2]
+  - paragraph: Unique and legendary Pokémon of Paldea
+  - button "Regional Variants":
+    - img
+    - text: Regional Variants
+  - button "Legendary Pokémon":
+    - img
+    - text: Legendary Pokémon
+  - heading "Paldean Forms" [level=3]:
+    - img
+    - text: Paldean Forms
+  - paragraph: Pokémon that adapted to Paldea's diverse ecosystems
+  - img "Tauros (Combat)"
+  - heading "Tauros (Combat)" [level=3]
+  - text: Fighting
+  - paragraph: Click to view in Pokédex
+  - img "Tauros (Blaze)"
+  - heading "Tauros (Blaze)" [level=3]
+  - text: Fighting Fire
+  - paragraph: Click to view in Pokédex
+  - img "Tauros (Aqua)"
+  - heading "Tauros (Aqua)" [level=3]
+  - text: Fighting Water
+  - paragraph: Click to view in Pokédex
+  - img "Wooper"
+  - heading "Wooper" [level=3]
+  - text: Poison Ground
+  - paragraph: Click to view in Pokédex
+  - heading "Your Journey in Paldea" [level=2]
+  - paragraph: Challenge the strongest trainers on your path to becoming Champion
+  - heading "Gym Leader Challenge" [level=3]
+  - paragraph: Defeat all 8 Gym Leaders to earn their badges
+  - button:
+    - img
+  - button:
+    - img
+  - text: TYPE SPECIALIST
+  - img "bug type"
+  - text: Bug
+  - img "Bug Badge Badge"
+  - heading "Katy" [level=2]
+  - paragraph: Cortondo
+  - link "Nymble":
+    - /url: /pokedex/nymble
+    - img "Nymble"
+  - link "Tarountula":
+    - /url: /pokedex/tarountula
+    - img "Tarountula"
+  - link "Teddiursa":
+    - /url: /pokedex/teddiursa
+    - img "Teddiursa"
+  - text: "Weak to:"
+  - img "fire type"
+  - text: Fire
+  - img "flying type"
+  - text: Flying
+  - img "rock type"
+  - text: Rock "
+  - paragraph: “Master of bug-type Pokémon!”
+  - text: "Fun Fact:"
+  - paragraph: Katy is the Cortondo Gym Leader specializing in bug-type Pokémon.
+  - text: "Recommended Level: 14+ GYM LEADER"
+  - img "Katy - paldea Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "grass type"
+  - text: Grass
+  - img "Grass Badge Badge"
+  - heading "Brassius" [level=2]
+  - paragraph: Artazon
+  - link "Petilil":
+    - /url: /pokedex/petilil
+    - img "Petilil"
+  - link "Smoliv":
+    - /url: /pokedex/smoliv
+    - img "Smoliv"
+  - link "Sudowoodo":
+    - /url: /pokedex/sudowoodo
+    - img "Sudowoodo"
+  - text: "Weak to:"
+  - img "fire type"
+  - text: Fire
+  - img "ice type"
+  - text: Ice
+  - img "poison type"
+  - text: Poison
+  - img "flying type"
+  - text: Flying
+  - img "bug type"
+  - text: Bug "
+  - paragraph: “Master of grass-type Pokémon!”
+  - text: "Fun Fact:"
+  - paragraph: Brassius is the Artazon Gym Leader specializing in grass-type Pokémon.
+  - text: "Recommended Level: 16+ GYM LEADER"
+  - img "Brassius - paldea Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "electric type"
+  - text: Electric
+  - img "Electric Badge Badge"
+  - heading "Iono" [level=2]
+  - paragraph: Levincia
+  - link "Wattrel":
+    - /url: /pokedex/wattrel
+    - img "Wattrel"
+  - link "Bellibolt":
+    - /url: /pokedex/bellibolt
+    - img "Bellibolt"
+  - link "Luxio":
+    - /url: /pokedex/luxio
+    - img "Luxio"
+  - link "Mismagius":
+    - /url: /pokedex/mismagius
+    - img "Mismagius"
+  - text: "Weak to:"
+  - img "ground type"
+  - text: Ground "
+  - paragraph: “Master of electric-type Pokémon!”
+  - text: "Fun Fact:"
+  - paragraph: Iono is the Levincia Gym Leader specializing in electric-type Pokémon.
+  - text: "Recommended Level: 23+ GYM LEADER"
+  - img "Iono - paldea Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "water type"
+  - text: Water
+  - img "Water Badge Badge"
+  - heading "Kofu" [level=2]
+  - paragraph: Cascarrafa
+  - link "Veluza":
+    - /url: /pokedex/veluza
+    - img "Veluza"
+  - link "Wugtrio":
+    - /url: /pokedex/wugtrio
+    - img "Wugtrio"
+  - link "Crabominable":
+    - /url: /pokedex/crabominable
+    - img "Crabominable"
+  - text: "Weak to:"
+  - img "electric type"
+  - text: Electric
+  - img "grass type"
+  - text: Grass "
+  - paragraph: “Master of water-type Pokémon!”
+  - text: "Fun Fact:"
+  - paragraph: Kofu is the Cascarrafa Gym Leader specializing in water-type Pokémon.
+  - text: "Recommended Level: 29+ GYM LEADER"
+  - img "Kofu - paldea Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "normal type"
+  - text: Normal
+  - img "Normal Badge Badge"
+  - heading "Larry" [level=2]
+  - paragraph: Medali
+  - link "Komala":
+    - /url: /pokedex/komala
+    - img "Komala"
+  - link "Dudunsparce":
+    - /url: /pokedex/dudunsparce
+    - img "Dudunsparce"
+  - link "Staraptor":
+    - /url: /pokedex/staraptor
+    - img "Staraptor"
+  - text: "Weak to:"
+  - img "fighting type"
+  - text: Fighting "
+  - paragraph: “Master of normal-type Pokémon!”
+  - text: "Fun Fact:"
+  - paragraph: Larry is the Medali Gym Leader specializing in normal-type Pokémon.
+  - text: "Recommended Level: 35+ GYM LEADER"
+  - img "Larry - paldea Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "ghost type"
+  - text: Ghost
+  - img "Ghost Badge Badge"
+  - heading "Ryme" [level=2]
+  - paragraph: Montenevera
+  - link "Banette":
+    - /url: /pokedex/banette
+    - img "Banette"
+  - link "Mimikyu":
+    - /url: /pokedex/mimikyu
+    - img "Mimikyu"
+  - link "Houndstone":
+    - /url: /pokedex/houndstone
+    - img "Houndstone"
+  - link "Toxtricity":
+    - /url: /pokedex/toxtricity
+    - img "Toxtricity"
+  - text: "Weak to:"
+  - img "ghost type"
+  - text: Ghost
+  - img "dark type"
+  - text: Dark "
+  - paragraph: “Master of ghost-type Pokémon!”
+  - text: "Fun Fact:"
+  - paragraph: Ryme is the Montenevera Gym Leader specializing in ghost-type Pokémon.
+  - text: "Recommended Level: 41+ GYM LEADER"
+  - img "Ryme - paldea Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "psychic type"
+  - text: Psychic
+  - img "Psychic Badge Badge"
+  - heading "Tulip" [level=2]
+  - paragraph: Alfornada
+  - link "Farigiraf":
+    - /url: /pokedex/farigiraf
+    - img "Farigiraf"
+  - link "Gardevoir":
+    - /url: /pokedex/gardevoir
+    - img "Gardevoir"
+  - link "Espathra":
+    - /url: /pokedex/espathra
+    - img "Espathra"
+  - link "Florges":
+    - /url: /pokedex/florges
+    - img "Florges"
+  - text: "Weak to:"
+  - img "bug type"
+  - text: Bug
+  - img "ghost type"
+  - text: Ghost
+  - img "dark type"
+  - text: Dark "
+  - paragraph: “Master of psychic-type Pokémon!”
+  - text: "Fun Fact:"
+  - paragraph: Tulip is the Alfornada Gym Leader specializing in psychic-type Pokémon.
+  - text: "Recommended Level: 44+ GYM LEADER"
+  - img "Tulip - paldea Gym Leader"
+  - text: TYPE SPECIALIST
+  - img "ice type"
+  - text: Ice
+  - img "Ice Badge Badge"
+  - heading "Grusha" [level=2]
+  - paragraph: Glaseado
+  - link "Frosmoth":
+    - /url: /pokedex/frosmoth
+    - img "Frosmoth"
+  - link "Beartic":
+    - /url: /pokedex/beartic
+    - img "Beartic"
+  - link "Cetitan":
+    - /url: /pokedex/cetitan
+    - img "Cetitan"
+  - link "Altaria":
+    - /url: /pokedex/altaria
+    - img "Altaria"
+  - text: "Weak to:"
+  - img "fire type"
+  - text: Fire
+  - img "fighting type"
+  - text: Fighting
+  - img "rock type"
+  - text: Rock
+  - img "steel type"
+  - text: Steel "
+  - paragraph: “Master of ice-type Pokémon!”
+  - text: "Fun Fact:"
+  - paragraph: Grusha is the Glaseado Gym Leader specializing in ice-type Pokémon.
+  - text: "Recommended Level: 47+ GYM LEADER"
+  - img "Grusha - paldea Gym Leader"
+  - button
+  - button
+  - button
+  - button
+  - button
+  - button
+  - button
+  - button
+  - heading "⚡ ELITE FOUR & CHAMPION ⚡" [level=3]
+  - img
+  - img
+  - img
+  - img
+  - img
+  - paragraph: The ultimate challenge awaits at the Pokémon League
+  - button:
+    - img
+  - button:
+    - img
+  - text: ELITE TYPE SPECIALIST
+  - img "ground type"
+  - text: "Ground #1"
+  - heading "Rika" [level=2]
+  - paragraph: Elite Four Member
+  - text: "No team data Weak to:"
+  - img "water type"
+  - text: Water
+  - img "grass type"
+  - text: Grass
+  - img "ice type"
+  - text: Ice "
+  - paragraph: “Master of ground-type Pokémon!”
+  - text: "Battle Strategy:"
+  - paragraph: Elite Four member specializing in ground-type Pokémon.
+  - text: "Difficulty: ★★★★ ELITE FOUR"
+  - img "Rika - Elite Four"
+  - text: ELITE TYPE SPECIALIST
+  - img "steel type"
+  - text: "Steel #2"
+  - heading "Poppy" [level=2]
+  - paragraph: Elite Four Member
+  - text: "No team data Weak to:"
+  - img "fire type"
+  - text: Fire
+  - img "fighting type"
+  - text: Fighting
+  - img "ground type"
+  - text: Ground "
+  - paragraph: “Master of steel-type Pokémon!”
+  - text: "Battle Strategy:"
+  - paragraph: Elite Four member specializing in steel-type Pokémon.
+  - text: "Difficulty: ★★★★ ELITE FOUR"
+  - img "Poppy - Elite Four"
+  - text: ELITE TYPE SPECIALIST
+  - img "flying type"
+  - text: "Flying #3"
+  - heading "Larry" [level=2]
+  - paragraph: Elite Four Member
+  - text: "No team data Weak to:"
+  - img "electric type"
+  - text: Electric
+  - img "ice type"
+  - text: Ice
+  - img "rock type"
+  - text: Rock "
+  - paragraph: “Master of flying-type Pokémon!”
+  - text: "Battle Strategy:"
+  - paragraph: Elite Four member specializing in flying-type Pokémon.
+  - text: "Difficulty: ★★★★ ELITE FOUR"
+  - img "Larry - Elite Four"
+  - text: ELITE TYPE SPECIALIST
+  - img "dragon type"
+  - text: "Dragon #4"
+  - heading "Hassel" [level=2]
+  - paragraph: Elite Four Member
+  - text: "No team data Weak to:"
+  - img "ice type"
+  - text: Ice
+  - img "dragon type"
+  - text: Dragon
+  - img "fairy type"
+  - text: Fairy "
+  - paragraph: “Master of dragon-type Pokémon!”
+  - text: "Battle Strategy:"
+  - paragraph: Elite Four member specializing in dragon-type Pokémon.
+  - text: "Difficulty: ★★★★ ELITE FOUR"
+  - img "Hassel - Elite Four"
+  - button
+  - button
+  - button
+  - button
+  - heading "THE FINAL CHALLENGE" [level=4]
+  - img
+  - img
+  - img
+  - button "REVEAL THE CHAMPION":
+    - img
+    - text: REVEAL THE CHAMPION
+    - img
+  - paragraph: Face the ultimate test of your skills
+  - heading "Explore Paldea" [level=2]
+  - paragraph: Discover the diverse cities, towns, and landmarks
+  - heading "Cities & Towns" [level=3]:
+    - img
+    - text: Cities & Towns
+  - img
+  - heading "Cabo Poco" [level=4]
+  - paragraph: A small coastal town where your journey begins
+  - img
+  - heading "Mesagoza" [level=4]
+  - paragraph: The largest city and home to Naranja/Uva Academy
+  - img
+  - heading "Artazon" [level=4]
+  - paragraph: A town famous for its art and sunflower fields
+  - img
+  - heading "Levincia" [level=4]
+  - paragraph: A port city with neon lights and electric energy
+  - img
+  - heading "Cascarrafa" [level=4]
+  - paragraph: A desert oasis city with water features
+  - img
+  - heading "Medali" [level=4]
+  - paragraph: A peaceful town known for its restaurants
+  - img
+  - heading "Montenevera" [level=4]
+  - paragraph: A snowy mountain town with ghostly atmosphere
+  - img
+  - heading "Alfornada" [level=4]
+  - paragraph: A town in a basin surrounded by mountains
+  - heading "Notable Landmarks" [level=3]:
+    - img
+    - text: Notable Landmarks
+  - heading "Naranja/Uva Academy" [level=4]
+  - paragraph: The prestigious school at the region's heart
+  - heading "Great Crater of Paldea" [level=4]
+  - paragraph: A mysterious crater with a hidden secret
+  - heading "Area Zero" [level=4]
+  - paragraph: The deepest part of the Great Crater
+  - heading "Glaseado Mountain" [level=4]
+  - paragraph: The highest peak in Paldea covered in snow
+  - heading "Asado Desert" [level=4]
+  - paragraph: A vast desert in western Paldea
+  - heading "Kitakami" [level=4]
+  - paragraph: A rural land of masks and festivals
+  - heading "Blueberry Academy" [level=4]
+  - paragraph: An elite academy in the Unova region
+  - heading "Poco Path Lighthouse" [level=4]
+  - paragraph: A guiding light for travelers
+  - heading "Games in Paldea" [level=2]
+  - paragraph: Experience the Paldea region across different generations
+  - link "Pokémon Scarlet cover Pokémon Scarlet Explore More":
+    - /url: /pokemon/games/scarlet
+    - img "Pokémon Scarlet cover"
+    - heading "Pokémon Scarlet" [level=3]
+    - button "Explore More":
+      - text: Explore More
+      - img
+    - img
+    - img
+    - img
+  - link "Pokémon Violet cover Pokémon Violet Explore More":
+    - /url: /pokemon/games/violet
+    - img "Pokémon Violet cover"
+    - heading "Pokémon Violet" [level=3]
+    - button "Explore More":
+      - text: Explore More
+      - img
+    - img
+    - img
+    - img
+  - link "Pokémon The Hidden Treasure of Area Zero cover Pokémon The Hidden Treasure of Area Zero Explore More":
+    - /url: /pokemon/games/the-hidden-treasure-of-area-zero
+    - img "Pokémon The Hidden Treasure of Area Zero cover"
+    - heading "Pokémon The Hidden Treasure of Area Zero" [level=3]
+    - button "Explore More":
+      - text: Explore More
+      - img
+    - img
+    - img
+    - img
+  - img
+  - text: Generation 9
+  - img
+  - text: 3 Games Released
+  - link "Explore All Pokémon Games":
+    - /url: /pokemon/games
+    - img
+    - text: Explore All Pokémon Games
+    - img
+  - heading "Villainous Organizations" [level=2]:
+    - img
+    - text: Villainous Organizations
+  - paragraph: The evil teams threatening Paldea's peace
+  - heading "Team Star" [level=3]
+  - paragraph: "\"We're the bad guys, but we stick together!\""
+  - paragraph: Leader
+  - paragraph: Penny (Cassiopeia)
+  - paragraph: Big Boss
+  - img "Penny (Cassiopeia)"
+  - img
+  - heading "Did You Know?" [level=2]
+  - paragraph: Interesting facts about Paldea
+  - text: "1"
+  - paragraph: Paldea is based on the Iberian Peninsula
+  - text: "2"
+  - paragraph: First fully open-world main series game
+  - text: "3"
+  - paragraph: Features three separate storylines
+  - text: "4"
+  - paragraph: Introduced Terastallization mechanic
+  - text: Press ? for shortcuts 🔕
+  - heading "Push Notifications" [level=3]
+  - paragraph: Blocked by user
+  - button "Enable"
+- contentinfo:
+  - paragraph:
+    - text: © 2025 DexTrends - A
+    - link "PakePoint":
+      - /url: https://www.pakepoint.com
+    - text: Project. All rights reserved.
+- button "Open card comparison tool":
+  - img
+- text: Compare Cards
+- button "💡"
+- button:
+  - img
+- alert: /pokemon/regions/paldea
+- button "Open Next.js Dev Tools":
+  - img
+- button "Open issues overlay": 1 Issue
+- button "Collapse issues badge":
+  - img
+- navigation:
+  - button "previous" [disabled]:
+    - img "previous"
+  - text: 1/1
+  - button "next" [disabled]:
+    - img "next"
+- img
+- link "Next.js 15.3.5 (stale) Webpack":
+  - /url: https://nextjs.org/docs/messages/version-staleness
+  - img
+  - text: Next.js 15.3.5 (stale) Webpack
+- img
+- dialog "Runtime Error":
+  - text: Runtime Error
+  - button "Copy Stack Trace":
+    - img
+  - button "No related documentation found" [disabled]:
+    - img
+  - link "Learn more about enabling Node.js inspector for server code with Chrome DevTools":
+    - /url: https://nextjs.org/docs/app/building-your-application/configuring/debugging#server-side-code
+    - img
+  - paragraph: "TypeError: Failed to register a ServiceWorker for scope ('http://localhost:3000/') with script ('http://localhost:3000/sw.js'): A bad HTTP response code (404) was received when fetching the script."
+```

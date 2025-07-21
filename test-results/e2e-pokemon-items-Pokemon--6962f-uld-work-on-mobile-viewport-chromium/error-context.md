@@ -1,0 +1,547 @@
+# Page snapshot
+
+```yaml
+- link "DexTrends":
+  - /url: /
+  - img
+  - text: DexTrends
+- button "Open global search":
+  - img
+- link "View favorites":
+  - /url: /favorites
+  - img
+- button "Activate dark mode":
+  - img
+- button "Toggle mobile menu"
+- main:
+  - button "Back to Pokémon Hub":
+    - img
+    - text: Back to Pokémon Hub
+  - heading "Pokémon Items" [level=1]:
+    - img
+    - text: Pokémon Items
+  - paragraph: Discover 150 items and their effects
+  - paragraph: Data from PokeAPI
+  - img
+  - textbox "Search items by name, effect, or description..."
+  - text: "Sort by:"
+  - combobox:
+    - option "Name" [selected]
+    - option "Price"
+    - option "Generation"
+  - text: Showing 150 items
+  - button "All Items":
+    - img
+    - text: All Items
+  - button "other":
+    - img
+    - text: other
+  - button "Healing Items":
+    - img
+    - text: Healing Items
+  - button "Evolution Items":
+    - img
+    - text: Evolution Items
+  - button "Battle Items":
+    - img
+    - text: Battle Items
+  - text: Showing 150 items
+  - img "adamant orb"
+  - heading "adamant orb" [level=3]
+  - img
+  - paragraph: Boosts the damage from Dialga's Dragon-type and Steel-type moves by 20%.
+  - paragraph: A brightly gleaming orb to be held by DIALGA. It boosts the power of Dragon- and Steel-type moves.
+  - paragraph: Price
+  - paragraph: N/A
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "aguav berry"
+  - heading "aguav berry" [level=3]
+  - img
+  - paragraph: "Held: Consumed at 1/2 max HP to restore 1/8 max HP. Confuses Pokémon that dislike bitter flavor."
+  - paragraph: A hold item that restores HP but may confuse.
+  - paragraph: Price
+  - paragraph: ¥80
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "air mail"
+  - heading "air mail" [level=3]
+  - img
+  - paragraph: Lets a Trainer write a message and send it via Pokémon trade.
+  - paragraph: Stationery featuring a print of colorful letter sets. Let a Pokémon hold it for delivery.
+  - paragraph: Price
+  - paragraph: ¥50
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "antidote"
+  - heading "antidote" [level=3]
+  - img
+  - paragraph: Cures poison.
+  - paragraph: Heals a poisoned POKéMON.
+  - paragraph: Price
+  - paragraph: ¥200
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "armor fossil"
+  - heading "armor fossil" [level=3]
+  - img
+  - paragraph: Can be revived into a Shieldon.
+  - paragraph: A fossil from a prehistoric Pokémon that lived on the land. It appears to be part of a collar.
+  - paragraph: Price
+  - paragraph: ¥7000
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "aspear berry"
+  - heading "aspear berry" [level=3]
+  - img
+  - paragraph: "Held: Consumed when frozen to cure frozen."
+  - paragraph: A hold item that defrosts POKéMON in battle.
+  - paragraph: Price
+  - paragraph: ¥80
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "awakening"
+  - heading "awakening" [level=3]
+  - img
+  - paragraph: Cures sleep.
+  - paragraph: Awakens a sleeping POKéMON.
+  - paragraph: Price
+  - paragraph: ¥200
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "berry juice"
+  - heading "berry juice" [level=3]
+  - img
+  - paragraph: Restores 20 HP.
+  - paragraph: A 100% pure juice that restores HP by 20 points.
+  - paragraph: Price
+  - paragraph: ¥200
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "big mushroom"
+  - heading "big mushroom" [level=3]
+  - img
+  - paragraph: "Fire Red and Leaf Green: Trade for prior Level-up moves. Sell for 2500 Pokédollars, or to Hungry Maid for 5000 Pokédollars."
+  - paragraph: A rare mushroom that would sell at a high price.
+  - paragraph: Price
+  - paragraph: ¥5000
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "big pearl"
+  - heading "big pearl" [level=3]
+  - img
+  - paragraph: Sell for 3750 Pokédollars, or to Ore Collector for 7500 Pokédollars.
+  - paragraph: A lovely large pearl that would sell at a high price.
+  - paragraph: Price
+  - paragraph: ¥8000
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "black flute"
+  - heading "black flute" [level=3]
+  - img
+  - paragraph: Halves the wild Pokémon encounter rate.
+  - paragraph: A glass flute that keeps away wild POKéMON.
+  - paragraph: Price
+  - paragraph: ¥20
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "bloom mail"
+  - heading "bloom mail" [level=3]
+  - img
+  - paragraph: Lets a Trainer write a message and send it via Pokémon trade.
+  - paragraph: Stationery featuring a print of pretty floral patterns. Let a Pokémon hold it for delivery.
+  - paragraph: Price
+  - paragraph: ¥50
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "blue flute"
+  - heading "blue flute" [level=3]
+  - img
+  - paragraph: Cures sleep.
+  - paragraph: A glass flute that awakens sleeping POKéMON.
+  - paragraph: Price
+  - paragraph: ¥20
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "blue shard"
+  - heading "blue shard" [level=3]
+  - img
+  - paragraph: No effect. Can be traded for items or moves.
+  - paragraph: A shard from an ancient item. Can be sold cheaply.
+  - paragraph: Price
+  - paragraph: ¥1000
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "bluk berry"
+  - heading "bluk berry" [level=3]
+  - img
+  - paragraph: Used for creating PokéBlocks and Poffins.
+  - paragraph: POKéBLOCK ingredient. Plant in loamy soil to grow BLUK.
+  - paragraph: Price
+  - paragraph: ¥20
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "brick mail"
+  - heading "brick mail" [level=3]
+  - img
+  - paragraph: Lets a Trainer write a message and send it via Pokémon trade.
+  - paragraph: Stationery featuring a print of a tough-looking brick pattern. Let a Pokémon hold it for delivery.
+  - paragraph: Price
+  - paragraph: ¥50
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "bubble mail"
+  - heading "bubble mail" [level=3]
+  - img
+  - paragraph: Lets a Trainer write a message and send it via Pokémon trade.
+  - paragraph: Stationery featuring a print of a blue world underwater. Let a Pokémon hold it for delivery.
+  - paragraph: Price
+  - paragraph: ¥50
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "burn heal"
+  - heading "burn heal" [level=3]
+  - img
+  - paragraph: Cures a burn.
+  - paragraph: Heals POKéMON of a burn.
+  - paragraph: Price
+  - paragraph: ¥200
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "calcium"
+  - heading "calcium" [level=3]
+  - img
+  - paragraph: Raises Special Attack effort and happiness.
+  - paragraph: Raises the stat SP. ATK of one POKéMON.
+  - paragraph: Price
+  - paragraph: ¥10000
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "carbos"
+  - heading "carbos" [level=3]
+  - img
+  - paragraph: Raises Speed effort and happiness.
+  - paragraph: Raises the stat SPEED of one POKéMON.
+  - paragraph: Price
+  - paragraph: ¥10000
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "cheri berry"
+  - heading "cheri berry" [level=3]
+  - img
+  - paragraph: "Held: Consumed when paralyzed to cure paralysis."
+  - paragraph: A hold item that heals paralysis in battle.
+  - paragraph: Price
+  - paragraph: ¥80
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "cherish ball"
+  - heading "cherish ball" [level=3]
+  - img
+  - paragraph: Tries to catch a wild Pokémon.
+  - paragraph: A quite rare Poké Ball that has been specially crafted to commemorate an occasion of some sort.
+  - paragraph: Price
+  - paragraph: N/A
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "chesto berry"
+  - heading "chesto berry" [level=3]
+  - img
+  - paragraph: "Held: Consumed when asleep to cure sleep."
+  - paragraph: A hold item that awakens POKéMON in battle.
+  - paragraph: Price
+  - paragraph: ¥80
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "claw fossil"
+  - heading "claw fossil" [level=3]
+  - img
+  - paragraph: Can be revived into an Anorith.
+  - paragraph: A fossil of an ancient, seafloor- dwelling POKéMON.
+  - paragraph: Price
+  - paragraph: ¥7000
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "damp mulch"
+  - heading "damp mulch" [level=3]
+  - img
+  - paragraph: Growing time of berries is increased, but the soil dries out slower.
+  - paragraph: A plant fertilizer spread on soft soil. It slows the growth of Berries and causes the soil to dry slower.
+  - paragraph: Price
+  - paragraph: ¥200
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "dawn stone"
+  - heading "dawn stone" [level=3]
+  - img
+  - paragraph: Evolves a male Kirlia into Gallade or a female Snorunt into Froslass.
+  - paragraph: A peculiar stone that makes certain species of Pokémon evolve. It sparkles like eyes.
+  - paragraph: Price
+  - paragraph: ¥3000
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "dire hit"
+  - heading "dire hit" [level=3]
+  - img
+  - paragraph: Increases the chance of a critical hit in battle. Raises happiness.
+  - paragraph: Raises the critical-hit ratio during one battle.
+  - paragraph: Price
+  - paragraph: ¥1000
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "dive ball"
+  - heading "dive ball" [level=3]
+  - img
+  - paragraph: Tries to catch a wild Pokémon. Success rate is 3.5× when underwater, fishing, or surfing.
+  - paragraph: A BALL that works better on POKéMON on the ocean floor.
+  - paragraph: Price
+  - paragraph: ¥1000
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "dome fossil"
+  - heading "dome fossil" [level=3]
+  - img
+  - paragraph: Can be revived into a Kabuto.
+  - paragraph: A piece of an ancient marine POKéMON’s shell.
+  - paragraph: Price
+  - paragraph: ¥7000
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "dusk ball"
+  - heading "dusk ball" [level=3]
+  - img
+  - paragraph: Tries to catch a wild Pokémon. Success rate is 3.5× at night and in caves.
+  - paragraph: A somewhat different Poké Ball that makes it easier to catch wild Pokémon at night or in dark places like caves.
+  - paragraph: Price
+  - paragraph: ¥1000
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "dusk stone"
+  - heading "dusk stone" [level=3]
+  - img
+  - paragraph: Evolves a Lampent into Chandelure, a Misdreavus into Mismagius, or a Murkrow into Honchkrow.
+  - paragraph: A peculiar stone that makes certain species of Pokémon evolve. It is as dark as dark can be.
+  - paragraph: Price
+  - paragraph: ¥3000
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "elixir"
+  - heading "elixir" [level=3]
+  - img
+  - paragraph: Restores 10 PP for each move.
+  - paragraph: Restores the PP of all moves by 10.
+  - paragraph: Price
+  - paragraph: ¥3000
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "energy powder"
+  - heading "energy powder" [level=3]
+  - img
+  - paragraph: Restores 50 HP, but lowers happiness.
+  - paragraph: A bitter powder that restores HP by 50 points.
+  - paragraph: Price
+  - paragraph: ¥500
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "energy root"
+  - heading "energy root" [level=3]
+  - img
+  - paragraph: Restores 200 HP, but lowers happiness.
+  - paragraph: A bitter root that restores HP by 200 points.
+  - paragraph: Price
+  - paragraph: ¥1200
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "escape rope"
+  - heading "escape rope" [level=3]
+  - img
+  - paragraph: Transports user to the outside entrance of a cave.
+  - paragraph: Use to escape instantly from a cave or a dungeon.
+  - paragraph: Price
+  - paragraph: ¥300
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "ether"
+  - heading "ether" [level=3]
+  - img
+  - paragraph: Restores 10 PP for one move.
+  - paragraph: Restores the PP of a selected move by 10.
+  - paragraph: Price
+  - paragraph: ¥1200
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "figy berry"
+  - heading "figy berry" [level=3]
+  - img
+  - paragraph: "Held: Consumed at 1/2 max HP to restore 1/8 max HP. Confuses Pokémon that dislike spicy flavor."
+  - paragraph: A hold item that restores HP but may confuse.
+  - paragraph: Price
+  - paragraph: ¥80
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "fire stone"
+  - heading "fire stone" [level=3]
+  - img
+  - paragraph: Evolves an Eevee into Flareon, a Growlithe into Arcanine, a Pansear into Simisear, or a Vulpix into Ninetales.
+  - paragraph: Makes certain species of POKéMON evolve.
+  - paragraph: Price
+  - paragraph: ¥3000
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "flame mail"
+  - heading "flame mail" [level=3]
+  - img
+  - paragraph: Lets a Trainer write a message and send it via Pokémon trade.
+  - paragraph: Stationery featuring a print of flames in blazing red. Let a Pokémon hold it for delivery.
+  - paragraph: Price
+  - paragraph: ¥50
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "fluffy tail"
+  - heading "fluffy tail" [level=3]
+  - img
+  - paragraph: Ends a wild battle.
+  - paragraph: Use to flee from any battle with a wild POKéMON.
+  - paragraph: Price
+  - paragraph: ¥100
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "fresh water"
+  - heading "fresh water" [level=3]
+  - img
+  - paragraph: Restores 50 HP.
+  - paragraph: A mineral water that restores HP by 50 points.
+  - paragraph: Price
+  - paragraph: ¥200
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "full heal"
+  - heading "full heal" [level=3]
+  - img
+  - paragraph: Cures any status ailment and confusion.
+  - paragraph: Heals all the status problems of one POKéMON.
+  - paragraph: Price
+  - paragraph: ¥400
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "full restore"
+  - heading "full restore" [level=3]
+  - img
+  - paragraph: Restores HP to full and cures any status ailment and confusion.
+  - paragraph: Fully restores the HP and status of a POKéMON.
+  - paragraph: Price
+  - paragraph: ¥3000
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "gooey mulch"
+  - heading "gooey mulch" [level=3]
+  - img
+  - paragraph: Berries regrow from dead plants an increased number of times.
+  - paragraph: A plant fertilizer spread on soft soil. It ups the number of times new plants grow where mature plants withered.
+  - paragraph: Price
+  - paragraph: ¥200
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "grass mail"
+  - heading "grass mail" [level=3]
+  - img
+  - paragraph: Lets a Trainer write a message and send it via Pokémon trade.
+  - paragraph: Stationery featuring a print of a refreshingly green field. Let a Pokémon hold it for delivery.
+  - paragraph: Price
+  - paragraph: ¥50
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "great ball"
+  - heading "great ball" [level=3]
+  - img
+  - paragraph: Tries to catch a wild Pokémon. Success rate is 1.5×.
+  - paragraph: A good BALL with a higher catch rate than a POKé BALL.
+  - paragraph: Price
+  - paragraph: ¥600
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "green shard"
+  - heading "green shard" [level=3]
+  - img
+  - paragraph: No effect. Can be traded for items or moves.
+  - paragraph: A shard from an ancient item. Can be sold cheaply.
+  - paragraph: Price
+  - paragraph: ¥1000
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "grepa berry"
+  - heading "grepa berry" [level=3]
+  - img
+  - paragraph: Drops Special Defense Effort Values by 10 and raises happiness.
+  - paragraph: POKéBLOCK ingredient. Plant in loamy soil to grow GREPA.
+  - paragraph: Price
+  - paragraph: ¥80
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "growth mulch"
+  - heading "growth mulch" [level=3]
+  - img
+  - paragraph: Growing time of berries is reduced, but the soil dries out faster.
+  - paragraph: A plant fertilizer spread on soft soil. It speeds up the growth of Berries. However, it also dries the soil faster.
+  - paragraph: Price
+  - paragraph: ¥200
+  - paragraph: Gen
+  - paragraph: "1"
+  - img "guard spec"
+  - heading "guard spec" [level=3]
+  - img
+  - paragraph: Prevents stat changes in battle for five turns in battle. Raises happiness.
+  - paragraph: Prevents stat reduction when used in battle.
+  - paragraph: Price
+  - paragraph: ¥1500
+  - paragraph: Gen
+  - paragraph: "1"
+  - button "Previous" [disabled]
+  - text: Page 1 of 3
+  - button "Next"
+  - heading "Item Categories" [level=2]
+  - text: 105 other 27 Healing Items 10 Evolution Items 8 Battle Items Press ? for shortcuts 🔕
+  - heading "Push Notifications" [level=3]
+  - paragraph: Blocked by user
+  - button "Enable"
+- contentinfo:
+  - paragraph:
+    - text: © 2025 DexTrends - A
+    - link "PakePoint":
+      - /url: https://www.pakepoint.com
+    - text: Project. All rights reserved.
+- button "Open card comparison tool":
+  - img
+- text: Compare Cards
+- button "💡"
+- button:
+  - img
+- alert
+- button "Open Next.js Dev Tools":
+  - img
+- button "Open issues overlay": 1 Issue
+- button "Collapse issues badge":
+  - img
+- navigation:
+  - button "previous" [disabled]:
+    - img "previous"
+  - text: 1/1
+  - button "next" [disabled]:
+    - img "next"
+- img
+- link "Next.js 15.3.5 (stale) Webpack":
+  - /url: https://nextjs.org/docs/messages/version-staleness
+  - img
+  - text: Next.js 15.3.5 (stale) Webpack
+- img
+- dialog "Runtime Error":
+  - text: Runtime Error
+  - button "Copy Stack Trace":
+    - img
+  - button "No related documentation found" [disabled]:
+    - img
+  - link "Learn more about enabling Node.js inspector for server code with Chrome DevTools":
+    - /url: https://nextjs.org/docs/app/building-your-application/configuring/debugging#server-side-code
+    - img
+  - paragraph: "TypeError: Failed to register a ServiceWorker for scope ('http://localhost:3000/') with script ('http://localhost:3000/sw.js'): A bad HTTP response code (404) was received when fetching the script."
+```

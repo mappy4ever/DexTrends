@@ -1,5 +1,6 @@
 // components/ErrorBoundary.tsx
 import React, { Component, ReactNode, ErrorInfo } from 'react';
+import Router from 'next/router';
 import { reportError } from '../../utils/logger';
 
 interface ErrorBoundaryProps {
@@ -55,7 +56,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
                 Refresh Page
               </button>
               <button
-                onClick={() => window.location.href = '/'}
+                onClick={() => Router.push('/')}
                 className="w-full px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
               >
                 Go to Homepage

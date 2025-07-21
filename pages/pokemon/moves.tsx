@@ -8,7 +8,7 @@ import { useTheme } from "../../context/UnifiedAppContext";
 import { pokemonTheme } from "../../utils/pokemonTheme";
 import StyledBackButton from "../../components/ui/StyledBackButton";
 import { TypeBadge } from "../../components/ui/TypeBadge";
-import { TableSkeleton } from "../../components/ui/SkeletonLoader";
+import { SmartSkeleton } from "../../components/ui/SkeletonLoader";
 import { BsBook, BsSearch, BsLightning, BsShield, BsQuestionCircle } from "react-icons/bs";
 import { fetchData } from "../../utils/apiutils";
 
@@ -70,7 +70,7 @@ const MovesPage: NextPage = () => {
         const response = await fetchData(`https://pokeapi.co/api/v2/move?limit=1000`) as { results: Array<{ name: string; url: string }> };
         
         // Fetch details for first batch of moves
-        const moveDetailsPromises = response.results.slice(0, 100).map(move => 
+        const moveDetailsPromises = (response?.results?.slice(0, 100) || []).map(move => 
           fetchData(move.url)
         );
         
@@ -239,7 +239,8 @@ const MovesPage: NextPage = () => {
           {/* Moves List */}
           {loading ? (
             <div className="w-full">
-              <TableSkeleton 
+              <SmartSkeleton 
+                type="table"
                 rows={10} 
                 columns={5}
                 className="bg-white dark:bg-gray-800 rounded-xl p-6"

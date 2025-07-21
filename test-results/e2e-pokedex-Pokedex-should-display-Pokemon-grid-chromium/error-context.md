@@ -1,0 +1,246 @@
+# Page snapshot
+
+```yaml
+- link "DexTrends":
+  - /url: /
+  - img
+  - text: DexTrends
+- navigation:
+  - link "Home":
+    - /url: /
+    - img
+    - text: Home
+  - link "Pokémon TCG":
+    - /url: /tcgsets
+    - img
+    - text: Pokémon TCG
+    - img
+  - link "Pokédex":
+    - /url: /pokedex
+    - img
+    - text: Pokédex
+  - link "Pokémon":
+    - /url: /pokemon
+    - img
+    - text: Pokémon
+    - img
+  - link "Battle":
+    - /url: /battle-simulator
+    - img
+    - text: Battle
+    - img
+  - link "Pocket":
+    - /url: /pocketmode
+    - img
+    - text: Pocket
+    - img
+  - link "Fun":
+    - /url: /fun
+    - img
+    - text: Fun
+- button "Open global search":
+  - img
+- link "View favorites":
+  - /url: /favorites
+  - img
+- button "Activate dark mode":
+  - img
+- main:
+  - text: ⬇️ Pull to refresh
+  - heading "Complete Pokédex" [level=1]
+  - paragraph: Browse all 1025 Pokémon from every generation
+  - text: 1025 Pokémon found • 48 displayed
+  - textbox "Search by name or ID..."
+  - button "🔍 Filters"
+  - button "↕️ Sort"
+  - button "Search"
+  - img "test-pokemon-1"
+  - text: "#001"
+  - heading "test-pokemon-1" [level=3]
+  - img "test-pokemon-2"
+  - text: "#002"
+  - heading "test-pokemon-2" [level=3]
+  - img "test-pokemon-3"
+  - text: "#003"
+  - heading "test-pokemon-3" [level=3]
+  - img "test-pokemon-4"
+  - text: "#004"
+  - heading "test-pokemon-4" [level=3]
+  - img "test-pokemon-5"
+  - text: "#005"
+  - heading "test-pokemon-5" [level=3]
+  - img "test-pokemon-6"
+  - text: "#006"
+  - heading "test-pokemon-6" [level=3]
+  - img "test-pokemon-7"
+  - text: "#007"
+  - heading "test-pokemon-7" [level=3]
+  - img "test-pokemon-8"
+  - text: "#008"
+  - heading "test-pokemon-8" [level=3]
+  - img "test-pokemon-9"
+  - text: "#009"
+  - heading "test-pokemon-9" [level=3]
+  - img "test-pokemon-10"
+  - text: "#010"
+  - heading "test-pokemon-10" [level=3]
+  - img "test-pokemon-11"
+  - text: "#011"
+  - heading "test-pokemon-11" [level=3]
+  - img "test-pokemon-12"
+  - text: "#012"
+  - heading "test-pokemon-12" [level=3]
+  - img "test-pokemon-13"
+  - text: "#013"
+  - heading "test-pokemon-13" [level=3]
+  - img "test-pokemon-14"
+  - text: "#014"
+  - heading "test-pokemon-14" [level=3]
+  - img "test-pokemon-15"
+  - text: "#015"
+  - heading "test-pokemon-15" [level=3]
+  - img "test-pokemon-16"
+  - text: "#016"
+  - heading "test-pokemon-16" [level=3]
+  - img "test-pokemon-17"
+  - text: "#017"
+  - heading "test-pokemon-17" [level=3]
+  - img "test-pokemon-18"
+  - text: "#018"
+  - heading "test-pokemon-18" [level=3]
+  - img "test-pokemon-19"
+  - text: "#019"
+  - heading "test-pokemon-19" [level=3]
+  - img "test-pokemon-20"
+  - text: "#020"
+  - heading "test-pokemon-20" [level=3]
+  - img "test-pokemon-21"
+  - text: "#021"
+  - heading "test-pokemon-21" [level=3]
+  - img "test-pokemon-22"
+  - text: "#022"
+  - heading "test-pokemon-22" [level=3]
+  - img "test-pokemon-23"
+  - text: "#023"
+  - heading "test-pokemon-23" [level=3]
+  - img "test-pokemon-24"
+  - text: "#024"
+  - heading "test-pokemon-24" [level=3]
+  - img "test-pokemon-25"
+  - text: "#025"
+  - heading "test-pokemon-25" [level=3]
+  - img "test-pokemon-26"
+  - text: "#026"
+  - heading "test-pokemon-26" [level=3]
+  - img "test-pokemon-27"
+  - text: "#027"
+  - heading "test-pokemon-27" [level=3]
+  - img "test-pokemon-28"
+  - text: "#028"
+  - heading "test-pokemon-28" [level=3]
+  - img "test-pokemon-29"
+  - text: "#029"
+  - heading "test-pokemon-29" [level=3]
+  - img "test-pokemon-30"
+  - text: "#030"
+  - heading "test-pokemon-30" [level=3]
+  - img "test-pokemon-31"
+  - text: "#031"
+  - heading "test-pokemon-31" [level=3]
+  - img "test-pokemon-32"
+  - text: "#032"
+  - heading "test-pokemon-32" [level=3]
+  - img "test-pokemon-33"
+  - text: "#033"
+  - heading "test-pokemon-33" [level=3]
+  - img "test-pokemon-34"
+  - text: "#034"
+  - heading "test-pokemon-34" [level=3]
+  - img "test-pokemon-35"
+  - text: "#035"
+  - heading "test-pokemon-35" [level=3]
+  - img "test-pokemon-36"
+  - text: "#036"
+  - heading "test-pokemon-36" [level=3]
+  - img "test-pokemon-37"
+  - text: "#037"
+  - heading "test-pokemon-37" [level=3]
+  - img "test-pokemon-38"
+  - text: "#038"
+  - heading "test-pokemon-38" [level=3]
+  - img "test-pokemon-39"
+  - text: "#039"
+  - heading "test-pokemon-39" [level=3]
+  - img "test-pokemon-40"
+  - text: "#040"
+  - heading "test-pokemon-40" [level=3]
+  - img "test-pokemon-41"
+  - text: "#041"
+  - heading "test-pokemon-41" [level=3]
+  - img "test-pokemon-42"
+  - text: "#042"
+  - heading "test-pokemon-42" [level=3]
+  - img "test-pokemon-43"
+  - text: "#043"
+  - heading "test-pokemon-43" [level=3]
+  - img "test-pokemon-44"
+  - text: "#044"
+  - heading "test-pokemon-44" [level=3]
+  - img "test-pokemon-45"
+  - text: "#045"
+  - heading "test-pokemon-45" [level=3]
+  - img "test-pokemon-46"
+  - text: "#046"
+  - heading "test-pokemon-46" [level=3]
+  - img "test-pokemon-47"
+  - text: "#047"
+  - heading "test-pokemon-47" [level=3]
+  - img "test-pokemon-48"
+  - text: "#048"
+  - heading "test-pokemon-48" [level=3]
+  - button "Load More (977 remaining)"
+  - text: Press ? for shortcuts 🔕
+  - heading "Push Notifications" [level=3]
+  - paragraph: Blocked by user
+  - button "Enable"
+- contentinfo:
+  - paragraph:
+    - text: © 2025 DexTrends - A
+    - link "PakePoint":
+      - /url: https://www.pakepoint.com
+    - text: Project. All rights reserved.
+- button "Open card comparison tool":
+  - img
+- text: Compare Cards
+- button "💡"
+- button:
+  - img
+- alert
+- button "Open Next.js Dev Tools":
+  - img
+- button "Open issues overlay": 1 Issue
+- button "Collapse issues badge":
+  - img
+- navigation:
+  - button "previous" [disabled]:
+    - img "previous"
+  - text: 1/1
+  - button "next" [disabled]:
+    - img "next"
+- img
+- link "Next.js 15.3.5 (stale) Webpack":
+  - /url: https://nextjs.org/docs/messages/version-staleness
+  - img
+  - text: Next.js 15.3.5 (stale) Webpack
+- img
+- dialog "Runtime Error":
+  - text: Runtime Error
+  - button "Copy Stack Trace":
+    - img
+  - button "No related documentation found" [disabled]:
+    - img
+  - link "Learn more about enabling Node.js inspector for server code with Chrome DevTools":
+    - /url: https://nextjs.org/docs/app/building-your-application/configuring/debugging#server-side-code
+    - img
+  - paragraph: "TypeError: Failed to register a ServiceWorker for scope ('http://localhost:3000/') with script ('http://localhost:3000/sw.js'): A bad HTTP response code (404) was received when fetching the script."
+```

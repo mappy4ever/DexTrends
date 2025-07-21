@@ -1,4 +1,5 @@
 import { optimizedFetch as fetchData } from '../../utils/apiOptimizations';
+import { sanitizePokemonName } from '../../utils/apiutils';
 
 // Map of regional evolutions
 const REGIONAL_EVOLUTION_MAP: { [key: string]: string | string[] | null } = {
@@ -65,10 +66,11 @@ export async function getRegionalEvolutionChain(pokemonName: string, currentForm
   
   // Build the evolution chain for this regional variant
   const regionalName = currentForm ? `${baseName}-${currentForm}` : pokemonName;
+  const sanitizedRegionalName = sanitizePokemonName(regionalName);
   
   // Add the current Pokemon
   try {
-    const pokemonData = await fetchData(`https://pokeapi.co/api/v2/pokemon/${regionalName}`);
+    const pokemonData = await fetchData(`https://pokeapi.co/api/v2/pokemon/${sanitizedRegionalName}`);
     evolutionChain.push({
       id: pokemonData.id,
       name: regionalName,
@@ -89,7 +91,7 @@ export async function getRegionalEvolutionChain(pokemonName: string, currentForm
       // Split evolution (like Galarian Slowpoke)
       for (const evo of evolution) {
         try {
-          const evoData = await fetchData(`https://pokeapi.co/api/v2/pokemon/${evo}`);
+          const evoData = await fetchData(`https://pokeapi.co/api/v2/pokemon/${sanitizePokemonName(evo)}`);
           evolutionChain.push({
             id: evoData.id,
             name: evo,
@@ -107,7 +109,7 @@ export async function getRegionalEvolutionChain(pokemonName: string, currentForm
     } else {
       // Single evolution
       try {
-        const evoData = await fetchData(`https://pokeapi.co/api/v2/pokemon/${evolution}`);
+        const evoData = await fetchData(`https://pokeapi.co/api/v2/pokemon/${sanitizePokemonName(evolution)}`);
         evolutionChain.push({
           id: evoData.id,
           name: evolution,
@@ -121,7 +123,7 @@ export async function getRegionalEvolutionChain(pokemonName: string, currentForm
         // Check if this evolution has further evolutions
         const furtherEvolution = REGIONAL_EVOLUTION_MAP[evolution];
         if (furtherEvolution && !Array.isArray(furtherEvolution)) {
-          const furtherEvoData = await fetchData(`https://pokeapi.co/api/v2/pokemon/${furtherEvolution}`);
+          const furtherEvoData = await fetchData(`https://pokeapi.co/api/v2/pokemon/${sanitizePokemonName(furtherEvolution)}`);
           evolutionChain.push({
             id: furtherEvoData.id,
             name: furtherEvolution,
@@ -145,7 +147,7 @@ export async function getRegionalEvolutionChain(pokemonName: string, currentForm
   
   for (const [preEvo] of preEvolutions) {
     try {
-      const preEvoData = await fetchData(`https://pokeapi.co/api/v2/pokemon/${preEvo}`);
+      const preEvoData = await fetchData(`https://pokeapi.co/api/v2/pokemon/${sanitizePokemonName(preEvo)}`);
       evolutionChain.unshift({
         id: preEvoData.id,
         name: preEvo,

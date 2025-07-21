@@ -1,0 +1,92 @@
+# Page snapshot
+
+```yaml
+- link "DexTrends":
+  - /url: /
+  - img
+  - text: DexTrends
+- navigation:
+  - link "Home":
+    - /url: /
+    - img
+    - text: Home
+  - link "Pokémon TCG":
+    - /url: /tcgsets
+    - img
+    - text: Pokémon TCG
+    - img
+  - link "Pokédex":
+    - /url: /pokedex
+    - img
+    - text: Pokédex
+  - link "Pokémon":
+    - /url: /pokemon
+    - img
+    - text: Pokémon
+    - img
+  - link "Battle":
+    - /url: /battle-simulator
+    - img
+    - text: Battle
+    - img
+  - link "Pocket":
+    - /url: /pocketmode
+    - img
+    - text: Pocket
+    - img
+  - link "Fun":
+    - /url: /fun
+    - img
+    - text: Fun
+- button "Open global search":
+  - img
+- link "View favorites":
+  - /url: /favorites
+  - img
+- button "Activate dark mode":
+  - img
+- main:
+  - heading "Pokemon Battle Simulator" [level=1]
+  - heading "Pokemon 1" [level=2]
+  - button "Click to select Pokemon"
+  - text: VS
+  - heading "Pokemon 2" [level=2]
+  - button "Click to select Pokemon"
+  - dialog:
+    - heading "Select Pokemon 1" [level=2]
+    - button "Close modal":
+      - img
+  - text: Press ? for shortcuts 🔕
+  - heading "Push Notifications" [level=3]
+  - paragraph: Blocked by user
+  - button "Enable"
+- contentinfo:
+  - paragraph:
+    - text: © 2025 DexTrends - A
+    - link "PakePoint":
+      - /url: https://www.pakepoint.com
+    - text: Project. All rights reserved.
+- button "Open card comparison tool":
+  - img
+- text: Compare Cards
+- button "💡"
+- button:
+  - img
+- alert
+- button "Open Next.js Dev Tools":
+  - img
+- dialog "Choose a Pokémon":
+  - heading "Choose a Pokémon" [level=2]
+  - button "Close modal":
+    - img
+  - textbox "Search Pokémon by name..."
+  - img
+  - text: "Sort by:"
+  - combobox:
+    - option "Pokédex Number" [selected]
+    - option "Name (A-Z)"
+  - button "🎲 Random Pokémon" [disabled]
+  - text: 0 Pokémon available 🔍
+  - heading "No Pokémon Found" [level=3]
+  - paragraph: No Pokémon available
+```

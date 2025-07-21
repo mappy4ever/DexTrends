@@ -11,7 +11,7 @@ import { DynamicPriceHistoryChart } from "../../components/dynamic/DynamicCompon
 import { useTheme } from "../../context/UnifiedAppContext";
 import { useFavorites } from "../../context/UnifiedAppContext";
 import { useViewSettings } from "../../context/UnifiedAppContext";
-import { SetLoadingScreen } from "../../components/ui/loading/UnifiedLoadingScreen";
+import { PageLoader } from "../../utils/unifiedLoading";
 import logger from "../../utils/logger";
 import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
 import type { TCGCard, CardSet } from "../../types/api/cards";
@@ -243,10 +243,7 @@ const SetIdPage: NextPage = () => {
   // Loading state
   if (loading) {
     return (
-      <SetLoadingScreen 
-        message="Loading set information..."
-        preventFlash={true}
-      />
+      <PageLoader text="Loading set information..." />
     );
   }
 

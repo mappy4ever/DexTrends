@@ -77,6 +77,7 @@ const CircularPokemonCard = memo(({
           hover:-translate-y-2 hover:scale-110
         `}
         onClick={handleClick}
+        data-testid="pokemon-card"
       >
         {/* Outer ring - Type gradient */}
         <div className={`

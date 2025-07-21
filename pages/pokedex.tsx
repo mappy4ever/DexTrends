@@ -9,7 +9,14 @@ import { getGeneration } from "../utils/pokemonutils";
 import PokeballLoader from "../components/ui/PokeballLoader";
 import FullBleedWrapper from "../components/ui/FullBleedWrapper";
 import CircularPokemonCard from "../components/ui/cards/CircularPokemonCard";
+import { InlineLoader } from "../utils/unifiedLoading";
 import { NextPage } from "next";
+import dynamic from 'next/dynamic';
+
+// Dynamically import PullToRefresh for mobile
+const PullToRefresh = dynamic(() => import('../components/mobile/PullToRefresh'), {
+  ssr: false
+});
 
 // Type definitions
 interface PokemonType {
@@ -141,6 +148,10 @@ const PokedexIndex: NextPage = () => {
   const [pendingStages, setPendingStages] = useState<EvolutionStage[]>([]);
   const [pendingSortBy, setPendingSortBy] = useState<SortOption>("id");
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  
+  // Intersection observer ref for infinite scroll
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   // Handle search with debounce
   useEffect(() => {
@@ -283,9 +294,9 @@ const PokedexIndex: NextPage = () => {
     return starterIds.includes(id);
   };
 
-  const isStarter = (pokemonName: string, pokemonId: number): boolean => {
+  const isStarter = useCallback((pokemonName: string, pokemonId: number): boolean => {
     return checkIfStarter(pokemonId);
-  };
+  }, []);
 
   const isFossil = (pokemonName: string): boolean => {
     const fossils = [
@@ -402,7 +413,7 @@ const PokedexIndex: NextPage = () => {
   };
 
   // Fetch Pokémon batch
-  const fetchPokemonBatch = async (start: number, count: number): Promise<EnhancedPokemon[]> => {
+  const fetchPokemonBatch = useCallback(async (start: number, count: number): Promise<EnhancedPokemon[]> => {
     try {
       const promises = [];
       for (let i = start; i < start + count && i <= TOTAL_POKEMON; i++) {
@@ -443,60 +454,136 @@ const PokedexIndex: NextPage = () => {
       console.error("Batch fetch error:", err);
       return [];
     }
-  };
+  }, [isStarter]);
 
-  // Load all Pokémon data in progressive batches
+  // Background loading function for remaining Pokemon
+  const loadRemainingPokemon = useCallback(async (initialData: EnhancedPokemon[]) => {
+    try {
+      let allPokemonData = [...initialData];
+      
+      // Load remaining Pokemon (151-1025) in smaller batches
+      const BACKGROUND_BATCH_SIZE = 20;
+      for (let start = 151; start <= TOTAL_POKEMON; start += BACKGROUND_BATCH_SIZE) {
+        const count = Math.min(BACKGROUND_BATCH_SIZE, TOTAL_POKEMON - start + 1);
+        const batch = await fetchPokemonBatch(start, count);
+        
+        // Update the loaded data
+        batch.forEach(pokemon => {
+          if (pokemon.id <= allPokemonData.length) {
+            allPokemonData[pokemon.id - 1] = pokemon;
+          }
+        });
+        
+        // Update data periodically
+        if (start % (BACKGROUND_BATCH_SIZE * 5) === 1) { // Every 5 batches (100 Pokemon)
+          setAllPokemon([...allPokemonData]);
+        }
+        
+        // Longer delay for background loading - be very gentle with API
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+      
+      // Load special forms in background - temporarily disabled to fix infinite loop
+      // TODO: Re-enable special forms loading with proper useCallback handling
+      try {
+        // const megaEvolutions = await fetchMegaEvolutions();
+        // allPokemonData = [...allPokemonData, ...megaEvolutions];
+        
+        // const regionalVariants = await fetchRegionalVariants();
+        // allPokemonData = [...allPokemonData, ...regionalVariants];
+      } catch (err) {
+        console.log("Special forms loading failed, continuing with basic Pokemon");
+      }
+      
+      // Final update
+      setAllPokemon(allPokemonData);
+    } catch (err) {
+      console.error("Background loading failed:", err);
+    }
+  }, [fetchPokemonBatch]);
+
+  // Load initial Pokémon data for faster page load
   useEffect(() => {
-    const loadAllPokemon = async () => {
+    const loadInitialPokemon = async () => {
       setLoading(true);
       setError(null);
       
       try {
-        // Load all Pokemon in batches to avoid overwhelming the API
-        let allPokemonData: EnhancedPokemon[] = [];
+        // First, get the list of all Pokemon (lightweight)
+        const pokemonList = await fetchData('https://pokeapi.co/api/v2/pokemon?limit=1025') as { results: Array<{ name: string; url: string }> };
         
-        for (let start = 1; start <= TOTAL_POKEMON; start += BATCH_SIZE) {
-          const count = Math.min(BATCH_SIZE, TOTAL_POKEMON - start + 1);
+        if (!pokemonList?.results) {
+          throw new Error('Failed to fetch Pokemon list');
+        }
+        
+        // Create placeholder data immediately with just names and IDs
+        const placeholderPokemon: EnhancedPokemon[] = pokemonList.results.map((p, index) => ({
+          id: index + 1,
+          name: p.name,
+          types: [],
+          sprite: '/dextrendslogo.png',
+          height: 0,
+          weight: 0,
+          generation: getGeneration(index + 1).toString(),
+          isLegendary: false,
+          isMythical: false,
+          isUltraBeast: false,
+          isStarter: isStarter(p.name, index + 1),
+          isBaby: false,
+          isFossil: isFossil(p.name),
+          totalStats: 0,
+        }));
+        
+        // Display placeholder data immediately
+        setAllPokemon(placeholderPokemon);
+        setPokemon(placeholderPokemon);
+        setLoading(false);
+        
+        // Load only first 150 Pokemon initially for faster page load
+        const INITIAL_LOAD_COUNT = 150;
+        let loadedPokemonData: EnhancedPokemon[] = [...placeholderPokemon];
+        
+        // Load detailed data in smaller batches
+        const SMALL_BATCH_SIZE = 10;
+        for (let start = 1; start <= INITIAL_LOAD_COUNT; start += SMALL_BATCH_SIZE) {
+          const count = Math.min(SMALL_BATCH_SIZE, INITIAL_LOAD_COUNT - start + 1);
           const batch = await fetchPokemonBatch(start, count);
-          allPokemonData = [...allPokemonData, ...batch];
+          
+          // Update the loaded data
+          batch.forEach(pokemon => {
+            if (pokemon.id <= loadedPokemonData.length) {
+              loadedPokemonData[pokemon.id - 1] = pokemon;
+            }
+          });
           
           // Update progress
-          const progress = Math.round((start + count - 1) / TOTAL_POKEMON * 100);
+          const progress = Math.round((start + count - 1) / INITIAL_LOAD_COUNT * 100);
           setLoadingProgress(progress);
           
-          // Update allPokemon but only show first 48 initially
-          setAllPokemon([...allPokemonData]);
-          if (allPokemonData.length <= 48) {
-            setPokemon([...allPokemonData]);
-          }
+          // Update displayed Pokemon with loaded data
+          setAllPokemon([...loadedPokemonData]);
+          setPokemon([...loadedPokemonData]);
           
           // Small delay to prevent API overload
-          if (start + BATCH_SIZE <= TOTAL_POKEMON) {
-            await new Promise(resolve => setTimeout(resolve, 50));
+          if (start + SMALL_BATCH_SIZE <= INITIAL_LOAD_COUNT) {
+            await new Promise(resolve => setTimeout(resolve, 100));
           }
         }
         
-        // After loading regular Pokemon, fetch mega evolutions
-        const megaEvolutions = await fetchMegaEvolutions();
-        allPokemonData = [...allPokemonData, ...megaEvolutions];
+        // Continue loading remaining Pokemon in background
+        setTimeout(() => {
+          loadRemainingPokemon(loadedPokemonData);
+        }, 2000);
         
-        // Fetch regional variants
-        const regionalVariants = await fetchRegionalVariants();
-        allPokemonData = [...allPokemonData, ...regionalVariants];
-        
-        // Store all Pokemon data and make it available for scrolling
-        setAllPokemon(allPokemonData);
-        setPokemon(allPokemonData);
       } catch (err) {
         setError("Failed to load Pokédex data");
         console.error("Error loading Pokémon:", err);
-      } finally {
         setLoading(false);
       }
     };
 
-    loadAllPokemon();
-  }, []);
+    loadInitialPokemon();
+  }, [fetchPokemonBatch, isStarter, loadRemainingPokemon]);
 
   // Fetch mega evolutions separately
   const fetchMegaEvolutions = async (): Promise<EnhancedPokemon[]> => {
@@ -741,17 +828,46 @@ const PokedexIndex: NextPage = () => {
     }, 300);
   }, [isLoadingMore, visibleCount, sortedPokemon.length]);
 
-  // Infinite scroll detection
+  // Intersection Observer for infinite scroll
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000) {
-        loadMore();
+    // Cleanup previous observer
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+    }
+    
+    // Create new observer with debouncing
+    let timeoutId: NodeJS.Timeout;
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting && !isLoadingMore && visibleCount < sortedPokemon.length) {
+          // Debounce to prevent multiple rapid calls
+          clearTimeout(timeoutId);
+          timeoutId = setTimeout(() => {
+            loadMore();
+          }, 100);
+        }
+      },
+      {
+        root: null,
+        rootMargin: '400px', // Start loading 400px before reaching the element
+        threshold: 0.1
+      }
+    );
+    
+    // Observe the load more trigger element
+    if (loadMoreRef.current) {
+      observerRef.current.observe(loadMoreRef.current);
+    }
+    
+    // Cleanup on unmount
+    return () => {
+      clearTimeout(timeoutId);
+      if (observerRef.current) {
+        observerRef.current.disconnect();
       }
     };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [loadMore]);
+  }, [loadMore, isLoadingMore, visibleCount, sortedPokemon.length]);
 
   // Get type colors for dynamic styling
   const getTypeGradient = (types: string[]): string => {
@@ -761,12 +877,29 @@ const PokedexIndex: NextPage = () => {
     return `from-poke-${types[0]} to-poke-${types[1]}`;
   };
 
+  // Pull to refresh handler
+  const handleRefresh = useCallback(async () => {
+    try {
+      // Clear existing data
+      setAllPokemon([]);
+      setPokemon([]);
+      setLoading(true);
+      setError(null);
+      
+      // Re-trigger the initial loading
+      window.location.reload();
+    } catch (err) {
+      console.error('Refresh failed:', err);
+      setError("Failed to refresh Pokédex data");
+    }
+  }, []);
+
   // Loading state with pokeball loader
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
         <div className="text-center">
-          <PokeballLoader size="large" text={`Loading all ${TOTAL_POKEMON} Pokémon...`} />
+          <PokeballLoader size="large" text={loadingProgress < 100 ? `Loading Pokémon... ${loadingProgress}% complete` : "Loading Pokémon..."} />
           
           {/* Progress bar */}
           <div className="mt-6 max-w-md mx-auto px-8">
@@ -791,7 +924,7 @@ const PokedexIndex: NextPage = () => {
           <p className="text-red-500 text-xl mb-4">{error}</p>
           <button
             onClick={() => window.location.reload()}
-            className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+            className="btn btn-primary"
           >
             Try Again
           </button>
@@ -807,7 +940,8 @@ const PokedexIndex: NextPage = () => {
         <meta name="description" content="Browse all 1025+ Pokémon with detailed stats, types, abilities, and more. Filter by generation, type, and category." />
       </Head>
 
-      <FullBleedWrapper gradient="pokedex">
+      <PullToRefresh onRefresh={handleRefresh}>
+        <FullBleedWrapper gradient="pokedex">
         <div className="max-w-7xl mx-auto px-4 py-8">
           {/* Header */}
           <div className="text-center mb-8">
@@ -825,7 +959,7 @@ const PokedexIndex: NextPage = () => {
           </div>
 
           {/* Search and Filter Bar */}
-          <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
+          <div className="panel-base mb-8">
             <div className="flex flex-col lg:flex-row gap-4">
               {/* Search Input */}
               <div className="flex-1">
@@ -835,7 +969,7 @@ const PokedexIndex: NextPage = () => {
                   value={pendingSearchTerm}
                   onChange={(e) => setPendingSearchTerm(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="input"
                 />
               </div>
 
@@ -843,10 +977,10 @@ const PokedexIndex: NextPage = () => {
               <div className="flex gap-2">
                 <button
                   onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-                  className={`px-6 py-3 rounded-lg font-medium transition-all ${
+                  className={`btn ${
                     showAdvancedFilters
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                      ? 'btn-primary'
+                      : 'btn-secondary'
                   }`}
                 >
                   <span className="mr-2">🔍</span>
@@ -860,10 +994,10 @@ const PokedexIndex: NextPage = () => {
 
                 <button
                   onClick={() => setShowSortOptions(!showSortOptions)}
-                  className={`px-6 py-3 rounded-lg font-medium transition-all ${
+                  className={`btn ${
                     showSortOptions
-                      ? 'bg-purple-500 text-white'
-                      : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                      ? 'btn-primary'
+                      : 'btn-secondary'
                   }`}
                 >
                   <span className="mr-2">↕️</span>
@@ -872,7 +1006,7 @@ const PokedexIndex: NextPage = () => {
 
                 <button
                   onClick={handleSearch}
-                  className="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-medium hover:from-blue-600 hover:to-purple-600 transition-all"
+                  className="btn btn-primary"
                 >
                   Search
                 </button>
@@ -880,7 +1014,7 @@ const PokedexIndex: NextPage = () => {
                 {(searchTerm || selectedType || selectedGeneration || selectedCategory !== 'all' || selectedStage !== 'all') && (
                   <button
                     onClick={clearAllFilters}
-                    className="px-6 py-3 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition-all"
+                    className="btn bg-gradient-to-r from-red-500 to-pink-500 text-white hover:from-red-600 hover:to-pink-600"
                   >
                     Clear
                   </button>
@@ -892,7 +1026,7 @@ const PokedexIndex: NextPage = () => {
             {showAdvancedFilters && (
               <div className="mt-6 space-y-4 border-t pt-6">
                 {/* Type Filter */}
-                <div>
+                <div data-testid="type-filter">
                   <h3 className="font-semibold mb-3 text-gray-700">Type</h3>
                   <div className="flex flex-wrap gap-2">
                     {['normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy'].map(type => (
@@ -910,7 +1044,7 @@ const PokedexIndex: NextPage = () => {
                 </div>
 
                 {/* Generation Filter */}
-                <div>
+                <div data-testid="generation-filter">
                   <h3 className="font-semibold mb-3 text-gray-700">Generation</h3>
                   <div className="flex flex-wrap gap-2">
                     {['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX'].map(gen => (
@@ -920,11 +1054,11 @@ const PokedexIndex: NextPage = () => {
                           setPendingGeneration(pendingGeneration === gen ? '' : gen);
                           setSelectedGeneration(pendingGeneration === gen ? '' : gen);
                         }}
-                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                        className={`btn ${
                           pendingGeneration === gen
-                            ? 'bg-purple-500 text-white'
-                            : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                        }`}
+                            ? 'btn-primary'
+                            : 'btn-secondary'
+                        } !px-4 !py-2 !min-h-0`}
                       >
                         Gen {gen}
                       </button>
@@ -947,11 +1081,11 @@ const PokedexIndex: NextPage = () => {
                       <button
                         key={category.value}
                         onClick={() => toggleCategory(category.value)}
-                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                        className={`btn ${
                           pendingCategories.includes(category.value)
-                            ? 'bg-green-500 text-white'
-                            : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                        }`}
+                            ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600'
+                            : 'btn-secondary'
+                        } !px-4 !py-2 !min-h-0`}
                       >
                         {category.label}
                       </button>
@@ -972,11 +1106,11 @@ const PokedexIndex: NextPage = () => {
                       <button
                         key={stage.value}
                         onClick={() => toggleStage(stage.value)}
-                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                        className={`btn ${
                           pendingStages.includes(stage.value)
-                            ? 'bg-orange-500 text-white'
-                            : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                        }`}
+                            ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white hover:from-orange-600 hover:to-amber-600'
+                            : 'btn-secondary'
+                        } !px-4 !py-2 !min-h-0`}
                       >
                         {stage.label}
                       </button>
@@ -1003,11 +1137,11 @@ const PokedexIndex: NextPage = () => {
                     <button
                       key={option.value}
                       onClick={() => handleSortChange(option.value)}
-                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                      className={`btn ${
                         pendingSortBy === option.value
-                          ? 'bg-purple-500 text-white'
-                          : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                      }`}
+                          ? 'btn-primary'
+                          : 'btn-secondary'
+                      } !px-4 !py-2 !min-h-0`}
                     >
                       {option.label}
                     </button>
@@ -1039,33 +1173,42 @@ const PokedexIndex: NextPage = () => {
               <p className="text-gray-400">Try adjusting your filters or search term</p>
               <button
                 onClick={clearAllFilters}
-                className="mt-4 px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                className="mt-4 btn btn-primary"
               >
                 Clear All Filters
               </button>
             </div>
           )}
 
+          {/* Infinite scroll trigger element */}
+          <div ref={loadMoreRef} className="h-20 -mt-10" aria-hidden="true" />
+          
           {/* Load More / Loading Indicator */}
           {displayedPokemon.length < sortedPokemon.length && (
             <div className="text-center mt-8">
               {isLoadingMore ? (
-                <div className="inline-flex items-center gap-3 px-6 py-3 bg-gray-100 rounded-lg">
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-800" />
-                  <span>Loading more Pokémon...</span>
-                </div>
+                <InlineLoader text="Loading more Pokémon..." />
               ) : (
                 <button
                   onClick={loadMore}
-                  className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-medium hover:from-blue-600 hover:to-purple-600 transition-all"
+                  className="btn btn-primary px-8 py-4"
                 >
                   Load More ({sortedPokemon.length - displayedPokemon.length} remaining)
                 </button>
               )}
             </div>
           )}
+          
+          {/* End of results message */}
+          {displayedPokemon.length >= sortedPokemon.length && sortedPokemon.length > 0 && (
+            <div className="text-center py-8 text-gray-500">
+              <p className="text-lg">You've caught them all! 🎉</p>
+              <p className="text-sm mt-2">{sortedPokemon.length} Pokémon displayed</p>
+            </div>
+          )}
         </div>
       </FullBleedWrapper>
+      </PullToRefresh>
 
       <style jsx>{`
         /* Type-specific gradient colors - Tailwind doesn't support dynamic classes */

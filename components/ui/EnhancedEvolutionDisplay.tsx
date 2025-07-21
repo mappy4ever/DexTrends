@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, Fragment } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { TypeBadge } from './TypeBadge';
-import { fetchData } from '../../utils/apiutils';
+import { fetchData, sanitizePokemonName } from '../../utils/apiutils';
 import { getRegionalEvolutionChain } from './RegionalEvolutionHandler';
 import { Pokemon } from '../../types/api/pokemon';
 
@@ -315,6 +315,8 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }: EnhancedEvol
                 'linoone': ['obstagoon'], // Galarian Linoone evolves to Obstagoon
                 'yamask': ['runerigus'], // Galarian Yamask evolves to Runerigus
                 'mr-mime': ['mr-rime'], // Galarian Mr. Mime evolves to Mr. Rime
+                'slowpoke': ['slowking-galar'], // Base Slowpoke doesn't evolve to Galarian Slowking
+                'ponyta': ['rapidash-galar'], // Base Ponyta doesn't evolve to Galarian Rapidash
               };
               
               if (regionalExclusions[node.species.name] && regionalExclusions[node.species.name].includes(evolutionSpeciesName)) {
@@ -498,30 +500,67 @@ function EvolutionTreeDisplay({ node, currentPokemonId, isShiny, parentPosition 
       {/* Evolution branches */}
       {node.evolutions && node.evolutions.length > 0 && (
         <>
-          {/* Arrow */}
-          <div className="mx-4 flex flex-col items-center">
-            <svg className="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-            </svg>
-            {node.evolutions[0]?.evolutionDetails && (
-              <div className="text-xs text-gray-500 mt-1 text-center max-w-[100px]">
-                {formatEvolutionMethod(node.evolutions[0].evolutionDetails)}
+          {/* For split evolutions, show different layout */}
+          {hasMultipleEvolutions ? (
+            <div className="flex items-center">
+              {/* Arrow pointing to branch */}
+              <div className="mx-4">
+                <svg className="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
               </div>
-            )}
-          </div>
+              
+              {/* Branch container */}
+              <div className="flex flex-col gap-4 relative">
+                {/* Vertical line connecting branches */}
+                <div className="absolute left-0 top-1/4 bottom-1/4 w-0.5 bg-gray-300"></div>
+                
+                {node.evolutions.map((evolution, index) => (
+                  <div key={evolution.id} className="flex items-center">
+                    {/* Horizontal connector from vertical line */}
+                    <div className="w-4 h-0.5 bg-gray-300 mr-4"></div>
+                    
+                    {/* Evolution details */}
+                    <div className="flex flex-col items-center mr-4">
+                      {evolution.evolutionDetails && (
+                        <div className="text-xs text-gray-500 text-center max-w-[100px] mb-1">
+                          {formatEvolutionMethod(evolution.evolutionDetails)}
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Evolution and its chain */}
+                    <EvolutionTreeDisplay 
+                      node={evolution}
+                      currentPokemonId={currentPokemonId}
+                      isShiny={isShiny}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <>
+              {/* Single evolution - normal arrow */}
+              <div className="mx-4 flex flex-col items-center">
+                <svg className="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+                {node.evolutions[0]?.evolutionDetails && (
+                  <div className="text-xs text-gray-500 mt-1 text-center max-w-[100px]">
+                    {formatEvolutionMethod(node.evolutions[0].evolutionDetails)}
+                  </div>
+                )}
+              </div>
 
-          {/* Evolution(s) */}
-          <div className={`flex ${hasMultipleEvolutions ? 'flex-col gap-4' : ''}`}>
-            {node.evolutions.map((evolution, index) => (
-              <div key={evolution.id} className={hasMultipleEvolutions && index > 0 ? 'border-t-2 border-gray-200 pt-4' : ''}>
-                <EvolutionTreeDisplay 
-                  node={evolution}
-                  currentPokemonId={currentPokemonId}
-                  isShiny={isShiny}
-                />
-              </div>
-            ))}
-          </div>
+              {/* Single evolution */}
+              <EvolutionTreeDisplay 
+                node={node.evolutions[0]}
+                currentPokemonId={currentPokemonId}
+                isShiny={isShiny}
+              />
+            </>
+          )}
         </>
       )}
 
@@ -695,16 +734,30 @@ function formatEvolutionMethod(details: EvolutionDetails) {
   
   const parts: string[] = [];
   
-  if (details.min_level) {
-    parts.push(`Lv ${details.min_level}`);
-  }
-  
-  if (details.item) {
-    parts.push(details.item.name.replace(/-/g, ' '));
-  }
-  
-  if (details.trigger && details.trigger.name !== 'level-up') {
-    parts.push(details.trigger.name.replace(/-/g, ' '));
+  // Handle different trigger types
+  if (details.trigger) {
+    switch (details.trigger.name) {
+      case 'level-up':
+        if (details.min_level) {
+          parts.push(`Lv ${details.min_level}`);
+        } else if (!details.min_happiness && !details.time_of_day && !details.location && !details.known_move) {
+          parts.push('Level up');
+        }
+        break;
+      case 'trade':
+        parts.push('Trade');
+        break;
+      case 'use-item':
+        if (details.item) {
+          const itemName = details.item.name
+            .replace(/-/g, ' ')
+            .replace(/\b\w/g, l => l.toUpperCase());
+          parts.push(itemName);
+        }
+        break;
+      default:
+        parts.push(details.trigger.name.replace(/-/g, ' '));
+    }
   }
   
   if (details.min_happiness) {
@@ -712,22 +765,41 @@ function formatEvolutionMethod(details: EvolutionDetails) {
   }
   
   if (details.time_of_day) {
-    parts.push(`${details.time_of_day} time`);
+    const timeFormatted = details.time_of_day.charAt(0).toUpperCase() + details.time_of_day.slice(1);
+    if (details.min_level) {
+      parts.push(`(${timeFormatted})`);
+    } else {
+      parts.push(`${timeFormatted} time`);
+    }
   }
   
   if (details.location) {
-    parts.push(`at ${details.location.name.replace(/-/g, ' ')}`);
+    const locationName = details.location.name
+      .replace(/-/g, ' ')
+      .replace(/\b\w/g, l => l.toUpperCase());
+    parts.push(`at ${locationName}`);
   }
   
   if (details.known_move) {
-    parts.push(`knowing ${details.known_move.name.replace(/-/g, ' ')}`);
+    const moveName = details.known_move.name
+      .replace(/-/g, ' ')
+      .replace(/\b\w/g, l => l.toUpperCase());
+    parts.push(`knowing ${moveName}`);
   }
   
   if (details.min_beauty) {
     parts.push(`Beauty ${details.min_beauty}+`);
   }
   
-  return parts.join(', ') || 'Evolves';
+  // Add any item requirements for trades
+  if (details.trigger?.name === 'trade' && details.item) {
+    const itemName = details.item.name
+      .replace(/-/g, ' ')
+      .replace(/\b\w/g, l => l.toUpperCase());
+    parts.push(`holding ${itemName}`);
+  }
+  
+  return parts.join(' ') || 'Evolves';
 }
 
 // Component to display regional variant evolution chains

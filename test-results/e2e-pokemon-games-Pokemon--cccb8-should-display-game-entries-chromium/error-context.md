@@ -1,0 +1,249 @@
+# Page snapshot
+
+```yaml
+- link "DexTrends":
+  - /url: /
+  - img
+  - text: DexTrends
+- navigation:
+  - link "Home":
+    - /url: /
+    - img
+    - text: Home
+  - link "Pokémon TCG":
+    - /url: /tcgsets
+    - img
+    - text: Pokémon TCG
+    - img
+  - link "Pokédex":
+    - /url: /pokedex
+    - img
+    - text: Pokédex
+  - link "Pokémon":
+    - /url: /pokemon
+    - img
+    - text: Pokémon
+    - img
+  - link "Battle":
+    - /url: /battle-simulator
+    - img
+    - text: Battle
+    - img
+  - link "Pocket":
+    - /url: /pocketmode
+    - img
+    - text: Pocket
+    - img
+  - link "Fun":
+    - /url: /fun
+    - img
+    - text: Fun
+- button "Open global search":
+  - img
+- link "View favorites":
+  - /url: /favorites
+  - img
+- button "Activate dark mode":
+  - img
+- main:
+  - img
+  - img
+  - img
+  - img
+  - img
+  - img
+  - heading "POKÉMON GAMES" [level=1]
+  - paragraph: 25+ Years of Adventures Across 9 Generations
+  - text: 1996 - Present 40+ Main Games 9 Regions
+  - button "Back to Pokémon Hub":
+    - img
+    - text: Back to Pokémon Hub
+  - text: Scroll to explore
+  - img
+  - heading "Game Timeline" [level=2]
+  - paragraph: Journey through the evolution of Pokémon games, from the iconic originals to the latest open-world adventures
+  - heading "Generation 1" [level=3]
+  - paragraph: Classic Era
+  - link "Explore Kanto":
+    - /url: /pokemon/regions/kanto
+    - img
+    - text: Explore Kanto
+  - text: "1"
+  - img "Red & Blue"
+  - img "Red & Blue"
+  - text: "1996"
+  - img
+  - heading "Red & Blue" [level=4]
+  - img
+  - text: Game Boy
+  - img
+  - text: "1996"
+  - paragraph: The legendary games that started it all
+  - text: 151 Original Pokémon Trading System Gym Battles 1998
+  - img
+  - heading "Yellow" [level=4]
+  - img
+  - text: Game Boy
+  - img
+  - text: "1998"
+  - paragraph: Special Pikachu Edition
+  - text: Pikachu Partner Team Rocket Enhanced Story
+  - img "FireRed & LeafGreen"
+  - img "FireRed & LeafGreen"
+  - text: "2004"
+  - img
+  - heading "FireRed & LeafGreen" [level=4]
+  - img
+  - text: Game Boy Advance
+  - img
+  - text: "2004"
+  - paragraph: Kanto reimagined with modern graphics
+  - text: Updated Graphics Sevii Islands Wireless Trading
+  - heading "Generation 2" [level=3]
+  - paragraph: Golden Era
+  - link "Explore Johto":
+    - /url: /pokemon/regions/johto
+    - img
+    - text: Explore Johto
+  - text: "2"
+  - img "Gold & Silver"
+  - img "Gold & Silver"
+  - text: "1999"
+  - img
+  - heading "Gold & Silver" [level=4]
+  - img
+  - text: Game Boy Color
+  - img
+  - text: "1999"
+  - paragraph: Day & night cycle with 100 new Pokémon
+  - text: Day/Night Cycle Breeding Two Regions
+  - img "Crystal"
+  - text: "2000"
+  - img
+  - heading "Crystal" [level=4]
+  - img
+  - text: Game Boy Color
+  - img
+  - text: "2000"
+  - paragraph: Enhanced version with animated sprites
+  - text: Animated Sprites Female Protagonist Suicune Story
+  - heading "Generation 3" [level=3]
+  - paragraph: Advanced Era
+  - link "Explore Hoenn":
+    - /url: /pokemon/regions/hoenn
+    - img
+    - text: Explore Hoenn
+  - text: "3"
+  - img "Ruby & Sapphire"
+  - img "Ruby & Sapphire"
+  - text: "2002"
+  - img
+  - heading "Ruby & Sapphire" [level=4]
+  - img
+  - text: Game Boy Advance
+  - img
+  - text: "2002"
+  - paragraph: Tropical adventures with abilities & double battles
+  - text: Abilities Double Battles Secret Bases 2004
+  - img
+  - heading "Emerald" [level=4]
+  - img
+  - text: Game Boy Advance
+  - img
+  - text: "2004"
+  - paragraph: The ultimate Hoenn experience
+  - text: Battle Frontier Both Evil Teams Rayquaza
+  - img "Omega Ruby & Alpha Sapphire"
+  - img "Omega Ruby & Alpha Sapphire"
+  - text: "2014"
+  - img
+  - heading "Omega Ruby & Alpha Sapphire" [level=4]
+  - img
+  - text: Nintendo 3DS
+  - img
+  - text: "2014"
+  - paragraph: Hoenn remade with Mega Evolution
+  - text: Mega Evolution 3D Graphics DexNav
+  - heading "Generation 4" [level=3]
+  - paragraph: Diamond Era
+  - link "Explore Sinnoh":
+    - /url: /pokemon/regions/sinnoh
+    - img
+    - text: Explore Sinnoh
+  - text: "4"
+  - img "Diamond & Pearl"
+  - img "Diamond & Pearl"
+  - text: "2006"
+  - img
+  - heading "Diamond & Pearl" [level=4]
+  - img
+  - text: Nintendo DS
+  - img
+  - text: "2006"
+  - paragraph: Dual-screen adventures in Sinnoh
+  - text: Touch Screen WiFi Trading Underground
+  - img "Platinum"
+  - text: "2008"
+  - img
+  - heading "Platinum" [level=4]
+  - img
+  - text: Nintendo DS
+  - img
+  - text: "2008"
+  - paragraph: Enhanced Sinnoh with Distortion World
+  - text: Distortion World Battle Frontier Enhanced Story
+  - heading "Generation 8" [level=3]
+  - paragraph: Modern Era
+  - link "Explore Galar":
+    - /url: /pokemon/regions/galar
+    - img
+    - text: Explore Galar
+  - text: "8"
+  - img "Sword & Shield"
+  - img "Sword & Shield"
+  - text: "2019"
+  - img
+  - heading "Sword & Shield" [level=4]
+  - img
+  - text: Nintendo Switch
+  - img
+  - text: "2019"
+  - paragraph: Console Pokémon with Dynamax
+  - text: Dynamax Wild Area Max Raid Battles
+  - heading "Generation 9" [level=3]
+  - paragraph: Open World Era
+  - link "Explore Paldea":
+    - /url: /pokemon/regions/paldea
+    - img
+    - text: Explore Paldea
+  - text: "9"
+  - img "Scarlet & Violet"
+  - img "Scarlet & Violet"
+  - text: "2022"
+  - img
+  - heading "Scarlet & Violet" [level=4]
+  - img
+  - text: Nintendo Switch
+  - img
+  - text: "2022"
+  - paragraph: Open world Pokémon adventure
+  - text: Open World Three Stories Terastallization Press ? for shortcuts 🔕
+  - heading "Push Notifications" [level=3]
+  - paragraph: Blocked by user
+  - button "Enable"
+- contentinfo:
+  - paragraph:
+    - text: © 2025 DexTrends - A
+    - link "PakePoint":
+      - /url: https://www.pakepoint.com
+    - text: Project. All rights reserved.
+- button "Open card comparison tool":
+  - img
+- text: Compare Cards
+- button "💡"
+- button:
+  - img
+- alert
+- button "Open Next.js Dev Tools":
+  - img
+```

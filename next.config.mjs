@@ -3,7 +3,7 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: false, // Temporarily disabled to fix Fast Refresh loop
+  reactStrictMode: true, // Enable strict mode for better error detection
   
   // PWA handled by custom service worker
 
@@ -82,6 +82,27 @@ const nextConfig = {
       }
     ];
   },
+
+  // Redirects for consolidated pages
+  async redirects() {
+    return [
+      {
+        source: '/regions',
+        destination: '/pokemon/regions',
+        permanent: true,
+      },
+      {
+        source: '/regions/:region',
+        destination: '/pokemon/regions/:region',
+        permanent: true,
+      },
+      {
+        source: '/leaderboard',
+        destination: '/trending',
+        permanent: true,
+      },
+    ];
+  },
   
   // Remove console statements in production builds
   compiler: {
@@ -146,8 +167,11 @@ const nextConfig = {
   
   // Webpack configuration for additional optimizations
   webpack: (config, { dev, isServer }) => {
-    // Only in production builds
-    if (!dev) {
+    // Skip heavy optimizations during testing
+    const isTestMode = process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'test-prod';
+    
+    // Only in production builds (but not during testing)
+    if (!dev && !isTestMode) {
       // Additional console statement removal for any that slip through
       config.optimization.minimize = true;
       
@@ -190,6 +214,18 @@ const nextConfig = {
       };
     }
     
+    // Test-specific optimizations
+    if (isTestMode) {
+      // Disable Fast Refresh during testing to prevent interference
+      if (dev) {
+        config.optimization = config.optimization || {};
+        config.optimization.emitOnErrors = false;
+      }
+      
+      // Minimize webpack output during testing
+      config.stats = 'errors-only';
+    }
+    
     // Optimize imports
     config.resolve.alias = {
       ...config.resolve.alias,
@@ -208,14 +244,6 @@ const nextConfig = {
   
   // Enable compression
   compress: true,
-  
-  // Re-enable linting and type checking during build
-  eslint: {
-    ignoreDuringBuilds: false,
-  },
-  typescript: {
-    ignoreBuildErrors: false,
-  },
 };
 
 export default nextConfig;

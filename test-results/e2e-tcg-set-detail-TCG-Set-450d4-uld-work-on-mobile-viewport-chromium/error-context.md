@@ -1,0 +1,69 @@
+# Page snapshot
+
+```yaml
+- link "DexTrends":
+  - /url: /
+  - img
+  - text: DexTrends
+- button "Open global search":
+  - img
+- link "View favorites":
+  - /url: /favorites
+  - img
+- button "Activate dark mode":
+  - img
+- button "Toggle mobile menu"
+- main:
+  - link "Back to Sets":
+    - /url: /tcgsets
+    - img
+    - text: Back to Sets
+  - heading [level=1]
+  - paragraph: Series
+  - paragraph
+  - paragraph: Release Date
+  - paragraph: Invalid Date
+  - paragraph: Total Cards
+  - paragraph: /
+  - button "View Cards":
+    - text: View Cards
+    - img
+  - heading "Set Statistics" [level=2]
+  - heading "Rarity Distribution" [level=3]
+  - heading "Average Value by Rarity" [level=3]
+  - heading "Set Summary" [level=3]
+  - text: Total Cards 0 Total Market Value $0.00 Avg Card Value $0.00
+  - heading "Filter Cards" [level=2]
+  - text: Search
+  - textbox "Search cards..."
+  - text: Rarity
+  - combobox:
+    - option "All Rarities" [selected]
+  - text: Supertype
+  - combobox:
+    - option "All Supertypes" [selected]
+  - text: Subtype
+  - combobox:
+    - option "All Subtypes" [selected]
+  - heading "Cards (0 )" [level=2]
+  - paragraph: No cards found matching your filters.
+  - text: Press ? for shortcuts 🔕
+  - heading "Push Notifications" [level=3]
+  - paragraph: Blocked by user
+  - button "Enable"
+- contentinfo:
+  - paragraph:
+    - text: © 2025 DexTrends - A
+    - link "PakePoint":
+      - /url: https://www.pakepoint.com
+    - text: Project. All rights reserved.
+- button "Open card comparison tool":
+  - img
+- text: Compare Cards
+- button "💡"
+- button:
+  - img
+- alert: /tcgsets/base1
+- button "Open Next.js Dev Tools":
+  - img
+```

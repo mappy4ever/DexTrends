@@ -1,0 +1,142 @@
+# Page snapshot
+
+```yaml
+- link "DexTrends":
+  - /url: /
+  - img
+  - text: DexTrends
+- navigation:
+  - link "Home":
+    - /url: /
+    - img
+    - text: Home
+  - link "Pokémon TCG":
+    - /url: /tcgsets
+    - img
+    - text: Pokémon TCG
+    - img
+  - link "Pokédex":
+    - /url: /pokedex
+    - img
+    - text: Pokédex
+  - link "Pokémon":
+    - /url: /pokemon
+    - img
+    - text: Pokémon
+    - img
+  - link "Battle":
+    - /url: /battle-simulator
+    - img
+    - text: Battle
+    - img
+  - link "Pocket":
+    - /url: /pocketmode
+    - img
+    - text: Pocket
+    - img
+  - link "Fun":
+    - /url: /fun
+    - img
+    - text: Fun
+- button "Open global search":
+  - img
+- link "View favorites":
+  - /url: /favorites
+  - img
+- button "Activate dark mode":
+  - img
+- main:
+  - img "Arceus Pokemon Map"
+  - paragraph: Explore diverse regions in the world of Pokémon
+  - text: "Generation 1 Starters:"
+  - img "Starter 1"
+  - img "Starter 4"
+  - img "Starter 7"
+  - link "Kanto Map Kanto":
+    - /url: /pokemon/regions/kanto
+    - img "Kanto Map"
+    - heading "Kanto" [level=2]
+  - text: "Generation 2 Starters:"
+  - img "Starter 152"
+  - img "Starter 155"
+  - img "Starter 158"
+  - link "Johto Map Johto":
+    - /url: /pokemon/regions/johto
+    - img "Johto Map"
+    - heading "Johto" [level=2]
+  - text: "Generation 3 Starters:"
+  - img "Starter 252"
+  - img "Starter 255"
+  - img "Starter 258"
+  - link "Hoenn Map Hoenn":
+    - /url: /pokemon/regions/hoenn
+    - img "Hoenn Map"
+    - heading "Hoenn" [level=2]
+  - text: "Generation 4 Starters:"
+  - img "Starter 387"
+  - img "Starter 390"
+  - img "Starter 393"
+  - link "Sinnoh Map Sinnoh":
+    - /url: /pokemon/regions/sinnoh
+    - img "Sinnoh Map"
+    - heading "Sinnoh" [level=2]
+  - text: "Generation 5 Starters:"
+  - img "Starter 495"
+  - img "Starter 498"
+  - img "Starter 501"
+  - link "Unova Map Unova":
+    - /url: /pokemon/regions/unova
+    - img "Unova Map"
+    - heading "Unova" [level=2]
+  - text: "Generation 6 Starters:"
+  - img "Starter 650"
+  - img "Starter 653"
+  - img "Starter 656"
+  - link "Kalos Map Kalos":
+    - /url: /pokemon/regions/kalos
+    - img "Kalos Map"
+    - heading "Kalos" [level=2]
+  - text: "Generation 7 Starters:"
+  - img "Starter 722"
+  - img "Starter 725"
+  - img "Starter 728"
+  - link "Alola Map Alola":
+    - /url: /pokemon/regions/alola
+    - img "Alola Map"
+    - heading "Alola" [level=2]
+  - text: "Generation 8 Starters:"
+  - img "Starter 810"
+  - img "Starter 813"
+  - img "Starter 816"
+  - link "Galar Map Galar":
+    - /url: /pokemon/regions/galar
+    - img "Galar Map"
+    - heading "Galar" [level=2]
+  - text: "Generation 9 Starters:"
+  - img "Starter 906"
+  - img "Starter 909"
+  - img "Starter 912"
+  - link "Paldea Map Paldea":
+    - /url: /pokemon/regions/paldea
+    - img "Paldea Map"
+    - heading "Paldea" [level=2]
+  - text: Press ? for shortcuts 🔕
+  - heading "Push Notifications" [level=3]
+  - paragraph: Blocked by user
+  - button "Enable"
+- contentinfo:
+  - paragraph:
+    - text: © 2025 DexTrends - A
+    - link "PakePoint":
+      - /url: https://www.pakepoint.com
+    - text: Project. All rights reserved.
+- button "Open card comparison tool":
+  - img
+- text: Compare Cards
+- button "💡"
+- button:
+  - img
+- alert
+- button "Open Next.js Dev Tools":
+  - img
+```

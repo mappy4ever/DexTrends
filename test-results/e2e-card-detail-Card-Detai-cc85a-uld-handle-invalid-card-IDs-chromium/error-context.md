@@ -1,0 +1,52 @@
+# Page snapshot
+
+```yaml
+- text: ⚠️
+- heading "Something went wrong" [level=1]
+- paragraph: We're sorry for the inconvenience. Please try refreshing the page.
+- button "Refresh Page"
+- button "Go to Homepage"
+- group: Error Details
+- alert: /cards/invalid-card-id-xyz
+- button "Open Next.js Dev Tools":
+  - img
+- button "Open issues overlay": 3 Issue
+- button "Collapse issues badge":
+  - img
+- navigation:
+  - button "previous" [disabled]:
+    - img "previous"
+  - text: 1/3
+  - button "next":
+    - img "next"
+- img
+- link "Next.js 15.3.5 (stale) Webpack":
+  - /url: https://nextjs.org/docs/messages/version-staleness
+  - img
+  - text: Next.js 15.3.5 (stale) Webpack
+- img
+- dialog "Runtime Error":
+  - text: Runtime Error
+  - button "Copy Stack Trace":
+    - img
+  - button "No related documentation found" [disabled]:
+    - img
+  - link "Learn more about enabling Node.js inspector for server code with Chrome DevTools":
+    - /url: https://nextjs.org/docs/app/building-your-application/configuring/debugging#server-side-code
+    - img
+  - paragraph: "TypeError: Cannot read properties of undefined (reading 'large')"
+  - paragraph:
+    - img
+    - text: pages/cards/[cardId].tsx (209:38) @ CardDetailPage
+    - button "Open in editor":
+      - img
+  - text: "207 | <div className=\"relative cursor-zoom-in mb-4\" onClick={() => setMagnifyImage(true)}> 208 | <img > 209 | src={card.images.large} | ^ 210 | alt={card.name} 211 | className=\"w-full h-auto rounded-md shadow-sm transition-transform hover:scale-[1.02]\" 212 | />"
+  - paragraph: Call Stack 15
+  - button "Show 14 ignore-listed frame(s)":
+    - text: Show 14 ignore-listed frame(s)
+    - img
+  - text: CardDetailPage
+  - button:
+    - img
+  - text: pages/cards/[cardId].tsx (209:38)
+```

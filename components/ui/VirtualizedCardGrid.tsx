@@ -2,7 +2,7 @@ import React, { useState, useCallback, useMemo, CSSProperties } from 'react';
 import { FixedSizeGrid as Grid, GridOnScrollProps } from 'react-window';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll';
 import UnifiedCard from './cards/UnifiedCard';
-import { InlineLoadingSpinner } from './loading/LoadingSpinner';
+import { InlineLoader } from '../../utils/unifiedLoading';
 import { TCGCard } from '../../types/api/cards';
 import { PocketCard } from '../../types/api/pocket-cards';
 import { Pokemon } from '../../types/api/pokemon';
@@ -139,7 +139,7 @@ const VirtualizedCardGrid: React.FC<VirtualizedCardGridProps> = ({
       {/* Loading indicator */}
       {scrollLoading && hasMore && (
         <div className="flex justify-center py-4">
-          <InlineLoadingSpinner text="Loading more cards..." />
+          <InlineLoader text="Loading more cards..." />
         </div>
       )}
       

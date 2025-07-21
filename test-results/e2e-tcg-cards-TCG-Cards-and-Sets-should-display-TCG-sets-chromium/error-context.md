@@ -1,0 +1,289 @@
+# Page snapshot
+
+```yaml
+- link "DexTrends":
+  - /url: /
+  - img
+  - text: DexTrends
+- navigation:
+  - link "Home":
+    - /url: /
+    - img
+    - text: Home
+  - link "Pokémon TCG":
+    - /url: /tcgsets
+    - img
+    - text: Pokémon TCG
+    - img
+  - link "Pokédex":
+    - /url: /pokedex
+    - img
+    - text: Pokédex
+  - link "Pokémon":
+    - /url: /pokemon
+    - img
+    - text: Pokémon
+    - img
+  - link "Battle":
+    - /url: /battle-simulator
+    - img
+    - text: Battle
+    - img
+  - link "Pocket":
+    - /url: /pocketmode
+    - img
+    - text: Pocket
+    - img
+  - link "Fun":
+    - /url: /fun
+    - img
+    - text: Fun
+- button "Open global search":
+  - img
+- link "View favorites":
+  - /url: /favorites
+  - img
+- button "Activate dark mode":
+  - img
+- main:
+  - heading "Pokémon TCG Sets" [level=1]
+  - paragraph: Explore the complete collection of Pokémon Trading Card Game sets
+  - textbox "Search for a set (e.g., Base, Evolving Skies)"
+  - img
+  - text: Filter by Series
+  - combobox "Filter by Series":
+    - option "All Series" [selected]
+    - option "Base"
+    - option "Black & White"
+    - option "Diamond & Pearl"
+    - option "E-Card"
+    - option "EX"
+    - option "Gym"
+    - option "HeartGold & SoulSilver"
+    - option "NP"
+    - option "Neo"
+    - option "Other"
+    - option "POP"
+    - option "Platinum"
+    - option "Scarlet & Violet"
+    - option "Sun & Moon"
+    - option "Sword & Shield"
+    - option "XY"
+  - img
+  - text: Sort By
+  - combobox "Sort By":
+    - option "Release Date" [selected]
+    - option "Name"
+    - option "Card Count"
+  - img
+  - text: Order
+  - combobox "Order":
+    - option "Newest First" [selected]
+    - option "Oldest First"
+  - img
+  - button "Clear Filters"
+  - img "Black Bolt"
+  - heading "Black Bolt" [level=2]
+  - paragraph: Scarlet & Violet
+  - paragraph: Released
+  - paragraph: 2025/07/18
+  - paragraph: Total Cards
+  - paragraph: "172"
+  - button "View Cards"
+  - img "White Flare"
+  - heading "White Flare" [level=2]
+  - paragraph: Scarlet & Violet
+  - paragraph: Released
+  - paragraph: 2025/07/18
+  - paragraph: Total Cards
+  - paragraph: "173"
+  - button "View Cards"
+  - img "Destined Rivals"
+  - heading "Destined Rivals" [level=2]
+  - paragraph: Scarlet & Violet
+  - paragraph: Released
+  - paragraph: 2025/05/30
+  - paragraph: Total Cards
+  - paragraph: "244"
+  - button "View Cards"
+  - img "Journey Together"
+  - heading "Journey Together" [level=2]
+  - paragraph: Scarlet & Violet
+  - paragraph: Released
+  - paragraph: 2025/03/28
+  - paragraph: Total Cards
+  - paragraph: "190"
+  - button "View Cards"
+  - img "Prismatic Evolutions"
+  - heading "Prismatic Evolutions" [level=2]
+  - paragraph: Scarlet & Violet
+  - paragraph: Released
+  - paragraph: 2025/01/17
+  - paragraph: Total Cards
+  - paragraph: "180"
+  - button "View Cards"
+  - img "Surging Sparks"
+  - heading "Surging Sparks" [level=2]
+  - paragraph: Scarlet & Violet
+  - paragraph: Released
+  - paragraph: 2024/11/08
+  - paragraph: Total Cards
+  - paragraph: "252"
+  - button "View Cards"
+  - img "Stellar Crown"
+  - heading "Stellar Crown" [level=2]
+  - paragraph: Scarlet & Violet
+  - paragraph: Released
+  - paragraph: 2024/09/13
+  - paragraph: Total Cards
+  - paragraph: "175"
+  - button "View Cards"
+  - img "Shrouded Fable"
+  - heading "Shrouded Fable" [level=2]
+  - paragraph: Scarlet & Violet
+  - paragraph: Released
+  - paragraph: 2024/08/02
+  - paragraph: Total Cards
+  - paragraph: "99"
+  - button "View Cards"
+  - img "Twilight Masquerade"
+  - heading "Twilight Masquerade" [level=2]
+  - paragraph: Scarlet & Violet
+  - paragraph: Released
+  - paragraph: 2024/05/24
+  - paragraph: Total Cards
+  - paragraph: "226"
+  - button "View Cards"
+  - img "Temporal Forces"
+  - heading "Temporal Forces" [level=2]
+  - paragraph: Scarlet & Violet
+  - paragraph: Released
+  - paragraph: 2024/03/22
+  - paragraph: Total Cards
+  - paragraph: "218"
+  - button "View Cards"
+  - img "Paldean Fates"
+  - heading "Paldean Fates" [level=2]
+  - paragraph: Scarlet & Violet
+  - paragraph: Released
+  - paragraph: 2024/01/26
+  - paragraph: Total Cards
+  - paragraph: "245"
+  - button "View Cards"
+  - img "Paradox Rift"
+  - heading "Paradox Rift" [level=2]
+  - paragraph: Scarlet & Violet
+  - paragraph: Released
+  - paragraph: 2023/11/03
+  - paragraph: Total Cards
+  - paragraph: "266"
+  - button "View Cards"
+  - img "151"
+  - heading "151" [level=2]
+  - paragraph: Scarlet & Violet
+  - paragraph: Released
+  - paragraph: 2023/09/22
+  - paragraph: Total Cards
+  - paragraph: "207"
+  - button "View Cards"
+  - img "Obsidian Flames"
+  - heading "Obsidian Flames" [level=2]
+  - paragraph: Scarlet & Violet
+  - paragraph: Released
+  - paragraph: 2023/08/11
+  - paragraph: Total Cards
+  - paragraph: "230"
+  - button "View Cards"
+  - img "Paldea Evolved"
+  - heading "Paldea Evolved" [level=2]
+  - paragraph: Scarlet & Violet
+  - paragraph: Released
+  - paragraph: 2023/06/09
+  - paragraph: Total Cards
+  - paragraph: "279"
+  - button "View Cards"
+  - img "Scarlet & Violet"
+  - heading "Scarlet & Violet" [level=2]
+  - paragraph: Scarlet & Violet
+  - paragraph: Released
+  - paragraph: 2023/03/31
+  - paragraph: Total Cards
+  - paragraph: "258"
+  - button "View Cards"
+  - img "Scarlet & Violet Energies"
+  - heading "Scarlet & Violet Energies" [level=2]
+  - paragraph: Scarlet & Violet
+  - paragraph: Released
+  - paragraph: 2023/03/31
+  - paragraph: Total Cards
+  - paragraph: "8"
+  - button "View Cards"
+  - img "Crown Zenith"
+  - heading "Crown Zenith" [level=2]
+  - paragraph: Sword & Shield
+  - paragraph: Released
+  - paragraph: 2023/01/20
+  - paragraph: Total Cards
+  - paragraph: "160"
+  - button "View Cards"
+  - img "Crown Zenith Galarian Gallery"
+  - heading "Crown Zenith Galarian Gallery" [level=2]
+  - paragraph: Sword & Shield
+  - paragraph: Released
+  - paragraph: 2023/01/20
+  - paragraph: Total Cards
+  - paragraph: "70"
+  - button "View Cards"
+  - img "Scarlet & Violet Black Star Promos"
+  - heading "Scarlet & Violet Black Star Promos" [level=2]
+  - paragraph: Scarlet & Violet
+  - paragraph: Released
+  - paragraph: 2023/01/01
+  - paragraph: Total Cards
+  - paragraph: "196"
+  - button "View Cards"
+  - text: Showing 20 of 168 sets Scroll down to load more... Press ? for shortcuts 🔕
+  - heading "Push Notifications" [level=3]
+  - paragraph: Blocked by user
+  - button "Enable"
+- contentinfo:
+  - paragraph:
+    - text: © 2025 DexTrends - A
+    - link "PakePoint":
+      - /url: https://www.pakepoint.com
+    - text: Project. All rights reserved.
+- button "Open card comparison tool":
+  - img
+- text: Compare Cards
+- button "💡"
+- button:
+  - img
+- alert
+- button "Open Next.js Dev Tools":
+  - img
+- button "Open issues overlay": 1 Issue
+- button "Collapse issues badge":
+  - img
+- navigation:
+  - button "previous" [disabled]:
+    - img "previous"
+  - text: 1/1
+  - button "next" [disabled]:
+    - img "next"
+- img
+- link "Next.js 15.3.5 (stale) Webpack":
+  - /url: https://nextjs.org/docs/messages/version-staleness
+  - img
+  - text: Next.js 15.3.5 (stale) Webpack
+- img
+- dialog "Runtime Error":
+  - text: Runtime Error
+  - button "Copy Stack Trace":
+    - img
+  - button "No related documentation found" [disabled]:
+    - img
+  - link "Learn more about enabling Node.js inspector for server code with Chrome DevTools":
+    - /url: https://nextjs.org/docs/app/building-your-application/configuring/debugging#server-side-code
+    - img
+  - paragraph: "TypeError: Failed to register a ServiceWorker for scope ('http://localhost:3000/') with script ('http://localhost:3000/sw.js'): A bad HTTP response code (404) was received when fetching the script."
+```

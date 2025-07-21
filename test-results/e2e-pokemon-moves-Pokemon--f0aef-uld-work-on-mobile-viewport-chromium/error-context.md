@@ -1,0 +1,326 @@
+# Page snapshot
+
+```yaml
+- link "DexTrends":
+  - /url: /
+  - img
+  - text: DexTrends
+- button "Open global search":
+  - img
+- link "View favorites":
+  - /url: /favorites
+  - img
+- button "Activate dark mode":
+  - img
+- button "Toggle mobile menu"
+- main:
+  - button "Back to Pokémon Hub":
+    - img
+    - text: Back to Pokémon Hub
+  - heading "Moves & TMs" [level=1]:
+    - img
+    - text: Moves & TMs
+  - paragraph: Master every move in the Pokémon world
+  - paragraph: Data from PokeAPI
+  - img
+  - textbox "Search moves..."
+  - button "All Types"
+  - button "Normal"
+  - button "Fire"
+  - button "Water"
+  - button "Electric"
+  - button "Grass"
+  - button "Ice"
+  - button "Fighting"
+  - button "Poison"
+  - button "Ground"
+  - button "Flying"
+  - button "Psychic"
+  - button "Bug"
+  - button "Rock"
+  - button "Ghost"
+  - button "Dragon"
+  - button "Dark"
+  - button "Steel"
+  - button "Fairy"
+  - button "All Moves":
+    - img
+    - text: All Moves
+  - button "Physical":
+    - img
+    - text: Physical
+  - button "Special":
+    - img
+    - text: Special
+  - button "Status":
+    - img
+    - text: Status
+  - text: Showing 100 moves
+  - heading "pound" [level=3]
+  - text: Normal P
+  - paragraph: Inflicts regular damage with no additional effect.
+  - text: Power
+  - paragraph: "40"
+  - text: Accuracy
+  - paragraph: 100%
+  - text: PP
+  - paragraph: "35"
+  - text: Priority
+  - paragraph: "0"
+  - heading "karate chop" [level=3]
+  - text: Fighting P
+  - paragraph: Has an increased chance for a critical hit.
+  - text: Power
+  - paragraph: "50"
+  - text: Accuracy
+  - paragraph: 100%
+  - text: PP
+  - paragraph: "25"
+  - text: Priority
+  - paragraph: "0"
+  - heading "double slap" [level=3]
+  - text: Normal P
+  - paragraph: Hits 2-5 times in one turn.
+  - text: Power
+  - paragraph: "15"
+  - text: Accuracy
+  - paragraph: 85%
+  - text: PP
+  - paragraph: "10"
+  - text: Priority
+  - paragraph: "0"
+  - heading "comet punch" [level=3]
+  - text: Normal P
+  - paragraph: Hits 2-5 times in one turn.
+  - text: Power
+  - paragraph: "18"
+  - text: Accuracy
+  - paragraph: 85%
+  - text: PP
+  - paragraph: "15"
+  - text: Priority
+  - paragraph: "0"
+  - heading "mega punch" [level=3]
+  - text: Normal P
+  - paragraph: Inflicts regular damage with no additional effect.
+  - text: Power
+  - paragraph: "80"
+  - text: Accuracy
+  - paragraph: 85%
+  - text: PP
+  - paragraph: "20"
+  - text: Priority
+  - paragraph: "0"
+  - heading "pay day" [level=3]
+  - text: Normal P
+  - paragraph: Scatters money on the ground worth five times the user's level.
+  - text: Power
+  - paragraph: "40"
+  - text: Accuracy
+  - paragraph: 100%
+  - text: PP
+  - paragraph: "20"
+  - text: Priority
+  - paragraph: "0"
+  - heading "fire punch" [level=3]
+  - text: Fire P
+  - paragraph: Has a 10% chance to burn the target.
+  - text: Power
+  - paragraph: "75"
+  - text: Accuracy
+  - paragraph: 100%
+  - text: PP
+  - paragraph: "15"
+  - text: Priority
+  - paragraph: "0"
+  - heading "ice punch" [level=3]
+  - text: Ice P
+  - paragraph: Has a 10% chance to freeze the target.
+  - text: Power
+  - paragraph: "75"
+  - text: Accuracy
+  - paragraph: 100%
+  - text: PP
+  - paragraph: "15"
+  - text: Priority
+  - paragraph: "0"
+  - heading "thunder punch" [level=3]
+  - text: Electric P
+  - paragraph: Has a 10% chance to paralyze the target.
+  - text: Power
+  - paragraph: "75"
+  - text: Accuracy
+  - paragraph: 100%
+  - text: PP
+  - paragraph: "15"
+  - text: Priority
+  - paragraph: "0"
+  - heading "scratch" [level=3]
+  - text: Normal P
+  - paragraph: Inflicts regular damage with no additional effect.
+  - text: Power
+  - paragraph: "40"
+  - text: Accuracy
+  - paragraph: 100%
+  - text: PP
+  - paragraph: "35"
+  - text: Priority
+  - paragraph: "0"
+  - heading "vice grip" [level=3]
+  - text: Normal P
+  - paragraph: Inflicts regular damage with no additional effect.
+  - text: Power
+  - paragraph: "55"
+  - text: Accuracy
+  - paragraph: 100%
+  - text: PP
+  - paragraph: "30"
+  - text: Priority
+  - paragraph: "0"
+  - heading "guillotine" [level=3]
+  - text: Normal P
+  - paragraph: Causes a one-hit KO.
+  - text: Accuracy
+  - paragraph: 30%
+  - text: PP
+  - paragraph: "5"
+  - text: Priority
+  - paragraph: "0"
+  - heading "razor wind" [level=3]
+  - text: Normal S
+  - paragraph: Requires a turn to charge before attacking.
+  - text: Power
+  - paragraph: "80"
+  - text: Accuracy
+  - paragraph: 100%
+  - text: PP
+  - paragraph: "10"
+  - text: Priority
+  - paragraph: "0"
+  - heading "swords dance" [level=3]
+  - text: Normal ST
+  - paragraph: Raises the user's Attack by two stages.
+  - text: PP
+  - paragraph: "20"
+  - text: Priority
+  - paragraph: "0"
+  - heading "cut" [level=3]
+  - text: Normal P
+  - paragraph: Inflicts regular damage with no additional effect.
+  - text: Power
+  - paragraph: "50"
+  - text: Accuracy
+  - paragraph: 95%
+  - text: PP
+  - paragraph: "30"
+  - text: Priority
+  - paragraph: "0"
+  - heading "gust" [level=3]
+  - text: Flying S
+  - paragraph: Inflicts regular damage and can hit Pokémon in the air.
+  - text: Power
+  - paragraph: "40"
+  - text: Accuracy
+  - paragraph: 100%
+  - text: PP
+  - paragraph: "35"
+  - text: Priority
+  - paragraph: "0"
+  - heading "wing attack" [level=3]
+  - text: Flying P
+  - paragraph: Inflicts regular damage with no additional effect.
+  - text: Power
+  - paragraph: "60"
+  - text: Accuracy
+  - paragraph: 100%
+  - text: PP
+  - paragraph: "35"
+  - text: Priority
+  - paragraph: "0"
+  - heading "whirlwind" [level=3]
+  - text: Normal ST
+  - paragraph: Immediately ends wild battles. Forces trainers to switch Pokémon.
+  - text: PP
+  - paragraph: "20"
+  - text: Priority
+  - paragraph: "-6"
+  - heading "fly" [level=3]
+  - text: Flying P
+  - paragraph: User flies high into the air, dodging all attacks, and hits next turn.
+  - text: Power
+  - paragraph: "90"
+  - text: Accuracy
+  - paragraph: 95%
+  - text: PP
+  - paragraph: "15"
+  - text: Priority
+  - paragraph: "0"
+  - heading "bind" [level=3]
+  - text: Normal P
+  - paragraph: Prevents the target from fleeing and inflicts damage for 2-5 turns.
+  - text: Power
+  - paragraph: "15"
+  - text: Accuracy
+  - paragraph: 85%
+  - text: PP
+  - paragraph: "20"
+  - text: Priority
+  - paragraph: "0"
+  - button "Previous" [disabled]
+  - text: Page 1 of 5
+  - button "Next"
+  - heading "Move Categories" [level=2]
+  - text: P
+  - heading "Physical Moves" [level=3]
+  - paragraph: Damage based on Attack stat
+  - text: S
+  - heading "Special Moves" [level=3]
+  - paragraph: Damage based on Special Attack stat
+  - text: ST
+  - heading "Status Moves" [level=3]
+  - paragraph: No direct damage, various effects
+  - text: Press ? for shortcuts 🔕
+  - heading "Push Notifications" [level=3]
+  - paragraph: Blocked by user
+  - button "Enable"
+- contentinfo:
+  - paragraph:
+    - text: © 2025 DexTrends - A
+    - link "PakePoint":
+      - /url: https://www.pakepoint.com
+    - text: Project. All rights reserved.
+- button "Open card comparison tool":
+  - img
+- text: Compare Cards
+- button "💡"
+- button:
+  - img
+- alert
+- button "Open Next.js Dev Tools":
+  - img
+- button "Open issues overlay": 1 Issue
+- button "Collapse issues badge":
+  - img
+- navigation:
+  - button "previous" [disabled]:
+    - img "previous"
+  - text: 1/1
+  - button "next" [disabled]:
+    - img "next"
+- img
+- link "Next.js 15.3.5 (stale) Webpack":
+  - /url: https://nextjs.org/docs/messages/version-staleness
+  - img
+  - text: Next.js 15.3.5 (stale) Webpack
+- img
+- dialog "Runtime Error":
+  - text: Runtime Error
+  - button "Copy Stack Trace":
+    - img
+  - button "No related documentation found" [disabled]:
+    - img
+  - link "Learn more about enabling Node.js inspector for server code with Chrome DevTools":
+    - /url: https://nextjs.org/docs/app/building-your-application/configuring/debugging#server-side-code
+    - img
+  - paragraph: "TypeError: Failed to register a ServiceWorker for scope ('http://localhost:3000/') with script ('http://localhost:3000/sw.js'): A bad HTTP response code (404) was received when fetching the script."
+```

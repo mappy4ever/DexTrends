@@ -1,0 +1,129 @@
+# Page snapshot
+
+```yaml
+- link "DexTrends":
+  - /url: /
+  - img
+  - text: DexTrends
+- navigation:
+  - link "Home":
+    - /url: /
+    - img
+    - text: Home
+  - link "Pokémon TCG":
+    - /url: /tcgsets
+    - img
+    - text: Pokémon TCG
+    - img
+  - link "Pokédex":
+    - /url: /pokedex
+    - img
+    - text: Pokédex
+  - link "Pokémon":
+    - /url: /pokemon
+    - img
+    - text: Pokémon
+    - img
+  - link "Battle":
+    - /url: /battle-simulator
+    - img
+    - text: Battle
+    - img
+  - link "Pocket":
+    - /url: /pocketmode
+    - img
+    - text: Pocket
+    - img
+  - link "Fun":
+    - /url: /fun
+    - img
+    - text: Fun
+- button "Open global search":
+  - img
+- link "View favorites":
+  - /url: /favorites
+  - img
+- button "Activate dark mode":
+  - img
+- main:
+  - button "Back to Pokémon Hub":
+    - img
+    - text: Back to Pokémon Hub
+  - heading "Starter Pokémon" [level=1]:
+    - img
+    - text: Starter Pokémon
+  - paragraph: Choose your partner from 9 generations of starters
+  - button "All"
+  - button "Grass"
+  - button "Fire"
+  - button "Water"
+  - button "Poison"
+  - button "Flying"
+  - button "Single View":
+    - img
+    - text: Single View
+  - button "Comparison":
+    - img
+    - text: Comparison
+  - button [disabled]:
+    - img
+  - link "Kanto Region":
+    - /url: /pokemon/regions/kanto
+    - heading "Kanto Region" [level=2]
+  - paragraph: Generation 1
+  - button:
+    - img
+  - img "Bulbasaur"
+  - text: "#001"
+  - heading "Bulbasaur" [level=3]
+  - paragraph: A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.
+  - text: Grass Poison
+  - img "Charmander"
+  - text: "#004"
+  - heading "Charmander" [level=3]
+  - paragraph: The flame that burns at the tip of its tail is an indication of its emotions.
+  - text: Fire
+  - img "Squirtle"
+  - text: "#007"
+  - heading "Squirtle" [level=3]
+  - paragraph: After birth, its back swells and hardens into a shell. It powerfully sprays foam from its mouth.
+  - text: Water
+  - heading "Explore by Region" [level=3]
+  - link "Kanto Gen 1":
+    - /url: /pokemon/starters/kanto
+  - link "Johto Gen 2":
+    - /url: /pokemon/starters/johto
+  - link "Hoenn Gen 3":
+    - /url: /pokemon/starters/hoenn
+  - link "Sinnoh Gen 4":
+    - /url: /pokemon/starters/sinnoh
+  - link "Unova Gen 5":
+    - /url: /pokemon/starters/unova
+  - link "Kalos Gen 6":
+    - /url: /pokemon/starters/kalos
+  - link "Alola Gen 7":
+    - /url: /pokemon/starters/alola
+  - link "Galar Gen 8":
+    - /url: /pokemon/starters/galar
+  - link "Paldea Gen 9":
+    - /url: /pokemon/starters/paldea
+  - text: Press ? for shortcuts 🔕
+  - heading "Push Notifications" [level=3]
+  - paragraph: Blocked by user
+  - button "Enable"
+- contentinfo:
+  - paragraph:
+    - text: © 2025 DexTrends - A
+    - link "PakePoint":
+      - /url: https://www.pakepoint.com
+    - text: Project. All rights reserved.
+- button "Open card comparison tool":
+  - img
+- text: Compare Cards
+- button "💡"
+- button:
+  - img
+- alert: Starter Pokémon | DexTrends
+- button "Open Next.js Dev Tools":
+  - img
+```

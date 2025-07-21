@@ -1,0 +1,169 @@
+# Page snapshot
+
+```yaml
+- link "DexTrends":
+  - /url: /
+  - img
+  - text: DexTrends
+- navigation:
+  - link "Home":
+    - /url: /
+    - img
+    - text: Home
+  - link "Pokémon TCG":
+    - /url: /tcgsets
+    - img
+    - text: Pokémon TCG
+    - img
+  - link "Pokédex":
+    - /url: /pokedex
+    - img
+    - text: Pokédex
+  - link "Pokémon":
+    - /url: /pokemon
+    - img
+    - text: Pokémon
+    - img
+  - link "Battle":
+    - /url: /battle-simulator
+    - img
+    - text: Battle
+    - img
+  - link "Pocket":
+    - /url: /pocketmode
+    - img
+    - text: Pocket
+    - img
+  - link "Fun":
+    - /url: /fun
+    - img
+    - text: Fun
+- button "Open global search":
+  - img
+- link "View favorites":
+  - /url: /favorites
+  - img
+- button "Activate dark mode":
+  - img
+- main:
+  - button "Back to Pokédex":
+    - img
+    - text: Back to Pokédex
+  - button "🤍 Add to Favorites"
+  - img "test-pokemon-6"
+  - heading "test-pokemon-6" [level=1]
+  - paragraph: Unknown Pokémon
+  - text: "Normal Height: 1.0m Weight: 10.0kg"
+  - heading "Description" [level=3]
+  - paragraph: Test flavor text for species 6
+  - heading "National №" [level=4]
+  - paragraph: "#0006"
+  - heading "Generation" [level=4]
+  - paragraph: "1"
+  - heading "Egg Groups" [level=4]
+  - paragraph: Unknown
+  - heading "Gender Ratio" [level=4]
+  - text: ♂ NaN% ♀ NaN%
+  - heading "Catch Rate" [level=4]
+  - img
+  - text: "?"
+  - paragraph: Unknown
+  - paragraph: Unknown
+  - heading "Base Stats Total" [level=4]
+  - paragraph: "300"
+  - button "📋 overview"
+  - button "📊 stats"
+  - button "🔄 evolution"
+  - button "⚔️ moves"
+  - button "🎴 cards"
+  - heading "Abilities" [level=3]
+  - heading "test ability" [level=4]
+  - heading "Evolution Chain" [level=3]
+  - 'link "charmander charmander #004 Normal"':
+    - /url: /pokedex/4
+    - img "charmander"
+    - paragraph: charmander
+    - paragraph: "#004"
+    - text: Normal
+  - img
+  - text: Lv 16
+  - 'link "charmeleon charmeleon #005 Normal"':
+    - /url: /pokedex/5
+    - img "charmeleon"
+    - paragraph: charmeleon
+    - paragraph: "#005"
+    - text: Normal
+  - img
+  - text: Lv 36
+  - 'link "charizard charizard #006 Normal"':
+    - /url: /pokedex/6
+    - img "charizard"
+    - paragraph: charizard
+    - paragraph: "#006"
+    - text: Normal
+  - img
+  - text: Mega
+  - 'link "charizard-mega-x Mega Charizard #10034 Fire Dragon"':
+    - /url: /pokedex/10034
+    - img "charizard-mega-x"
+    - paragraph: Mega Charizard
+    - paragraph: "#10034"
+    - text: Fire Dragon
+  - 'link "charizard-mega-y Mega Charizard #10035 Fire Flying"':
+    - /url: /pokedex/10035
+    - img "charizard-mega-y"
+    - paragraph: Mega Charizard
+    - paragraph: "#10035"
+    - text: Fire Flying
+  - button "Shiny":
+    - img
+    - text: Shiny
+  - heading "Type Effectiveness" [level=3]
+  - heading "Weak to (2x damage)" [level=4]
+  - text: fighting 2×
+  - heading "Immune to (0x damage)" [level=4]
+  - text: ghost 0× Press ? for shortcuts 🔕
+  - heading "Push Notifications" [level=3]
+  - paragraph: Blocked by user
+  - button "Enable"
+- contentinfo:
+  - paragraph:
+    - text: © 2025 DexTrends - A
+    - link "PakePoint":
+      - /url: https://www.pakepoint.com
+    - text: Project. All rights reserved.
+- button "Open card comparison tool":
+  - img
+- text: Compare Cards
+- button "💡"
+- button:
+  - img
+- alert: /pokedex/6
+- button "Open Next.js Dev Tools":
+  - img
+- button "Open issues overlay": 2 Issue
+- button "Collapse issues badge":
+  - img
+- navigation:
+  - button "previous" [disabled]:
+    - img "previous"
+  - text: 1/2
+  - button "next":
+    - img "next"
+- img
+- link "Next.js 15.3.5 (stale) Webpack":
+  - /url: https://nextjs.org/docs/messages/version-staleness
+  - img
+  - text: Next.js 15.3.5 (stale) Webpack
+- img
+- dialog "Runtime Error":
+  - text: Runtime Error
+  - button "Copy Stack Trace":
+    - img
+  - button "No related documentation found" [disabled]:
+    - img
+  - link "Learn more about enabling Node.js inspector for server code with Chrome DevTools":
+    - /url: https://nextjs.org/docs/app/building-your-application/configuring/debugging#server-side-code
+    - img
+  - paragraph: "TypeError: Failed to register a ServiceWorker for scope ('http://localhost:3000/') with script ('http://localhost:3000/sw.js'): A bad HTTP response code (404) was received when fetching the script."
+```

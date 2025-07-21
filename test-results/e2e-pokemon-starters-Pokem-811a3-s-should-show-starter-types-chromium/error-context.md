@@ -1,0 +1,132 @@
+# Page snapshot
+
+```yaml
+- link "DexTrends":
+  - /url: /
+  - img
+  - text: DexTrends
+- navigation:
+  - link "Home":
+    - /url: /
+    - img
+    - text: Home
+  - link "Pokémon TCG":
+    - /url: /tcgsets
+    - img
+    - text: Pokémon TCG
+    - img
+  - link "Pokédex":
+    - /url: /pokedex
+    - img
+    - text: Pokédex
+  - link "Pokémon":
+    - /url: /pokemon
+    - img
+    - text: Pokémon
+    - img
+  - link "Battle":
+    - /url: /battle-simulator
+    - img
+    - text: Battle
+    - img
+  - link "Pocket":
+    - /url: /pocketmode
+    - img
+    - text: Pocket
+    - img
+  - link "Fun":
+    - /url: /fun
+    - img
+    - text: Fun
+- button "Open global search":
+  - img
+- link "View favorites":
+  - /url: /favorites
+  - img
+- button "Activate dark mode":
+  - img
+- main:
+  - button "Back to All Starters":
+    - img
+    - text: Back to All Starters
+  - heading "Hoenn Starters" [level=1]
+  - paragraph: Generation 3 • Ruby, Sapphire, Emerald, Omega Ruby, Alpha Sapphire
+  - paragraph: The Hoenn starters feature unique secondary typings in their final evolutions and have powerful Mega Evolutions.
+  - heading "Treecko" [level=2]
+  - paragraph: Wood Gecko Pokémon
+  - img
+  - img "Treecko"
+  - text: Grass
+  - paragraph: It quickly scales even vertical walls. It senses humidity with its tail to predict the next day's weather.
+  - heading "Abilities" [level=3]
+  - text: Overgrow Unburden (Hidden)
+  - heading "Evolution Chain" [level=3]
+  - img "Treecko"
+  - img
+  - img "Grovyle"
+  - img
+  - img "Sceptile"
+  - button "View Full Details"
+  - heading "Torchic" [level=2]
+  - paragraph: Chick Pokémon
+  - img
+  - img "Torchic"
+  - text: Fire
+  - paragraph: It has a flame sac inside its belly that perpetually burns. It feels warm if it is hugged.
+  - heading "Abilities" [level=3]
+  - text: Blaze Speed Boost (Hidden)
+  - heading "Evolution Chain" [level=3]
+  - img "Torchic"
+  - img
+  - img "Combusken"
+  - img
+  - img "Blaziken"
+  - button "View Full Details"
+  - heading "Mudkip" [level=2]
+  - paragraph: Mud Fish Pokémon
+  - img
+  - img "Mudkip"
+  - text: Water
+  - paragraph: The fin on its head is a radar that can sense nearby movements in water.
+  - heading "Abilities" [level=3]
+  - text: Torrent Damp (Hidden)
+  - heading "Evolution Chain" [level=3]
+  - img "Mudkip"
+  - img
+  - img "Marshtomp"
+  - img
+  - img "Swampert"
+  - button "View Full Details"
+  - heading "Base Stats Comparison" [level=2]
+  - heading "Treecko" [level=3]
+  - text: "310"
+  - img
+  - paragraph: Total Base Stats
+  - heading "Torchic" [level=3]
+  - text: "310"
+  - img
+  - paragraph: Total Base Stats
+  - heading "Mudkip" [level=3]
+  - text: "310"
+  - img
+  - paragraph: Total Base Stats
+  - text: Press ? for shortcuts 🔕
+  - heading "Push Notifications" [level=3]
+  - paragraph: Blocked by user
+  - button "Enable"
+- contentinfo:
+  - paragraph:
+    - text: © 2025 DexTrends - A
+    - link "PakePoint":
+      - /url: https://www.pakepoint.com
+    - text: Project. All rights reserved.
+- button "Open card comparison tool":
+  - img
+- text: Compare Cards
+- button "💡"
+- button:
+  - img
+- alert: /pokemon/starters/hoenn
+- button "Open Next.js Dev Tools":
+  - img
+```

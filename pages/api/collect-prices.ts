@@ -21,6 +21,9 @@ interface PriceData {
 interface CardData {
   id: string;
   name: string;
+  set?: {
+    name: string;
+  };
   tcgplayer?: {
     prices?: PriceData;
   };
@@ -77,13 +80,55 @@ async function getCardsFromDatabase(): Promise<DatabaseCard[]> {
   }
 }
 
-async function storePriceHistory(cardId: string, priceData: PriceData): Promise<boolean> {
+async function storePriceHistory(cardId: string, priceData: PriceData, cardName: string = '', setName: string = ''): Promise<boolean> {
   try {
+    // Extract individual prices from the different variants
+    const marketPrice = priceData.normal?.market || 
+                       priceData.holofoil?.market || 
+                       priceData.reverseHolofoil?.market || 
+                       priceData.unlimited?.market || 
+                       priceData.unlimitedHolofoil?.market || 
+                       0;
+    
+    const lowPrice = priceData.normal?.low || 
+                     priceData.holofoil?.low || 
+                     priceData.reverseHolofoil?.low || 
+                     priceData.unlimited?.low || 
+                     priceData.unlimitedHolofoil?.low || 
+                     0;
+    
+    const midPrice = priceData.normal?.mid || 
+                     priceData.holofoil?.mid || 
+                     priceData.reverseHolofoil?.mid || 
+                     priceData.unlimited?.mid || 
+                     priceData.unlimitedHolofoil?.mid || 
+                     0;
+    
+    const highPrice = priceData.normal?.high || 
+                      priceData.holofoil?.high || 
+                      priceData.reverseHolofoil?.high || 
+                      priceData.unlimited?.high || 
+                      priceData.unlimitedHolofoil?.high || 
+                      0;
+
+    // Determine variant type based on available data
+    let variantType = 'normal';
+    if (priceData.holofoil?.market) variantType = 'holofoil';
+    else if (priceData.reverseHolofoil?.market) variantType = 'reverseHolofoil';
+    else if (priceData.unlimited?.market) variantType = 'unlimited';
+    else if (priceData.unlimitedHolofoil?.market) variantType = 'unlimitedHolofoil';
+
     const { error } = await supabase
-      .from('price_history')
+      .from('card_price_history')
       .insert({
         card_id: cardId,
-        price_data: priceData,
+        card_name: cardName,
+        set_name: setName,
+        variant_type: variantType,
+        price_market: marketPrice,
+        price_low: lowPrice,
+        price_mid: midPrice,
+        price_high: highPrice,
         collected_at: new Date().toISOString()
       });
 
@@ -155,7 +200,12 @@ export default async function handler(
               unlimitedHolofoil: cardData.tcgplayer.prices.unlimitedHolofoil || null
             };
 
-            const stored = await storePriceHistory(card.id, priceData);
+            const stored = await storePriceHistory(
+              card.id, 
+              priceData, 
+              cardData.name || card.name,
+              cardData.set?.name || ''
+            );
             if (stored) {
               successCount++;
             } else {

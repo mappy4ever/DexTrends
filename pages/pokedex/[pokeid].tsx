@@ -8,7 +8,7 @@ import { TypeBadge } from "../../components/ui/TypeBadge";
 import { TypeEffectivenessBadge } from "../../components/ui/TypeEffectivenessBadge";
 import { useFavorites } from "../../context/UnifiedAppContext";
 import { typeEffectiveness, getGeneration } from "../../utils/pokemonutils";
-import { fetchData, fetchPokemon, fetchPokemonSpecies, fetchNature, fetchTCGCards, fetchPocketCards } from "../../utils/apiutils";
+import { fetchData, fetchPokemon, fetchPokemonSpecies, fetchNature, fetchTCGCards, fetchPocketCards, sanitizePokemonName } from "../../utils/apiutils";
 import EnhancedEvolutionDisplay from "../../components/ui/EnhancedEvolutionDisplay";
 import PokemonFormSelector from "../../components/ui/PokemonFormSelector";
 import SimplifiedMovesDisplay from "../../components/ui/SimplifiedMovesDisplay";
@@ -16,10 +16,11 @@ import CardList from "../../components/CardList";
 import PocketCardList from "../../components/PocketCardList";
 import { fetchPocketData } from "../../utils/pocketData";
 import { getPokemonSDK } from "../../utils/pokemonSDK";
-import { PokemonLoadingScreen } from "../../components/ui/loading/UnifiedLoadingScreen";
+import { PageLoader } from "../../utils/unifiedLoading";
 import { CardGridSkeleton } from "../../components/ui/SkeletonLoader";
 import Modal from "../../components/ui/modals/Modal";
 import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
+import PageErrorBoundary from "../../components/ui/PageErrorBoundary";
 import { getTypeUIColors } from "../../utils/pokemonTypeGradients";
 import type { Pokemon, PokemonSpecies, Nature, EvolutionChain, PokemonAbility, PokemonStat } from "../../types/api/pokemon";
 import type { TCGCard } from "../../types/api/cards";
@@ -66,7 +67,7 @@ interface ExtendedTCGCard extends TCGCard {
 
 const PokemonDetail: NextPage = () => {
   const router = useRouter();
-  const { pokeid } = router.query;
+  const { pokeid, form } = router.query;
   const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
   
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
@@ -98,14 +99,27 @@ const PokemonDetail: NextPage = () => {
         setLoading(true);
         setError(null);
 
-        console.log('Loading Pokemon with ID:', pokeid);
+        console.log('Loading Pokemon with ID:', pokeid, 'Form:', form);
+        
+        // Handle regional forms
+        let pokemonIdentifier: string;
+        if (form && typeof form === 'string') {
+          // Construct regional form name (e.g., "vulpix-alolan")
+          pokemonIdentifier = `${pokeid as string}-${form.toLowerCase()}`;
+        } else {
+          pokemonIdentifier = pokeid as string;
+        }
+        
+        // Sanitize the Pokemon identifier for API calls
+        const sanitizedId = sanitizePokemonName(pokemonIdentifier);
+        console.log('Sanitized Pokemon ID:', sanitizedId);
 
         // Load Pokemon basic data (cached)
-        const pokemonData = await fetchPokemon(pokeid as string);
+        const pokemonData = await fetchPokemon(sanitizedId);
         setPokemon(pokemonData);
 
         // Load species data (cached)
-        const speciesData = await fetchPokemonSpecies(pokeid as string);
+        const speciesData = await fetchPokemonSpecies(sanitizedId);
         setSpecies(speciesData);
 
         // Load abilities
@@ -134,7 +148,7 @@ const PokemonDetail: NextPage = () => {
     };
 
     loadPokemon();
-  }, [router.isReady, pokeid]);
+  }, [router.isReady, pokeid, form]);
 
   // Load location encounters
   const loadLocationEncounters = async (encountersUrl?: string) => {
@@ -248,35 +262,26 @@ const PokemonDetail: NextPage = () => {
   };
 
   // Load cards for this Pokemon
-  // Sanitize Pokemon names for API calls
-  const sanitizePokemonName = (name: string): string => {
-    return name
-      .toLowerCase()
-      .replace(/♀/g, '-f')
-      .replace(/♂/g, '-m')
-      .replace(/[':.\s]/g, '-')
-      .replace(/--+/g, '-')
-      .replace(/-$/, '');
-  };
-
   const loadCards = async (pokemonName: string) => {
     if (!pokemonName) return;
     
     setCardsLoading(true);
+    console.log('[Card Loading] Starting to load cards for:', pokemonName);
     
     try {
-      // Sanitize the Pokemon name for API compatibility
-      const sanitizedName = sanitizePokemonName(pokemonName);
-      
-      // Load TCG cards (cached)
-      const tcgCardsData = await fetchTCGCards(sanitizedName);
+      // Load TCG cards (cached) - sanitization is handled internally
+      const tcgCardsData = await fetchTCGCards(pokemonName);
+      console.log('[Card Loading] TCG cards loaded:', tcgCardsData?.length || 0);
       setTcgCards(tcgCardsData || []);
       
-      // Load Pocket cards (cached)
-      const pocketCardsData = await fetchPocketCards(sanitizedName);
+      // Load Pocket cards (cached) - sanitization is handled internally
+      const pocketCardsData = await fetchPocketCards(pokemonName);
+      console.log('[Card Loading] Pocket cards loaded:', pocketCardsData?.length || 0);
       setPocketCards(pocketCardsData || []);
     } catch (err) {
-      console.error('Error loading cards:', err);
+      console.error('[Card Loading] Error loading cards:', err);
+      setTcgCards([]);
+      setPocketCards([]);
     } finally {
       setCardsLoading(false);
     }
@@ -476,7 +481,7 @@ const PokemonDetail: NextPage = () => {
     const totalStats = pokemon.stats.reduce((sum, stat) => sum + stat.base_stat, 0);
     
     return (
-      <div className={`${typeColors.cardBg} p-4 rounded-2xl shadow-lg`}>
+      <div className={`${typeColors.cardBg} p-4 rounded-2xl shadow-lg`} data-testid="pokemon-stats">
         <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-xl p-6">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-2xl font-bold">Base Stats</h3>
@@ -675,7 +680,7 @@ const PokemonDetail: NextPage = () => {
     if (!pokemon?.abilities || pokemon.abilities.length === 0) return null;
     
     return (
-      <div className="space-y-4">
+      <div className="space-y-4" data-testid="pokemon-abilities">
         <h3 className="text-xl font-bold mb-4">Abilities</h3>
         
         <div className="space-y-3">
@@ -844,12 +849,7 @@ const PokemonDetail: NextPage = () => {
   // Loading state
   if (loading) {
     return (
-      <PokemonLoadingScreen
-        message="Loading Pokémon details..."
-        showFacts={true}
-        overlay={false}
-        preventFlash={true}
-      />
+      <PageLoader text="Loading Pokémon details..." />
     );
   }
 
@@ -892,12 +892,12 @@ const PokemonDetail: NextPage = () => {
   const isFavorite = favorites.pokemon.some((p: Pokemon) => p.id === pokemon.id);
 
   return (
-    <>
+    <PageErrorBoundary pageName="Pokemon Detail">
       <Head>
-        <title>{pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)} - Pokédex | DexTrends</title>
+        <title>{pokemon?.name ? pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1) : 'Pokemon'} - Pokédex | DexTrends</title>
         <meta 
           name="description" 
-          content={`View detailed information about ${pokemon.name}, including stats, abilities, evolution chain, and more.`} 
+          content={`View detailed information about ${pokemon?.name || 'this Pokemon'}, including stats, abilities, evolution chain, and more.`} 
         />
       </Head>
       
@@ -1016,12 +1016,14 @@ const PokemonDetail: NextPage = () => {
                                 src={pokemon.sprites.other['official-artwork'].front_default}
                                 alt={pokemon.name}
                                 className="absolute inset-0 w-full h-full object-contain p-6"
+                                data-testid="pokemon-sprite"
                               />
                             ) : pokemon.sprites?.front_default ? (
                               <img
                                 src={pokemon.sprites.front_default}
                                 alt={pokemon.name}
                                 className="absolute inset-0 w-full h-full object-contain p-6"
+                                data-testid="pokemon-sprite"
                               />
                             ) : (
                               <div className="flex items-center justify-center h-full text-gray-400">
@@ -1060,8 +1062,8 @@ const PokemonDetail: NextPage = () => {
                     </div>
                   </div>
 
-                  <h1 className="text-3xl font-bold mb-2 capitalize">{pokemon.name}</h1>
-                  <p className="text-gray-500 dark:text-gray-400 mb-4">{getGenus()}</p>
+                  <h1 className="text-3xl font-bold mb-2 capitalize" data-testid="pokemon-name">{pokemon.name}</h1>
+                  <p className="text-gray-500 dark:text-gray-400 mb-4" data-testid="pokemon-genus">{getGenus()}</p>
                   
                   <div className="flex justify-center gap-2 mb-4">
                     {pokemon.types?.map(typeInfo => (
@@ -1096,7 +1098,7 @@ const PokemonDetail: NextPage = () => {
                     <div className={`${typeColors.cardBg} p-3 rounded-xl shadow-md`}>
                       <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-lg p-3">
                         <h4 className={`font-medium text-${typeColors.text} dark:text-${typeColors.textDark} text-sm mb-1`}>National №</h4>
-                        <p className="font-bold text-lg">#{String(pokemon.id).padStart(4, '0')}</p>
+                        <p className="font-bold text-lg" data-testid="pokemon-number">#{String(pokemon.id).padStart(4, '0')}</p>
                       </div>
                     </div>
                     <div className={`${typeColors.cardBg} p-3 rounded-xl shadow-md`}>
@@ -1193,6 +1195,9 @@ const PokemonDetail: NextPage = () => {
                         // Update the current Pokemon data with the new form data
                         setPokemon(formData);
                         
+                        // Reload cards for the new form
+                        await loadCards(sanitizePokemonName(formData.name));
+                        
                         // Update abilities for the new form
                         const newAbilities: Record<string, AbilityData> = {};
                         for (const ab of formData.abilities || []) {
@@ -1213,12 +1218,28 @@ const PokemonDetail: NextPage = () => {
                         }
                         setAbilities(newAbilities);
                         
-                        // Reload cards for the new form
-                        await loadCards(formData.name);
+                        // Reload species data for the new form - important for evolution chain
+                        try {
+                          const newSpeciesData = await fetchPokemonSpecies(formData.id || sanitizePokemonName(formData.name));
+                          setSpecies(newSpeciesData);
+                          
+                          // Reload evolution chain if it exists
+                          if (newSpeciesData.evolution_chain) {
+                            await loadEvolutionChain(newSpeciesData.evolution_chain.url);
+                          }
+                        } catch (error) {
+                          console.error('Error loading species data for form:', error);
+                        }
                         
-                        // Update the URL without navigating
+                        // Reload location encounters for the new form
+                        if (formData.location_area_encounters) {
+                          await loadLocationEncounters(formData.location_area_encounters);
+                        }
+                        
+                        // Update the URL without navigating - handle both numeric and string IDs
                         const formId = formData.id || formData.name;
-                        window.history.replaceState({}, '', `/pokedex/${formId}`);
+                        // Use router.replace to properly update the route
+                        router.replace(`/pokedex/${formId}`, undefined, { shallow: true });
                       }}
                     />
                   )}
@@ -1263,7 +1284,7 @@ const PokemonDetail: NextPage = () => {
                         <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-xl p-6">
                           <h3 className="text-xl font-bold mb-4">Evolution Chain</h3>
                           <EnhancedEvolutionDisplay 
-                            speciesUrl={species.evolution_chain.url}
+                            speciesUrl={`https://pokeapi.co/api/v2/pokemon-species/${pokemon.id}/`}
                             currentPokemonId={pokemon.id}
                           />
                         </div>
@@ -1295,17 +1316,19 @@ const PokemonDetail: NextPage = () => {
                 {/* Evolution Tab */}
                 {activeTab === 'evolution' && species && (
                   <EnhancedEvolutionDisplay 
-                    speciesUrl={species.evolution_chain?.url || ''}
+                    speciesUrl={`https://pokeapi.co/api/v2/pokemon-species/${pokemon.id}/`}
                     currentPokemonId={pokemon.id}
                   />
                 )}
 
                 {/* Moves Tab */}
                 {activeTab === 'moves' && pokemon.moves && (
-                  <SimplifiedMovesDisplay 
-                    moves={pokemon.moves} 
-                    pokemonName={pokemon.name}
-                  />
+                  <div data-testid="pokemon-moves">
+                    <SimplifiedMovesDisplay 
+                      moves={pokemon.moves} 
+                      pokemonName={pokemon.name}
+                    />
+                  </div>
                 )}
 
                 {/* Cards Tab */}
@@ -1332,7 +1355,7 @@ const PokemonDetail: NextPage = () => {
           </div>
         </Modal>
       )}
-    </>
+    </PageErrorBoundary>
   );
 };
 

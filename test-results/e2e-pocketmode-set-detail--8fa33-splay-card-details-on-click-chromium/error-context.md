@@ -1,0 +1,1535 @@
+# Page snapshot
+
+```yaml
+- link "DexTrends":
+  - /url: /
+  - img
+  - text: DexTrends
+- navigation:
+  - link "Home":
+    - /url: /
+    - img
+    - text: Home
+  - link "Pokémon TCG":
+    - /url: /tcgsets
+    - img
+    - text: Pokémon TCG
+    - img
+  - link "Pokédex":
+    - /url: /pokedex
+    - img
+    - text: Pokédex
+  - link "Pokémon":
+    - /url: /pokemon
+    - img
+    - text: Pokémon
+    - img
+  - link "Battle":
+    - /url: /battle-simulator
+    - img
+    - text: Battle
+    - img
+  - link "Pocket":
+    - /url: /pocketmode
+    - img
+    - text: Pocket
+    - img
+  - link "Fun":
+    - /url: /fun
+    - img
+    - text: Fun
+- button "Open global search":
+  - img
+- link "View favorites":
+  - /url: /favorites
+  - img
+- button "Activate dark mode":
+  - img
+- main:
+  - button "Back to Packs":
+    - img
+    - text: Back to Packs
+  - text: 📦
+  - heading "Unknown Set" [level=1]
+  - text: "Total Cards: 286 Showing: 286"
+  - textbox "Search cards..."
+  - combobox:
+    - option "All Types" [selected]
+    - option "Colorless"
+    - option "Darkness"
+    - option "Dragon"
+    - option "Fighting"
+    - option "Fire"
+    - option "Grass"
+    - option "Lightning"
+    - option "Metal"
+    - option "Psychic"
+    - option "Trainer"
+    - option "Water"
+  - combobox:
+    - option "All Rarities" [selected]
+    - option "◊"
+    - option "◊◊"
+    - option "◊◊◊"
+    - option "◊◊◊◊"
+    - option "☆"
+    - option "☆☆"
+    - option "☆☆☆"
+    - option "♕"
+  - combobox:
+    - option "Sort by Name" [selected]
+    - option "Sort by Type"
+    - option "Sort by Health"
+    - option "Sort by Rarity"
+  - button "Grid"
+  - button "List"
+  - link "Abra Abra Psychic ◊":
+    - /url: /pocketmode/a1-115
+    - img "Abra"
+    - heading "Abra" [level=4]
+    - text: Psychic ◊
+  - link "Aerodactyl Aerodactyl Colorless ◊◊◊":
+    - /url: /pocketmode/a1-210
+    - img "Aerodactyl"
+    - heading "Aerodactyl" [level=4]
+    - text: Colorless ◊◊◊
+  - link "Alakazam Alakazam Psychic ◊◊◊":
+    - /url: /pocketmode/a1-117
+    - img "Alakazam"
+    - heading "Alakazam" [level=4]
+    - text: Psychic ◊◊◊
+  - link "Alakazam Alakazam Psychic ☆":
+    - /url: /pocketmode/a1-236
+    - img "Alakazam"
+    - heading "Alakazam" [level=4]
+    - text: Psychic ☆
+  - link "Arbok Arbok Darkness ◊◊":
+    - /url: /pocketmode/a1-165
+    - img "Arbok"
+    - heading "Arbok" [level=4]
+    - text: Darkness ◊◊
+  - link "Arcanine Arcanine Fire ◊◊◊":
+    - /url: /pocketmode/a1-040
+    - img "Arcanine"
+    - heading "Arcanine" [level=4]
+    - text: Fire ◊◊◊
+  - link "Arcanine ex Arcanine ex Fire ◊◊◊◊":
+    - /url: /pocketmode/a1-041
+    - img "Arcanine ex"
+    - heading "Arcanine ex" [level=4]
+    - text: Fire ◊◊◊◊
+  - link "Arcanine ex Arcanine ex Fire ☆☆":
+    - /url: /pocketmode/a1-254
+    - img "Arcanine ex"
+    - heading "Arcanine ex" [level=4]
+    - text: Fire ☆☆
+  - link "Articuno Articuno Water ◊◊◊":
+    - /url: /pocketmode/a1-083
+    - img "Articuno"
+    - heading "Articuno" [level=4]
+    - text: Water ◊◊◊
+  - link "Articuno ex Articuno ex Water ◊◊◊◊":
+    - /url: /pocketmode/a1-084
+    - img "Articuno ex"
+    - heading "Articuno ex" [level=4]
+    - text: Water ◊◊◊◊
+  - link "Articuno ex Articuno ex Water ☆☆":
+    - /url: /pocketmode/a1-258
+    - img "Articuno ex"
+    - heading "Articuno ex" [level=4]
+    - text: Water ☆☆
+  - link "Articuno ex Articuno ex Water ☆☆":
+    - /url: /pocketmode/a1-275
+    - img "Articuno ex"
+    - heading "Articuno ex" [level=4]
+    - text: Water ☆☆
+  - link "Beedrill Beedrill Grass ◊◊◊":
+    - /url: /pocketmode/a1-010
+    - img "Beedrill"
+    - heading "Beedrill" [level=4]
+    - text: Grass ◊◊◊
+  - link "Bellsprout Bellsprout Grass ◊":
+    - /url: /pocketmode/a1-018
+    - img "Bellsprout"
+    - heading "Bellsprout" [level=4]
+    - text: Grass ◊
+  - link "Bisharp Bisharp Metal ◊◊":
+    - /url: /pocketmode/a1-180
+    - img "Bisharp"
+    - heading "Bisharp" [level=4]
+    - text: Metal ◊◊
+  - link "Blaine Blaine Trainer ◊◊":
+    - /url: /pocketmode/a1-221
+    - img "Blaine"
+    - heading "Blaine" [level=4]
+    - text: Trainer ◊◊
+  - link "Blaine Blaine Trainer ☆☆":
+    - /url: /pocketmode/a1-268
+    - img "Blaine"
+    - heading "Blaine" [level=4]
+    - text: Trainer ☆☆
+  - link "Blastoise Blastoise Water ◊◊◊":
+    - /url: /pocketmode/a1-055
+    - img "Blastoise"
+    - heading "Blastoise" [level=4]
+    - text: Water ◊◊◊
+  - link "Blastoise ex Blastoise ex Water ◊◊◊◊":
+    - /url: /pocketmode/a1-056
+    - img "Blastoise ex"
+    - heading "Blastoise ex" [level=4]
+    - text: Water ◊◊◊◊
+  - link "Blastoise ex Blastoise ex Water ☆☆":
+    - /url: /pocketmode/a1-256
+    - img "Blastoise ex"
+    - heading "Blastoise ex" [level=4]
+    - text: Water ☆☆
+  - link "Blitzle Blitzle Lightning ◊":
+    - /url: /pocketmode/a1-105
+    - img "Blitzle"
+    - heading "Blitzle" [level=4]
+    - text: Lightning ◊
+  - link "Brock Brock Trainer ◊◊":
+    - /url: /pocketmode/a1-224
+    - img "Brock"
+    - heading "Brock" [level=4]
+    - text: Trainer ◊◊
+  - link "Brock Brock Trainer ☆☆":
+    - /url: /pocketmode/a1-271
+    - img "Brock"
+    - heading "Brock" [level=4]
+    - text: Trainer ☆☆
+  - link "Bruxish Bruxish Water ◊◊":
+    - /url: /pocketmode/a1-091
+    - img "Bruxish"
+    - heading "Bruxish" [level=4]
+    - text: Water ◊◊
+  - link "Bulbasaur Bulbasaur Grass ◊":
+    - /url: /pocketmode/a1-001
+    - img "Bulbasaur"
+    - heading "Bulbasaur" [level=4]
+    - text: Grass ◊
+  - link "Bulbasaur Bulbasaur Grass ☆":
+    - /url: /pocketmode/a1-227
+    - img "Bulbasaur"
+    - heading "Bulbasaur" [level=4]
+    - text: Grass ☆
+  - link "Butterfree Butterfree Grass ◊◊◊":
+    - /url: /pocketmode/a1-007
+    - img "Butterfree"
+    - heading "Butterfree" [level=4]
+    - text: Grass ◊◊◊
+  - link "Caterpie Caterpie Grass ◊":
+    - /url: /pocketmode/a1-005
+    - img "Caterpie"
+    - heading "Caterpie" [level=4]
+    - text: Grass ◊
+  - link "Centiskorch Centiskorch Fire ◊◊":
+    - /url: /pocketmode/a1-052
+    - img "Centiskorch"
+    - heading "Centiskorch" [level=4]
+    - text: Fire ◊◊
+  - link "Chansey Chansey Colorless ◊◊":
+    - /url: /pocketmode/a1-202
+    - img "Chansey"
+    - heading "Chansey" [level=4]
+    - text: Colorless ◊◊
+  - link "Charizard Charizard Fire ◊◊◊":
+    - /url: /pocketmode/a1-035
+    - img "Charizard"
+    - heading "Charizard" [level=4]
+    - text: Fire ◊◊◊
+  - link "Charizard ex Charizard ex Fire ◊◊◊◊":
+    - /url: /pocketmode/a1-036
+    - img "Charizard ex"
+    - heading "Charizard ex" [level=4]
+    - text: Fire ◊◊◊◊
+  - link "Charizard ex Charizard ex Fire ☆☆":
+    - /url: /pocketmode/a1-253
+    - img "Charizard ex"
+    - heading "Charizard ex" [level=4]
+    - text: Fire ☆☆
+  - link "Charizard ex Charizard ex Fire ☆☆☆":
+    - /url: /pocketmode/a1-280
+    - img "Charizard ex"
+    - heading "Charizard ex" [level=4]
+    - text: Fire ☆☆☆
+  - link "Charizard ex Charizard ex Fire ♕":
+    - /url: /pocketmode/a1-284
+    - img "Charizard ex"
+    - heading "Charizard ex" [level=4]
+    - text: Fire ♕
+  - link "Charmander Charmander Fire ◊":
+    - /url: /pocketmode/a1-033
+    - img "Charmander"
+    - heading "Charmander" [level=4]
+    - text: Fire ◊
+  - link "Charmander Charmander Fire ☆":
+    - /url: /pocketmode/a1-230
+    - img "Charmander"
+    - heading "Charmander" [level=4]
+    - text: Fire ☆
+  - link "Charmeleon Charmeleon Fire ◊◊":
+    - /url: /pocketmode/a1-034
+    - img "Charmeleon"
+    - heading "Charmeleon" [level=4]
+    - text: Fire ◊◊
+  - link "Cinccino Cinccino Colorless ◊◊":
+    - /url: /pocketmode/a1-213
+    - img "Cinccino"
+    - heading "Cinccino" [level=4]
+    - text: Colorless ◊◊
+  - link "Clefable Clefable Psychic ◊◊":
+    - /url: /pocketmode/a1-114
+    - img "Clefable"
+    - heading "Clefable" [level=4]
+    - text: Psychic ◊◊
+  - link "Clefairy Clefairy Psychic ◊":
+    - /url: /pocketmode/a1-113
+    - img "Clefairy"
+    - heading "Clefairy" [level=4]
+    - text: Psychic ◊
+  - link "Clobbopus Clobbopus Fighting ◊":
+    - /url: /pocketmode/a1-162
+    - img "Clobbopus"
+    - heading "Clobbopus" [level=4]
+    - text: Fighting ◊
+  - link "Cloyster Cloyster Water ◊◊":
+    - /url: /pocketmode/a1-067
+    - img "Cloyster"
+    - heading "Cloyster" [level=4]
+    - text: Water ◊◊
+  - link "Cottonee Cottonee Grass ◊":
+    - /url: /pocketmode/a1-027
+    - img "Cottonee"
+    - heading "Cottonee" [level=4]
+    - text: Grass ◊
+  - link "Cubone Cubone Fighting ◊":
+    - /url: /pocketmode/a1-151
+    - img "Cubone"
+    - heading "Cubone" [level=4]
+    - text: Fighting ◊
+  - link "Cubone Cubone Fighting ☆":
+    - /url: /pocketmode/a1-239
+    - img "Cubone"
+    - heading "Cubone" [level=4]
+    - text: Fighting ☆
+  - link "Dewgong Dewgong Water ◊◊":
+    - /url: /pocketmode/a1-065
+    - img "Dewgong"
+    - heading "Dewgong" [level=4]
+    - text: Water ◊◊
+  - link "Diglett Diglett Fighting ◊":
+    - /url: /pocketmode/a1-139
+    - img "Diglett"
+    - heading "Diglett" [level=4]
+    - text: Fighting ◊
+  - link "Diglett Diglett Fighting ☆":
+    - /url: /pocketmode/a1-238
+    - img "Diglett"
+    - heading "Diglett" [level=4]
+    - text: Fighting ☆
+  - link "Ditto Ditto Colorless ◊◊◊":
+    - /url: /pocketmode/a1-205
+    - img "Ditto"
+    - heading "Ditto" [level=4]
+    - text: Colorless ◊◊◊
+  - link "Ditto Ditto Colorless ☆":
+    - /url: /pocketmode/a1-247
+    - img "Ditto"
+    - heading "Ditto" [level=4]
+    - text: Colorless ☆
+  - link "Dodrio Dodrio Colorless ◊◊":
+    - /url: /pocketmode/a1-200
+    - img "Dodrio"
+    - heading "Dodrio" [level=4]
+    - text: Colorless ◊◊
+  - link "Doduo Doduo Colorless ◊":
+    - /url: /pocketmode/a1-199
+    - img "Doduo"
+    - heading "Doduo" [level=4]
+    - text: Colorless ◊
+  - link "Dome Fossil Dome Fossil Trainer ◊":
+    - /url: /pocketmode/a1-217
+    - img "Dome Fossil"
+    - heading "Dome Fossil" [level=4]
+    - text: Trainer ◊
+  - link "Dragonair Dragonair Dragon ◊◊":
+    - /url: /pocketmode/a1-184
+    - img "Dragonair"
+    - heading "Dragonair" [level=4]
+    - text: Dragon ◊◊
+  - link "Dragonite Dragonite Dragon ◊◊◊":
+    - /url: /pocketmode/a1-185
+    - img "Dragonite"
+    - heading "Dragonite" [level=4]
+    - text: Dragon ◊◊◊
+  - link "Dragonite Dragonite Dragon ☆":
+    - /url: /pocketmode/a1-244
+    - img "Dragonite"
+    - heading "Dragonite" [level=4]
+    - text: Dragon ☆
+  - link "Dratini Dratini Dragon ◊":
+    - /url: /pocketmode/a1-183
+    - img "Dratini"
+    - heading "Dratini" [level=4]
+    - text: Dragon ◊
+  - link "Drowzee Drowzee Psychic ◊":
+    - /url: /pocketmode/a1-124
+    - img "Drowzee"
+    - heading "Drowzee" [level=4]
+    - text: Psychic ◊
+  - link "Dubwool Dubwool Colorless ◊":
+    - /url: /pocketmode/a1-215
+    - img "Dubwool"
+    - heading "Dubwool" [level=4]
+    - text: Colorless ◊
+  - link "Ducklett Ducklett Water ◊":
+    - /url: /pocketmode/a1-085
+    - img "Ducklett"
+    - heading "Ducklett" [level=4]
+    - text: Water ◊
+  - link "Dugtrio Dugtrio Fighting ◊◊":
+    - /url: /pocketmode/a1-140
+    - img "Dugtrio"
+    - heading "Dugtrio" [level=4]
+    - text: Fighting ◊◊
+  - link "Eelektrik Eelektrik Lightning ◊◊":
+    - /url: /pocketmode/a1-108
+    - img "Eelektrik"
+    - heading "Eelektrik" [level=4]
+    - text: Lightning ◊◊
+  - link "Eelektross Eelektross Lightning ◊◊◊":
+    - /url: /pocketmode/a1-109
+    - img "Eelektross"
+    - heading "Eelektross" [level=4]
+    - text: Lightning ◊◊◊
+  - link "Eevee Eevee Colorless ◊":
+    - /url: /pocketmode/a1-206
+    - img "Eevee"
+    - heading "Eevee" [level=4]
+    - text: Colorless ◊
+  - link "Eevee Eevee Colorless ◊":
+    - /url: /pocketmode/a1-207
+    - img "Eevee"
+    - heading "Eevee" [level=4]
+    - text: Colorless ◊
+  - link "Eevee Eevee Colorless ◊":
+    - /url: /pocketmode/a1-208
+    - img "Eevee"
+    - heading "Eevee" [level=4]
+    - text: Colorless ◊
+  - link "Eevee Eevee Colorless ☆":
+    - /url: /pocketmode/a1-248
+    - img "Eevee"
+    - heading "Eevee" [level=4]
+    - text: Colorless ☆
+  - link "Ekans Ekans Darkness ◊":
+    - /url: /pocketmode/a1-164
+    - img "Ekans"
+    - heading "Ekans" [level=4]
+    - text: Darkness ◊
+  - link "Electabuzz Electabuzz Lightning ◊":
+    - /url: /pocketmode/a1-101
+    - img "Electabuzz"
+    - heading "Electabuzz" [level=4]
+    - text: Lightning ◊
+  - link "Electrode Electrode Lightning ◊◊":
+    - /url: /pocketmode/a1-100
+    - img "Electrode"
+    - heading "Electrode" [level=4]
+    - text: Lightning ◊◊
+  - link "Electrode Electrode Lightning ☆":
+    - /url: /pocketmode/a1-235
+    - img "Electrode"
+    - heading "Electrode" [level=4]
+    - text: Lightning ☆
+  - link "Erika Erika Trainer ◊◊":
+    - /url: /pocketmode/a1-219
+    - img "Erika"
+    - heading "Erika" [level=4]
+    - text: Trainer ◊◊
+  - link "Erika Erika Trainer ☆☆":
+    - /url: /pocketmode/a1-266
+    - img "Erika"
+    - heading "Erika" [level=4]
+    - text: Trainer ☆☆
+  - link "Exeggcute Exeggcute Grass ◊":
+    - /url: /pocketmode/a1-021
+    - img "Exeggcute"
+    - heading "Exeggcute" [level=4]
+    - text: Grass ◊
+  - link "Exeggutor Exeggutor Grass ◊◊◊":
+    - /url: /pocketmode/a1-022
+    - img "Exeggutor"
+    - heading "Exeggutor" [level=4]
+    - text: Grass ◊◊◊
+  - link "Exeggutor ex Exeggutor ex Grass ◊◊◊◊":
+    - /url: /pocketmode/a1-023
+    - img "Exeggutor ex"
+    - heading "Exeggutor ex" [level=4]
+    - text: Grass ◊◊◊◊
+  - link "Exeggutor ex Exeggutor ex Grass ☆☆":
+    - /url: /pocketmode/a1-252
+    - img "Exeggutor ex"
+    - heading "Exeggutor ex" [level=4]
+    - text: Grass ☆☆
+  - link "Farfetch'd Farfetch'd Colorless ◊":
+    - /url: /pocketmode/a1-198
+    - img "Farfetch'd"
+    - heading "Farfetch'd" [level=4]
+    - text: Colorless ◊
+  - link "Fearow Fearow Colorless ◊":
+    - /url: /pocketmode/a1-192
+    - img "Fearow"
+    - heading "Fearow" [level=4]
+    - text: Colorless ◊
+  - link "Flareon Flareon Fire ◊◊◊":
+    - /url: /pocketmode/a1-045
+    - img "Flareon"
+    - heading "Flareon" [level=4]
+    - text: Fire ◊◊◊
+  - link "Froakie Froakie Water ◊":
+    - /url: /pocketmode/a1-087
+    - img "Froakie"
+    - heading "Froakie" [level=4]
+    - text: Water ◊
+  - link "Frogadier Frogadier Water ◊◊":
+    - /url: /pocketmode/a1-088
+    - img "Frogadier"
+    - heading "Frogadier" [level=4]
+    - text: Water ◊◊
+  - link "Frosmoth Frosmoth Water ◊◊":
+    - /url: /pocketmode/a1-093
+    - img "Frosmoth"
+    - heading "Frosmoth" [level=4]
+    - text: Water ◊◊
+  - link "Gardevoir Gardevoir Psychic ◊◊◊":
+    - /url: /pocketmode/a1-132
+    - img "Gardevoir"
+    - heading "Gardevoir" [level=4]
+    - text: Psychic ◊◊◊
+  - link "Gastly Gastly Psychic ◊":
+    - /url: /pocketmode/a1-120
+    - img "Gastly"
+    - heading "Gastly" [level=4]
+    - text: Psychic ◊
+  - link "Gengar Gengar Psychic ◊◊◊":
+    - /url: /pocketmode/a1-122
+    - img "Gengar"
+    - heading "Gengar" [level=4]
+    - text: Psychic ◊◊◊
+  - link "Gengar ex Gengar ex Psychic ◊◊◊◊":
+    - /url: /pocketmode/a1-123
+    - img "Gengar ex"
+    - heading "Gengar ex" [level=4]
+    - text: Psychic ◊◊◊◊
+  - link "Gengar ex Gengar ex Psychic ☆☆":
+    - /url: /pocketmode/a1-261
+    - img "Gengar ex"
+    - heading "Gengar ex" [level=4]
+    - text: Psychic ☆☆
+  - link "Gengar ex Gengar ex Psychic ☆☆":
+    - /url: /pocketmode/a1-277
+    - img "Gengar ex"
+    - heading "Gengar ex" [level=4]
+    - text: Psychic ☆☆
+  - link "Geodude Geodude Fighting ◊":
+    - /url: /pocketmode/a1-147
+    - img "Geodude"
+    - heading "Geodude" [level=4]
+    - text: Fighting ◊
+  - link "Giovanni Giovanni Trainer ◊◊":
+    - /url: /pocketmode/a1-223
+    - img "Giovanni"
+    - heading "Giovanni" [level=4]
+    - text: Trainer ◊◊
+  - link "Giovanni Giovanni Trainer ☆☆":
+    - /url: /pocketmode/a1-270
+    - img "Giovanni"
+    - heading "Giovanni" [level=4]
+    - text: Trainer ☆☆
+  - link "Gloom Gloom Grass ◊◊":
+    - /url: /pocketmode/a1-012
+    - img "Gloom"
+    - heading "Gloom" [level=4]
+    - text: Grass ◊◊
+  - link "Gloom Gloom Grass ☆":
+    - /url: /pocketmode/a1-228
+    - img "Gloom"
+    - heading "Gloom" [level=4]
+    - text: Grass ☆
+  - link "Gogoat Gogoat Grass ◊":
+    - /url: /pocketmode/a1-032
+    - img "Gogoat"
+    - heading "Gogoat" [level=4]
+    - text: Grass ◊
+  - link "Golbat Golbat Darkness ◊◊":
+    - /url: /pocketmode/a1-173
+    - img "Golbat"
+    - heading "Golbat" [level=4]
+    - text: Darkness ◊◊
+  - link "Golbat Golbat Darkness ☆":
+    - /url: /pocketmode/a1-242
+    - img "Golbat"
+    - heading "Golbat" [level=4]
+    - text: Darkness ☆
+  - link "Goldeen Goldeen Water ◊":
+    - /url: /pocketmode/a1-072
+    - img "Goldeen"
+    - heading "Goldeen" [level=4]
+    - text: Water ◊
+  - link "Golduck Golduck Water ◊◊":
+    - /url: /pocketmode/a1-058
+    - img "Golduck"
+    - heading "Golduck" [level=4]
+    - text: Water ◊◊
+  - link "Golem Golem Fighting ◊◊◊":
+    - /url: /pocketmode/a1-149
+    - img "Golem"
+    - heading "Golem" [level=4]
+    - text: Fighting ◊◊◊
+  - link "Golett Golett Psychic ◊":
+    - /url: /pocketmode/a1-135
+    - img "Golett"
+    - heading "Golett" [level=4]
+    - text: Psychic ◊
+  - link "Golurk Golurk Psychic ◊◊":
+    - /url: /pocketmode/a1-136
+    - img "Golurk"
+    - heading "Golurk" [level=4]
+    - text: Psychic ◊◊
+  - link "Grapploct Grapploct Fighting ◊◊":
+    - /url: /pocketmode/a1-163
+    - img "Grapploct"
+    - heading "Grapploct" [level=4]
+    - text: Fighting ◊◊
+  - link "Graveler Graveler Fighting ◊◊":
+    - /url: /pocketmode/a1-148
+    - img "Graveler"
+    - heading "Graveler" [level=4]
+    - text: Fighting ◊◊
+  - link "Greninja Greninja Water ◊◊◊":
+    - /url: /pocketmode/a1-089
+    - img "Greninja"
+    - heading "Greninja" [level=4]
+    - text: Water ◊◊◊
+  - link "Grimer Grimer Darkness ◊":
+    - /url: /pocketmode/a1-174
+    - img "Grimer"
+    - heading "Grimer" [level=4]
+    - text: Darkness ◊
+  - link "Growlithe Growlithe Fire ◊":
+    - /url: /pocketmode/a1-039
+    - img "Growlithe"
+    - heading "Growlithe" [level=4]
+    - text: Fire ◊
+  - link "Gyarados Gyarados Water ◊◊◊":
+    - /url: /pocketmode/a1-078
+    - img "Gyarados"
+    - heading "Gyarados" [level=4]
+    - text: Water ◊◊◊
+  - link "Gyarados Gyarados Water ☆":
+    - /url: /pocketmode/a1-233
+    - img "Gyarados"
+    - heading "Gyarados" [level=4]
+    - text: Water ☆
+  - link "Haunter Haunter Psychic ◊◊":
+    - /url: /pocketmode/a1-121
+    - img "Haunter"
+    - heading "Haunter" [level=4]
+    - text: Psychic ◊◊
+  - link "Heatmor Heatmor Fire ◊":
+    - /url: /pocketmode/a1-048
+    - img "Heatmor"
+    - heading "Heatmor" [level=4]
+    - text: Fire ◊
+  - link "Heliolisk Heliolisk Lightning ◊":
+    - /url: /pocketmode/a1-111
+    - img "Heliolisk"
+    - heading "Heliolisk" [level=4]
+    - text: Lightning ◊
+  - link "Helioptile Helioptile Lightning ◊":
+    - /url: /pocketmode/a1-110
+    - img "Helioptile"
+    - heading "Helioptile" [level=4]
+    - text: Lightning ◊
+  - link "Helix Fossil Helix Fossil Trainer ◊":
+    - /url: /pocketmode/a1-216
+    - img "Helix Fossil"
+    - heading "Helix Fossil" [level=4]
+    - text: Trainer ◊
+  - link "Hitmonchan Hitmonchan Fighting ◊":
+    - /url: /pocketmode/a1-155
+    - img "Hitmonchan"
+    - heading "Hitmonchan" [level=4]
+    - text: Fighting ◊
+  - link "Hitmonlee Hitmonlee Fighting ◊":
+    - /url: /pocketmode/a1-154
+    - img "Hitmonlee"
+    - heading "Hitmonlee" [level=4]
+    - text: Fighting ◊
+  - link "Horsea Horsea Water ◊":
+    - /url: /pocketmode/a1-070
+    - img "Horsea"
+    - heading "Horsea" [level=4]
+    - text: Water ◊
+  - link "Hypno Hypno Psychic ◊◊◊":
+    - /url: /pocketmode/a1-125
+    - img "Hypno"
+    - heading "Hypno" [level=4]
+    - text: Psychic ◊◊◊
+  - link "Ivysaur Ivysaur Grass ◊◊":
+    - /url: /pocketmode/a1-002
+    - img "Ivysaur"
+    - heading "Ivysaur" [level=4]
+    - text: Grass ◊◊
+  - link "Jigglypuff Jigglypuff Colorless ◊":
+    - /url: /pocketmode/a1-193
+    - img "Jigglypuff"
+    - heading "Jigglypuff" [level=4]
+    - text: Colorless ◊
+  - link "Jolteon Jolteon Lightning ◊◊◊":
+    - /url: /pocketmode/a1-102
+    - img "Jolteon"
+    - heading "Jolteon" [level=4]
+    - text: Lightning ◊◊◊
+  - link "Jynx Jynx Psychic ◊":
+    - /url: /pocketmode/a1-127
+    - img "Jynx"
+    - heading "Jynx" [level=4]
+    - text: Psychic ◊
+  - link "Kabuto Kabuto Fighting ◊◊":
+    - /url: /pocketmode/a1-158
+    - img "Kabuto"
+    - heading "Kabuto" [level=4]
+    - text: Fighting ◊◊
+  - link "Kabutops Kabutops Fighting ◊◊◊":
+    - /url: /pocketmode/a1-159
+    - img "Kabutops"
+    - heading "Kabutops" [level=4]
+    - text: Fighting ◊◊◊
+  - link "Kadabra Kadabra Psychic ◊◊":
+    - /url: /pocketmode/a1-116
+    - img "Kadabra"
+    - heading "Kadabra" [level=4]
+    - text: Psychic ◊◊
+  - link "Kakuna Kakuna Grass ◊":
+    - /url: /pocketmode/a1-009
+    - img "Kakuna"
+    - heading "Kakuna" [level=4]
+    - text: Grass ◊
+  - link "Kangaskhan Kangaskhan Colorless ◊◊◊":
+    - /url: /pocketmode/a1-203
+    - img "Kangaskhan"
+    - heading "Kangaskhan" [level=4]
+    - text: Colorless ◊◊◊
+  - link "Kingler Kingler Water ◊◊":
+    - /url: /pocketmode/a1-069
+    - img "Kingler"
+    - heading "Kingler" [level=4]
+    - text: Water ◊◊
+  - link "Kirlia Kirlia Psychic ◊◊":
+    - /url: /pocketmode/a1-131
+    - img "Kirlia"
+    - heading "Kirlia" [level=4]
+    - text: Psychic ◊◊
+  - link "Koffing Koffing Darkness ◊":
+    - /url: /pocketmode/a1-176
+    - img "Koffing"
+    - heading "Koffing" [level=4]
+    - text: Darkness ◊
+  - link "Koga Koga Trainer ◊◊":
+    - /url: /pocketmode/a1-222
+    - img "Koga"
+    - heading "Koga" [level=4]
+    - text: Trainer ◊◊
+  - link "Koga Koga Trainer ☆☆":
+    - /url: /pocketmode/a1-269
+    - img "Koga"
+    - heading "Koga" [level=4]
+    - text: Trainer ☆☆
+  - link "Krabby Krabby Water ◊":
+    - /url: /pocketmode/a1-068
+    - img "Krabby"
+    - heading "Krabby" [level=4]
+    - text: Water ◊
+  - link "Lapras Lapras Water ◊◊◊":
+    - /url: /pocketmode/a1-079
+    - img "Lapras"
+    - heading "Lapras" [level=4]
+    - text: Water ◊◊◊
+  - link "Lapras Lapras Water ☆":
+    - /url: /pocketmode/a1-234
+    - img "Lapras"
+    - heading "Lapras" [level=4]
+    - text: Water ☆
+  - link "Lickitung Lickitung Colorless ◊◊":
+    - /url: /pocketmode/a1-201
+    - img "Lickitung"
+    - heading "Lickitung" [level=4]
+    - text: Colorless ◊◊
+  - link "Lilligant Lilligant Grass ◊◊":
+    - /url: /pocketmode/a1-030
+    - img "Lilligant"
+    - heading "Lilligant" [level=4]
+    - text: Grass ◊◊
+  - link "Lt. Surge Lt. Surge Trainer ◊◊":
+    - /url: /pocketmode/a1-226
+    - img "Lt. Surge"
+    - heading "Lt. Surge" [level=4]
+    - text: Trainer ◊◊
+  - link "Lt. Surge Lt. Surge Trainer ☆☆":
+    - /url: /pocketmode/a1-273
+    - img "Lt. Surge"
+    - heading "Lt. Surge" [level=4]
+    - text: Trainer ☆☆
+  - link "Machamp Machamp Fighting ◊◊◊":
+    - /url: /pocketmode/a1-145
+    - img "Machamp"
+    - heading "Machamp" [level=4]
+    - text: Fighting ◊◊◊
+  - link "Machamp ex Machamp ex Fighting ◊◊◊◊":
+    - /url: /pocketmode/a1-146
+    - img "Machamp ex"
+    - heading "Machamp ex" [level=4]
+    - text: Fighting ◊◊◊◊
+  - link "Machamp ex Machamp ex Fighting ☆☆":
+    - /url: /pocketmode/a1-263
+    - img "Machamp ex"
+    - heading "Machamp ex" [level=4]
+    - text: Fighting ☆☆
+  - link "Machamp ex Machamp ex Fighting ☆☆":
+    - /url: /pocketmode/a1-278
+    - img "Machamp ex"
+    - heading "Machamp ex" [level=4]
+    - text: Fighting ☆☆
+  - link "Machoke Machoke Fighting ◊◊":
+    - /url: /pocketmode/a1-144
+    - img "Machoke"
+    - heading "Machoke" [level=4]
+    - text: Fighting ◊◊
+  - link "Machop Machop Fighting ◊":
+    - /url: /pocketmode/a1-143
+    - img "Machop"
+    - heading "Machop" [level=4]
+    - text: Fighting ◊
+  - link "Magikarp Magikarp Water ◊":
+    - /url: /pocketmode/a1-077
+    - img "Magikarp"
+    - heading "Magikarp" [level=4]
+    - text: Water ◊
+  - link "Magmar Magmar Fire ◊":
+    - /url: /pocketmode/a1-044
+    - img "Magmar"
+    - heading "Magmar" [level=4]
+    - text: Fire ◊
+  - link "Magnemite Magnemite Lightning ◊":
+    - /url: /pocketmode/a1-097
+    - img "Magnemite"
+    - heading "Magnemite" [level=4]
+    - text: Lightning ◊
+  - link "Magneton Magneton Lightning ◊◊◊":
+    - /url: /pocketmode/a1-098
+    - img "Magneton"
+    - heading "Magneton" [level=4]
+    - text: Lightning ◊◊◊
+  - link "Mankey Mankey Fighting ◊":
+    - /url: /pocketmode/a1-141
+    - img "Mankey"
+    - heading "Mankey" [level=4]
+    - text: Fighting ◊
+  - link "Marowak Marowak Fighting ◊◊":
+    - /url: /pocketmode/a1-152
+    - img "Marowak"
+    - heading "Marowak" [level=4]
+    - text: Fighting ◊◊
+  - link "Marowak ex Marowak ex Fighting ◊◊◊◊":
+    - /url: /pocketmode/a1-153
+    - img "Marowak ex"
+    - heading "Marowak ex" [level=4]
+    - text: Fighting ◊◊◊◊
+  - link "Marowak ex Marowak ex Fighting ☆☆":
+    - /url: /pocketmode/a1-264
+    - img "Marowak ex"
+    - heading "Marowak ex" [level=4]
+    - text: Fighting ☆☆
+  - link "Mawile Mawile Metal ◊":
+    - /url: /pocketmode/a1-178
+    - img "Mawile"
+    - heading "Mawile" [level=4]
+    - text: Metal ◊
+  - link "Melmetal Melmetal Metal ◊◊◊":
+    - /url: /pocketmode/a1-182
+    - img "Melmetal"
+    - heading "Melmetal" [level=4]
+    - text: Metal ◊◊◊
+  - link "Meltan Meltan Metal ◊":
+    - /url: /pocketmode/a1-181
+    - img "Meltan"
+    - heading "Meltan" [level=4]
+    - text: Metal ◊
+  - link "Meowth Meowth Colorless ◊":
+    - /url: /pocketmode/a1-196
+    - img "Meowth"
+    - heading "Meowth" [level=4]
+    - text: Colorless ◊
+  - link "Meowth Meowth Colorless ☆":
+    - /url: /pocketmode/a1-246
+    - img "Meowth"
+    - heading "Meowth" [level=4]
+    - text: Colorless ☆
+  - link "Metapod Metapod Grass ◊":
+    - /url: /pocketmode/a1-006
+    - img "Metapod"
+    - heading "Metapod" [level=4]
+    - text: Grass ◊
+  - link "Mew Mew Psychic ☆☆☆":
+    - /url: /pocketmode/a1-283
+    - img "Mew"
+    - heading "Mew" [level=4]
+    - text: Psychic ☆☆☆
+  - link "Mewtwo Mewtwo Psychic ◊◊◊":
+    - /url: /pocketmode/a1-128
+    - img "Mewtwo"
+    - heading "Mewtwo" [level=4]
+    - text: Psychic ◊◊◊
+  - link "Mewtwo ex Mewtwo ex Psychic ◊◊◊◊":
+    - /url: /pocketmode/a1-129
+    - img "Mewtwo ex"
+    - heading "Mewtwo ex" [level=4]
+    - text: Psychic ◊◊◊◊
+  - link "Mewtwo ex Mewtwo ex Psychic ☆☆":
+    - /url: /pocketmode/a1-262
+    - img "Mewtwo ex"
+    - heading "Mewtwo ex" [level=4]
+    - text: Psychic ☆☆
+  - link "Mewtwo ex Mewtwo ex Psychic ☆☆☆":
+    - /url: /pocketmode/a1-282
+    - img "Mewtwo ex"
+    - heading "Mewtwo ex" [level=4]
+    - text: Psychic ☆☆☆
+  - link "Mewtwo ex Mewtwo ex Psychic ♕":
+    - /url: /pocketmode/a1-286
+    - img "Mewtwo ex"
+    - heading "Mewtwo ex" [level=4]
+    - text: Psychic ♕
+  - link "Mienfoo Mienfoo Fighting ◊":
+    - /url: /pocketmode/a1-160
+    - img "Mienfoo"
+    - heading "Mienfoo" [level=4]
+    - text: Fighting ◊
+  - link "Mienshao Mienshao Fighting ◊◊":
+    - /url: /pocketmode/a1-161
+    - img "Mienshao"
+    - heading "Mienshao" [level=4]
+    - text: Fighting ◊◊
+  - link "Minccino Minccino Colorless ◊":
+    - /url: /pocketmode/a1-212
+    - img "Minccino"
+    - heading "Minccino" [level=4]
+    - text: Colorless ◊
+  - link "Misty Misty Trainer ◊◊":
+    - /url: /pocketmode/a1-220
+    - img "Misty"
+    - heading "Misty" [level=4]
+    - text: Trainer ◊◊
+  - link "Misty Misty Trainer ☆☆":
+    - /url: /pocketmode/a1-267
+    - img "Misty"
+    - heading "Misty" [level=4]
+    - text: Trainer ☆☆
+  - link "Moltres Moltres Fire ◊◊◊":
+    - /url: /pocketmode/a1-046
+    - img "Moltres"
+    - heading "Moltres" [level=4]
+    - text: Fire ◊◊◊
+  - link "Moltres ex Moltres ex Fire ◊◊◊◊":
+    - /url: /pocketmode/a1-047
+    - img "Moltres ex"
+    - heading "Moltres ex" [level=4]
+    - text: Fire ◊◊◊◊
+  - link "Moltres ex Moltres ex Fire ☆☆":
+    - /url: /pocketmode/a1-255
+    - img "Moltres ex"
+    - heading "Moltres ex" [level=4]
+    - text: Fire ☆☆
+  - link "Moltres ex Moltres ex Fire ☆☆":
+    - /url: /pocketmode/a1-274
+    - img "Moltres ex"
+    - heading "Moltres ex" [level=4]
+    - text: Fire ☆☆
+  - link "Mr. Mime Mr. Mime Psychic ◊◊":
+    - /url: /pocketmode/a1-126
+    - img "Mr. Mime"
+    - heading "Mr. Mime" [level=4]
+    - text: Psychic ◊◊
+  - link "Muk Muk Darkness ◊◊◊":
+    - /url: /pocketmode/a1-175
+    - img "Muk"
+    - heading "Muk" [level=4]
+    - text: Darkness ◊◊◊
+  - link "Nidoking Nidoking Darkness ◊◊◊":
+    - /url: /pocketmode/a1-171
+    - img "Nidoking"
+    - heading "Nidoking" [level=4]
+    - text: Darkness ◊◊◊
+  - link "Nidoking Nidoking Darkness ☆":
+    - /url: /pocketmode/a1-241
+    - img "Nidoking"
+    - heading "Nidoking" [level=4]
+    - text: Darkness ☆
+  - link "Nidoqueen Nidoqueen Darkness ◊◊◊":
+    - /url: /pocketmode/a1-168
+    - img "Nidoqueen"
+    - heading "Nidoqueen" [level=4]
+    - text: Darkness ◊◊◊
+  - link "Nidoqueen Nidoqueen Darkness ☆":
+    - /url: /pocketmode/a1-240
+    - img "Nidoqueen"
+    - heading "Nidoqueen" [level=4]
+    - text: Darkness ☆
+  - link "Nidoran♀ Nidoran♀ Darkness ◊":
+    - /url: /pocketmode/a1-166
+    - img "Nidoran♀"
+    - heading "Nidoran♀" [level=4]
+    - text: Darkness ◊
+  - link "Nidoran♂ Nidoran♂ Darkness ◊":
+    - /url: /pocketmode/a1-169
+    - img "Nidoran♂"
+    - heading "Nidoran♂" [level=4]
+    - text: Darkness ◊
+  - link "Nidorina Nidorina Darkness ◊◊":
+    - /url: /pocketmode/a1-167
+    - img "Nidorina"
+    - heading "Nidorina" [level=4]
+    - text: Darkness ◊◊
+  - link "Nidorino Nidorino Darkness ◊◊":
+    - /url: /pocketmode/a1-170
+    - img "Nidorino"
+    - heading "Nidorino" [level=4]
+    - text: Darkness ◊◊
+  - link "Ninetales Ninetales Fire ◊◊":
+    - /url: /pocketmode/a1-038
+    - img "Ninetales"
+    - heading "Ninetales" [level=4]
+    - text: Fire ◊◊
+  - link "Oddish Oddish Grass ◊":
+    - /url: /pocketmode/a1-011
+    - img "Oddish"
+    - heading "Oddish" [level=4]
+    - text: Grass ◊
+  - link "Old Amber Old Amber Trainer ◊":
+    - /url: /pocketmode/a1-218
+    - img "Old Amber"
+    - heading "Old Amber" [level=4]
+    - text: Trainer ◊
+  - link "Omanyte Omanyte Water ◊◊":
+    - /url: /pocketmode/a1-081
+    - img "Omanyte"
+    - heading "Omanyte" [level=4]
+    - text: Water ◊◊
+  - link "Omastar Omastar Water ◊◊◊":
+    - /url: /pocketmode/a1-082
+    - img "Omastar"
+    - heading "Omastar" [level=4]
+    - text: Water ◊◊◊
+  - link "Onix Onix Fighting ◊◊":
+    - /url: /pocketmode/a1-150
+    - img "Onix"
+    - heading "Onix" [level=4]
+    - text: Fighting ◊◊
+  - link "Paras Paras Grass ◊":
+    - /url: /pocketmode/a1-014
+    - img "Paras"
+    - heading "Paras" [level=4]
+    - text: Grass ◊
+  - link "Parasect Parasect Grass ◊◊":
+    - /url: /pocketmode/a1-015
+    - img "Parasect"
+    - heading "Parasect" [level=4]
+    - text: Grass ◊◊
+  - link "Pawniard Pawniard Metal ◊":
+    - /url: /pocketmode/a1-179
+    - img "Pawniard"
+    - heading "Pawniard" [level=4]
+    - text: Metal ◊
+  - link "Persian Persian Colorless ◊◊":
+    - /url: /pocketmode/a1-197
+    - img "Persian"
+    - heading "Persian" [level=4]
+    - text: Colorless ◊◊
+  - link "Petilil Petilil Grass ◊":
+    - /url: /pocketmode/a1-029
+    - img "Petilil"
+    - heading "Petilil" [level=4]
+    - text: Grass ◊
+  - link "Pidgeot Pidgeot Colorless ◊◊◊":
+    - /url: /pocketmode/a1-188
+    - img "Pidgeot"
+    - heading "Pidgeot" [level=4]
+    - text: Colorless ◊◊◊
+  - link "Pidgeot Pidgeot Colorless ☆":
+    - /url: /pocketmode/a1-245
+    - img "Pidgeot"
+    - heading "Pidgeot" [level=4]
+    - text: Colorless ☆
+  - link "Pidgeotto Pidgeotto Colorless ◊":
+    - /url: /pocketmode/a1-187
+    - img "Pidgeotto"
+    - heading "Pidgeotto" [level=4]
+    - text: Colorless ◊
+  - link "Pidgey Pidgey Colorless ◊":
+    - /url: /pocketmode/a1-186
+    - img "Pidgey"
+    - heading "Pidgey" [level=4]
+    - text: Colorless ◊
+  - link "Pikachu Pikachu Lightning ◊":
+    - /url: /pocketmode/a1-094
+    - img "Pikachu"
+    - heading "Pikachu" [level=4]
+    - text: Lightning ◊
+  - link "Pikachu ex Pikachu ex Lightning ◊◊◊◊":
+    - /url: /pocketmode/a1-096
+    - img "Pikachu ex"
+    - heading "Pikachu ex" [level=4]
+    - text: Lightning ◊◊◊◊
+  - link "Pikachu ex Pikachu ex Lightning ☆☆":
+    - /url: /pocketmode/a1-259
+    - img "Pikachu ex"
+    - heading "Pikachu ex" [level=4]
+    - text: Lightning ☆☆
+  - link "Pikachu ex Pikachu ex Lightning ☆☆☆":
+    - /url: /pocketmode/a1-281
+    - img "Pikachu ex"
+    - heading "Pikachu ex" [level=4]
+    - text: Lightning ☆☆☆
+  - link "Pikachu ex Pikachu ex Lightning ♕":
+    - /url: /pocketmode/a1-285
+    - img "Pikachu ex"
+    - heading "Pikachu ex" [level=4]
+    - text: Lightning ♕
+  - link "Pincurchin Pincurchin Lightning ◊◊":
+    - /url: /pocketmode/a1-112
+    - img "Pincurchin"
+    - heading "Pincurchin" [level=4]
+    - text: Lightning ◊◊
+  - link "Pinsir Pinsir Grass ☆":
+    - /url: /pocketmode/a1-229
+    - img "Pinsir"
+    - heading "Pinsir" [level=4]
+    - text: Grass ☆
+  - link "Pinsir Pinsir Grass ◊◊":
+    - /url: /pocketmode/a1-026
+    - img "Pinsir"
+    - heading "Pinsir" [level=4]
+    - text: Grass ◊◊
+  - link "Poliwag Poliwag Water ◊":
+    - /url: /pocketmode/a1-059
+    - img "Poliwag"
+    - heading "Poliwag" [level=4]
+    - text: Water ◊
+  - link "Poliwhirl Poliwhirl Water ◊◊":
+    - /url: /pocketmode/a1-060
+    - img "Poliwhirl"
+    - heading "Poliwhirl" [level=4]
+    - text: Water ◊◊
+  - link "Poliwrath Poliwrath Water ◊◊◊":
+    - /url: /pocketmode/a1-061
+    - img "Poliwrath"
+    - heading "Poliwrath" [level=4]
+    - text: Water ◊◊◊
+  - link "Ponyta Ponyta Fire ◊":
+    - /url: /pocketmode/a1-042
+    - img "Ponyta"
+    - heading "Ponyta" [level=4]
+    - text: Fire ◊
+  - link "Porygon Porygon Colorless ◊◊":
+    - /url: /pocketmode/a1-209
+    - img "Porygon"
+    - heading "Porygon" [level=4]
+    - text: Colorless ◊◊
+  - link "Porygon Porygon Colorless ☆":
+    - /url: /pocketmode/a1-249
+    - img "Porygon"
+    - heading "Porygon" [level=4]
+    - text: Colorless ☆
+  - link "Primeape Primeape Fighting ◊◊":
+    - /url: /pocketmode/a1-142
+    - img "Primeape"
+    - heading "Primeape" [level=4]
+    - text: Fighting ◊◊
+  - link "Psyduck Psyduck Water ◊":
+    - /url: /pocketmode/a1-057
+    - img "Psyduck"
+    - heading "Psyduck" [level=4]
+    - text: Water ◊
+  - link "Pyukumuku Pyukumuku Water ◊":
+    - /url: /pocketmode/a1-090
+    - img "Pyukumuku"
+    - heading "Pyukumuku" [level=4]
+    - text: Water ◊
+  - link "Raichu Raichu Lightning ◊◊◊":
+    - /url: /pocketmode/a1-095
+    - img "Raichu"
+    - heading "Raichu" [level=4]
+    - text: Lightning ◊◊◊
+  - link "Ralts Ralts Psychic ◊":
+    - /url: /pocketmode/a1-130
+    - img "Ralts"
+    - heading "Ralts" [level=4]
+    - text: Psychic ◊
+  - link "Rapidash Rapidash Fire ☆":
+    - /url: /pocketmode/a1-231
+    - img "Rapidash"
+    - heading "Rapidash" [level=4]
+    - text: Fire ☆
+  - link "Rapidash Rapidash Fire ◊◊":
+    - /url: /pocketmode/a1-043
+    - img "Rapidash"
+    - heading "Rapidash" [level=4]
+    - text: Fire ◊◊
+  - link "Raticate Raticate Colorless ◊":
+    - /url: /pocketmode/a1-190
+    - img "Raticate"
+    - heading "Raticate" [level=4]
+    - text: Colorless ◊
+  - link "Rattata Rattata Colorless ◊":
+    - /url: /pocketmode/a1-189
+    - img "Rattata"
+    - heading "Rattata" [level=4]
+    - text: Colorless ◊
+  - link "Rhydon Rhydon Fighting ◊◊":
+    - /url: /pocketmode/a1-157
+    - img "Rhydon"
+    - heading "Rhydon" [level=4]
+    - text: Fighting ◊◊
+  - link "Rhyhorn Rhyhorn Fighting ◊":
+    - /url: /pocketmode/a1-156
+    - img "Rhyhorn"
+    - heading "Rhyhorn" [level=4]
+    - text: Fighting ◊
+  - link "Sabrina Sabrina Trainer ◊◊":
+    - /url: /pocketmode/a1-225
+    - img "Sabrina"
+    - heading "Sabrina" [level=4]
+    - text: Trainer ◊◊
+  - link "Sabrina Sabrina Trainer ☆☆":
+    - /url: /pocketmode/a1-272
+    - img "Sabrina"
+    - heading "Sabrina" [level=4]
+    - text: Trainer ☆☆
+  - link "Salandit Salandit Fire ◊":
+    - /url: /pocketmode/a1-049
+    - img "Salandit"
+    - heading "Salandit" [level=4]
+    - text: Fire ◊
+  - link "Salazzle Salazzle Fire ◊":
+    - /url: /pocketmode/a1-050
+    - img "Salazzle"
+    - heading "Salazzle" [level=4]
+    - text: Fire ◊
+  - link "Sandshrew Sandshrew Fighting ◊":
+    - /url: /pocketmode/a1-137
+    - img "Sandshrew"
+    - heading "Sandshrew" [level=4]
+    - text: Fighting ◊
+  - link "Sandslash Sandslash Fighting ◊◊":
+    - /url: /pocketmode/a1-138
+    - img "Sandslash"
+    - heading "Sandslash" [level=4]
+    - text: Fighting ◊◊
+  - link "Scyther Scyther Grass ◊":
+    - /url: /pocketmode/a1-025
+    - img "Scyther"
+    - heading "Scyther" [level=4]
+    - text: Grass ◊
+  - link "Seadra Seadra Water ◊◊":
+    - /url: /pocketmode/a1-071
+    - img "Seadra"
+    - heading "Seadra" [level=4]
+    - text: Water ◊◊
+  - link "Seaking Seaking Water ◊":
+    - /url: /pocketmode/a1-073
+    - img "Seaking"
+    - heading "Seaking" [level=4]
+    - text: Water ◊
+  - link "Seel Seel Water ◊":
+    - /url: /pocketmode/a1-064
+    - img "Seel"
+    - heading "Seel" [level=4]
+    - text: Water ◊
+  - link "Shellder Shellder Water ◊":
+    - /url: /pocketmode/a1-066
+    - img "Shellder"
+    - heading "Shellder" [level=4]
+    - text: Water ◊
+  - link "Sizzlipede Sizzlipede Fire ◊":
+    - /url: /pocketmode/a1-051
+    - img "Sizzlipede"
+    - heading "Sizzlipede" [level=4]
+    - text: Fire ◊
+  - link "Skiddo Skiddo Grass ◊":
+    - /url: /pocketmode/a1-031
+    - img "Skiddo"
+    - heading "Skiddo" [level=4]
+    - text: Grass ◊
+  - link "Slowbro Slowbro Psychic ◊◊":
+    - /url: /pocketmode/a1-119
+    - img "Slowbro"
+    - heading "Slowbro" [level=4]
+    - text: Psychic ◊◊
+  - link "Slowpoke Slowpoke Psychic ☆":
+    - /url: /pocketmode/a1-237
+    - img "Slowpoke"
+    - heading "Slowpoke" [level=4]
+    - text: Psychic ☆
+  - link "Slowpoke Slowpoke Psychic ◊":
+    - /url: /pocketmode/a1-118
+    - img "Slowpoke"
+    - heading "Slowpoke" [level=4]
+    - text: Psychic ◊
+  - link "Snom Snom Water ◊":
+    - /url: /pocketmode/a1-092
+    - img "Snom"
+    - heading "Snom" [level=4]
+    - text: Water ◊
+  - link "Snorlax Snorlax Colorless ◊◊◊":
+    - /url: /pocketmode/a1-211
+    - img "Snorlax"
+    - heading "Snorlax" [level=4]
+    - text: Colorless ◊◊◊
+  - link "Snorlax Snorlax Colorless ☆":
+    - /url: /pocketmode/a1-250
+    - img "Snorlax"
+    - heading "Snorlax" [level=4]
+    - text: Colorless ☆
+  - link "Spearow Spearow Colorless ◊":
+    - /url: /pocketmode/a1-191
+    - img "Spearow"
+    - heading "Spearow" [level=4]
+    - text: Colorless ◊
+  - link "Squirtle Squirtle Water ◊":
+    - /url: /pocketmode/a1-053
+    - img "Squirtle"
+    - heading "Squirtle" [level=4]
+    - text: Water ◊
+  - link "Squirtle Squirtle Water ☆":
+    - /url: /pocketmode/a1-232
+    - img "Squirtle"
+    - heading "Squirtle" [level=4]
+    - text: Water ☆
+  - link "Starmie Starmie Water ◊◊":
+    - /url: /pocketmode/a1-075
+    - img "Starmie"
+    - heading "Starmie" [level=4]
+    - text: Water ◊◊
+  - link "Starmie ex Starmie ex Water ◊◊◊◊":
+    - /url: /pocketmode/a1-076
+    - img "Starmie ex"
+    - heading "Starmie ex" [level=4]
+    - text: Water ◊◊◊◊
+  - link "Starmie ex Starmie ex Water ☆☆":
+    - /url: /pocketmode/a1-257
+    - img "Starmie ex"
+    - heading "Starmie ex" [level=4]
+    - text: Water ☆☆
+  - link "Staryu Staryu Water ◊":
+    - /url: /pocketmode/a1-074
+    - img "Staryu"
+    - heading "Staryu" [level=4]
+    - text: Water ◊
+  - link "Swanna Swanna Water ◊◊":
+    - /url: /pocketmode/a1-086
+    - img "Swanna"
+    - heading "Swanna" [level=4]
+    - text: Water ◊◊
+  - link "Swoobat Swoobat Psychic ◊":
+    - /url: /pocketmode/a1-134
+    - img "Swoobat"
+    - heading "Swoobat" [level=4]
+    - text: Psychic ◊
+  - link "Tangela Tangela Grass ◊":
+    - /url: /pocketmode/a1-024
+    - img "Tangela"
+    - heading "Tangela" [level=4]
+    - text: Grass ◊
+  - link "Tauros Tauros Colorless ◊◊":
+    - /url: /pocketmode/a1-204
+    - img "Tauros"
+    - heading "Tauros" [level=4]
+    - text: Colorless ◊◊
+  - link "Tentacool Tentacool Water ◊":
+    - /url: /pocketmode/a1-062
+    - img "Tentacool"
+    - heading "Tentacool" [level=4]
+    - text: Water ◊
+  - link "Tentacruel Tentacruel Water ◊◊":
+    - /url: /pocketmode/a1-063
+    - img "Tentacruel"
+    - heading "Tentacruel" [level=4]
+    - text: Water ◊◊
+  - link "Tynamo Tynamo Lightning ◊":
+    - /url: /pocketmode/a1-107
+    - img "Tynamo"
+    - heading "Tynamo" [level=4]
+    - text: Lightning ◊
+  - link "Vaporeon Vaporeon Water ◊◊◊":
+    - /url: /pocketmode/a1-080
+    - img "Vaporeon"
+    - heading "Vaporeon" [level=4]
+    - text: Water ◊◊◊
+  - link "Venomoth Venomoth Grass ◊◊":
+    - /url: /pocketmode/a1-017
+    - img "Venomoth"
+    - heading "Venomoth" [level=4]
+    - text: Grass ◊◊
+  - link "Venonat Venonat Grass ◊":
+    - /url: /pocketmode/a1-016
+    - img "Venonat"
+    - heading "Venonat" [level=4]
+    - text: Grass ◊
+  - link "Venusaur Venusaur Grass ◊◊◊":
+    - /url: /pocketmode/a1-003
+    - img "Venusaur"
+    - heading "Venusaur" [level=4]
+    - text: Grass ◊◊◊
+  - link "Venusaur ex Venusaur ex Grass ◊◊◊◊":
+    - /url: /pocketmode/a1-004
+    - img "Venusaur ex"
+    - heading "Venusaur ex" [level=4]
+    - text: Grass ◊◊◊◊
+  - link "Venusaur ex Venusaur ex Grass ☆☆":
+    - /url: /pocketmode/a1-251
+    - img "Venusaur ex"
+    - heading "Venusaur ex" [level=4]
+    - text: Grass ☆☆
+  - link "Victreebel Victreebel Grass ◊◊◊":
+    - /url: /pocketmode/a1-020
+    - img "Victreebel"
+    - heading "Victreebel" [level=4]
+    - text: Grass ◊◊◊
+  - link "Vileplume Vileplume Grass ◊◊◊":
+    - /url: /pocketmode/a1-013
+    - img "Vileplume"
+    - heading "Vileplume" [level=4]
+    - text: Grass ◊◊◊
+  - link "Voltorb Voltorb Lightning ◊":
+    - /url: /pocketmode/a1-099
+    - img "Voltorb"
+    - heading "Voltorb" [level=4]
+    - text: Lightning ◊
+  - link "Vulpix Vulpix Fire ◊":
+    - /url: /pocketmode/a1-037
+    - img "Vulpix"
+    - heading "Vulpix" [level=4]
+    - text: Fire ◊
+  - link "Wartortle Wartortle Water ◊◊":
+    - /url: /pocketmode/a1-054
+    - img "Wartortle"
+    - heading "Wartortle" [level=4]
+    - text: Water ◊◊
+  - link "Weedle Weedle Grass ◊":
+    - /url: /pocketmode/a1-008
+    - img "Weedle"
+    - heading "Weedle" [level=4]
+    - text: Grass ◊
+  - link "Weepinbell Weepinbell Grass ◊◊":
+    - /url: /pocketmode/a1-019
+    - img "Weepinbell"
+    - heading "Weepinbell" [level=4]
+    - text: Grass ◊◊
+  - link "Weezing Weezing Darkness ◊◊◊":
+    - /url: /pocketmode/a1-177
+    - img "Weezing"
+    - heading "Weezing" [level=4]
+    - text: Darkness ◊◊◊
+  - link "Weezing Weezing Darkness ☆":
+    - /url: /pocketmode/a1-243
+    - img "Weezing"
+    - heading "Weezing" [level=4]
+    - text: Darkness ☆
+  - link "Whimsicott Whimsicott Grass ◊◊":
+    - /url: /pocketmode/a1-028
+    - img "Whimsicott"
+    - heading "Whimsicott" [level=4]
+    - text: Grass ◊◊
+  - link "Wigglytuff Wigglytuff Colorless ◊":
+    - /url: /pocketmode/a1-194
+    - img "Wigglytuff"
+    - heading "Wigglytuff" [level=4]
+    - text: Colorless ◊
+  - link "Wigglytuff ex Wigglytuff ex Colorless ◊◊◊◊":
+    - /url: /pocketmode/a1-195
+    - img "Wigglytuff ex"
+    - heading "Wigglytuff ex" [level=4]
+    - text: Colorless ◊◊◊◊
+  - link "Wigglytuff ex Wigglytuff ex Colorless ☆☆":
+    - /url: /pocketmode/a1-265
+    - img "Wigglytuff ex"
+    - heading "Wigglytuff ex" [level=4]
+    - text: Colorless ☆☆
+  - link "Wigglytuff ex Wigglytuff ex Colorless ☆☆":
+    - /url: /pocketmode/a1-279
+    - img "Wigglytuff ex"
+    - heading "Wigglytuff ex" [level=4]
+    - text: Colorless ☆☆
+  - link "Woobat Woobat Psychic ◊":
+    - /url: /pocketmode/a1-133
+    - img "Woobat"
+    - heading "Woobat" [level=4]
+    - text: Psychic ◊
+  - link "Wooloo Wooloo Colorless ◊":
+    - /url: /pocketmode/a1-214
+    - img "Wooloo"
+    - heading "Wooloo" [level=4]
+    - text: Colorless ◊
+  - link "Zapdos Zapdos Lightning ◊◊◊":
+    - /url: /pocketmode/a1-103
+    - img "Zapdos"
+    - heading "Zapdos" [level=4]
+    - text: Lightning ◊◊◊
+  - link "Zapdos ex Zapdos ex Lightning ◊◊◊◊":
+    - /url: /pocketmode/a1-104
+    - img "Zapdos ex"
+    - heading "Zapdos ex" [level=4]
+    - text: Lightning ◊◊◊◊
+  - link "Zapdos ex Zapdos ex Lightning ☆☆":
+    - /url: /pocketmode/a1-260
+    - img "Zapdos ex"
+    - heading "Zapdos ex" [level=4]
+    - text: Lightning ☆☆
+  - link "Zapdos ex Zapdos ex Lightning ☆☆":
+    - /url: /pocketmode/a1-276
+    - img "Zapdos ex"
+    - heading "Zapdos ex" [level=4]
+    - text: Lightning ☆☆
+  - link "Zebstrika Zebstrika Lightning ◊◊":
+    - /url: /pocketmode/a1-106
+    - img "Zebstrika"
+    - heading "Zebstrika" [level=4]
+    - text: Lightning ◊◊
+  - link "Zubat Zubat Darkness ◊":
+    - /url: /pocketmode/a1-172
+    - img "Zubat"
+    - heading "Zubat" [level=4]
+    - text: Darkness ◊
+  - text: Press ? for shortcuts 🔕
+  - heading "Push Notifications" [level=3]
+  - paragraph: Blocked by user
+  - button "Enable"
+- contentinfo:
+  - paragraph:
+    - text: © 2025 DexTrends - A
+    - link "PakePoint":
+      - /url: https://www.pakepoint.com
+    - text: Project. All rights reserved.
+- button "Open card comparison tool":
+  - img
+- text: Compare Cards
+- button "💡"
+- button:
+  - img
+- alert: /pocketmode/set/genetic-apex
+- button "Open Next.js Dev Tools":
+  - img
+```

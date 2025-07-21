@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, createContext, useContext, ReactNode } from 'react';
+import { useRouter } from 'next/router';
 import logger from '../../utils/logger';
 
 // Type definitions
@@ -221,6 +222,7 @@ const NotificationContainer: React.FC<{ notifications: Notification[]; onDismiss
 // Main notification provider
 export const NotificationProvider: React.FC<NotificationProviderProps> = ({ children }) => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const router = useRouter();
 
   const addNotification = useCallback((notification: Partial<Notification>): string | number => {
     const id = Date.now() + Math.random();
@@ -289,9 +291,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
           label: 'View Favorites',
           handler: () => {
             // Navigate to favorites page
-            if (typeof window !== 'undefined') {
-              window.location.href = '/favorites';
-            }
+            router.push('/favorites');
           }
         }
       ],
@@ -329,6 +329,10 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
 
   // Expose notification functions globally
   useEffect(() => {
+    // Set global API for modern usage
+    setGlobalNotificationAPI(notify);
+    
+    // Legacy window.showNotification for backwards compatibility
     if (typeof window !== 'undefined') {
       window.showNotification = (type: string, message: string, options?: { description?: string; duration?: number }) => {
         addNotification({ 
@@ -339,7 +343,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
         });
       };
     }
-  }, [addNotification]);
+  }, [addNotification, router, notify]);
 
   // Context value
   const contextValue: NotificationContextValue = {
@@ -416,6 +420,59 @@ export const useSmartNotifications = () => {
     notifySearchResult,
     notifyNetworkStatus
   };
+};
+
+// Global notification API for use outside React components
+let globalNotificationAPI: NotifyHelpers | null = null;
+
+export const setGlobalNotificationAPI = (api: NotifyHelpers) => {
+  globalNotificationAPI = api;
+};
+
+// Global notification functions that can be used anywhere
+export const GlobalNotifications = {
+  success: (message: string, options?: Partial<Notification>) => {
+    if (globalNotificationAPI) {
+      return globalNotificationAPI.success(message, options);
+    }
+    console.warn('GlobalNotifications: NotificationProvider not initialized');
+    return -1;
+  },
+  error: (message: string, options?: Partial<Notification>) => {
+    if (globalNotificationAPI) {
+      return globalNotificationAPI.error(message, options);
+    }
+    console.warn('GlobalNotifications: NotificationProvider not initialized');
+    return -1;
+  },
+  warning: (message: string, options?: Partial<Notification>) => {
+    if (globalNotificationAPI) {
+      return globalNotificationAPI.warning(message, options);
+    }
+    console.warn('GlobalNotifications: NotificationProvider not initialized');
+    return -1;
+  },
+  info: (message: string, options?: Partial<Notification>) => {
+    if (globalNotificationAPI) {
+      return globalNotificationAPI.info(message, options);
+    }
+    console.warn('GlobalNotifications: NotificationProvider not initialized');
+    return -1;
+  },
+  loading: (message: string, options?: Partial<Notification>) => {
+    if (globalNotificationAPI) {
+      return globalNotificationAPI.loading(message, options);
+    }
+    console.warn('GlobalNotifications: NotificationProvider not initialized');
+    return -1;
+  },
+  cardAdded: (cardName: string, options?: Partial<Notification>) => {
+    if (globalNotificationAPI) {
+      return globalNotificationAPI.cardAdded(cardName, options);
+    }
+    console.warn('GlobalNotifications: NotificationProvider not initialized');
+    return -1;
+  }
 };
 
 export default NotificationProvider;

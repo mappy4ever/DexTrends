@@ -29,6 +29,7 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
   const { theme } = useTheme();
   const [currentFact, setCurrentFact] = useState(0);
   const [randomPokemon, setRandomPokemon] = useState<RandomPokemon | null>(null);
+  const [loadingRandomPokemon, setLoadingRandomPokemon] = useState(false);
 
   const pokemonFacts: PokemonFact[] = [
     {
@@ -126,6 +127,7 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
   };
 
   const getRandomPokemon = async () => {
+    setLoadingRandomPokemon(true);
     try {
       const randomId = Math.floor(Math.random() * 1010) + 1;
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomId}`);
@@ -138,6 +140,8 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
       });
     } catch (error) {
       logger.error('Error fetching random Pokemon:', { error });
+    } finally {
+      setLoadingRandomPokemon(false);
     }
   };
 
@@ -169,7 +173,18 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
               <h2 className="text-2xl font-bold mb-4 text-center text-pokemon-blue">
                 🎲 Random Pokémon
               </h2>
-              {randomPokemon ? (
+              {loadingRandomPokemon ? (
+                <div className="text-center">
+                  <div className="w-32 h-32 mx-auto mb-4 bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse"></div>
+                  <div className="h-6 w-32 mx-auto mb-2 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+                  <div className="h-4 w-20 mx-auto mb-4 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+                  <div className="flex justify-center gap-2 mb-4">
+                    <div className="h-6 w-16 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse"></div>
+                    <div className="h-6 w-16 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse"></div>
+                  </div>
+                  <p className="text-gray-500">Loading...</p>
+                </div>
+              ) : randomPokemon ? (
                 <div className="text-center">
                   <img 
                     src={randomPokemon.sprite} 
@@ -195,14 +210,19 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
                 </div>
               ) : (
                 <div className="text-center">
-                  <div className="w-32 h-32 mx-auto mb-4 bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse"></div>
-                  <p className="text-gray-500">Loading...</p>
+                  <div className="w-32 h-32 mx-auto mb-4 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
+                  <p className="text-gray-500">No Pokémon loaded</p>
                 </div>
               )}
               <button
                 onClick={getRandomPokemon}
-                className="w-full bg-pokemon-yellow hover:bg-yellow-600 text-white font-bold py-3 rounded-lg transition-colors duration-200">
-                Get New Random Pokémon!
+                disabled={loadingRandomPokemon}
+                className={`w-full font-bold py-3 rounded-lg transition-colors duration-200 ${
+                  loadingRandomPokemon 
+                    ? 'bg-gray-400 cursor-not-allowed' 
+                    : 'bg-pokemon-yellow hover:bg-yellow-600'
+                } text-white`}>
+                {loadingRandomPokemon ? 'Loading...' : 'Get New Random Pokémon!'}
               </button>
             </div>
 

@@ -8,7 +8,7 @@ import { fetchPocketData } from '../../utils/pocketData';
 import { TypeBadge } from '../../components/ui/TypeBadge';
 import PackOpening from '../../components/ui/PackOpening';
 import StyledBackButton from '../../components/ui/StyledBackButton';
-import { PocketLoadingScreen } from '../../components/ui/loading/UnifiedLoadingScreen';
+import { PageLoader } from '../../utils/unifiedLoading';
 import logger from '../../utils/logger';
 import type { PocketCard } from '../../types/api/pocket-cards';
 
@@ -68,14 +68,27 @@ const Expansions: NextPage = () => {
   const [showPackOpening, setShowPackOpening] = useState(false);
   const [packOpenCount, setPackOpenCount] = useState(0);
   const [lastOpenedCards, setLastOpenedCards] = useState<ExtendedPocketCard[]>([]);
+  const [packHistory, setPackHistory] = useState<Array<{
+    expansion: string;
+    cards: ExtendedPocketCard[];
+    timestamp: number;
+  }>>([]);
   
-  // Load cards on component mount
+  // Load cards and pack history on component mount
   useEffect(() => {
     const loadCards = async () => {
       try {
         setLoading(true);
         const data = await fetchPocketData();
         setAllCards(data || []);
+        
+        // Load pack history from localStorage
+        const savedHistory = localStorage.getItem('packOpeningHistory');
+        if (savedHistory) {
+          const history = JSON.parse(savedHistory);
+          setPackHistory(history);
+          setPackOpenCount(history.length);
+        }
       } catch (err) {
         setError('Failed to load expansions');
         logger.error('Error loading pocket cards:', { error: err });
@@ -115,6 +128,9 @@ const Expansions: NextPage = () => {
              packName !== 'unknown' &&
              packName !== '';
     });
+    
+    console.log('Total cards loaded:', allCards.length);
+    console.log('Main set cards after filtering:', mainSetCards.length);
     
     // Redistribute shared cards to individual packs based on type
     const redistributedCards = mainSetCards.map(card => {
@@ -161,40 +177,31 @@ const Expansions: NextPage = () => {
       expansionMap[packName].totalCards++;
     });
     
-    // Get only real expansions with high card counts and filter out shared/placeholder packs
+    // Get only real expansions with sufficient card counts
     const realExpansions = Object.values(expansionMap).filter(expansion => {
       const name = expansion.name;
       const cardCount = expansion.totalCards;
       
-      // Filter out shared, placeholder, and low-count packs
+      // Filter out shared and placeholder packs
       if (name.includes('Shared(') || 
           name.includes('PLACEHOLDER') ||
-          name === 'Eevee Grove' ||
           name.includes('Extra Dimensional') ||
           name.includes('Space Time') ||
-          name.includes('Celestial Guardian') ||
-          cardCount < 70) {
+          name.includes('Celestial Guardian')) {
         return false;
       }
       
-      // Only keep main expansions with high card counts
-      return (
-        (name === 'Mewtwo' && cardCount >= 90) ||
-        (name === 'Charizard' && cardCount >= 90) ||
-        (name === 'Pikachu' && cardCount >= 85) ||
-        (name === 'Mythical Island' && cardCount >= 80) ||
-        (name === 'Dialga' && cardCount >= 75) ||
-        (name === 'Palkia' && cardCount >= 75) ||
-        (name === 'Triumphant Light' && cardCount >= 90) ||
-        (name === 'Shining Revelry' && cardCount >= 100) ||
-        (name === 'Solgaleo' && cardCount >= 90) ||
-        (name === 'Lunala' && cardCount >= 90) ||
-        (name === 'Extradimensional Crisis' && cardCount >= 90)
-      );
+      // Log pack details for debugging
+      console.log(`Pack: ${name}, Cards: ${cardCount}`);
+      
+      // Keep all packs with at least 50 cards to ensure good variety
+      return cardCount >= 50;
     });
     
+    console.log('Real expansions found:', realExpansions.map(e => `${e.name}: ${e.totalCards} cards`));
+    
     return realExpansions
-    .filter(expansion => expansion.totalCards >= 70) // Only show high-quality sets
+    .filter(expansion => expansion.totalCards >= 20) // Adjusted threshold to match actual data
     .map(expansion => {
       // Get featured cards (rare cards for showcase)
       const rareCards = expansion.cards
@@ -247,7 +254,7 @@ const Expansions: NextPage = () => {
       'Dialga': 'Dialga',
       'Palkia': 'Palkia',
       'Triumphant Light': 'Arceus',
-      'Shining Revelry': 'Shiny Charizard',
+      'Shining Revelry': 'Shining Revelry',
       'Solgaleo': 'Solgaleo',
       'Lunala': 'Lunala',
       'Extradimensional Crisis': 'Buzzwole'
@@ -310,6 +317,9 @@ const Expansions: NextPage = () => {
       // Shining Revelry (A2b)
       'Shining Revelry': '/images/PocketBoosterPacks/shinningrivalrycharizard.png',
       
+      // Eevee Grove (if we want to include it)
+      'Eevee Grove': '/images/PocketBoosterPacks/eeveegrove2.png',
+      
       // Celestial Guardians (A3)
       'Solgaleo': '/images/PocketBoosterPacks/celestialguardiansol.png',
       'Lunala': '/images/PocketBoosterPacks/celestialguardianlun.png',
@@ -330,10 +340,10 @@ const Expansions: NextPage = () => {
       'Celestial Guardian': 'Harness the radiant power of Solgaleo, guardian of the sun.',
       'Celestial Guardian Luna': 'Embrace the mysterious lunar energy of Lunala, guardian of the moon.',
       'Triumphant Light': 'Illuminate your path to victory with brilliant light-type Pokemon.',
-      'Shining Rivalry': 'Experience the ultimate rivalry with shining rare Pokemon cards.',
+      'Shining Revelry': 'Experience the ultimate celebration with shining rare Pokemon cards.',
       'Mythical Island': 'Discover mystical Pokemon from the legendary Mythical Island.',
       'Eevee Grove': 'Explore the diverse evolutions of Eevee in this nature-themed expansion.',
-      'Extra Dimensional Crisis': 'Battle across dimensions with ultra-rare interdimensional Pokemon.'
+      'Extradimensional Crisis': 'Battle across dimensions with ultra-rare interdimensional Pokemon.'
     };
     return descriptions[name] || `Discover the incredible power of ${name} in this exciting expansion.`;
   }
@@ -361,34 +371,6 @@ const Expansions: NextPage = () => {
         bgPattern: 'radial-gradient(circle at 50% 80%, rgba(251, 191, 36, 0.3) 0%, transparent 50%)',
         glowColor: 'shadow-yellow-500/50'
       },
-      'Space Time Dialga': {
-        gradient: 'from-blue-700 via-steel-600 to-blue-900',
-        accentColor: 'blue',
-        emoji: '⏰',
-        bgPattern: 'radial-gradient(circle at 30% 40%, rgba(59, 130, 246, 0.3) 0%, transparent 50%)',
-        glowColor: 'shadow-blue-500/50'
-      },
-      'Space Time Palkia': {
-        gradient: 'from-pink-600 via-purple-600 to-pink-800',
-        accentColor: 'pink',
-        emoji: '🌌',
-        bgPattern: 'radial-gradient(circle at 70% 30%, rgba(236, 72, 153, 0.3) 0%, transparent 50%)',
-        glowColor: 'shadow-pink-500/50'
-      },
-      'Celestial Guardian': {
-        gradient: 'from-orange-500 via-yellow-500 to-orange-700',
-        accentColor: 'orange',
-        emoji: '☀️',
-        bgPattern: 'radial-gradient(circle at 50% 30%, rgba(251, 146, 60, 0.3) 0%, transparent 50%)',
-        glowColor: 'shadow-orange-500/50'
-      },
-      'Celestial Guardian Luna': {
-        gradient: 'from-purple-800 via-indigo-700 to-purple-900',
-        accentColor: 'purple',
-        emoji: '🌙',
-        bgPattern: 'radial-gradient(circle at 40% 60%, rgba(147, 51, 234, 0.3) 0%, transparent 50%)',
-        glowColor: 'shadow-purple-500/50'
-      },
       'Triumphant Light': {
         gradient: 'from-yellow-300 via-white to-yellow-500',
         accentColor: 'yellow',
@@ -396,10 +378,10 @@ const Expansions: NextPage = () => {
         bgPattern: 'radial-gradient(circle at 50% 50%, rgba(251, 191, 36, 0.3) 0%, transparent 50%)',
         glowColor: 'shadow-yellow-500/50'
       },
-      'Shining Rivalry': {
+      'Shining Revelry': {
         gradient: 'from-red-500 via-orange-500 to-yellow-500',
         accentColor: 'orange',
-        emoji: '⚔️',
+        emoji: '🌟',
         bgPattern: 'radial-gradient(circle at 60% 40%, rgba(239, 68, 68, 0.3) 0%, transparent 50%)',
         glowColor: 'shadow-red-500/50'
       },
@@ -417,12 +399,40 @@ const Expansions: NextPage = () => {
         bgPattern: 'radial-gradient(circle at 40% 60%, rgba(34, 197, 94, 0.3) 0%, transparent 50%)',
         glowColor: 'shadow-green-500/50'
       },
-      'Extra Dimensional Crisis': {
+      'Extradimensional Crisis': {
         gradient: 'from-violet-600 via-purple-600 to-indigo-800',
         accentColor: 'violet',
         emoji: '🌀',
         bgPattern: 'radial-gradient(circle at 30% 70%, rgba(139, 92, 246, 0.3) 0%, transparent 50%)',
         glowColor: 'shadow-violet-500/50'
+      },
+      'Solgaleo': {
+        gradient: 'from-orange-500 via-yellow-500 to-orange-700',
+        accentColor: 'orange',
+        emoji: '☀️',
+        bgPattern: 'radial-gradient(circle at 50% 30%, rgba(251, 146, 60, 0.3) 0%, transparent 50%)',
+        glowColor: 'shadow-orange-500/50'
+      },
+      'Lunala': {
+        gradient: 'from-purple-800 via-indigo-700 to-purple-900',
+        accentColor: 'purple',
+        emoji: '🌙',
+        bgPattern: 'radial-gradient(circle at 40% 60%, rgba(147, 51, 234, 0.3) 0%, transparent 50%)',
+        glowColor: 'shadow-purple-500/50'
+      },
+      'Dialga': {
+        gradient: 'from-blue-700 via-steel-600 to-blue-900',
+        accentColor: 'blue',
+        emoji: '⏰',
+        bgPattern: 'radial-gradient(circle at 30% 40%, rgba(59, 130, 246, 0.3) 0%, transparent 50%)',
+        glowColor: 'shadow-blue-500/50'
+      },
+      'Palkia': {
+        gradient: 'from-pink-600 via-purple-600 to-pink-800',
+        accentColor: 'pink',
+        emoji: '🌌',
+        bgPattern: 'radial-gradient(circle at 70% 30%, rgba(236, 72, 153, 0.3) 0%, transparent 50%)',
+        glowColor: 'shadow-pink-500/50'
       }
     };
     return themes[name] || {
@@ -444,6 +454,22 @@ const Expansions: NextPage = () => {
   const handlePackOpened = (cards: ExtendedPocketCard[]) => {
     setLastOpenedCards(cards);
     setPackOpenCount(prev => prev + 1);
+    
+    // Save to pack history
+    if (selectedExpansion) {
+      const newHistoryItem = {
+        expansion: selectedExpansion.name,
+        cards: cards,
+        timestamp: Date.now()
+      };
+      
+      const updatedHistory = [...packHistory, newHistoryItem];
+      setPackHistory(updatedHistory);
+      
+      // Save to localStorage (keep last 100 packs)
+      const historyToSave = updatedHistory.slice(-100);
+      localStorage.setItem('packOpeningHistory', JSON.stringify(historyToSave));
+    }
   };
 
   // Close pack opening modal
@@ -510,13 +536,7 @@ const Expansions: NextPage = () => {
         <Head>
           <title>Expansions | Pokemon Pocket | DexTrends</title>
         </Head>
-        <PocketLoadingScreen
-          message="Loading Expansions..."
-          customMessage="Preparing the ultimate pack opening experience"
-          showFacts={false}
-          overlay={false}
-          preventFlash={true}
-        />
+        <PageLoader text="Loading Expansions..." />
       </>
     );
   }
@@ -580,6 +600,20 @@ const Expansions: NextPage = () => {
                   {expansions.length} Booster Packs
                 </span>
               </div>
+              {packHistory.length > 0 && (
+                <button
+                  onClick={() => {
+                    if (confirm('Clear pack opening history?')) {
+                      setPackHistory([]);
+                      setPackOpenCount(0);
+                      localStorage.removeItem('packOpeningHistory');
+                    }
+                  }}
+                  className="text-sm text-text-grey hover:text-pokemon-red transition-colors"
+                >
+                  Clear History
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -603,7 +637,8 @@ const Expansions: NextPage = () => {
             return (
               <div
                 key={expansion.id}
-                className="group bg-white border border-border-color rounded-lg shadow-sm card-holographic overflow-hidden"
+                className="group bg-white border border-border-color rounded-lg shadow-sm card-holographic overflow-hidden hover:shadow-lg hover:border-pokemon-red/20 transition-all duration-300"
+                data-testid="pack-item"
               >
                 {/* Pack Image - Vertical Showcase */}
                 <div className="relative h-64 bg-light-grey rounded-t-lg overflow-hidden flex items-center justify-center">
@@ -679,6 +714,7 @@ const Expansions: NextPage = () => {
                       onClick={() => openBoosterPack(expansion)}
                       disabled={showPackOpening}
                       className="w-full btn-primary py-3 font-semibold text-lg hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                      data-testid="open-pack"
                     >
                       {showPackOpening ? 'Opening Pack...' : 'Open Pack'}
                     </button>
@@ -694,6 +730,46 @@ const Expansions: NextPage = () => {
             );
           })}
         </div>
+
+        {/* Pack Opening Statistics */}
+        {packHistory.length > 0 && (
+          <div className="bg-white rounded-lg border border-border-color shadow-sm p-8 mb-8">
+            <h3 className="text-2xl font-bold text-dark-text mb-6 text-center">
+              Your Pack Opening Stats
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="bg-light-grey rounded-lg p-4 text-center border border-border-color">
+                <div className="text-2xl font-bold text-pokemon-red">{packOpenCount}</div>
+                <div className="text-sm text-text-grey">Total Packs Opened</div>
+              </div>
+              <div className="bg-light-grey rounded-lg p-4 text-center border border-border-color">
+                <div className="text-2xl font-bold text-pokemon-yellow">
+                  {packHistory.reduce((acc, pack) => 
+                    acc + pack.cards.filter(c => c.rarity?.includes('★') || c.rarity?.includes('◊◊◊')).length, 0
+                  )}
+                </div>
+                <div className="text-sm text-text-grey">Rare Cards Pulled</div>
+              </div>
+              <div className="bg-light-grey rounded-lg p-4 text-center border border-border-color">
+                <div className="text-2xl font-bold text-pokemon-blue">
+                  {packOpenCount > 0 ? (Math.round((packHistory.reduce((acc, pack) => 
+                    acc + pack.cards.filter(c => c.rarity?.includes('★') || c.rarity?.includes('◊◊◊')).length, 0
+                  ) / packOpenCount) * 100) / 100) : 0}
+                </div>
+                <div className="text-sm text-text-grey">Avg Rares per Pack</div>
+              </div>
+              <div className="bg-light-grey rounded-lg p-4 text-center border border-border-color">
+                <div className="text-2xl font-bold text-pokemon-green">
+                  {Object.keys(packHistory.reduce((acc, pack) => {
+                    acc[pack.expansion] = true;
+                    return acc;
+                  }, {} as Record<string, boolean>)).length}
+                </div>
+                <div className="text-sm text-text-grey">Different Packs Tried</div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Clean Feature Highlights */}
         <div className="bg-white rounded-lg border border-border-color shadow-sm p-8 text-center">

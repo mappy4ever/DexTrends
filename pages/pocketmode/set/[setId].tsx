@@ -54,12 +54,36 @@ export default function SetView() {
   useEffect(() => {
     const loadData = async () => {
       if (!setId || typeof setId !== 'string') return;
+      console.log('[SetView] Loading set:', setId);
+      
+      // Handle old URL format (e.g., a2b-107) by redirecting to the expansion page
+      if (/^[a-z]\d+[a-z]?-\d+$/i.test(setId)) {
+        // Extract the expansion code (e.g., a2b from a2b-107)
+        const expansionCode = setId.split('-')[0].toLowerCase();
+        
+        // Map old expansion codes to correct set names
+        const expansionMapping: Record<string, string> = {
+          'a1': 'genetic-apex',
+          'a1a': 'mythical-island', 
+          'a2': 'space-time-smackdown',
+          'a2a': 'triumphant-light',
+          'a2b': 'shining-revelry', // Fix: a2b should redirect to shining-revelry
+          'a3': 'celestial-guardians',
+          'a3a': 'extradimensional-crisis'
+        };
+        
+        const correctSetName = expansionMapping[expansionCode] || expansionCode;
+        router.replace(`/pocketmode/set/${correctSetName}`);
+        return;
+      }
       
       try {
         setLoading(true);
         
         // Load cards data
         const cards = await fetchPocketData() as ExtendedPocketCard[];
+        console.log('[SetView] Total cards loaded:', cards.length);
+        console.log('[SetView] Sample pack names:', [...new Set(cards.slice(0, 20).map((c: any) => c.pack))].filter(Boolean));
         setAllCards(cards || []);
         
         // Load set information from API
@@ -79,21 +103,72 @@ export default function SetView() {
     };
     
     loadData();
-  }, [setId]);
+  }, [setId, router]);
 
   // Filter cards for this set
   const setCards = useMemo(() => {
     if (!allCards.length || !setId || typeof setId !== 'string') return [];
     
-    // Map set IDs to pack names
-    const setNameMap: Record<string, string> = {
-      'mewtwo': 'Mewtwo',
-      'charizard': 'Charizard', 
-      'pikachu': 'Pikachu'
+    // Map set IDs to pack names - handle multiple formats
+    const setNameMap: Record<string, string[]> = {
+      // Genetic Apex packs
+      'mewtwo': ['Mewtwo'],
+      'charizard': ['Charizard'], 
+      'pikachu': ['Pikachu'],
+      'genetic-apex': ['Mewtwo', 'Charizard', 'Pikachu'],
+      'a1': ['Mewtwo', 'Charizard', 'Pikachu'],
+      
+      // Mythical Island
+      'mythical-island': ['Mythical Island'],
+      'a1a': ['Mythical Island'],
+      
+      // Space-Time Smackdown
+      'space-time-smackdown': ['Dialga', 'Palkia'],
+      'a2': ['Dialga', 'Palkia'],
+      'dialga': ['Dialga'],
+      'palkia': ['Palkia'],
+      
+      // Other expansions
+      'triumphant-light': ['Reshiram', 'Zekrom'],
+      'a2a': ['Reshiram', 'Zekrom'],
+      'shining-revelry': ['Shaymin', 'Darkrai'],
+      'a2b': ['Shaymin', 'Darkrai'],
+      'celestial-guardians': ['Arceus'],
+      'a3': ['Arceus'],
+      'extradimensional-crisis': ['Giratina'],
+      'a3a': ['Giratina'],
+      'eevee-grove': ['Eevee Grove'],
+      'promo-a': ['Promo-A']
     };
     
-    const packName = setNameMap[setId];
-    return allCards.filter(card => card.pack === packName);
+    const packNames = setNameMap[setId] || [];
+    
+    // If no cards found with exact pack name match, try more flexible matching
+    let filteredCards = allCards.filter(card => packNames.includes(card.pack || ''));
+    
+    // If no cards found, try case-insensitive and partial matching
+    if (filteredCards.length === 0 && packNames.length > 0) {
+      const lowerPackNames = packNames.map(p => p.toLowerCase());
+      filteredCards = allCards.filter(card => {
+        const cardPack = (card.pack || '').toLowerCase();
+        // Check if card pack contains any of the expected pack names
+        return lowerPackNames.some(packName => 
+          cardPack.includes(packName) || packName.includes(cardPack)
+        );
+      });
+    }
+    
+    // Special handling for Genetic Apex - include shared cards
+    if (setId === 'genetic-apex' || setId === 'a1') {
+      const sharedCards = allCards.filter(card => 
+        (card.pack || '').toLowerCase().includes('shared') && 
+        (card.pack || '').toLowerCase().includes('genetic')
+      );
+      filteredCards = [...filteredCards, ...sharedCards];
+    }
+    
+    console.log(`[SetView] Set ${setId}: Found ${filteredCards.length} cards for packs:`, packNames);
+    return filteredCards;
   }, [allCards, setId]);
 
   // Get unique values for filters

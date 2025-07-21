@@ -10,7 +10,7 @@ import PocketCardList from "../../components/PocketCardList";
 import Modal from "../../components/ui/modals/Modal";
 import logger from "../../utils/logger";
 import { getEvolutionChain } from "../../utils/evolutionUtils";
-import { PocketLoadingScreen } from "../../components/ui/loading/UnifiedLoadingScreen";
+import { PageLoader } from "../../utils/unifiedLoading";
 import type { PocketCard } from "../../types/api/pocket-cards";
 // Define EvolutionTreeNode locally since it's not exported from types
 interface EvolutionTreeNode {
@@ -318,9 +318,14 @@ export default function PocketPokemonDetail() {
         setError(null);
 
         const data = await fetchPocketData();
+        console.log('[Pocket Card Detail] Total cards loaded:', data.length);
+        console.log('[Pocket Card Detail] Looking for card ID:', pokemonid);
+        
         const card = data.find((c: PocketCard) => c.id === pokemonid);
-
+        console.log('[Pocket Card Detail] Found card:', card);
+        
         if (!card) {
+          console.error('[Pocket Card Detail] Card not found in data');
           setError("Pokemon card not found");
           setLoading(false);
           return;
@@ -395,12 +400,7 @@ export default function PocketPokemonDetail() {
 
   if (loading) {
     return (
-      <PocketLoadingScreen
-        message="Loading Pokémon..."
-        showFacts={false}
-        overlay={false}
-        preventFlash={true}
-      />
+      <PageLoader text="Loading Pokémon..." />
     );
   }
 
@@ -428,10 +428,11 @@ export default function PocketPokemonDetail() {
     ...relatedCards.related,
     ...relatedCards.fallback
   ] : [];
-  const currentCard = allCards.find(c => c.id === currentCardId) || { 
+  const primaryCard = relatedCards?.samePokemon.find(c => c.id === currentCardId);
+  const currentCard = primaryCard || allCards.find(c => c.id === currentCardId) || { 
     id: currentCardId,
     name: pokemonDetails.name,
-    image: `/pocket-cards/${currentCardId}.webp`,
+    image: null, // Will use fallback in Image component
     type: pokemonDetails.type,
     pack: pokemonDetails.pack,
     rarity: pokemonDetails.rarity
@@ -467,6 +468,10 @@ export default function PocketPokemonDetail() {
                   alt={pokemonDetails.name}
                   width={300}
                   height={420}
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = "/back-card.png";
+                  }}
                   className="rounded-lg shadow-2xl transition-transform group-hover:scale-105"
                   placeholder="blur"
                   blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Eve6J4HNvbzTe7+v1+8BvxRf4X3/f/9k="
@@ -682,6 +687,10 @@ export default function PocketPokemonDetail() {
               alt={zoomedCard.name}
               width={400}
               height={560}
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = "/back-card.png";
+              }}
               className="rounded-lg shadow-lg"
               placeholder="blur"
               blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Eve6J4HNvbzTe7+v1+8BvxRf4X3/f/9k="

@@ -6,8 +6,8 @@ import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../components/ui/
 import { useTheme } from "../context/UnifiedAppContext";
 import { useViewSettings } from "../context/UnifiedAppContext";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
-import { InlineLoadingSpinner } from "../components/ui/loading/LoadingSpinner";
-import { SetLoadingScreen } from "../components/ui/loading/UnifiedLoadingScreen";
+import { InlineLoader } from "../utils/unifiedLoading";
+import { PageLoader } from "../utils/unifiedLoading";
 import FullBleedWrapper from "../components/ui/FullBleedWrapper";
 import TCGSetsErrorBoundary from "../components/TCGSetsErrorBoundary";
 import { CardSet } from "../types/api/cards";
@@ -120,7 +120,7 @@ const TcgSetsContent: React.FC = () => {
             </div>
             
             {/* Search and Filters Card */}
-            <div className="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-xl border border-white/30 mb-8">
+            <div className="panel-base mb-8">
               {/* Search and Filters */}
               <div className="flex flex-col gap-6">
                 {/* Search Bar */}
@@ -128,7 +128,7 @@ const TcgSetsContent: React.FC = () => {
                   <input
                     id="searchInput"
                     type="text"
-                    className="w-full pr-6 py-4 pl-12 bg-gray-50 border border-gray-200 rounded-full text-lg focus:outline-none focus:border-purple-400 focus:bg-white transition-all duration-300"
+                    className="input text-lg pl-12"
                     placeholder="Search for a set (e.g., Base, Evolving Skies)"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
@@ -152,7 +152,7 @@ const TcgSetsContent: React.FC = () => {
                     <div className="relative">
                       <select
                         id="seriesFilter"
-                        className="w-full px-4 py-2.5 pr-10 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-full appearance-none cursor-pointer hover:border-purple-300 dark:hover:border-purple-500 focus:outline-none focus:border-purple-400 dark:focus:border-purple-500 focus:bg-white dark:focus:bg-gray-700 transition-all duration-300 text-gray-700 dark:text-gray-300 text-sm"
+                        className="select text-sm"
                         value={filterSeries}
                         onChange={(e) => setFilterSeries(e.target.value)}
                       >
@@ -174,7 +174,7 @@ const TcgSetsContent: React.FC = () => {
                     <div className="relative">
                       <select
                         id="sortOption"
-                        className="w-full px-4 py-2.5 pr-10 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-full appearance-none cursor-pointer hover:border-purple-300 dark:hover:border-purple-500 focus:outline-none focus:border-purple-400 dark:focus:border-purple-500 focus:bg-white dark:focus:bg-gray-700 transition-all duration-300 text-gray-700 dark:text-gray-300 text-sm"
+                        className="select text-sm"
                         value={sortOption}
                         onChange={(e) => setSortOption(e.target.value as SortOption)}
                       >
@@ -195,7 +195,7 @@ const TcgSetsContent: React.FC = () => {
                     <div className="relative">
                       <select
                         id="sortDirection"
-                        className="w-full px-4 py-2.5 pr-10 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-full appearance-none cursor-pointer hover:border-purple-300 dark:hover:border-purple-500 focus:outline-none focus:border-purple-400 dark:focus:border-purple-500 focus:bg-white dark:focus:bg-gray-700 transition-all duration-300 text-gray-700 dark:text-gray-300 text-sm"
+                        className="select text-sm"
                         value={sortDirection}
                         onChange={(e) => setSortDirection(e.target.value as SortDirection)}
                       >
@@ -227,10 +227,7 @@ const TcgSetsContent: React.FC = () => {
           </FadeIn>
       
       {loading ? (
-        <SetLoadingScreen 
-          message="Loading TCG sets..."
-          preventFlash={true}
-        />
+        <PageLoader text="Loading TCG sets..." />
           ) : error ? (
             <div className="bg-red-50/80 backdrop-blur-sm border border-red-200 rounded-3xl p-8 text-center shadow-lg">
               <h2 className="text-2xl font-bold text-red-600">Error</h2>
@@ -306,9 +303,7 @@ const TcgSetsContent: React.FC = () => {
             >
               {scrollLoading && (
                 <div className="bg-white/80 backdrop-blur-sm rounded-full px-6 py-3 shadow-lg">
-                  <InlineLoadingSpinner 
-                    text="Loading more sets..." 
-                  />
+                  <InlineLoader text="Loading more sets..." />
                 </div>
               )}
             </div>

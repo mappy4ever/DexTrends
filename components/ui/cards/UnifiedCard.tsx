@@ -416,6 +416,9 @@ const UnifiedCard = memo(({
 
   // Optimized event handlers with useSmartCallback
   const handleCardClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    // Prevent default to ensure our navigation works
+    e.preventDefault();
+    
     const target = e.target as HTMLElement;
     if (
       target.closest('a') ||
@@ -427,7 +430,7 @@ const UnifiedCard = memo(({
     
     if (onCardClick) {
       onCardClick(card);
-    } else {
+    } else if (router && normalizedCard.linkPath) {
       router.push(normalizedCard.linkPath);
     }
     

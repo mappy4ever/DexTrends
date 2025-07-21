@@ -1,151 +1,158 @@
 # CLAUDE.md - DexTrends Project Context
 
 ## Project Overview
-DexTrends is a Pokemon TCG and Pokedex application with advanced features for tracking cards, prices, and Pokemon data.
+DexTrends is a Pokemon TCG and Pokedex application built with Next.js and TypeScript.
+
+## CRITICAL RULES - PREVENT DUPLICATES
+
+### Before Creating ANY New File or Function:
+1. **ALWAYS search first** - Use Grep/LS tools to check if similar functionality exists
+2. **Check multiple locations** - Functions might be in utils/, components/ui/, or other directories
+3. **Look for existing patterns** - This codebase likely already has what you need
+4. **Reuse over recreate** - Modify/extend existing code instead of creating new files
+
+### Common Duplicate Pitfalls to Avoid:
+- Loading components - Check `/components/ui/loading/` and `/utils/unifiedLoading.tsx`
+- Modal components - Check `/components/ui/modals/`
+- Animation utilities - Check `/utils/motion.tsx` and `/components/ui/animations/`
+- API utilities - Check `/utils/apiutils.ts`
+- Type definitions - Check `/types/` directory
+- Hooks - Check `/hooks/` directory
+
+### If You Must Create Something New:
+1. Document WHY existing solutions don't work
+2. Check if you can extend existing code instead
+3. Follow existing naming conventions
+4. Update relevant index files
 
 ## Technical Stack
 - **Framework**: Next.js 15.3.5 with TypeScript (100% coverage)
-- **State Management**: UnifiedAppContext (React Context)
-- **Caching**: UnifiedCacheManager (3-tier: Memory → LocalStorage → Supabase)
-- **Bundle Size**: 722 KB (First Load JS)
-- **CSS**: 52.6 KB
+- **State**: React Context (UnifiedAppContext)
+- **Caching**: 3-tier (Memory → LocalStorage → Supabase)
+- **Testing**: Playwright E2E tests
+- **Styling**: Tailwind CSS
 
 ## Key Commands
 ```bash
-# Development
-npm run dev          # Start development server (port 3001)
+npm run dev          # Dev server (port 3001)
 npm run build        # Production build
-npm run lint         # Run ESLint
-npm run typecheck    # Run TypeScript checks
-
-# Testing
-npm test             # Run tests
-npm run test:iphone  # iPhone-specific tests
+npm run lint         # ESLint
+npm run typecheck    # TypeScript check
+npm test             # Run all tests
+npm run test:ui      # Test UI mode
 ```
-
-## Current Project Status (July 18, 2025)
-
-### ✅ TypeScript Migration: 100% Complete!
-- All production code converted to TypeScript
-- Zero JavaScript files remaining in production directories
-- Bundle size maintained under target
-- Full type safety across the codebase
-
-### ✅ Recent Fixes (Session 29)
-1. **Pokemon Form/Variant Selection** - Working correctly
-2. **Modal/Zoom Functionality** - Fixed and operational
-3. **Collections/Favorites CRUD** - Verified working
-4. **Pocket Mode Card Clicks** - Navigation fixed
-5. **Design Language** - Fully implemented
-
-### 🚧 Known Issues & Bugs
-See `/project-resources/docs/POST_MIGRATION_FIXES.md` for comprehensive list
-
-## Core QA Testing Conditions
-**IMPORTANT**: All QA testing must follow these conditions:
-
-1. **Physical Testing Required**
-   - Actually visit and interact with every page in the browser
-   - Do not assume anything works without verification
-   - Test all interactive elements (buttons, forms, modals, etc.)
-
-2. **Comprehensive Bug Tracking**
-   - Log ALL bugs found, regardless of cause (new, migration-related, or pre-existing)
-   - Include clear reproduction steps
-   - Assign priority levels (P0/P1/P2)
-   - Separate "Active Functionality Bugs" from migration issues
-
-3. **Feature Comparison**
-   - Compare TypeScript version with original JavaScript version
-   - Note any missing features or behavioral differences
-   - Document visual/UX differences
-
-4. **Documentation Requirements**
-   - Update `/project-resources/docs/POST_MIGRATION_FIXES.md`
-   - Group issues by page/feature for clarity
-   - Include expected vs actual behavior
 
 ## Project Structure
 ```
-/components     - React components (100% TypeScript)
-/context       - React Context providers
-/pages         - Next.js pages (100% TypeScript)
-/public        - Static assets
-/styles        - CSS/styling
-/utils         - Utility functions (100% TypeScript)
-/types         - TypeScript type definitions
-/project-resources - Documentation and non-code files
+/components     # React components
+/pages          # Next.js pages & API routes
+/utils          # Utility functions
+/types          # TypeScript types
+/tests          # Playwright tests
+/styles         # CSS files
 ```
 
-## Important Development Notes
+## Critical Patterns
 
-### TypeScript Best Practices
-- Always check for nullable properties before use
-- Use `override` modifier for class methods extending base classes
-- Handle Next.js query params: `Array.isArray(param) ? param[0] : String(param)`
-- Add type guards before accessing nested properties
-
-### Common Patterns
+### API Calls
 ```typescript
-// Pokemon name sanitization for API calls
-const sanitizePokemonName = (name: string): string => {
-  return name
-    .toLowerCase()
-    .replace(/♀/g, '-f')
-    .replace(/♂/g, '-m')
-    .replace(/[':.\s]/g, '-')
-    .replace(/--+/g, '-')
-    .replace(/-$/, '');
-};
+// Always use the caching utility
+import { fetchData } from '../utils/apiutils';
+const data = await fetchData(url);
+```
 
-// Navigation pattern
+### Navigation
+```typescript
+// Use Next.js router, NOT window.location
 import { useRouter } from 'next/router';
 const router = useRouter();
-router.push('/path'); // NOT window.location.href
+router.push('/path');
+```
 
-// Error handling pattern
+### Error Handling
+```typescript
+// Return empty data, don't throw
 try {
   const data = await fetchData(url);
   return data || [];
 } catch (error) {
   console.error('Error:', error);
-  return []; // Return empty array, don't throw
+  return [];
 }
 ```
 
-### Build & Module Notes
-- Do NOT add `"type": "module"` to package.json - breaks Next.js
-- Always run lint and typecheck before committing
-- Avoid module-level SDK configurations
-- Use dynamic imports for heavy components
+## Testing Guidelines
 
-## Next Priority Tasks
+### Test Infrastructure
+- API mocking in `/tests/helpers/api-mock.ts`
+- Wait strategies in `/tests/helpers/wait-strategies.ts`
+- Mock data in `/tests/helpers/mock-api-data.ts`
+- Custom fixtures in `/tests/fixtures/test-base.ts`
 
-### Immediate (P0)
-1. Fix all Critical Issues in POST_MIGRATION_FIXES.md
-2. Add comprehensive test coverage
-3. Performance optimization (target < 700KB bundle)
+### Key Test Patterns
+- Use `data-testid` attributes
+- Apply wait strategies for async ops
+- All external APIs are mocked
 
-### Short-term (P1)
-1. Implement missing features from bug reports
-2. Add proper error boundaries throughout
-3. Improve loading and error states
-4. Complete mobile gesture handling
+## File Creation Examples - What NOT to Do
 
-### Long-term (P2)
-1. Enable TypeScript strict mode
-2. Implement advanced caching strategies
-3. Add E2E testing with Playwright
-4. Performance monitoring and analytics
-5. Progressive Web App features
+### ❌ BAD: Creating duplicate functionality
+```typescript
+// DON'T: Create new loading component
+// components/MyNewLoader.tsx ❌
+export const MyNewLoader = () => <div>Loading...</div>
 
-## Quick Test URLs
+// DO: Use existing unified loader
+import { PageLoader } from '../utils/unifiedLoading';
 ```
-http://localhost:3001/pokedex/83        # Farfetch'd (special character)
-http://localhost:3001/pokedex/386       # Deoxys (forms)
-http://localhost:3001/battle-simulator  # Complex interactions
-http://localhost:3001/pocketmode        # Pocket TCG features
-http://localhost:3001/collections       # CRUD operations
+
+### ❌ BAD: Creating new utility when one exists
+```typescript
+// DON'T: Create new fetch wrapper
+// utils/myFetch.ts ❌
+export const myFetch = async (url) => {...}
+
+// DO: Use existing apiutils
+import { fetchData } from '../utils/apiutils';
+```
+
+### ✅ GOOD: Extending existing functionality
+```typescript
+// If you need new functionality, extend existing:
+import { fetchData } from '../utils/apiutils';
+
+export const fetchWithTimeout = (url, timeout) => {
+  // Builds on existing fetchData
+  return Promise.race([
+    fetchData(url),
+    new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('Timeout')), timeout)
+    )
+  ]);
+};
+```
+
+## Common Issues & Solutions
+
+### TypeScript
+- Check nullable properties: `pokemon?.name`
+- Handle query params: `Array.isArray(id) ? id[0] : String(id)`
+
+### Build
+- Do NOT add `"type": "module"` to package.json
+- Run lint & typecheck before committing
+
+### Performance
+- Use progressive loading for large lists
+- Implement proper error boundaries
+- Add loading states
+
+## Quick URLs
+```
+http://localhost:3001/pokedex           # Main Pokedex
+http://localhost:3001/pokedex/25        # Pokemon detail
+http://localhost:3001/battle-simulator  # Battle simulator
+http://localhost:3001/pocketmode        # Pocket TCG
 ```
 
 ## Git Workflow
@@ -153,24 +160,53 @@ http://localhost:3001/collections       # CRUD operations
 # Current branch
 git checkout optimization-branch-progress
 
-# Before making changes
-git pull origin optimization-branch-progress
-
-# After changes
+# Commit pattern
 git add -A
 git commit -m "fix: [description]"
 git push origin optimization-branch-progress
-
-# Create PR to main when ready
 ```
 
 ## Performance Targets
-- First Load JS: < 700KB (currently 722KB)
-- CSS Bundle: < 50KB (currently 52.6KB)
-- Build Time: < 5 minutes
-- Lighthouse Score: > 90
+- Bundle size: < 700KB
+- Test suite: < 10 minutes
+- Lighthouse: > 90
 
-## Contact & Support
-- Report issues: https://github.com/anthropics/claude-code/issues
-- Main branch: `main`
-- Working branch: `optimization-branch-progress`
+## Search Checklist Before Creating Files
+
+Before creating any new file, run these searches:
+
+```bash
+# 1. Search for similar function names
+grep -r "functionName" . --exclude-dir=node_modules
+
+# 2. Search for similar components
+find . -name "*ComponentName*" -type f | grep -v node_modules
+
+# 3. Search for existing utilities
+ls utils/ | grep -i "keyword"
+
+# 4. Search for types
+find types/ -name "*.d.ts" | xargs grep -l "TypeName"
+
+# 5. Check if hook exists
+ls hooks/ | grep -i "useSomething"
+
+# 6. Search across all TypeScript/JavaScript files
+grep -r "functionality" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" . --exclude-dir=node_modules
+```
+
+## Directory Quick Reference for Common Needs
+
+- **Animations**: `/utils/motion.tsx`, `/components/ui/animations/`
+- **API/Data Fetching**: `/utils/apiutils.ts`, `/utils/pokemonSDK.ts`
+- **Caching**: `/utils/UnifiedCacheManager.ts`, `/utils/cacheManager.ts`
+- **Components**: `/components/ui/` (has subdirectories for cards, modals, charts, etc.)
+- **Forms**: `/components/ui/forms/`
+- **Hooks**: `/hooks/` (useDebounce, useInfiniteScroll, etc.)
+- **Loading**: `/utils/unifiedLoading.tsx`, `/components/ui/PokeballLoader.tsx`
+- **Pokemon Utilities**: `/utils/pokemonutils.ts`, `/utils/pokemonHelpers.ts`
+- **State Management**: `/context/UnifiedAppContext.tsx`
+- **Types**: `/types/` (api/, components/, context/, etc.)
+
+---
+For detailed documentation, see `/project-resources/docs/`

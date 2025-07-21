@@ -3,7 +3,7 @@ import Image from "next/image";
 import Modal from "./ui/modals/Modal";
 import UnifiedCard from "./ui/cards/UnifiedCard";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
-import { InlineLoadingSpinner } from "./ui/loading/LoadingSpinner";
+import { InlineLoader } from "../utils/unifiedLoading";
 import { CardGridSkeleton } from "./ui/SkeletonLoader";
 import { isFeatureEnabled } from "../utils/featureFlags";
 import { TCGCard } from "../types/api/cards";
@@ -176,10 +176,7 @@ const CardList = memo<CardListProps>(({
           style={{ minHeight: '80px' }}
         >
           {scrollLoading && (
-            <InlineLoadingSpinner 
-              text="Loading more cards..." 
-              className="mt-2"
-            />
+            <InlineLoader text="Loading more cards..." />
           )}
         </div>
       )}

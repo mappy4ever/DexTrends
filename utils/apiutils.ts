@@ -18,6 +18,17 @@ export class ApiError extends Error {
   }
 }
 
+// Sanitize Pokemon names for API calls
+export const sanitizePokemonName = (name: string): string => {
+  return name
+    .toLowerCase()
+    .replace(/♀/g, '-f')
+    .replace(/♂/g, '-m')
+    .replace(/[':.\s]/g, '-')
+    .replace(/--+/g, '-')
+    .replace(/-$/, '');
+};
+
 // Fetch options interface
 export interface FetchOptions extends RequestInit {
   timeout?: number;
@@ -116,12 +127,30 @@ export const fetchMove = async (name: string): Promise<Move> => {
 // TCG-specific fetch functions with aggressive caching
 export const fetchTCGCards = async (pokemonName: string): Promise<TCGCard[]> => {
   try {
-    // The tcgCache returns Card[] from pokemontcgsdk, we need to cast to TCGCard[]
-    // In practice, the structure is compatible, just the type strictness differs
-    const cards = await tcgCache.getCards(pokemonName) as TCGCard[];
+    // Sanitize the Pokemon name for API compatibility
+    const sanitizedName = sanitizePokemonName(pokemonName);
+    console.log('[TCG Fetch] Fetching cards for sanitized name:', sanitizedName);
+    
+    // Use our API endpoint instead of SDK directly
+    const key = cacheManager.generateKey('tcg-cards', { name: sanitizedName });
+    const cards = await cacheManager.cachedFetch<TCGCard[]>(
+      `tcg-${sanitizedName}`,
+      async () => {
+        const response = await fetch(`/api/tcg-cards?name=${encodeURIComponent(sanitizedName)}`);
+        if (!response.ok) {
+          throw new ApiError(`Failed to fetch TCG cards for ${sanitizedName}`, response.status);
+        }
+        const data = await response.json();
+        console.log('[TCG Fetch] API returned cards:', data?.length || 0);
+        return data || [];
+      },
+      { priority: CONFIG.PRIORITY.CRITICAL, ttl: CONFIG.DB_TTL }
+    );
+    
+    console.log('[TCG Fetch] Found TCG cards:', cards?.length || 0);
     return cards || [];
   } catch (error) {
-    console.error(`Failed to fetch TCG cards for ${pokemonName}:`, error);
+    console.error(`[TCG Fetch] Failed to fetch TCG cards for ${pokemonName}:`, error);
     // Return empty array instead of throwing to prevent UI crashes
     return [];
   }
@@ -129,13 +158,16 @@ export const fetchTCGCards = async (pokemonName: string): Promise<TCGCard[]> => 
 
 export const fetchPocketCards = async (pokemonName: string): Promise<PocketCard[]> => {
   try {
-    const key = cacheManager.generateKey('pocket-cards', { name: pokemonName });
+    // Sanitize the Pokemon name for API compatibility
+    const sanitizedName = sanitizePokemonName(pokemonName);
+    
+    const key = cacheManager.generateKey('pocket-cards', { name: sanitizedName });
     return await cacheManager.cachedFetch<PocketCard[]>(
-      `pocket-${pokemonName}`,
+      `pocket-${sanitizedName}`,
       async () => {
         // Implementation for pocket cards fetch
-        const response = await fetch(`/api/pocket-cards?name=${encodeURIComponent(pokemonName)}`);
-        if (!response.ok) throw new ApiError(`Failed to fetch pocket cards for ${pokemonName}`, response.status);
+        const response = await fetch(`/api/pocket-cards?name=${encodeURIComponent(sanitizedName)}`);
+        if (!response.ok) throw new ApiError(`Failed to fetch pocket cards for ${sanitizedName}`, response.status);
         return response.json();
       },
       { priority: CONFIG.PRIORITY.CRITICAL, ttl: CONFIG.DB_TTL }

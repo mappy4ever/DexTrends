@@ -1,6 +1,7 @@
 import React, { useState, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 interface Enhanced3DCardProps {
   card: any;
@@ -17,6 +18,7 @@ interface Enhanced3DCardProps {
 const Enhanced3DCard = ({ 
   card, cardClassName = '', isPocketCard = false, showHP = true, showRarity = true, rarity = {}, cardFeatures = [], setZoomedCard, children 
 }: Enhanced3DCardProps) => {
+  const router = useRouter();
   const [isHovered, setIsHovered] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
   const [rotateX, setRotateX] = useState(0);
@@ -56,9 +58,9 @@ const Enhanced3DCard = ({
     ) return;
     
     if (isPocketCard) {
-      window.location.href = `/pocketmode/${card.id}`;
+      router.push(`/pocketmode/${card.id}`);
     } else {
-      window.location.href = `/cards/${card.id}`;
+      router.push(`/cards/${card.id}`);
     }
   };
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import CardList from '../components/CardList';
 import { useTheme } from '../context/UnifiedAppContext';
-import { TrendingLoadingScreen } from "../components/ui/loading/UnifiedLoadingScreen";
+import { PageLoader } from "../utils/unifiedLoading";
 import logger from '../utils/logger';
 import { getPokemonSDK } from '../utils/pokemonSDK';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
@@ -174,10 +174,7 @@ const TrendingPage: NextPage = () => {
         <p className="text-gray-600 mt-2">Track cards with significant price changes in the market</p>
       </div>
       {loading ? (
-        <TrendingLoadingScreen 
-          message="Analyzing market trends..."
-          preventFlash={true}
-        />
+        <PageLoader text="Analyzing market trends..." />
       ) : error ? (
         <div className="bg-red-50 text-red-600 p-4 rounded-lg text-center">
           {error}

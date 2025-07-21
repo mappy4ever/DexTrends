@@ -30,14 +30,17 @@ export default function Modal({ isOpen, onClose, title, children, size = "md" }:
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm transition-opacity duration-300 ease-in-out" // Using Tailwind opacity shorthand
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm transition-opacity duration-300 ease-in-out overflow-y-auto" // Added overflow for mobile
       onClick={onClose}
       aria-modal="true"
       role="dialog"
     >
       <div
-        className={`bg-card text-card-foreground rounded-app-lg shadow-2xl m-4 w-full ${resolvedSizeClass} transform transition-all duration-300 ease-in-out scale-100 opacity-100 animate-fadeIn overflow-y-auto max-h-[90vh]`} // Added overflow and max-height
+        className={`bg-card text-card-foreground rounded-app-lg shadow-2xl my-4 mx-auto w-[calc(100%-2rem)] sm:w-full ${resolvedSizeClass} transform transition-all duration-300 ease-in-out scale-100 opacity-100 animate-fadeIn overflow-y-auto max-h-[calc(100vh-2rem)] sm:max-h-[90vh]`} // Better mobile sizing
         onClick={(e: any) => e.stopPropagation()} // Prevent closing when clicking inside modal content
+        style={{
+          maxHeight: 'calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 2rem)'
+        }}
       >
         <div className="flex items-center justify-between p-4 md:p-6 border-b border-border"> {/* Standardized padding */}
           {title && (

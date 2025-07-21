@@ -1,14 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import pokemon from "pokemontcgsdk";
+// Import pokemontcgsdk dynamically to reduce initial bundle size
 import Modal from "../components/ui/modals/Modal";
-import CardList from "../components/CardList";
+import CardListComponent from "../components/CardList";
 import Image from 'next/image';
 import { getPrice, getRarityRank } from "../utils/pokemonutils";
-import { BsBook, BsCardList, BsGrid, BsSearch, BsGlobeEuropeAfrica, BsTrophy, BsHeart, BsGraphUp } from "react-icons/bs";
-import { GiCardPickup, GiCrossedSwords, GiPokerHand } from "react-icons/gi";
-import { FiTrendingUp, FiShoppingBag } from "react-icons/fi";
-import { AiOutlineBulb } from "react-icons/ai";
+// Use centralized icon imports for better tree-shaking
+import { 
+  Book, Search, Globe, Trophy, Heart, 
+  CardList, Grid, GraphUp,
+  CardPickup, PokerHand, CrossedSwords,
+  ShoppingBag, TrendingUp,
+  Bulb 
+} from "../utils/icons";
 import { DynamicAdvancedSearchModal, DynamicMarketAnalytics, preloadCriticalComponents } from "../components/dynamic/DynamicComponents";
 import dynamic from 'next/dynamic';
 import { toggleFeature, isFeatureEnabled } from "../utils/featureFlags";
@@ -85,8 +89,12 @@ const IndexPage: NextPage = () => {
     setError(null);
     setCards([]);
     try {
-      // Configure Pokemon SDK before use
-      pokemon.configure({ apiKey: pokemonKey });
+      // Dynamically import and configure Pokemon SDK
+      const pokemonModule = await import('pokemontcgsdk');
+      const pokemon = pokemonModule.default || pokemonModule;
+      if (pokemonKey && typeof pokemon.configure === 'function') {
+        pokemon.configure({ apiKey: pokemonKey });
+      }
       const result = await pokemon.card.where({ q: `name:${cardSearchTerm}*` });
       setCards((result as any).data as TCGCard[]);
     } catch (err) {
@@ -176,7 +184,7 @@ const IndexPage: NextPage = () => {
                 onChange={(e) => setGlobalSearchTerm(e.target.value)}
               />
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <BsSearch className="h-5 w-5 text-gray-500" aria-hidden="true" />
+                <Search className="h-5 w-5 text-gray-500" aria-hidden="true" />
               </div>
               <button
                 type="submit"
@@ -189,168 +197,147 @@ const IndexPage: NextPage = () => {
         </div>
         
         {/* Main Navigation Grid - 8 Key Sections */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8 mb-12">
           {/* Pokédex */}
-          <Link href="/pokedex" className="group relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform group-hover:scale-105 border border-white/50">
-              <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-pink-500 rounded-2xl flex items-center justify-center mb-4 group-hover:rotate-6 transition-transform duration-300">
-                <BsBook className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-2">Pokédex</h3>
-              <p className="text-sm text-gray-600 mb-4">Explore all 1000+ Pokémon with stats, evolutions, and abilities</p>
-              <div className="flex items-center text-red-600 font-semibold text-sm">
-                <span>Browse Now</span>
-                <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+          <Link href="/pokedex" className="group flex flex-col items-center">
+            <div className="relative w-32 h-32 sm:w-36 sm:h-36 mb-4">
+              {/* Outer ring */}
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-red-500 to-pink-500 p-1 shadow-lg group-hover:shadow-xl transition-all duration-300">
+                {/* Middle ring */}
+                <div className="w-full h-full rounded-full bg-white p-2">
+                  {/* Inner circle */}
+                  <div className="relative w-full h-full rounded-full bg-gradient-to-br from-red-50 to-pink-50 shadow-inner flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <Book className="w-12 h-12 text-red-500" />
+                  </div>
+                </div>
               </div>
             </div>
+            <h3 className="text-lg font-bold text-gray-800 text-center">Pokédex</h3>
+            <p className="text-sm text-gray-600 text-center mt-1">1000+ Pokémon</p>
           </Link>
 
           {/* TCG Sets */}
-          <Link href="/tcgsets" className="group relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform group-hover:scale-105 border border-white/50">
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center mb-4 group-hover:rotate-6 transition-transform duration-300">
-                <BsCardList className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-2">TCG Sets</h3>
-              <p className="text-sm text-gray-600 mb-4">Browse all Pokémon TCG sets and expansions</p>
-              <div className="flex items-center text-blue-600 font-semibold text-sm">
-                <span>View Sets</span>
-                <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+          <Link href="/tcgsets" className="group flex flex-col items-center">
+            <div className="relative w-32 h-32 sm:w-36 sm:h-36 mb-4">
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 p-1 shadow-lg group-hover:shadow-xl transition-all duration-300">
+                <div className="w-full h-full rounded-full bg-white p-2">
+                  <div className="relative w-full h-full rounded-full bg-gradient-to-br from-blue-50 to-purple-50 shadow-inner flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <CardList className="w-12 h-12 text-blue-500" />
+                  </div>
+                </div>
               </div>
             </div>
+            <h3 className="text-lg font-bold text-gray-800 text-center">TCG Sets</h3>
+            <p className="text-sm text-gray-600 text-center mt-1">All expansions</p>
           </Link>
 
           {/* Pokemon Regions */}
-          <Link href="/pokemon/regions" className="group relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-teal-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform group-hover:scale-105 border border-white/50">
-              <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-teal-500 rounded-2xl flex items-center justify-center mb-4 group-hover:rotate-6 transition-transform duration-300">
-                <BsGlobeEuropeAfrica className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-2">Regions</h3>
-              <p className="text-sm text-gray-600 mb-4">Journey through Kanto, Johto, Hoenn, and beyond</p>
-              <div className="flex items-center text-green-600 font-semibold text-sm">
-                <span>Explore</span>
-                <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+          <Link href="/pokemon/regions" className="group flex flex-col items-center">
+            <div className="relative w-32 h-32 sm:w-36 sm:h-36 mb-4">
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-green-500 to-teal-500 p-1 shadow-lg group-hover:shadow-xl transition-all duration-300">
+                <div className="w-full h-full rounded-full bg-white p-2">
+                  <div className="relative w-full h-full rounded-full bg-gradient-to-br from-green-50 to-teal-50 shadow-inner flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <Globe className="w-12 h-12 text-green-500" />
+                  </div>
+                </div>
               </div>
             </div>
+            <h3 className="text-lg font-bold text-gray-800 text-center">Regions</h3>
+            <p className="text-sm text-gray-600 text-center mt-1">All regions</p>
           </Link>
 
           {/* Battle Simulator */}
-          <Link href="/battle-simulator" className="group relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-red-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform group-hover:scale-105 border border-white/50">
-              <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl flex items-center justify-center mb-4 group-hover:rotate-6 transition-transform duration-300">
-                <GiCrossedSwords className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-2">Battle</h3>
-              <p className="text-sm text-gray-600 mb-4">Simulate battles and build competitive teams</p>
-              <div className="flex items-center text-orange-600 font-semibold text-sm">
-                <span>Battle Now</span>
-                <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+          <Link href="/battle-simulator" className="group flex flex-col items-center">
+            <div className="relative w-32 h-32 sm:w-36 sm:h-36 mb-4">
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-orange-500 to-red-500 p-1 shadow-lg group-hover:shadow-xl transition-all duration-300">
+                <div className="w-full h-full rounded-full bg-white p-2">
+                  <div className="relative w-full h-full rounded-full bg-gradient-to-br from-orange-50 to-red-50 shadow-inner flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <CrossedSwords className="w-12 h-12 text-orange-500" />
+                  </div>
+                </div>
               </div>
             </div>
+            <h3 className="text-lg font-bold text-gray-800 text-center">Battle</h3>
+            <p className="text-sm text-gray-600 text-center mt-1">Simulator</p>
           </Link>
 
           {/* Collections */}
-          <Link href="/collections" className="group relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/10 to-amber-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform group-hover:scale-105 border border-white/50">
-              <div className="w-16 h-16 bg-gradient-to-br from-yellow-500 to-amber-500 rounded-2xl flex items-center justify-center mb-4 group-hover:rotate-6 transition-transform duration-300">
-                <BsHeart className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-2">My Collection</h3>
-              <p className="text-sm text-gray-600 mb-4">Track your cards, favorites, and collection value</p>
-              <div className="flex items-center text-yellow-600 font-semibold text-sm">
-                <span>Manage</span>
-                <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+          <Link href="/collections" className="group flex flex-col items-center">
+            <div className="relative w-32 h-32 sm:w-36 sm:h-36 mb-4">
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-500 to-amber-500 p-1 shadow-lg group-hover:shadow-xl transition-all duration-300">
+                <div className="w-full h-full rounded-full bg-white p-2">
+                  <div className="relative w-full h-full rounded-full bg-gradient-to-br from-yellow-50 to-amber-50 shadow-inner flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <Heart className="w-12 h-12 text-yellow-500" />
+                  </div>
+                </div>
               </div>
             </div>
+            <h3 className="text-lg font-bold text-gray-800 text-center">Collection</h3>
+            <p className="text-sm text-gray-600 text-center mt-1">Track cards</p>
           </Link>
 
           {/* Pocket Mode */}
-          <Link href="/pocketmode" className="group relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform group-hover:scale-105 border border-white/50">
-              <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mb-4 group-hover:rotate-6 transition-transform duration-300">
-                <GiCardPickup className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-2">Pocket TCG</h3>
-              <p className="text-sm text-gray-600 mb-4">Mobile-optimized TCG with exclusive cards</p>
-              <div className="flex items-center text-purple-600 font-semibold text-sm">
-                <span>Play Now</span>
-                <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+          <Link href="/pocketmode" className="group flex flex-col items-center">
+            <div className="relative w-32 h-32 sm:w-36 sm:h-36 mb-4">
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 p-1 shadow-lg group-hover:shadow-xl transition-all duration-300">
+                <div className="w-full h-full rounded-full bg-white p-2">
+                  <div className="relative w-full h-full rounded-full bg-gradient-to-br from-purple-50 to-pink-50 shadow-inner flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <CardPickup className="w-12 h-12 text-purple-500" />
+                  </div>
+                </div>
               </div>
             </div>
+            <h3 className="text-lg font-bold text-gray-800 text-center">Pocket TCG</h3>
+            <p className="text-sm text-gray-600 text-center mt-1">Mobile cards</p>
           </Link>
 
           {/* Price Tracker */}
-          <Link href="/trending" className="group relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-green-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform group-hover:scale-105 border border-white/50">
-              <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-green-500 rounded-2xl flex items-center justify-center mb-4 group-hover:rotate-6 transition-transform duration-300">
-                <FiTrendingUp className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-2">Price Tracker</h3>
-              <p className="text-sm text-gray-600 mb-4">Monitor card prices and market trends</p>
-              <div className="flex items-center text-emerald-600 font-semibold text-sm">
-                <span>Track Prices</span>
-                <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+          <Link href="/trending" className="group flex flex-col items-center">
+            <div className="relative w-32 h-32 sm:w-36 sm:h-36 mb-4">
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-emerald-500 to-green-500 p-1 shadow-lg group-hover:shadow-xl transition-all duration-300">
+                <div className="w-full h-full rounded-full bg-white p-2">
+                  <div className="relative w-full h-full rounded-full bg-gradient-to-br from-emerald-50 to-green-50 shadow-inner flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <TrendingUp className="w-12 h-12 text-emerald-500" />
+                  </div>
+                </div>
               </div>
             </div>
+            <h3 className="text-lg font-bold text-gray-800 text-center">Prices</h3>
+            <p className="text-sm text-gray-600 text-center mt-1">Track trends</p>
           </Link>
 
           {/* Fun & Games */}
-          <Link href="/fun" className="group relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform group-hover:scale-105 border border-white/50">
-              <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center mb-4 group-hover:rotate-6 transition-transform duration-300">
-                <AiOutlineBulb className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-2">Fun Zone</h3>
-              <p className="text-sm text-gray-600 mb-4">Quizzes, games, and Pokémon trivia</p>
-              <div className="flex items-center text-indigo-600 font-semibold text-sm">
-                <span>Have Fun</span>
-                <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+          <Link href="/fun" className="group flex flex-col items-center">
+            <div className="relative w-32 h-32 sm:w-36 sm:h-36 mb-4">
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 p-1 shadow-lg group-hover:shadow-xl transition-all duration-300">
+                <div className="w-full h-full rounded-full bg-white p-2">
+                  <div className="relative w-full h-full rounded-full bg-gradient-to-br from-indigo-50 to-purple-50 shadow-inner flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <Bulb className="w-12 h-12 text-indigo-500" />
+                  </div>
+                </div>
               </div>
             </div>
+            <h3 className="text-lg font-bold text-gray-800 text-center">Fun Zone</h3>
+            <p className="text-sm text-gray-600 text-center mt-1">Games & trivia</p>
           </Link>
         </div>
         
         {/* Pokemon Card Search Section */}
-        <div className="mb-8">
-          <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/30">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+        <div className="mb-12">
+          <div className="panel-base">
+            <div className="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
+              <div className="text-center sm:text-left">
+                <h2 className="text-3xl font-bold text-gradient mb-2">
                   Pokémon Card Search
                 </h2>
                 <p className="text-gray-600">Search any Pokémon TCG card from our extensive database</p>
               </div>
               <button
                 onClick={() => setShowCardSearch(!showCardSearch)}
-                className={`px-6 py-3 font-semibold rounded-full transition-all duration-300 transform hover:scale-105 ${
+                className={`btn ${
                   showCardSearch 
-                    ? 'bg-gray-200 text-gray-700 hover:bg-gray-300' 
-                    : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 shadow-lg'
+                    ? 'btn-secondary' 
+                    : 'btn-primary'
                 }`}
               >
                 {showCardSearch ? 'Hide' : 'Show'} Card Search
@@ -363,25 +350,25 @@ const IndexPage: NextPage = () => {
                   <div className="relative flex-1">
                     <input
                       type="text"
-                      className="w-full px-6 py-4 pl-14 bg-gray-50 border border-gray-200 rounded-full text-lg focus:outline-none focus:border-purple-400 focus:bg-white transition-all duration-300"
+                      className="input"
                       placeholder="Search for Pokémon cards (e.g., Charizard, Pikachu)..."
                       value={cardSearchTerm}
                       onChange={(e) => setCardSearchTerm(e.target.value)}
                     />
-                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                      <BsSearch className="h-5 w-5 text-gray-500" aria-hidden="true" />
+                    <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
+                      <Search className="h-5 w-5 text-gray-500" aria-hidden="true" />
                     </div>
                   </div>
                   <button
                     type="submit"
-                    className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg"
+                    className="btn btn-primary"
                   >
                     Search Cards
                   </button>
                   <button
                     type="button"
                     onClick={() => setShowAdvancedSearch(true)}
-                    className="px-6 py-4 bg-white border-2 border-purple-300 text-purple-700 font-semibold rounded-full hover:bg-purple-50 transition-all duration-300 flex items-center gap-2"
+                    className="btn btn-secondary flex items-center gap-2"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
@@ -400,7 +387,7 @@ const IndexPage: NextPage = () => {
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
-                    <BsGraphUp className="inline-block w-4 h-4 mr-2" />
+                    <GraphUp className="inline-block w-4 h-4 mr-2" />
                     Market Analytics
                   </button>
                   
@@ -443,25 +430,25 @@ const IndexPage: NextPage = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <Link href="/pokemon/starters" className="group">
               <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-4 text-center hover:bg-white hover:shadow-lg transition-all duration-300 border border-white/50">
-                <GiPokerHand className="w-8 h-8 mx-auto mb-2 text-red-500 group-hover:scale-110 transition-transform" />
+                <PokerHand className="w-8 h-8 mx-auto mb-2 text-red-500 group-hover:scale-110 transition-transform" />
                 <span className="text-sm font-medium text-gray-700">Starter Pokémon</span>
               </div>
             </Link>
             <Link href="/pokemon/moves" className="group">
               <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-4 text-center hover:bg-white hover:shadow-lg transition-all duration-300 border border-white/50">
-                <BsBook className="w-8 h-8 mx-auto mb-2 text-blue-500 group-hover:scale-110 transition-transform" />
+                <Book className="w-8 h-8 mx-auto mb-2 text-blue-500 group-hover:scale-110 transition-transform" />
                 <span className="text-sm font-medium text-gray-700">Moves & TMs</span>
               </div>
             </Link>
             <Link href="/pokemon/items" className="group">
               <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-4 text-center hover:bg-white hover:shadow-lg transition-all duration-300 border border-white/50">
-                <FiShoppingBag className="w-8 h-8 mx-auto mb-2 text-green-500 group-hover:scale-110 transition-transform" />
+                <ShoppingBag className="w-8 h-8 mx-auto mb-2 text-green-500 group-hover:scale-110 transition-transform" />
                 <span className="text-sm font-medium text-gray-700">Items</span>
               </div>
             </Link>
             <Link href="/type-effectiveness" className="group">
               <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-4 text-center hover:bg-white hover:shadow-lg transition-all duration-300 border border-white/50">
-                <BsTrophy className="w-8 h-8 mx-auto mb-2 text-yellow-500 group-hover:scale-110 transition-transform" />
+                <Trophy className="w-8 h-8 mx-auto mb-2 text-yellow-500 group-hover:scale-110 transition-transform" />
                 <span className="text-sm font-medium text-gray-700">Type Chart</span>
               </div>
             </Link>
@@ -500,7 +487,7 @@ const IndexPage: NextPage = () => {
         {/* Card Results Section */}
         {(showCardSearch && cards.length > 0) && (
           <div className="w-full mb-8">
-            <CardList
+            <CardListComponent
               cards={cards}
               loading={loading}
               error={error}

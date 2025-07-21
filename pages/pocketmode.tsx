@@ -15,7 +15,6 @@ import { PocketCard } from "../types/api/pocket-cards";
 import { NextPage } from "next";
 
 // Dynamic imports for components that might cause SSR issues
-import { PocketLoadingScreen } from "../components/ui/loading/UnifiedLoadingScreen";
 import { CardGridSkeleton } from "../components/ui/SkeletonLoader";
 const PokemonEmptyState = dynamic(() => import("../components/ui/loading/PokemonEmptyState"), { ssr: false });
 
@@ -252,7 +251,7 @@ const PocketMode: NextPage = () => {
         {(
           <div className="mb-4 px-4">
             {/* Enhanced Search and Filters */}
-            <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 mb-6">
+            <div className="panel-base mb-6">
               {/* Search Bar */}
               <div className="relative mb-6">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
@@ -262,7 +261,7 @@ const PocketMode: NextPage = () => {
                 </div>
                 <input
                   type="text"
-                  className="w-full pl-12 pr-12 py-4 text-lg border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-pokemon-red/20 focus:border-pokemon-red transition-all duration-300 placeholder-gray-400"
+                  className="input text-lg pl-12 pr-12"
                   placeholder="Search Pocket cards... (Press / to focus)"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
@@ -391,7 +390,7 @@ const PocketMode: NextPage = () => {
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value as SortBy)}
-                    className="px-4 py-2 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-pokemon-red/20 focus:border-pokemon-red transition-all duration-300"
+                    className="select"
                   >
                     <option value="name">Name</option>
                     <option value="rarity">Rarity</option>
@@ -405,17 +404,17 @@ const PocketMode: NextPage = () => {
         {/* Tabs for Card List and Deck Builder */}
         <div className="flex justify-center mb-6 gap-4">
           <Link href="/pocketmode" className="transform transition-all hover:scale-105">
-            <button className="px-6 py-3 bg-gradient-to-r from-pokemon-red to-red-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+            <button className="btn bg-gradient-to-r from-red-500 to-pink-500 text-white hover:from-red-600 hover:to-pink-600">
               Card List
             </button>
           </Link>
           <Link href="/pocketmode/deckbuilder" className="transform transition-all hover:scale-105">
-            <button className="px-6 py-3 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+            <button className="btn btn-secondary">
               Deck Builder
             </button>
           </Link>
           <Link href="/pocketmode/decks" className="transform transition-all hover:scale-105">
-            <button className="px-6 py-3 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+            <button className="btn btn-secondary">
               Pre-Built Decks
             </button>
           </Link>
