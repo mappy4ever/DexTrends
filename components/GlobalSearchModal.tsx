@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useState, useRef, useEffect } from "react";
+import React, { forwardRef, useImperativeHandle, useState, useRef, useEffect, useCallback, useMemo, memo } from "react";
 import Link from "next/link";
 import pokemon from "pokemontcgsdk";
 import { toLowercaseUrl } from "../utils/formatters";
@@ -51,6 +51,49 @@ function debounce<T extends (...args: any[]) => any>(
   return debouncedFn;
 }
 
+// Memoized search result components for better performance
+const SearchResultCard = memo(({ card }: { card: TCGCard }) => (
+  <Link href={`/cards/${card.id}`} className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+    {card.images?.small && (
+      <img src={card.images.small} alt={card.name} className="w-8 h-12 mr-3 rounded" />
+    )}
+    <div>
+      <div className="font-medium text-sm">{card.name}</div>
+      <div className="text-xs text-gray-500">{card.set?.name}</div>
+    </div>
+  </Link>
+));
+SearchResultCard.displayName = 'SearchResultCard';
+
+const SearchResultSet = memo(({ set }: { set: CardSet }) => (
+  <Link href={`/tcgsets/${set.id}`} className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+    {set.images?.logo && (
+      <img src={set.images.logo} alt={set.name} className="w-8 h-8 mr-3 rounded" />
+    )}
+    <div>
+      <div className="font-medium text-sm">{set.name}</div>
+      <div className="text-xs text-gray-500">{set.series}</div>
+    </div>
+  </Link>
+));
+SearchResultSet.displayName = 'SearchResultSet';
+
+const SearchResultPokemon = memo(({ pokemon }: { pokemon: PokemonResult }) => {
+  const pokemonId = pokemon.url.split('/').slice(-2, -1)[0];
+  return (
+    <Link href={`/pokedex/${pokemonId}`} className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+      <img 
+        src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`} 
+        alt={pokemon.name} 
+        className="w-8 h-8 mr-3"
+        loading="lazy"
+      />
+      <div className="font-medium text-sm capitalize">{pokemon.name}</div>
+    </Link>
+  );
+});
+SearchResultPokemon.displayName = 'SearchResultPokemon';
+
 const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSearchModal(_, ref) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -58,27 +101,25 @@ const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSea
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useImperativeHandle(ref, () => ({ 
-    open: () => setOpen(true) 
-  }));
-
-  function close() { 
+  const handleOpen = useCallback(() => setOpen(true), []);
+  const handleClose = useCallback(() => {
     setOpen(false); 
     setQuery(""); 
     setResults({ cards: [], sets: [], pokemon: [] }); 
-  }
+  }, []);
 
-  // Create debounced search function
-  const debouncedSearchRef = useRef<ReturnType<typeof debounce> | null>(null);
-  
-  useEffect(() => {
-    const searchFn = async (q: string) => {
-      if (!q) {
-        setResults({ cards: [], sets: [], pokemon: [] });
-        setLoading(false);
-        return;
-      }
-      setLoading(true);
+  useImperativeHandle(ref, () => ({ 
+    open: handleOpen
+  }), [handleOpen]);
+
+  // Memoized search function
+  const searchFunction = useCallback(async (q: string) => {
+    if (!q) {
+      setResults({ cards: [], sets: [], pokemon: [] });
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
       
       // Card search
       let cards: TCGCard[] = [];
@@ -112,33 +153,46 @@ const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSea
         // Silent failure - search continues without Pokemon results
       }
       
-      setResults({ cards, sets, pokemon: pokemonResults });
-      setLoading(false);
-    };
-    
-    debouncedSearchRef.current = debounce(searchFn, 350);
-    
-    // Cleanup on unmount
-    return () => {
-      if (debouncedSearchRef.current) {
-        debouncedSearchRef.current.cancel();
-      }
-    };
+    setResults({ cards, sets, pokemon: pokemonResults });
+    setLoading(false);
   }, []);
 
+  // Create debounced search function with useMemo
+  const debouncedSearch = useMemo(() => debounce(searchFunction, 350), [searchFunction]);
+  
+  // Cleanup on unmount
   useEffect(() => {
-    if (!open || !debouncedSearchRef.current) return;
-    debouncedSearchRef.current(query);
-  }, [query, open]);
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [debouncedSearch]);
+
+  useEffect(() => {
+    if (!open) return;
+    debouncedSearch(query);
+  }, [query, open, debouncedSearch]);
 
   useEffect(() => {
     if (open && inputRef.current) inputRef.current.focus();
   }, [open]);
 
+  const handleBackdropClick = useCallback(() => {
+    handleClose();
+  }, [handleClose]);
+
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+  }, []);
+
+  const hasResults = useMemo(() => 
+    results.cards.length > 0 || results.sets.length > 0 || results.pokemon.length > 0,
+    [results]
+  );
+
   return open ? (
     <div 
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm safe-area-padding" 
-      onClick={close}
+      onClick={handleBackdropClick}
     >
       <div
         className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl p-6 w-full max-w-lg mx-auto relative flex flex-col items-center modal-content"
@@ -162,8 +216,8 @@ const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSea
             }}
             placeholder="Search cards, Pokémon, sets..."
             value={query}
-            onChange={e => setQuery(e.target.value)}
-            onKeyDown={e => { if (e.key === "Escape") close(); }}
+            onChange={handleInputChange}
+            onKeyDown={e => { if (e.key === "Escape") handleClose(); }}
             tabIndex={0}
             spellCheck={false}
             autoComplete="off"
@@ -171,75 +225,42 @@ const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSea
         </div>
         <div className="min-h-[120px] w-full">
           {loading && <div className="text-center text-gray-400 py-4">Searching...</div>}
-          {!loading && !results.cards.length && !results.sets.length && !results.pokemon.length && (
+          {!loading && !hasResults && (
             <div className="text-gray-400 text-center py-4">Type to search...</div>
           )}
           {results.cards.length > 0 && (
             <div>
               <div className="font-bold text-primary mb-1">Cards</div>
-              <ul>
+              <div className="space-y-1">
                 {results.cards.map((card) => (
-                  <li key={card.id} className="py-2 px-2 rounded hover:bg-primary/10 cursor-pointer">
-                    <Link
-                      href={toLowercaseUrl(`/pokedex/${card.name}`)}
-                      className="text-primary font-semibold flex items-center gap-2"
-                    >
-                      <img 
-                        src={card.images?.small} 
-                        alt={card.name} 
-                        className="w-8 h-8 rounded shadow" 
-                      />
-                      {card.name} <span className="text-xs text-gray-400">({card.set?.name})</span>
-                    </Link>
-                  </li>
+                  <SearchResultCard key={card.id} card={card} />
                 ))}
-              </ul>
+              </div>
             </div>
           )}
           {results.sets.length > 0 && (
             <div className="mt-3">
               <div className="font-bold text-primary mb-1">Sets</div>
-              <ul>
+              <div className="space-y-1">
                 {results.sets.map((set) => (
-                  <li key={set.id} className="py-2 px-2 rounded hover:bg-primary/10 cursor-pointer">
-                    <Link
-                      href={toLowercaseUrl(`/tcgsets/${set.id}`)}
-                      className="text-primary font-semibold flex items-center gap-2"
-                    >
-                      {set.images?.logo && (
-                        <img 
-                          src={set.images.logo} 
-                          alt={set.name} 
-                          className="w-8 h-8 rounded" 
-                        />
-                      )}
-                      {set.name}
-                    </Link>
-                  </li>
+                  <SearchResultSet key={set.id} set={set} />
                 ))}
-              </ul>
+              </div>
             </div>
           )}
           {results.pokemon.length > 0 && (
             <div className="mt-3">
               <div className="font-bold text-primary mb-1">Pokémon</div>
-              <ul>
+              <div className="space-y-1">
                 {results.pokemon.map((poke) => (
-                  <li key={poke.name} className="py-2 px-2 rounded hover:bg-primary/10 cursor-pointer">
-                    <Link
-                      href={toLowercaseUrl(`/pokedex/${poke.name}`)}
-                      className="text-primary font-semibold flex items-center gap-2"
-                    >
-                      <span className="capitalize">{poke.name}</span>
-                    </Link>
-                  </li>
+                  <SearchResultPokemon key={poke.name} pokemon={poke} />
                 ))}
-              </ul>
+              </div>
             </div>
           )}
         </div>
         <button 
-          onClick={close} 
+          onClick={handleClose} 
           className="absolute top-2 right-2 text-gray-400 hover:text-primary text-2xl font-bold bg-white/80 dark:bg-gray-800/80 rounded-full w-10 h-10 flex items-center justify-center shadow-md" 
           aria-label="Close search"
         >

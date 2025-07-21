@@ -4,8 +4,9 @@ import { waitForNetworkIdle, waitForElementStable } from '../helpers/test-utils'
 
 test.describe('Battle Simulator', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/battle-simulator');
-    await waitForNetworkIdle(page);
+    await page.goto('/battle-simulator', { waitUntil: 'load', timeout: 30000 });
+    // Wait for the main heading to ensure page is loaded
+    await expect(page.locator('h1:has-text("Pokemon Battle Simulator")')).toBeVisible({ timeout: 10000 });
   });
 
   test('should load battle simulator page', async ({ page, consoleLogger }) => {

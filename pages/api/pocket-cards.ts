@@ -6,7 +6,38 @@ interface PocketCard {
   id?: string;
   name: string;
   rarity?: string;
-  [key: string]: any;
+  type?: string;
+  set?: string;
+  cardNumber?: string;
+  artist?: string;
+  hp?: number;
+  attacks?: Array<{
+    name: string;
+    cost: string[];
+    damage?: string;
+    text?: string;
+  }>;
+  weaknesses?: Array<{
+    type: string;
+    value: string;
+  }>;
+  resistances?: Array<{
+    type: string;
+    value: string;
+  }>;
+  retreatCost?: string[];
+  convertedRetreatCost?: number;
+  images?: {
+    small?: string;
+    large?: string;
+  };
+  abilities?: Array<{
+    name: string;
+    text: string;
+    type: string;
+  }>;
+  rules?: string[];
+  legalities?: Record<string, string>;
 }
 
 interface ErrorResponse {
@@ -99,14 +130,15 @@ export default async function handler(
     });
 
     res.status(200).json(filteredCards);
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
     logger.error('Failed to fetch pocket cards', { 
       pokemonName: nameStr, 
-      error: error.message 
+      error: errorMessage 
     });
     res.status(500).json({ 
       error: 'Failed to fetch pocket cards',
-      message: error.message 
+      message: errorMessage 
     });
   }
 }

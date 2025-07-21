@@ -27,20 +27,50 @@ interface AbilityWithPokemon extends Ability {
   pokemon?: string[];
 }
 
-interface AbilityResponse {
+interface AbilityApiResponse {
+  id: number;
   name: string;
+  is_main_series: boolean;
+  generation: {
+    name: string;
+    url: string;
+  };
   effect_entries: Array<{
     effect: string;
+    short_effect: string;
     language: {
       name: string;
+      url: string;
+    };
+  }>;
+  flavor_text_entries?: Array<{
+    flavor_text: string;
+    language: {
+      name: string;
+      url: string;
+    };
+    version_group: {
+      name: string;
+      url: string;
     };
   }>;
   pokemon: Array<{
     is_hidden: boolean;
+    slot: number;
     pokemon: {
       name: string;
       url: string;
     };
+  }>;
+}
+
+interface AbilityListResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Array<{
+    name: string;
+    url: string;
   }>;
 }
 
@@ -180,21 +210,22 @@ const AbilitiesPage: NextPage = () => {
       setLoading(true);
       try {
         // PokeAPI has many abilities, fetch them with pagination
-        const response = await fetchData(`https://pokeapi.co/api/v2/ability?limit=350`) as { results: Array<{ name: string; url: string }> };
+        const response = await fetchData<AbilityListResponse>(`https://pokeapi.co/api/v2/ability?limit=350`);
         
         // Fetch details for abilities
         const abilityDetailsPromises = (response?.results?.slice(0, 200) || []).map(ability => 
-          fetchData(ability.url)
+          fetchData<AbilityApiResponse>(ability.url)
         );
         
         const abilityDetails = await Promise.all(abilityDetailsPromises);
         
         // Process ability data
-        const processedAbilities = abilityDetails.map((ability: any) => {
+        const processedAbilities = abilityDetails.map((ability) => {
           // Categorize abilities based on their effects
           let category = 'other';
-          const effectText = ability.effect_entries.find((entry: any) => entry.language.name === 'en')?.effect || '';
-          const shortEffect = ability.effect_entries.find((entry: any) => entry.language.name === 'en')?.short_effect || '';
+          const englishEntry = ability.effect_entries.find(entry => entry.language.name === 'en');
+          const effectText = englishEntry?.effect || '';
+          const shortEffect = englishEntry?.short_effect || '';
           const combinedText = (effectText + ' ' + shortEffect).toLowerCase();
 
           if (combinedText.includes('attack') || combinedText.includes('damage') || combinedText.includes('power')) {
@@ -217,10 +248,9 @@ const AbilitiesPage: NextPage = () => {
             id: ability.id,
             name: ability.name.replace(/-/g, ' '),
             category: category,
-            effect: ability.effect_entries.find((entry: any) => entry.language.name === 'en')?.short_effect || 
-                    'No effect description available',
-            description: ability.effect_entries.find((entry: any) => entry.language.name === 'en')?.effect || 
-                        ability.flavor_text_entries?.find((entry: any) => entry.language.name === 'en')?.flavor_text || 
+            effect: englishEntry?.short_effect || 'No effect description available',
+            description: englishEntry?.effect || 
+                        ability.flavor_text_entries?.find(entry => entry.language.name === 'en')?.flavor_text || 
                         'No description available',
             generation: ability.generation ? parseInt(ability.generation.name.replace('generation-', '')) : 1,
             hidden: ability.is_main_series === false

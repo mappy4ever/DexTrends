@@ -24,27 +24,53 @@ interface Item {
   sprite?: string;
 }
 
-interface ItemResponse {
+interface ItemApiResponse {
+  id: number;
   name: string;
   cost: number;
   category: {
     name: string;
+    url: string;
+  };
+  generation: {
+    name: string;
+    url: string;
+  };
+  sprites: {
+    default: string | null;
   };
   effect_entries: Array<{
     effect: string;
     short_effect: string;
     language: {
       name: string;
+      url: string;
     };
   }>;
   flavor_text_entries: Array<{
     text: string;
     language: {
       name: string;
+      url: string;
+    };
+    version_group: {
+      name: string;
+      url: string;
     };
   }>;
   attributes: Array<{
     name: string;
+    url: string;
+  }>;
+}
+
+interface ItemListResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Array<{
+    name: string;
+    url: string;
   }>;
 }
 
@@ -175,17 +201,17 @@ const ItemsPage: NextPage = () => {
       setLoading(true);
       try {
         // PokeAPI has a lot of items, so we'll fetch them with pagination
-        const response = await fetchData(`https://pokeapi.co/api/v2/item?limit=300`) as { results: Array<{ name: string; url: string }> };
+        const response = await fetchData<ItemListResponse>(`https://pokeapi.co/api/v2/item?limit=300`);
         
         // Fetch details for first batch of items
         const itemDetailsPromises = (response?.results?.slice(0, 150) || []).map(item => 
-          fetchData(item.url)
+          fetchData<ItemApiResponse>(item.url)
         );
         
         const itemDetails = await Promise.all(itemDetailsPromises);
         
         // Process item data
-        const processedItems = itemDetails.map((item: any) => {
+        const processedItems = itemDetails.map((item) => {
           // Determine category based on item attributes
           let category = 'other';
           if (item.category) {
@@ -213,11 +239,11 @@ const ItemsPage: NextPage = () => {
             id: item.id,
             name: item.name.replace(/-/g, ' '),
             category: category,
-            effect: item.effect_entries?.find((entry: any) => entry.language.name === 'en')?.short_effect || 
-                    item.flavor_text_entries?.find((entry: any) => entry.language.name === 'en')?.text || 
+            effect: item.effect_entries?.find(entry => entry.language.name === 'en')?.short_effect || 
+                    item.flavor_text_entries?.find(entry => entry.language.name === 'en')?.text || 
                     'No effect description available',
-            description: item.flavor_text_entries?.find((entry: any) => entry.language.name === 'en')?.text || 
-                        item.effect_entries?.find((entry: any) => entry.language.name === 'en')?.effect || 
+            description: item.flavor_text_entries?.find(entry => entry.language.name === 'en')?.text || 
+                        item.effect_entries?.find(entry => entry.language.name === 'en')?.effect || 
                         'No description available',
             price: item.cost || null,
             generation: item.generation ? parseInt(item.generation.name.replace('generation-', '')) : 1,

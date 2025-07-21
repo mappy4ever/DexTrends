@@ -29,6 +29,57 @@ interface Move {
   generation: number;
 }
 
+interface MoveApiResponse {
+  id: number;
+  name: string;
+  type: {
+    name: string;
+    url: string;
+  };
+  damage_class: {
+    name: string;
+    url: string;
+  };
+  power: number | null;
+  accuracy: number | null;
+  pp: number;
+  priority: number;
+  effect_chance: number | null;
+  generation: {
+    name: string;
+    url: string;
+  };
+  effect_entries: Array<{
+    effect: string;
+    short_effect: string;
+    language: {
+      name: string;
+      url: string;
+    };
+  }>;
+  flavor_text_entries: Array<{
+    flavor_text: string;
+    language: {
+      name: string;
+      url: string;
+    };
+    version_group: {
+      name: string;
+      url: string;
+    };
+  }>;
+}
+
+interface MoveListResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Array<{
+    name: string;
+    url: string;
+  }>;
+}
+
 interface MoveCategory {
   name: string;
   icon: React.ReactNode;
@@ -68,32 +119,37 @@ const MovesPage: NextPage = () => {
       setLoading(true);
       try {
         // PokeAPI has a lot of moves, so we'll fetch them with pagination
-        const response = await fetchData(`https://pokeapi.co/api/v2/move?limit=1000`) as { results: Array<{ name: string; url: string }> };
+        const response = await fetchData<MoveListResponse>(`https://pokeapi.co/api/v2/move?limit=1000`);
         
         // Fetch details for first batch of moves
         const moveDetailsPromises = (response?.results?.slice(0, 100) || []).map(move => 
-          fetchData(move.url)
+          fetchData<MoveApiResponse>(move.url)
         );
         
         const moveDetails = await Promise.all(moveDetailsPromises);
         
         // Process move data
-        const processedMoves = moveDetails.map((move: any) => ({
-          id: move.id,
-          name: move.name.replace(/-/g, ' '),
-          type: move.type.name,
-          category: move.damage_class.name,
-          power: move.power,
-          accuracy: move.accuracy,
-          pp: move.pp,
-          priority: move.priority,
-          effect_chance: move.effect_chance,
-          effect: move.effect_entries?.find((entry: any) => entry.language.name === 'en')?.effect || 'No effect available',
-          short_effect: move.effect_entries?.find((entry: any) => entry.language.name === 'en')?.short_effect || 
-                      move.flavor_text_entries?.find((entry: any) => entry.language.name === 'en')?.flavor_text || 
-                      'No description available',
-          generation: move.generation ? parseInt(move.generation.name.replace('generation-', '')) : 1
-        } as Move));
+        const processedMoves = moveDetails.map((move) => {
+          const englishEntry = move.effect_entries?.find(entry => entry.language.name === 'en');
+          const englishFlavor = move.flavor_text_entries?.find(entry => entry.language.name === 'en');
+          
+          return {
+            id: move.id,
+            name: move.name.replace(/-/g, ' '),
+            type: move.type.name,
+            category: move.damage_class.name,
+            power: move.power,
+            accuracy: move.accuracy,
+            pp: move.pp,
+            priority: move.priority,
+            effect_chance: move.effect_chance,
+            effect: englishEntry?.effect || 'No effect available',
+            short_effect: englishEntry?.short_effect || 
+                        englishFlavor?.flavor_text || 
+                        'No description available',
+            generation: move.generation ? parseInt(move.generation.name.replace('generation-', '')) : 1
+          } as Move;
+        });
         
         setMoves(processedMoves);
         setFilteredMoves(processedMoves);
