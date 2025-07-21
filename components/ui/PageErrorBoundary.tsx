@@ -15,6 +15,7 @@ interface State {
 
 // Default error fallback component
 const DefaultErrorFallback = ({ error, resetError }: { error: Error; resetError: () => void }) => {
+  const router = useRouter();
   return (
     <div className="min-h-[50vh] flex items-center justify-center p-8">
       <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8 text-center">
@@ -35,7 +36,7 @@ const DefaultErrorFallback = ({ error, resetError }: { error: Error; resetError:
             Try Again
           </button>
           <button
-            onClick={() => window.location.href = '/'}
+            onClick={() => router.push('/')}
             className="w-full px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-medium rounded-lg transition-colors"
           >
             Go to Homepage

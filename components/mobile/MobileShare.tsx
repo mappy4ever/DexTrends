@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { useRouter } from 'next/router';
 import { useMobileUtils } from '../../utils/mobileUtils';
 import logger from '../../utils/logger';
 
@@ -62,6 +63,7 @@ const MobileShare: React.FC<MobileShareProps> = ({
   showFallbackOptions = true
 }) => {
   const { utils } = useMobileUtils();
+  const router = useRouter();
   const [isSharing, setIsSharing] = useState(false);
   const [showShareMenu, setShowShareMenu] = useState(false);
   const [isSupported] = useState(() => {
@@ -140,7 +142,7 @@ const MobileShare: React.FC<MobileShareProps> = ({
     return {
       title: title || 'Check out DexTrends',
       text: text || 'Discover Pokemon card prices and trends with DexTrends!',
-      url: url || window.location.href,
+      url: url || `${window.location.origin}${router.asPath}`,
       image
     };
   }, [cardData, title, text, url, image]);

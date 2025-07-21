@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { fetchData } from '../utils/apiutils';
 import { POKEMON_TYPE_COLORS } from '../utils/pokemonTypeColors';
 import { TypeBadge } from '../components/ui/TypeBadge';
-import { EnhancedPokemonSelector } from '../components/ui/EnhancedPokemonSelector';
+import { EnhancedPokemonSelector, type Pokemon as SelectorPokemon } from '../components/ui/EnhancedPokemonSelector';
 import Modal from '../components/ui/modals/Modal';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import { InlineLoader } from '../utils/unifiedLoading';
@@ -53,16 +53,6 @@ interface BattleConfig {
     speed: number;
   };
   manualStats: boolean;
-}
-
-interface BattleLog {
-  player: string;
-  pokemon: string;
-  action: string;
-  damage?: number;
-  effectiveness?: number;
-  critical?: boolean;
-  timestamp: Date;
 }
 
 // Props interface for PokemonSelectionItem
@@ -194,9 +184,9 @@ const BattleSimulator: NextPage = () => {
   const [selectedPokemon2, setSelectedPokemon2] = useState<Pokemon | null>(null);
   const [showPokemonSelector, setShowPokemonSelector] = useState<number | null>(null); // 1 or 2
   const [searchTerm, setSearchTerm] = useState('');
-  const [pokemonList, setPokemonList] = useState<Array<{ name: string; url: string }>>([]);
+  const [pokemonList, setPokemonList] = useState<SelectorPokemon[]>([]);
   const [loading, setLoading] = useState(false);
-  const [battleLog, setBattleLog] = useState<BattleLog[]>([]);
+  const [battleLog, setBattleLog] = useState<string[]>([]);
   const [battleActive, setBattleActive] = useState(false);
   const [showMoveSelector, setShowMoveSelector] = useState<number | null>(null); // 1 or 2
   const [availableMoves1, setAvailableMoves1] = useState<PokemonMove[]>([]);
@@ -309,7 +299,7 @@ const BattleSimulator: NextPage = () => {
 
   const loadPokemonList = async () => {
     try {
-      const response = await fetchData('https://pokeapi.co/api/v2/pokemon?limit=1010') as { results: Array<{ name: string; url: string }> }; // All Pokemon
+      const response = await fetchData('https://pokeapi.co/api/v2/pokemon?limit=1010') as { results: SelectorPokemon[] }; // All Pokemon
       
       // Handle case where response doesn't have results (e.g., mocked API)
       if (!response || !response.results || !Array.isArray(response.results)) {
@@ -427,7 +417,7 @@ const BattleSimulator: NextPage = () => {
   };
 
   // Load Pokemon data when selected
-  const selectPokemon = async (pokemon: { name: string; url: string }, player: number) => {
+  const selectPokemon = async (pokemon: SelectorPokemon, player: number) => {
     setLoading(true);
     try {
       const pokemonData = await fetchData(pokemon.url) as Pokemon;
@@ -929,6 +919,294 @@ const BattleSimulator: NextPage = () => {
   // Due to size constraints, I need to continue the file conversion in the next message
   // This is a partial conversion showing the structure and approach
   
+  const runBattle = async () => {
+    setBattleActive(true);
+    setBattleLog([]);
+
+    if (
+      pokemon1Config.selectedMoves.length === 0 ||
+      pokemon2Config.selectedMoves.length === 0
+    ) {
+      setBattleLog([
+        'Please select moves for both Pokemon before starting the battle!',
+      ]);
+      setBattleActive(false);
+      return;
+    }
+
+    const allMoves = [
+      ...pokemon1Config.selectedMoves,
+      ...pokemon2Config.selectedMoves,
+    ];
+    for (const move of allMoves) {
+      if (!movesData[move.move.name]) {
+        await loadMoveData(move.move.name);
+      }
+    }
+
+    const p1 = {
+      pokemon: selectedPokemon1!,
+      config: pokemon1Config,
+      currentHP: pokemon1Config.stats.hp,
+      maxHP: pokemon1Config.stats.hp,
+      name:
+        selectedPokemon1!.name.charAt(0).toUpperCase() +
+        selectedPokemon1!.name.slice(1),
+    };
+
+    const p2 = {
+      pokemon: selectedPokemon2!,
+      config: pokemon2Config,
+      currentHP: pokemon2Config.stats.hp,
+      maxHP: pokemon2Config.stats.hp,
+      name:
+        selectedPokemon2!.name.charAt(0).toUpperCase() +
+        selectedPokemon2!.name.slice(1),
+    };
+
+    const log: string[] = [];
+    let turn = 1;
+
+    log.push(`=== BATTLE START ===`);
+    log.push(
+      `Player 1's ${p1.name} (Level ${p1.config.level}) - HP: ${p1.currentHP}/${p1.maxHP}`,
+    );
+    log.push(
+      `Player 2's ${p2.name} (Level ${p2.config.level}) - HP: ${p2.currentHP}/${p2.maxHP}`,
+    );
+    log.push('');
+
+    while (p1.currentHP > 0 && p2.currentHP > 0 && turn <= 50) {
+      log.push(`--- Turn ${turn} ---`);
+
+      const p1Speed = p1.config.stats.speed;
+      const p2Speed = p2.config.stats.speed;
+
+      let first = p1Speed >= p2Speed ? p1 : p2;
+      let second = p1Speed >= p2Speed ? p2 : p1;
+      let firstPlayer = p1Speed >= p2Speed ? 'Player 1' : 'Player 2';
+      let secondPlayer = p1Speed >= p2Speed ? 'Player 2' : 'Player 1';
+
+      const firstMoveIndex = Math.floor(
+        Math.random() * first.config.selectedMoves.length,
+      );
+      const firstSelectedMove = first.config.selectedMoves[firstMoveIndex];
+      const firstMoveData = movesData[firstSelectedMove.move.name];
+
+      if (firstMoveData) {
+        if (firstMoveData.power) {
+          const damage = calculateDamage(first, second, firstSelectedMove);
+          const effectiveness =
+            firstMoveData.type && second.pokemon.types
+              ? getTypeEffectiveness(
+                  firstMoveData.type.name,
+                  second.pokemon.types,
+                )
+              : 1;
+          second.currentHP = Math.max(0, second.currentHP - damage);
+
+          log.push(
+            `${firstPlayer}'s ${first.name} used ${firstMoveData.name
+              .replace(/-/g, ' ')
+              .toUpperCase()}!`,
+          );
+
+          if (effectiveness > 1) log.push(`It's super effective!`);
+          else if (effectiveness < 1 && effectiveness > 0)
+            log.push(`It's not very effective...`);
+          else if (effectiveness === 0)
+            log.push(`It doesn't affect ${second.name}...`);
+
+          log.push(
+            `${secondPlayer}'s ${second.name} took ${damage} damage! (${second.currentHP}/${second.maxHP} HP remaining)`,
+          );
+
+          if (second.currentHP <= 0) {
+            log.push('');
+            log.push(`${secondPlayer}'s ${second.name} fainted!`);
+            log.push(`${firstPlayer}'s ${first.name} wins the battle!`);
+            break;
+          }
+        } else {
+          log.push(
+            `${firstPlayer}'s ${first.name} used ${firstMoveData.name
+              .replace(/-/g, ' ')
+              .toUpperCase()}!`,
+          );
+          log.push(`(Status moves are not yet implemented)`);
+        }
+      } else {
+        const struggleDamage = Math.floor((40 * first.config.level) / 50);
+        second.currentHP = Math.max(0, second.currentHP - struggleDamage);
+        log.push(`${firstPlayer}'s ${first.name} used STRUGGLE!`);
+        log.push(
+          `${secondPlayer}'s ${second.name} took ${struggleDamage} damage! (${second.currentHP}/${second.maxHP} HP remaining)`,
+        );
+
+        if (second.currentHP <= 0) {
+          log.push('');
+          log.push(`${secondPlayer}'s ${second.name} fainted!`);
+          log.push(`${firstPlayer}'s ${first.name} wins the battle!`);
+          break;
+        }
+      }
+
+      if (second.currentHP > 0) {
+        const secondMoveIndex = Math.floor(
+          Math.random() * second.config.selectedMoves.length,
+        );
+        const secondSelectedMove = second.config.selectedMoves[secondMoveIndex];
+        const secondMoveData = movesData[secondSelectedMove.move.name];
+
+        if (secondMoveData) {
+          if (secondMoveData.power) {
+            const damage = calculateDamage(second, first, secondSelectedMove);
+            const effectiveness =
+              secondMoveData.type && first.pokemon.types
+                ? getTypeEffectiveness(
+                    secondMoveData.type.name,
+                    first.pokemon.types,
+                  )
+                : 1;
+            first.currentHP = Math.max(0, first.currentHP - damage);
+
+            log.push(
+              `${secondPlayer}'s ${second.name} used ${secondMoveData.name
+                .replace(/-/g, ' ')
+                .toUpperCase()}!`,
+            );
+
+            if (effectiveness > 1) log.push(`It's super effective!`);
+            else if (effectiveness < 1 && effectiveness > 0)
+              log.push(`It's not very effective...`);
+            else if (effectiveness === 0)
+              log.push(`It doesn't affect ${first.name}...`);
+
+            log.push(
+              `${firstPlayer}'s ${first.name} took ${damage} damage! (${first.currentHP}/${first.maxHP} HP remaining)`,
+            );
+
+            if (first.currentHP <= 0) {
+              log.push('');
+              log.push(`${firstPlayer}'s ${first.name} fainted!`);
+              log.push(`${secondPlayer}'s ${second.name} wins the battle!`);
+              break;
+            }
+          } else {
+            log.push(
+              `${secondPlayer}'s ${second.name} used ${secondMoveData.name
+                .replace(/-/g, ' ')
+                .toUpperCase()}!`,
+            );
+            log.push(`(Status moves are not yet implemented)`);
+          }
+        } else {
+          const struggleDamage = Math.floor((40 * second.config.level) / 50);
+          first.currentHP = Math.max(0, first.currentHP - struggleDamage);
+          log.push(`${secondPlayer}'s ${second.name} used STRUGGLE!`);
+          log.push(
+            `${firstPlayer}'s ${first.name} took ${struggleDamage} damage! (${first.currentHP}/${first.maxHP} HP remaining)`,
+          );
+
+          if (first.currentHP <= 0) {
+            log.push('');
+            log.push(`${firstPlayer}'s ${first.name} fainted!`);
+            log.push(`${secondPlayer}'s ${second.name} wins the battle!`);
+            break;
+          }
+        }
+      }
+
+      log.push('');
+      turn++;
+    }
+
+    if (turn > 50) {
+      log.push(`Battle ended due to turn limit!`);
+      if (p1.currentHP > p2.currentHP) {
+        log.push(`Player 1's ${p1.name} wins by HP advantage!`);
+      } else if (p2.currentHP > p1.currentHP) {
+        log.push(`Player 2's ${p2.name} wins by HP advantage!`);
+      } else {
+        log.push(`It's a draw!`);
+      }
+    }
+
+    setBattleLog(log);
+    setBattleActive(false);
+  };
+
+  const resetBattle = () => {
+    setBattleLog([]);
+    setBattleActive(false);
+    setSelectedPokemon1(null);
+    setSelectedPokemon2(null);
+    setPokemon1Config({
+      level: 50,
+      nature: 'hardy',
+      ivs: {
+        hp: 31,
+        attack: 31,
+        defense: 31,
+        specialAttack: 31,
+        specialDefense: 31,
+        speed: 31,
+      },
+      evs: {
+        hp: 0,
+        attack: 0,
+        defense: 0,
+        specialAttack: 0,
+        specialDefense: 0,
+        speed: 0,
+      },
+      moves: [],
+      selectedMoves: [],
+      stats: {
+        hp: 0,
+        attack: 0,
+        defense: 0,
+        specialAttack: 0,
+        specialDefense: 0,
+        speed: 0,
+      },
+      manualStats: false,
+    });
+    setPokemon2Config({
+      level: 50,
+      nature: 'hardy',
+      ivs: {
+        hp: 31,
+        attack: 31,
+        defense: 31,
+        specialAttack: 31,
+        specialDefense: 31,
+        speed: 31,
+      },
+      evs: {
+        hp: 0,
+        attack: 0,
+        defense: 0,
+        specialAttack: 0,
+        specialDefense: 0,
+        speed: 0,
+      },
+      moves: [],
+      selectedMoves: [],
+      stats: {
+        hp: 0,
+        attack: 0,
+        defense: 0,
+        specialAttack: 0,
+        specialDefense: 0,
+        speed: 0,
+      },
+      manualStats: false,
+    });
+    setAvailableMoves1([]);
+    setAvailableMoves2([]);
+  };
+
   return (
     <PageErrorBoundary pageName="Battle Simulator">
       <Head>
@@ -1464,6 +1742,28 @@ const BattleSimulator: NextPage = () => {
                     </div>
                   </div>
                 )}
+                
+                {/* Quick Battle Option */}
+                <div className="mt-6 pt-6 border-t border-gray-200">
+                  <h4 className="text-lg font-semibold mb-3 text-center text-gray-700">Alternative Battle Mode</h4>
+                  <div className="flex gap-3 justify-center">
+                    <button
+                      onClick={runQuickBattle}
+                      disabled={battleActive}
+                      className="btn bg-gradient-to-r from-purple-500 to-indigo-500 text-white hover:from-purple-600 hover:to-indigo-600 px-6 py-3 font-bold disabled:opacity-50"
+                    >
+                      {battleActive ? 'Battle in Progress...' : 'Quick Battle (Auto)'}
+                    </button>
+                    {(selectedPokemon1 || selectedPokemon2 || battleLog.length > 0) && (
+                      <button
+                        onClick={resetBattle}
+                        className="btn bg-gray-700 text-white hover:bg-gray-800 px-6 py-3 font-bold"
+                      >
+                        Reset All
+                      </button>
+                    )}
+                  </div>
+                </div>
               </div>
             )}
           </div>
@@ -1553,11 +1853,11 @@ const BattleSimulator: NextPage = () => {
               <EnhancedPokemonSelector
                 isOpen={true}
                 onClose={() => {}}
-                onSelect={(pokemon: any) => {
+                onSelect={(pokemon: SelectorPokemon) => {
                   if (showPokemonSelector === 1) {
-                    setSelectedPokemon1(pokemon);
+                    selectPokemon(pokemon, 1);
                   } else {
-                    setSelectedPokemon2(pokemon);
+                    selectPokemon(pokemon, 2);
                   }
                   setShowPokemonSelector(null);
                 }}
@@ -1791,6 +2091,17 @@ const BattleSimulator: NextPage = () => {
               </div>
             </div>
           </Modal>
+
+          {battleLog.length > 0 && (
+            <div className="mt-8">
+              <h3 className="font-bold mb-2">Battle Log</h3>
+              <div className="bg-white rounded-xl p-4 space-y-1">
+                {battleLog.map((entry, index) => (
+                  <div key={index}>{entry}</div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </FullBleedWrapper>
 
@@ -1866,3 +2177,5 @@ const BattleSimulator: NextPage = () => {
 };
 
 export default BattleSimulator;
+(BattleSimulator as any).fullBleed = true;
+

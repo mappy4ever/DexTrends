@@ -1,4 +1,5 @@
 import React, { ReactNode, ErrorInfo } from 'react';
+import Router from 'next/router';
 
 interface TCGSetsErrorBoundaryProps {
   children: ReactNode;
@@ -30,7 +31,7 @@ class TCGSetsErrorBoundary extends React.Component<TCGSetsErrorBoundaryProps, TC
   handleReset(): void {
     this.setState({ hasError: false, errorInfo: null });
     // Force a page reload to clear any module state
-    window.location.reload();
+    Router.reload();
   }
 
   override render(): ReactNode {

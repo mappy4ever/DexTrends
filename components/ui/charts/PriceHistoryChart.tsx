@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { useTheme } from '../../../context/UnifiedAppContext';
 import { PriceHistoryManager } from '../../../lib/supabase';
 import { postJSON } from '../../../utils/unifiedFetch';
@@ -21,6 +22,7 @@ interface PriceHistoryChartProps {
 }
 
 export default function PriceHistoryChart({ cardId, variantType = 'market', initialPrice = 0 }: PriceHistoryChartProps) {
+  const router = useRouter();
   const { theme } = useTheme();
   const [priceData, setPriceData] = useState<unknown[]>([]);
   const [loading, setLoading] = useState(true);
@@ -298,7 +300,7 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
         <p className="text-red-600 dark:text-red-400 font-medium">Error loading price data</p>
         <p className="text-sm text-red-500 dark:text-red-300 mt-1">{error}</p>
         <button
-          onClick={() => window.location.reload()}
+          onClick={() => router.reload()}
           className="mt-3 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
         >
           Retry

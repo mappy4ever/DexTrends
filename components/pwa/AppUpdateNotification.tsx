@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { useMobileUtils } from '../../utils/mobileUtils';
 import logger from '../../utils/logger';
 
@@ -18,6 +19,7 @@ interface ServiceWorkerMessage {
 
 const AppUpdateNotification: React.FC = () => {
   const { utils } = useMobileUtils();
+  const router = useRouter();
   const [updateAvailable, setUpdateAvailable] = useState(false);
   const [appUpdated, setAppUpdated] = useState(false);
   const [updateInfo, setUpdateInfo] = useState<UpdateInfo | null>(null);
@@ -128,7 +130,7 @@ const AppUpdateNotification: React.FC = () => {
         
         // Reload the page to get the new version
         setTimeout(() => {
-          window.location.reload();
+          router.reload();
         }, 1000);
       }
     } catch (error) {

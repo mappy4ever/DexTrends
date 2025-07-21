@@ -29,7 +29,7 @@ export default function GlobalErrorHandler(): null {
           // Reload the page once to try recovering
           if (!window.__hasReloaded) {
             window.__hasReloaded = true;
-            window.location.reload();
+            router.reload();
           }
         }
       }
@@ -47,7 +47,7 @@ export default function GlobalErrorHandler(): null {
         
         if (process.env.NODE_ENV === 'production' && !window.__hasReloaded) {
           window.__hasReloaded = true;
-          window.location.reload();
+          router.reload();
         }
       }
     };

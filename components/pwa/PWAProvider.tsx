@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { useRouter } from 'next/router';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -36,6 +37,7 @@ export const PWAProvider: React.FC<PWAProviderProps> = ({ children }) => {
   const [isOnline, setIsOnline] = useState(true);
   const [serviceWorkerRegistration, setServiceWorkerRegistration] = useState<ServiceWorkerRegistration | null>(null);
   const [hasUpdate, setHasUpdate] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     // Check if app is installed/standalone
@@ -117,7 +119,7 @@ export const PWAProvider: React.FC<PWAProviderProps> = ({ children }) => {
   const refreshApp = (): void => {
     if (serviceWorkerRegistration && serviceWorkerRegistration.waiting) {
       serviceWorkerRegistration.waiting.postMessage({ type: 'SKIP_WAITING' });
-      window.location.reload();
+      router.reload();
     }
   };
 
