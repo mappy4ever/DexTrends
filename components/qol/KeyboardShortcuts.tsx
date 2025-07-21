@@ -109,7 +109,7 @@ export const KeyboardShortcutsManager: React.FC = () => {
       title: 'Refresh Page',
       description: 'Reload the current page',
       icon: '🔄',
-      action: () => window.location.reload(),
+      action: () => router.reload(),
       keywords: ['refresh', 'reload', 'update']
     }
   ];

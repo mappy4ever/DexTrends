@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, ReactNode } from 'react';
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { useNotifications } from './NotificationSystem';
 import logger from '../../utils/logger';
 
@@ -379,7 +379,7 @@ export class SmartErrorBoundary extends React.Component<SmartErrorBoundaryProps,
               
               <div className="space-y-2">
                 <button
-                  onClick={() => window.location.reload()}
+                  onClick={() => Router.reload()}
                   className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
 
                   Refresh Page

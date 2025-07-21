@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { FaUsers, FaComments, FaTrophy, FaHeart, FaShare, FaStar, FaFire, FaCrown } from 'react-icons/fa';
 import { BsChatDots, BsHeart, BsShare, BsBookmark, BsThreeDots } from 'react-icons/bs';
 
@@ -97,6 +98,7 @@ interface Tab {
 }
 
 const SocialCommunityHub: React.FC = () => {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<TabId>('feed');
   const [socialData, setSocialData] = useState<SocialData>({
     posts: [],
@@ -322,14 +324,14 @@ const SocialCommunityHub: React.FC = () => {
         await navigator.share({
           title: `${post.user.username} shared on DexTrends`,
           text: post.content,
-          url: window.location.href
+          url: `${window.location.origin}${router.asPath}`
         });
       } catch (error) {
         console.log('Share cancelled');
       }
     } else {
       // Fallback to clipboard
-      navigator.clipboard.writeText(window.location.href);
+      navigator.clipboard.writeText(`${window.location.origin}${router.asPath}`);
       // Show notification
     }
   };
