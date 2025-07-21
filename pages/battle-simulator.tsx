@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { fetchData } from '../utils/apiutils';
 import { POKEMON_TYPE_COLORS } from '../utils/pokemonTypeColors';
 import { TypeBadge } from '../components/ui/TypeBadge';
-import { EnhancedPokemonSelector } from '../components/ui/EnhancedPokemonSelector';
+import { EnhancedPokemonSelector, type Pokemon as SelectorPokemon } from '../components/ui/EnhancedPokemonSelector';
 import Modal from '../components/ui/modals/Modal';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import { InlineLoader } from '../utils/unifiedLoading';
@@ -183,7 +183,7 @@ const BattleSimulator: NextPage = () => {
   const [selectedPokemon2, setSelectedPokemon2] = useState<Pokemon | null>(null);
   const [showPokemonSelector, setShowPokemonSelector] = useState<number | null>(null); // 1 or 2
   const [searchTerm, setSearchTerm] = useState('');
-  const [pokemonList, setPokemonList] = useState<Array<{ name: string; url: string }>>([]);
+  const [pokemonList, setPokemonList] = useState<SelectorPokemon[]>([]);
   const [loading, setLoading] = useState(false);
   const [battleLog, setBattleLog] = useState<string[]>([]);
   const [battleActive, setBattleActive] = useState(false);
@@ -257,7 +257,7 @@ const BattleSimulator: NextPage = () => {
 
   const loadPokemonList = async () => {
     try {
-      const response = await fetchData('https://pokeapi.co/api/v2/pokemon?limit=1010') as { results: Array<{ name: string; url: string }> }; // All Pokemon
+      const response = await fetchData('https://pokeapi.co/api/v2/pokemon?limit=1010') as { results: SelectorPokemon[] }; // All Pokemon
       
       // Handle case where response doesn't have results (e.g., mocked API)
       if (!response || !response.results || !Array.isArray(response.results)) {
@@ -375,7 +375,7 @@ const BattleSimulator: NextPage = () => {
   };
 
   // Load Pokemon data when selected
-  const selectPokemon = async (pokemon: { name: string; url: string }, player: number) => {
+  const selectPokemon = async (pokemon: SelectorPokemon, player: number) => {
     setLoading(true);
     try {
       const pokemonData = await fetchData(pokemon.url) as Pokemon;
@@ -1037,11 +1037,11 @@ const BattleSimulator: NextPage = () => {
               <EnhancedPokemonSelector
                 isOpen={true}
                 onClose={() => {}}
-                onSelect={(pokemon: any) => {
+                onSelect={(pokemon: SelectorPokemon) => {
                   if (showPokemonSelector === 1) {
-                    setSelectedPokemon1(pokemon);
+                    selectPokemon(pokemon, 1);
                   } else {
-                    setSelectedPokemon2(pokemon);
+                    selectPokemon(pokemon, 2);
                   }
                   setShowPokemonSelector(null);
                 }}

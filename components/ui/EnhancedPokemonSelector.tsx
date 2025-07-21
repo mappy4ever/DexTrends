@@ -3,7 +3,7 @@ import { PositionedModal } from './PositionedModal';
 import PokeballLoader from './PokeballLoader';
 
 // Types
-interface Pokemon {
+export interface Pokemon {
   name: string;
   url: string;
 }
