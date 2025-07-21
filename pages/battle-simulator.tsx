@@ -55,6 +55,17 @@ interface BattleConfig {
   manualStats: boolean;
 }
 
+// Battle log entry interface for interactive battles
+interface BattleLog {
+  player: string;
+  pokemon: string;
+  action: string;
+  damage?: number;
+  effectiveness?: number;
+  critical?: boolean;
+  timestamp: Date;
+}
+
 // Props interface for PokemonSelectionItem
 interface PokemonSelectionItemProps {
   pokemon: {
@@ -186,7 +197,7 @@ const BattleSimulator: NextPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [pokemonList, setPokemonList] = useState<SelectorPokemon[]>([]);
   const [loading, setLoading] = useState(false);
-  const [battleLog, setBattleLog] = useState<string[]>([]);
+  const [battleLog, setBattleLog] = useState<(BattleLog | string)[]>([]);
   const [battleActive, setBattleActive] = useState(false);
   const [showMoveSelector, setShowMoveSelector] = useState<number | null>(null); // 1 or 2
   const [availableMoves1, setAvailableMoves1] = useState<PokemonMove[]>([]);
@@ -899,7 +910,7 @@ const BattleSimulator: NextPage = () => {
       winnerPokemon: winnerPokemon?.name,
       loser: winner === 1 ? player2Name : player1Name,
       loserPokemon: winner === 1 ? selectedPokemon2?.name : selectedPokemon1?.name,
-      moves: battleLog.filter(log => log.damage)
+      moves: battleLog.filter(log => typeof log === 'object' && 'damage' in log && log.damage)
     };
     
     setBattleHistory(prev => [...prev, battleRecord]);
@@ -919,7 +930,7 @@ const BattleSimulator: NextPage = () => {
   // Due to size constraints, I need to continue the file conversion in the next message
   // This is a partial conversion showing the structure and approach
   
-  const runBattle = async () => {
+  const runQuickBattle = async () => {
     setBattleActive(true);
     setBattleLog([]);
 
@@ -1436,7 +1447,7 @@ const BattleSimulator: NextPage = () => {
                     <div className="text-sm text-gray-500 font-medium">Battle Arena</div>
                     {battleActive && (
                       <div className="mt-2 text-xs text-gray-400">
-                        Turn {battleLog.filter(log => log.damage).length + 1}
+                        Turn {battleLog.filter(log => typeof log === 'object' && 'damage' in log && log.damage).length + 1}
                       </div>
                     )}
                   </div>
@@ -1773,48 +1784,64 @@ const BattleSimulator: NextPage = () => {
             <div className="bg-white rounded-2xl shadow-xl p-6 mb-8">
               <h3 className="text-xl font-bold mb-4 text-gray-800">Battle Log</h3>
               <div className="bg-gray-50 rounded-xl p-4 max-h-64 overflow-y-auto space-y-2">
-                {battleLog.map((log, index) => (
-                  <div 
-                    key={index}
-                    className={`p-3 rounded-lg text-sm ${
-                      log.critical ? 'bg-yellow-100 border border-yellow-300' :
-                      log.effectiveness && log.effectiveness > 1 ? 'bg-green-100 border border-green-300' :
-                      log.effectiveness && log.effectiveness < 1 ? 'bg-red-100 border border-red-300' :
-                      'bg-white border border-gray-200'
-                    } animate-fadeIn`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <span className="font-semibold text-gray-700">{log.player}</span>
-                        <span className="text-gray-500 mx-2">•</span>
-                        <span className="font-medium capitalize">{log.pokemon}</span>
+                {battleLog.map((log, index) => {
+                  // Handle string logs from Quick Battle
+                  if (typeof log === 'string') {
+                    return (
+                      <div 
+                        key={index}
+                        className="p-3 rounded-lg text-sm bg-white border border-gray-200"
+                      >
+                        <span className="text-gray-600">{log}</span>
                       </div>
-                      <span className="text-xs text-gray-400">
-                        {new Date(log.timestamp).toLocaleTimeString()}
-                      </span>
+                    );
+                  }
+                  
+                  // Handle BattleLog objects from Interactive Battle
+                  const battleLogEntry = log as BattleLog;
+                  return (
+                    <div 
+                      key={index}
+                      className={`p-3 rounded-lg text-sm ${
+                        battleLogEntry.critical ? 'bg-yellow-100 border border-yellow-300' :
+                        battleLogEntry.effectiveness && battleLogEntry.effectiveness > 1 ? 'bg-green-100 border border-green-300' :
+                        battleLogEntry.effectiveness && battleLogEntry.effectiveness < 1 ? 'bg-red-100 border border-red-300' :
+                        'bg-white border border-gray-200'
+                      } animate-fadeIn`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <span className="font-semibold text-gray-700">{battleLogEntry.player}</span>
+                          <span className="text-gray-500 mx-2">•</span>
+                          <span className="font-medium capitalize">{battleLogEntry.pokemon}</span>
+                        </div>
+                        <span className="text-xs text-gray-400">
+                          {new Date(battleLogEntry.timestamp).toLocaleTimeString()}
+                        </span>
+                      </div>
+                      <div className="mt-1">
+                        <span className="text-gray-600">{battleLogEntry.action}</span>
+                        {battleLogEntry.damage && (
+                          <span className="ml-2 font-bold text-red-600">
+                            -{battleLogEntry.damage} HP
+                          </span>
+                        )}
+                        {battleLogEntry.effectiveness && battleLogEntry.effectiveness !== 1 && (
+                          <span className={`ml-2 text-xs font-medium px-2 py-1 rounded-full ${
+                            battleLogEntry.effectiveness > 1 ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'
+                          }`}>
+                            {battleLogEntry.effectiveness > 1 ? 'Super Effective!' : 'Not Very Effective'}
+                          </span>
+                        )}
+                        {battleLogEntry.critical && (
+                          <span className="ml-2 text-xs font-medium px-2 py-1 rounded-full bg-yellow-200 text-yellow-800">
+                            Critical Hit!
+                          </span>
+                        )}
+                      </div>
                     </div>
-                    <div className="mt-1">
-                      <span className="text-gray-600">{log.action}</span>
-                      {log.damage && (
-                        <span className="ml-2 font-bold text-red-600">
-                          -{log.damage} HP
-                        </span>
-                      )}
-                      {log.effectiveness && log.effectiveness !== 1 && (
-                        <span className={`ml-2 text-xs font-medium px-2 py-1 rounded-full ${
-                          log.effectiveness > 1 ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'
-                        }`}>
-                          {log.effectiveness > 1 ? 'Super Effective!' : 'Not Very Effective'}
-                        </span>
-                      )}
-                      {log.critical && (
-                        <span className="ml-2 text-xs font-medium px-2 py-1 rounded-full bg-yellow-200 text-yellow-800">
-                          Critical Hit!
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}
@@ -2054,9 +2081,9 @@ const BattleSimulator: NextPage = () => {
               <div className="bg-gray-50 rounded-lg p-4 mb-6">
                 <h3 className="font-semibold text-gray-700 mb-2">Battle Summary</h3>
                 <div className="text-sm text-gray-600 space-y-1">
-                  <div>Total Turns: {battleLog.filter(log => log.damage).length}</div>
-                  <div>Total Damage Dealt: {battleLog.reduce((sum, log) => sum + (log.damage || 0), 0)}</div>
-                  <div>Critical Hits: {battleLog.filter(log => log.critical).length}</div>
+                  <div>Total Turns: {battleLog.filter(log => typeof log === 'object' && 'damage' in log && log.damage).length}</div>
+                  <div>Total Damage Dealt: {battleLog.reduce((sum, log) => sum + (typeof log === 'object' && 'damage' in log ? log.damage || 0 : 0), 0)}</div>
+                  <div>Critical Hits: {battleLog.filter(log => typeof log === 'object' && 'critical' in log && log.critical).length}</div>
                 </div>
               </div>
               
@@ -2097,7 +2124,9 @@ const BattleSimulator: NextPage = () => {
               <h3 className="font-bold mb-2">Battle Log</h3>
               <div className="bg-white rounded-xl p-4 space-y-1">
                 {battleLog.map((entry, index) => (
-                  <div key={index}>{entry}</div>
+                  <div key={index}>
+                    {typeof entry === 'string' ? entry : `${entry.player}: ${entry.action}`}
+                  </div>
                 ))}
               </div>
             </div>
