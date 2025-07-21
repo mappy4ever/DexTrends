@@ -1,4 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { fetchJSON } from '../../utils/unifiedFetch';
+import logger from '../../utils/logger';
 
 interface PocketCard {
   id?: string;
@@ -28,14 +30,17 @@ export default async function handler(
   }
 
   try {
-    // Fetch pocket cards data from the external API
-    const response = await fetch('https://raw.githubusercontent.com/chase-manning/pokemon-tcg-pocket-cards/refs/heads/main/v4.json');
+    logger.debug('Fetching pocket cards data', { pokemonName: nameStr });
     
-    if (!response.ok) {
-      throw new Error(`External API returned ${response.status}`);
-    }
-
-    const allCards = await response.json();
+    // Fetch pocket cards data from the external API with aggressive caching
+    const allCards = await fetchJSON<PocketCard[]>(
+      'https://raw.githubusercontent.com/chase-manning/pokemon-tcg-pocket-cards/refs/heads/main/v4.json',
+      {
+        useCache: true,
+        cacheTime: 30 * 60 * 1000, // Cache for 30 minutes (static data)
+        retries: 2
+      }
+    );
     
     if (!Array.isArray(allCards)) {
       throw new Error('Invalid data format from external API');
@@ -87,9 +92,18 @@ export default async function handler(
       return (a.name || '').localeCompare(b.name || '');
     });
 
+    logger.debug('Pocket cards filtered and sorted', { 
+      pokemonName: nameStr, 
+      totalCards: allCards.length,
+      filteredCount: filteredCards.length 
+    });
+
     res.status(200).json(filteredCards);
-  } catch (error) {
-    console.error('Error fetching pocket cards:', error);
+  } catch (error: any) {
+    logger.error('Failed to fetch pocket cards', { 
+      pokemonName: nameStr, 
+      error: error.message 
+    });
     res.status(500).json({ 
       error: 'Failed to fetch pocket cards',
       message: error.message 

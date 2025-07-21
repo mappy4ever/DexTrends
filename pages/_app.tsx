@@ -14,6 +14,7 @@ import "../styles/card-types.css";
 import "../styles/unified-components.css";
 import "../components/typebadge.css";
 import Layout from "../components/layout/Layout";
+import logger from "../utils/logger";
 import ErrorBoundary from "../components/layout/ErrorBoundary";
 import { AnimatePresence } from "framer-motion";
 import { PageTransition } from "../components/ui/animations/AnimationSystem";
@@ -109,7 +110,7 @@ function MyApp({ Component, pageProps, router }: MyAppProps) {
     import('../utils/iosFixes').then(({ applyIOSFixes }) => {
       applyIOSFixes();
     }).catch(err => {
-      console.warn('iOS fixes failed to load:', err);
+      logger.warn('iOS fixes failed to load', { error: err });
     });
     
     // iOS scroll performance optimization

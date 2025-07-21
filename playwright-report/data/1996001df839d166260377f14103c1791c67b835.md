@@ -1,0 +1,132 @@
+# Page snapshot
+
+```yaml
+- link "DexTrends":
+  - /url: /
+  - img
+  - text: DexTrends
+- navigation:
+  - link "Home":
+    - /url: /
+    - img
+    - text: Home
+  - link "Pokémon TCG":
+    - /url: /tcgsets
+    - img
+    - text: Pokémon TCG
+    - img
+  - link "Pokédex":
+    - /url: /pokedex
+    - img
+    - text: Pokédex
+  - link "Pokémon":
+    - /url: /pokemon
+    - img
+    - text: Pokémon
+    - img
+  - link "Battle":
+    - /url: /battle-simulator
+    - img
+    - text: Battle
+    - img
+  - link "Pocket":
+    - /url: /pocketmode
+    - img
+    - text: Pocket
+    - img
+  - link "Fun":
+    - /url: /fun
+    - img
+    - text: Fun
+- button "Open search":
+  - img
+- link "View favorites":
+  - /url: /favorites
+  - img
+- button "Activate dark mode":
+  - img
+- main:
+  - img "DexTrends"
+  - paragraph: Your ultimate destination for everything Pokémon - from TCG cards to game data, competitive battles to collection tracking.
+  - textbox "Search Pokémon, cards, moves, items, regions..."
+  - button "Search"
+  - link "Pokédex 1000+ Pokémon":
+    - /url: /pokedex
+    - img
+    - heading "Pokédex" [level=3]
+    - paragraph: 1000+ Pokémon
+  - link "TCG Sets All expansions":
+    - /url: /tcgsets
+    - img
+    - heading "TCG Sets" [level=3]
+    - paragraph: All expansions
+  - link "Regions All regions":
+    - /url: /pokemon/regions
+    - img
+    - heading "Regions" [level=3]
+    - paragraph: All regions
+  - link "Battle Simulator":
+    - /url: /battle-simulator
+    - img
+    - heading "Battle" [level=3]
+    - paragraph: Simulator
+  - link "Collection Track cards":
+    - /url: /collections
+    - img
+    - heading "Collection" [level=3]
+    - paragraph: Track cards
+  - link "Pocket TCG Mobile cards":
+    - /url: /pocketmode
+    - img
+    - heading "Pocket TCG" [level=3]
+    - paragraph: Mobile cards
+  - link "Prices Track trends":
+    - /url: /trending
+    - img
+    - heading "Prices" [level=3]
+    - paragraph: Track trends
+  - link "Fun Zone Games & trivia":
+    - /url: /fun
+    - img
+    - heading "Fun Zone" [level=3]
+    - paragraph: Games & trivia
+  - heading "Pokémon Card Search" [level=2]
+  - paragraph: Search any Pokémon TCG card from our extensive database
+  - button "Show Card Search"
+  - heading "Popular Destinations" [level=2]
+  - link "Starter Pokémon":
+    - /url: /pokemon/starters
+    - img
+    - text: Starter Pokémon
+  - link "Moves & TMs":
+    - /url: /pokemon/moves
+    - img
+    - text: Moves & TMs
+  - link "Items":
+    - /url: /pokemon/items
+    - img
+    - text: Items
+  - link "Type Chart":
+    - /url: /type-effectiveness
+    - img
+    - text: Type Chart
+  - text: Press ? for shortcuts 🔕
+  - heading "Push Notifications" [level=3]
+  - paragraph: Blocked by user
+  - button "Enable"
+- contentinfo:
+  - paragraph:
+    - text: © 2025 DexTrends - A
+    - link "PakePoint":
+      - /url: https://www.pakepoint.com
+    - text: Project. All rights reserved.
+- button "Open card comparison tool":
+  - img
+- text: Compare Cards
+- button "💡"
+- button:
+  - img
+- alert
+- button "Open Next.js Dev Tools":
+  - img
+```

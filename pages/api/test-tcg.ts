@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import logger from '../../utils/logger';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { name } = req.query;
@@ -9,8 +10,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const pokemon = pokemonModule.default || pokemonModule;
     const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
     
-    console.log('[Test TCG API] API Key present:', !!apiKey);
-    console.log('[Test TCG API] Searching for:', pokemonName);
+    logger.debug('[Test TCG API] API Key present:', { hasApiKey: !!apiKey });
+    logger.debug('[Test TCG API] Searching for:', { pokemonName });
     
     if (apiKey && typeof pokemon.configure === 'function') {
       pokemon.configure({ apiKey });
@@ -18,11 +19,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
     // Try exact match first
     const exactResult = await pokemon.card.where({ q: `name:"${pokemonName}"` });
-    console.log('[Test TCG API] Exact match result:', exactResult);
+    logger.debug('[Test TCG API] Exact match result:', { count: exactResult?.length || 0 });
     
     // Try partial match
     const partialResult = await pokemon.card.where({ q: `name:${pokemonName}*` });
-    console.log('[Test TCG API] Partial match result:', partialResult);
+    logger.debug('[Test TCG API] Partial match result:', { count: partialResult?.length || 0 });
     
     res.status(200).json({
       success: true,
@@ -38,7 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     });
   } catch (error: any) {
-    console.error('[Test TCG API] Error:', error);
+    logger.error('[Test TCG API] Error:', { error: error.message, stack: error.stack });
     res.status(500).json({
       success: false,
       error: error.message || 'Unknown error',

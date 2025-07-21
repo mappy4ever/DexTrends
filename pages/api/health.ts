@@ -9,6 +9,7 @@ import { withSecurity } from '../../utils/securityHeaders';
 import { globalRegistry } from '../../utils/circuitBreaker';
 import { getRateLimiterHealth } from '../../utils/rateLimiter';
 import logger from '../../utils/logger';
+import { unifiedFetch } from '../../utils/unifiedFetch';
 
 interface DatabaseHealth {
   status: 'healthy' | 'unhealthy';
@@ -121,24 +122,25 @@ async function checkExternalAPIs(): Promise<Record<string, APIHealth>> {
   for (const [name, config] of Object.entries(apis)) {
     try {
       const start = Date.now();
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), config.timeout);
-
-      const response = await fetch(config.url, {
-        signal: controller.signal,
+      
+      const response = await unifiedFetch(config.url, {
+        timeout: config.timeout,
         headers: {
           'User-Agent': 'DexTrends-HealthCheck/1.0'
-        }
+        },
+        useCache: false, // Don't cache health checks
+        retries: 0, // Don't retry health checks
+        throwOnError: false
       });
 
-      clearTimeout(timeoutId);
       const responseTime = Date.now() - start;
 
       results[name] = {
-        status: response.ok ? 'healthy' : 'unhealthy',
-        statusCode: response.status,
+        status: response.error ? 'unhealthy' : 'healthy',
+        statusCode: response.status || 0,
         responseTime,
-        url: config.url
+        url: config.url,
+        error: response.error?.message
       } as APIHealth;
     } catch (error) {
       results[name] = {

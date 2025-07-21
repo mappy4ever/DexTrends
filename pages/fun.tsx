@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTheme } from '../context/UnifiedAppContext';
 import Head from 'next/head';
 import logger from '../utils/logger';
+import { fetchJSON } from '../utils/unifiedFetch';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import type { NextPage } from 'next';
 
@@ -23,6 +24,19 @@ interface RandomPokemon {
   id: number;
   sprite: string;
   types: string[];
+}
+
+interface PokemonApiResponse {
+  name: string;
+  id: number;
+  sprites: {
+    front_default: string;
+  };
+  types: Array<{
+    type: {
+      name: string;
+    };
+  }>;
 }
 
 const FunPage: NextPage & { fullBleed?: boolean } = () => {
@@ -130,14 +144,21 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
     setLoadingRandomPokemon(true);
     try {
       const randomId = Math.floor(Math.random() * 1010) + 1;
-      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomId}`);
-      const pokemon = await response.json();
-      setRandomPokemon({
-        name: pokemon.name,
-        id: pokemon.id,
-        sprite: pokemon.sprites.front_default,
-        types: pokemon.types.map((type: any) => type.type.name)
+      const pokemon = await fetchJSON<PokemonApiResponse>(`https://pokeapi.co/api/v2/pokemon/${randomId}`, {
+        useCache: true,
+        cacheTime: 5 * 60 * 1000, // Cache for 5 minutes
+        timeout: 10000, // 10 second timeout
+        retries: 2
       });
+      
+      if (pokemon) {
+        setRandomPokemon({
+          name: pokemon.name,
+          id: pokemon.id,
+          sprite: pokemon.sprites.front_default,
+          types: pokemon.types.map((type) => type.type.name)
+        });
+      }
     } catch (error) {
       logger.error('Error fetching random Pokemon:', { error });
     } finally {

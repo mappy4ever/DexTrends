@@ -1,5 +1,6 @@
 // Enhanced Pocket Data utility with intelligent caching and Supabase integration
 import { SupabaseCache } from '../lib/supabase';
+import { fetchJSON } from './unifiedFetch';
 import type { PocketCard } from '../types/api/pocket-cards';
 
 let pocketDataCache: PocketCard[] | null = null;
@@ -31,7 +32,7 @@ export async function fetchPocketData(): Promise<PocketCard[]> {
   // Try Supabase cache first
   try {
     const supabaseCached = await SupabaseCache.getCachedPokemon(SUPABASE_CACHE_ID) as PocketCard[] | null;
-    if (supabaseCached) {
+    if (supabaseCached && Array.isArray(supabaseCached)) {
       pocketDataCache = supabaseCached;
       cacheTimestamp = now;
       return supabaseCached;
@@ -40,15 +41,16 @@ export async function fetchPocketData(): Promise<PocketCard[]> {
     // Supabase cache unavailable, continue with fetch
   }
   
-  // Create new fetch promise
-  fetchPromise = fetch("https://raw.githubusercontent.com/chase-manning/pokemon-tcg-pocket-cards/refs/heads/main/v4.json")
-    .then(res => {
-      if (!res.ok) {
-        throw new Error(`Failed to fetch Pocket data: ${res.status}`);
-      }
-      return res.json() as Promise<PocketCard[]>;
-    })
+  // Create new fetch promise using unifiedFetch
+  fetchPromise = fetchJSON<PocketCard[]>("https://raw.githubusercontent.com/chase-manning/pokemon-tcg-pocket-cards/refs/heads/main/v4.json", {
+    useCache: false, // We handle caching at this level
+    timeout: 15000, // 15 second timeout for large JSON file
+    retries: 3 // More retries for critical data
+  })
     .then(async (data) => {
+      if (!data) {
+        throw new Error('Received null/undefined data from pocket cards API');
+      }
       pocketDataCache = data;
       cacheTimestamp = now;
       fetchPromise = null;
@@ -79,7 +81,7 @@ export async function fetchPocketData(): Promise<PocketCard[]> {
       // Try Supabase cache as fallback (even if expired)
       try {
         const supabaseFallback = await SupabaseCache.getCachedPokemon(SUPABASE_CACHE_ID) as PocketCard[] | null;
-        if (supabaseFallback) {
+        if (supabaseFallback && Array.isArray(supabaseFallback)) {
           // Using Supabase fallback cache due to fetch error
           pocketDataCache = supabaseFallback;
           cacheTimestamp = now - (CACHE_DURATION / 2); // Mark as half-expired

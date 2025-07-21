@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useMobileUtils } from '../../utils/mobileUtils';
 import logger from '../../utils/logger';
+import { postJSON } from '../../utils/unifiedFetch';
 
 // Type definitions
 interface PriceAlert {
@@ -48,17 +49,24 @@ const PushNotifications: React.FC<PushNotificationsProps> = ({
   // Check push notification support
   useEffect(() => {
     const checkSupport = () => {
-      const supported = 'Notification' in window && 
-                       'serviceWorker' in navigator && 
-                       'PushManager' in window;
-      
-      setIsSupported(supported);
-      
-      if (supported) {
-        setPermission(Notification.permission);
+      try {
+        const supported = 'Notification' in window && 
+                         'serviceWorker' in navigator && 
+                         'PushManager' in window;
+        
+        setIsSupported(supported);
+        
+        if (supported && window.Notification) {
+          setPermission(Notification.permission);
+          logger.debug('Push notifications support:', { supported, permission: Notification.permission });
+        } else {
+          logger.debug('Push notifications support:', { supported, permission: 'default' });
+        }
+      } catch (error) {
+        // Notification API not available (e.g., in tests or certain environments)
+        setIsSupported(false);
+        logger.warn('Push notifications not supported', { error });
       }
-      
-      logger.debug('Push notifications support:', { supported, permission: Notification.permission });
     };
     
     checkSupport();
@@ -78,6 +86,11 @@ const PushNotifications: React.FC<PushNotificationsProps> = ({
     }
     
     try {
+      if (!window.Notification) {
+        logger.debug('Notification API not available');
+        return 'denied';
+      }
+      
       const result = await Notification.requestPermission();
       setPermission(result);
       
@@ -146,17 +159,7 @@ const PushNotifications: React.FC<PushNotificationsProps> = ({
         }
       };
 
-      const response = await fetch('/api/push-subscription', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-      });
-      
-      if (!response.ok) {
-        throw new Error('Failed to save subscription');
-      }
+      await postJSON('/api/push-subscription', data);
       
       logger.debug('Subscription saved to server');
     } catch (error) {

@@ -6,6 +6,7 @@ import { useFavorites } from '../context/UnifiedAppContext';
 import { FadeIn, SlideUp } from '../components/ui/animations/animations';
 import { TypeBadge } from '../components/ui/TypeBadge';
 import { getGeneration } from '../utils/pokemonutils';
+import { fetchJSON } from '../utils/unifiedFetch';
 import logger from '../utils/logger';
 import PokeballLoader from '../components/ui/PokeballLoader';
 import CollectionDashboard from "../components/ui/layout/CollectionDashboard";
@@ -21,6 +22,23 @@ interface Pokemon {
   name: string;
   types: string[];
   sprite: string;
+}
+
+interface PokemonApiResponse {
+  id: number;
+  name: string;
+  sprites: {
+    front_default: string;
+  };
+  types: Array<{
+    type: {
+      name: string;
+    };
+  }>;
+}
+
+interface TCGCardApiResponse {
+  data: TCGCard;
 }
 
 type TabType = 'dashboard' | 'achievements' | 'pokemon' | 'cards';
@@ -45,15 +63,21 @@ const FavoritesPage: NextPage = () => {
         setLoading(true);
         const pokemonPromises = favorites.pokemon.map(async (id) => {
           try {
-            const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-            if (!res.ok) throw new Error(`Failed to fetch Pokémon #${id}`);
-            const data = await res.json();
-            return {
-              id: data.id,
-              name: data.name,
-              types: data.types.map((t: any) => t.type.name),
-              sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${data.id}.png`
-            };
+            const data = await fetchJSON<PokemonApiResponse>(`https://pokeapi.co/api/v2/pokemon/${id}`, {
+              useCache: true,
+              cacheTime: 10 * 60 * 1000, // Cache for 10 minutes - Pokemon data is stable
+              timeout: 8000,
+              retries: 2
+            });
+            if (data) {
+              return {
+                id: data.id,
+                name: data.name,
+                types: data.types.map((t) => t.type.name),
+                sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${data.id}.png`
+              };
+            }
+            return null;
           } catch (err) {
             logger.error(`Error fetching Pokémon #${id}:`, { error: err, id });
             return null;
@@ -84,10 +108,13 @@ const FavoritesPage: NextPage = () => {
         setLoading(true);
         const cardsPromises = favorites.cards.map(async (id) => {
           try {
-            const res = await fetch(`https://api.pokemontcg.io/v2/cards/${id}`);
-            if (!res.ok) throw new Error(`Failed to fetch card ${id}`);
-            const data = await res.json();
-            return data.data;
+            const response = await fetchJSON<TCGCardApiResponse>(`https://api.pokemontcg.io/v2/cards/${id}`, {
+              useCache: true,
+              cacheTime: 15 * 60 * 1000, // Cache for 15 minutes - card data is very stable
+              timeout: 10000,
+              retries: 2
+            });
+            return response?.data || null;
           } catch (err) {
             logger.error(`Error fetching card ${id}:`, { error: err, id });
             return null;

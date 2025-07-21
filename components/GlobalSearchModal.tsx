@@ -2,6 +2,7 @@ import React, { forwardRef, useImperativeHandle, useState, useRef, useEffect } f
 import Link from "next/link";
 import pokemon from "pokemontcgsdk";
 import { toLowercaseUrl } from "../utils/formatters";
+import { fetchJSON } from "../utils/unifiedFetch";
 import type { TCGCard, CardSet } from "../types/api/cards";
 
 const POKE_API = "https://pokeapi.co/api/v2/pokemon?limit=10&offset=0";
@@ -98,14 +99,18 @@ const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSea
       // Pokémon search
       let pokemonResults: PokemonResult[] = [];
       try {
-        const pokeRes = await fetch(`${POKE_API}&name=${q.toLowerCase()}`);
-        if (pokeRes.ok) {
-          const pokeData: PokemonApiResponse = await pokeRes.json();
-          pokemonResults = pokeData.results
-            ?.filter(p => p.name.includes(q.toLowerCase()))
-            .slice(0, 5) || [];
-        }
-      } catch {}
+        const pokeData = await fetchJSON<PokemonApiResponse>(`${POKE_API}&name=${q.toLowerCase()}`, {
+          useCache: true,
+          cacheTime: 5 * 60 * 1000, // Cache for 5 minutes
+          timeout: 5000, // 5 second timeout for search
+          retries: 1 // Quick retry for search
+        });
+        pokemonResults = pokeData?.results
+          ?.filter(p => p.name.includes(q.toLowerCase()))
+          .slice(0, 5) || [];
+      } catch {
+        // Silent failure - search continues without Pokemon results
+      }
       
       setResults({ cards, sets, pokemon: pokemonResults });
       setLoading(false);

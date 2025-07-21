@@ -15,10 +15,40 @@ interface MetricsError {
   message: string;
 }
 
+interface HealthStatus {
+  status: 'healthy' | 'degraded' | 'unhealthy' | 'critical';
+  lastCheck: string | null;
+  responseTime?: number;
+  error?: string;
+}
+
+interface Alert {
+  id: string;
+  type: string; // More flexible to handle all alert types from monitoring
+  message: string;
+  timestamp: string;
+  resolved?: boolean;
+}
+
+interface CircuitBreakerStatus {
+  name: string;
+  state: 'closed' | 'open' | 'half-open';
+  failures: number;
+  threshold: number;
+  timeout: number;
+  lastFailure?: string;
+}
+
+interface CircuitBreakersData {
+  breakers: CircuitBreakerStatus[];
+  totalBreakers: number;
+  openBreakers: number;
+}
+
 interface MetricsData {
   timestamp: string;
   timeRange: string;
-  health: any;
+  health: HealthStatus;
   performance: {
     totalRequests: number | null;
     totalErrors: number | null;
@@ -27,10 +57,10 @@ interface MetricsData {
     memoryUsage: number | null;
   };
   alerts: {
-    active: any[];
-    recent: any[];
+    active: Alert[];
+    recent: Alert[];
   };
-  circuitBreakers: any;
+  circuitBreakers: CircuitBreakersData;
   system: {
     uptime: number;
     memoryUsage: NodeJS.MemoryUsage;
@@ -45,10 +75,13 @@ interface MetricsData {
  */
 async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<MetricsData | MetricsError | string | any>
+  res: NextApiResponse<MetricsData | MetricsError | string>
 ) {
   if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return res.status(405).json({ 
+      error: 'Method not allowed',
+      message: 'Only GET requests are allowed' 
+    });
   }
 
   try {
@@ -166,9 +199,9 @@ function handlePrometheusFormat(req: NextApiRequest, res: NextApiResponse<string
       metrics += `# HELP dextrends_circuit_breaker_state Circuit breaker state (0=closed, 1=half-open, 2=open)\n`;
       metrics += `# TYPE dextrends_circuit_breaker_state gauge\n`;
       
-      dashboardData.circuitBreakers.breakers.forEach((breaker: any) => {
-        const stateValue = breaker.status === 'healthy' ? 0 : 
-                          breaker.status === 'degraded' ? 1 : 2;
+      dashboardData.circuitBreakers.breakers.forEach((breaker: CircuitBreakerStatus) => {
+        const stateValue = breaker.state === 'closed' ? 0 : 
+                          breaker.state === 'half-open' ? 1 : 2;
         metrics += `dextrends_circuit_breaker_state{name="${breaker.name || 'unknown'}"} ${stateValue}\n`;
       });
       metrics += '\n';

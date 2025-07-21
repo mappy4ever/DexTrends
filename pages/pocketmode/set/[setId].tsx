@@ -6,7 +6,9 @@ import { useRouter } from 'next/router';
 import { fetchPocketData } from '../../../utils/pocketData';
 import { TypeBadge } from '../../../components/ui/TypeBadge';
 import StyledBackButton from '../../../components/ui/StyledBackButton';
+import { fetchJSON } from '../../../utils/unifiedFetch';
 import type { PocketCard } from '../../../types/api/pocket-cards';
+import logger from '../../../utils/logger';
 
 // Extended PocketCard type with additional properties from actual data
 interface ExtendedPocketCard extends Omit<PocketCard, 'rarity' | 'hp'> {
@@ -54,7 +56,7 @@ export default function SetView() {
   useEffect(() => {
     const loadData = async () => {
       if (!setId || typeof setId !== 'string') return;
-      console.log('[SetView] Loading set:', setId);
+      logger.debug('SetView loading set', { setId });
       
       // Handle old URL format (e.g., a2b-107) by redirecting to the expansion page
       if (/^[a-z]\d+[a-z]?-\d+$/i.test(setId)) {
@@ -82,21 +84,30 @@ export default function SetView() {
         
         // Load cards data
         const cards = await fetchPocketData() as ExtendedPocketCard[];
-        console.log('[SetView] Total cards loaded:', cards.length);
-        console.log('[SetView] Sample pack names:', [...new Set(cards.slice(0, 20).map((c: any) => c.pack))].filter(Boolean));
+        logger.debug('SetView cards loaded', { setId, totalCards: cards.length });
+        logger.debug('SetView sample pack names', { 
+          setId, 
+          samplePackNames: [...new Set(cards.slice(0, 20).map((c: any) => c.pack))].filter(Boolean) 
+        });
         setAllCards(cards || []);
         
         // Load set information from API
-        const expansionsResponse = await fetch("/api/pocket-expansions");
-        if (expansionsResponse.ok) {
-          const expansions = await expansionsResponse.json();
-          const currentSet = expansions.find((exp: SetInfo) => exp.id === setId);
-          setSetInfo(currentSet);
+        try {
+          const expansions = await fetchJSON<SetInfo[]>("/api/pocket-expansions", {
+            useCache: true,
+            cacheTime: 10 * 60 * 1000, // Cache for 10 minutes (stable data)
+            timeout: 5000,
+            retries: 2
+          });
+          const currentSet = expansions?.find((exp: SetInfo) => exp.id === setId);
+          setSetInfo(currentSet || null);
+        } catch (error) {
+          logger.warn('Failed to load set information', { setId, error: error.message });
         }
         
       } catch (err) {
         setError('Failed to load set data');
-        console.error('Error loading set data:', err);
+        logger.error('Error loading set data', { setId, error: err.message, stack: err.stack });
       } finally {
         setLoading(false);
       }
@@ -167,7 +178,7 @@ export default function SetView() {
       filteredCards = [...filteredCards, ...sharedCards];
     }
     
-    console.log(`[SetView] Set ${setId}: Found ${filteredCards.length} cards for packs:`, packNames);
+    logger.debug('SetView cards filtered', { setId, filteredCount: filteredCards.length, packNames });
     return filteredCards;
   }, [allCards, setId]);
 

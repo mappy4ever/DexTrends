@@ -15,6 +15,8 @@ import type {
   CacheInvalidationOptions
 } from '../types/utils/cache';
 
+import { fetchJSON } from './unifiedFetch';
+
 // Cache configuration
 export const CONFIG = {
   // Memory cache settings
@@ -616,9 +618,11 @@ export const pokemonCache = {
     return cacheManager.cachedFetch(
       `https://pokeapi.co/api/v2/pokemon/${id}`,
       async () => {
-        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-        if (!response.ok) throw new Error(`Failed to fetch pokemon ${id}`);
-        return response.json();
+        return await fetchJSON(`https://pokeapi.co/api/v2/pokemon/${id}`, {
+          useCache: false, // Let cacheManager handle caching
+          timeout: 8000,
+          retries: 3 // Pokemon data is essential
+        });
       },
       { priority: CONFIG.PRIORITY.HIGH, ttl: CONFIG.LOCAL_TTL }
     );
@@ -629,9 +633,11 @@ export const pokemonCache = {
     return cacheManager.cachedFetch(
       `https://pokeapi.co/api/v2/pokemon-species/${id}`,
       async () => {
-        const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
-        if (!response.ok) throw new Error(`Failed to fetch species ${id}`);
-        return response.json();
+        return await fetchJSON(`https://pokeapi.co/api/v2/pokemon-species/${id}`, {
+          useCache: false, // Let cacheManager handle caching
+          timeout: 8000,
+          retries: 3 // Species data is essential for evolution chains
+        });
       },
       { priority: CONFIG.PRIORITY.HIGH, ttl: CONFIG.LOCAL_TTL }
     );
@@ -682,29 +688,15 @@ export default cacheManager;
 // Legacy API compatibility
 export const cachedFetchData = (url: string, options?: ExtendedCacheOptions) => {
   return cacheManager.cachedFetch(url, async () => {
-    // Add timeout to prevent hanging requests
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
-    
-    try {
-      const response = await fetch(url, {
-        signal: controller.signal,
-        headers: {
-          'Accept': 'application/json',
-          'Cache-Control': 'no-cache'
-        }
-      });
-      clearTimeout(timeoutId);
-      
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      return response.json();
-    } catch (error) {
-      clearTimeout(timeoutId);
-      if (error instanceof Error && error.name === 'AbortError') {
-        throw new Error(`Request timeout after 30 seconds: ${url}`);
+    return await fetchJSON(url, {
+      useCache: false, // Let cacheManager handle caching
+      timeout: 30000,
+      retries: 2,
+      headers: {
+        'Accept': 'application/json',
+        'Cache-Control': 'no-cache'
       }
-      throw error;
-    }
+    });
   }, options);
 };
 

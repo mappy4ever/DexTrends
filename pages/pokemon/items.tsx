@@ -10,6 +10,7 @@ import { FiShoppingBag } from "react-icons/fi";
 import { BsSearch, BsHeart, BsShield, BsLightning } from "react-icons/bs";
 import { GiPotionBall, GiSwordWound, GiStoneBlock, GiCrystalGrowth } from "react-icons/gi";
 import { fetchData } from "../../utils/apiutils";
+import logger from "../../utils/logger";
 
 // Interfaces
 interface Item {
@@ -226,7 +227,7 @@ const ItemsPage: NextPage = () => {
         
         setItems(processedItems);
       } catch (error) {
-        console.error("Error fetching items:", error);
+        logger.error("Failed to fetch items", { error });
         setError("Failed to fetch items from PokeAPI");
       } finally {
         setLoading(false);

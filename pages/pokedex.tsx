@@ -12,6 +12,7 @@ import CircularPokemonCard from "../components/ui/cards/CircularPokemonCard";
 import { InlineLoader } from "../utils/unifiedLoading";
 import { NextPage } from "next";
 import dynamic from 'next/dynamic';
+import logger from "../utils/logger";
 
 // Dynamically import PullToRefresh for mobile
 const PullToRefresh = dynamic(() => import('../components/mobile/PullToRefresh'), {
@@ -429,7 +430,7 @@ const PokedexIndex: NextPage = () => {
             })
             .catch((err: any) => {
               // Return placeholder for failed loads
-              console.error(`Failed to load Pokemon ${i}:`, err);
+              logger.error('Failed to load Pokemon', { pokemonId: i, error: err });
               return {
                 id: i,
                 name: `pokemon-${i}`,
@@ -451,7 +452,7 @@ const PokedexIndex: NextPage = () => {
       }
       return Promise.all(promises);
     } catch (err) {
-      console.error("Batch fetch error:", err);
+      logger.error('Batch fetch error', { error: err });
       return [];
     }
   }, [isStarter]);
@@ -492,13 +493,13 @@ const PokedexIndex: NextPage = () => {
         // const regionalVariants = await fetchRegionalVariants();
         // allPokemonData = [...allPokemonData, ...regionalVariants];
       } catch (err) {
-        console.log("Special forms loading failed, continuing with basic Pokemon");
+        logger.debug('Special forms loading failed, continuing with basic Pokemon');
       }
       
       // Final update
       setAllPokemon(allPokemonData);
     } catch (err) {
-      console.error("Background loading failed:", err);
+      logger.error('Background loading failed', { error: err });
     }
   }, [fetchPokemonBatch]);
 
@@ -577,7 +578,7 @@ const PokedexIndex: NextPage = () => {
         
       } catch (err) {
         setError("Failed to load Pokédex data");
-        console.error("Error loading Pokémon:", err);
+        logger.error('Error loading Pokémon', { error: err });
         setLoading(false);
       }
     };
@@ -646,7 +647,7 @@ const PokedexIndex: NextPage = () => {
         const enhancedData = enhancePokemonData(details, speciesData);
         megaForms.push(enhancedData);
       } catch (err) {
-        console.error(`Failed to fetch mega evolution: ${mega.name}`, err);
+        logger.error('Failed to fetch mega evolution', { megaName: mega.name, error: err });
       }
     }
 
@@ -889,7 +890,7 @@ const PokedexIndex: NextPage = () => {
       // Re-trigger the initial loading
       window.location.reload();
     } catch (err) {
-      console.error('Refresh failed:', err);
+      logger.error('Refresh failed', { error: err });
       setError("Failed to refresh Pokédex data");
     }
   }, []);

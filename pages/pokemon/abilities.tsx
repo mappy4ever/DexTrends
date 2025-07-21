@@ -10,6 +10,7 @@ import { AiOutlineBulb } from "react-icons/ai";
 import { BsSearch, BsShield, BsLightning, BsDroplet, BsFire } from "react-icons/bs";
 import { GiPunch, GiHealing, GiSpeedometer, GiShieldBounces } from "react-icons/gi";
 import { fetchData } from "../../utils/apiutils";
+import logger from "../../utils/logger";
 
 // Interfaces
 interface Ability {
@@ -228,7 +229,7 @@ const AbilitiesPage: NextPage = () => {
         
         setAbilities(processedAbilities);
       } catch (error) {
-        console.error("Error fetching abilities:", error);
+        logger.error("Failed to fetch abilities", { error });
         setError("Failed to fetch abilities from PokeAPI");
       } finally {
         setLoading(false);

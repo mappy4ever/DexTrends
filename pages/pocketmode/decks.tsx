@@ -8,6 +8,7 @@ import { useInfiniteScroll } from "../../hooks/useInfiniteScroll";
 import { InlineLoader } from "../../utils/unifiedLoading";
 import { PageLoader } from "../../utils/unifiedLoading";
 import StyledBackButton from "../../components/ui/StyledBackButton";
+import { fetchJSON } from "../../utils/unifiedFetch";
 import BackToTop from "../../components/ui/SimpleBackToTop";
 import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
 import PageErrorBoundary from "../../components/ui/PageErrorBoundary";
@@ -58,11 +59,10 @@ const PocketDecks: NextPage = () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch('/api/pocket-decks');
-        if (!response.ok) {
-          throw new Error('Failed to fetch decks');
-        }
-        const data = await response.json();
+        const data = await fetchJSON<any[]>('/api/pocket-decks', {
+          useCache: true,
+          cacheTime: 5 * 60 * 1000 // 5 minutes
+        });
         setDecks(data || []);
       } catch (err) {
         setError("Failed to load Pocket decks. Please try again later.");

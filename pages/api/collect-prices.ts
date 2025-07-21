@@ -1,6 +1,7 @@
 // API endpoint to collect current Pokemon card prices and store them in history
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { supabase } from '../../lib/supabase';
+import logger from '../../utils/logger';
 
 // Rate limiting to avoid overwhelming the Pokemon TCG API
 const BATCH_SIZE = 20; // Process 20 cards at a time
@@ -10,12 +11,21 @@ async function delay(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+interface PriceVariant {
+  low?: number;
+  mid?: number;
+  high?: number;
+  market?: number;
+  directLow?: number;
+}
+
 interface PriceData {
-  normal?: any;
-  holofoil?: any;
-  reverseHolofoil?: any;
-  unlimited?: any;
-  unlimitedHolofoil?: any;
+  normal?: PriceVariant | null;
+  holofoil?: PriceVariant | null;
+  reverseHolofoil?: PriceVariant | null;
+  unlimited?: PriceVariant | null;
+  unlimitedHolofoil?: PriceVariant | null;
+  '1stEditionHolofoil'?: PriceVariant | null;
 }
 
 interface CardData {
@@ -56,7 +66,7 @@ async function fetchCardData(cardId: string): Promise<CardData | null> {
     const data = await response.json();
     return data.data;
   } catch (error) {
-    console.error(`Failed to fetch card ${cardId}:`, error);
+    logger.error(`Failed to fetch card ${cardId}:`, { cardId, error });
     return null;
   }
 }
@@ -69,13 +79,13 @@ async function getCardsFromDatabase(): Promise<DatabaseCard[]> {
       .limit(100);
 
     if (error) {
-      console.error('Supabase error:', error);
+      logger.error('Supabase error:', { error });
       return [];
     }
 
     return data || [];
   } catch (error) {
-    console.error('Database error:', error);
+    logger.error('Database error:', { error });
     return [];
   }
 }
@@ -133,13 +143,13 @@ async function storePriceHistory(cardId: string, priceData: PriceData, cardName:
       });
 
     if (error) {
-      console.error('Failed to store price history:', error);
+      logger.error('Failed to store price history:', { cardId, error });
       return false;
     }
 
     return true;
   } catch (error) {
-    console.error('Database storage error:', error);
+    logger.error('Database storage error:', { error });
     return false;
   }
 }
@@ -173,10 +183,10 @@ export default async function handler(
   }
 
   try {
-    console.log('Starting price collection...');
+    logger.info('Starting price collection...');
     
     const cards = await getCardsFromDatabase();
-    console.log(`Found ${cards.length} cards to process`);
+    logger.info(`Found ${cards.length} cards to process`);
 
     let processedCount = 0;
     let successCount = 0;
@@ -215,7 +225,7 @@ export default async function handler(
           
           processedCount++;
         } catch (error) {
-          console.error(`Error processing card ${card.id}:`, error);
+          logger.error(`Error processing card ${card.id}:`, { cardId: card.id, error });
           errorCount++;
           processedCount++;
         }
@@ -229,7 +239,7 @@ export default async function handler(
       }
     }
 
-    console.log(`Price collection completed. Processed: ${processedCount}, Success: ${successCount}, Errors: ${errorCount}`);
+    logger.info(`Price collection completed. Processed: ${processedCount}, Success: ${successCount}, Errors: ${errorCount}`);
 
     res.status(200).json({
       success: true,
@@ -242,7 +252,7 @@ export default async function handler(
     });
 
   } catch (error) {
-    console.error('Price collection failed:', error);
+    logger.error('Price collection failed:', { error });
     res.status(500).json({
       success: false,
       error: 'Price collection failed',

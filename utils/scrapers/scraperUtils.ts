@@ -5,6 +5,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import scraperConfig from './scraperConfig';
+import logger from '../logger';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '../..');
@@ -51,7 +52,7 @@ export async function ensureDirectory(dirPath: string): Promise<void> {
     await fs.access(dirPath);
   } catch {
     await fs.mkdir(dirPath, { recursive: true });
-    console.log(`Created directory: ${dirPath}`);
+    logger.debug(`Created directory: ${dirPath}`);
   }
 }
 
@@ -66,13 +67,13 @@ export async function downloadImage(imageUrl: string, fileName: string, subfolde
     // Skip if file already exists
     try {
       await fs.access(filePath);
-      console.log(`Image already exists: ${fileName}`);
+      logger.debug(`Image already exists: ${fileName}`);
       return filePath;
     } catch {
       // File doesn't exist, proceed with download
     }
 
-    console.log(`Downloading image: ${imageUrl}`);
+    logger.info(`Downloading image: ${imageUrl}`);
     
     const response = await fetch(imageUrl, {
       headers: {
@@ -100,11 +101,11 @@ export async function downloadImage(imageUrl: string, fileName: string, subfolde
     const buffer = Buffer.from(arrayBuffer);
     
     await fs.writeFile(filePath, buffer);
-    console.log(`Image saved: ${fileName}`);
+    logger.info(`Image saved: ${fileName}`);
     
     return filePath;
   } catch (error) {
-    console.error(`Error downloading image ${imageUrl}:`, (error as Error).message);
+    logger.error(`Error downloading image ${imageUrl}:`, { url: imageUrl, error: (error as Error).message });
     return null;
   }
 }
@@ -129,7 +130,7 @@ export function getImageFileName(imageUrl: string, prefix: string = '', suffix: 
 // Fetch HTML content
 export async function fetchHtml(url: string): Promise<string | null> {
   try {
-    console.log(`Fetching: ${url}`);
+    logger.debug(`Fetching: ${url}`);
     
     const response = await fetch(url, {
       headers: {
@@ -145,7 +146,7 @@ export async function fetchHtml(url: string): Promise<string | null> {
     const html = await response.text();
     return html;
   } catch (error) {
-    console.error(`Error fetching ${url}:`, (error as Error).message);
+    logger.error(`Error fetching ${url}:`, { url, error: (error as Error).message });
     return null;
   }
 }
@@ -181,7 +182,7 @@ export async function fetchMediaWikiApi(params: Record<string, string>): Promise
 
     return await response.json();
   } catch (error) {
-    console.error(`Error fetching MediaWiki API:`, (error as Error).message);
+    logger.error(`Error fetching MediaWiki API:`, { error: (error as Error).message });
     return null;
   }
 }
@@ -289,7 +290,7 @@ export function parseInfobox(wikitext: string, infoboxType: string = 'Character'
     
     return data;
   } catch (error) {
-    console.error('Error parsing infobox:', (error as Error).message);
+    logger.error('Error parsing infobox:', { error: (error as Error).message });
     return null;
   }
 }
@@ -327,10 +328,10 @@ export async function saveDataToFile<T>(data: T, fileName: string, subfolder: st
     const filePath = path.join(dataDir, fileName);
     await fs.writeFile(filePath, JSON.stringify(data, null, 2));
     
-    console.log(`Data saved: ${fileName}`);
+    logger.debug(`Data saved: ${fileName}`);
     return filePath;
   } catch (error) {
-    console.error(`Error saving data to ${fileName}:`, (error as Error).message);
+    logger.error(`Error saving data to ${fileName}:`, { fileName, error: (error as Error).message });
     return null;
   }
 }
@@ -344,7 +345,7 @@ export async function loadDataFromFile<T>(fileName: string, subfolder: string = 
     const content = await fs.readFile(filePath, 'utf-8');
     return JSON.parse(content) as T;
   } catch (error) {
-    console.error(`Error loading data from ${fileName}:`, (error as Error).message);
+    logger.error(`Error loading data from ${fileName}:`, { fileName, error: (error as Error).message });
     return null;
   }
 }
@@ -371,7 +372,7 @@ export async function cacheData<T>(key: string, data: T, expirationHours: number
     
     return true;
   } catch (error) {
-    console.error(`Error caching data for ${key}:`, (error as Error).message);
+    logger.error(`Error caching data for ${key}:`, { key, error: (error as Error).message });
     return false;
   }
 }
@@ -388,7 +389,7 @@ export async function getCachedData<T>(key: string): Promise<T | null> {
     if (ageHours < cacheData.expirationHours) {
       return cacheData.data;
     } else {
-      console.log(`Cache expired for ${key}`);
+      logger.debug(`Cache expired for ${key}`);
       return null;
     }
   } catch (error) {

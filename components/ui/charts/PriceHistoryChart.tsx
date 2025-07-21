@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '../../../context/UnifiedAppContext';
 import { PriceHistoryManager } from '../../../lib/supabase';
+import { postJSON } from '../../../utils/unifiedFetch';
 import { 
   generateSamplePriceHistory, 
   getSamplePriceData, 
@@ -262,21 +263,16 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
   // Handler to trigger price collection
   const handleCollectPrices = async () => {
     try {
-      const response = await fetch('/api/collect-prices', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        }
+      await postJSON('/api/collect-prices', {}, {
+        timeout: 30000, // 30 second timeout for this operation
+        retries: 1,
+        useCache: false // Don't cache POST requests
       });
       
-      if (response.ok) {
-        alert('Price collection started. This may take a few minutes.');
-      } else {
-        alert('Failed to start price collection.');
-      }
+      alert('Price collection started. This may take a few minutes.');
     } catch (error) {
       console.error('Error triggering price collection:', error);
-      alert('Error starting price collection.');
+      alert('Failed to start price collection.');
     }
   };
 

@@ -8,6 +8,7 @@ import { BsSun, BsMoon, BsGlobeEuropeAfrica, BsHeart, BsSearch, BsCardList, BsGr
 import { GiPokerHand, GiCardPickup, GiCrossedSwords } from "react-icons/gi";
 import { FiTrendingUp, FiShoppingBag } from "react-icons/fi";
 import GlobalSearchModal from "./GlobalSearchModal";
+import logger from "../utils/logger";
 import { DynamicAdvancedSearchModal } from "./dynamic/DynamicComponents";
 import { useAppContext, useTheme, useFavorites } from "../context/UnifiedAppContext";
 import { toLowercaseUrl } from "../utils/formatters";
@@ -93,8 +94,6 @@ export default function Navbar() {
       hasDropdown: true,
       dropdownItems: [
         { href: "/battle-simulator", label: "Battle Simulator", icon: <GiCrossedSwords size={18} />, description: "Simulate Pokemon battles" },
-        { href: "/battle-simulator/team-builder", label: "Team Builder", icon: <BsGrid size={18} />, description: "Build competitive teams" },
-        { href: "/battle-simulator/damage-calc", label: "Damage Calculator", icon: <FiTrendingUp size={18} />, description: "Calculate move damage" },
         { href: "/type-effectiveness", label: "Type Effectiveness", icon: <BsBook size={18} />, description: "Interactive type chart" },
       ]
     },
@@ -262,7 +261,7 @@ export default function Navbar() {
                               : 'hover:bg-gradient-to-r hover:from-red-50/80 hover:to-pink-50/80 hover:shadow-md hover:scale-[1.02]'
                           }`}
                           onClick={() => {
-                            console.log('Link clicked:', dropdownItem.href);
+                            logger.debug('Navigation link clicked', { href: dropdownItem.href });
                             setDropdownStates({});
                           }}
                         >

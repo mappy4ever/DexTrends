@@ -1,5 +1,8 @@
 // utils/apiutils.ts
 import cacheManager, { cachedFetchData, pokemonCache, tcgCache, CONFIG } from './UnifiedCacheManager';
+import { sanitizePokemonName } from './pokemonNameSanitizer';
+import { fetchJSON, postJSON } from './unifiedFetch';
+import logger from './logger';
 import type { Pokemon, PokemonSpecies, Nature, Move } from '../types/api/pokemon';
 import type { TCGCard } from '../types/api/cards';
 import type { PocketCard } from '../types/api/pocket-cards';
@@ -18,16 +21,8 @@ export class ApiError extends Error {
   }
 }
 
-// Sanitize Pokemon names for API calls
-export const sanitizePokemonName = (name: string): string => {
-  return name
-    .toLowerCase()
-    .replace(/♀/g, '-f')
-    .replace(/♂/g, '-m')
-    .replace(/[':.\s]/g, '-')
-    .replace(/--+/g, '-')
-    .replace(/-$/, '');
-};
+// Re-export sanitizePokemonName to maintain backward compatibility
+export { sanitizePokemonName };
 
 // Fetch options interface
 export interface FetchOptions extends RequestInit {
@@ -46,43 +41,30 @@ export async function fetchData<T = any>(url: string, options: FetchOptions = {}
       return await cachedFetchData(url) as T;
     }
     
-    // For non-GET requests, use direct fetch
-    const response = await fetch(url, options);
-    if (!response.ok) {
-      // Attempt to get more detailed error info, falling back gracefully
-      let errorInfo = `Request failed with status ${response.status}`;
-      let errorDetails: any;
-      
-      try {
-        const errorBody = await response.text(); // Read as text first
-        // Try to parse as JSON for structured error, but don't fail if not JSON
-        try {
-          const jsonError = JSON.parse(errorBody);
-          errorInfo = jsonError.message || jsonError.error || errorBody || errorInfo;
-          errorDetails = jsonError;
-        } catch (e) {
-          // errorBody wasn't JSON, use it as is if not empty
-          errorInfo = errorBody || errorInfo;
-        }
-      } catch (e) {
-        // Failed to get error body, stick with status text
-        errorInfo = response.statusText || errorInfo;
-      }
-      
-      throw new ApiError(errorInfo, response.status, errorDetails);
+    // For non-GET requests, use unifiedFetch
+    if (options.method?.toUpperCase() === 'POST') {
+      const result = await postJSON<T>(url, options.body, {
+        timeout: options.timeout || 10000,
+        retries: options.retries || 2,
+        useCache: false
+      });
+      if (!result) throw new ApiError('No data received', 204);
+      return result;
+    } else {
+      // Use fetchJSON for other HTTP methods with proper options mapping
+      const result = await fetchJSON<T>(url, {
+        timeout: options.timeout || 10000,
+        retries: options.retries || 2,
+        useCache: false,
+        method: options.method,
+        headers: options.headers as Record<string, string>
+      });
+      if (!result) throw new ApiError('No data received', 204);
+      return result;
     }
-    return await response.json() as T;
   } catch (error) {
-    // Re-throw error for caller to handle
-    if (error instanceof ApiError) {
-      throw error;
-    }
-    // Wrap other errors
-    throw new ApiError(
-      error instanceof Error ? error.message : 'Unknown error occurred',
-      0,
-      error
-    );
+    logger.error('Fetch error in apiutils.ts', { url, error: error.message });
+    throw error;
   }
 }
 
@@ -103,9 +85,13 @@ export const fetchNature = async (name: string): Promise<Nature> => {
   return cacheManager.cachedFetch<Nature>(
     `https://pokeapi.co/api/v2/nature/${name}`,
     async () => {
-      const response = await fetch(`https://pokeapi.co/api/v2/nature/${name}`);
-      if (!response.ok) throw new ApiError(`Failed to fetch nature ${name}`, response.status);
-      return response.json();
+      const result = await fetchJSON<Nature>(`https://pokeapi.co/api/v2/nature/${name}`, {
+        useCache: false, // Let cacheManager handle caching
+        timeout: 8000,
+        retries: 3 // Nature data is critical for calculations
+      });
+      if (!result) throw new ApiError(`No nature data received for ${name}`, 204);
+      return result;
     },
     { priority: CONFIG.PRIORITY.HIGH }
   );
@@ -116,9 +102,13 @@ export const fetchMove = async (name: string): Promise<Move> => {
   return cacheManager.cachedFetch<Move>(
     `https://pokeapi.co/api/v2/move/${name}`,
     async () => {
-      const response = await fetch(`https://pokeapi.co/api/v2/move/${name}`);
-      if (!response.ok) throw new ApiError(`Failed to fetch move ${name}`, response.status);
-      return response.json();
+      const result = await fetchJSON<Move>(`https://pokeapi.co/api/v2/move/${name}`, {
+        useCache: false, // Let cacheManager handle caching
+        timeout: 8000,
+        retries: 3 // Move data is critical for battle calculations
+      });
+      if (!result) throw new ApiError(`No move data received for ${name}`, 204);
+      return result;
     },
     { priority: CONFIG.PRIORITY.HIGH }
   );
@@ -129,28 +119,28 @@ export const fetchTCGCards = async (pokemonName: string): Promise<TCGCard[]> => 
   try {
     // Sanitize the Pokemon name for API compatibility
     const sanitizedName = sanitizePokemonName(pokemonName);
-    console.log('[TCG Fetch] Fetching cards for sanitized name:', sanitizedName);
+    logger.debug('Fetching TCG cards', { pokemonName, sanitizedName });
     
     // Use our API endpoint instead of SDK directly
     const key = cacheManager.generateKey('tcg-cards', { name: sanitizedName });
     const cards = await cacheManager.cachedFetch<TCGCard[]>(
       `tcg-${sanitizedName}`,
       async () => {
-        const response = await fetch(`/api/tcg-cards?name=${encodeURIComponent(sanitizedName)}`);
-        if (!response.ok) {
-          throw new ApiError(`Failed to fetch TCG cards for ${sanitizedName}`, response.status);
-        }
-        const data = await response.json();
-        console.log('[TCG Fetch] API returned cards:', data?.length || 0);
+        const data = await fetchJSON<TCGCard[]>(`/api/tcg-cards?name=${encodeURIComponent(sanitizedName)}`, {
+          useCache: false, // Let cacheManager handle caching
+          timeout: 12000, // Longer timeout for TCG API
+          retries: 2
+        });
+        logger.debug('TCG API response', { sanitizedName, cardCount: data?.length || 0 });
         return data || [];
       },
       { priority: CONFIG.PRIORITY.CRITICAL, ttl: CONFIG.DB_TTL }
     );
     
-    console.log('[TCG Fetch] Found TCG cards:', cards?.length || 0);
+    logger.debug('TCG cards retrieved', { pokemonName, cardCount: cards?.length || 0 });
     return cards || [];
   } catch (error) {
-    console.error(`[TCG Fetch] Failed to fetch TCG cards for ${pokemonName}:`, error);
+    logger.error('Failed to fetch TCG cards', { pokemonName, error });
     // Return empty array instead of throwing to prevent UI crashes
     return [];
   }
@@ -166,14 +156,17 @@ export const fetchPocketCards = async (pokemonName: string): Promise<PocketCard[
       `pocket-${sanitizedName}`,
       async () => {
         // Implementation for pocket cards fetch
-        const response = await fetch(`/api/pocket-cards?name=${encodeURIComponent(sanitizedName)}`);
-        if (!response.ok) throw new ApiError(`Failed to fetch pocket cards for ${sanitizedName}`, response.status);
-        return response.json();
+        const result = await fetchJSON<PocketCard[]>(`/api/pocket-cards?name=${encodeURIComponent(sanitizedName)}`, {
+          useCache: false, // Let cacheManager handle caching
+          timeout: 10000,
+          retries: 2
+        });
+        return result || [];
       },
       { priority: CONFIG.PRIORITY.CRITICAL, ttl: CONFIG.DB_TTL }
     );
   } catch (error) {
-    console.error(`Failed to fetch pocket cards for ${pokemonName}:`, error);
+    logger.error('Failed to fetch pocket cards', { pokemonName, error });
     // Return empty array instead of throwing to prevent UI crashes
     return [];
   }

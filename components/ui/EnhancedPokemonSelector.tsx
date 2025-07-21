@@ -33,6 +33,7 @@ const PokemonSelectionItem: React.FC<PokemonSelectionItemProps> = ({ pokemon, in
   return (
     <button
       onClick={() => onSelect(pokemon)}
+      data-testid="pokemon-option"
       className="w-full p-4 rounded-xl border-2 transition-all transform hover:scale-[1.02] border-gray-200 hover:border-blue-400 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
     >
       <div className="flex items-center justify-between">

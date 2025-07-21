@@ -1,4 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { fetchJSON } from '../../utils/unifiedFetch';
+import logger from '../../utils/logger';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { name } = req.query;
@@ -20,21 +22,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Use the Pokemon TCG API directly
     const apiUrl = `https://api.pokemontcg.io/v2/cards?q=name:${encodeURIComponent(pokemonName)}`;
-    console.log('[TCG API Route] Fetching from:', apiUrl);
+    logger.debug('Fetching TCG cards from API', { url: apiUrl, pokemonName });
     
-    const response = await fetch(apiUrl, { headers });
+    const data = await fetchJSON<{ data: any[] }>(apiUrl, { 
+      headers,
+      useCache: true,
+      cacheTime: 5 * 60 * 1000, // Cache for 5 minutes
+      retries: 2
+    });
     
-    if (!response.ok) {
-      console.error('[TCG API Route] API Error:', response.status, response.statusText);
-      throw new Error(`API returned ${response.status}`);
-    }
-
-    const data = await response.json();
-    console.log('[TCG API Route] Found cards:', data.data?.length || 0);
+    const cards = data?.data || [];
+    logger.debug('TCG API response received', { pokemonName, cardCount: cards.length });
     
-    res.status(200).json(data.data || []);
+    res.status(200).json(cards);
   } catch (error: any) {
-    console.error('[TCG API Route] Error fetching TCG cards:', error);
+    logger.error('Failed to fetch TCG cards', { 
+      pokemonName, 
+      error: error.message,
+      stack: error.stack 
+    });
     res.status(500).json({ 
       error: 'Failed to fetch TCG cards',
       message: error.message 

@@ -435,42 +435,42 @@ export const GlobalNotifications = {
     if (globalNotificationAPI) {
       return globalNotificationAPI.success(message, options);
     }
-    console.warn('GlobalNotifications: NotificationProvider not initialized');
+    logger.warn('GlobalNotifications: NotificationProvider not initialized');
     return -1;
   },
   error: (message: string, options?: Partial<Notification>) => {
     if (globalNotificationAPI) {
       return globalNotificationAPI.error(message, options);
     }
-    console.warn('GlobalNotifications: NotificationProvider not initialized');
+    logger.warn('GlobalNotifications: NotificationProvider not initialized');
     return -1;
   },
   warning: (message: string, options?: Partial<Notification>) => {
     if (globalNotificationAPI) {
       return globalNotificationAPI.warning(message, options);
     }
-    console.warn('GlobalNotifications: NotificationProvider not initialized');
+    logger.warn('GlobalNotifications: NotificationProvider not initialized');
     return -1;
   },
   info: (message: string, options?: Partial<Notification>) => {
     if (globalNotificationAPI) {
       return globalNotificationAPI.info(message, options);
     }
-    console.warn('GlobalNotifications: NotificationProvider not initialized');
+    logger.warn('GlobalNotifications: NotificationProvider not initialized');
     return -1;
   },
   loading: (message: string, options?: Partial<Notification>) => {
     if (globalNotificationAPI) {
       return globalNotificationAPI.loading(message, options);
     }
-    console.warn('GlobalNotifications: NotificationProvider not initialized');
+    logger.warn('GlobalNotifications: NotificationProvider not initialized');
     return -1;
   },
   cardAdded: (cardName: string, options?: Partial<Notification>) => {
     if (globalNotificationAPI) {
       return globalNotificationAPI.cardAdded(cardName, options);
     }
-    console.warn('GlobalNotifications: NotificationProvider not initialized');
+    logger.warn('GlobalNotifications: NotificationProvider not initialized');
     return -1;
   }
 };

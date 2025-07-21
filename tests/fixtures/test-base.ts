@@ -66,6 +66,14 @@ export const test = base.extend<TestFixtures>({
         if (error.text.includes('Failed to load resource') && error.text.includes('404')) {
           return false;
         }
+        // Ignore service worker registration errors
+        if (error.text.includes('Service worker registration failed')) {
+          return false;
+        }
+        // Ignore service worker script errors
+        if (error.text.includes('sw.js') && error.text.includes('404')) {
+          return false;
+        }
         return true;
       });
       

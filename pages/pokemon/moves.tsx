@@ -8,6 +8,7 @@ import { useTheme } from "../../context/UnifiedAppContext";
 import { pokemonTheme } from "../../utils/pokemonTheme";
 import StyledBackButton from "../../components/ui/StyledBackButton";
 import { TypeBadge } from "../../components/ui/TypeBadge";
+import logger from "../../utils/logger";
 import { SmartSkeleton } from "../../components/ui/SkeletonLoader";
 import { BsBook, BsSearch, BsLightning, BsShield, BsQuestionCircle } from "react-icons/bs";
 import { fetchData } from "../../utils/apiutils";
@@ -97,7 +98,7 @@ const MovesPage: NextPage = () => {
         setMoves(processedMoves);
         setFilteredMoves(processedMoves);
       } catch (error) {
-        console.error("Error fetching moves:", error);
+        logger.error("Failed to fetch moves", { error });
       } finally {
         setLoading(false);
       }
