@@ -1,4 +1,5 @@
 import React, { useEffect, useState, ReactNode } from 'react';
+import { useRouter } from 'next/router';
 import { useMobileUtils } from '../../utils/mobileUtils';
 import adaptiveLoading from '../../utils/adaptiveLoading';
 import batteryOptimization from '../../utils/batteryOptimization';
@@ -92,6 +93,7 @@ const MobileIntegration: React.FC<MobileIntegrationProps> = ({
   onShare
 }) => {
   const { isMobile, utils } = useMobileUtils();
+  const router = useRouter();
   const isStandalone = utils.isStandalone;
   const [mobileFeatures, setMobileFeatures] = useState<MobileFeatures>({
     loading: adaptiveLoading.getCurrentStrategy(),
@@ -417,7 +419,7 @@ const MobileIntegration: React.FC<MobileIntegrationProps> = ({
             onClick={() => handleShare({
               title: 'DexTrends - Pokemon TCG Price Tracker',
               text: 'Check out DexTrends for Pokemon card prices!',
-              url: window.location.href
+              url: `${window.location.origin}${router.asPath}`
             })}
             className="w-full p-3 bg-blue-500 text-white rounded-lg font-medium">
 
@@ -428,7 +430,7 @@ const MobileIntegration: React.FC<MobileIntegrationProps> = ({
             onClick={() => handleShare({
               title: document.title,
               text: 'Found this on DexTrends!',
-              url: window.location.href
+              url: `${window.location.origin}${router.asPath}`
             })}
             className="w-full p-3 bg-green-500 text-white rounded-lg font-medium">
 

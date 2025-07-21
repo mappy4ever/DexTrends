@@ -1,7 +1,7 @@
-import React, { 
-  useState, 
-  useEffect, 
-  useRef, 
+import React, {
+  useState,
+  useEffect,
+  useRef,
   useCallback,
   createContext,
   useContext,
@@ -9,6 +9,7 @@ import React, {
   ReactNode,
   CSSProperties
 } from 'react';
+import { useRouter } from 'next/router';
 import { HapticFeedback, VisualFeedback } from './MicroInteractionSystem';
 
 /**
@@ -486,6 +487,7 @@ export const SpeedDialFAB: React.FC<SpeedDialFABProps> = ({
 // Contextual FAB Hook
 export const useContextualFAB = () => {
   const { setGlobalFABConfig, clearGlobalFAB } = useFAB();
+  const router = useRouter();
   
   const showFAB = useCallback((config: FABConfig) => {
     setGlobalFABConfig(config);
@@ -535,7 +537,7 @@ export const useContextualFAB = () => {
         ),
         label: 'Share to Twitter',
         onClick: () => {
-          const url = shareOptions.url || window.location.href;
+          const url = shareOptions.url || `${window.location.origin}${router.asPath}`;
           const text = shareOptions.text || 'Check this out!';
           window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank');
         }
@@ -548,7 +550,7 @@ export const useContextualFAB = () => {
         ),
         label: 'Copy link',
         onClick: () => {
-          const url = shareOptions.url || window.location.href;
+          const url = shareOptions.url || `${window.location.origin}${router.asPath}`;
           navigator.clipboard.writeText(url);
           HapticFeedback.success();
         }

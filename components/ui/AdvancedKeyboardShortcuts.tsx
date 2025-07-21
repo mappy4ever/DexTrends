@@ -230,7 +230,7 @@ const AdvancedKeyboardShortcuts: React.FC<AdvancedKeyboardShortcutsProps> = ({
       description: 'Reload current data',
       icon: <ArrowPathIcon className="h-4 w-4" />,
       category: 'quick',
-      action: () => window.location.reload(),
+      action: () => router.reload(),
       shortcut: 'f5'
     },
     'quick:share-page': {
@@ -239,7 +239,7 @@ const AdvancedKeyboardShortcuts: React.FC<AdvancedKeyboardShortcutsProps> = ({
       icon: <ShareIcon className="h-4 w-4" />,
       category: 'quick',
       action: () => {
-        navigator.clipboard.writeText(window.location.href);
+        navigator.clipboard.writeText(`${window.location.origin}${router.asPath}`);
         notify.success('Page link copied to clipboard');
       },
       shortcut: 'ctrl+shift+s'
