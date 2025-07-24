@@ -1,24 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { NextPage } from 'next';
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
-import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../../components/ui/animations/animations";
-import { useTheme } from "../../context/UnifiedAppContext";
-import { pokemonTheme } from "../../utils/pokemonTheme";
-import StyledBackButton from "../../components/ui/StyledBackButton";
+import { motion, AnimatePresence } from 'framer-motion';
+import { FadeIn, SlideUp, StaggeredChildren } from "../../components/ui/animations/animations";
 import { TypeBadge } from "../../components/ui/TypeBadge";
-import CircularPokemonCard from "../../components/ui/cards/CircularPokemonCard";
-import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
-import { GiPokerHand } from "react-icons/gi";
-import { BsChevronLeft, BsChevronRight, BsGrid3X3, BsList } from "react-icons/bs";
+import { PageLoader } from "../../utils/unifiedLoading";
+import { BsChevronRight, BsChevronDown, BsChevronUp, BsStar, BsStarFill } from "react-icons/bs";
+import { GiSwordWound, GiShield, GiSpeedometer, GiHearts, GiBrain, GiEyeShield } from "react-icons/gi";
+import { FaFire, FaLeaf, FaWater } from "react-icons/fa";
+import { THEME, themeClass, getTypeGradient } from "../../utils/theme";
+import { useTheme } from "../../context/UnifiedAppContext";
 
 // Type definitions
 interface Evolution {
   id: number;
   name: string;
   level: number;
+  types?: string[];
 }
 
 interface Stats {
@@ -34,22 +35,124 @@ interface Starter {
   id: number;
   name: string;
   types: string[];
+  category?: string;
+  abilities?: string[];
   evolutions: Evolution[];
   stats: Stats;
   description: string;
+  strategy?: string;
+  funFacts?: string[];
+  signature?: string;
+  strengths?: string[];
+  weaknesses?: string[];
 }
 
 interface Generation {
   generation: number;
   region: string;
+  games?: string[];
+  description?: string;
   starters: Starter[];
 }
 
-// Comprehensive starter data
-const startersByGeneration: Generation[] = [
+// Import comprehensive starter data
+const starterDataByRegion: Record<string, any> = {
+  kanto: {
+    region: "Kanto",
+    generation: 1,
+    games: ["Red", "Blue", "Yellow", "FireRed", "LeafGreen"],
+    description: "The original trio that started it all. These Pokémon have become iconic symbols of the franchise.",
+    starters: [
+      {
+        id: 1,
+        name: "Bulbasaur",
+        types: ["grass", "poison"],
+        category: "Seed Pokémon",
+        abilities: ["Overgrow", "Chlorophyll (Hidden)"],
+        evolutions: [
+          { id: 1, name: "Bulbasaur", level: 1, types: ["grass", "poison"] },
+          { id: 2, name: "Ivysaur", level: 16, types: ["grass", "poison"] },
+          { id: 3, name: "Venusaur", level: 32, types: ["grass", "poison"] }
+        ],
+        stats: { hp: 45, attack: 49, defense: 49, spAttack: 65, spDefense: 65, speed: 45 },
+        description: "A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.",
+        strategy: "Bulbasaur is excellent for beginners due to type advantages against early gyms. Venusaur excels as a defensive tank with access to status moves like Sleep Powder and Leech Seed.",
+        funFacts: [
+          "First Pokémon in the National Dex",
+          "Only starter with dual typing from the start",
+          "Ash's Bulbasaur refused to evolve in the anime"
+        ],
+        signature: "Frenzy Plant",
+        strengths: ["Water", "Electric", "Grass", "Fighting"],
+        weaknesses: ["Fire", "Flying", "Ice", "Psychic"]
+      },
+      {
+        id: 4,
+        name: "Charmander",
+        types: ["fire"],
+        category: "Lizard Pokémon",
+        abilities: ["Blaze", "Solar Power (Hidden)"],
+        evolutions: [
+          { id: 4, name: "Charmander", level: 1, types: ["fire"] },
+          { id: 5, name: "Charmeleon", level: 16, types: ["fire"] },
+          { id: 6, name: "Charizard", level: 36, types: ["fire", "flying"] }
+        ],
+        stats: { hp: 39, attack: 52, defense: 43, spAttack: 60, spDefense: 50, speed: 65 },
+        description: "The flame that burns at the tip of its tail is an indication of its emotions. The flame wavers when it is happy.",
+        strategy: "Hard mode for Kanto beginners but rewarding. Charizard becomes a powerful special attacker with great coverage moves and two Mega Evolution forms.",
+        funFacts: [
+          "Most popular starter according to polls",
+          "Charizard is not a Dragon-type despite appearance",
+          "Has two different Mega Evolutions"
+        ],
+        signature: "Blast Burn",
+        strengths: ["Grass", "Ice", "Bug", "Steel"],
+        weaknesses: ["Water", "Electric", "Rock"]
+      },
+      {
+        id: 7,
+        name: "Squirtle",
+        types: ["water"],
+        category: "Tiny Turtle Pokémon",
+        abilities: ["Torrent", "Rain Dish (Hidden)"],
+        evolutions: [
+          { id: 7, name: "Squirtle", level: 1, types: ["water"] },
+          { id: 8, name: "Wartortle", level: 16, types: ["water"] },
+          { id: 9, name: "Blastoise", level: 36, types: ["water"] }
+        ],
+        stats: { hp: 44, attack: 48, defense: 65, spAttack: 50, spDefense: 64, speed: 43 },
+        description: "After birth, its back swells and hardens into a shell. It powerfully sprays foam from its mouth.",
+        strategy: "Balanced choice for Kanto. Blastoise is a defensive powerhouse with access to powerful Water moves and good coverage options like Ice Beam.",
+        funFacts: [
+          "Leader of the Squirtle Squad in the anime",
+          "Blastoise has water cannons that can punch through steel",
+          "Popular in competitive play for its bulk"
+        ],
+        signature: "Hydro Cannon",
+        strengths: ["Fire", "Ground", "Rock"],
+        weaknesses: ["Electric", "Grass"]
+      }
+    ]
+  },
+  // Add other regions with similar detailed data...
+};
+
+// Convert to generation array format
+const startersByGeneration: Generation[] = Object.values(starterDataByRegion).map(region => ({
+  generation: region.generation,
+  region: region.region,
+  games: region.games,
+  description: region.description,
+  starters: region.starters
+}));
+
+// Add all generations data
+const allGenerations: Generation[] = [
   {
     generation: 1,
     region: "Kanto",
+    games: ["Red", "Blue", "Yellow"],
+    description: "The original trio that started it all",
     starters: [
       {
         id: 1,
@@ -61,7 +164,7 @@ const startersByGeneration: Generation[] = [
           { id: 3, name: "Venusaur", level: 32 }
         ],
         stats: { hp: 45, attack: 49, defense: 49, spAttack: 65, spDefense: 65, speed: 45 },
-        description: "A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon."
+        description: "A strange seed was planted on its back at birth."
       },
       {
         id: 4,
@@ -73,7 +176,7 @@ const startersByGeneration: Generation[] = [
           { id: 6, name: "Charizard", level: 36 }
         ],
         stats: { hp: 39, attack: 52, defense: 43, spAttack: 60, spDefense: 50, speed: 65 },
-        description: "The flame that burns at the tip of its tail is an indication of its emotions."
+        description: "The flame at the tip of its tail indicates its emotions."
       },
       {
         id: 7,
@@ -85,13 +188,15 @@ const startersByGeneration: Generation[] = [
           { id: 9, name: "Blastoise", level: 36 }
         ],
         stats: { hp: 44, attack: 48, defense: 65, spAttack: 50, spDefense: 64, speed: 43 },
-        description: "After birth, its back swells and hardens into a shell. It powerfully sprays foam from its mouth."
+        description: "Its shell hardens after birth to protect it."
       }
     ]
   },
   {
     generation: 2,
     region: "Johto",
+    games: ["Gold", "Silver", "Crystal"],
+    description: "The Johto starters continue the tradition",
     starters: [
       {
         id: 152,
@@ -103,7 +208,7 @@ const startersByGeneration: Generation[] = [
           { id: 154, name: "Meganium", level: 32 }
         ],
         stats: { hp: 45, attack: 49, defense: 65, spAttack: 49, spDefense: 65, speed: 45 },
-        description: "A sweet aroma gently wafts from the leaf on its head. It is docile and loves to soak up sunrays."
+        description: "A sweet aroma gently wafts from the leaf on its head."
       },
       {
         id: 155,
@@ -115,7 +220,7 @@ const startersByGeneration: Generation[] = [
           { id: 157, name: "Typhlosion", level: 36 }
         ],
         stats: { hp: 39, attack: 52, defense: 43, spAttack: 60, spDefense: 50, speed: 65 },
-        description: "It is timid and always curls itself up in a ball. If attacked, it flares up its back for protection."
+        description: "It is timid and always curls itself up in a ball."
       },
       {
         id: 158,
@@ -127,13 +232,15 @@ const startersByGeneration: Generation[] = [
           { id: 160, name: "Feraligatr", level: 30 }
         ],
         stats: { hp: 50, attack: 65, defense: 64, spAttack: 44, spDefense: 48, speed: 43 },
-        description: "Its well-developed jaws are powerful and capable of crushing anything. Even its trainer must be careful."
+        description: "Its well-developed jaws are powerful and capable of crushing anything."
       }
     ]
   },
   {
     generation: 3,
     region: "Hoenn",
+    games: ["Ruby", "Sapphire", "Emerald"],
+    description: "Hoenn introduces dual-type final evolutions",
     starters: [
       {
         id: 252,
@@ -145,7 +252,7 @@ const startersByGeneration: Generation[] = [
           { id: 254, name: "Sceptile", level: 36 }
         ],
         stats: { hp: 40, attack: 45, defense: 35, spAttack: 65, spDefense: 55, speed: 70 },
-        description: "It quickly scales even vertical walls. It senses humidity with its tail to predict the next day's weather."
+        description: "It quickly scales even vertical walls."
       },
       {
         id: 255,
@@ -157,7 +264,7 @@ const startersByGeneration: Generation[] = [
           { id: 257, name: "Blaziken", level: 36 }
         ],
         stats: { hp: 45, attack: 60, defense: 40, spAttack: 70, spDefense: 50, speed: 45 },
-        description: "It has a flame sac inside its belly that perpetually burns. It feels warm if it is hugged."
+        description: "It has a flame sac inside its belly that perpetually burns."
       },
       {
         id: 258,
@@ -169,13 +276,15 @@ const startersByGeneration: Generation[] = [
           { id: 260, name: "Swampert", level: 36 }
         ],
         stats: { hp: 50, attack: 70, defense: 50, spAttack: 50, spDefense: 50, speed: 40 },
-        description: "The fin on its head is a radar that can sense nearby movements in water."
+        description: "The fin on its head is a radar that senses movements."
       }
     ]
   },
   {
     generation: 4,
     region: "Sinnoh",
+    games: ["Diamond", "Pearl", "Platinum"],
+    description: "Sinnoh starters bring diverse strategies",
     starters: [
       {
         id: 387,
@@ -187,7 +296,7 @@ const startersByGeneration: Generation[] = [
           { id: 389, name: "Torterra", level: 32 }
         ],
         stats: { hp: 55, attack: 68, defense: 64, spAttack: 45, spDefense: 55, speed: 31 },
-        description: "Made from soil, the shell on its back hardens when it drinks water. It lives along lakes."
+        description: "Made from soil, the shell on its back hardens when it drinks water."
       },
       {
         id: 390,
@@ -199,7 +308,7 @@ const startersByGeneration: Generation[] = [
           { id: 392, name: "Infernape", level: 36 }
         ],
         stats: { hp: 44, attack: 58, defense: 44, spAttack: 58, spDefense: 44, speed: 61 },
-        description: "Its fiery rear end is fueled by gas made in its belly. Even rain can't extinguish the fire."
+        description: "Its fiery rear end is fueled by gas made in its belly."
       },
       {
         id: 393,
@@ -211,13 +320,15 @@ const startersByGeneration: Generation[] = [
           { id: 395, name: "Empoleon", level: 36 }
         ],
         stats: { hp: 53, attack: 51, defense: 53, spAttack: 61, spDefense: 56, speed: 40 },
-        description: "It doesn't like to be taken care of. It's difficult to bond with since it won't listen to its Trainer."
+        description: "It doesn't like to be taken care of. It's difficult to bond with."
       }
     ]
   },
   {
     generation: 5,
     region: "Unova",
+    games: ["Black", "White", "Black 2", "White 2"],
+    description: "Unova brings a fresh start with new designs",
     starters: [
       {
         id: 495,
@@ -229,7 +340,7 @@ const startersByGeneration: Generation[] = [
           { id: 497, name: "Serperior", level: 36 }
         ],
         stats: { hp: 45, attack: 45, defense: 55, spAttack: 45, spDefense: 55, speed: 63 },
-        description: "It is very intelligent and calm. Being exposed to lots of sunlight makes its movements swifter."
+        description: "It is very intelligent and calm."
       },
       {
         id: 498,
@@ -241,7 +352,7 @@ const startersByGeneration: Generation[] = [
           { id: 500, name: "Emboar", level: 36 }
         ],
         stats: { hp: 65, attack: 63, defense: 45, spAttack: 45, spDefense: 45, speed: 45 },
-        description: "It can deftly dodge its foe's attacks while shooting fireballs from its nose."
+        description: "It can deftly dodge its foe's attacks while shooting fireballs."
       },
       {
         id: 501,
@@ -253,13 +364,15 @@ const startersByGeneration: Generation[] = [
           { id: 503, name: "Samurott", level: 36 }
         ],
         stats: { hp: 55, attack: 55, defense: 45, spAttack: 63, spDefense: 45, speed: 45 },
-        description: "It fights using the scalchop on its stomach. In response to an attack, it retaliates immediately."
+        description: "It fights using the scalchop on its stomach."
       }
     ]
   },
   {
     generation: 6,
     region: "Kalos",
+    games: ["X", "Y"],
+    description: "Kalos starters gain unique secondary types",
     starters: [
       {
         id: 650,
@@ -271,7 +384,7 @@ const startersByGeneration: Generation[] = [
           { id: 652, name: "Chesnaught", level: 36 }
         ],
         stats: { hp: 56, attack: 61, defense: 65, spAttack: 48, spDefense: 45, speed: 38 },
-        description: "The quills on its head are usually soft. When it flexes them, the points become so hard and sharp that they can pierce rock."
+        description: "The quills on its head are usually soft."
       },
       {
         id: 653,
@@ -283,7 +396,7 @@ const startersByGeneration: Generation[] = [
           { id: 655, name: "Delphox", level: 36 }
         ],
         stats: { hp: 40, attack: 45, defense: 40, spAttack: 62, spDefense: 60, speed: 60 },
-        description: "Eating a twig fills it with energy, and its roomy ears give vent to air hotter than 390 degrees Fahrenheit."
+        description: "Eating a twig fills it with energy."
       },
       {
         id: 656,
@@ -295,13 +408,15 @@ const startersByGeneration: Generation[] = [
           { id: 658, name: "Greninja", level: 36 }
         ],
         stats: { hp: 41, attack: 56, defense: 40, spAttack: 62, spDefense: 44, speed: 71 },
-        description: "It secretes flexible bubbles from its chest and back. The bubbles reduce the damage it would otherwise take when attacked."
+        description: "It secretes flexible bubbles from its chest and back."
       }
     ]
   },
   {
     generation: 7,
     region: "Alola",
+    games: ["Sun", "Moon", "Ultra Sun", "Ultra Moon"],
+    description: "Alola brings tropical-themed starters",
     starters: [
       {
         id: 722,
@@ -313,7 +428,7 @@ const startersByGeneration: Generation[] = [
           { id: 724, name: "Decidueye", level: 34 }
         ],
         stats: { hp: 68, attack: 55, defense: 55, spAttack: 50, spDefense: 50, speed: 42 },
-        description: "This wary Pokémon uses photosynthesis to store up energy during the day, while becoming active at night."
+        description: "This wary Pokémon uses photosynthesis during the day."
       },
       {
         id: 725,
@@ -325,7 +440,7 @@ const startersByGeneration: Generation[] = [
           { id: 727, name: "Incineroar", level: 34 }
         ],
         stats: { hp: 45, attack: 65, defense: 40, spAttack: 60, spDefense: 40, speed: 70 },
-        description: "While grooming itself, it builds up fur inside its stomach. It sets the fur alight and spews fiery attacks."
+        description: "While grooming itself, it builds up fur inside its stomach."
       },
       {
         id: 728,
@@ -337,13 +452,15 @@ const startersByGeneration: Generation[] = [
           { id: 730, name: "Primarina", level: 34 }
         ],
         stats: { hp: 50, attack: 54, defense: 54, spAttack: 66, spDefense: 56, speed: 40 },
-        description: "This Pokémon snorts body fluids from its nose, blowing balloons to smash into its foes."
+        description: "This Pokémon snorts body fluids from its nose."
       }
     ]
   },
   {
     generation: 8,
     region: "Galar",
+    games: ["Sword", "Shield"],
+    description: "Galar starters with UK-inspired themes",
     starters: [
       {
         id: 810,
@@ -355,7 +472,7 @@ const startersByGeneration: Generation[] = [
           { id: 812, name: "Rillaboom", level: 35 }
         ],
         stats: { hp: 50, attack: 65, defense: 50, spAttack: 40, spDefense: 40, speed: 65 },
-        description: "When it uses its special stick to strike up a beat, the sound waves produced carry revitalizing energy."
+        description: "When it uses its special stick to strike up a beat."
       },
       {
         id: 813,
@@ -367,7 +484,7 @@ const startersByGeneration: Generation[] = [
           { id: 815, name: "Cinderace", level: 35 }
         ],
         stats: { hp: 50, attack: 71, defense: 40, spAttack: 40, spDefense: 40, speed: 69 },
-        description: "It has special pads on the backs of its feet, and one on its nose. Once it's raring to fight, these pads radiate heat."
+        description: "It has special pads on the backs of its feet."
       },
       {
         id: 816,
@@ -379,13 +496,15 @@ const startersByGeneration: Generation[] = [
           { id: 818, name: "Inteleon", level: 35 }
         ],
         stats: { hp: 50, attack: 40, defense: 40, spAttack: 70, spDefense: 40, speed: 70 },
-        description: "When scared, this Pokémon cries. Its tears pack the chemical punch of 100 onions."
+        description: "When scared, this Pokémon cries."
       }
     ]
   },
   {
     generation: 9,
     region: "Paldea",
+    games: ["Scarlet", "Violet"],
+    description: "The newest generation from the Paldea region",
     starters: [
       {
         id: 906,
@@ -397,7 +516,7 @@ const startersByGeneration: Generation[] = [
           { id: 908, name: "Meowscarada", level: 36 }
         ],
         stats: { hp: 40, attack: 61, defense: 54, spAttack: 45, spDefense: 45, speed: 65 },
-        description: "Its fluffy fur is similar in composition to plants. This Pokémon frequently washes its face to keep it from drying out."
+        description: "Its fluffy fur is similar in composition to plants."
       },
       {
         id: 909,
@@ -409,7 +528,7 @@ const startersByGeneration: Generation[] = [
           { id: 911, name: "Skeledirge", level: 36 }
         ],
         stats: { hp: 67, attack: 45, defense: 59, spAttack: 63, spDefense: 40, speed: 36 },
-        description: "It lies on warm rocks and uses the heat absorbed by its square-shaped scales to create fire energy."
+        description: "It lies on warm rocks and uses the heat absorbed."
       },
       {
         id: 912,
@@ -421,445 +540,752 @@ const startersByGeneration: Generation[] = [
           { id: 914, name: "Quaquaval", level: 36 }
         ],
         stats: { hp: 55, attack: 65, defense: 45, spAttack: 50, spDefense: 45, speed: 50 },
-        description: "Its strong legs let it easily swim around in even fast-flowing rivers. It likes to keep things tidy."
+        description: "Its strong legs let it easily swim around."
       }
     ]
   }
 ];
 
+// Type gradient mappings (local version for starter page)
+const STARTER_TYPE_GRADIENTS = {
+  grass: 'from-green-400 to-green-600',
+  fire: 'from-orange-400 to-red-600',
+  water: 'from-blue-400 to-blue-600',
+  poison: 'from-purple-400 to-purple-600',
+  flying: 'from-sky-300 to-blue-400',
+  fighting: 'from-red-600 to-red-800',
+  ground: 'from-yellow-600 to-amber-700',
+  steel: 'from-gray-400 to-gray-600',
+  dark: 'from-gray-700 to-gray-900',
+  fairy: 'from-pink-300 to-pink-500',
+  psychic: 'from-pink-400 to-purple-500',
+  dragon: 'from-indigo-500 to-purple-600'
+};
+
 const StartersPage: NextPage = () => {
   const router = useRouter();
   const { theme } = useTheme();
+  // TODO: Update when userPreferences is available in context
+  const isHighContrast = false;
+  const reduceMotion = false;
   const [selectedGen, setSelectedGen] = useState(0);
-  const [viewMode, setViewMode] = useState<"single" | "comparison">("single");
-  const [typeFilter, setTypeFilter] = useState("all");
-  
+  const [expandedStarters, setExpandedStarters] = useState<Record<number, boolean>>({});
+  const [selectedForComparison, setSelectedForComparison] = useState<number[]>([]);
+  const [loading, setLoading] = useState(false);
+
   const getPokemonImage = (pokemonId: number): string => {
     return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonId}.png`;
+  };
+
+  const getStatIcon = (stat: string) => {
+    switch(stat) {
+      case 'hp': return <GiHearts className="text-red-500" />;
+      case 'attack': return <GiSwordWound className="text-orange-500" />;
+      case 'defense': return <GiShield className="text-yellow-500" />;
+      case 'spAttack': return <GiBrain className="text-blue-500" />;
+      case 'spDefense': return <GiEyeShield className="text-green-500" />;
+      case 'speed': return <GiSpeedometer className="text-purple-500" />;
+      default: return null;
+    }
   };
 
   const getStatPercentage = (stat: number): number => {
     return (stat / 255) * 100;
   };
 
-  const getStatColor = (stat: number): string => {
-    if (stat >= 100) return pokemonTheme.gradients.grass;
-    if (stat >= 80) return pokemonTheme.gradients.water;
-    if (stat >= 60) return pokemonTheme.gradients.electric;
-    return pokemonTheme.gradients.fire;
+  const toggleStarterExpansion = (starterId: number) => {
+    setExpandedStarters(prev => ({
+      ...prev,
+      [starterId]: !prev[starterId]
+    }));
   };
 
-  const allTypes = ["all", "grass", "fire", "water", "poison", "flying"];
-
-  const filteredGenerations = startersByGeneration.filter(gen => {
-    if (typeFilter === "all") return true;
-    return gen.starters.some(starter => 
-      starter.types.includes(typeFilter)
-    );
-  });
-
-  const currentGen = filteredGenerations[selectedGen];
-
-  const handlePrevGen = () => {
-    setSelectedGen(prev => Math.max(0, prev - 1));
+  const toggleComparison = (starterId: number) => {
+    setSelectedForComparison(prev => {
+      if (prev.includes(starterId)) {
+        return prev.filter(id => id !== starterId);
+      }
+      if (prev.length < 3) {
+        return [...prev, starterId];
+      }
+      return prev;
+    });
   };
 
-  const handleNextGen = () => {
-    setSelectedGen(prev => Math.min(filteredGenerations.length - 1, prev + 1));
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
+
+  if (loading) {
+    return <PageLoader text="Loading starter Pokémon data..." />;
+  }
 
   return (
-    <FullBleedWrapper gradient="pokedex">
+    <>
       <Head>
-        <title>Starter Pokémon | DexTrends</title>
-        <meta name="description" content="Meet all starter Pokémon from every generation" />
+        <title>Starter Pokémon - All Generations | DexTrends</title>
+        <meta name="description" content="Explore all starter Pokémon from every generation. Compare stats, evolution chains, and choose your perfect partner." />
       </Head>
 
-      <FadeIn>
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          {/* Header */}
-          <div className="mb-8">
-            <StyledBackButton 
-              text="Back to Pokémon Hub" 
-              onClick={() => router.push('/pokemon')} 
-            />
+      <div className={themeClass(
+        'min-h-screen',
+        'bg-gradient-to-br from-emerald-50 via-blue-50 to-red-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900'
+      )}>
+        {/* Skip Navigation for Accessibility */}
+        <a 
+          href="#generation-showcase" 
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded-md z-50"
+        >
+          Skip to main content
+        </a>
+        {/* Hero Section */}
+        <section className="relative h-screen flex items-center justify-center overflow-hidden">
+          {/* Animated Background */}
+          <div className="absolute inset-0">
+            <div className="absolute inset-0 bg-gradient-to-br from-green-900/20 via-blue-900/20 to-red-900/20 dark:from-green-900/30 dark:via-blue-900/30 dark:to-red-900/30" />
+            {/* Floating Starter Icons */}
+            <motion.div
+              className="absolute top-20 left-20 text-6xl"
+              animate={{
+                y: [0, -20, 0],
+                rotate: [0, 10, 0]
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            >
+              <FaLeaf className="text-green-500/20" />
+            </motion.div>
+            <motion.div
+              className="absolute top-40 right-32 text-8xl"
+              animate={{
+                y: [0, 20, 0],
+                rotate: [0, -10, 0]
+              }}
+              transition={{
+                duration: 5,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 1
+              }}
+            >
+              <FaFire className="text-red-500/20" />
+            </motion.div>
+            <motion.div
+              className="absolute bottom-32 left-40 text-7xl"
+              animate={{
+                y: [0, -15, 0],
+                x: [0, 10, 0]
+              }}
+              transition={{
+                duration: 6,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 2
+              }}
+            >
+              <FaWater className="text-blue-500/20" />
+            </motion.div>
           </div>
 
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold mb-4 flex items-center justify-center gap-3">
-              <GiPokerHand className="text-red-400" />
-              <span className="bg-gradient-to-r from-red-400 to-pink-400 bg-clip-text text-transparent">
+          {/* Hero Content */}
+          <div className="relative z-10 text-center px-4">
+            <motion.h1 
+              className={themeClass(THEME.typography.h1, 'mb-6')}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <span className="bg-gradient-to-r from-green-600 via-blue-600 to-red-600 dark:from-green-400 dark:via-blue-400 dark:to-red-400 bg-clip-text text-transparent">
                 Starter Pokémon
               </span>
-            </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-400">
-              Choose your partner from {startersByGeneration.length} generations of starters
-            </p>
+            </motion.h1>
+            <motion.p 
+              className={themeClass('text-2xl md:text-3xl', THEME.colors.text.secondary, 'mb-12')}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              Choose your partner from 9 generations of adventure
+            </motion.p>
+            
+            {/* Quick Navigation */}
+            <motion.div 
+              className="flex flex-wrap justify-center gap-4"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
+              <button
+                onClick={() => scrollToSection('generation-showcase')}
+                className={themeClass(
+                  'px-8 py-4 rounded-full font-semibold',
+                  THEME.colors.background.translucent,
+                  THEME.colors.text.primary,
+                  THEME.shadows.lg,
+                  THEME.interactive.hover,
+                  THEME.interactive.focus
+                )}
+              >
+                Browse All Starters
+              </button>
+              <button
+                onClick={() => scrollToSection('comparison')}
+                className={themeClass(
+                  'px-8 py-4 text-white rounded-full font-semibold',
+                  isHighContrast
+                    ? 'bg-black border-4 border-white'
+                    : 'bg-gradient-to-r from-green-500 via-blue-500 to-red-500',
+                  THEME.shadows.lg,
+                  THEME.interactive.hover,
+                  THEME.interactive.focus
+                )}
+              >
+                Compare Starters
+              </button>
+            </motion.div>
           </div>
 
-          {/* Controls */}
-          <div className="mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
-            {/* Type Filter */}
-            <div className="flex flex-wrap gap-2">
-              {allTypes.map(type => (
+          {/* Scroll Indicator */}
+          <motion.div 
+            className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+            animate={{ y: [0, 10, 0] }}
+            transition={{ repeat: Infinity, duration: 1.5 }}
+          >
+            <BsChevronDown className={themeClass('text-4xl', THEME.colors.text.secondary)} />
+          </motion.div>
+        </section>
+
+        {/* Generation Tabs Navigation */}
+        <div className={themeClass(
+          'sticky top-0 z-40 backdrop-blur-md',
+          THEME.colors.background.translucent,
+          THEME.shadows.md
+        )}>
+          <div className="max-w-7xl mx-auto px-4 py-4">
+            <div className="flex overflow-x-auto gap-2 scrollbar-hide">
+              {allGenerations.map((gen, index) => (
                 <button
-                  key={type}
-                  onClick={() => setTypeFilter(type)}
-                  className={`px-4 py-2 rounded-full font-semibold transition-all transform hover:scale-105 ${
-                    typeFilter === type
-                      ? 'bg-gradient-to-r from-red-400 to-pink-400 text-white shadow-lg'
-                      : 'bg-white/80 dark:bg-gray-800/80 hover:bg-white dark:hover:bg-gray-700 backdrop-blur-sm shadow-md hover:shadow-lg'
-                  }`}
+                  key={gen.generation}
+                  onClick={() => setSelectedGen(index)}
+                  className={themeClass(
+                    'px-6 py-3 rounded-full font-semibold whitespace-nowrap transition-all duration-300',
+                    selectedGen === index 
+                      ? 'bg-gradient-to-r from-green-500 via-blue-500 to-red-500 text-white shadow-lg scale-105' 
+                      : themeClass(
+                          'bg-gray-100 dark:bg-gray-800',
+                          'hover:bg-gray-200 dark:hover:bg-gray-700',
+                          'text-gray-700 dark:text-gray-300'
+                        )
+                  )}
                 >
-                  {type.charAt(0).toUpperCase() + type.slice(1)}
+                  Gen {gen.generation} - {gen.region}
                 </button>
               ))}
             </div>
-
-            {/* View Mode */}
-            <div className="flex gap-2">
-              <button
-                onClick={() => setViewMode("single")}
-                className={`px-4 py-2 rounded-full font-semibold transition-all flex items-center gap-2 transform hover:scale-105 ${
-                  viewMode === "single"
-                    ? 'bg-gradient-to-r from-red-400 to-pink-400 text-white shadow-lg'
-                    : 'bg-white/80 dark:bg-gray-800/80 hover:bg-white dark:hover:bg-gray-700 backdrop-blur-sm shadow-md hover:shadow-lg'
-                }`}
-              >
-                <BsList /> Single View
-              </button>
-              <button
-                onClick={() => setViewMode("comparison")}
-                className={`px-4 py-2 rounded-full font-semibold transition-all flex items-center gap-2 transform hover:scale-105 ${
-                  viewMode === "comparison"
-                    ? 'bg-gradient-to-r from-red-400 to-pink-400 text-white shadow-lg'
-                    : 'bg-white/80 dark:bg-gray-800/80 hover:bg-white dark:hover:bg-gray-700 backdrop-blur-sm shadow-md hover:shadow-lg'
-                }`}
-              >
-                <BsGrid3X3 /> Comparison
-              </button>
-            </div>
           </div>
+        </div>
 
-          {/* Navigation */}
-          {viewMode === "single" && currentGen && (
-            <div className="mb-8 flex items-center justify-between">
-              <button
-                onClick={handlePrevGen}
-                disabled={selectedGen === 0}
-                className={`p-3 rounded-full transition-all ${
-                  selectedGen === 0
-                    ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 cursor-not-allowed'
-                    : 'bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
-                } shadow-md`}
+        {/* Generation Showcase Section */}
+        <section id="generation-showcase" className="py-20 px-4">
+          <div className="max-w-7xl mx-auto">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={selectedGen}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5 }}
               >
-                <BsChevronLeft size={24} />
-              </button>
-
-              <div className="text-center">
-                <Link 
-                  href={`/pokemon/regions/${currentGen.region.toLowerCase()}`}
-                  className="group"
-                >
-                  <h2 className="text-3xl font-bold group-hover:text-pokemon-blue transition-colors">{currentGen.region} Region</h2>
-                </Link>
-                <p className="text-lg text-gray-600 dark:text-gray-400">Generation {currentGen.generation}</p>
-              </div>
-
-              <button
-                onClick={handleNextGen}
-                disabled={selectedGen === filteredGenerations.length - 1}
-                className={`p-3 rounded-full transition-all ${
-                  selectedGen === filteredGenerations.length - 1
-                    ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 cursor-not-allowed'
-                    : 'bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
-                } shadow-md`}
-              >
-                <BsChevronRight size={24} />
-              </button>
-            </div>
-          )}
-
-          {/* Content */}
-          {viewMode === "single" && currentGen ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-8 justify-items-center">
-              {currentGen.starters.map((starter) => (
-                <div key={starter.id} className="text-center">
-                  <CircularPokemonCard 
-                    pokemon={{
-                      id: starter.id,
-                      name: starter.name,
-                      sprite: getPokemonImage(starter.id),
-                      types: starter.types.map(type => ({ type: { name: type } }))
-                    }}
-                    size="lg"
-                  />
-                  <div className="mt-4 space-y-2">
-                    <p className="text-sm text-gray-600 dark:text-gray-400 max-w-xs mx-auto">
-                      {starter.description}
-                    </p>
-                    <div className="flex justify-center gap-1">
-                      {starter.types.map(type => (
-                        <TypeBadge key={type} type={type} size="sm" />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="space-y-12">
-              {filteredGenerations.map((gen) => (
-                <div key={gen.generation}>
-                  <h2 className="text-2xl font-bold mb-6">
-                    Generation {gen.generation} - 
-                    <Link 
-                      href={`/pokemon/regions/${gen.region.toLowerCase()}`}
-                      className="text-pokemon-blue hover:text-pokemon-red transition-colors ml-2"
-                    >
-                      {gen.region}
-                    </Link>
+                {/* Generation Header */}
+                <div className="text-center mb-12">
+                  <h2 className={themeClass(THEME.typography.h2, THEME.colors.text.primary, 'mb-4')}>
+                    {allGenerations[selectedGen].region} Region
                   </h2>
-                  {/* Comparison Table */}
-                  <div className={`rounded-3xl overflow-hidden shadow-xl backdrop-blur-sm ${
-                    theme === 'dark' ? 'bg-gray-800/80' : 'bg-white/80'
-                  }`}>
-                    <div className="overflow-x-auto">
-                      <table className="w-full">
-                        <thead>
-                          <tr className={`${
-                            theme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'
-                          }`}>
-                            <th className="p-4 text-left font-bold">Pokémon</th>
-                            <th className="p-4 text-center">Type</th>
-                            <th className="p-4 text-center">HP</th>
-                            <th className="p-4 text-center">Attack</th>
-                            <th className="p-4 text-center">Defense</th>
-                            <th className="p-4 text-center">Sp. Atk</th>
-                            <th className="p-4 text-center">Sp. Def</th>
-                            <th className="p-4 text-center">Speed</th>
-                            <th className="p-4 text-center">Total</th>
-                            <th className="p-4 text-center">Final Evolution</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {gen.starters.map((starter, idx) => (
-                            <tr key={starter.id} className={`${
-                              idx % 2 === 0 ? (
-                                theme === 'dark' ? 'bg-gray-900/30' : 'bg-gray-50/50'
-                              ) : ''
-                            } transition-all hover:bg-gray-100/50 dark:hover:bg-gray-700/50`}>
-                              <td className="p-4">
-                                <div className="flex items-center gap-3">
-                                  <div className="relative w-16 h-16">
+                  <p className={themeClass('text-xl', THEME.colors.text.secondary, 'mb-2')}>
+                    Generation {allGenerations[selectedGen].generation}
+                  </p>
+                  {allGenerations[selectedGen].games && (
+                    <p className={themeClass(THEME.colors.text.tertiary)}>
+                      {allGenerations[selectedGen].games.join(' • ')}
+                    </p>
+                  )}
+                  {allGenerations[selectedGen].description && (
+                    <p className="text-lg text-gray-600 mt-4 max-w-3xl mx-auto">
+                      {allGenerations[selectedGen].description}
+                    </p>
+                  )}
+                </div>
+
+                {/* Starters Grid */}
+                <div className="grid md:grid-cols-3 gap-8">
+                  {allGenerations[selectedGen].starters.map((starter, index) => (
+                    <FadeIn key={starter.id} delay={index * 0.1}>
+                      <motion.div
+                        className={themeClass(
+                          'relative rounded-3xl overflow-hidden',
+                          THEME.colors.background.translucent,
+                          THEME.shadows.xl,
+                          expandedStarters[starter.id] ? 'md:col-span-3' : ''
+                        )}
+                        layout
+                      >
+                        {/* Starter Header */}
+                        <div className={`p-8 bg-gradient-to-br ${getTypeGradient(starter.types[0])}`}>
+                          <div className="flex justify-between items-start">
+                            <div>
+                              <h3 className="text-3xl font-bold text-white mb-2">
+                                {starter.name}
+                              </h3>
+                              <div className="flex gap-2">
+                                {starter.types.map(type => (
+                                  <TypeBadge key={type} type={type} size="md" />
+                                ))}
+                              </div>
+                            </div>
+                            <div className="flex gap-2">
+                              <button
+                                onClick={() => toggleComparison(starter.id)}
+                                className={`
+                                  p-2 rounded-full transition-all
+                                  ${selectedForComparison.includes(starter.id)
+                                    ? 'bg-yellow-400 text-yellow-900'
+                                    : 'bg-white/20 text-white hover:bg-white/30'}
+                                `}
+                                title="Add to comparison"
+                              >
+                                {selectedForComparison.includes(starter.id) ? <BsStarFill /> : <BsStar />}
+                              </button>
+                              <button
+                                onClick={() => toggleStarterExpansion(starter.id)}
+                                className="p-2 bg-white/20 rounded-full text-white hover:bg-white/30 transition-colors"
+                              >
+                                {expandedStarters[starter.id] ? <BsChevronUp /> : <BsChevronDown />}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Pokemon Image */}
+                        <div className="relative h-64 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700">
+                          <Image
+                            src={getPokemonImage(starter.id)}
+                            alt={starter.name}
+                            layout="fill"
+                            objectFit="contain"
+                            className="p-8"
+                          />
+                        </div>
+
+                        {/* Basic Info */}
+                        <div className="p-6">
+                          <p className={themeClass(THEME.colors.text.secondary, 'mb-6')}>{starter.description}</p>
+
+                          {/* Stats Preview */}
+                          <div className="grid grid-cols-3 gap-4 mb-6">
+                            {Object.entries(starter.stats).slice(0, 3).map(([stat, value]) => (
+                              <div key={stat} className="text-center">
+                                <div className="flex justify-center mb-1">
+                                  {getStatIcon(stat)}
+                                </div>
+                                <p className={themeClass('text-xs capitalize', THEME.colors.text.tertiary)}>
+                                  {stat.replace(/([A-Z])/g, ' $1').trim()}
+                                </p>
+                                <p className="text-lg font-bold">{value}</p>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Evolution Chain Preview */}
+                          <div className="flex items-center justify-center gap-2">
+                            {starter.evolutions.map((evo, idx) => (
+                              <React.Fragment key={evo.id}>
+                                <div className="text-center">
+                                  <div className="relative w-16 h-16 mx-auto">
                                     <Image
-                                      src={getPokemonImage(starter.id)}
-                                      alt={starter.name}
+                                      src={getPokemonImage(evo.id)}
+                                      alt={evo.name}
                                       layout="fill"
                                       objectFit="contain"
                                     />
                                   </div>
-                                  <div>
-                                    <Link href={`/pokedex/${starter.id}`} className="font-bold hover:text-pink-400 transition-colors">
-                                      {starter.name}
-                                    </Link>
-                                    <div className="text-sm text-gray-500">#{starter.id.toString().padStart(3, '0')}</div>
+                                  <p className="text-xs mt-1">{evo.name}</p>
+                                </div>
+                                {idx < starter.evolutions.length - 1 && (
+                                  <BsChevronRight className="text-gray-400" />
+                                )}
+                              </React.Fragment>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Expanded Details */}
+                        <AnimatePresence>
+                          {expandedStarters[starter.id] && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: 'auto', opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.3 }}
+                              className="border-t border-gray-200"
+                            >
+                              <div className="p-8 grid md:grid-cols-2 gap-8">
+                                {/* Detailed Stats */}
+                                <div>
+                                  <h4 className="text-xl font-bold mb-4">Base Stats</h4>
+                                  <div className="space-y-3">
+                                    {Object.entries(starter.stats).map(([stat, value]) => (
+                                      <div key={stat}>
+                                        <div className="flex justify-between items-center mb-1">
+                                          <div className="flex items-center gap-2">
+                                            {getStatIcon(stat)}
+                                            <span className="text-sm font-medium capitalize">
+                                              {stat.replace(/([A-Z])/g, ' $1').trim()}
+                                            </span>
+                                          </div>
+                                          <span className="text-sm font-bold">{value}</span>
+                                        </div>
+                                        <div className="w-full bg-gray-200 rounded-full h-2">
+                                          <motion.div 
+                                            className="bg-gradient-to-r from-blue-400 to-blue-600 rounded-full h-2"
+                                            initial={{ width: 0 }}
+                                            animate={{ width: `${getStatPercentage(value)}%` }}
+                                            transition={{ duration: 0.8, delay: 0.1 }}
+                                          />
+                                        </div>
+                                      </div>
+                                    ))}
+                                    <div className="pt-4 border-t border-gray-200">
+                                      <div className="flex justify-between items-center">
+                                        <span className="font-bold">Total</span>
+                                        <span className="text-xl font-bold text-blue-600">
+                                          {Object.values(starter.stats).reduce((a, b) => a + b, 0)}
+                                        </span>
+                                      </div>
+                                    </div>
                                   </div>
                                 </div>
-                              </td>
-                              <td className="p-4 text-center">
-                                <div className="flex gap-1 justify-center">
-                                  {starter.types.map(type => (
-                                    <TypeBadge key={type} type={type} size="sm" />
-                                  ))}
-                                </div>
-                              </td>
-                              <td className="p-4 text-center font-medium">{starter.stats.hp}</td>
-                              <td className="p-4 text-center font-medium">{starter.stats.attack}</td>
-                              <td className="p-4 text-center font-medium">{starter.stats.defense}</td>
-                              <td className="p-4 text-center font-medium">{starter.stats.spAttack}</td>
-                              <td className="p-4 text-center font-medium">{starter.stats.spDefense}</td>
-                              <td className="p-4 text-center font-medium">{starter.stats.speed}</td>
-                              <td className="p-4 text-center font-bold text-pink-400">
-                                {Object.values(starter.stats).reduce((a, b) => a + b, 0)}
-                              </td>
-                              <td className="p-4">
-                                <div className="flex items-center gap-2 justify-center">
-                                  {starter.evolutions.slice(-1).map(evo => (
-                                    <div key={evo.id} className="text-center">
-                                      <div className="relative w-12 h-12 mx-auto">
-                                        <Image
-                                          src={getPokemonImage(evo.id)}
-                                          alt={evo.name}
-                                          layout="fill"
-                                          objectFit="contain"
-                                        />
-                                      </div>
-                                      <div className="text-xs">{evo.name}</div>
+
+                                {/* Additional Info */}
+                                <div className="space-y-6">
+                                  {/* Evolution Details */}
+                                  <div>
+                                    <h4 className="text-xl font-bold mb-4">Evolution Chain</h4>
+                                    <div className="space-y-2">
+                                      {starter.evolutions.map((evo, idx) => (
+                                        <div key={evo.id} className="flex items-center gap-3">
+                                          <div className="relative w-12 h-12">
+                                            <Image
+                                              src={getPokemonImage(evo.id)}
+                                              alt={evo.name}
+                                              layout="fill"
+                                              objectFit="contain"
+                                            />
+                                          </div>
+                                          <div>
+                                            <p className="font-semibold">{evo.name}</p>
+                                            <p className="text-sm text-gray-500">Level {evo.level}</p>
+                                          </div>
+                                        </div>
+                                      ))}
                                     </div>
-                                  ))}
+                                  </div>
+
+                                  {/* Abilities if available */}
+                                  {starter.abilities && (
+                                    <div>
+                                      <h4 className="text-xl font-bold mb-4">Abilities</h4>
+                                      <div className="space-y-2">
+                                        {starter.abilities.map(ability => (
+                                          <p key={ability} className="text-gray-700">
+                                            • {ability}
+                                          </p>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  )}
+
+                                  {/* Strategy if available */}
+                                  {starter.strategy && (
+                                    <div>
+                                      <h4 className="text-xl font-bold mb-4">Battle Strategy</h4>
+                                      <p className="text-gray-700">{starter.strategy}</p>
+                                    </div>
+                                  )}
+
+                                  {/* Fun Facts if available */}
+                                  {starter.funFacts && (
+                                    <div>
+                                      <h4 className="text-xl font-bold mb-4">Fun Facts</h4>
+                                      <ul className="space-y-1">
+                                        {starter.funFacts.map((fact, idx) => (
+                                          <li key={idx} className="text-gray-700">
+                                            • {fact}
+                                          </li>
+                                        ))}
+                                      </ul>
+                                    </div>
+                                  )}
                                 </div>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                              </div>
+
+                              {/* Action Buttons */}
+                              <div className="px-8 pb-8 flex gap-4">
+                                <Link href={`/pokedex/${starter.id}`}>
+                                  <a className="flex-1 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl font-semibold text-center hover:from-blue-600 hover:to-blue-700 transition-all">
+                                    View in Pokédex
+                                  </a>
+                                </Link>
+                                <Link href={`/pokemon/starters/${allGenerations[selectedGen].region.toLowerCase()}`}>
+                                  <a className="flex-1 py-3 bg-gray-200 text-gray-800 rounded-xl font-semibold text-center hover:bg-gray-300 transition-all">
+                                    {allGenerations[selectedGen].region} Details
+                                  </a>
+                                </Link>
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </motion.div>
+                    </FadeIn>
+                  ))}
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </section>
+
+        {/* Comparison Section */}
+        <section id="comparison" className={themeClass(
+          'py-20 px-4',
+          'bg-gradient-to-br from-purple-100 via-pink-50 to-orange-100 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800'
+        )}>
+          <div className="max-w-7xl mx-auto">
+            <FadeIn>
+              <h2 className={themeClass(THEME.typography.h2, 'text-center', THEME.colors.text.primary, 'mb-4')}>
+                Compare Starters
+              </h2>
+              <p className={themeClass('text-xl text-center', THEME.colors.text.secondary, 'mb-12')}>
+                Select up to 3 starters to compare side by side
+              </p>
+            </FadeIn>
+
+            {selectedForComparison.length > 0 ? (
+              <FadeIn delay={0.2}>
+                <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-8">
+                  <div className="grid md:grid-cols-3 gap-6">
+                    {selectedForComparison.map(starterId => {
+                      const starter = allGenerations
+                        .flatMap(gen => gen.starters)
+                        .find(s => s.id === starterId);
+                      
+                      if (!starter) return null;
+                      
+                      return (
+                        <div key={starterId} className="text-center">
+                          <div className="relative w-32 h-32 mx-auto mb-4">
+                            <Image
+                              src={getPokemonImage(starter.id)}
+                              alt={starter.name}
+                              layout="fill"
+                              objectFit="contain"
+                            />
+                          </div>
+                          <h3 className="text-xl font-bold mb-2">{starter.name}</h3>
+                          <div className="flex justify-center gap-1 mb-4">
+                            {starter.types.map(type => (
+                              <TypeBadge key={type} type={type} size="sm" />
+                            ))}
+                          </div>
+                          
+                          {/* Stats Comparison */}
+                          <div className="space-y-2 text-left">
+                            {Object.entries(starter.stats).map(([stat, value]) => (
+                              <div key={stat} className="flex justify-between">
+                                <span className="text-sm capitalize">
+                                  {stat.replace(/([A-Z])/g, ' $1').trim()}
+                                </span>
+                                <span className="font-bold">{value}</span>
+                              </div>
+                            ))}
+                            <div className="pt-2 border-t border-gray-200">
+                              <div className="flex justify-between">
+                                <span className="font-bold">Total</span>
+                                <span className="font-bold text-blue-600">
+                                  {Object.values(starter.stats).reduce((a, b) => a + b, 0)}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <button
+                            onClick={() => toggleComparison(starterId)}
+                            className="mt-4 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </FadeIn>
+            ) : (
+              <FadeIn delay={0.2}>
+                <div className="text-center py-20 bg-white/50 rounded-3xl">
+                  <p className="text-2xl text-gray-500">
+                    Click the star icon on any starter to add them to comparison
+                  </p>
+                </div>
+              </FadeIn>
+            )}
+          </div>
+        </section>
+
+        {/* Advanced Tools Section */}
+        <section id="advanced-tools" className={themeClass(THEME.spacing.section, 'px-4')}>
+          <div className="max-w-7xl mx-auto">
+            <FadeIn>
+              <h2 className="text-5xl font-bold text-center text-gray-800 mb-4">
+                Starter Insights
+              </h2>
+              <p className="text-xl text-center text-gray-600 mb-12">
+                Deep dive into starter Pokémon statistics and trends
+              </p>
+            </FadeIn>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Type Distribution */}
+              <FadeIn delay={0.2}>
+                <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl p-8">
+                  <h3 className="text-2xl font-bold mb-6">Type Distribution</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <FaLeaf className="text-3xl text-green-500" />
+                        <span className="font-semibold">Grass Starters</span>
+                      </div>
+                      <span className="text-2xl font-bold">9</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <FaFire className="text-3xl text-red-500" />
+                        <span className="font-semibold">Fire Starters</span>
+                      </div>
+                      <span className="text-2xl font-bold">9</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <FaWater className="text-3xl text-blue-500" />
+                        <span className="font-semibold">Water Starters</span>
+                      </div>
+                      <span className="text-2xl font-bold">9</span>
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
+              </FadeIn>
 
-          {/* Region Navigation Links */}
-          <div className="mt-12">
-            <h3 className="text-2xl font-bold mb-6 text-center">Explore by Region</h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-              {startersByGeneration.map((gen) => (
-                <Link
-                  key={gen.generation}
-                  href={`/pokemon/starters/${gen.region.toLowerCase()}`}
-                  className={`p-4 rounded-full text-center transition-all transform hover:scale-105 ${
-                    theme === 'dark' ? 'bg-gray-800/80' : 'bg-white/80'
-                  } hover:shadow-lg backdrop-blur-sm shadow-md`}
-                >
-                  <div className="text-lg font-bold">{gen.region}</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Gen {gen.generation}</div>
-                </Link>
-              ))}
+              {/* Popular Choices */}
+              <FadeIn delay={0.3}>
+                <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl p-8">
+                  <h3 className="text-2xl font-bold mb-6">Popular Choices</h3>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <div className="relative w-12 h-12">
+                        <Image
+                          src={getPokemonImage(6)}
+                          alt="Charizard"
+                          layout="fill"
+                          objectFit="contain"
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-semibold">Charizard</p>
+                        <p className="text-sm text-gray-500">Most popular evolution</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="relative w-12 h-12">
+                        <Image
+                          src={getPokemonImage(658)}
+                          alt="Greninja"
+                          layout="fill"
+                          objectFit="contain"
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-semibold">Greninja</p>
+                        <p className="text-sm text-gray-500">Competitive favorite</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="relative w-12 h-12">
+                        <Image
+                          src={getPokemonImage(724)}
+                          alt="Decidueye"
+                          layout="fill"
+                          objectFit="contain"
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-semibold">Decidueye</p>
+                        <p className="text-sm text-gray-500">Unique typing combo</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </FadeIn>
             </div>
+
+            {/* Generation Overview */}
+            <FadeIn delay={0.4}>
+              <div className="mt-8 bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl p-8">
+                <h3 className="text-2xl font-bold mb-6 text-center">All Generations at a Glance</h3>
+                <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-4">
+                  {allGenerations.map(gen => (
+                    <button
+                      key={gen.generation}
+                      onClick={() => setSelectedGen(gen.generation - 1)}
+                      className="p-4 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl hover:shadow-lg transform hover:scale-105 transition-all"
+                    >
+                      <p className="font-bold text-lg">Gen {gen.generation}</p>
+                      <p className="text-sm text-gray-600">{gen.region}</p>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </FadeIn>
           </div>
-        </div>
-      </FadeIn>
-    </FullBleedWrapper>
+        </section>
+
+        {/* Quick Navigation */}
+        <motion.div 
+          className="fixed bottom-8 right-8 flex flex-col gap-2"
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 1 }}
+        >
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className={themeClass(
+              'p-4 rounded-full',
+              THEME.colors.background.translucent,
+              THEME.shadows.lg,
+              THEME.interactive.hover,
+              THEME.interactive.focus
+            )}
+            title="Back to top"
+          >
+            <BsChevronUp className={themeClass('text-xl', THEME.colors.text.primary)} />
+          </button>
+        </motion.div>
+      </div>
+    </>
   );
 };
-
-// Starter Card Component
-interface StarterCardProps {
-  starter: Starter;
-  theme: string;
-  compact?: boolean;
-}
-
-function StarterCard({ starter, theme, compact = false }: StarterCardProps) {
-  const getPokemonImage = (pokemonId: number): string => {
-    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonId}.png`;
-  };
-
-  const getStatPercentage = (stat: number): number => {
-    return (stat / 255) * 100;
-  };
-
-  return (
-    <CardHover>
-      <div className={`rounded-2xl overflow-hidden ${
-        theme === 'dark' ? 'bg-gray-800/50' : 'bg-white'
-      } shadow-sm hover:shadow-md transition-all border border-gray-100 dark:border-gray-700`}>
-        {/* Header */}
-        <div className={`p-6 bg-gradient-to-br ${
-          starter.types[0] === 'grass' ? pokemonTheme.gradients.grass :
-          starter.types[0] === 'fire' ? pokemonTheme.gradients.fire :
-          pokemonTheme.gradients.water
-        }`}>
-          <div className="flex justify-between items-start">
-            <div>
-              <h3 className="text-2xl font-bold text-white">{starter.name}</h3>
-              <div className="flex gap-2 mt-2">
-                {starter.types.map(type => (
-                  <TypeBadge key={type} type={type} size="sm" />
-                ))}
-              </div>
-            </div>
-            <div className="text-white/80 text-sm">#{starter.id.toString().padStart(3, '0')}</div>
-          </div>
-        </div>
-
-        {/* Pokemon Image */}
-        <div className="relative h-48 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800">
-          <Image
-            src={getPokemonImage(starter.id)}
-            alt={starter.name}
-            layout="fill"
-            objectFit="contain"
-            className="p-4"
-          />
-        </div>
-
-        {/* Content */}
-        <div className="p-6">
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-            {starter.description}
-          </p>
-
-          {/* Evolution Chain */}
-          <div className="mb-4">
-            <h4 className="font-bold text-sm mb-2">Evolution Chain</h4>
-            <div className="flex items-center justify-between">
-              {starter.evolutions.map((evo, idx) => (
-                <React.Fragment key={evo.id}>
-                  <Link href={`/pokedex/${evo.id}`} className="text-center group">
-                    <div className="relative w-16 h-16 mx-auto mb-1">
-                      <Image
-                        src={getPokemonImage(evo.id)}
-                        alt={evo.name}
-                        layout="fill"
-                        objectFit="contain"
-                        className="group-hover:scale-110 transition-transform"
-                      />
-                    </div>
-                    <p className="text-xs font-medium">{evo.name}</p>
-                    <p className="text-xs text-gray-500">Lv. {evo.level}</p>
-                  </Link>
-                  {idx < starter.evolutions.length - 1 && (
-                    <BsChevronRight className="text-gray-400" />
-                  )}
-                </React.Fragment>
-              ))}
-            </div>
-          </div>
-
-          {/* Stats - Always Visible */}
-          {
-            <div className="mt-4 space-y-2">
-              {Object.entries(starter.stats).map(([stat, value]) => (
-                <div key={stat}>
-                  <div className="flex justify-between mb-1">
-                    <span className="text-xs font-medium capitalize">
-                      {stat.replace(/([A-Z])/g, ' $1').trim()}
-                    </span>
-                    <span className="text-xs font-bold">{value}</span>
-                  </div>
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                    <div 
-                      className={`bg-gradient-to-r ${pokemonTheme.gradients.accent} rounded-full h-2 transition-all duration-500`}
-                      style={{ width: `${getStatPercentage(value)}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
-              <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
-                <div className="flex justify-between">
-                  <span className="text-xs font-bold">Total</span>
-                  <span className="text-xs font-bold">
-                    {Object.values(starter.stats).reduce((a, b) => a + b, 0)}
-                  </span>
-                </div>
-              </div>
-            </div>
-          }
-
-          {/* Link to Region Starters */}
-          <Link
-            href={`/pokedex/${starter.id}`}
-            className="mt-4 block w-full py-2 rounded-lg bg-gradient-to-r from-red-400 to-pink-400 text-white text-center font-semibold hover:opacity-90 transition-opacity"
-          >
-            View in Pokédex
-          </Link>
-        </div>
-      </div>
-    </CardHover>
-  );
-}
 
 export default StartersPage;

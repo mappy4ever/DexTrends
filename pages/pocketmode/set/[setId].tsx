@@ -3,10 +3,16 @@ import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { motion } from 'framer-motion';
 import { fetchPocketData } from '../../../utils/pocketData';
 import { TypeBadge } from '../../../components/ui/TypeBadge';
 import StyledBackButton from '../../../components/ui/StyledBackButton';
 import { fetchJSON } from '../../../utils/unifiedFetch';
+import { GlassContainer } from '../../../components/ui/design-system/GlassContainer';
+import { GradientButton } from '../../../components/ui/design-system/GradientButton';
+import FullBleedWrapper from '../../../components/ui/FullBleedWrapper';
+import { PageLoader } from '../../../utils/unifiedLoading';
+import { useDebounce } from '../../../hooks/useDebounce';
 import type { PocketCard } from '../../../types/api/pocket-cards';
 import logger from '../../../utils/logger';
 
@@ -120,14 +126,18 @@ export default function SetView() {
   const setCards = useMemo(() => {
     if (!allCards.length || !setId || typeof setId !== 'string') return [];
     
+    // Debug: Log unique pack names to understand data structure
+    const uniquePacks = [...new Set(allCards.map(card => card.pack).filter(Boolean))];
+    logger.debug('Available pack names in data', { uniquePacks: uniquePacks.slice(0, 20), totalPacks: uniquePacks.length });
+    
     // Map set IDs to pack names - handle multiple formats
     const setNameMap: Record<string, string[]> = {
       // Genetic Apex packs
       'mewtwo': ['Mewtwo'],
       'charizard': ['Charizard'], 
       'pikachu': ['Pikachu'],
-      'genetic-apex': ['Mewtwo', 'Charizard', 'Pikachu'],
-      'a1': ['Mewtwo', 'Charizard', 'Pikachu'],
+      'genetic-apex': ['Mewtwo', 'Charizard', 'Pikachu', 'Shared(Genetic Apex)'],
+      'a1': ['Mewtwo', 'Charizard', 'Pikachu', 'Shared(Genetic Apex)'],
       
       // Mythical Island
       'mythical-island': ['Mythical Island'],
@@ -140,21 +150,26 @@ export default function SetView() {
       'palkia': ['Palkia'],
       
       // Other expansions
-      'triumphant-light': ['Reshiram', 'Zekrom'],
-      'a2a': ['Reshiram', 'Zekrom'],
-      'shining-revelry': ['Shaymin', 'Darkrai'],
-      'a2b': ['Shaymin', 'Darkrai'],
-      'celestial-guardians': ['Arceus'],
-      'a3': ['Arceus'],
-      'extradimensional-crisis': ['Giratina'],
-      'a3a': ['Giratina'],
+      'triumphant-light': ['Triumphant Light'],
+      'a2a': ['Triumphant Light'],
+      'shining-revelry': ['Shining Revelry'],
+      'a2b': ['Shining Revelry'],
+      'celestial-guardians': ['Solgaleo', 'Lunala'],
+      'a3': ['Solgaleo', 'Lunala'],
+      'extradimensional-crisis': ['Extradimensional Crisis'],
+      'a3a': ['Extradimensional Crisis'],
       'eevee-grove': ['Eevee Grove'],
-      'promo-a': ['Promo-A']
+      'promo-a': ['Promo-A', 'Premium Tournament Collection - Gengar ex', 'Launch Promo-A', 
+                   'Oversized Card Binder Pack Opening Promo-A', 'Player Rewards Program Promo-A',
+                   'Shop Promo-A', 'Premium Tournament Collection - Emblem (Fire)', 
+                   'Premium Tournament Collection - Emblem (Grass)', 'Premium Tournament Collection - Emblem (Lightning)',
+                   'Premium Tournament Collection - Emblem (Psychic)', 'Premium Tournament Collection - Emblem (Water)',
+                   'Premium Pass (Premium) Promo-A', 'Special Campaign Promo-A', 'Wonder Pick Promo-A']
     };
     
     const packNames = setNameMap[setId] || [];
     
-    // If no cards found with exact pack name match, try more flexible matching
+    // First try exact match
     let filteredCards = allCards.filter(card => packNames.includes(card.pack || ''));
     
     // If no cards found, try case-insensitive and partial matching
@@ -169,17 +184,30 @@ export default function SetView() {
       });
     }
     
-    // Special handling for Genetic Apex - include shared cards
-    if (setId === 'genetic-apex' || setId === 'a1') {
-      const sharedCards = allCards.filter(card => 
-        (card.pack || '').toLowerCase().includes('shared') && 
-        (card.pack || '').toLowerCase().includes('genetic')
-      );
-      filteredCards = [...filteredCards, ...sharedCards];
+    // If still no cards and it's a promo set, include all promo cards
+    if (filteredCards.length === 0 && setId === 'promo-a') {
+      filteredCards = allCards.filter(card => {
+        const packName = (card.pack || '').toLowerCase();
+        return packName.includes('promo') || 
+               packName.includes('promotional') || 
+               packName.includes('special') ||
+               packName.includes('shop') ||
+               packName.includes('campaign') ||
+               packName.includes('premium') ||
+               packName.includes('wonder');
+      });
     }
     
-    logger.debug('SetView cards filtered', { setId, filteredCount: filteredCards.length, packNames });
-    return filteredCards;
+    // Remove duplicates based on card ID
+    const uniqueCards = Array.from(new Map(filteredCards.map(card => [card.id, card])).values());
+    
+    logger.debug('SetView cards filtered', { 
+      setId, 
+      filteredCount: uniqueCards.length, 
+      packNames,
+      sampleCards: uniqueCards.slice(0, 5).map(c => ({ id: c.id, name: c.name, pack: c.pack }))
+    });
+    return uniqueCards;
   }, [allCards, setId]);
 
   // Get unique values for filters
@@ -435,83 +463,103 @@ export default function SetView() {
           </div>
         </div>
 
-        {/* Cards Grid */}
-        {filteredCards.length === 0 ? (
-          <div className="text-center py-16">
-            <div className="text-6xl mb-4">🔍</div>
-            <h3 className="text-2xl font-bold mb-4">No cards found</h3>
-            <p className="text-gray-400">Try adjusting your search or filter criteria</p>
-          </div>
-        ) : viewMode === 'grid' ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-            {filteredCards.map((card) => (
-              <Link key={card.id} href={`/pocketmode/${card.id}`}>
-                <div className="group bg-black/40 backdrop-blur-sm rounded-xl p-3 border border-white/20 hover:border-white/40 transition-all duration-200 hover:scale-105 hover:bg-black/60 cursor-pointer">
-                  <div className="relative w-full aspect-[3/4] mb-3 overflow-hidden rounded-lg">
-                    <Image
-                      src={card.image || "/dextrendslogo.png"}
-                      alt={card.name}
-                      fill
-                      className="object-contain transition-transform duration-200 group-hover:scale-110"
-                      loading="lazy"
-                      sizes="(max-width: 640px) 150px, (max-width: 768px) 120px, 100px"
-                    />
-                  </div>
-                  
-                  <div className="text-center">
-                    <h4 className="font-medium text-sm text-white mb-2 line-clamp-2">{card.name}</h4>
-                    
-                    <div className="flex items-center justify-center gap-1 mb-2">
-                      <TypeBadge type={card.type || ''} size="sm" />
-                    </div>
-                    
-                    <div className="text-xs mb-2">
-                      <div className={`inline-block px-2 py-1 rounded text-xs font-medium ${getRarityColor(card.rarity)}`}>
-                        {card.rarity}
-                      </div>
-                      {card.hp && (
-                        <div className="text-gray-300 mt-1">HP: {card.hp}</div>
-                      )}
-                    </div>
-                  </div>
+          {/* Cards Grid */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <GlassContainer variant="light">
+              <h2 className="text-2xl font-bold mb-4">
+                Cards ({filteredCards.length} {filteredCards.length !== setCards.length && `of ${setCards.length}`})
+              </h2>
+              
+              {filteredCards.length === 0 ? (
+                <div className="text-center py-12">
+                  <div className="text-6xl mb-4">🔍</div>
+                  <h3 className="text-2xl font-bold mb-4">No cards found</h3>
+                  <p className="text-gray-500 dark:text-gray-400">Try adjusting your search or filter criteria</p>
                 </div>
-              </Link>
-            ))}
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {filteredCards.map((card) => (
-              <Link key={card.id} href={`/pocketmode/${card.id}`}>
-                <div className="group bg-black/40 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:border-white/40 transition-all duration-200 hover:bg-black/60 cursor-pointer">
-                  <div className="flex items-center gap-4">
-                    <div className="relative w-16 h-20 flex-shrink-0">
-                      <Image
-                        src={card.image || "/dextrendslogo.png"}
-                        alt={card.name}
-                        fill
-                        className="object-contain rounded"
-                        sizes="64px"
-                      />
-                    </div>
-                    
-                    <div className="flex-grow">
-                      <h4 className="font-medium text-white text-lg mb-1">{card.name}</h4>
-                      <div className="flex items-center gap-3 mb-2">
-                        <TypeBadge type={card.type || ''} size="sm" />
-                        <span className={`text-xs px-2 py-1 rounded font-medium ${getRarityColor(card.rarity)}`}>
-                          {card.rarity}
-                        </span>
-                        {card.hp && (
-                          <span className="text-gray-300 text-sm">HP: {card.hp}</span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+              ) : viewMode === 'grid' ? (
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                  {filteredCards.map((card) => (
+                    <Link key={card.id} href={`/pocketmode/${card.id}`}>
+                      <motion.div 
+                        className="group glass-light rounded-2xl p-4 border border-gray-200 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-400 transition-all duration-200 hover:scale-105 cursor-pointer"
+                        whileHover={{ y: -5 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <div className="relative w-full aspect-[3/4] mb-3 overflow-hidden rounded-lg">
+                          <Image
+                            src={card.image || "/dextrendslogo.png"}
+                            alt={card.name}
+                            fill
+                            className="object-contain transition-transform duration-200 group-hover:scale-110"
+                            loading="lazy"
+                            sizes="(max-width: 640px) 150px, (max-width: 768px) 120px, 100px"
+                          />
+                        </div>
+                        
+                        <div className="text-center">
+                          <h4 className="font-medium text-sm mb-2 line-clamp-2">{card.name}</h4>
+                          
+                          <div className="flex items-center justify-center gap-1 mb-2">
+                            <TypeBadge type={card.type || ''} size="sm" />
+                          </div>
+                          
+                          <div className="text-xs mb-2">
+                            <div className={`inline-block px-2 py-1 rounded text-xs font-medium ${getRarityColor(card.rarity)}`}>
+                              {card.rarity}
+                            </div>
+                            {card.hp && (
+                              <div className="text-gray-600 dark:text-gray-400 mt-1">HP: {card.hp}</div>
+                            )}
+                          </div>
+                        </div>
+                      </motion.div>
+                    </Link>
+                  ))}
                 </div>
-              </Link>
-            ))}
-          </div>
-        )}
+              ) : (
+                <div className="space-y-3">
+                  {filteredCards.map((card) => (
+                    <Link key={card.id} href={`/pocketmode/${card.id}`}>
+                      <motion.div 
+                        className="group glass-light rounded-2xl p-4 border border-gray-200 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-400 transition-all duration-200 cursor-pointer"
+                        whileHover={{ x: 5 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className="relative w-16 h-20 flex-shrink-0">
+                            <Image
+                              src={card.image || "/dextrendslogo.png"}
+                              alt={card.name}
+                              fill
+                              className="object-contain rounded"
+                              sizes="64px"
+                            />
+                          </div>
+                          
+                          <div className="flex-grow">
+                            <h4 className="font-medium text-lg mb-1">{card.name}</h4>
+                            <div className="flex items-center gap-3 mb-2">
+                              <TypeBadge type={card.type || ''} size="sm" />
+                              <span className={`text-xs px-2 py-1 rounded font-medium ${getRarityColor(card.rarity)}`}>
+                                {card.rarity}
+                              </span>
+                              {card.hp && (
+                                <span className="text-gray-600 dark:text-gray-400 text-sm">HP: {card.hp}</span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </GlassContainer>
+          </motion.div>
       </div>
     </div>
   );

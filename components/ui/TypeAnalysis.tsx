@@ -130,29 +130,6 @@ export const TypeAnalysisCard: React.FC<TypeAnalysisCardProps> = ({ type, onClos
 
   if (!typeInfo) return null;
 
-  const getTypeEmoji = (type: PokemonType): string => {
-    const emojiMap: Record<PokemonType, string> = {
-      normal: '⚪',
-      fire: '🔥',
-      water: '💧',
-      electric: '⚡',
-      grass: '🌿',
-      ice: '❄️',
-      fighting: '👊',
-      poison: '☠️',
-      ground: '⛰️',
-      flying: '🌪️',
-      psychic: '🔮',
-      bug: '🐛',
-      rock: '🗿',
-      ghost: '👻',
-      dragon: '🐲',
-      dark: '🌑',
-      steel: '⚙️',
-      fairy: '🧚'
-    };
-    return emojiMap[type] || '❓';
-  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -161,9 +138,6 @@ export const TypeAnalysisCard: React.FC<TypeAnalysisCardProps> = ({ type, onClos
         <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-6 rounded-t-2xl">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-4">
-              <div className="text-4xl">
-                {getTypeEmoji(type)}
-              </div>
               <div>
                 <h2 className="text-3xl font-bold capitalize">{type} Type</h2>
                 <p className="text-purple-100">Detailed analysis and battle guide</p>
@@ -173,7 +147,7 @@ export const TypeAnalysisCard: React.FC<TypeAnalysisCardProps> = ({ type, onClos
               onClick={onClose}
               className="text-white hover:text-gray-300 text-2xl font-bold"
             >
-              ✕
+              ×
             </button>
           </div>
         </div>
@@ -181,9 +155,9 @@ export const TypeAnalysisCard: React.FC<TypeAnalysisCardProps> = ({ type, onClos
         {/* Tab Navigation */}
         <div className="flex border-b border-gray-200">
           {[
-            { key: 'overview' as const, label: 'Overview', icon: '📊' },
-            { key: 'strategy' as const, label: 'Strategy', icon: '⚔️' },
-            { key: 'matchups' as const, label: 'Matchups', icon: '🎯' }
+            { key: 'overview' as const, label: 'Overview' },
+            { key: 'strategy' as const, label: 'Strategy' },
+            { key: 'matchups' as const, label: 'Matchups' }
           ].map(tab => (
             <button
               key={tab.key}
@@ -194,7 +168,6 @@ export const TypeAnalysisCard: React.FC<TypeAnalysisCardProps> = ({ type, onClos
                   : 'text-gray-600 hover:text-gray-800'
               }`}
             >
-              <span className="mr-2">{tab.icon}</span>
               {tab.label}
             </button>
           ))}
@@ -231,7 +204,7 @@ export const TypeAnalysisCard: React.FC<TypeAnalysisCardProps> = ({ type, onClos
               </div>
               
               <div className="bg-blue-50 rounded-lg p-4">
-                <h4 className="font-semibold text-blue-800 mb-2">💡 Pro Tips</h4>
+                <h4 className="font-semibold text-blue-800 mb-2">Pro Tips</h4>
                 <ul className="text-blue-700 text-sm space-y-1">
                   <li>• Consider team composition when using {type} types</li>
                   <li>• Take advantage of STAB (Same Type Attack Bonus) for 1.5× damage</li>
@@ -282,7 +255,7 @@ export const DualTypeCalculator: React.FC = () => {
   return (
     <div className="bg-white rounded-xl shadow-lg p-6">
       <h3 className="text-xl font-bold text-gray-800 mb-4 text-center">
-        🔄 Dual Type Calculator
+        Dual Type Calculator
       </h3>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">

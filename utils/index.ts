@@ -2,18 +2,44 @@
 // Organized by category for better developer experience
 
 // === Core API & Data Fetching ===
-export * from './apiutils';
+export { 
+  fetchData,
+  fetchPokemon,
+  fetchPokemonSpecies,
+  fetchNature,
+  fetchMove,
+  fetchTCGCards,
+  fetchPocketCards,
+  isApiError,
+  getErrorMessage,
+  getErrorStatus
+} from './apiutils';
 export * from './unifiedFetch';
 export * from './UnifiedCacheManager';
 export * from './pokemonSDK';
 export * from './pocketData';
 
 // === Pokemon-specific utilities ===
-export * from './pokemonutils';
+export {
+  getPokemonSprite,
+  getPokemonOfficialArtwork,
+  getShinySprite,
+  formatStatName,
+  getStatColor,
+  calculateCatchRate,
+  calculateExperienceToNext,
+  getGenerationFromId,
+  formatHeight,
+  formatWeight,
+  getNationalDexNumber,
+  getPokemonCry,
+  getHiddenPowerType,
+  formatPokemonId
+} from './pokemonutils';
+export { sanitizePokemonName } from './pokemonNameSanitizer';
 export * from './pokemonHelpers';
-export * from './pokemonNameSanitizer';
-export * from './pokemonTheme';
-export * from './pokemonTypeColors';
+export { getTypeUIColors } from './pokemonTheme';
+export { tcgTypeColors, typeColors } from './pokemonTypeColors';
 export * from './pokemonTypeGradients';
 export * from './evolutionUtils';
 export * from './moveUtils';
@@ -27,34 +53,48 @@ export * from './formatters';
 
 // === Performance & Optimization ===
 export * from './performanceMonitor';
-export * from './componentPreloader';
-export * from './imageOptimization';
-export * from './batteryOptimization';
+export * from './requestIdleCallback';
+export * from './useDebounce';
+export * from './useInfiniteScroll';
+export * from './useIntersectionObserver';
+export * from './useMediaQuery';
 
-// === Mobile & Platform-specific ===
-export * from './mobileUtils';
-export * from './hapticFeedback';
-export * from './iosFixes';
-
-// === Security & Validation ===
-export * from './inputValidation';
-export * from './securityHeaders';
-
-// === Analytics & Monitoring ===
-export * from './logger';
-export * from './monitoring';
-export * from './analyticsEngine';
-export * from './mobileAnalytics';
-
-// === Feature Management ===
-export * from './featureFlags';
-export * from './deepLinking';
+// === State Management & Hooks ===
+export * from './useLocalStorage';
+export * from './usePrevious';
+export * from './useInterval';
+export * from './useOnClickOutside';
 
 // === Data Processing ===
-export * from './dataTools';
-export * from './priceDataHelper';
-export * from './notificationHelpers';
+export * from './typeEffectiveness';
+export * from './damageCalculator';
+export * from './statCalculations';
+export * from './natureModifiers';
+export * from './searchUtils';
+export * from './teamAnalysis';
 
-// Legacy exports (consider migrating away from these)
-export * from './cacheManager';
-export * from './retryFetch';
+// === Theme & Styling ===
+export * from './theme';
+
+// === Authentication & Security ===
+export * from './auth';
+
+// === Analytics & Logging ===
+export * from './analytics';
+export * from './logger';
+
+// === Error Handling ===
+export * from './errorHandling';
+
+// === Database & Storage ===
+export * from './supabaseClient';
+export * from './databaseOperations';
+
+// === Miscellaneous ===
+export * from './getBaseUrl';
+export * from './dataCleaner';
+export * from './constants';
+export * from './generateUniqueId';
+
+// === Deprecated - Use specific imports above ===
+// export * from './cacheManager'; // Use UnifiedCacheManager instead

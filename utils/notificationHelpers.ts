@@ -3,7 +3,7 @@
  * Demonstrates usage of the global notification API from outside React components
  */
 
-import { GlobalNotifications } from '../components/qol/NotificationSystem';
+import { GlobalNotifications } from './globalNotifications';
 
 /**
  * Show success notification for API operations

@@ -6,7 +6,7 @@ import { FadeIn } from '../ui/animations/animations';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { gymLeaderTeams } from '../../data/gymLeaderTeams';
 import { typeEffectiveness } from '../../utils/pokemonutils';
-import GymLeaderCard from '../ui/cards/GymLeaderCard';
+import CircularGymLeaderCard from '../ui/cards/CircularGymLeaderCard';
 
 // Type definitions
 interface GymLeader {
@@ -171,10 +171,13 @@ const GymLeaderCarousel: React.FC<GymLeaderCarouselProps> = ({ region, gymLeader
   };
 
   return (
-    <div>
+    <div className="relative py-12">
+      {/* Gradient background */}
+      <div className="absolute inset-0 gradient-bg-primary opacity-30 rounded-3xl" />
+      
       <FadeIn>
-        <div className="text-center mb-8">
-          <h3 className="text-2xl font-bold mb-2">
+        <div className="text-center mb-8 relative z-10">
+          <h3 className="text-2xl font-bold mb-2 text-gray-800 dark:text-gray-200">
             Gym Leader Challenge
           </h3>
           <p className="text-base text-gray-600 dark:text-gray-400">
@@ -184,17 +187,17 @@ const GymLeaderCarousel: React.FC<GymLeaderCarouselProps> = ({ region, gymLeader
       </FadeIn>
 
       {/* Carousel Container */}
-      <div className="relative px-20">
+      <div className="relative px-4 sm:px-8 md:px-20">
           {/* Navigation Buttons - Enhanced Design */}
           <button
             onClick={handlePrev}
-            className="absolute -left-20 top-1/2 -translate-y-1/2 z-20 bg-gradient-to-r from-white to-gray-100 dark:from-gray-800 dark:to-gray-700 backdrop-blur-sm rounded-full p-4 shadow-2xl hover:scale-110 transition-all duration-300 border-2 border-gray-200 dark:border-gray-600 group"
+            className="absolute -left-4 sm:-left-8 md:-left-20 top-1/2 -translate-y-1/2 z-20 glass-medium rounded-full p-3 md:p-4 shadow-xl hover:scale-110 transition-all duration-300 group"
           >
             <BsChevronLeft className="text-2xl text-gray-700 dark:text-gray-200 group-hover:-translate-x-1 transition-transform" />
           </button>
           <button
             onClick={handleNext}
-            className="absolute -right-20 top-1/2 -translate-y-1/2 z-20 bg-gradient-to-l from-white to-gray-100 dark:from-gray-800 dark:to-gray-700 backdrop-blur-sm rounded-full p-4 shadow-2xl hover:scale-110 transition-all duration-300 border-2 border-gray-200 dark:border-gray-600 group"
+            className="absolute -right-4 sm:-right-8 md:-right-20 top-1/2 -translate-y-1/2 z-20 glass-medium rounded-full p-3 md:p-4 shadow-xl hover:scale-110 transition-all duration-300 group"
           >
             <BsChevronRight className="text-2xl text-gray-700 dark:text-gray-200 group-hover:translate-x-1 transition-transform" />
           </button>
@@ -202,7 +205,7 @@ const GymLeaderCarousel: React.FC<GymLeaderCarouselProps> = ({ region, gymLeader
           {/* Carousel */}
           <div
             ref={carouselRef}
-            className={`flex gap-12 overflow-x-auto scrollbar-hide pb-12`}
+            className={`flex gap-12 overflow-x-auto scrollbar-hide pb-12 carousel-container px-8 sm:px-12 md:px-16 lg:px-32 xl:px-48`}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleDragEnd}
@@ -213,9 +216,7 @@ const GymLeaderCarousel: React.FC<GymLeaderCarouselProps> = ({ region, gymLeader
             style={{
               scrollbarWidth: 'none',
               msOverflowStyle: 'none',
-              WebkitOverflowScrolling: 'touch',
-              paddingLeft: window.innerWidth <= 850 ? '32px' : '200px', // Left cushion for first card
-              paddingRight: window.innerWidth <= 850 ? '32px' : '200px' // Right cushion for last card
+              WebkitOverflowScrolling: 'touch'
             }}
           >
             {gymLeaders.map((leader, index) => {
@@ -259,9 +260,9 @@ const GymLeaderCarousel: React.FC<GymLeaderCarouselProps> = ({ region, gymLeader
                 <div
                   key={leader.name}
                   className="flex-shrink-0"
-                  style={{ width: '900px' }} // Reduced to match smaller card width
+                  style={{ width: '384px' }} // Adjusted for circular card width
                 >
-                  <GymLeaderCard
+                  <CircularGymLeaderCard
                     name={leader.name}
                     region={region.id}
                     type={leader.type}

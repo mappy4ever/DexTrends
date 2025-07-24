@@ -5,6 +5,10 @@ import Image from 'next/image';
 import { fetchData } from '../utils/apiutils';
 import { POKEMON_TYPE_COLORS } from '../utils/pokemonTypeColors';
 import { TypeBadge } from '../components/ui/TypeBadge';
+import { GlassContainer } from '../components/ui/design-system/GlassContainer';
+import { CircularCard } from '../components/ui/design-system/CircularCard';
+import { GradientButton } from '../components/ui/design-system/GradientButton';
+import { TypeGradientBadge } from '../components/ui/design-system/TypeGradientBadge';
 import { EnhancedPokemonSelector, type Pokemon as SelectorPokemon } from '../components/ui/EnhancedPokemonSelector';
 import Modal from '../components/ui/modals/Modal';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
@@ -1227,9 +1231,37 @@ const BattleSimulator: NextPage = () => {
       
       <FullBleedWrapper gradient="pokedex">
         <div className="max-w-7xl mx-auto px-4 py-8">
-          <h1 className="text-4xl font-bold text-center mb-8 bg-gradient-to-r from-pokemon-red to-pink-600 bg-clip-text text-transparent">
-            Pokemon Battle Simulator
-          </h1>
+          {/* Hero Section with Gradient */}
+          <div className="relative mb-12">
+            <div className="absolute inset-0 gradient-bg-primary opacity-20 rounded-3xl blur-3xl" />
+            <div className="relative text-center">
+              <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-pokemon-red to-pink-600 bg-clip-text text-transparent">
+                Pokemon Battle Simulator
+              </h1>
+              <p className="text-gray-600 dark:text-gray-400 text-lg">
+                Experience epic battles with real damage calculations
+              </p>
+            </div>
+          </div>
+          
+          {/* Quick Links */}
+          <div className="flex justify-center gap-4 mb-6">
+            <a
+              href="/team-builder/advanced"
+              className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z" />
+              </svg>
+              Advanced Team Builder
+            </a>
+            <a
+              href="/battle-simulator/damage-calc"
+              className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              Damage Calculator
+            </a>
+          </div>
           
           {/* Battle Format Selection */}
           <div className="flex justify-center gap-4 mb-6">

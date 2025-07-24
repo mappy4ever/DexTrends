@@ -128,7 +128,7 @@ const TcgSetsContent: React.FC = () => {
                   <input
                     id="searchInput"
                     type="text"
-                    className="input text-lg pl-12"
+                    className="w-full pl-12 pr-4 py-3 glass-light rounded-full text-lg border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
                     placeholder="Search for a set (e.g., Base, Evolving Skies)"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
@@ -152,7 +152,7 @@ const TcgSetsContent: React.FC = () => {
                     <div className="relative">
                       <select
                         id="seriesFilter"
-                        className="select text-sm"
+                        className="w-full px-4 py-2 glass-light rounded-full text-sm border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all pr-10"
                         value={filterSeries}
                         onChange={(e) => setFilterSeries(e.target.value)}
                       >
@@ -174,7 +174,7 @@ const TcgSetsContent: React.FC = () => {
                     <div className="relative">
                       <select
                         id="sortOption"
-                        className="select text-sm"
+                        className="w-full px-4 py-2 glass-light rounded-full text-sm border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all pr-10"
                         value={sortOption}
                         onChange={(e) => setSortOption(e.target.value as SortOption)}
                       >
@@ -195,7 +195,7 @@ const TcgSetsContent: React.FC = () => {
                     <div className="relative">
                       <select
                         id="sortDirection"
-                        className="select text-sm"
+                        className="w-full px-4 py-2 glass-light rounded-full text-sm border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all pr-10"
                         value={sortDirection}
                         onChange={(e) => setSortDirection(e.target.value as SortDirection)}
                       >

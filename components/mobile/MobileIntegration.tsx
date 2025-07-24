@@ -1,5 +1,6 @@
 import React, { useEffect, useState, ReactNode } from 'react';
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 import { useMobileUtils } from '../../utils/mobileUtils';
 import adaptiveLoading from '../../utils/adaptiveLoading';
 import batteryOptimization from '../../utils/batteryOptimization';
@@ -15,7 +16,11 @@ import VoiceSearch from './VoiceSearch';
 import CardScanner from './CardScanner';
 import BottomSheet, { useBottomSheet } from './BottomSheet';
 import FloatingActionButton, { QuickActionFAB } from './FloatingActionButton';
-import PushNotifications from './PushNotifications';
+// PushNotifications will be imported dynamically to avoid SSR issues
+const PushNotifications = dynamic(() => import('./PushNotifications'), {
+  ssr: false,
+  loading: () => null
+});
 import AppUpdateNotification from '../pwa/AppUpdateNotification';
 import InstallPrompt from '../pwa/InstallPrompt';
 

@@ -14,15 +14,40 @@ export * from './components/navigation';
 
 // === Context Types ===
 export * from './context/favorites';
-export * from './context/unified-app-context';
+export type { 
+  // Theme types
+  ThemeMode,
+  ThemeColor,
+  ThemeConfig,
+  // User types
+  User,
+  UserPreferences,
+  NotificationPreferences,
+  PrivacySettings,
+  DisplayPreferences,
+  GameplayPreferences,
+  UserStats,
+  SubscriptionInfo,
+  // Settings types
+  AppSettings,
+  GeneralSettings,
+  AppearanceSettings,
+  PerformanceSettings,
+  AccessibilitySettings,
+  AdvancedSettings,
+  // Collection types
+  CollectionState,
+  CollectionStats,
+  CollectionFilters
+} from './context/unified-app-context';
 
 // === Utility Types ===
 export * from './utils/cache';
 export * from './utils/performance';
 
 // === Third-party Types ===
-export * from './pokemontcgsdk';
-export * from './graphql-subscriptions';
+// Module declarations are in pokemontcgsdk.d.ts and graphql-subscriptions.d.ts
+// They are automatically available when imported
 
 // === Global Types ===
 export * from './global';

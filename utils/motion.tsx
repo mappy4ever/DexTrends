@@ -15,21 +15,6 @@ export function MotionProvider({ children }: { children: ReactNode }) {
   );
 }
 
-// Common animation variants
-export const fadeIn = {
-  initial: { opacity: 0 },
-  animate: { opacity: 1 },
-  exit: { opacity: 0 }
-};
-
-export const slideUp = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -20 }
-};
-
-export const scaleIn = {
-  initial: { scale: 0.9, opacity: 0 },
-  animate: { scale: 1, opacity: 1 },
-  exit: { scale: 0.9, opacity: 0 }
-};
+// Animation variants moved to animationVariants.ts to avoid Fast Refresh issues
+// Re-export for convenience
+export { fadeIn, slideUp, scaleIn } from './animationVariants';

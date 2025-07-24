@@ -5,6 +5,9 @@
 /* Import the unified design system */
 @import './design-system.css';
 
+/* Import theme-aware utilities */
+@import './theme-utilities.css';
+
 /* CSS Variables - Design System */
 :root {
   /* Base colors */

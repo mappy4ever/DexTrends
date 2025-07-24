@@ -113,9 +113,37 @@ const PushNotifications: React.FC<PushNotificationsProps> = ({
     }
   }, [isSupported, onPermissionChange, utils]);
 
+  // Convert VAPID key
+  const urlBase64ToUint8Array = useCallback((base64String: string): Uint8Array => {
+    // Check if we're in the browser
+    if (typeof window === 'undefined' || !window.atob) {
+      // Return empty array during SSR
+      return new Uint8Array(0);
+    }
+    
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+      .replace(/-/g, '+')
+      .replace(/_/g, '/');
+    
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+    
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+  }, []);
+
   // Initialize push subscription
   const initializePushSubscription = useCallback(async (): Promise<PushSubscription | null> => {
     try {
+      // Ensure we're in the browser
+      if (typeof window === 'undefined' || !navigator?.serviceWorker) {
+        logger.debug('Service worker not available, skipping push initialization');
+        return null;
+      }
+      
       const registration = await navigator.serviceWorker.ready;
       
       const existingSubscription = await registration.pushManager.getSubscription();
@@ -127,9 +155,15 @@ const PushNotifications: React.FC<PushNotificationsProps> = ({
       }
       
       // Create new subscription
+      const applicationServerKey = urlBase64ToUint8Array(vapidPublicKey);
+      if (!applicationServerKey || applicationServerKey.length === 0) {
+        logger.warn('Invalid application server key, skipping push subscription');
+        return null;
+      }
+      
       const newSubscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
+        applicationServerKey: applicationServerKey
       });
       
       setSubscription(newSubscription);
@@ -143,7 +177,7 @@ const PushNotifications: React.FC<PushNotificationsProps> = ({
       logger.error('Failed to initialize push subscription:', error);
       throw error;
     }
-  }, [vapidPublicKey]);
+  }, [vapidPublicKey, urlBase64ToUint8Array]);
 
   // Send subscription to server
   const sendSubscriptionToServer = useCallback(async (subscription: PushSubscription) => {
@@ -167,22 +201,6 @@ const PushNotifications: React.FC<PushNotificationsProps> = ({
       // Don't throw - allow local functionality to continue
     }
   }, []);
-
-  // Convert VAPID key
-  const urlBase64ToUint8Array = (base64String: string): Uint8Array => {
-    const padding = '='.repeat((4 - base64String.length % 4) % 4);
-    const base64 = (base64String + padding)
-      .replace(/-/g, '+')
-      .replace(/_/g, '/');
-    
-    const rawData = window.atob(base64);
-    const outputArray = new Uint8Array(rawData.length);
-    
-    for (let i = 0; i < rawData.length; ++i) {
-      outputArray[i] = rawData.charCodeAt(i);
-    }
-    return outputArray;
-  };
 
   // Show welcome notification
   const showWelcomeNotification = useCallback(() => {

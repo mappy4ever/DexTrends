@@ -7,6 +7,9 @@ import dynamic from "next/dynamic";
 import { FadeIn, SlideUp } from "../components/ui/animations/animations";
 import { TypeBadge } from "../components/ui/TypeBadge";
 import { TypeFilter } from "../components/ui/forms/TypeFilter";
+import { GlassContainer } from "../components/ui/design-system/GlassContainer";
+import { GradientButton } from "../components/ui/design-system/GradientButton";
+import { motion } from "framer-motion";
 import PocketCardList from "../components/PocketCardList";
 import { fetchPocketData } from "../utils/pocketData";
 import BackToTop from "../components/ui/SimpleBackToTop";
@@ -232,11 +235,18 @@ const PocketMode: NextPage = () => {
       </Head>
       <FadeIn>
         <div className="flex flex-col items-center justify-center mb-8">
-          <h1 className="text-2xl md:text-3xl font-bold text-center mb-3">Pokémon TCG Pocket</h1>
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full mb-6 shadow-2xl"
+          >
+            <span className="text-4xl">🎴</span>
+          </motion.div>
+          <h1 className="text-4xl md:text-5xl font-bold text-center mb-4 bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 bg-clip-text text-transparent">Pokémon TCG Pocket</h1>
           <p className="text-lg text-center text-gray-600 dark:text-gray-400 max-w-2xl mb-4">
             Explore the streamlined mobile version of the Pokémon Trading Card Game with simplified rules and unique cards.
           </p>
-          <div className="w-32 h-1 bg-gradient-to-r from-transparent via-primary to-transparent rounded"></div>
           
           {/* Keyboard Shortcuts Help */}
           <div className="mt-6 text-center">
@@ -251,7 +261,7 @@ const PocketMode: NextPage = () => {
         {(
           <div className="mb-4 px-4">
             {/* Enhanced Search and Filters */}
-            <div className="panel-base mb-6">
+            <GlassContainer variant="medium" className="mb-6">
               {/* Search Bar */}
               <div className="relative mb-6">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
@@ -261,7 +271,7 @@ const PocketMode: NextPage = () => {
                 </div>
                 <input
                   type="text"
-                  className="input text-lg pl-12 pr-12"
+                  className="w-full pl-12 pr-12 py-3 glass-light rounded-full text-lg border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-all"
                   placeholder="Search Pocket cards... (Press / to focus)"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
@@ -284,92 +294,89 @@ const PocketMode: NextPage = () => {
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Rarity</label>
                   <div className="flex flex-wrap gap-2">
-                    <button
+                    <GradientButton
                       onClick={() => setRarityFilter('all')}
-                      className={`px-4 py-2 rounded-full font-medium transition-all ${
-                        rarityFilter === 'all'
-                          ? 'bg-pokemon-red text-white shadow-md'
-                          : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-                      }`}
+                      variant={rarityFilter === 'all' ? 'primary' : 'secondary'}
+                      size="sm"
                     >
                       All
-                    </button>
+                    </GradientButton>
                     <button
                       onClick={() => setRarityFilter('◊')}
-                      className={`px-4 py-2 rounded-full font-medium transition-all ${
+                      className={`px-4 py-2 rounded-full font-medium transition-all glass-light border ${
                         rarityFilter === '◊'
-                          ? 'bg-gray-500 text-white shadow-md'
-                          : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                          ? 'border-gray-500 bg-gray-500/20'
+                          : 'border-gray-200 dark:border-gray-700 hover:scale-105'
                       }`}
                     >
                       ◊ Common
                     </button>
                     <button
                       onClick={() => setRarityFilter('◊◊')}
-                      className={`px-4 py-2 rounded-full font-medium transition-all ${
+                      className={`px-4 py-2 rounded-full font-medium transition-all glass-light border ${
                         rarityFilter === '◊◊'
-                          ? 'bg-green-500 text-white shadow-md'
-                          : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                          ? 'border-green-500 bg-green-500/20'
+                          : 'border-gray-200 dark:border-gray-700 hover:scale-105'
                       }`}
                     >
                       ◊◊ Uncommon
                     </button>
                     <button
                       onClick={() => setRarityFilter('◊◊◊')}
-                      className={`px-4 py-2 rounded-full font-medium transition-all ${
+                      className={`px-4 py-2 rounded-full font-medium transition-all glass-light border ${
                         rarityFilter === '◊◊◊'
-                          ? 'bg-blue-500 text-white shadow-md'
-                          : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                          ? 'border-blue-500 bg-blue-500/20'
+                          : 'border-gray-200 dark:border-gray-700 hover:scale-105'
                       }`}
                     >
                       ◊◊◊ Rare
                     </button>
                     <button
                       onClick={() => setRarityFilter('◊◊◊◊')}
-                      className={`px-4 py-2 rounded-full font-medium transition-all ${
+                      className={`px-4 py-2 rounded-full font-medium transition-all glass-light border ${
                         rarityFilter === '◊◊◊◊'
-                          ? 'bg-purple-500 text-white shadow-md'
-                          : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                          ? 'border-purple-500 bg-purple-500/20'
+                          : 'border-gray-200 dark:border-gray-700 hover:scale-105'
                       }`}
                     >
                       ◊◊◊◊ Double Rare
                     </button>
                     <button
                       onClick={() => setRarityFilter('★')}
-                      className={`px-4 py-2 rounded-full font-medium transition-all ${
+                      className={`px-4 py-2 rounded-full font-medium transition-all glass-light border ${
                         rarityFilter === '★'
-                          ? 'bg-yellow-500 text-white shadow-md'
-                          : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                          ? 'border-yellow-500 bg-yellow-500/20'
+                          : 'border-gray-200 dark:border-gray-700 hover:scale-105'
                       }`}
                     >
                       ★ EX
                     </button>
                     <button
                       onClick={() => setRarityFilter('immersive')}
-                      className={`px-4 py-2 rounded-full font-medium transition-all ${
+                      className={`px-4 py-2 rounded-full font-medium transition-all glass-light border ${
                         rarityFilter === 'immersive'
-                          ? 'bg-pink-500 text-white shadow-md'
-                          : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                          ? 'border-pink-500 bg-pink-500/20'
+                          : 'border-gray-200 dark:border-gray-700 hover:scale-105'
                       }`}
                     >
                       ★★★ Immersive
                     </button>
                     <button
                       onClick={() => setRarityFilter('★★')}
-                      className={`px-4 py-2 rounded-full font-medium transition-all ${
+                      className={`px-4 py-2 rounded-full font-medium transition-all glass-light border ${
                         rarityFilter === '★★'
-                          ? 'bg-red-500 text-white shadow-md'
-                          : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                          ? 'border-red-500 bg-red-500/20'
+                          : 'border-gray-200 dark:border-gray-700 hover:scale-105'
                       }`}
                     >
                       ★★ Crown
                     </button>
                     <button
                       onClick={() => setRarityFilter('fullart')}
-                      className={`px-4 py-2 rounded-full font-medium transition-all ${
+                      className={`px-4 py-2 rounded-full font-medium transition-all glass-light border ${
                         rarityFilter === 'fullart'
-                          ? 'bg-gradient-to-r from-yellow-500 to-pink-500 text-white shadow-md'
-                          : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                          ? 'border-gradient-to-r from-yellow-500 to-pink-500 bg-gradient-to-r from-yellow-500/20 to-pink-500/20'
+                          : 'border-gray-200 dark:border-gray-700 hover:scale-105'
                       }`}
                     >
                       Full Art
@@ -390,34 +397,40 @@ const PocketMode: NextPage = () => {
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value as SortBy)}
-                    className="select"
+                    className="px-4 py-2 glass-light rounded-full border border-gray-200 dark:border-gray-700"
                   >
                     <option value="name">Name</option>
                     <option value="rarity">Rarity</option>
                   </select>
                 </div>
               </div>
-            </div>
+            </GlassContainer>
           </div>
         )}
         
         {/* Tabs for Card List and Deck Builder */}
         <div className="flex justify-center mb-6 gap-4">
-          <Link href="/pocketmode" className="transform transition-all hover:scale-105">
-            <button className="btn bg-gradient-to-r from-red-500 to-pink-500 text-white hover:from-red-600 hover:to-pink-600">
-              Card List
-            </button>
-          </Link>
-          <Link href="/pocketmode/deckbuilder" className="transform transition-all hover:scale-105">
-            <button className="btn btn-secondary">
-              Deck Builder
-            </button>
-          </Link>
-          <Link href="/pocketmode/decks" className="transform transition-all hover:scale-105">
-            <button className="btn btn-secondary">
-              Pre-Built Decks
-            </button>
-          </Link>
+          <GradientButton
+            onClick={() => router.push('/pocketmode')}
+            variant="primary"
+            size="md"
+          >
+            Card List
+          </GradientButton>
+          <GradientButton
+            onClick={() => router.push('/pocketmode/deckbuilder')}
+            variant="secondary"
+            size="md"
+          >
+            Deck Builder
+          </GradientButton>
+          <GradientButton
+            onClick={() => router.push('/pocketmode/decks')}
+            variant="secondary"
+            size="md"
+          >
+            Pre-Built Decks
+          </GradientButton>
         </div>
         
         <SlideUp>
@@ -432,17 +445,22 @@ const PocketMode: NextPage = () => {
               className="animate-fadeIn"
             />
           ) : viewError ? (
-            <div className="flex flex-col items-center justify-center min-h-[400px] bg-white rounded-xl shadow-lg p-8">
-              <div className="text-6xl mb-4">😕</div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">Oops! Something went wrong</h2>
-              <p className="text-gray-600 text-center mb-6">{viewError}</p>
-              <button 
+            <GlassContainer variant="colored" className="flex flex-col items-center justify-center min-h-[400px]">
+              <motion.div 
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="text-6xl mb-4"
+              >😕</motion.div>
+              <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">Oops! Something went wrong</h2>
+              <p className="text-gray-600 dark:text-gray-400 text-center mb-6">{viewError}</p>
+              <GradientButton 
                 onClick={fetchPokemonData}
-                className="px-6 py-3 bg-pokemon-red text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                variant="danger"
+                size="lg"
               >
                 Try Again
-              </button>
-            </div>
+              </GradientButton>
+            </GlassContainer>
           ) : filteredPokemon.length === 0 ? (
             <PokemonEmptyState 
               customMessage={search || typeFilter !== 'all' || rarityFilter !== 'all' 
@@ -468,16 +486,22 @@ const PocketMode: NextPage = () => {
         
         {/* Actions */}
         <div className="flex flex-wrap justify-center gap-4 mt-8">
-          <Link href="/pocketmode/expansions" className="transform transition-all hover:scale-105">
-            <button className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
-              Explore Expansions
-            </button>
-          </Link>
-          <Link href="/pocketmode/packs" className="transform transition-all hover:scale-105">
-            <button className="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
-              Pack Opening
-            </button>
-          </Link>
+          <GradientButton
+            onClick={() => router.push('/pocketmode/expansions')}
+            variant="primary"
+            size="lg"
+            icon={<span>🎯</span>}
+          >
+            Explore Expansions
+          </GradientButton>
+          <GradientButton
+            onClick={() => router.push('/pocketmode/packs')}
+            variant="success"
+            size="lg"
+            icon={<span>🎰</span>}
+          >
+            Pack Opening
+          </GradientButton>
         </div>
         
         {/* Pocket Mode Rules Guide Link */}

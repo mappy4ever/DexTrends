@@ -165,17 +165,30 @@ const nextConfig = {
     ],
   },
   
-  // Webpack configuration for additional optimizations
+  // Webpack configuration optimized for Fast Refresh
   webpack: (config, { dev, isServer }) => {
-    // Skip heavy optimizations during testing
-    const isTestMode = process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'test-prod';
-    
-    // Only in production builds (but not during testing)
-    if (!dev && !isTestMode) {
-      // Additional console statement removal for any that slip through
+    // Separate development and production configurations
+    if (dev) {
+      // Development optimizations for Fast Refresh
+      config.optimization = {
+        ...config.optimization,
+        // Enable Fast Refresh optimizations
+        removeAvailableModules: false,
+        removeEmptyChunks: false,
+        splitChunks: false, // Disable complex splitting in dev for faster rebuilds
+      };
+      
+      // Better development stats for debugging
+      config.stats = {
+        ...config.stats,
+        errorDetails: true,
+        warnings: true,
+      };
+    } else {
+      // Production-only optimizations
       config.optimization.minimize = true;
       
-      // Split chunks for better caching
+      // Split chunks for better caching in production only
       config.optimization.splitChunks = {
         chunks: 'all',
         cacheGroups: {
@@ -214,19 +227,7 @@ const nextConfig = {
       };
     }
     
-    // Test-specific optimizations
-    if (isTestMode) {
-      // Disable Fast Refresh during testing to prevent interference
-      if (dev) {
-        config.optimization = config.optimization || {};
-        config.optimization.emitOnErrors = false;
-      }
-      
-      // Minimize webpack output during testing
-      config.stats = 'errors-only';
-    }
-    
-    // Optimize imports
+    // Optimize imports for all environments
     config.resolve.alias = {
       ...config.resolve.alias,
       // Tree shake lodash

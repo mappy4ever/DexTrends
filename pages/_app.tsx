@@ -51,7 +51,7 @@ const PushNotifications = dynamic(() => import('../components/mobile/PushNotific
 });
 
 // Global search shortcuts with command palette
-const GlobalSearchShortcuts = dynamic(() => import('../components/qol/SmartSearchEnhancer').then(mod => ({ default: mod.GlobalSearchShortcuts })), {
+const GlobalSearchShortcuts = dynamic(() => import('../components/qol/GlobalSearchShortcuts'), {
   ssr: false,
   loading: () => null
 });
@@ -160,34 +160,31 @@ function MyApp({ Component, pageProps, router }: MyAppProps) {
         {/* AccessibilityProvider disabled to stop refresh */}
         
         <UnifiedAppProvider>
-        {isClient && <NotificationProvider>
-          <ContextualHelpProvider>
-            <PreferencesProvider>
-              <Layout fullBleed={Component.fullBleed}>
-                <AnimatePresence mode="wait" initial={false}>
-                  <PageTransition key={nextRouter.asPath}>
-                    <Component {...pageProps} />
-                  </PageTransition>
-                </AnimatePresence>
-                
-                {/* QOL System Components */}
-                <KeyboardShortcutsManager />
-                <GlobalSearchShortcuts />
-                <PreferencesManager />
-                
-                {/* Mobile features */}
-                <PushNotifications />
-              </Layout>
-            </PreferencesProvider>
-          </ContextualHelpProvider>
-        </NotificationProvider>}
-        {!isClient && (
-          <Layout fullBleed={Component.fullBleed}>
-            <PageTransition key={nextRouter.asPath}>
-              <Component {...pageProps} />
-            </PageTransition>
-          </Layout>
-        )}
+          <NotificationProvider>
+            <ContextualHelpProvider>
+              <PreferencesProvider>
+                <Layout fullBleed={Component.fullBleed}>
+                  <AnimatePresence mode="wait" initial={false}>
+                    <PageTransition key={nextRouter.asPath}>
+                      <Component {...pageProps} />
+                    </PageTransition>
+                  </AnimatePresence>
+                  
+                  {/* QOL System Components */}
+                  {isClient && (
+                    <>
+                      <KeyboardShortcutsManager />
+                      <GlobalSearchShortcuts />
+                      <PreferencesManager />
+                      
+                      {/* Mobile features */}
+                      <PushNotifications />
+                    </>
+                  )}
+                </Layout>
+              </PreferencesProvider>
+            </ContextualHelpProvider>
+          </NotificationProvider>
         </UnifiedAppProvider>
       </PWAProvider>
     </ErrorBoundary>

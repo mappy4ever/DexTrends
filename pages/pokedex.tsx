@@ -377,7 +377,7 @@ const PokedexIndex: NextPage = () => {
   };
 
   // Enhanced Pokemon data loading function
-  const enhancePokemonData = (details: ApiPokemonResponse, speciesData?: PokemonSpecies | null): EnhancedPokemon => {
+  const enhancePokemonData = useCallback((details: ApiPokemonResponse, speciesData?: PokemonSpecies | null): EnhancedPokemon => {
     const generation = getGeneration(details.id).toString();
     const isLegendary = speciesData?.is_legendary || false;
     const isMythical = speciesData?.is_mythical || false;
@@ -411,7 +411,7 @@ const PokedexIndex: NextPage = () => {
       evolvesFrom: speciesData?.evolves_from_species?.name,
       totalStats: details.stats.reduce((acc, stat) => acc + stat.base_stat, 0),
     };
-  };
+  }, []);
 
   // Fetch Pokémon batch
   const fetchPokemonBatch = useCallback(async (start: number, count: number): Promise<EnhancedPokemon[]> => {
@@ -455,33 +455,64 @@ const PokedexIndex: NextPage = () => {
       logger.error('Batch fetch error', { error: err });
       return [];
     }
-  }, [isStarter]);
+  }, [enhancePokemonData]);
 
   // Background loading function for remaining Pokemon
   const loadRemainingPokemon = useCallback(async (initialData: EnhancedPokemon[]) => {
     try {
+      logger.debug('Starting background loading of remaining Pokemon...');
       let allPokemonData = [...initialData];
       
-      // Load remaining Pokemon (151-1025) in smaller batches
-      const BACKGROUND_BATCH_SIZE = 20;
-      for (let start = 151; start <= TOTAL_POKEMON; start += BACKGROUND_BATCH_SIZE) {
+      // Ensure we have placeholders for all Pokemon
+      while (allPokemonData.length < TOTAL_POKEMON) {
+        allPokemonData.push({
+          id: allPokemonData.length + 1,
+          name: `pokemon-${allPokemonData.length + 1}`,
+          types: [],
+          sprite: '/dextrendslogo.png',
+          height: 0,
+          weight: 0,
+          generation: getGeneration(allPokemonData.length + 1).toString(),
+          isLegendary: false,
+          isMythical: false,
+          isUltraBeast: false,
+          isStarter: false,
+          isBaby: false,
+          isFossil: false,
+          totalStats: 0,
+        } as EnhancedPokemon);
+      }
+      
+      // Load remaining Pokemon (251-1025) in medium batches
+      const BACKGROUND_BATCH_SIZE = 30;
+      let loadedCount = 0;
+      
+      for (let start = 251; start <= TOTAL_POKEMON; start += BACKGROUND_BATCH_SIZE) {
         const count = Math.min(BACKGROUND_BATCH_SIZE, TOTAL_POKEMON - start + 1);
-        const batch = await fetchPokemonBatch(start, count);
         
-        // Update the loaded data
-        batch.forEach(pokemon => {
-          if (pokemon.id <= allPokemonData.length) {
-            allPokemonData[pokemon.id - 1] = pokemon;
+        try {
+          const batch = await fetchPokemonBatch(start, count);
+          loadedCount += batch.length;
+          
+          // Update the loaded data
+          batch.forEach(pokemon => {
+            if (pokemon.id > 0 && pokemon.id <= TOTAL_POKEMON) {
+              allPokemonData[pokemon.id - 1] = pokemon;
+            }
+          });
+          
+          // Update data periodically
+          if (loadedCount % 90 === 0 || start + BACKGROUND_BATCH_SIZE > TOTAL_POKEMON) { // Every 90 Pokemon or at the end
+            logger.debug(`Background loading progress: ${loadedCount} Pokemon loaded`);
+            setAllPokemon([...allPokemonData]);
           }
-        });
-        
-        // Update data periodically
-        if (start % (BACKGROUND_BATCH_SIZE * 5) === 1) { // Every 5 batches (100 Pokemon)
-          setAllPokemon([...allPokemonData]);
+          
+          // Moderate delay for background loading - balance between API limits and speed
+          await new Promise(resolve => setTimeout(resolve, 300));
+        } catch (batchError) {
+          logger.error(`Failed to load batch starting at ${start}`, { error: batchError });
+          // Continue with next batch even if one fails
         }
-        
-        // Longer delay for background loading - be very gentle with API
-        await new Promise(resolve => setTimeout(resolve, 500));
       }
       
       // Load special forms in background - temporarily disabled to fix infinite loop
@@ -497,6 +528,7 @@ const PokedexIndex: NextPage = () => {
       }
       
       // Final update
+      logger.debug(`Background loading complete! Total Pokemon loaded: ${loadedCount + 250}`);
       setAllPokemon(allPokemonData);
     } catch (err) {
       logger.error('Background loading failed', { error: err });
@@ -505,7 +537,11 @@ const PokedexIndex: NextPage = () => {
 
   // Load initial Pokémon data for faster page load
   useEffect(() => {
+    let mounted = true;
+
     const loadInitialPokemon = async () => {
+      if (!mounted) return;
+      
       setLoading(true);
       setError(null);
       
@@ -529,24 +565,28 @@ const PokedexIndex: NextPage = () => {
           isLegendary: false,
           isMythical: false,
           isUltraBeast: false,
-          isStarter: isStarter(p.name, index + 1),
+          isStarter: checkIfStarter(index + 1),
           isBaby: false,
           isFossil: isFossil(p.name),
           totalStats: 0,
         }));
+        
+        if (!mounted) return;
         
         // Display placeholder data immediately
         setAllPokemon(placeholderPokemon);
         setPokemon(placeholderPokemon);
         setLoading(false);
         
-        // Load only first 150 Pokemon initially for faster page load
-        const INITIAL_LOAD_COUNT = 150;
+        // Load first 250 Pokemon initially for faster initial page load
+        const INITIAL_LOAD_COUNT = 250;
         let loadedPokemonData: EnhancedPokemon[] = [...placeholderPokemon];
         
-        // Load detailed data in smaller batches
-        const SMALL_BATCH_SIZE = 10;
+        // Load detailed data in medium batches for better performance
+        const SMALL_BATCH_SIZE = 25;
         for (let start = 1; start <= INITIAL_LOAD_COUNT; start += SMALL_BATCH_SIZE) {
+          if (!mounted) return;
+          
           const count = Math.min(SMALL_BATCH_SIZE, INITIAL_LOAD_COUNT - start + 1);
           const batch = await fetchPokemonBatch(start, count);
           
@@ -557,8 +597,10 @@ const PokedexIndex: NextPage = () => {
             }
           });
           
+          if (!mounted) return;
+          
           // Update progress
-          const progress = Math.round((start + count - 1) / INITIAL_LOAD_COUNT * 100);
+          const progress = Math.round((start + count - 1) / TOTAL_POKEMON * 100);
           setLoadingProgress(progress);
           
           // Update displayed Pokemon with loaded data
@@ -567,16 +609,30 @@ const PokedexIndex: NextPage = () => {
           
           // Small delay to prevent API overload
           if (start + SMALL_BATCH_SIZE <= INITIAL_LOAD_COUNT) {
-            await new Promise(resolve => setTimeout(resolve, 100));
+            await new Promise(resolve => setTimeout(resolve, 200));
           }
         }
         
+        if (!mounted) return;
+        
         // Continue loading remaining Pokemon in background
-        setTimeout(() => {
-          loadRemainingPokemon(loadedPokemonData);
-        }, 2000);
+        // Use requestIdleCallback for better performance if available
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(() => {
+            if (mounted) {
+              loadRemainingPokemon(loadedPokemonData);
+            }
+          }, { timeout: 2000 });
+        } else {
+          setTimeout(() => {
+            if (mounted) {
+              loadRemainingPokemon(loadedPokemonData);
+            }
+          }, 1000);
+        }
         
       } catch (err) {
+        if (!mounted) return;
         setError("Failed to load Pokédex data");
         logger.error('Error loading Pokémon', { error: err });
         setLoading(false);
@@ -584,7 +640,12 @@ const PokedexIndex: NextPage = () => {
     };
 
     loadInitialPokemon();
-  }, [fetchPokemonBatch, isStarter, loadRemainingPokemon]);
+
+    return () => {
+      mounted = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Fetch mega evolutions separately
   const fetchMegaEvolutions = async (): Promise<EnhancedPokemon[]> => {
@@ -950,12 +1011,20 @@ const PokedexIndex: NextPage = () => {
               Complete Pokédex
             </h1>
             <p className="text-gray-600 text-lg mb-2">
-              Browse all {allPokemon.length} Pokémon from every generation
+              Browse all {TOTAL_POKEMON} Pokémon from every generation
             </p>
             <div className="flex justify-center gap-4 text-sm text-gray-500">
               <span>{filteredPokemon.length} Pokémon found</span>
               <span>•</span>
               <span>{displayedPokemon.length} displayed</span>
+              {allPokemon.filter(p => p.sprite !== '/dextrendslogo.png').length < TOTAL_POKEMON && (
+                <>
+                  <span>•</span>
+                  <span className="text-blue-600">
+                    {allPokemon.filter(p => p.sprite !== '/dextrendslogo.png').length}/{TOTAL_POKEMON} loaded
+                  </span>
+                </>
+              )}
             </div>
           </div>
 

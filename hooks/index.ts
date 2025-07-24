@@ -2,9 +2,9 @@
 // All custom hooks for the DexTrends application
 
 // === Utility Hooks ===
-export { default as useDebounce } from './useDebounce';
-export { default as useInfiniteScroll } from './useInfiniteScroll';
-export { default as useSearchHistory } from './useSearchHistory';
+export { useDebounce } from './useDebounce';
+export { useInfiniteScroll } from './useInfiniteScroll';
+export { useSearchHistory } from './useSearchHistory';
 
 // === Data Fetching Hooks ===
-export { default as useBulbapedia } from './useBulbapedia';
+export { useBulbapedia } from './useBulbapedia';

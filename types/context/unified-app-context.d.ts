@@ -116,15 +116,16 @@ export interface SubscriptionInfo {
   features?: string[];
 }
 
-// Favorites types
-export interface FavoritesState {
+// Favorites types - Temporarily using inline types to avoid conflicts
+// TODO: Migrate to use types from './favorites' 
+interface FavoritesState {
   cards: SimpleCard[];
   pokemon: SimplePokemon[];
   decks: string[];
   sets: string[];
 }
 
-export interface FavoritesActions {
+interface FavoritesActions {
   addToFavorites: (type: keyof FavoritesState, item: any) => void;
   removeFromFavorites: (type: keyof FavoritesState, itemId: string | number) => void;
   isFavorite: (type: keyof FavoritesState, itemId: string | number) => boolean;

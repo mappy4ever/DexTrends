@@ -5,6 +5,10 @@ import Link from "next/link";
 import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../../components/ui/animations/animations";
 import { useTheme } from "../../context/UnifiedAppContext";
 import { useInfiniteScroll } from "../../hooks/useInfiniteScroll";
+import { GlassContainer } from "../../components/ui/design-system/GlassContainer";
+import { GradientButton } from "../../components/ui/design-system/GradientButton";
+import { TypeGradientBadge } from "../../components/ui/design-system/TypeGradientBadge";
+import { motion } from "framer-motion";
 import { InlineLoader } from "../../utils/unifiedLoading";
 import { PageLoader } from "../../utils/unifiedLoading";
 import StyledBackButton from "../../components/ui/StyledBackButton";
@@ -196,6 +200,14 @@ const PocketDecks: NextPage = () => {
                 className="mx-auto mb-6"
               />
             </div>
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full mb-6 shadow-2xl"
+            >
+              <span className="text-4xl">🃏</span>
+            </motion.div>
             <h1 className="text-4xl md:text-5xl font-extrabold mb-4 bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 bg-clip-text text-transparent">
               Top Pocket Decks
             </h1>
@@ -205,7 +217,7 @@ const PocketDecks: NextPage = () => {
           </div>
           
           {/* Search and Filters Card */}
-          <div className="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-xl border border-white/30 mb-8">
+          <GlassContainer variant="medium" className="mb-8">
             {/* Search and Filters */}
             <div className="flex flex-col gap-6">
               {/* Search Bar */}
@@ -213,7 +225,7 @@ const PocketDecks: NextPage = () => {
                 <input
                   id="searchInput"
                   type="text"
-                  className="w-full pr-6 py-4 pl-12 bg-gray-50 border border-gray-200 rounded-full text-lg focus:outline-none focus:border-orange-400 focus:bg-white transition-all duration-300"
+                  className="w-full pr-6 py-4 pl-12 glass-light border border-gray-200 dark:border-gray-700 rounded-full text-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all"
                   placeholder="Search decks (e.g., Pikachu, Mewtwo, Lightning)"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
@@ -319,8 +331,9 @@ const PocketDecks: NextPage = () => {
                   </div>
                 </div>
             
-                <button 
-                  className="px-8 py-3 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 hover:from-gray-200 hover:to-gray-300 dark:hover:from-gray-600 dark:hover:to-gray-500 text-gray-700 dark:text-gray-200 font-semibold rounded-full transition-all duration-300 transform hover:scale-105"
+                <GradientButton 
+                  variant="secondary"
+                  size="md"
                   onClick={() => {
                     setSearch("");
                     setFilterTier("");
@@ -330,19 +343,19 @@ const PocketDecks: NextPage = () => {
                   }}
                 >
                   Clear Filters
-                </button>
+                </GradientButton>
               </div>
             </div>
-          </div>
+          </GlassContainer>
         </FadeIn>
       
       {loading ? (
         <PageLoader text="Loading meta decks..." />
         ) : error ? (
-          <div className="bg-red-50/80 backdrop-blur-sm border border-red-200 rounded-3xl p-8 text-center shadow-lg">
+          <GlassContainer variant="colored" className="text-center">
             <h2 className="text-2xl font-bold text-red-600">Error</h2>
             <p className="text-red-600 mt-2">{error}</p>
-          </div>
+          </GlassContainer>
         ) : (
           <StaggeredChildren className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {visibleDecks.map((deck) => (

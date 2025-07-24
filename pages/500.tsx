@@ -1,43 +1,156 @@
-import React from 'react';
 import Link from 'next/link';
-import Head from 'next/head';
 import type { NextPage } from 'next';
+import { motion } from 'framer-motion';
+import { GlassContainer } from '../components/ui/design-system/GlassContainer';
+import { GradientButton } from '../components/ui/design-system/GradientButton';
 
 const Custom500: NextPage = () => {
   return (
-    <>
-      <Head>
-        <title>500 - Server Error | DexTrends</title>
-      </Head>
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-        <div className="max-w-md w-full text-center">
-          <div className="mb-8">
-            <div className="text-6xl mb-4">🔥</div>
-            <h1 className="text-6xl font-bold text-pokemon-red mb-4">500</h1>
-            <p className="text-xl text-gray-700 mb-2">Server Error</p>
-            <p className="text-gray-600">
-              Oops! Something went wrong on our end. Our team has been notified and is working on it.
-            </p>
-          </div>
-          
-          <div className="space-y-3">
-            <button
-              onClick={() => window.location.reload()}
-              className="w-full px-6 py-3 bg-pokemon-red text-white rounded-lg hover:bg-red-700 transition-colors"
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
+      {/* Electric Background */}
+      <div className="absolute inset-0 gradient-bg-electric opacity-20" />
+      
+      {/* Lightning Bolts Animation */}
+      {[...Array(5)].map((_, index) => (
+        <motion.div
+          key={index}
+          className="absolute w-1 bg-yellow-400 opacity-30"
+          style={{
+            height: `${Math.random() * 200 + 100}px`,
+            left: `${Math.random() * 100}%`,
+            top: '-50px',
+          }}
+          animate={{
+            y: [0, 1000],
+            opacity: [0, 1, 0],
+          }}
+          transition={{
+            duration: 0.5,
+            delay: index * 2,
+            repeat: Infinity,
+            repeatDelay: 5,
+            ease: "easeIn"
+          }}
+        />
+      ))}
+
+      {/* Shocked Pikachu Animation */}
+      <motion.div
+        className="absolute w-32 h-32 opacity-20"
+        style={{ left: '10%', top: '20%' }}
+        animate={{
+          rotate: [0, -10, 10, -10, 10, 0],
+          scale: [1, 1.1, 0.9, 1.1, 0.9, 1],
+        }}
+        transition={{
+          duration: 0.5,
+          repeat: Infinity,
+          repeatDelay: 3,
+        }}
+      >
+        <div className="w-full h-full rounded-full bg-gradient-to-br from-yellow-300 to-yellow-500" />
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
+        className="relative z-10"
+      >
+        <GlassContainer variant="colored" className="max-w-lg mx-auto text-center">
+          {/* Big 500 with Electric Effect */}
+          <motion.div
+            className="relative mb-8"
+            animate={{ 
+              filter: ['brightness(1)', 'brightness(1.5)', 'brightness(1)'],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
+            <div className="text-8xl md:text-9xl font-bold bg-gradient-to-r from-yellow-400 via-orange-500 to-red-600 bg-clip-text text-transparent">
+              500
+            </div>
+            
+            {/* Electric sparks */}
+            <motion.div
+              className="absolute -top-8 left-1/2 transform -translate-x-1/2"
+              animate={{ 
+                opacity: [0, 1, 0],
+                scale: [0.8, 1.2, 0.8],
+              }}
+              transition={{
+                duration: 1,
+                repeat: Infinity,
+              }}
             >
-              Try Again
-            </button>
-            <Link href="/" className="block w-full px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors">
-              Back to Homepage
-            </Link>
-          </div>
+              <span className="text-4xl">⚡</span>
+            </motion.div>
+          </motion.div>
+
+          <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-4">
+            Critical Hit! Server Error!
+          </h2>
           
-          <div className="mt-8 text-sm text-gray-500">
-            If this problem persists, please contact support.
+          <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
+            The server used Self-Destruct!
+            <br />
+            It's super effective... at breaking things.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <GradientButton
+              onClick={() => window.location.reload()}
+              variant="electric"
+              size="lg"
+              className="group"
+            >
+              <span className="flex items-center gap-2">
+                Use Revive
+                <motion.span
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                  className="inline-block"
+                >
+                  🔄
+                </motion.span>
+              </span>
+            </GradientButton>
+            
+            <GradientButton
+              onClick={() => window.location.href = '/'}
+              variant="secondary"
+              size="lg"
+            >
+              Flee to Pokemon Center
+            </GradientButton>
           </div>
-        </div>
-      </div>
-    </>
+
+          {/* Fun Pokemon quote */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1 }}
+            className="text-sm text-gray-500 dark:text-gray-500 mt-8 italic"
+          >
+            "Team Rocket's blasting off again!" - Team Rocket
+          </motion.p>
+          
+          {/* Status effect */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.5 }}
+            className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 rounded-full text-sm"
+          >
+            <span>💫</span>
+            Server is paralyzed! It may be unable to move!
+          </motion.div>
+        </GlassContainer>
+      </motion.div>
+    </div>
   );
 };
 

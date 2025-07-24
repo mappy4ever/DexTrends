@@ -1,15 +1,17 @@
 # Documentation Index
 
 ## Core Project Files (Root Directory)
-- **[CLAUDE.md](/CLAUDE.md)** - AI assistant context and development instructions
-- **[DESIGN_LANGUAGE.md](/DESIGN_LANGUAGE.md)** - Visual design principles and guidelines
+- **[CLAUDE.md](/CLAUDE.md)** - AI assistant context and critical rules
+- **[DEVELOPER_GUIDE.md](/project-resources/docs/DEVELOPER_GUIDE.md)** - Developer guide with search checklist and directory reference
+- **[README.md](/README.md)** - Main project documentation and setup guide
 
 ## Primary Documentation
 
 ### Development Guides
-- **[README.md](README.md)** - Main project documentation and setup guide
-- **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** - Comprehensive design system reference
+- **[DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md)** - Essential developer reference (search patterns, directory structure)
+- **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** - Comprehensive design system reference (consolidated)
 - **[iOS_MOBILE_DEVELOPMENT_GUIDE.md](iOS_MOBILE_DEVELOPMENT_GUIDE.md)** - Consolidated mobile development guide
+- **[TYPESCRIPT_MIGRATION_PROGRESS.md](TYPESCRIPT_MIGRATION_PROGRESS.md)** - Current TypeScript migration status
 
 ### Feature Documentation
 - **[BULBAPEDIA_SCRAPER_README.md](BULBAPEDIA_SCRAPER_README.md)** - Image scraping system documentation
@@ -29,11 +31,16 @@
 - **[OPTIMIZATION_SETUP.md](OPTIMIZATION_SETUP.md)** - Performance optimization setup
 - **[PRICE_HISTORY_SETUP.md](PRICE_HISTORY_SETUP.md)** - Price tracking feature setup
 
-### Historical/Archive
-- **[POKEMON_SECTION_FIXES.md](POKEMON_SECTION_FIXES.md)** - Pokemon section fix history
-- **[SIMILAR_CARDS_CONTEXT.md](SIMILAR_CARDS_CONTEXT.md)** - Similar cards feature context
-- **[IPHONE_QA_REPORT.md](IPHONE_QA_REPORT.md)** - iPhone testing results
-- **[Code_Citations.md](Code_Citations.md)** - Code attribution references
+### Current Status & Reports
+- **[CURRENT_PROJECT_STATE.md](CURRENT_PROJECT_STATE.md)** - Overall project status
+- **[PROJECT_EFFICIENCY_TRACKER.md](PROJECT_EFFICIENCY_TRACKER.md)** - Performance metrics
+- **[COMPREHENSIVE_OPTIMIZATION_REPORT.md](COMPREHENSIVE_OPTIMIZATION_REPORT.md)** - Optimization summary
+
+### Archive Directories
+- **[archive/typescript-migration/](archive/typescript-migration/)** - Historical TypeScript migration session files
+- **[archive/phase-progress/](archive/phase-progress/)** - Phase-based development progress files
+- **[archive/design-notes/](archive/design-notes/)** - Original design implementation notes
+- **[archive/debugging/](archive/debugging/)** - Debugging and fix documentation
 
 ## Documentation Guidelines
 
@@ -51,4 +58,10 @@
 
 ---
 
-Last Updated: January 2025
+Last Updated: 2025-07-24
+
+## Recently Consolidated Documentation
+- Design documentation merged into DESIGN_SYSTEM.md
+- Developer search patterns moved to DEVELOPER_GUIDE.md
+- TypeScript migration sessions archived for historical reference
+- Phase progress files archived but accessible
