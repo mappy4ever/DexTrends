@@ -117,7 +117,7 @@ export const DynamicPriceAlerts = dynamic(
 
 // Icons and heavy UI components
 export const DynamicFontAwesome = dynamic(
-  () => import('@fortawesome/react-fontawesome').then(mod => mod.FontAwesomeIcon),
+  () => import('./FontAwesomeIcon'),
   {
     loading: () => <span className="inline-block w-4 h-4 bg-gray-200 rounded animate-pulse"></span>,
     ssr: false
@@ -160,21 +160,21 @@ export const DynamicParticles = dynamic(
 // Framer Motion components (can be loaded on demand)
 export const DynamicMotion = {
   div: dynamic(
-    () => import('framer-motion').then(mod => mod.motion.div),
+    () => import('./MotionDiv'),
     {
       loading: () => <div />,
       ssr: false
     }
   ) as any,
   span: dynamic(
-    () => import('framer-motion').then(mod => mod.motion.span),
+    () => import('./MotionSpan'),
     {
       loading: () => <span />,
       ssr: false
     }
   ) as any,
   button: dynamic(
-    () => import('framer-motion').then(mod => mod.motion.button),
+    () => import('./MotionButton'),
     {
       loading: () => <button />,
       ssr: false
@@ -184,7 +184,7 @@ export const DynamicMotion = {
 
 // Analytics components (non-critical)
 export const DynamicAnalytics = dynamic(
-  () => import('@vercel/analytics/react').then(mod => mod.Analytics),
+  () => import('./Analytics'),
   {
     loading: () => null,
     ssr: false
@@ -192,7 +192,7 @@ export const DynamicAnalytics = dynamic(
 );
 
 export const DynamicSpeedInsights = dynamic(
-  () => import('@vercel/speed-insights/next').then(mod => mod.SpeedInsights),
+  () => import('./SpeedInsights'),
   {
     loading: () => null,
     ssr: false

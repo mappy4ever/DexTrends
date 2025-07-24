@@ -3,6 +3,10 @@ import { useTheme } from '../context/UnifiedAppContext';
 import { DynamicCollectionManager, DynamicPriceAlerts } from '../components/dynamic/DynamicComponents';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import PageErrorBoundary from '../components/ui/PageErrorBoundary';
+import { GlassContainer } from '../components/ui/design-system/GlassContainer';
+import { GradientButton } from '../components/ui/design-system/GradientButton';
+import { CircularCard } from '../components/ui/design-system/CircularCard';
+import { motion } from 'framer-motion';
 import type { NextPage } from 'next';
 
 interface Tab {
@@ -52,37 +56,51 @@ const CollectionsPage: NextPage = () => {
     <PageErrorBoundary pageName="Collections">
       <FullBleedWrapper gradient="collections">
       <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+        {/* Header with Gradient */}
+        <div className="text-center mb-12">
+          <motion.h1 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"
+          >
             My Collections
-          </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400">
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-lg text-gray-600 dark:text-gray-400"
+          >
             Manage your Pokemon card collection, track prices, and set alerts
-          </p>
+          </motion.p>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="flex justify-center mb-8">
-          <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-lg p-1">
-            <div className="flex space-x-1">
+        {/* Tab Navigation with Glass Morphism */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="flex justify-center mb-8"
+        >
+          <GlassContainer variant="medium" rounded="full" padding="none" className="inline-flex">
+            <div className="flex space-x-1 p-1">
               {tabs.map(tab => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`btn ${
+                  className={`px-6 py-3 rounded-full font-semibold transition-all flex items-center gap-2 ${
                     activeTab === tab.id
-                      ? 'btn-primary'
-                      : 'btn-ghost'
-                  } flex items-center gap-2`}
+                      ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
+                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'
+                  }`}
                 >
                   <span className="text-lg">{tab.icon}</span>
                   {tab.label}
                 </button>
               ))}
             </div>
-          </div>
-        </div>
+          </GlassContainer>
+        </motion.div>
 
         {/* Tab Content */}
         <div className="max-w-7xl mx-auto">
@@ -143,59 +161,80 @@ const PortfolioOverview: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Portfolio Summary */}
+      {/* Portfolio Summary with Glass Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="card hover-enhance">
-          <div className="text-sm text-gray-500 dark:text-gray-400">Total Value</div>
-          <div className="text-3xl font-bold text-green-600">
-            {formatCurrency(portfolioData.totalValue)}
-          </div>
-          <div className="text-sm text-green-600 mt-1">
-            +12.5% this month
-          </div>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+        >
+          <GlassContainer variant="colored" hover className="h-full">
+            <div className="text-sm text-gray-600 dark:text-gray-400">Total Value</div>
+            <div className="text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+              {formatCurrency(portfolioData.totalValue)}
+            </div>
+            <div className="text-sm text-green-600 mt-1">
+              +12.5% this month
+            </div>
+          </GlassContainer>
+        </motion.div>
         
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-          <div className="text-sm text-gray-500 dark:text-gray-400">Total Cards</div>
-          <div className="text-3xl font-bold text-gray-900 dark:text-white">
-            {portfolioData.totalCards}
-          </div>
-          <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            across all collections
-          </div>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <GlassContainer variant="medium" hover className="h-full">
+            <div className="text-sm text-gray-600 dark:text-gray-400">Total Cards</div>
+            <div className="text-3xl font-bold text-gray-800 dark:text-white">
+              {portfolioData.totalCards}
+            </div>
+            <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              across all collections
+            </div>
+          </GlassContainer>
+        </motion.div>
         
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-          <div className="text-sm text-gray-500 dark:text-gray-400">Unique Cards</div>
-          <div className="text-3xl font-bold text-gray-900 dark:text-white">
-            {portfolioData.uniqueCards}
-          </div>
-          <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            different cards
-          </div>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <GlassContainer variant="medium" hover className="h-full">
+            <div className="text-sm text-gray-600 dark:text-gray-400">Unique Cards</div>
+            <div className="text-3xl font-bold text-gray-800 dark:text-white">
+              {portfolioData.uniqueCards}
+            </div>
+            <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              different cards
+            </div>
+          </GlassContainer>
+        </motion.div>
         
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-          <div className="text-sm text-gray-500 dark:text-gray-400">Avg Card Value</div>
-          <div className="text-3xl font-bold text-gray-900 dark:text-white">
-            {formatCurrency(portfolioData.totalValue / portfolioData.totalCards)}
-          </div>
-          <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            per card
-          </div>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          <GlassContainer variant="medium" hover className="h-full">
+            <div className="text-sm text-gray-600 dark:text-gray-400">Avg Card Value</div>
+            <div className="text-3xl font-bold text-gray-800 dark:text-white">
+              {formatCurrency(portfolioData.totalValue / portfolioData.totalCards)}
+            </div>
+            <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              per card
+            </div>
+          </GlassContainer>
+        </motion.div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Top Performing Cards */}
-        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all">
-          <div className="p-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-              Top Performing Cards
-            </h3>
-          </div>
-          <div className="p-4">
-            <div className="space-y-3">
+        <GlassContainer variant="medium">
+          <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
+            Top Performing Cards
+          </h3>
+          <div className="space-y-3">
               {portfolioData.topCards.map((card, index) => (
                 <div key={index} className="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded">
                   <div className="flex items-center gap-3">
@@ -217,8 +256,7 @@ const PortfolioOverview: React.FC = () => {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
+          </GlassContainer>
 
         {/* Recent Activity */}
         <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all">

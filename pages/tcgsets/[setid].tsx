@@ -1,19 +1,27 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
 import { NextPage } from "next";
-import { getPokemonSDK } from "../../utils/pokemonSDK";
+import { fetchJSON } from "../../utils/unifiedFetch";
+import { useDebounce } from "../../hooks/useDebounce";
+import { safeRequestIdleCallback } from "../../utils/requestIdleCallback";
+import { GlassContainer } from "../../components/ui/design-system/GlassContainer";
+import { GradientButton } from "../../components/ui/design-system/GradientButton";
+import { motion } from "framer-motion";
 import Modal from "../../components/ui/modals/Modal";
 import CardList from "../../components/CardList";
+import VirtualizedCardGrid from "../../components/ui/VirtualizedCardGrid";
 import { FadeIn, SlideUp } from "../../components/ui/animations/animations";
 import { DynamicPriceHistoryChart } from "../../components/dynamic/DynamicComponents";
 import { useTheme } from "../../context/UnifiedAppContext";
 import { useFavorites } from "../../context/UnifiedAppContext";
 import { useViewSettings } from "../../context/UnifiedAppContext";
-import { PageLoader } from "../../utils/unifiedLoading";
+import { PageLoader, InlineLoader } from "../../utils/unifiedLoading";
 import logger from "../../utils/logger";
 import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
+import performanceMonitor from "../../utils/performanceMonitor";
+import { CardGridSkeleton } from "../../components/ui/SkeletonLoader";
 import type { TCGCard, CardSet } from "../../types/api/cards";
 
 // Interface for set statistics
@@ -57,6 +65,7 @@ const SetIdPage: NextPage = () => {
   const [filterSubtype, setFilterSubtype] = useState<string>("");
   const [filterSupertype, setFilterSupertype] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const debouncedSearchQuery = useDebounce(searchQuery, 300);
   
   // Set statistics
   const [statistics, setStatistics] = useState<SetStatistics>({
@@ -69,45 +78,8 @@ const SetIdPage: NextPage = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [modalCard, setModalCard] = useState<TCGCard | null>(null);
 
-  // Fetch set information and cards
-  useEffect(() => {
-    if (!setid) return;
-
-    setLoading(true);
-    setError(null);
-    
-    const pokemon = getPokemonSDK();
-    
-    Promise.all([
-      pokemon.set.find(setid as string).catch((err: any) => {
-        logger.error("Error fetching set info:", { error: err });
-        setError("Failed to load set information");
-        return null;
-      }),
-      
-      pokemon.card.where({ q: `set.id:${setid}` }).catch((err: any) => {
-        logger.error("Error fetching cards:", { error: err });
-        setError("Failed to load cards for this set");
-        return { data: [] };
-      })
-    ])
-    .then(([setData, cardsData]) => {
-      if (setData) setSetInfo(setData as CardSet);
-      if (cardsData) {
-        // Handle both array and object with data property
-        const cardArray = Array.isArray(cardsData) 
-          ? cardsData 
-          : (cardsData as any).data || [];
-        const tcgCards = cardArray as unknown as TCGCard[];
-        setCards(tcgCards);
-        calculateSetStatistics(tcgCards);
-      }
-      setLoading(false);
-    });
-  }, [setid]);
-
   // Calculate set statistics when cards are loaded
-  const calculateSetStatistics = (cardsData: TCGCard[]) => {
+  const calculateSetStatistics = useCallback((cardsData: TCGCard[]) => {
     try {
       if (!cardsData || cardsData.length === 0) return;
       
@@ -166,7 +138,69 @@ const SetIdPage: NextPage = () => {
     } catch (err) {
       logger.error("Error calculating statistics:", { error: err });
     }
-  };
+  }, []);
+
+  // Fetch set information and cards
+  useEffect(() => {
+    if (!setid) return;
+
+    const fetchSetData = async () => {
+      setLoading(true);
+      setError(null);
+      
+      // Start performance monitoring
+      performanceMonitor.startTimer('api-request', `tcg-set-${setid}`);
+      performanceMonitor.startTimer('page-load', `tcg-set-page-${setid}`);
+      
+      try {
+        const data = await fetchJSON<{ set: CardSet; cards: TCGCard[] }>(
+          `/api/tcg-sets/${setid}`,
+          {
+            useCache: true,
+            cacheTime: 5 * 60 * 1000, // Cache for 5 minutes
+            retries: 2
+          }
+        );
+        // End API call monitoring
+        const apiTime = performanceMonitor.endTimer('api-request', `tcg-set-${setid}`, {
+          setId: setid,
+          cardCount: data?.cards?.length || 0
+        });
+        
+        if (apiTime && apiTime > 2000) {
+          logger.warn(`Slow API response for set ${setid}: ${apiTime}ms`);
+        }
+        
+        if (data?.set) setSetInfo(data.set);
+        if (data?.cards) {
+          setCards(data.cards);
+          
+          // Defer statistics calculation for large sets
+          if (data.cards.length > 100) {
+            safeRequestIdleCallback(() => {
+              performanceMonitor.startTimer('statistics-calculation', `stats-${setid}`);
+              calculateSetStatistics(data.cards);
+              const calcTime = performanceMonitor.endTimer('statistics-calculation', `stats-${setid}`);
+              if (calcTime && calcTime > 500) {
+                logger.warn(`Slow statistics calculation for set ${setid}: ${calcTime}ms`);
+              }
+            });
+          } else {
+            calculateSetStatistics(data.cards);
+          }
+        }
+      } catch (err: any) {
+        logger.error("Error fetching set data:", { error: err });
+        setError("Failed to load set information");
+      } finally {
+        setLoading(false);
+        // End page load monitoring
+        performanceMonitor.endTimer('page-load', `tcg-set-page-${setid}`);
+      }
+    };
+    
+    fetchSetData();
+  }, [setid, calculateSetStatistics]);
 
   // Handle card click for modal
   const handleCardClick = (card: TCGCard) => {
@@ -186,9 +220,9 @@ const SetIdPage: NextPage = () => {
       // Supertype filter
       if (filterSupertype && card.supertype !== filterSupertype) return false;
       
-      // Search query
-      if (searchQuery) {
-        const query = searchQuery.toLowerCase();
+      // Search query (use debounced value)
+      if (debouncedSearchQuery) {
+        const query = debouncedSearchQuery.toLowerCase();
         const matchesName = card.name.toLowerCase().includes(query);
         const matchesText = card.attacks?.some(attack => 
           attack.text?.toLowerCase().includes(query)
@@ -202,7 +236,7 @@ const SetIdPage: NextPage = () => {
       
       return true;
     });
-  }, [cards, filterRarity, filterSubtype, filterSupertype, searchQuery]);
+  }, [cards, filterRarity, filterSubtype, filterSupertype, debouncedSearchQuery]);
 
   // Get unique filter options
   const filterOptions = useMemo(() => {
@@ -240,8 +274,8 @@ const SetIdPage: NextPage = () => {
     }
   };
 
-  // Loading state
-  if (loading) {
+  // Loading state - only show full page loader if we don't have set info yet
+  if (loading && !setInfo) {
     return (
       <PageLoader text="Loading set information..." />
     );
@@ -251,16 +285,17 @@ const SetIdPage: NextPage = () => {
   if (error) {
     return (
       <div className="container mx-auto p-4 flex flex-col items-center justify-center min-h-screen">
-        <div className="bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-200 p-4 rounded-md">
-          <h2 className="text-xl font-bold mb-2">Error</h2>
-          <p>{error}</p>
-          <button 
+        <GlassContainer variant="colored" className="text-center">
+          <h2 className="text-2xl font-bold text-red-600 mb-2">Error</h2>
+          <p className="text-red-600 mb-4">{error}</p>
+          <GradientButton 
             onClick={() => router.push('/tcgsets')}
-            className="mt-4 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded"
+            variant="primary"
+            size="md"
           >
             Back to Sets
-          </button>
-        </div>
+          </GradientButton>
+        </GlassContainer>
       </div>
     );
   }
@@ -269,16 +304,17 @@ const SetIdPage: NextPage = () => {
   if (!setInfo) {
     return (
       <div className="container mx-auto p-4 flex flex-col items-center justify-center min-h-screen">
-        <div className="bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-200 p-4 rounded-md">
+        <GlassContainer variant="medium" className="text-center">
           <h2 className="text-xl font-bold mb-2">Set Not Found</h2>
-          <p>The set you're looking for couldn't be found.</p>
-          <button 
+          <p className="mb-4">The set you're looking for couldn't be found.</p>
+          <GradientButton 
             onClick={() => router.push('/tcgsets')}
-            className="mt-4 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded"
+            variant="primary"
+            size="md"
           >
             Back to Sets
-          </button>
-        </div>
+          </GradientButton>
+        </GlassContainer>
       </div>
     );
   }
@@ -291,20 +327,23 @@ const SetIdPage: NextPage = () => {
         <FadeIn>
           {/* Header */}
           <div className="mb-8">
-            <div className="flex items-center justify-between mb-4">
-              <Link
-                href="/tcgsets"
-                className="flex items-center text-blue-600 dark:text-blue-400 hover:underline">
-                
-                <svg className="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
+            <div className="flex items-center justify-between mb-6">
+              <GradientButton
+                onClick={() => router.push('/tcgsets')}
+                variant="secondary"
+                size="sm"
+                icon={
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                  </svg>
+                }
+              >
                 Back to Sets
-              </Link>
+              </GradientButton>
             </div>
 
             {/* Set Information */}
-            <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-lg p-6 mb-8`}>
+            <GlassContainer variant="medium" className="mb-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Set Image */}
                 <div className="flex flex-col items-center">
@@ -355,23 +394,28 @@ const SetIdPage: NextPage = () => {
                     )}
                   </div>
 
-                  <button
+                  <GradientButton
                     onClick={scrollToCards}
-                    className="mt-6 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors duration-200 flex items-center"
+                    variant="primary"
+                    size="lg"
+                    className="mt-6"
+                    icon={
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    }
                   >
                     View Cards
-                    <svg className="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
+                  </GradientButton>
                 </div>
               </div>
-            </div>
+            </GlassContainer>
 
             {/* Set Statistics */}
-            <SlideUp delay={100}>
-              <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-lg p-6 mb-8`}>
-                <h2 className="text-2xl font-bold mb-6">Set Statistics</h2>
+            {cards.length > 0 && (
+              <SlideUp delay={100}>
+                <GlassContainer variant="light" className="mb-8">
+                  <h2 className="text-2xl font-bold mb-6">Set Statistics</h2>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {/* Rarity Distribution */}
@@ -448,12 +492,13 @@ const SetIdPage: NextPage = () => {
                     </div>
                   </div>
                 )}
-              </div>
+              </GlassContainer>
             </SlideUp>
+            )}
 
             {/* Filters */}
             <SlideUp delay={200}>
-              <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-lg p-6 mb-8`}>
+              <GlassContainer variant="medium" className="mb-8">
                 <h2 className="text-2xl font-bold mb-4">Filter Cards</h2>
                 
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -465,7 +510,7 @@ const SetIdPage: NextPage = () => {
                       placeholder="Search cards..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700"
+                      className="w-full px-4 py-2 glass-light rounded-full border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
                     />
                   </div>
 
@@ -475,7 +520,7 @@ const SetIdPage: NextPage = () => {
                     <select
                       value={filterRarity}
                       onChange={(e) => setFilterRarity(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700"
+                      className="w-full px-4 py-2 glass-light rounded-full border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
                     >
                       <option value="">All Rarities</option>
                       {filterOptions.rarities.map(rarity => (
@@ -490,7 +535,7 @@ const SetIdPage: NextPage = () => {
                     <select
                       value={filterSupertype}
                       onChange={(e) => setFilterSupertype(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700"
+                      className="w-full px-4 py-2 glass-light rounded-full border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
                     >
                       <option value="">All Supertypes</option>
                       {filterOptions.supertypes.map(supertype => (
@@ -505,7 +550,7 @@ const SetIdPage: NextPage = () => {
                     <select
                       value={filterSubtype}
                       onChange={(e) => setFilterSubtype(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700"
+                      className="w-full px-4 py-2 glass-light rounded-full border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
                     >
                       <option value="">All Subtypes</option>
                       {filterOptions.subtypes.map(subtype => (
@@ -517,36 +562,53 @@ const SetIdPage: NextPage = () => {
 
                 {/* Clear Filters */}
                 {(searchQuery || filterRarity || filterSupertype || filterSubtype) && (
-                  <button
+                  <GradientButton
                     onClick={() => {
                       setSearchQuery("");
                       setFilterRarity("");
                       setFilterSupertype("");
                       setFilterSubtype("");
                     }}
-                    className="mt-4 px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-md transition-colors"
+                    variant="secondary"
+                    size="sm"
+                    className="mt-4"
                   >
                     Clear All Filters
-                  </button>
+                  </GradientButton>
                 )}
-              </div>
+              </GlassContainer>
             </SlideUp>
 
             {/* Cards Grid */}
             <div ref={cardsGridRef}>
               <SlideUp delay={300}>
-                <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-lg p-6`}>
+                <GlassContainer variant="light">
                   <div className="flex justify-between items-center mb-4">
                     <h2 className="text-2xl font-bold">
                       Cards ({filteredCards.length} {filteredCards.length !== cards.length && `of ${cards.length}`})
                     </h2>
                   </div>
 
-                  {filteredCards.length > 0 ? (
-                    <CardList
-                      cards={filteredCards}
-                      onCardClick={handleCardClick}
-                    />
+                  {cards.length === 0 && loading ? (
+                    <CardGridSkeleton count={12} />
+                  ) : filteredCards.length > 0 ? (
+                    <>
+                      {filteredCards.length > 100 ? (
+                        <VirtualizedCardGrid
+                          cards={filteredCards}
+                          cardType="tcg"
+                          onCardClick={handleCardClick as any}
+                          showPrice={true}
+                          showSet={false}
+                          showRarity={true}
+                        />
+                      ) : (
+                        <CardList
+                          cards={filteredCards}
+                          onCardClick={handleCardClick}
+                        />
+                      )}
+                    </>
                   ) : (
                     <div className="text-center py-12">
                       <p className="text-gray-500 dark:text-gray-400">
@@ -554,7 +616,7 @@ const SetIdPage: NextPage = () => {
                       </p>
                     </div>
                   )}
-                </div>
+                </GlassContainer>
               </SlideUp>
             </div>
           </div>

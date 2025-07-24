@@ -6,6 +6,9 @@ import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import PageErrorBoundary from '../components/ui/PageErrorBoundary';
 import BackToTop from '../components/ui/SimpleBackToTop';
 import { FadeIn, SlideUp } from '../components/ui/animations/animations';
+import { GlassContainer } from '../components/ui/design-system/GlassContainer';
+import { GradientButton } from '../components/ui/design-system/GradientButton';
+import { motion } from 'framer-motion';
 import type { NextPage } from 'next';
 
 interface Tab {
@@ -58,13 +61,18 @@ const MarketPage: NextPage = () => {
         <div className="container mx-auto px-4 py-8 max-w-7xl">
           
           <FadeIn>
-            {/* Hero Section */}
+            {/* Hero Section with Enhanced Gradient */}
             <div className="text-center mb-12">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-100 to-blue-100 dark:from-green-800/30 dark:to-blue-800/30 rounded-full mb-6">
-                <span className="text-3xl">📊</span>
-              </div>
+              <motion.div 
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-green-400 to-blue-600 rounded-full mb-6 shadow-2xl"
+              >
+                <span className="text-4xl">📊</span>
+              </motion.div>
               
-              <h1 className="text-4xl md:text-5xl font-extrabold mb-4 bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
                 Market Analytics
               </h1>
               
@@ -72,32 +80,56 @@ const MarketPage: NextPage = () => {
                 Comprehensive Pokemon TCG market insights, trending cards, and price movement analysis to help you make informed trading decisions.
               </p>
               
-              {/* Quick Stats */}
+              {/* Quick Stats with Glass Morphism */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-                <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-4 shadow-lg">
-                  <div className="text-2xl font-bold text-green-600 dark:text-green-400">2.4K+</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Cards Tracked</div>
-                </div>
-                <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-4 shadow-lg">
-                  <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">$45K</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Daily Volume</div>
-                </div>
-                <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-4 shadow-lg">
-                  <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">+12.5%</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Weekly Growth</div>
-                </div>
-                <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-4 shadow-lg">
-                  <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">156</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Active Traders</div>
-                </div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                >
+                  <GlassContainer variant="medium" hover className="text-center">
+                    <div className="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">2.4K+</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Cards Tracked</div>
+                  </GlassContainer>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <GlassContainer variant="medium" hover className="text-center">
+                    <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">$45K</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Daily Volume</div>
+                  </GlassContainer>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <GlassContainer variant="medium" hover className="text-center">
+                    <div className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">+12.5%</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Weekly Growth</div>
+                  </GlassContainer>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  <GlassContainer variant="medium" hover className="text-center">
+                    <div className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">156</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Active Traders</div>
+                  </GlassContainer>
+                </motion.div>
               </div>
             </div>
           </FadeIn>
 
           <SlideUp>
-            {/* Tab Navigation */}
+            {/* Tab Navigation with Glass Morphism */}
             <div className="flex justify-center mb-8">
-              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-xl p-2 max-w-4xl w-full">
+              <GlassContainer variant="medium" rounded="2xl" padding="sm" className="max-w-4xl w-full">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                   {tabs.map(tab => (
                     <button
@@ -125,7 +157,7 @@ const MarketPage: NextPage = () => {
                     </button>
                   ))}
                 </div>
-              </div>
+              </GlassContainer>
             </div>
           </SlideUp>
 

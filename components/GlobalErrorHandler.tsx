@@ -1,19 +1,29 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-// Extend Window interface to include our custom property
-declare global {
-  interface Window {
-    __hasReloaded?: boolean;
-  }
-}
-
 /**
  * Global error handler component that catches unhandled errors and chunk loading failures
  * Automatically reloads the page once on chunk loading errors in production
  */
 export default function GlobalErrorHandler(): null {
   const router = useRouter();
+  
+  // Use sessionStorage instead of window mutation for Fast Refresh compatibility
+  const RELOAD_KEY = 'error-handler-has-reloaded';
+  
+  const hasReloaded = () => {
+    if (typeof window === 'undefined') return false;
+    return sessionStorage.getItem(RELOAD_KEY) === 'true';
+  };
+  
+  const setReloaded = (value: boolean) => {
+    if (typeof window === 'undefined') return;
+    if (value) {
+      sessionStorage.setItem(RELOAD_KEY, 'true');
+    } else {
+      sessionStorage.removeItem(RELOAD_KEY);
+    }
+  };
 
   useEffect(() => {
     // Handle unhandled promise rejections
@@ -27,8 +37,8 @@ export default function GlobalErrorHandler(): null {
         if (errorMessage.includes('Loading chunk') || 
             errorMessage.includes('Failed to fetch')) {
           // Reload the page once to try recovering
-          if (!window.__hasReloaded) {
-            window.__hasReloaded = true;
+          if (!hasReloaded()) {
+            setReloaded(true);
             router.reload();
           }
         }
@@ -45,8 +55,8 @@ export default function GlobalErrorHandler(): null {
           errorMessage.includes('Failed to fetch dynamically imported module')) {
         event.preventDefault();
         
-        if (process.env.NODE_ENV === 'production' && !window.__hasReloaded) {
-          window.__hasReloaded = true;
+        if (process.env.NODE_ENV === 'production' && !hasReloaded()) {
+          setReloaded(true);
           router.reload();
         }
       }
@@ -57,7 +67,7 @@ export default function GlobalErrorHandler(): null {
 
     // Clear reload flag on route change
     const handleRouteChange = (): void => {
-      window.__hasReloaded = false;
+      setReloaded(false);
     };
 
     router.events.on('routeChangeComplete', handleRouteChange);
