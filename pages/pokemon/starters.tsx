@@ -761,18 +761,51 @@ const StartersPage: NextPage = () => {
           </motion.div>
         </section>
 
-        {/* Generation Tabs Navigation */}
+        {/* Generation Tabs Navigation - Sticky */}
         <div className={themeClass(
-          'sticky top-0 z-40 backdrop-blur-md',
-          THEME.colors.background.translucent,
+          'sticky top-16 z-40 backdrop-blur-lg bg-white/95 dark:bg-gray-900/95 border-b border-gray-200 dark:border-gray-700',
           THEME.shadows.md
         )}>
           <div className="max-w-7xl mx-auto px-4 py-4">
-            <div className="flex overflow-x-auto gap-2 scrollbar-hide">
+            <style jsx>{`
+              .generation-tabs::-webkit-scrollbar {
+                height: 6px;
+              }
+              .generation-tabs::-webkit-scrollbar-track {
+                background: rgba(0, 0, 0, 0.05);
+                border-radius: 3px;
+              }
+              .generation-tabs::-webkit-scrollbar-thumb {
+                background: rgba(0, 0, 0, 0.2);
+                border-radius: 3px;
+              }
+              .generation-tabs::-webkit-scrollbar-thumb:hover {
+                background: rgba(0, 0, 0, 0.3);
+              }
+              .dark .generation-tabs::-webkit-scrollbar-track {
+                background: rgba(255, 255, 255, 0.05);
+              }
+              .dark .generation-tabs::-webkit-scrollbar-thumb {
+                background: rgba(255, 255, 255, 0.2);
+              }
+              .dark .generation-tabs::-webkit-scrollbar-thumb:hover {
+                background: rgba(255, 255, 255, 0.3);
+              }
+            `}</style>
+            <div className="generation-tabs flex overflow-x-auto gap-2 pb-2">
               {allGenerations.map((gen, index) => (
                 <button
                   key={gen.generation}
-                  onClick={() => setSelectedGen(index)}
+                  onClick={() => {
+                    setSelectedGen(index);
+                    // Scroll to showcase section
+                    const element = document.getElementById('generation-showcase');
+                    if (element) {
+                      const yOffset = -100; // Account for sticky header
+                      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                      window.scrollTo({ top: y, behavior: 'smooth' });
+                    }
+                  }}
                   className={themeClass(
                     'px-6 py-3 rounded-full font-semibold whitespace-nowrap transition-all duration-300',
                     selectedGen === index 
@@ -828,12 +861,14 @@ const StartersPage: NextPage = () => {
                     <FadeIn key={starter.id} delay={index * 0.1}>
                       <motion.div
                         className={themeClass(
-                          'relative rounded-3xl overflow-hidden',
+                          'relative rounded-3xl overflow-hidden cursor-pointer group',
                           THEME.colors.background.translucent,
                           THEME.shadows.xl,
-                          expandedStarters[starter.id] ? 'md:col-span-3' : ''
+                          expandedStarters[starter.id] ? 'md:col-span-3' : '',
+                          'hover:shadow-2xl transition-shadow duration-300'
                         )}
                         layout
+                        onClick={() => toggleStarterExpansion(starter.id)}
                       >
                         {/* Starter Header */}
                         <div className={`p-8 bg-gradient-to-br ${getTypeGradient(starter.types[0])}`}>
@@ -850,40 +885,50 @@ const StartersPage: NextPage = () => {
                             </div>
                             <div className="flex gap-2">
                               <button
-                                onClick={() => toggleComparison(starter.id)}
-                                className={`
-                                  p-2 rounded-full transition-all
-                                  ${selectedForComparison.includes(starter.id)
-                                    ? 'bg-yellow-400 text-yellow-900'
-                                    : 'bg-white/20 text-white hover:bg-white/30'}
-                                `}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  toggleComparison(starter.id);
+                                }}
+                                className={themeClass(
+                                  'p-3 rounded-full transition-all transform hover:scale-110',
+                                  selectedForComparison.includes(starter.id)
+                                    ? 'bg-yellow-400 text-yellow-900 shadow-lg'
+                                    : 'bg-white/20 text-white hover:bg-white/30'
+                                )}
                                 title="Add to comparison"
                               >
-                                {selectedForComparison.includes(starter.id) ? <BsStarFill /> : <BsStar />}
+                                {selectedForComparison.includes(starter.id) ? <BsStarFill className="text-lg" /> : <BsStar className="text-lg" />}
                               </button>
-                              <button
-                                onClick={() => toggleStarterExpansion(starter.id)}
-                                className="p-2 bg-white/20 rounded-full text-white hover:bg-white/30 transition-colors"
-                              >
-                                {expandedStarters[starter.id] ? <BsChevronUp /> : <BsChevronDown />}
-                              </button>
+                              <div className={themeClass(
+                                'p-3 bg-white/20 rounded-full text-white transition-all transform',
+                                'group-hover:bg-white/30'
+                              )}>
+                                {expandedStarters[starter.id] ? <BsChevronUp className="text-lg" /> : <BsChevronDown className="text-lg" />}
+                              </div>
                             </div>
                           </div>
                         </div>
 
                         {/* Pokemon Image */}
-                        <div className="relative h-64 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700">
+                        <div className="relative h-64 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 group-hover:from-gray-100 group-hover:to-gray-200 dark:group-hover:from-gray-700 dark:group-hover:to-gray-600 transition-all duration-300">
                           <Image
                             src={getPokemonImage(starter.id)}
                             alt={starter.name}
                             layout="fill"
                             objectFit="contain"
-                            className="p-8"
+                            className="p-8 group-hover:scale-105 transition-transform duration-300"
                           />
+                          {/* Click indicator */}
+                          <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div className="bg-black/50 text-white px-3 py-1 rounded-full text-sm flex items-center gap-1">
+                              <span>Click to expand</span>
+                              <BsChevronDown className="text-xs" />
+                            </div>
+                          </div>
                         </div>
 
                         {/* Basic Info */}
-                        <div className="p-6">
+                        <div className="p-6 group-hover:bg-gray-50 dark:group-hover:bg-gray-800/50 transition-colors duration-300">
                           <p className={themeClass(THEME.colors.text.secondary, 'mb-6')}>{starter.description}</p>
 
                           {/* Stats Preview */}

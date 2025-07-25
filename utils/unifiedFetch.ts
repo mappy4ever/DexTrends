@@ -29,10 +29,10 @@ export interface UnifiedFetchOptions extends Omit<RequestInit, 'cache'> {
   throwOnError?: boolean;
   
   // Request metadata (for logging)
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
-export interface UnifiedFetchResponse<T = any> {
+export interface UnifiedFetchResponse<T = unknown> {
   data: T | null;
   error: Error | null;
   status?: number;
@@ -60,7 +60,7 @@ const DEFAULT_OPTIONS: Partial<UnifiedFetchOptions> = {
  * @param options - Unified fetch options
  * @returns Promise with data, error, and metadata
  */
-export async function unifiedFetch<T = any>(
+export async function unifiedFetch<T = unknown>(
   url: string,
   options: UnifiedFetchOptions = {}
 ): Promise<UnifiedFetchResponse<T>> {
@@ -113,7 +113,7 @@ export async function unifiedFetch<T = any>(
       // Check response status
       if (!response.ok) {
         const error = new Error(`HTTP ${response.status}: ${response.statusText}`);
-        (error as any).status = response.status;
+        (error as Error & { status?: number }).status = response.status;
         throw error;
       }
       
@@ -210,7 +210,7 @@ export async function unifiedFetch<T = any>(
 /**
  * Convenience function for JSON GET requests
  */
-export async function fetchJSON<T = any>(
+export async function fetchJSON<T = unknown>(
   url: string, 
   options?: Omit<UnifiedFetchOptions, 'responseType'>
 ): Promise<T | null> {
@@ -238,7 +238,7 @@ export async function fetchText(
 /**
  * Convenience function for POST requests
  */
-export async function postJSON<T = any>(
+export async function postJSON<T = unknown>(
   url: string,
   data: any,
   options?: Omit<UnifiedFetchOptions, 'method' | 'body'>
@@ -259,7 +259,7 @@ export async function postJSON<T = any>(
 /**
  * Batch fetch utility for multiple URLs
  */
-export async function batchFetch<T = any>(
+export async function batchFetch<T = unknown>(
   urls: string[],
   options?: UnifiedFetchOptions,
   concurrency: number = 5

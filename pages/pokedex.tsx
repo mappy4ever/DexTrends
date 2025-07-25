@@ -3,13 +3,16 @@ import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { fetchData } from "../utils/apiutils";
+import { fetchJSON } from "../utils/unifiedFetch";
 import { TypeBadge } from "../components/ui/TypeBadge";
 import { getGeneration } from "../utils/pokemonutils";
 import PokeballLoader from "../components/ui/PokeballLoader";
 import FullBleedWrapper from "../components/ui/FullBleedWrapper";
+import type { Pokemon, PokemonType, PokemonSprites, PokemonSpecies } from "../types/api/pokemon";
 import CircularPokemonCard from "../components/ui/cards/CircularPokemonCard";
 import { InlineLoader } from "../utils/unifiedLoading";
+import { CircularButton } from "../components/ui/design-system";
+import { FiFilter, FiChevronDown } from "react-icons/fi";
 import { NextPage } from "next";
 import dynamic from 'next/dynamic';
 import logger from "../utils/logger";
@@ -20,53 +23,7 @@ const PullToRefresh = dynamic(() => import('../components/mobile/PullToRefresh')
 });
 
 // Type definitions
-interface PokemonType {
-  type: {
-    name: string;
-    url: string;
-  };
-}
-
-interface PokemonSprites {
-  front_default?: string | null;
-  other: {
-    'official-artwork': {
-      front_default: string | null;
-    };
-  };
-}
-
-interface PokemonSpecies {
-  base_happiness?: number;
-  capture_rate?: number;
-  growth_rate?: {
-    name: string;
-  };
-  is_baby?: boolean;
-  is_legendary?: boolean;
-  is_mythical?: boolean;
-  evolution_chain?: {
-    url: string;
-  };
-  evolves_from_species?: {
-    name: string;
-    url: string;
-  };
-  varieties?: Array<{
-    is_default: boolean;
-    pokemon: {
-      name: string;
-      url: string;
-    };
-  }>;
-  genera?: Array<{
-    genus: string;
-    language: {
-      name: string;
-      url: string;
-    };
-  }>;
-}
+// Using types from ../types/api/pokemon
 
 interface EnhancedPokemon {
   id: number;
@@ -419,10 +376,11 @@ const PokedexIndex: NextPage = () => {
       const promises = [];
       for (let i = start; i < start + count && i <= TOTAL_POKEMON; i++) {
         promises.push(
-          fetchData(`https://pokeapi.co/api/v2/pokemon/${i}`)
-            .then(async (details: ApiPokemonResponse) => {
+          fetchJSON<ApiPokemonResponse>(`https://pokeapi.co/api/v2/pokemon/${i}`)
+            .then(async (details) => {
+              if (!details) return null;
               try {
-                const speciesData = await fetchData(details.species.url) as PokemonSpecies;
+                const speciesData = await fetchJSON<PokemonSpecies>(details.species.url);
                 return enhancePokemonData(details, speciesData);
               } catch {
                 return enhancePokemonData(details);
@@ -450,7 +408,8 @@ const PokedexIndex: NextPage = () => {
             })
         );
       }
-      return Promise.all(promises);
+      const results = await Promise.all(promises);
+      return results.filter((pokemon): pokemon is EnhancedPokemon => pokemon !== null);
     } catch (err) {
       logger.error('Batch fetch error', { error: err });
       return [];
@@ -547,7 +506,7 @@ const PokedexIndex: NextPage = () => {
       
       try {
         // First, get the list of all Pokemon (lightweight)
-        const pokemonList = await fetchData('https://pokeapi.co/api/v2/pokemon?limit=1025') as { results: Array<{ name: string; url: string }> };
+        const pokemonList = await fetchJSON<{ results: Array<{ name: string; url: string }> }>('https://pokeapi.co/api/v2/pokemon?limit=1025');
         
         if (!pokemonList?.results) {
           throw new Error('Failed to fetch Pokemon list');
@@ -703,8 +662,9 @@ const PokedexIndex: NextPage = () => {
 
     for (const mega of megaPokemon) {
       try {
-        const details = await fetchData(`https://pokeapi.co/api/v2/pokemon/${mega.id}`) as ApiPokemonResponse;
-        const speciesData = await fetchData(details.species.url) as PokemonSpecies;
+        const details = await fetchJSON<ApiPokemonResponse>(`https://pokeapi.co/api/v2/pokemon/${mega.id}`);
+        if (!details) continue;
+        const speciesData = await fetchJSON<PokemonSpecies>(details.species.url);
         const enhancedData = enhancePokemonData(details, speciesData);
         megaForms.push(enhancedData);
       } catch (err) {
@@ -722,8 +682,9 @@ const PokedexIndex: NextPage = () => {
     // Alolan forms
     for (let id = 10091; id <= 10115; id++) {
       try {
-        const details = await fetchData(`https://pokeapi.co/api/v2/pokemon/${id}`) as ApiPokemonResponse;
-        const speciesData = await fetchData(details.species.url) as PokemonSpecies;
+        const details = await fetchJSON<ApiPokemonResponse>(`https://pokeapi.co/api/v2/pokemon/${id}`);
+        if (!details) continue;
+        const speciesData = await fetchJSON<PokemonSpecies>(details.species.url);
         const enhancedData = enhancePokemonData(details, speciesData);
         regionalForms.push(enhancedData);
       } catch (err) {
@@ -734,8 +695,9 @@ const PokedexIndex: NextPage = () => {
     // More Alolan forms
     for (let id = 10123; id <= 10126; id++) {
       try {
-        const details = await fetchData(`https://pokeapi.co/api/v2/pokemon/${id}`) as ApiPokemonResponse;
-        const speciesData = await fetchData(details.species.url) as PokemonSpecies;
+        const details = await fetchJSON<ApiPokemonResponse>(`https://pokeapi.co/api/v2/pokemon/${id}`);
+        if (!details) continue;
+        const speciesData = await fetchJSON<PokemonSpecies>(details.species.url);
         const enhancedData = enhancePokemonData(details, speciesData);
         regionalForms.push(enhancedData);
       } catch (err) {
@@ -746,8 +708,9 @@ const PokedexIndex: NextPage = () => {
     // Galarian forms
     for (let id = 10158; id <= 10184; id++) {
       try {
-        const details = await fetchData(`https://pokeapi.co/api/v2/pokemon/${id}`) as ApiPokemonResponse;
-        const speciesData = await fetchData(details.species.url) as PokemonSpecies;
+        const details = await fetchJSON<ApiPokemonResponse>(`https://pokeapi.co/api/v2/pokemon/${id}`);
+        if (!details) continue;
+        const speciesData = await fetchJSON<PokemonSpecies>(details.species.url);
         const enhancedData = enhancePokemonData(details, speciesData);
         regionalForms.push(enhancedData);
       } catch (err) {
@@ -758,8 +721,9 @@ const PokedexIndex: NextPage = () => {
     // Hisuian forms
     for (let id = 10221; id <= 10249; id++) {
       try {
-        const details = await fetchData(`https://pokeapi.co/api/v2/pokemon/${id}`) as ApiPokemonResponse;
-        const speciesData = await fetchData(details.species.url) as PokemonSpecies;
+        const details = await fetchJSON<ApiPokemonResponse>(`https://pokeapi.co/api/v2/pokemon/${id}`);
+        if (!details) continue;
+        const speciesData = await fetchJSON<PokemonSpecies>(details.species.url);
         const enhancedData = enhancePokemonData(details, speciesData);
         regionalForms.push(enhancedData);
       } catch (err) {
@@ -984,12 +948,12 @@ const PokedexIndex: NextPage = () => {
       <FullBleedWrapper>
         <div className="flex flex-col items-center justify-center min-h-screen">
           <p className="text-red-500 text-xl mb-4">{error}</p>
-          <button
+          <CircularButton
             onClick={() => window.location.reload()}
-            className="btn btn-primary"
+            variant="primary"
           >
             Try Again
-          </button>
+          </CircularButton>
         </div>
       </FullBleedWrapper>
     );
@@ -1045,41 +1009,33 @@ const PokedexIndex: NextPage = () => {
 
               {/* Filter Buttons */}
               <div className="flex gap-2">
-                <button
+                <CircularButton
                   onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-                  className={`btn ${
-                    showAdvancedFilters
-                      ? 'btn-primary'
-                      : 'btn-secondary'
-                  }`}
+                  variant={showAdvancedFilters ? "primary" : "secondary"}
+                  leftIcon={<FiFilter className="w-4 h-4" />}
                 >
-                  <span className="mr-2">🔍</span>
                   Filters
                   {(pendingTypes.length > 0 || pendingGeneration || pendingCategories.length > 0 || pendingStages.length > 0) && (
                     <span className="ml-2 bg-white text-blue-500 px-2 py-1 rounded-full text-xs">
                       {pendingTypes.length + (pendingGeneration ? 1 : 0) + pendingCategories.length + pendingStages.length}
                     </span>
                   )}
-                </button>
+                </CircularButton>
 
-                <button
+                <CircularButton
                   onClick={() => setShowSortOptions(!showSortOptions)}
-                  className={`btn ${
-                    showSortOptions
-                      ? 'btn-primary'
-                      : 'btn-secondary'
-                  }`}
+                  variant={showSortOptions ? "primary" : "secondary"}
+                  leftIcon={<FiChevronDown className="w-4 h-4" />}
                 >
-                  <span className="mr-2">↕️</span>
                   Sort
-                </button>
+                </CircularButton>
 
-                <button
+                <CircularButton
                   onClick={handleSearch}
-                  className="btn btn-primary"
+                  variant="primary"
                 >
                   Search
-                </button>
+                </CircularButton>
 
                 {(searchTerm || selectedType || selectedGeneration || selectedCategory !== 'all' || selectedStage !== 'all') && (
                   <button

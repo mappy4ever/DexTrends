@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Head from 'next/head';
 import { useTheme } from '../context/UnifiedAppContext';
 import { DynamicCollectionManager, DynamicPriceAlerts } from '../components/dynamic/DynamicComponents';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
@@ -6,6 +7,7 @@ import PageErrorBoundary from '../components/ui/PageErrorBoundary';
 import { GlassContainer } from '../components/ui/design-system/GlassContainer';
 import { GradientButton } from '../components/ui/design-system/GradientButton';
 import { CircularCard } from '../components/ui/design-system/CircularCard';
+import { CircularButton, StandardCard, CardHeader, CardTitle, CardContent } from '../components/ui/design-system';
 import { motion } from 'framer-motion';
 import type { NextPage } from 'next';
 
@@ -53,8 +55,13 @@ const CollectionsPage: NextPage = () => {
   ];
 
   return (
-    <PageErrorBoundary pageName="Collections">
-      <FullBleedWrapper gradient="collections">
+    <>
+      <Head>
+        <title>Collections - Portfolio Management | DexTrends</title>
+        <meta name="description" content="Manage your Pokemon TCG collection, track portfolio value, set price alerts, and monitor market trends for your cards" />
+      </Head>
+      <PageErrorBoundary pageName="Collections">
+        <FullBleedWrapper gradient="collections">
       <div className="container mx-auto px-4 py-8">
         {/* Header with Gradient */}
         <div className="text-center mb-12">
@@ -85,18 +92,14 @@ const CollectionsPage: NextPage = () => {
           <GlassContainer variant="medium" rounded="full" padding="none" className="inline-flex">
             <div className="flex space-x-1 p-1">
               {tabs.map(tab => (
-                <button
+                <CircularButton
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`px-6 py-3 rounded-full font-semibold transition-all flex items-center gap-2 ${
-                    activeTab === tab.id
-                      ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
-                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'
-                  }`}
+                  variant={activeTab === tab.id ? 'primary' : 'ghost'}
+                  leftIcon={<span className="text-lg">{tab.icon}</span>}
                 >
-                  <span className="text-lg">{tab.icon}</span>
                   {tab.label}
-                </button>
+                </CircularButton>
               ))}
             </div>
           </GlassContainer>
@@ -122,7 +125,8 @@ const CollectionsPage: NextPage = () => {
         </div>
       </div>
       </FullBleedWrapper>
-    </PageErrorBoundary>
+      </PageErrorBoundary>
+    </>
   );
 };
 
@@ -259,13 +263,17 @@ const PortfolioOverview: React.FC = () => {
           </GlassContainer>
 
         {/* Recent Activity */}
-        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all">
-          <div className="p-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+        <StandardCard 
+          variant="featured"
+          className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm"
+          padding="none"
+        >
+          <CardHeader className="p-4">
+            <CardTitle className="text-lg">
               Recent Activity
-            </h3>
-          </div>
-          <div className="p-4">
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-4">
             <div className="space-y-3">
               {portfolioData.recentActivity.map((activity, index) => (
                 <div key={index} className="flex items-center gap-3 p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded">
@@ -283,12 +291,15 @@ const PortfolioOverview: React.FC = () => {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </StandardCard>
       </div>
 
       {/* Portfolio Distribution */}
-      <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all">
+      <StandardCard 
+        variant="featured"
+        className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm"
+      >
         <div className="p-4">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
             Portfolio Distribution
@@ -376,10 +387,13 @@ const PortfolioOverview: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
+      </StandardCard>
 
       {/* Performance Chart Placeholder */}
-      <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all">
+      <StandardCard 
+        variant="featured"
+        className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm"
+      >
         <div className="p-4 flex justify-between items-center">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
             Portfolio Performance
@@ -406,9 +420,23 @@ const PortfolioOverview: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
+      </StandardCard>
     </div>
   );
+};
+
+const { formatCurrency, formatPercentChange } = {
+  formatCurrency: (amount: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    }).format(amount);
+  },
+  formatPercentChange: (change: number) => {
+    const sign = change >= 0 ? '+' : '';
+    const percent = Math.abs(change);
+    return `${sign}${percent.toFixed(1)}%`;
+  }
 };
 
 export default CollectionsPage;

@@ -23,8 +23,25 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     this.state = { hasError: false, error: null, errorInfo: null };
   }
 
-  static getDerivedStateFromError(error: Error): Partial<ErrorBoundaryState> {
-    // Update state so the next render will show the fallback UI.
+  // Method to reset error boundary state
+  resetErrorBoundary = () => {
+    this.setState({ hasError: false, error: null, errorInfo: null });
+  };
+
+  static getDerivedStateFromError(error: Error): Partial<ErrorBoundaryState> | null {
+    // Don't catch chunk loading errors - let Next.js handle them
+    const errorMessage = error.message || '';
+    if (errorMessage.includes('Loading chunk') || 
+        errorMessage.includes('Failed to fetch dynamically imported module') ||
+        errorMessage.includes('Cannot find module') ||
+        errorMessage.includes('Failed to import') ||
+        errorMessage.includes('Unable to preload CSS')) {
+      // Return null to not update state - let error propagate
+      console.log('Chunk/module loading error detected, letting Next.js handle it:', errorMessage);
+      return null;
+    }
+    
+    // Only catch true runtime errors
     return { hasError: true, error };
   }
 
@@ -50,13 +67,32 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
             
             <div className="space-y-3">
               <button
-                onClick={() => Router.reload()}
+                onClick={() => {
+                  // Reset state before reload to ensure clean refresh
+                  this.resetErrorBoundary();
+                  Router.reload();
+                }}
                 className="w-full px-6 py-3 bg-pokemon-red text-white rounded-lg hover:bg-red-700 transition-colors"
               >
                 Refresh Page
               </button>
               <button
-                onClick={() => Router.push('/')}
+                onClick={() => {
+                  try {
+                    // First, reset the error boundary state
+                    this.resetErrorBoundary();
+                    
+                    // Use requestAnimationFrame to ensure React has processed the state update
+                    requestAnimationFrame(() => {
+                      // Use window.location for reliable navigation in error states
+                      window.location.href = '/';
+                    });
+                  } catch (navError) {
+                    // If navigation fails, at least try to force reload
+                    console.error('Navigation failed:', navError);
+                    window.location.reload();
+                  }
+                }}
                 className="w-full px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
               >
                 Go to Homepage

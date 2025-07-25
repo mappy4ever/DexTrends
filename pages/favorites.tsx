@@ -8,34 +8,28 @@ import { TypeBadge } from '../components/ui/TypeBadge';
 import { getGeneration } from '../utils/pokemonutils';
 import { fetchJSON } from '../utils/unifiedFetch';
 import logger from '../utils/logger';
+import { retryWithBackoff } from '../utils/retryWithBackoff';
 import PokeballLoader from '../components/ui/PokeballLoader';
 import CollectionDashboard from "../components/ui/layout/CollectionDashboard";
 import AchievementSystem from '../components/ui/AchievementSystem';
 import CircularPokemonCard from '../components/ui/cards/CircularPokemonCard';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
+import { CircularButton } from '../components/ui/design-system';
 import { NextPage } from 'next';
 import { TCGCard } from '../types/api/cards';
+import Head from 'next/head';
 
 // Type definitions
-interface Pokemon {
+import type { Pokemon as APIPokemon } from '../types/api/pokemon';
+
+interface SimplePokemon {
   id: number;
   name: string;
   types: string[];
   sprite: string;
 }
 
-interface PokemonApiResponse {
-  id: number;
-  name: string;
-  sprites: {
-    front_default: string;
-  };
-  types: Array<{
-    type: {
-      name: string;
-    };
-  }>;
-}
+// Using APIPokemon from types instead of local interface
 
 interface TCGCardApiResponse {
   data: TCGCard;
@@ -47,7 +41,7 @@ const FavoritesPage: NextPage = () => {
   const router = useRouter();
   const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
   const [activeTab, setActiveTab] = useState<TabType>('dashboard');
-  const [pokemonData, setPokemonData] = useState<Pokemon[]>([]);
+  const [pokemonData, setPokemonData] = useState<SimplePokemon[]>([]);
   const [cardsData, setCardsData] = useState<TCGCard[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -63,13 +57,21 @@ const FavoritesPage: NextPage = () => {
         setLoading(true);
         const pokemonPromises = favorites.pokemon.map(async (id) => {
           try {
-            const data = await fetchJSON<PokemonApiResponse>(`https://pokeapi.co/api/v2/pokemon/${id}`, {
-              useCache: true,
-              cacheTime: 10 * 60 * 1000, // Cache for 10 minutes - Pokemon data is stable
-              timeout: 8000,
-              retries: 2
-            });
-            if (data) {
+            const data = await retryWithBackoff(
+              () => fetchJSON<APIPokemon>(`https://pokeapi.co/api/v2/pokemon/${id}`, {
+                useCache: true,
+                cacheTime: 10 * 60 * 1000, // Cache for 10 minutes - Pokemon data is stable
+                timeout: 8000,
+                retries: 2
+              }),
+              {
+                maxRetries: 3,
+                onRetry: (error, attempt) => {
+                  logger.warn(`Retrying Pokemon fetch for ID ${id}, attempt ${attempt}`, error);
+                }
+              }
+            );
+            if (data && data.types) {
               return {
                 id: data.id,
                 name: data.name,
@@ -85,7 +87,7 @@ const FavoritesPage: NextPage = () => {
         });
 
         const results = await Promise.all(pokemonPromises);
-        setPokemonData(results.filter((pokemon): pokemon is Pokemon => pokemon !== null));
+        setPokemonData(results.filter((pokemon): pokemon is SimplePokemon => pokemon !== null));
       } catch (err) {
         logger.error("Error fetching Pokémon data:", { error: err });
       } finally {
@@ -108,12 +110,20 @@ const FavoritesPage: NextPage = () => {
         setLoading(true);
         const cardsPromises = favorites.cards.map(async (id) => {
           try {
-            const response = await fetchJSON<TCGCardApiResponse>(`https://api.pokemontcg.io/v2/cards/${id}`, {
-              useCache: true,
-              cacheTime: 15 * 60 * 1000, // Cache for 15 minutes - card data is very stable
-              timeout: 10000,
-              retries: 2
-            });
+            const response = await retryWithBackoff(
+              () => fetchJSON<TCGCardApiResponse>(`https://api.pokemontcg.io/v2/cards/${id}`, {
+                useCache: true,
+                cacheTime: 15 * 60 * 1000, // Cache for 15 minutes - card data is very stable
+                timeout: 10000,
+                retries: 2
+              }),
+              {
+                maxRetries: 3,
+                onRetry: (error, attempt) => {
+                  logger.warn(`Retrying TCG card fetch for ID ${id}, attempt ${attempt}`, error);
+                }
+              }
+            );
             return response?.data || null;
           } catch (err) {
             logger.error(`Error fetching card ${id}:`, { error: err, id });
@@ -138,37 +148,42 @@ const FavoritesPage: NextPage = () => {
   };
 
   return (
-    <FullBleedWrapper gradient="pokedex">
-      <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto px-2 sm:px-4 animate-fadeIn">
-        <h1 className="text-2xl md:text-3xl font-bold text-center mb-8 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Your Favorites</h1>
+    <>
+      <Head>
+        <title>Favorites - Your Collection | DexTrends</title>
+        <meta name="description" content="View and manage your favorite Pokemon, cards, and decks in one place" />
+      </Head>
+      <FullBleedWrapper gradient="pokedex">
+        <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto px-2 sm:px-4 animate-fadeIn">
+          <h1 className="text-2xl md:text-3xl font-bold text-center mb-8 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Your Favorites</h1>
       
         {/* Tabs */}
         <div className="flex justify-center mb-8">
           <div className="flex bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-lg p-1">
-            <button 
-              className={`px-6 py-3 font-semibold rounded-full transition-all transform hover:scale-105 ${activeTab === 'dashboard' ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg' : 'hover:bg-gray-100/80 dark:hover:bg-gray-700/80'}`}
+            <CircularButton
+              variant={activeTab === 'dashboard' ? 'primary' : 'ghost'}
               onClick={() => setActiveTab('dashboard')}
             >
               📊 Dashboard
-            </button>
-            <button 
-              className={`px-6 py-3 font-semibold rounded-full transition-all transform hover:scale-105 ${activeTab === 'achievements' ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg' : 'hover:bg-gray-100/80 dark:hover:bg-gray-700/80'}`}
+            </CircularButton>
+            <CircularButton
+              variant={activeTab === 'achievements' ? 'primary' : 'ghost'}
               onClick={() => setActiveTab('achievements')}
             >
               🏆 Achievements
-            </button>
-            <button 
-              className={`px-6 py-3 font-semibold rounded-full transition-all transform hover:scale-105 ${activeTab === 'pokemon' ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg' : 'hover:bg-gray-100/80 dark:hover:bg-gray-700/80'}`}
+            </CircularButton>
+            <CircularButton
+              variant={activeTab === 'pokemon' ? 'primary' : 'ghost'}
               onClick={() => setActiveTab('pokemon')}
             >
               Pokémon ({favorites?.pokemon?.length || 0})
-            </button>
-            <button 
-              className={`px-6 py-3 font-semibold rounded-full transition-all transform hover:scale-105 ${activeTab === 'cards' ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg' : 'hover:bg-gray-100/80 dark:hover:bg-gray-700/80'}`}
+            </CircularButton>
+            <CircularButton
+              variant={activeTab === 'cards' ? 'primary' : 'ghost'}
               onClick={() => setActiveTab('cards')}
             >
               Cards ({favorites?.cards?.length || 0})
-            </button>
+            </CircularButton>
           </div>
         </div>
       
@@ -312,6 +327,7 @@ const FavoritesPage: NextPage = () => {
       )}
       </div>
     </FullBleedWrapper>
+    </>
   );
 };
 

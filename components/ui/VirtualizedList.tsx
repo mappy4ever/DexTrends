@@ -175,8 +175,14 @@ function VirtualizedGrid<T>({
   );
 }
 
+// Note: displayName cannot be set on generic functions directly
+// The memoized versions below have displayName set
+
 export const MemoizedVirtualizedList = memo(VirtualizedList) as typeof VirtualizedList;
+(MemoizedVirtualizedList as any).displayName = 'MemoizedVirtualizedList';
+
 export const MemoizedVirtualizedGrid = memo(VirtualizedGrid) as typeof VirtualizedGrid;
+(MemoizedVirtualizedGrid as any).displayName = 'MemoizedVirtualizedGrid';
 
 export { VirtualizedList, VirtualizedGrid };
 export default VirtualizedList;

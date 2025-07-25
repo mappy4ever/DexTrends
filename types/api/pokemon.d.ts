@@ -482,3 +482,344 @@ export interface Move {
     url: string;
   }[];
 }
+
+// Ability API response type
+export interface AbilityData {
+  id: number;
+  name: string;
+  is_main_series: boolean;
+  generation: {
+    name: string;
+    url: string;
+  };
+  names: {
+    name: string;
+    language: {
+      name: string;
+      url: string;
+    };
+  }[];
+  effect_entries: {
+    effect: string;
+    short_effect: string;
+    language: {
+      name: string;
+      url: string;
+    };
+  }[];
+  effect_changes: any[];
+  flavor_text_entries: {
+    flavor_text: string;
+    language: {
+      name: string;
+      url: string;
+    };
+    version_group: {
+      name: string;
+      url: string;
+    };
+  }[];
+  pokemon: {
+    is_hidden: boolean;
+    slot: number;
+    pokemon: {
+      name: string;
+      url: string;
+    };
+  }[];
+}
+
+// Type info API response
+export interface TypeInfo {
+  id: number;
+  name: string;
+  damage_relations: {
+    no_damage_to: Array<{ name: string; url: string }>;
+    half_damage_to: Array<{ name: string; url: string }>;
+    double_damage_to: Array<{ name: string; url: string }>;
+    no_damage_from: Array<{ name: string; url: string }>;
+    half_damage_from: Array<{ name: string; url: string }>;
+    double_damage_from: Array<{ name: string; url: string }>;
+  };
+  past_damage_relations: any[];
+  game_indices: {
+    game_index: number;
+    generation: {
+      name: string;
+      url: string;
+    };
+  }[];
+  generation: {
+    name: string;
+    url: string;
+  };
+  move_damage_class: {
+    name: string;
+    url: string;
+  } | null;
+  names: {
+    name: string;
+    language: {
+      name: string;
+      url: string;
+    };
+  }[];
+  pokemon: {
+    slot: number;
+    pokemon: {
+      name: string;
+      url: string;
+    };
+  }[];
+  moves: {
+    name: string;
+    url: string;
+  }[];
+}
+
+// Item API response type
+export interface ItemData {
+  id: number;
+  name: string;
+  cost: number;
+  fling_power: number | null;
+  fling_effect: {
+    name: string;
+    url: string;
+  } | null;
+  attributes: {
+    name: string;
+    url: string;
+  }[];
+  category: {
+    name: string;
+    url: string;
+  };
+  effect_entries: {
+    effect: string;
+    short_effect: string;
+    language: {
+      name: string;
+      url: string;
+    };
+  }[];
+  flavor_text_entries: {
+    text: string;
+    language: {
+      name: string;
+      url: string;
+    };
+    version_group: {
+      name: string;
+      url: string;
+    };
+  }[];
+  game_indices: {
+    game_index: number;
+    generation: {
+      name: string;
+      url: string;
+    };
+  }[];
+  names: {
+    name: string;
+    language: {
+      name: string;
+      url: string;
+    };
+  }[];
+  sprites: {
+    default: string | null;
+  };
+  held_by_pokemon: {
+    pokemon: {
+      name: string;
+      url: string;
+    };
+    version_details: {
+      rarity: number;
+      version: {
+        name: string;
+        url: string;
+      };
+    }[];
+  }[];
+  baby_trigger_for: {
+    url: string;
+  } | null;
+}
+
+// Enhanced location encounter with method details
+export interface LocationAreaEncounterDetail {
+  location_area: {
+    name: string;
+    url: string;
+  };
+  version_details: {
+    encounter_details: {
+      chance: number;
+      condition_values: any[];
+      max_level: number;
+      method: {
+        name: string;
+        url: string;
+      };
+      min_level: number;
+    }[];
+    max_chance: number;
+    version: {
+      name: string;
+      url: string;
+    };
+  }[];
+}
+
+// Breeding data interface
+export interface BreedingData {
+  egg_groups: string[];
+  gender_rate: number; // -1 for genderless, 0-8 for female ratio
+  hatch_counter: number;
+  baby_trigger_item?: string | null;
+  egg_moves?: {
+    move: string;
+    learned_from: string[];
+  }[];
+  compatible_pokemon?: {
+    name: string;
+    id: number;
+    sprite: string;
+  }[];
+}
+
+// Competitive data interface
+export interface CompetitiveData {
+  tier?: string;
+  usage_percent?: number;
+  common_moves?: {
+    move: string;
+    usage: number;
+  }[];
+  common_items?: {
+    item: string;
+    usage: number;
+  }[];
+  common_abilities?: {
+    ability: string;
+    usage: number;
+  }[];
+  common_ev_spreads?: {
+    hp: number;
+    attack: number;
+    defense: number;
+    special_attack: number;
+    special_defense: number;
+    speed: number;
+    nature: string;
+    usage: number;
+  }[];
+  counters?: {
+    pokemon: string;
+    effectiveness: number;
+  }[];
+  teammates?: {
+    pokemon: string;
+    synergy: number;
+  }[];
+}
+
+// Enhanced move detail interface
+export interface MoveDetail extends Move {
+  category: 'physical' | 'special' | 'status';
+  contest_type?: {
+    name: string;
+    url: string;
+  } | null;
+  contest_effect?: {
+    appeal: number;
+    jam: number;
+  } | null;
+  machines?: {
+    machine: {
+      url: string;
+    };
+    version_group: {
+      name: string;
+      url: string;
+    };
+  }[];
+  learned_by_pokemon?: {
+    name: string;
+    url: string;
+  }[];
+}
+
+// Calculator settings interface
+export interface CalculatorSettings {
+  level: number;
+  nature: string;
+  evs: {
+    hp: number;
+    attack: number;
+    defense: number;
+    special_attack: number;
+    special_defense: number;
+    speed: number;
+  };
+  ivs: {
+    hp: number;
+    attack: number;
+    defense: number;
+    special_attack: number;
+    special_defense: number;
+    speed: number;
+  };
+}
+
+// Pokemon tab type
+export type PokemonTab = 
+  | 'overview' 
+  | 'stats' 
+  | 'evolution' 
+  | 'moves' 
+  | 'breeding' 
+  | 'locations' 
+  | 'cards' 
+  | 'competitive';
+
+// Theme configuration interface
+export interface PokemonTheme {
+  primaryColor: string;
+  secondaryColor: string;
+  gradient: string;
+  particleColors: string[];
+  glowColor: string;
+  accentColor: string;
+}
+
+// Location interface (already exists, keeping for reference)
+export interface Location {
+  id: number;
+  name: string;
+  region?: {
+    name: string;
+    url: string;
+  } | null;
+  names: {
+    name: string;
+    language: {
+      name: string;
+      url: string;
+    };
+  }[];
+  game_indices: {
+    game_index: number;
+    generation: {
+      name: string;
+      url: string;
+    };
+  }[];
+  areas: {
+    name: string;
+    url: string;
+  }[];
+}

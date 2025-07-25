@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { TypeBadge } from './TypeBadge';
-import { fetchData, sanitizePokemonName } from '../../utils/apiutils';
+import { sanitizePokemonName } from '../../utils/apiutils';
+import { fetchJSON } from '../../utils/unifiedFetch';
 
 // Types
 interface EvolutionDetails {
@@ -56,14 +57,14 @@ const SimpleEvolutionDisplay: React.FC<SimpleEvolutionDisplayProps> = ({ species
         setError(null);
         
         // Get species data
-        const speciesData = await fetchData(speciesUrl);
+        const speciesData = await fetchJSON<any>(speciesUrl);
         if (!speciesData.evolution_chain?.url) {
           setEvolutionChain([]);
           return;
         }
         
         // Get evolution chain
-        const evoData = await fetchData(speciesData.evolution_chain.url);
+        const evoData = await fetchJSON<any>(speciesData.evolution_chain.url);
         
         // Parse the chain into a flat array
         const parseChain = async (node: EvolutionNode, evolutionDetails: EvolutionDetails | null = null): Promise<Pokemon[]> => {
@@ -74,7 +75,7 @@ const SimpleEvolutionDisplay: React.FC<SimpleEvolutionDisplayProps> = ({ species
           // Get Pokemon data for types
           let types: string[] = [];
           try {
-            const pokeData = await fetchData(`https://pokeapi.co/api/v2/pokemon/${speciesId}`);
+            const pokeData = await fetchJSON<any>(`https://pokeapi.co/api/v2/pokemon/${speciesId}`);
             types = pokeData.types.map((t: any) => t.type.name);
           } catch (e) {
             console.error('Failed to fetch Pokemon data:', e);

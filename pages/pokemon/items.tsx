@@ -9,8 +9,9 @@ import { ListItemSkeleton } from "../../components/ui/SkeletonLoader";
 import { FiShoppingBag } from "react-icons/fi";
 import { BsSearch, BsHeart, BsShield, BsLightning } from "react-icons/bs";
 import { GiPotionBall, GiSwordWound, GiStoneBlock, GiCrystalGrowth } from "react-icons/gi";
-import { fetchData } from "../../utils/apiutils";
+import { fetchJSON } from "../../utils/unifiedFetch";
 import logger from "../../utils/logger";
+import type { ItemData } from "../../types/api/pokemon";
 
 // Interfaces
 interface Item {
@@ -201,17 +202,19 @@ const ItemsPage: NextPage = () => {
       setLoading(true);
       try {
         // PokeAPI has a lot of items, so we'll fetch them with pagination
-        const response = await fetchData<ItemListResponse>(`https://pokeapi.co/api/v2/item?limit=300`);
+        const response = await fetchJSON<ItemListResponse>(`https://pokeapi.co/api/v2/item?limit=300`);
         
         // Fetch details for first batch of items
         const itemDetailsPromises = (response?.results?.slice(0, 150) || []).map(item => 
-          fetchData<ItemApiResponse>(item.url)
+          fetchJSON<ItemApiResponse>(item.url)
         );
         
         const itemDetails = await Promise.all(itemDetailsPromises);
         
-        // Process item data
-        const processedItems = itemDetails.map((item) => {
+        // Process item data - filter out any null values
+        const processedItems = itemDetails
+          .filter((item): item is ItemApiResponse => item !== null)
+          .map((item) => {
           // Determine category based on item attributes
           let category = 'other';
           if (item.category) {

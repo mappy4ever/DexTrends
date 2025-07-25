@@ -31,39 +31,25 @@ export interface FetchOptions extends RequestInit {
   retryDelay?: number;
 }
 
-// Legacy fetchData function (now with unified caching and TypeScript)
-export async function fetchData<T = any>(url: string, options: FetchOptions = {}): Promise<T> {
+// Legacy fetchData function (now using unifiedFetch internally)
+export async function fetchData<T = unknown>(url: string, options: FetchOptions = {}): Promise<T> {
   try {
-    // Use cached version for GET requests (most common)
-    if (!options.method || options.method.toUpperCase() === 'GET') {
-      // cachedFetchData doesn't use fetch options directly, it just needs cache options
-      // For now, we'll use default cache options since cachedFetchData does its own fetch
-      return await cachedFetchData(url) as T;
-    }
+    // Map FetchOptions to UnifiedFetchOptions
+    const result = await fetchJSON<T>(url, {
+      timeout: options.timeout || 10000,
+      retries: options.retries || 2,
+      retryDelay: options.retryDelay || 1000,
+      useCache: !options.method || options.method.toUpperCase() === 'GET',
+      method: options.method,
+      headers: options.headers as Record<string, string>,
+      body: options.body,
+      throwOnError: false
+    });
     
-    // For non-GET requests, use unifiedFetch
-    if (options.method?.toUpperCase() === 'POST') {
-      const result = await postJSON<T>(url, options.body, {
-        timeout: options.timeout || 10000,
-        retries: options.retries || 2,
-        useCache: false
-      });
-      if (!result) throw new ApiError('No data received', 204);
-      return result;
-    } else {
-      // Use fetchJSON for other HTTP methods with proper options mapping
-      const result = await fetchJSON<T>(url, {
-        timeout: options.timeout || 10000,
-        retries: options.retries || 2,
-        useCache: false,
-        method: options.method,
-        headers: options.headers as Record<string, string>
-      });
-      if (!result) throw new ApiError('No data received', 204);
-      return result;
-    }
+    if (!result) throw new ApiError('No data received', 204);
+    return result;
   } catch (error) {
-    logger.error('Fetch error in apiutils.ts', { url, error: error.message });
+    logger.error('Fetch error in apiutils.ts', { url, error: (error as Error).message });
     throw error;
   }
 }
@@ -73,11 +59,13 @@ export { cacheManager, pokemonCache, tcgCache, cachedFetchData, CONFIG };
 
 // Pokemon-specific fetch functions with optimized caching and proper types
 export const fetchPokemon = async (id: string | number): Promise<Pokemon> => {
-  return pokemonCache.getPokemon(id);
+  const result = await pokemonCache.getPokemon(id);
+  return result as Pokemon;
 };
 
 export const fetchPokemonSpecies = async (id: string | number): Promise<PokemonSpecies> => {
-  return pokemonCache.getSpecies(id);
+  const result = await pokemonCache.getSpecies(id);
+  return result as PokemonSpecies;
 };
 
 export const fetchNature = async (name: string): Promise<Nature> => {
@@ -126,13 +114,20 @@ export const fetchTCGCards = async (pokemonName: string): Promise<TCGCard[]> => 
     const cards = await cacheManager.cachedFetch<TCGCard[]>(
       `tcg-${sanitizedName}`,
       async () => {
-        const data = await fetchJSON<TCGCard[]>(`/api/tcg-cards?name=${encodeURIComponent(sanitizedName)}`, {
+        const response = await fetchJSON<{ data: TCGCard[], meta?: any }>(`/api/tcg-cards?name=${encodeURIComponent(sanitizedName)}`, {
           useCache: false, // Let cacheManager handle caching
           timeout: 12000, // Longer timeout for TCG API
           retries: 2
         });
-        logger.debug('TCG API response', { sanitizedName, cardCount: data?.length || 0 });
-        return data || [];
+        
+        // Handle new API response structure
+        const data = response?.data || response || [];
+        logger.debug('TCG API response', { 
+          sanitizedName, 
+          cardCount: Array.isArray(data) ? data.length : 0,
+          responseTime: response?.meta?.responseTime 
+        });
+        return Array.isArray(data) ? data : [];
       },
       { priority: CONFIG.PRIORITY.CRITICAL, ttl: CONFIG.DB_TTL }
     );

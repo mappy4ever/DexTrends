@@ -1,6 +1,4 @@
 import React from "react";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import { NextPageContext } from "next";
 
 interface ErrorProps {
@@ -8,8 +6,6 @@ interface ErrorProps {
 }
 
 function Error({ statusCode }: ErrorProps) {
-  const router = useRouter();
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="max-w-md w-full text-center">
@@ -40,11 +36,15 @@ function Error({ statusCode }: ErrorProps) {
           >
             Try Again
           </button>
-          <Link href="/">
-            <a className="inline-block px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors">
-              Go Home
-            </a>
-          </Link>
+          <button
+            onClick={() => {
+              // Use window.location for reliable navigation in error states
+              window.location.href = '/';
+            }}
+            className="inline-block px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
+          >
+            Go Home
+          </button>
         </div>
       </div>
     </div>

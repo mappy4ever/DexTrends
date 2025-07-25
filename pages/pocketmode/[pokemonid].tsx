@@ -11,6 +11,11 @@ import Modal from "../../components/ui/modals/Modal";
 import logger from "../../utils/logger";
 import { getEvolutionChain } from "../../utils/evolutionUtils";
 import { PageLoader } from "../../utils/unifiedLoading";
+import { GlassContainer } from "../../components/ui/design-system/GlassContainer";
+import { GradientButton } from "../../components/ui/design-system/GradientButton";
+import { TypeGradientBadge } from "../../components/ui/design-system/TypeGradientBadge";
+import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
+import { motion } from "framer-motion";
 import type { PocketCard } from "../../types/api/pocket-cards";
 // Define EvolutionTreeNode locally since it's not exported from types
 interface EvolutionTreeNode {
@@ -439,23 +444,26 @@ export default function PocketPokemonDetail() {
   };
 
   return (
-    <div className="min-h-screen max-w-7xl mx-auto px-4 py-8">
-      <Head>
-        <title>{pokemonDetails.name} - Pokémon TCG Pocket</title>
-        <meta name="description" content={`${pokemonDetails.name} details from Pokémon Trading Card Game Pocket`} />
-      </Head>
+    <FullBleedWrapper gradient="pocket">
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
+        <Head>
+          <title>{pokemonDetails.name} - Pokémon TCG Pocket</title>
+          <meta name="description" content={`${pokemonDetails.name} details from Pokémon Trading Card Game Pocket`} />
+        </Head>
 
       <FadeIn>
         <div className="mb-6">
-          <Link
-            href="/pocketmode"
-            className="inline-flex items-center text-blue-500 hover:text-blue-600 transition-colors">
-            
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <GradientButton
+            onClick={() => router.push('/pocketmode')}
+            variant="secondary"
+            size="sm"
+            className="mb-4"
+          >
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
             Back to Pocket Mode
-          </Link>
+          </GradientButton>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
@@ -485,7 +493,7 @@ export default function PocketPokemonDetail() {
               </div>
             </Scale>
             <div className="mt-4 flex items-center space-x-2">
-              <TypeBadge type={pokemonDetails.type} size="lg" />
+              <TypeGradientBadge type={pokemonDetails.type} size="lg" />
               <span className="text-sm text-gray-600 dark:text-gray-400">
                 {pokemonDetails.rarity}
               </span>
@@ -507,63 +515,84 @@ export default function PocketPokemonDetail() {
             </div>
 
             {/* Card Stats */}
-            <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 space-y-4">
-              <h2 className="text-xl font-semibold mb-4">Card Details</h2>
+            <GlassContainer variant="light">
+              <h2 className="text-xl font-semibold mb-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">Card Details</h2>
               
               <div className="grid grid-cols-2 gap-4">
                 {pokemonDetails.hp && (
-                  <div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow-sm">
-                    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">HP</h3>
-                    <p className="text-2xl font-bold text-green-600 dark:text-green-400">{pokemonDetails.hp}</p>
-                  </div>
+                  <motion.div 
+                    className="glass-light rounded-2xl p-4 border border-gray-200 dark:border-gray-700"
+                    whileHover={{ scale: 1.02, y: -2 }}
+                  >
+                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">HP</h3>
+                    <p className="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">{pokemonDetails.hp}</p>
+                  </motion.div>
                 )}
                 
                 {pokemonDetails.stage && (
-                  <div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow-sm">
-                    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Stage</h3>
-                    <p className="text-lg font-semibold text-gray-800 dark:text-gray-200">{pokemonDetails.stage}</p>
-                  </div>
+                  <motion.div 
+                    className="glass-light rounded-2xl p-4 border border-gray-200 dark:border-gray-700"
+                    whileHover={{ scale: 1.02, y: -2 }}
+                  >
+                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Stage</h3>
+                    <p className="text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{pokemonDetails.stage}</p>
+                  </motion.div>
                 )}
                 
                 {pokemonDetails.weakness && (
-                  <div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow-sm">
-                    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Weakness</h3>
-                    <p className="text-lg font-semibold text-red-600 dark:text-red-400">{pokemonDetails.weakness}</p>
-                  </div>
+                  <motion.div 
+                    className="glass-light rounded-2xl p-4 border border-gray-200 dark:border-gray-700"
+                    whileHover={{ scale: 1.02, y: -2 }}
+                  >
+                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Weakness</h3>
+                    <p className="text-lg font-semibold bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent">{pokemonDetails.weakness}</p>
+                  </motion.div>
                 )}
                 
                 {pokemonDetails.retreat && (
-                  <div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow-sm">
-                    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Retreat Cost</h3>
-                    <p className="text-lg font-semibold text-gray-800 dark:text-gray-200">{pokemonDetails.retreat}</p>
-                  </div>
+                  <motion.div 
+                    className="glass-light rounded-2xl p-4 border border-gray-200 dark:border-gray-700"
+                    whileHover={{ scale: 1.02, y: -2 }}
+                  >
+                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Retreat Cost</h3>
+                    <p className="text-lg font-semibold bg-gradient-to-r from-gray-600 to-slate-600 bg-clip-text text-transparent">{pokemonDetails.retreat}</p>
+                  </motion.div>
                 )}
               </div>
 
               {pokemonDetails.ability && (
-                <div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow-sm">
-                  <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">Ability</h3>
+                <motion.div 
+                  className="glass-light rounded-2xl p-4 border border-gray-200 dark:border-gray-700 mt-4"
+                  whileHover={{ scale: 1.02, y: -2 }}
+                >
+                  <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Ability</h3>
                   <p className="text-gray-800 dark:text-gray-200">{pokemonDetails.ability}</p>
-                </div>
+                </motion.div>
               )}
 
               {pokemonDetails.artist && (
-                <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Illustrated by: <span className="font-medium">{pokemonDetails.artist}</span>
+                <motion.div 
+                  className="border-t border-gray-300 dark:border-gray-600 pt-4 mt-4"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+                    Illustrated by: <span className="font-medium bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">{pokemonDetails.artist}</span>
                   </p>
-                </div>
+                </motion.div>
               )}
 
-              <div className="grid grid-cols-2 gap-4 pt-4">
-                {pokemonDetails.fullart && (
-                  <div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow-sm">
-                    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Full Art</h3>
-                    <p className="text-lg font-semibold text-gray-800 dark:text-gray-200">{pokemonDetails.fullart}</p>
-                  </div>
-                )}
-              </div>
-            </div>
+              {pokemonDetails.fullart && (
+                <motion.div 
+                  className="glass-light rounded-2xl p-4 border border-gray-200 dark:border-gray-700 mt-4"
+                  whileHover={{ scale: 1.02, y: -2 }}
+                >
+                  <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Full Art</h3>
+                  <p className="text-lg font-semibold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">{pokemonDetails.fullart}</p>
+                </motion.div>
+              )}
+            </GlassContainer>
           </div>
 
         </div>
@@ -571,9 +600,14 @@ export default function PocketPokemonDetail() {
       
       <SlideUp delay={200}>
         {/* Similar Cards - Always Visible */}
-        <div className="mt-8">
-          <div className="space-y-8">
-            <h2 className="text-xl font-bold mb-6">Similar Cards</h2>
+        <motion.div 
+          className="mt-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <GlassContainer variant="light">
+            <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Similar Cards</h2>
             
             {/* Same Pokémon Cards Section */}
             {relatedCards?.samePokemon && relatedCards.samePokemon.length > 0 && (
@@ -615,28 +649,33 @@ export default function PocketPokemonDetail() {
               </div>
             )}
 
-            {/* Related Cards Section */}
-            {relatedCards?.related && relatedCards.related.length > 0 && (
-              <div>
-                <h3 className="text-lg font-semibold mb-4 text-purple-600 dark:text-purple-400 border-b border-purple-200 dark:border-purple-700 pb-2">
-                  Related Cards
-                </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                  Other {pokemonDetails.type} type cards from the {pokemonDetails.pack} pack
-                </p>
-                <PocketCardList 
-                  cards={relatedCards.related}
-                  loading={false}
-                  error={undefined}
-                  showSort={false}
-                  hideCardCount={true}
-                  gridClassName="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4"
-                  imageWidth={110}
-                  imageHeight={154}
-                  emptyMessage="No related cards found."
-                />
-              </div>
-            )}
+              {/* Related Cards Section */}
+              {relatedCards?.related && relatedCards.related.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.6 }}
+                  className="mt-6"
+                >
+                  <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Related Cards</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                    Other {pokemonDetails.type} type cards from the {pokemonDetails.pack} pack
+                  </p>
+                  <div className="glass-light rounded-2xl p-4 border border-gray-200 dark:border-gray-700">
+                    <PocketCardList 
+                      cards={relatedCards.related}
+                      loading={false}
+                      error={undefined}
+                      showSort={false}
+                      hideCardCount={true}
+                      gridClassName="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4"
+                      imageWidth={110}
+                      imageHeight={154}
+                      emptyMessage="No related cards found."
+                    />
+                  </div>
+                </motion.div>
+              )}
 
             {/* Fallback Similar Cards Section */}
             {relatedCards?.fallback && relatedCards.fallback.length > 0 && (
@@ -674,9 +713,9 @@ export default function PocketPokemonDetail() {
                 </p>
               </div>
             )}
-          </div>
-        </div>
-      </SlideUp>
+            </GlassContainer>
+          </motion.div>
+        </SlideUp>
       
       {/* Zoom Modal */}
       {zoomedCard && (
@@ -703,6 +742,7 @@ export default function PocketPokemonDetail() {
           </div>
         </Modal>
       )}
-    </div>
+      </div>
+    </FullBleedWrapper>
   );
 }

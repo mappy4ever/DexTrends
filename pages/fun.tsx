@@ -4,6 +4,7 @@ import Head from 'next/head';
 import logger from '../utils/logger';
 import { fetchJSON } from '../utils/unifiedFetch';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
+import CircularButton from '../components/ui/CircularButton';
 import type { NextPage } from 'next';
 
 interface PokemonFact {
@@ -235,16 +236,18 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
                   <p className="text-gray-500">No Pokémon loaded</p>
                 </div>
               )}
-              <button
+              <CircularButton
                 onClick={getRandomPokemon}
                 disabled={loadingRandomPokemon}
-                className={`w-full font-bold py-3 rounded-lg transition-colors duration-200 ${
+                variant="primary"
+                size="lg"
+                className={`w-full font-bold ${
                   loadingRandomPokemon 
                     ? 'bg-gray-400 cursor-not-allowed' 
                     : 'bg-pokemon-yellow hover:bg-yellow-600'
                 } text-white`}>
                 {loadingRandomPokemon ? 'Loading...' : 'Get New Random Pokémon!'}
-              </button>
+              </CircularButton>
             </div>
 
             {/* Pokemon Facts */}
@@ -259,11 +262,13 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
                   <p className="text-sm leading-relaxed">{pokemonFacts[currentFact].fact}</p>
                 </div>
               </div>
-              <button
+              <CircularButton
                 onClick={getRandomFact}
-                className="w-full mt-4 bg-pokemon-blue hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition-colors duration-200">
+                variant="primary"
+                size="lg"
+                className="w-full mt-4 bg-pokemon-blue hover:bg-blue-700 text-white font-bold">
                 Show Random Fact!
-              </button>
+              </CircularButton>
             </div>
 
             {/* Pokemon Quiz */}
@@ -277,11 +282,13 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
                 </h3>
                 <div className="space-y-2">
                   {pokemonQuizzes[currentQuiz].options.map((option, index) => (
-                    <button
+                    <CircularButton
                       key={index}
                       onClick={() => handleAnswerSelect(index)}
                       disabled={showAnswer}
-                      className={`w-full p-3 rounded-lg text-left transition-all duration-200 ${
+                      variant="secondary"
+                      size="md"
+                      className={`w-full text-left !rounded-lg ${
                         showAnswer
                           ? index === pokemonQuizzes[currentQuiz].correct
                             ? 'bg-green-500 text-white'
@@ -292,7 +299,7 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
                       }`}
                     >
                       {option}
-                    </button>
+                    </CircularButton>
                   ))}
                 </div>
                 {showAnswer && (
@@ -303,11 +310,13 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
                   </div>
                 )}
               </div>
-              <button
+              <CircularButton
                 onClick={getRandomQuiz}
-                className="w-full bg-pokemon-red hover:bg-red-700 text-white font-bold py-3 rounded-lg transition-colors duration-200">
+                variant="primary"
+                size="lg"
+                className="w-full bg-pokemon-red hover:bg-red-700 text-white font-bold">
                 New Question!
-              </button>
+              </CircularButton>
             </div>
           </div>
 

@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Head from "next/head";
 // Import pokemontcgsdk dynamically to reduce initial bundle size
 import Modal from "../components/ui/modals/Modal";
 import CardListComponent from "../components/CardList";
 import Image from 'next/image';
 import { getPrice, getRarityRank } from "../utils/pokemonutils";
+import { CircularButton } from "../components/ui/design-system";
 // Use centralized icon imports for better tree-shaking
 import { 
   Book, Search, Globe, Trophy, Heart, 
@@ -145,9 +147,15 @@ const IndexPage: NextPage = () => {
   }, [modalOpen]);
 
   return (
-    <FullBleedWrapper gradient="pokedex">
-      {/* Pokemon-themed Background Elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+    <>
+      <Head>
+        <title>DexTrends - Pokemon TCG Card Prices & Trends</title>
+        <meta name="description" content="Track Pokemon TCG card prices, explore trending cards, manage your collection, and discover the latest Pokemon TCG market trends" />
+        <meta name="keywords" content="Pokemon TCG, card prices, Pokemon cards, TCG trends, Pokemon collection, card values" />
+      </Head>
+      <FullBleedWrapper gradient="pokedex">
+        {/* Pokemon-themed Background Elements */}
+        <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-10 left-10 w-96 h-96 bg-gradient-to-br from-yellow-200/20 to-orange-200/20 rounded-full blur-3xl" />
         <div className="absolute bottom-10 right-10 w-96 h-96 bg-gradient-to-br from-blue-200/20 to-purple-200/20 rounded-full blur-3xl" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-br from-red-200/10 to-pink-200/10 rounded-full blur-3xl" />
@@ -186,12 +194,14 @@ const IndexPage: NextPage = () => {
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                 <Search className="h-5 w-5 text-gray-500" aria-hidden="true" />
               </div>
-              <button
+              <CircularButton
                 type="submit"
-                className="absolute right-2 top-1/2 -translate-y-1/2 px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold rounded-full transition-all duration-300 transform hover:scale-105"
+                variant="primary"
+                size="md"
+                className="absolute right-2 top-1/2 -translate-y-1/2"
               >
                 Search
-              </button>
+              </CircularButton>
             </div>
           </form>
         </div>
@@ -576,6 +586,7 @@ const IndexPage: NextPage = () => {
         }
       `}</style>
     </FullBleedWrapper>
+    </>
   );
 };
 

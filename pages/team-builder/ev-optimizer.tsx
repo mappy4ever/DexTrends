@@ -3,7 +3,7 @@
  * Advanced tool for optimizing Pokemon EVs with visual feedback
  */
 
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import type { NextPage } from 'next';
@@ -116,10 +116,12 @@ const EVOptimizer: NextPage = () => {
   }, [searchQuery, searchPokemon]);
 
   // Get base stats
-  const baseStats = selectedPokemon?.stats?.reduce((acc, stat) => {
-    acc[stat.stat.name] = stat.base_stat;
-    return acc;
-  }, {} as Record<string, number>) || {};
+  const baseStats = useMemo(() => {
+    return selectedPokemon?.stats?.reduce((acc, stat) => {
+      acc[stat.stat.name] = stat.base_stat;
+      return acc;
+    }, {} as Record<string, number>) || {};
+  }, [selectedPokemon]);
 
   // Calculate current stats
   const currentStats = selectedPokemon ? 

@@ -1,6 +1,6 @@
 // Cached Pokemon utilities with Supabase integration
 import { SupabaseCache } from '../lib/supabase';
-import { fetchData } from './apiutils';
+import { fetchJSON } from './unifiedFetch';
 import type { Pokemon, PokemonSpecies, PokemonListResponse } from '../types/api/pokemon';
 import type { TCGCard } from '../types/api/cards';
 
@@ -17,7 +17,11 @@ export async function fetchPokemonWithCache(pokemonId: string | number): Promise
 
     // If not in cache, fetch from API
     const apiUrl = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`;
-    const pokemonData = await fetchData<Pokemon>(apiUrl);
+    const pokemonData = await fetchJSON<Pokemon>(apiUrl);
+    
+    if (!pokemonData) {
+      throw new Error(`Pokemon with ID ${pokemonId} not found`);
+    }
     
     // Cache the result
     await SupabaseCache.setCachedPokemon(Number(pokemonId), pokemonData, `pokemon_${pokemonId}`);
@@ -41,7 +45,11 @@ export async function fetchPokemonSpeciesWithCache(pokemonId: string | number): 
 
     // If not in cache, fetch from API
     const apiUrl = `https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`;
-    const speciesData = await fetchData<PokemonSpecies>(apiUrl);
+    const speciesData = await fetchJSON<PokemonSpecies>(apiUrl);
+    
+    if (!speciesData) {
+      throw new Error(`Pokemon species with ID ${pokemonId} not found`);
+    }
     
     // Cache the result
     await SupabaseCache.setCachedPokemon(Number(pokemonId), speciesData, `species_${pokemonId}`);
@@ -69,7 +77,11 @@ export async function fetchPokemonListWithCache(limit = 1000, offset = 0): Promi
 
     // If not in cache, fetch from API
     const apiUrl = `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`;
-    const listData = await fetchData<PokemonListResponse>(apiUrl);
+    const listData = await fetchJSON<PokemonListResponse>(apiUrl);
+    
+    if (!listData) {
+      throw new Error(`Failed to fetch Pokemon list`);
+    }
     
     // Cache the result for 12 hours (list doesn't change often)
     await SupabaseCache.setCachedPokemon(listCacheId, listData, cacheKey);

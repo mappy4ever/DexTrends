@@ -45,6 +45,7 @@ const PushNotifications: React.FC<PushNotificationsProps> = ({
   const [priceAlerts, setPriceAlerts] = useState<PriceAlert[]>([]);
   const [marketAlerts, setMarketAlerts] = useState<string[]>([]);
   const [systemAlerts, setSystemAlerts] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
 
   // Check push notification support
   useEffect(() => {
@@ -72,12 +73,24 @@ const PushNotifications: React.FC<PushNotificationsProps> = ({
     checkSupport();
   }, []);
 
+  // Track mounted state
+  useEffect(() => {
+    setIsMounted(true);
+    return () => setIsMounted(false);
+  }, []);
+
   // Initialize service worker and push subscription
   useEffect(() => {
-    if (isSupported && permission === 'granted') {
-      initializePushSubscription();
+    if (isSupported && permission === 'granted' && isMounted) {
+      // Add small delay to ensure browser APIs are ready
+      const timer = setTimeout(() => {
+        initializePushSubscription();
+      }, 100);
+      
+      return () => clearTimeout(timer);
     }
-  }, [isSupported, permission]);
+    return undefined;
+  }, [isSupported, permission, isMounted]);
 
   // Request notification permission
   const requestPermission = useCallback(async (): Promise<NotificationPermission> => {
@@ -111,36 +124,52 @@ const PushNotifications: React.FC<PushNotificationsProps> = ({
       logger.error('Failed to request notification permission:', error);
       throw error;
     }
-  }, [isSupported, onPermissionChange, utils]);
+  }, [isSupported, onPermissionChange, utils, isMounted]);
 
   // Convert VAPID key
   const urlBase64ToUint8Array = useCallback((base64String: string): Uint8Array => {
-    // Check if we're in the browser
-    if (typeof window === 'undefined' || !window.atob) {
-      // Return empty array during SSR
+    try {
+      // More robust browser environment check
+      if (typeof window === 'undefined' || 
+          typeof window.atob !== 'function' ||
+          !base64String || 
+          base64String === 'YOUR_VAPID_PUBLIC_KEY') {
+        return new Uint8Array(0);
+      }
+      
+      const padding = '='.repeat((4 - base64String.length % 4) % 4);
+      const base64 = (base64String + padding)
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+      
+      // Wrap atob in try-catch for additional safety
+      const rawData = window.atob(base64);
+      const outputArray = new Uint8Array(rawData.length);
+      
+      for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+      }
+      return outputArray;
+    } catch (error) {
+      logger.warn('Failed to convert base64 to Uint8Array:', error);
       return new Uint8Array(0);
     }
-    
-    const padding = '='.repeat((4 - base64String.length % 4) % 4);
-    const base64 = (base64String + padding)
-      .replace(/-/g, '+')
-      .replace(/_/g, '/');
-    
-    const rawData = window.atob(base64);
-    const outputArray = new Uint8Array(rawData.length);
-    
-    for (let i = 0; i < rawData.length; ++i) {
-      outputArray[i] = rawData.charCodeAt(i);
-    }
-    return outputArray;
   }, []);
 
   // Initialize push subscription
   const initializePushSubscription = useCallback(async (): Promise<PushSubscription | null> => {
     try {
-      // Ensure we're in the browser
-      if (typeof window === 'undefined' || !navigator?.serviceWorker) {
-        logger.debug('Service worker not available, skipping push initialization');
+      // Ensure we're in the browser and component is mounted
+      if (typeof window === 'undefined' || 
+          !navigator?.serviceWorker || 
+          !isMounted ||
+          vapidPublicKey === 'YOUR_VAPID_PUBLIC_KEY') {
+        logger.debug('Push initialization skipped:', { 
+          hasWindow: typeof window !== 'undefined',
+          hasServiceWorker: !!navigator?.serviceWorker,
+          isMounted,
+          hasValidKey: vapidPublicKey !== 'YOUR_VAPID_PUBLIC_KEY'
+        });
         return null;
       }
       
@@ -177,7 +206,7 @@ const PushNotifications: React.FC<PushNotificationsProps> = ({
       logger.error('Failed to initialize push subscription:', error);
       throw error;
     }
-  }, [vapidPublicKey, urlBase64ToUint8Array]);
+  }, [vapidPublicKey, urlBase64ToUint8Array, isMounted]);
 
   // Send subscription to server
   const sendSubscriptionToServer = useCallback(async (subscription: PushSubscription) => {
@@ -297,6 +326,10 @@ const PushNotifications: React.FC<PushNotificationsProps> = ({
 
   // Listen for service worker messages
   useEffect(() => {
+    if (!isMounted || typeof navigator === 'undefined' || !navigator.serviceWorker) {
+      return;
+    }
+    
     const handleMessage = (event: MessageEvent) => {
       if (event.data && event.data.type === 'push-notification') {
         if (onNotificationReceived) {
@@ -306,12 +339,17 @@ const PushNotifications: React.FC<PushNotificationsProps> = ({
       }
     };
     
-    navigator.serviceWorker.addEventListener('message', handleMessage);
-    
-    return () => {
-      navigator.serviceWorker.removeEventListener('message', handleMessage);
-    };
-  }, [onNotificationReceived]);
+    try {
+      navigator.serviceWorker.addEventListener('message', handleMessage);
+      
+      return () => {
+        navigator.serviceWorker.removeEventListener('message', handleMessage);
+      };
+    } catch (error) {
+      logger.warn('Failed to setup service worker message listener:', error);
+      return undefined;
+    }
+  }, [onNotificationReceived, isMounted]);
 
   if (!isSupported) {
     return (

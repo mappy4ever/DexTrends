@@ -13,9 +13,33 @@ interface State {
   errorInfo: ErrorInfo | null;
 }
 
-// Default error fallback component
-const DefaultErrorFallback = ({ error, resetError }: { error: Error; resetError: () => void }) => {
+// Router-aware wrapper component
+const RouterAwareErrorFallback = ({ error, resetError }: { error: Error; resetError: () => void }) => {
   const router = useRouter();
+  
+  const handleGoHome = () => {
+    router.push('/');
+  };
+  
+  return (
+    <DefaultErrorFallbackContent 
+      error={error} 
+      resetError={resetError}
+      onGoHome={handleGoHome}
+    />
+  );
+};
+
+// Default error fallback component (no hooks)
+const DefaultErrorFallbackContent = ({ 
+  error, 
+  resetError, 
+  onGoHome 
+}: { 
+  error: Error; 
+  resetError: () => void;
+  onGoHome: () => void;
+}) => {
   return (
     <div className="min-h-[50vh] flex items-center justify-center p-8">
       <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8 text-center">
@@ -36,7 +60,7 @@ const DefaultErrorFallback = ({ error, resetError }: { error: Error; resetError:
             Try Again
           </button>
           <button
-            onClick={() => router.push('/')}
+            onClick={onGoHome}
             className="w-full px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-medium rounded-lg transition-colors"
           >
             Go to Homepage
@@ -91,7 +115,7 @@ class PageErrorBoundary extends Component<Props, State> {
 
   override render() {
     if (this.state.hasError && this.state.error) {
-      const FallbackComponent = this.props.fallbackComponent || DefaultErrorFallback;
+      const FallbackComponent = this.props.fallbackComponent || RouterAwareErrorFallback;
       
       return (
         <FallbackComponent 

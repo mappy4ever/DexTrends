@@ -20,21 +20,10 @@ export * from './pokemonSDK';
 export * from './pocketData';
 
 // === Pokemon-specific utilities ===
+// Export existing functions from pokemonutils with aliases where needed
 export {
-  getPokemonSprite,
-  getPokemonOfficialArtwork,
-  getShinySprite,
-  formatStatName,
-  getStatColor,
-  calculateCatchRate,
-  calculateExperienceToNext,
-  getGenerationFromId,
-  formatHeight,
-  formatWeight,
-  getNationalDexNumber,
-  getPokemonCry,
-  getHiddenPowerType,
-  formatPokemonId
+  getOfficialArtworkSpriteUrl as getPokemonOfficialArtwork,
+  getGeneration as getGenerationFromId
 } from './pokemonutils';
 export { sanitizePokemonName } from './pokemonNameSanitizer';
 export * from './pokemonHelpers';
@@ -54,47 +43,38 @@ export * from './formatters';
 // === Performance & Optimization ===
 export * from './performanceMonitor';
 export * from './requestIdleCallback';
-export * from './useDebounce';
-export * from './useInfiniteScroll';
-export * from './useIntersectionObserver';
-export * from './useMediaQuery';
+// Import hooks from correct location
+export { useDebounce } from '../hooks/useDebounce';
+export { useInfiniteScroll } from '../hooks/useInfiniteScroll';
 
 // === State Management & Hooks ===
-export * from './useLocalStorage';
-export * from './usePrevious';
-export * from './useInterval';
-export * from './useOnClickOutside';
+// Note: These hooks don't exist yet and have been removed
 
 // === Data Processing ===
 export * from './typeEffectiveness';
-export * from './damageCalculator';
 export * from './statCalculations';
-export * from './natureModifiers';
-export * from './searchUtils';
-export * from './teamAnalysis';
+// Note: damageCalculator, natureModifiers, searchUtils, teamAnalysis don't exist
 
 // === Theme & Styling ===
 export * from './theme';
 
 // === Authentication & Security ===
-export * from './auth';
+// Note: auth module doesn't exist yet
 
 // === Analytics & Logging ===
-export * from './analytics';
+export * from './analyticsEngine';
 export * from './logger';
 
 // === Error Handling ===
-export * from './errorHandling';
+// Note: errorHandling module doesn't exist yet
 
 // === Database & Storage ===
-export * from './supabaseClient';
-export * from './databaseOperations';
+// Export from correct location
+export * from '../lib/supabase';
+// Note: databaseOperations doesn't exist
 
 // === Miscellaneous ===
-export * from './getBaseUrl';
-export * from './dataCleaner';
-export * from './constants';
-export * from './generateUniqueId';
+// Note: These utilities don't exist yet and have been removed
 
 // === Deprecated - Use specific imports above ===
 // export * from './cacheManager'; // Use UnifiedCacheManager instead

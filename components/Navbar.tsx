@@ -95,6 +95,8 @@ export default function Navbar() {
       dropdownItems: [
         { href: "/battle-simulator", label: "Battle Simulator", icon: <GiCrossedSwords size={18} />, description: "Simulate Pokemon battles" },
         { href: "/type-effectiveness", label: "Type Effectiveness", icon: <BsBook size={18} />, description: "Interactive type chart" },
+        { href: "/team-builder/advanced", label: "Team Builder", icon: <GiPokerHand size={18} />, description: "Build competitive teams" },
+        { href: "/team-builder/ev-optimizer", label: "EV Optimizer", icon: <AiOutlineBulb size={18} />, description: "Optimize EVs and stats" },
       ]
     },
     { 

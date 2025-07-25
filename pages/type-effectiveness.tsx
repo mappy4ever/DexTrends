@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Head from 'next/head';
-import { fetchData } from '../utils/apiutils';
+import { fetchJSON } from '../utils/unifiedFetch';
 import { TypeBadge } from '../components/ui/TypeBadge';
 import { DualTypeCalculator } from '../components/ui/TypeAnalysis';
 import { GlassContainer } from '../components/ui/design-system/GlassContainer';
-import { GradientButton } from '../components/ui/design-system/GradientButton';
+import CircularButton from '../components/ui/CircularButton';
 import { TypeGradientBadge } from '../components/ui/design-system/TypeGradientBadge';
 import CircularTypeMatrix from '../components/ui/CircularTypeMatrix';
 import { PageLoader } from '../utils/unifiedLoading';
@@ -14,6 +14,7 @@ import { FadeIn, SlideUp, StaggeredChildren } from '../components/ui/animations/
 import { BsChevronUp, BsChevronDown } from 'react-icons/bs';
 import { THEME, TYPE_GRADIENTS, themeClass } from '../utils/theme';
 import { useTheme } from '../context/UnifiedAppContext';
+import type { TypeInfo } from '../types/api/pokemon';
 
 // Type definitions
 interface DamageRelations {
@@ -212,6 +213,13 @@ const TYPE_INFO: Record<PokemonType, { gradient: string; hero: string; descripti
   }
 };
 
+// Types array constant
+const POKEMON_TYPES: PokemonType[] = [
+  'normal', 'fire', 'water', 'electric', 'grass', 'ice',
+  'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug',
+  'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy'
+];
+
 const TypeEffectiveness: NextPage = () => {
   const { theme } = useTheme();
   // TODO: Update when userPreferences is available in context
@@ -224,38 +232,33 @@ const TypeEffectiveness: NextPage = () => {
   const [expandedType, setExpandedType] = useState<PokemonType | null>(null);
   const [hoveredCell, setHoveredCell] = useState<{ attack: PokemonType; defend: PokemonType } | null>(null);
 
-  const types: PokemonType[] = [
-    'normal', 'fire', 'water', 'electric', 'grass', 'ice',
-    'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug',
-    'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy'
-  ];
 
   useEffect(() => {
+    const loadTypeData = async () => {
+      setLoading(true);
+      const data: Record<string, TypeData> = {};
+      
+      for (const type of POKEMON_TYPES) {
+        try {
+          const typeInfo = await fetchJSON<TypeInfo>(`https://pokeapi.co/api/v2/type/${type}`);
+          data[type] = {
+            name: type,
+            damageRelations: typeInfo!.damage_relations,
+            pokemon: typeInfo!.pokemon?.slice(0, 10) || [],
+            moves: typeInfo!.moves?.slice(0, 5) || [],
+            generation: typeInfo!.generation
+          };
+        } catch (error) {
+          console.error(`Failed to load type ${type}:`, error);
+        }
+      }
+      
+      setTypeData(data);
+      setLoading(false);
+    };
+    
     loadTypeData();
   }, []);
-
-  const loadTypeData = async () => {
-    setLoading(true);
-    const data: Record<string, TypeData> = {};
-    
-    for (const type of types) {
-      try {
-        const typeInfo = await fetchData(`https://pokeapi.co/api/v2/type/${type}`);
-        data[type] = {
-          name: type,
-          damageRelations: typeInfo.damage_relations,
-          pokemon: typeInfo.pokemon?.slice(0, 10) || [],
-          moves: typeInfo.moves?.slice(0, 5) || [],
-          generation: typeInfo.generation
-        };
-      } catch (error) {
-        console.error(`Failed to load type ${type}:`, error);
-      }
-    }
-    
-    setTypeData(data);
-    setLoading(false);
-  };
 
   const getEffectiveness = (attackType: string, defendType: string): number => {
     if (!typeData[attackType]) return 1;
@@ -332,25 +335,21 @@ const TypeEffectiveness: NextPage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              <button
+              <CircularButton
                 onClick={() => scrollToSection('type-chart')}
-                className={themeClass(
-                  'px-8 py-4 rounded-full font-semibold',
-                  THEME.colors.background.translucent,
-                  THEME.colors.text.primary,
-                  THEME.shadows.lg,
-                  THEME.interactive.hover,
-                  THEME.interactive.focus
-                )}
+                variant="secondary"
+                size="lg"
               >
                 View Type Chart
-              </button>
-              <button
+              </CircularButton>
+              <CircularButton
                 onClick={() => scrollToSection('interactive')}
-                className="px-8 py-4 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 font-semibold"
+                variant="primary"
+                size="lg"
+                className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
               >
                 Interactive Explorer
-              </button>
+              </CircularButton>
             </motion.div>
           </div>
 
@@ -390,7 +389,7 @@ const TypeEffectiveness: NextPage = () => {
                         <th className="p-3 text-sm font-bold text-gray-700 sticky left-0 bg-white/90 backdrop-blur-sm z-10">
                           ATK → DEF
                         </th>
-                        {types.map(type => (
+                        {POKEMON_TYPES.map(type => (
                           <th key={type} className="p-2">
                             <div className="flex flex-col items-center gap-1">
                               <TypeBadge type={type} size="xs" />
@@ -400,14 +399,14 @@ const TypeEffectiveness: NextPage = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {types.map(attackType => (
+                      {POKEMON_TYPES.map(attackType => (
                         <tr key={attackType}>
                           <td className="p-2 sticky left-0 bg-white/90 backdrop-blur-sm z-10">
                             <div className="flex items-center gap-2">
                               <TypeBadge type={attackType} size="sm" />
                             </div>
                           </td>
-                          {types.map(defendType => {
+                          {POKEMON_TYPES.map(defendType => {
                             const effectiveness = getEffectiveness(attackType, defendType);
                             const style = EFFECTIVENESS_DESCRIPTIONS[effectiveness];
                             const isHovered = hoveredCell?.attack === attackType && hoveredCell?.defend === defendType;
@@ -520,11 +519,11 @@ const TypeEffectiveness: NextPage = () => {
               {/* Attack Type Selector */}
               <FadeIn delay={0.2}>
                 <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl p-8">
-                  <h3 className="text-2xl font-bold text-gray-800 mb-6">
+                  <h3 className="text-2xl font-semibold text-gray-800 mb-6">
                     Attacking Type
                   </h3>
                   <div className="grid grid-cols-3 sm:grid-cols-4 gap-4">
-                    {types.map(type => (
+                    {POKEMON_TYPES.map(type => (
                       <motion.button
                         key={type}
                         onClick={() => setSelectedAttackType(type)}
@@ -554,11 +553,11 @@ const TypeEffectiveness: NextPage = () => {
               {/* Defend Type Selector */}
               <FadeIn delay={0.3}>
                 <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl p-8">
-                  <h3 className="text-2xl font-bold text-gray-800 mb-6">
+                  <h3 className="text-2xl font-semibold text-gray-800 mb-6">
                     Defending Type
                   </h3>
                   <div className="grid grid-cols-3 sm:grid-cols-4 gap-4">
-                    {types.map(type => (
+                    {POKEMON_TYPES.map(type => (
                       <motion.button
                         key={type}
                         onClick={() => setSelectedDefendType(type)}
@@ -599,7 +598,7 @@ const TypeEffectiveness: NextPage = () => {
                   <FadeIn>
                     <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-12">
                       <div className="text-center">
-                        <h3 className="text-3xl font-bold text-gray-800 mb-8">Battle Result</h3>
+                        <h3 className="text-2xl font-semibold text-gray-800 mb-8">Battle Result</h3>
                         
                         <div className="flex items-center justify-center gap-8 mb-8">
                           <motion.div 
@@ -679,7 +678,7 @@ const TypeEffectiveness: NextPage = () => {
             <div className="sticky top-0 z-40 backdrop-blur-md bg-white/80 dark:bg-gray-900/80 shadow-md -mx-4 px-4 py-4 mb-8">
               <div className="max-w-7xl mx-auto">
                 <div className="flex overflow-x-auto gap-3 scrollbar-hide">
-                  {types.map((type) => (
+                  {POKEMON_TYPES.map((type) => (
                     <motion.button
                       key={type}
                       onClick={() => setExpandedType(expandedType === type ? null : type)}
@@ -727,23 +726,25 @@ const TypeEffectiveness: NextPage = () => {
                         <div className="flex items-center gap-4">
                           <TypeBadge type={expandedType} size="xl" />
                           <div>
-                            <h3 className="text-3xl font-bold capitalize text-gray-800">{expandedType} Type</h3>
+                            <h3 className="text-2xl font-semibold capitalize text-gray-800">{expandedType} Type</h3>
                             <p className="text-gray-600 mt-1">{TYPE_INFO[expandedType].description}</p>
                           </div>
                         </div>
-                        <button 
+                        <CircularButton 
                           onClick={() => setExpandedType(null)}
-                          className="text-gray-400 hover:text-gray-600 transition-colors"
+                          variant="ghost"
+                          size="sm"
+                          className="p-2 text-gray-400 hover:text-gray-600"
                         >
                           <BsChevronUp className="text-2xl" />
-                        </button>
+                        </CircularButton>
                       </div>
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-8">
                       {/* Offensive Matchups */}
                       <div className="space-y-6">
-                        <h4 className="text-xl font-bold text-gray-800 border-b border-gray-200 pb-2">Offensive Matchups</h4>
+                        <h4 className="text-xl font-medium text-gray-800 border-b border-gray-200 pb-2">Offensive Matchups</h4>
                         
                         {typeData[expandedType]?.damageRelations.double_damage_to && 
                          typeData[expandedType].damageRelations.double_damage_to.length > 0 && (
@@ -891,7 +892,7 @@ const TypeEffectiveness: NextPage = () => {
               {/* Type Statistics */}
               <FadeIn delay={0.4}>
                 <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl p-8">
-                  <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+                  <h3 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
                     Type Statistics & Insights
                   </h3>
                   
@@ -944,7 +945,7 @@ const TypeEffectiveness: NextPage = () => {
               {/* Battle Strategy Tips */}
               <FadeIn delay={0.6}>
                 <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl p-8">
-                  <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+                  <h3 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
                     Pro Battle Strategy Tips
                   </h3>
                   
@@ -1020,13 +1021,15 @@ const TypeEffectiveness: NextPage = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 1 }}
         >
-          <button
+          <CircularButton
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="p-4 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+            variant="secondary"
+            size="sm"
+            className="shadow-lg hover:shadow-xl backdrop-blur-sm"
             title="Back to top"
           >
             <BsChevronUp className="text-xl" />
-          </button>
+          </CircularButton>
         </motion.div>
       </div>
     </>

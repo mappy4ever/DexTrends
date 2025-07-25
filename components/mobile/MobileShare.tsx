@@ -145,7 +145,7 @@ const MobileShare: React.FC<MobileShareProps> = ({
       url: url || `${window.location.origin}${router.asPath}`,
       image
     };
-  }, [cardData, title, text, url, image]);
+  }, [cardData, title, text, url, image, router.asPath]);
 
   // Native share function
   const shareNative = useCallback(async (): Promise<boolean> => {

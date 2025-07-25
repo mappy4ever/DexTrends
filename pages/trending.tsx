@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Head from 'next/head';
 import CardList from '../components/CardList';
 import { useTheme } from '../context/UnifiedAppContext';
 import { PageLoader } from "../utils/unifiedLoading";
 import logger from '../utils/logger';
 import { getPokemonSDK } from '../utils/pokemonSDK';
+import { retryWithBackoff } from '../utils/retryWithBackoff';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import type { NextPage } from 'next';
 import type { TCGCard } from '../types/api/cards';
@@ -100,7 +102,15 @@ const TrendingPage: NextPage = () => {
         
         // Fetch cards for these Pokémon
         const promises = selectedPokemon.map(name => 
-          pokemon.card.where({ q: `name:${name}*` })
+          retryWithBackoff(
+            () => pokemon.card.where({ q: `name:${name}*` }),
+            {
+              maxRetries: 3,
+              onRetry: (error, attempt) => {
+                logger.warn(`Retrying card fetch for ${name}, attempt ${attempt}`, error);
+              }
+            }
+          )
         );
         
         const results = await Promise.all(promises);
@@ -162,11 +172,16 @@ const TrendingPage: NextPage = () => {
   }, []);
   
   return (
-    <FullBleedWrapper gradient="tcg">
-      <div className="container max-w-6xl mx-auto px-4 py-8">
+    <>
+      <Head>
+        <title>Trending Cards - Market Movers | DexTrends</title>
+        <meta name="description" content="Discover rising and falling Pokemon TCG card prices. Track market trends and find the hottest cards in the trading card game market" />
+      </Head>
+      <FullBleedWrapper gradient="tcg">
+        <div className="container max-w-6xl mx-auto px-4 py-8">
       <div className="mb-8">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold">Trending Cards</h1>
+          <h1 className="text-4xl font-bold">Trending Cards</h1>
           <Link href="/" className="text-blue-600 hover:underline">
             Back to Home
           </Link>
@@ -182,7 +197,7 @@ const TrendingPage: NextPage = () => {
       ) : (
         <>
           <div className="mb-12">
-            <h2 className="text-2xl font-bold mb-4 flex items-center text-green-600">
+            <h2 className="text-3xl font-semibold mb-4 flex items-center text-green-600">
               <span className="mr-2">▲</span> Rising Prices
             </h2>
             <div className={`p-6 rounded-xl shadow-lg ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
@@ -223,7 +238,7 @@ const TrendingPage: NextPage = () => {
           </div>
           
           <div className="mb-12">
-            <h2 className="text-2xl font-bold mb-4 flex items-center text-red-600">
+            <h2 className="text-3xl font-semibold mb-4 flex items-center text-red-600">
               <span className="mr-2">▼</span> Falling Prices
             </h2>
             <div className={`p-6 rounded-xl shadow-lg ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
@@ -270,6 +285,7 @@ const TrendingPage: NextPage = () => {
       )}
       </div>
     </FullBleedWrapper>
+    </>
   );
 };
 

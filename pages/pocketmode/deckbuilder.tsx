@@ -54,6 +54,14 @@ type SortBy = 'name' | 'type' | 'health' | 'rarity' | 'pack';
 type ViewMode = 'compact' | 'expanded';
 type DeckViewMode = '2x10' | '5x5';
 
+// All available packs
+const ALL_PACKS = [
+  'Charizard', 'Mewtwo', 'Pikachu', 'Mythical Island',
+  'Apex', 'Mythical', 'Celestial', 'Eevee Grove',
+  'Dialga', 'Palkia', 'Triumphant Light', 'Shining Revelry',
+  'Solgaleo', 'Lunala', 'Extradimensional Crisis'
+];
+
 export default function DeckBuilder() {
   const router = useRouter();
   
@@ -93,14 +101,6 @@ export default function DeckBuilder() {
   // Constants matching Pokemon Pocket
   const MAX_DECK_SIZE = 20;
   const MAX_COPIES_PER_CARD = 2;
-  
-  // All available packs
-  const ALL_PACKS = [
-    'Charizard', 'Mewtwo', 'Pikachu', 'Mythical Island',
-    'Apex', 'Mythical', 'Celestial', 'Eevee Grove',
-    'Dialga', 'Palkia', 'Triumphant Light', 'Shining Revelry',
-    'Solgaleo', 'Lunala', 'Extradimensional Crisis'
-  ];
   
   // Validate and analyze deck when it changes
   useEffect(() => {

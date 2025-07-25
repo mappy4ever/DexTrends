@@ -20,15 +20,15 @@ import { fetchJSON } from './unifiedFetch';
 // Cache configuration
 export const CONFIG = {
   // Memory cache settings
-  MEMORY_MAX_SIZE: 100,
-  MEMORY_TTL: 5 * 60 * 1000, // 5 minutes
+  MEMORY_MAX_SIZE: 150, // Increased for better performance
+  MEMORY_TTL: 15 * 60 * 1000, // 15 minutes (increased)
   
   // Local storage settings
-  LOCAL_TTL: 60 * 60 * 1000, // 1 hour
+  LOCAL_TTL: 6 * 60 * 60 * 1000, // 6 hours (increased)
   LOCAL_PREFIX: 'dextrends_cache_',
   
   // Database cache settings (for critical data)
-  DB_TTL: 24 * 60 * 60 * 1000, // 24 hours
+  DB_TTL: 48 * 60 * 60 * 1000, // 48 hours (increased)
   
   // Cache priorities
   PRIORITY: {

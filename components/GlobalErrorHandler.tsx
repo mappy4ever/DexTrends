@@ -28,38 +28,37 @@ export default function GlobalErrorHandler(): null {
   useEffect(() => {
     // Handle unhandled promise rejections
     const handleUnhandledRejection = (event: PromiseRejectionEvent): void => {
-      console.error('Unhandled promise rejection:', event.reason);
+      const errorMessage = event.reason?.message || '';
       
-      // Don't reload on development to see the error
-      if (process.env.NODE_ENV === 'production') {
-        // Check if it's a chunk loading error
-        const errorMessage = event.reason?.message || '';
-        if (errorMessage.includes('Loading chunk') || 
-            errorMessage.includes('Failed to fetch')) {
-          // Reload the page once to try recovering
-          if (!hasReloaded()) {
-            setReloaded(true);
-            router.reload();
-          }
-        }
+      // For chunk/module loading errors, let Next.js handle
+      if (errorMessage.includes('Loading chunk') || 
+          errorMessage.includes('Failed to fetch dynamically imported module') ||
+          errorMessage.includes('Cannot find module') ||
+          errorMessage.includes('Failed to import')) {
+        console.log('Chunk loading error in promise rejection, letting Next.js handle:', errorMessage);
+        return;
       }
+      
+      // Log other unhandled rejections
+      console.error('Unhandled promise rejection:', event.reason);
     };
 
     // Handle global errors
     const handleError = (event: ErrorEvent): void => {
-      console.error('Global error:', event.error);
-      
-      // Check for chunk loading errors
       const errorMessage = event.error?.message || '';
+      
+      // For chunk loading errors, let Next.js show 404
       if (errorMessage.includes('Loading chunk') ||
-          errorMessage.includes('Failed to fetch dynamically imported module')) {
-        event.preventDefault();
-        
-        if (process.env.NODE_ENV === 'production' && !hasReloaded()) {
-          setReloaded(true);
-          router.reload();
-        }
+          errorMessage.includes('Failed to fetch dynamically imported module') ||
+          errorMessage.includes('Cannot find module') ||
+          errorMessage.includes('Failed to import')) {
+        // Don't prevent default - let Next.js handle it
+        console.log('Chunk loading error detected, letting Next.js handle:', errorMessage);
+        return;
       }
+      
+      // Log other errors
+      console.error('Global error:', event.error);
     };
 
     window.addEventListener('unhandledrejection', handleUnhandledRejection);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchData } from '../../utils/apiutils';
+import { fetchJSON } from '../../utils/unifiedFetch';
 import { TypeBadge } from './TypeBadge';
 
 // Types
@@ -138,7 +138,7 @@ const EnhancedMovesDisplay: React.FC<EnhancedMovesDisplayProps> = ({ moves, poke
     
     for (const moveInfo of movesToLoad) {
       try {
-        const moveData = await fetchData(moveInfo.move.url);
+        const moveData = await fetchJSON<any>(moveInfo.move.url);
         moveDetails[moveInfo.move.name] = {
           ...moveData,
           versionDetails: moveInfo.version_group_details

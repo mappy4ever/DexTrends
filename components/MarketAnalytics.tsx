@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { PriceHistoryManager } from '../lib/supabase';
 import { CompactPriceIndicator } from './ui/PriceIndicator';
 import Link from 'next/link';
@@ -53,11 +53,7 @@ export default function MarketAnalytics({ className = '' }: MarketAnalyticsProps
   const [loading, setLoading] = useState(true);
   const [timeframe, setTimeframe] = useState<Timeframe>('7d');
 
-  useEffect(() => {
-    loadAnalytics();
-  }, [timeframe]);
-
-  const loadAnalytics = async () => {
+  const loadAnalytics = useCallback(async () => {
     setLoading(true);
     try {
       const days = timeframe === '24h' ? 1 : timeframe === '7d' ? 7 : 30;
@@ -91,7 +87,11 @@ export default function MarketAnalytics({ className = '' }: MarketAnalyticsProps
     } finally {
       setLoading(false);
     }
-  };
+  }, [timeframe]);
+
+  useEffect(() => {
+    loadAnalytics();
+  }, [timeframe, loadAnalytics]);
 
   const generateTopMovers = (cards: CardWithPriceData[]): TopMover[] => {
     // Simulate price changes for demo purposes using deterministic values

@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback, Fragment } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { TypeBadge } from './TypeBadge';
-import { fetchData, sanitizePokemonName } from '../../utils/apiutils';
+import { sanitizePokemonName } from '../../utils/apiutils';
+import { fetchJSON } from '../../utils/unifiedFetch';
 import { getRegionalEvolutionChain } from './RegionalEvolutionHandler';
 import { Pokemon } from '../../types/api/pokemon';
 
@@ -160,7 +161,7 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }: EnhancedEvol
         }
         
         // Get species data
-        const speciesData = await fetchData(speciesUrl);
+        const speciesData = await fetchJSON<any>(speciesUrl);
         
         // Check if evolution chain URL exists
         if (!speciesData.evolution_chain?.url) {
@@ -170,7 +171,7 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }: EnhancedEvol
         }
         
         // Get current Pokemon data to check if it's a regional form
-        const currentPokemonData = await fetchData(`https://pokeapi.co/api/v2/pokemon/${currentPokemonId}`);
+        const currentPokemonData = await fetchJSON<any>(`https://pokeapi.co/api/v2/pokemon/${currentPokemonId}`);
         const currentPokemonName = currentPokemonData.name;
         
         // Check if this is a regional form
@@ -234,7 +235,7 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }: EnhancedEvol
         // Get evolution chain for non-regional forms
         let evoData;
         try {
-          evoData = await fetchData(speciesData.evolution_chain.url);
+          evoData = await fetchJSON<any>(speciesData.evolution_chain.url);
         } catch (error) {
           console.error('Failed to fetch evolution chain:', error);
           if (isMounted) {
@@ -253,18 +254,18 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }: EnhancedEvol
           let types: string[] = [];
           let forms: PokemonForm[] = [];
           try {
-            const pokeData = await fetchData(`https://pokeapi.co/api/v2/pokemon/${speciesId}`);
+            const pokeData = await fetchJSON<any>(`https://pokeapi.co/api/v2/pokemon/${speciesId}`);
             types = pokeData.types.map((t: any) => t.type.name);
             
             // Get available forms including mega evolutions
-            const speciesDetail = await fetchData(node.species.url);
+            const speciesDetail = await fetchJSON<any>(node.species.url);
             if (speciesDetail.varieties && speciesDetail.varieties.length > 1) {
               forms = await Promise.all(
                 speciesDetail.varieties
                   .filter((v: any) => !v.is_default || isRegionalForm(v.pokemon.name) || isMegaEvolution(v.pokemon.name))
                   .map(async (variety: any) => {
                     try {
-                      const formData = await fetchData(variety.pokemon.url);
+                      const formData = await fetchJSON<any>(variety.pokemon.url);
                       // Check if this regional form should show its own evolution chain
                       const isRegional = isRegionalForm(variety.pokemon.name);
                       return {
@@ -394,7 +395,7 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }: EnhancedEvol
       try {
         // Get species data to check varieties
         const speciesUrl = `https://pokeapi.co/api/v2/pokemon-species/${evolutionData.structure.name}`;
-        const speciesData = await fetchData(speciesUrl);
+        const speciesData = await fetchJSON<any>(speciesUrl);
         
         if (speciesData.varieties && speciesData.varieties.length > 1) {
           // Filter for regional variants using naming pattern
@@ -442,8 +443,8 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }: EnhancedEvol
 
   // Regular evolution display with split evolution support
   return (
-    <div className="w-full">
-      <div className="flex items-start justify-between">
+    <div className="w-full overflow-x-auto pb-4">
+      <div className="flex items-start justify-between min-w-max">
         <div className="space-y-8 flex-1">
           {/* Main evolution chain */}
           <EvolutionTreeDisplay 

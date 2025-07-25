@@ -59,6 +59,9 @@ const SetIdPage: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
+  const [loadingMoreCards, setLoadingMoreCards] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [hasMoreCards, setHasMoreCards] = useState<boolean>(true);
   
   // Filter states
   const [filterRarity, setFilterRarity] = useState<string>("");
@@ -77,6 +80,49 @@ const SetIdPage: NextPage = () => {
   // Modal state
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [modalCard, setModalCard] = useState<TCGCard | null>(null);
+
+  // Load more cards in background for complete statistics
+  const loadMoreCardsInBackground = useCallback(async () => {
+    if (!setid || !hasMoreCards || loadingMoreCards) return;
+    
+    let page = currentPage + 1;
+    const allCards: TCGCard[] = [...cards];
+    
+    try {
+      while (hasMoreCards) {
+        const data = await fetchJSON<{ cards: TCGCard[]; pagination: any }>(
+          `/api/tcg-sets/${setid}?page=${page}&pageSize=20`,
+          {
+            useCache: true,
+            cacheTime: 30 * 60 * 1000,
+            retries: 1,
+            timeout: 8000
+          }
+        );
+        
+        if (data?.cards?.length) {
+          allCards.push(...data.cards);
+          setCards(prevCards => [...prevCards, ...data.cards]);
+          
+          // Update statistics with complete dataset
+          calculateSetStatistics(allCards);
+        }
+        
+        if (!data?.pagination?.hasMore) {
+          setHasMoreCards(false);
+          break;
+        }
+        
+        page++;
+        
+        // Small delay to prevent overwhelming the API
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+    } catch (err) {
+      logger.warn('Background card loading failed:', err);
+      // Non-critical failure, keep existing cards
+    }
+  }, [setid, hasMoreCards, loadingMoreCards, currentPage, cards]);
 
   // Calculate set statistics when cards are loaded
   const calculateSetStatistics = useCallback((cardsData: TCGCard[]) => {
@@ -153,12 +199,14 @@ const SetIdPage: NextPage = () => {
       performanceMonitor.startTimer('page-load', `tcg-set-page-${setid}`);
       
       try {
-        const data = await fetchJSON<{ set: CardSet; cards: TCGCard[] }>(
-          `/api/tcg-sets/${setid}`,
+        // Load first page of cards immediately for faster initial render
+        const data = await fetchJSON<{ set: CardSet; cards: TCGCard[]; pagination: any }>(
+          `/api/tcg-sets/${setid}?page=1&pageSize=20`,
           {
             useCache: true,
-            cacheTime: 5 * 60 * 1000, // Cache for 5 minutes
-            retries: 2
+            cacheTime: 30 * 60 * 1000, // Cache for 30 minutes
+            retries: 2,
+            timeout: 10000 // Reduced timeout
           }
         );
         // End API call monitoring
@@ -174,19 +222,15 @@ const SetIdPage: NextPage = () => {
         if (data?.set) setSetInfo(data.set);
         if (data?.cards) {
           setCards(data.cards);
+          setCurrentPage(1);
+          setHasMoreCards(data.pagination?.hasMore || false);
           
-          // Defer statistics calculation for large sets
-          if (data.cards.length > 100) {
-            safeRequestIdleCallback(() => {
-              performanceMonitor.startTimer('statistics-calculation', `stats-${setid}`);
-              calculateSetStatistics(data.cards);
-              const calcTime = performanceMonitor.endTimer('statistics-calculation', `stats-${setid}`);
-              if (calcTime && calcTime > 500) {
-                logger.warn(`Slow statistics calculation for set ${setid}: ${calcTime}ms`);
-              }
-            });
-          } else {
-            calculateSetStatistics(data.cards);
+          // Calculate statistics with first batch of cards (for immediate display)
+          calculateSetStatistics(data.cards);
+          
+          // Load remaining cards in background if there are more
+          if (data.pagination?.hasMore) {
+            loadMoreCardsInBackground();
           }
         }
       } catch (err: any) {

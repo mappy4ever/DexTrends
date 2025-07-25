@@ -9,6 +9,7 @@ import { TypeBadge } from "../components/ui/TypeBadge";
 import { TypeFilter } from "../components/ui/forms/TypeFilter";
 import { GlassContainer } from "../components/ui/design-system/GlassContainer";
 import { GradientButton } from "../components/ui/design-system/GradientButton";
+import CircularButton from "../components/ui/CircularButton";
 import { motion } from "framer-motion";
 import PocketCardList from "../components/PocketCardList";
 import { fetchPocketData } from "../utils/pocketData";
@@ -277,14 +278,16 @@ const PocketMode: NextPage = () => {
                   onChange={(e) => setSearch(e.target.value)}
                 />
                 {search && (
-                  <button 
-                    className="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                  <CircularButton
+                    size="sm"
+                    variant="ghost"
+                    className="absolute inset-y-0 right-0 !p-0 pr-4 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
                     onClick={() => setSearch('')}
                   >
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
-                  </button>
+                  </CircularButton>
                 )}
               </div>
               
@@ -301,86 +304,70 @@ const PocketMode: NextPage = () => {
                     >
                       All
                     </GradientButton>
-                    <button
+                    <CircularButton
                       onClick={() => setRarityFilter('◊')}
-                      className={`px-4 py-2 rounded-full font-medium transition-all glass-light border ${
-                        rarityFilter === '◊'
-                          ? 'border-gray-500 bg-gray-500/20'
-                          : 'border-gray-200 dark:border-gray-700 hover:scale-105'
-                      }`}
+                      variant={rarityFilter === '◊' ? 'primary' : 'secondary'}
+                      size="sm"
+                      className={rarityFilter === '◊' ? 'border-gray-500 bg-gray-500/20' : ''}
                     >
                       ◊ Common
-                    </button>
-                    <button
+                    </CircularButton>
+                    <CircularButton
                       onClick={() => setRarityFilter('◊◊')}
-                      className={`px-4 py-2 rounded-full font-medium transition-all glass-light border ${
-                        rarityFilter === '◊◊'
-                          ? 'border-green-500 bg-green-500/20'
-                          : 'border-gray-200 dark:border-gray-700 hover:scale-105'
-                      }`}
+                      variant={rarityFilter === '◊◊' ? 'primary' : 'secondary'}
+                      size="sm"
+                      className={rarityFilter === '◊◊' ? 'border-green-500 bg-green-500/20' : ''}
                     >
                       ◊◊ Uncommon
-                    </button>
-                    <button
+                    </CircularButton>
+                    <CircularButton
                       onClick={() => setRarityFilter('◊◊◊')}
-                      className={`px-4 py-2 rounded-full font-medium transition-all glass-light border ${
-                        rarityFilter === '◊◊◊'
-                          ? 'border-blue-500 bg-blue-500/20'
-                          : 'border-gray-200 dark:border-gray-700 hover:scale-105'
-                      }`}
+                      variant={rarityFilter === '◊◊◊' ? 'primary' : 'secondary'}
+                      size="sm"
+                      className={rarityFilter === '◊◊◊' ? 'border-blue-500 bg-blue-500/20' : ''}
                     >
                       ◊◊◊ Rare
-                    </button>
-                    <button
+                    </CircularButton>
+                    <CircularButton
                       onClick={() => setRarityFilter('◊◊◊◊')}
-                      className={`px-4 py-2 rounded-full font-medium transition-all glass-light border ${
-                        rarityFilter === '◊◊◊◊'
-                          ? 'border-purple-500 bg-purple-500/20'
-                          : 'border-gray-200 dark:border-gray-700 hover:scale-105'
-                      }`}
+                      variant={rarityFilter === '◊◊◊◊' ? 'primary' : 'secondary'}
+                      size="sm"
+                      className={rarityFilter === '◊◊◊◊' ? 'border-purple-500 bg-purple-500/20' : ''}
                     >
                       ◊◊◊◊ Double Rare
-                    </button>
-                    <button
+                    </CircularButton>
+                    <CircularButton
                       onClick={() => setRarityFilter('★')}
-                      className={`px-4 py-2 rounded-full font-medium transition-all glass-light border ${
-                        rarityFilter === '★'
-                          ? 'border-yellow-500 bg-yellow-500/20'
-                          : 'border-gray-200 dark:border-gray-700 hover:scale-105'
-                      }`}
+                      variant={rarityFilter === '★' ? 'primary' : 'secondary'}
+                      size="sm"
+                      className={rarityFilter === '★' ? 'border-yellow-500 bg-yellow-500/20' : ''}
                     >
                       ★ EX
-                    </button>
-                    <button
+                    </CircularButton>
+                    <CircularButton
                       onClick={() => setRarityFilter('immersive')}
-                      className={`px-4 py-2 rounded-full font-medium transition-all glass-light border ${
-                        rarityFilter === 'immersive'
-                          ? 'border-pink-500 bg-pink-500/20'
-                          : 'border-gray-200 dark:border-gray-700 hover:scale-105'
-                      }`}
+                      variant={rarityFilter === 'immersive' ? 'primary' : 'secondary'}
+                      size="sm"
+                      className={rarityFilter === 'immersive' ? 'border-pink-500 bg-pink-500/20' : ''}
                     >
                       ★★★ Immersive
-                    </button>
-                    <button
+                    </CircularButton>
+                    <CircularButton
                       onClick={() => setRarityFilter('★★')}
-                      className={`px-4 py-2 rounded-full font-medium transition-all glass-light border ${
-                        rarityFilter === '★★'
-                          ? 'border-red-500 bg-red-500/20'
-                          : 'border-gray-200 dark:border-gray-700 hover:scale-105'
-                      }`}
+                      variant={rarityFilter === '★★' ? 'primary' : 'secondary'}
+                      size="sm"
+                      className={rarityFilter === '★★' ? 'border-red-500 bg-red-500/20' : ''}
                     >
                       ★★ Crown
-                    </button>
-                    <button
+                    </CircularButton>
+                    <CircularButton
                       onClick={() => setRarityFilter('fullart')}
-                      className={`px-4 py-2 rounded-full font-medium transition-all glass-light border ${
-                        rarityFilter === 'fullart'
-                          ? 'border-gradient-to-r from-yellow-500 to-pink-500 bg-gradient-to-r from-yellow-500/20 to-pink-500/20'
-                          : 'border-gray-200 dark:border-gray-700 hover:scale-105'
-                      }`}
+                      variant={rarityFilter === 'fullart' ? 'primary' : 'secondary'}
+                      size="sm"
+                      className={rarityFilter === 'fullart' ? 'border-gradient-to-r from-yellow-500 to-pink-500 bg-gradient-to-r from-yellow-500/20 to-pink-500/20' : ''}
                     >
                       Full Art
-                    </button>
+                    </CircularButton>
                   </div>
                 </div>
                 

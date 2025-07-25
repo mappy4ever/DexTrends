@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchData } from '../../utils/apiutils';
+import { fetchJSON } from '../../utils/unifiedFetch';
 import type { Pokemon } from '../../types/api/pokemon';
 
 interface PokemonVariety {
@@ -200,7 +200,8 @@ export default function PokemonFormSelector({
     
     try {
       // Load the form's data
-      const formData = await fetchData<Pokemon>(form.url);
+      const formData = await fetchJSON<Pokemon>(form.url);
+      if (!formData) throw new Error('No form data received');
       console.log('Form data loaded:', formData.name);
       
       // Validate the form data has required fields

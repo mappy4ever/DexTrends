@@ -26,54 +26,67 @@ import { PWAProvider } from '../components/pwa/PWAProvider';
 import dynamic from 'next/dynamic';
 import { initializeFeatureFlags, isFeatureEnabled } from '../utils/featureFlags';
 
+// Create stable references for dynamic imports to improve Fast Refresh
+const dynamicImports = {
+  SimpleBackToTop: () => import('../components/ui/SimpleBackToTop'),
+  AccessibilityProvider: () => import('../components/ui/AccessibilityProvider'),
+  KeyboardShortcutsManager: () => import('../components/qol/KeyboardShortcuts'),
+  PushNotifications: () => import('../components/mobile/PushNotifications'),
+  GlobalSearchShortcuts: () => import('../components/qol/GlobalSearchShortcuts'),
+  PreferencesManager: () => import('../components/qol/PreferencesManager'),
+  NotificationProvider: () => import('../components/qol/NotificationSystem'),
+  ContextualHelpProvider: () => import('../components/qol/ContextualHelp'),
+  PreferencesProvider: () => import('../components/qol/UserPreferences'),
+};
+
 // Safe components - only load confirmed existing ones
-const SimpleBackToTop = dynamic(() => import('../components/ui/SimpleBackToTop'), {
+const SimpleBackToTop = dynamic(dynamicImports.SimpleBackToTop, {
   ssr: false,
   loading: () => <div className="fixed bottom-4 right-4 w-12 h-12" />
 });
 
 // Core UX components that should be safe
-const AccessibilityProvider = dynamic(() => import('../components/ui/AccessibilityProvider'), {
+const AccessibilityProvider = dynamic(dynamicImports.AccessibilityProvider, {
   ssr: false,
   loading: () => <div />
 });
 
 // Keyboard shortcuts manager
-const KeyboardShortcutsManager = dynamic(() => import('../components/qol/KeyboardShortcuts'), {
+const KeyboardShortcutsManager = dynamic(dynamicImports.KeyboardShortcutsManager, {
   ssr: false,
   loading: () => null
 });
 
 // Mobile push notifications
-const PushNotifications = dynamic(() => import('../components/mobile/PushNotifications'), {
+const PushNotifications = dynamic(dynamicImports.PushNotifications, {
   ssr: false,
   loading: () => null
 });
 
 // Global search shortcuts with command palette
-const GlobalSearchShortcuts = dynamic(() => import('../components/qol/GlobalSearchShortcuts'), {
+const GlobalSearchShortcuts = dynamic(dynamicImports.GlobalSearchShortcuts, {
   ssr: false,
   loading: () => null
 });
 
 // Preferences manager
-const PreferencesManager = dynamic(() => import('../components/qol/PreferencesManager'), {
+const PreferencesManager = dynamic(dynamicImports.PreferencesManager, {
   ssr: false,
   loading: () => null
 });
 
 // QOL Component System
-const NotificationProvider = dynamic(() => import('../components/qol/NotificationSystem'), {
+const NotificationProvider = dynamic(dynamicImports.NotificationProvider, {
   ssr: false,
   loading: () => null
 });
 
-const ContextualHelpProvider = dynamic(() => import('../components/qol/ContextualHelp'), {
+const ContextualHelpProvider = dynamic(dynamicImports.ContextualHelpProvider, {
   ssr: false,
   loading: () => null
 });
 
-const PreferencesProvider = dynamic(() => import('../components/qol/UserPreferences'), {
+const PreferencesProvider = dynamic(dynamicImports.PreferencesProvider, {
   ssr: false,
   loading: () => null
 });
@@ -101,6 +114,13 @@ function MyApp({ Component, pageProps, router }: MyAppProps) {
   const [isClient, setIsClient] = useState(false);
   const [featuresEnabled, setFeaturesEnabled] = useState<Record<string, boolean>>({});
   const [isScrolling, setIsScrolling] = useState(false);
+  
+  // Check if this is an error page
+  // Error pages should not be wrapped in ErrorBoundary to prevent infinite loops
+  // and to ensure they can render even if there are errors in the app
+  const isErrorPage = router.pathname === '/404' || 
+                     router.pathname === '/500' || 
+                     router.pathname === '/_error';
   
   // EMERGENCY: Minimal initialization only
   useEffect(() => {
@@ -134,10 +154,27 @@ function MyApp({ Component, pageProps, router }: MyAppProps) {
       window.removeEventListener('scroll', handleScroll);
       clearTimeout(scrollTimer);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Remove isScrolling dependency to prevent re-renders
 
-  return (
-    <ErrorBoundary>
+  // Create minimal content for error pages
+  if (isErrorPage) {
+    console.log('Rendering error page with minimal wrapper:', router.pathname);
+    return (
+      <>
+        <Head>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
+          <meta name="theme-color" content="#dc2626" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <Component {...pageProps} />
+      </>
+    );
+  }
+
+  // Create the main app content for non-error pages
+  const appContent = (
+    <>
       <GlobalErrorHandler />
       <PWAProvider>
         <Head>
@@ -187,8 +224,11 @@ function MyApp({ Component, pageProps, router }: MyAppProps) {
           </NotificationProvider>
         </UnifiedAppProvider>
       </PWAProvider>
-    </ErrorBoundary>
+    </>
   );
+
+  // Wrap non-error pages with ErrorBoundary
+  return <ErrorBoundary>{appContent}</ErrorBoundary>;
 }
 
 

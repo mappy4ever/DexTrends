@@ -8,6 +8,7 @@ import BackToTop from '../components/ui/SimpleBackToTop';
 import { FadeIn, SlideUp } from '../components/ui/animations/animations';
 import { GlassContainer } from '../components/ui/design-system/GlassContainer';
 import { GradientButton } from '../components/ui/design-system/GradientButton';
+import CircularButton from '../components/ui/CircularButton';
 import { motion } from 'framer-motion';
 import type { NextPage } from 'next';
 
@@ -132,13 +133,15 @@ const MarketPage: NextPage = () => {
               <GlassContainer variant="medium" rounded="2xl" padding="sm" className="max-w-4xl w-full">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                   {tabs.map(tab => (
-                    <button
+                    <CircularButton
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
-                      className={`relative p-4 rounded-xl transition-all duration-300 text-left ${
+                      variant={activeTab === tab.id ? 'primary' : 'secondary'}
+                      size="lg"
+                      className={`relative p-4 !rounded-xl text-left w-full ${
                         activeTab === tab.id
                           ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg scale-105'
-                          : 'bg-transparent text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700/50'
+                          : 'bg-transparent text-gray-600 dark:text-gray-400'
                       }`}
                     >
                       <div className="flex items-center gap-3 mb-2">
@@ -154,7 +157,7 @@ const MarketPage: NextPage = () => {
                       {activeTab === tab.id && (
                         <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-white rounded-full" />
                       )}
-                    </button>
+                    </CircularButton>
                   ))}
                 </div>
               </GlassContainer>

@@ -11,7 +11,7 @@ import { TypeBadge } from "../../components/ui/TypeBadge";
 import logger from "../../utils/logger";
 import { SmartSkeleton } from "../../components/ui/SkeletonLoader";
 import { BsBook, BsSearch, BsLightning, BsShield, BsQuestionCircle } from "react-icons/bs";
-import { fetchData } from "../../utils/apiutils";
+import { fetchJSON } from "../../utils/unifiedFetch";
 
 // Interfaces
 interface Move {
@@ -119,17 +119,19 @@ const MovesPage: NextPage = () => {
       setLoading(true);
       try {
         // PokeAPI has a lot of moves, so we'll fetch them with pagination
-        const response = await fetchData<MoveListResponse>(`https://pokeapi.co/api/v2/move?limit=1000`);
+        const response = await fetchJSON<MoveListResponse>(`https://pokeapi.co/api/v2/move?limit=1000`);
         
         // Fetch details for first batch of moves
         const moveDetailsPromises = (response?.results?.slice(0, 100) || []).map(move => 
-          fetchData<MoveApiResponse>(move.url)
+          fetchJSON<MoveApiResponse>(move.url)
         );
         
         const moveDetails = await Promise.all(moveDetailsPromises);
         
-        // Process move data
-        const processedMoves = moveDetails.map((move) => {
+        // Process move data - filter out any null values
+        const processedMoves = moveDetails
+          .filter((move): move is MoveApiResponse => move !== null)
+          .map((move) => {
           const englishEntry = move.effect_entries?.find(entry => entry.language.name === 'en');
           const englishFlavor = move.flavor_text_entries?.find(entry => entry.language.name === 'en');
           

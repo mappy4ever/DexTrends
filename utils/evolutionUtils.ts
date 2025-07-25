@@ -3,7 +3,8 @@
  * Optimized and reusable across the application
  */
 
-import { fetchData, sanitizePokemonName } from './apiutils';
+import { sanitizePokemonName } from './apiutils';
+import { fetchJSON } from './unifiedFetch';
 import { extractIdFromUrl } from './pokemonutils';
 import type { Pokemon, PokemonSpecies, EvolutionChain, EvolutionLink, EvolutionDetail } from '../types/api/pokemon';
 
@@ -48,7 +49,10 @@ const cachedFetchData = async <T = any>(url: string): Promise<T> => {
     return cached.data as T;
   }
   
-  const data = await fetchData<T>(url);
+  const data = await fetchJSON<T>(url);
+  if (!data) {
+    throw new Error(`Failed to fetch data from ${url}`);
+  }
   evolutionCache.set(url, { data, timestamp: now });
   return data;
 };

@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import type { Pokemon } from '../../../types/api/pokemon';
+import { TypeBadge } from '../TypeBadge';
 
 interface CircularPokemonCardProps {
   pokemon: {
@@ -135,6 +136,18 @@ const CircularPokemonCard = memo(({
         ">
           {pokemon.name}
         </h3>
+        {/* Pokemon types */}
+        {pokemon.types && pokemon.types.length > 0 && (
+          <div className="flex justify-center gap-1 mt-1">
+            {pokemon.types.map((type, index) => (
+              <TypeBadge
+                key={index}
+                type={type.type.name}
+                size="xs"
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

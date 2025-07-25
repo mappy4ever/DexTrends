@@ -119,9 +119,9 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
     } finally {
       setLoading(false);
     }
-  }, [userId, getSessionId, selectedCollection]);
+  }, [userId, getSessionId]);
 
-  const calculatePortfolioValue = async () => {
+  const calculatePortfolioValue = useCallback(async () => {
     if (!selectedCollection?.cards) return;
 
     let totalValue = 0;
@@ -131,9 +131,9 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
       totalValue += currentPrice * quantity;
     }
     setPortfolioValue(totalValue);
-  };
+  }, [selectedCollection]);
 
-  const getCurrentCardPrice = async (cardId: string): Promise<number> => {
+  const getCurrentCardPrice = useCallback(async (cardId: string): Promise<number> => {
     try {
       // In a real implementation, this would fetch from Pokemon TCG API or local cache
       // Use deterministic price based on card ID for consistency
@@ -147,9 +147,9 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
     } catch (error) {
       return 0;
     }
-  };
+  }, []);
 
-  const createCollection = async (name: string, description: string) => {
+  const createCollection = useCallback(async (name: string, description: string) => {
     try {
       const sessionId = userId || getSessionId();
       const table = userId ? 'user_collections' : 'session_collections';
@@ -181,7 +181,7 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
     } catch (error) {
       // Error creating collection
     }
-  };
+  }, [userId, getSessionId]);
 
   const addCardToCollection = async (cardData: TCGCard, quantity = 1, condition = 'Near Mint', notes = '') => {
     if (!selectedCollection) return;
@@ -373,7 +373,7 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
     }
   }, [selectedCollection, portfolioValue]);
 
-  const updateCollection = async (collectionId: string, updates: Partial<Collection>) => {
+  const updateCollection = useCallback(async (collectionId: string, updates: Partial<Collection>) => {
     try {
       const sessionId = userId || getSessionId();
       const table = userId ? 'user_collections' : 'session_collections';
@@ -396,7 +396,7 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
     } catch (error) {
       console.error('Error updating collection:', error);
     }
-  };
+  }, [userId, getSessionId]);
 
   const importCollection = useCallback(async (file: File) => {
     setImportError(null);

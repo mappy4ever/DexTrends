@@ -14,6 +14,7 @@ import { FadeIn, SlideUp } from '../../components/ui/animations/animations';
 import { TypeBadge } from '../../components/ui/TypeBadge';
 import { PageLoader } from '../../utils/unifiedLoading';
 import FullBleedWrapper from '../../components/ui/FullBleedWrapper';
+import CircularButton from '../../components/ui/CircularButton';
 import { analyzeTeamTypeSynergy, getTypeMatchups } from '../../utils/typeEffectiveness';
 import type { TeamMember, Move, Nature, StatSpread } from '../../types/team-builder';
 import type { Pokemon } from '../../types/api/pokemon';
@@ -197,36 +198,30 @@ const AdvancedTeamBuilder: NextPage = () => {
 
           {/* Tabs */}
           <div className="flex flex-wrap gap-2 mb-6">
-            <button
+            <CircularButton
               onClick={() => setActiveTab('builder')}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                activeTab === 'builder'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
-              }`}
+              variant={activeTab === 'builder' ? 'primary' : 'secondary'}
+              size="md"
+              className={activeTab === 'builder' ? 'bg-blue-600' : ''}
             >
               Team Builder
-            </button>
-            <button
+            </CircularButton>
+            <CircularButton
               onClick={() => setActiveTab('analysis')}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                activeTab === 'analysis'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
-              }`}
+              variant={activeTab === 'analysis' ? 'primary' : 'secondary'}
+              size="md"
+              className={activeTab === 'analysis' ? 'bg-blue-600' : ''}
             >
               Synergy Analysis
-            </button>
-            <button
+            </CircularButton>
+            <CircularButton
               onClick={() => setActiveTab('export')}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                activeTab === 'export'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
-              }`}
+              variant={activeTab === 'export' ? 'primary' : 'secondary'}
+              size="md"
+              className={activeTab === 'export' ? 'bg-blue-600' : ''}
             >
               Export/Import
-            </button>
+            </CircularButton>
             <a
               href="/team-builder/ev-optimizer"
               className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-200 flex items-center gap-2"
@@ -263,10 +258,12 @@ const AdvancedTeamBuilder: NextPage = () => {
                   {searchResults.length > 0 && (
                     <div className="mt-4 space-y-2">
                       {searchResults.map((pokemon) => (
-                        <button
+                        <CircularButton
                           key={pokemon.id}
                           onClick={() => addToTeam(pokemon)}
-                          className="w-full p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors flex items-center gap-3"
+                          variant="secondary"
+                          size="lg"
+                          className="w-full p-3 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 !rounded-lg justify-start"
                         >
                           <Image
                             src={pokemon.sprites?.front_default || '/dextrendslogo.png'}
@@ -282,7 +279,7 @@ const AdvancedTeamBuilder: NextPage = () => {
                               )) || null}
                             </div>
                           </div>
-                        </button>
+                        </CircularButton>
                       ))}
                     </div>
                   )}
@@ -346,13 +343,15 @@ const AdvancedTeamBuilder: NextPage = () => {
               <h2 className="text-xl font-bold mb-4">Export/Import Team</h2>
               
               <div className="space-y-4">
-                <button
+                <CircularButton
                   onClick={exportTeam}
                   disabled={team.length === 0}
-                  className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                  variant="primary"
+                  size="lg"
+                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400"
                 >
                   Export Team as JSON
-                </button>
+                </CircularButton>
 
                 <div className="border-t pt-4">
                   <h3 className="font-medium mb-2">Showdown Format</h3>
@@ -402,18 +401,22 @@ const TeamMemberCard: React.FC<{
         </div>
         
         <div className="flex gap-2">
-          <button
+          <CircularButton
             onClick={onEdit}
+            variant="ghost"
+            size="sm"
             className="text-blue-600 hover:text-blue-700"
           >
             Edit
-          </button>
-          <button
+          </CircularButton>
+          <CircularButton
             onClick={onRemove}
+            variant="ghost"
+            size="sm"
             className="text-red-600 hover:text-red-700"
           >
             Remove
-          </button>
+          </CircularButton>
         </div>
       </div>
 

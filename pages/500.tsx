@@ -1,11 +1,19 @@
-import Link from 'next/link';
 import type { NextPage } from 'next';
 import { motion } from 'framer-motion';
 import { GlassContainer } from '../components/ui/design-system/GlassContainer';
-import { GradientButton } from '../components/ui/design-system/GradientButton';
+import { CircularButton } from '../components/ui/design-system';
+import { FiRefreshCw } from 'react-icons/fi';
+import { AiOutlineHome } from 'react-icons/ai';
+import { FaBolt } from 'react-icons/fa';
+import Head from 'next/head';
 
 const Custom500: NextPage = () => {
   return (
+    <>
+      <Head>
+        <title>500 - Server Error | DexTrends</title>
+        <meta name="description" content="Something went wrong on our servers. Our team has been notified and is working to fix it." />
+      </Head>
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
       {/* Electric Background */}
       <div className="absolute inset-0 gradient-bg-electric opacity-20" />
@@ -86,24 +94,24 @@ const Custom500: NextPage = () => {
                 repeat: Infinity,
               }}
             >
-              <span className="text-4xl">⚡</span>
+              <FaBolt className="text-4xl text-yellow-400" />
             </motion.div>
           </motion.div>
 
-          <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-4">
+          <h2 className="text-3xl font-semibold text-gray-800 dark:text-white mb-4">
             Critical Hit! Server Error!
           </h2>
           
-          <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
+          <p className="text-base text-gray-600 dark:text-gray-400 mb-8">
             The server used Self-Destruct!
             <br />
             It's super effective... at breaking things.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <GradientButton
+            <CircularButton
               onClick={() => window.location.reload()}
-              variant="electric"
+              variant="primary"
               size="lg"
               className="group"
             >
@@ -114,18 +122,24 @@ const Custom500: NextPage = () => {
                   transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
                   className="inline-block"
                 >
-                  🔄
+                  <FiRefreshCw className="w-5 h-5" />
                 </motion.span>
               </span>
-            </GradientButton>
+            </CircularButton>
             
-            <GradientButton
-              onClick={() => window.location.href = '/'}
+            <CircularButton
+              onClick={() => {
+                // Use window.location for reliable navigation in error states
+                window.location.href = '/';
+              }}
               variant="secondary"
               size="lg"
             >
-              Flee to Pokemon Center
-            </GradientButton>
+              <span className="flex items-center gap-2">
+                <AiOutlineHome className="w-5 h-5" />
+                Flee to Pokemon Center
+              </span>
+            </CircularButton>
           </div>
 
           {/* Fun Pokemon quote */}
@@ -145,12 +159,13 @@ const Custom500: NextPage = () => {
             transition={{ delay: 1.5 }}
             className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 rounded-full text-sm"
           >
-            <span>💫</span>
+            <FaBolt className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />
             Server is paralyzed! It may be unable to move!
           </motion.div>
         </GlassContainer>
       </motion.div>
     </div>
+    </>
   );
 };
 

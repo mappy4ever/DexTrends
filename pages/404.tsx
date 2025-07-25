@@ -2,8 +2,9 @@ import Link from 'next/link';
 import type { NextPage } from 'next';
 import { motion } from 'framer-motion';
 import { GlassContainer } from '../components/ui/design-system/GlassContainer';
-import { GradientButton } from '../components/ui/design-system/GradientButton';
+import { CircularButton } from '../components/ui/design-system';
 import Image from 'next/image';
+import Head from 'next/head';
 
 const Custom404: NextPage = () => {
   const pokemonSprites = [
@@ -15,7 +16,12 @@ const Custom404: NextPage = () => {
   ];
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
+    <>
+      <Head>
+        <title>404 - Page Not Found | DexTrends</title>
+        <meta name="description" content="The page you're looking for has escaped into the tall grass. Maybe it used Teleport?" />
+      </Head>
+      <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
       {/* Gradient Background */}
       <div className="absolute inset-0 gradient-bg-primary opacity-20" />
       
@@ -25,8 +31,8 @@ const Custom404: NextPage = () => {
           key={index}
           className="absolute w-24 h-24 opacity-10"
           initial={{ 
-            x: Math.random() * window.innerWidth - window.innerWidth / 2,
-            y: Math.random() * window.innerHeight - window.innerHeight / 2,
+            x: `${Math.random() * 100 - 50}vw`,
+            y: `${Math.random() * 100 - 50}vh`,
           }}
           animate={{
             x: [
@@ -70,7 +76,7 @@ const Custom404: NextPage = () => {
               ease: "easeInOut"
             }}
           >
-            <div className="text-8xl md:text-9xl font-bold bg-gradient-to-r from-pokemon-red to-pokemon-blue bg-clip-text text-transparent">
+            <div className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-pokemon-red to-pokemon-blue bg-clip-text text-transparent">
               404
             </div>
             
@@ -87,32 +93,32 @@ const Custom404: NextPage = () => {
             </motion.div>
           </motion.div>
 
-          <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-4">
+          <h2 className="text-3xl font-semibold text-gray-800 dark:text-white mb-4">
             Oops! This Pokemon has fled!
           </h2>
           
-          <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
+          <p className="text-base text-gray-600 dark:text-gray-400 mb-8">
             The page you're looking for has escaped into the tall grass.
             <br />
             Maybe it used Teleport?
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <GradientButton
+            <CircularButton
               onClick={() => window.location.href = '/'}
               variant="primary"
               size="lg"
             >
               Return to Pallet Town
-            </GradientButton>
+            </CircularButton>
             
-            <GradientButton
+            <CircularButton
               onClick={() => window.history.back()}
               variant="secondary"
               size="lg"
             >
               Go Back
-            </GradientButton>
+            </CircularButton>
           </div>
 
           {/* Fun Pokemon quote */}
@@ -127,6 +133,7 @@ const Custom404: NextPage = () => {
         </GlassContainer>
       </motion.div>
     </div>
+    </>
   );
 };
 

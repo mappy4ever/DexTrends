@@ -371,3 +371,27 @@ export function getTypeColor(type: string): string {
   
   return colors[type.toLowerCase()] || '#68A090';
 }
+
+/**
+ * Get type effectiveness color for badges
+ */
+export function getTypeEffectivenessColor(multiplier: number): string {
+  if (multiplier === 0) return 'bg-gray-500 text-white';
+  if (multiplier === 0.25) return 'bg-green-600 text-white';
+  if (multiplier === 0.5) return 'bg-green-500 text-white';
+  if (multiplier === 2) return 'bg-red-500 text-white';
+  if (multiplier === 4) return 'bg-red-600 text-white';
+  return 'bg-gray-400 text-white';
+}
+
+/**
+ * Get effectiveness label
+ */
+export function getEffectivenessLabel(multiplier: number): string {
+  if (multiplier === 0) return '0×';
+  if (multiplier === 0.25) return '¼×';
+  if (multiplier === 0.5) return '½×';
+  if (multiplier === 2) return '2×';
+  if (multiplier === 4) return '4×';
+  return '1×';
+}

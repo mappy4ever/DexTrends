@@ -9,8 +9,9 @@ import { ListItemSkeleton } from "../../components/ui/SkeletonLoader";
 import { AiOutlineBulb } from "react-icons/ai";
 import { BsSearch, BsShield, BsLightning, BsDroplet, BsFire } from "react-icons/bs";
 import { GiPunch, GiHealing, GiSpeedometer, GiShieldBounces } from "react-icons/gi";
-import { fetchData } from "../../utils/apiutils";
+import { fetchJSON } from "../../utils/unifiedFetch";
 import logger from "../../utils/logger";
+import type { AbilityData } from "../../types/api/pokemon";
 
 // Interfaces
 interface Ability {
@@ -210,17 +211,19 @@ const AbilitiesPage: NextPage = () => {
       setLoading(true);
       try {
         // PokeAPI has many abilities, fetch them with pagination
-        const response = await fetchData<AbilityListResponse>(`https://pokeapi.co/api/v2/ability?limit=350`);
+        const response = await fetchJSON<AbilityListResponse>(`https://pokeapi.co/api/v2/ability?limit=350`);
         
         // Fetch details for abilities
         const abilityDetailsPromises = (response?.results?.slice(0, 200) || []).map(ability => 
-          fetchData<AbilityApiResponse>(ability.url)
+          fetchJSON<AbilityApiResponse>(ability.url)
         );
         
         const abilityDetails = await Promise.all(abilityDetailsPromises);
         
-        // Process ability data
-        const processedAbilities = abilityDetails.map((ability) => {
+        // Process ability data - filter out any null values
+        const processedAbilities = abilityDetails
+          .filter((ability): ability is AbilityData => ability !== null)
+          .map((ability) => {
           // Categorize abilities based on their effects
           let category = 'other';
           const englishEntry = ability.effect_entries.find(entry => entry.language.name === 'en');

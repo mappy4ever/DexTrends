@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TypeBadge } from './TypeBadge';
-import { fetchData } from '../../utils/apiutils';
+import { fetchJSON } from '../../utils/unifiedFetch';
 
 interface Move {
   move: {
@@ -90,7 +90,7 @@ const SimplifiedMovesDisplay: React.FC<SimplifiedMovesDisplayProps> = ({ moves, 
     
     for (const moveName of movesToLoad) {
       try {
-        const moveData = await fetchData(`https://pokeapi.co/api/v2/move/${moveName}`);
+        const moveData = await fetchJSON<any>(`https://pokeapi.co/api/v2/move/${moveName}`);
         newMovesData[moveName] = moveData;
       } catch (error) {
         console.error(`Failed to load move: ${moveName}`, error);
