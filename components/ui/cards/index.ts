@@ -4,6 +4,8 @@ export { default as UnifiedCard } from './UnifiedCard';
 export { default as PokemonCardItem } from './PokemonCardItem';
 export { default as EvolutionStageCard } from './EvolutionStageCard';
 export { default as CardComparisonTool } from './CardComparisonTool';
+export { default as FlippableCard } from './FlippableCard';
+export { default as FlippableTCGCard } from './FlippableTCGCard';
 
 // Trainer card components
 export { default as GymLeaderCard } from './GymLeaderCard';

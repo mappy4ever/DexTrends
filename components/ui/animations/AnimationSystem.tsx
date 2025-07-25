@@ -55,25 +55,28 @@ export const PageTransition = ({ children, className = '' }: AnimationProps) => 
   const pageVariants = {
     initial: {
       opacity: 0,
-      y: prefersReducedMotion ? 0 : 24,
+      y: prefersReducedMotion ? 0 : 20,
       scale: prefersReducedMotion ? 1 : 0.98,
+      filter: prefersReducedMotion ? 'none' : 'blur(4px)',
     },
     in: {
       opacity: 1,
       y: 0,
       scale: 1,
+      filter: 'blur(0px)',
     },
     out: {
       opacity: 0,
-      y: prefersReducedMotion ? 0 : -24,
+      y: prefersReducedMotion ? 0 : -20,
       scale: prefersReducedMotion ? 1 : 1.02,
+      filter: prefersReducedMotion ? 'none' : 'blur(4px)',
     }
   };
 
   const pageTransition = {
     type: 'tween',
-    ease: [0.23, 1, 0.32, 1], // Premium easing
-    duration: prefersReducedMotion ? 0.01 : 0.4,
+    ease: [0.43, 0.13, 0.23, 0.96], // Smooth bezier curve
+    duration: prefersReducedMotion ? 0.01 : 0.3,
   };
 
   return (

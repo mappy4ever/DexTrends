@@ -44,3 +44,8 @@ tsconfig.tsbuildinfo
 
 .vercel
 *.old
+
+# Large image directories (moved to CDN)
+public/images/scraped/
+# Uncomment after migrating PocketBoosterPacks to CDN
+# public/images/PocketBoosterPacks/

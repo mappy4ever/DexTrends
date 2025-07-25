@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { typeColors, tcgTypeColors } from '../../utils/pokemonutils';
 // import { getTypeIcon } from '../../utils/scrapedImageMapping';
-import { getTypeStyle } from '../../utils/pokemonTypeColors';
+import { getTypeStyle, POKEMON_TYPE_COLORS, POKEMON_TCG_POCKET_COLORS } from '../../utils/pokemonTypeColors';
 
 // Type badge component for consistent display of Pokémon types
 interface TypeBadgeProps {
@@ -38,6 +38,16 @@ export function TypeBadge({
   // Get exact type colors using inline styles to override any CSS conflicts
   const typeStyle = getTypeStyle(lowerType, isPocketCard);
   
+  // Force proper type colors with classic styling
+  const correctColors = isPocketCard ? POKEMON_TCG_POCKET_COLORS : POKEMON_TYPE_COLORS;
+  const backgroundColor = correctColors[lowerType] || correctColors.normal || '#A8A77A';
+  const enforceTypeStyle = {
+    backgroundColor: backgroundColor,
+    color: '#FFFFFF',
+    border: '1px solid rgba(0, 0, 0, 0.1)',
+    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)'
+  };
+  
   // Size classes
   const sizeClass = {
     'xxs': 'size-xxs',
@@ -63,7 +73,7 @@ export function TypeBadge({
   const config = sizeConfig[size] || sizeConfig['md'];
   const iconPaths = showIcon ? [`/images/types/${lowerType}.svg`] : [];
 
-  const interactiveClasses = onClick ? 'cursor-pointer hover:scale-105' : 'hover:scale-105';
+  const interactiveClasses = onClick ? 'cursor-pointer hover:opacity-90' : '';
 
   // Display name
   const displayType = typeStr
@@ -76,8 +86,8 @@ export function TypeBadge({
   if (showIcon) {
     return (
       <div
-        className={`inline-flex items-center justify-center gap-2 rounded-full font-semibold ${config.badge} ${interactiveClasses} transition-transform duration-200 ${className}`}
-        style={{...typeStyle, textAlign: 'center'}}
+        className={`inline-flex items-center justify-center gap-2 rounded-full font-medium ${config.badge} ${interactiveClasses} transition-opacity duration-200 ${className}`}
+        style={{...enforceTypeStyle, textAlign: 'center'}}
         onClick={handleClick}
         role={onClick ? "button" : undefined}
         tabIndex={onClick ? 0 : undefined}
@@ -114,8 +124,8 @@ export function TypeBadge({
   // Standard badge without icon
   return (
     <span
-      className={`type-badge ${sizeClass} ${interactiveClasses} transition-transform duration-200 ${className}`}
-      style={typeStyle}
+      className={`type-badge ${sizeClass} ${interactiveClasses} transition-opacity duration-200 ${className}`}
+      style={enforceTypeStyle}
       onClick={handleClick}
       role={onClick ? "button" : undefined}
       tabIndex={onClick ? 0 : undefined}

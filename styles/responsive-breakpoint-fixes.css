@@ -1,0 +1,187 @@
+/* Responsive Breakpoint Fixes for 768px and Tablet Devices */
+
+/* Fix for iPad and 768px breakpoint issues */
+@media (max-width: 768px) and (min-width: 640px) {
+  /* Tab navigation horizontal scrolling fix */
+  .tab-navigation,
+  nav.tab-navigation {
+    display: flex !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    scroll-snap-type: x mandatory !important;
+    scroll-behavior: smooth !important;
+    gap: 0.5rem !important;
+    padding: 0.75rem !important;
+    /* Hide scrollbar but keep functionality */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .tab-navigation::-webkit-scrollbar,
+  nav.tab-navigation::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Tab button adjustments for tablets */
+  .tab-navigation button,
+  nav.tab-navigation button {
+    flex: 0 0 auto !important;
+    scroll-snap-align: start !important;
+    min-width: fit-content !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 0.875rem !important;
+    white-space: nowrap !important;
+  }
+  
+  /* Pokemon grid adjustments for tablets */
+  .grid.grid-cols-2.sm\:grid-cols-3.md\:grid-cols-4 {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 1rem !important;
+  }
+  
+  /* Modal adjustments for tablets */
+  .fixed.inset-0 > div[class*="max-w-"] {
+    max-width: 90% !important;
+    margin: 2rem auto !important;
+  }
+  
+  /* Card size adjustments */
+  .circular-pokemon-card {
+    width: 100% !important;
+    max-width: 200px !important;
+    margin: 0 auto !important;
+  }
+}
+
+/* Smooth transitions between breakpoints */
+@media (min-width: 640px) and (max-width: 768px) {
+  /* Container width transitions */
+  .max-w-7xl {
+    max-width: 100% !important;
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
+  
+  /* Navigation spacing */
+  nav.fixed.top-0 {
+    padding: 0.75rem 1.5rem !important;
+  }
+  
+  /* Form and input adjustments */
+  input[type="text"],
+  input[type="search"],
+  select {
+    font-size: 16px !important; /* Prevent zoom on iOS */
+  }
+}
+
+/* Specific iPad Pro fixes */
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* Tab navigation for larger tablets */
+  .tab-navigation {
+    justify-content: flex-start !important;
+    gap: 0.75rem !important;
+  }
+  
+  /* Grid adjustments for iPad Pro */
+  .grid.md\:grid-cols-4.lg\:grid-cols-5 {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+  
+  /* Modal centering */
+  .fixed.inset-0.z-50 {
+    padding: 2rem !important;
+  }
+}
+
+/* Pull-to-refresh prevention on tablets */
+@media (max-width: 1024px) {
+  body {
+    /* Prevent pull-to-refresh on Chrome */
+    overscroll-behavior-y: contain;
+  }
+  
+  /* Prevent elastic scrolling on iOS */
+  html {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  body {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Landscape orientation fixes */
+@media (max-width: 1024px) and (orientation: landscape) {
+  /* Reduce vertical spacing in landscape */
+  .py-8 {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+  
+  /* Adjust header size */
+  h1.text-5xl {
+    font-size: 2rem !important;
+  }
+  
+  /* Compact navigation */
+  nav.fixed.top-0 {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+  
+  /* Hide mobile bottom navigation in landscape tablets */
+  @media (min-width: 768px) {
+    .fixed.bottom-0.left-0.right-0.bg-white.border-t {
+      display: none !important;
+    }
+    
+    /* Remove bottom padding spacer */
+    .h-16.safe-area-bottom {
+      display: none !important;
+    }
+  }
+}
+
+/* Touch target size improvements */
+@media (pointer: coarse) {
+  /* Ensure minimum touch target size of 44px */
+  button,
+  a,
+  .clickable,
+  .tab-navigation button {
+    min-height: 44px !important;
+    min-width: 44px !important;
+  }
+  
+  /* Adjust small buttons to meet touch targets */
+  button.px-2.py-1,
+  button.px-3.py-1 {
+    padding: 0.625rem 1rem !important;
+  }
+}
+
+/* Fix for hover states on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  /* Remove hover effects on touch devices */
+  button:hover,
+  a:hover,
+  .hover\:bg-gray-100:hover {
+    background-color: inherit !important;
+  }
+  
+  /* Use active states instead */
+  button:active,
+  a:active {
+    opacity: 0.8;
+    transform: scale(0.98);
+  }
+}

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useFavorites } from '../../../context/favoritescontext';
+import { useFavorites } from '../../../context/UnifiedAppContext';
 import { TypeBadge } from '../TypeBadge';
 import Link from 'next/link';
 import logger from '../../../utils/logger';
@@ -18,7 +18,19 @@ const EnhancedCardModal = ({ card, isOpen, onClose }: { card: PokemonTCGCard; is
   const [isFullscreen, setIsFullscreen] = useState(false);
   const imageRef = useRef<HTMLImageElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { toggleCardFavorite, isCardFavorite } = useFavorites();
+  const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
+  
+  const isCardFavorite = (cardId: string) => {
+    return favorites?.cards?.some((card: any) => card.id === cardId) || false;
+  };
+  
+  const toggleCardFavorite = (card: PokemonTCGCard) => {
+    if (isCardFavorite(card.id)) {
+      removeFromFavorites('cards', card.id);
+    } else {
+      addToFavorites('cards', card);
+    }
+  };
 
   // Reset zoom and position when modal opens/closes
   useEffect(() => {

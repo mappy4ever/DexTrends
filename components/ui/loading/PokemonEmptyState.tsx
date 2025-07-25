@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 interface PokemonEmptyStateProps {
   type?: 'search' | 'collection' | 'cards' | 'error' | 'maintenance';
@@ -12,6 +13,7 @@ const PokemonEmptyState = ({
   type = "search",
   customMessage = null, actionButton = null, showAnimation = true 
 }: PokemonEmptyStateProps) => {
+  const router = useRouter();
   const [currentMessage, setCurrentMessage] = useState(0);
 
   const emptyStateData = {
@@ -246,8 +248,8 @@ const PokemonEmptyState = ({
             </Link>
             
             {type === 'search' && (
-              <button 
-                onClick={() => window.location.reload()} 
+              <button
+                onClick={() => router.reload()}
                 className="bg-pokemon-blue hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:scale-105"
               >
                 🔄 Try Again
@@ -263,8 +265,8 @@ const PokemonEmptyState = ({
             )}
             
             {type === 'error' && (
-              <button 
-                onClick={() => window.location.reload()} 
+              <button
+                onClick={() => router.reload()}
                 className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:scale-105"
               >
                 ⚡ Revive Page

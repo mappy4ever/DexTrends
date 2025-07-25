@@ -32,6 +32,7 @@ export default function PackOpening({
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [packImage, setPackImage] = useState<any>(null);
   const [hasRareCard, setHasRareCard] = useState(false);
+  const [timeoutIds, setTimeoutIds] = useState<NodeJS.Timeout[]>([]);
 
   // Reset when pack opens
   useEffect(() => {
@@ -46,9 +47,20 @@ export default function PackOpening({
     }
   }, [isOpen, expansion]);
 
+  // Cleanup timeouts on unmount
+  useEffect(() => {
+    return () => {
+      timeoutIds.forEach(id => clearTimeout(id));
+    };
+  }, [timeoutIds]);
+
   // Generate pack contents with realistic rarity distribution
   const generatePackCards = (): any => {
-    if (!availableCards.length) return [];
+    console.log('Generating pack with', availableCards.length, 'available cards');
+    if (!availableCards.length) {
+      console.error('No available cards for pack generation!');
+      return [];
+    }
 
     const packCards = [];
     let hasRareInPack = false;
@@ -141,17 +153,39 @@ export default function PackOpening({
     return cardArray[Math.floor(Math.random() * cardArray.length)];
   };
 
+  // Helper function to create a timeout with tracking
+  const createTrackedTimeout = (callback: () => void, delay: number): Promise<void> => {
+    return new Promise(resolve => {
+      const timeoutId = setTimeout(() => {
+        callback();
+        resolve();
+      }, delay);
+      setTimeoutIds(prev => [...prev, timeoutId]);
+    });
+  };
+
   // Start pack opening sequence
   const openPack = async () => {
+    // Clear any existing timeouts before starting
+    timeoutIds.forEach(id => clearTimeout(id));
+    setTimeoutIds([]);
+
     const cards = generatePackCards();
+    
+    // Check if we got valid cards
+    if (!cards || cards.length === 0) {
+      console.error('Failed to generate pack cards');
+      alert('Failed to generate pack. Please try again.');
+      return;
+    }
     
     // Pack shaking animation
     setPackState('shaking');
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await createTrackedTimeout(() => {}, 1500);
     
     // Pack opening
     setPackState('opening');
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await createTrackedTimeout(() => {}, 1000);
     
     // Card revealing
     setPackState('revealing');
@@ -160,11 +194,11 @@ export default function PackOpening({
     // Reveal cards one by one
     for (let i = 0; i < cards.length; i++) {
       setCurrentCardIndex(i);
-      await new Promise(resolve => setTimeout(resolve, 800));
+      await createTrackedTimeout(() => {}, 800);
       
       // Extra pause for rare cards
       if (cards[i].isRare) {
-        await new Promise(resolve => setTimeout(resolve, 1200));
+        await createTrackedTimeout(() => {}, 1200);
       }
     }
     
@@ -300,6 +334,7 @@ export default function PackOpening({
                       className={`relative transition-all duration-500 ${
                         isRevealed ? 'opacity-100 scale-100' : 'opacity-30 scale-95'
                       }`}
+                      data-testid="revealed-card"
                     >
                       <div className={`bg-white border border-border-color rounded-lg p-2 ${holographicClass} ${rarityGlow} ${
                         card.isRare ? 'ring-2 ring-pokemon-yellow' : ''
