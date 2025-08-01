@@ -837,44 +837,7 @@ export function UnifiedAppProvider({ children }: UnifiedAppProviderProps) {
     };
   }, [state.user.preferences]);
 
-  // Legacy hooks for backward compatibility
-  const useFavorites = () => ({
-    favorites: state.user.favorites,
-    addToFavorites,
-    removeFromFavorites,
-    updateFavorites
-  });
-
-  const useTheme = () => ({
-    theme: state.user.preferences.theme,
-    toggleTheme,
-    updateTheme
-  });
-
-  const useModal = () => ({
-    modal: state.app.ui.modal,
-    openModal,
-    closeModal
-  });
-
-  const useSorting = () => ({
-    sorting: state.app.ui.sorting,
-    updateSorting
-  });
-
-  const useViewSettings = () => ({
-    viewSettings: state.app.ui.view,
-    updateViewSettings
-  });
-
-  const usePerformanceMonitor = () => ({
-    performance: state.app.performance,
-    updatePerformanceMetrics,
-    updatePerformanceVitals,
-    updateApiMetrics,
-    enablePerformanceMonitoring,
-    disablePerformanceMonitoring
-  });
+  // Legacy hooks have been moved to /hooks/useUnifiedApp.ts for Fast Refresh compatibility
 
   const value: UnifiedAppContextValue = {
     // State
@@ -947,59 +910,5 @@ export function UnifiedAppProvider({ children }: UnifiedAppProviderProps) {
   );
 }
 
-// Export legacy hooks for backward compatibility
-export const useFavorites = () => {
-  const context = useAppContext();
-  return {
-    favorites: context.favorites,
-    addToFavorites: context.addToFavorites,
-    removeFromFavorites: context.removeFromFavorites,
-    updateFavorites: context.updateFavorites
-  };
-};
-
-export const useTheme = () => {
-  const context = useAppContext();
-  return {
-    theme: context.theme,
-    toggleTheme: context.toggleTheme,
-    updateTheme: context.updateTheme
-  };
-};
-
-export const useModal = () => {
-  const context = useAppContext();
-  return {
-    modal: context.modal,
-    openModal: context.openModal,
-    closeModal: context.closeModal
-  };
-};
-
-export const useSorting = () => {
-  const context = useAppContext();
-  return {
-    sorting: context.sorting,
-    updateSorting: context.updateSorting
-  };
-};
-
-export const useViewSettings = () => {
-  const context = useAppContext();
-  return {
-    viewSettings: context.viewSettings,
-    updateViewSettings: context.updateViewSettings
-  };
-};
-
-export const usePerformanceMonitor = () => {
-  const context = useAppContext();
-  return {
-    performance: context.performance,
-    updatePerformanceMetrics: context.updatePerformanceMetrics,
-    updatePerformanceVitals: context.updatePerformanceVitals,
-    updateApiMetrics: context.updateApiMetrics,
-    enablePerformanceMonitoring: context.enablePerformanceMonitoring,
-    disablePerformanceMonitoring: context.disablePerformanceMonitoring
-  };
-};
+// Export legacy hooks for backward compatibility - moved to /hooks/useUnifiedApp.ts
+export { useFavorites, useTheme, useModal, useSorting, useViewSettings, usePerformanceMonitor } from '../hooks/useUnifiedApp';

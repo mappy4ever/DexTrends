@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import Head from "next/head";
 import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../components/ui/animations/animations";
-import { retryWithBackoff } from "../utils/retryWithBackoff";
 import { fetchJSON } from "../utils/unifiedFetch";
 import { useTheme } from "../context/UnifiedAppContext";
 import { useViewSettings } from "../context/UnifiedAppContext";
@@ -23,8 +22,13 @@ const TcgSetsContent: React.FC = () => {
   const [sets, setSets] = useState<CardSet[]>([]);
   const [search, setSearch] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
+  const [loadingMore, setLoadingMore] = useState<boolean>(false);
   const [selectedSetId, setSelectedSetId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [totalSetsCount, setTotalSetsCount] = useState<number | null>(null);
+  const [loadingMessage, setLoadingMessage] = useState<string>("Loading TCG sets...");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [hasMorePages, setHasMorePages] = useState<boolean>(true);
   const router = useRouter();
   const { theme } = useTheme();
   const { viewSettings } = useViewSettings();
@@ -34,35 +38,100 @@ const TcgSetsContent: React.FC = () => {
   const [sortOption, setSortOption] = useState<SortOption>("releaseDate");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
 
-  useEffect(() => {
-    async function fetchSets() {
-      console.log('Starting to fetch TCG sets...');
-      setLoading(true);
+  const fetchSets = async (page = 1, append = false) => {
+      console.log(`Fetching TCG sets page ${page}...`);
+      
+      if (!append) {
+        setLoading(true);
+        setLoadingMessage("Loading TCG sets...");
+      } else {
+        setLoadingMore(true);
+      }
+      
       setError(null);
+      
       try {
-        const res = await retryWithBackoff(
-          () => fetchJSON<{ data: CardSet[], pagination: any }>('/api/tcg-sets?page=1&pageSize=50', {
-            useCache: true,
-            timeout: 10000, // Reduced timeout
-            retries: 2
-          }),
+        const res = await fetchJSON<{ data: CardSet[], pagination: any }>(
+          `/api/tcg-sets?page=${page}&pageSize=25`,
           {
-            maxRetries: 2, // Reduced retries for faster failure
-            onRetry: (error, attempt) => {
-              console.log(`Retrying TCG sets fetch, attempt ${attempt}`, error);
-            }
+            useCache: page > 1,
+            forceRefresh: page === 1 && !append,
+            timeout: 60000,
+            retries: 2,
+            retryDelay: 2000
           }
         );
-        console.log('TCG sets fetched successfully:', res?.data?.length || 0, 'sets');
-        setSets(res?.data || []);
-      } catch (err) {
-        console.error("Failed to load TCG sets after retries:", err);
-        setError("Failed to load TCG sets. Please try again later.");
-        setSets([]);
+        
+        // Check if response is null (error case)
+        if (!res) {
+          console.error(`Failed to fetch page ${page} - response is null`);
+          throw new Error('API returned null response');
+        }
+        
+        // Debug logging
+        console.log(`Page ${page} response:`, {
+          dataLength: res?.data?.length || 0,
+          pagination: res?.pagination,
+          hasData: !!res?.data
+        });
+        
+        if (res?.data && res.data.length > 0) {
+          if (append) {
+            setSets(prevSets => [...prevSets, ...res.data]);
+          } else {
+            setSets(res.data);
+          }
+          
+          setTotalSetsCount(res.pagination?.totalCount || res.data.length);
+          setCurrentPage(page);
+          
+          // Check if there are more pages
+          const hasMore = res.pagination?.hasMore || (res.data.length === 25);
+          setHasMorePages(hasMore);
+          
+          console.log(`✓ Successfully fetched ${res.data.length} sets from page ${page}`);
+          
+          // Log newest sets on first page
+          if (page === 1) {
+            const sortedByDate = [...res.data].sort((a, b) => 
+              new Date(b.releaseDate || '1970-01-01').getTime() - new Date(a.releaseDate || '1970-01-01').getTime()
+            );
+            console.log('Newest 5 sets:', sortedByDate.slice(0, 5).map(s => `${s.id} (${s.name}, ${s.releaseDate})`));
+          }
+        } else {
+          if (!append) {
+            setSets([]);
+          }
+          setHasMorePages(false);
+        }
+        
+      } catch (err: any) {
+        console.error("Failed to load TCG sets:", err);
+        console.error("Error details:", {
+          message: err.message,
+          response: err.response,
+          data: err.data,
+          stack: err.stack
+        });
+        
+        setError(`Failed to load TCG sets: ${err.message || 'Unknown error'}`);
+        if (!append) {
+          setSets([]);
+        }
+      } finally {
+        setLoading(false);
+        setLoadingMore(false);
       }
-      setLoading(false);
+  };
+  
+  const loadMoreSets = async () => {
+    if (!loadingMore && hasMorePages) {
+      await fetchSets(currentPage + 1, true);
     }
-    fetchSets();
+  };
+
+  useEffect(() => {
+    fetchSets(1, false);
   }, []);
 
 
@@ -238,20 +307,59 @@ const TcgSetsContent: React.FC = () => {
                   >
                     Clear Filters
                   </button>
+                  <button 
+                    className="ml-4 px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold rounded-full transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
+                    onClick={async () => {
+                      setLoading(true);
+                      setError(null);
+                      
+                      // Clear cache for TCG sets to ensure fresh data
+                      try {
+                        // Clear localStorage cache for TCG sets
+                        const cacheKeys = Object.keys(localStorage).filter(key => 
+                          key.includes('tcg-sets') || key.includes('tcgsets')
+                        );
+                        cacheKeys.forEach(key => localStorage.removeItem(key));
+                        console.log(`Cleared ${cacheKeys.length} cached TCG sets entries`);
+                      } catch (e) {
+                        console.warn('Failed to clear cache:', e);
+                      }
+                      
+                      await fetchSets(1, false);
+                    }}
+                    disabled={loading}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    Refresh Sets
+                  </button>
                 </div>
               </div>
             </div>
           </FadeIn>
       
       {loading ? (
-        <PageLoader text="Loading TCG sets..." />
+        <PageLoader text={loadingMessage} />
           ) : error ? (
             <StandardCard 
               variant="featured"
               className="bg-red-50/80 backdrop-blur-sm border-red-200 text-center max-w-2xl mx-auto"
             >
               <CardTitle className="text-red-600">Error</CardTitle>
-              <p className="text-red-600 mt-2">{error}</p>
+              <div>
+                <p className="text-red-600 mt-2">{error}</p>
+                <button 
+                  className="mt-4 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-full transition-colors"
+                  onClick={() => {
+                    setLoading(true);
+                    setError(null);
+                    fetchSets();
+                  }}
+                >
+                  Try Again
+                </button>
+              </div>
             </StandardCard>
           ) : (
             <StaggeredChildren className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -260,6 +368,7 @@ const TcgSetsContent: React.FC = () => {
                   key={set.id}
                   className="animate-fadeIn group"
                   onClick={() => {
+                    console.log('Navigating to set:', set.id, set.name);
                     setSelectedSetId(set.id);
                     router.push(`/tcgsets/${set.id}`);
                   }}
@@ -341,12 +450,42 @@ const TcgSetsContent: React.FC = () => {
               )}
             </div>
           )}
+          
+          {/* Load More Button */}
+          {!loading && hasMorePages && sets.length > 0 && (
+            <div className="text-center mt-8">
+              <button
+                onClick={loadMoreSets}
+                disabled={loadingMore}
+                className="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:from-gray-400 disabled:to-gray-500 text-white font-semibold rounded-full transition-all duration-300 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed"
+              >
+                {loadingMore ? (
+                  <span className="flex items-center gap-2">
+                    <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Loading...
+                  </span>
+                ) : (
+                  `Load More Sets (${sets.length} of ${totalSetsCount || '?'} loaded)`
+                )}
+              </button>
+            </div>
+          )}
 
           {/* Show scroll hint */}
           {!loading && !error && hasMore && (
             <div className="text-center mt-8 text-gray-600 dark:text-gray-400">
               <div className="inline-flex items-center gap-2 bg-white/70 backdrop-blur-sm rounded-full px-6 py-3 shadow-md">
-                <span className="text-sm font-medium">Showing {visibleSets.length} of {sortedSets.length} sets</span>
+                <div className="flex flex-col items-center gap-1">
+                  <span className="text-sm font-medium">
+                    Showing {visibleSets.length} of {sortedSets.length} filtered sets
+                  </span>
+                  <span className="text-xs text-gray-500">
+                    ({sets.length} sets loaded{totalSetsCount ? ` out of ${totalSetsCount} available` : ''})
+                  </span>
+                </div>
               </div>
               <div className="text-xs text-purple-600 mt-2 font-medium">
                 Scroll down to load more...
@@ -357,7 +496,12 @@ const TcgSetsContent: React.FC = () => {
           {!loading && !scrollLoading && !hasMore && sortedSets.length > 0 && (
             <div className="text-center mt-8">
               <div className="inline-flex items-center gap-2 bg-gray-100 rounded-full px-6 py-3">
-                <span className="text-sm font-semibold text-purple-700">All {sortedSets.length} sets loaded</span>
+                <span className="text-sm font-semibold text-purple-700">
+                  All {sortedSets.length} sets displayed
+                  {totalSetsCount && totalSetsCount > sortedSets.length && 
+                    ` (${totalSetsCount - sortedSets.length} filtered out)`
+                  }
+                </span>
               </div>
             </div>
           )}

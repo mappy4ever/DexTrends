@@ -19,7 +19,7 @@ interface AnimationContextValue {
 }
 
 // Create context for animation components
-const AnimationContext = createContext<AnimationContextValue>({
+export const AnimationContext = createContext<AnimationContextValue>({
   motion: null,
   AnimatePresence: null,
   useAnimation: () => null,
@@ -99,59 +99,8 @@ export const AnimationProvider: React.FC<AnimationProviderProps> = ({ children, 
   );
 };
 
-// Hook to use animation components
-export const useAnimations = () => {
-  const context = useContext(AnimationContext);
-  if (!context) {
-    throw new Error('useAnimations must be used within AnimationProvider');
-  }
-  return context;
-};
-
-// Pre-built animation variants for common use cases
-export const animationVariants: Record<string, any> = {
-  fadeIn: {
-    initial: { opacity: 0 },
-    animate: { opacity: 1 },
-    exit: { opacity: 0 }
-  },
-  slideUp: {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: -20 }
-  },
-  slideDown: {
-    initial: { opacity: 0, y: -20 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: 20 }
-  },
-  slideLeft: {
-    initial: { opacity: 0, x: 20 },
-    animate: { opacity: 1, x: 0 },
-    exit: { opacity: 0, x: -20 }
-  },
-  slideRight: {
-    initial: { opacity: 0, x: -20 },
-    animate: { opacity: 1, x: 0 },
-    exit: { opacity: 0, x: 20 }
-  },
-  scale: {
-    initial: { opacity: 0, scale: 0.8 },
-    animate: { opacity: 1, scale: 1 },
-    exit: { opacity: 0, scale: 0.8 }
-  },
-  rotate: {
-    initial: { opacity: 0, rotate: -180 },
-    animate: { opacity: 1, rotate: 0 },
-    exit: { opacity: 0, rotate: 180 }
-  }
-};
-
-// Utility function to preload framer-motion
-export const preloadAnimations = () => {
-  if (typeof window !== 'undefined') {
-    import('framer-motion');
-  }
-};
+// NOTE: Hooks and utilities have been moved to separate files for Fast Refresh compatibility:
+// - useAnimations hook: /hooks/useAnimations.ts
+// - animationVariants & preloadAnimations: /utils/animation.ts
 
 export default AnimationProvider;

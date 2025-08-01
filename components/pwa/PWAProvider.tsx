@@ -1,6 +1,9 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/router';
 
+// Re-export hook for backward compatibility
+export { usePWA } from '../../hooks/usePWA';
+
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
@@ -20,15 +23,9 @@ interface PWAProviderProps {
   children: ReactNode;
 }
 
-const PWAContext = createContext<PWAContextValue | undefined>(undefined);
+export const PWAContext = createContext<PWAContextValue | undefined>(undefined);
 
-export const usePWA = (): PWAContextValue => {
-  const context = useContext(PWAContext);
-  if (!context) {
-    throw new Error('usePWA must be used within PWAProvider');
-  }
-  return context;
-};
+// NOTE: usePWA hook has been moved to /hooks/usePWA.ts for Fast Refresh compatibility
 
 export const PWAProvider: React.FC<PWAProviderProps> = ({ children }) => {
   const [isInstallable, setIsInstallable] = useState(false);

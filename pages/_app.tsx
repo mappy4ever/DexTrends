@@ -12,15 +12,27 @@ import "../styles/design-system.css";
 import "../styles/animations.css";
 import "../styles/card-types.css";
 import "../styles/unified-components.css";
+import "../styles/battle-simulator.css";
+import "../styles/tcg-set-detail.css";
+import "../styles/card-performance.css";
 import "../components/typebadge.css";
 import Layout from "../components/layout/Layout";
 import logger from "../utils/logger";
 import ErrorBoundary from "../components/layout/ErrorBoundary";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { PageTransition } from "../components/ui/animations/AnimationSystem";
 import { UnifiedAppProvider } from '../context/UnifiedAppContext';
 import GlobalErrorHandler from '../components/GlobalErrorHandler';
 import { PWAProvider } from '../components/pwa/PWAProvider';
+import { pageVariants, defaultTransition, getRouteTransition, prefersReducedMotion } from '../utils/pageTransitions';
+
+// Import critical providers directly to avoid context errors
+import { NotificationProvider } from '../components/qol/NotificationSystem';
+import { ContextualHelpProvider } from '../components/qol/ContextualHelp';
+import { PreferencesProvider } from '../components/qol/UserPreferences';
+
+// Toast system imports
+import { ToastProvider } from '../components/providers/ToastProvider';
 
 // Enhanced dynamic imports with comprehensive loading
 import dynamic from 'next/dynamic';
@@ -34,9 +46,6 @@ const dynamicImports = {
   PushNotifications: () => import('../components/mobile/PushNotifications'),
   GlobalSearchShortcuts: () => import('../components/qol/GlobalSearchShortcuts'),
   PreferencesManager: () => import('../components/qol/PreferencesManager'),
-  NotificationProvider: () => import('../components/qol/NotificationSystem'),
-  ContextualHelpProvider: () => import('../components/qol/ContextualHelp'),
-  PreferencesProvider: () => import('../components/qol/UserPreferences'),
 };
 
 // Safe components - only load confirmed existing ones
@@ -75,21 +84,34 @@ const PreferencesManager = dynamic(dynamicImports.PreferencesManager, {
   loading: () => null
 });
 
-// QOL Component System
-const NotificationProvider = dynamic(dynamicImports.NotificationProvider, {
-  ssr: false,
-  loading: () => null
-});
+// Enhanced Page Transition Component
+interface EnhancedPageTransitionProps {
+  children: React.ReactNode;
+  pathname: string;
+}
 
-const ContextualHelpProvider = dynamic(dynamicImports.ContextualHelpProvider, {
-  ssr: false,
-  loading: () => null
-});
+const EnhancedPageTransition: React.FC<EnhancedPageTransitionProps> = ({ children, pathname }) => {
+  const routeTransition = getRouteTransition(pathname);
+  const variants = pageVariants[routeTransition.type];
+  const reducedMotion = prefersReducedMotion();
 
-const PreferencesProvider = dynamic(dynamicImports.PreferencesProvider, {
-  ssr: false,
-  loading: () => null
-});
+  if (reducedMotion) {
+    return <>{children}</>;
+  }
+
+  return (
+    <motion.div
+      initial="initial"
+      animate="in"
+      exit="out"
+      variants={variants}
+      transition={defaultTransition}
+      style={{ width: '100%', height: '100%' }}
+    >
+      {children}
+    </motion.div>
+  );
+};
 
 // Simple throttle function
 const throttle = <T extends (...args: any[]) => any>(func: T, limit: number): T => {
@@ -103,11 +125,110 @@ const throttle = <T extends (...args: any[]) => any>(func: T, limit: number): T 
   }) as T;
 };
 
+// Scroll handler state and callbacks
+let scrollTimer: NodeJS.Timeout;
+let scrollHandlerIsScrolling = false;
+let scrollStateSetters: {
+  setIsScrolling?: React.Dispatch<React.SetStateAction<boolean>>;
+} = {};
+
+// Scroll handler object to avoid function detection issues
+const scrollHandlerUtils = {
+  handleScroll: () => {
+    if (!scrollHandlerIsScrolling) {
+      document.body.classList.add('is-scrolling');
+      scrollStateSetters.setIsScrolling?.(true);
+      scrollHandlerIsScrolling = true;
+    }
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => {
+      document.body.classList.remove('is-scrolling');
+      scrollStateSetters.setIsScrolling?.(false);
+      scrollHandlerIsScrolling = false;
+    }, 150);
+  },
+  cleanup: () => {
+    clearTimeout(scrollTimer);
+    scrollStateSetters = {};
+  }
+};
+
 interface MyAppProps extends AppProps {
   Component: AppProps['Component'] & {
     fullBleed?: boolean;
   };
 }
+
+// Extracted component to fix Fast Refresh nested component issue
+interface AppContentProps {
+  Component: MyAppProps['Component'];
+  pageProps: any;
+  fullBleed?: boolean;
+  isClient: boolean;
+  nextRouterPath: string;
+}
+
+const AppContent: React.FC<AppContentProps> = ({ 
+  Component, 
+  pageProps, 
+  fullBleed, 
+  isClient,
+  nextRouterPath 
+}) => {
+  return (
+    <>
+      <GlobalErrorHandler />
+      <PWAProvider>
+        <Head>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
+          <meta name="theme-color" content="#dc2626" />
+          <meta name="apple-mobile-web-app-capable" content="yes" />
+          <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+          <meta name="format-detection" content="telephone=no" />
+          <link rel="preconnect" href="https://pokeapi.co" />
+          <link rel="preconnect" href="https://api.pokemontcg.io" />
+          <link rel="dns-prefetch" href="https://images.pokemontcg.io" />
+          <link rel="prefetch" href="/back-card.png" />
+          <link rel="manifest" href="/manifest.json" />
+          <link rel="icon" href="/favicon.ico" />
+          <link rel="apple-touch-icon" href="/icon-192x192.png" />
+          <meta name="description" content="Discover, track, and explore Pokémon TCG card prices and trends in a beautiful Pokédex-inspired experience." />
+          <meta name="keywords" content="Pokemon, TCG, cards, prices, trends, pokedex, collection, trading cards" />
+        </Head>
+        
+        <UnifiedAppProvider>
+          <ToastProvider>
+            <NotificationProvider>
+              <ContextualHelpProvider>
+                <PreferencesProvider>
+                <Layout fullBleed={fullBleed}>
+                  <AnimatePresence mode="wait" initial={false}>
+                    <EnhancedPageTransition pathname={nextRouterPath} key={nextRouterPath}>
+                      <Component {...pageProps} />
+                    </EnhancedPageTransition>
+                  </AnimatePresence>
+                  
+                  {/* QOL System Components */}
+                  {isClient && (
+                    <>
+                      <KeyboardShortcutsManager />
+                      <GlobalSearchShortcuts />
+                      <PreferencesManager />
+                      
+                      {/* Mobile features */}
+                      <PushNotifications />
+                    </>
+                  )}
+                </Layout>
+                </PreferencesProvider>
+              </ContextualHelpProvider>
+            </NotificationProvider>
+          </ToastProvider>
+        </UnifiedAppProvider>
+      </PWAProvider>
+    </>
+  );
+};
 
 function MyApp({ Component, pageProps, router }: MyAppProps) {
   const nextRouter = useRouter();
@@ -134,25 +255,15 @@ function MyApp({ Component, pageProps, router }: MyAppProps) {
     });
     
     // iOS scroll performance optimization
-    let scrollTimer: NodeJS.Timeout;
-    const handleScroll = () => {
-      if (!isScrolling) {
-        document.body.classList.add('is-scrolling');
-        setIsScrolling(true);
-      }
-      clearTimeout(scrollTimer);
-      scrollTimer = setTimeout(() => {
-        document.body.classList.remove('is-scrolling');
-        setIsScrolling(false);
-      }, 150);
-    };
+    // Store state setter in external object to avoid nested functions
+    scrollStateSetters.setIsScrolling = setIsScrolling;
     
     // Use passive event listener for better performance
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', scrollHandlerUtils.handleScroll, { passive: true });
     
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      clearTimeout(scrollTimer);
+      window.removeEventListener('scroll', scrollHandlerUtils.handleScroll);
+      scrollHandlerUtils.cleanup();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Remove isScrolling dependency to prevent re-renders
@@ -172,63 +283,18 @@ function MyApp({ Component, pageProps, router }: MyAppProps) {
     );
   }
 
-  // Create the main app content for non-error pages
-  const appContent = (
-    <>
-      <GlobalErrorHandler />
-      <PWAProvider>
-        <Head>
-          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
-          <meta name="theme-color" content="#dc2626" />
-          <meta name="apple-mobile-web-app-capable" content="yes" />
-          <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-          <meta name="format-detection" content="telephone=no" />
-          <link rel="preconnect" href="https://pokeapi.co" />
-          <link rel="preconnect" href="https://api.pokemontcg.io" />
-          <link rel="dns-prefetch" href="https://images.pokemontcg.io" />
-          <link rel="prefetch" href="/back-card.png" />
-          <link rel="manifest" href="/manifest.json" />
-          <link rel="icon" href="/favicon.ico" />
-          <link rel="apple-touch-icon" href="/icon-192x192.png" />
-          <meta name="description" content="Discover, track, and explore Pokémon TCG card prices and trends in a beautiful Pokédex-inspired experience." />
-          <meta name="keywords" content="Pokemon, TCG, cards, prices, trends, pokedex, collection, trading cards" />
-        </Head>
-        
-        {/* AccessibilityProvider disabled to stop refresh */}
-        
-        <UnifiedAppProvider>
-          <NotificationProvider>
-            <ContextualHelpProvider>
-              <PreferencesProvider>
-                <Layout fullBleed={Component.fullBleed}>
-                  <AnimatePresence mode="wait" initial={false}>
-                    <PageTransition key={nextRouter.asPath}>
-                      <Component {...pageProps} />
-                    </PageTransition>
-                  </AnimatePresence>
-                  
-                  {/* QOL System Components */}
-                  {isClient && (
-                    <>
-                      <KeyboardShortcutsManager />
-                      <GlobalSearchShortcuts />
-                      <PreferencesManager />
-                      
-                      {/* Mobile features */}
-                      <PushNotifications />
-                    </>
-                  )}
-                </Layout>
-              </PreferencesProvider>
-            </ContextualHelpProvider>
-          </NotificationProvider>
-        </UnifiedAppProvider>
-      </PWAProvider>
-    </>
-  );
-
   // Wrap non-error pages with ErrorBoundary
-  return <ErrorBoundary>{appContent}</ErrorBoundary>;
+  return (
+    <ErrorBoundary>
+      <AppContent 
+        Component={Component}
+        pageProps={pageProps}
+        fullBleed={Component.fullBleed}
+        isClient={isClient}
+        nextRouterPath={nextRouter.asPath}
+      />
+    </ErrorBoundary>
+  );
 }
 
 

@@ -1,4 +1,4 @@
-import React, { useState, ReactNode } from 'react';
+import React, { useState, useCallback, ReactNode } from 'react';
 import StickySidebar from '../ui/navigation/StickySidebar';
 
 interface SidebarFilter {
@@ -26,9 +26,9 @@ export default function SidebarLayout({
 }: SidebarLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
+  const toggleSidebar = useCallback(() => {
+    setSidebarOpen(prev => !prev);
+  }, []);
 
   return (
     <div className={`flex min-h-screen ${className}`}>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, createContext, useContext, ReactNode, useRef } from 'react';
-import { useNotifications } from './NotificationSystem';
+import { usePreferences } from './UserPreferences.hooks';
+import { useNotifications } from '../../hooks/useNotifications';
 import logger from '../../utils/logger';
 
 // Type definitions
@@ -47,7 +48,7 @@ interface UserPreferences {
   debugMode: boolean;
 }
 
-interface PreferencesContextValue {
+export interface PreferencesContextValue {
   preferences: UserPreferences;
   isLoading: boolean;
   updatePreference: <K extends keyof UserPreferences>(key: K, value: UserPreferences[K]) => void;
@@ -68,15 +69,7 @@ interface PreferencesPanelProps {
 }
 
 // User preferences context
-const PreferencesContext = createContext<PreferencesContextValue | undefined>(undefined);
-
-export const usePreferences = (): PreferencesContextValue => {
-  const context = useContext(PreferencesContext);
-  if (!context) {
-    throw new Error('usePreferences must be used within PreferencesProvider');
-  }
-  return context;
-};
+export const PreferencesContext = createContext<PreferencesContextValue | undefined>(undefined);
 
 // Default preferences
 const defaultPreferences: UserPreferences = {

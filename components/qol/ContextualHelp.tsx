@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, ReactNode } from 'react';
 import { useRouter } from 'next/router';
-import { useNotifications } from './NotificationSystem';
+import { useNotifications } from '../../hooks/useNotifications';
 import logger from '../../utils/logger';
 
 // Type definitions

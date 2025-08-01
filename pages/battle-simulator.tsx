@@ -7,10 +7,9 @@ import { fetchJSON } from '../utils/unifiedFetch';
 import { POKEMON_TYPE_COLORS } from '../utils/pokemonTypeColors';
 import { TypeBadge } from '../components/ui/TypeBadge';
 import { GlassContainer } from '../components/ui/design-system/GlassContainer';
-import { CircularCard } from '../components/ui/design-system/CircularCard';
-import CircularButton from '../components/ui/CircularButton';
-import StandardCard from '../components/ui/StandardCard';
+// Removed div and button imports - using standard rectangular designs
 import { TypeGradientBadge } from '../components/ui/design-system/TypeGradientBadge';
+import { motion } from 'framer-motion';
 import { EnhancedPokemonSelector, type Pokemon as SelectorPokemon } from '../components/ui/EnhancedPokemonSelector';
 import Modal from '../components/ui/modals/Modal';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
@@ -19,6 +18,12 @@ import PageErrorBoundary from '../components/ui/PageErrorBoundary';
 import { SmartTooltip } from '../components/qol/ContextualHelp';
 import logger from '../utils/logger';
 import type { Pokemon, PokemonMove, PokemonType, PokemonStat, PokemonSpecies, Nature, Move } from '../types/api/pokemon';
+import type { EnhancedBattleState, BattleResult, StatusEffect } from '../types/battle';
+import { createInitialBattleState } from '../utils/battle/core';
+import { simulateBattleToCompletion } from '../utils/battle/simulation';
+import { calculateDamage } from '../utils/battle/damage';
+import { applyStatusEffect, processEndOfTurn } from '../utils/battle/effects';
+import { executeMove } from '../utils/battle/moves';
 
 // Type definitions
 
@@ -84,9 +89,9 @@ interface PokemonSelectionItemProps {
 }
 
 // Enhanced Pokemon selection component with type colors
-function PokemonSelectionItem({ pokemon, pokemonId, onSelect, allPokemonData = null }: PokemonSelectionItemProps) {
+const PokemonSelectionItem: React.FC<PokemonSelectionItemProps> = ({ pokemon, pokemonId, onSelect, allPokemonData = null }) => {
   const [pokemonData, setPokemonData] = useState<Pokemon | null>(allPokemonData);
-  const [loading, setLoading] = useState(false);
+  const [itemLoading, setItemLoading] = useState(false);
 
   // Get type colors for dual-type display
   const getTypeColors = (): TypeColors => {
@@ -116,7 +121,7 @@ function PokemonSelectionItem({ pokemon, pokemonId, onSelect, allPokemonData = n
 
   const handleSelect = async () => {
     if (!pokemonData) {
-      setLoading(true);
+      setItemLoading(true);
       try {
         const data = await fetchJSON<Pokemon>(pokemon.url);
         if (data) {
@@ -126,7 +131,7 @@ function PokemonSelectionItem({ pokemon, pokemonId, onSelect, allPokemonData = n
       } catch (err) {
         logger.error('Failed to load Pokemon data:', { error: err });
       } finally {
-        setLoading(false);
+        setItemLoading(false);
       }
     } else {
       onSelect(pokemonData);
@@ -136,19 +141,18 @@ function PokemonSelectionItem({ pokemon, pokemonId, onSelect, allPokemonData = n
   const colors = getTypeColors();
 
   return (
-    <CircularButton
+    <button
       onClick={handleSelect}
-      disabled={loading}
-      variant="ghost"
-      className="w-full text-left min-h-0 p-4 justify-start"
+      disabled={itemLoading}
+      className="w-full text-left min-h-0 p-4 justify-start bg-white/80 hover:bg-white/90 transition-all duration-200 border border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md backdrop-blur-sm"
       data-testid="pokemon-option"
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          {/* Type Color Circle */}
-          <div className="w-16 h-16 rounded-full flex items-center justify-center overflow-hidden relative">
+          {/* Type Color Badge - Rectangular design per requirements */}
+          <div className="w-16 h-16 rounded-lg flex items-center justify-center overflow-hidden relative bg-gradient-to-br from-white/20 to-transparent backdrop-blur-sm border border-white/20">
             {colors.dual ? (
-              <div className="absolute inset-0 rounded-full overflow-hidden">
+              <div className="absolute inset-0 rounded-lg overflow-hidden">
                 <div 
                   className="absolute inset-0 w-1/2"
                   style={{ backgroundColor: colors.color1 || '#A8A77A' }}
@@ -160,11 +164,11 @@ function PokemonSelectionItem({ pokemon, pokemonId, onSelect, allPokemonData = n
               </div>
             ) : (
               <div 
-                className="absolute inset-0 rounded-full"
+                className="absolute inset-0 rounded-lg"
                 style={{ backgroundColor: colors.single || '#A8A77A' }}
               />
             )}
-            {loading ? (
+            {itemLoading ? (
               <div className="relative z-10"><InlineLoader /></div>
             ) : (
               <span className="text-2xl font-bold text-white/90 relative z-10">
@@ -195,9 +199,9 @@ function PokemonSelectionItem({ pokemon, pokemonId, onSelect, allPokemonData = n
           )}
         </div>
       </div>
-    </CircularButton>
+    </button>
   );
-}
+};
 
 const BattleSimulator: NextPage = () => {
   const [selectedPokemon1, setSelectedPokemon1] = useState<Pokemon | null>(null);
@@ -229,14 +233,19 @@ const BattleSimulator: NextPage = () => {
   const [showVictoryScreen, setShowVictoryScreen] = useState(false);
   const [winner, setWinner] = useState<1 | 2 | null>(null);
   const [battleStats, setBattleStats] = useState<any>({});
-  const [autoBattle, setAutoBattle] = useState(false);
-  const [autoBattleSpeed, setAutoBattleSpeed] = useState(2); // 1=slow, 2=normal, 3=fast
-  const [sideLayout, setSideLayout] = useState(false);
   const [weather, setWeather] = useState('none');
   const [battleFormat, setBattleFormat] = useState('singles');
   const [battleRules, setBattleRules] = useState('standard');
   const [moveSearchTerm, setMoveSearchTerm] = useState('');
   const [moveFilter, setMoveFilter] = useState('all'); // all, physical, special, status
+  const [autoBattle, setAutoBattle] = useState(false);
+  
+  // Enhanced battle state
+  const [battleState, setBattleState] = useState<EnhancedBattleState | null>(null);
+  const [fastForward, setFastForward] = useState(false);
+  const [showBattleResults, setShowBattleResults] = useState(false);
+  const [battleResults, setBattleResults] = useState<BattleResult | null>(null);
+  const [isSimulating, setIsSimulating] = useState(false);
   
   // Pokemon stats configuration
   const [pokemon1Config, setPokemon1Config] = useState<BattleConfig>({
@@ -597,17 +606,19 @@ const BattleSimulator: NextPage = () => {
 
 
   // Load move data
-  const loadMoveData = useCallback(async (moveName: string) => {
-    if (movesData[moveName]) return; // Already loaded
+  const loadMoveData = useCallback(async (moveName: string): Promise<Move | null> => {
+    if (movesData[moveName]) return movesData[moveName]; // Already loaded
     
     try {
       const moveData = await fetchJSON<Move>(`https://pokeapi.co/api/v2/move/${moveName}`);
       if (moveData) {
         setMovesData(prev => ({ ...prev, [moveName]: moveData }));
+        return moveData;
       }
     } catch (error) {
       logger.error(`Failed to load move data for ${moveName}:`, { moveName, error });
     }
+    return null;
   }, [movesData]);
 
   // Load move data for selected moves
@@ -703,9 +714,18 @@ const BattleSimulator: NextPage = () => {
   const startBattle = () => {
     if (!selectedPokemon1 || !selectedPokemon2) return;
     
+    // Create enhanced battle state
+    const newBattleState = createInitialBattleState(
+      selectedPokemon1,
+      selectedPokemon2,
+      pokemon1Config,
+      pokemon2Config
+    );
+    setBattleState(newBattleState);
+    
     // Reset HP
-    setCurrentHP1(pokemon1Config.stats.hp);
-    setCurrentHP2(pokemon2Config.stats.hp);
+    setCurrentHP1(newBattleState.pokemon1.maxHp);
+    setCurrentHP2(newBattleState.pokemon2.maxHp);
     
     // Clear battle log
     setBattleLog([]);
@@ -714,15 +734,15 @@ const BattleSimulator: NextPage = () => {
     setBattleActive(true);
     
     // Determine first turn based on speed
-    const speed1 = pokemon1Config.stats.speed;
-    const speed2 = pokemon2Config.stats.speed;
+    const speed1 = newBattleState.pokemon1.stats.speed;
+    const speed2 = newBattleState.pokemon2.stats.speed;
     setCurrentTurn(speed1 >= speed2 ? 1 : 2);
     
     // Add to battle log
     addToBattleLog({
       player: 'System',
       pokemon: 'Battle',
-      action: `Battle started! ${player1Name}'s ${selectedPokemon1.name} vs ${player2Name}'s ${selectedPokemon2.name}${autoBattle ? ' (Auto Battle)' : ''}`,
+      action: `Battle started! ${player1Name}'s ${selectedPokemon1.name} vs ${player2Name}'s ${selectedPokemon2.name}`,
       timestamp: new Date()
     });
     
@@ -733,18 +753,62 @@ const BattleSimulator: NextPage = () => {
     if (pokemon2Config.selectedMoves.length === 0) {
       selectBestMoves(selectedPokemon2, pokemon2Config, 2);
     }
+  };
+
+  // Fast forward battle to completion
+  const fastForwardBattle = async () => {
+    if (!selectedPokemon1 || !selectedPokemon2 || !battleState) return;
     
-    // Start auto battle if enabled
-    if (autoBattle) {
-      setTimeout(() => {
-        executeAutoBattleTurn();
-      }, 1000);
+    setIsSimulating(true);
+    setFastForward(true);
+    
+    try {
+      // Get selected moves
+      const moves1 = pokemon1Config.selectedMoves;
+      const moves2 = pokemon2Config.selectedMoves;
+      
+      if (moves1.length === 0 || moves2.length === 0) {
+        logger.error('No moves selected for battle simulation');
+        return;
+      }
+      
+      // Run simulation
+      const results = await simulateBattleToCompletion(
+        selectedPokemon1,
+        selectedPokemon2,
+        pokemon1Config,
+        pokemon2Config,
+        moves1,
+        moves2,
+        loadMoveData
+      );
+      
+      // Update state with results
+      setBattleResults(results);
+      setWinner(results.winner);
+      setCurrentHP1(results.finalHP[0]);
+      setCurrentHP2(results.finalHP[1]);
+      setBattleActive(false);
+      setShowBattleResults(true);
+      
+      // Add summary to battle log
+      addToBattleLog({
+        player: 'System',
+        pokemon: 'Battle',
+        action: `Battle completed in ${results.turns} turns! ${results.winner === 1 ? player1Name : player2Name} wins!`,
+        timestamp: new Date()
+      });
+      
+    } catch (error) {
+      logger.error('Error in fast forward battle:', error);
+    } finally {
+      setIsSimulating(false);
     }
   };
 
   // Execute move
   const executeMove = async (player: 1 | 2, move: PokemonMove) => {
-    if (!battleActive || !selectedPokemon1 || !selectedPokemon2) return;
+    if (!battleActive || !selectedPokemon1 || !selectedPokemon2 || !battleState) return;
     
     const attacker = player === 1 ? 
       { pokemon: selectedPokemon1, config: pokemon1Config } : 
@@ -762,6 +826,7 @@ const BattleSimulator: NextPage = () => {
     }
     
     const moveData = movesData[move.move.name];
+    if (!moveData) return;
     
     // Check accuracy
     if (moveData?.accuracy && Math.random() * 100 > moveData.accuracy) {
@@ -833,76 +898,6 @@ const BattleSimulator: NextPage = () => {
   // Switch turn
   const switchTurn = () => {
     setCurrentTurn(prev => prev === 1 ? 2 : 1);
-    
-    // Continue auto battle if enabled
-    if (autoBattle && battleActive) {
-      const delay = autoBattleSpeed === 1 ? 3000 : autoBattleSpeed === 2 ? 2000 : 1000;
-      setTimeout(() => {
-        executeAutoBattleTurn();
-      }, delay);
-    }
-  };
-  
-  // Execute auto battle turn
-  const executeAutoBattleTurn = () => {
-    if (!battleActive || !currentTurn) return;
-    
-    const currentPlayerMoves = currentTurn === 1 ? pokemon1Config.selectedMoves : pokemon2Config.selectedMoves;
-    
-    if (currentPlayerMoves.length === 0) {
-      // End battle if no moves available
-      endBattle();
-      return;
-    }
-    
-    // Select a random move (or best move with some strategy)
-    const selectedMove = selectAutoBattleMove(currentTurn, currentPlayerMoves);
-    
-    if (selectedMove) {
-      executeMove(currentTurn, selectedMove);
-    }
-  };
-  
-  // Select move for auto battle
-  const selectAutoBattleMove = (player: 1 | 2, moves: PokemonMove[]): PokemonMove | null => {
-    if (moves.length === 0) return null;
-    
-    // Simple AI: prefer moves with higher power and STAB
-    const pokemon = player === 1 ? selectedPokemon1 : selectedPokemon2;
-    const config = player === 1 ? pokemon1Config : pokemon2Config;
-    
-    const scoredMoves = moves.map(move => {
-      let score = Math.random() * 10; // Add some randomness
-      const moveData = movesData[move.move.name];
-      
-      if (moveData) {
-        // Prefer moves with higher power
-        if (moveData.power) {
-          score += moveData.power * 0.3;
-        }
-        
-        // STAB bonus
-        if (pokemon?.types && moveData.type && pokemon.types.some(type => type.type.name === moveData.type.name)) {
-          score += 20;
-        }
-        
-        // Prefer moves that match the Pokemon's better attacking stat
-        const isPhysical = moveData.damage_class?.name === 'physical';
-        const isSpecial = moveData.damage_class?.name === 'special';
-        
-        if (isPhysical && config.stats.attack > config.stats.specialAttack) {
-          score += 15;
-        } else if (isSpecial && config.stats.specialAttack > config.stats.attack) {
-          score += 15;
-        }
-      }
-      
-      return { move, score };
-    });
-    
-    // Sort by score and return the best move
-    scoredMoves.sort((a, b) => b.score - a.score);
-    return scoredMoves[0].move;
   };
 
   // Handle victory
@@ -1243,99 +1238,121 @@ const BattleSimulator: NextPage = () => {
         <meta name="description" content="Battle Pokemon with real damage calculations and type effectiveness" />
       </Head>
       
-      <FullBleedWrapper gradient="pokedex">
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          {/* Hero Section with Gradient */}
-          <div className="relative mb-12">
-            <div className="absolute inset-0 gradient-bg-primary opacity-20 rounded-3xl blur-3xl" />
-            <div className="relative text-center">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-pokemon-red to-pink-600 bg-clip-text text-transparent">
-                Pokemon Battle Simulator
-              </h1>
-              <p className="text-gray-600 dark:text-gray-400 text-lg">
-                Experience epic battles with real damage calculations
-              </p>
-            </div>
+      {/* Battle-themed gradient background */}
+      <div className="min-h-screen bg-gradient-to-br from-red-100 via-orange-100 to-yellow-100 dark:from-red-900 dark:via-orange-900 dark:to-yellow-900">
+        {/* Sticky Header */}
+        <div className="sticky top-0 z-50 backdrop-blur-xl bg-white/70 dark:bg-gray-900/70 border-b border-white/20">
+          <div className="container mx-auto px-4 py-4">
+            <h1 className="text-3xl font-bold text-red-600 mb-6">
+              Pokemon Battle Simulator
+            </h1>
+            <p className="text-slate-700 dark:text-slate-300 text-sm">
+              Experience epic battles with real damage calculations and type effectiveness
+            </p>
           </div>
-          
+        </div>
+
+        {/* Main Content */}
+        <div className="container mx-auto px-4 py-8">
           {/* Quick Links */}
-          <div className="flex justify-center gap-4 mb-6">
-            <Link href="/team-builder/advanced">
-              <CircularButton
-                variant="primary"
-                size="lg"
-                leftIcon={
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z" />
-                  </svg>
-                }
-              >
-                Advanced Team Builder
-              </CircularButton>
-            </Link>
-            <Link href="/battle-simulator/damage-calc">
-              <CircularButton
-                variant="secondary"
-                size="lg"
-              >
-                Damage Calculator
-              </CircularButton>
-            </Link>
-          </div>
+          <GlassContainer variant="colored" className="mb-8">
+            <div className="flex justify-center gap-4">
+              <Link href="/team-builder/advanced">
+                <button
+                  className="px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 border-2 border-red-600"
+                >
+                  <div className="w-5 h-5 bg-white/20 rounded flex items-center justify-center">
+                    <div className="w-2 h-2 bg-white rounded" />
+                  </div>
+                  Advanced Team Builder
+                </button>
+              </Link>
+              <Link href="/battle-simulator/damage-calc">
+                <button
+                  className="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
+                >
+                  Damage Calculator
+                </button>
+              </Link>
+            </div>
+          </GlassContainer>
           
-          {/* Battle Format Selection */}
-          <div className="flex justify-center gap-4 mb-6">
-            <div className="flex items-center gap-2">
-              <label className="text-sm font-medium text-gray-700">Format:</label>
-              <select
-                value={battleFormat}
-                onChange={(e) => setBattleFormat(e.target.value)}
-                className="px-3 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="singles">Singles</option>
-                <option value="doubles">Doubles</option>
-              </select>
+          {/* Battle Format & Weather Selection */}
+          <GlassContainer variant="medium" className="mb-8">
+            <div className="space-y-6">
+              <h3 className="text-lg font-semibold text-slate-700 dark:text-slate-300 text-center">Battle Configuration</h3>
+              
+              {/* Format Selection */}
+              <div className="flex justify-center gap-2">
+                <motion.button
+                  onClick={() => setBattleFormat('singles')}
+                  className={`px-6 py-3 rounded-lg text-sm font-medium transition-all duration-300 relative overflow-hidden ${
+                    battleFormat === 'singles'
+                      ? 'bg-red-100 text-slate-700 shadow-lg border-[4px] border-red-400'
+                      : 'bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 border-[1.5px] border-gray-300'
+                  }`}
+                                    whileTap={{ scale: 0.98 }}
+                >
+                  <span className="relative">Singles</span>
+                </motion.button>
+                <motion.button
+                  onClick={() => setBattleFormat('doubles')}
+                  className={`px-6 py-3 rounded-lg text-sm font-medium transition-all duration-300 relative overflow-hidden ${
+                    battleFormat === 'doubles'
+                      ? 'bg-red-100 text-slate-700 shadow-lg border-[4px] border-red-400'
+                      : 'bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 border-[1.5px] border-gray-300'
+                  }`}
+                                    whileTap={{ scale: 0.98 }}
+                >
+                  <span className="relative">Doubles</span>
+                </motion.button>
+              </div>
+
+              {/* Weather Selection */}
+              <div className="flex flex-wrap justify-center gap-2">
+                {['none', 'sun', 'rain', 'sandstorm', 'hail'].map((weatherType) => (
+                  <motion.button
+                    key={weatherType}
+                    onClick={() => setWeather(weatherType)}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 relative overflow-hidden ${
+                      weather === weatherType
+                        ? 'bg-orange-100 text-slate-700 shadow-lg border-[3px] border-orange-400'
+                        : 'bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 border-[1px] border-gray-300'
+                    }`}
+                                        whileTap={{ scale: 0.98 }}
+                  >
+                    <span className="relative">
+                      {weatherType === 'none' ? 'Clear' : 
+                       weatherType === 'sun' ? 'Sunny' : 
+                       weatherType.charAt(0).toUpperCase() + weatherType.slice(1)}
+                    </span>
+                  </motion.button>
+                ))}
+              </div>
+
+              {/* Random Battle Button */}
+              <div className="flex justify-center">
+                <motion.button
+                  onClick={() => {
+                    selectRandomPokemon(1);
+                    selectRandomPokemon(2);
+                  }}
+                  className="px-8 py-3 bg-gradient-to-r from-red-400 to-orange-400 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border-4 border-orange-400"
+                                                    >
+                  <span className="flex items-center gap-2">
+                    <div className="w-4 h-4 bg-white/20 rounded animate-pulse" />
+                    Random Battle!
+                  </span>
+                </motion.button>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <label className="text-sm font-medium text-gray-700">Weather:</label>
-              <select
-                value={weather}
-                onChange={(e) => setWeather(e.target.value)}
-                className="px-3 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="none">None</option>
-                <option value="sun">Harsh Sunlight</option>
-                <option value="rain">Rain</option>
-                <option value="sandstorm">Sandstorm</option>
-                <option value="hail">Hail</option>
-              </select>
-            </div>
-            <CircularButton
-              onClick={() => {
-                selectRandomPokemon(1);
-                selectRandomPokemon(2);
-              }}
-              variant="primary"
-              size="sm"
-              className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
-            >
-              Random Battle!
-            </CircularButton>
-            <CircularButton
-              onClick={() => setSideLayout(!sideLayout)}
-              variant="primary"
-              size="sm"
-              className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600"
-            >
-              {sideLayout ? 'Grid Layout' : 'Side Layout'}
-            </CircularButton>
-          </div>
+          </GlassContainer>
           
           {/* Battle Arena */}
-          <StandardCard variant="featured" className="p-8 mb-8">
-            <div className={`${sideLayout ? 'flex flex-col lg:flex-row gap-6' : 'grid grid-cols-1 md:grid-cols-2 gap-8'} mb-8`}>
+          <GlassContainer variant="dark" className="mb-8">
+            <div className="flex flex-col lg:flex-row gap-6 mb-8">
               {/* Pokemon 1 */}
-              <div className={`text-center ${sideLayout ? 'lg:flex-1 bg-blue-50 rounded-xl p-6' : ''}`}>
+              <GlassContainer variant="colored" className="text-center lg:flex-1 bg-gradient-to-br from-red-50/80 to-orange-50/80">
                 {/* Editable Trainer Name */}
                 <div className="mb-4">
                   {editingPlayer1 ? (
@@ -1345,12 +1362,12 @@ const BattleSimulator: NextPage = () => {
                       onChange={(e) => setPlayer1Name(e.target.value)}
                       onBlur={() => setEditingPlayer1(false)}
                       onKeyPress={(e) => e.key === 'Enter' && setEditingPlayer1(false)}
-                      className="text-3xl font-semibold text-center bg-transparent border-b-2 border-blue-600 text-blue-700 outline-none px-2"
+                      className="text-3xl font-semibold text-center bg-transparent border-b-2 border-red-400 text-slate-700 dark:text-slate-300 outline-none px-2"
                       autoFocus
                     />
                   ) : (
                     <h2 
-                      className="text-3xl font-semibold text-blue-700 cursor-pointer hover:text-blue-800 transition-colors inline-flex items-center gap-2"
+                      className="text-3xl font-semibold text-slate-700 dark:text-slate-300 cursor-pointer hover:text-red-600 dark:hover:text-red-400 transition-colors inline-flex items-center gap-2"
                       onClick={() => setEditingPlayer1(true)}
                     >
                       {player1Name}
@@ -1364,20 +1381,18 @@ const BattleSimulator: NextPage = () => {
                   <div>
                     {/* Config Buttons */}
                     <div className="flex justify-center gap-2 mb-3">
-                      <CircularButton
+                      <button
                         onClick={() => setShowIVsEVs1(!showIVsEVs1)}
-                        variant="secondary"
-                        size="sm"
+                        className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg transition-all duration-200"
                       >
                         {showIVsEVs1 ? 'Hide' : 'Show'} IVs/EVs
-                      </CircularButton>
-                      <CircularButton
+                      </button>
+                      <button
                         onClick={() => setShowMoveSelector(1)}
-                        variant="secondary"
-                        size="sm"
-                      >
+                        className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg transition-all duration-200"
+                                              >
                         Select Moves ({pokemon1Config.selectedMoves.length}/4)
-                      </CircularButton>
+                      </button>
                     </div>
                   <div className="space-y-4" data-testid="selected-pokemon">
                     <div className={`relative inline-block ${isAnimating && 'animate-shake'}`}>
@@ -1393,10 +1408,10 @@ const BattleSimulator: NextPage = () => {
                         <div className="battle-effects" />
                       </div>
                     </div>
-                    <h3 className="text-2xl font-semibold capitalize">{selectedPokemon1.name}</h3>
+                    <h3 className="text-2xl font-semibold capitalize text-slate-700 dark:text-slate-300">{selectedPokemon1.name}</h3>
                     <div className="flex justify-center gap-2">
                       {selectedPokemon1.types?.map((t: PokemonType) => (
-                        <TypeBadge key={t.type.name} type={t.type.name} size="sm" />
+                        <TypeGradientBadge key={t.type.name} type={t.type.name} size="sm" />
                       ))}
                     </div>
                     {/* HP Bar */}
@@ -1405,17 +1420,35 @@ const BattleSimulator: NextPage = () => {
                         <span>HP</span>
                         <span>{currentHP1 || pokemon1Config.stats.hp}/{pokemon1Config.stats.hp}</span>
                       </div>
-                      <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                      <div className="w-full bg-gray-200 rounded-lg h-3 overflow-hidden hp-bar-container">
                         <div 
-                          className={`h-full transition-all duration-500 ease-out ${
+                          className={`h-full hp-bar ${
                             ((currentHP1 || pokemon1Config.stats.hp) / pokemon1Config.stats.hp) > 0.5 ? 'bg-green-500' :
                             ((currentHP1 || pokemon1Config.stats.hp) / pokemon1Config.stats.hp) > 0.2 ? 'bg-yellow-500' :
                             'bg-red-500'
-                          }`}
+                          } ${isAnimating && currentTurn === 2 ? 'damage-flash' : ''}`}
                           style={{ width: `${((currentHP1 || pokemon1Config.stats.hp) / pokemon1Config.stats.hp) * 100}%` }}
                         />
                       </div>
                     </div>
+                    
+                    {/* Status Effect Indicator */}
+                    {battleState?.pokemon1.status && battleState.pokemon1.status !== 'none' && (
+                      <div className="mt-2">
+                        <span className={`inline-block px-3 py-1 rounded-lg text-xs font-medium status-badge ${
+                          battleState.pokemon1.status === 'burn' ? 'bg-orange-100 text-orange-800 status-burn' :
+                          battleState.pokemon1.status === 'poison' ? 'bg-purple-100 text-purple-800 status-poison' :
+                          battleState.pokemon1.status === 'badpoison' ? 'bg-purple-200 text-purple-900 status-poison' :
+                          battleState.pokemon1.status === 'paralysis' ? 'bg-yellow-100 text-yellow-800 status-paralysis' :
+                          battleState.pokemon1.status === 'sleep' ? 'bg-indigo-100 text-indigo-800 status-sleep' :
+                          battleState.pokemon1.status === 'freeze' ? 'bg-blue-100 text-blue-800' :
+                          'bg-gray-100 text-gray-800'
+                        }`}>
+                          {battleState.pokemon1.status.toUpperCase()}
+                        </span>
+                      </div>
+                    )}
+                    
                     <div className="text-sm text-gray-600 mt-2">
                       Level: {pokemon1Config.level}
                     </div>
@@ -1426,36 +1459,71 @@ const BattleSimulator: NextPage = () => {
                         <h4 className="text-xl font-medium text-gray-700 mb-3">Stats Configuration</h4>
                         
                         {/* Nature Selection */}
-                        <div className="mb-3">
-                          <label className="text-sm font-medium text-gray-600">Nature</label>
-                          <select
-                            value={pokemon1Config.nature}
-                            onChange={(e) => setPokemon1Config(prev => ({ ...prev, nature: e.target.value }))}
-                            className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          >
+                        <div className="mb-4">
+                          <label className="text-sm font-medium text-gray-600 mb-2 block">Nature</label>
+                          <div className="grid grid-cols-3 gap-2 max-h-48 overflow-y-auto">
                             {allNatures.map(nature => (
-                              <option key={nature.name} value={nature.name}>
-                                {nature.name} {nature.increased_stat && nature.decreased_stat && 
-                                  `(+${nature.increased_stat.name.replace('special-', 'Sp.')}, -${nature.decreased_stat.name.replace('special-', 'Sp.')})`
-                                }
-                              </option>
+                              <button
+                                key={nature.name}
+                                onClick={() => setPokemon1Config(prev => ({ ...prev, nature: nature.name }))}
+                                className={`p-2 rounded-lg border-2 transition-all duration-200 text-xs ${
+                                  pokemon1Config.nature === nature.name
+                                    ? 'border-blue-500 bg-blue-50'
+                                    : 'border-gray-200 hover:border-gray-300'
+                                }`}
+                              >
+                                <div className="font-medium capitalize">{nature.name}</div>
+                                {nature.increased_stat && nature.decreased_stat && (
+                                  <div className="mt-1">
+                                    <span className="text-green-600">↑{nature.increased_stat.name.replace('special-', 'Sp.').replace('attack', 'Atk').replace('defense', 'Def')}</span>
+                                    <span className="mx-1 text-gray-400">/</span>
+                                    <span className="text-red-600">↓{nature.decreased_stat.name.replace('special-', 'Sp.').replace('attack', 'Atk').replace('defense', 'Def')}</span>
+                                  </div>
+                                )}
+                              </button>
                             ))}
-                          </select>
+                          </div>
                         </div>
                         
                         {/* Stats Display */}
-                        <div className="grid grid-cols-2 gap-2 text-sm">
-                          {Object.entries(pokemon1Config.stats).map(([stat, value]) => (
-                            <div key={stat} className="flex justify-between">
-                              <span className="capitalize">{stat.replace('special', 'Sp.').replace('Attack', ' Atk').replace('Defense', ' Def')}</span>
-                              <span className="font-semibold">{value}</span>
-                            </div>
-                          ))}
+                        <div className="space-y-2">
+                          {Object.entries(pokemon1Config.stats).map(([stat, value]) => {
+                            const statColors: Record<string, string> = {
+                              hp: '#22c55e',
+                              attack: '#ef4444',
+                              defense: '#3b82f6',
+                              specialAttack: '#a855f7',
+                              specialDefense: '#eab308',
+                              speed: '#06b6d4'
+                            };
+                            const statColor = statColors[stat] || '#6b7280';
+                            const percentage = (value / 255) * 100;
+                            
+                            return (
+                              <div key={stat} className="space-y-1">
+                                <div className="flex justify-between items-center text-xs">
+                                  <span className="capitalize font-medium text-gray-700">
+                                    {stat.replace('special', 'Sp.').replace('Attack', ' Atk').replace('Defense', ' Def')}
+                                  </span>
+                                  <span className="font-semibold">{value}</span>
+                                </div>
+                                <div className="h-4 bg-gray-200 rounded-lg overflow-hidden">
+                                  <div
+                                    className="h-full transition-all duration-500 ease-out rounded-lg"
+                                    style={{
+                                      width: `${percentage}%`,
+                                      backgroundColor: statColor
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            );
+                          })}
                         </div>
                         
                         {/* Quick Presets */}
                         <div className="mt-3 flex gap-2">
-                          <CircularButton
+                          <button
                             onClick={() => {
                               setPokemon1Config(prev => ({
                                 ...prev,
@@ -1463,13 +1531,11 @@ const BattleSimulator: NextPage = () => {
                                 evs: { hp: 252, attack: 252, defense: 0, specialAttack: 0, specialDefense: 4, speed: 0 }
                               }));
                             }}
-                            variant="ghost"
-                            size="sm"
-                            className="text-xs"
+                            className="px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded transition-all duration-200 text-xs"
                           >
                             Physical Sweeper
-                          </CircularButton>
-                          <CircularButton
+                          </button>
+                          <button
                             onClick={() => {
                               setPokemon1Config(prev => ({
                                 ...prev,
@@ -1477,48 +1543,51 @@ const BattleSimulator: NextPage = () => {
                                 evs: { hp: 4, attack: 0, defense: 0, specialAttack: 252, specialDefense: 0, speed: 252 }
                               }));
                             }}
-                            variant="ghost"
-                            size="sm"
-                            className="text-xs"
+                            className="px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded transition-all duration-200 text-xs"
                           >
                             Special Sweeper
-                          </CircularButton>
+                          </button>
                         </div>
                       </div>
                     )}
                   </div>
                   </div>
                 ) : (
-                  <CircularButton
+                  <button
                     onClick={() => setShowPokemonSelector(1)}
-                    variant="ghost"
-                    className="w-full p-6 border-2 border-dashed border-gray-300 hover:border-gray-400 min-h-[100px]"
+                    className="w-full p-6 border-2 border-dashed border-gray-300 hover:border-gray-400 min-h-[100px] bg-gray-100 hover:bg-gray-200 text-gray-600 rounded transition-all duration-200"
                     data-testid="pokemon-select"
                   >
                     <span className="text-gray-500">Click to select Pokemon</span>
-                  </CircularButton>
+                  </button>
                 )}
-              </div>
+              </GlassContainer>
 
               {/* VS Divider */}
-              <div className={`${sideLayout ? 'lg:flex' : 'hidden md:flex'} items-center justify-center ${sideLayout ? 'lg:flex-col lg:justify-center lg:px-4' : ''}`}>
-                <div className={`${sideLayout ? 'lg:bg-white lg:rounded-full lg:w-16 lg:h-16 lg:flex lg:items-center lg:justify-center lg:shadow-lg' : ''}`}>
-                  <div className="text-4xl font-bold text-gray-400">VS</div>
-                </div>
-                {sideLayout && (
-                  <div className="mt-4 text-center">
-                    <div className="text-sm text-gray-500 font-medium">Battle Arena</div>
-                    {battleActive && (
-                      <div className="mt-2 text-xs text-gray-400">
-                        Turn {battleLog.filter(log => typeof log === 'object' && 'damage' in log && log.damage).length + 1}
-                      </div>
-                    )}
+              <div className="lg:flex items-center justify-center lg:flex-col lg:justify-center lg:px-4">
+                <div
+                  className={`h-24 w-full max-w-[200px] mx-auto bg-gradient-to-r from-red-400 to-orange-400 rounded-lg shadow-lg backdrop-blur-sm border-4 border-orange-400 ${battleActive ? 'animate-pulse shadow-xl' : ''}`}
+                >
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="flex items-center justify-center">
+                      <div className="w-3 h-3 bg-white rounded" />
+                      <div className="mx-2 w-8 h-1 bg-white rounded" />
+                      <div className="w-3 h-3 bg-white rounded" />
+                    </div>
                   </div>
-                )}
+                </div>
+                <div className="mt-4 text-center">
+                  <div className="text-sm text-slate-700 dark:text-slate-300 font-medium">Battle Arena</div>
+                  {battleActive && (
+                    <div className="mt-2 text-xs text-gray-600 dark:text-gray-400">
+                      Turn {battleLog.filter(log => typeof log === 'object' && 'damage' in log && log.damage).length + 1}
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Pokemon 2 */}
-              <div className={`text-center ${sideLayout ? 'lg:flex-1 bg-red-50 rounded-xl p-6' : ''}`}>
+              <GlassContainer variant="colored" className="text-center lg:flex-1 bg-gradient-to-br from-yellow-50/80 to-red-50/80">
                 {/* Editable Trainer Name */}
                 <div className="mb-4">
                   {editingPlayer2 ? (
@@ -1528,12 +1597,12 @@ const BattleSimulator: NextPage = () => {
                       onChange={(e) => setPlayer2Name(e.target.value)}
                       onBlur={() => setEditingPlayer2(false)}
                       onKeyPress={(e) => e.key === 'Enter' && setEditingPlayer2(false)}
-                      className="text-3xl font-semibold text-center bg-transparent border-b-2 border-red-600 text-red-700 outline-none px-2"
+                      className="text-3xl font-semibold text-center bg-transparent border-b-2 border-orange-400 text-slate-700 dark:text-slate-300 outline-none px-2"
                       autoFocus
                     />
                   ) : (
                     <h2 
-                      className="text-3xl font-semibold text-red-700 cursor-pointer hover:text-red-800 transition-colors inline-flex items-center gap-2"
+                      className="text-3xl font-semibold text-slate-700 dark:text-slate-300 cursor-pointer hover:text-orange-600 dark:hover:text-orange-400 transition-colors inline-flex items-center gap-2"
                       onClick={() => setEditingPlayer2(true)}
                     >
                       {player2Name}
@@ -1547,20 +1616,18 @@ const BattleSimulator: NextPage = () => {
                   <div>
                     {/* Config Buttons */}
                     <div className="flex justify-center gap-2 mb-3">
-                      <CircularButton
+                      <button
                         onClick={() => setShowIVsEVs2(!showIVsEVs2)}
-                        variant="secondary"
-                        size="sm"
-                      >
+                        className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg transition-all duration-200"
+                                              >
                         {showIVsEVs2 ? 'Hide' : 'Show'} IVs/EVs
-                      </CircularButton>
-                      <CircularButton
+                      </button>
+                      <button
                         onClick={() => setShowMoveSelector(2)}
-                        variant="secondary"
-                        size="sm"
-                      >
+                        className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg transition-all duration-200"
+                                              >
                         Select Moves ({pokemon2Config.selectedMoves.length}/4)
-                      </CircularButton>
+                      </button>
                     </div>
                   <div className="space-y-4" data-testid="selected-pokemon">
                     <div className={`relative inline-block ${isAnimating && 'animate-shake'}`}>
@@ -1576,10 +1643,10 @@ const BattleSimulator: NextPage = () => {
                         <div className="battle-effects" />
                       </div>
                     </div>
-                    <h3 className="text-2xl font-semibold capitalize">{selectedPokemon2.name}</h3>
+                    <h3 className="text-2xl font-semibold capitalize text-slate-700 dark:text-slate-300">{selectedPokemon2.name}</h3>
                     <div className="flex justify-center gap-2">
                       {selectedPokemon2.types?.map((t: PokemonType) => (
-                        <TypeBadge key={t.type.name} type={t.type.name} size="sm" />
+                        <TypeGradientBadge key={t.type.name} type={t.type.name} size="sm" />
                       ))}
                     </div>
                     {/* HP Bar */}
@@ -1588,17 +1655,35 @@ const BattleSimulator: NextPage = () => {
                         <span>HP</span>
                         <span>{currentHP2 || pokemon2Config.stats.hp}/{pokemon2Config.stats.hp}</span>
                       </div>
-                      <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                      <div className="w-full bg-gray-200 rounded-lg h-3 overflow-hidden hp-bar-container">
                         <div 
-                          className={`h-full transition-all duration-500 ease-out ${
+                          className={`h-full hp-bar ${
                             ((currentHP2 || pokemon2Config.stats.hp) / pokemon2Config.stats.hp) > 0.5 ? 'bg-green-500' :
                             ((currentHP2 || pokemon2Config.stats.hp) / pokemon2Config.stats.hp) > 0.2 ? 'bg-yellow-500' :
                             'bg-red-500'
-                          }`}
+                          } ${isAnimating && currentTurn === 1 ? 'damage-flash' : ''}`}
                           style={{ width: `${((currentHP2 || pokemon2Config.stats.hp) / pokemon2Config.stats.hp) * 100}%` }}
                         />
                       </div>
                     </div>
+                    
+                    {/* Status Effect Indicator */}
+                    {battleState?.pokemon2.status && battleState.pokemon2.status !== 'none' && (
+                      <div className="mt-2">
+                        <span className={`inline-block px-3 py-1 rounded-lg text-xs font-medium status-badge ${
+                          battleState.pokemon2.status === 'burn' ? 'bg-orange-100 text-orange-800 status-burn' :
+                          battleState.pokemon2.status === 'poison' ? 'bg-purple-100 text-purple-800 status-poison' :
+                          battleState.pokemon2.status === 'badpoison' ? 'bg-purple-200 text-purple-900 status-poison' :
+                          battleState.pokemon2.status === 'paralysis' ? 'bg-yellow-100 text-yellow-800 status-paralysis' :
+                          battleState.pokemon2.status === 'sleep' ? 'bg-indigo-100 text-indigo-800 status-sleep' :
+                          battleState.pokemon2.status === 'freeze' ? 'bg-blue-100 text-blue-800' :
+                          'bg-gray-100 text-gray-800'
+                        }`}>
+                          {battleState.pokemon2.status.toUpperCase()}
+                        </span>
+                      </div>
+                    )}
+                    
                     <div className="text-sm text-gray-600 mt-2">
                       Level: {pokemon2Config.level}
                     </div>
@@ -1609,36 +1694,71 @@ const BattleSimulator: NextPage = () => {
                         <h4 className="text-xl font-medium text-gray-700 mb-3">Stats Configuration</h4>
                         
                         {/* Nature Selection */}
-                        <div className="mb-3">
-                          <label className="text-sm font-medium text-gray-600">Nature</label>
-                          <select
-                            value={pokemon2Config.nature}
-                            onChange={(e) => setPokemon2Config(prev => ({ ...prev, nature: e.target.value }))}
-                            className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
-                          >
+                        <div className="mb-4">
+                          <label className="text-sm font-medium text-gray-600 mb-2 block">Nature</label>
+                          <div className="grid grid-cols-3 gap-2 max-h-48 overflow-y-auto">
                             {allNatures.map(nature => (
-                              <option key={nature.name} value={nature.name}>
-                                {nature.name} {nature.increased_stat && nature.decreased_stat && 
-                                  `(+${nature.increased_stat.name.replace('special-', 'Sp.')}, -${nature.decreased_stat.name.replace('special-', 'Sp.')})`
-                                }
-                              </option>
+                              <button
+                                key={nature.name}
+                                onClick={() => setPokemon2Config(prev => ({ ...prev, nature: nature.name }))}
+                                className={`p-2 rounded-lg border-2 transition-all duration-200 text-xs ${
+                                  pokemon2Config.nature === nature.name
+                                    ? 'border-red-500 bg-red-50'
+                                    : 'border-gray-200 hover:border-gray-300'
+                                }`}
+                              >
+                                <div className="font-medium capitalize">{nature.name}</div>
+                                {nature.increased_stat && nature.decreased_stat && (
+                                  <div className="mt-1">
+                                    <span className="text-green-600">↑{nature.increased_stat.name.replace('special-', 'Sp.').replace('attack', 'Atk').replace('defense', 'Def')}</span>
+                                    <span className="mx-1 text-gray-400">/</span>
+                                    <span className="text-red-600">↓{nature.decreased_stat.name.replace('special-', 'Sp.').replace('attack', 'Atk').replace('defense', 'Def')}</span>
+                                  </div>
+                                )}
+                              </button>
                             ))}
-                          </select>
+                          </div>
                         </div>
                         
                         {/* Stats Display */}
-                        <div className="grid grid-cols-2 gap-2 text-sm">
-                          {Object.entries(pokemon2Config.stats).map(([stat, value]) => (
-                            <div key={stat} className="flex justify-between">
-                              <span className="capitalize">{stat.replace('special', 'Sp.').replace('Attack', ' Atk').replace('Defense', ' Def')}</span>
-                              <span className="font-semibold">{value}</span>
-                            </div>
-                          ))}
+                        <div className="space-y-2">
+                          {Object.entries(pokemon2Config.stats).map(([stat, value]) => {
+                            const statColors: Record<string, string> = {
+                              hp: '#22c55e',
+                              attack: '#ef4444',
+                              defense: '#3b82f6',
+                              specialAttack: '#a855f7',
+                              specialDefense: '#eab308',
+                              speed: '#06b6d4'
+                            };
+                            const statColor = statColors[stat] || '#6b7280';
+                            const percentage = (value / 255) * 100;
+                            
+                            return (
+                              <div key={stat} className="space-y-1">
+                                <div className="flex justify-between items-center text-xs">
+                                  <span className="capitalize font-medium text-gray-700">
+                                    {stat.replace('special', 'Sp.').replace('Attack', ' Atk').replace('Defense', ' Def')}
+                                  </span>
+                                  <span className="font-semibold">{value}</span>
+                                </div>
+                                <div className="h-4 bg-gray-200 rounded-lg overflow-hidden">
+                                  <div
+                                    className="h-full transition-all duration-500 ease-out rounded-lg"
+                                    style={{
+                                      width: `${percentage}%`,
+                                      backgroundColor: statColor
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            );
+                          })}
                         </div>
                         
                         {/* Quick Presets */}
                         <div className="mt-3 flex gap-2">
-                          <CircularButton
+                          <button
                             onClick={() => {
                               setPokemon2Config(prev => ({
                                 ...prev,
@@ -1646,13 +1766,11 @@ const BattleSimulator: NextPage = () => {
                                 evs: { hp: 252, attack: 252, defense: 0, specialAttack: 0, specialDefense: 4, speed: 0 }
                               }));
                             }}
-                            variant="ghost"
-                            size="sm"
-                            className="text-xs"
+                            className="px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded transition-all duration-200 text-xs"
                           >
                             Physical Sweeper
-                          </CircularButton>
-                          <CircularButton
+                          </button>
+                          <button
                             onClick={() => {
                               setPokemon2Config(prev => ({
                                 ...prev,
@@ -1660,86 +1778,51 @@ const BattleSimulator: NextPage = () => {
                                 evs: { hp: 4, attack: 0, defense: 0, specialAttack: 252, specialDefense: 0, speed: 252 }
                               }));
                             }}
-                            variant="ghost"
-                            size="sm"
-                            className="text-xs"
+                            className="px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded transition-all duration-200 text-xs"
                           >
                             Special Sweeper
-                          </CircularButton>
+                          </button>
                         </div>
                       </div>
                     )}
                   </div>
                   </div>
                 ) : (
-                  <CircularButton
+                  <button
                     onClick={() => setShowPokemonSelector(2)}
-                    variant="ghost"
-                    className="w-full p-6 border-2 border-dashed border-gray-300 hover:border-gray-400 min-h-[100px]"
+                    className="w-full p-6 border-2 border-dashed border-gray-300 hover:border-gray-400 min-h-[100px] bg-gray-100 hover:bg-gray-200 text-gray-600 rounded transition-all duration-200"
                     data-testid="pokemon-select"
                   >
                     <span className="text-gray-500">Click to select Pokemon</span>
-                  </CircularButton>
+                  </button>
                 )}
-              </div>
+              </GlassContainer>
             </div>
+          </GlassContainer>
 
             {/* Battle Controls */}
             {selectedPokemon1 && selectedPokemon2 && (
-              <div className="text-center">
+              <GlassContainer variant="medium" className="text-center">
                 {!battleActive ? (
                   <div className="space-y-4">
-                    <CircularButton
+                    <button
                       onClick={() => startBattle()}
-                      variant="primary"
-                      size="lg"
-                      className="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white"
+                      className="px-8 py-4 bg-gradient-to-r from-red-400 to-orange-400 text-white font-bold text-lg rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border-4 border-orange-400"
                     >
-                      Start Battle!
-                    </CircularButton>
-                    
-                    {/* Auto Battle Controls */}
-                    <div className="flex items-center justify-center gap-4">
-                      <label className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          checked={autoBattle}
-                          onChange={(e) => setAutoBattle(e.target.checked)}
-                          className="rounded"
-                        />
-                        <span className="text-sm font-medium">Auto Battle</span>
-                      </label>
-                      
-                      {autoBattle && (
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm">Speed:</span>
-                          <select
-                            value={autoBattleSpeed}
-                            onChange={(e) => setAutoBattleSpeed(Number(e.target.value))}
-                            className="px-2 py-1 border border-gray-300 rounded text-sm"
-                          >
-                            <option value={1}>Slow</option>
-                            <option value={2}>Normal</option>
-                            <option value={3}>Fast</option>
-                          </select>
-                        </div>
-                      )}
-                    </div>
+                      <span className="flex items-center gap-3">
+                        <div className="w-4 h-4 bg-white rounded animate-pulse" />
+                        Start Battle!
+                        <div className="w-4 h-4 bg-white rounded animate-pulse" />
+                      </span>
+                    </button>
                   </div>
                 ) : (
                   <div className="space-y-4">
                     {/* Turn Indicator */}
                     <div className="text-center mb-4">
-                      <div className="text-lg font-semibold text-gray-700">
+                      <div className="text-lg font-semibold text-slate-700 dark:text-slate-300">
                         {currentTurn === 1 ? `${player1Name}'s Turn` : `${player2Name}'s Turn`}
                       </div>
-                      {autoBattle && (
-                        <div className="flex items-center justify-center gap-2 mt-2">
-                          <div className="animate-pulse w-2 h-2 bg-green-500 rounded-full"></div>
-                          <span className="text-sm text-green-600 font-medium">Auto Battle Active</span>
-                          <div className="animate-pulse w-2 h-2 bg-green-500 rounded-full"></div>
-                        </div>
-                      )}
                     </div>
                     
                     {/* Move Selection */}
@@ -1747,25 +1830,49 @@ const BattleSimulator: NextPage = () => {
                       <div className="grid grid-cols-2 gap-3">
                         {pokemon1Config.selectedMoves.map((move, index) => {
                           const moveData = movesData[move.move.name];
+                          const effectiveness = moveData?.type && selectedPokemon2?.types ? 
+                            getTypeEffectiveness(moveData.type.name, selectedPokemon2.types) : 1;
+                          const typeColor = moveData?.type ? POKEMON_TYPE_COLORS[moveData.type.name as keyof typeof POKEMON_TYPE_COLORS] : '#6B7280';
+                          
                           return (
-                            <CircularButton
+                            <button
                               key={index}
                               onClick={() => executeMove(1, move)}
-                              variant="ghost"
-                              size="md"
-                              className={`p-4 border-2 min-h-[80px] ${
-                                moveData?.type ? `bg-${moveData.type.name}-100 border-${moveData.type.name}-300 hover:bg-${moveData.type.name}-200` : 'bg-gray-100 border-gray-300'
-                              }`}
+                              className="relative p-4 border-2 rounded-lg min-h-[100px] transition-all duration-200 hover:scale-105 hover:shadow-lg overflow-hidden"
+                              style={{
+                                backgroundColor: `${typeColor}15`,
+                                borderColor: `${typeColor}40`
+                              }}
                             >
-                              <div>
-                                <div className="font-semibold capitalize">{move.move.name.replace('-', ' ')}</div>
+                              {/* Type Badge Background */}
+                              <div className="absolute top-0 right-0 opacity-20">
+                                {moveData?.type && <TypeGradientBadge type={moveData.type.name} size="sm" />}
+                              </div>
+                              
+                              {/* Move Content */}
+                              <div className="relative z-10">
+                                <div className="font-semibold capitalize text-slate-700 dark:text-slate-300">{move.move.name.replace(/-/g, ' ')}</div>
+                                
                                 {moveData && (
-                                  <div className="text-xs text-gray-600 mt-1">
-                                    Power: {moveData.power || '-'} | Acc: {moveData.accuracy || '-'}%
+                                  <div className="mt-2 space-y-1">
+                                    <div className="flex justify-between items-center text-xs">
+                                      <span className="text-gray-600">PP: {moveData.pp}/{moveData.pp}</span>
+                                      {effectiveness > 1 && (
+                                        <span className="text-red-600 font-bold">Super Effective!</span>
+                                      )}
+                                      {effectiveness < 1 && effectiveness > 0 && (
+                                        <span className="text-gray-500">Not very effective</span>
+                                      )}
+                                    </div>
+                                    
+                                    <div className="flex justify-between text-xs text-gray-500">
+                                      <span>Power: {moveData.power || '-'}</span>
+                                      <span>Acc: {moveData.accuracy || '-'}%</span>
+                                    </div>
                                   </div>
                                 )}
                               </div>
-                            </CircularButton>
+                            </button>
                           );
                         })}
                       </div>
@@ -1775,25 +1882,49 @@ const BattleSimulator: NextPage = () => {
                       <div className="grid grid-cols-2 gap-3">
                         {pokemon2Config.selectedMoves.map((move, index) => {
                           const moveData = movesData[move.move.name];
+                          const effectiveness = moveData?.type && selectedPokemon1?.types ? 
+                            getTypeEffectiveness(moveData.type.name, selectedPokemon1.types) : 1;
+                          const typeColor = moveData?.type ? POKEMON_TYPE_COLORS[moveData.type.name as keyof typeof POKEMON_TYPE_COLORS] : '#6B7280';
+                          
                           return (
-                            <CircularButton
+                            <button
                               key={index}
                               onClick={() => executeMove(2, move)}
-                              variant="ghost"
-                              size="md"
-                              className={`p-4 border-2 min-h-[80px] ${
-                                moveData?.type ? `bg-${moveData.type.name}-100 border-${moveData.type.name}-300 hover:bg-${moveData.type.name}-200` : 'bg-gray-100 border-gray-300'
-                              }`}
+                              className="relative p-4 border-2 rounded-lg min-h-[100px] transition-all duration-200 hover:scale-105 hover:shadow-lg overflow-hidden"
+                              style={{
+                                backgroundColor: `${typeColor}15`,
+                                borderColor: `${typeColor}40`
+                              }}
                             >
-                              <div>
-                                <div className="font-semibold capitalize">{move.move.name.replace('-', ' ')}</div>
+                              {/* Type Badge Background */}
+                              <div className="absolute top-0 right-0 opacity-20">
+                                {moveData?.type && <TypeGradientBadge type={moveData.type.name} size="sm" />}
+                              </div>
+                              
+                              {/* Move Content */}
+                              <div className="relative z-10">
+                                <div className="font-semibold capitalize text-slate-700 dark:text-slate-300">{move.move.name.replace(/-/g, ' ')}</div>
+                                
                                 {moveData && (
-                                  <div className="text-xs text-gray-600 mt-1">
-                                    Power: {moveData.power || '-'} | Acc: {moveData.accuracy || '-'}%
+                                  <div className="mt-2 space-y-1">
+                                    <div className="flex justify-between items-center text-xs">
+                                      <span className="text-gray-600">PP: {moveData.pp}/{moveData.pp}</span>
+                                      {effectiveness > 1 && (
+                                        <span className="text-red-600 font-bold">Super Effective!</span>
+                                      )}
+                                      {effectiveness < 1 && effectiveness > 0 && (
+                                        <span className="text-gray-500">Not very effective</span>
+                                      )}
+                                    </div>
+                                    
+                                    <div className="flex justify-between text-xs text-gray-500">
+                                      <span>Power: {moveData.power || '-'}</span>
+                                      <span>Acc: {moveData.accuracy || '-'}%</span>
+                                    </div>
                                   </div>
                                 )}
                               </div>
-                            </CircularButton>
+                            </button>
                           );
                         })}
                       </div>
@@ -1801,34 +1932,13 @@ const BattleSimulator: NextPage = () => {
                     
                     {/* Battle Controls */}
                     <div className="flex gap-3 justify-center">
-                      <CircularButton
-                        onClick={() => setAutoBattle(!autoBattle)}
-                        variant="primary"
-                        size="sm"
-                        className={autoBattle ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-blue-500 hover:bg-blue-600'}
+                      <button
+                        onClick={fastForwardBattle}
+                        className="px-6 py-3 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
+                        disabled={isSimulating}
                       >
-                        {autoBattle ? 'Stop Auto' : 'Auto Battle'}
-                      </CircularButton>
-                      
-                      {autoBattle && (
-                        <select
-                          value={autoBattleSpeed}
-                          onChange={(e) => setAutoBattleSpeed(Number(e.target.value))}
-                          className="px-3 py-2 border border-gray-300 rounded text-sm"
-                        >
-                          <option value={1}>Slow</option>
-                          <option value={2}>Normal</option>
-                          <option value={3}>Fast</option>
-                        </select>
-                      )}
-                      
-                      <CircularButton
-                        onClick={() => endBattle()}
-                        variant="secondary"
-                        size="sm"
-                      >
-                        End Battle
-                      </CircularButton>
+                        {isSimulating ? 'Simulating...' : 'Auto Complete Battle'}
+                      </button>
                     </div>
                   </div>
                 )}
@@ -1837,45 +1947,40 @@ const BattleSimulator: NextPage = () => {
                 <div className="mt-6 pt-6 border-t border-gray-200">
                   <h4 className="text-xl font-medium mb-3 text-center text-gray-700">Alternative Battle Mode</h4>
                   <div className="flex gap-3 justify-center">
-                    <CircularButton
+                    <button
                       onClick={runQuickBattle}
                       disabled={battleActive}
-                      variant="primary"
-                      size="md"
-                      className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 disabled:opacity-50"
+                      className="px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 disabled:opacity-50"
                     >
                       {battleActive ? 'Battle in Progress...' : 'Quick Battle (Auto)'}
-                    </CircularButton>
+                    </button>
                     {(selectedPokemon1 || selectedPokemon2 || battleLog.length > 0) && (
-                      <CircularButton
+                      <button
                         onClick={resetBattle}
-                        variant="secondary"
-                        size="md"
-                        className="bg-gray-700 hover:bg-gray-800"
+                        className="px-4 py-2 bg-gray-700 hover:bg-gray-800 text-white font-medium rounded-lg transition-all duration-200"
                       >
                         Reset All
-                      </CircularButton>
+                      </button>
                     )}
                   </div>
                 </div>
-              </div>
+              </GlassContainer>
             )}
-          </StandardCard>
 
           {/* Battle Log */}
           {battleLog.length > 0 && (
-            <StandardCard variant="featured" className="p-6 mb-8">
-              <h3 className="text-2xl font-semibold mb-4 text-gray-800">Battle Log</h3>
-              <div className="bg-gray-50 rounded-xl p-4 max-h-64 overflow-y-auto space-y-2">
+            <GlassContainer variant="dark" className="mb-8">
+              <h3 className="text-2xl font-semibold mb-4 text-slate-700 dark:text-slate-300">Battle Log</h3>
+              <div className="bg-white/50 dark:bg-gray-800/50 rounded-xl p-4 max-h-64 overflow-y-auto space-y-2 backdrop-blur-sm border border-white/20">
                 {battleLog.map((log, index) => {
                   // Handle string logs from Quick Battle
                   if (typeof log === 'string') {
                     return (
                       <div 
                         key={index}
-                        className="p-3 rounded-lg text-sm bg-white border border-gray-200"
+                        className="p-3 rounded-lg text-sm bg-white/80 dark:bg-gray-700/80 border border-gray-200/50"
                       >
-                        <span className="text-gray-600">{log}</span>
+                        <span className="text-gray-600 dark:text-gray-300">{log}</span>
                       </div>
                     );
                   }
@@ -1910,14 +2015,14 @@ const BattleSimulator: NextPage = () => {
                           </span>
                         )}
                         {battleLogEntry.effectiveness && battleLogEntry.effectiveness !== 1 && (
-                          <span className={`ml-2 text-xs font-medium px-2 py-1 rounded-full ${
+                          <span className={`ml-2 text-xs font-medium px-2 py-1 rounded-lg ${
                             battleLogEntry.effectiveness > 1 ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'
                           }`}>
                             {battleLogEntry.effectiveness > 1 ? 'Super Effective!' : 'Not Very Effective'}
                           </span>
                         )}
                         {battleLogEntry.critical && (
-                          <span className="ml-2 text-xs font-medium px-2 py-1 rounded-full bg-yellow-200 text-yellow-800">
+                          <span className="ml-2 text-xs font-medium px-2 py-1 rounded-lg bg-yellow-200 text-yellow-800">
                             Critical Hit!
                           </span>
                         )}
@@ -1926,31 +2031,33 @@ const BattleSimulator: NextPage = () => {
                   );
                 })}
               </div>
-            </StandardCard>
+            </GlassContainer>
           )}
 
           {/* Battle History */}
           {battleHistory.length > 0 && (
-            <StandardCard variant="featured" className="p-6">
-              <h3 className="text-2xl font-semibold mb-4 text-gray-800">Battle History</h3>
+            <GlassContainer variant="medium" className="mb-8">
+              <h3 className="text-2xl font-semibold mb-4 text-slate-700 dark:text-slate-300">Battle History</h3>
               <div className="space-y-3">
                 {battleHistory.slice(-5).reverse().map((battle, index) => (
-                  <div key={index} className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors">
+                  <div key={index} className="bg-white/50 dark:bg-gray-700/50 rounded-lg p-4 hover:bg-white/70 dark:hover:bg-gray-600/50 transition-colors border border-white/20">
                     <div className="flex justify-between items-start">
                       <div>
-                        <div className="font-semibold text-gray-800">
+                        <div className="font-semibold text-slate-700 dark:text-slate-300">
                           {battle.winner}'s {battle.winnerPokemon} defeated {battle.loser}'s {battle.loserPokemon}
                         </div>
-                        <div className="text-sm text-gray-600 mt-1">
+                        <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                           {battle.moves.length} moves • {new Date(battle.date).toLocaleDateString()}
                         </div>
                       </div>
-                      <div className="text-2xl">🏆</div>
+                      <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-lg flex items-center justify-center">
+                        <div className="w-4 h-4 bg-white rounded" />
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
-            </StandardCard>
+            </GlassContainer>
           )}
 
           {/* Pokemon Selector Modal */}
@@ -2000,38 +2107,30 @@ const BattleSimulator: NextPage = () => {
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <div className="flex gap-2">
-                  <CircularButton
+                  <button
                     onClick={() => setMoveFilter('all')}
-                    variant={moveFilter === 'all' ? 'primary' : 'secondary'}
-                    size="sm"
                     className={moveFilter === 'all' ? 'bg-blue-500' : ''}
                   >
                     All
-                  </CircularButton>
-                  <CircularButton
+                  </button>
+                  <button
                     onClick={() => setMoveFilter('physical')}
-                    variant={moveFilter === 'physical' ? 'primary' : 'secondary'}
-                    size="sm"
                     className={moveFilter === 'physical' ? 'bg-red-500' : ''}
                   >
                     Physical
-                  </CircularButton>
-                  <CircularButton
+                  </button>
+                  <button
                     onClick={() => setMoveFilter('special')}
-                    variant={moveFilter === 'special' ? 'primary' : 'secondary'}
-                    size="sm"
                     className={moveFilter === 'special' ? 'bg-purple-500' : ''}
                   >
                     Special
-                  </CircularButton>
-                  <CircularButton
+                  </button>
+                  <button
                     onClick={() => setMoveFilter('status')}
-                    variant={moveFilter === 'status' ? 'primary' : 'secondary'}
-                    size="sm"
                     className={moveFilter === 'status' ? 'bg-gray-500' : ''}
                   >
                     Status
-                  </CircularButton>
+                  </button>
                 </div>
               </div>
               
@@ -2096,7 +2195,7 @@ const BattleSimulator: NextPage = () => {
                             <div>
                               <div className="font-semibold capitalize">
                                 {move.move.name.replace('-', ' ')}
-                                {isSTAB && <span className="ml-2 text-xs bg-yellow-200 text-yellow-800 px-2 py-1 rounded-full">STAB</span>}
+                                {isSTAB && <span className="ml-2 text-xs bg-yellow-200 text-yellow-800 px-2 py-1 rounded-lg">STAB</span>}
                               </div>
                               {moveData && (
                                 <div className="text-sm text-gray-600 mt-1">
@@ -2121,7 +2220,7 @@ const BattleSimulator: NextPage = () => {
               
               {/* Action Buttons */}
               <div className="flex gap-3 mt-4">
-                <CircularButton
+                <button
                   onClick={() => {
                     selectBestMoves(
                       showMoveSelector === 1 ? selectedPokemon1! : selectedPokemon2!,
@@ -2129,20 +2228,99 @@ const BattleSimulator: NextPage = () => {
                       showMoveSelector!
                     );
                   }}
-                  variant="primary"
-                  size="lg"
-                  className="flex-1"
+                  className="flex-1 px-6 py-3 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
                 >
                   Auto-Select Best
-                </CircularButton>
-                <CircularButton
+                </button>
+                <button
                   onClick={() => setShowMoveSelector(null)}
-                  variant="secondary"
-                  size="lg"
-                  className="flex-1"
+                  className="flex-1 px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg transition-all duration-200"
                 >
                   Done
-                </CircularButton>
+                </button>
+              </div>
+            </div>
+          </Modal>
+
+          {/* Fast Forward Results Modal */}
+          <Modal
+            isOpen={showBattleResults && battleResults !== null}
+            onClose={() => setShowBattleResults(false)}
+            title="Battle Simulation Complete!"
+          >
+            <div className="p-6">
+              <div className="text-center mb-6">
+                <img 
+                  src={battleResults?.winner === 1 ? selectedPokemon1?.sprites?.front_default || '' : selectedPokemon2?.sprites?.front_default || ''}
+                  alt="Winner"
+                  className="mx-auto w-32 h-32 mb-4"
+                />
+                <h2 className="text-2xl font-bold text-gray-800 mb-2 capitalize">
+                  {battleResults?.winner === 1 ? selectedPokemon1?.name : selectedPokemon2?.name} Won!
+                </h2>
+                <p className="text-lg text-gray-600">
+                  Trainer: {battleResults?.winner === 1 ? player1Name : player2Name}
+                </p>
+                <p className="text-sm text-gray-500">
+                  Battle completed in {battleResults?.turns} turns
+                </p>
+              </div>
+              
+              {/* Battle Statistics */}
+              <div className="bg-gray-50 rounded-lg p-4 mb-6">
+                <h3 className="font-semibold text-gray-700 mb-3">Battle Statistics</h3>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <div className="font-medium text-gray-700">{player1Name}'s {selectedPokemon1?.name}</div>
+                    <div className="text-gray-600">Final HP: {battleResults?.finalHP[0]} / {battleState?.pokemon1.maxHp}</div>
+                    <div className="text-gray-600">Damage Dealt: {battleResults?.totalDamageDealt[0]}</div>
+                  </div>
+                  <div>
+                    <div className="font-medium text-gray-700">{player2Name}'s {selectedPokemon2?.name}</div>
+                    <div className="text-gray-600">Final HP: {battleResults?.finalHP[1]} / {battleState?.pokemon2.maxHp}</div>
+                    <div className="text-gray-600">Damage Dealt: {battleResults?.totalDamageDealt[1]}</div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Key Moments */}
+              {battleResults?.keyMoments && battleResults.keyMoments.length > 0 && (
+                <div className="bg-blue-50 rounded-lg p-4 mb-6">
+                  <h3 className="font-semibold text-gray-700 mb-2">Key Moments</h3>
+                  <div className="space-y-1 text-sm text-gray-600">
+                    {battleResults.keyMoments.slice(0, 5).map((moment, index) => (
+                      <div key={index} className="flex items-center gap-2">
+                        <span className="text-gray-400">Turn {moment.turn}:</span>
+                        <span className={
+                          moment.type === 'critical' ? 'text-yellow-600' :
+                          moment.type === 'super_effective' ? 'text-red-600' :
+                          moment.type === 'ko' ? 'text-purple-600' :
+                          'text-gray-600'
+                        }>
+                          {moment.description}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              <div className="flex gap-3">
+                <button
+                  onClick={() => {
+                    setShowBattleResults(false);
+                    endBattle();
+                  }}
+                  className="flex-1 px-6 py-3 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
+                >
+                  New Battle
+                </button>
+                <button
+                  onClick={() => setShowBattleResults(false)}
+                  className="flex-1 px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg transition-all duration-200"
+                >
+                  Close
+                </button>
               </div>
             </div>
           </Modal>
@@ -2155,12 +2333,16 @@ const BattleSimulator: NextPage = () => {
           >
             <div className="p-6 text-center">
               <div className="mb-6">
-                <div className="text-6xl mb-4">🏆</div>
-                <h2 className="text-3xl font-bold text-gray-800 mb-2">
-                  {winner === 1 ? player1Name : player2Name} Wins!
+                <img 
+                  src={winner === 1 ? selectedPokemon1?.sprites?.front_default || '' : selectedPokemon2?.sprites?.front_default || ''}
+                  alt="Winner"
+                  className="mx-auto w-32 h-32 mb-4"
+                />
+                <h2 className="text-3xl font-bold text-gray-800 mb-2 capitalize">
+                  {winner === 1 ? selectedPokemon1?.name : selectedPokemon2?.name} Won!
                 </h2>
                 <p className="text-lg text-gray-600">
-                  with {winner === 1 ? selectedPokemon1?.name : selectedPokemon2?.name}
+                  Trainer: {winner === 1 ? player1Name : player2Name}
                 </p>
               </div>
               
@@ -2175,18 +2357,16 @@ const BattleSimulator: NextPage = () => {
               </div>
               
               <div className="flex gap-3">
-                <CircularButton
+                <button
                   onClick={() => {
                     setShowVictoryScreen(false);
                     endBattle();
                   }}
-                  variant="primary"
-                  size="lg"
-                  className="flex-1"
+                  className="flex-1 px-6 py-3 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
                 >
                   New Battle
-                </CircularButton>
-                <CircularButton
+                </button>
+                <button
                   onClick={() => {
                     setShowVictoryScreen(false);
                     // Swap Pokemon
@@ -2200,30 +2380,16 @@ const BattleSimulator: NextPage = () => {
                     setPokemon2Config(tempConfig1);
                     endBattle();
                   }}
-                  variant="secondary"
-                  size="lg"
-                  className="flex-1"
+                  className="flex-1 px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg transition-all duration-200"
                 >
                   Rematch (Swap)
-                </CircularButton>
+                </button>
               </div>
             </div>
           </Modal>
 
-          {battleLog.length > 0 && (
-            <div className="mt-8">
-              <h3 className="font-bold mb-2">Battle Log</h3>
-              <div className="bg-white rounded-xl p-4 space-y-1">
-                {battleLog.map((entry, index) => (
-                  <div key={index}>
-                    {typeof entry === 'string' ? entry : `${entry.player}: ${entry.action}`}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
-      </FullBleedWrapper>
+      </div>
 
       {/* Battle Animation Styles */}
       <style jsx>{`

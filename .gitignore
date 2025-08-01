@@ -49,3 +49,17 @@ tsconfig.tsbuildinfo
 public/images/scraped/
 # Uncomment after migrating PocketBoosterPacks to CDN
 # public/images/PocketBoosterPacks/
+
+# Backup files
+*.backup-*
+*.backup
+
+# Test artifacts
+playwright-report/
+test-results/
+coverage/
+
+# Debug and demo pages (uncomment if needed)
+# pages/*-demo.tsx
+# pages/*-test.tsx
+# pages/test-*.tsx

@@ -1711,4 +1711,4 @@ export default function DeckBuilder() {
       <BackToTop />
     </div>
   );
-}
+};

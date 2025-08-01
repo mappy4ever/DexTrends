@@ -44,6 +44,23 @@ function getRarityGlow(rarity?: string): string {
   return "";
 }
 
+const renderEvolutionLine = (card: TCGCard) => (
+  <div className="mt-2 flex flex-wrap gap-2 text-xs">
+    {card.evolvesFrom && (
+      <span>
+        <b className="text-foreground-muted">Evolves From:</b>{" "}
+        <span className="font-medium">{card.evolvesFrom}</span>
+      </span>
+    )}
+    {card.evolvesTo && card.evolvesTo.length > 0 && (
+      <span>
+        <b className="text-foreground-muted">Evolves To:</b>{" "}
+        <span className="font-medium">{card.evolvesTo.join(", ")}</span>
+      </span>
+    )}
+  </div>
+);
+
 const IndexPage: NextPage = () => {
   const [globalSearchTerm, setGlobalSearchTerm] = useState("");
   const [cardSearchTerm, setCardSearchTerm] = useState("");
@@ -112,22 +129,6 @@ const IndexPage: NextPage = () => {
     console.log('Global search:', globalSearchTerm);
   };
 
-  const renderEvolutionLine = (card: TCGCard) => (
-    <div className="mt-2 flex flex-wrap gap-2 text-xs">
-      {card.evolvesFrom && (
-        <span>
-          <b className="text-foreground-muted">Evolves From:</b>{" "}
-          <span className="font-medium">{card.evolvesFrom}</span>
-        </span>
-      )}
-      {card.evolvesTo && card.evolvesTo.length > 0 && (
-        <span>
-          <b className="text-foreground-muted">Evolves To:</b>{" "}
-          <span className="font-medium">{card.evolvesTo.join(", ")}</span>
-        </span>
-      )}
-    </div>
-  );
 
   // Handle click outside expanded card modal to close it
   useEffect(() => {

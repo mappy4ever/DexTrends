@@ -208,11 +208,12 @@ export default function Navbar() {
                     }}
                     onMouseLeave={(e) => {
                       // Check if we're moving to the dropdown menu
-                      const relatedTarget = e.relatedTarget as HTMLElement;
-                      const isMovingToDropdown = relatedTarget && (
-                        relatedTarget.closest('.dropdown-menu') || 
-                        relatedTarget.closest('.invisible-bridge')
-                      );
+                      const relatedTarget = e.relatedTarget as HTMLElement | null;
+                      const isMovingToDropdown = relatedTarget && 
+                        typeof relatedTarget.closest === 'function' && (
+                          relatedTarget.closest('.dropdown-menu') || 
+                          relatedTarget.closest('.invisible-bridge')
+                        );
                       
                       if (!isMovingToDropdown) {
                         // Small delay to allow moving to dropdown

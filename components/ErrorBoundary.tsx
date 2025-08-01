@@ -1,4 +1,5 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { useErrorBoundary } from './ErrorBoundary.hooks';
 import { useRouter } from 'next/router';
 import logger from '../utils/logger';
 
@@ -189,25 +190,5 @@ class ErrorBoundaryClass extends Component<Props & { resetCount: number; onReset
 }
 
 // Hook for resetting error boundary programmatically
-export function useErrorBoundary() {
-  const [error, setError] = React.useState<Error | null>(null);
-  
-  const resetError = React.useCallback(() => {
-    setError(null);
-  }, []);
-  
-  const throwError = React.useCallback((error: Error) => {
-    setError(error);
-  }, []);
-  
-  // Throw error in effect to trigger error boundary
-  React.useEffect(() => {
-    if (error) {
-      throw error;
-    }
-  }, [error]);
-  
-  return { resetError, throwError };
-}
 
 export default ErrorBoundaryWrapper;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
-import { useNotifications } from './NotificationSystem';
+import { useNotifications } from '../../hooks/useNotifications';
 import { useTheme } from '../../context/UnifiedAppContext';
 import logger from '../../utils/logger';
 

@@ -8,12 +8,8 @@ import { useDebounce } from "../../hooks/useDebounce";
 import { safeRequestIdleCallback } from "../../utils/requestIdleCallback";
 import { GlassContainer } from "../../components/ui/design-system/GlassContainer";
 import { GradientButton } from "../../components/ui/design-system/GradientButton";
-import { motion } from "framer-motion";
 import Modal from "../../components/ui/modals/Modal";
 import CardList from "../../components/CardList";
-import VirtualizedCardGrid from "../../components/ui/VirtualizedCardGrid";
-import { FadeIn, SlideUp } from "../../components/ui/animations/animations";
-import { DynamicPriceHistoryChart } from "../../components/dynamic/DynamicComponents";
 import { useTheme } from "../../context/UnifiedAppContext";
 import { useFavorites } from "../../context/UnifiedAppContext";
 import { useViewSettings } from "../../context/UnifiedAppContext";
@@ -59,9 +55,7 @@ const SetIdPage: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
-  const [loadingMoreCards, setLoadingMoreCards] = useState<boolean>(false);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [hasMoreCards, setHasMoreCards] = useState<boolean>(true);
+  const [loadingMessage, setLoadingMessage] = useState<string>("Loading set information...");
   
   // Filter states
   const [filterRarity, setFilterRarity] = useState<string>("");
@@ -80,49 +74,10 @@ const SetIdPage: NextPage = () => {
   // Modal state
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [modalCard, setModalCard] = useState<TCGCard | null>(null);
-
-  // Load more cards in background for complete statistics
-  const loadMoreCardsInBackground = useCallback(async () => {
-    if (!setid || !hasMoreCards || loadingMoreCards) return;
-    
-    let page = currentPage + 1;
-    const allCards: TCGCard[] = [...cards];
-    
-    try {
-      while (hasMoreCards) {
-        const data = await fetchJSON<{ cards: TCGCard[]; pagination: any }>(
-          `/api/tcg-sets/${setid}?page=${page}&pageSize=20`,
-          {
-            useCache: true,
-            cacheTime: 30 * 60 * 1000,
-            retries: 1,
-            timeout: 8000
-          }
-        );
-        
-        if (data?.cards?.length) {
-          allCards.push(...data.cards);
-          setCards(prevCards => [...prevCards, ...data.cards]);
-          
-          // Update statistics with complete dataset
-          calculateSetStatistics(allCards);
-        }
-        
-        if (!data?.pagination?.hasMore) {
-          setHasMoreCards(false);
-          break;
-        }
-        
-        page++;
-        
-        // Small delay to prevent overwhelming the API
-        await new Promise(resolve => setTimeout(resolve, 100));
-      }
-    } catch (err) {
-      logger.warn('Background card loading failed:', err);
-      // Non-critical failure, keep existing cards
-    }
-  }, [setid, hasMoreCards, loadingMoreCards, currentPage, cards]);
+  
+  // Pagination state for tracking loading
+  const [paginationInfo, setPaginationInfo] = useState<any>(null);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   // Calculate set statistics when cards are loaded
   const calculateSetStatistics = useCallback((cardsData: TCGCard[]) => {
@@ -188,27 +143,72 @@ const SetIdPage: NextPage = () => {
 
   // Fetch set information and cards
   useEffect(() => {
-    if (!setid) return;
+    let mounted = true;
+    let abortController: AbortController | null = null;
+    
+    // Wait for router to be ready
+    if (!router.isReady) {
+      return;
+    }
+    
+    if (!setid) {
+      return;
+    }
 
     const fetchSetData = async () => {
+      // Create abort controller for this request
+      abortController = new AbortController();
       setLoading(true);
       setError(null);
+      setLoadingMessage("Connecting to Pokemon TCG database...");
       
       // Start performance monitoring
       performanceMonitor.startTimer('api-request', `tcg-set-${setid}`);
       performanceMonitor.startTimer('page-load', `tcg-set-page-${setid}`);
       
       try {
-        // Load first page of cards immediately for faster initial render
-        const data = await fetchJSON<{ set: CardSet; cards: TCGCard[]; pagination: any }>(
-          `/api/tcg-sets/${setid}?page=1&pageSize=20`,
-          {
-            useCache: true,
-            cacheTime: 30 * 60 * 1000, // Cache for 30 minutes
-            retries: 2,
-            timeout: 10000 // Reduced timeout
+        // Load first page of cards - API limit is 50
+        const url = `/api/tcg-sets/${setid}?page=1&pageSize=50`;
+        
+        setLoadingMessage("Loading set information...");
+        
+        // Add timeout to show additional message if taking too long
+        const slowLoadTimeout = setTimeout(() => {
+          if (mounted) {
+            setLoadingMessage("Still loading... The Pokemon TCG API is responding slowly. Please wait...");
           }
-        );
+        }, 10000); // Show after 10 seconds
+        
+        let data;
+        try {
+          // Use fetchJSON with proper error handling and abort signal
+          data = await fetchJSON<{ set: any; cards: any[]; pagination: any }>(
+            url,
+            {
+              signal: abortController.signal,
+              useCache: true,
+              cacheTime: 30 * 60 * 1000,
+              retries: 3,
+              retryDelay: 2000,
+              timeout: 60000, // 60 seconds to match backend
+              throwOnError: true
+            }
+          );
+          
+          // Clear the slow load timeout
+          clearTimeout(slowLoadTimeout);
+          
+          // Log raw API response for debugging
+        } catch (fetchError: any) {
+          // Clear the slow load timeout
+          clearTimeout(slowLoadTimeout);
+          
+          // Check if request was aborted
+          if (fetchError.name === 'AbortError' || !mounted) {
+            return;
+          }
+          throw fetchError;
+        }
         // End API call monitoring
         const apiTime = performanceMonitor.endTimer('api-request', `tcg-set-${setid}`, {
           setId: setid,
@@ -219,23 +219,117 @@ const SetIdPage: NextPage = () => {
           logger.warn(`Slow API response for set ${setid}: ${apiTime}ms`);
         }
         
-        if (data?.set) setSetInfo(data.set);
+        // Check if component is still mounted before setting state
+        if (!mounted) return;
+        
+        if (!data) {
+          throw new Error('No data returned from API');
+        }
+        
+        setLoadingMessage("Loading cards...");
+        
+        if (data?.set) {
+          setSetInfo(data.set);
+        } else {
+          throw new Error('Set data not found in API response');
+        }
+        
         if (data?.cards) {
-          setCards(data.cards);
-          setCurrentPage(1);
-          setHasMoreCards(data.pagination?.hasMore || false);
           
-          // Calculate statistics with first batch of cards (for immediate display)
+          setCards(data.cards);
+          
+          // Store pagination info for later use
+          if (data.pagination) {
+            setPaginationInfo(data.pagination);
+          }
+          
+          // Calculate statistics with first batch of cards
           calculateSetStatistics(data.cards);
           
-          // Load remaining cards in background if there are more
-          if (data.pagination?.hasMore) {
-            loadMoreCardsInBackground();
+          // Check if we need to load more cards
+          const needsMoreCards = data.pagination?.hasMore || 
+                                (data.pagination?.totalCount && data.cards.length < data.pagination.totalCount);
+
+
+          if (needsMoreCards && mounted) {
+            // Calculate based on actual page size (50)
+            const actualPageSize = data.cards.length || 50;
+            const totalCards = data.pagination?.totalCount || 0;
+            const totalPages = Math.ceil(totalCards / actualPageSize);
+            
+            
+            let allCards = [...data.cards];
+            let currentPage = 2;
+            
+            // Show loading progress
+            setLoadingMessage(`Loading all ${totalCards} cards...`);
+            
+            // Load remaining pages
+            while (currentPage <= totalPages && mounted) {
+              try {
+                const nextPageUrl = `/api/tcg-sets/${setid}?page=${currentPage}&pageSize=${actualPageSize}`;
+                
+                const nextPageData = await fetchJSON<{ cards: TCGCard[]; pagination: any }>(
+                  nextPageUrl,
+                  {
+                    signal: abortController.signal,
+                    useCache: true,
+                    cacheTime: 30 * 60 * 1000,
+                    retries: 2,
+                    retryDelay: 1000,
+                    timeout: 30000
+                  }
+                );
+                
+                if (nextPageData?.cards?.length) {
+                  allCards = [...allCards, ...nextPageData.cards];
+                  
+                  // Update UI progressively
+                  if (mounted) {
+                    setCards([...allCards]);
+                    setLoadingMessage(`Loaded ${allCards.length} of ${totalCards} cards...`);
+                  }
+                } else {
+                  break;
+                }
+                
+                currentPage++;
+              } catch (pageErr) {
+                console.error(`[TCG Set Debug] Failed to load page ${currentPage}:`, pageErr);
+                // Don't break, try next page
+                currentPage++;
+              }
+            }
+            
+            if (mounted) {
+              calculateSetStatistics(allCards);
+              setLoadingMessage(''); // Clear loading message
+            }
+          } else {
           }
         }
       } catch (err: any) {
-        logger.error("Error fetching set data:", { error: err });
-        setError("Failed to load set information");
+        // Ignore abort errors
+        if (err.name === 'AbortError' || !mounted) {
+          return;
+        }
+        
+        logger.error("Error fetching set data:", { 
+          error: err,
+          setId: setid,
+          message: err.message
+        });
+        
+        // More specific error messages
+        if (err.message?.includes('404') || err.response?.status === 404 || err.status === 404) {
+          setError(`Set "${setid}" not found. Please check the set ID.`);
+        } else if (err.message?.includes('network') || err.message?.includes('fetch')) {
+          setError("Network error. Please check your connection.");
+        } else if (err.message?.includes('timeout')) {
+          setError("Request timed out. Please try again.");
+        } else {
+          setError(`Failed to load set information: ${err.message || 'Unknown error'}`);
+        }
       } finally {
         setLoading(false);
         // End page load monitoring
@@ -244,7 +338,16 @@ const SetIdPage: NextPage = () => {
     };
     
     fetchSetData();
-  }, [setid, calculateSetStatistics]);
+    
+    // Cleanup function
+    return () => {
+      mounted = false;
+      if (abortController) {
+        abortController.abort();
+      }
+    };
+  }, [router.isReady, setid, calculateSetStatistics]);
+
 
   // Handle card click for modal
   const handleCardClick = (card: TCGCard) => {
@@ -318,10 +421,10 @@ const SetIdPage: NextPage = () => {
     }
   };
 
-  // Loading state - only show full page loader if we don't have set info yet
-  if (loading && !setInfo) {
+  // Loading state
+  if (!router.isReady || (loading && !setInfo)) {
     return (
-      <PageLoader text="Loading set information..." />
+      <PageLoader text={loadingMessage} />
     );
   }
 
@@ -367,304 +470,344 @@ const SetIdPage: NextPage = () => {
 
   return (
     <FullBleedWrapper gradient="tcg">
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
-        <FadeIn>
-          {/* Header */}
-          <div className="mb-8">
-            <div className="flex items-center justify-between mb-6">
-              <GradientButton
-                onClick={() => router.push('/tcgsets')}
-                variant="secondary"
-                size="sm"
-                icon={
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                  </svg>
-                }
-              >
-                Back to Sets
-              </GradientButton>
-            </div>
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-6">
+            <GradientButton
+              onClick={() => router.push('/tcgsets')}
+              variant="secondary"
+              size="sm"
+              icon={
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+              }
+            >
+              Back to Sets
+            </GradientButton>
+          </div>
 
-            {/* Set Information */}
-            <GlassContainer variant="medium" className="mb-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Set Image */}
-                <div className="flex flex-col items-center">
-                  {setInfo.images?.logo && (
-                    <img 
-                      src={setInfo.images.logo} 
-                      alt={setInfo.name}
-                      className="max-w-full h-auto mb-4"
-                      style={{ maxHeight: '200px' }}
-                    />
-                  )}
-                  {setInfo.images?.symbol && (
-                    <img 
-                      src={setInfo.images.symbol} 
-                      alt={`${setInfo.name} symbol`}
-                      className="h-16 w-16 object-contain"
-                    />
-                  )}
-                </div>
-
-                {/* Set Details */}
-                <div>
-                  <h1 className="text-3xl font-bold mb-4">{setInfo.name}</h1>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-gray-600 dark:text-gray-400">Series</p>
-                      <p className="font-semibold">{setInfo.series}</p>
-                    </div>
-                    <div>
-                      <p className="text-gray-600 dark:text-gray-400">Release Date</p>
-                      <p className="font-semibold">
-                        {new Date(setInfo.releaseDate).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric'
-                        })}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-gray-600 dark:text-gray-400">Total Cards</p>
-                      <p className="font-semibold">{setInfo.printedTotal} / {setInfo.total}</p>
-                    </div>
-                    {setInfo.ptcgoCode && (
-                      <div>
-                        <p className="text-gray-600 dark:text-gray-400">PTCGO Code</p>
-                        <p className="font-semibold">{setInfo.ptcgoCode}</p>
-                      </div>
-                    )}
-                  </div>
-
-                  <GradientButton
-                    onClick={scrollToCards}
-                    variant="primary"
-                    size="lg"
-                    className="mt-6"
-                    icon={
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
-                    }
-                  >
-                    View Cards
-                  </GradientButton>
-                </div>
+          {/* Set Information */}
+          <GlassContainer variant="medium" className="mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Set Image */}
+              <div className="flex flex-col items-center">
+                {setInfo.images?.logo && (
+                  <img 
+                    src={setInfo.images.logo} 
+                    alt={setInfo.name}
+                    className="max-w-full h-auto mb-4"
+                    style={{ maxHeight: '200px' }}
+                  />
+                )}
+                {setInfo.images?.symbol && (
+                  <img 
+                    src={setInfo.images.symbol} 
+                    alt={`${setInfo.name} symbol`}
+                    className="h-16 w-16 object-contain"
+                  />
+                )}
               </div>
-            </GlassContainer>
 
-            {/* Set Statistics */}
-            {cards.length > 0 && (
-              <SlideUp delay={100}>
-                <GlassContainer variant="light" className="mb-8">
-                  <h2 className="text-2xl font-bold mb-6">Set Statistics</h2>
-                
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {/* Rarity Distribution */}
+              {/* Set Details */}
+              <div>
+                <h1 className="text-3xl font-bold mb-4">{setInfo.name}</h1>
+                <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <h3 className="text-lg font-semibold mb-3">Rarity Distribution</h3>
-                    <div className="space-y-2">
-                      {Object.entries(statistics.rarityDistribution)
-                        .sort(([,a], [,b]) => b - a)
-                        .map(([rarity, count]) => (
-                          <div key={rarity} className="flex justify-between">
-                            <span className="text-gray-600 dark:text-gray-400">{rarity}</span>
-                            <span className="font-medium">{count} cards</span>
-                          </div>
-                        ))}
-                    </div>
+                    <p className="text-gray-600 dark:text-gray-400">Series</p>
+                    <p className="font-semibold">{setInfo.series}</p>
                   </div>
-
-                  {/* Value by Rarity */}
                   <div>
-                    <h3 className="text-lg font-semibold mb-3">Average Value by Rarity</h3>
-                    <div className="space-y-2">
-                      {Object.entries(statistics.valueByRarity)
-                        .sort(([,a], [,b]) => b.average - a.average)
-                        .map(([rarity, data]) => (
-                          <div key={rarity} className="flex justify-between">
-                            <span className="text-gray-600 dark:text-gray-400">{rarity}</span>
-                            <span className="font-medium">${data.average.toFixed(2)}</span>
-                          </div>
-                        ))}
-                    </div>
+                    <p className="text-gray-600 dark:text-gray-400">Release Date</p>
+                    <p className="font-semibold">
+                      {new Date(setInfo.releaseDate).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
+                    </p>
                   </div>
-
-                  {/* Set Summary */}
                   <div>
-                    <h3 className="text-lg font-semibold mb-3">Set Summary</h3>
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className="text-gray-600 dark:text-gray-400">Total Cards</span>
-                        <span className="font-medium">{cards.length}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600 dark:text-gray-400">Total Market Value</span>
-                        <span className="font-medium">${totalValue.toFixed(2)}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600 dark:text-gray-400">Avg Card Value</span>
-                        <span className="font-medium">
-                          ${cards.length > 0 ? (totalValue / cards.length).toFixed(2) : '0.00'}
-                        </span>
-                      </div>
-                    </div>
+                    <p className="text-gray-600 dark:text-gray-400">Total Cards</p>
+                    <p className="font-semibold">{setInfo.printedTotal} / {setInfo.total}</p>
                   </div>
+                  {setInfo.ptcgoCode && (
+                    <div>
+                      <p className="text-gray-600 dark:text-gray-400">PTCGO Code</p>
+                      <p className="font-semibold">{setInfo.ptcgoCode}</p>
+                    </div>
+                  )}
                 </div>
 
-                {/* Highest Value Cards */}
-                {statistics.highestValueCards.length > 0 && (
-                  <div className="mt-8">
-                    <h3 className="text-lg font-semibold mb-4">Highest Value Cards</h3>
-                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                      {statistics.highestValueCards.slice(0, 5).map((card: any) => (
-                        <div key={card.id} className="text-center">
-                          <img 
-                            src={card.images.small} 
-                            alt={card.name}
-                            className="w-full h-auto rounded-lg mb-2 cursor-pointer hover:scale-105 transition-transform"
-                            onClick={() => handleCardClick(card)}
-                          />
-                          <p className="text-sm font-medium truncate">{card.name}</p>
-                          <p className="text-sm text-green-600 dark:text-green-400">
-                            ${card.marketPrice.toFixed(2)}
-                          </p>
+                <GradientButton
+                  onClick={scrollToCards}
+                  variant="primary"
+                  size="lg"
+                  className="mt-6"
+                  icon={
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  }
+                >
+                  View Cards
+                </GradientButton>
+              </div>
+            </div>
+          </GlassContainer>
+
+          {/* Set Statistics */}
+          {cards.length > 0 && (
+            <GlassContainer variant="light" className="mb-8">
+              <h2 className="text-2xl font-bold mb-6">Set Statistics</h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Rarity Distribution */}
+                <div>
+                  <h3 className="text-lg font-semibold mb-3">Rarity Distribution</h3>
+                  <div className="space-y-2">
+                    {Object.entries(statistics.rarityDistribution)
+                      .sort(([,a], [,b]) => b - a)
+                      .map(([rarity, count]) => (
+                        <div key={rarity} className="flex justify-between">
+                          <span className="text-gray-600 dark:text-gray-400">{rarity}</span>
+                          <span className="font-medium">{count} cards</span>
                         </div>
                       ))}
-                    </div>
-                  </div>
-                )}
-              </GlassContainer>
-            </SlideUp>
-            )}
-
-            {/* Filters */}
-            <SlideUp delay={200}>
-              <GlassContainer variant="medium" className="mb-8">
-                <h2 className="text-2xl font-bold mb-4">Filter Cards</h2>
-                
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                  {/* Search */}
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Search</label>
-                    <input
-                      type="text"
-                      placeholder="Search cards..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full px-4 py-2 glass-light rounded-full border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
-                    />
-                  </div>
-
-                  {/* Rarity Filter */}
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Rarity</label>
-                    <select
-                      value={filterRarity}
-                      onChange={(e) => setFilterRarity(e.target.value)}
-                      className="w-full px-4 py-2 glass-light rounded-full border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
-                    >
-                      <option value="">All Rarities</option>
-                      {filterOptions.rarities.map(rarity => (
-                        <option key={rarity} value={rarity}>{rarity}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Supertype Filter */}
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Supertype</label>
-                    <select
-                      value={filterSupertype}
-                      onChange={(e) => setFilterSupertype(e.target.value)}
-                      className="w-full px-4 py-2 glass-light rounded-full border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
-                    >
-                      <option value="">All Supertypes</option>
-                      {filterOptions.supertypes.map(supertype => (
-                        <option key={supertype} value={supertype}>{supertype}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Subtype Filter */}
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Subtype</label>
-                    <select
-                      value={filterSubtype}
-                      onChange={(e) => setFilterSubtype(e.target.value)}
-                      className="w-full px-4 py-2 glass-light rounded-full border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
-                    >
-                      <option value="">All Subtypes</option>
-                      {filterOptions.subtypes.map(subtype => (
-                        <option key={subtype} value={subtype}>{subtype}</option>
-                      ))}
-                    </select>
                   </div>
                 </div>
 
-                {/* Clear Filters */}
-                {(searchQuery || filterRarity || filterSupertype || filterSubtype) && (
-                  <GradientButton
-                    onClick={() => {
-                      setSearchQuery("");
-                      setFilterRarity("");
-                      setFilterSupertype("");
-                      setFilterSubtype("");
-                    }}
-                    variant="secondary"
-                    size="sm"
-                    className="mt-4"
-                  >
-                    Clear All Filters
-                  </GradientButton>
-                )}
-              </GlassContainer>
-            </SlideUp>
-
-            {/* Cards Grid */}
-            <div ref={cardsGridRef}>
-              <SlideUp delay={300}>
-                <GlassContainer variant="light">
-                  <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-2xl font-bold">
-                      Cards ({filteredCards.length} {filteredCards.length !== cards.length && `of ${cards.length}`})
-                    </h2>
+                {/* Value by Rarity */}
+                <div>
+                  <h3 className="text-lg font-semibold mb-3">Average Value by Rarity</h3>
+                  <div className="space-y-2">
+                    {Object.entries(statistics.valueByRarity)
+                      .sort(([,a], [,b]) => b.average - a.average)
+                      .map(([rarity, data]) => (
+                        <div key={rarity} className="flex justify-between">
+                          <span className="text-gray-600 dark:text-gray-400">{rarity}</span>
+                          <span className="font-medium">${data.average.toFixed(2)}</span>
+                        </div>
+                      ))}
                   </div>
+                </div>
 
-                  {cards.length === 0 && loading ? (
-                    <CardGridSkeleton count={12} />
-                  ) : filteredCards.length > 0 ? (
-                    <>
-                      {filteredCards.length > 100 ? (
-                        <VirtualizedCardGrid
-                          cards={filteredCards}
-                          cardType="tcg"
-                          onCardClick={handleCardClick as any}
-                          showPrice={true}
-                          showSet={false}
-                          showRarity={true}
-                        />
-                      ) : (
-                        <CardList
-                          cards={filteredCards}
-                          onCardClick={handleCardClick}
-                        />
-                      )}
-                    </>
-                  ) : (
-                    <div className="text-center py-12">
-                      <p className="text-gray-500 dark:text-gray-400">
-                        No cards found matching your filters.
-                      </p>
+                {/* Set Summary */}
+                <div>
+                  <h3 className="text-lg font-semibold mb-3">Set Summary</h3>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">Total Cards</span>
+                      <span className="font-medium">{cards.length}</span>
                     </div>
-                  )}
-                </GlassContainer>
-              </SlideUp>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">Total Market Value</span>
+                      <span className="font-medium">${totalValue.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">Avg Card Value</span>
+                      <span className="font-medium">
+                        ${cards.length > 0 ? (totalValue / cards.length).toFixed(2) : '0.00'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Highest Value Cards */}
+              {statistics.highestValueCards.length > 0 && (
+                <div className="mt-8">
+                  <h3 className="text-lg font-semibold mb-4">Highest Value Cards</h3>
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    {statistics.highestValueCards.slice(0, 5).map((card: any) => (
+                      <div key={card.id} className="text-center">
+                        <img 
+                          src={card.images.small} 
+                          alt={card.name}
+                          className="w-full h-auto rounded-lg mb-2 cursor-pointer hover:scale-105 transition-transform"
+                          onClick={() => handleCardClick(card)}
+                        />
+                        <p className="text-sm font-medium truncate">{card.name}</p>
+                        <p className="text-sm text-green-600 dark:text-green-400">
+                          ${card.marketPrice.toFixed(2)}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </GlassContainer>
+          )}
+
+          {/* Manual Load Button - Fallback if auto-load fails */}
+          {paginationInfo?.totalCount && cards.length < paginationInfo.totalCount && (
+            <GlassContainer variant="medium" className="mb-8 text-center">
+              <p className="text-lg mb-4">
+                Showing <span className="font-bold">{cards.length}</span> of{' '}
+                <span className="font-bold">{paginationInfo.totalCount}</span> cards
+              </p>
+              {!isLoadingMore && (
+                <GradientButton
+                  onClick={async () => {
+                    setIsLoadingMore(true);
+                    try {
+                      const actualPageSize = 50;
+                      const totalPages = Math.ceil(paginationInfo.totalCount / actualPageSize);
+                      let allCards = [...cards];
+                      
+                      for (let page = Math.ceil(cards.length / actualPageSize) + 1; page <= totalPages; page++) {
+                        const url = `/api/tcg-sets/${setid}?page=${page}&pageSize=${actualPageSize}`;
+                        const pageData = await fetchJSON<{ cards: TCGCard[]; pagination: any }>(url, {
+                          useCache: true,
+                          timeout: 30000
+                        });
+                        
+                        if (pageData?.cards) {
+                          allCards.push(...pageData.cards);
+                          setCards([...allCards]);
+                        }
+                      }
+                      
+                      calculateSetStatistics(allCards);
+                    } catch (error) {
+                      console.error('Manual load failed:', error);
+                    } finally {
+                      setIsLoadingMore(false);
+                    }
+                  }}
+                  variant="primary"
+                  size="md"
+                >
+                  Load All Cards
+                </GradientButton>
+              )}
+              {isLoadingMore && (
+                <div className="flex items-center justify-center gap-2">
+                  <InlineLoader />
+                  <span>Loading remaining cards...</span>
+                </div>
+              )}
+            </GlassContainer>
+          )}
+
+          {/* Filters */}
+          <GlassContainer variant="medium" className="mb-8">
+            <h2 className="text-2xl font-bold mb-4">Filter Cards</h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              {/* Search */}
+              <div>
+                <label className="block text-sm font-medium mb-2">Search</label>
+                <input
+                  type="text"
+                  placeholder="Search cards..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full px-4 py-2 glass-light rounded-full border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                />
+              </div>
+
+              {/* Rarity Filter */}
+              <div>
+                <label className="block text-sm font-medium mb-2">Rarity</label>
+                <select
+                  value={filterRarity}
+                  onChange={(e) => setFilterRarity(e.target.value)}
+                  className="w-full px-4 py-2 glass-light rounded-full border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                >
+                  <option value="">All Rarities</option>
+                  {filterOptions.rarities.map(rarity => (
+                    <option key={rarity} value={rarity}>{rarity}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Supertype Filter */}
+              <div>
+                <label className="block text-sm font-medium mb-2">Supertype</label>
+                <select
+                  value={filterSupertype}
+                  onChange={(e) => setFilterSupertype(e.target.value)}
+                  className="w-full px-4 py-2 glass-light rounded-full border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                >
+                  <option value="">All Supertypes</option>
+                  {filterOptions.supertypes.map(supertype => (
+                    <option key={supertype} value={supertype}>{supertype}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Subtype Filter */}
+              <div>
+                <label className="block text-sm font-medium mb-2">Subtype</label>
+                <select
+                  value={filterSubtype}
+                  onChange={(e) => setFilterSubtype(e.target.value)}
+                  className="w-full px-4 py-2 glass-light rounded-full border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                >
+                  <option value="">All Subtypes</option>
+                  {filterOptions.subtypes.map(subtype => (
+                    <option key={subtype} value={subtype}>{subtype}</option>
+                  ))}
+                </select>
+              </div>
             </div>
+
+            {/* Clear Filters */}
+            {(searchQuery || filterRarity || filterSupertype || filterSubtype) && (
+              <GradientButton
+                onClick={() => {
+                  setSearchQuery("");
+                  setFilterRarity("");
+                  setFilterSupertype("");
+                  setFilterSubtype("");
+                }}
+                variant="secondary"
+                size="sm"
+                className="mt-4"
+              >
+                Clear All Filters
+              </GradientButton>
+            )}
+          </GlassContainer>
+
+          {/* Cards Grid */}
+          <div ref={cardsGridRef}>
+            <GlassContainer variant="light">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-2xl font-bold">
+                  Cards ({filteredCards.length} {filteredCards.length !== cards.length && `of ${cards.length}`})
+                </h2>
+              </div>
+
+              {cards.length === 0 && loading ? (
+                <CardGridSkeleton count={12} />
+              ) : filteredCards.length > 0 ? (
+                <div key={`card-grid-${cards.length}`}>
+                  {/* Always use CardList with max 500 cards limit */}
+                  <>
+                    <CardList
+                      cards={filteredCards.slice(0, 500)}
+                      onCardClick={handleCardClick}
+                    />
+                    {filteredCards.length > 500 && (
+                      <p className="text-center mt-4 text-sm text-gray-600 dark:text-gray-400">
+                        Showing first 500 of {filteredCards.length} cards for performance
+                      </p>
+                    )}
+                  </>
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <p className="text-gray-500 dark:text-gray-400">
+                    No cards found matching your filters.
+                  </p>
+                </div>
+              )}
+            </GlassContainer>
           </div>
-        </FadeIn>
+        </div>
 
         {/* Card Modal */}
         <Modal
