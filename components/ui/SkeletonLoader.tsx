@@ -1,14 +1,18 @@
 import React, { memo } from 'react';
+import { motion } from 'framer-motion';
 
 type SkeletonVariant = 'rectangular' | 'circular' | 'text';
 type SkeletonAnimation = 'pulse' | 'wave' | 'none';
 
-interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
+interface SkeletonProps {
   className?: string;
   height?: string;
   width?: string;
   variant?: SkeletonVariant;
   animation?: SkeletonAnimation;
+  style?: React.CSSProperties;
+  id?: string;
+  'data-testid'?: string;
 }
 
 /**
@@ -20,7 +24,9 @@ export const Skeleton = memo<SkeletonProps>(({
   width = "100%",
   variant = "rectangular",
   animation = "pulse",
-  ...props 
+  style,
+  id,
+  'data-testid': dataTestId
 }) => {
   const baseClasses = "bg-gray-200 dark:bg-gray-700";
   
@@ -37,15 +43,24 @@ export const Skeleton = memo<SkeletonProps>(({
   };
 
   return (
-    <div
+    <motion.div
       className={`
         ${baseClasses}
         ${variantClasses[variant] || variantClasses.rectangular}
         ${animationClasses[animation] || animationClasses.pulse}
         ${className}
       `}
-      style={{ height, width }}
-      {...props}
+      style={{ height, width, ...style }}
+      animate={animation === 'pulse' ? {
+        opacity: [0.5, 1, 0.5],
+      } : undefined}
+      transition={animation === 'pulse' ? {
+        duration: 2,
+        repeat: Infinity,
+        ease: "easeInOut"
+      } : undefined}
+      id={id}
+      data-testid={dataTestId}
     />
   );
 });
@@ -136,12 +151,55 @@ export const CardGridSkeleton = memo<CardGridSkeletonProps>(({
     8: "grid-cols-8"
   };
   
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        delayChildren: 0.1,
+        staggerChildren: 0.05
+      }
+    }
+  };
+  
+  const itemVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { 
+      opacity: 1, 
+      scale: 1,
+      transition: {
+        type: "spring" as const,
+        stiffness: 300,
+        damping: 24
+      }
+    }
+  };
+  
   return (
-    <div className={`grid ${gridClasses[columns] || 'grid-cols-6'} gap-4 ${className}`}>
+    <motion.div 
+      className={`grid ${gridClasses[columns] || 'grid-cols-6'} gap-4 ${className}`}
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
       {cards.map(i => (
-        <CardSkeleton key={i} {...cardProps} />
+        <motion.div
+          key={i}
+          variants={itemVariants}
+          animate={{
+            opacity: [0.5, 1, 0.5],
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            delay: i * 0.1,
+            ease: "easeInOut" as const
+          }}
+        >
+          <CardSkeleton {...cardProps} />
+        </motion.div>
       ))}
-    </div>
+    </motion.div>
   );
 });
 

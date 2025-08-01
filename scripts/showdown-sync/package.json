@@ -1,0 +1,27 @@
+{
+  "name": "dextrends-showdown-sync",
+  "version": "1.0.0",
+  "description": "Pokemon Showdown data sync for DexTrends",
+  "main": "sync-showdown-data.ts",
+  "scripts": {
+    "sync": "ts-node sync-showdown-data.ts",
+    "sync:type": "ts-node sync-showdown-data.ts --type-only",
+    "sync:tiers": "ts-node sync-showdown-data.ts --tiers-only",
+    "sync:learnsets": "ts-node sync-showdown-data.ts --learnsets-only",
+    "sync:moves": "ts-node sync-showdown-data.ts --moves-only",
+    "test": "ts-node sync-showdown-data.ts --dry-run"
+  },
+  "dependencies": {
+    "axios": "^1.6.7",
+    "dotenv": "^16.4.1",
+    "@supabase/supabase-js": "^2.39.7"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.16",
+    "typescript": "^5.3.3",
+    "ts-node": "^10.9.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

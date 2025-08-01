@@ -1,6 +1,9 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
+import { FaHeart, FaShare, FaInfo } from 'react-icons/fa';
+import { useContextMenu, ContextMenuItem } from '../ContextMenu';
+import { useToast } from '../../../hooks/useToast';
 
 interface CircularCardProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
@@ -16,6 +19,10 @@ interface CircularCardProps {
   children?: React.ReactNode;
   hover?: boolean;
   glow?: boolean;
+  enableGestures?: boolean;
+  onFavorite?: () => void;
+  onShare?: () => void;
+  onInfo?: () => void;
 }
 
 const sizeClasses = {
@@ -38,12 +45,91 @@ export const CircularCard: React.FC<CircularCardProps> = ({
   className = '',
   children,
   hover = true,
-  glow = false
+  glow = false,
+  enableGestures = false,
+  onFavorite,
+  onShare,
+  onInfo
 }) => {
+  const { success, info } = useToast();
+  const { handleLongPress, openMenu } = useContextMenu();
+  const [swipeX, setSwipeX] = useState(0);
+  const [showActions, setShowActions] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+
   const containerVariants = {
     rest: { scale: 1, y: 0 },
     hover: { scale: 1.05, y: -4 }
   };
+
+  // Context menu items
+  const contextMenuItems: ContextMenuItem[] = [
+    {
+      id: 'favorite',
+      icon: <FaHeart />,
+      label: 'Add to Favorites',
+      action: () => {
+        if (onFavorite) {
+          onFavorite();
+        } else {
+          success('Added to favorites!');
+        }
+      },
+      color: 'text-red-500'
+    },
+    {
+      id: 'share',
+      icon: <FaShare />,
+      label: 'Share',
+      action: () => {
+        if (onShare) {
+          onShare();
+        } else {
+          info('Share feature coming soon!');
+        }
+      },
+      color: 'text-blue-500'
+    },
+    {
+      id: 'info',
+      icon: <FaInfo />,
+      label: 'More Info',
+      action: () => {
+        if (onInfo) {
+          onInfo();
+        } else {
+          info('More information coming soon!');
+        }
+      },
+      color: 'text-gray-500'
+    }
+  ];
+
+  const handleClick = useCallback((e: React.MouseEvent) => {
+    if (!isDragging && onClick) {
+      onClick();
+    }
+  }, [isDragging, onClick]);
+
+  const longPressHandlers = React.useMemo(() => {
+    if (!enableGestures) return {};
+    
+    // Create a wrapper that properly calls handleLongPress with the event
+    const createHandler = (handler: (event: React.TouchEvent | React.MouseEvent) => void) => {
+      return (event: React.TouchEvent | React.MouseEvent) => {
+        const handlers = handleLongPress(event, contextMenuItems);
+        handler(event);
+      };
+    };
+    
+    // For now, we'll manually handle the long press
+    return {
+      onContextMenu: (e: React.MouseEvent) => {
+        e.preventDefault();
+        openMenu(e, contextMenuItems);
+      }
+    };
+  }, [enableGestures, handleLongPress, openMenu, contextMenuItems]);
 
   return (
     <motion.div
@@ -52,14 +138,41 @@ export const CircularCard: React.FC<CircularCardProps> = ({
       initial="rest"
       whileHover="hover"
       animate="rest"
-      onClick={onClick}
+      onClick={handleClick}
+      drag={enableGestures ? "x" : false}
+      dragConstraints={{ left: -100, right: 0 }}
+      dragElastic={0.2}
+      dragMomentum={false}
+      onDrag={(event, info) => {
+        if (enableGestures) {
+          setSwipeX(info.offset.x);
+          setIsDragging(true);
+        }
+      }}
+      onDragEnd={(event, info) => {
+        if (enableGestures) {
+          if (info.offset.x < -60 || info.velocity.x < -300) {
+            setShowActions(true);
+            setSwipeX(-100);
+          } else {
+            setShowActions(false);
+            setSwipeX(0);
+          }
+          setTimeout(() => setIsDragging(false), 100);
+        }
+      }}
+      style={{
+        x: swipeX,
+        filter: swipeX < -50 ? 'brightness(0.95)' : 'brightness(1)'
+      }}
+      {...longPressHandlers}
     >
       {/* Main circular container */}
       <div className={`relative ${sizeClasses[size]} group`}>
         {/* Outer gradient ring */}
-        <div className={`absolute inset-0 rounded-full bg-gradient-to-br from-${gradientFrom} to-${gradientTo} p-[3px] shadow-lg ${glow ? 'animate-pulse' : ''}`}>
+        <div className={`absolute inset-0 rounded-full bg-gradient-to-br from-${gradientFrom} to-${gradientTo} p-[5px] shadow-lg ${glow ? 'animate-pulse' : ''}`}>
           {/* White spacing ring */}
-          <div className="w-full h-full rounded-full bg-white dark:bg-gray-800 p-[3px]">
+          <div className="w-full h-full rounded-full bg-white/80 dark:bg-gray-800/80 p-[5px]">
             {/* Inner content circle */}
             <div className="relative w-full h-full rounded-full bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600 shadow-inner overflow-hidden">
               {/* Shine effect */}
@@ -110,6 +223,79 @@ export const CircularCard: React.FC<CircularCardProps> = ({
             </p>
           )}
         </div>
+      )}
+
+      {/* Swipe Actions */}
+      <AnimatePresence>
+        {enableGestures && showActions && (
+          <motion.div
+            className="absolute top-1/2 -translate-y-1/2 right-0 flex items-center gap-2 px-3"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+          >
+            <motion.button
+              className="p-2 bg-red-500 text-white rounded-full shadow-lg"
+              whileTap={{ scale: 0.9 }}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (onFavorite) {
+                  onFavorite();
+                } else {
+                  success('Added to favorites!');
+                }
+                setShowActions(false);
+                setSwipeX(0);
+              }}
+              title="Add to favorites"
+            >
+              <FaHeart className="w-4 h-4" />
+            </motion.button>
+            
+            <motion.button
+              className="p-2 bg-blue-500 text-white rounded-full shadow-lg"
+              whileTap={{ scale: 0.9 }}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (onShare) {
+                  onShare();
+                } else {
+                  info('Share feature coming soon!');
+                }
+                setShowActions(false);
+                setSwipeX(0);
+              }}
+              title="Share"
+            >
+              <FaShare className="w-4 h-4" />
+            </motion.button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Swipe Indicator */}
+      {enableGestures && isDragging && swipeX < -20 && !showActions && (
+        <motion.div
+          className="absolute right-1 top-1/2 -translate-y-1/2"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ 
+            opacity: swipeX < -50 ? 1 : 0.5,
+            scale: swipeX < -50 ? 1 : 0.9
+          }}
+          transition={{ duration: 0.2 }}
+        >
+          <div className={`px-2 py-1 rounded-full text-xs ${
+            swipeX < -50 ? 'bg-purple-500 text-white' : 'bg-gray-300 text-gray-600'
+          }`}>
+            <motion.span
+              animate={{ x: [-1, 1, -1] }}
+              transition={{ repeat: Infinity, duration: 0.6 }}
+            >
+              ←
+            </motion.span>
+          </div>
+        </motion.div>
       )}
     </motion.div>
   );
