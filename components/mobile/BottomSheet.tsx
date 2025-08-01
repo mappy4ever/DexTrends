@@ -1,6 +1,12 @@
 import React, { useState, useRef, useCallback, useEffect, ReactNode, TouchEvent, MouseEvent } from 'react';
+import { motion, AnimatePresence, PanInfo, useSpring, useTransform, useMotionValue } from 'framer-motion';
+import { useBottomSheet } from './BottomSheet.hooks';
 import { useMobileUtils } from '../../utils/mobileUtils';
 import logger from '../../utils/logger';
+import hapticFeedback from '../../utils/hapticFeedback';
+
+// Re-export hook for backward compatibility
+export { useBottomSheet } from './BottomSheet.hooks';
 
 interface BottomSheetProps {
   isOpen: boolean;
@@ -46,6 +52,14 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
   const [dragOffset, setDragOffset] = useState(0);
   const [startY, setStartY] = useState(0);
   const [startHeight, setStartHeight] = useState(0);
+  const [hasReachedThreshold, setHasReachedThreshold] = useState(false);
+  const [lastSnapPoint, setLastSnapPoint] = useState(currentSnapPoint);
+  
+  // Motion values for smooth animations
+  const y = useMotionValue(0);
+  const handleY = useTransform(y, [0, 100], [0, 8]);
+  const handleOpacity = useTransform(y, [0, 50], [0.5, 1]);
+  const sheetScale = useTransform(y, [-100, 0, 100], [1.02, 1, 0.98]);
 
   // Calculate sheet height based on snap point
   const getSheetHeight = useCallback((snapPoint: number) => {
@@ -85,10 +99,13 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
     setStartY(touch.clientY);
     setStartHeight(getSheetHeight(currentSnapPoint));
     setIsDragging(true);
+    setHasReachedThreshold(false);
     
-    utils.hapticFeedback('light');
+    // Haptic feedback on drag start
+    hapticFeedback.light();
+    
     logger.debug('Bottom sheet drag started');
-  }, [allowDrag, currentSnapPoint, getSheetHeight, utils]);
+  }, [allowDrag, currentSnapPoint, getSheetHeight]);
 
   // Handle touch move
   const handleTouchMove = useCallback((e: TouchEvent<HTMLDivElement>) => {
@@ -100,7 +117,22 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
     const newOffset = Math.max(-startHeight, deltaY);
     
     setDragOffset(newOffset);
-  }, [isDragging, allowDrag, startY, startHeight]);
+    
+    // Haptic feedback when crossing snap thresholds
+    const currentHeight = startHeight - newOffset;
+    const nearestPoint = findNearestSnapPoint(currentHeight);
+    
+    if (nearestPoint !== lastSnapPoint) {
+      hapticFeedback.selection();
+      setLastSnapPoint(nearestPoint);
+    }
+    
+    // Haptic feedback when reaching dismiss threshold
+    if (newOffset > screenSize.height * 0.3 && !hasReachedThreshold) {
+      hapticFeedback.warning();
+      setHasReachedThreshold(true);
+    }
+  }, [isDragging, allowDrag, startY, startHeight, findNearestSnapPoint, lastSnapPoint, screenSize.height, hasReachedThreshold]);
 
   // Handle touch end
   const handleTouchEnd = useCallback(() => {
@@ -112,14 +144,20 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
     // Determine if user is closing or snapping
     if (dragOffset > 100 && velocity > 0.5) {
       // Fast swipe down - close
+      hapticFeedback.success();
       onClose();
     } else if (currentHeight < getSheetHeight(snapPoints[0]) * 0.5) {
       // Dragged below minimum - close
+      hapticFeedback.success();
       onClose();
     } else {
       // Snap to nearest point
       const nearestPoint = findNearestSnapPoint(currentHeight);
+      if (nearestPoint !== currentSnapPoint) {
+        hapticFeedback.medium();
+      }
       setCurrentSnapPoint(nearestPoint);
+      setLastSnapPoint(nearestPoint);
       
       if (onSnapPointChange) {
         onSnapPointChange(nearestPoint);
@@ -128,7 +166,6 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
 
     setIsDragging(false);
     setDragOffset(0);
-    utils.hapticFeedback('medium');
     
     logger.debug('Bottom sheet drag ended', { currentSnapPoint });
   }, [isDragging, allowDrag, dragOffset, startHeight, snapPoints, currentSnapPoint, onClose, findNearestSnapPoint, getSheetHeight, onSnapPointChange, utils]);
@@ -143,14 +180,17 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
   // Snap to specific point
   const snapTo = useCallback((point: number) => {
     if (snapPoints.includes(point)) {
+      if (point !== currentSnapPoint) {
+        hapticFeedback.selection();
+      }
       setCurrentSnapPoint(point);
-      utils.hapticFeedback('light');
+      setLastSnapPoint(point);
       
       if (onSnapPointChange) {
         onSnapPointChange(point);
       }
     }
-  }, [snapPoints, utils, onSnapPointChange]);
+  }, [snapPoints, onSnapPointChange, currentSnapPoint]);
 
   // Handle escape key
   useEffect(() => {
@@ -178,35 +218,136 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
     return undefined;
   }, [isOpen]);
 
-  if (!isOpen) {
-    return null;
-  }
-
   const sheetTransform = getSheetTransform();
-
+  
+  // Calculate current height as a percentage for framer-motion
+  const currentHeight = (1 - currentSnapPoint) * 100;
+  
   return (
-    <div 
-      className={`bottom-sheet-overlay ${overlayClassName}`}
-      onClick={handleBackdropClick}
-    >
-      <div
-        ref={sheetRef}
-        className={`bottom-sheet ${className} ${isDragging ? 'dragging' : ''}`}
-        style={{
-          transform: `translateY(${sheetTransform}px)`,
-          transition: isDragging ? 'none' : 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-          maxWidth,
-          height: `${getSheetHeight(snapPoints[snapPoints.length - 1])}px`
-        }}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* Backdrop */}
+          <motion.div 
+            className={`bottom-sheet-overlay ${overlayClassName}`}
+            onClick={handleBackdropClick}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          />
+          
+          {/* Bottom Sheet */}
+          <motion.div
+            ref={sheetRef}
+            className={`bottom-sheet ${className} ${isDragging ? 'dragging' : ''}`}
+            style={{
+              maxWidth,
+              height: `${getSheetHeight(snapPoints[snapPoints.length - 1])}px`,
+              position: 'fixed',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              zIndex: 1001,
+              scale: sheetScale,
+              y
+            }}
+            initial={{ y: "100%", opacity: 0 }}
+            animate={{ 
+              y: `${currentHeight}%`,
+              opacity: 1
+            }}
+            exit={{ y: "100%", opacity: 0 }}
+            transition={{
+              type: "spring",
+              damping: 28,
+              stiffness: 400,
+              mass: 0.8,
+              opacity: { duration: 0.2 }
+            }}
+            drag={allowDrag ? "y" : false}
+            dragConstraints={{
+              top: -getSheetHeight(snapPoints[snapPoints.length - 1]) + 100,
+              bottom: 0
+            }}
+            dragElastic={{
+              top: 0.05,
+              bottom: 0.3
+            }}
+            onDragStart={() => {
+              setIsDragging(true);
+              setHasReachedThreshold(false);
+              document.body.style.cursor = 'grabbing';
+              hapticFeedback.light();
+            }}
+            onDrag={(event, info: PanInfo) => {
+              setDragOffset(info.offset.y);
+              y.set(info.offset.y);
+              
+              // Haptic feedback when crossing snap thresholds
+              const currentHeight = getSheetHeight(currentSnapPoint) - info.offset.y;
+              const nearestPoint = findNearestSnapPoint(currentHeight);
+              
+              if (nearestPoint !== lastSnapPoint) {
+                hapticFeedback.selection();
+                setLastSnapPoint(nearestPoint);
+              }
+              
+              // Haptic feedback when reaching dismiss threshold
+              if (info.offset.y > screenSize.height * 0.3 && !hasReachedThreshold) {
+                hapticFeedback.warning();
+                setHasReachedThreshold(true);
+              }
+            }}
+            onDragEnd={(event, info: PanInfo) => {
+              const velocity = info.velocity.y;
+              const offset = info.offset.y;
+              document.body.style.cursor = '';
+              
+              // Enhanced velocity-based dismissal
+              if (velocity > 800 || (velocity > 200 && offset > 150)) {
+                hapticFeedback.success();
+                onClose();
+              } else if (offset > screenSize.height * 0.4) {
+                hapticFeedback.success();
+                onClose();
+              } else {
+                // Smooth snap to nearest point
+                const currentHeight = getSheetHeight(currentSnapPoint) - offset;
+                const nearestPoint = findNearestSnapPoint(currentHeight);
+                if (nearestPoint !== currentSnapPoint) {
+                  hapticFeedback.medium();
+                }
+                snapTo(nearestPoint);
+              }
+              setIsDragging(false);
+              setDragOffset(0);
+              setHasReachedThreshold(false);
+              y.set(0);
+            }}
+          >
         {/* Drag Handle */}
         {showHandle && (
-          <div className="bottom-sheet-handle">
-            <div className="handle-bar"></div>
-          </div>
+          <motion.div 
+            className="bottom-sheet-handle"
+            style={{ touchAction: 'none' }}
+          >
+            <motion.div 
+              className="handle-bar"
+              style={{
+                scaleX: handleY,
+                opacity: handleOpacity
+              }}
+            />
+            <motion.div 
+              className="handle-hint"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: isDragging ? 1 : 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              Swipe to adjust
+            </motion.div>
+          </motion.div>
         )}
 
         {/* Header */}
@@ -219,17 +360,35 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
             {/* Snap Point Indicators */}
             <div className="snap-indicators">
               {snapPoints.map((point, index) => (
-                <button
+                <motion.button
                   key={index}
                   onClick={() => snapTo(point)}
                   className={`snap-indicator ${point === currentSnapPoint ? 'active' : ''}`}
                   aria-label={`Snap to ${Math.round(point * 100)}%`}
+                  whileHover={{ scale: 1.2 }}
+                  whileTap={{ scale: 0.9 }}
+                  onHoverStart={() => hapticFeedback.light()}
+                  onTap={() => hapticFeedback.selection()}
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ 
+                    opacity: 1, 
+                    scale: point === currentSnapPoint ? 1.3 : 1,
+                    backgroundColor: point === currentSnapPoint ? '#3b82f6' : '#d1d5db'
+                  }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 500,
+                    damping: 25
+                  }}
                 />
               ))}
             </div>
             
             <button
-              onClick={onClose}
+              onClick={() => {
+                hapticFeedback.light();
+                onClose();
+              }}
               className="bottom-sheet-close"
               aria-label="Close"
             >
@@ -253,7 +412,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
         <div className="bottom-sheet-resize-handle desktop-only">
           <div className="resize-bar"></div>
         </div>
-      </div>
+      </motion.div>
 
       <style jsx>{`
         .bottom-sheet-overlay {
@@ -269,21 +428,32 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
         }
 
         .bottom-sheet {
-          background: white;
-          border-radius: 16px 16px 0 0;
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(20px) saturate(180%);
+          -webkit-backdrop-filter: blur(20px) saturate(180%);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 24px 24px 0 0;
           width: 100%;
           max-width: 100%;
-          box-shadow: 0 -4px 32px rgba(0, 0, 0, 0.2);
+          box-shadow: 
+            0 -4px 32px rgba(0, 0, 0, 0.1),
+            0 -2px 16px rgba(0, 0, 0, 0.05),
+            inset 0 1px 0 rgba(255, 255, 255, 0.5);
           display: flex;
           flex-direction: column;
           touch-action: none;
           user-select: none;
           position: relative;
-          animation: sheetSlideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          transform-origin: bottom center;
+          will-change: transform;
         }
 
         .bottom-sheet.dragging {
-          box-shadow: 0 -8px 48px rgba(0, 0, 0, 0.3);
+          box-shadow: 
+            0 -8px 48px rgba(0, 0, 0, 0.15),
+            0 -4px 24px rgba(0, 0, 0, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.5);
+          transform: scale(1.01);
         }
 
         .bottom-sheet-handle {
@@ -300,9 +470,21 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
         .handle-bar {
           width: 40px;
           height: 4px;
-          background: #d1d5db;
+          background: rgba(156, 163, 175, 0.4);
           border-radius: 2px;
           transition: all 0.2s ease;
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .handle-hint {
+          position: absolute;
+          top: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+          font-size: 12px;
+          color: #6b7280;
+          white-space: nowrap;
+          pointer-events: none;
         }
 
         .bottom-sheet:hover .handle-bar,
@@ -339,9 +521,25 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
           height: 8px;
           border-radius: 50%;
           border: none;
-          background: #d1d5db;
+          background: rgba(209, 213, 219, 0.6);
           cursor: pointer;
-          transition: all 0.2s ease;
+          position: relative;
+          overflow: visible;
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .snap-indicator::before {
+          content: '';
+          position: absolute;
+          inset: -4px;
+          border-radius: 50%;
+          background: rgba(59, 130, 246, 0.1);
+          opacity: 0;
+          transition: opacity 0.2s ease;
+        }
+        
+        .snap-indicator:hover::before {
+          opacity: 1;
         }
 
         .snap-indicator:hover {
@@ -352,6 +550,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
         .snap-indicator.active {
           background: #3b82f6;
           transform: scale(1.3);
+          box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
         }
 
         .bottom-sheet-close {
@@ -429,8 +628,15 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
         /* Dark mode support */
         @media (prefers-color-scheme: dark) {
           .bottom-sheet {
-            background: #1f2937;
+            background: rgba(31, 41, 55, 0.95);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: white;
+            box-shadow: 
+              0 -4px 32px rgba(0, 0, 0, 0.3),
+              0 -2px 16px rgba(0, 0, 0, 0.2),
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
           }
 
           .bottom-sheet-header {
@@ -547,7 +753,9 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
           }
         }
       `}</style>
-    </div>
+        </>
+      )}
+    </AnimatePresence>
   );
 };
 
@@ -560,23 +768,5 @@ interface UseBottomSheetReturn {
   toggle: () => void;
   setSnapPoint: React.Dispatch<React.SetStateAction<number>>;
 }
-
-export const useBottomSheet = (initialOpen: boolean = false): UseBottomSheetReturn => {
-  const [isOpen, setIsOpen] = useState(initialOpen);
-  const [snapPoint, setSnapPoint] = useState(0.6);
-
-  const open = useCallback(() => setIsOpen(true), []);
-  const close = useCallback(() => setIsOpen(false), []);
-  const toggle = useCallback(() => setIsOpen(prev => !prev), []);
-
-  return {
-    isOpen,
-    snapPoint,
-    open,
-    close,
-    toggle,
-    setSnapPoint
-  };
-};
 
 export default BottomSheet;

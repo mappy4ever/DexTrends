@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import logger from '../../utils/logger';
+import hapticFeedback from '../../utils/hapticFeedback';
 
 // Import mobile utils with error handling
 let useMobileUtils: any;
 try {
   useMobileUtils = require('../../utils/mobileUtils').useMobileUtils;
 } catch (error) {
-  useMobileUtils = () => ({ isTouch: true, utils: { hapticFeedback: () => {} } });
+  useMobileUtils = () => ({ isTouch: true, utils: {} });
 }
 
 interface SwipeEventDetail {
@@ -143,6 +144,11 @@ const TouchGestures: React.FC<TouchGesturesProps> = ({
       );
     }
 
+    // Haptic feedback on touch start for gesture recognition
+    if (touches.length === 1 && !isScrollableElement) {
+      hapticFeedback.light();
+    }
+    
     logger.debug('Touch start', { 
       touchCount: touches.length, 
       position: { x: touch.clientX, y: touch.clientY } 
@@ -210,6 +216,11 @@ const TouchGestures: React.FC<TouchGesturesProps> = ({
       const scale = touchState.current.currentDistance / touchState.current.initialDistance;
       
       if (onPinch) {
+        // Haptic feedback for pinch thresholds
+        if (Math.abs(scale - 1) > 0.2 && Math.abs(scale - 1) < 0.25) {
+          hapticFeedback.selection();
+        }
+        
         onPinch({
           scale,
           delta: touchState.current.currentDistance - touchState.current.initialDistance,
@@ -241,12 +252,12 @@ const TouchGestures: React.FC<TouchGesturesProps> = ({
       
       if (timeSinceLastTap < 500) {
         if (onDoubleTap) {
+          hapticFeedback.doubleTap();
           onDoubleTap({
             x: touchState.current.endX,
             y: touchState.current.endY
           });
         }
-        utils.hapticFeedback('medium');
         logger.debug('Double tap detected');
         return;
       }
@@ -264,8 +275,7 @@ const TouchGestures: React.FC<TouchGesturesProps> = ({
       if (velocityMagnitude > VELOCITY_THRESHOLD || (duration < 300 && duration > 50)) {
         // Horizontal swipe
         if (absDeltaX >= swipeThreshold && absDeltaX > absDeltaY * 1.5) {
-          utils.hapticFeedback('light');
-          
+          hapticFeedback.swipe();
           if (deltaX > 0) {
             onSwipeRight && onSwipeRight({ distance: absDeltaX, duration });
             logger.debug('Swipe right detected', { 
@@ -283,14 +293,13 @@ const TouchGestures: React.FC<TouchGesturesProps> = ({
         // Vertical swipe (only if explicitly enabled and velocity is high)
         else if (absDeltaY >= swipeThreshold && absDeltaY > absDeltaX * 1.5 && 
                  Math.abs(touchState.current.velocityY) > VELOCITY_THRESHOLD * 1.5) {
-          utils.hapticFeedback('light');
-          
           // Additional check to prevent accidental pull-to-refresh
           const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
           
           if (deltaY > 0 && scrollTop === 0) {
             // Only trigger swipe down if not at top of page or velocity is very high
             if (Math.abs(touchState.current.velocityY) > VELOCITY_THRESHOLD * 2) {
+              hapticFeedback.swipe();
               onSwipeDown && onSwipeDown({ distance: absDeltaY, duration });
               logger.debug('Swipe down detected', { 
                 distance: absDeltaY, 
@@ -298,6 +307,7 @@ const TouchGestures: React.FC<TouchGesturesProps> = ({
               });
             }
           } else if (deltaY < 0) {
+            hapticFeedback.swipe();
             onSwipeUp && onSwipeUp({ distance: absDeltaY, duration });
             logger.debug('Swipe up detected', { 
               distance: absDeltaY, 
@@ -307,7 +317,7 @@ const TouchGestures: React.FC<TouchGesturesProps> = ({
         }
       }
     }
-  }, [disabled, isTouch, enableSwipe, enableDoubleTap, swipeThreshold, onSwipeLeft, onSwipeRight, onSwipeUp, onSwipeDown, onDoubleTap, utils]);
+  }, [disabled, isTouch, enableSwipe, enableDoubleTap, swipeThreshold, onSwipeLeft, onSwipeRight, onSwipeUp, onSwipeDown, onDoubleTap]);
 
   useEffect(() => {
     const container = containerRef.current;

@@ -119,7 +119,7 @@ const MobileIntegration: React.FC<MobileIntegrationProps> = ({
     if (!isMobile) return;
 
     // Initialize haptic feedback
-    hapticFeedback.trigger('light');
+    hapticFeedback.light();
     
     // Track mobile session
     mobileAnalytics.trackEvent('mobile_session_start', {
@@ -226,7 +226,7 @@ const MobileIntegration: React.FC<MobileIntegrationProps> = ({
   // Handle pull to refresh
   const handlePullToRefresh = async () => {
     try {
-      hapticFeedback.pullRefresh();
+      hapticFeedback.light(); // pullRefresh method doesn't exist
       mobileAnalytics.trackGestureUsage('pull_to_refresh', true);
       
       if (onRefresh) {
@@ -260,7 +260,7 @@ const MobileIntegration: React.FC<MobileIntegrationProps> = ({
 
   // Handle card scanning
   const handleCardDetected = (card: DetectedCard, imageData: string) => {
-    hapticFeedback.cardMatch();
+    hapticFeedback.success(); // cardMatch method doesn't exist
     mobileAnalytics.trackPWAFeature('card_scanner', {
       card_detected: true,
       confidence: card.confidence
