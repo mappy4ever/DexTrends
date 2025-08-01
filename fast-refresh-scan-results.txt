@@ -1,0 +1,779 @@
+[34m🔍 Running Improved Fast Refresh Scanner...
+[0m
+
+[34m═══════════════════════════════════════════
+     Improved Fast Refresh Violation Report
+═══════════════════════════════════════════[0m
+
+Total files scanned: [32m1935[0m
+Violations found: [31m137[0m
+
+[31m🚨 CRITICAL (Affects entire app):[0m
+
+  [34mcomponents/BulbapediaDataExample.tsx[0m
+    - Conditional Hook (line 169) - Hook call inside conditional: const [loading, setLoading] = useState(false);
+    - Conditional Hook (line 170) - Hook call inside conditional: const bulbapedia = useBulbapedia();
+    - Conditional Hook (line 230) - Hook call inside conditional: const { data, loading, error } = useBulbapediaQuery(
+
+  [34mcomponents/CardList.tsx[0m
+    - Conditional Hook (line 71) - Hook call inside conditional: const handleSortChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+    - Conditional Hook (line 75) - Hook call inside conditional: const handleMagnifyClick = useCallback((card: TCGCard) => {
+    - Conditional Hook (line 79) - Hook call inside conditional: const handleCloseModal = useCallback(() => {
+    - Conditional Hook (line 83) - Hook call inside conditional: const handleCardClick = useCallback((card: TCGCard) => {
+    - Conditional Hook (line 88) - Hook call inside conditional: const sortedCards = useMemo(() => {
+    - Conditional Hook (line 107) - Hook call inside conditional: const { visibleItems: visibleCards, hasMore, isLoading: scrollLoading, sentinelRef } = useInfiniteScroll(
+
+  [34mcomponents/CollectionManager.tsx[0m
+    - Conditional Hook (line 97) - Hook call inside conditional: const loadCollections = useCallback(async () => {
+    - Conditional Hook (line 124) - Hook call inside conditional: const calculatePortfolioValue = useCallback(async () => {
+    - Conditional Hook (line 136) - Hook call inside conditional: const getCurrentCardPrice = useCallback(async (cardId: string): Promise<number> => {
+    - Conditional Hook (line 320) - Hook call inside conditional: const exportCollection = useCallback((format: 'json' | 'csv' = 'json') => {
+    - Conditional Hook (line 376) - Hook call inside conditional: const updateCollection = useCallback(async (collectionId: string, updates: Partial<Collection>) => {
+    - Conditional Hook (line 497) - Hook call inside conditional: const getCollectionStats = useMemo((): CollectionStats => {
+    - Conditional Hook (line 824) - Hook call inside conditional: const [name, setName] = useState('');
+    - Conditional Hook (line 825) - Hook call inside conditional: const [description, setDescription] = useState('');
+    - Conditional Hook (line 827) - Hook call inside conditional: const handleSubmit = useCallback((e: React.FormEvent) => {
+    - Conditional Hook (line 899) - Hook call inside conditional: const [quantity, setQuantity] = useState(1);
+    - Conditional Hook (line 900) - Hook call inside conditional: const [condition, setCondition] = useState('Near Mint');
+    - Conditional Hook (line 901) - Hook call inside conditional: const [notes, setNotes] = useState('');
+    - Conditional Hook (line 903) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 913) - Hook call inside conditional: const handleAddCard = useCallback((e: React.FormEvent) => {
+
+  [34mcomponents/FastRefreshTests/scenarios/ConditionalHooks.tsx[0m
+    - Mixed Exports - export const CorrectHooksExample
+    - Nested Component (line 9) - Nested component: const BadComponent = () => {
+    - Conditional Hook (line 14) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 55) - Hook call inside conditional: useEffect(() => {}, []);
+    - Conditional Hook (line 60) - Hook call inside conditional: useState(0);
+    - Conditional Hook (line 65) - Hook call inside conditional: useState(0); // Never reached sometimes!`}
+    - Conditional Hook (line 79) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 86) - Hook call inside conditional: const [state1] = useState(0);
+    - Conditional Hook (line 87) - Hook call inside conditional: const [state2] = useState(0);
+    - Conditional Hook (line 116) - Hook call inside conditional: const [enabled, setEnabled] = useState(true);
+    - Conditional Hook (line 117) - Hook call inside conditional: const [count, setCount] = useState(0);
+    - Conditional Hook (line 119) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 126) - Hook call inside conditional: const [itemStates] = useState(() => items.map(() => 0));
+
+  [34mcomponents/GlobalErrorHandler.tsx[0m
+    - Conditional Hook (line 28) - Hook call inside conditional: useEffect(() => {
+
+  [34mcomponents/PocketCardList.tsx[0m
+    - Conditional Hook (line 146) - Hook call inside conditional: const sortedCards = useMemo(() => {
+    - Conditional Hook (line 198) - Hook call inside conditional: const { visibleItems: displayedCards, hasMore, isLoading: scrollLoading, sentinelRef } = useInfiniteScroll(
+    - Conditional Hook (line 205) - Hook call inside conditional: const handleSortChange = useCallback((newSort: string) => {
+
+  [34mcomponents/PopularCards.tsx[0m
+    - Conditional Hook (line 40) - Hook call inside conditional: const [loading, setLoading] = useState(true);
+    - Conditional Hook (line 44) - Hook call inside conditional: useEffect(() => {
+
+  [34mcomponents/PriceAlerts.tsx[0m
+    - Conditional Hook (line 100) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 228) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 389) - Hook call inside conditional: const [targetPrice, setTargetPrice] = useState('');
+    - Conditional Hook (line 390) - Hook call inside conditional: const [percentageChange, setPercentageChange] = useState('');
+
+  [34mcomponents/TrendingCards.tsx[0m
+    - Conditional Hook (line 88) - Hook call inside conditional: const risingCards = useMemo(() =>
+    - Conditional Hook (line 93) - Hook call inside conditional: const fallingCards = useMemo(() =>
+    - Conditional Hook (line 99) - Hook call inside conditional: const navigateToCardDetails = useCallback((card: TrendingCard) => {
+
+  [34mcomponents/mobile/BottomSheet.tsx[0m
+    - Conditional Hook (line 138) - Hook call inside conditional: const handleBackdropClick = useCallback((e: MouseEvent<HTMLDivElement>) => {
+    - Conditional Hook (line 145) - Hook call inside conditional: const snapTo = useCallback((point: number) => {
+    - Conditional Hook (line 157) - Hook call inside conditional: useEffect(() => {
+
+  [34mcomponents/mobile/CardScanner.tsx[0m
+    - Conditional Hook (line 127) - Hook call inside conditional: const stopCamera = useCallback(() => {
+    - Conditional Hook (line 149) - Hook call inside conditional: const captureFrame = useCallback(async () => {
+    - Conditional Hook (line 193) - Hook call inside conditional: const startAutoCapture = useCallback(() => {
+
+  [34mcomponents/mobile/EnhancedSwipeGestures.tsx[0m
+    - Conditional Hook (line 191) - Hook call inside conditional: const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    - Conditional Hook (line 263) - Hook call inside conditional: const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+
+  [34mcomponents/mobile/EnhancedTouchInteractions.tsx[0m
+    - Mixed Exports - export const SwipeableCard, export const PullToRefresh
+    - Conditional Hook (line 179) - Hook call inside conditional: const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    - Conditional Hook (line 222) - Hook call inside conditional: const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    - Conditional Hook (line 270) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 312) - Hook call inside conditional: const touchGestures = useTouchGestures({
+
+  [34mcomponents/mobile/FloatingActionButton.tsx[0m
+    - Mixed Exports - export const QuickActionFAB, export const CollectionFAB
+    - Conditional Hook (line 111) - Hook call inside conditional: const handleActionClick = useCallback((action: FABAction, index: number) => {
+    - Conditional Hook (line 125) - Hook call inside conditional: useEffect(() => {
+
+  [34mcomponents/mobile/GestureCardSorting.tsx[0m
+    - Conditional Hook (line 110) - Hook call inside conditional: const handleGesturePattern = useCallback((pattern: string) => {
+    - Conditional Hook (line 131) - Hook call inside conditional: const handleDoubleTap = useCallback((position: Position) => {
+    - Conditional Hook (line 152) - Hook call inside conditional: const handleLongPress = useCallback((position: Position) => {
+
+  [34mcomponents/mobile/MobileShare.tsx[0m
+    - Conditional Hook (line 183) - Hook call inside conditional: const shareFallback = useCallback(async (method: ShareMethod): Promise<boolean> => {
+
+  [34mcomponents/mobile/PullToRefresh.tsx[0m
+    - Conditional Hook (line 99) - Hook call inside conditional: const handleTouchMove = useCallback((e: TouchEvent) => {
+    - Conditional Hook (line 125) - Hook call inside conditional: const handleTouchEnd = useCallback(async () => {
+    - Conditional Hook (line 165) - Hook call inside conditional: useEffect(() => {
+
+  [34mcomponents/mobile/PushNotifications.tsx[0m
+    - Conditional Hook (line 130) - Hook call inside conditional: const urlBase64ToUint8Array = useCallback((base64String: string): Uint8Array => {
+    - Conditional Hook (line 212) - Hook call inside conditional: const sendSubscriptionToServer = useCallback(async (subscription: PushSubscription) => {
+    - Conditional Hook (line 235) - Hook call inside conditional: const showWelcomeNotification = useCallback(() => {
+    - Conditional Hook (line 248) - Hook call inside conditional: const addPriceAlert = useCallback((
+    - Conditional Hook (line 278) - Hook call inside conditional: const removePriceAlert = useCallback((alertId: string) => {
+    - Conditional Hook (line 291) - Hook call inside conditional: const toggleAlert = useCallback((alertId: string) => {
+    - Conditional Hook (line 307) - Hook call inside conditional: const sendTestNotification = useCallback(() => {
+    - Conditional Hook (line 322) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 328) - Hook call inside conditional: useEffect(() => {
+
+  [34mcomponents/mobile/TouchGestures.tsx[0m
+    - Conditional Hook (line 152) - Hook call inside conditional: const handleTouchMove = useCallback((e: TouchEvent) => {
+    - Conditional Hook (line 228) - Hook call inside conditional: const handleTouchEnd = useCallback((e: TouchEvent) => {
+    - Conditional Hook (line 312) - Hook call inside conditional: useEffect(() => {
+
+  [34mcomponents/mobile/VoiceSearch.tsx[0m
+    - Conditional Hook (line 163) - Hook call inside conditional: const startAudioVisualization = useCallback(async () => {
+    - Conditional Hook (line 214) - Hook call inside conditional: const processVoiceCommand = useCallback((transcript: string) => {
+    - Conditional Hook (line 239) - Hook call inside conditional: const startListening = useCallback(() => {
+    - Conditional Hook (line 253) - Hook call inside conditional: const stopListening = useCallback(() => {
+    - Conditional Hook (line 260) - Hook call inside conditional: const toggleListening = useCallback(() => {
+
+  [34mcomponents/pokemon/PokemonTabSystem.tsx[0m
+    - Conditional Hook (line 139) - Hook call inside conditional: useEffect(() => {
+
+  [34mcomponents/qol/GlobalKeyboardShortcuts.tsx[0m
+    - Conditional Hook (line 128) - Hook call inside conditional: useEffect(() => {
+
+  [34mcomponents/ui/AchievementSystem.tsx[0m
+    - Conditional Hook (line 304) - Hook call inside conditional: useEffect(() => {
+
+  [34mcomponents/ui/AdvancedKeyboardShortcuts.tsx[0m
+    - Conditional Hook (line 354) - Hook call inside conditional: const executeCommand = useCallback((command: CommandWithId) => {
+    - Conditional Hook (line 421) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 483) - Hook call inside conditional: useEffect(() => {
+
+  [34mcomponents/ui/AdvancedModalSystem.tsx[0m
+    - Mixed Exports - export const ConfirmationModal, export const ImageModal, export const LoadingModal
+    - Conditional Hook (line 212) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 248) - Hook call inside conditional: const [isVisible, setIsVisible] = useState(false);
+    - Conditional Hook (line 249) - Hook call inside conditional: const [isAnimating, setIsAnimating] = useState(false);
+    - Conditional Hook (line 253) - Hook call inside conditional: useFocusManagement(isVisible, modalRef);
+    - Conditional Hook (line 258) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 267) - Hook call inside conditional: useEffect(() => {
+
+  [34mcomponents/ui/AdvancedSearchInterface.tsx[0m
+    - Conditional Hook (line 137) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 144) - Hook call inside conditional: const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    - Conditional Hook (line 152) - Hook call inside conditional: const handleInputFocus = useCallback(() => {
+    - Conditional Hook (line 159) - Hook call inside conditional: const handleInputBlur = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
+    - Conditional Hook (line 170) - Hook call inside conditional: const filteredSuggestions = useMemo((): Suggestion[] => {
+    - Conditional Hook (line 183) - Hook call inside conditional: const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    - Conditional Hook (line 219) - Hook call inside conditional: const handleSuggestionClick = useCallback((suggestion: Suggestion) => {
+    - Conditional Hook (line 225) - Hook call inside conditional: const handleFilterChange = useCallback((filterId: string, value: string | number | string[] | null) => {
+    - Conditional Hook (line 245) - Hook call inside conditional: const clearSearch = useCallback(() => {
+    - Conditional Hook (line 254) - Hook call inside conditional: useEffect(() => {
+
+  [34mcomponents/ui/AdvancedSearchSystem.tsx[0m
+    - Conditional Hook (line 143) - Hook call inside conditional: const performSearch = useCallback(async (query: string, currentFilters: SearchFilters) => {
+
+  [34mcomponents/ui/CacheStatus.tsx[0m
+    - Mixed Exports - export const CacheStatus, export const CacheHitToast
+    - Conditional Hook (line 164) - Hook call inside conditional: useEffect(() => {
+
+  [34mcomponents/ui/CollectionTracker.tsx[0m
+    - Conditional Hook (line 140) - Hook call inside conditional: const collectionAnalysis = useMemo((): CollectionAnalysis => {
+
+  [34mcomponents/ui/DragDropSystem.tsx[0m
+    - Mixed Exports - export const DraggableItem, export const DropZone, export function SortableList, export const DraggableCardGrid, export const DragDropCollectionManager
+    - Conditional Hook (line 228) - Hook call inside conditional: const handleMouseUp = useCallback(() => {
+    - Conditional Hook (line 313) - Hook call inside conditional: const handleTouchEnd = useCallback(() => {
+    - Conditional Hook (line 457) - Hook call inside conditional: const handleMouseLeave = useCallback(() => {
+    - Conditional Hook (line 571) - Hook call inside conditional: const handleDragEnter = useCallback((index: number) => {
+
+  [34mcomponents/ui/EnhancedCardInteractions.tsx[0m
+    - Mixed Exports - export const InteractiveCard, export const CardInteractionIndicator
+    - Conditional Hook (line 123) - Hook call inside conditional: const handleMouseLeave = useCallback(() => {
+    - Conditional Hook (line 141) - Hook call inside conditional: const handleMouseDown = useCallback(() => {
+    - Conditional Hook (line 157) - Hook call inside conditional: const handleMouseUp = useCallback(() => {
+    - Conditional Hook (line 173) - Hook call inside conditional: const handleTouchStart = useCallback((e: TouchEvent<HTMLDivElement>) => {
+    - Conditional Hook (line 194) - Hook call inside conditional: const handleTouchEnd = useCallback(() => {
+    - Conditional Hook (line 219) - Hook call inside conditional: const handleFocus = useCallback(() => {
+    - Conditional Hook (line 235) - Hook call inside conditional: const handleBlur = useCallback(() => {
+    - Conditional Hook (line 255) - Hook call inside conditional: const handleDoubleInteraction = useCallback(() => {
+    - Conditional Hook (line 300) - Hook call inside conditional: const handleKeyDown = useCallback((e: KeyboardEvent<HTMLDivElement>) => {
+    - Conditional Hook (line 325) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 337) - Hook call inside conditional: const getCardShadow = useCallback(() => {
+    - Conditional Hook (line 348) - Hook call inside conditional: const getCardStyles = useCallback((): CSSProperties => {
+    - Conditional Hook (line 420) - Hook call inside conditional: const { cardStyles, eventHandlers } = useCardInteractions({
+
+  [34mcomponents/ui/EnhancedEvolutionDisplay.tsx[0m
+    - Conditional Hook (line 148) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 387) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 809) - Hook call inside conditional: const [loading, setLoading] = useState(true);
+    - Conditional Hook (line 811) - Hook call inside conditional: useEffect(() => {
+
+  [34mcomponents/ui/FloatingActionSystem.tsx[0m
+    - Mixed Exports - export const FloatingActionButton, export const SpeedDialFAB, export const FABPresets
+    - Conditional Hook (line 201) - Hook call inside conditional: const handleActionClick = useCallback((action: FABAction, event: React.MouseEvent) => {
+    - Conditional Hook (line 212) - Hook call inside conditional: const handleMouseEnter = useCallback(() => {
+    - Conditional Hook (line 220) - Hook call inside conditional: const handleMouseLeave = useCallback(() => {
+    - Conditional Hook (line 456) - Hook call inside conditional: const [isOpen, setIsOpen] = useState(false);
+    - Conditional Hook (line 484) - Hook call inside conditional: const { fabs, globalFAB } = useFAB();
+
+  [34mcomponents/ui/GestureConflictResolver.tsx[0m
+    - Mixed Exports - export const GestureConflictResolver
+    - Conditional Hook (line 71) - Hook call inside conditional: const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+
+  [34mcomponents/ui/KeyboardNavigation.hooks.tsx[0m
+    - Conditional Hook (line 44) - Hook call inside conditional: useEffect(() => {
+
+  [34mcomponents/ui/MarketInsightsDashboard.tsx[0m
+    - Conditional Hook (line 408) - Hook call inside conditional: useEffect(() => {
+
+  [34mcomponents/ui/MicroInteractionSystem.tsx[0m
+    - Mixed Exports - export const HapticFeedback, export const VisualFeedback, export const InteractiveButton, export const InteractiveCard, export const InteractiveInput, export const InteractiveLoader, export const InteractiveProgress, export const MicroInteractionStyles
+    - Conditional Hook (line 266) - Hook call inside conditional: const handleClick = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+    - Conditional Hook (line 281) - Hook call inside conditional: const handleMouseEnter = useCallback(() => {
+    - Conditional Hook (line 287) - Hook call inside conditional: const handleMouseLeave = useCallback(() => {
+    - Conditional Hook (line 346) - Hook call inside conditional: const [focused, setFocused] = useState(false);
+    - Conditional Hook (line 348) - Hook call inside conditional: const handleFocus = useCallback((event: React.FocusEvent<HTMLInputElement>) => {
+    - Conditional Hook (line 357) - Hook call inside conditional: const handleBlur = useCallback((event: React.FocusEvent<HTMLInputElement>) => {
+    - Conditional Hook (line 365) - Hook call inside conditional: const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+
+  [34mcomponents/ui/OptimizationEnhancer.tsx[0m
+    - Mixed Exports - export const ImageOptimizer, export const BundleOptimizer, export const MemoryManager, export const PerformanceTracker, export const ResourceOptimizer, export const ServiceWorkerManager
+    - Conditional Hook (line 79) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 184) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 266) - Hook call inside conditional: useEffect(() => {
+
+  [34mcomponents/ui/OptimizedImageMobile.tsx[0m
+    - Mixed Exports - export const withBatchLoading, export const preloadImage, export const preloadImages
+    - Conditional Hook (line 116) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 178) - Hook call inside conditional: const handleLoad = useCallback((event: React.SyntheticEvent<HTMLImageElement>) => {
+    - Conditional Hook (line 198) - Hook call inside conditional: const handleError = useCallback((event: React.SyntheticEvent<HTMLImageElement>) => {
+
+  [34mcomponents/ui/PerformanceDashboard.tsx[0m
+    - Conditional Hook (line 213) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 269) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 327) - Hook call inside conditional: useEffect(() => {
+
+  [34mcomponents/ui/PerformanceMonitor.tsx[0m
+    - Mixed Exports - export const PerformanceMonitor, export const OptimizedImage
+    - Conditional Hook (line 168) - Hook call inside conditional: const [loading, setLoading] = useState(true);
+    - Conditional Hook (line 169) - Hook call inside conditional: const [error, setError] = useState(false);
+
+  [34mcomponents/ui/PokemonEasterEggs.tsx[0m
+    - Mixed Exports - export const KonamiCode, export const PokeballClicker, export const RandomFactTooltip, export const WeatherThemeChanger, export const CatchNotification, export const MouseTrail
+    - Conditional Hook (line 119) - Hook call inside conditional: const [showFact, setShowFact] = useState(false);
+    - Conditional Hook (line 120) - Hook call inside conditional: const [currentFact, setCurrentFact] = useState(0);
+    - Conditional Hook (line 133) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 169) - Hook call inside conditional: const [showSuggestion, setShowSuggestion] = useState(false);
+    - Conditional Hook (line 171) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 223) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 254) - Hook call inside conditional: useEffect(() => {
+
+  [34mcomponents/ui/ProgressiveDisclosure.tsx[0m
+    - Mixed Exports - export const CollapsibleSection, export const Accordion, export const StepByStepDisclosure, export const TabbedDisclosure, export const DetailsSummary, export const ProgressiveForm
+    - Conditional Hook (line 314) - Hook call inside conditional: const [activeStep, setActiveStep] = useState(currentStep);
+    - Conditional Hook (line 317) - Hook call inside conditional: const handleStepClick = useCallback((stepIndex: number) => {
+    - Conditional Hook (line 328) - Hook call inside conditional: const handleStepComplete = useCallback((stepIndex: number) => {
+    - Conditional Hook (line 566) - Hook call inside conditional: const [isOpen, setIsOpen] = useState(defaultOpen);
+    - Conditional Hook (line 568) - Hook call inside conditional: const handleToggle = useCallback(() => {
+
+  [34mcomponents/ui/SkeletonLoadingSystem.tsx[0m
+    - Mixed Exports - export const Skeleton, export const CardSkeleton, export const PokemonCardSkeleton, export const ListSkeleton, export const TableSkeleton, export const ChartSkeleton, export const FormSkeleton, export const NavigationSkeleton, export const SkeletonWrapper, export const SkeletonStyles
+    - Conditional Hook (line 786) - Hook call inside conditional: const [showSkeleton, setShowSkeleton] = useState(delay === 0 ? loading : false);
+    - Conditional Hook (line 788) - Hook call inside conditional: useEffect(() => {
+
+  [34mcomponents/ui/SmartRecommendationEngine.tsx[0m
+    - Conditional Hook (line 340) - Hook call inside conditional: const generateRecommendations = useCallback(async () => {
+    - Conditional Hook (line 365) - Hook call inside conditional: useEffect(() => {
+
+  [34mcomponents/ui/TooltipHelpSystem.tsx[0m
+    - Mixed Exports - export const Tooltip, export const RichTooltip, export const HelpSystem, export const QuickHelpButton, export const HelpContentDatabase, export const HelpSystemStyles
+    - Conditional Hook (line 154) - Hook call inside conditional: const hideTooltip = useCallback(() => {
+    - Conditional Hook (line 223) - Hook call inside conditional: const { activeTooltip, tooltipPosition } = useTooltip();
+    - Conditional Hook (line 272) - Hook call inside conditional: const { showTooltip, hideTooltip } = useTooltip();
+    - Conditional Hook (line 275) - Hook call inside conditional: const handleMouseEnter = useCallback(() => {
+    - Conditional Hook (line 283) - Hook call inside conditional: const handleMouseLeave = useCallback(() => {
+    - Conditional Hook (line 288) - Hook call inside conditional: const handleFocus = useCallback(() => {
+    - Conditional Hook (line 296) - Hook call inside conditional: const handleBlur = useCallback(() => {
+    - Conditional Hook (line 379) - Hook call inside conditional: const [isActive, setIsActive] = useState(false);
+    - Conditional Hook (line 380) - Hook call inside conditional: const [currentStep, setCurrentStep] = useState(0);
+    - Conditional Hook (line 383) - Hook call inside conditional: const highlightStep = useCallback((stepIndex: number) => {
+    - Conditional Hook (line 400) - Hook call inside conditional: const startTour = useCallback(() => {
+    - Conditional Hook (line 407) - Hook call inside conditional: const completeTour = useCallback(() => {
+    - Conditional Hook (line 417) - Hook call inside conditional: const nextStep = useCallback(() => {
+    - Conditional Hook (line 428) - Hook call inside conditional: const previousStep = useCallback(() => {
+    - Conditional Hook (line 437) - Hook call inside conditional: const skipTour = useCallback(() => {
+    - Conditional Hook (line 487) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 617) - Hook call inside conditional: const [isOpen, setIsOpen] = useState(false);
+    - Conditional Hook (line 619) - Hook call inside conditional: const toggleHelp = useCallback(() => {
+
+  [34mcomponents/ui/TouchGestureSystem.tsx[0m
+    - Mixed Exports - export const SwipeableCard, export const PullToRefresh, export const SwipeableListItem, export const GestureArea
+    - Conditional Hook (line 141) - Hook call inside conditional: const handleTouchMove = useCallback((event: ReactTouchEvent) => {
+    - Conditional Hook (line 164) - Hook call inside conditional: const handleTouchEnd = useCallback((event: ReactTouchEvent) => {
+    - Conditional Hook (line 236) - Hook call inside conditional: const tapCount = useRef(0);
+    - Conditional Hook (line 240) - Hook call inside conditional: const [isLongPressing, setIsLongPressing] = useState(false);
+    - Conditional Hook (line 242) - Hook call inside conditional: const handleTouchStart = useCallback((event: ReactTouchEvent) => {
+    - Conditional Hook (line 264) - Hook call inside conditional: const handleTouchMove = useCallback((event: ReactTouchEvent) => {
+    - Conditional Hook (line 279) - Hook call inside conditional: const handleTouchEnd = useCallback((event: ReactTouchEvent) => {
+    - Conditional Hook (line 356) - Hook call inside conditional: const currentScale = useRef(1);
+    - Conditional Hook (line 357) - Hook call inside conditional: const [isPinching, setIsPinching] = useState(false);
+    - Conditional Hook (line 365) - Hook call inside conditional: const handleTouchStart = useCallback((event: ReactTouchEvent) => {
+    - Conditional Hook (line 380) - Hook call inside conditional: const handleTouchMove = useCallback((event: ReactTouchEvent) => {
+    - Conditional Hook (line 396) - Hook call inside conditional: const handleTouchEnd = useCallback((event: ReactTouchEvent) => {
+    - Conditional Hook (line 449) - Hook call inside conditional: const [isDragging, setIsDragging] = useState(false);
+    - Conditional Hook (line 450) - Hook call inside conditional: const [isAnimating, setIsAnimating] = useState(false);
+    - Conditional Hook (line 453) - Hook call inside conditional: const swipeGestures = useSwipeGesture({
+    - Conditional Hook (line 502) - Hook call inside conditional: const resetCard = useCallback(() => {
+    - Conditional Hook (line 508) - Hook call inside conditional: const handleTouchStart = useCallback((event: ReactTouchEvent) => {
+    - Conditional Hook (line 516) - Hook call inside conditional: const handleTouchMove = useCallback((event: ReactTouchEvent) => {
+    - Conditional Hook (line 643) - Hook call inside conditional: const handleTouchMove = useCallback((event: ReactTouchEvent) => {
+    - Conditional Hook (line 666) - Hook call inside conditional: const handleTouchEnd = useCallback(async () => {
+    - Conditional Hook (line 779) - Hook call inside conditional: const [swipeDistance, setSwipeDistance] = useState(0);
+    - Conditional Hook (line 780) - Hook call inside conditional: const [isActioned, setIsActioned] = useState(false);
+    - Conditional Hook (line 783) - Hook call inside conditional: const swipeGestures = useSwipeGesture({
+    - Conditional Hook (line 901) - Hook call inside conditional: const swipeHandlers = useSwipeGesture(gestures.swipe || {});
+    - Conditional Hook (line 902) - Hook call inside conditional: const tapHandlers = useTapGesture(gestures.tap || {});
+    - Conditional Hook (line 903) - Hook call inside conditional: const pinchHandlers = usePinchGesture(gestures.pinch || {});
+    - Conditional Hook (line 905) - Hook call inside conditional: const handleTouchStart = useCallback((event: ReactTouchEvent) => {
+    - Conditional Hook (line 913) - Hook call inside conditional: const handleTouchMove = useCallback((event: ReactTouchEvent) => {
+    - Conditional Hook (line 921) - Hook call inside conditional: const handleTouchEnd = useCallback((event: ReactTouchEvent) => {
+
+  [34mcomponents/ui/UserExperienceEnhancer.tsx[0m
+    - Mixed Exports - export const ConnectionStatusIndicator, export const ReadingProgressIndicator, export const SmartSearchSuggestions, export const PageRecommendations, export const AccessibilityEnhancer
+    - Conditional Hook (line 182) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 231) - Hook call inside conditional: const [highContrast, setHighContrast] = useState(false);
+    - Conditional Hook (line 232) - Hook call inside conditional: const [fontSize, setFontSize] = useState('normal');
+    - Conditional Hook (line 233) - Hook call inside conditional: const [reducedMotion, setReducedMotion] = useState(false);
+    - Conditional Hook (line 235) - Hook call inside conditional: useEffect(() => {
+
+  [34mcomponents/ui/VisualCardSearch.tsx[0m
+    - Conditional Hook (line 203) - Hook call inside conditional: const handleDragOver = useCallback((e: React.DragEvent) => {
+    - Conditional Hook (line 208) - Hook call inside conditional: const handleDragLeave = useCallback((e: React.DragEvent) => {
+    - Conditional Hook (line 213) - Hook call inside conditional: const handleDrop = useCallback((e: React.DragEvent) => {
+
+  [34mcomponents/ui/cards/UnifiedCard.tsx[0m
+    - Conditional Hook (line 394) - Hook call inside conditional: const visualEffects = useMemo(() => ({
+    - Conditional Hook (line 400) - Hook call inside conditional: const rarityInfo = useMemo(() => {
+    - Conditional Hook (line 415) - Hook call inside conditional: const [imageError, setImageError] = useState(false);
+    - Conditional Hook (line 418) - Hook call inside conditional: const handleCardClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    - Conditional Hook (line 440) - Hook call inside conditional: const handleMagnifyClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    - Conditional Hook (line 447) - Hook call inside conditional: const handleImageError = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
+
+  [34mcomponents/ui/forms/VisualSearchFilters.tsx[0m
+    - Conditional Hook (line 125) - Hook call inside conditional: useEffect(() => {
+
+  [34mcomponents/ui/navigation/NavigationEnhancements.tsx[0m
+    - Mixed Exports - export const RouteTransitionLoader, export const PokemonBreadcrumbs, export const QuickActionFAB, export const PageProgressIndicator, export const BackToTopButton, export const KeyboardShortcuts
+    - Conditional Hook (line 96) - Hook call inside conditional: const router = useRouter();
+
+  [34mcontext/UnifiedAppContext.tsx[0m
+    - Conditional Hook (line 375) - Hook call inside conditional: export function useAppContext(): UnifiedAppContextValue {
+    - Conditional Hook (line 376) - Hook call inside conditional: const context = useContext(UnifiedAppContext);
+    - Conditional Hook (line 390) - Hook call inside conditional: const [mounted, setMounted] = useState(false);
+    - Conditional Hook (line 393) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 398) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 412) - Hook call inside conditional: const persistState = useCallback((key: string, value: any) => {
+    - Conditional Hook (line 423) - Hook call inside conditional: const updateTheme = useCallback((newTheme: ThemeMode) => {
+    - Conditional Hook (line 437) - Hook call inside conditional: const toggleTheme = useCallback(() => {
+    - Conditional Hook (line 443) - Hook call inside conditional: const addToFavorites = useCallback((type: keyof FavoritesState, item: any) => {
+    - Conditional Hook (line 460) - Hook call inside conditional: const removeFromFavorites = useCallback((type: keyof FavoritesState, itemId: string | number) => {
+    - Conditional Hook (line 479) - Hook call inside conditional: const updateFavorites = useCallback((favorites: Partial<FavoritesState>) => {
+    - Conditional Hook (line 494) - Hook call inside conditional: const updateViewSettings = useCallback((viewSettings: Partial<ViewSettings>) => {
+    - Conditional Hook (line 512) - Hook call inside conditional: const updateSorting = useCallback((sorting: Partial<SortingState>) => {
+    - Conditional Hook (line 530) - Hook call inside conditional: const openModal = useCallback((type: string, data?: any) => {
+    - Conditional Hook (line 543) - Hook call inside conditional: const closeModal = useCallback(() => {
+    - Conditional Hook (line 557) - Hook call inside conditional: const updatePerformanceMetrics = useCallback((metrics: Partial<PerformanceMetrics>) => {
+    - Conditional Hook (line 570) - Hook call inside conditional: const updatePerformanceVitals = useCallback((vitals: Partial<PerformanceMetrics>) => {
+    - Conditional Hook (line 583) - Hook call inside conditional: const updateApiMetrics = useCallback((metrics: Partial<PerformanceMetrics>) => {
+    - Conditional Hook (line 596) - Hook call inside conditional: const enablePerformanceMonitoring = useCallback(() => {
+    - Conditional Hook (line 609) - Hook call inside conditional: const disablePerformanceMonitoring = useCallback(() => {
+    - Conditional Hook (line 623) - Hook call inside conditional: const trackInteraction = useCallback(() => {
+    - Conditional Hook (line 637) - Hook call inside conditional: const trackUserAction = useCallback((action: string, data?: Record<string, any>) => {
+    - Conditional Hook (line 665) - Hook call inside conditional: const updatePreference = useCallback((key: keyof UserPreferences, value: any) => {
+    - Conditional Hook (line 682) - Hook call inside conditional: const updateAccessibilitySettings = useCallback((key: keyof AccessibilitySettings, value: any) => {
+    - Conditional Hook (line 704) - Hook call inside conditional: const startOnboarding = useCallback((tourId: string) => {
+    - Conditional Hook (line 722) - Hook call inside conditional: const completeOnboardingStep = useCallback(() => {
+    - Conditional Hook (line 738) - Hook call inside conditional: const completeOnboarding = useCallback((tourId: string) => {
+    - Conditional Hook (line 761) - Hook call inside conditional: const shouldShowTooltip = useCallback((tooltipId: string): boolean => {
+    - Conditional Hook (line 766) - Hook call inside conditional: const dismissTooltip = useCallback((tooltipId: string) => {
+    - Conditional Hook (line 784) - Hook call inside conditional: const getPersonalizedRecommendations = useCallback((): PersonalizedRecommendations => {
+    - Conditional Hook (line 810) - Hook call inside conditional: const optimizeForPerformance = useCallback((): PerformanceOptimizations => {
+    - Conditional Hook (line 827) - Hook call inside conditional: const getAccessibilityEnhancements = useCallback((): AccessibilityEnhancements => {
+
+  [34mhooks/useBulbapedia.ts[0m
+    - Conditional Hook (line 173) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 195) - Hook call inside conditional: const { data, loading, error } = useBulbapediaQuery('gymLeader', { name: leaderName });
+    - Unnecessary React Import
+
+  [34mhooks/useInfiniteScroll.ts[0m
+    - Conditional Hook (line 114) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 149) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 181) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 193) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 205) - Hook call inside conditional: const forceLoadMore = useCallback(() => {
+    - Conditional Hook (line 212) - Hook call inside conditional: const reset = useCallback(() => {
+    - Unnecessary React Import
+
+  [34mpages/battle-simulator.tsx[0m
+    - Conditional Hook (line 212) - Hook call inside conditional: const [searchTerm, setSearchTerm] = useState('');
+    - Conditional Hook (line 214) - Hook call inside conditional: const [loading, setLoading] = useState(false);
+    - Conditional Hook (line 216) - Hook call inside conditional: const [battleActive, setBattleActive] = useState(false);
+    - Conditional Hook (line 221) - Hook call inside conditional: const [showIVsEVs1, setShowIVsEVs1] = useState(false);
+    - Conditional Hook (line 222) - Hook call inside conditional: const [showIVsEVs2, setShowIVsEVs2] = useState(false);
+    - Conditional Hook (line 224) - Hook call inside conditional: const [player1Name, setPlayer1Name] = useState('Player 1');
+    - Conditional Hook (line 225) - Hook call inside conditional: const [player2Name, setPlayer2Name] = useState('Player 2');
+    - Conditional Hook (line 226) - Hook call inside conditional: const [editingPlayer1, setEditingPlayer1] = useState(false);
+    - Conditional Hook (line 227) - Hook call inside conditional: const [editingPlayer2, setEditingPlayer2] = useState(false);
+    - Conditional Hook (line 228) - Hook call inside conditional: const [currentHP1, setCurrentHP1] = useState(0);
+    - Conditional Hook (line 229) - Hook call inside conditional: const [currentHP2, setCurrentHP2] = useState(0);
+    - Conditional Hook (line 230) - Hook call inside conditional: const [isAnimating, setIsAnimating] = useState(false);
+    - Conditional Hook (line 235) - Hook call inside conditional: const [showVictoryScreen, setShowVictoryScreen] = useState(false);
+    - Conditional Hook (line 238) - Hook call inside conditional: const [weather, setWeather] = useState('none');
+    - Conditional Hook (line 239) - Hook call inside conditional: const [battleFormat, setBattleFormat] = useState('singles');
+    - Conditional Hook (line 240) - Hook call inside conditional: const [battleRules, setBattleRules] = useState('standard');
+    - Conditional Hook (line 241) - Hook call inside conditional: const [moveSearchTerm, setMoveSearchTerm] = useState('');
+    - Conditional Hook (line 242) - Hook call inside conditional: const [moveFilter, setMoveFilter] = useState('all'); // all, physical, special, status
+    - Conditional Hook (line 246) - Hook call inside conditional: const [fastForward, setFastForward] = useState(false);
+    - Conditional Hook (line 247) - Hook call inside conditional: const [showBattleResults, setShowBattleResults] = useState(false);
+    - Conditional Hook (line 249) - Hook call inside conditional: const [isSimulating, setIsSimulating] = useState(false);
+    - Conditional Hook (line 275) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 296) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 302) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 309) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 321) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 610) - Hook call inside conditional: const loadMoveData = useCallback(async (moveName: string): Promise<Move | null> => {
+    - Conditional Hook (line 626) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 632) - Hook call inside conditional: useEffect(() => {
+
+  [34mpages/pocketmode/expansions.tsx[0m
+    - Conditional Hook (line 305) - Hook call inside conditional: const uniqueSeries = useMemo(() => {
+    - Conditional Hook (line 316) - Hook call inside conditional: const filteredExpansions = useMemo(() => {
+    - Conditional Hook (line 329) - Hook call inside conditional: const sortedExpansions = useMemo(() => {
+    - Conditional Hook (line 352) - Hook call inside conditional: const { visibleItems: visibleExpansions, hasMore, isLoading: scrollLoading, sentinelRef } = useInfiniteScroll(
+
+  [34mpages/pokedex/[pokeid]_old.tsx[0m
+    - Conditional Hook (line 181) - Hook call inside conditional: const loadAllNatures = useCallback(async () => {
+    - Conditional Hook (line 205) - Hook call inside conditional: const loadNatureData = useCallback(async (natureName: string) => {
+
+  [34mpages/pokedex.tsx[0m
+    - Conditional Hook (line 498) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 738) - Hook call inside conditional: const filteredPokemon = useMemo(() => {
+    - Conditional Hook (line 808) - Hook call inside conditional: const sortedPokemon = useMemo(() => {
+    - Conditional Hook (line 842) - Hook call inside conditional: const displayedPokemon = useMemo(() => {
+    - Conditional Hook (line 847) - Hook call inside conditional: const loadMore = useCallback(() => {
+    - Conditional Hook (line 858) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 907) - Hook call inside conditional: const handleRefresh = useCallback(async () => {
+
+  [34mpages/pokemon/starters/[region].tsx[0m
+    - Conditional Hook (line 769) - Hook call inside conditional: const router = useRouter();
+    - Conditional Hook (line 771) - Hook call inside conditional: const { theme } = useTheme();
+
+  [34mpages/tcgsets/[setid].tsx[0m
+    - Conditional Hook (line 128) - Hook call inside conditional: const calculateSetStatistics = useCallback((cardsData: TCGCard[]) => {
+    - Conditional Hook (line 190) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 286) - Hook call inside conditional: const filterOptions = useMemo(() => {
+
+  [34mpages/tcgsets.tsx[0m
+    - Conditional Hook (line 82) - Hook call inside conditional: const filteredSets = useMemo(() => {
+    - Conditional Hook (line 96) - Hook call inside conditional: const sortedSets = useMemo(() => {
+    - Conditional Hook (line 119) - Hook call inside conditional: const { visibleItems: visibleSets, hasMore, isLoading: scrollLoading, sentinelRef } = useInfiniteScroll(
+
+  [34mscripts/fix-fast-refresh.js[0m
+    - Nested Component (line 245) - Nested component: function Parent() {
+    - Nested Component (line 246) - Nested component: const Child = () => <div>Child</div>;
+    - Nested Component (line 253) - Nested component: const Child = () => <div>Child</div>;
+    - Nested Component (line 255) - Nested component: function Parent() {
+    - Conditional Hook (line 266) - Hook call inside conditional: useEffect(() => {}, []);
+    - Conditional Hook (line 272) - Hook call inside conditional: useEffect(() => {
+
+  [34mutils/dragDrop.ts[0m
+    - Conditional Hook (line 71) - Hook call inside conditional: const handleRemove = useCallback((item: T) => {
+    - Unnecessary React Import
+
+  [34mutils/imageOptimization.ts[0m
+    - Conditional Hook (line 508) - Hook call inside conditional: const preloadImages = useCallback((urls: string[], options?: PreloadOptions) => {
+    - Conditional Hook (line 512) - Hook call inside conditional: const lazyLoad = useCallback((img: HTMLImageElement, src: string, options?: LazyLoadOptions) => {
+    - Conditional Hook (line 516) - Hook call inside conditional: const getCardImageProps = useCallback((card: Card, options?: CardImagePropsOptions) => {
+    - Conditional Hook (line 520) - Hook call inside conditional: const getCacheStats = useCallback(() => {
+    - Conditional Hook (line 525) - Hook call inside conditional: useEffect(() => {
+
+  [34mutils/localDataLoader.ts[0m
+    - Conditional Hook (line 164) - Hook call inside conditional: export function useGymLeaders(region: string | null = null): UseDataReturn<GymLeader[] | { [region: string]: GymLeader[] }> {
+    - Conditional Hook (line 169) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 198) - Hook call inside conditional: export function useGames(filterOptions: FilterOptions = {}): UseDataReturn<Game[]> {
+    - Conditional Hook (line 203) - Hook call inside conditional: useEffect(() => {
+    - Unnecessary React Import
+
+  [34mutils/mobileUtils.ts[0m
+    - Conditional Hook (line 574) - Hook call inside conditional: useEffect(() => {
+    - Unnecessary React Import
+
+  [34mutils/performanceMonitor.ts[0m
+    - Conditional Hook (line 744) - Hook call inside conditional: const [isSupported] = useState((performanceMonitor as any).isSupported);
+    - Conditional Hook (line 745) - Hook call inside conditional: const renderCount = useRef(0);
+    - Conditional Hook (line 749) - Hook call inside conditional: useEffect(() => {
+
+  [34mutils/reactOptimizations.ts[0m
+    - Conditional Hook (line 154) - Hook call inside conditional: const renderCount = useRef(0);
+    - Conditional Hook (line 155) - Hook call inside conditional: const lastRenderTime = useRef(0);
+    - Conditional Hook (line 157) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 199) - Hook call inside conditional: const computationTimeRef = useRef(0);
+    - Conditional Hook (line 200) - Hook call inside conditional: const callCountRef = useRef(0);
+    - Conditional Hook (line 202) - Hook call inside conditional: const memoizedValue = useMemo(() => {
+    - Conditional Hook (line 242) - Hook call inside conditional: const callCountRef = useRef(0);
+    - Conditional Hook (line 243) - Hook call inside conditional: const lastDepsRef = useRef(deps);
+    - Conditional Hook (line 265) - Hook call inside conditional: return useCallback((...args: Parameters<T>) =>
+    - Conditional Hook (line 270) - Hook call inside conditional: return useCallback(callback, deps);
+    - Conditional Hook (line 274) - Hook call inside conditional: export function usePerformanceProfiler(
+    - Conditional Hook (line 284) - Hook call inside conditional: const renderCount = useRef(0);
+    - Conditional Hook (line 285) - Hook call inside conditional: const updateCount = useRef(0);
+    - Conditional Hook (line 286) - Hook call inside conditional: const mountTime = useRef(performance.now());
+    - Conditional Hook (line 287) - Hook call inside conditional: const lastRenderTime = useRef(0);
+    - Conditional Hook (line 290) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 311) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 322) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 362) - Hook call inside conditional: const [startIndex, setStartIndex] = useState(0);
+    - Conditional Hook (line 363) - Hook call inside conditional: const [scrollTop, setScrollTop] = useState(0);
+    - Conditional Hook (line 366) - Hook call inside conditional: const visibleItems = useMemo((): VisibleItem<T>[] => {
+    - Conditional Hook (line 379) - Hook call inside conditional: const handleScroll = useCallback((event: React.UIEvent<HTMLElement>) => {
+    - Conditional Hook (line 422) - Hook call inside conditional: export function useOptimizationSuggestions(componentName: string): OptimizationSuggestion[] {
+    - Conditional Hook (line 425) - Hook call inside conditional: useEffect(() => {
+    - Conditional Hook (line 512) - Hook call inside conditional: usePerformanceProfiler(componentName);
+    - Conditional Hook (line 516) - Hook call inside conditional: const suggestions = useOptimizationSuggestions(componentName);
+    - Unnecessary React Import
+[31m
+⚠️  HIGH PRIORITY (Affects pages/layouts):[0m
+
+  [34mcomponents/FastRefreshTests/scenarios/NestedComponents.tsx[0m
+    - Mixed Exports - export const CorrectPatternExample
+    - Nested Component (line 9) - Nested component: const NestedInsideComponent = () => {
+    - Nested Component (line 41) - Nested component: const ChildComponent = () => {
+    - Nested Component (line 60) - Nested component: const ChildComponent = () => {
+    - Nested Component (line 64) - Nested component: function ParentComponent() {
+    - Nested Component (line 109) - Nested component: const ProperlyDefinedChild: React.FC<{ label: string }> = ({ label }) => {
+
+  [34mcomponents/ui/VoiceSearchInterface.tsx[0m
+    - Nested Component (line 124) - Nested component: const AudioContext = windowWithAudio.AudioContext || windowWithAudio.webkitAudioContext;
+
+  [34mscripts/analyzeEliteFourChampions.js[0m
+    - Nested Component (line 65) - Nested component: const CHAMPIONS_PATH = path.join(__dirname, '..', 'public', 'images', 'scraped', 'champions');
+    - Nested Component (line 152) - Nested component: const CHAMPIONS_PATH = path.join(__dirname, '..', 'public', 'images', 'scraped', 'champions');
+[33m
+⚡ MEDIUM PRIORITY (Component files):[0m
+
+  [34mcomponents/FastRefreshTests/scenarios/AnonymousExports.tsx[0m
+    - Mixed Exports - export const NamedExportExample
+
+  [34mcomponents/FastRefreshTests/scenarios/DynamicImports.tsx[0m
+    - Mixed Exports - export const OptimizedLazyPattern
+
+  [34mcomponents/FastRefreshTests/scenarios/MixedExports.tsx[0m
+    - Mixed Exports - export const SOME_CONSTANT, export function utilityFunction, export const SOME_CONSTANT, export function utilityFunction, export const SOME_CONSTANT, export function utilityFunction
+
+  [34mcomponents/FastRefreshTests/scenarios/StatePreservation.tsx[0m
+    - Mixed Exports - export const ModuleLevelStateExample
+
+  [34mcomponents/dynamic/DynamicComponents.tsx[0m
+    - Mixed Exports - export const DynamicPriceHistoryChart, export const DynamicReactLeaflet, export const DynamicAdvancedSearchModal, export const DynamicMarketAnalytics, export const DynamicMarketInsightsDashboard, export const DynamicDataAnalyticsDashboard, export const DynamicCollectionManager, export const DynamicAdvancedDeckBuilder, export const DynamicTradingMarketplace, export const DynamicTournamentSystem, export const DynamicPriceAlerts, export const DynamicFontAwesome, export const DynamicDatePicker, export const DynamicReactSelect, export const DynamicHtml2Canvas, export const DynamicFileSaver, export const DynamicParticles, export const DynamicMotion, export const DynamicAnalytics, export const DynamicSpeedInsights, export const DynamicErrorBoundary
+
+  [34mcomponents/pwa/InstallPrompt.tsx[0m
+    - Mixed Exports - export const DesktopInstallButton
+
+  [34mcomponents/qol/ContextualHelp.tsx[0m
+    - Mixed Exports - export const SmartTooltip
+
+  [34mcomponents/qol/KeyboardShortcuts.tsx[0m
+    - Mixed Exports - export const KeyboardShortcutsManager
+
+  [34mcomponents/qol/PreferencesManager.tsx[0m
+    - Mixed Exports - export const PreferencesManager
+
+  [34mcomponents/qol/SmartSearchEnhancer.tsx[0m
+    - Mixed Exports - export const SmartSearchEnhancer, export const GlobalSearchShortcuts
+
+  [34mcomponents/qol/UserPreferences.tsx[0m
+    - Mixed Exports - export const PreferencesPanel
+
+  [34mcomponents/ui/AdvancedLoadingStates.tsx[0m
+    - Mixed Exports - export const PokemonCardSkeleton, export const SearchResultsSkeleton, export const ProgressiveLoader
+
+  [34mcomponents/ui/AriaLiveAnnouncer.tsx[0m
+    - Mixed Exports - export const AriaLiveAnnouncer
+
+  [34mcomponents/ui/Card.tsx[0m
+    - Mixed Exports - export const CardHeader, export const CardTitle, export const CardContent, export const CardFooter
+
+  [34mcomponents/ui/CardSharingSystem.tsx[0m
+    - Mixed Exports - export
+  const handleExport
+
+  [34mcomponents/ui/CircularButton.tsx[0m
+    - Mixed Exports - export const ButtonGroup
+
+  [34mcomponents/ui/CircularTypeMatrix.tsx[0m
+    - Mixed Exports - export const CircularTypeMatrix
+
+  [34mcomponents/ui/ConsistentModal.tsx[0m
+    - Mixed Exports - export const ModalHeader, export const ModalBody, export const ModalFooter
+
+  [34mcomponents/ui/EnhancedAnimationSystem.tsx[0m
+    - Mixed Exports - export const easings, export const EnhancedPageTransition, export const InteractiveCard, export const AnimatedModal, export const AnimatedDrawer, export const AnimatedButton, export const AnimatedToggle, export const AnimatedInput, export const ScrollReveal, export const EnhancedLoadingDots, export const AnimatedSkeleton, export const StaggerList, export const ParallaxElement
+
+  [34mcomponents/ui/EnhancedModal.tsx[0m
+    - Mixed Exports - export const modalVariants, export const modalPositions
+
+  [34mcomponents/ui/EnhancedPokemonSelector.tsx[0m
+    - Mixed Exports - export const EnhancedPokemonSelector
+
+  [34mcomponents/ui/FullBleedWrapper.tsx[0m
+    - Mixed Exports - export const FullBleedWrapper, export const PageBackground, export const BackgroundOnly
+
+  [34mcomponents/ui/KeyboardNavigation.tsx[0m
+    - Mixed Exports - export const KeyboardNavigation, export const SkipToContent
+
+  [34mcomponents/ui/LevelTag.tsx[0m
+    - Mixed Exports - export function CompactLevelTag
+
+  [34mcomponents/ui/MobileCard.tsx[0m
+    - Mixed Exports - export const MobileCardListItem, export const MobileCardGrid
+
+  [34mcomponents/ui/MobileDesignSystem.tsx[0m
+    - Mixed Exports - export const TypographyScale, export const SpacingGrid, export const ButtonShowcase, export const CardShowcase, export const FormShowcase, export const ShadowShowcase, export const ColorShowcase, export const NavigationShowcase, export const ResponsiveGridShowcase
+
+  [34mcomponents/ui/MobileOptimizedPokeID.tsx[0m
+    - Mixed Exports - export const MobileContainer, export const MobileHeader, export const MobileCard, export const MobileGrid, export const MobileInfoBox, export const MobileTabNav, export const MobileSection, export const MobileTitle, export const MobileTypeEffectiveness, export const MobileButton
+
+  [34mcomponents/ui/MobilePokemonDetail.tsx[0m
+    - Mixed Exports - export const MobilePokemonHeader, export const MobilePokemonHero, export const MobilePokemonDetails, export const MobileTabNavigation, export const MobileStatDisplay, export const MobileTypeEffectiveness, export const MobileBottomNavigation, export const MobileFAB
+
+  [34mcomponents/ui/PokeballLoader.tsx[0m
+    - Mixed Exports - export function PokemonLoader, export function CardLoader
+
+  [34mcomponents/ui/PokeballSVG.tsx[0m
+    - Mixed Exports - export const PokeballSVG, export const TypeBadgeSVG, export const LoadingDotsRun, export const PikachuSilhouette, export const SearchMagnifyingGlass
+
+  [34mcomponents/ui/PokemonCardAnimations.tsx[0m
+    - Mixed Exports - export const HolographicCard, export const FlippableCard, export const PackOpeningAnimation, export const CardStack, export const EvolutionAnimation, export const AnimatedTypeBadge
+
+  [34mcomponents/ui/PokemonSoundEffects.tsx[0m
+    - Mixed Exports - export const PokemonSoundController, export const withSoundEffects
+
+  [34mcomponents/ui/PositionedModal.tsx[0m
+    - Mixed Exports - export const PositionedModal, export const PokemonSelectorModal, export const PackOpeningModal
+
+  [34mcomponents/ui/PremiumComponents.tsx[0m
+    - Mixed Exports - export const GlassCard, export const PremiumButton, export const FloatingActionButton, export const GlassNavbar, export const PremiumModal, export const PremiumSkeleton, export const PremiumBadge, export const PremiumInput, export const PremiumProgress
+
+  [34mcomponents/ui/PriceIndicator.tsx[0m
+    - Mixed Exports - export function CompactPriceIndicator, export function SimplePriceDisplay
+
+  [34mcomponents/ui/PrintableCardLists.tsx[0m
+    - Mixed Exports - export
+  const handlePDFExport
+
+  [34mcomponents/ui/SkeletonLoader.tsx[0m
+    - Mixed Exports - export const Skeleton, export const CardSkeleton, export const CardGridSkeleton, export const SearchSkeleton, export const ListItemSkeleton, export const TableSkeleton, export const PageSkeleton, export const ChartSkeleton, export const SmartSkeleton
+
+  [34mcomponents/ui/StandardCard.tsx[0m
+    - Mixed Exports - export const CardHeader, export const CardTitle, export const CardDescription, export const CardContent, export const CardFooter
+
+  [34mcomponents/ui/TypeBadge.tsx[0m
+    - Mixed Exports - export function TypeBadge, export function TypeBadgeSelector, export const TypeBadgeWithIcon
+
+  [34mcomponents/ui/TypeEffectivenessBadge.tsx[0m
+    - Mixed Exports - export function TypeEffectivenessBadge
+
+  [34mcomponents/ui/VirtualizedList.tsx[0m
+    - Mixed Exports - export const MemoizedVirtualizedList, export const MemoizedVirtualizedGrid
+
+  [34mcomponents/ui/animations/AnimationSystem.tsx[0m
+    - Mixed Exports - export const PageTransition, export const StaggerContainer, export const StaggerItem, export const HoverCard, export const FloatingElement, export const RevealElement, export const PulseElement, export const LoadingDots, export const ModalAnimation, export const PressableButton
+
+  [34mcomponents/ui/animations/animations.tsx[0m
+    - Mixed Exports - export const FadeIn, export const SlideUp, export const Scale, export const CardHover, export const Pulse, export const Bounce, export const StaggeredChildren
+
+  [34mcomponents/ui/cards/FlippableTCGCard.tsx[0m
+    - Mixed Exports - export const FlippableTCGCard
+
+  [34mcomponents/ui/design-system/CircularCard.tsx[0m
+    - Mixed Exports - export const CircularCard
+
+  [34mcomponents/ui/design-system/GlassContainer.tsx[0m
+    - Mixed Exports - export const GlassContainer
+
+  [34mcomponents/ui/design-system/GradientButton.tsx[0m
+    - Mixed Exports - export const GradientButton
+
+  [34mcomponents/ui/design-system/TypeGradientBadge.tsx[0m
+    - Mixed Exports - export const TypeGradientBadge
+
+  [34mcomponents/ui/forms/TypeFilter.tsx[0m
+    - Mixed Exports - export function TypeFilter
+[32m
+📝 LOW PRIORITY (Utility files):[0m
+
+  [34mcomponents/ui/AdvancedLoadingStates.hooks.ts[0m
+    - Unnecessary React Import
+
+  [34mcomponents/ui/AdvancedModalSystem.hooks.ts[0m
+    - Unnecessary React Import
+
+  [34mhooks/useAccessibility.ts[0m
+    - Unnecessary React Import
+
+  [34mhooks/useAnimations.ts[0m
+    - Unnecessary React Import
+
+  [34mhooks/useDebounce.ts[0m
+    - Unnecessary React Import
+
+  [34mhooks/useDragDrop.ts[0m
+    - Unnecessary React Import
+
+  [34mhooks/useKeyboardNavigation.ts[0m
+    - Unnecessary React Import
+
+  [34mhooks/useNotifications.ts[0m
+    - Unnecessary React Import
+
+  [34mhooks/usePWA.ts[0m
+    - Unnecessary React Import
+
+  [34mhooks/useScrollVisibility.ts[0m
+    - Unnecessary React Import
+
+  [34mhooks/useSearchHistory.ts[0m
+    - Unnecessary React Import
+
+  [34mhooks/useSmartNotifications.ts[0m
+    - Unnecessary React Import
+
+  [34mutils/animationVariants.ts[0m
+    - Unnecessary React Import
+
+  [34mutils/fetchGymLeaderData.ts[0m
+    - Unnecessary React Import
+
+  [34mutils/notificationTypes.ts[0m
+    - Unnecessary React Import
+
+  [34mutils/pokemonTypeColors.ts[0m
+    - Unnecessary React Import
+
+[34m═══════════════════════════════════════════[0m
+Summary by violation type:
+  Conditional Hook: [33m368[0m
+  Mixed Exports: [33m70[0m
+  Nested Component: [33m13[0m
+  Unnecessary React Import: [33m22[0m
+
+Total violations: [36m473[0m
+
+Detailed report saved to: [32m/Users/moazzam/GitHub/Mappy/DexTrends/fast-refresh-report-improved.json[0m
+
+Scan completed in 5873ms

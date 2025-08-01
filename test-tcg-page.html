@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TCG Set Detail Page Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 10px; border: 1px solid #ddd; }
+        .pass { color: green; }
+        .fail { color: red; }
+        .info { color: blue; }
+    </style>
+</head>
+<body>
+    <h1>TCG Set Detail Page Test</h1>
+    <p>Open this page after navigating to your TCG set detail page (e.g., http://localhost:3002/tcgsets/sv5)</p>
+    
+    <button onclick="runTests()">Run Tests</button>
+    
+    <div id="results"></div>
+    
+    <script>
+        function runTests() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<h2>Test Results:</h2>';
+            
+            // Test 1: Page Structure
+            addResult('Page Structure Test', () => {
+                const tests = {
+                    'Set Header': !!document.querySelector('h1'),
+                    'Statistics Section': document.querySelectorAll('[class*="statistic"]').length > 0,
+                    'Card Grid': document.querySelectorAll('[class*="grid"]').length > 0,
+                    'Search Input': !!document.querySelector('input[type="text"]')
+                };
+                return tests;
+            });
+            
+            // Test 2: Rarity Symbols
+            addResult('Rarity Symbols Test', () => {
+                const symbols = document.querySelectorAll('img[src*="TCG-rarity"]');
+                return {
+                    'Rarity symbols found': symbols.length + ' symbols',
+                    'Symbols loading': symbols.length > 0
+                };
+            });
+            
+            // Test 3: Cards Display
+            addResult('Cards Display Test', () => {
+                const cards = document.querySelectorAll('img[class*="card"], img[alt*="card"]');
+                return {
+                    'Cards found': cards.length + ' cards',
+                    'Cards visible': cards.length > 0
+                };
+            });
+            
+            // Test 4: Interactive Elements
+            addResult('Interactive Elements Test', () => {
+                return {
+                    'Clickable cards': document.querySelectorAll('[class*="cursor-pointer"]').length,
+                    'Filter buttons': document.querySelectorAll('button').length,
+                    'Search functionality': !!document.querySelector('input')
+                };
+            });
+            
+            // Test 5: Performance
+            addResult('Performance Test', () => {
+                const perf = performance.getEntriesByType('navigation')[0];
+                return {
+                    'Page load time': Math.round(perf.loadEventEnd) + 'ms',
+                    'DOM ready time': Math.round(perf.domContentLoadedEventEnd) + 'ms'
+                };
+            });
+        }
+        
+        function addResult(testName, testFn) {
+            const results = document.getElementById('results');
+            const section = document.createElement('div');
+            section.className = 'test-section';
+            
+            try {
+                const testResults = testFn();
+                let html = '<h3>' + testName + '</h3>';
+                
+                for (const [key, value] of Object.entries(testResults)) {
+                    const passed = value === true || (typeof value === 'string' && !value.includes('0'));
+                    const className = passed ? 'pass' : (value === false ? 'fail' : 'info');
+                    html += '<p class="' + className + '">• ' + key + ': ' + value + '</p>';
+                }
+                
+                section.innerHTML = html;
+            } catch (error) {
+                section.innerHTML = '<h3>' + testName + '</h3><p class="fail">Error: ' + error.message + '</p>';
+            }
+            
+            results.appendChild(section);
+        }
+    </script>
+</body>
+</html>
