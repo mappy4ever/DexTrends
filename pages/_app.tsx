@@ -26,6 +26,13 @@ import GlobalErrorHandler from '../components/GlobalErrorHandler';
 import { PWAProvider } from '../components/pwa/PWAProvider';
 import { pageVariants, defaultTransition, getRouteTransition, prefersReducedMotion } from '../utils/pageTransitions';
 
+// Initialize cache warming on server startup
+if (typeof window === 'undefined') {
+  import('../lib/initialize-cache-warming').catch(err => {
+    logger.error('[App] Failed to initialize cache warming:', err);
+  });
+}
+
 // Import critical providers directly to avoid context errors
 import { NotificationProvider } from '../components/qol/NotificationSystem';
 import { ContextualHelpProvider } from '../components/qol/ContextualHelp';
@@ -40,12 +47,12 @@ import { initializeFeatureFlags, isFeatureEnabled } from '../utils/featureFlags'
 
 // Create stable references for dynamic imports to improve Fast Refresh
 const dynamicImports = {
-  SimpleBackToTop: () => import('../components/ui/SimpleBackToTop'),
-  AccessibilityProvider: () => import('../components/ui/AccessibilityProvider'),
-  KeyboardShortcutsManager: () => import('../components/qol/KeyboardShortcuts'),
-  PushNotifications: () => import('../components/mobile/PushNotifications'),
-  GlobalSearchShortcuts: () => import('../components/qol/GlobalSearchShortcuts'),
-  PreferencesManager: () => import('../components/qol/PreferencesManager'),
+  SimpleBackToTop: () => import('../components/ui/SimpleBackToTop').catch(() => ({ default: () => null })),
+  AccessibilityProvider: () => import('../components/ui/AccessibilityProvider').catch(() => ({ default: ({ children }: any) => children })),
+  KeyboardShortcutsManager: () => import('../components/qol/KeyboardShortcuts').catch(() => ({ default: () => null })),
+  PushNotifications: () => import('../components/mobile/PushNotifications').catch(() => ({ default: () => null })),
+  GlobalSearchShortcuts: () => import('../components/qol/GlobalSearchShortcuts').catch(() => ({ default: () => null })),
+  PreferencesManager: () => import('../components/qol/PreferencesManager').catch(() => ({ default: () => null })),
 };
 
 // Safe components - only load confirmed existing ones
@@ -83,6 +90,24 @@ const PreferencesManager = dynamic(dynamicImports.PreferencesManager, {
   ssr: false,
   loading: () => null
 });
+
+// Test Supabase connection on app start (development only)
+// COMMENTED OUT: This was causing app startup to hang at "ready"
+/*
+if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
+  import('@/utils/supabase').then(({ testSupabaseConnection }) => {
+    testSupabaseConnection().then(result => {
+      if (result.success) {
+        console.log('[App] Supabase connection test:', result.message);
+      } else {
+        console.error('[App] Supabase connection test failed:', result.error);
+      }
+    });
+  }).catch(err => {
+    console.error('[App] Failed to load Supabase test:', err);
+  });
+}
+*/
 
 // Enhanced Page Transition Component
 interface EnhancedPageTransitionProps {

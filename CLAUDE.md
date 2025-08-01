@@ -2,7 +2,13 @@
 
 DexTrends is a Pokemon TCG and Pokedex application built with Next.js 15.3.1 and TypeScript.
 
-## 🚨 CRITICAL: Prevent Duplicates
+## UI/UX Guidelines
+- **NO EMOJIS** - Never use emojis in code, UI, or user-facing text
+- Use text labels, abbreviations, or SVG icons instead
+- For status indicators use: "PHY", "SPE", "STA" not emoji icons
+- For data display use: "Power: 90" not emoji symbols
+
+## CRITICAL: Prevent Duplicates
 Before creating ANY new file or function:
 1. **ALWAYS search first** - Use Grep/LS to check if functionality exists
 2. **Reuse over recreate** - Extend existing code instead of creating new files

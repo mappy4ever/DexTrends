@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { fetchJSON } from '../../../utils/unifiedFetch';
 import logger from '../../../utils/logger';
+import { tcgCache } from '../../../lib/tcg-cache';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { setId, page = '1', pageSize = '100' } = req.query; // Reduced to 100 for better reliability
@@ -17,6 +18,47 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     logger.info('Fetching TCG set details', { setId: id, page: pageNum, pageSize: pageSizeNum });
+    
+    // First, check if we have the complete set cached (best performance)
+    if (pageNum === 1) {
+      const completeSet = await tcgCache.getCompleteSet(id);
+      if (completeSet) {
+        logger.info('Returning complete cached set', {
+          setId: id,
+          cardCount: completeSet.cards.length,
+          cachedAt: completeSet.cachedAt
+        });
+        
+        // Return paginated subset from complete cache
+        const startIdx = (pageNum - 1) * pageSizeNum;
+        const endIdx = startIdx + pageSizeNum;
+        const paginatedCards = completeSet.cards.slice(startIdx, endIdx);
+        
+        res.setHeader('X-Cache-Status', 'hit-complete');
+        res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+        
+        return res.status(200).json({
+          set: completeSet.set,
+          cards: paginatedCards,
+          pagination: {
+            page: pageNum,
+            pageSize: pageSizeNum,
+            count: paginatedCards.length,
+            totalCount: completeSet.cards.length,
+            hasMore: endIdx < completeSet.cards.length
+          }
+        });
+      }
+    }
+    
+    // Check page-specific cache
+    const cachedPage = await tcgCache.getSetWithCards(id, pageNum, pageSizeNum);
+    if (cachedPage) {
+      logger.info('Returning cached page', { setId: id, page: pageNum });
+      res.setHeader('X-Cache-Status', 'hit-page');
+      res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+      return res.status(200).json(cachedPage);
+    }
     
     const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
     const headers: Record<string, string> = {
@@ -148,10 +190,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       totalCount: cardsData?.totalCount 
     });
     
-    // Add cache-control headers for better edge caching
-    res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400'); // 1hr cache, 24hr stale
-    
-    // Log what we're sending back
+    // Prepare response
     const response = { 
       set, 
       cards,
@@ -163,6 +202,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         hasMore: (cardsData?.count || cards.length) === pageSizeNum
       }
     };
+    
+    // Cache the response asynchronously
+    tcgCache.cacheSetWithCards(id, pageNum, pageSizeNum, response).catch(err => {
+      logger.error('Failed to cache set details', { error: err, setId: id });
+    });
+    
+    // If this is page 1 and we potentially have all cards, check if we should cache complete set
+    if (pageNum === 1 && cardsData?.totalCount && cards.length === cardsData.totalCount) {
+      logger.info('Caching complete set', { setId: id, cardCount: cards.length });
+      tcgCache.cacheCompleteSet(id, set, cards).catch(err => {
+        logger.error('Failed to cache complete set', { error: err, setId: id });
+      });
+    }
+    
+    // Add cache-control headers for better edge caching
+    res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400'); // 1hr cache, 24hr stale
+    res.setHeader('X-Cache-Status', 'miss');
     
     logger.info('Sending response', {
       setId: id,

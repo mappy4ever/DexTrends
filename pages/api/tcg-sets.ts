@@ -1,6 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { fetchJSON } from '../../utils/unifiedFetch';
 import logger from '../../utils/logger';
+import { tcgCache } from '../../lib/tcg-cache';
+import { createFallbackResponse } from '../../lib/static-sets-fallback';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const startTime = Date.now();
@@ -11,6 +13,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
   
   try {
+    // Check Redis cache first (unless force refresh)
+    if (!shouldForceRefresh) {
+      const cached = await tcgCache.getSetsList(pageNum, pageSizeNum);
+      if (cached) {
+        logger.info('Returning cached TCG sets', {
+          page: pageNum,
+          pageSize: pageSizeNum,
+          responseTime: Date.now() - startTime
+        });
+        
+        res.setHeader('X-Cache-Status', 'hit');
+        res.setHeader('X-Response-Time', `${Date.now() - startTime}ms`);
+        res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+        
+        return res.status(200).json(cached);
+      }
+    }
+
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
     };
@@ -29,26 +49,51 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       hasApiKey: !!apiKey
     });
     
-    const data = await fetchJSON<{ data: any[], page?: number, pageSize?: number, count?: number, totalCount?: number }>(apiUrl, { 
-      headers,
-      useCache: true,
-      cacheTime: 30 * 60 * 1000, // Cache for 30 minutes
-      forceRefresh: pageNum === 1 && shouldForceRefresh,
-      timeout: 60000, // 60 seconds timeout
-      retries: 3,
-      retryDelay: 2000, // 2 second delay between retries
-      throwOnError: false // Don't throw, we'll handle errors
-    });
-    
-    // Extra validation
-    if (!data) {
-      logger.error('fetchJSON returned null', { url: apiUrl });
-      throw new Error('No data returned from API - fetchJSON returned null. This usually means the API request failed.');
+    // Try API with aggressive timeout - if it's slow, fall back immediately
+    let data;
+    try {
+      data = await fetchJSON<{ data: any[], page?: number, pageSize?: number, count?: number, totalCount?: number }>(apiUrl, { 
+        headers,
+        useCache: true,
+        cacheTime: 30 * 60 * 1000, // Cache for 30 minutes
+        forceRefresh: pageNum === 1 && shouldForceRefresh,
+        timeout: 15000, // Reduced to 15 seconds - if it's slower than this, use fallback
+        retries: 1, // Only 1 retry to avoid long waits
+        retryDelay: 1000,
+        throwOnError: false
+      });
+    } catch (apiError: any) {
+      logger.warn('Pokemon TCG API slow/unavailable, using fallback', { 
+        error: apiError.message,
+        duration: Date.now() - startTime
+      });
+      
+      // Return static fallback immediately
+      const fallback = createFallbackResponse(pageNum, pageSizeNum);
+      
+      res.setHeader('X-Cache-Status', 'fallback');
+      res.setHeader('X-Response-Time', `${Date.now() - startTime}ms`);
+      res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400'); // Shorter cache for fallback
+      
+      return res.status(200).json(fallback);
     }
     
-    if (!data.data) {
-      logger.error('API response missing data array', { response: data });
-      throw new Error('API response is missing the data array');
+    // Extra validation - if API fails, use fallback
+    if (!data || !data.data) {
+      logger.warn('API returned invalid data, using fallback', { 
+        hasData: !!data,
+        hasDataArray: !!data?.data,
+        url: apiUrl
+      });
+      
+      // Return static fallback immediately
+      const fallback = createFallbackResponse(pageNum, pageSizeNum);
+      
+      res.setHeader('X-Cache-Status', 'fallback-invalid-data');
+      res.setHeader('X-Response-Time', `${Date.now() - startTime}ms`);
+      res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+      
+      return res.status(200).json(fallback);
     }
     
     const sets = data?.data || [];
@@ -80,7 +125,57 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
     
     // Add cache-control headers for better edge caching
-    res.setHeader('Cache-Control', 'public, s-maxage=21600, stale-while-revalidate=86400'); // 6hr cache, 24hr stale
+    // Cache the response in Redis
+    const response = {
+      data: sets,
+      pagination: {
+        page: pageNum,
+        pageSize: pageSizeNum,
+        count: data?.count || sets.length,
+        totalCount: data?.totalCount || sets.length,
+        hasMore: (data?.count || sets.length) === pageSizeNum
+      },
+      meta: {
+        responseTime: Date.now() - startTime,
+        cached: false
+      }
+    };
+    
+    // Cache the response asynchronously
+    tcgCache.cacheSetsList(pageNum, pageSizeNum, response).catch(err => {
+      logger.error('Failed to cache TCG sets', { error: err });
+    });
+    
+    // Background task: Pre-warm commonly requested pages  
+    if (pageNum === 1 && pageSizeNum === 25) {
+      // Fire and forget - warm the next few pages in background
+      setImmediate(async () => {
+        try {
+          const pagesToWarm = [
+            { page: 2, pageSize: 25 },
+            { page: 1, pageSize: 50 },
+            { page: 3, pageSize: 25 }
+          ];
+          
+          for (const { page, pageSize } of pagesToWarm) {
+            const existing = await tcgCache.getSetsList(page, pageSize);
+            if (!existing) {
+              logger.info(`[Background] Pre-warming sets list page ${page}:${pageSize}`);
+              // Don't await - fire and forget
+              tcgCache.warmSetsListCache().catch(err => 
+                logger.debug('[Background] Sets warming failed:', err)
+              );
+              break; // Only warm one at a time to avoid overwhelming
+            }
+          }
+        } catch (error) {
+          logger.debug('[Background] Pre-warming failed:', error);
+        }
+      });
+    }
+    
+    res.setHeader('Cache-Control', 'public, s-maxage=604800, stale-while-revalidate=2592000'); // 7 day cache, 30 day stale
+    res.setHeader('X-Cache-Status', 'miss');
     
     // Add performance headers
     const responseTime = Date.now() - startTime;
@@ -96,20 +191,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
     }
     
-    res.status(200).json({
-      data: sets,
-      pagination: {
-        page: pageNum,
-        pageSize: pageSizeNum,
-        count: data?.count || sets.length,
-        totalCount: data?.totalCount || sets.length,
-        hasMore: (data?.count || sets.length) === pageSizeNum
-      },
-      meta: {
-        responseTime,
-        cached: false // This would need to be determined from fetchJSON
-      }
-    });
+    res.status(200).json(response);
   } catch (error: any) {
     logger.error('Failed to fetch TCG sets', { 
       error: error.message,
@@ -118,34 +200,43 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       apiKey: !!apiKey
     });
     
-    // Try to return cached data if available
-    try {
-      const fallbackUrl = `https://api.pokemontcg.io/v2/sets?page=${pageNum}&pageSize=${pageSizeNum}&orderBy=-releaseDate`;
-      const cacheKey = `fetch-${fallbackUrl}`;
-      const cachedData = await (global as any).cacheManager?.get(cacheKey);
+    // Try to return stale cache first
+    const staleCache = await tcgCache.getSetsList(pageNum, pageSizeNum);
+    if (staleCache) {
+      logger.warn('Returning stale cached sets due to API error', {
+        page: pageNum,
+        pageSize: pageSizeNum,
+        error: error.message
+      });
       
-      if (cachedData) {
-        logger.warn('Returning stale cached data due to API error', {
-          page: pageNum,
-          error: error.message
-        });
-        
-        res.setHeader('X-Cache-Status', 'stale');
-        res.setHeader('X-Error', error.message);
-        
-        return res.status(200).json({
-          ...cachedData,
-          _stale: true,
-          _error: error.message
-        });
-      }
-    } catch (cacheError) {
-      logger.error('Failed to retrieve cached data', { error: cacheError });
+      res.setHeader('X-Cache-Status', 'stale-fallback');
+      res.setHeader('X-Response-Time', `${Date.now() - startTime}ms`);
+      res.setHeader('X-Error', error.message);
+      res.setHeader('Cache-Control', 'public, s-maxage=1800, stale-while-revalidate=172800');
+      
+      return res.status(200).json({
+        ...staleCache,
+        warning: 'Data may be outdated due to API issues'
+      });
     }
     
-    res.status(500).json({ 
-      error: 'Failed to fetch TCG sets',
-      message: error.message 
+    // If no stale cache, use static fallback as last resort
+    logger.warn('No stale cache available, using static fallback', {
+      page: pageNum,
+      pageSize: pageSizeNum,
+      error: error.message
+    });
+    
+    const fallback = createFallbackResponse(pageNum, pageSizeNum);
+    
+    res.setHeader('X-Cache-Status', 'static-fallback');
+    res.setHeader('X-Response-Time', `${Date.now() - startTime}ms`);
+    res.setHeader('X-Error', error.message);
+    res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+    
+    return res.status(200).json({
+      ...fallback,
+      warning: 'Using fallback data due to API unavailability'
     });
   }
 }

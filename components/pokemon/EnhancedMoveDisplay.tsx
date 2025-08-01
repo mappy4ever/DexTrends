@@ -3,6 +3,7 @@ import { useMoveData } from '@/hooks/useMoveData';
 import { MoveCompetitiveDataRecord } from '@/utils/supabase';
 import { cn } from '@/utils/cn';
 import { typeColors } from '@/utils/pokemonTypeColors';
+import { CategoryIcon } from '@/components/ui/CategoryIcon';
 
 interface EnhancedMoveDisplayProps {
   moveName: string;
@@ -27,9 +28,31 @@ export const EnhancedMoveDisplay: React.FC<EnhancedMoveDisplayProps> = ({ moveNa
 
   if (isLoading) {
     return (
-      <div className={cn("animate-pulse bg-gray-700 rounded-lg p-3", className)}>
-        <div className="h-4 bg-gray-600 rounded w-1/3 mb-2"></div>
-        <div className="h-3 bg-gray-600 rounded w-full"></div>
+      <div className={cn("animate-pulse rounded-lg p-4 space-y-3 bg-gray-800 dark:bg-gray-800", className)}>
+        {/* Header skeleton */}
+        <div className="flex items-center justify-between">
+          <div className="h-5 bg-gray-700 dark:bg-gray-700 rounded w-1/3"></div>
+          <div className="flex gap-2">
+            <div className="h-6 bg-gray-700 dark:bg-gray-700 rounded-full w-16"></div>
+            <div className="h-6 bg-gray-700 dark:bg-gray-700 rounded w-6"></div>
+          </div>
+        </div>
+        
+        {/* Stats grid skeleton */}
+        <div className="grid grid-cols-3 gap-2">
+          {[1, 2, 3].map(i => (
+            <div key={i} className="text-center space-y-1">
+              <div className="h-3 bg-gray-700 dark:bg-gray-700 rounded w-16 mx-auto"></div>
+              <div className="h-4 bg-gray-700 dark:bg-gray-700 rounded w-12 mx-auto"></div>
+            </div>
+          ))}
+        </div>
+        
+        {/* Description skeleton */}
+        <div className="space-y-1">
+          <div className="h-3 bg-gray-700 dark:bg-gray-700 rounded w-full"></div>
+          <div className="h-3 bg-gray-700 dark:bg-gray-700 rounded w-4/5"></div>
+        </div>
       </div>
     );
   }
@@ -45,11 +68,6 @@ export const EnhancedMoveDisplay: React.FC<EnhancedMoveDisplayProps> = ({ moveNa
   }
 
   const typeColor = moveData.type ? typeColors[moveData.type.toLowerCase()]?.bg : 'bg-gray-600';
-  const categoryIcon = {
-    physical: '💪',
-    special: '✨',
-    status: '📊'
-  }[moveData.category || 'status'];
 
   return (
     <div 
@@ -65,9 +83,7 @@ export const EnhancedMoveDisplay: React.FC<EnhancedMoveDisplayProps> = ({ moveNa
           <span className={cn("px-2 py-1 rounded text-xs font-medium text-white", typeColor)}>
             {moveData.type?.toUpperCase()}
           </span>
-          <span className="text-lg" title={moveData.category || 'status'}>
-            {categoryIcon}
-          </span>
+          <CategoryIcon category={moveData.category} size={16} />
         </div>
       </div>
 

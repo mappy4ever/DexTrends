@@ -8,6 +8,11 @@ type RarityType = string | null | undefined;
  * Determine the holographic effect class based on card rarity
  */
 export function getHolographicEffect(rarity: RarityType): string {
+  // DISABLED - Now using HolographicCard component for holographic effects
+  // Keeping the function to prevent breaking existing code
+  return '';
+  
+  /* ORIGINAL CODE - KEPT FOR REFERENCE
   if (!rarity) return '';
   
   const normalizedRarity = rarity.toLowerCase();
@@ -39,6 +44,7 @@ export function getHolographicEffect(rarity: RarityType): string {
   
   // Common/Uncommon cards get standard effects
   return 'card-holographic';
+  */
 }
 
 /**

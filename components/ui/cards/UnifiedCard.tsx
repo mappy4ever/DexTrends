@@ -8,7 +8,7 @@ import { TypeBadge } from "../TypeBadge";
 import { CompactPriceIndicator } from "../PriceIndicator";
 import { isFeatureEnabled } from "../../../utils/featureFlags";
 import performanceMonitor from "../../../utils/performanceMonitor";
-import { useSmartMemo, useSmartCallback, withOptimizations } from "../../../utils/reactOptimizations";
+// import { useSmartMemo, useSmartCallback, withOptimizations } from "../../../utils/reactOptimizations";
 import { getPrice } from "../../../utils/pokemonutils";
 import OptimizedImage from "../OptimizedImage";
 import { useFavorites } from "../../../context/UnifiedAppContext";
@@ -28,6 +28,8 @@ const getHolographicRarities = () => [
 ];
 
 // Check if card should have holographic effects (illustration rare and above)
+// KEPT FOR FUTURE USE - Currently disabled in favor of HolographicCard component
+/*
 const shouldHaveHolographicEffect = (rarity: string | undefined): boolean => {
   if (!rarity) return false;
   const holoRarities = getHolographicRarities();
@@ -44,6 +46,7 @@ const getHolographicEffect = (rarity: string | undefined): string => {
   if (!shouldHaveHolographicEffect(rarity)) return '';
   return 'card-holographic-optimized';
 };
+*/
 
 // Get rarity glow effect - optimized for performance
 const getRarityGlowClass = (rarity: string | undefined): string => {
@@ -324,7 +327,7 @@ const UnifiedCard = memo(({
   const [isDragging, setIsDragging] = useState(false);
   
   // Optimized card data normalization with performance monitoring
-  const normalizedCard = useSmartMemo(() => {
+  const normalizedCard = useMemo(() => {
     const startTime = Date.now();
     let normalizedData;
     
@@ -401,14 +404,11 @@ const UnifiedCard = memo(({
     }
     
     return normalizedData;
-  }, [card.id, card.name, card.image, card.images, cardType, card.pack, card.rarity], {
-    enableProfiling: true,
-    maxComputationTime: 10
-  });
+  }, [card.id, card.name, card.image, card.images, cardType, card.pack, card.rarity]);
 
   // Memoized visual effects to prevent recalculation
   const visualEffects = useMemo(() => ({
-    holographicClass: getHolographicEffect(normalizedCard.rarity),
+    // holographicClass: getHolographicEffect(normalizedCard.rarity), // Disabled - using HolographicCard component instead
     glowClass: getRarityGlowClass(normalizedCard.rarity)
   }), [normalizedCard.rarity]);
 
@@ -430,7 +430,7 @@ const UnifiedCard = memo(({
   // Image error handling state
   const [imageError, setImageError] = useState(false);
 
-  // Optimized event handlers with useSmartCallback
+  // Optimized event handlers with useCallback
   const handleCardClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     // Prevent default to ensure our navigation works
     e.preventDefault();
@@ -558,9 +558,8 @@ const UnifiedCard = memo(({
           rounded-lg overflow-hidden 
           shadow-sm 
           ${cardType === "pocket" ? "pocket-card" : cardType === "tcg" ? "tcg-card" : "unified-card"}
-          ${shouldHaveHolographicEffect(normalizedCard.rarity) ? "rare-card" : ""}
           cursor-pointer group relative
-          ${visualEffects.holographicClass} ${visualEffects.glowClass}
+          ${visualEffects.glowClass}
           ${cardType === "pocket" ? "mx-auto" : ""}
         `}
         onClick={handleCardClick}
@@ -583,17 +582,18 @@ const UnifiedCard = memo(({
           }}
         />
 
-        {/* Simplified holographic effect for performance */}
+        {/* Holographic effects disabled - now using HolographicCard component wrapper for effects */}
+        {/* Kept for reference:
         {shouldHaveHolographicEffect(normalizedCard.rarity) && cardType !== "pocket" && (
           <div className="card-holographic-optimized" />
         )}
         
-        {/* Subtle glow for rare Pocket cards only */}
         {shouldHaveHolographicEffect(normalizedCard.rarity) && cardType === "pocket" && (
           <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-50 transition-opacity duration-300">
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
           </div>
         )}
+        */}
 
         {/* Magnify button overlay */}
         {onMagnifyClick && (
@@ -771,11 +771,5 @@ const UnifiedCard = memo(({
 
 UnifiedCard.displayName = 'UnifiedCard';
 
-// Apply optimizations to the component
-const OptimizedUnifiedCard = withOptimizations(UnifiedCard, {
-  enableMemo: true,
-  enableProfiling: process.env.NODE_ENV === 'development',
-  enableSuggestions: process.env.NODE_ENV === 'development'
-});
-
-export default OptimizedUnifiedCard;
+// Temporarily disable optimizations to fix import issues
+export default UnifiedCard;

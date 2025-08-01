@@ -4,11 +4,25 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables');
+let supabase: any = null;
+
+try {
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.warn('[Supabase] Missing environment variables');
+    console.warn('[Supabase] URL:', supabaseUrl ? 'Present' : 'Missing');
+    console.warn('[Supabase] Key:', supabaseAnonKey ? 'Present' : 'Missing');
+    supabase = null;
+  } else {
+    supabase = createClient(supabaseUrl, supabaseAnonKey);
+    console.log('[Supabase] Client initialized successfully');
+    console.log('[Supabase] URL:', supabaseUrl);
+  }
+} catch (error) {
+  console.error('[Supabase] Failed to initialize client:', error);
+  supabase = null;
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export { supabase };
 
 // Type definitions for Showdown integration tables
 export interface TypeEffectivenessRecord {
@@ -71,6 +85,11 @@ export interface AbilityRatingRecord {
 // Helper functions for common queries
 export const showdownQueries = {
   async getTypeEffectiveness(attackingType: string, defendingType: string) {
+    if (!supabase) {
+      console.error('[Showdown] Supabase client not initialized');
+      return 1; // Default multiplier
+    }
+    
     const { data, error } = await supabase
       .from('type_effectiveness')
       .select('multiplier')
@@ -87,6 +106,11 @@ export const showdownQueries = {
   },
 
   async getPokemonTiers(pokemonName: string) {
+    if (!supabase) {
+      console.error('[Showdown] Supabase client not initialized');
+      return null;
+    }
+    
     const { data, error } = await supabase
       .from('competitive_tiers')
       .select('*')
@@ -101,6 +125,11 @@ export const showdownQueries = {
   },
 
   async getPokemonLearnset(pokemonId: string, generation?: number, learnMethod?: string) {
+    if (!supabase) {
+      console.error('[Showdown] Supabase client not initialized');
+      return [];
+    }
+    
     let query = supabase
       .from('pokemon_learnsets')
       .select('*')
@@ -126,6 +155,11 @@ export const showdownQueries = {
   },
 
   async getAllTypeChart() {
+    if (!supabase) {
+      console.error('[Showdown] Supabase client not initialized');
+      return null;
+    }
+    
     const { data, error } = await supabase
       .from('type_effectiveness')
       .select('*');
@@ -149,6 +183,11 @@ export const showdownQueries = {
   },
 
   async getMoveData(moveName: string) {
+    if (!supabase) {
+      console.error('[Showdown] Supabase client not initialized');
+      return null;
+    }
+    
     const { data, error } = await supabase
       .from('move_competitive_data')
       .select('*')
@@ -207,6 +246,29 @@ export const showdownQueries = {
     return data || [];
   }
 };
+
+// Test Supabase connection
+export async function testSupabaseConnection() {
+  if (!supabase) {
+    return { success: false, error: 'Supabase client not initialized' };
+  }
+  
+  try {
+    // Test by checking if we can query the type_effectiveness table
+    const { data, error } = await supabase
+      .from('type_effectiveness')
+      .select('count')
+      .limit(1);
+    
+    if (error) {
+      return { success: false, error: error.message };
+    }
+    
+    return { success: true, message: 'Supabase connection successful' };
+  } catch (err) {
+    return { success: false, error: err instanceof Error ? err.message : 'Unknown error' };
+  }
+}
 
 // Export everything
 export default supabase;

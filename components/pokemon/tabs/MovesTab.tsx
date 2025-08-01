@@ -10,6 +10,15 @@ interface MovesTabProps {
 }
 
 const MovesTab: React.FC<MovesTabProps> = ({ pokemon, species, typeColors }) => {
+  // Validate pokemon data
+  if (!pokemon || !pokemon.name) {
+    return (
+      <div className="text-center py-8 text-red-500">
+        Pokemon data not available
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6" data-testid="pokemon-moves">
       {/* Header Card */}

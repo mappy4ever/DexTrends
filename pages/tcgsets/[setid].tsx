@@ -10,6 +10,7 @@ import { GlassContainer } from "../../components/ui/design-system/GlassContainer
 import { GradientButton } from "../../components/ui/design-system/GradientButton";
 import Modal from "../../components/ui/modals/Modal";
 import CardList from "../../components/CardList";
+import HolographicCard from "../../components/ui/HolographicCard";
 import { useTheme } from "../../context/UnifiedAppContext";
 import { useFavorites } from "../../context/UnifiedAppContext";
 import { useViewSettings } from "../../context/UnifiedAppContext";
@@ -96,18 +97,19 @@ const SetIdPage: NextPage = () => {
         }
         
         // Calculate value by rarity
-        if (card.tcgplayer?.prices) {
-          const prices = Object.values(card.tcgplayer.prices);
-          let highestPrice = 0;
-          
-          prices.forEach((priceData: any) => {
-            if (priceData && typeof priceData === 'object') {
-              const marketPrice = priceData.market || priceData.mid || 0;
-              if (marketPrice > highestPrice) {
-                highestPrice = marketPrice;
+        if (card.tcgplayer?.prices && typeof card.tcgplayer.prices === 'object') {
+          try {
+            const prices = Object.values(card.tcgplayer.prices);
+            let highestPrice = 0;
+            
+            prices.forEach((priceData: any) => {
+              if (priceData && typeof priceData === 'object') {
+                const marketPrice = priceData.market || priceData.mid || 0;
+                if (marketPrice > highestPrice) {
+                  highestPrice = marketPrice;
+                }
               }
-            }
-          });
+            });
           
           if (highestPrice > 0 && card.rarity) {
             if (!rarityValue[card.rarity]) {
@@ -117,6 +119,9 @@ const SetIdPage: NextPage = () => {
             rarityValue[card.rarity].count += 1;
             
             valuedCards.push({ ...card, marketPrice: highestPrice } as CardWithMarketPrice);
+          }
+          } catch (error) {
+            logger.warn('Error processing card prices:', { cardId: card.id, error });
           }
         }
       });
@@ -167,30 +172,30 @@ const SetIdPage: NextPage = () => {
       performanceMonitor.startTimer('page-load', `tcg-set-page-${setid}`);
       
       try {
-        // Load first page of cards - API limit is 50
-        const url = `/api/tcg-sets/${setid}?page=1&pageSize=50`;
+        // Use new complete endpoint for better performance
+        const url = `/api/tcg-sets/${setid}/complete`;
         
         setLoadingMessage("Loading set information...");
         
         // Add timeout to show additional message if taking too long
         const slowLoadTimeout = setTimeout(() => {
           if (mounted) {
-            setLoadingMessage("Still loading... The Pokemon TCG API is responding slowly. Please wait...");
+            setLoadingMessage("Loading all cards... This may take a moment for large sets.");
           }
-        }, 10000); // Show after 10 seconds
+        }, 5000); // Show after 5 seconds
         
         let data;
         try {
           // Use fetchJSON with proper error handling and abort signal
-          data = await fetchJSON<{ set: any; cards: any[]; pagination: any }>(
+          data = await fetchJSON<{ set: any; cards: any[]; stats?: any; cachedAt?: string }>(
             url,
             {
               signal: abortController.signal,
               useCache: true,
-              cacheTime: 30 * 60 * 1000,
-              retries: 3,
-              retryDelay: 2000,
-              timeout: 60000, // 60 seconds to match backend
+              cacheTime: 60 * 60 * 1000, // 1 hour cache
+              retries: 2,
+              retryDelay: 1000,
+              timeout: 90000, // 90 seconds for complete sets
               throwOnError: true
             }
           );
@@ -198,7 +203,14 @@ const SetIdPage: NextPage = () => {
           // Clear the slow load timeout
           clearTimeout(slowLoadTimeout);
           
-          // Log raw API response for debugging
+          // Log cache status
+          if (data?.cachedAt) {
+            logger.info(`[TCG Set] Loaded from cache`, { 
+              setId: setid, 
+              cachedAt: data.cachedAt,
+              cardCount: data.cards?.length 
+            });
+          }
         } catch (fetchError: any) {
           // Clear the slow load timeout
           clearTimeout(slowLoadTimeout);
@@ -235,78 +247,22 @@ const SetIdPage: NextPage = () => {
         }
         
         if (data?.cards) {
-          
           setCards(data.cards);
           
-          // Store pagination info for later use
-          if (data.pagination) {
-            setPaginationInfo(data.pagination);
-          }
-          
-          // Calculate statistics with first batch of cards
-          calculateSetStatistics(data.cards);
-          
-          // Check if we need to load more cards
-          const needsMoreCards = data.pagination?.hasMore || 
-                                (data.pagination?.totalCount && data.cards.length < data.pagination.totalCount);
-
-
-          if (needsMoreCards && mounted) {
-            // Calculate based on actual page size (50)
-            const actualPageSize = data.cards.length || 50;
-            const totalCards = data.pagination?.totalCount || 0;
-            const totalPages = Math.ceil(totalCards / actualPageSize);
-            
-            
-            let allCards = [...data.cards];
-            let currentPage = 2;
-            
-            // Show loading progress
-            setLoadingMessage(`Loading all ${totalCards} cards...`);
-            
-            // Load remaining pages
-            while (currentPage <= totalPages && mounted) {
-              try {
-                const nextPageUrl = `/api/tcg-sets/${setid}?page=${currentPage}&pageSize=${actualPageSize}`;
-                
-                const nextPageData = await fetchJSON<{ cards: TCGCard[]; pagination: any }>(
-                  nextPageUrl,
-                  {
-                    signal: abortController.signal,
-                    useCache: true,
-                    cacheTime: 30 * 60 * 1000,
-                    retries: 2,
-                    retryDelay: 1000,
-                    timeout: 30000
-                  }
-                );
-                
-                if (nextPageData?.cards?.length) {
-                  allCards = [...allCards, ...nextPageData.cards];
-                  
-                  // Update UI progressively
-                  if (mounted) {
-                    setCards([...allCards]);
-                    setLoadingMessage(`Loaded ${allCards.length} of ${totalCards} cards...`);
-                  }
-                } else {
-                  break;
-                }
-                
-                currentPage++;
-              } catch (pageErr) {
-                console.error(`[TCG Set Debug] Failed to load page ${currentPage}:`, pageErr);
-                // Don't break, try next page
-                currentPage++;
-              }
-            }
-            
-            if (mounted) {
-              calculateSetStatistics(allCards);
-              setLoadingMessage(''); // Clear loading message
-            }
+          // Use pre-calculated stats if available
+          if (data.stats) {
+            setStatistics(data.stats);
           } else {
+            // Calculate statistics if not provided
+            calculateSetStatistics(data.cards);
           }
+          
+          setLoadingMessage(''); // Clear loading message
+          
+          logger.info(`[TCG Set] Successfully loaded ${data.cards.length} cards`, {
+            setId: setid,
+            cached: !!data.cachedAt
+          });
         }
       } catch (err: any) {
         // Ignore abort errors
@@ -466,7 +422,7 @@ const SetIdPage: NextPage = () => {
     );
   }
 
-  const totalValue = Object.values(statistics.valueByRarity).reduce((sum, rarity) => sum + rarity.total, 0);
+  const totalValue = statistics.valueByRarity ? Object.values(statistics.valueByRarity).reduce((sum, rarity) => sum + rarity.total, 0) : 0;
 
   return (
     <FullBleedWrapper gradient="tcg">
@@ -622,12 +578,18 @@ const SetIdPage: NextPage = () => {
                   <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                     {statistics.highestValueCards.slice(0, 5).map((card: any) => (
                       <div key={card.id} className="text-center">
-                        <img 
-                          src={card.images.small} 
-                          alt={card.name}
-                          className="w-full h-auto rounded-lg mb-2 cursor-pointer hover:scale-105 transition-transform"
-                          onClick={() => handleCardClick(card)}
-                        />
+                        <HolographicCard
+                          rarity={card.rarity}
+                          intensity="medium"
+                          className="rounded-lg overflow-hidden mb-2"
+                        >
+                          <img 
+                            src={card.images.small} 
+                            alt={card.name}
+                            className="w-full h-auto cursor-pointer"
+                            onClick={() => handleCardClick(card)}
+                          />
+                        </HolographicCard>
                         <p className="text-sm font-medium truncate">{card.name}</p>
                         <p className="text-sm text-green-600 dark:text-green-400">
                           ${card.marketPrice.toFixed(2)}
