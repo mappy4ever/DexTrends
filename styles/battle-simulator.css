@@ -1,0 +1,428 @@
+/* Battle Simulator Animations and Styles */
+
+/* HP Bar Animations */
+.hp-bar-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.hp-bar {
+  transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+}
+
+.hp-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transform: translateX(-100%);
+  animation: hp-shine 1.5s ease-in-out infinite;
+}
+
+@keyframes hp-shine {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Damage Flash Animation */
+.damage-flash {
+  animation: damage-flash 0.3s ease-out;
+}
+
+@keyframes damage-flash {
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: rgba(255, 0, 0, 0.2);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+/* Critical Hit Animation */
+.critical-hit {
+  animation: critical-shake 0.5s ease-out;
+}
+
+@keyframes critical-shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-2px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(2px);
+  }
+}
+
+/* Status Effect Animations */
+.status-badge {
+  animation: status-appear 0.3s ease-out;
+}
+
+@keyframes status-appear {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Status Effect Specific Animations */
+.status-burn {
+  animation: burn-glow 2s ease-in-out infinite;
+}
+
+@keyframes burn-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(255, 140, 0, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(255, 140, 0, 0.8);
+  }
+}
+
+.status-poison {
+  animation: poison-pulse 2s ease-in-out infinite;
+}
+
+@keyframes poison-pulse {
+  0%, 100% {
+    background-color: rgba(147, 51, 234, 0.1);
+  }
+  50% {
+    background-color: rgba(147, 51, 234, 0.2);
+  }
+}
+
+.status-paralysis {
+  animation: paralysis-spark 3s linear infinite;
+}
+
+@keyframes paralysis-spark {
+  0%, 100% {
+    opacity: 1;
+  }
+  10%, 11%, 40%, 41% {
+    opacity: 0.7;
+  }
+}
+
+.status-sleep::before {
+  content: 'Z';
+  position: absolute;
+  animation: sleep-float 2s ease-in-out infinite;
+  opacity: 0.6;
+  font-size: 1.2em;
+}
+
+@keyframes sleep-float {
+  0% {
+    transform: translate(0, 0) scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(10px, -20px) scale(1.2);
+    opacity: 0;
+  }
+}
+
+/* Move Animation */
+.move-button {
+  transition: all 0.2s ease;
+}
+
+.move-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.move-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Battle Arena Animations */
+.pokemon-sprite {
+  transition: transform 0.3s ease;
+}
+
+.pokemon-sprite.attacking {
+  animation: attack-move 0.5s ease-out;
+}
+
+@keyframes attack-move {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(20px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.pokemon-sprite.damaged {
+  animation: damage-recoil 0.3s ease-out;
+}
+
+@keyframes damage-recoil {
+  0% {
+    transform: translateX(0) rotate(0deg);
+  }
+  50% {
+    transform: translateX(-10px) rotate(-5deg);
+  }
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
+}
+
+/* Weather Effects */
+.weather-sun {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 223, 0, 0.1),
+    transparent
+  );
+  animation: sun-rays 4s ease-in-out infinite;
+}
+
+@keyframes sun-rays {
+  0%, 100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.weather-rain {
+  position: relative;
+  overflow: hidden;
+}
+
+.weather-rain::before {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(0, 100, 200, 0.1) 50%,
+    transparent
+  );
+  animation: rain-fall 1s linear infinite;
+}
+
+@keyframes rain-fall {
+  to {
+    transform: translateY(200%);
+  }
+}
+
+/* VS Badge Animation */
+.vs-badge {
+  animation: vs-pulse 2s ease-in-out infinite;
+}
+
+@keyframes vs-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* Fast Forward Loading Animation */
+.fast-forward-loading {
+  display: inline-block;
+  position: relative;
+}
+
+.fast-forward-loading::after {
+  content: '⚡';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: fast-forward-spin 1s linear infinite;
+}
+
+@keyframes fast-forward-spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Battle Log Entry Animation */
+.battle-log-entry {
+  animation: log-slide-in 0.3s ease-out;
+}
+
+@keyframes log-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Type Effectiveness Indicators */
+.super-effective {
+  color: #dc2626;
+  font-weight: bold;
+  animation: effectiveness-pop 0.5s ease-out;
+}
+
+.not-very-effective {
+  color: #6b7280;
+  animation: effectiveness-pop 0.5s ease-out;
+}
+
+@keyframes effectiveness-pop {
+  0% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+/* Enhanced Move Buttons */
+.move-button-enhanced {
+  position: relative;
+  background: #f9fafb;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.2s ease;
+  overflow: hidden;
+}
+
+.move-button-enhanced:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.move-button-enhanced:active {
+  transform: translateY(0);
+}
+
+.move-type-indicator {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  opacity: 0.3;
+}
+
+/* Nature Selector */
+.nature-card {
+  transition: all 0.2s ease;
+}
+
+.nature-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.nature-card.selected {
+  animation: selected-pulse 0.3s ease-out;
+}
+
+@keyframes selected-pulse {
+  0% {
+    transform: scale(0.95);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Stat Bars */
+.stat-bar-container {
+  animation: stat-fade-in 0.5s ease-out;
+}
+
+@keyframes stat-fade-in {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.stat-bar {
+  position: relative;
+  background: #e5e7eb;
+  overflow: visible;
+}
+
+.stat-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(0, 0, 0, 0.1);
+  transform: translateX(100%);
+}
+
+/* Winner Screen */
+.winner-pokemon img {
+  animation: winner-bounce 0.8s ease-out;
+}
+
+@keyframes winner-bounce {
+  0% {
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.1) rotate(5deg);
+  }
+  75% {
+    transform: scale(0.95) rotate(-2deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
