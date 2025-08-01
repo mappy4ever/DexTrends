@@ -91,6 +91,40 @@ const PokemonDetail: NextPage = () => {
   const [showStatsCalculator, setShowStatsCalculator] = useState<boolean>(false);
   const [hasOpenedCalculator, setHasOpenedCalculator] = useState<boolean>(false);
 
+  // Load specific nature data (cached)
+  const loadNatureData = useCallback(async (natureName: string) => {
+    try {
+      const data = await fetchNature(natureName);
+      setNatureData(data);
+    } catch (err) {
+      console.error('Error loading nature data:', err);
+    }
+  }, []);
+
+  // Load all available natures
+  const loadAllNatures = useCallback(async () => {
+    try {
+      const response = await fetchData('https://pokeapi.co/api/v2/nature/') as { results: { name: string; url: string }[] };
+      // Load full data for each nature
+      const naturesWithData = await Promise.all(
+        response.results.map(async (nature: { name: string; url: string }) => {
+          try {
+            const natureData = await fetchData(nature.url);
+            return natureData;
+          } catch (err) {
+            console.error(`Error loading nature ${nature.name}:`, err);
+            return { name: nature.name };
+          }
+        })
+      );
+      setAllNatures(naturesWithData as Nature[]);
+      // Load default nature data
+      await loadNatureData('hardy');
+    } catch (err) {
+      console.error('Error loading natures:', err);
+    }
+  }, [loadNatureData]);
+
   useEffect(() => {
     // Wait for router to be ready and pokeid to be available
     if (!router.isReady || !pokeid) return;
@@ -177,39 +211,7 @@ const PokemonDetail: NextPage = () => {
     }
   };
 
-  // Load all available natures
-  const loadAllNatures = useCallback(async () => {
-    try {
-      const response = await fetchData('https://pokeapi.co/api/v2/nature/') as { results: { name: string; url: string }[] };
-      // Load full data for each nature
-      const naturesWithData = await Promise.all(
-        response.results.map(async (nature: { name: string; url: string }) => {
-          try {
-            const natureData = await fetchData(nature.url);
-            return natureData;
-          } catch (err) {
-            console.error(`Error loading nature ${nature.name}:`, err);
-            return { name: nature.name };
-          }
-        })
-      );
-      setAllNatures(naturesWithData as Nature[]);
-      // Load default nature data
-      await loadNatureData('hardy');
-    } catch (err) {
-      console.error('Error loading natures:', err);
-    }
-  }, [loadNatureData]);
-
-  // Load specific nature data (cached)
-  const loadNatureData = useCallback(async (natureName: string) => {
-    try {
-      const data = await fetchNature(natureName);
-      setNatureData(data);
-    } catch (err) {
-      console.error('Error loading nature data:', err);
-    }
-  }, []);
+  // These functions have been moved before useEffect to avoid temporal dead zone issues
 
   // Handle nature change
   const handleNatureChange = async (nature: string) => {

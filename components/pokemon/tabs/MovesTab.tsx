@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Pokemon, PokemonSpecies } from '../../../types/api/pokemon';
 import PokemonGlassCard from '../PokemonGlassCard';
-import SimplifiedMovesDisplay from '../../ui/SimplifiedMovesDisplay';
+import { PokemonLearnset } from '../PokemonLearnset';
 
 interface MovesTabProps {
   pokemon: Pokemon;
@@ -19,23 +19,18 @@ const MovesTab: React.FC<MovesTabProps> = ({ pokemon, species, typeColors }) => 
             Move Pool
           </h3>
           <span className="text-sm text-gray-600 dark:text-gray-400">
-            {pokemon.moves?.length || 0} moves available
+            Complete learnset from Pokemon Showdown
           </span>
         </div>
       </PokemonGlassCard>
 
-      {/* Moves Display */}
+      {/* Moves Display - Using Showdown Learnset Data */}
       <PokemonGlassCard variant="default" pokemonTypes={pokemon.types}>
-        {pokemon.moves && pokemon.moves.length > 0 ? (
-          <SimplifiedMovesDisplay 
-            moves={pokemon.moves} 
-            pokemonName={pokemon.name}
-          />
-        ) : (
-          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-            <p>No moves data available for this Pokémon</p>
-          </div>
-        )}
+        <PokemonLearnset 
+          pokemonId={pokemon.name}
+          generation={9}
+          className="mt-4"
+        />
       </PokemonGlassCard>
     </div>
   );

@@ -1,17 +1,19 @@
 import React, { useState, lazy, Suspense, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Pokemon, PokemonSpecies, PokemonTab } from '../../types/api/pokemon';
+import type { CompetitiveTierRecord } from '../../utils/supabase';
 import { getTypeUIColors } from '../../utils/pokemonTypeGradients';
 import PokemonGlassCard from './PokemonGlassCard';
 import { cn } from '../../utils/cn';
 import { PageLoader } from '../../utils/unifiedLoading';
 import { FaClipboardList, FaChartBar, FaExchangeAlt, FaMapMarkerAlt, FaTrophy, FaLayerGroup } from 'react-icons/fa';
 import { GiCrossedSwords, GiEggClutch } from 'react-icons/gi';
+import { getAnimationProps, UI_ANIMATION_SETS } from '../../utils/standardizedAnimations';
 
 // Lazy load tab components
-const OverviewTab = lazy(() => import('./tabs/OverviewTab'));
-const StatsTab = lazy(() => import('./tabs/StatsTab'));
-const EvolutionTab = lazy(() => import('./tabs/EvolutionTab'));
+const OverviewTab = lazy(() => import('./tabs/OverviewTabV2'));
+const StatsTab = lazy(() => import('./tabs/StatsTabV2'));
+const EvolutionTab = lazy(() => import('./tabs/EvolutionTabV2'));
 const MovesTab = lazy(() => import('./tabs/MovesTab'));
 const BreedingTab = lazy(() => import('./tabs/BreedingTab'));
 const LocationsTab = lazy(() => import('./tabs/LocationsTab'));
@@ -35,6 +37,7 @@ interface PokemonTabSystemProps {
   selectedNature?: string;
   selectedLevel?: number;
   onLevelChange?: (level: number) => void;
+  competitiveTiers?: CompetitiveTierRecord | null;
 }
 
 // Tab configuration - moved outside component to prevent recreation
@@ -64,7 +67,8 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
   onNatureChange,
   selectedNature = 'hardy',
   selectedLevel = 50,
-  onLevelChange
+  onLevelChange,
+  competitiveTiers = null
 }) => {
   const typeColors = getTypeUIColors(pokemon.types || []);
   const [swipeDirection, setSwipeDirection] = useState(0);
@@ -162,6 +166,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
             {...commonProps}
             abilities={abilities}
             typeColors={typeColors}
+            competitiveTiers={competitiveTiers}
           />
         );
       
@@ -228,6 +233,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
           <CompetitiveTab
             {...commonProps}
             typeColors={typeColors}
+            competitiveTiers={competitiveTiers}
           />
         );
       
@@ -251,7 +257,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
                 setSwipeDirection(newIndex > currentTabIndex ? 1 : -1);
                 onTabChange(tab.id);
               }}
-              data-testid={`tab-${tab.id}`}
+              data-testid={tab.id === 'moves' ? 'moves-tab' : `tab-${tab.id}`}
               style={{ position: 'relative', zIndex: 51 }}
               className={cn(
                 "px-5 py-2 font-medium text-sm transition-all duration-300 whitespace-nowrap flex items-center gap-2 rounded-full",
@@ -277,19 +283,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
-            initial={{ 
-              opacity: 0 
-            }}
-            animate={{ 
-              opacity: 1 
-            }}
-            exit={{ 
-              opacity: 0 
-            }}
-            transition={{ 
-              duration: 0.2,
-              ease: "easeInOut"
-            }}
+            {...getAnimationProps('tabSwitch')}
           >
             <Suspense fallback={
               <div className="min-h-[400px] flex items-center justify-center">

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Pokemon, PokemonSpecies } from '../../../types/api/pokemon';
+import type { CompetitiveTierRecord } from '../../../utils/supabase';
+import { TierBadgeGroup } from '../../ui/TierBadge';
 import PokemonGlassCard from '../PokemonGlassCard';
 import { cn } from '../../../utils/cn';
 import { STAT_NAMES } from '../../../utils/pokemonDetailUtils';
@@ -9,6 +11,7 @@ interface CompetitiveTabProps {
   pokemon: Pokemon;
   species: PokemonSpecies;
   typeColors: any;
+  competitiveTiers?: CompetitiveTierRecord | null;
 }
 
 // Mock competitive data (in a real app, this would come from an API)
@@ -60,7 +63,7 @@ const COUNTERS = [
   { name: 'Tangrowth', winRate: 63.7 }
 ];
 
-const CompetitiveTab: React.FC<CompetitiveTabProps> = ({ pokemon, species, typeColors }) => {
+const CompetitiveTab: React.FC<CompetitiveTabProps> = ({ pokemon, species, typeColors, competitiveTiers }) => {
   const [expandedMoveset, setExpandedMoveset] = useState<number | null>(null);
   const [selectedFormat, setSelectedFormat] = useState<'singles' | 'doubles'>('singles');
   
@@ -108,10 +111,26 @@ const CompetitiveTab: React.FC<CompetitiveTabProps> = ({ pokemon, species, typeC
         {/* Tier and Usage */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="text-center p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Current Tier</p>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white">
-              {estimatedTier}
-            </p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Current Tiers</p>
+            {competitiveTiers ? (
+              <div data-testid="tier-badge">
+                <div data-testid="singles-tier" style={{ display: competitiveTiers.singles_tier ? 'block' : 'none' }}>
+                  <TierBadgeGroup 
+                    tiers={{
+                      singles: competitiveTiers.singles_tier,
+                      doubles: competitiveTiers.doubles_tier,
+                      nationalDex: competitiveTiers.national_dex_tier
+                    }}
+                    size="lg"
+                  />
+                </div>
+                <div data-testid="doubles-tier" style={{ display: competitiveTiers.doubles_tier ? 'block' : 'none' }} />
+              </div>
+            ) : (
+              <p className="text-xl font-bold text-gray-900 dark:text-white">
+                {estimatedTier}
+              </p>
+            )}
           </div>
           <div className="text-center p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Usage Rate</p>

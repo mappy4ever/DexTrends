@@ -4,6 +4,8 @@ import Head from "next/head";
 import { NextPage } from "next";
 import { motion } from "framer-motion";
 import { fetchData, fetchPokemon, fetchPokemonSpecies, fetchNature, fetchTCGCards, fetchPocketCards, sanitizePokemonName } from "../../utils/apiutils";
+import { showdownQueries, CompetitiveTierRecord } from "../../utils/supabase";
+import { loadTypeChart } from "../../utils/typeEffectiveness";
 import type { 
   AbilityData as AbilityApiData,
   Pokemon, 
@@ -18,15 +20,15 @@ import type {
 } from "../../types/api/pokemon";
 import type { TCGCard } from "../../types/api/cards";
 import type { PocketCard } from "../../types/api/pocket-cards";
-import PokemonHeroSection from "../../components/pokemon/PokemonHeroSection";
+import PokemonHeroSectionV2 from "../../components/pokemon/PokemonHeroSectionV2";
 import PokemonTabSystem from "../../components/pokemon/PokemonTabSystem";
+import FloatingActionBar from "../../components/pokemon/FloatingActionBar";
 import { PageLoader } from "../../utils/unifiedLoading";
 import { FullBleedWrapper } from "../../components/ui";
 import { PageErrorBoundary } from "../../components/ui";
 import { CircularButton } from "../../components/ui/design-system";
 import { getPokemonTheme } from "../../utils/pokemonAnimations";
 import NavigationArrow from "../../components/pokemon/NavigationArrow";
-import FloatingStatsWidget from "../../components/pokemon/FloatingStatsWidget";
 
 // Interface for abilities state
 interface AbilityData {
@@ -60,6 +62,7 @@ const PokemonDetail: NextPage = () => {
     prev: { id: number; name: string; types: PokemonType[] } | null;
     next: { id: number; name: string; types: PokemonType[] } | null;
   }>({ prev: null, next: null });
+  const [competitiveTiers, setCompetitiveTiers] = useState<CompetitiveTierRecord | null>(null);
 
   // Load adjacent Pokemon for navigation
   const loadAdjacentPokemon = useCallback(async (currentId: number) => {
@@ -190,6 +193,20 @@ const PokemonDetail: NextPage = () => {
 
         // Set loading to false immediately for faster perceived performance
         setLoading(false);
+        
+        // Load type chart from Showdown data
+        loadTypeChart().catch(err => {
+          console.warn('[Showdown Data] Failed to load type chart:', err);
+        });
+        
+        // Load competitive tiers from Showdown data
+        showdownQueries.getPokemonTiers(pokemonData.name).then(tiers => {
+          if (tiers) {
+            setCompetitiveTiers(tiers);
+          }
+        }).catch(err => {
+          console.warn('[Showdown Data] Failed to load competitive tiers:', err);
+        });
         
         // Reset tab to saved preference on Pokemon change
         // Temporarily disabled to fix Fast Refresh loop
@@ -484,7 +501,7 @@ const PokemonDetail: NextPage = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <PokemonHeroSection 
+              <PokemonHeroSectionV2 
                 pokemon={pokemon}
                 species={species}
                 showShiny={showShiny}
@@ -517,6 +534,7 @@ const PokemonDetail: NextPage = () => {
                 selectedNature={selectedNature}
                 selectedLevel={selectedLevel}
                 onLevelChange={setSelectedLevel}
+                competitiveTiers={competitiveTiers}
               />
             </motion.div>
           </div>
@@ -533,8 +551,8 @@ const PokemonDetail: NextPage = () => {
             onClick={() => adjacentPokemon.next && handleNavigate(adjacentPokemon.next.id)}
           />
           
-          {/* Floating Stats Widget */}
-          <FloatingStatsWidget pokemon={pokemon} />
+          {/* Floating Action Bar */}
+          <FloatingActionBar pokemon={pokemon} />
         </div>
       </FullBleedWrapper>
     </PageErrorBoundary>

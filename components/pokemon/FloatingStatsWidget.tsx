@@ -67,7 +67,6 @@ const FloatingStatsWidget: React.FC<FloatingStatsWidgetProps> = ({
             pokemonTypes={pokemon.types}
             className="shadow-2xl backdrop-blur-xl"
             hover={true}
-            glow={true}
           >
             <div className="w-72">
               {/* Header */}
