@@ -397,9 +397,12 @@ export const PackOpeningAnimation: React.FC<PackOpeningAnimationProps> = ({
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                duration: prefersReducedMotion ? 0.01 : 0.5 / animationSpeed,
-                ease: easings.springBouncy,
+              transition={prefersReducedMotion ? {
+                duration: 0.01
+              } : {
+                ...easings.springBouncy,
+                stiffness: easings.springBouncy.stiffness / animationSpeed,
+                damping: easings.springBouncy.damping * animationSpeed
               }}
             >
               {children}
@@ -483,9 +486,12 @@ export const EvolutionAnimation: React.FC<EvolutionAnimationProps> = ({
                 opacity: isPast || isActive ? 1 : 0.3,
                 scale: isActive ? 1.2 : 1,
               }}
-              transition={{
-                duration: prefersReducedMotion ? 0.01 : 0.5 / animationSpeed,
-                ease: easings.springBouncy,
+              transition={prefersReducedMotion ? {
+                duration: 0.01
+              } : {
+                ...easings.springBouncy,
+                stiffness: easings.springBouncy.stiffness / animationSpeed,
+                damping: easings.springBouncy.damping * animationSpeed
               }}
               onClick={() => onStageChange?.(index)}
             >

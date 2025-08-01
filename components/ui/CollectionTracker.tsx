@@ -15,7 +15,7 @@ import {
 import { Doughnut, Bar } from 'react-chartjs-2';
 import { ChartData, ChartOptions } from 'chart.js';
 import Modal from './modals/Modal';
-import { useNotifications } from '../qol/NotificationSystem';
+import { useNotifications } from '../../hooks/useNotifications';
 import { TCGCard } from '../../types/api/cards';
 import { PocketCard } from '../../types/api/pocket-cards';
 import { Pokemon } from '../../types/api/pokemon';

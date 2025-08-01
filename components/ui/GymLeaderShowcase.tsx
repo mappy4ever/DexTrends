@@ -102,7 +102,7 @@ const GymLeaderShowcase: React.FC<GymLeaderShowcaseProps> = ({ leader, index, is
       scale: 1,
       transition: {
         duration: 0.8,
-        ease: "easeOut",
+        ease: "easeOut" as const,
         delay: index * 0.2
       }
     }
@@ -118,7 +118,7 @@ const GymLeaderShowcase: React.FC<GymLeaderShowcaseProps> = ({ leader, index, is
       opacity: 1,
       transition: {
         duration: 1,
-        ease: "easeOut",
+        ease: "easeOut" as const,
         delay: index * 0.2 + 0.3
       }
     }

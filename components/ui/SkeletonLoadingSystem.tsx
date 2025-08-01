@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useCallback, createContext, useContext, ReactNode, CSSProperties } from 'react';
 
+import { useSkeleton, useSkeletonState } from './SkeletonLoadingSystem.hooks';
 /**
  * Comprehensive Skeleton Loading System
  * Provides smooth loading states for all components and data
  */
 
 // Type definitions
-interface SkeletonContextType {
+export interface SkeletonContextType {
   globalLoading: boolean;
   setLoading: (key: string, isLoading: boolean) => void;
   isLoading: (key: string) => boolean;
@@ -14,15 +15,7 @@ interface SkeletonContextType {
 }
 
 // Skeleton Context for global loading states
-const SkeletonContext = createContext<SkeletonContextType | undefined>(undefined);
-
-export const useSkeleton = (): SkeletonContextType => {
-  const context = useContext(SkeletonContext);
-  if (!context) {
-    throw new Error('useSkeleton must be used within SkeletonProvider');
-  }
-  return context;
-};
+export const SkeletonContext = createContext<SkeletonContextType | undefined>(undefined);
 
 // Skeleton Provider Component
 interface SkeletonProviderProps {
@@ -770,29 +763,6 @@ interface UseSkeletonStateReturn<T extends (...args: any[]) => Promise<any>> {
   setLoading: (loading: boolean) => void;
   withSkeleton: (asyncFunction: T) => T;
 }
-
-export const useSkeletonState = <T extends (...args: any[]) => Promise<any>>(
-  initialLoading = false
-): UseSkeletonStateReturn<T> => {
-  const [loading, setLoading] = useState(initialLoading);
-  
-  const withSkeleton = useCallback((asyncFunction: T): T => {
-    return (async (...args: Parameters<T>) => {
-      setLoading(true);
-      try {
-        return await asyncFunction(...args);
-      } finally {
-        setLoading(false);
-      }
-    }) as T;
-  }, []);
-  
-  return {
-    loading,
-    setLoading,
-    withSkeleton
-  };
-};
 
 // Skeleton Wrapper Component
 interface SkeletonWrapperProps {

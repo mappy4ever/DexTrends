@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
+import { useIntersectionObserver } from './PerformanceMonitor.hooks';
+
+// Re-export hook for backward compatibility
+export { useIntersectionObserver } from './PerformanceMonitor.hooks';
+
 // Performance monitoring component
 interface PerformanceMonitorProps {
   showInDev?: boolean;
@@ -195,23 +200,5 @@ export const OptimizedImage = ({ src, alt, className, priority = false, ...props
 };
 
 // Intersection Observer hook for lazy loading
-export const useIntersectionObserver = (elementRef: React.RefObject<HTMLElement>, options = {}) => {
-  const [isIntersecting, setIsIntersecting] = useState(false);
-
-  useEffect(() => {
-    const element = elementRef.current;
-    if (!element) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsIntersecting(entry.isIntersecting),
-      { threshold: 0.1, ...options }
-    );
-
-    observer.observe(element);
-    return () => observer.unobserve(element);
-  }, [elementRef, options]);
-
-  return isIntersecting;
-};
 
 export default { PerformanceMonitor, OptimizedImage, useIntersectionObserver };

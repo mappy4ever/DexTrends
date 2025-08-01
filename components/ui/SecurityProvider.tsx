@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { useSecurity } from './SecurityProvider.hooks';
 import logger from '../../utils/logger';
 
 // Types
@@ -30,7 +31,7 @@ interface SecureStorage {
   removeItem: (key: string) => void;
 }
 
-interface SecurityContextValue {
+export interface SecurityContextValue {
   securityStatus: SecurityStatus;
   runSecurityCheck: () => Promise<Threat[]>;
   sanitizeInput: (input: any) => any;
@@ -43,15 +44,7 @@ interface SecurityProviderProps {
   children: React.ReactNode;
 }
 
-const SecurityContext = createContext<SecurityContextValue | undefined>(undefined);
-
-export const useSecurity = (): SecurityContextValue => {
-  const context = useContext(SecurityContext);
-  if (!context) {
-    throw new Error('useSecurity must be used within SecurityProvider');
-  }
-  return context;
-};
+export const SecurityContext = createContext<SecurityContextValue | undefined>(undefined);
 
 export const SecurityProvider: React.FC<SecurityProviderProps> = ({ children }) => {
   const [securityStatus, setSecurityStatus] = useState<SecurityStatus>({

@@ -1,4 +1,9 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode, CSSProperties } from 'react';
+import { useEnhancedAnimation } from './EnhancedAnimationSystem.hooks';
+
+// Re-export hook for backward compatibility
+export { useEnhancedAnimation } from './EnhancedAnimationSystem.hooks';
+
 import { 
   motion, 
   AnimatePresence, 
@@ -33,8 +38,12 @@ interface AnimationContextValue {
   setEnableScrollAnimations: (enabled: boolean) => void;
 }
 
+interface EnhancedAnimationProviderProps {
+  children: ReactNode;
+}
+
 // Enhanced Animation Context with more controls
-const AnimationContext = createContext<AnimationContextValue>({
+export const AnimationContext = createContext<AnimationContextValue>({
   prefersReducedMotion: false,
   animationSpeed: 1,
   enablePageTransitions: true,
@@ -45,13 +54,6 @@ const AnimationContext = createContext<AnimationContextValue>({
   setEnableMicroInteractions: () => {},
   setEnableScrollAnimations: () => {},
 });
-
-export const useEnhancedAnimation = () => useContext(AnimationContext);
-
-// Animation Provider Props
-interface EnhancedAnimationProviderProps {
-  children: ReactNode;
-}
 
 // Animation Provider with user preferences
 export const EnhancedAnimationProvider: React.FC<EnhancedAnimationProviderProps> = ({ children }) => {
@@ -98,9 +100,9 @@ export const easings = {
   easeOutQuart: [0.25, 1, 0.5, 1] as [number, number, number, number],
   easeInOutQuart: [0.76, 0, 0.24, 1] as [number, number, number, number],
   easeInOutExpo: [0.87, 0, 0.13, 1] as [number, number, number, number],
-  spring: { type: "spring", stiffness: 300, damping: 30 },
-  springBouncy: { type: "spring", stiffness: 400, damping: 25 },
-  springSmooth: { type: "spring", stiffness: 200, damping: 35 },
+  spring: { type: "spring" as const, stiffness: 300, damping: 30 },
+  springBouncy: { type: "spring" as const, stiffness: 400, damping: 25 },
+  springSmooth: { type: "spring" as const, stiffness: 200, damping: 35 },
 };
 
 // Page Transition Props
@@ -807,7 +809,7 @@ export const StaggerList: React.FC<StaggerListProps> = ({
             hidden: { opacity: 0, y: 20 },
             visible: { opacity: 1, y: 0 }
           }}
-          transition={easings.easeOutQuart}
+          transition={{ ease: easings.easeOutQuart, duration: 0.5 }}
         >
           {child}
         </motion.div>

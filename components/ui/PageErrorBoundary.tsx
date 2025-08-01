@@ -1,4 +1,5 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { useErrorHandler } from './PageErrorBoundary.hooks';
 import { useRouter } from 'next/router';
 
 interface Props {
@@ -130,16 +131,5 @@ class PageErrorBoundary extends Component<Props, State> {
 }
 
 // Hook to use with the error boundary
-export const useErrorHandler = () => {
-  const [error, setError] = React.useState<Error | null>(null);
-  
-  React.useEffect(() => {
-    if (error) {
-      throw error;
-    }
-  }, [error]);
-  
-  return setError;
-};
 
 export default PageErrorBoundary;

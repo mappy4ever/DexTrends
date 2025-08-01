@@ -40,7 +40,7 @@ const RegionHeader: React.FC<RegionHeaderProps> = ({
       rotateX: 0,
       transition: {
         duration: 0.8,
-        ease: "easeOut"
+        ease: "easeOut" as const
       }
     }
   };
@@ -52,7 +52,7 @@ const RegionHeader: React.FC<RegionHeaderProps> = ({
       transition: {
         duration: 6,
         repeat: Infinity,
-        ease: "easeInOut"
+        ease: "easeInOut" as const
       }
     }
   };

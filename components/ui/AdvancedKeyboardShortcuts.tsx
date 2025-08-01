@@ -15,7 +15,7 @@ import {
   CogIcon,
   ExclamationTriangleIcon
 } from '@heroicons/react/24/outline';
-import { useNotifications } from '../qol/NotificationSystem';
+import { useNotifications } from '../../hooks/useNotifications';
 
 // Type definitions
 interface Command {

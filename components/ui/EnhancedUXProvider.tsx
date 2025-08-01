@@ -1,5 +1,9 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import { useUX } from './EnhancedUXProvider.hooks';
 import { useRouter } from 'next/router';
+
+// Re-export hook for backward compatibility
+export { useUX } from './EnhancedUXProvider.hooks';
 
 // Type definitions
 interface UserPreferences {
@@ -87,7 +91,7 @@ interface AdaptedLayout {
   accessibility: AccessibilityEnhancements;
 }
 
-interface UXContextValue {
+export interface UXContextValue {
   // State
   userPreferences: UserPreferences;
   userBehavior: UserBehavior;
@@ -119,15 +123,7 @@ interface EnhancedUXProviderProps {
   children: ReactNode;
 }
 
-const UXContext = createContext<UXContextValue | undefined>(undefined);
-
-export const useUX = () => {
-  const context = useContext(UXContext);
-  if (!context) {
-    throw new Error('useUX must be used within EnhancedUXProvider');
-  }
-  return context;
-};
+export const UXContext = createContext<UXContextValue | undefined>(undefined);
 
 export const EnhancedUXProvider: React.FC<EnhancedUXProviderProps> = ({ children }) => {
   const router = useRouter();

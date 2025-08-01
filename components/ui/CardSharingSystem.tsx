@@ -9,7 +9,7 @@ import {
   FaCheck
 } from 'react-icons/fa';
 import Modal from './modals/Modal';
-import { useNotifications } from '../qol/NotificationSystem';
+import { useNotifications } from '../../hooks/useNotifications';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { TCGCard } from '../../types/api/cards';

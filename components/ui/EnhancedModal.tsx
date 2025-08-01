@@ -66,14 +66,14 @@ export default function EnhancedModal({
       opacity: 1,
       transition: {
         duration: prefersReducedMotion ? 0.01 : 0.2 / animationSpeed,
-        ease: "easeOut"
+        ease: "easeOut" as const
       }
     },
     exit: { 
       opacity: 0,
       transition: {
         duration: prefersReducedMotion ? 0.01 : 0.15 / animationSpeed,
-        ease: "easeIn"
+        ease: "easeIn" as const
       }
     }
   };
@@ -90,7 +90,7 @@ export default function EnhancedModal({
         scale: 1,
         y: 0,
         transition: {
-          type: "spring",
+          type: "spring" as const,
           stiffness: 300,
           damping: 30,
           duration: prefersReducedMotion ? 0.01 : undefined,
@@ -114,7 +114,7 @@ export default function EnhancedModal({
         opacity: 1,
         y: 0,
         transition: {
-          ...easings.easeOutExpo,
+          ease: easings.easeOutExpo,
           duration: prefersReducedMotion ? 0.01 : 0.4 / animationSpeed,
         }
       },

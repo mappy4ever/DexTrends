@@ -34,13 +34,14 @@ const OptimizedImage = memo(({
   const [currentSrc, setCurrentSrc] = useState(src);
   const imgRef = useRef<HTMLDivElement>(null);
   
-  // Use intersection observer for lazy loading
+  // Use intersection observer for lazy loading only when lazy is true
   const isInView = useIntersectionObserver(imgRef as React.RefObject<HTMLElement>, {
     threshold: 0.1,
     rootMargin: '50px',
   });
 
-  // Should load image if not lazy, is priority, or is in view
+  // When lazy is false, always load immediately regardless of intersection
+  // This prevents blank cards during scrolling in virtualized grids
   const shouldLoad = !lazy || priority || isInView;
 
   const handleLoad = useCallback(() => {
@@ -64,9 +65,12 @@ const OptimizedImage = memo(({
   // Generate blur data URL for placeholder
   const blurDataURL = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Eve6J4HNvbzTe7+v1+8BvxRf4X3/f/9k=";
 
+  // For non-lazy images, skip loading states to prevent flashing
+  const skipLoadingState = !lazy || priority;
+
   return (
     <div ref={imgRef} className={`relative ${className}`}>
-      {loading && !error && (
+      {loading && !error && !skipLoadingState && (
         <div 
           className="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded"
           style={{ width, height }}
@@ -88,7 +92,7 @@ const OptimizedImage = memo(({
           alt={alt}
           width={width}
           height={height}
-          className={`${className} ${loading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
+          className={`${className} ${loading && !skipLoadingState ? 'opacity-0' : 'opacity-100'}`}
           onLoad={handleLoad}
           onError={handleError}
           priority={priority}

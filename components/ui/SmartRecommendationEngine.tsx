@@ -411,7 +411,7 @@ const SmartRecommendationEngine: React.FC<SmartRecommendationEngineProps> = ({
     }
     
     // Determine if user follows trends
-    interests.followsTrends = userBehavior.recentActions?.some(action => 
+    interests.followsTrends = userBehavior.recentActions?.some((action: any) => 
       action.action === 'view_trending'
     ) || false;
     

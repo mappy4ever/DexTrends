@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 /**
  * Advanced Loading States Component
@@ -6,28 +7,28 @@ import React, { useState, useEffect } from 'react';
  */
 
 // Type definitions
-interface PokemonCardSkeletonProps {
+export interface PokemonCardSkeletonProps {
   count?: number;
   showPrice?: boolean;
   variant?: 'card' | 'list' | 'grid';
 }
 
-interface LoadingStage {
+export interface LoadingStage {
   title: string;
   description: string;
   shortLabel?: string;
 }
 
-interface ProgressiveLoaderProps {
+export interface ProgressiveLoaderProps {
   stages?: LoadingStage[];
   currentStage?: number;
   showPercentage?: boolean;
   showStageDescription?: boolean;
 }
 
-type LoadingState = 'idle' | 'loading' | 'success' | 'error';
+export type LoadingState = 'idle' | 'loading' | 'success' | 'error';
 
-interface UseLoadingStateReturn {
+export interface UseLoadingStateReturn {
   loadingState: LoadingState;
   progress: number;
   error: string | null;
@@ -679,59 +680,64 @@ export const ProgressiveLoader: React.FC<ProgressiveLoaderProps> = ({
   );
 };
 
-// Smart Loading State Manager
-export const useLoadingState = (initialState: LoadingState = 'idle'): UseLoadingStateReturn => {
-  const [loadingState, setLoadingState] = useState<LoadingState>(initialState);
-  const [progress, setProgress] = useState(0);
-  const [error, setError] = useState<string | null>(null);
-  
-  const startLoading = (stages: LoadingStage[] = []) => {
-    setLoadingState('loading');
-    setProgress(0);
-    setError(null);
-    return { stages };
+// Enhanced Loading Dots Component
+interface LoadingDotsProps {
+  message?: string;
+  size?: 'small' | 'medium' | 'large';
+  color?: string;
+}
+
+export const LoadingDots: React.FC<LoadingDotsProps> = ({ 
+  message = 'Loading...',
+  size = 'medium',
+  color = 'blue'
+}) => {
+  const sizeMap = {
+    small: { dot: 'w-2 h-2', spacing: 'space-x-1', text: 'text-sm' },
+    medium: { dot: 'w-3 h-3', spacing: 'space-x-2', text: 'text-base' },
+    large: { dot: 'w-4 h-4', spacing: 'space-x-3', text: 'text-lg' }
   };
   
-  const updateProgress = (currentStage: number, totalStages: number) => {
-    const newProgress = (currentStage / totalStages) * 100;
-    setProgress(newProgress);
-  };
+  const sizes = sizeMap[size];
   
-  const completeLoading = () => {
-    setLoadingState('success');
-    setProgress(100);
-  };
-  
-  const failLoading = (errorMessage: string) => {
-    setLoadingState('error');
-    setError(errorMessage);
-  };
-  
-  const resetLoading = () => {
-    setLoadingState('idle');
-    setProgress(0);
-    setError(null);
-  };
-  
-  return {
-    loadingState,
-    progress,
-    error,
-    startLoading,
-    updateProgress,
-    completeLoading,
-    failLoading,
-    resetLoading,
-    isLoading: loadingState === 'loading',
-    isSuccess: loadingState === 'success',
-    isError: loadingState === 'error',
-    isIdle: loadingState === 'idle'
-  };
+  return (
+    <div className="flex flex-col items-center justify-center">
+      <div className={`flex ${sizes.spacing} mb-4`}>
+        {[0, 1, 2].map((i) => (
+          <motion.div
+            key={i}
+            className={`${sizes.dot} bg-${color}-500 rounded-full`}
+            animate={{
+              y: [-10, 0, -10],
+              scale: [1, 1.2, 1],
+            }}
+            transition={{
+              duration: 0.8,
+              repeat: Infinity,
+              delay: i * 0.2,
+              ease: "easeInOut"
+            }}
+          />
+        ))}
+      </div>
+      {message && (
+        <motion.p
+          className={`text-gray-600 ${sizes.text}`}
+          animate={{ opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+        >
+          {message}
+        </motion.p>
+      )}
+    </div>
+  );
 };
+
+// useLoadingState hook has been moved to AdvancedLoadingStates.hooks.ts
 
 export default {
   PokemonCardSkeleton,
   SearchResultsSkeleton,
   ProgressiveLoader,
-  useLoadingState
+  LoadingDots
 };

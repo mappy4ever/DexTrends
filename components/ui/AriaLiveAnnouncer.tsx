@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+import { useAnnouncer } from './AriaLiveAnnouncer.hooks';
 interface AriaLiveAnnouncerProps {
   message: string;
   priority?: 'polite' | 'assertive';
@@ -48,24 +49,5 @@ export const AriaLiveAnnouncer: React.FC<AriaLiveAnnouncerProps> = ({
 };
 
 // Hook for easy announcement
-export const useAnnouncer = (): any => {
-  const [announcement, setAnnouncement] = useState<{
-    message: string;
-    priority: 'polite' | 'assertive';
-  }>({ message: '', priority: 'polite' });
-
-  const announce = (message: string, priority: 'polite' | 'assertive' = 'polite') => {
-    setAnnouncement({ message, priority });
-  };
-
-  const AnnouncerComponent = () => (
-    <AriaLiveAnnouncer 
-      message={announcement.message} 
-      priority={announcement.priority} 
-    />
-  );
-
-  return { announce, AnnouncerComponent };
-};
 
 export default AriaLiveAnnouncer;

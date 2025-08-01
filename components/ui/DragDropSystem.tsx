@@ -16,6 +16,8 @@ import { HapticFeedback, VisualFeedback } from './MicroInteractionSystem';
 import { TCGCard } from '../../types/api/cards';
 import { PocketCard } from '../../types/api/pocket-cards';
 import { Pokemon } from '../../types/api/pokemon';
+import { useDragDrop } from '../../hooks/useDragDrop';
+import { useDragDropLogic } from '../../utils/dragDrop';
 
 /**
  * Advanced Drag and Drop System for Card Management
@@ -52,16 +54,12 @@ interface DragDropContextValue {
   cancelDrag: () => void;
 }
 
-// Drag and Drop Context
-const DragDropContext = createContext<DragDropContextValue | null>(null);
+// Drag and Drop Context - exported for use in hooks
+export const DragDropContext = createContext<DragDropContextValue | null>(null);
 
-export const useDragDrop = () => {
-  const context = useContext(DragDropContext);
-  if (!context) {
-    throw new Error('useDragDrop must be used within DragDropProvider');
-  }
-  return context;
-};
+// NOTE: Hooks and utilities have been moved to separate files for Fast Refresh compatibility:
+// - useDragDrop hook: /hooks/useDragDrop.ts
+// - useDragDropLogic and types: /utils/dragDrop.ts
 
 // Provider Props
 interface DragDropProviderProps {
@@ -821,69 +819,13 @@ export const DragDropCollectionManager: React.FC<DragDropCollectionManagerProps>
   );
 };
 
-// Custom Hook Props
-interface UseDragDropLogicOptions<T> {
-  initialItems: T[];
-  onReorder?: (items: T[]) => void;
-}
 
-// Custom Hook for Drag and Drop Logic
-export function useDragDropLogic<T extends { id: string }>(
-  initialItems: T[], 
-  onReorder?: (items: T[]) => void
-) {
-  const [items, setItems] = useState(initialItems);
-  const [draggedItem, setDraggedItem] = useState<T | null>(null);
-  
-  useEffect(() => {
-    setItems(initialItems);
-  }, [initialItems]);
-  
-  const handleDragStart = useCallback((item: T) => {
-    setDraggedItem(item);
-  }, []);
-  
-  const handleDragEnd = useCallback((item: T, fromContainer: string | null, toContainer: string | null, position: { index?: number } | null) => {
-    if (!toContainer) return;
-    
-    const fromIndex = items.findIndex(i => i.id === item.id);
-    const newItems = [...items];
-    
-    // Remove from original position
-    newItems.splice(fromIndex, 1);
-    
-    // Calculate new position
-    let toIndex = position?.index || 0;
-    if (toIndex > fromIndex) {
-      toIndex -= 1;
-    }
-    
-    // Insert at new position
-    newItems.splice(toIndex, 0, item);
-    
-    setItems(newItems);
-    setDraggedItem(null);
-    
-    if (onReorder) {
-      onReorder(newItems);
-    }
-  }, [items, onReorder]);
-  
-  return {
-    items,
-    draggedItem,
-    handleDragStart,
-    handleDragEnd
-  };
-}
-
+// Default export contains only React components
 export default {
   DragDropProvider,
   DraggableItem,
   DropZone,
   SortableList,
   DraggableCardGrid,
-  DragDropCollectionManager,
-  useDragDrop,
-  useDragDropLogic
+  DragDropCollectionManager
 };

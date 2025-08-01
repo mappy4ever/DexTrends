@@ -27,7 +27,7 @@ import {
   Filler
 } from 'chart.js';
 import Modal from './modals/Modal';
-import { useNotifications } from '../qol/NotificationSystem';
+import { useNotifications } from '../../hooks/useNotifications';
 
 // Register Chart.js components
 ChartJS.register(

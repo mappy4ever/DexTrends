@@ -20,15 +20,12 @@ interface AccessibilityContextType {
 /**
  * Accessibility context for managing accessibility preferences and features
  */
-const AccessibilityContext = createContext<AccessibilityContextType | undefined>(undefined);
+export const AccessibilityContext = createContext<AccessibilityContextType | undefined>(undefined);
 
-export function useAccessibility() {
-  const context = useContext(AccessibilityContext);
-  if (!context) {
-    throw new Error('useAccessibility must be used within AccessibilityProvider');
-  }
-  return context;
-}
+// NOTE: Hooks have been moved to separate files for Fast Refresh compatibility:
+// - useAccessibility: /hooks/useAccessibility.ts
+// - useKeyboardNavigation: /hooks/useKeyboardNavigation.ts  
+// - useFocusManagement: /hooks/useFocusManagement.ts
 
 /**
  * Accessibility preferences with localStorage persistence
@@ -206,90 +203,7 @@ export function AccessibilityProvider({ children }: AccessibilityProviderProps) 
   );
 }
 
-/**
- * Hook for keyboard navigation
- */
-export function useKeyboardNavigation() {
-  const { preferences } = useAccessibility();
-
-  useEffect(() => {
-    if (!preferences.keyboardNavigation) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Tab navigation enhancement
-      if (e.key === 'Tab') {
-        document.body.classList.add('keyboard-navigation');
-      }
-
-      // Escape key to close modals/dropdowns
-      if (e.key === 'Escape') {
-        const activeElement = document.activeElement;
-        if (activeElement && activeElement.closest('[role="dialog"]')) {
-          const dialog = activeElement.closest('[role="dialog"]');
-          if (dialog) {
-            const closeButton = dialog.querySelector('[aria-label*="close"], [aria-label*="Close"]') as HTMLElement;
-            if (closeButton) {
-              closeButton.click();
-            }
-          }
-        }
-      }
-    };
-
-    const handleMouseDown = (): any => {
-      document.body.classList.remove('keyboard-navigation');
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    document.addEventListener('mousedown', handleMouseDown);
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.removeEventListener('mousedown', handleMouseDown);
-    };
-  }, [preferences.keyboardNavigation]);
-}
-
-/**
- * Hook for focus management
- */
-export function useFocusManagement() {
-  const { preferences } = useAccessibility();
-
-  const trapFocus = (container: HTMLElement) => {
-    const focusableElements = container.querySelectorAll(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    );
-    const firstElement = focusableElements[0] as HTMLElement;
-    const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Tab') {
-        if (e.shiftKey) {
-          if (document.activeElement === firstElement) {
-            e.preventDefault();
-            lastElement.focus();
-          }
-        } else {
-          if (document.activeElement === lastElement) {
-            e.preventDefault();
-            firstElement.focus();
-          }
-        }
-      }
-    };
-
-    container.addEventListener('keydown', handleKeyDown);
-    return () => container.removeEventListener('keydown', handleKeyDown);
-  };
-
-  const restoreFocus = (element: HTMLElement | null) => {
-    if (element && element.focus) {
-      element.focus();
-    }
-  };
-
-  return { trapFocus, restoreFocus };
-}
+// useKeyboardNavigation has been moved to /hooks/useKeyboardNavigation.ts
+// useFocusManagement has been moved to /hooks/useFocusManagement.ts
 
 export default AccessibilityProvider;

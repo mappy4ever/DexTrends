@@ -17,12 +17,12 @@ import { HapticFeedback, VisualFeedback } from './MicroInteractionSystem';
  */
 
 // Type definitions
-type AnimationType = 'scale' | 'slide-up' | 'slide-down' | 'slide-left' | 'slide-right' | 'fade';
-type ModalSize = 'small' | 'medium' | 'large' | 'xl' | 'full';
-type ModalPosition = 'center' | 'top' | 'bottom' | 'left' | 'right';
-type ConfirmationVariant = 'primary' | 'danger' | 'success' | 'warning';
+export type AnimationType = 'scale' | 'slide-up' | 'slide-down' | 'slide-left' | 'slide-right' | 'fade';
+export type ModalSize = 'small' | 'medium' | 'large' | 'xl' | 'full';
+export type ModalPosition = 'center' | 'top' | 'bottom' | 'left' | 'right';
+export type ConfirmationVariant = 'primary' | 'danger' | 'success' | 'warning';
 
-interface ModalOptions {
+export interface ModalOptions {
   closable?: boolean;
   backdrop?: boolean;
   animation?: AnimationType;
@@ -31,18 +31,18 @@ interface ModalOptions {
   props?: Record<string, any>;
 }
 
-interface ModalItem {
+export interface ModalItem {
   id: string;
   component: ComponentType<any>;
   options: Required<Omit<ModalOptions, 'props'>> & { props?: Record<string, any> };
 }
 
-interface OverlayItem {
+export interface OverlayItem {
   component: ComponentType<any>;
   options: ModalOptions;
 }
 
-interface ModalContextValue {
+export interface ModalContextValue {
   modals: ModalItem[];
   overlay: OverlayItem | null;
   openModal: (component: ComponentType<any>, options?: ModalOptions) => string;
@@ -68,7 +68,7 @@ interface OverlayProps {
   className?: string;
 }
 
-interface ConfirmationModalProps {
+export interface ConfirmationModalProps {
   title?: string;
   message?: string;
   confirmText?: string;
@@ -79,29 +79,23 @@ interface ConfirmationModalProps {
   variant?: ConfirmationVariant;
 }
 
-interface ImageModalProps {
+export interface ImageModalProps {
   src: string;
   alt?: string;
   title?: string;
   onClose?: () => void;
 }
 
-interface LoadingModalProps {
+export interface LoadingModalProps {
   message?: string;
   progress?: number;
   onClose?: () => void;
 }
 
 // Modal Context for global state management
-const ModalContext = createContext<ModalContextValue | undefined>(undefined);
+export const ModalContext = createContext<ModalContextValue | undefined>(undefined);
 
-export const useModal = (): ModalContextValue => {
-  const context = useContext(ModalContext);
-  if (!context) {
-    throw new Error('useModal must be used within ModalProvider');
-  }
-  return context;
-};
+// useModal hook has been moved to AdvancedModalSystem.hooks.ts
 
 // Modal Provider Component
 export const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -424,6 +418,9 @@ const Modal: React.FC<ModalProps> = ({
   return null;
 };
 
+// Import hooks from separate file
+import { useModal } from './AdvancedModalSystem.hooks';
+
 // Modal Renderer Component
 const ModalRenderer: React.FC = () => {
   const { modals, closeModal } = useModal();
@@ -667,54 +664,10 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({
   );
 };
 
-// Custom Modal Hook
-export const useModalManager = () => {
-  const { openModal, closeModal, closeAllModals } = useModal();
-  
-  const confirm = useCallback((options: Partial<ConfirmationModalProps> = {}) => {
-    return new Promise<boolean>((resolve) => {
-      const modalId = openModal(ConfirmationModal, {
-        props: {
-          ...options,
-          onConfirm: () => resolve(true),
-          onCancel: () => resolve(false)
-        },
-        closable: false
-      });
-    });
-  }, [openModal]);
-  
-  const showImage = useCallback((src: string, options: Partial<ImageModalProps> = {}) => {
-    return openModal(ImageModal, {
-      props: { src, ...options },
-      size: 'large',
-      animation: 'scale'
-    });
-  }, [openModal]);
-  
-  const showLoading = useCallback((message = 'Loading...', progress?: number) => {
-    return openModal(LoadingModal, {
-      props: { message, progress },
-      closable: false,
-      backdrop: false,
-      size: 'small'
-    });
-  }, [openModal]);
-  
-  return {
-    openModal,
-    closeModal,
-    closeAllModals,
-    confirm,
-    showImage,
-    showLoading
-  };
-};
+// useModalManager hook has been moved to AdvancedModalSystem.hooks.ts
 
 export default {
   ModalProvider,
-  useModal,
-  useModalManager,
   ConfirmationModal,
   ImageModal,
   LoadingModal,
