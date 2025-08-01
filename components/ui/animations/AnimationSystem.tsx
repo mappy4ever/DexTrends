@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { useAnimation } from './AnimationSystem.hooks';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 
 // Type definitions
@@ -25,12 +26,10 @@ interface LoadingDotsProps {
 }
 
 // Animation preferences context
-const AnimationContext = createContext<AnimationContextType>({
+export const AnimationContext = createContext<AnimationContextType>({
   prefersReducedMotion: false,
   pageTransitionEnabled: true,
 });
-
-export const useAnimation = () => useContext(AnimationContext);
 
 // Animation Provider
 export const AnimationProvider = ({ children }: AnimationProps) => {
@@ -74,8 +73,8 @@ export const PageTransition = ({ children, className = '' }: AnimationProps) => 
   };
 
   const pageTransition = {
-    type: 'tween',
-    ease: [0.43, 0.13, 0.23, 0.96], // Smooth bezier curve
+    type: 'tween' as const,
+    ease: [0.43, 0.13, 0.23, 0.96] as const, // Smooth bezier curve
     duration: prefersReducedMotion ? 0.01 : 0.3,
   };
 
@@ -158,7 +157,7 @@ export const StaggerItem = ({ children, className = '', direction = 'up', ...pro
       y: 0,
       scale: 1,
       transition: {
-        type: 'spring',
+        type: 'spring' as const,
         stiffness: 100,
         damping: 15,
         duration: prefersReducedMotion ? 0.01 : 0.5,
@@ -208,7 +207,7 @@ export const HoverCard = ({ children, className = '', scale = 1.02, y = -4, rota
       whileTap={{
         scale: prefersReducedMotion ? 1 : 0.98,
         transition: {
-          type: 'spring',
+          type: 'spring' as const,
           stiffness: 400,
           damping: 25,
         }
@@ -349,7 +348,7 @@ export const LoadingDots = ({ className = '', size = 'md' }: LoadingDotsProps) =
       transition: {
         duration: 0.6,
         repeat: Infinity,
-        ease: 'easeInOut',
+        ease: 'easeInOut' as const,
       }
     }
   };
@@ -399,11 +398,13 @@ export const ModalAnimation = ({ children, isOpen, onClose, className = '' }: { 
       opacity: 1,
       scale: 1,
       y: 0,
-      transition: {
-        type: 'spring',
+      transition: prefersReducedMotion ? {
+        type: 'tween' as const,
+        duration: 0.01,
+      } : {
+        type: 'spring' as const,
         stiffness: 300,
         damping: 30,
-        duration: prefersReducedMotion ? 0.01 : 0.4,
       }
     },
     exit: {
@@ -460,7 +461,7 @@ export const PressableButton = ({ children, className = '', pressScale = 0.95, .
       whileTap={{
         scale: prefersReducedMotion ? 1 : pressScale,
         transition: {
-          type: 'spring',
+          type: 'spring' as const,
           stiffness: 400,
           damping: 25,
         }

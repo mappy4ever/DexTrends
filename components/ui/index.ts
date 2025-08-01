@@ -9,10 +9,17 @@ export * from './navigation';
 // Modal Components
 export * from './modals';
 
-// Form Components
+// Form Components - Enhanced with animations
+export * from './forms';
 export { default as EnhancedSearchBox } from './forms/EnhancedSearchBox';
 export { default as TypeFilter } from './forms/TypeFilter';
 export { default as VisualSearchFilters } from './forms/VisualSearchFilters';
+
+// Progress Indicators
+export * from './progress';
+
+// Design System Components
+export * from './design-system';
 
 // Layout Components
 export { default as ListContainer } from './layout/ListContainer';
@@ -22,9 +29,13 @@ export { default as CollectionDashboard } from './layout/CollectionDashboard';
 export * from './loading';
 
 // Animation Components
+export * from './animations';
 export { default as AnimationSystem } from './animations/AnimationSystem';
-// Temporarily disable the TypeScript animations export to avoid conflicts
-// export * from './animations/animations';
+export { default as EnhancedAnimationSystem } from './EnhancedAnimationSystem';
+export { useEnhancedAnimation } from './EnhancedAnimationSystem.hooks';
+
+// Mobile Components
+export * from '../mobile';
 
 // Chart Components
 export { default as PriceHistoryChart } from './charts/PriceHistoryChart';
@@ -53,6 +64,10 @@ export { default as PageErrorBoundary } from './PageErrorBoundary';
 export { default as AccessibilityProvider } from './AccessibilityProvider';
 export { default as PerformanceMonitor } from './PerformanceMonitor';
 export { default as PremiumComponents } from './PremiumComponents';
+
+// Feedback Components
+export { Toast, ToastContainer } from './Toast';
+export { ContextMenu, useContextMenu } from './ContextMenu';
 
 // Feature Components
 export { default as AchievementSystem } from './AchievementSystem';

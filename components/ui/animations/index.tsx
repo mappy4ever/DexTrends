@@ -40,9 +40,11 @@ export {
   PulseElement,
   LoadingDots,
   ModalAnimation,
-  PressableButton,
-  useAnimation
+  PressableButton
 } from './AnimationSystem';
+
+// Re-export hooks from AnimationSystem.hooks.tsx
+export { useAnimation } from './AnimationSystem.hooks';
 
 
 // Removed aliases that break Fast Refresh

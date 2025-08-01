@@ -2,6 +2,8 @@ import React, { memo, useMemo, useState, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaHeart, FaRegHeart, FaShare, FaTrash } from "react-icons/fa";
 import { TypeBadge } from "../TypeBadge";
 import { CompactPriceIndicator } from "../PriceIndicator";
 import { isFeatureEnabled } from "../../../utils/featureFlags";
@@ -9,6 +11,7 @@ import performanceMonitor from "../../../utils/performanceMonitor";
 import { useSmartMemo, useSmartCallback, withOptimizations } from "../../../utils/reactOptimizations";
 import { getPrice } from "../../../utils/pokemonutils";
 import OptimizedImage from "../OptimizedImage";
+import { useFavorites } from "../../../context/UnifiedAppContext";
 
 // Rarity tiers for holographic effects (illustration rare and above only)
 const getHolographicRarities = () => [
@@ -39,22 +42,27 @@ const shouldHaveHolographicEffect = (rarity: string | undefined): boolean => {
 // Get holographic CSS class
 const getHolographicEffect = (rarity: string | undefined): string => {
   if (!shouldHaveHolographicEffect(rarity)) return '';
-  return 'card-holographic';
+  return 'card-holographic-optimized';
 };
 
-// Get rarity glow effect
+// Get rarity glow effect - optimized for performance
 const getRarityGlowClass = (rarity: string | undefined): string => {
-  if (!rarity) return '';
-  if (rarity.toLowerCase().includes('secret') || rarity.toLowerCase().includes('rainbow')) {
-    return 'shadow-lg shadow-purple-400/50';
+  if (!rarity) return 'rarity-glow-common';
+  const rarityLower = rarity.toLowerCase();
+  
+  if (rarityLower.includes('secret') || rarityLower.includes('rainbow')) {
+    return 'rarity-glow-secret';
   }
-  if (rarity.toLowerCase().includes('illustration')) {
-    return 'shadow-lg shadow-yellow-400/50';
+  if (rarityLower.includes('ultra') || rarityLower.includes('hyper')) {
+    return 'rarity-glow-ultra';
   }
-  if (shouldHaveHolographicEffect(rarity)) {
-    return 'shadow-md shadow-blue-300/50';
+  if (rarityLower.includes('illustration') || rarityLower.includes('rare')) {
+    return 'rarity-glow-rare';
   }
-  return '';
+  if (rarityLower.includes('uncommon')) {
+    return 'rarity-glow-uncommon';
+  }
+  return 'rarity-glow-common';
 };
 
 
@@ -283,6 +291,7 @@ interface UnifiedCardProps {
   className?: string;
   imageWidth?: number;
   imageHeight?: number;
+  disableLazyLoad?: boolean;
 }
 
 /**
@@ -303,9 +312,16 @@ const UnifiedCard = memo(({
   onMagnifyClick = null,
   className = "",
   imageWidth = 220,
-  imageHeight = 308
+  imageHeight = 308,
+  disableLazyLoad = false
 }: UnifiedCardProps) => {
   const router = useRouter();
+  const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
+  
+  // Swipe gesture state
+  const [swipeX, setSwipeX] = useState(0);
+  const [showActions, setShowActions] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   
   // Optimized card data normalization with performance monitoring
   const normalizedCard = useSmartMemo(() => {
@@ -428,6 +444,9 @@ const UnifiedCard = memo(({
     
     // performanceMonitor.startTiming('card-click');
     
+    // Don't trigger click if we're dragging
+    if (isDragging) return;
+    
     if (onCardClick) {
       onCardClick(card);
     } else if (router && normalizedCard.linkPath) {
@@ -435,7 +454,48 @@ const UnifiedCard = memo(({
     }
     
     // performanceMonitor.endTiming('card-click');
-  }, [card, onCardClick, normalizedCard.linkPath, router]);
+  }, [card, onCardClick, normalizedCard.linkPath, router, isDragging]);
+  
+  // Swipe action handlers
+  const handleFavorite = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    
+    // Toggle favorite status
+    const isFavorited = favorites.cards.some((c: any) => c.id === card.id);
+    if (isFavorited) {
+      removeFromFavorites('cards', card.id);
+    } else {
+      addToFavorites('cards', card);
+    }
+    
+    setShowActions(false);
+    setSwipeX(0);
+  }, [card, favorites, addToFavorites, removeFromFavorites]);
+  
+  const handleShare = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    
+    if (navigator.share) {
+      navigator.share({
+        title: normalizedCard.name,
+        text: `Check out this ${normalizedCard.name} card!`,
+        url: window.location.href
+      });
+    }
+    setShowActions(false);
+    setSwipeX(0);
+  }, [normalizedCard.name]);
+  
+  const handleDelete = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    
+    // TODO: Implement delete functionality
+    // This would typically call a parent handler or context method
+    console.log('Delete card:', normalizedCard.name);
+    
+    setShowActions(false);
+    setSwipeX(0);
+  }, [normalizedCard.name]);
 
   const handleMagnifyClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -443,6 +503,9 @@ const UnifiedCard = memo(({
       onMagnifyClick(card);
     }
   }, [card, onMagnifyClick]);
+  
+  // Check if card is favorited
+  const isFavorited = favorites.cards.some((c: any) => c.id === card.id);
 
   const handleImageError = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
     const target = e.target as HTMLImageElement;
@@ -456,7 +519,37 @@ const UnifiedCard = memo(({
 
 
   return (
-    <>
+    <motion.div
+      className="relative"
+      drag="x"
+      dragConstraints={{ left: -120, right: 0 }}
+      dragElastic={0.2}
+      dragMomentum={false}
+      onDrag={(event, info) => {
+        setSwipeX(info.offset.x);
+        setIsDragging(true);
+      }}
+      onDragEnd={(event, info) => {
+        if (info.offset.x < -80 || info.velocity.x < -500) {
+          setShowActions(true);
+          setSwipeX(-120);
+        } else {
+          setShowActions(false);
+          setSwipeX(0);
+        }
+        setIsDragging(false);
+      }}
+      animate={{ 
+        x: swipeX,
+        scale: isDragging ? 0.98 : 1,
+        rotate: isDragging ? swipeX * 0.02 : 0
+      }}
+      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      style={{
+        // Add visual feedback based on swipe distance
+        filter: swipeX < -60 ? 'brightness(0.95)' : 'brightness(1)'
+      }}
+    >
       <div
         className={`
           ${className}
@@ -473,25 +566,26 @@ const UnifiedCard = memo(({
         onClick={handleCardClick}
         style={{ cursor: 'pointer' }}
       >
-      {/* Card Image */}
-      <div className="relative w-full">
-        <OptimizedImage 
+      {/* Card Image with performance optimizations */}
+      <div className="relative w-full card-image-container">
+        <img 
           src={normalizedCard.image} 
           alt={normalizedCard.name}
           width={imageWidth}
           height={imageHeight}
           className="w-full h-auto object-cover"
-          placeholder="blur"
-          onError={handleImageError}
-          priority={card.priority || false}
+          loading={disableLazyLoad ? "eager" : "lazy"}
+          decoding="async"
+          onLoad={() => console.log('Image loaded:', normalizedCard.name, normalizedCard.image)}
+          onError={(e) => {
+            console.error('Image failed:', normalizedCard.name, normalizedCard.image, e);
+            handleImageError(e);
+          }}
         />
 
-        {/* Holographic Shine Overlay - Only for rare cards, more subtle for Pocket cards */}
+        {/* Simplified holographic effect for performance */}
         {shouldHaveHolographicEffect(normalizedCard.rarity) && cardType !== "pocket" && (
-          <div className="holographic-overlay absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            <div className="shine-effect absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out"></div>
-            <div className="holographic-pattern absolute inset-0 bg-gradient-to-br from-purple-400/10 via-blue-400/10 via-green-400/10 via-yellow-400/10 to-red-400/10 opacity-30"></div>
-          </div>
+          <div className="card-holographic-optimized" />
         )}
         
         {/* Subtle glow for rare Pocket cards only */}
@@ -606,77 +700,72 @@ const UnifiedCard = memo(({
         </div>
       )}
     </div>
-      {/* CSS Styles for Holographic Effects */}
-      <style jsx>{`
-        .card-holographic {
-          background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.1) 100%);
-          border: 1px solid rgba(147, 51, 234, 0.3);
-          position: relative;
-        }
-        
-        .card-holographic::before {
-          content: '';
-          position: absolute;
-          top: -1px;
-          left: -1px;
-          right: -1px;
-          bottom: -1px;
-          background: linear-gradient(45deg, 
-            rgba(147, 51, 234, 0.5), 
-            rgba(59, 130, 246, 0.5), 
-            rgba(16, 185, 129, 0.5), 
-            rgba(245, 158, 11, 0.5), 
-            rgba(239, 68, 68, 0.5));
-          border-radius: inherit;
-          z-index: -1;
-          opacity: 0;
-          transition: opacity 0.3s ease;
-        }
-        
-        .card-holographic:hover::before {
-          opacity: 1;
-        }
-        
-        .holographic-overlay {
-          background: radial-gradient(circle at 50% 50%, 
-            rgba(147, 51, 234, 0.1) 0%, 
-            rgba(59, 130, 246, 0.1) 25%, 
-            rgba(16, 185, 129, 0.1) 50%, 
-            rgba(245, 158, 11, 0.1) 75%, 
-            rgba(239, 68, 68, 0.1) 100%);
-          animation: holographic-shift 3s ease-in-out infinite;
-        }
-        
-        @keyframes holographic-shift {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
-        
-        .shine-effect {
-          background: linear-gradient(90deg, 
-            transparent 0%, 
-            rgba(255, 255, 255, 0.2) 20%, 
-            rgba(255, 255, 255, 0.5) 50%, 
-            rgba(255, 255, 255, 0.2) 80%, 
-            transparent 100%);
-          box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-        }
-        
-        .holographic-pattern {
-          background: 
-            linear-gradient(45deg, transparent 30%, rgba(147, 51, 234, 0.1) 50%, transparent 70%),
-            linear-gradient(-45deg, transparent 30%, rgba(59, 130, 246, 0.1) 50%, transparent 70%),
-            linear-gradient(90deg, rgba(16, 185, 129, 0.05) 0%, rgba(245, 158, 11, 0.05) 100%);
-          background-size: 20px 20px, 20px 20px, 40px 40px;
-          animation: holographic-pattern 4s linear infinite;
-        }
-        
-        @keyframes holographic-pattern {
-          0% { background-position: 0px 0px, 0px 0px, 0px 0px; }
-          100% { background-position: 20px 20px, -20px 20px, 40px 0px; }
-        }
-      `}</style>
-    </>
+    
+      {/* Swipe Indicator - shows when dragging */}
+      {isDragging && swipeX < -30 && !showActions && (
+        <motion.div
+          className="absolute right-2 top-1/2 -translate-y-1/2"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ 
+            opacity: swipeX < -60 ? 1 : 0.5,
+            scale: swipeX < -60 ? 1 : 0.9
+          }}
+          transition={{ duration: 0.2 }}
+        >
+          <div className={`flex items-center gap-1 px-3 py-2 rounded-full ${
+            swipeX < -60 ? 'bg-purple-500 text-white' : 'bg-gray-300 text-gray-600'
+          }`}>
+            <span className="text-sm font-medium">Swipe for actions</span>
+            <motion.span
+              animate={{ x: [-2, 2, -2] }}
+              transition={{ repeat: Infinity, duration: 0.8 }}
+            >
+              ←
+            </motion.span>
+          </div>
+        </motion.div>
+      )}
+
+      {/* Swipe Actions */}
+      <AnimatePresence>
+        {showActions && (
+          <motion.div
+            className="absolute top-0 right-0 h-full flex items-center gap-2 px-4"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+          >
+            <motion.button
+              className={`p-3 ${isFavorited ? 'bg-red-600' : 'bg-red-500'} text-white rounded-full shadow-lg`}
+              whileTap={{ scale: 0.9 }}
+              onClick={handleFavorite}
+              title={isFavorited ? "Remove from favorites" : "Add to favorites"}
+            >
+              {isFavorited ? <FaHeart className="w-5 h-5" /> : <FaRegHeart className="w-5 h-5" />}
+            </motion.button>
+            
+            <motion.button
+              className="p-3 bg-blue-500 text-white rounded-full shadow-lg"
+              whileTap={{ scale: 0.9 }}
+              onClick={handleShare}
+              title="Share card"
+            >
+              <FaShare className="w-5 h-5" />
+            </motion.button>
+            
+            <motion.button
+              className="p-3 bg-gray-500 text-white rounded-full shadow-lg"
+              whileTap={{ scale: 0.9 }}
+              onClick={handleDelete}
+              title="Remove card"
+            >
+              <FaTrash className="w-5 h-5" />
+            </motion.button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 });
 

@@ -12,9 +12,9 @@ interface TypeGradientBadgeProps {
 
 const typeColors: { [key: string]: { bg: string; text: string; gradient: string } } = {
   normal: { 
-    bg: 'bg-gray-400', 
-    text: 'text-gray-900',
-    gradient: 'from-gray-300 to-gray-500'
+    bg: 'bg-stone-400', 
+    text: 'text-white',
+    gradient: 'from-stone-300 to-stone-500'
   },
   fire: { 
     bg: 'bg-red-500', 
@@ -47,9 +47,9 @@ const typeColors: { [key: string]: { bg: string; text: string; gradient: string 
     gradient: 'from-red-600 to-red-800'
   },
   poison: { 
-    bg: 'bg-purple-600', 
+    bg: 'bg-violet-600', 
     text: 'text-white',
-    gradient: 'from-purple-500 to-purple-700'
+    gradient: 'from-fuchsia-500 to-violet-700'
   },
   ground: { 
     bg: 'bg-yellow-600', 
@@ -67,9 +67,9 @@ const typeColors: { [key: string]: { bg: string; text: string; gradient: string 
     gradient: 'from-pink-400 to-pink-600'
   },
   bug: { 
-    bg: 'bg-green-400', 
+    bg: 'bg-yellow-500', 
     text: 'text-gray-900',
-    gradient: 'from-lime-400 to-green-500'
+    gradient: 'from-yellow-400 to-lime-600'
   },
   rock: { 
     bg: 'bg-yellow-800', 
@@ -100,14 +100,30 @@ const typeColors: { [key: string]: { bg: string; text: string; gradient: string 
     bg: 'bg-pink-300', 
     text: 'text-gray-900',
     gradient: 'from-pink-300 to-pink-500'
+  },
+  // Pokemon Pocket TCG Types
+  colorless: {
+    bg: 'bg-gray-300',
+    text: 'text-gray-900',
+    gradient: 'from-gray-200 to-gray-400'
+  },
+  darkness: {
+    bg: 'bg-gray-900',
+    text: 'text-white',
+    gradient: 'from-gray-800 to-black'
+  },
+  metal: {
+    bg: 'bg-slate-500',
+    text: 'text-white',
+    gradient: 'from-slate-400 to-slate-600'
   }
 };
 
 const sizeClasses = {
-  xs: 'text-xs px-2 py-1',
-  sm: 'text-sm px-3 py-1.5',
-  md: 'text-base px-4 py-2',
-  lg: 'text-lg px-5 py-2.5'
+  xs: 'text-xs px-2 py-1 min-w-[60px]',
+  sm: 'text-sm px-3 py-1.5 min-w-[70px]',
+  md: 'text-base px-4 py-2 min-w-[80px]',
+  lg: 'text-lg px-5 py-2.5 min-w-[90px]'
 };
 
 const circularSizeClasses = {
@@ -128,6 +144,10 @@ export const TypeGradientBadge: React.FC<TypeGradientBadgeProps> = ({
   const typeStyle = typeColors[type.toLowerCase()] || typeColors.normal;
   const isClickable = !!onClick;
 
+  // Check if this is a regular Pokemon type (not Pocket TCG)
+  const isPocketType = ['colorless', 'darkness', 'metal'].includes(type.toLowerCase());
+  const isRegularType = !isPocketType;
+
   const baseClasses = circular
     ? `${circularSizeClasses[size]} rounded-full flex items-center justify-center`
     : `${sizeClasses[size]} rounded-full`;
@@ -136,6 +156,8 @@ export const TypeGradientBadge: React.FC<TypeGradientBadgeProps> = ({
     ? `bg-gradient-to-r ${typeStyle.gradient}`
     : typeStyle.bg;
 
+  const borderClass = isRegularType ? 'border border-gray-400' : '';
+
   return (
     <motion.button
       onClick={onClick}
@@ -143,6 +165,7 @@ export const TypeGradientBadge: React.FC<TypeGradientBadgeProps> = ({
       className={`
         ${baseClasses}
         ${bgClass}
+        ${borderClass}
         ${typeStyle.text}
         font-semibold uppercase tracking-wider
         shadow-md

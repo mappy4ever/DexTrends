@@ -9,8 +9,12 @@ import React, {
   ReactNode,
   CSSProperties
 } from 'react';
+import { useTooltip, useContextualHelp } from './TooltipHelpSystem.hooks';
 import { createPortal } from 'react-dom';
 import { HapticFeedback } from './MicroInteractionSystem';
+
+// Re-export hooks for backward compatibility
+export { useTooltip, useContextualHelp } from './TooltipHelpSystem.hooks';
 
 /**
  * Advanced Contextual Tooltip and Help System
@@ -34,7 +38,7 @@ interface Position {
   y: number;
 }
 
-interface TooltipContextType {
+export interface TooltipContextType {
   activeTooltip: ActiveTooltip | null;
   tooltipPosition: Position;
   showTooltip: (content: ReactNode, targetElement: HTMLElement, options?: TooltipOptions) => void;
@@ -116,15 +120,7 @@ interface HelpContentEntry {
 }
 
 // Tooltip Context for global management
-const TooltipContext = createContext<TooltipContextType | undefined>(undefined);
-
-export const useTooltip = () => {
-  const context = useContext(TooltipContext);
-  if (!context) {
-    throw new Error('useTooltip must be used within TooltipProvider');
-  }
-  return context;
-};
+export const TooltipContext = createContext<TooltipContextType | undefined>(undefined);
 
 // Tooltip Provider Component
 export const TooltipProvider: React.FC<TooltipProviderProps> = ({ children, delay = 500, hideDelay = 0 }) => {
@@ -701,32 +697,6 @@ export const QuickHelpButton: React.FC<QuickHelpButtonProps> = ({
 };
 
 // Contextual Help Hook
-export const useContextualHelp = () => {
-  const [helpData, setHelpData] = useState<Map<string, ReactNode>>(new Map());
-  
-  const registerHelp = useCallback((key: string, content: ReactNode) => {
-    setHelpData(prev => new Map(prev.set(key, content)));
-  }, []);
-  
-  const getHelp = useCallback((key: string) => {
-    return helpData.get(key);
-  }, [helpData]);
-  
-  const removeHelp = useCallback((key: string) => {
-    setHelpData(prev => {
-      const newMap = new Map(prev);
-      newMap.delete(key);
-      return newMap;
-    });
-  }, []);
-  
-  return {
-    registerHelp,
-    getHelp,
-    removeHelp,
-    helpData
-  };
-};
 
 // Help Content Database
 export const HelpContentDatabase: HelpContentEntry = {

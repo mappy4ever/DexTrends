@@ -1,6 +1,7 @@
 // components/ui/Modal.js
 import React from 'react';
 import { FaTimes } from 'react-icons/fa';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface ModalProps {
   isOpen: boolean;
@@ -11,8 +12,6 @@ interface ModalProps {
 }
 
 export default function Modal({ isOpen, onClose, title, children, size = "md" }: ModalProps) {
-  if (!isOpen) return null;
-
   // Define size classes based on props
   // These should align with Tailwind's max-width scale or your custom extensions
   const sizeClasses = {
@@ -29,39 +28,93 @@ export default function Modal({ isOpen, onClose, title, children, size = "md" }:
   const resolvedSizeClass = sizeClasses[size] || sizeClasses.md;
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm transition-opacity duration-300 ease-in-out overflow-y-auto" // Added overflow for mobile
-      onClick={onClose}
-      aria-modal="true"
-      role="dialog"
-    >
-      <div
-        className={`bg-card text-card-foreground rounded-app-lg shadow-2xl my-4 mx-auto w-[calc(100%-2rem)] sm:w-full ${resolvedSizeClass} transform transition-all duration-300 ease-in-out scale-100 opacity-100 animate-fadeIn overflow-y-auto max-h-[calc(100vh-2rem)] sm:max-h-[90vh]`} // Better mobile sizing
-        onClick={(e: any) => e.stopPropagation()} // Prevent closing when clicking inside modal content
-        style={{
-          maxHeight: 'calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 2rem)'
-        }}
-      >
-        <div className="flex items-center justify-between p-4 md:p-6 border-b border-border"> {/* Standardized padding */}
-          {title && (
-            typeof title === 'string' ? (
-                <h2 className="text-xl font-semibold text-foreground">{title}</h2>
-            ) : (
-                title // Allow JSX title
-            )
-          )}
-          <button
+    <AnimatePresence mode="wait">
+      {isOpen && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
             onClick={onClose}
-            className="text-foreground-muted hover:text-foreground transition-colors rounded-full p-1 -mr-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" // Improved focus and spacing
-            aria-label="Close modal"
+            aria-modal="true"
+            role="dialog"
+          />
+          
+          {/* Modal Content */}
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
           >
-            <FaTimes size={20} />
-          </button>
-        </div>
-        <div className="p-4 md:p-6"> {/* Standardized padding */}
-            {children}
-        </div>
-      </div>
-    </div>
+            <motion.div
+              className={`bg-card text-card-foreground rounded-app-lg shadow-2xl my-4 mx-auto w-[calc(100%-2rem)] sm:w-full ${resolvedSizeClass} overflow-y-auto max-h-[calc(100vh-2rem)] sm:max-h-[90vh]`}
+              initial={{ scale: 0.7, opacity: 0, y: 20 }}
+              animate={{ 
+                scale: 1, 
+                opacity: 1, 
+                y: 0,
+                transition: {
+                  type: "spring" as const,
+                  stiffness: 300,
+                  damping: 20,
+                  duration: 0.3
+                }
+              }}
+              exit={{ 
+                scale: 0.7, 
+                opacity: 0, 
+                y: 20,
+                transition: {
+                  duration: 0.2
+                }
+              }}
+              onClick={(e: any) => e.stopPropagation()}
+              style={{
+                maxHeight: 'calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 2rem)'
+              }}
+            >
+              <div className="flex items-center justify-between p-4 md:p-6 border-b border-border">
+                {title && (
+                  typeof title === 'string' ? (
+                    <motion.h2 
+                      className="text-xl font-semibold text-foreground"
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.1 }}
+                    >
+                      {title}
+                    </motion.h2>
+                  ) : (
+                    title // Allow JSX title
+                  )
+                )}
+                <motion.button
+                  onClick={onClose}
+                  className="text-foreground-muted hover:text-foreground transition-colors rounded-full p-1 -mr-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  aria-label="Close modal"
+                  whileHover={{ scale: 1.1, rotate: 90 }}
+                  whileTap={{ scale: 0.9 }}
+                  transition={{ type: "spring" as const, stiffness: 400, damping: 17 }}
+                >
+                  <FaTimes size={20} />
+                </motion.button>
+              </div>
+              <motion.div 
+                className="p-4 md:p-6"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 }}
+              >
+                {children}
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
   );
 }
