@@ -2,8 +2,11 @@
  * Comprehensive type effectiveness calculator for team synergy analysis
  */
 
+import { showdownQueries } from '@/utils/supabase';
+
 // Type effectiveness chart - attacking type vs defending type
-const TYPE_CHART: Record<string, Record<string, number>> = {
+// This serves as a fallback when Supabase data is not available
+const FALLBACK_TYPE_CHART: Record<string, Record<string, number>> = {
   normal: {
     rock: 0.5,
     ghost: 0,
@@ -162,6 +165,42 @@ const TYPE_CHART: Record<string, Record<string, number>> = {
   },
 };
 
+// Dynamic type chart loaded from Supabase
+let TYPE_CHART: Record<string, Record<string, number>> = FALLBACK_TYPE_CHART;
+let typeChartLoaded = false;
+let typeChartLoadPromise: Promise<void> | null = null;
+
+/**
+ * Load type effectiveness data from Supabase
+ */
+export async function loadTypeChart(): Promise<void> {
+  if (typeChartLoaded) return;
+  
+  // Prevent multiple simultaneous loads
+  if (typeChartLoadPromise) {
+    await typeChartLoadPromise;
+    return;
+  }
+  
+  typeChartLoadPromise = (async () => {
+    try {
+      const chart = await showdownQueries.getAllTypeChart();
+      if (chart) {
+        TYPE_CHART = chart;
+        typeChartLoaded = true;
+        console.log('Successfully loaded type effectiveness data from Showdown');
+      } else {
+        console.warn('Failed to load type chart from Supabase, using fallback');
+      }
+    } catch (error) {
+      console.error('Error loading type effectiveness data:', error);
+      // Keep using fallback
+    }
+  })();
+  
+  await typeChartLoadPromise;
+}
+
 // All Pokemon types
 export const POKEMON_TYPES = [
   'normal', 'fighting', 'flying', 'poison', 'ground', 'rock', 'bug', 'ghost',
@@ -173,6 +212,7 @@ export type PokemonType = typeof POKEMON_TYPES[number];
 
 /**
  * Calculate damage multiplier for an attacking type against defending type(s)
+ * Uses whatever type chart is currently loaded (Showdown or fallback)
  */
 export function calculateTypeEffectiveness(
   attackingType: string,
@@ -186,6 +226,18 @@ export function calculateTypeEffectiveness(
   }
   
   return multiplier;
+}
+
+/**
+ * Calculate damage multiplier with guaranteed Showdown data
+ * Ensures type chart is loaded from Supabase before calculating
+ */
+export async function calculateTypeEffectivenessAsync(
+  attackingType: string,
+  defendingTypes: string[]
+): Promise<number> {
+  await loadTypeChart();
+  return calculateTypeEffectiveness(attackingType, defendingTypes);
 }
 
 /**

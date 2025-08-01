@@ -54,6 +54,9 @@ const DEFAULT_OPTIONS: Partial<UnifiedFetchOptions> = {
 
 // Cache manager is imported from UnifiedCacheManager
 
+// Request deduplication map
+const pendingRequests = new Map<string, Promise<UnifiedFetchResponse<any>>>();
+
 /**
  * Main unified fetch function
  * @param url - The URL to fetch
@@ -74,6 +77,13 @@ export async function unifiedFetch<T = unknown>(
     body: opts.body 
   });
   
+  // Check for pending requests to the same URL (request deduplication)
+  const requestKey = `${url}-${JSON.stringify({ method: opts.method, body: opts.body })}`;
+  if (!opts.forceRefresh && pendingRequests.has(requestKey)) {
+    logger.debug('Request deduplication: reusing pending request', { url, requestKey });
+    return pendingRequests.get(requestKey)! as Promise<UnifiedFetchResponse<T>>;
+  }
+  
   // Check cache first (for GET requests only)
   if (opts.useCache && (!opts.method || opts.method === 'GET') && !opts.forceRefresh) {
     try {
@@ -92,11 +102,13 @@ export async function unifiedFetch<T = unknown>(
     }
   }
   
-  // Perform fetch with retries
-  let lastError: Error | null = null;
-  let attempt = 0;
-  
-  while (attempt <= (opts.retries || 0)) {
+  // Create the request promise and store it for deduplication
+  const requestPromise = (async (): Promise<UnifiedFetchResponse<T>> => {
+    // Perform fetch with retries
+    let lastError: Error | null = null;
+    let attempt = 0;
+    
+    while (attempt <= (opts.retries || 0)) {
     try {
       // Create abort controller for timeout
       const controller = new AbortController();
@@ -183,28 +195,39 @@ export async function unifiedFetch<T = unknown>(
         await new Promise(resolve => setTimeout(resolve, opts.retryDelay));
       }
     }
-  }
+    }
+    
+    // All retries failed
+    const duration = performance.now() - startTime;
+    logger.error('Fetch failed after all retries:', { 
+      url, 
+      attempts: attempt,
+      error: lastError?.message,
+      duration,
+      ...opts.metadata 
+    });
+    
+    if (opts.throwOnError) {
+      throw lastError;
+    }
+    
+    return {
+      data: null,
+      error: lastError,
+      fromCache: false,
+      duration
+    };
+  })();
   
-  // All retries failed
-  const duration = performance.now() - startTime;
-  logger.error('Fetch failed after all retries:', { 
-    url, 
-    attempts: attempt,
-    error: lastError?.message,
-    duration,
-    ...opts.metadata 
+  // Store the promise for deduplication
+  pendingRequests.set(requestKey, requestPromise);
+  
+  // Clean up after completion
+  requestPromise.finally(() => {
+    pendingRequests.delete(requestKey);
   });
   
-  if (opts.throwOnError) {
-    throw lastError;
-  }
-  
-  return {
-    data: null,
-    error: lastError,
-    fromCache: false,
-    duration
-  };
+  return requestPromise;
 }
 
 /**
@@ -218,6 +241,27 @@ export async function fetchJSON<T = unknown>(
     ...options, 
     responseType: 'json' 
   });
+  
+  // Debug logging for cached responses
+  if (result.fromCache) {
+    logger.debug('fetchJSON returning cached data', { 
+      url, 
+      hasData: !!result.data,
+      dataType: typeof result.data,
+      fromCache: result.fromCache 
+    });
+  }
+  
+  // If there's an error and throwOnError is true (or not specified), throw it
+  if (result.error && (options?.throwOnError !== false)) {
+    logger.error('fetchJSON throwing error', { 
+      url, 
+      error: result.error.message,
+      fromCache: result.fromCache 
+    });
+    throw result.error;
+  }
+  
   return result.data;
 }
 

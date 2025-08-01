@@ -15,7 +15,19 @@ import type {
   CacheInvalidationOptions
 } from '../types/utils/cache';
 
-import { fetchJSON } from './unifiedFetch';
+// Import Supabase statically to avoid chunk loading errors
+import { supabase } from '../lib/supabase';
+
+// Removed circular import - using direct fetch instead
+
+// Simple fetch function to avoid circular dependency
+const simpleFetch = async (url: string, options?: RequestInit) => {
+  const response = await fetch(url, options);
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  return response.json();
+};
 
 // Cache configuration
 export const CONFIG = {
@@ -286,20 +298,21 @@ class LocalStorageCache extends CacheStorage {
  * Database cache implementation (using Supabase)
  */
 class DatabaseCache extends CacheStorage {
-  private supabase: any = null;
+  private isEnabled: boolean;
   
-  async initialize(): Promise<void> {
-    if (!this.supabase) {
-      const { supabase } = await import('../lib/supabase');
-      this.supabase = supabase;
-    }
+  constructor() {
+    super();
+    // Only enable if Supabase is configured
+    this.isEnabled = typeof window !== 'undefined' && 
+                     !!process.env.NEXT_PUBLIC_SUPABASE_URL && 
+                     !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   }
   
   override async get<T = any>(key: string): Promise<T | null> {
-    await this.initialize();
+    if (!this.isEnabled || !supabase) return null;
     
     try {
-      const { data, error } = await this.supabase
+      const { data, error } = await supabase
         .from('unified_cache')
         .select('cache_data')
         .eq('cache_key', key)
@@ -315,12 +328,12 @@ class DatabaseCache extends CacheStorage {
   }
   
   override async set<T = any>(key: string, value: T, ttl: number = CONFIG.DB_TTL): Promise<void> {
-    await this.initialize();
+    if (!this.isEnabled || !supabase) return;
     
     try {
       const expiresAt = new Date(Date.now() + ttl);
       
-      await this.supabase
+      await supabase
         .from('unified_cache')
         .upsert({
           cache_key: key,
@@ -335,10 +348,10 @@ class DatabaseCache extends CacheStorage {
   }
   
   override async delete(key: string): Promise<void> {
-    await this.initialize();
+    if (!this.isEnabled || !supabase) return;
     
     try {
-      await this.supabase
+      await supabase
         .from('unified_cache')
         .delete()
         .eq('cache_key', key);
@@ -348,10 +361,10 @@ class DatabaseCache extends CacheStorage {
   }
   
   override async clear(): Promise<void> {
-    await this.initialize();
+    if (!this.isEnabled || !supabase) return;
     
     try {
-      await this.supabase
+      await supabase
         .from('unified_cache')
         .delete()
         .lt('expires_at', new Date().toISOString());
@@ -618,10 +631,8 @@ export const pokemonCache = {
     return cacheManager.cachedFetch(
       `https://pokeapi.co/api/v2/pokemon/${id}`,
       async () => {
-        return await fetchJSON(`https://pokeapi.co/api/v2/pokemon/${id}`, {
-          useCache: false, // Let cacheManager handle caching
-          timeout: 8000,
-          retries: 3 // Pokemon data is essential
+        return await simpleFetch(`https://pokeapi.co/api/v2/pokemon/${id}`, {
+          signal: AbortSignal.timeout(8000)
         });
       },
       { priority: CONFIG.PRIORITY.HIGH, ttl: CONFIG.LOCAL_TTL }
@@ -633,10 +644,8 @@ export const pokemonCache = {
     return cacheManager.cachedFetch(
       `https://pokeapi.co/api/v2/pokemon-species/${id}`,
       async () => {
-        return await fetchJSON(`https://pokeapi.co/api/v2/pokemon-species/${id}`, {
-          useCache: false, // Let cacheManager handle caching
-          timeout: 8000,
-          retries: 3 // Species data is essential for evolution chains
+        return await simpleFetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`, {
+          signal: AbortSignal.timeout(8000)
         });
       },
       { priority: CONFIG.PRIORITY.HIGH, ttl: CONFIG.LOCAL_TTL }
@@ -688,10 +697,8 @@ export default cacheManager;
 // Legacy API compatibility
 export const cachedFetchData = (url: string, options?: ExtendedCacheOptions) => {
   return cacheManager.cachedFetch(url, async () => {
-    return await fetchJSON(url, {
-      useCache: false, // Let cacheManager handle caching
-      timeout: 30000,
-      retries: 2,
+    return await simpleFetch(url, {
+      signal: AbortSignal.timeout(30000),
       headers: {
         'Accept': 'application/json',
         'Cache-Control': 'no-cache'

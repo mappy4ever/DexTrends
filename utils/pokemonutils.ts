@@ -215,6 +215,27 @@ export const getPrice = (card: Partial<TCGCard> | null | undefined): string => {
   return "N/A";
 };
 
+export const getPriceNumeric = (card: Partial<TCGCard> | null | undefined): number => {
+  if (card?.tcgplayer?.prices) {
+    const prices = card.tcgplayer.prices;
+    const priceOrder = [
+      "holofoil",
+      "normal",
+      "reverseHolofoil",
+      "1stEditionHolofoil",
+      "unlimitedHolofoil",
+    ] as const;
+    
+    for (const type of priceOrder) {
+      const priceData = prices[type];
+      if (priceData?.market) {
+        return priceData.market;
+      }
+    }
+  }
+  return 0;
+};
+
 export const getRarityRank = (card: Partial<TCGCard> | null | undefined): number => {
   const rarity = card?.rarity;
   const rarityMap: Record<string, number> = {
