@@ -10,6 +10,7 @@ import { GlassContainer } from "../../components/ui/design-system/GlassContainer
 import { GradientButton } from "../../components/ui/design-system/GradientButton";
 import Modal from "../../components/ui/modals/Modal";
 import CardList from "../../components/CardList";
+import VirtualCardGrid from "../../components/VirtualCardGrid";
 import HolographicCard from "../../components/ui/HolographicCard";
 import { useTheme } from "../../context/UnifiedAppContext";
 import { useFavorites } from "../../context/UnifiedAppContext";
@@ -20,6 +21,7 @@ import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
 import performanceMonitor from "../../utils/performanceMonitor";
 import { CardGridSkeleton } from "../../components/ui/SkeletonLoader";
 import type { TCGCard, CardSet } from "../../types/api/cards";
+import TCGSetErrorBoundary from "../../components/TCGSetErrorBoundary";
 
 // Interface for set statistics
 interface CardWithMarketPrice extends TCGCard {
@@ -42,7 +44,6 @@ interface PriceDataType {
 
 const SetIdPage: NextPage = () => {
   const router = useRouter();
-  const { setid } = router.query;
   const { theme } = useTheme();
   const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
   const { viewSettings } = useViewSettings();
@@ -57,6 +58,7 @@ const SetIdPage: NextPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
   const [loadingMessage, setLoadingMessage] = useState<string>("Loading set information...");
+  const [dataWarning, setDataWarning] = useState<string | null>(null);
   
   // Filter states
   const [filterRarity, setFilterRarity] = useState<string>("");
@@ -146,17 +148,32 @@ const SetIdPage: NextPage = () => {
     }
   }, []);
 
+  // Get setid from router query with proper validation
+  const setid = useMemo(() => {
+    if (!router.isReady || !router.query.setid) {
+      return null;
+    }
+    return Array.isArray(router.query.setid) ? router.query.setid[0] : router.query.setid;
+  }, [router.isReady, router.query.setid]);
+
+  // Add debug logging
+  useEffect(() => {
+    console.log('[SetIdPage] Router state:', {
+      isReady: router.isReady,
+      query: router.query,
+      setid: setid,
+      pathname: router.pathname
+    });
+  }, [router.isReady, router.query, setid, router.pathname]);
+
   // Fetch set information and cards
   useEffect(() => {
     let mounted = true;
     let abortController: AbortController | null = null;
     
-    // Wait for router to be ready
-    if (!router.isReady) {
-      return;
-    }
-    
-    if (!setid) {
+    // Wait for router to be ready and setid to be available
+    if (!router.isReady || !setid) {
+      console.log('[SetIdPage] Skipping fetch - router not ready or no setid', { isReady: router.isReady, setid });
       return;
     }
 
@@ -187,7 +204,7 @@ const SetIdPage: NextPage = () => {
         let data;
         try {
           // Use fetchJSON with proper error handling and abort signal
-          data = await fetchJSON<{ set: any; cards: any[]; stats?: any; cachedAt?: string }>(
+          data = await fetchJSON<{ set: any; cards: any[]; stats?: any; cachedAt?: string; error?: string; warning?: string }>(
             url,
             {
               signal: abortController.signal,
@@ -196,9 +213,15 @@ const SetIdPage: NextPage = () => {
               retries: 2,
               retryDelay: 1000,
               timeout: 90000, // 90 seconds for complete sets
-              throwOnError: true
+              throwOnError: false // Don't throw immediately to handle error responses
             }
           );
+          
+          // Check if the response is an error
+          if (data && typeof data === 'object' && 'error' in data && !data.set) {
+            console.error('[SetIdPage] API returned error response:', data);
+            throw new Error(data.error || 'API returned an error');
+          }
           
           // Clear the slow load timeout
           clearTimeout(slowLoadTimeout);
@@ -238,31 +261,88 @@ const SetIdPage: NextPage = () => {
           throw new Error('No data returned from API');
         }
         
+        // Log the response structure to debug
+        console.log('[SetIdPage] API Response structure:', {
+          hasData: !!data,
+          dataKeys: Object.keys(data || {}),
+          hasSet: !!data?.set,
+          hasCards: !!data?.cards,
+          dataType: typeof data,
+          cachedAt: data?.cachedAt,
+          warning: data?.warning
+        });
+        
         setLoadingMessage("Loading cards...");
         
-        if (data?.set) {
-          setSetInfo(data.set);
-        } else {
-          throw new Error('Set data not found in API response');
+        // Handle both possible data structures
+        // Case 1: Standard response with { set, cards, ... }
+        // Case 2: Direct set data (from some cache scenarios)
+        let setData = data?.set;
+        let cardsData = data?.cards || [];
+        
+        // Validate set data
+        if (!setData || !setData.id || !setData.name) {
+          console.error('[SetIdPage] Invalid set data structure:', { 
+            setData, 
+            hasId: setData?.id,
+            hasName: setData?.name
+          });
+          throw new Error('Invalid or missing set data in API response');
         }
         
-        if (data?.cards) {
-          setCards(data.cards);
+        setSetInfo(setData);
+        
+        // Check for warnings (e.g., stale data)
+        if (data?.warning) {
+          setDataWarning(data.warning);
+          console.warn('[SetIdPage] Data warning:', data.warning);
+        }
+        
+        // Handle cards data
+        if (Array.isArray(cardsData) && cardsData.length > 0) {
+          setCards(cardsData);
+          
+          // Pre-populate browser cache for individual cards for instant navigation
+          if (typeof window !== 'undefined') {
+            cardsData.forEach(card => {
+              // Cache the card response in browser's fetchJSON cache
+              const cardResponse = { card, cached: true, responseTime: 0 };
+              const cacheKey = `fetch:/api/tcg-cards/${card.id}`;
+              
+              // Store in fetchJSON's cache format
+              try {
+                const cacheData = {
+                  data: cardResponse,
+                  timestamp: Date.now(),
+                  expiresAt: Date.now() + (60 * 60 * 1000) // 1 hour
+                };
+                localStorage.setItem(cacheKey, JSON.stringify(cacheData));
+              } catch (e) {
+                // Ignore localStorage errors (quota exceeded, etc.)
+              }
+            });
+            
+            logger.info(`[TCG Set] Pre-populated browser cache for ${cardsData.length} cards`);
+          }
           
           // Use pre-calculated stats if available
           if (data.stats) {
             setStatistics(data.stats);
           } else {
             // Calculate statistics if not provided
-            calculateSetStatistics(data.cards);
+            calculateSetStatistics(cardsData);
           }
           
           setLoadingMessage(''); // Clear loading message
           
-          logger.info(`[TCG Set] Successfully loaded ${data.cards.length} cards`, {
+          logger.info(`[TCG Set] Successfully loaded ${cardsData.length} cards`, {
             setId: setid,
-            cached: !!data.cachedAt
+            cached: !!data.cachedAt,
+            hasWarning: !!data.warning
           });
+        } else {
+          console.warn('[SetIdPage] No cards found in response');
+          setCards([]); // Set empty array to show "no cards" state
         }
       } catch (err: any) {
         // Ignore abort errors
@@ -370,6 +450,25 @@ const SetIdPage: NextPage = () => {
     }
   };
 
+  // Get card price helper for VirtualCardGrid
+  const getCardPrice = useCallback((card: TCGCard): number => {
+    if (!card.tcgplayer?.prices) return 0;
+    
+    const prices = Object.values(card.tcgplayer.prices);
+    let highestPrice = 0;
+    
+    prices.forEach((priceData: any) => {
+      if (priceData && typeof priceData === 'object') {
+        const price = priceData.market || priceData.mid || 0;
+        if (price > highestPrice) {
+          highestPrice = price;
+        }
+      }
+    });
+    
+    return highestPrice;
+  }, []);
+
   // Scroll to cards section
   const scrollToCards = () => {
     if (cardsGridRef.current) {
@@ -377,8 +476,32 @@ const SetIdPage: NextPage = () => {
     }
   };
 
-  // Loading state
-  if (!router.isReady || (loading && !setInfo)) {
+  // Loading state - show loader if router not ready or still loading initial data
+  if (!router.isReady) {
+    return <PageLoader text="Initializing..." />;
+  }
+
+  // No setid state - show error if setid is missing after router is ready
+  if (!setid) {
+    return (
+      <div className="container mx-auto p-4 flex flex-col items-center justify-center min-h-screen">
+        <GlassContainer variant="colored" className="text-center">
+          <h2 className="text-2xl font-bold text-red-600 mb-2">Invalid Set ID</h2>
+          <p className="text-red-600 mb-4">No set ID was provided in the URL.</p>
+          <GradientButton 
+            onClick={() => router.push('/tcgsets')}
+            variant="primary"
+            size="md"
+          >
+            Back to Sets
+          </GradientButton>
+        </GlassContainer>
+      </div>
+    );
+  }
+
+  // Loading state for set data
+  if (loading && !setInfo) {
     return (
       <PageLoader text={loadingMessage} />
     );
@@ -443,6 +566,18 @@ const SetIdPage: NextPage = () => {
               Back to Sets
             </GradientButton>
           </div>
+
+          {/* Data Warning Alert */}
+          {dataWarning && (
+            <GlassContainer variant="colored" className="mb-6 bg-yellow-50 dark:bg-yellow-900/20 border-yellow-300 dark:border-yellow-700">
+              <div className="flex items-center gap-3">
+                <svg className="w-5 h-5 text-yellow-600 dark:text-yellow-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <p className="text-yellow-700 dark:text-yellow-300">{dataWarning}</p>
+              </div>
+            </GlassContainer>
+          )}
 
           {/* Set Information */}
           <GlassContainer variant="medium" className="mb-8">
@@ -746,19 +881,25 @@ const SetIdPage: NextPage = () => {
               {cards.length === 0 && loading ? (
                 <CardGridSkeleton count={12} />
               ) : filteredCards.length > 0 ? (
-                <div key={`card-grid-${cards.length}`}>
-                  {/* Always use CardList with max 500 cards limit */}
-                  <>
+                <div key={`card-grid-${cards.length}`} className="card-grid-container">
+                  {/* Use VirtualCardGrid for larger sets, CardList for smaller ones */}
+                  {filteredCards.length > 50 ? (
+                    <>
+                      <VirtualCardGrid
+                        cards={filteredCards}
+                        onCardClick={handleCardClick}
+                        getPrice={getCardPrice}
+                      />
+                      <p className="text-center mt-4 text-sm text-gray-600 dark:text-gray-400">
+                        Showing {filteredCards.length} cards with virtual scrolling
+                      </p>
+                    </>
+                  ) : (
                     <CardList
-                      cards={filteredCards.slice(0, 500)}
+                      cards={filteredCards}
                       onCardClick={handleCardClick}
                     />
-                    {filteredCards.length > 500 && (
-                      <p className="text-center mt-4 text-sm text-gray-600 dark:text-gray-400">
-                        Showing first 500 of {filteredCards.length} cards for performance
-                      </p>
-                    )}
-                  </>
+                  )}
                 </div>
               ) : (
                 <div className="text-center py-12">
@@ -845,12 +986,18 @@ const SetIdPage: NextPage = () => {
 
                 {/* Actions */}
                 <div className="flex gap-3">
-                  <Link
-                    href={`/cards/${modalCard.id}`}
+                  <button
+                    onClick={() => {
+                      // Store card data in sessionStorage for instant loading
+                      if (typeof window !== 'undefined') {
+                        sessionStorage.setItem(`card-${modalCard.id}`, JSON.stringify(modalCard));
+                        sessionStorage.setItem(`set-${modalCard.set.id}`, JSON.stringify(setInfo));
+                      }
+                      router.push(`/cards/${modalCard.id}`);
+                    }}
                     className="flex-1 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg text-center transition-colors">
-                    
                     View Details
-                  </Link>
+                  </button>
                   <button
                     onClick={() => handleFavoriteToggle(modalCard)}
                     className={`flex-1 px-4 py-2 font-medium rounded-lg transition-colors ${
@@ -871,4 +1018,13 @@ const SetIdPage: NextPage = () => {
   );
 };
 
-export default SetIdPage;
+// Wrap the component with error boundary
+const SetIdPageWithErrorBoundary: NextPage = () => {
+  return (
+    <TCGSetErrorBoundary>
+      <SetIdPage />
+    </TCGSetErrorBoundary>
+  );
+};
+
+export default SetIdPageWithErrorBoundary;

@@ -9,8 +9,8 @@ test.describe('TCG Set Detail Page Improvements', () => {
     // Navigate to set detail
     await page.goto(setDetailUrl);
     
-    // Check that skeleton loading appears immediately
-    await expect(page.locator('.skeleton-shimmer').first()).toBeVisible({ timeout: 1000 });
+    // Check that skeleton loading appears (using correct selector)
+    await expect(page.locator('.skeleton, .animate-pulse').first()).toBeVisible({ timeout: 1000 });
     
     // Wait for content to load (should be fast with 250 card page size)
     await expect(page.locator('h1').filter({ hasText: /Sword & Shield|Base Set/ })).toBeVisible({ timeout: 10000 });
@@ -19,7 +19,7 @@ test.describe('TCG Set Detail Page Improvements', () => {
     await expect(page.locator('.animate-spin')).toBeHidden();
     
     // Check that cards loaded
-    const cards = page.locator('[data-testid="card-item"], .card-item, [class*="card"]').first();
+    const cards = page.locator('.virtual-scroll-container, .card-item, [class*="card"]').first();
     await expect(cards).toBeVisible({ timeout: 5000 });
   });
 
@@ -43,7 +43,7 @@ test.describe('TCG Set Detail Page Improvements', () => {
     await page.waitForLoadState('networkidle');
     
     // Wait for cards to load
-    await page.waitForSelector('.virtualized-grid-container, [data-testid="card-grid"]', { timeout: 10000 });
+    await page.waitForSelector('.virtual-scroll-container, .card-grid-container', { timeout: 10000 });
     
     // Test smooth scrolling
     await page.evaluate(() => {
@@ -81,12 +81,12 @@ test.describe('TCG Set Detail Page Improvements', () => {
     
     // Check desktop layout
     if (viewport && viewport.width > 1024) {
-      const grid = page.locator('.virtualized-grid-container, [role="grid"]').first();
+      const grid = page.locator('.virtual-scroll-container, .card-grid-container').first();
       await expect(grid).toBeVisible();
       
       // Verify no overlapping elements
       const boundingBoxes = await page.evaluate(() => {
-        const cards = document.querySelectorAll('[data-testid="card-item"], .card-item, [class*="card-"]');
+        const cards = document.querySelectorAll('.virtual-card-container, .card-item, .unified-card');
         return Array.from(cards).slice(0, 10).map(card => {
           const rect = card.getBoundingClientRect();
           return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
@@ -122,7 +122,7 @@ test.describe('TCG Set Detail Page Improvements', () => {
     await page.goto(setDetailUrl);
     
     // Check skeleton elements are visible
-    await expect(page.locator('.skeleton-shimmer, [class*="skeleton"]').first()).toBeVisible();
+    await expect(page.locator('.skeleton, .animate-pulse, [class*="skeleton"]').first()).toBeVisible();
     
     // Verify skeleton structure
     await expect(page.locator('[class*="skeleton"]')).toHaveCount(17); // Header + 4 stats + 12 cards
@@ -231,15 +231,23 @@ test.describe('Performance Tests', () => {
     await page.goto(`/tcgsets/${largeSetId}`);
     
     // Wait for cards to appear
-    await page.waitForSelector('[data-testid="card-item"], .card-item, img[alt*="card"]', { timeout: 15000 });
+    await page.waitForSelector('.virtual-scroll-container, .card-item, .unified-card', { timeout: 15000 });
     
     const loadTime = Date.now() - startTime;
     
     // Should load within reasonable time (15 seconds for large set)
     expect(loadTime).toBeLessThan(15000);
     
-    // Check that many cards loaded
-    const cardCount = await page.locator('[data-testid="card-item"], .card-item, img[alt*="card"]').count();
-    expect(cardCount).toBeGreaterThan(50); // Should show many cards at once
+    // Check that virtual scrolling is working
+    const virtualContainer = await page.locator('.virtual-scroll-container').count();
+    if (virtualContainer > 0) {
+      // Virtual scrolling active - check that some cards are rendered
+      const cardCount = await page.locator('.virtual-card-container').count();
+      expect(cardCount).toBeGreaterThan(10); // Should show visible cards only
+    } else {
+      // Fallback to regular CardList
+      const cardCount = await page.locator('.card-item, .unified-card').count();
+      expect(cardCount).toBeGreaterThan(50); // Should show many cards
+    }
   });
 });
