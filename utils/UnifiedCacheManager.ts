@@ -237,7 +237,12 @@ class LocalStorageCache extends CacheStorage {
       console.warn('LocalStorage set error:', error);
       // Try to clear some space
       if (error.name === 'QuotaExceededError') {
+        console.log('QuotaExceededError detected, running aggressive cleanup...');
+        
+        // First try normal cleanup
         await this.cleanup();
+        
+        // If still failing, do more aggressive cleanup
         try {
           const entry: InternalCacheEntry<T> = {
             data: value,
@@ -246,8 +251,24 @@ class LocalStorageCache extends CacheStorage {
             version: '1.0'
           };
           localStorage.setItem(this.generateKey(key), JSON.stringify(entry));
-        } catch {
-          // Still failed, give up
+        } catch (retryError: any) {
+          if (retryError.name === 'QuotaExceededError') {
+            // More aggressive cleanup - remove oldest 50% of cache entries
+            await this.aggressiveCleanup();
+            
+            // Final attempt
+            try {
+              const entry: InternalCacheEntry<T> = {
+                data: value,
+                expiry: Date.now() + ttl,
+                timestamp: Date.now(),
+                version: '1.0'
+              };
+              localStorage.setItem(this.generateKey(key), JSON.stringify(entry));
+            } catch {
+              console.error('Failed to save to localStorage even after aggressive cleanup');
+            }
+          }
         }
       }
     }
@@ -291,6 +312,53 @@ class LocalStorageCache extends CacheStorage {
         }
       }
     });
+  }
+  
+  async aggressiveCleanup(): Promise<void> {
+    if (typeof window === 'undefined') return;
+    
+    console.log('Running aggressive localStorage cleanup...');
+    
+    const entries: { key: string; timestamp: number; size: number }[] = [];
+    
+    // Collect all cache entries with timestamps
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith(this.prefix)) {
+        try {
+          const item = localStorage.getItem(key);
+          if (item) {
+            const entry: InternalCacheEntry = JSON.parse(item);
+            entries.push({
+              key,
+              timestamp: entry.timestamp || 0,
+              size: new Blob([item]).size
+            });
+          }
+        } catch {
+          // Invalid entry, mark for removal
+          entries.push({ key, timestamp: 0, size: 0 });
+        }
+      }
+    }
+    
+    // Sort by timestamp (oldest first)
+    entries.sort((a, b) => a.timestamp - b.timestamp);
+    
+    // Remove oldest 50% of entries
+    const toRemove = Math.ceil(entries.length * 0.5);
+    let removed = 0;
+    
+    for (let i = 0; i < toRemove && i < entries.length; i++) {
+      try {
+        localStorage.removeItem(entries[i].key);
+        removed++;
+      } catch {
+        // Ignore errors
+      }
+    }
+    
+    console.log(`Aggressive cleanup removed ${removed} cache entries`);
   }
 }
 

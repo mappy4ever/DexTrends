@@ -1080,11 +1080,11 @@ const PokedexIndex: NextPage = () => {
                           setPendingGeneration(pendingGeneration === gen ? '' : gen);
                           setSelectedGeneration(pendingGeneration === gen ? '' : gen);
                         }}
-                        className={`btn ${
+                        className={`px-4 py-2 rounded-full font-medium text-sm transition-all duration-200 ${
                           pendingGeneration === gen
-                            ? 'btn-primary'
-                            : 'btn-secondary'
-                        } !px-4 !py-2 !min-h-0`}
+                            ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg'
+                            : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700'
+                        }`}
                       >
                         Gen {gen}
                       </button>

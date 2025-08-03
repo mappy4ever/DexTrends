@@ -13,8 +13,9 @@ import UnifiedCard from "../../components/ui/cards/UnifiedCard";
 import StyledBackButton from "../../components/ui/StyledBackButton";
 import HolographicCard from "../../components/ui/HolographicCard";
 import logger from "../../utils/logger";
-import { getPokemonSDK } from "../../utils/pokemonSDK";
 import { useAppContext } from "../../context/UnifiedAppContext";
+import { fetchJSON } from "../../utils/unifiedFetch";
+import performanceMonitor from "../../utils/performanceMonitor";
 import type { TCGCard, CardSet } from "../../types/api/cards";
 
 // Type color mapping and RGBA helpers
@@ -61,45 +62,176 @@ export default function CardDetailPage() {
       setLoading(true);
       setError(null);
       
+      // Start performance monitoring
+      performanceMonitor.startTimer('page-load', `card-detail-${cardId}`);
+      
       try {
-        const pokemon = getPokemonSDK();
+        // Check sessionStorage first for instant loading
+        if (typeof window !== 'undefined') {
+          const cachedCardData = sessionStorage.getItem(`card-${cardId}`);
+          const cachedSetData = sessionStorage.getItem(`set-${cardId.split('-')[0]}`);
+          
+          if (cachedCardData) {
+            try {
+              const cardData = JSON.parse(cachedCardData);
+              setCard(cardData);
+              logger.info('[Card Detail] Loaded from sessionStorage', { cardId });
+              
+              // Load set data if available
+              if (cachedSetData && cardData.set?.id) {
+                const setData = JSON.parse(sessionStorage.getItem(`set-${cardData.set.id}`) || 'null');
+                if (setData) {
+                  setCardSet(setData);
+                  logger.info('[Card Detail] Set loaded from sessionStorage', { setId: cardData.set.id });
+                }
+              }
+              
+              // Clean up sessionStorage after use
+              sessionStorage.removeItem(`card-${cardId}`);
+              
+              // Still fetch related cards in background
+              if (cardData.name) {
+                const pokemonName = cardData.name.split(" ")[0];
+                fetchJSON<{ data: TCGCard[] }>(
+                  `/api/tcg-cards?name=${encodeURIComponent(pokemonName)}`,
+                  {
+                    useCache: true,
+                    cacheTime: 30 * 60 * 1000,
+                    timeout: 10000
+                  }
+                ).then(relatedResponse => {
+                  if (relatedResponse?.data) {
+                    const filtered = relatedResponse.data
+                      .filter(c => c.id !== cardId)
+                      .slice(0, 8);
+                    setRelatedCards(filtered);
+                  }
+                }).catch(err => {
+                  logger.error("Error fetching related cards:", { error: err });
+                });
+              }
+              
+              setLoading(false);
+              performanceMonitor.endTimer('page-load', `card-detail-${cardId}`, {
+                cardId,
+                source: 'sessionStorage'
+              });
+              return; // Exit early since we have the data
+            } catch (err) {
+              logger.error('[Card Detail] Error parsing sessionStorage data', { error: err });
+              // Continue with normal fetch if parsing fails
+            }
+          }
+        }
+        // Fetch card details from our cached API
+        const cardResponse = await fetchJSON<{ card: TCGCard; cached: boolean; responseTime: number }>(
+          `/api/tcg-cards/${cardId}`,
+          {
+            useCache: true,
+            cacheTime: 60 * 60 * 1000, // 1 hour
+            timeout: 10000,
+            retries: 2
+          }
+        );
         
-        // Fetch card details
-        const cardData = await pokemon.card.find(cardId);
-        setCard(cardData as unknown as TCGCard);
+        if (!cardResponse?.card) {
+          throw new Error('Card not found');
+        }
+        
+        const cardData = cardResponse.card;
+        setCard(cardData);
+        
+        logger.info('[Card Detail] Card loaded', {
+          cardId,
+          cached: cardResponse.cached,
+          responseTime: cardResponse.responseTime,
+          setId: cardData.set?.id
+        });
+        
+        // Fetch set data and related cards in parallel
+        const promises: Promise<any>[] = [];
         
         // Fetch card set data
         if (cardData.set?.id) {
-          try {
-            const setData = await pokemon.set.find(cardData.set.id);
-            setCardSet(setData as unknown as CardSet);
-          } catch (err) {
-            logger.error("Error fetching set data:", { error: err });
-          }
+          promises.push(
+            fetchJSON<{ set: CardSet; cached: boolean }>(
+              `/api/tcg-sets/${cardData.set.id}`,
+              {
+                useCache: true,
+                cacheTime: 60 * 60 * 1000,
+                timeout: 10000
+              }
+            ).then(setResponse => {
+              if (setResponse?.set) {
+                setCardSet(setResponse.set);
+                logger.info('[Card Detail] Set loaded', {
+                  setId: cardData.set.id,
+                  cached: setResponse.cached
+                });
+              }
+            }).catch(err => {
+              logger.error("Error fetching set data:", { error: err });
+            })
+          );
         }
         
-        // Fetch related cards (same Pokémon, different versions)
+        // Fetch related cards
         if (cardData.name) {
-          try {
-            const pokemonName = cardData.name.split(" ")[0]; // Get base name without form/variant
-            const relatedCardsData = await pokemon.card.where({ q: `name:${pokemonName}` });
-            
-            // Filter out the current card and limit to 8 related cards
-            const filtered = relatedCardsData
-              .filter(c => c.id !== cardId)
-              .slice(0, 8);
-            
-            setRelatedCards(filtered as unknown as TCGCard[]);
-          } catch (err) {
-            logger.error("Error fetching related cards:", { error: err });
-          }
+          const pokemonName = cardData.name.split(" ")[0]; // Get base name without form/variant
+          promises.push(
+            fetchJSON<{ data: TCGCard[] }>(
+              `/api/tcg-cards?name=${encodeURIComponent(pokemonName)}`,
+              {
+                useCache: true,
+                cacheTime: 30 * 60 * 1000, // 30 minutes
+                timeout: 10000
+              }
+            ).then(relatedResponse => {
+              if (relatedResponse?.data) {
+                // Filter out the current card and limit to 8 related cards
+                const filtered = relatedResponse.data
+                  .filter(c => c.id !== cardId)
+                  .slice(0, 8);
+                
+                setRelatedCards(filtered);
+                logger.info('[Card Detail] Related cards loaded', {
+                  pokemonName,
+                  count: filtered.length
+                });
+              }
+            }).catch(err => {
+              logger.error("Error fetching related cards:", { error: err });
+            })
+          );
         }
         
+        // Wait for parallel fetches to complete
+        await Promise.all(promises);
+        
         setLoading(false);
-      } catch (err) {
-        logger.error("Error fetching card:", { error: err });
-        setError("Failed to load card data. Please try again later.");
+        
+        // End performance monitoring
+        const loadTime = performanceMonitor.endTimer('page-load', `card-detail-${cardId}`, {
+          cardId,
+          cached: cardResponse.cached
+        });
+        
+        if (loadTime) {
+          logger.info('[Card Detail] Page load complete', {
+            cardId,
+            loadTime,
+            cached: cardResponse.cached
+          });
+        }
+        
+      } catch (err: any) {
+        logger.error("Error fetching card:", { 
+          error: err.message,
+          cardId 
+        });
+        setError("Failed to load card details. Please try again.");
         setLoading(false);
+        performanceMonitor.endTimer('page-load', `card-detail-${cardId}`);
       }
     };
 

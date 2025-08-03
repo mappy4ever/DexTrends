@@ -22,12 +22,6 @@ const CardsTab: React.FC<CardsTabProps> = ({
 }) => {
   const [cardType, setCardType] = useState<'tcg' | 'pocket'>('tcg');
   
-  // Debug logging for TCG cards
-  useEffect(() => {
-    console.log('[CardsTab Debug] TCG Cards:', tcgCards);
-    console.log('[CardsTab Debug] TCG Cards Length:', tcgCards.length);
-    console.log('[CardsTab Debug] Pocket Cards Length:', pocketCards.length);
-  }, [tcgCards, pocketCards]);
   
   return (
     <PokemonGlassCard variant="default" pokemonTypes={pokemon.types} padding="lg">

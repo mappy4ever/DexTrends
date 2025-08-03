@@ -67,12 +67,19 @@ const CompetitiveTab: React.FC<CompetitiveTabProps> = ({ pokemon, species, typeC
   const [expandedMoveset, setExpandedMoveset] = useState<number | null>(null);
   const [selectedFormat, setSelectedFormat] = useState<'singles' | 'doubles'>('singles');
   
-  // Calculate base stat total for tier estimation
+  // Use real tier data from Showdown or fall back to estimation
+  const currentTier = selectedFormat === 'singles' 
+    ? competitiveTiers?.singles_tier 
+    : competitiveTiers?.doubles_tier;
+    
+  // Calculate base stat total for fallback tier estimation
   const baseStatTotal = pokemon.stats?.reduce((sum, stat) => sum + stat.base_stat, 0) || 0;
-  const estimatedTier = baseStatTotal >= 600 ? 'Uber' : 
-                       baseStatTotal >= 500 ? 'OU' : 
-                       baseStatTotal >= 450 ? 'UU' : 
-                       baseStatTotal >= 400 ? 'RU' : 'NU';
+  const estimatedTier = currentTier || (
+    baseStatTotal >= 600 ? 'Uber' : 
+    baseStatTotal >= 500 ? 'OU' : 
+    baseStatTotal >= 450 ? 'UU' : 
+    baseStatTotal >= 400 ? 'RU' : 'NU'
+  );
 
   return (
     <div className="space-y-6">
@@ -149,7 +156,10 @@ const CompetitiveTab: React.FC<CompetitiveTabProps> = ({ pokemon, species, typeC
 
       {/* Common Movesets */}
       <PokemonGlassCard variant="stat" pokemonTypes={pokemon.types}>
-        <h4 className="text-xl font-bold mb-4">Popular Movesets</h4>
+        <div className="flex items-center justify-between mb-4">
+          <h4 className="text-xl font-bold text-gray-900 dark:text-white">Popular Movesets</h4>
+          <span className="text-xs text-gray-500 dark:text-gray-400 italic">Sample data - real usage data coming soon</span>
+        </div>
         <div className="space-y-3">
           {SAMPLE_MOVESETS.map((moveset, index) => (
             <motion.div
@@ -164,11 +174,20 @@ const CompetitiveTab: React.FC<CompetitiveTabProps> = ({ pokemon, species, typeC
             >
               <div className="p-4">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <h5 className="font-semibold">{moveset.name}</h5>
-                    <span className="text-sm text-gray-600 dark:text-gray-400">
-                      {moveset.usage}% usage
-                    </span>
+                  <div>
+                    <h5 className="font-semibold text-gray-900 dark:text-white">{moveset.name}</h5>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-sm text-gray-600 dark:text-gray-400">Usage:</span>
+                      <div className={cn(
+                        "px-3 py-1 rounded-full text-xs font-bold text-white shadow-md",
+                        moveset.usage >= 40 ? "bg-gradient-to-r from-purple-500 to-pink-500" :
+                        moveset.usage >= 25 ? "bg-gradient-to-r from-blue-500 to-purple-500" :
+                        moveset.usage >= 10 ? "bg-gradient-to-r from-green-500 to-blue-500" :
+                        "bg-gradient-to-r from-gray-500 to-gray-600"
+                      )}>
+                        {moveset.usage}%
+                      </div>
+                    </div>
                   </div>
                   <motion.svg
                     className="w-5 h-5"
@@ -232,12 +251,7 @@ const CompetitiveTab: React.FC<CompetitiveTabProps> = ({ pokemon, species, typeC
                             {moveset.moves.map(move => (
                               <span
                                 key={move}
-                                className={cn(
-                                  "px-3 py-1 rounded text-sm text-center",
-                                  "bg-gradient-to-r text-white",
-                                  typeColors.from,
-                                  typeColors.to
-                                )}
+                                className="px-3 py-1 rounded text-sm text-center bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-600"
                               >
                                 {move}
                               </span>
@@ -258,7 +272,10 @@ const CompetitiveTab: React.FC<CompetitiveTabProps> = ({ pokemon, species, typeC
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Common Teammates */}
         <PokemonGlassCard variant="default" pokemonTypes={pokemon.types}>
-          <h4 className="text-lg font-bold mb-4">Common Teammates</h4>
+          <div className="flex items-center justify-between mb-4">
+            <h4 className="text-lg font-bold">Common Teammates</h4>
+            <span className="text-xs text-gray-500 dark:text-gray-400 italic">Sample data</span>
+          </div>
           <div className="space-y-2">
             {COMMON_TEAMMATES.map((teammate, index) => (
               <motion.div
@@ -292,9 +309,15 @@ const CompetitiveTab: React.FC<CompetitiveTabProps> = ({ pokemon, species, typeC
                 onClick={() => window.location.href = `/pokedex/${counter.name.toLowerCase()}`}
               >
                 <span className="font-medium">{counter.name}</span>
-                <span className="text-sm text-red-600 dark:text-red-400">
+                <div className={cn(
+                  "px-3 py-1 rounded-full text-xs font-bold text-white shadow-lg",
+                  counter.winRate >= 70 ? "bg-gradient-to-r from-red-600 to-red-500" :
+                  counter.winRate >= 60 ? "bg-gradient-to-r from-orange-600 to-orange-500" :
+                  counter.winRate >= 50 ? "bg-gradient-to-r from-yellow-600 to-yellow-500" : 
+                  "bg-gradient-to-r from-green-600 to-green-500"
+                )}>
                   {counter.winRate}% win rate
-                </span>
+                </div>
               </motion.div>
             ))}
           </div>

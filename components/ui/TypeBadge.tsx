@@ -26,7 +26,14 @@ export const TypeBadge: React.FC<TypeBadgeProps> = ({
       'rounded-full font-medium text-white inline-flex items-center',
       sizeClasses[size],
       className
-    )} style={{ backgroundColor: bgColor }}>
+    )} style={{ 
+      backgroundColor: bgColor,
+      transform: 'translate3d(0,0,0)',
+      WebkitTransform: 'translate3d(0,0,0)',
+      backfaceVisibility: 'visible',
+      WebkitBackfaceVisibility: 'visible',
+      willChange: 'auto'
+    }}>
       {type.toUpperCase()}
     </span>
   );

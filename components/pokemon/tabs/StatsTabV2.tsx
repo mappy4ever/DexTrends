@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import type { Pokemon, PokemonSpecies, Nature } from '../../../types/api/pokemon';
 import { GlassContainer, CircularButton } from '../../ui/design-system';
-import PokemonStatRing from '../PokemonStatRing';
+import PokemonStatRadar from '../PokemonStatRadar';
 import { cn } from '../../../utils/cn';
 
 interface StatsTabV2Props {
@@ -110,28 +110,33 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
         </div>
       </GlassContainer>
       
-      {/* Circular Stat Display */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-8 justify-items-center">
-        {calculatedStats.map((stat, index) => (
-          <motion.div
-            key={stat.name}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: index * 0.1 }}
-            className="text-center"
-          >
-            <PokemonStatRing
-              stat={stat.name}
-              value={stat.baseStat}
-              size="lg"
-              typeColors={typeColors}
-              animate
-            />
-            <div className="mt-3">
-              <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
+      {/* Unified Hexagonal Stat Display */}
+      <GlassContainer variant="dark" className="p-6">
+        <h3 className="text-xl font-bold mb-6 text-center">Base Stats Distribution</h3>
+        <div className="flex justify-center">
+          <PokemonStatRadar
+            stats={calculatedStats}
+            size="lg"
+            typeColors={typeColors}
+            animate
+            showValues
+          />
+        </div>
+        
+        {/* Actual Stats with Nature/Level */}
+        <div className="mt-6 grid grid-cols-2 md:grid-cols-3 gap-4">
+          {calculatedStats.map((stat, index) => (
+            <motion.div
+              key={stat.name}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.05 }}
+              className="bg-white/5 dark:bg-gray-800/50 rounded-lg p-3 text-center"
+            >
+              <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
                 {STAT_NAMES[stat.name]}
               </div>
-              <div className="text-lg font-bold">
+              <div className="text-2xl font-bold mt-1">
                 {stat.actualStat}
                 {stat.natureModifier !== 1 && (
                   <span className={cn(
@@ -143,14 +148,14 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
                 )}
               </div>
               {stat.effort > 0 && (
-                <div className="text-xs text-purple-600 dark:text-purple-400">
+                <div className="text-xs text-purple-600 dark:text-purple-400 mt-1">
                   +{stat.effort} EV
                 </div>
               )}
-            </div>
-          </motion.div>
-        ))}
-      </div>
+            </motion.div>
+          ))}
+        </div>
+      </GlassContainer>
       
       {/* Nature & Level Calculator */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

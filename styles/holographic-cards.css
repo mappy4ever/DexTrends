@@ -3,17 +3,17 @@
   position: relative;
   display: inline-block;
   border-radius: inherit;
-  overflow: hidden;
+  overflow: visible;
   isolation: isolate;
+  transform-style: preserve-3d;
 }
 
 /* Holographic Card Container */
 .holographic-card-container {
   position: relative;
   display: inline-block;
-  perspective: 1000px;
   transform-style: preserve-3d;
-  transition: transform 0.1s ease-out;
+  transition: transform 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
   cursor: pointer;
   overflow: hidden;
   border-radius: inherit;
@@ -30,6 +30,7 @@
   overflow: hidden;
   border-radius: inherit;
   backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 /* Content Layer */
@@ -62,14 +63,14 @@
 .holographic-shine {
   background: radial-gradient(
     circle at var(--mouse-x) var(--mouse-y),
-    rgba(255, 255, 255, 0.4) 0%,
-    rgba(255, 255, 255, 0.2) 20%,
-    transparent 70%
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(255, 255, 255, 0.3) 20%,
+    transparent 60%
   );
   mix-blend-mode: color-dodge;
   z-index: 4;
   border-radius: inherit;
-  transform: translateZ(1px);
+  transform: translateZ(2px);
   will-change: background;
   backface-visibility: hidden;
 }
@@ -78,14 +79,16 @@
 .holographic-glare {
   background: linear-gradient(
     105deg,
-    transparent 40%,
-    rgba(255, 255, 255, 0.7) 50%,
-    transparent 60%
+    transparent 30%,
+    rgba(255, 255, 255, 0.8) 45%,
+    rgba(255, 255, 255, 0.9) 50%,
+    rgba(255, 255, 255, 0.8) 55%,
+    transparent 70%
   );
-  filter: blur(6px);
+  filter: blur(4px);
   mix-blend-mode: color-dodge;
   z-index: 3;
-  transform: translateX(calc((var(--mouse-x) - 50%) * 2));
+  transform: translateX(calc((var(--mouse-x) - 50%) * 2.5)) translateY(calc((var(--mouse-y) - 50%) * 1));
   border-radius: inherit;
   will-change: transform;
 }
@@ -165,10 +168,10 @@
   background: 
     radial-gradient(
       circle at var(--mouse-x) var(--mouse-y),
-      rgba(147, 51, 234, 0.3) 0%,
-      rgba(59, 130, 246, 0.3) 25%,
-      rgba(236, 72, 153, 0.2) 50%,
-      transparent 70%
+      rgba(147, 51, 234, 0.4) 0%,
+      rgba(59, 130, 246, 0.4) 25%,
+      rgba(236, 72, 153, 0.3) 50%,
+      transparent 65%
     );
 }
 
@@ -221,19 +224,19 @@
   background: 
     radial-gradient(
       circle at var(--mouse-x) var(--mouse-y),
-      rgba(255, 0, 255, 0.4) 0%,
-      rgba(255, 255, 0, 0.4) 20%,
-      rgba(0, 255, 255, 0.4) 40%,
-      transparent 70%
+      rgba(255, 0, 255, 0.5) 0%,
+      rgba(255, 255, 0, 0.5) 20%,
+      rgba(0, 255, 255, 0.5) 40%,
+      transparent 65%
     ),
     conic-gradient(
       from 0deg at var(--mouse-x) var(--mouse-y),
       transparent 0deg,
-      rgba(255, 255, 255, 0.2) 60deg,
+      rgba(255, 255, 255, 0.3) 60deg,
       transparent 120deg,
-      rgba(255, 255, 255, 0.2) 180deg,
+      rgba(255, 255, 255, 0.3) 180deg,
       transparent 240deg,
-      rgba(255, 255, 255, 0.2) 300deg,
+      rgba(255, 255, 255, 0.3) 300deg,
       transparent 360deg
     );
   animation: secret-pulse 2s ease-in-out infinite;
@@ -256,6 +259,13 @@
 .holographic-active .holographic-sparkle {
   opacity: 1;
   transition: opacity 0.2s ease-in;
+}
+
+/* Enhanced 3D effect on hover */
+.holographic-active .holographic-card {
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    0 0 60px rgba(var(--type-rgb, 255, 255, 255), 0.2);
 }
 
 /* Intensity Variations */

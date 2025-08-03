@@ -129,60 +129,17 @@ export function formatStatName(statName: string): string {
  * @returns Tailwind gradient classes
  */
 export function getStatColor(statName: string, pokemonTypes?: string[]): string {
-  // If Pokemon has types, use type-based colors
-  if (pokemonTypes && pokemonTypes.length > 0) {
-    const primaryType = pokemonTypes[0];
-    const typeStatColors: Record<string, Record<string, string>> = {
-      fire: {
-        hp: 'from-red-400 to-orange-500',
-        attack: 'from-orange-500 to-red-600',
-        defense: 'from-yellow-500 to-orange-600',
-        'special-attack': 'from-red-500 to-pink-500',
-        'special-defense': 'from-orange-400 to-yellow-500',
-        speed: 'from-red-400 to-orange-400'
-      },
-      water: {
-        hp: 'from-blue-400 to-cyan-500',
-        attack: 'from-blue-500 to-indigo-600',
-        defense: 'from-cyan-500 to-blue-600',
-        'special-attack': 'from-blue-400 to-purple-500',
-        'special-defense': 'from-cyan-400 to-teal-500',
-        speed: 'from-blue-300 to-cyan-400'
-      },
-      grass: {
-        hp: 'from-green-400 to-emerald-500',
-        attack: 'from-emerald-500 to-green-600',
-        defense: 'from-lime-500 to-green-600',
-        'special-attack': 'from-green-400 to-teal-500',
-        'special-defense': 'from-emerald-400 to-lime-500',
-        speed: 'from-green-300 to-lime-400'
-      },
-      electric: {
-        hp: 'from-yellow-400 to-amber-500',
-        attack: 'from-amber-500 to-yellow-600',
-        defense: 'from-yellow-500 to-orange-500',
-        'special-attack': 'from-yellow-400 to-amber-600',
-        'special-defense': 'from-amber-400 to-yellow-500',
-        speed: 'from-yellow-300 to-amber-400'
-      }
-    };
-    
-    if (typeStatColors[primaryType] && typeStatColors[primaryType][statName]) {
-      return typeStatColors[primaryType][statName];
-    }
-  }
-  
-  // Default stat colors
-  const defaultStatColors: Record<string, string> = {
-    'hp': 'from-red-400 to-red-600',
-    'attack': 'from-orange-400 to-orange-600',
-    'defense': 'from-yellow-400 to-yellow-600',
-    'special-attack': 'from-blue-400 to-blue-600',
-    'special-defense': 'from-green-400 to-green-600',
-    'speed': 'from-pink-400 to-pink-600'
+  // Use consistent rainbow colors for all Pokemon types
+  const statColors: Record<string, string> = {
+    hp: 'from-green-400 to-emerald-600',
+    attack: 'from-red-400 to-red-600',
+    defense: 'from-yellow-400 to-orange-600',
+    'special-attack': 'from-blue-400 to-purple-600',
+    'special-defense': 'from-indigo-400 to-purple-600',
+    speed: 'from-blue-400 to-blue-600'
   };
-  
-  return defaultStatColors[statName] || 'from-gray-400 to-gray-600';
+
+  return statColors[statName] || 'from-gray-400 to-gray-600';
 }
 
 /**
@@ -195,7 +152,7 @@ export function calculateCatchRate(captureRate: number): {
   difficulty: string;
   color: string;
 } {
-  const percentage = (captureRate / 255) * 100;
+  const percentage = Math.round((captureRate / 255) * 100);
   
   let difficulty: string;
   let color: string;

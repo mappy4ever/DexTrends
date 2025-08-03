@@ -110,6 +110,13 @@ export function TierBadge({
           isParenthetical && 'opacity-75',
           className
         )}
+        style={{ 
+          transform: 'translate3d(0,0,0)',
+          WebkitTransform: 'translate3d(0,0,0)',
+          backfaceVisibility: 'visible',
+          WebkitBackfaceVisibility: 'visible',
+          willChange: 'auto'
+        }}
         title={description ? `${description}${format !== 'singles' ? ` (${formatLabel})` : ''}` : tier}
       >
         {tier}

@@ -58,13 +58,8 @@ export const EnhancedMoveDisplay: React.FC<EnhancedMoveDisplayProps> = ({ moveNa
   }
 
   if (!moveData) {
-    // Fallback display without competitive data
-    return (
-      <div className={cn("bg-gray-800 rounded-lg p-3", className)} data-testid="move-display">
-        <h4 className="font-medium capitalize">{moveName.replace(/-/g, ' ')}</h4>
-        <p className="text-sm text-gray-400">No competitive data available</p>
-      </div>
-    );
+    // Don't show anything if no competitive data is available
+    return null;
   }
 
   const typeColor = moveData.type ? typeColors[moveData.type.toLowerCase()]?.bg : 'bg-gray-600';

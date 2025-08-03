@@ -92,6 +92,17 @@ const getConsoleIcon = (console: string): React.ReactNode => {
 };
 
 const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationEncounters = [], typeColors }) => {
+  // Early return if no data to prevent processing errors
+  if (!pokemon || !species) {
+    return (
+      <PokemonGlassCard className="p-8 text-center">
+        <p className="text-gray-500 dark:text-gray-400">Loading location data...</p>
+      </PokemonGlassCard>
+    );
+  }
+  
+  // Safety check for locationEncounters
+  const safeLocationEncounters = Array.isArray(locationEncounters) ? locationEncounters : [];
   const [selectedGeneration, setSelectedGeneration] = useState<number | null>(null);
   const [selectedConsole, setSelectedConsole] = useState<string | null>(null);
   const [expandedGame, setExpandedGame] = useState<string | null>(null);
@@ -100,7 +111,7 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
   const gameLocations = useMemo(() => {
     const locations: Record<string, GameLocation> = {};
     
-    locationEncounters.forEach(encounter => {
+    safeLocationEncounters.forEach(encounter => {
       encounter.version_details.forEach(versionDetail => {
         const gameName = versionDetail.version.name;
         const generation = GAME_GENERATION_MAP[gameName] || 0;
@@ -131,7 +142,7 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
       if (a.generation !== b.generation) return b.generation - a.generation;
       return a.game.localeCompare(b.game);
     });
-  }, [locationEncounters]);
+  }, [safeLocationEncounters]);
 
   // Group locations by generation
   const locationsByGeneration = useMemo(() => {

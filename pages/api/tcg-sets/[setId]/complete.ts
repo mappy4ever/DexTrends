@@ -188,14 +188,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.setHeader('X-Response-Time', `${responseTime}ms`);
     res.setHeader('Cache-Control', 'public, s-maxage=7200, stale-while-revalidate=86400');
     
-    res.status(200).json({
+    // Return consistent structure
+    const response = {
       set,
       cards: allCards,
       cachedAt: new Date().toISOString(),
       cardCount: allCards.length,
       stats,
       loadTime: responseTime
-    });
+    };
+    
+    res.status(200).json(response);
     
   } catch (error: any) {
     logger.error('Failed to fetch complete set', { 
@@ -219,10 +222,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.setHeader('X-Response-Time', `${Date.now() - startTime}ms`);
       res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=172800'); // More aggressive stale-while-revalidate
       
-      return res.status(200).json({
-        ...staleCache,
+      // Ensure consistent structure when returning stale cache
+      const response = {
+        set: staleCache.set || staleCache,
+        cards: staleCache.cards || [],
+        cachedAt: staleCache.cachedAt || new Date().toISOString(),
+        cardCount: staleCache.cardCount || staleCache.cards?.length || 0,
         warning: 'Data may be outdated due to API issues'
-      });
+      };
+      
+      return res.status(200).json(response);
     }
     
     res.status(500).json({ 

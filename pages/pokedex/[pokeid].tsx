@@ -20,7 +20,7 @@ import type {
 } from "../../types/api/pokemon";
 import type { TCGCard } from "../../types/api/cards";
 import type { PocketCard } from "../../types/api/pocket-cards";
-import PokemonHeroSectionV2 from "../../components/pokemon/PokemonHeroSectionV2";
+import PokemonHeroSectionV3 from "../../components/pokemon/PokemonHeroSectionV3";
 import PokemonTabSystem from "../../components/pokemon/PokemonTabSystem";
 import FloatingActionBar from "../../components/pokemon/FloatingActionBar";
 import { PageLoader } from "../../utils/unifiedLoading";
@@ -180,7 +180,6 @@ const PokemonDetail: NextPage = () => {
         
         // Sanitize the Pokemon identifier for API calls
         const sanitizedId = sanitizePokemonName(pokemonIdentifier);
-        console.log('Sanitized Pokemon ID:', sanitizedId);
 
         // Load critical Pokemon and species data in parallel first
         const [pokemonData, speciesData] = await Promise.all([
@@ -195,8 +194,8 @@ const PokemonDetail: NextPage = () => {
         setLoading(false);
         
         // Load type chart from Showdown data
-        loadTypeChart().catch(err => {
-          console.warn('[Showdown Data] Failed to load type chart:', err);
+        loadTypeChart().catch(() => {
+          // Type chart load failure is not critical
         });
         
         // Load competitive tiers from Showdown data
@@ -359,22 +358,17 @@ const PokemonDetail: NextPage = () => {
     if (!pokemonName) return;
     
     setCardsLoading(true);
-    console.log('[Card Loading] Starting to load cards for:', pokemonName);
     
     try {
       // Create a timeout promise to ensure we don't block too long
       const timeoutPromise = new Promise<[any[], any[]]>((_, reject) => 
-        setTimeout(() => reject(new Error('Card loading timeout')), 15000)
+        setTimeout(() => reject(new Error('Card loading timeout')), 5000)
       );
       
       // Load both card types in parallel with timeout
       const [tcgCardsData, pocketCardsData] = await Promise.race([
         Promise.all([
           fetchTCGCards(pokemonName)
-            .then(cards => {
-              console.log('[Card Loading] TCG cards fetched successfully:', cards?.length || 0);
-              return cards;
-            })
             .catch(err => {
               console.error('[Card Loading] TCG cards error:', err);
               console.error('[Card Loading] TCG cards error details:', err.message, err.stack);
@@ -391,11 +385,6 @@ const PokemonDetail: NextPage = () => {
         return [[], []];
       });
       
-      console.log('[Card Loading] TCG cards loaded:', tcgCardsData?.length || 0);
-      console.log('[Card Loading] Pocket cards loaded:', pocketCardsData?.length || 0);
-      if (tcgCardsData && tcgCardsData.length > 0) {
-        console.log('[Card Loading] Sample TCG card:', tcgCardsData[0]);
-      }
       
       setTcgCards(tcgCardsData || []);
       setPocketCards(pocketCardsData || []);
@@ -469,12 +458,12 @@ const PokemonDetail: NextPage = () => {
         <div className="min-h-screen">
           {/* Navigation Header */}
           <motion.div 
-            className="sticky top-0 z-40 backdrop-blur-md"
+            className="sticky top-0 z-50 backdrop-blur-xl bg-white/5 dark:bg-gray-900/5"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="bg-gradient-to-b from-white/90 to-white/80 dark:from-gray-900/90 dark:to-gray-900/80 border-b border-white/30 dark:border-gray-700/30">
+            <div className="border-b border-white/20 dark:border-gray-700/20">
               <div className="container mx-auto px-4 py-4">
                 <div className="flex items-center justify-between">
                   <CircularButton
@@ -501,7 +490,7 @@ const PokemonDetail: NextPage = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <PokemonHeroSectionV2 
+              <PokemonHeroSectionV3 
                 pokemon={pokemon}
                 species={species}
                 showShiny={showShiny}
@@ -558,5 +547,8 @@ const PokemonDetail: NextPage = () => {
     </PageErrorBoundary>
   );
 };
+
+// Tell Layout to use fullBleed mode
+PokemonDetail.fullBleed = true;
 
 export default PokemonDetail;

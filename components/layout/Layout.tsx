@@ -41,7 +41,7 @@ export default function Layout({ children, fullBleed = false }: LayoutProps) {
           {/* Removed glassy, layered background effect overlay */}
           <Navbar />
       <div className="flex flex-grow relative z-10">
-        <main className={`flex-grow transition-all duration-300 ${fullBleed ? '' : 'pt-20 pb-10 px-4 md:px-6 lg:px-8'} pb-20`}>
+        <main className={`flex-grow transition-all duration-300 ${fullBleed ? '' : 'pt-20 pb-10'} pb-20`}>
           <div className="max-w-full mx-auto">
             {children}
           </div>

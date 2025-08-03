@@ -31,9 +31,9 @@ const HolographicCard: React.FC<HolographicCardProps> = ({
   const springX = useSpring(mouseX, springConfig);
   const springY = useSpring(mouseY, springConfig);
   
-  // Transform values for 3D rotation
-  const rotateX = useTransform(springY, [0, 1], [10, -10]);
-  const rotateY = useTransform(springX, [0, 1], [-10, 10]);
+  // Transform values for 3D rotation - increased range for more dramatic effect
+  const rotateX = useTransform(springY, [0, 1], [25, -25]);
+  const rotateY = useTransform(springX, [0, 1], [-25, 25]);
 
   // Determine holographic pattern based on rarity
   const getHolographicClass = () => {
@@ -118,7 +118,12 @@ const HolographicCard: React.FC<HolographicCardProps> = ({
   }, [springX, springY]);
 
   return (
-    <div className="holographic-wrapper" style={{ position: 'relative', display: 'inline-block' }}>
+    <div className="holographic-wrapper" style={{ 
+      position: 'relative', 
+      display: 'inline-block',
+      perspective: '1200px',
+      transformStyle: 'preserve-3d'
+    }}>
       <motion.div
         ref={cardRef}
         className={cn(
@@ -133,7 +138,8 @@ const HolographicCard: React.FC<HolographicCardProps> = ({
         )}
         style={{
           '--pointer-from-center': isHovered ? 1 : 0,
-          '--card-scale': isHovered ? 1.05 : 1,
+          '--card-scale': isHovered ? 1.1 : 1,
+          transformStyle: 'preserve-3d',
         } as React.CSSProperties}
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
@@ -141,12 +147,14 @@ const HolographicCard: React.FC<HolographicCardProps> = ({
         animate={{
           rotateX: isHovered ? rotateX : 0,
           rotateY: isHovered ? rotateY : 0,
-          scale: isHovered ? 1.05 : 1,
+          scale: isHovered ? 1.1 : 1,
+          z: isHovered ? 50 : 0,
         }}
         transition={{
           type: 'spring',
-          stiffness: 400,
-          damping: 30,
+          stiffness: 300,
+          damping: 25,
+          mass: 0.8,
         }}
       >
         <div className="holographic-card">

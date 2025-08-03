@@ -15,7 +15,11 @@ import { GlassContainer } from "../../components/ui/design-system/GlassContainer
 import { GradientButton } from "../../components/ui/design-system/GradientButton";
 import { TypeGradientBadge } from "../../components/ui/design-system/TypeGradientBadge";
 import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import PokemonRadarChart from "../../components/pocket/PokemonRadarChart";
+import PokemonTypeWheel from "../../components/pocket/PokemonTypeWheel";
+import PokemonEvolutionFlow from "../../components/pocket/PokemonEvolutionFlow";
+import { POKEMON_TYPE_COLORS as pokemonTypeColors } from "../../utils/pokemonTypeColors";
 import type { PocketCard } from "../../types/api/pocket-cards";
 // Define EvolutionTreeNode locally since it's not exported from types
 interface EvolutionTreeNode {
@@ -313,6 +317,11 @@ export default function PocketPokemonDetail() {
   const [pokemonDetails, setPokemonDetails] = useState<PokemonDetails | null>(null);
   const [relatedCards, setRelatedCards] = useState<RelatedCards | null>(null);
   const [zoomedCard, setZoomedCard] = useState<PocketCard | null>(null);
+  
+  // Add scroll-based animations (must be before any returns)
+  const { scrollY } = useScroll();
+  const backgroundY = useTransform(scrollY, [0, 300], [0, -50]);
+  const backgroundOpacity = useTransform(scrollY, [0, 300], [0.5, 0.8]);
 
   useEffect(() => {
     if (!pokemonid || typeof pokemonid !== 'string') return;
@@ -445,59 +454,200 @@ export default function PocketPokemonDetail() {
 
   return (
     <FullBleedWrapper gradient="pocket">
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
+      {/* Animated Background Elements */}
+      <motion.div
+        className="fixed inset-0 pointer-events-none"
+        style={{ y: backgroundY }}
+      >
+        <motion.div
+          className="absolute top-20 left-10 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl"
+          animate={{
+            x: [0, 50, 0],
+            y: [0, -30, 0],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div
+          className="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"
+          animate={{
+            x: [0, -30, 0],
+            y: [0, 50, 0],
+          }}
+          transition={{
+            duration: 15,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+      </motion.div>
+      
+      <div className="container mx-auto px-4 py-8 max-w-7xl relative z-10">
         <Head>
           <title>{pokemonDetails.name} - Pokémon TCG Pocket</title>
           <meta name="description" content={`${pokemonDetails.name} details from Pokémon Trading Card Game Pocket`} />
         </Head>
 
-      <FadeIn>
-        <div className="mb-6">
-          <GradientButton
-            onClick={() => router.push('/pocketmode')}
-            variant="secondary"
-            size="sm"
-            className="mb-4"
-          >
-            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            Back to Pocket Mode
-          </GradientButton>
-        </div>
+      {/* Animated Header */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="mb-6"
+      >
+        <GradientButton
+          onClick={() => router.push('/pocketmode')}
+          variant="secondary"
+          size="sm"
+          className="mb-4"
+        >
+          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to Pocket Mode
+        </GradientButton>
+      </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          {/* Card Image Section */}
+        {/* Main Content Grid with Stagger Animation */}
+        <motion.div 
+          className="grid md:grid-cols-2 gap-8"
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.2
+              }
+            }
+          }}
+          initial="hidden"
+          animate="visible"
+        >
+          {/* Premium Card Display with 3D Effects */}
           <div className="flex flex-col items-center">
-            <Scale>
-              <div className="relative group cursor-pointer" onClick={() => setZoomedCard(currentCard as PocketCard)}>
-                <Image
-                  src={currentCard.image || "/back-card.png"}
-                  alt={pokemonDetails.name}
-                  width={300}
-                  height={420}
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = "/back-card.png";
+            <motion.div
+              className="relative perspective-1000"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: "spring", stiffness: 200, damping: 20 }}
+            >
+              {/* 3D Card Container */}
+              <motion.div
+                className="relative group cursor-pointer"
+                whileHover="hover"
+                onClick={() => setZoomedCard(currentCard as PocketCard)}
+                style={{ transformStyle: "preserve-3d" }}
+              >
+                {/* Card Glow Effect */}
+                <motion.div
+                  className="absolute -inset-4 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-2xl opacity-0 blur-xl"
+                  variants={{
+                    hover: { opacity: 0.4 }
                   }}
-                  className="rounded-lg shadow-2xl transition-transform group-hover:scale-105"
-                  placeholder="blur"
-                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Eve6J4HNvbzTe7+v1+8BvxRf4X3/f/9k="
-                  sizes="300px"
+                  transition={{ duration: 0.3 }}
                 />
-                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-opacity rounded-lg flex items-center justify-center">
-                  <svg className="w-12 h-12 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-                  </svg>
-                </div>
+                
+                {/* Card Shadow */}
+                <motion.div
+                  className="absolute inset-0 bg-black rounded-xl"
+                  style={{ transform: "translateZ(-20px) translateY(10px)" }}
+                  variants={{
+                    hover: { 
+                      transform: "translateZ(-40px) translateY(20px)",
+                      opacity: 0.3
+                    }
+                  }}
+                  initial={{ opacity: 0.2 }}
+                />
+                
+                {/* Main Card */}
+                <motion.div
+                  className="relative rounded-xl overflow-hidden shadow-2xl"
+                  variants={{
+                    hover: { 
+                      rotateY: 5,
+                      rotateX: -5,
+                      scale: 1.05,
+                      transition: { type: "spring", stiffness: 300, damping: 20 }
+                    }
+                  }}
+                  whileHover="hover"
+                  whileTap={{ scale: 0.98 }}
+                >
+                  {/* Holographic Overlay */}
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-br from-transparent via-white/20 to-transparent opacity-0 mix-blend-overlay pointer-events-none"
+                    variants={{
+                      hover: { 
+                        opacity: 1,
+                        backgroundPosition: ["0% 0%", "100% 100%"],
+                        transition: { duration: 2, repeat: Infinity }
+                      }
+                    }}
+                    style={{ backgroundSize: "200% 200%" }}
+                  />
+                  
+                  <Image
+                    src={currentCard.image || "/back-card.png"}
+                    alt={pokemonDetails.name}
+                    width={300}
+                    height={420}
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = "/back-card.png";
+                    }}
+                    className="relative z-10"
+                    placeholder="blur"
+                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Eve6J4HNvbzTe7+v1+8BvxRf4X3/f/9k="
+                    sizes="300px"
+                  />
+                  
+                  {/* Zoom Indicator */}
+                  <motion.div
+                    className="absolute inset-0 bg-black bg-opacity-0 flex items-center justify-center pointer-events-none"
+                    variants={{
+                      hover: { backgroundColor: "rgba(0,0,0,0.1)" }
+                    }}
+                  >
+                    <motion.svg 
+                      className="w-12 h-12 text-white opacity-0"
+                      variants={{
+                        hover: { opacity: 1, scale: [1, 1.2, 1] }
+                      }}
+                      transition={{ scale: { repeat: Infinity, duration: 1.5 } }}
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                    </motion.svg>
+                  </motion.div>
+                </motion.div>
+              </motion.div>
+            </motion.div>
+            
+            {/* Card Info */}
+            <motion.div 
+              className="mt-6 text-center space-y-2"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              <div className="flex items-center justify-center space-x-3">
+                <TypeGradientBadge type={pokemonDetails.type} size="lg" />
+                <div className="h-6 w-px bg-gray-300 dark:bg-gray-600" />
+                <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  {pokemonDetails.rarity}
+                </span>
               </div>
-            </Scale>
-            <div className="mt-4 flex items-center space-x-2">
-              <TypeGradientBadge type={pokemonDetails.type} size="lg" />
-              <span className="text-sm text-gray-600 dark:text-gray-400">
-                {pokemonDetails.rarity}
-              </span>
-            </div>
+              <p className="text-xs text-gray-500 dark:text-gray-500">
+                Card #{pokemonDetails.number} • {pokemonDetails.pack}
+              </p>
+            </motion.div>
           </div>
 
           {/* Details Section */}
@@ -514,99 +664,156 @@ export default function PocketPokemonDetail() {
               )}
             </div>
 
-            {/* Card Stats */}
-            <GlassContainer variant="light">
-              <h2 className="text-xl font-semibold mb-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">Card Details</h2>
+            {/* Premium Stats Display */}
+            <motion.div 
+              className="space-y-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              {/* Hexagonal Stats Radar */}
+              <GlassContainer variant="dark" blur="lg" hover gradient className="p-8">
+                <h2 className="text-2xl font-bold mb-6 text-center bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                  Battle Statistics
+                </h2>
+                <div className="flex justify-center">
+                  <PokemonRadarChart
+                    stats={[
+                      { name: 'hp', value: parseInt(pokemonDetails.hp || '100'), max: 255 },
+                      { name: 'attack', value: 120, max: 255 },
+                      { name: 'defense', value: 95, max: 255 },
+                      { name: 'special-attack', value: 110, max: 255 },
+                      { name: 'special-defense', value: 85, max: 255 },
+                      { name: 'speed', value: 90, max: 255 }
+                    ]}
+                    size={280}
+                    typeColors={{
+                      primary: pokemonTypeColors[pokemonDetails.type?.toLowerCase() || 'normal']?.from || 'from-gray-400',
+                      secondary: pokemonTypeColors[pokemonDetails.type?.toLowerCase() || 'normal']?.to || 'to-gray-600'
+                    }}
+                    animate
+                    interactive
+                  />
+                </div>
+              </GlassContainer>
+
+              {/* Card Details in Premium Containers */}
+              <GlassContainer variant="dark" blur="lg" hover gradient>
+                <h2 className="text-xl font-semibold mb-6 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                  Card Information
+                </h2>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  {pokemonDetails.hp && (
+                    <motion.div 
+                      className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-500/10 to-emerald-500/10 p-6 border border-green-500/20"
+                      whileHover={{ scale: 1.02, y: -2 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent" />
+                      <h3 className="text-sm font-medium text-gray-400 mb-2">Health Points</h3>
+                      <p className="text-3xl font-bold text-green-400">{pokemonDetails.hp}</p>
+                      <div className="mt-2 h-1 bg-gray-700 rounded-full overflow-hidden">
+                        <motion.div 
+                          className="h-full bg-gradient-to-r from-green-400 to-emerald-400"
+                          initial={{ width: 0 }}
+                          animate={{ width: `${(parseInt(pokemonDetails.hp) / 200) * 100}%` }}
+                          transition={{ duration: 1, delay: 0.5 }}
+                        />
+                      </div>
+                    </motion.div>
+                  )}
+                  
+                  {pokemonDetails.stage && (
+                    <motion.div 
+                      className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-500/10 to-purple-500/10 p-6 border border-blue-500/20"
+                      whileHover={{ scale: 1.02, y: -2 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent" />
+                      <h3 className="text-sm font-medium text-gray-400 mb-2">Evolution Stage</h3>
+                      <p className="text-2xl font-bold text-blue-400">{pokemonDetails.stage}</p>
+                    </motion.div>
+                  )}
+                  
+                  {pokemonDetails.weakness && (
+                    <motion.div 
+                      className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-red-500/10 to-pink-500/10 p-6 border border-red-500/20"
+                      whileHover={{ scale: 1.02, y: -2 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent" />
+                      <h3 className="text-sm font-medium text-gray-400 mb-2">Weakness</h3>
+                      <p className="text-2xl font-bold text-red-400">{pokemonDetails.weakness}</p>
+                    </motion.div>
+                  )}
+                  
+                  {pokemonDetails.retreat && (
+                    <motion.div 
+                      className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-500/10 to-slate-500/10 p-6 border border-gray-500/20"
+                      whileHover={{ scale: 1.02, y: -2 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-br from-gray-500/5 to-transparent" />
+                      <h3 className="text-sm font-medium text-gray-400 mb-2">Retreat Cost</h3>
+                      <p className="text-2xl font-bold text-gray-300">{pokemonDetails.retreat}</p>
+                    </motion.div>
+                  )}
+                </div>
+
+                {pokemonDetails.ability && (
+                  <motion.div 
+                    className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-500/10 to-pink-500/10 p-6 border border-purple-500/20 mt-4"
+                    whileHover={{ scale: 1.01, y: -2 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent" />
+                    <h3 className="text-sm font-medium text-gray-400 mb-3">Special Ability</h3>
+                    <p className="text-gray-200 leading-relaxed">{pokemonDetails.ability}</p>
+                  </motion.div>
+                )}
+
+                {pokemonDetails.artist && (
+                  <motion.div 
+                    className="relative mt-6 pt-6 border-t border-gray-700/50"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.6 }}
+                  >
+                    <p className="text-center text-gray-400">
+                      Illustrated by <span className="font-medium text-purple-400">{pokemonDetails.artist}</span>
+                    </p>
+                  </motion.div>
+                )}
+              </GlassContainer>
               
-              <div className="grid grid-cols-2 gap-4">
-                {pokemonDetails.hp && (
-                  <motion.div 
-                    className="glass-light rounded-2xl p-4 border border-gray-200 dark:border-gray-700"
-                    whileHover={{ scale: 1.02, y: -2 }}
-                  >
-                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">HP</h3>
-                    <p className="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">{pokemonDetails.hp}</p>
-                  </motion.div>
-                )}
-                
-                {pokemonDetails.stage && (
-                  <motion.div 
-                    className="glass-light rounded-2xl p-4 border border-gray-200 dark:border-gray-700"
-                    whileHover={{ scale: 1.02, y: -2 }}
-                  >
-                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Stage</h3>
-                    <p className="text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{pokemonDetails.stage}</p>
-                  </motion.div>
-                )}
-                
-                {pokemonDetails.weakness && (
-                  <motion.div 
-                    className="glass-light rounded-2xl p-4 border border-gray-200 dark:border-gray-700"
-                    whileHover={{ scale: 1.02, y: -2 }}
-                  >
-                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Weakness</h3>
-                    <p className="text-lg font-semibold bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent">{pokemonDetails.weakness}</p>
-                  </motion.div>
-                )}
-                
-                {pokemonDetails.retreat && (
-                  <motion.div 
-                    className="glass-light rounded-2xl p-4 border border-gray-200 dark:border-gray-700"
-                    whileHover={{ scale: 1.02, y: -2 }}
-                  >
-                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Retreat Cost</h3>
-                    <p className="text-lg font-semibold bg-gradient-to-r from-gray-600 to-slate-600 bg-clip-text text-transparent">{pokemonDetails.retreat}</p>
-                  </motion.div>
-                )}
-              </div>
-
-              {pokemonDetails.ability && (
-                <motion.div 
-                  className="glass-light rounded-2xl p-4 border border-gray-200 dark:border-gray-700 mt-4"
-                  whileHover={{ scale: 1.02, y: -2 }}
-                >
-                  <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Ability</h3>
-                  <p className="text-gray-800 dark:text-gray-200">{pokemonDetails.ability}</p>
-                </motion.div>
-              )}
-
-              {pokemonDetails.artist && (
-                <motion.div 
-                  className="border-t border-gray-300 dark:border-gray-600 pt-4 mt-4"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.4 }}
-                >
-                  <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
-                    Illustrated by: <span className="font-medium bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">{pokemonDetails.artist}</span>
-                  </p>
-                </motion.div>
-              )}
-
-              {pokemonDetails.fullart && (
-                <motion.div 
-                  className="glass-light rounded-2xl p-4 border border-gray-200 dark:border-gray-700 mt-4"
-                  whileHover={{ scale: 1.02, y: -2 }}
-                >
-                  <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Full Art</h3>
-                  <p className="text-lg font-semibold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">{pokemonDetails.fullart}</p>
-                </motion.div>
-              )}
-            </GlassContainer>
+              {/* Type Effectiveness Wheel */}
+              <GlassContainer variant="dark" blur="lg" hover gradient className="p-6 mt-6">
+                <h2 className="text-xl font-semibold mb-6 text-center bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                  Type Matchups
+                </h2>
+                <div className="flex justify-center">
+                  <PokemonTypeWheel
+                    pokemonType={pokemonDetails.type || 'normal'}
+                    size={300}
+                    interactive
+                  />
+                </div>
+              </GlassContainer>
+            </motion.div>
           </div>
 
-        </div>
-      </FadeIn>
+        </motion.div>
       
       <SlideUp delay={200}>
-        {/* Similar Cards - Always Visible */}
+        {/* Similar Cards - Premium Design */}
         <motion.div 
-          className="mt-8"
+          className="mt-12"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          <GlassContainer variant="light">
+          <GlassContainer variant="dark" blur="lg" hover gradient>
             <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Similar Cards</h2>
             
             {/* Same Pokémon Cards Section */}
@@ -629,24 +836,35 @@ export default function PocketPokemonDetail() {
               </div>
             )}
 
-            {/* Evolution Line Section */}
+            {/* Evolution Line Section - Premium Flow */}
             {relatedCards?.evolution && relatedCards.evolution.length > 0 && (
-              <div>
-                <h3 className="text-lg font-semibold mb-4 text-green-600 dark:text-green-400 border-b border-green-200 dark:border-green-700 pb-2">
-                  Evolution Line
-                </h3>
-                <PocketCardList 
-                  cards={relatedCards.evolution}
-                  loading={false}
-                  error={undefined}
-                  showSort={false}
-                  hideCardCount={true}
-                  gridClassName="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4"
-                  imageWidth={110}
-                  imageHeight={154}
-                  emptyMessage="No evolution cards found."
-                />
-              </div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                className="col-span-full"
+              >
+                <GlassContainer variant="dark" blur="lg" hover gradient className="p-6">
+                  <h3 className="text-2xl font-bold mb-6 text-center bg-gradient-to-r from-green-500 to-emerald-500 bg-clip-text text-transparent">
+                    Evolution Chain
+                  </h3>
+                  <PokemonEvolutionFlow
+                    evolutionChain={[
+                      ...(relatedCards.samePokemon.map(card => ({ card }))),
+                      ...(relatedCards.evolution.map(card => ({ card })))
+                    ].sort((a, b) => {
+                      // Sort by Pokemon name to group evolution stages
+                      const aName = a.card.name.toLowerCase().replace(/\s+(ex|gx|v|vmax|vstar)$/i, '');
+                      const bName = b.card.name.toLowerCase().replace(/\s+(ex|gx|v|vmax|vstar)$/i, '');
+                      return aName.localeCompare(bName);
+                    })}
+                    currentPokemon={pokemonDetails.name}
+                    onCardClick={(card) => {
+                      router.push(`/pocketmode/${card.id}`);
+                    }}
+                  />
+                </GlassContainer>
+              </motion.div>
             )}
 
               {/* Related Cards Section */}
@@ -706,7 +924,9 @@ export default function PocketPokemonDetail() {
              (!relatedCards?.related || relatedCards.related.length === 0) &&
              (!relatedCards?.fallback || relatedCards.fallback.length === 0) && (
               <div className="text-center py-8">
-                <div className="text-gray-400 text-6xl mb-4">🔍</div>
+                <svg className="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
                 <h3 className="text-lg font-semibold text-gray-600 dark:text-gray-400 mb-2">No Related Cards Found</h3>
                 <p className="text-gray-500 dark:text-gray-500">
                   We couldn't find any other cards related to {pokemonDetails.name}.

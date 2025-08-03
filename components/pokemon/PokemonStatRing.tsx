@@ -10,6 +10,8 @@ interface PokemonStatRingProps {
   typeColors?: {
     from: string;
     to: string;
+    accent?: string;
+    animationAccent?: string;
   };
   showLabel?: boolean;
   animate?: boolean;
@@ -46,6 +48,20 @@ const PokemonStatRing: React.FC<PokemonStatRingProps> = ({
   const percentage = (value / maxValue) * 100;
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
   
+  // Get stat-specific gradient colors
+  const getStatGradientColors = (statType: string) => {
+    const colors = {
+      'hp': { from: '#ef4444', to: '#dc2626' }, // Red
+      'attack': { from: '#f97316', to: '#ea580c' }, // Orange
+      'defense': { from: '#3b82f6', to: '#2563eb' }, // Blue
+      'special-attack': { from: '#8b5cf6', to: '#7c3aed' }, // Purple
+      'special-defense': { from: '#10b981', to: '#059669' }, // Green
+      'speed': { from: '#f59e0b', to: '#d97706' } // Yellow
+    };
+    
+    return colors[statType as keyof typeof colors] || { from: '#6b7280', to: '#4b5563' };
+  };
+  
   // Color based on stat value
   const getStatColor = () => {
     if (value >= 150) return 'from-purple-500 to-pink-500';
@@ -59,72 +75,78 @@ const PokemonStatRing: React.FC<PokemonStatRingProps> = ({
   const statColor = getStatColor();
   const statLabel = statAbbreviations[stat] || stat.toUpperCase();
   
+  // Create hexagonal points for Pokemon-style stats
+  const createHexagonPath = (centerX: number, centerY: number, radius: number) => {
+    const points = [];
+    for (let i = 0; i < 6; i++) {
+      const angle = (i * Math.PI) / 3 - Math.PI / 2;
+      const x = centerX + radius * Math.cos(angle);
+      const y = centerY + radius * Math.sin(angle);
+      points.push(`${x},${y}`);
+    }
+    return `M ${points.join(' L ')} Z`;
+  };
+  
+  const center = config.diameter / 2;
+  const hexRadius = (config.diameter - config.strokeWidth) / 2;
+  const backgroundPath = createHexagonPath(center, center, hexRadius);
+  const progressPath = createHexagonPath(center, center, hexRadius * (percentage / 100));
+  
   return (
     <div className="relative inline-flex items-center justify-center">
-      {/* Background circle with glass effect */}
+      {/* Background hexagon with glass effect */}
       <div 
         className={cn(
-          "absolute inset-0 rounded-full",
+          "absolute inset-0",
           "bg-gray-100/50 dark:bg-gray-800/50",
           "backdrop-blur-sm"
         )}
+        style={{
+          clipPath: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)'
+        }}
       />
       
-      {/* SVG Ring */}
+      {/* SVG Hexagon */}
       <svg
         width={config.diameter}
         height={config.diameter}
-        className="transform -rotate-90"
       >
-        {/* Background ring */}
-        <circle
-          cx={config.diameter / 2}
-          cy={config.diameter / 2}
-          r={radius}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={config.strokeWidth}
-          className="text-gray-200 dark:text-gray-700"
-        />
-        
         {/* Gradient definition */}
         <defs>
           <linearGradient id={`stat-gradient-${stat}`} x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" className={cn("text-gradient-from", statColor.split(' ')[0])} />
-            <stop offset="100%" className={cn("text-gradient-to", statColor.split(' ')[2])} />
+            <stop offset="0%" stopColor={getStatGradientColors(stat).from} />
+            <stop offset="100%" stopColor={getStatGradientColors(stat).to} />
           </linearGradient>
+          <filter id={`glow-${stat}`}>
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feMerge> 
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/> 
+            </feMerge>
+          </filter>
         </defs>
         
-        {/* Progress ring */}
-        <motion.circle
-          cx={config.diameter / 2}
-          cy={config.diameter / 2}
-          r={radius}
+        {/* Background hexagon */}
+        <path
+          d={backgroundPath}
           fill="none"
-          stroke={`url(#stat-gradient-${stat})`}
-          strokeWidth={config.strokeWidth}
-          strokeLinecap="round"
-          strokeDasharray={circumference}
-          initial={animate ? { strokeDashoffset: circumference } : { strokeDashoffset }}
-          animate={{ strokeDashoffset }}
-          transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+          stroke="currentColor"
+          strokeWidth={config.strokeWidth / 2}
+          className="text-gray-200 dark:text-gray-700"
         />
         
-        {/* Glow effect */}
-        <motion.circle
-          cx={config.diameter / 2}
-          cy={config.diameter / 2}
-          r={radius}
-          fill="none"
+        {/* Progress hexagon */}
+        <motion.path
+          d={progressPath}
+          fill={`url(#stat-gradient-${stat})`}
+          fillOpacity={0.3}
           stroke={`url(#stat-gradient-${stat})`}
-          strokeWidth={config.strokeWidth}
-          strokeLinecap="round"
-          strokeDasharray={circumference}
-          strokeDashoffset={strokeDashoffset}
-          className="blur-md opacity-50"
-          initial={animate ? { opacity: 0 } : { opacity: 0.5 }}
-          animate={{ opacity: 0.5 }}
-          transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
+          strokeWidth={config.strokeWidth / 3}
+          filter={`url(#glow-${stat})`}
+          initial={animate ? { scale: 0 } : { scale: 1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+          style={{ transformOrigin: `${center}px ${center}px` }}
         />
       </svg>
       
