@@ -70,4 +70,7 @@ const DamageCalcPage: NextPage = () => {
   );
 };
 
+// Mark this page as full bleed to remove Layout padding
+(DamageCalcPage as any).fullBleed = true;
+
 export default DamageCalcPage;

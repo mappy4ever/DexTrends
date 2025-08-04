@@ -36,6 +36,8 @@ function getTypeRgba(type: string | null | undefined, alpha: number): string {
   return hexToRgba(typeHexColors[type?.toLowerCase() || ''] || '#e5e7eb', alpha);
 }
 
+import { FullBleedWrapper } from "../../components/ui";
+
 export default function CardDetailPage() {
   const router = useRouter();
   const { cardId } = router.query;
@@ -323,8 +325,9 @@ export default function CardDetailPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
-      <FadeIn>
+    <FullBleedWrapper gradient="tcg">
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
+        <FadeIn>
         <div className="mb-4">
           <StyledBackButton variant="tcg" />
         </div>
@@ -619,6 +622,10 @@ export default function CardDetailPage() {
         onClose={() => setMagnifyImage(false)}
         enablePinchZoom={true}
       />
-    </div>
+      </div>
+    </FullBleedWrapper>
   );
 }
+
+// Mark this page as full bleed to remove Layout padding
+(CardDetailPage as any).fullBleed = true;

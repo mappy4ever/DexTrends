@@ -1,10 +1,22 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Pokemon, PokemonSpecies, LocationAreaEncounterDetail } from '../../../types/api/pokemon';
-import PokemonGlassCard from '../PokemonGlassCard';
+import { GlassContainer } from '../../ui/design-system';
 import { cn } from '../../../utils/cn';
-import { FaGamepad } from 'react-icons/fa';
-import { getAnimationProps, UI_ANIMATION_SETS } from '../../../utils/standardizedAnimations';
+import { 
+  FaGamepad, FaMapMarkerAlt, FaGlobeAmericas, FaFilter,
+  FaMountain, FaTree, FaWater, FaCity, FaCampground,
+  FaSnowflake, FaFire, FaCloud, FaSun
+} from 'react-icons/fa';
+import { GiCave, GiIsland, GiForest, GiDesert } from 'react-icons/gi';
+import { HiSparkles } from 'react-icons/hi';
+
+// Animation helper
+const getAnimationProps = (variant: string, delay: number = 0) => ({
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.5, delay }
+});
 
 interface LocationsTabProps {
   pokemon: Pokemon;
@@ -92,20 +104,26 @@ const getConsoleIcon = (console: string): React.ReactNode => {
 };
 
 const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationEncounters = [], typeColors }) => {
+  // Hooks must be called before any conditional returns
+  const [selectedGeneration, setSelectedGeneration] = useState<number | null>(null);
+  const [selectedConsole, setSelectedConsole] = useState<string | null>(null);
+  const [expandedGame, setExpandedGame] = useState<string | null>(null);
+  
   // Early return if no data to prevent processing errors
   if (!pokemon || !species) {
     return (
-      <PokemonGlassCard className="p-8 text-center">
+      <GlassContainer 
+        variant="dark" 
+        className="backdrop-blur-xl bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 shadow-xl p-8 text-center"
+        animate={false}
+      >
         <p className="text-gray-500 dark:text-gray-400">Loading location data...</p>
-      </PokemonGlassCard>
+      </GlassContainer>
     );
   }
   
   // Safety check for locationEncounters
   const safeLocationEncounters = Array.isArray(locationEncounters) ? locationEncounters : [];
-  const [selectedGeneration, setSelectedGeneration] = useState<number | null>(null);
-  const [selectedConsole, setSelectedConsole] = useState<string | null>(null);
-  const [expandedGame, setExpandedGame] = useState<string | null>(null);
 
   // Process location encounters by game
   const gameLocations = useMemo(() => {
@@ -184,116 +202,130 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
   const habitat = species.habitat ? species.habitat.name.replace(/-/g, ' ') : null;
 
   return (
-    <div className="space-y-6">
-      {/* Habitat Info */}
-      {habitat && (
-        <PokemonGlassCard variant="default" pokemonTypes={pokemon.types}>
-          <div className="flex items-center justify-between">
-            <h3 className="text-xl font-bold">Natural Habitat</h3>
-            <span className={cn(
-              "px-4 py-2 rounded-full text-sm font-medium",
-              "bg-gradient-to-r text-white",
-              typeColors.from,
-              typeColors.to
-            )}>
-              {habitat.charAt(0).toUpperCase() + habitat.slice(1)}
-            </span>
-          </div>
-        </PokemonGlassCard>
+    <div className="space-y-4">
+      {/* Consolidated Filters */}
+      {(habitat || gameLocations.length > 0) && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <GlassContainer 
+            variant="dark" 
+            className="backdrop-blur-xl bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 shadow-xl"
+            animate={false}
+          >
+            <div className="p-4 md:p-6 space-y-4">
+              {/* Habitat */}
+              {habitat && (
+                <div className="flex items-center gap-3">
+                  <FaTree className="w-4 h-4 text-green-500" />
+                  <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Natural Habitat:</span>
+                  <span className="px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-green-500 to-green-600 text-white">
+                    {habitat.charAt(0).toUpperCase() + habitat.slice(1)}
+                  </span>
+                </div>
+              )}
+              
+              {/* Era Filter */}
+              {gameLocations.length > 0 && (
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <FaFilter className="w-4 h-4 text-purple-400" />
+                    <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Filter by Era</span>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    <button
+                      onClick={() => {setSelectedGeneration(null); setSelectedConsole(null);}}
+                      className={cn(
+                        "px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300",
+                        "transform hover:scale-[1.02] active:scale-[0.98]",
+                        selectedGeneration === null && selectedConsole === null
+                          ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg"
+                          : "bg-white/10 text-gray-600 dark:text-gray-300 border border-gray-200/50 dark:border-gray-600/50 hover:bg-white/20"
+                      )}
+                    >
+                      All
+                    </button>
+                    {Object.keys(locationsByGeneration).sort((a, b) => Number(b) - Number(a)).map(gen => (
+                      <button
+                        key={gen}
+                        onClick={() => {setSelectedGeneration(Number(gen)); setSelectedConsole(null);}}
+                        className={cn(
+                          "px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300",
+                          "transform hover:scale-[1.02] active:scale-[0.98]",
+                          selectedGeneration === Number(gen)
+                            ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg"
+                            : "bg-white/10 text-gray-600 dark:text-gray-300 border border-gray-200/50 dark:border-gray-600/50 hover:bg-white/20"
+                        )}
+                      >
+                        {GENERATION_INFO[Number(gen)]?.gen || `Gen ${gen}`}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {/* Console Filter */}
+              {availableConsoles.length > 1 && (
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <FaGamepad className="w-4 h-4 text-blue-400" />
+                    <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Filter by Console</span>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {['3ds', 'ds', 'gameboy-advance', 'gameboy-color', 'gameboy'].map(console => {
+                      if (!availableConsoles.includes(console)) return null;
+                      return (
+                        <button
+                          key={console}
+                          onClick={() => {setSelectedConsole(selectedConsole === console ? null : console); setSelectedGeneration(null);}}
+                          className={cn(
+                            "px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 flex items-center gap-1.5",
+                            "transform hover:scale-[1.02] active:scale-[0.98]",
+                            selectedConsole === console
+                              ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg"
+                              : "bg-white/10 text-gray-600 dark:text-gray-300 border border-gray-200/50 dark:border-gray-600/50 hover:bg-white/20"
+                          )}
+                        >
+                          {getConsoleIcon(console)}
+                          <span className="capitalize">
+                            {console === '3ds' ? '3DS' : 
+                             console === 'ds' ? 'DS' : 
+                             console === 'gameboy' ? 'GB' :
+                             console === 'gameboy-color' ? 'GBC' :
+                             console === 'gameboy-advance' ? 'GBA' : console}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+          </GlassContainer>
+        </motion.div>
       )}
 
-      {/* Filters */}
+      {/* Info Banner */}
       {gameLocations.length > 0 && (
-        <div className="space-y-4">
-          {/* Era Filter */}
-          <PokemonGlassCard variant="stat" pokemonTypes={pokemon.types}>
-            <h4 className="text-lg font-bold mb-4">Filter by Era</h4>
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => {setSelectedGeneration(null); setSelectedConsole(null);}}
-                className={cn(
-                  "px-4 py-2 rounded-full text-sm font-medium transition-all",
-                  selectedGeneration === null && selectedConsole === null
-                    ? "bg-gradient-to-r text-white " + typeColors.from + " " + typeColors.to
-                    : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
-                )}
-              >
-                All Eras
-              </button>
-              {Object.keys(locationsByGeneration).sort((a, b) => Number(b) - Number(a)).map(gen => (
-                <button
-                  key={gen}
-                  onClick={() => {setSelectedGeneration(Number(gen)); setSelectedConsole(null);}}
-                  className={cn(
-                    "px-4 py-2 rounded-full text-sm font-medium transition-all",
-                    selectedGeneration === Number(gen)
-                      ? "bg-gradient-to-r text-white " + (GENERATION_INFO[Number(gen)]?.colors || 'from-gray-500 to-gray-600')
-                      : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
-                  )}
-                >
-                  ({GENERATION_INFO[Number(gen)]?.gen || `Gen ${gen}`})
-                </button>
-              ))}
-            </div>
-          </PokemonGlassCard>
-
-          {/* Console Filter */}
-          {availableConsoles.length > 1 && (
-            <PokemonGlassCard variant="stat" pokemonTypes={pokemon.types}>
-              <h4 className="text-lg font-bold mb-4">Filter by Console</h4>
-              <div className="flex flex-wrap gap-2">
-                <button
-                  onClick={() => setSelectedConsole(null)}
-                  className={cn(
-                    "px-4 py-2 rounded-full text-sm font-medium transition-all flex items-center gap-2",
-                    selectedConsole === null
-                      ? "bg-gradient-to-r text-white " + typeColors.from + " " + typeColors.to
-                      : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
-                  )}
-                >
-                  <FaGamepad />
-                  All Consoles
-                </button>
-                {availableConsoles.map(console => (
-                  <button
-                    key={console}
-                    onClick={() => {setSelectedConsole(console); setSelectedGeneration(null);}}
-                    className={cn(
-                      "px-4 py-2 rounded-full text-sm font-medium transition-all flex items-center gap-2",
-                      selectedConsole === console
-                        ? "bg-gradient-to-r text-white " + typeColors.from + " " + typeColors.to
-                        : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
-                    )}
-                  >
-                    {getConsoleIcon(console)}
-                    {console.charAt(0).toUpperCase() + console.slice(1).replace(/-/g, ' ')}
-                  </button>
-                ))}
-              </div>
-            </PokemonGlassCard>
-          )}
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 flex items-start gap-2">
+            <FaGamepad className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
+            <p className="text-xs text-blue-700 dark:text-blue-300">
+              Location data available for generations 1-7. Gen 8-9 games (Sword/Shield, Scarlet/Violet) have limited wild encounter data in the Pokémon API due to different gameplay mechanics.
+            </p>
+          </div>
+        </motion.div>
       )}
 
       {/* Location Encounters */}
       {gameLocations.length > 0 ? (
         <div className="space-y-4">
-          {/* Info message about data availability */}
-          <PokemonGlassCard variant="default" pokemonTypes={pokemon.types}>
-            <div className="flex items-start gap-3">
-              <div className="text-blue-500 mt-1">
-                <FaGamepad className="text-lg" />
-              </div>
-              <div className="text-sm">
-                <p className="text-gray-700 dark:text-gray-300 mb-1">
-                  <strong>Location data available for generations 1-7.</strong>
-                </p>
-                <p className="text-gray-600 dark:text-gray-400 text-xs">
-                  Gen 8-9 games (Sword/Shield, Scarlet/Violet) have limited wild encounter data in the Pokémon API due to different gameplay mechanics.
-                </p>
-              </div>
-            </div>
-          </PokemonGlassCard>
           
           <AnimatePresence mode="wait">
             {Object.entries(selectedConsole || selectedGeneration !== null ? filteredLocationsByGeneration : locationsByGeneration)
@@ -309,52 +341,49 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
                     {...getAnimationProps('slideUp')}
                     className="space-y-3"
                   >
-                    <h3 className="text-lg font-bold flex items-center gap-3">
+                    <h3 className="text-sm font-bold flex items-center gap-2 mb-2">
                       <span className={cn(
-                        "px-4 py-2 rounded-full text-sm text-white bg-gradient-to-r flex items-center gap-2",
+                        "px-3 py-1 rounded-full text-xs text-white bg-gradient-to-r",
                         GENERATION_INFO[Number(generation)]?.colors || 'from-gray-500 to-gray-600'
                       )}>
-                        <span className="text-lg">
-                          <FaGamepad />
-                        </span>
-                        ({GENERATION_INFO[Number(generation)]?.gen || `Gen ${generation}`})
+                        {GENERATION_INFO[Number(generation)]?.gen || `Gen ${generation}`}
                       </span>
-                      <span className="text-base font-semibold text-gray-700 dark:text-gray-300">
+                      <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
                         {GENERATION_INFO[Number(generation)]?.region || 'Unknown Region'}
                       </span>
                     </h3>
                     
                     {games.map(game => (
-                      <motion.div key={game.game} {...UI_ANIMATION_SETS.card}>
-                        <PokemonGlassCard 
-                          variant="default" 
-                          pokemonTypes={pokemon.types}
-                          className="cursor-pointer"
+                      <motion.div 
+                        key={game.game}
+                        className="group"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.05 }}
+                        whileHover={{ scale: 1.02, y: -2 }}
+                      >
+                        <div 
+                          className="bg-white dark:bg-gray-900/50 rounded-lg p-3 backdrop-blur-md border border-gray-200 dark:border-gray-700 shadow transition-all duration-300 cursor-pointer hover:shadow-md"
                           onClick={() => setExpandedGame(expandedGame === game.game ? null : game.game)}
                         >
-                        <div className="space-y-3">
+                        <div className="space-y-2">
                           <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                              <span className="text-xl">
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm">
                                 {getConsoleIcon(GAME_CONSOLE_MAP[game.game] || 'gameboy')}
                               </span>
-                              <div>
-                                <h4 className="font-semibold capitalize">
-                                  Pokémon {game.game ? game.game.split('-').map(w => 
-                                    w.charAt(0).toUpperCase() + w.slice(1)
-                                  ).join(' ') : 'Unknown Game'}
-                                </h4>
-                                <div className="text-xs text-gray-500 dark:text-gray-400 capitalize">
-                                  {game.game ? (GAME_CONSOLE_MAP[game.game] || 'gameboy').replace(/-/g, ' ') : 'gameboy'}
-                                </div>
-                              </div>
+                              <h4 className="text-sm font-medium capitalize">
+                                {game.game ? game.game.split('-').map(w => 
+                                  w.charAt(0).toUpperCase() + w.slice(1)
+                                ).join(' ') : 'Unknown Game'}
+                              </h4>
                             </div>
                             <div className="flex items-center gap-2">
-                              <span className="text-sm text-gray-600 dark:text-gray-400">
-                                {game.locations.length} location{game.locations.length !== 1 ? 's' : ''}
+                              <span className="text-xs text-gray-500 dark:text-gray-400">
+                                {game.locations.length} loc{game.locations.length !== 1 ? 's' : ''}
                               </span>
                               <motion.svg
-                                className="w-5 h-5"
+                                className="w-4 h-4 text-gray-400"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -369,50 +398,44 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
                           <AnimatePresence>
                             {expandedGame === game.game && (
                               <motion.div
-                                {...getAnimationProps('slideDown')}
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: 'auto', opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.3 }}
                                 className="overflow-hidden"
                               >
-                                <div className="pt-3 space-y-2">
+                                <div className="pt-2 space-y-1.5">
                                   {game.locations.map((loc, idx) => (
                                     <motion.div
                                       key={`${loc.area}-${idx}`}
-                                      {...getAnimationProps('staggerItem', { delay: idx * 0.05 })}
-                                      className={cn(
-                                        "p-3 rounded-lg",
-                                        "bg-gray-100 dark:bg-gray-800"
-                                      )}
+                                      initial={{ opacity: 0, y: 5 }}
+                                      animate={{ opacity: 1, y: 0 }}
+                                      transition={{ delay: idx * 0.03 }}
+                                      className="p-2 rounded bg-gray-100 dark:bg-gray-800"
                                     >
-                                      <div className="flex items-start justify-between">
-                                        <div className="space-y-1">
-                                          <h5 className="font-medium capitalize">
-                                            {loc.area}
-                                          </h5>
-                                          <div className="flex flex-wrap gap-2 text-sm">
-                                            <span className="text-gray-600 dark:text-gray-400">
-                                              Method: <span className="capitalize">{loc.method}</span>
-                                            </span>
-                                            <span className="text-gray-600 dark:text-gray-400">
-                                              Level: {loc.minLevel}{loc.maxLevel !== loc.minLevel && `-${loc.maxLevel}`}
-                                            </span>
-                                            {loc.chance < 100 && (
-                                              <span className="text-gray-600 dark:text-gray-400">
-                                                Chance: {loc.chance}%
-                                              </span>
-                                            )}
-                                          </div>
-                                          {loc.conditions.length > 0 && (
-                                            <div className="flex flex-wrap gap-1 mt-2">
-                                              {loc.conditions.map(condition => (
-                                                <span
-                                                  key={condition}
-                                                  className="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded text-xs capitalize"
-                                                >
-                                                  {condition}
-                                                </span>
-                                              ))}
-                                            </div>
+                                      <div className="space-y-1">
+                                        <h5 className="text-xs font-medium capitalize">
+                                          {loc.area}
+                                        </h5>
+                                        <div className="flex flex-wrap gap-2 text-[11px] text-gray-600 dark:text-gray-400">
+                                          <span>Method: <span className="capitalize">{loc.method}</span></span>
+                                          <span>Lv. {loc.minLevel}{loc.maxLevel !== loc.minLevel && `-${loc.maxLevel}`}</span>
+                                          {loc.chance < 100 && (
+                                            <span>{loc.chance}%</span>
                                           )}
                                         </div>
+                                        {loc.conditions.length > 0 && (
+                                          <div className="flex flex-wrap gap-1 mt-1">
+                                            {loc.conditions.map(condition => (
+                                              <span
+                                                key={condition}
+                                                className="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-[10px] capitalize"
+                                              >
+                                                {condition}
+                                              </span>
+                                            ))}
+                                          </div>
+                                        )}
                                       </div>
                                     </motion.div>
                                   ))}
@@ -421,7 +444,7 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
                             )}
                           </AnimatePresence>
                         </div>
-                        </PokemonGlassCard>
+                        </div>
                       </motion.div>
                     ))}
                   </motion.div>
@@ -430,35 +453,41 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
           </AnimatePresence>
         </div>
       ) : (
-        <PokemonGlassCard variant="default" pokemonTypes={pokemon.types}>
-          <div className="text-center py-8 space-y-4">
-            <div className="text-4xl mb-4">
-              <FaGamepad className="text-gray-400 mx-auto" />
-            </div>
-            <h3 className="text-lg font-bold text-gray-700 dark:text-gray-300">
-              No Location Data Available
-            </h3>
-            <div className="space-y-2 text-sm">
-              <p className="text-gray-600 dark:text-gray-400">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <GlassContainer 
+            variant="dark" 
+            className="backdrop-blur-xl bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 shadow-xl"
+            animate={false}
+          >
+            <div className="p-6 space-y-3">
+              <div className="flex items-center gap-3">
+                <FaGamepad className="text-2xl text-gray-400" />
+                <h3 className="text-base font-semibold text-gray-700 dark:text-gray-300">
+                  No Location Data Available
+                </h3>
+              </div>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 This Pokémon doesn't have wild encounter location data in our database.
               </p>
-              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 text-left">
-                <h4 className="font-semibold text-blue-800 dark:text-blue-200 mb-2">
-                  Why is this happening?
-                </h4>
-                <ul className="text-blue-700 dark:text-blue-300 space-y-1 text-xs list-disc list-inside">
-                  <li><strong>Gen 8-9 limitations:</strong> Newer games (Sword/Shield, Scarlet/Violet) have limited location data in the Pokémon API</li>
-                  <li><strong>Starter Pokémon:</strong> Usually obtained as gifts rather than wild encounters</li>
-                  <li><strong>Legendary/Mythical:</strong> Often found through special events or story encounters</li>
-                  <li><strong>Evolution-only:</strong> Some Pokémon can only be obtained by evolving others</li>
+              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
+                <p className="text-xs text-blue-700 dark:text-blue-300 font-medium mb-1">Common reasons:</p>
+                <ul className="text-[11px] text-blue-600 dark:text-blue-400 space-y-0.5 list-disc list-inside">
+                  <li>Gen 8-9 games have limited location data in the API</li>
+                  <li>Starter Pokémon are obtained as gifts</li>
+                  <li>Legendary/Mythical found through special events</li>
+                  <li>Evolution-only Pokémon</li>
                 </ul>
               </div>
-              <p className="text-gray-500 dark:text-gray-500 text-xs">
-                Try checking the <strong>Evolution</strong> or <strong>Breeding</strong> tabs for alternative methods to obtain this Pokémon.
+              <p className="text-[11px] text-gray-500 dark:text-gray-500">
+                Check the Evolution or Breeding tabs for alternative methods to obtain this Pokémon.
               </p>
             </div>
-          </div>
-        </PokemonGlassCard>
+          </GlassContainer>
+        </motion.div>
       )}
     </div>
   );

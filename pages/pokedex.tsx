@@ -993,19 +993,20 @@ const PokedexIndex: NextPage = () => {
           </div>
 
           {/* Search and Filter Bar */}
-          <div className="panel-base mb-8">
-            <div className="flex flex-col lg:flex-row gap-4">
-              {/* Search Input */}
-              <div className="flex-1">
-                <input
-                  type="text"
-                  placeholder="Search by name or ID..."
-                  value={pendingSearchTerm}
-                  onChange={(e) => setPendingSearchTerm(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                  className="input"
-                />
-              </div>
+          <div className="sticky top-16 z-20 bg-gradient-to-b from-surface to-surface/95 backdrop-blur-sm pb-4 -mx-4 px-4">
+            <div className="panel-base">
+              <div className="flex flex-col lg:flex-row gap-4">
+                {/* Search Input */}
+                <div className="flex-1">
+                  <input
+                    type="text"
+                    placeholder="Search by name or ID..."
+                    value={pendingSearchTerm}
+                    onChange={(e) => setPendingSearchTerm(e.target.value)}
+                    onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                    className="w-full px-3 py-1.5 text-sm border border-border-color rounded-md bg-white text-dark-text focus:outline-none focus:border-pokemon-blue focus:ring-1 focus:ring-pokemon-blue/20 placeholder:text-text-grey"
+                  />
+                </div>
 
               {/* Filter Buttons */}
               <div className="flex gap-2">
@@ -1176,8 +1177,10 @@ const PokedexIndex: NextPage = () => {
               </div>
             )}
           </div>
+          </div>
 
           {/* Pokémon Grid - Circular Design */}
+          <div className="mt-8">
           {displayedPokemon.length > 0 ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 mb-8">
               {displayedPokemon.map((pokemon) => (
@@ -1205,6 +1208,7 @@ const PokedexIndex: NextPage = () => {
               </button>
             </div>
           )}
+          </div>
 
           {/* Infinite scroll trigger element */}
           <div ref={loadMoreRef} className="h-20 -mt-10" aria-hidden="true" />

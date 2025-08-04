@@ -40,19 +40,23 @@ export default function Layout({ children, fullBleed = false }: LayoutProps) {
         <TouchGestures>
           {/* Removed glassy, layered background effect overlay */}
           <Navbar />
-      <div className="flex flex-grow relative z-10">
-        <main className={`flex-grow transition-all duration-300 ${fullBleed ? '' : 'pt-20 pb-10'} pb-20`}>
-          <div className="max-w-full mx-auto">
-            {children}
+          <div className="flex flex-col flex-grow relative z-10">
+            <main className={`flex-grow transition-all duration-300 ${fullBleed ? '' : 'pt-20'}`}>
+              {fullBleed ? (
+                children
+              ) : (
+                <div className="max-w-full mx-auto pb-20">
+                  {children}
+                </div>
+              )}
+              {/* Mobile bottom padding spacer */}
+              <div className="md:hidden h-16" />
+              {/* Vercel Analytics and Speed Insights re-enabled */}
+              <Analytics />
+              <SpeedInsights />
+            </main>
           </div>
-          {/* Mobile bottom padding spacer */}
-          <div className="md:hidden h-16" />
-          {/* Vercel Analytics and Speed Insights re-enabled */}
-          <Analytics />
-          <SpeedInsights />
-        </main>
-      </div>
-      <Footer />
+          <Footer />
           {/* Mobile Navigation - only shown on mobile */}
           <MobileNavigation />
           {/* Floating comparison button */}

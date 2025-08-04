@@ -62,7 +62,7 @@ const ALL_PACKS = [
   'Solgaleo', 'Lunala', 'Extradimensional Crisis'
 ];
 
-export default function DeckBuilder() {
+function DeckBuilder() {
   const router = useRouter();
   
   // Card data state
@@ -1711,4 +1711,9 @@ export default function DeckBuilder() {
       <BackToTop />
     </div>
   );
-};
+}
+
+// Mark this page as full bleed to remove Layout padding
+(DeckBuilder as any).fullBleed = true;
+
+export default DeckBuilder;

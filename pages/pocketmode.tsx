@@ -507,4 +507,7 @@ const PocketMode: NextPage = () => {
   );
 };
 
+// Mark this page as full bleed to remove Layout padding
+(PocketMode as any).fullBleed = true;
+
 export default PocketMode;

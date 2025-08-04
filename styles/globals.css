@@ -178,6 +178,8 @@ html {
   -webkit-text-size-adjust: 100%;
   /* Enable momentum scrolling */
   -webkit-overflow-scrolling: touch;
+  /* Ensure full height */
+  height: 100%;
 }
 
 body {
@@ -192,6 +194,33 @@ body {
   -webkit-overflow-scrolling: touch;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+  /* Ensure full viewport height */
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Ensure root app container extends full height */
+#__next {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Full background extension utility */
+.full-bleed-bg {
+  position: relative;
+  min-height: 100vh;
+}
+
+.full-bleed-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background: inherit;
 }
 
 /* Accessibility Classes */
@@ -761,6 +790,11 @@ button, a, [role="button"], input, select, textarea {
 
   .card-padding {
     @apply p-4 md:p-6;
+  }
+  
+  /* Custom shadow effects */
+  .drop-shadow-glow {
+    filter: drop-shadow(0 0 10px rgba(255, 223, 0, 0.5)) drop-shadow(0 0 20px rgba(255, 223, 0, 0.3));
   }
 }
 

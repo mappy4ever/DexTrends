@@ -697,4 +697,7 @@ const PocketExpansions: NextPage = () => {
   );
 };
 
+// Mark this page as full bleed to remove Layout padding
+(PocketExpansions as any).fullBleed = true;
+
 export default PocketExpansions;

@@ -41,7 +41,7 @@ interface FilterOptions {
   rarities: string[];
 }
 
-export default function SetView() {
+function SetView() {
   const router = useRouter();
   const { setId } = router.query;
   
@@ -564,3 +564,8 @@ export default function SetView() {
     </div>
   );
 }
+
+// Mark this page as full bleed to remove Layout padding
+(SetView as any).fullBleed = true;
+
+export default SetView;

@@ -966,3 +966,6 @@ export default function PocketPokemonDetail() {
     </FullBleedWrapper>
   );
 }
+
+// Mark this page as full bleed to remove Layout padding
+(PocketPokemonDetail as any).fullBleed = true;

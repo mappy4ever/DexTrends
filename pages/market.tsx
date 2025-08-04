@@ -415,4 +415,7 @@ const MarketPage: NextPage = () => {
   );
 };
 
+// Mark this page as full bleed to remove Layout padding
+(MarketPage as any).fullBleed = true;
+
 export default MarketPage;

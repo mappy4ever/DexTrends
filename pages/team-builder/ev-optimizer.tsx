@@ -420,4 +420,7 @@ const EVOptimizer: NextPage = () => {
   );
 };
 
+// Mark this page as full bleed to remove Layout padding
+(EVOptimizer as any).fullBleed = true;
+
 export default EVOptimizer;

@@ -1,9 +1,18 @@
-import React, { useMemo } from 'react';
-import { motion } from 'framer-motion';
+import React, { useMemo, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import type { Pokemon, PokemonSpecies, Nature } from '../../../types/api/pokemon';
-import { GlassContainer, CircularButton } from '../../ui/design-system';
+import { GlassContainer } from '../../ui/design-system';
+import CircularButton from '../../ui/CircularButton';
 import PokemonStatRadar from '../PokemonStatRadar';
+import PokemonStatBars from '../PokemonStatBars';
 import { cn } from '../../../utils/cn';
+import { 
+  FaChartBar, FaChartLine, FaCalculator, FaDna, 
+  FaFlask, FaRunning, FaShieldAlt, FaBolt,
+  FaHeart, FaStar, FaMedal, FaGamepad
+} from 'react-icons/fa';
+import { GiSwordWound, GiMagicShield } from 'react-icons/gi';
+import { HiSparkles } from 'react-icons/hi';
 
 interface StatsTabV2Props {
   pokemon: Pokemon;
@@ -14,7 +23,7 @@ interface StatsTabV2Props {
   selectedNature?: string;
   selectedLevel?: number;
   onLevelChange?: (level: number) => void;
-  typeColors: any;
+  typeColors: Record<string, string>;
 }
 
 const STAT_NAMES: Record<string, string> = {
@@ -37,11 +46,30 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
   onLevelChange,
   typeColors
 }) => {
+  // State for perfect IVs/EVs toggle
+  const [usePerfectStats, setUsePerfectStats] = useState(false);
   // Calculate stats with nature modifiers
   const calculatedStats = useMemo(() => {
     const stats = pokemon.stats || [];
     
-    return stats.map(stat => {
+    // For realistic EV distribution when max EVs is checked:
+    // Typically invest 252 EVs in two best stats, 4 in another
+    const getEVsForStat = (statName: string, index: number) => {
+      if (!usePerfectStats) return 0;
+      
+      // Find the two highest base stats
+      const sortedStats = [...stats].sort((a, b) => b.base_stat - a.base_stat);
+      const topTwoStats = sortedStats.slice(0, 2).map(s => s.stat.name);
+      
+      if (topTwoStats.includes(statName)) {
+        return 252/4; // 252 EVs = 63 stat points
+      } else if (index === 0) { // HP often gets the remaining 4 EVs
+        return 4/4; // 4 EVs = 1 stat point
+      }
+      return 0;
+    };
+    
+    return stats.map((stat, index) => {
       const baseStat = stat.base_stat;
       let natureModifier = 1;
       
@@ -55,10 +83,12 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
       
       // Calculate actual stat at given level
       let actualStat: number;
+      const evValue = getEVsForStat(stat.stat.name, index);
+      
       if (stat.stat.name === 'hp') {
-        actualStat = Math.floor(((2 * baseStat + 31 + 252/4) * selectedLevel) / 100) + selectedLevel + 10;
+        actualStat = Math.floor(((2 * baseStat + 31 + evValue) * selectedLevel) / 100) + selectedLevel + 10;
       } else {
-        actualStat = Math.floor((Math.floor(((2 * baseStat + 31 + 252/4) * selectedLevel) / 100) + 5) * natureModifier);
+        actualStat = Math.floor((Math.floor(((2 * baseStat + 31 + evValue) * selectedLevel) / 100) + 5) * natureModifier);
       }
       
       return {
@@ -69,196 +99,220 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
         natureModifier
       };
     });
-  }, [pokemon.stats, natureData, selectedLevel]);
+  }, [pokemon.stats, natureData, selectedLevel, usePerfectStats]);
   
-  // Calculate total base stats
+  // Calculate total base stats (for ranking)
   const totalBaseStats = useMemo(() => {
     return pokemon.stats?.reduce((sum, stat) => sum + stat.base_stat, 0) || 0;
   }, [pokemon.stats]);
   
-  // Get stat ranking (how this Pokemon compares to others)
+  // Calculate total actual stats (with level/nature modifiers)
+  const totalActualStats = useMemo(() => {
+    return calculatedStats.reduce((sum, stat) => sum + stat.actualStat, 0);
+  }, [calculatedStats]);
+  
+  // Get stat ranking (based on base stats for consistency)
   const getStatRanking = (total: number) => {
-    if (total >= 700) return { rank: 'Legendary', color: 'from-purple-500 to-pink-500' };
-    if (total >= 600) return { rank: 'Pseudo-Legendary', color: 'from-blue-500 to-purple-500' };
-    if (total >= 500) return { rank: 'Very Strong', color: 'from-green-500 to-blue-500' };
-    if (total >= 400) return { rank: 'Above Average', color: 'from-yellow-500 to-green-500' };
-    if (total >= 300) return { rank: 'Average', color: 'from-orange-500 to-yellow-500' };
-    return { rank: 'Below Average', color: 'from-red-500 to-orange-500' };
+    if (total >= 600) return { rank: 'Legendary', color: 'bg-purple-500' };
+    if (total >= 540) return { rank: 'Excellent', color: 'bg-indigo-500' };
+    if (total >= 500) return { rank: 'Very Strong', color: 'bg-emerald-500' };
+    if (total >= 450) return { rank: 'Strong', color: 'bg-green-500' };
+    if (total >= 400) return { rank: 'Good', color: 'bg-blue-500' };
+    if (total >= 350) return { rank: 'Average', color: 'bg-yellow-500' };
+    if (total >= 300) return { rank: 'Below Average', color: 'bg-orange-500' };
+    return { rank: 'Weak', color: 'bg-red-500' };
   };
   
   const ranking = getStatRanking(totalBaseStats);
   
   return (
     <div className="space-y-6">
-      {/* Stats Overview Header */}
-      <GlassContainer variant="dark" className="p-6">
-        <div className="text-center">
-          <h3 className="text-2xl font-bold mb-2">Total Base Stats</h3>
-          <div className={cn(
-            "text-5xl font-bold bg-gradient-to-r text-transparent bg-clip-text mb-2",
-            ranking.color
-          )}>
-            {totalBaseStats}
-          </div>
-          <span className={cn(
-            "px-4 py-2 rounded-full text-sm font-medium inline-block",
-            "bg-gradient-to-r text-white",
-            ranking.color
-          )}>
-            {ranking.rank}
-          </span>
-        </div>
-      </GlassContainer>
-      
-      {/* Unified Hexagonal Stat Display */}
-      <GlassContainer variant="dark" className="p-6">
-        <h3 className="text-xl font-bold mb-6 text-center">Base Stats Distribution</h3>
-        <div className="flex justify-center">
-          <PokemonStatRadar
-            stats={calculatedStats}
-            size="lg"
-            typeColors={typeColors}
-            animate
-            showValues
-          />
-        </div>
-        
-        {/* Actual Stats with Nature/Level */}
-        <div className="mt-6 grid grid-cols-2 md:grid-cols-3 gap-4">
-          {calculatedStats.map((stat, index) => (
-            <motion.div
-              key={stat.name}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.05 }}
-              className="bg-white/5 dark:bg-gray-800/50 rounded-lg p-3 text-center"
-            >
-              <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
-                {STAT_NAMES[stat.name]}
-              </div>
-              <div className="text-2xl font-bold mt-1">
-                {stat.actualStat}
-                {stat.natureModifier !== 1 && (
-                  <span className={cn(
-                    "text-sm ml-1",
-                    stat.natureModifier > 1 ? "text-green-500" : "text-red-500"
-                  )}>
-                    {stat.natureModifier > 1 ? '↑' : '↓'}
+      {/* Stats Display */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+      >
+        <GlassContainer 
+          variant="dark" 
+          className="backdrop-blur-xl bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 shadow-xl"
+          animate={false}
+        >
+          <div className="flex flex-col h-full">
+            <div className="p-6 md:p-8 flex-1">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-gray-500 dark:text-gray-400">
+                  Stats Distribution
+                </h2>
+                
+                {/* Perfect Stats Toggle */}
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={usePerfectStats}
+                    onChange={(e) => setUsePerfectStats(e.target.checked)}
+                    className="w-4 h-4 rounded text-blue-500 focus:ring-blue-500"
+                  />
+                  <span className="text-xs text-gray-600 dark:text-gray-400">
+                    Optimized EVs
                   </span>
-                )}
+                </label>
               </div>
-              {stat.effort > 0 && (
-                <div className="text-xs text-purple-600 dark:text-purple-400 mt-1">
-                  +{stat.effort} EV
-                </div>
-              )}
-            </motion.div>
-          ))}
-        </div>
-      </GlassContainer>
+              
+              <PokemonStatBars
+                key={`stats-${selectedNature}-${usePerfectStats}`}
+                stats={calculatedStats}
+                selectedLevel={selectedLevel}
+                typeColors={typeColors}
+                animate={false}
+                totalStats={totalActualStats}
+                baseTotal={totalBaseStats}
+                ranking={ranking}
+                showNotes={false}
+              />
+            </div>
+            
+            {/* Notes at bottom */}
+            <div className="px-6 pb-4 md:px-8 md:pb-6 space-y-1 text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-700 pt-4">
+              <div className="flex items-start gap-2">
+                <span className="text-purple-500">•</span>
+                <span>Minimum stats are calculated with 0 EVs, IVs of 0, and (if applicable) a hindering nature.</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-purple-500">•</span>
+                <span>
+                  {usePerfectStats 
+                    ? "Stats shown with optimal EV spread: 252 EVs in two highest base stats, 4 in HP (510 total, game-legal)."
+                    : "Stats shown use perfect IVs (31) with no EVs. Check 'Max EVs' to see optimized EV distribution."
+                  }
+                </span>
+              </div>
+            </div>
+          </div>
+        </GlassContainer>
+      </motion.div>
       
-      {/* Nature & Level Calculator */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Nature Selector */}
-        <GlassContainer variant="dark" className="p-6">
-          <h4 className="font-bold text-lg mb-4">Nature</h4>
+      {/* Nature, Level, and EV Yield in single row */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="grid grid-cols-1 md:grid-cols-3 gap-4"
+      >
+        {/* Nature Selector - Compact */}
+        <div className="bg-white dark:bg-gray-900/50 rounded-2xl p-4 backdrop-blur-md border border-gray-200 dark:border-gray-700 shadow-lg">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-500/20 to-green-600/10 flex items-center justify-center">
+              <FaFlask className="w-4 h-4 text-green-400" />
+            </div>
+            <h3 className="font-bold text-xs uppercase tracking-wider text-green-400">Nature</h3>
+          </div>
           <select
             value={selectedNature}
             onChange={(e) => onNatureChange?.(e.target.value)}
-            className="w-full p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-300 dark:border-gray-600"
+            className="w-full p-2 text-sm bg-white/10 dark:bg-gray-800/50 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all"
           >
             {allNatures.map(nature => (
               <option key={nature.name} value={nature.name}>
                 {nature.name.charAt(0).toUpperCase() + nature.name.slice(1)}
-                {nature.increased_stat && nature.decreased_stat && (
-                  ` (+${STAT_NAMES[nature.increased_stat.name]} -${STAT_NAMES[nature.decreased_stat.name]})`
-                )}
               </option>
             ))}
           </select>
           
           {natureData && (
-            <div className="mt-4 space-y-2 text-sm">
-              {natureData.increased_stat && (
-                <div className="flex items-center gap-2">
-                  <span className="text-green-500">↑</span>
-                  <span>Increases {STAT_NAMES[natureData.increased_stat.name]}</span>
-                </div>
-              )}
-              {natureData.decreased_stat && (
-                <div className="flex items-center gap-2">
-                  <span className="text-red-500">↓</span>
-                  <span>Decreases {STAT_NAMES[natureData.decreased_stat.name]}</span>
-                </div>
-              )}
-              {!natureData.increased_stat && !natureData.decreased_stat && (
-                <div className="text-gray-600 dark:text-gray-400">
-                  No stat changes (neutral nature)
-                </div>
+            <div className="mt-3 text-xs text-gray-600 dark:text-gray-400">
+              {natureData.increased_stat && natureData.decreased_stat ? (
+                <span>+{STAT_NAMES[natureData.increased_stat.name]} -{STAT_NAMES[natureData.decreased_stat.name]}</span>
+              ) : (
+                <span>No stat changes (neutral nature)</span>
               )}
             </div>
           )}
-        </GlassContainer>
+        </div>
         
-        {/* Level Selector */}
-        <GlassContainer variant="dark" className="p-6">
-          <h4 className="font-bold text-lg mb-4">Level</h4>
-          <div className="space-y-4">
-            <input
-              type="range"
-              min="1"
-              max="100"
-              value={selectedLevel}
-              onChange={(e) => onLevelChange?.(parseInt(e.target.value))}
-              className="w-full"
-            />
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600 dark:text-gray-400">Level</span>
-              <span className="text-2xl font-bold">{selectedLevel}</span>
+        {/* Level Selector - Compact */}
+        <div className="bg-white dark:bg-gray-900/50 rounded-2xl p-4 backdrop-blur-md border border-gray-200 dark:border-gray-700 shadow-lg">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500/20 to-blue-600/10 flex items-center justify-center">
+                <FaGamepad className="w-4 h-4 text-blue-400" />
+              </div>
+              <h3 className="font-bold text-xs uppercase tracking-wider text-blue-400">Level</h3>
             </div>
-            
-            {/* Quick level buttons */}
-            <div className="grid grid-cols-4 gap-2">
-              {[1, 50, 75, 100].map(level => (
-                <CircularButton
-                  key={level}
-                  size="sm"
-                  variant={selectedLevel === level ? 'primary' : 'secondary'}
+            <span className="text-xl font-bold">{selectedLevel}</span>
+          </div>
+          
+          <input
+            type="range"
+            min="1"
+            max="100"
+            value={selectedLevel}
+            onChange={(e) => onLevelChange?.(parseInt(e.target.value))}
+            className="w-full mb-4"
+          />
+          
+          {/* Quick level buttons */}
+          <div className="grid grid-cols-4 gap-2">
+            {[1, 25, 50, 100].map(level => (
+              <div key={level} className="flex flex-col items-center">
+                <button
+                  className={cn(
+                    "w-10 h-10 text-xs rounded-full transition-all flex items-center justify-center font-semibold",
+                    selectedLevel === level 
+                      ? "bg-blue-500 text-white shadow-lg" 
+                      : "bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
+                  )}
                   onClick={() => onLevelChange?.(level)}
                 >
                   {level}
-                </CircularButton>
-              ))}
-            </div>
-          </div>
-        </GlassContainer>
-      </div>
-      
-      {/* EV Yield Information */}
-      <GlassContainer variant="dark" className="p-6">
-        <h4 className="font-bold text-lg mb-4">EV Yield</h4>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {calculatedStats.filter(stat => stat.effort > 0).map(stat => (
-            <div
-              key={stat.name}
-              className="bg-purple-100 dark:bg-purple-900/30 rounded-lg p-3 text-center"
-            >
-              <div className="font-medium">{STAT_NAMES[stat.name]}</div>
-              <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
-                +{stat.effort}
+                </button>
+                {level === 50 && (
+                  <span className="text-[8px] mt-1 text-gray-500 dark:text-gray-400 uppercase font-semibold">
+                    Default
+                  </span>
+                )}
               </div>
+            ))}
+          </div>
+        </div>
+        
+        {/* EV Yield - Compact */}
+        <div className="bg-white dark:bg-gray-900/50 rounded-2xl p-4 backdrop-blur-md border border-gray-200 dark:border-gray-700 shadow-lg">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500/20 to-purple-600/10 flex items-center justify-center">
+              <FaDna className="w-4 h-4 text-purple-400" />
             </div>
-          ))}
-          {calculatedStats.filter(stat => stat.effort > 0).length === 0 && (
-            <div className="col-span-full text-center text-gray-600 dark:text-gray-400">
-              No EVs yielded
+            <h3 className="font-bold text-xs uppercase tracking-wider text-purple-400">EV Yield</h3>
+          </div>
+          
+          <div className="space-y-2">
+            {calculatedStats.filter(stat => stat.effort > 0).map(stat => (
+              <div
+                key={stat.name}
+                className="bg-purple-100 dark:bg-purple-900/30 rounded-lg px-3 py-2 flex items-center justify-between"
+              >
+                <span className="text-sm font-medium">{STAT_NAMES[stat.name]}</span>
+                <span className="text-lg font-bold text-purple-600 dark:text-purple-400">
+                  +{stat.effort}
+                </span>
+              </div>
+            ))}
+            {calculatedStats.filter(stat => stat.effort > 0).length === 0 && (
+              <div className="text-center text-sm text-gray-600 dark:text-gray-400 py-4">
+                No EVs yielded
+              </div>
+            )}
+          </div>
+          
+          {calculatedStats.filter(stat => stat.effort > 0).length > 0 && (
+            <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+              <p className="text-xs text-gray-600 dark:text-gray-400 text-center">
+                Effort Values gained when defeating this Pokémon
+              </p>
             </div>
           )}
         </div>
-        <div className="mt-4 text-sm text-gray-600 dark:text-gray-400">
-          Effort Values gained when defeating this Pokémon
-        </div>
-      </GlassContainer>
+      </motion.div>
     </div>
   );
 };

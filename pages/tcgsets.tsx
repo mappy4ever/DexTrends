@@ -606,4 +606,7 @@ const TcgSetsContent: React.FC = () => {
     );
   };
 
+  // Mark this page as full bleed to remove Layout padding
+  (TcgSets as any).fullBleed = true;
+
   export default TcgSets;

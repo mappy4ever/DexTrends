@@ -138,7 +138,7 @@ const CircularPokemonCard = memo(({
         </h3>
         {/* Pokemon types */}
         {pokemon.types && pokemon.types.length > 0 && (
-          <div className="flex justify-center gap-1 mt-1">
+          <div className="flex justify-center gap-1.5 mt-1 flex-wrap">
             {pokemon.types.map((type, index) => (
               <TypeBadge
                 key={index}

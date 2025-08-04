@@ -17,3 +17,6 @@ export {
   CardTitle, 
   CardContent 
 } from '../StandardCard';
+
+// New standardized glass container components
+export { StandardGlassContainer, SectionHeader, HoverCard } from './GlassContainerStandard';

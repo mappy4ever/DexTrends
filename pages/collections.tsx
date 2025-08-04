@@ -439,4 +439,7 @@ const { formatCurrency, formatPercentChange } = {
   }
 };
 
+// Mark this page as full bleed to remove Layout padding
+(CollectionsPage as any).fullBleed = true;
+
 export default CollectionsPage;

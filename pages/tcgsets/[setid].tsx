@@ -1027,4 +1027,7 @@ const SetIdPageWithErrorBoundary: NextPage = () => {
   );
 };
 
+// Mark this page as full bleed to remove Layout padding
+(SetIdPageWithErrorBoundary as any).fullBleed = true;
+
 export default SetIdPageWithErrorBoundary;

@@ -7,6 +7,7 @@ import Image from "next/image";
 import { FadeIn, SlideUp } from "../../components/ui/animations/animations";
 import { useTheme } from "../../context/UnifiedAppContext";
 import { BsGlobeEuropeAfrica } from "react-icons/bs";
+import { useSmoothParallax } from "../../hooks/useSmoothParallax";
 
 // Type definitions
 interface Region {
@@ -218,24 +219,14 @@ const RegionTile: React.FC<RegionTileProps> = ({ region }) => {
 const RegionsPage: NextPage = () => {
   const { theme } = useTheme();
   const router = useRouter();
-  const [scrollY, setScrollY] = useState(0);
+  
+  // Use smooth parallax hook for jitter-free scrolling
+  const parallaxOffset = useSmoothParallax(0.5);
 
   // Clean up transition class on component mount
   useEffect(() => {
     document.body.classList.remove('region-zoom-transition');
   }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Parallax effect calculation
-  const parallaxOffset = scrollY * 0.5;
 
   return (
     <>
@@ -262,8 +253,8 @@ const RegionsPage: NextPage = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          transform: `translateY(${parallaxOffset}px)`,
-          transition: 'transform 0.1s ease-out'
+          transform: `translate3d(0, ${parallaxOffset}px, 0)`,
+          willChange: 'transform'
         }}>
           {/* Arceus Map Image */}
           <img 

@@ -4,7 +4,7 @@ import { POKEMON_TYPE_COLORS } from '@/utils/pokemonTypeColors';
 
 interface TypeBadgeProps {
   type: string;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
   className?: string;
 }
 
@@ -14,6 +14,7 @@ export const TypeBadge: React.FC<TypeBadgeProps> = ({
   className 
 }) => {
   const sizeClasses = {
+    xs: 'px-1.5 py-0.5 text-[10px]',
     sm: 'px-2 py-0.5 text-xs',
     md: 'px-3 py-1 text-sm',
     lg: 'px-4 py-1.5 text-base'

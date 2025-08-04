@@ -51,4 +51,7 @@ const TeamBuilderPage: NextPage = () => {
   );
 };
 
+// Mark this page as full bleed to remove Layout padding
+(TeamBuilderPage as any).fullBleed = true;
+
 export default TeamBuilderPage;

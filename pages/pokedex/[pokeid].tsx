@@ -63,6 +63,7 @@ const PokemonDetail: NextPage = () => {
     next: { id: number; name: string; types: PokemonType[] } | null;
   }>({ prev: null, next: null });
   const [competitiveTiers, setCompetitiveTiers] = useState<CompetitiveTierRecord | null>(null);
+  const [selectedForm, setSelectedForm] = useState<string>('');
 
   // Load adjacent Pokemon for navigation
   const loadAdjacentPokemon = useCallback(async (currentId: number) => {
@@ -158,6 +159,30 @@ const PokemonDetail: NextPage = () => {
     }
   }, [loadNatureData]);
 
+  // Handle form changes
+  const handleFormChange = useCallback((formName: string) => {
+    if (formName === selectedForm) return;
+    
+    // Extract base pokemon ID from current species
+    const baseId = species?.id || pokeid as string;
+    const baseName = species?.name || pokeid as string;
+    const isDefaultForm = species?.varieties?.find(v => v.pokemon.name === formName)?.is_default;
+    
+    // Update URL with form parameter
+    if (isDefaultForm || formName === baseName) {
+      // Default form - remove form parameter
+      router.push(`/pokedex/${baseId}`, undefined, { shallow: false });
+    } else {
+      // Alternate form - add form parameter
+      // Remove base name prefix to get form suffix
+      let formSuffix = formName;
+      if (formName.startsWith(baseName + '-')) {
+        formSuffix = formName.substring(baseName.length + 1);
+      }
+      router.push(`/pokedex/${baseId}?form=${formSuffix}`, undefined, { shallow: false });
+    }
+  }, [pokeid, selectedForm, species, router]);
+
   useEffect(() => {
     // Wait for router to be ready and pokeid to be available
     if (!router.isReady || !pokeid) return;
@@ -182,13 +207,15 @@ const PokemonDetail: NextPage = () => {
         const sanitizedId = sanitizePokemonName(pokemonIdentifier);
 
         // Load critical Pokemon and species data in parallel first
-        const [pokemonData, speciesData] = await Promise.all([
-          fetchPokemon(sanitizedId),
-          fetchPokemonSpecies(sanitizedId)
-        ]);
+        const pokemonData = await fetchPokemon(sanitizedId);
+        
+        // For species, always use the base Pokemon ID (numeric part)
+        const baseSpeciesId = pokemonData.species?.url?.split('/').filter(Boolean).pop() || pokeid;
+        const speciesData = await fetchPokemonSpecies(baseSpeciesId);
 
         setPokemon(pokemonData);
         setSpecies(speciesData);
+        setSelectedForm(pokemonData.name); // Set the current form
 
         // Set loading to false immediately for faster perceived performance
         setLoading(false);
@@ -495,9 +522,7 @@ const PokemonDetail: NextPage = () => {
                 species={species}
                 showShiny={showShiny}
                 onShinyToggle={() => setShowShiny(!showShiny)}
-                onFormChange={(formId) => {
-                  router.push(`/pokedex/${formId}`, undefined, { shallow: true });
-                }}
+                onFormChange={handleFormChange}
               />
             </motion.div>
 
@@ -549,6 +574,6 @@ const PokemonDetail: NextPage = () => {
 };
 
 // Tell Layout to use fullBleed mode
-PokemonDetail.fullBleed = true;
+(PokemonDetail as any).fullBleed = true;
 
 export default PokemonDetail;

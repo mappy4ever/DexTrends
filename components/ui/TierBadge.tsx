@@ -90,6 +90,11 @@ export function TierBadge({
   const isParenthetical = tier.startsWith('(') && tier.endsWith(')');
   const color = tierColors[cleanTier] || 'bg-gray-400';
   
+  // Remove D prefix for doubles tiers when shown in doubles format context
+  const displayTier = (format === 'doubles' && tier.startsWith('D')) 
+    ? tier.substring(1) 
+    : tier;
+  
   // Size classes
   const sizeClasses = {
     sm: 'px-2 py-0.5 text-xs',
@@ -119,7 +124,7 @@ export function TierBadge({
         }}
         title={description ? `${description}${format !== 'singles' ? ` (${formatLabel})` : ''}` : tier}
       >
-        {tier}
+        {displayTier}
       </span>
       {format !== 'singles' && (
         <span className={cn(

@@ -504,4 +504,7 @@ const PocketDecks: NextPage = () => {
   );
 };
 
+// Mark this page as full bleed to remove Layout padding
+(PocketDecks as any).fullBleed = true;
+
 export default PocketDecks;

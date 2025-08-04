@@ -573,4 +573,7 @@ function generateShowdownFormat(team: TeamMember[]): string {
   }).join('\n\n');
 }
 
+// Mark this page as full bleed to remove Layout padding
+(AdvancedTeamBuilder as any).fullBleed = true;
+
 export default AdvancedTeamBuilder;

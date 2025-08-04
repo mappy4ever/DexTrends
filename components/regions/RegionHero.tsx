@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { getRegionMap } from '../../utils/scrapedImageMapping';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
+import { useSmoothParallax } from '../../hooks/useSmoothParallax';
 
 // Types
 interface Region {
@@ -30,20 +31,10 @@ const RegionHero: React.FC<RegionHeroProps> = ({ region, theme }) => {
   const currentRegionIndex = regionOrder.indexOf(region.id as RegionId);
   const prevRegion = currentRegionIndex > 0 ? regionOrder[currentRegionIndex - 1] : null;
   const nextRegion = currentRegionIndex < regionOrder.length - 1 ? regionOrder[currentRegionIndex + 1] : null;
-  const [scrollY, setScrollY] = useState(0);
   const [mapError, setMapError] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Parallax effect calculation
-  const parallaxOffset = scrollY * 0.5;
+  
+  // Use smooth parallax hook for jitter-free scrolling
+  const parallaxOffset = useSmoothParallax(0.5);
 
   // Get map path with fallback
   const mapPath = getRegionMap(region.id);
@@ -80,8 +71,8 @@ const RegionHero: React.FC<RegionHeroProps> = ({ region, theme }) => {
         left: 0,
         right: 0,
         bottom: 0,
-        transform: `translateY(${parallaxOffset}px)`,
-        transition: 'transform 0.1s ease-out'
+        transform: `translate3d(0, ${parallaxOffset}px, 0)`,
+        willChange: 'transform'
       }}>
         {/* Map Image */}
         <img 

@@ -289,4 +289,7 @@ const TrendingPage: NextPage = () => {
   );
 };
 
+// Mark this page as full bleed to remove Layout padding
+(TrendingPage as any).fullBleed = true;
+
 export default TrendingPage;

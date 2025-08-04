@@ -381,22 +381,8 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
             )`
       }}>
       {/* Tab Header with Circular Design */}
-      <div 
-        className="backdrop-blur-md border-b relative z-50 shadow-md"
-        style={{
-          background: theme === 'dark'
-            ? `linear-gradient(to bottom, 
-                color-mix(in srgb, ${typeColors.accent} 25%, rgba(31, 41, 55, 0.95)), 
-                color-mix(in srgb, ${typeColors.accent} 20%, rgba(17, 24, 39, 0.95))
-              )`
-            : `linear-gradient(to bottom, 
-                color-mix(in srgb, ${typeColors.accent} 28%, rgba(255, 255, 255, 0.95)), 
-                color-mix(in srgb, ${typeColors.accent} 25%, rgba(249, 250, 251, 0.95))
-              )`,
-          borderBottomColor: `color-mix(in srgb, ${typeColors.accent} 30%, ${theme === 'dark' ? '#374151' : '#e5e7eb'})`,
-          boxShadow: `0 2px 8px rgba(0, 0, 0, ${theme === 'dark' ? '0.2' : '0.08'})`
-        }}>
-        <div className="flex overflow-x-auto scrollbar-hide px-4 py-3 gap-2">
+      <div className="backdrop-blur-xl bg-white/90 dark:bg-gray-900/90 border-b border-gray-200 dark:border-gray-700 relative z-50 shadow-md">
+        <div className="flex overflow-x-auto scrollbar-hide px-4 py-4 gap-3">
           {POKEMON_TABS.map((tab) => (
             <button
               key={tab.id}
@@ -408,40 +394,12 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
                 onTabChange(tab.id);
               }}
               data-testid={tab.id === 'moves' ? 'moves-tab' : `tab-${tab.id}`}
-              style={{
-                position: 'relative',
-                zIndex: 51,
-                ...(activeTab === tab.id ? {
-                  backgroundImage: pokemon.types?.length === 2
-                    ? theme === 'dark'
-                      ? `linear-gradient(135deg, 
-                          color-mix(in srgb, ${typeColors.animationAccent} 70%, #1f2937), 
-                          color-mix(in srgb, ${getTypeAnimationAccent([pokemon.types[1]]) || typeColors.animationAccent} 70%, #111827)
-                        )`
-                      : `linear-gradient(135deg, 
-                          color-mix(in srgb, ${typeColors.animationAccent} 60%, #f3f4f6), 
-                          color-mix(in srgb, ${getTypeAnimationAccent([pokemon.types[1]]) || typeColors.animationAccent} 60%, #e5e7eb)
-                        )`
-                    : theme === 'dark'
-                      ? `linear-gradient(135deg, 
-                          color-mix(in srgb, ${typeColors.animationAccent} 70%, #1f2937), 
-                          color-mix(in srgb, ${typeColors.animationAccent} 60%, #111827)
-                        )`
-                      : `linear-gradient(135deg, 
-                          color-mix(in srgb, ${typeColors.animationAccent} 60%, #f3f4f6), 
-                          color-mix(in srgb, ${typeColors.animationAccent} 50%, #e5e7eb)
-                        )`,
-                  backgroundColor: 'transparent',
-                  boxShadow: 'none',
-                  border: `1px solid ${typeColors.animationAccent}50`,
-                  textShadow: '0 1px 2px rgba(0,0,0,0.3)'
-                } : {})
-              }}
               className={cn(
-                "px-4 py-2 font-medium text-sm transition-all duration-300 whitespace-nowrap flex items-center gap-2 rounded-full",
+                "px-5 py-2.5 font-medium text-sm transition-all duration-300 whitespace-nowrap flex items-center gap-2 rounded-full",
+                "transform hover:scale-[1.02] active:scale-[0.98]",
                 activeTab === tab.id
-                  ? "text-white transform scale-[1.02] font-semibold drop-shadow-md"
-                  : "text-gray-700 dark:text-gray-300 bg-white/80 dark:bg-gray-800/80 hover:bg-white/90 dark:hover:bg-gray-700/90 hover:shadow-md"
+                  ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg"
+                  : "bg-white/10 text-gray-600 dark:text-gray-300 border border-gray-200/50 dark:border-gray-600/50 hover:bg-white/20"
               )}
             >
               <span className="text-base">{tab.icon}</span>

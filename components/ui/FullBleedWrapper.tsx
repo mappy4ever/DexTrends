@@ -43,8 +43,12 @@ export const FullBleedWrapper: React.FC<FullBleedWrapperProps> = ({
   const gradientClasses = getGradientClasses();
 
   return (
-    <div className={`min-h-screen ${gradientClasses} ${className}`}>
-      {children}
+    <div className={`min-h-screen relative ${gradientClasses} ${className}`}>
+      {/* Background extender to ensure full coverage */}
+      <div className={`absolute inset-0 ${gradientClasses} -z-10`} aria-hidden="true" />
+      <div className="relative z-0 min-h-screen">
+        {children}
+      </div>
     </div>
   );
 };

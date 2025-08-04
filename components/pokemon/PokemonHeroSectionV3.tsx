@@ -9,6 +9,7 @@ import { calculateCatchRate, calculateGenderRatio, getStatColor } from '../../ut
 import { cn } from '../../utils/cn';
 import { FaStar, FaRuler, FaWeight, FaMars, FaVenus, FaHeart, FaTag } from 'react-icons/fa';
 import { useFavorites } from '../../hooks/useUnifiedApp';
+import PokemonFormSelector from './PokemonFormSelector';
 
 interface PokemonHeroSectionV3Props {
   pokemon: Pokemon;
@@ -109,6 +110,37 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
   
   const generation = ROMAN_TO_NUMBER[generationRoman] || '1';
   const regionName = GENERATION_TO_REGION[generationRoman] || 'Unknown';
+  
+  // Prepare forms data - filter out unwanted forms
+  const availableForms = species?.varieties?.filter(variety => {
+    const name = variety.pokemon.name;
+    const baseId = species.id.toString();
+    
+    // Skip cosmetic forms
+    if (name.includes('totem') || 
+        name.includes('cosplay') || 
+        name.includes('cap') ||
+        name.includes('starter') ||
+        name.includes('gmax')) {
+      return false;
+    }
+    
+    // Include default form and real alternate forms
+    return variety.is_default || 
+           name.includes('mega') || 
+           name.includes('alola') || 
+           name.includes('galar') || 
+           name.includes('hisui') || 
+           name.includes('paldea') ||
+           name.includes('rotom') ||
+           name.includes('castform') ||
+           name.includes('deoxys');
+  }).map(variety => ({
+    name: variety.pokemon.name,
+    displayName: variety.pokemon.name,
+    url: variety.pokemon.url,
+    isDefault: variety.is_default
+  })) || [];
   
   return (
     <div className="w-full">
@@ -236,6 +268,18 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                   {species.genera?.find(g => g.language.name === 'en')?.genus || 'Pokemon'}
                 </p>
               </div>
+              
+              {/* Form Selector */}
+              {availableForms.length > 1 && (
+                <div className="flex justify-center mt-3 mb-3">
+                  <PokemonFormSelector
+                    forms={availableForms}
+                    selectedForm={pokemon.name}
+                    onFormChange={onFormChange || (() => {})}
+                    typeColors={typeColors}
+                  />
+                </div>
+              )}
               
               <div className="flex gap-2 justify-center">
                 {pokemon.types?.map((type, index) => (
