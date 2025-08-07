@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useMoveData } from '@/hooks/useMoveData';
 import { MoveCompetitiveDataRecord } from '@/utils/supabase';
 import { cn } from '@/utils/cn';
-import { typeColors } from '@/utils/pokemonTypeColors';
+import { typeColors } from '@/utils/unifiedTypeColors';
 import { CategoryIcon } from '@/components/ui/CategoryIcon';
 
 interface EnhancedMoveDisplayProps {

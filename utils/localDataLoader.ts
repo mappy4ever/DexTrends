@@ -2,6 +2,7 @@
 // Loads scraped data from local files instead of external APIs
 
 import { useState, useEffect } from 'react';
+import logger from '@/utils/logger';
 
 // Types
 interface DataPaths {
@@ -116,7 +117,7 @@ export async function loadLocalData<T = any>(
     
     return data;
   } catch (error) {
-    console.error(`Error loading local data for ${dataType}:`, (error as Error).message);
+    logger.error(`Error loading local data for ${dataType}:`, (error as Error).message);
     return null;
   }
 }
@@ -250,7 +251,7 @@ export async function checkLocalDataAvailability(): Promise<DataAvailability> {
     checks.games = gamesResponse.ok;
 
   } catch (error) {
-    console.log('Local data check failed:', (error as Error).message);
+    logger.debug('Local data check failed:', (error as Error).message);
   }
 
   return checks;
@@ -328,7 +329,7 @@ export async function loadDataWithFallback(
     }
   } else {
     // Use fallback data
-    console.warn(`Local ${dataType} data not available, using fallback`);
+    logger.warn(`Local ${dataType} data not available, using fallback`);
     if (dataType === 'gymLeaders') {
       return region ? fallbackData.gymLeaders[region] || [] : fallbackData.gymLeaders;
     } else if (dataType === 'games') {

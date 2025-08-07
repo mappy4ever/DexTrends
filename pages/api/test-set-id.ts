@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import logger from '@/utils/logger';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;
@@ -16,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Test direct fetch to Pokemon TCG API
     const apiUrl = `https://api.pokemontcg.io/v2/sets/${testId}`;
-    console.log('Testing set ID:', testId);
+    logger.debug('Testing set ID:', testId);
     
     const response = await fetch(apiUrl, { headers });
     const data = await response.json();
@@ -43,7 +44,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
     }
   } catch (error: any) {
-    console.error('Test failed:', error);
+    logger.error('Test failed:', error);
     res.status(500).json({ 
       success: false,
       setId: testId,

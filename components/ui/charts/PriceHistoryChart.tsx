@@ -125,7 +125,7 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
           }
         }
       } catch (error: any) {
-        console.error('Error fetching price data:', error);
+        logger.error('Error fetching price data:', error);
         setError(error.message || 'Failed to load price data');
         
         // Fallback to sample data on error
@@ -273,7 +273,7 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
       
       alert('Price collection started. This may take a few minutes.');
     } catch (error) {
-      console.error('Error triggering price collection:', error);
+      logger.error('Error triggering price collection:', error);
       alert('Failed to start price collection.');
     }
   };

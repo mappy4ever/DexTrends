@@ -2,6 +2,8 @@
  * Simple circuit breaker implementation
  */
 
+import logger from '@/utils/logger';
+
 // Types
 type CircuitState = 'CLOSED' | 'OPEN' | 'HALF_OPEN';
 
@@ -96,7 +98,7 @@ class CircuitBreaker {
 
   private trip(): void {
     this.state = 'OPEN';
-    console.warn(`Circuit breaker ${this.name} tripped. Failures: ${this.failures}`);
+    logger.warn(`Circuit breaker ${this.name} tripped. Failures: ${this.failures}`);
   }
 
   reset(): void {
@@ -104,7 +106,7 @@ class CircuitBreaker {
     this.failures = 0;
     this.requests = 0;
     this.lastFailureTime = null;
-    console.info(`Circuit breaker ${this.name} reset`);
+    logger.info(`Circuit breaker ${this.name} reset`);
   }
 
   getStats(): CircuitBreakerStats {

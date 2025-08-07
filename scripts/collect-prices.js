@@ -4,6 +4,7 @@
 // Can be run manually or via cron job
 
 const https = require('https');
+const logger = require('./utils/logger');
 
 const BASE_URL = process.env.NEXT_PUBLIC_VERCEL_URL 
   ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` 
@@ -18,8 +19,8 @@ async function collectPrices(options = {}) {
     specificCards = []
   } = options;
 
-  console.log(`🚀 Starting price collection (${jobType})...`);
-  console.log(`📊 Target: ${specificCards.length > 0 ? specificCards.length + ' specific cards' : limit + ' popular cards'}`);
+  logger.info(`Starting price collection (${jobType})...`);
+  logger.info(`Target: ${specificCards.length > 0 ? specificCards.length + ' specific cards' : limit + ' popular cards'}`);
 
   const requestData = JSON.stringify({
     jobType,
@@ -45,24 +46,25 @@ async function collectPrices(options = {}) {
     const result = await response.json();
 
     if (response.ok) {
-      console.log('✅ Price collection completed successfully!');
-      console.log(`📈 Results:`);
-      console.log(`   • Cards processed: ${result.summary.cardsProcessed}`);
-      console.log(`   • Cards updated: ${result.summary.cardsUpdated}`);
-      console.log(`   • Cards failed: ${result.summary.cardsFailed}`);
-      console.log(`   • Batches processed: ${result.summary.batchesProcessed}`);
-      console.log(`   • Job ID: ${result.jobId}`);
+      logger.info('Price collection completed successfully!');
+      logger.info('Results:', {
+        cardsProcessed: result.summary.cardsProcessed,
+        cardsUpdated: result.summary.cardsUpdated,
+        cardsFailed: result.summary.cardsFailed,
+        batchesProcessed: result.summary.batchesProcessed,
+        jobId: result.jobId
+      });
       
       return result;
     } else {
-      console.error('❌ Price collection failed:', result.error);
+      logger.error('Price collection failed:', { error: result.error });
       if (result.message) {
-        console.error('💬 Message:', result.message);
+        logger.error('Message:', { message: result.message });
       }
       process.exit(1);
     }
   } catch (error) {
-    console.error('🔥 Error running price collection:', error.message);
+    logger.error('Error running price collection:', { error: error.message });
     process.exit(1);
   }
 }
@@ -83,8 +85,8 @@ for (let i = 0; i < args.length; i++) {
       options.specificCards = args[++i].split(',');
       break;
     case '--help':
-      console.log(`
-📊 DexTrends Price Collection Script
+      logger.info(`
+DexTrends Price Collection Script
 
 Usage:
   node scripts/collect-prices.js [options]

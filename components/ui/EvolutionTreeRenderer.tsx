@@ -26,10 +26,10 @@ export default function EvolutionTreeRenderer({
   currentId = null, 
   formatEvolutionDetails 
 }: EvolutionTreeRendererProps) {
-  console.log('EvolutionTreeRenderer received node:', node);
+  logger.debug('EvolutionTreeRenderer received node:', node);
   
   if (!node || !node.name) {
-    console.warn('EvolutionTreeRenderer: Invalid node data', node);
+    logger.warn('EvolutionTreeRenderer: Invalid node data', node);
     return null;
   }
 

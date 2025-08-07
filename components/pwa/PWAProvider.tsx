@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/router';
+import logger from '@/utils/logger';
 
 // Re-export hook for backward compatibility
 export { usePWA } from '../../hooks/usePWA';
@@ -97,7 +98,7 @@ export const PWAProvider: React.FC<PWAProviderProps> = ({ children }) => {
         }
       });
     } catch (error) {
-      console.error('Service worker registration failed:', error);
+      logger.error('Service worker registration failed:', { error });
     }
   };
 

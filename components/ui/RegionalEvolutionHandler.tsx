@@ -1,5 +1,6 @@
-import { optimizedFetch as fetchData } from '../../utils/apiOptimizations';
-import { sanitizePokemonName } from '../../utils/apiutils';
+import { fetchJSON } from '../../utils/unifiedFetch';
+import { sanitizePokemonName } from '../../utils/pokemonNameSanitizer';
+import logger from '../../utils/logger';
 
 // Map of regional evolutions
 const REGIONAL_EVOLUTION_MAP: { [key: string]: string | string[] | null } = {
@@ -69,8 +70,8 @@ export async function getRegionalEvolutionChain(pokemonName: string, currentForm
   const sanitizedRegionalName = sanitizePokemonName(regionalName);
   
   // Add the current Pokemon
-  try {
-    const pokemonData = await fetchData(`https://pokeapi.co/api/v2/pokemon/${sanitizedRegionalName}`);
+  const pokemonData = await fetchJSON(`https://pokeapi.co/api/v2/pokemon/${sanitizedRegionalName}`);
+  if (pokemonData) {
     evolutionChain.push({
       id: pokemonData.id,
       name: regionalName,
@@ -80,8 +81,8 @@ export async function getRegionalEvolutionChain(pokemonName: string, currentForm
       isRegional: true,
       region: region
     });
-  } catch (e) {
-    console.error(`Failed to fetch regional form: ${regionalName}`, e);
+  } else {
+    logger.error(`Failed to fetch regional form: ${regionalName}`);
   }
   
   // Check for evolutions
@@ -90,8 +91,8 @@ export async function getRegionalEvolutionChain(pokemonName: string, currentForm
     if (Array.isArray(evolution)) {
       // Split evolution (like Galarian Slowpoke)
       for (const evo of evolution) {
-        try {
-          const evoData = await fetchData(`https://pokeapi.co/api/v2/pokemon/${sanitizePokemonName(evo)}`);
+        const evoData = await fetchJSON(`https://pokeapi.co/api/v2/pokemon/${sanitizePokemonName(evo)}`);
+        if (evoData) {
           evolutionChain.push({
             id: evoData.id,
             name: evo,
@@ -102,14 +103,14 @@ export async function getRegionalEvolutionChain(pokemonName: string, currentForm
             region: region,
             isSplitEvolution: true
           });
-        } catch (e) {
-          console.error(`Failed to fetch evolution: ${evo}`, e);
+        } else {
+          logger.error(`Failed to fetch evolution: ${evo}`);
         }
       }
     } else {
       // Single evolution
-      try {
-        const evoData = await fetchData(`https://pokeapi.co/api/v2/pokemon/${sanitizePokemonName(evolution)}`);
+      const evoData = await fetchJSON(`https://pokeapi.co/api/v2/pokemon/${sanitizePokemonName(evolution)}`);
+      if (evoData) {
         evolutionChain.push({
           id: evoData.id,
           name: evolution,
@@ -123,19 +124,23 @@ export async function getRegionalEvolutionChain(pokemonName: string, currentForm
         // Check if this evolution has further evolutions
         const furtherEvolution = REGIONAL_EVOLUTION_MAP[evolution];
         if (furtherEvolution && !Array.isArray(furtherEvolution)) {
-          const furtherEvoData = await fetchData(`https://pokeapi.co/api/v2/pokemon/${sanitizePokemonName(furtherEvolution)}`);
-          evolutionChain.push({
-            id: furtherEvoData.id,
-            name: furtherEvolution,
-            types: furtherEvoData.types.map((t: any) => t.type.name),
-            sprite: furtherEvoData.sprites?.front_default,
-            shinySprite: furtherEvoData.sprites?.front_shiny,
-            isRegional: true,
-            region: region
-          });
+          const furtherEvoData = await fetchJSON(`https://pokeapi.co/api/v2/pokemon/${sanitizePokemonName(furtherEvolution)}`);
+          if (furtherEvoData) {
+            evolutionChain.push({
+              id: furtherEvoData.id,
+              name: furtherEvolution,
+              types: furtherEvoData.types.map((t: any) => t.type.name),
+              sprite: furtherEvoData.sprites?.front_default,
+              shinySprite: furtherEvoData.sprites?.front_shiny,
+              isRegional: true,
+              region: region
+            });
+          } else {
+            logger.error(`Failed to fetch further evolution: ${furtherEvolution}`);
+          }
         }
-      } catch (e) {
-        console.error(`Failed to fetch evolution: ${evolution}`, e);
+      } else {
+        logger.error(`Failed to fetch evolution: ${evolution}`);
       }
     }
   }
@@ -146,8 +151,8 @@ export async function getRegionalEvolutionChain(pokemonName: string, currentForm
   );
   
   for (const [preEvo] of preEvolutions) {
-    try {
-      const preEvoData = await fetchData(`https://pokeapi.co/api/v2/pokemon/${sanitizePokemonName(preEvo)}`);
+    const preEvoData = await fetchJSON(`https://pokeapi.co/api/v2/pokemon/${sanitizePokemonName(preEvo)}`);
+    if (preEvoData) {
       evolutionChain.unshift({
         id: preEvoData.id,
         name: preEvo,
@@ -157,8 +162,8 @@ export async function getRegionalEvolutionChain(pokemonName: string, currentForm
         isRegional: true,
         region: region
       });
-    } catch (e) {
-      console.error(`Failed to fetch pre-evolution: ${preEvo}`, e);
+    } else {
+      logger.error(`Failed to fetch pre-evolution: ${preEvo}`);
     }
   }
   

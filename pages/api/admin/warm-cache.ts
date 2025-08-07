@@ -392,10 +392,10 @@ export async function warmCache() {
     });
     
     const result = await response.json();
-    console.log('Cache warming result:', result);
+    logger.info('Cache warming result:', result);
     return result;
   } catch (error) {
-    console.error('Cache warming failed:', error);
+    logger.error('Cache warming failed:', error);
     throw error;
   }
 }

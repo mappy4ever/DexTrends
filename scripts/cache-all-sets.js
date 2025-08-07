@@ -6,14 +6,14 @@
  */
 
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+const logger = require('./utils/logger');
 
 async function cacheAllSets() {
   const baseUrl = 'http://localhost:3000';
   const token = process.env.CACHE_WARM_TOKEN || 'your-secure-token-here';
   
-  console.log('Starting cache warming for ALL TCG sets...');
-  console.log('This may take a while (30-60 minutes for all sets)');
-  console.log('');
+  logger.info('Starting cache warming for ALL TCG sets...');
+  logger.info('This may take a while (30-60 minutes for all sets)');
   
   try {
     // First, let's check how many sets we have
@@ -21,16 +21,15 @@ async function cacheAllSets() {
     const setsData = await statusResponse.json();
     
     if (setsData.error) {
-      console.error('Error fetching sets list:', setsData.error);
+      logger.error('Error fetching sets list:', { error: setsData.error });
       return;
     }
     
     const totalSets = setsData.totalCount || setsData.data?.length || 0;
-    console.log(`Found ${totalSets} total TCG sets to cache`);
-    console.log('');
+    logger.info(`Found ${totalSets} total TCG sets to cache`);
     
     // Now trigger the cache warming for ALL sets
-    console.log('Triggering cache warming for ALL sets...');
+    logger.info('Triggering cache warming for ALL sets...');
     const warmResponse = await fetch(`${baseUrl}/api/admin/warm-cache?all=true&token=${token}`, {
       method: 'POST',
       headers: {

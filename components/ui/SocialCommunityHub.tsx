@@ -286,7 +286,7 @@ const SocialCommunityHub: React.FC = () => {
 
       setSocialData(mockData);
     } catch (error) {
-      console.error('Failed to load social data:', error);
+      logger.error('Failed to load social data:', error);
     } finally {
       setLoading(false);
     }
@@ -327,7 +327,7 @@ const SocialCommunityHub: React.FC = () => {
           url: `${window.location.origin}${router.asPath}`
         });
       } catch (error) {
-        console.log('Share cancelled');
+        logger.debug('Share cancelled');
       }
     } else {
       // Fallback to clipboard

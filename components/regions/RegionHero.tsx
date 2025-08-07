@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { getRegionMap } from '../../utils/scrapedImageMapping';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { useSmoothParallax } from '../../hooks/useSmoothParallax';
+import logger from '@/utils/logger';
 
 // Types
 interface Region {
@@ -91,9 +92,9 @@ const RegionHero: React.FC<RegionHeroProps> = ({ region, theme }) => {
             maskImage: 'radial-gradient(ellipse 100% 100% at center center, black 50%, transparent 90%)',
             WebkitMaskImage: 'radial-gradient(ellipse 100% 100% at center center, black 50%, transparent 90%)'
           }}
-          onLoad={(e) => console.log('Region map loaded!', (e.target as HTMLImageElement).src)}
+          onLoad={(e) => logger.debug('Region map loaded!', { src: (e.target as HTMLImageElement).src })}
           onError={(e) => {
-            console.error('Region map failed!', (e.target as HTMLImageElement).src);
+            logger.error('Region map failed!', { src: (e.target as HTMLImageElement).src });
             setMapError(true);
           }}
         />

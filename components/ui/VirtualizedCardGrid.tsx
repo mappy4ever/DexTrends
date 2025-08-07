@@ -61,7 +61,7 @@ const VirtualizedCardGrid: React.FC<VirtualizedCardGridProps> = ({
   // Debug container width changes
   useEffect(() => {
     if (containerRef) {
-      console.log('Container ref set. Width:', containerRef.clientWidth, 'Viewport:', window.innerWidth);
+      logger.debug('Container ref set. Width:', containerRef.clientWidth, 'Viewport:', window.innerWidth);
     }
   }, [containerRef]);
   
@@ -91,14 +91,14 @@ const VirtualizedCardGrid: React.FC<VirtualizedCardGridProps> = ({
   useEffect(() => {
     if (actualColumnCount > 4 && initialColumnCountRef.current === null) {
       initialColumnCountRef.current = actualColumnCount;
-      console.log('🔒 Locking initial column count with useRef:', actualColumnCount);
+      logger.debug('🔒 Locking initial column count with useRef:', actualColumnCount);
     }
   }, [actualColumnCount]);
   
   // Track card array changes
   useEffect(() => {
     if (prevCardsLengthRef.current !== cards.length) {
-      console.log('📊 Card array changed:', {
+      logger.debug('📊 Card array changed:', {
         previousLength: prevCardsLengthRef.current,
         newLength: cards.length,
         lockedColumns: initialColumnCountRef.current,
@@ -113,7 +113,7 @@ const VirtualizedCardGrid: React.FC<VirtualizedCardGridProps> = ({
   
   // Enhanced debug logging
   useEffect(() => {
-    console.log('VirtualizedCardGrid State:', {
+    logger.debug('VirtualizedCardGrid State:', {
       containerWidth,
       viewportWidth,
       actualColumns: actualColumnCount,

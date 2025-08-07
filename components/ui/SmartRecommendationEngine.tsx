@@ -356,7 +356,7 @@ const SmartRecommendationEngine: React.FC<SmartRecommendationEngineProps> = ({
         personalizedPicks: recs[4]
       });
     } catch (error) {
-      console.error('Failed to generate recommendations:', error);
+      logger.error('Failed to generate recommendations:', error);
     } finally {
       setLoading(false);
     }

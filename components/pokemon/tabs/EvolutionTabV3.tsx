@@ -12,7 +12,8 @@ import {
 } from 'react-icons/fa';
 import { GiTwoCoins, GiStoneSphere } from 'react-icons/gi';
 import { HiSparkles } from 'react-icons/hi';
-import { fetchPokemon } from '../../../utils/apiutils';
+import { fetchJSON } from '../../../utils/unifiedFetch';
+import logger from '../../../utils/logger';
 import { hasRegionalEvolution, getRegionalEvolution, isRegionalEvolution } from '../../../utils/regionalEvolutions';
 
 interface EvolutionTabV3Props {
@@ -323,11 +324,11 @@ const EvolutionTabV3: React.FC<EvolutionTabV3Props> = ({
       const formData: Record<string, Pokemon> = {};
       
       for (const variety of specialVarieties) {
-        try {
-          const data = await fetchPokemon(variety.pokemon.name);
+        const data = await fetchJSON<Pokemon>(`https://pokeapi.co/api/v2/pokemon/${variety.pokemon.name}`);
+        if (data) {
           formData[variety.pokemon.name] = data;
-        } catch (error) {
-          console.warn(`Failed to fetch data for ${variety.pokemon.name}:`, error);
+        } else {
+          logger.warn(`Failed to fetch data for ${variety.pokemon.name}`);
         }
       }
       
@@ -386,7 +387,7 @@ const EvolutionTabV3: React.FC<EvolutionTabV3Props> = ({
           });
         }
       } catch (err) {
-        console.error('Error parsing evolution node:', err);
+        logger.error('Error parsing evolution node:', err);
       }
       
       // Process evolutions

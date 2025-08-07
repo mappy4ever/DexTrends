@@ -34,6 +34,8 @@ interface TypeUIColors {
   glowColorIntense: string;
   ringGradient: string;
   animationAccent: string;
+  // Index signature for compatibility with Record<string, string>
+  [key: string]: string | string[];
 }
 
 interface PokemonType {

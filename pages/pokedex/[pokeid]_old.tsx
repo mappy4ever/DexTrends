@@ -8,7 +8,10 @@ import { TypeBadge } from "../../components/ui/TypeBadge";
 import { TypeEffectivenessBadge } from "../../components/ui/TypeEffectivenessBadge";
 import { useFavorites } from "../../context/UnifiedAppContext";
 import { typeEffectiveness, getGeneration } from "../../utils/pokemonutils";
-import { fetchData, fetchPokemon, fetchPokemonSpecies, fetchNature, fetchTCGCards, fetchPocketCards, sanitizePokemonName } from "../../utils/apiutils";
+import { fetchJSON } from "../../utils/unifiedFetch";
+import { sanitizePokemonName } from "../../utils/pokemonNameSanitizer";
+import { fetchTCGCards, fetchPocketCards } from "../../utils/apiutils";
+import logger from "../../utils/logger";
 import type { AbilityData as AbilityApiData } from "../../types/api/pokemon";
 import EnhancedEvolutionDisplay from "../../components/ui/EnhancedEvolutionDisplay";
 import PokemonFormSelector from "../../components/ui/PokemonFormSelector";
@@ -94,8 +97,12 @@ const PokemonDetail: NextPage = () => {
   // Load specific nature data (cached)
   const loadNatureData = useCallback(async (natureName: string) => {
     try {
-      const data = await fetchNature(natureName);
-      setNatureData(data);
+      const data = await fetchJSON<Nature>(`https://pokeapi.co/api/v2/nature/${natureName}`);
+      if (data) {
+        setNatureData(data);
+      } else {
+        logger.error('Failed to fetch nature data:', natureName);
+      }
     } catch (err) {
       console.error('Error loading nature data:', err);
     }
@@ -104,13 +111,17 @@ const PokemonDetail: NextPage = () => {
   // Load all available natures
   const loadAllNatures = useCallback(async () => {
     try {
-      const response = await fetchData('https://pokeapi.co/api/v2/nature/') as { results: { name: string; url: string }[] };
+      const response = await fetchJSON<{ results: { name: string; url: string }[] }>('https://pokeapi.co/api/v2/nature/');
+      if (!response) {
+        logger.error('Failed to fetch natures list');
+        return;
+      }
       // Load full data for each nature
       const naturesWithData = await Promise.all(
         response.results.map(async (nature: { name: string; url: string }) => {
           try {
-            const natureData = await fetchData(nature.url);
-            return natureData;
+            const natureData = await fetchJSON<Nature>(nature.url);
+            return natureData || { name: nature.name };
           } catch (err) {
             console.error(`Error loading nature ${nature.name}:`, err);
             return { name: nature.name };
@@ -150,11 +161,17 @@ const PokemonDetail: NextPage = () => {
         console.log('Sanitized Pokemon ID:', sanitizedId);
 
         // Load Pokemon basic data (cached)
-        const pokemonData = await fetchPokemon(sanitizedId);
+        const pokemonData = await fetchJSON<Pokemon>(`https://pokeapi.co/api/v2/pokemon/${sanitizedId}`);
+        if (!pokemonData) {
+          throw new Error(`Pokemon not found: ${sanitizedId}`);
+        }
         setPokemon(pokemonData);
 
         // Load species data (cached)
-        const speciesData = await fetchPokemonSpecies(sanitizedId);
+        const speciesData = await fetchJSON<PokemonSpecies>(`https://pokeapi.co/api/v2/pokemon-species/${sanitizedId}`);
+        if (!speciesData) {
+          throw new Error(`Species not found: ${sanitizedId}`);
+        }
         setSpecies(speciesData);
 
         // Load abilities
@@ -190,7 +207,11 @@ const PokemonDetail: NextPage = () => {
     if (!encountersUrl) return;
     
     try {
-      const encounters = await fetchData(encountersUrl);
+      const encounters = await fetchJSON(encountersUrl);
+      if (!encounters) {
+        logger.error('Failed to fetch location encounters');
+        return;
+      }
       setLocationAreaEncounters(encounters as LocationAreaEncounter[]);
     } catch (err) {
       console.error('Error loading location encounters:', err);
@@ -203,7 +224,12 @@ const PokemonDetail: NextPage = () => {
     if (!evolutionUrl) return;
     
     try {
-      const chainData = await fetchData(evolutionUrl);
+      const chainData = await fetchJSON<EvolutionChain>(evolutionUrl);
+      if (!chainData) {
+        logger.error('Failed to fetch evolution chain');
+        setEvolutionChain(null);
+        return;
+      }
       setEvolutionChain(chainData as EvolutionChain);
     } catch (err) {
       console.error('Error loading evolution chain:', err);
@@ -247,7 +273,11 @@ const PokemonDetail: NextPage = () => {
     
     for (const abilityInfo of abilitiesList) {
       try {
-        const abilityData = await fetchData<AbilityApiData>(abilityInfo.ability.url);
+        const abilityData = await fetchJSON<AbilityApiData>(abilityInfo.ability.url);
+        if (!abilityData) {
+          logger.error(`Failed to fetch ability data for ${abilityInfo.ability.name}`);
+          continue;
+        }
         const englishEntry = abilityData.effect_entries.find(entry => entry.language.name === 'en');
         
         abilitiesData[abilityInfo.ability.name] = {
@@ -1205,7 +1235,8 @@ const PokemonDetail: NextPage = () => {
                         const newAbilities: Record<string, AbilityData> = {};
                         for (const ab of formData.abilities || []) {
                           try {
-                            const abilityData = await fetchData<AbilityApiData>(ab.ability.url);
+                            const abilityData = await fetchJSON<AbilityApiData>(ab.ability.url);
+                            if (!abilityData) continue;
                             const englishEffect = abilityData.effect_entries?.find(e => e.language.name === 'en');
                             const englishShortEffect = abilityData.flavor_text_entries?.find(f => f.language.name === 'en');
                             
@@ -1223,7 +1254,11 @@ const PokemonDetail: NextPage = () => {
                         
                         // Reload species data for the new form - important for evolution chain
                         try {
-                          const newSpeciesData = await fetchPokemonSpecies(formData.id || sanitizePokemonName(formData.name));
+                          const newSpeciesData = await fetchJSON<PokemonSpecies>(`https://pokeapi.co/api/v2/pokemon-species/${formData.id || sanitizePokemonName(formData.name)}`);
+                          if (!newSpeciesData) {
+                            logger.error('Failed to fetch species data for form');
+                            return;
+                          }
                           setSpecies(newSpeciesData);
                           
                           // Reload evolution chain if it exists

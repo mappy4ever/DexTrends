@@ -1,14 +1,15 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import logger from '@/utils/logger';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  console.log('===== TCG TEST SIMPLE =====');
+  logger.debug('===== TCG TEST SIMPLE =====');
   
   const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
-  console.log('API Key exists:', !!apiKey);
-  console.log('API Key value:', apiKey ? `${apiKey.substring(0, 5)}...` : 'none');
+  logger.debug('API Key exists:', !!apiKey);
+  logger.debug('API Key value:', apiKey ? `${apiKey.substring(0, 5)}...` : 'none');
   
   const url = 'https://api.pokemontcg.io/v2/sets?page=1&pageSize=10';
-  console.log('Fetching URL:', url);
+  logger.debug('Fetching URL:', url);
   
   try {
     const headers: HeadersInit = {
@@ -19,26 +20,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       headers['X-Api-Key'] = apiKey;
     }
     
-    console.log('Headers:', headers);
+    logger.debug('Headers:', headers);
     
     const response = await fetch(url, {
       method: 'GET',
       headers: headers,
     });
     
-    console.log('Response status:', response.status);
-    console.log('Response ok:', response.ok);
-    console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+    logger.debug('Response status:', response.status);
+    logger.debug('Response ok:', response.ok);
+    logger.debug('Response headers:', Object.fromEntries(response.headers.entries()));
     
     const responseText = await response.text();
-    console.log('Response text length:', responseText.length);
-    console.log('Response text preview:', responseText.substring(0, 200));
+    logger.debug('Response text length:', responseText.length);
+    logger.debug('Response text preview:', responseText.substring(0, 200));
     
     let data;
     try {
       data = JSON.parse(responseText);
     } catch (e) {
-      console.error('Failed to parse JSON:', e);
+      logger.error('Failed to parse JSON:', e);
       return res.status(500).json({
         error: 'Failed to parse API response',
         responseText: responseText.substring(0, 500),
@@ -46,7 +47,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
     }
     
-    console.log('Parsed data structure:', {
+    logger.debug('Parsed data structure:', {
       hasData: !!data,
       hasDataArray: !!data?.data,
       dataLength: data?.data?.length || 0,
@@ -64,7 +65,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       rawResponse: responseText.substring(0, 500)
     });
   } catch (error: any) {
-    console.error('Fetch error:', error);
+    logger.error('Fetch error:', error);
     res.status(500).json({
       error: 'Fetch failed',
       message: error.message,

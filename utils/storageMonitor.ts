@@ -2,6 +2,8 @@
  * Storage Monitor - Utility for monitoring and managing localStorage usage
  */
 
+import logger from '@/utils/logger';
+
 export interface StorageInfo {
   totalSize: number;
   usedSize: number;
@@ -60,7 +62,7 @@ export const getStorageInfo = (): StorageInfo => {
       }
     }
   } catch (error) {
-    console.error('Error calculating storage size:', error);
+    logger.error('Error calculating storage size:', error);
   }
 
   // Estimate max storage (usually 5-10MB, we'll use 5MB as conservative estimate)
@@ -157,7 +159,7 @@ export const clearStorageByType = (type: 'cache' | 'pokemonTabs' | 'all'): numbe
       }
     });
   } catch (error) {
-    console.error('Error clearing storage:', error);
+    logger.error('Error clearing storage:', error);
   }
   
   return clearedCount;
@@ -229,7 +231,7 @@ export const smartCleanup = (): number => {
       }
     });
   } catch (error) {
-    console.error('Error during smart cleanup:', error);
+    logger.error('Error during smart cleanup:', error);
   }
   
   return clearedCount;

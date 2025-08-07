@@ -95,13 +95,13 @@ class PageErrorBoundary extends Component<Props, State> {
   override componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // Log error to console in development
     if (process.env.NODE_ENV === 'development') {
-      console.error('Page Error Boundary caught an error:', error, errorInfo);
+      logger.error('Page Error Boundary caught an error:', error, errorInfo);
     }
     
     // Log to error tracking service in production
     if (process.env.NODE_ENV === 'production') {
       // TODO: Send to error tracking service like Sentry
-      console.error(`[${this.props.pageName || 'Unknown Page'}] Error:`, error.message);
+      logger.error(`[${this.props.pageName || 'Unknown Page'}] Error:`, error.message);
     }
 
     this.setState({

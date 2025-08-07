@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import logger from '@/utils/logger';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const setId = 'sv5';
@@ -15,12 +16,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Test the exact endpoint that the frontend calls
     const testUrl = `http://localhost:3002/api/tcg-sets/${setId}?page=1&pageSize=20`;
-    console.log('Testing local API endpoint:', testUrl);
+    logger.debug('Testing local API endpoint:', testUrl);
     
     const response = await fetch(testUrl);
     const data = await response.json();
     
-    console.log('Local API response:', {
+    logger.debug('Local API response:', {
       status: response.status,
       ok: response.ok,
       hasSet: !!data?.set,
@@ -42,7 +43,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     });
   } catch (error: any) {
-    console.error('Test failed:', error);
+    logger.error('Test failed:', error);
     res.status(500).json({
       error: error.message,
       stack: error.stack

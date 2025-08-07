@@ -2,8 +2,9 @@ import React, { useState, useEffect, useCallback, Fragment } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { TypeBadge } from './TypeBadge';
-import { sanitizePokemonName } from '../../utils/apiutils';
+import { sanitizePokemonName } from '../../utils/pokemonNameSanitizer';
 import { fetchJSON } from '../../utils/unifiedFetch';
+import logger from '../../utils/logger';
 import { getRegionalEvolutionChain } from './RegionalEvolutionHandler';
 import { Pokemon } from '../../types/api/pokemon';
 
@@ -162,16 +163,26 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }: EnhancedEvol
         
         // Get species data
         const speciesData = await fetchJSON<any>(speciesUrl);
+        if (!speciesData) {
+          logger.warn(`Failed to fetch species data for ${currentPokemonId}`);
+          setEvolutionData({ chain: [], structure: null });
+          return;
+        }
         
         // Check if evolution chain URL exists
         if (!speciesData.evolution_chain?.url) {
-          console.warn(`No evolution chain URL found for species ${currentPokemonId}`);
+          logger.warn(`No evolution chain URL found for species ${currentPokemonId}`);
           setEvolutionData({ chain: [], structure: null });
           return;
         }
         
         // Get current Pokemon data to check if it's a regional form
         const currentPokemonData = await fetchJSON<any>(`https://pokeapi.co/api/v2/pokemon/${currentPokemonId}`);
+        if (!currentPokemonData) {
+          logger.warn(`Failed to fetch Pokemon data for ${currentPokemonId}`);
+          setEvolutionData({ chain: [], structure: null });
+          return;
+        }
         const currentPokemonName = currentPokemonData.name;
         
         // Check if this is a regional form
@@ -237,7 +248,7 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }: EnhancedEvol
         try {
           evoData = await fetchJSON<any>(speciesData.evolution_chain.url);
         } catch (error) {
-          console.error('Failed to fetch evolution chain:', error);
+          logger.error('Failed to fetch evolution chain:', error);
           if (isMounted) {
             setEvolutionData({ chain: [], structure: null });
           }
@@ -255,17 +266,19 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }: EnhancedEvol
           let forms: PokemonForm[] = [];
           try {
             const pokeData = await fetchJSON<any>(`https://pokeapi.co/api/v2/pokemon/${speciesId}`);
-            types = pokeData.types.map((t: any) => t.type.name);
+            if (pokeData) {
+              types = pokeData.types.map((t: any) => t.type.name);
+            }
             
             // Get available forms including mega evolutions
             const speciesDetail = await fetchJSON<any>(node.species.url);
-            if (speciesDetail.varieties && speciesDetail.varieties.length > 1) {
+            if (speciesDetail && speciesDetail.varieties && speciesDetail.varieties.length > 1) {
               forms = await Promise.all(
                 speciesDetail.varieties
                   .filter((v: any) => !v.is_default || isRegionalForm(v.pokemon.name) || isMegaEvolution(v.pokemon.name))
                   .map(async (variety: any) => {
-                    try {
-                      const formData = await fetchJSON<any>(variety.pokemon.url);
+                    const formData = await fetchJSON<any>(variety.pokemon.url);
+                    if (formData) {
                       // Check if this regional form should show its own evolution chain
                       const isRegional = isRegionalForm(variety.pokemon.name);
                       return {
@@ -279,7 +292,7 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }: EnhancedEvol
                         isRegional: isRegional,
                         hasOwnEvolution: isRegional // Regional forms have their own evolution chains
                       };
-                    } catch (e) {
+                    } else {
                       return null;
                     }
                   })
@@ -287,7 +300,7 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }: EnhancedEvol
               forms = forms.filter((f): f is PokemonForm => f !== null && isValidForm(f.name));
             }
           } catch (e) {
-            console.error('Failed to fetch Pokemon data:', e);
+            logger.error('Failed to fetch Pokemon data:', e);
           }
           
           const pokemonNode: EvolutionNode = {
@@ -365,7 +378,7 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }: EnhancedEvol
         }
         
       } catch (err: any) {
-        console.error('Error loading evolution:', err);
+        logger.error('Error loading evolution:', err);
         if (isMounted) {
           setError(err.message);
         }
@@ -397,7 +410,7 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }: EnhancedEvol
         const speciesUrl = `https://pokeapi.co/api/v2/pokemon-species/${evolutionData.structure.name}`;
         const speciesData = await fetchJSON<any>(speciesUrl);
         
-        if (speciesData.varieties && speciesData.varieties.length > 1) {
+        if (speciesData && speciesData.varieties && speciesData.varieties.length > 1) {
           // Filter for regional variants using naming pattern
           const regionalPattern = /-(alola|galar|hisui|paldea)($|-)/;
           const variants = speciesData.varieties
@@ -410,7 +423,7 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }: EnhancedEvol
           }
         }
       } catch (error) {
-        console.error('Error checking for regional variants:', error);
+        logger.error('Error checking for regional variants:', error);
       }
     };
     
@@ -825,7 +838,7 @@ function RegionalVariantEvolutions({ basePokemonName, detectedVariants, currentP
             });
           }
         } catch (error) {
-          console.error(`Failed to load evolution chain for ${variant}:`, error);
+          logger.error(`Failed to load evolution chain for ${variant}:`, error);
         }
       }
       

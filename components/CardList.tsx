@@ -3,6 +3,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import Modal from "./ui/modals/Modal";
 import UnifiedCard from "./ui/cards/UnifiedCard";
+import logger from "@/utils/logger";
 import { CardGridSkeleton } from "./ui/SkeletonLoader";
 import { isFeatureEnabled } from "../utils/featureFlags";
 import { TCGCard } from "../types/api/cards";
@@ -36,7 +37,7 @@ interface CardItemProps {
 }
 
 const CardItem = memo<CardItemProps>(({ card, onMagnifyClick, onCardClick, isScrolling = false }) => {
-  console.log('Rendering card:', card.id, card.name); // Debug log
+  logger.debug('Rendering card:', card.id, card.name); // Debug log
   
   return (
     <motion.div 
@@ -241,13 +242,13 @@ const CardList = memo<CardListProps>(({
     });
     
     if (renderTime > 100) {
-      console.warn(`Slow CardList render: ${renderTime.toFixed(2)}ms for ${cards.length} cards`);
+      logger.warn(`Slow CardList render: ${renderTime.toFixed(2)}ms for ${cards.length} cards`);
     }
   }, []);
 
   // Sorting logic
   const sortedCards = useMemo(() => {
-    console.log('CardList received cards:', cards.length, 'cards'); // Debug log
+    logger.debug('CardList received cards:', cards.length, 'cards'); // Debug log
     return [...cards].sort((a, b) => {
       if (sortOption === "price") {
         return getPrice(b) - getPrice(a);

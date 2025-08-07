@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import logger from '@/utils/logger';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { setId } = req.query;
@@ -20,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Direct API call to test set existence
     const setUrl = `https://api.pokemontcg.io/v2/sets/${id}`;
-    console.log('Testing direct API call to:', setUrl);
+    logger.debug('Testing direct API call to:', setUrl);
     
     const response = await fetch(setUrl, {
       headers,
@@ -28,14 +29,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
     
     const responseText = await response.text();
-    console.log('Response status:', response.status);
-    console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+    logger.debug('Response status:', response.status);
+    logger.debug('Response headers:', Object.fromEntries(response.headers.entries()));
     
     let data;
     try {
       data = JSON.parse(responseText);
     } catch (e) {
-      console.error('Failed to parse response:', responseText);
+      logger.error('Failed to parse response:', responseText);
       return res.status(500).json({ 
         error: 'Invalid JSON response',
         responsePreview: responseText.substring(0, 200),
@@ -60,7 +61,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       message: data?.data ? `Set "${data.data.name}" found successfully` : 'No set data returned'
     });
   } catch (error: any) {
-    console.error('Test API failed:', error);
+    logger.error('Test API failed:', error);
     res.status(500).json({ 
       error: error.message,
       setId: id,

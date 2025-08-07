@@ -1,6 +1,8 @@
 // Bulbapedia MediaWiki API utility
 // https://bulbapedia.bulbagarden.net/w/api.php
 
+import logger from '@/utils/logger';
+
 const BULBAPEDIA_API_BASE = 'https://bulbapedia.bulbagarden.net/w/api.php';
 
 // Interfaces for API responses and data structures
@@ -147,7 +149,7 @@ export const bulbapediaApi = {
       const data = await response.json();
       return data.query?.search || [];
     } catch (error) {
-      console.error('Bulbapedia search error:', error);
+      logger.error('Bulbapedia search error:', error);
       return [];
     }
   },
@@ -180,7 +182,7 @@ export const bulbapediaApi = {
         categories: page.categories?.map((cat: { title: string }) => cat.title) || []
       };
     } catch (error) {
-      console.error('Bulbapedia page content error:', error);
+      logger.error('Bulbapedia page content error:', error);
       return null;
     }
   },
@@ -214,7 +216,7 @@ export const bulbapediaApi = {
       
       return imageUrls.filter((img): img is ImageInfo => img !== null);
     } catch (error) {
-      console.error('Bulbapedia images error:', error);
+      logger.error('Bulbapedia images error:', error);
       return [];
     }
   },
@@ -249,7 +251,7 @@ export const bulbapediaApi = {
         mime: imageInfo.mime
       };
     } catch (error) {
-      console.error('Bulbapedia image info error:', error);
+      logger.error('Bulbapedia image info error:', error);
       return null;
     }
   },
@@ -270,7 +272,7 @@ export const bulbapediaApi = {
       const data = await response.json();
       return data.query?.categorymembers || [];
     } catch (error) {
-      console.error('Bulbapedia category error:', error);
+      logger.error('Bulbapedia category error:', error);
       return [];
     }
   },

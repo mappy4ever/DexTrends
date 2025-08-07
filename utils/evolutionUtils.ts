@@ -3,7 +3,7 @@
  * Optimized and reusable across the application
  */
 
-import { sanitizePokemonName } from './apiutils';
+import { sanitizePokemonName } from './pokemonNameSanitizer';
 import { fetchJSON } from './unifiedFetch';
 import { extractIdFromUrl } from './pokemonutils';
 import type { Pokemon, PokemonSpecies, EvolutionChain, EvolutionLink, EvolutionDetail } from '../types/api/pokemon';

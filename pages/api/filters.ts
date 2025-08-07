@@ -1,6 +1,7 @@
 // pages/api/filters.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { createClient } from '@supabase/supabase-js';
+import logger from '@/utils/logger';
 
 // Initialize Supabase client
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -8,7 +9,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 // Check if environment variables are set
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error("Supabase URL or Anon Key is missing. Check environment variables.");
+  logger.error("Supabase URL or Anon Key is missing. Check environment variables.");
 }
 
 // Create client only if variables are present
@@ -87,7 +88,7 @@ async function getFiltersFromSupabase(): Promise<FilterData> {
       .not('set_name', 'is', null);
 
     if (setsError) {
-      console.error('Error fetching sets:', setsError);
+      logger.error('Error fetching sets:', setsError);
       throw setsError;
     }
 
@@ -119,7 +120,7 @@ async function getFiltersFromSupabase(): Promise<FilterData> {
       .not('artist', 'is', null);
 
     if (artistsError) {
-      console.error('Error fetching artists:', artistsError);
+      logger.error('Error fetching artists:', artistsError);
       throw artistsError;
     }
     
@@ -144,7 +145,7 @@ async function getFiltersFromSupabase(): Promise<FilterData> {
     };
 
   } catch (error) {
-    console.error('Database query error:', error);
+    logger.error('Database query error:', error);
     throw error;
   }
 }
@@ -195,7 +196,7 @@ export default async function handler(
       // Try to get data from Supabase
       filterData = await getFiltersFromSupabase();
     } catch (error) {
-      console.error('Failed to fetch from database, using fallback:', error);
+      logger.error('Failed to fetch from database, using fallback:', error);
       // Use fallback data if database fails
       filterData = getFallbackFilters();
     }
@@ -215,7 +216,7 @@ export default async function handler(
     });
 
   } catch (error) {
-    console.error('Filter API error:', error);
+    logger.error('Filter API error:', error);
     
     // Return fallback data even on error
     const fallbackData = getFallbackFilters();

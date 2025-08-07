@@ -19,7 +19,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import PokemonRadarChart from "../../components/pocket/PokemonRadarChart";
 import PokemonTypeWheel from "../../components/pocket/PokemonTypeWheel";
 import PokemonEvolutionFlow from "../../components/pocket/PokemonEvolutionFlow";
-import { POKEMON_TYPE_COLORS as pokemonTypeColors } from "../../utils/pokemonTypeColors";
+import { POKEMON_TYPE_COLORS as pokemonTypeColors } from "../../utils/unifiedTypeColors";
 import type { PocketCard } from "../../types/api/pocket-cards";
 // Define EvolutionTreeNode locally since it's not exported from types
 interface EvolutionTreeNode {
@@ -688,8 +688,8 @@ export default function PocketPokemonDetail() {
                     ]}
                     size={280}
                     typeColors={{
-                      primary: pokemonTypeColors[pokemonDetails.type?.toLowerCase() || 'normal']?.from || 'from-gray-400',
-                      secondary: pokemonTypeColors[pokemonDetails.type?.toLowerCase() || 'normal']?.to || 'to-gray-600'
+                      primary: `from-${pokemonDetails.type?.toLowerCase() || 'gray'}-400`,
+                      secondary: `to-${pokemonDetails.type?.toLowerCase() || 'gray'}-600`
                     }}
                     animate
                     interactive

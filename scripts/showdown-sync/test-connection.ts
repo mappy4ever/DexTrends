@@ -1,6 +1,7 @@
 import * as path from 'path';
 import * as dotenv from 'dotenv';
 import { createClient } from '@supabase/supabase-js';
+import logger from '../../utils/logger';
 
 // Load environment variables
 const envPath = path.resolve(process.cwd(), '.env.local');
@@ -10,16 +11,16 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
-  console.error('Missing required environment variables');
+  logger.error('Missing required environment variables');
   process.exit(1);
 }
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function testConnection() {
-  console.log('Testing Supabase connection...');
-  console.log('URL:', supabaseUrl);
-  console.log('Key type: anon key');
+  logger.info('Testing Supabase connection...');
+  logger.info(`URL: ${supabaseUrl}`);
+  logger.info('Key type: anon key');
   
   try {
     // Test reading from type_effectiveness table
@@ -29,9 +30,9 @@ async function testConnection() {
       .limit(5);
     
     if (error) {
-      console.error('Error reading from type_effectiveness:', error);
+      logger.error('Error reading from type_effectiveness:', { error });
     } else {
-      console.log('Successfully read from type_effectiveness. Record count:', data?.length || 0);
+      logger.info(`Successfully read from type_effectiveness. Record count: ${data?.length || 0}`);
     }
     
     // Test reading from move_competitive_data table
@@ -41,9 +42,9 @@ async function testConnection() {
       .limit(5);
     
     if (moveError) {
-      console.error('Error reading from move_competitive_data:', moveError);
+      logger.error('Error reading from move_competitive_data:', { error: moveError });
     } else {
-      console.log('Successfully read from move_competitive_data. Record count:', moveData?.length || 0);
+      logger.info(`Successfully read from move_competitive_data. Record count: ${moveData?.length || 0}`);
     }
     
     // Test counting records
@@ -52,13 +53,13 @@ async function testConnection() {
       .select('*', { count: 'exact', head: true });
     
     if (countError) {
-      console.error('Error counting move_competitive_data:', countError);
+      logger.error('Error counting move_competitive_data:', { error: countError });
     } else {
-      console.log('Current record count in move_competitive_data:', count);
+      logger.info(`Current record count in move_competitive_data: ${count}`);
     }
     
   } catch (err) {
-    console.error('Unexpected error:', err);
+    logger.error('Unexpected error:', { error: err });
   }
 }
 

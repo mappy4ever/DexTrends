@@ -229,7 +229,7 @@ const PokemonStatBars: React.FC<PokemonStatBarsProps> = ({
                   borderRadius: '0.25rem'
                 }}
                 initial={animate ? { width: 0 } : undefined}
-                animate={{ width: `${Math.min((baseTotal / 720) * 100, 100)}%` }}
+                animate={{ width: `${Math.min(((baseTotal || 0) / 720) * 100, 100)}%` }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
               />
             </div>

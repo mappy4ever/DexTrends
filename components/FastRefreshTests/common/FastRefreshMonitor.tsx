@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styles from './FastRefreshMonitor.module.css';
+import logger from '@/utils/logger';
 
 interface MonitorState {
   isHMRActive: boolean;
@@ -27,7 +28,7 @@ export const FastRefreshMonitor: React.FC = () => {
       const hot = (module as any).hot;
       
       hot.addStatusHandler((status: string) => {
-        console.log('[FastRefreshMonitor] HMR Status:', status);
+        logger.debug('[FastRefreshMonitor] HMR Status:', { status });
         
         if (status === 'ready') {
           setState(prev => ({

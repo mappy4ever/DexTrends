@@ -7,7 +7,8 @@ import { EnhancedMoveDisplay } from './EnhancedMoveDisplay';
 import { TypeBadge } from '@/components/ui/TypeBadge';
 import { CategoryIcon } from '@/components/ui/CategoryIcon';
 import { PillBadgeGroup } from '@/components/ui/PillBadgeGroup';
-import { POKEMON_TYPE_COLORS } from '@/utils/pokemonTypeColors';
+import { POKEMON_TYPE_COLORS } from '@/utils/unifiedTypeColors';
+import logger from '@/utils/logger';
 
 interface PokemonLearnsetProps {
   pokemonId: string;
@@ -67,7 +68,7 @@ export function PokemonLearnset({
         
         // Check if showdownQueries is available
         if (!showdownQueries || typeof showdownQueries.getPokemonLearnset !== 'function') {
-          console.error('Showdown queries not available:', showdownQueries);
+          logger.error('Showdown queries not available:', { showdownQueries });
           throw new Error('Showdown data not available. Check Supabase configuration.');
         }
         
@@ -94,13 +95,13 @@ export function PokemonLearnset({
             return acc;
           }, {} as Record<string | number, number>);
           
-          console.log(`[PokemonLearnset] Fetched ${movesArray.length} moves for ${pokemonId}. Generation distribution:`, genCounts);
+          logger.debug(`[PokemonLearnset] Fetched ${movesArray.length} moves for ${pokemonId}. Generation distribution:`, { genCounts });
         }
         
         // Always set all moves, filtering will be done in filteredMoves
         setMoves(movesArray);
       } catch (err) {
-        console.error('Failed to fetch learnset:', err);
+        logger.error('Failed to fetch learnset:', { err });
         setError(err instanceof Error ? err.message : 'Failed to load move data');
         setMoves([]); // Set empty array on error
       } finally {
@@ -130,7 +131,7 @@ export function PokemonLearnset({
       
       // Check if showdownQueries is available
       if (!showdownQueries || typeof showdownQueries.getMoveData !== 'function') {
-        console.warn('Showdown queries not available for move data');
+        logger.warn('Showdown queries not available for move data');
         setLoadingMoveData(false);
         return;
       }
@@ -149,7 +150,7 @@ export function PokemonLearnset({
                 newMoveDataMap.set(moveName, data);
               }
             } catch (error) {
-              console.error(`Failed to fetch data for move ${moveName}:`, error);
+              logger.error(`Failed to fetch data for move ${moveName}:`, { error, moveName });
             }
           });
           
@@ -158,7 +159,7 @@ export function PokemonLearnset({
         
         setMoveDataMap(newMoveDataMap);
       } catch (error) {
-        console.error('Error fetching move data:', error);
+        logger.error('Error fetching move data:', { error });
       } finally {
         setLoadingMoveData(false);
       }
@@ -215,7 +216,7 @@ export function PokemonLearnset({
     
     // Debug logging in development only
     if (process.env.NODE_ENV === 'development' && result.length === 0 && validMoves.length > 0) {
-      console.warn(`[PokemonLearnset] No moves after filtering. Valid moves: ${validMoves.length}, Selected Gen: ${selectedGeneration}, Cumulative: ${showCumulative}, Method: ${selectedMethod}`);
+      logger.warn('[PokemonLearnset] No moves after filtering', { validMovesCount: validMoves.length, selectedGeneration, showCumulative, selectedMethod });
     }
     
     return result;

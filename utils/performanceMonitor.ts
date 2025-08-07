@@ -647,12 +647,12 @@ class PerformanceMonitor {
     // This could send to Google Analytics, custom analytics, etc.
     // For now, just log in development
     if (this.isEnabled) {
-      console.group('🚀 Performance Report');
-      console.log('Web Vitals:', report.vitals);
-      console.log('Resources:', report.resources);
-      console.log('Custom Metrics:', report.custom);
-      console.log('Memory:', report.memory);
-      console.groupEnd();
+      logger.group('🚀 Performance Report');
+      logger.debug('Web Vitals:', report.vitals);
+      logger.debug('Resources:', report.resources);
+      logger.debug('Custom Metrics:', report.custom);
+      logger.debug('Memory:', report.memory);
+      logger.groupEnd();
     }
   }
 

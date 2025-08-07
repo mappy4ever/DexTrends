@@ -121,7 +121,7 @@ export default function PokemonFormSelector({
         setSelectedForm(currentForm);
         
       } catch (error) {
-        console.error('Error loading forms:', error);
+        logger.error('Error loading forms:', error);
       } finally {
         setLoading(false);
       }
@@ -195,14 +195,14 @@ export default function PokemonFormSelector({
   const handleFormChange = async (form: Form): Promise<void> => {
     if (form.name === selectedForm?.name || isChangingForm) return;
     
-    console.log('Switching to form:', form.name, 'from:', selectedForm?.name);
+    logger.debug('Switching to form:', form.name, 'from:', selectedForm?.name);
     setIsChangingForm(true);
     
     try {
       // Load the form's data
       const formData = await fetchJSON<Pokemon>(form.url);
       if (!formData) throw new Error('No form data received');
-      console.log('Form data loaded:', formData.name);
+      logger.debug('Form data loaded:', formData.name);
       
       // Validate the form data has required fields
       if (!formData || !formData.name) {
@@ -225,7 +225,7 @@ export default function PokemonFormSelector({
         await onFormChange(formData);
       }
     } catch (error) {
-      console.error('Error loading form data:', error);
+      logger.error('Error loading form data:', error);
       // Show error to user with more detail
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       alert(`Failed to load form data: ${errorMessage}`);

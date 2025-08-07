@@ -152,7 +152,7 @@ export const PageRecommendations = (): any => {
         localStorage.setItem('visited-pages', JSON.stringify(updatedVisited));
       }
     } catch (error) {
-      console.warn('Could not access localStorage for page tracking:', error);
+      logger.warn('Could not access localStorage for page tracking:', error);
     }
 
     // Generate recommendations based on current page

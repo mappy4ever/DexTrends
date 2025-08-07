@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { TypeBadge } from './TypeBadge';
-import { sanitizePokemonName } from '../../utils/apiutils';
+import { sanitizePokemonName } from '../../utils/pokemonNameSanitizer';
 import { fetchJSON } from '../../utils/unifiedFetch';
+import logger from '../../utils/logger';
 
 // Types
 interface EvolutionDetails {
@@ -58,6 +59,11 @@ const SimpleEvolutionDisplay: React.FC<SimpleEvolutionDisplayProps> = ({ species
         
         // Get species data
         const speciesData = await fetchJSON<any>(speciesUrl);
+        if (!speciesData) {
+          logger.warn('Failed to fetch species data');
+          setEvolutionChain([]);
+          return;
+        }
         if (!speciesData.evolution_chain?.url) {
           setEvolutionChain([]);
           return;
@@ -65,6 +71,11 @@ const SimpleEvolutionDisplay: React.FC<SimpleEvolutionDisplayProps> = ({ species
         
         // Get evolution chain
         const evoData = await fetchJSON<any>(speciesData.evolution_chain.url);
+        if (!evoData) {
+          logger.warn('Failed to fetch evolution chain data');
+          setEvolutionChain([]);
+          return;
+        }
         
         // Parse the chain into a flat array
         const parseChain = async (node: EvolutionNode, evolutionDetails: EvolutionDetails | null = null): Promise<Pokemon[]> => {
@@ -74,11 +85,11 @@ const SimpleEvolutionDisplay: React.FC<SimpleEvolutionDisplayProps> = ({ species
           
           // Get Pokemon data for types
           let types: string[] = [];
-          try {
-            const pokeData = await fetchJSON<any>(`https://pokeapi.co/api/v2/pokemon/${speciesId}`);
+          const pokeData = await fetchJSON<any>(`https://pokeapi.co/api/v2/pokemon/${speciesId}`);
+          if (pokeData) {
             types = pokeData.types.map((t: any) => t.type.name);
-          } catch (e) {
-            console.error('Failed to fetch Pokemon data:', e);
+          } else {
+            logger.warn(`Failed to fetch Pokemon data for ${speciesId}`);
           }
           
           const current: Pokemon = {
@@ -107,7 +118,7 @@ const SimpleEvolutionDisplay: React.FC<SimpleEvolutionDisplayProps> = ({ species
         setEvolutionChain(chain);
         
       } catch (err: any) {
-        console.error('Error loading evolution:', err);
+        logger.error('Error loading evolution:', err);
         setError(err.message);
       } finally {
         setLoading(false);

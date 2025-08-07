@@ -1,6 +1,7 @@
 // pages/api/trends.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { createClient } from '@supabase/supabase-js';
+import logger from '@/utils/logger';
 
 // Initialize Supabase client - This is OK at the top level
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -8,7 +9,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 // Check if environment variables are set
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error("Supabase URL or Anon Key is missing. Check environment variables.");
+  logger.error("Supabase URL or Anon Key is missing. Check environment variables.");
   // Optionally throw an error during build/startup if preferred
 }
 
@@ -139,11 +140,11 @@ export default async function handler(
 
     // Error handling for individual promises
     if (orgResult.error) {
-        console.warn("Supabase warning fetching org details:", orgResult.error.message);
+        logger.warn("Supabase warning fetching org details:", orgResult.error.message);
         // Non-critical, proceed without org details if it fails but trips succeed
     }
     if (tripsResult.error) {
-        console.error("Supabase error fetching trips:", tripsResult.error);
+        logger.error("Supabase error fetching trips:", tripsResult.error);
         return res.status(500).json({ error: "Failed to fetch trip data.", details: tripsResult.error.message });
     }
 
@@ -167,7 +168,7 @@ export default async function handler(
     });
 
   } catch (exception) {
-    console.error("API Route Exception (trends):", exception);
+    logger.error("API Route Exception (trends):", exception);
     res.status(500).json({ error: "An unexpected error occurred.", details: exception.message });
   }
 }

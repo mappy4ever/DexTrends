@@ -9,7 +9,7 @@ import analyticsEngine from './analyticsEngine';
 import EnhancedPriceCollector from './enhancedPriceCollector';
 import logger from './logger';
 import { PubSub } from 'graphql-subscriptions';
-import apiCache from './apiCache';
+import cacheManager from './UnifiedCacheManager';
 
 const pubsub = new PubSub();
 const priceCollector = new EnhancedPriceCollector();
@@ -729,16 +729,16 @@ export const resolvers = {
 
         switch (type) {
           case 'CARDS':
-            await (apiCache as any).clearCache('cards');
+            await cacheManager.clear();
             break;
           case 'POKEMON':
-            await (apiCache as any).clearCache('pokemon');
+            await cacheManager.clear();
             break;
           case 'PRICES':
-            await (apiCache as any).clearCache('prices');
+            await cacheManager.clear();
             break;
           case 'ALL':
-            await (apiCache as any).clearCache();
+            await cacheManager.clear();
             break;
           default:
             throw new Error(`Invalid cache type: ${type}`);

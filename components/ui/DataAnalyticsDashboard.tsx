@@ -152,7 +152,7 @@ const DataAnalyticsDashboard: React.FC = () => {
       
       setAnalyticsData(mockData);
     } catch (error) {
-      console.error('Failed to load analytics data:', error);
+      logger.error('Failed to load analytics data:', error);
     } finally {
       setLoading(false);
     }

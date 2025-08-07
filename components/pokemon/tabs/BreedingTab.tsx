@@ -5,7 +5,8 @@ import Image from 'next/image';
 import type { Pokemon, PokemonSpecies } from '../../../types/api/pokemon';
 import { GlassContainer } from '../../ui/design-system';
 import { TypeBadge } from '../../ui/TypeBadge';
-import { fetchData } from '../../../utils/apiutils';
+import { fetchJSON } from '../../../utils/unifiedFetch';
+import logger from '../../../utils/logger';
 import { cn } from '../../../utils/cn';
 import { 
   FaMars, 
@@ -29,7 +30,7 @@ import {
   formatHatchTime,
   canBreedTogether
 } from '../../../utils/breedingUtils';
-import { POKEMON_TYPE_COLORS } from '../../../utils/pokemonTypeColors';
+import { POKEMON_TYPE_COLORS } from '../../../utils/unifiedTypeColors';
 
 interface BreedingTabProps {
   pokemon: Pokemon;
@@ -86,8 +87,8 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
         )
         .slice(0, 20) // Limit to prevent too many API calls
         .map(async (moveData) => {
-          try {
-            const moveDetails: any = await fetchData(moveData.move.url);
+          const moveDetails: any = await fetchJSON(moveData.move.url);
+          if (moveDetails) {
             return {
               name: moveDetails.name,
               type: moveDetails.type?.name || 'normal',
@@ -99,7 +100,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
                 m.version_group.name === 'sword-shield'
               )?.machine?.url
             };
-          } catch {
+          } else {
             return null;
           }
         });
@@ -118,8 +119,8 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
         for (const group of species.egg_groups) {
           if (group.name === 'no-eggs') continue;
           
-          try {
-            const groupData: any = await fetchData(group.url);
+          const groupData: any = await fetchJSON(group.url);
+          if (groupData) {
             const pokemonInGroup = groupData.pokemon_species || [];
             
             // Get a sample of compatible Pokemon (limit to avoid too many requests)
@@ -128,20 +129,18 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
               .slice(0, 10);
             
             for (const compatibleSpecies of samplePokemon) {
-              try {
-                const pokemonData: any = await fetchData(`https://pokeapi.co/api/v2/pokemon/${compatibleSpecies.name}`);
+              const pokemonData: any = await fetchJSON(`https://pokeapi.co/api/v2/pokemon/${compatibleSpecies.name}`);
+              if (pokemonData) {
                 compatibleList.push({
                   name: pokemonData.name,
                   sprite: pokemonData.sprites?.front_default || '',
                   types: pokemonData.types?.map((t: any) => t.type.name) || [],
                   eggGroups: [group.name]
                 });
-              } catch {
-                // Skip if Pokemon data can't be loaded
               }
             }
-          } catch (err) {
-            console.error(`Error loading egg group ${group.name}:`, err);
+          } else {
+            logger.error(`Error loading egg group ${group.name}`);
           }
         }
         
@@ -149,7 +148,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
       }
       
     } catch (err) {
-      console.error('Error loading breeding data:', err);
+      logger.error('Error loading breeding data:', err);
       setError('Failed to load breeding data. Please try again later.');
     } finally {
       setLoading(false);

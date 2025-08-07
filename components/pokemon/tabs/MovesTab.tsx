@@ -36,7 +36,7 @@ class MovesTabErrorBoundary extends Component<{ children: ReactNode }, ErrorBoun
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('MovesTab error:', error, errorInfo);
+    logger.error('MovesTab error:', error, errorInfo);
   }
 
   render() {

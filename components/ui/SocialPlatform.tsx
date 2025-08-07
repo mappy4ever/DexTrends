@@ -86,7 +86,7 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
         loadFollowing()
       ]);
     } catch (error) {
-      console.error('Error loading social data:', error);
+      logger.error('Error loading social data:', error);
     } finally {
       setLoading(false);
     }

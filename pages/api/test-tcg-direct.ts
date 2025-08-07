@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import logger from '@/utils/logger';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -13,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Direct fetch to Pokemon TCG API
     const apiUrl = 'https://api.pokemontcg.io/v2/sets?page=1&pageSize=10';
-    console.log('Testing direct API call to:', apiUrl);
+    logger.debug('Testing direct API call to:', apiUrl);
     
     const response = await fetch(apiUrl, {
       headers,
@@ -21,14 +22,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
     
     const responseText = await response.text();
-    console.log('Response status:', response.status);
-    console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+    logger.debug('Response status:', response.status);
+    logger.debug('Response headers:', Object.fromEntries(response.headers.entries()));
     
     let data;
     try {
       data = JSON.parse(responseText);
     } catch (e) {
-      console.error('Failed to parse response:', responseText);
+      logger.error('Failed to parse response:', responseText);
       throw new Error(`Invalid JSON response: ${responseText.substring(0, 200)}`);
     }
     
@@ -42,7 +43,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       rawResponse: process.env.NODE_ENV === 'development' ? responseText.substring(0, 500) : undefined
     });
   } catch (error: any) {
-    console.error('Direct API test failed:', error);
+    logger.error('Direct API test failed:', error);
     res.status(500).json({ 
       success: false,
       error: error.message,

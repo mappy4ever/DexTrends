@@ -1,5 +1,6 @@
 import React, { ReactNode, ErrorInfo } from 'react';
 import Router from 'next/router';
+import logger from '@/utils/logger';
 
 interface TCGSetsErrorBoundaryProps {
   children: ReactNode;
@@ -22,7 +23,7 @@ class TCGSetsErrorBoundary extends React.Component<TCGSetsErrorBoundaryProps, TC
   }
 
   override componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-    console.error('TCGSets Error:', error, errorInfo);
+    logger.error('TCGSets Error:', { error, errorInfo });
     this.setState({
       errorInfo: errorInfo
     });

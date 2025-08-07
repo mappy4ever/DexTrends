@@ -41,7 +41,7 @@ const CardComparisonTool = ({ isOpen, onClose, initialCards = [] }: CardComparis
       const data = await response.json();
       setSearchResults(data.data || []);
     } catch (error) {
-      console.error('Error searching cards:', error);
+      logger.error('Error searching cards:', error);
       setSearchResults([]);
     } finally {
       setIsSearching(false);

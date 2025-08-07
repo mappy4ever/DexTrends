@@ -132,7 +132,7 @@ const PriceIntelligenceSystem: React.FC<PriceIntelligenceSystemProps> = ({
       });
 
     } catch (error) {
-      console.error('Error generating predictions:', error);
+      logger.error('Error generating predictions:', error);
     } finally {
       setLoading(false);
     }

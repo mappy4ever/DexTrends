@@ -6,6 +6,7 @@
 import { fetchJSON } from './unifiedFetch';
 import { extractIdFromUrl } from './pokemonutils';
 import logger from './logger';
+import { POKEMON_TYPE_COLORS } from './unifiedTypeColors';
 import type { Move, Pokemon } from '../types/api/pokemon';
 
 // Move-related interfaces
@@ -191,7 +192,8 @@ export const fetchMovesDetailsBatch = async (
  * Get type color classes for move types
  */
 export const getMoveTypeColor = (type: string): string => {
-  const typeColors: Record<string, string> = {
+  // Convert solid type colors from unified system to light backgrounds for move display
+  const typeColorMap: Record<string, string> = {
     normal: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200',
     fire: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
     water: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
@@ -212,7 +214,7 @@ export const getMoveTypeColor = (type: string): string => {
     fairy: 'bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-200'
   };
   
-  return typeColors[type] || typeColors.normal;
+  return typeColorMap[type] || typeColorMap.normal;
 };
 
 /**

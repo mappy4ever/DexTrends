@@ -167,7 +167,7 @@ const IntelligentRecommendations: React.FC<IntelligentRecommendationsProps> = ({
       scored.sort((a, b) => (b.score || 0) - (a.score || 0));
       setRecommendations(scored.slice(0, maxRecommendations));
     } catch (error) {
-      console.error('Failed to generate recommendations:', error);
+      logger.error('Failed to generate recommendations:', error);
     } finally {
       setIsLoading(false);
     }

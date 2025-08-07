@@ -2,7 +2,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { PokemonType } from '../../types/api/pokemon';
 import type { CompetitiveTierRecord } from '../../utils/supabase';
-import { POKEMON_TYPE_COLORS } from '../../utils/pokemonTypeColors';
+import { POKEMON_TYPE_COLORS } from '../../utils/unifiedTypeColors';
 import { cn } from '../../utils/cn';
 import { FaShieldAlt } from 'react-icons/fa';
 import { GiSwordWound } from 'react-icons/gi';

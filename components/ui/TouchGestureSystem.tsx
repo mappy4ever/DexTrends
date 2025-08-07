@@ -703,7 +703,7 @@ export const PullToRefresh: React.FC<PullToRefreshProps> = ({
       try {
         await onRefresh?.();
       } catch (error) {
-        console.error('Refresh failed:', error);
+        logger.error('Refresh failed:', error);
       } finally {
         setTimeout(() => {
           setIsRefreshing(false);

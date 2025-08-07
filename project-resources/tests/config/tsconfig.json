@@ -84,6 +84,8 @@
     "test/**/*",
     "project-resources/**/*",
     "playwright.config.ts",
-    "vitest.config.ts"
+    "vitest.config.ts",
+    "**/archive/**/*",
+    "components/pokemon/archive/**/*"
   ]
 }

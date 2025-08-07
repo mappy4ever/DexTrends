@@ -1,4 +1,5 @@
 import React, { ReactNode, useEffect, useRef } from 'react';
+import logger from '@/utils/logger';
 import styles from './TestWrapper.module.css';
 
 interface TestWrapperProps {
@@ -21,7 +22,7 @@ export const TestWrapper: React.FC<TestWrapperProps> = ({
       onRender(renderCount.current);
     }
     
-    console.log(`[${testName}] Render #${renderCount.current} at ${new Date().toLocaleTimeString()}`);
+    logger.debug(`[${testName}] Render #${renderCount.current} at ${new Date().toLocaleTimeString()}`);
   });
 
   return (

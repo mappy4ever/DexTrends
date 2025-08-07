@@ -363,7 +363,7 @@ const QATestingTool: React.FC = () => {
                     card={testData[config.cardType]}
                     cardType={config.cardType}
                     {...config.props}
-                    onMagnifyClick={() => console.log('Magnify clicked')}
+                    onMagnifyClick={() => logger.debug('Magnify clicked')}
                   />
                 ))}
               </div>

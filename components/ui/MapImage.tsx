@@ -39,7 +39,7 @@ export default function MapImage({
           objectFit: 'cover'
         }}
         onError={(e) => {
-          console.error(`Failed to load image: ${src}`);
+          logger.error(`Failed to load image: ${src}`);
           const target = e.target as HTMLImageElement;
           target.style.opacity = '0.3';
           target.alt = `${alt} (Failed to load)`;
@@ -56,7 +56,7 @@ export default function MapImage({
     style,
     priority,
     onError: () => {
-      console.error(`Next/Image failed to load: ${src}`);
+      logger.error(`Next/Image failed to load: ${src}`);
       setHasError(true);
     },
     onLoad: () => {

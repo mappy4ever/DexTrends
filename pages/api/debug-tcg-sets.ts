@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import logger from '@/utils/logger';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -18,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
     while (hasMore && page <= 5) { // Limit to 5 pages for safety
       const apiUrl = `https://api.pokemontcg.io/v2/sets?page=${page}&pageSize=100&orderBy=-releaseDate`;
-      console.log(`Fetching page ${page}...`);
+      logger.debug(`Fetching page ${page}...`);
       
       const response = await fetch(apiUrl, { headers });
       const data = await response.json();
@@ -72,7 +73,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       message: `Fetched ${sortedSets.length} total sets across ${page - 1} pages`
     });
   } catch (error: any) {
-    console.error('Debug API test failed:', error);
+    logger.error('Debug API test failed:', error);
     res.status(500).json({ 
       error: error.message,
       stack: process.env.NODE_ENV === 'development' ? error.stack : undefined

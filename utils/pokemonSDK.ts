@@ -1,4 +1,5 @@
 import pokemon from 'pokemontcgsdk';
+import logger from '@/utils/logger';
 
 let isConfigured = false;
 
@@ -18,12 +19,12 @@ export function configurePokemonSDK(): void {
     try {
       pokemon.configure({ apiKey });
       isConfigured = true;
-      console.log('[Pokemon SDK] Configured successfully');
+      logger.info('[Pokemon SDK] Configured successfully');
     } catch (error) {
-      console.warn('[Pokemon SDK] Failed to configure:', error);
+      logger.warn('[Pokemon SDK] Failed to configure:', error);
     }
   } else {
-    console.warn('[Pokemon SDK] No API key found');
+    logger.warn('[Pokemon SDK] No API key found');
   }
 }
 

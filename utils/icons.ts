@@ -18,7 +18,8 @@ export {
   BsBook as Book,
   BsCardList as CardList,
   BsGrid as Grid,
-  BsGraphUp as GraphUp
+  BsGraphUp as GraphUp,
+  BsX as X
 } from 'react-icons/bs';
 
 export { 

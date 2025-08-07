@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import logger from '@/utils/logger';
 import { TestWrapper, RenderCounter } from '../common';
 import styles from './TestScenarios.module.css';
 
@@ -12,7 +13,7 @@ const ConditionalHooksTest: React.FC = () => {
     // Fixed: Always call hook, but conditionally execute its logic
     useEffect(() => {
       if (showHook) {
-        console.log('This hook is conditional!');
+        logger.debug('This hook is conditional!');
       }
     }, [showHook]);
     
@@ -124,7 +125,7 @@ export const CorrectHooksExample: React.FC = () => {
   
   useEffect(() => {
     if (enabled) {
-      console.log('Effect running - correctly implemented');
+      logger.debug('Effect running - correctly implemented');
     }
   }, [enabled]);
   

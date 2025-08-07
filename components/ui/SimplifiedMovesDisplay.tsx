@@ -93,7 +93,7 @@ const SimplifiedMovesDisplay: React.FC<SimplifiedMovesDisplayProps> = ({ moves, 
         const moveData = await fetchJSON<any>(`https://pokeapi.co/api/v2/move/${moveName}`);
         newMovesData[moveName] = moveData;
       } catch (error) {
-        console.error(`Failed to load move: ${moveName}`, error);
+        logger.error(`Failed to load move: ${moveName}`, error);
       }
     }
     

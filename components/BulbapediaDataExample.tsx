@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useBulbapediaQuery, useBulbapedia } from '../hooks/useBulbapedia';
 import Image from 'next/image';
+import logger from '@/utils/logger';
 
 // Types for API responses
 interface SearchResult {
@@ -52,7 +53,7 @@ export const BulbapediaSearch: React.FC = () => {
     const { data, error } = await bulbapedia.search(searchTerm, { limit: 10 });
     
     if (error) {
-      console.error('Search error:', error);
+      logger.error('Search error:', { error });
       setResults(null);
     } else {
       setResults(data);

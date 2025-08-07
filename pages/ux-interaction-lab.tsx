@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Head from 'next/head';
 import { motion, AnimatePresence, useAnimation, PanInfo } from 'framer-motion';
 import { GlassContainer } from '../components/ui/design-system/GlassContainer';
@@ -15,6 +15,11 @@ const UXInteractionLab = () => {
   const [likedItems, setLikedItems] = useState<Set<number>>(new Set());
   const controls = useAnimation();
   const theme = useContextualTheme('ux');
+  
+  // Timer refs for cleanup
+  const notificationTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const progressResetTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Animation variants
   const waveContainerVariants = {
@@ -243,18 +248,44 @@ const UXInteractionLab = () => {
       name: 'Success Toast',
       action: () => {
         setNotificationVisible(true);
-        setTimeout(() => setNotificationVisible(false), 3000);
+        
+        // Clear existing timer
+        if (notificationTimerRef.current) {
+          clearTimeout(notificationTimerRef.current);
+        }
+        
+        notificationTimerRef.current = setTimeout(() => {
+          setNotificationVisible(false);
+          notificationTimerRef.current = null;
+        }, 3000);
       }
     },
     {
       name: 'Progress Bar',
       action: () => {
         setProgressValue(0);
-        const interval = setInterval(() => {
+        
+        // Clear existing intervals and timers
+        if (progressIntervalRef.current) {
+          clearInterval(progressIntervalRef.current);
+        }
+        if (progressResetTimerRef.current) {
+          clearTimeout(progressResetTimerRef.current);
+        }
+        
+        progressIntervalRef.current = setInterval(() => {
           setProgressValue(prev => {
             if (prev >= 100) {
-              clearInterval(interval);
-              setTimeout(() => setProgressValue(0), 1000);
+              if (progressIntervalRef.current) {
+                clearInterval(progressIntervalRef.current);
+                progressIntervalRef.current = null;
+              }
+              
+              progressResetTimerRef.current = setTimeout(() => {
+                setProgressValue(0);
+                progressResetTimerRef.current = null;
+              }, 1000);
+              
               return 100;
             }
             return prev + 10;
@@ -295,6 +326,15 @@ const UXInteractionLab = () => {
 
   const RippleButtonComponent = ({ id }: { id: number }) => {
     const [ripples, setRipples] = useState<Array<{ id: number; x: number; y: number }>>([]);
+    const rippleTimersRef = useRef<Set<NodeJS.Timeout>>(new Set());
+    
+    useEffect(() => {
+      return () => {
+        // Cleanup all ripple timers on unmount
+        rippleTimersRef.current.forEach(timer => clearTimeout(timer));
+        rippleTimersRef.current.clear();
+      };
+    }, []);
     
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       const rect = e.currentTarget.getBoundingClientRect();
@@ -305,9 +345,13 @@ const UXInteractionLab = () => {
       };
       
       setRipples(prev => [...prev, newRipple]);
-      setTimeout(() => {
+      
+      const timer = setTimeout(() => {
         setRipples(prev => prev.filter(r => r.id !== newRipple.id));
+        rippleTimersRef.current.delete(timer);
       }, 600);
+      
+      rippleTimersRef.current.add(timer);
     };
 
     return (
@@ -390,6 +434,21 @@ const UXInteractionLab = () => {
     { id: 'micro', label: 'Micro Interactions', icon: '🎯' },
     { id: 'gestures', label: 'Gestures', icon: '👆' }
   ];
+  
+  // Cleanup all timers on unmount
+  useEffect(() => {
+    return () => {
+      if (notificationTimerRef.current) {
+        clearTimeout(notificationTimerRef.current);
+      }
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+      }
+      if (progressResetTimerRef.current) {
+        clearTimeout(progressResetTimerRef.current);
+      }
+    };
+  }, []);
 
   return (
     <>

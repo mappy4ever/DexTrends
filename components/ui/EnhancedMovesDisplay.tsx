@@ -144,7 +144,7 @@ const EnhancedMovesDisplay: React.FC<EnhancedMovesDisplayProps> = ({ moves, poke
           versionDetails: moveInfo.version_group_details
         };
       } catch (err) {
-        console.error(`Failed to load move ${moveInfo.move.name}:`, err);
+        logger.error(`Failed to load move ${moveInfo.move.name}:`, err);
       }
     }
     

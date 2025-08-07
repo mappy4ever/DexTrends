@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '../../utils/cn';
-import { POKEMON_TYPE_COLORS as pokemonTypeColors } from '../../utils/pokemonTypeColors';
+import { POKEMON_TYPE_COLORS as pokemonTypeColors } from '../../utils/unifiedTypeColors';
 
 interface TypeEffectiveness {
   type: string;

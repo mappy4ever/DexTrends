@@ -1,7 +1,30 @@
 // Unified Pokemon Type Color System
 // This provides a consistent color system that adapts to Pokemon types across all components
 
-import { POKEMON_TYPE_COLORS } from './pokemonTypeColors';
+import { 
+  POKEMON_TYPE_COLORS as POKEMON_TYPE_COLORS_IMPORT,
+  POKEMON_TCG_POCKET_COLORS,
+  POKEMON_TYPE_TEXT_COLORS,
+  POKEMON_TYPE_BORDER_COLOR,
+  getTypeStyle,
+  getTypeStyleString,
+  typeColors,
+  tcgTypeColors
+} from './pokemonTypeColors';
+
+// Re-export all constants and functions for unified access
+export { 
+  POKEMON_TCG_POCKET_COLORS,
+  POKEMON_TYPE_TEXT_COLORS,
+  POKEMON_TYPE_BORDER_COLOR,
+  getTypeStyle,
+  getTypeStyleString,
+  typeColors,
+  tcgTypeColors
+};
+
+// Export POKEMON_TYPE_COLORS as the primary export
+export const POKEMON_TYPE_COLORS = POKEMON_TYPE_COLORS_IMPORT;
 
 export interface UnifiedTypeColors {
   // Base colors

@@ -3,13 +3,14 @@ import { createClient } from '@supabase/supabase-js';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
+import logger from '../../utils/logger';
 
 // Load environment variables from root .env file
 const envPath = path.resolve(process.cwd(), '.env.local');
 const result = dotenv.config({ path: envPath });
 
 if (result.error) {
-  console.error('Error loading .env.local:', result.error);
+  logger.error('Error loading .env.local:', { error: result.error });
 }
 
 // Constants
@@ -23,10 +24,11 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_JWT_SECRET || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseServiceKey) {
-  console.error('Missing required environment variables:');
-  console.error('SUPABASE_URL:', !!supabaseUrl);
-  console.error('SUPABASE_KEY:', !!supabaseServiceKey);
-  console.error('Available env vars:', Object.keys(process.env).filter(k => k.includes('SUPABASE')));
+  logger.error('Missing required environment variables:', {
+    SUPABASE_URL: !!supabaseUrl,
+    SUPABASE_KEY: !!supabaseServiceKey,
+    availableEnvVars: Object.keys(process.env).filter(k => k.includes('SUPABASE'))
+  });
   process.exit(1);
 }
 
@@ -100,7 +102,7 @@ async function sleep(ms: number): Promise<void> {
 async function fetchWithRetry(url: string, retries = RETRY_ATTEMPTS): Promise<string> {
   for (let i = 0; i < retries; i++) {
     try {
-      console.log(`Fetching ${url} (attempt ${i + 1}/${retries})`);
+      logger.info(`Fetching ${url} (attempt ${i + 1}/${retries})`);
       const response = await axios.get(url, {
         headers: {
           'User-Agent': 'DexTrends/1.0 (https://github.com/moazzam/dextrends)',
@@ -110,7 +112,7 @@ async function fetchWithRetry(url: string, retries = RETRY_ATTEMPTS): Promise<st
       });
       return response.data;
     } catch (error) {
-      console.error(`Attempt ${i + 1} failed:`, error.message);
+      logger.error(`Attempt ${i + 1} failed:`, { error: error.message });
       if (i < retries - 1) {
         await sleep(RETRY_DELAY * (i + 1));
       } else {
@@ -152,15 +154,16 @@ function parseJavaScriptExports(content: string, exportName: string): any {
     // Parse the JSON
     return JSON.parse(jsonString);
   } catch (error) {
-    console.error(`Error parsing JavaScript for ${exportName}:`, error);
+    logger.error(`Error parsing JavaScript for ${exportName}:`, { error: error.message });
     
-    // Fallback: try eval in a sandboxed way (less safe but sometimes necessary)
+    // Fallback: try Function constructor (safer than eval)
     try {
       const sandbox = { exports: {} };
-      const wrapped = `(function() { const exports = {}; ${content}; return exports.${exportName}; })()`;
-      return eval(wrapped);
-    } catch (evalError) {
-      console.error(`Eval fallback also failed:`, evalError);
+      // Use Function constructor instead of eval for better security
+      const func = new Function('exports', `${content}; return exports.${exportName};`);
+      return func(sandbox.exports);
+    } catch (funcError) {
+      logger.error(`Function constructor fallback also failed:`, { error: funcError.message });
       throw new Error(`Failed to parse ${exportName} from JavaScript content`);
     }
   }
@@ -198,7 +201,7 @@ async function syncTypeEffectiveness(): Promise<SyncResult> {
       }
     }
     
-    console.log(`Prepared ${records.length} type effectiveness records`);
+    logger.info(`Prepared ${records.length} type effectiveness records`);
     
     // Clear existing data
     const { error: deleteError } = await supabase
@@ -207,7 +210,7 @@ async function syncTypeEffectiveness(): Promise<SyncResult> {
       .neq('id', 0); // Delete all records
     
     if (deleteError) {
-      console.error('Error clearing type_effectiveness table:', deleteError);
+      logger.error('Error clearing type_effectiveness table:', { error: deleteError });
     }
     
     // Insert in batches
@@ -221,7 +224,7 @@ async function syncTypeEffectiveness(): Promise<SyncResult> {
         throw new Error(`Database insert error: ${error.message}`);
       }
       
-      console.log(`Inserted batch ${Math.floor(i / BATCH_SIZE) + 1}/${Math.ceil(records.length / BATCH_SIZE)}`);
+      logger.info(`Inserted batch ${Math.floor(i / BATCH_SIZE) + 1}/${Math.ceil(records.length / BATCH_SIZE)}`);
     }
     
     return {
@@ -258,7 +261,7 @@ async function syncPokemonTiers(): Promise<SyncResult> {
       }
     }
     
-    console.log(`Prepared ${records.length} tier records`);
+    logger.info(`Prepared ${records.length} tier records`);
     
     // Upsert in batches
     for (let i = 0; i < records.length; i += BATCH_SIZE) {
@@ -273,7 +276,7 @@ async function syncPokemonTiers(): Promise<SyncResult> {
         throw new Error(`Database upsert error: ${error.message}`);
       }
       
-      console.log(`Upserted batch ${Math.floor(i / BATCH_SIZE) + 1}/${Math.ceil(records.length / BATCH_SIZE)}`);
+      logger.info(`Upserted batch ${Math.floor(i / BATCH_SIZE) + 1}/${Math.ceil(records.length / BATCH_SIZE)}`);
     }
     
     return {
@@ -332,7 +335,7 @@ async function syncLearnsets(): Promise<SyncResult> {
       }
     }
     
-    console.log(`Prepared ${records.length} learnset records`);
+    logger.info(`Prepared ${records.length} learnset records`);
     
     // Clear existing data for full refresh
     const { error: deleteError } = await supabase
@@ -341,7 +344,7 @@ async function syncLearnsets(): Promise<SyncResult> {
       .neq('id', 0); // Delete all records
     
     if (deleteError) {
-      console.error('Error clearing pokemon_learnsets table:', deleteError);
+      logger.error('Error clearing pokemon_learnsets table:', { error: deleteError });
     }
     
     // Insert in batches
@@ -355,7 +358,7 @@ async function syncLearnsets(): Promise<SyncResult> {
         throw new Error(`Database insert error: ${error.message}`);
       }
       
-      console.log(`Inserted batch ${Math.floor(i / BATCH_SIZE) + 1}/${Math.ceil(records.length / BATCH_SIZE)}`);
+      logger.info(`Inserted batch ${Math.floor(i / BATCH_SIZE) + 1}/${Math.ceil(records.length / BATCH_SIZE)}`);
       
       // Add delay to avoid overwhelming the database
       if (i + BATCH_SIZE < records.length) {
@@ -433,7 +436,7 @@ async function syncMoveData(): Promise<SyncResult> {
       });
     });
     
-    console.log(`Prepared ${records.length} move records`);
+    logger.info(`Prepared ${records.length} move records`);
     
     // Clear existing data for full refresh
     const { error: deleteError } = await supabase
@@ -442,7 +445,7 @@ async function syncMoveData(): Promise<SyncResult> {
       .neq('id', 0); // Delete all records
     
     if (deleteError) {
-      console.error('Error clearing move_competitive_data table:', deleteError);
+      logger.error('Error clearing move_competitive_data table:', { error: deleteError });
     }
     
     // Insert in batches
@@ -456,7 +459,7 @@ async function syncMoveData(): Promise<SyncResult> {
         throw new Error(`Database insert error: ${error.message}`);
       }
       
-      console.log(`Inserted batch ${Math.floor(i / BATCH_SIZE) + 1}/${Math.ceil(records.length / BATCH_SIZE)}`);
+      logger.info(`Inserted batch ${Math.floor(i / BATCH_SIZE) + 1}/${Math.ceil(records.length / BATCH_SIZE)}`);
     }
     
     return {
@@ -478,14 +481,15 @@ async function syncAbilities(): Promise<SyncResult> {
   try {
     const content = await fetchWithRetry(`${SHOWDOWN_BASE_URL}/abilities.js`);
     
-    // Use eval approach for abilities since it has complex structure
+    // Use Function constructor for abilities since it has complex structure (safer than eval)
     let abilities: any;
     try {
       const sandbox = { exports: {} };
-      const wrapped = `(function() { const exports = {}; ${content}; return exports.BattleAbilities; })()`;
-      abilities = eval(wrapped);
+      // Use Function constructor instead of eval for better security
+      const func = new Function('exports', `${content}; return exports.BattleAbilities;`);
+      abilities = func(sandbox.exports);
     } catch (error) {
-      console.error('Error parsing abilities:', error);
+      logger.error('Error parsing abilities:', { error: error.message });
       throw new Error('Failed to parse abilities data');
     }
     
@@ -514,7 +518,7 @@ async function syncAbilities(): Promise<SyncResult> {
       });
     });
     
-    console.log(`Prepared ${records.length} ability records`);
+    logger.info(`Prepared ${records.length} ability records`);
     
     // Clear existing data for full refresh
     const { error: deleteError } = await supabase
@@ -523,7 +527,7 @@ async function syncAbilities(): Promise<SyncResult> {
       .neq('id', 0); // Delete all records
     
     if (deleteError) {
-      console.error('Error clearing ability_ratings table:', deleteError);
+      logger.error('Error clearing ability_ratings table:', { error: deleteError });
     }
     
     // Insert in batches
@@ -537,7 +541,7 @@ async function syncAbilities(): Promise<SyncResult> {
         throw new Error(`Database insert error: ${error.message}`);
       }
       
-      console.log(`Inserted batch ${Math.floor(i / BATCH_SIZE) + 1}/${Math.ceil(records.length / BATCH_SIZE)}`);
+      logger.info(`Inserted batch ${Math.floor(i / BATCH_SIZE) + 1}/${Math.ceil(records.length / BATCH_SIZE)}`);
     }
     
     return {
@@ -557,9 +561,9 @@ async function syncAbilities(): Promise<SyncResult> {
 
 // Main execution
 async function main() {
-  console.log('=== Pokemon Showdown Data Sync ===');
-  console.log(`Started at: ${new Date().toISOString()}`);
-  console.log(`Supabase URL: ${supabaseUrl}`);
+  logger.info('=== Pokemon Showdown Data Sync ===');
+  logger.info(`Started at: ${new Date().toISOString()}`);
+  logger.info(`Supabase URL: ${supabaseUrl}`);
   
   // Parse command line arguments
   const args = process.argv.slice(2);
@@ -571,14 +575,14 @@ async function main() {
   const abilitiesOnly = args.includes('--abilities-only');
   
   if (isDryRun) {
-    console.log('DRY RUN MODE - No data will be written to database');
-    console.log('Testing connection to Showdown...');
+    logger.info('DRY RUN MODE - No data will be written to database');
+    logger.info('Testing connection to Showdown...');
     
     try {
       await fetchWithRetry(`${SHOWDOWN_BASE_URL}/typechart.js`);
-      console.log('✅ Successfully connected to Pokemon Showdown data API');
+      logger.info('Successfully connected to Pokemon Showdown data API');
     } catch (error) {
-      console.error('❌ Failed to connect to Pokemon Showdown:', error.message);
+      logger.error('Failed to connect to Pokemon Showdown:', { error: error.message });
     }
     
     return;
@@ -612,7 +616,7 @@ async function main() {
   const results = await Promise.allSettled(syncsToRun);
   
   // Generate report
-  console.log('\n=== Sync Report ===');
+  logger.info('\n=== Sync Report ===');
   let totalSuccess = 0;
   let totalRecords = 0;
   
@@ -620,26 +624,26 @@ async function main() {
     if (result.status === 'fulfilled') {
       const { success, file, recordsProcessed, error } = result.value;
       if (success) {
-        console.log(`✅ ${file}: ${recordsProcessed} records processed`);
+        logger.info(`${file}: ${recordsProcessed} records processed`);
         totalSuccess++;
         totalRecords += recordsProcessed;
       } else {
-        console.log(`❌ ${file}: Failed - ${error}`);
+        logger.error(`${file}: Failed - ${error}`);
       }
     } else {
-      console.log(`❌ Task ${index}: ${result.reason}`);
+      logger.error(`Task ${index}: ${result.reason}`);
     }
   });
   
-  console.log(`\nCompleted: ${totalSuccess}/${results.length} tasks successful`);
-  console.log(`Total records processed: ${totalRecords}`);
-  console.log(`Finished at: ${new Date().toISOString()}`);
+  logger.info(`\nCompleted: ${totalSuccess}/${results.length} tasks successful`);
+  logger.info(`Total records processed: ${totalRecords}`);
+  logger.info(`Finished at: ${new Date().toISOString()}`);
 }
 
 // Run if called directly
 if (require.main === module) {
   main().catch(error => {
-    console.error('Fatal error:', error);
+    logger.error('Fatal error:', { error: error.message, stack: error.stack });
     process.exit(1);
   });
 }

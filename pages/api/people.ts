@@ -1,6 +1,7 @@
 // pages/api/people.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { createClient } from '@supabase/supabase-js';
+import logger from '@/utils/logger';
 
 // Initialize Supabase client - This is OK at the top level
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -8,7 +9,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 // Check if environment variables are set
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error("Supabase URL or Anon Key is missing. Check environment variables.");
+  logger.error("Supabase URL or Anon Key is missing. Check environment variables.");
   // Optionally throw an error during build/startup if preferred
 }
 
@@ -124,7 +125,7 @@ export default async function handler(
     });
 
   } catch (exception) {
-    console.error("API Route Exception (People Data):", exception);
+    logger.error("API Route Exception (People Data):", exception);
     const errorMessage = exception.message || "An unexpected error occurred.";
     res.status(500).json({ error: errorMessage, details: exception.details || exception.hint || "" });
   }

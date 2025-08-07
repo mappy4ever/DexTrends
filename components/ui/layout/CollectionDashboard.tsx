@@ -67,7 +67,7 @@ const CollectionDashboard = () => {
       generatePriceHistory(stats.totalValue);
       
     } catch (error) {
-      console.error('Error calculating collection analytics:', error);
+      logger.error('Error calculating collection analytics:', error);
     } finally {
       setLoadingStats(false);
     }

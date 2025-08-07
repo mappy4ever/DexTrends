@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FaMicrophone, FaMicrophoneSlash, FaSpinner } from 'react-icons/fa';
 import { BsSoundwave } from 'react-icons/bs';
 import { TCGCard } from '../../types/api/cards';
+import logger from '@/utils/logger';
 
 // Extend Window interface for Speech Recognition API
 interface IWindow extends Window {
@@ -136,7 +137,7 @@ export default function VoiceSearchInterface({
       source.connect(analyserRef.current);
       updateAudioLevel();
     } catch (err) {
-      console.warn('Could not setup audio analyzer:', err);
+      logger.warn('Could not setup audio analyzer:', { error: err });
     }
   };
 

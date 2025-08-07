@@ -1,5 +1,7 @@
 // Helper functions for generating and managing price data
 
+import logger from '@/utils/logger';
+
 export interface PriceDataPoint {
   date: string;
   price: number;
@@ -68,7 +70,7 @@ export function storeSamplePriceData(cardId: string, priceData: PriceDataPoint[]
   try {
     localStorage.setItem(key, JSON.stringify(dataToStore));
   } catch (error) {
-    console.error('Failed to store sample price data:', error);
+    logger.error('Failed to store sample price data:', error);
   }
 }
 
@@ -93,7 +95,7 @@ export function getSamplePriceData(cardId: string): PriceDataPoint[] | null {
     
     return parsed.data;
   } catch (error) {
-    console.error('Failed to retrieve sample price data:', error);
+    logger.error('Failed to retrieve sample price data:', error);
     return null;
   }
 }
@@ -215,7 +217,7 @@ export async function batchFetchPriceData(
           storeSamplePriceData(cardId, formatted);
         }
       } catch (error) {
-        console.error(`Failed to fetch price data for ${cardId}:`, error);
+        logger.error(`Failed to fetch price data for ${cardId}:`, error);
       }
     });
     

@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { fetchJSON } from '../utils/unifiedFetch';
-import { POKEMON_TYPE_COLORS } from '../utils/pokemonTypeColors';
+import { POKEMON_TYPE_COLORS } from '../utils/unifiedTypeColors';
 import { TypeBadge } from '../components/ui/TypeBadge';
 import { GlassContainer } from '../components/ui/design-system/GlassContainer';
 // Removed div and button imports - using standard rectangular designs

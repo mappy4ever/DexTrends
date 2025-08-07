@@ -142,16 +142,32 @@ const EnhancedPageTransition: React.FC<EnhancedPageTransitionProps> = ({ childre
   );
 };
 
-// Simple throttle function
+// Simple throttle function with proper cleanup
 const throttle = <T extends (...args: any[]) => any>(func: T, limit: number): T => {
   let inThrottle: boolean = false;
-  return (function(this: any, ...args: Parameters<T>) {
+  let timer: NodeJS.Timeout | null = null;
+  
+  const throttledFunc = function(this: any, ...args: Parameters<T>) {
     if (!inThrottle) {
       func.apply(this, args);
       inThrottle = true;
-      setTimeout(() => inThrottle = false, limit);
+      timer = setTimeout(() => {
+        inThrottle = false;
+        timer = null;
+      }, limit);
     }
-  }) as T;
+  } as T;
+  
+  // Add cleanup method
+  (throttledFunc as any).cleanup = () => {
+    if (timer) {
+      clearTimeout(timer);
+      timer = null;
+    }
+    inThrottle = false;
+  };
+  
+  return throttledFunc;
 };
 
 // Scroll handler state and callbacks

@@ -1,6 +1,6 @@
 import React from 'react';
 import { cn } from '@/utils/cn';
-import { POKEMON_TYPE_COLORS } from '@/utils/pokemonTypeColors';
+import { POKEMON_TYPE_COLORS } from '@/utils/unifiedTypeColors';
 
 interface TypeBadgeProps {
   type: string;

@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import logger from '@/utils/logger';
 
 // Initialize Supabase client
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -8,17 +9,17 @@ let supabase: any = null;
 
 try {
   if (!supabaseUrl || !supabaseAnonKey) {
-    console.warn('[Supabase] Missing environment variables');
-    console.warn('[Supabase] URL:', supabaseUrl ? 'Present' : 'Missing');
-    console.warn('[Supabase] Key:', supabaseAnonKey ? 'Present' : 'Missing');
+    logger.warn('[Supabase] Missing environment variables');
+    logger.warn('[Supabase] URL:', supabaseUrl ? 'Present' : 'Missing');
+    logger.warn('[Supabase] Key:', supabaseAnonKey ? 'Present' : 'Missing');
     supabase = null;
   } else {
     supabase = createClient(supabaseUrl, supabaseAnonKey);
-    console.log('[Supabase] Client initialized successfully');
-    console.log('[Supabase] URL:', supabaseUrl);
+    logger.info('[Supabase] Client initialized successfully');
+    logger.debug('[Supabase] URL:', supabaseUrl);
   }
 } catch (error) {
-  console.error('[Supabase] Failed to initialize client:', error);
+  logger.error('[Supabase] Failed to initialize client:', error);
   supabase = null;
 }
 
@@ -86,7 +87,7 @@ export interface AbilityRatingRecord {
 export const showdownQueries = {
   async getTypeEffectiveness(attackingType: string, defendingType: string) {
     if (!supabase) {
-      console.error('[Showdown] Supabase client not initialized');
+      logger.error('[Showdown] Supabase client not initialized');
       return 1; // Default multiplier
     }
     
@@ -98,7 +99,7 @@ export const showdownQueries = {
       .single();
     
     if (error) {
-      console.error('Error fetching type effectiveness:', error);
+      logger.error('Error fetching type effectiveness:', error);
       return null;
     }
     
@@ -107,7 +108,7 @@ export const showdownQueries = {
 
   async getPokemonTiers(pokemonName: string) {
     if (!supabase) {
-      console.error('[Showdown] Supabase client not initialized');
+      logger.error('[Showdown] Supabase client not initialized');
       return null;
     }
     
@@ -118,7 +119,7 @@ export const showdownQueries = {
       .single();
     
     if (error && error.code !== 'PGRST116') { // Not found is ok
-      console.error('Error fetching Pokemon tiers:', error);
+      logger.error('Error fetching Pokemon tiers:', error);
     }
     
     return data;
@@ -126,7 +127,7 @@ export const showdownQueries = {
 
   async getPokemonLearnset(pokemonId: string, generation?: number, learnMethod?: string) {
     if (!supabase) {
-      console.error('[Showdown] Supabase client not initialized');
+      logger.error('[Showdown] Supabase client not initialized');
       return [];
     }
     
@@ -147,7 +148,7 @@ export const showdownQueries = {
     const { data, error } = await query;
     
     if (error) {
-      console.error('Error fetching Pokemon learnset:', error);
+      logger.error('Error fetching Pokemon learnset:', error);
       return [];
     }
     
@@ -156,7 +157,7 @@ export const showdownQueries = {
 
   async getAllTypeChart() {
     if (!supabase) {
-      console.error('[Showdown] Supabase client not initialized');
+      logger.error('[Showdown] Supabase client not initialized');
       return null;
     }
     
@@ -165,7 +166,7 @@ export const showdownQueries = {
       .select('*');
     
     if (error) {
-      console.error('Error fetching type chart:', error);
+      logger.error('Error fetching type chart:', error);
       return null;
     }
     
@@ -184,7 +185,7 @@ export const showdownQueries = {
 
   async getMoveData(moveName: string) {
     if (!supabase) {
-      console.error('[Showdown] Supabase client not initialized');
+      logger.error('[Showdown] Supabase client not initialized');
       return null;
     }
     
@@ -195,7 +196,7 @@ export const showdownQueries = {
       .single();
     
     if (error && error.code !== 'PGRST116') { // Not found is ok
-      console.error('Error fetching move data:', error);
+      logger.error('Error fetching move data:', error);
     }
     
     return data;
@@ -209,7 +210,7 @@ export const showdownQueries = {
       .order('base_power', { ascending: false, nullsFirst: false });
     
     if (error) {
-      console.error('Error fetching moves by type:', error);
+      logger.error('Error fetching moves by type:', error);
       return [];
     }
     
@@ -224,7 +225,7 @@ export const showdownQueries = {
       .order('base_power', { ascending: false, nullsFirst: false });
     
     if (error) {
-      console.error('Error fetching moves by category:', error);
+      logger.error('Error fetching moves by category:', error);
       return [];
     }
     
@@ -239,7 +240,7 @@ export const showdownQueries = {
       .limit(20);
     
     if (error) {
-      console.error('Error searching moves:', error);
+      logger.error('Error searching moves:', error);
       return [];
     }
     
@@ -248,7 +249,7 @@ export const showdownQueries = {
 
   async getAbilityRatings(abilityNames: string[]) {
     if (!supabase) {
-      console.error('[Showdown] Supabase client not initialized');
+      logger.error('[Showdown] Supabase client not initialized');
       return {};
     }
     
@@ -258,7 +259,7 @@ export const showdownQueries = {
       .in('name', abilityNames.map(name => name.toLowerCase()));
     
     if (error) {
-      console.error('Error fetching ability ratings:', error);
+      logger.error('Error fetching ability ratings:', error);
       return {};
     }
     

@@ -17,6 +17,7 @@ import type {
 
 // Import Supabase statically to avoid chunk loading errors
 import { supabase } from '../lib/supabase';
+import logger from '@/utils/logger';
 
 // Removed circular import - using direct fetch instead
 
@@ -217,7 +218,7 @@ class LocalStorageCache extends CacheStorage {
       
       return entry.data;
     } catch (error) {
-      console.warn('LocalStorage get error:', error);
+      logger.warn('LocalStorage get error:', error);
       return null;
     }
   }
@@ -234,10 +235,10 @@ class LocalStorageCache extends CacheStorage {
       };
       localStorage.setItem(this.generateKey(key), JSON.stringify(entry));
     } catch (error: any) {
-      console.warn('LocalStorage set error:', error);
+      logger.warn('LocalStorage set error:', error);
       // Try to clear some space
       if (error.name === 'QuotaExceededError') {
-        console.log('QuotaExceededError detected, running aggressive cleanup...');
+        logger.debug('QuotaExceededError detected, running aggressive cleanup...');
         
         // First try normal cleanup
         await this.cleanup();
@@ -266,7 +267,7 @@ class LocalStorageCache extends CacheStorage {
               };
               localStorage.setItem(this.generateKey(key), JSON.stringify(entry));
             } catch {
-              console.error('Failed to save to localStorage even after aggressive cleanup');
+              logger.error('Failed to save to localStorage even after aggressive cleanup');
             }
           }
         }
@@ -317,7 +318,7 @@ class LocalStorageCache extends CacheStorage {
   async aggressiveCleanup(): Promise<void> {
     if (typeof window === 'undefined') return;
     
-    console.log('Running aggressive localStorage cleanup...');
+    logger.debug('Running aggressive localStorage cleanup...');
     
     const entries: { key: string; timestamp: number; size: number }[] = [];
     
@@ -358,7 +359,7 @@ class LocalStorageCache extends CacheStorage {
       }
     }
     
-    console.log(`Aggressive cleanup removed ${removed} cache entries`);
+    logger.debug(`Aggressive cleanup removed ${removed} cache entries`);
   }
 }
 
@@ -390,7 +391,7 @@ class DatabaseCache extends CacheStorage {
       if (error || !data) return null;
       return data.cache_data as T;
     } catch (error) {
-      console.warn('Database cache get error:', error);
+      logger.warn('Database cache get error:', error);
       return null;
     }
   }
@@ -411,7 +412,7 @@ class DatabaseCache extends CacheStorage {
           category: this.getCategoryFromKey(key)
         });
     } catch (error) {
-      console.warn('Database cache set error:', error);
+      logger.warn('Database cache set error:', error);
     }
   }
   
@@ -424,7 +425,7 @@ class DatabaseCache extends CacheStorage {
         .delete()
         .eq('cache_key', key);
     } catch (error) {
-      console.warn('Database cache delete error:', error);
+      logger.warn('Database cache delete error:', error);
     }
   }
   
@@ -437,7 +438,7 @@ class DatabaseCache extends CacheStorage {
         .delete()
         .lt('expires_at', new Date().toISOString());
     } catch (error) {
-      console.warn('Database cache clear error:', error);
+      logger.warn('Database cache clear error:', error);
     }
   }
   
@@ -658,7 +659,7 @@ class UnifiedCacheManager {
       if (options.staleWhileRevalidate) {
         const stale = await this.get<T>(key, { ...cacheOptions, ignoreExpiry: true });
         if (stale !== null) {
-          console.warn('Returning stale data due to fetch error:', error);
+          logger.warn('Returning stale data due to fetch error:', error);
           return stale;
         }
       }
@@ -684,7 +685,7 @@ class UnifiedCacheManager {
     
     // Clear all caches
     this.clear().catch(error => {
-      console.warn('Error clearing caches during destroy:', error);
+      logger.warn('Error clearing caches during destroy:', error);
     });
   }
 }
@@ -737,20 +738,20 @@ export const tcgCache = {
           try {
             pokemon.configure({ apiKey });
           } catch (e) {
-            console.warn('[TCG Cache] Failed to configure SDK:', e);
+            logger.warn('[TCG Cache] Failed to configure SDK:', e);
           }
         }
         
-        console.log('[TCG Cache] Querying Pokemon TCG API for:', pokemonName);
+        logger.debug('[TCG Cache] Querying Pokemon TCG API for:', pokemonName);
         try {
           const result = await pokemon.card.where({ q: `name:${pokemonName}` });
-          console.log('[TCG Cache] API Response:', result);
+          logger.debug('[TCG Cache] API Response:', result);
           // The SDK returns an object with data property containing the cards array
           const cards = (result as any).data || [];
-          console.log('[TCG Cache] Extracted cards:', cards.length);
+          logger.debug('[TCG Cache] Extracted cards:', cards.length);
           return cards;
         } catch (error) {
-          console.error('[TCG Cache] API Error:', error);
+          logger.error('[TCG Cache] API Error:', error);
           return [];
         }
       },

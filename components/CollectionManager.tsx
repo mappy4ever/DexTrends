@@ -4,6 +4,7 @@ import { CompactPriceIndicator } from './ui/PriceIndicator';
 import Modal from './ui/modals/Modal';
 import Link from 'next/link';
 import type { TCGCard } from '../types/api/cards';
+import logger from '@/utils/logger';
 
 // Type definitions for collections
 interface CollectionCard {
@@ -394,7 +395,7 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
         setSelectedCollection(data);
       }
     } catch (error) {
-      console.error('Error updating collection:', error);
+      logger.error('Error updating collection:', { error });
     }
   }, [userId, getSessionId]);
 

@@ -24,54 +24,6 @@ interface PocketTypeMappingResult {
   isPocketMapped: boolean;
 }
 
-// Type colors mapping for consistent usage across the app - with solid colors and white text like the GRASS example
-export const typeColors: Record<string, TypeColorConfig> = {
-  normal: { bg: "bg-poke-normal", text: "text-white", border: "border-poke-normal", hover: "hover:bg-poke-normal" },
-  fire: { bg: "bg-poke-fire", text: "text-white", border: "border-poke-fire", hover: "hover:bg-poke-fire" },
-  water: { bg: "bg-poke-water", text: "text-white", border: "border-poke-water", hover: "hover:bg-poke-water" },
-  electric: { bg: "bg-poke-electric", text: "text-white", border: "border-poke-electric", hover: "hover:bg-poke-electric" },
-  grass: { bg: "bg-poke-grass", text: "text-white", border: "border-poke-grass", hover: "hover:bg-poke-grass" },
-  ice: { bg: "bg-poke-ice", text: "text-white", border: "border-poke-ice", hover: "hover:bg-poke-ice" },
-  fighting: { bg: "bg-poke-fighting", text: "text-white", border: "border-poke-fighting", hover: "hover:bg-poke-fighting" },
-  poison: { bg: "bg-poke-poison", text: "text-white", border: "border-poke-poison", hover: "hover:bg-poke-poison" },
-  ground: { bg: "bg-poke-ground", text: "text-white", border: "border-poke-ground", hover: "hover:bg-poke-ground" },
-  flying: { bg: "bg-poke-flying", text: "text-white", border: "border-poke-flying", hover: "hover:bg-poke-flying" },
-  psychic: { bg: "bg-poke-psychic", text: "text-white", border: "border-poke-psychic", hover: "hover:bg-poke-psychic" },
-  bug: { bg: "bg-poke-bug", text: "text-white", border: "border-poke-bug", hover: "hover:bg-poke-bug" },
-  rock: { bg: "bg-poke-rock", text: "text-white", border: "border-poke-rock", hover: "hover:bg-poke-rock" },
-  ghost: { bg: "bg-poke-ghost", text: "text-white", border: "border-poke-ghost", hover: "hover:bg-poke-ghost" },
-  dragon: { bg: "bg-poke-dragon", text: "text-white", border: "border-poke-dragon", hover: "hover:bg-poke-dragon" },
-  dark: { bg: "bg-poke-dark", text: "text-white", border: "border-poke-dark", hover: "hover:bg-poke-dark" },
-  steel: { bg: "bg-poke-steel", text: "text-white", border: "border-poke-steel", hover: "hover:bg-poke-steel" },
-  fairy: { bg: "bg-poke-fairy", text: "text-white", border: "border-poke-fairy", hover: "hover:bg-poke-fairy" },
-};
-
-// TCG-specific type colors for Pocket mode (more familiar to TCG players)
-export const tcgTypeColors: Record<string, TypeColorConfig> = {
-  normal: { bg: "bg-gray-400", text: "text-white", border: "border-gray-500", hover: "hover:bg-gray-500" },
-  fire: { bg: "bg-red-500", text: "text-white", border: "border-red-600", hover: "hover:bg-red-600" },
-  water: { bg: "bg-blue-500", text: "text-white", border: "border-blue-600", hover: "hover:bg-blue-600" },
-  electric: { bg: "bg-yellow-400", text: "text-black", border: "border-yellow-500", hover: "hover:bg-yellow-500" },
-  lightning: { bg: "bg-yellow-400", text: "text-black", border: "border-yellow-500", hover: "hover:bg-yellow-500" }, // Pocket TCG alias
-  grass: { bg: "bg-green-500", text: "text-white", border: "border-green-600", hover: "hover:bg-green-600" },
-  ice: { bg: "bg-cyan-400", text: "text-white", border: "border-cyan-500", hover: "hover:bg-cyan-500" },
-  fighting: { bg: "bg-orange-600", text: "text-white", border: "border-orange-700", hover: "hover:bg-orange-700" },
-  poison: { bg: "bg-purple-500", text: "text-white", border: "border-purple-600", hover: "hover:bg-purple-600" },
-  ground: { bg: "bg-yellow-600", text: "text-white", border: "border-yellow-700", hover: "hover:bg-yellow-700" },
-  flying: { bg: "bg-indigo-400", text: "text-white", border: "border-indigo-500", hover: "hover:bg-indigo-500" },
-  psychic: { bg: "bg-pink-500", text: "text-white", border: "border-pink-600", hover: "hover:bg-pink-600" },
-  bug: { bg: "bg-lime-500", text: "text-white", border: "border-lime-600", hover: "hover:bg-lime-600" },
-  rock: { bg: "bg-stone-500", text: "text-white", border: "border-stone-600", hover: "hover:bg-stone-600" },
-  ghost: { bg: "bg-purple-600", text: "text-white", border: "border-purple-700", hover: "hover:bg-purple-700" },
-  dragon: { bg: "bg-indigo-600", text: "text-white", border: "border-indigo-700", hover: "hover:bg-indigo-700" },
-  dark: { bg: "bg-gray-800", text: "text-white", border: "border-gray-900", hover: "hover:bg-gray-900" },
-  darkness: { bg: "bg-gray-800", text: "text-white", border: "border-gray-900", hover: "hover:bg-gray-900" }, // Pocket TCG alias
-  steel: { bg: "bg-slate-500", text: "text-white", border: "border-slate-600", hover: "hover:bg-slate-600" },
-  metal: { bg: "bg-slate-500", text: "text-white", border: "border-slate-600", hover: "hover:bg-slate-600" }, // Pocket TCG alias
-  fairy: { bg: "bg-pink-400", text: "text-white", border: "border-pink-500", hover: "hover:bg-pink-500" },
-  colorless: { bg: "bg-gray-300", text: "text-gray-800", border: "border-gray-400", hover: "hover:bg-gray-400" }, // Pocket TCG specific
-  trainer: { bg: "bg-emerald-500", text: "text-white", border: "border-emerald-600", hover: "hover:bg-emerald-600" }, // Pocket TCG specific
-};
 
 // Complete type effectiveness chart
 export const typeEffectiveness: Record<string, TypeEffectivenessConfig> = {

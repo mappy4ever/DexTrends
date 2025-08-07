@@ -35,7 +35,7 @@ export const CacheStatus: React.FC<CacheStatusProps> = ({ showDetails = false })
         overall: cacheStats
       });
     } catch (error) {
-      console.warn('Failed to get cache stats:', error);
+      logger.warn('Failed to get cache stats:', error);
     }
   };
 

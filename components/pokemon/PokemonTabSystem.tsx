@@ -115,9 +115,9 @@ const cleanupOldTabPreferences = () => {
       }
     });
     
-    console.log(`Cleaned up ${keysToRemove.length} localStorage entries`);
+    logger.debug(`Cleaned up ${keysToRemove.length} localStorage entries`);
   } catch (error) {
-    console.error('Error during localStorage cleanup:', error);
+    logger.error('Error during localStorage cleanup:', error);
   }
 };
 
@@ -178,7 +178,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
         }
       }
     } catch (error) {
-      console.error('Error loading tab preference:', error);
+      logger.error('Error loading tab preference:', error);
     }
   }, [pokemon.id]); // Only depend on pokemon.id, not activeTab
   
@@ -198,7 +198,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
         lastSavedTab.current = activeTab;
       } catch (error: any) {
         if (error.name === 'QuotaExceededError') {
-          console.warn('localStorage quota exceeded, attempting cleanup...');
+          logger.warn('localStorage quota exceeded, attempting cleanup...');
           // Try to clean up old Pokemon tab preferences
           cleanupOldTabPreferences();
           // Try again after cleanup
@@ -207,7 +207,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
             localStorage.setItem(`pokemon-tab-${pokemon.id}`, tabData);
             lastSavedTab.current = activeTab;
           } catch {
-            console.error('Failed to save tab preference after cleanup');
+            logger.error('Failed to save tab preference after cleanup');
           }
         }
       }
@@ -316,7 +316,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
             />
           );
         } catch (error) {
-          console.error('Error rendering BreedingTab:', error);
+          logger.error('Error rendering BreedingTab:', error);
           return (
             <div className="p-8 text-center text-gray-500">
               <p>Unable to load breeding information</p>
@@ -334,7 +334,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
             />
           );
         } catch (error) {
-          console.error('Error rendering LocationsTab:', error);
+          logger.error('Error rendering LocationsTab:', error);
           return (
             <div className="p-8 text-center text-gray-500">
               <p>Unable to load location information</p>

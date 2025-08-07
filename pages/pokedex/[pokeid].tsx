@@ -3,7 +3,10 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import { NextPage } from "next";
 import { motion } from "framer-motion";
-import { fetchData, fetchPokemon, fetchPokemonSpecies, fetchNature, fetchTCGCards, fetchPocketCards, sanitizePokemonName } from "../../utils/apiutils";
+import { fetchJSON } from "../../utils/unifiedFetch";
+import { sanitizePokemonName } from "../../utils/pokemonNameSanitizer";
+import { fetchTCGCards, fetchPocketCards } from "../../utils/apiutils";
+import logger from "../../utils/logger";
 import { showdownQueries, CompetitiveTierRecord } from "../../utils/supabase";
 import { loadTypeChart } from "../../utils/typeEffectiveness";
 import type { 
@@ -75,14 +78,14 @@ const PokemonDetail: NextPage = () => {
       
       // Load previous Pokemon if valid ID
       if (prevId > 0) {
-        promises.push(fetchPokemon(prevId.toString()));
+        promises.push(fetchJSON<Pokemon>(`https://pokeapi.co/api/v2/pokemon/${prevId}`));
       } else {
         promises.push(Promise.resolve(null));
       }
       
       // Load next Pokemon if within known range (Gen 9 limit)
       if (nextId <= 1025) {
-        promises.push(fetchPokemon(nextId.toString()));
+        promises.push(fetchJSON<Pokemon>(`https://pokeapi.co/api/v2/pokemon/${nextId}`));
       } else {
         promises.push(Promise.resolve(null));
       }
@@ -128,8 +131,12 @@ const PokemonDetail: NextPage = () => {
   // Load specific nature data (cached)
   const loadNatureData = useCallback(async (natureName: string) => {
     try {
-      const data = await fetchNature(natureName);
-      setNatureData(data);
+      const data = await fetchJSON<Nature>(`https://pokeapi.co/api/v2/nature/${natureName}`);
+      if (data) {
+        setNatureData(data);
+      } else {
+        console.error('Failed to fetch nature data:', natureName);
+      }
     } catch (err) {
       console.error('Error loading nature data:', err);
     }
@@ -138,13 +145,17 @@ const PokemonDetail: NextPage = () => {
   // Load all available natures
   const loadAllNatures = useCallback(async () => {
     try {
-      const response = await fetchData('https://pokeapi.co/api/v2/nature/') as { results: { name: string; url: string }[] };
+      const response = await fetchJSON<{ results: { name: string; url: string }[] }>('https://pokeapi.co/api/v2/nature/');
+      if (!response) {
+        console.error('Failed to fetch natures list');
+        return;
+      }
       // Load full data for each nature
       const naturesWithData = await Promise.all(
         response.results.map(async (nature: { name: string; url: string }) => {
           try {
-            const natureData = await fetchData(nature.url);
-            return natureData;
+            const natureData = await fetchJSON<Nature>(nature.url);
+            return natureData || { name: nature.name };
           } catch (err) {
             console.error(`Error loading nature ${nature.name}:`, err);
             return { name: nature.name };
@@ -203,8 +214,12 @@ const PokemonDetail: NextPage = () => {
           if (/^\d+$/.test(pokeid as string)) {
             // It's a numeric ID, we need to get the Pokemon name first
             try {
-              const baseSpeciesData = await fetchPokemonSpecies(pokeid as string);
-              pokemonIdentifier = `${baseSpeciesData.name}-${form.toLowerCase()}`;
+              const baseSpeciesData = await fetchJSON<PokemonSpecies>(`https://pokeapi.co/api/v2/pokemon-species/${pokeid}`);
+              if (baseSpeciesData) {
+                pokemonIdentifier = `${baseSpeciesData.name}-${form.toLowerCase()}`;
+              } else {
+                pokemonIdentifier = `${pokeid as string}-${form.toLowerCase()}`;
+              }
             } catch (error) {
               // If species fetch fails, try with the form anyway
               pokemonIdentifier = `${pokeid as string}-${form.toLowerCase()}`;
@@ -219,11 +234,17 @@ const PokemonDetail: NextPage = () => {
         const sanitizedId = sanitizePokemonName(pokemonIdentifier);
 
         // Load Pokemon data
-        const pokemonData = await fetchPokemon(sanitizedId);
+        const pokemonData = await fetchJSON<Pokemon>(`https://pokeapi.co/api/v2/pokemon/${sanitizedId}`);
+        if (!pokemonData) {
+          throw new Error(`Pokemon not found: ${sanitizedId}`);
+        }
         
         // For species, always use the base Pokemon ID (numeric part)
         const baseSpeciesId = pokemonData.species?.url?.split('/').filter(Boolean).pop() || pokeid;
-        const speciesData = await fetchPokemonSpecies(baseSpeciesId);
+        const speciesData = await fetchJSON<PokemonSpecies>(`https://pokeapi.co/api/v2/pokemon-species/${baseSpeciesId}`);
+        if (!speciesData) {
+          throw new Error(`Species not found: ${baseSpeciesId}`);
+        }
 
         setPokemon(pokemonData);
         setSpecies(speciesData);
@@ -339,8 +360,12 @@ const PokemonDetail: NextPage = () => {
     if (!encountersUrl) return;
     
     try {
-      const encounters = await fetchData(encountersUrl);
-      setLocationAreaEncounters(encounters as LocationAreaEncounterDetail[]);
+      const encounters = await fetchJSON<LocationAreaEncounterDetail[]>(encountersUrl);
+      if (encounters) {
+        setLocationAreaEncounters(encounters);
+      } else {
+        setLocationAreaEncounters([]);
+      }
     } catch (err) {
       console.error('Error loading location encounters:', err);
       setLocationAreaEncounters([]);
@@ -352,8 +377,12 @@ const PokemonDetail: NextPage = () => {
     if (!evolutionUrl) return;
     
     try {
-      const chainData = await fetchData(evolutionUrl);
-      setEvolutionChain(chainData as EvolutionChain);
+      const chainData = await fetchJSON<EvolutionChain>(evolutionUrl);
+      if (chainData) {
+        setEvolutionChain(chainData);
+      } else {
+        setEvolutionChain(null);
+      }
     } catch (err) {
       console.error('Error loading evolution chain:', err);
       setEvolutionChain(null);
@@ -375,7 +404,11 @@ const PokemonDetail: NextPage = () => {
     
     for (const abilityInfo of abilitiesList) {
       try {
-        const abilityData = await fetchData<AbilityApiData>(abilityInfo.ability.url);
+        const abilityData = await fetchJSON<AbilityApiData>(abilityInfo.ability.url);
+        if (!abilityData) {
+          console.error(`Failed to fetch ability data for ${abilityInfo.ability.name}`);
+          continue;
+        }
         const englishEntry = abilityData.effect_entries.find(entry => entry.language.name === 'en');
         
         abilitiesData[abilityInfo.ability.name] = {

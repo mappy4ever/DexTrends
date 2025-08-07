@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PillBadge } from '@/components/ui/PillBadge';
 import { PillBadgeGroup } from '@/components/ui/PillBadgeGroup';
-import { POKEMON_TYPE_COLORS } from '@/utils/pokemonTypeColors';
+import { POKEMON_TYPE_COLORS } from '@/utils/unifiedTypeColors';
 
 export default function DemoPillBadges() {
   const [selectedType, setSelectedType] = useState<string>('');

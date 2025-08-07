@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { fetchJSON } from '../../utils/unifiedFetch';
 import { Search, X } from '../../utils/icons';
 import { useDebounce } from '../../hooks/useDebounce';
+import logger from '@/utils/logger';
 
 interface SearchResult {
   category: 'pokemon' | 'card' | 'set' | 'move' | 'item' | 'ability';
@@ -96,7 +97,7 @@ export const GlobalSearch: React.FC = () => {
         setShowResults(true);
       }
     } catch (error) {
-      console.error('Search error:', error);
+      logger.error('Search error:', { error });
       setResults([]);
     } finally {
       setLoading(false);

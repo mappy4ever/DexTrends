@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { typeColors } from '@/utils/pokemonTypeColors';
+import { typeColors } from '@/utils/unifiedTypeColors';
 
 type ThemeContext = 'pokemon' | 'tcg' | 'ui' | 'ux' | 'default';
 

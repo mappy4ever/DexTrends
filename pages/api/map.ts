@@ -1,6 +1,7 @@
 // pages/api/map.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { createClient } from '@supabase/supabase-js';
+import logger from '@/utils/logger';
 
 // Initialize Supabase client - This is OK at the top level
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -8,7 +9,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 // Check if environment variables are set
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error("Supabase URL or Anon Key is missing. Check environment variables.");
+  logger.error("Supabase URL or Anon Key is missing. Check environment variables.");
   // Optionally throw an error during build/startup if preferred
 }
 
@@ -118,7 +119,7 @@ export default async function handler(
         const { data, error } = await query;
 
         if (error) {
-            console.error(`MAP API [Handler - ${req.url}]: Supabase error fetching map data:`, error);
+            logger.error(`MAP API [Handler - ${req.url}]: Supabase error fetching map data:`, error);
             return res.status(500).json({ message: `Database error: ${error.message}`, details: error.details });
         }
 
@@ -127,7 +128,7 @@ export default async function handler(
 
     } catch (error) {
         // --- Catch Unexpected Errors ---
-        console.error(`MAP API [Handler - ${req.url}]: Unexpected error:`, error);
+        logger.error(`MAP API [Handler - ${req.url}]: Unexpected error:`, error);
         res.status(500).json({ message: 'An unexpected server error occurred.', error: error.message });
     }
 }

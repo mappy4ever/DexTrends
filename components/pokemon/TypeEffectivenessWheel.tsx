@@ -4,7 +4,7 @@ import { cn } from '../../utils/cn';
 import { TypeBadge } from '../ui/TypeBadge';
 import { GlassContainer } from '../ui/design-system';
 import { useTypeEffectiveness } from '../../hooks/useTypeEffectiveness';
-import { POKEMON_TYPE_COLORS } from '../../utils/pokemonTypeColors';
+import { POKEMON_TYPE_COLORS } from '../../utils/unifiedTypeColors';
 import { FaExclamationTriangle, FaBan, FaCircle } from 'react-icons/fa';
 import { GiShield } from 'react-icons/gi';
 import { getAnimationProps, UI_ANIMATION_SETS } from '../../utils/standardizedAnimations';

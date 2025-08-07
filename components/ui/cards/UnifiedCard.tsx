@@ -491,7 +491,7 @@ const UnifiedCard = memo(({
     
     // TODO: Implement delete functionality
     // This would typically call a parent handler or context method
-    console.log('Delete card:', normalizedCard.name);
+    logger.debug('Delete card:', normalizedCard.name);
     
     setShowActions(false);
     setSwipeX(0);
@@ -575,9 +575,9 @@ const UnifiedCard = memo(({
           className="w-full h-auto object-cover"
           loading={disableLazyLoad ? "eager" : "lazy"}
           decoding="async"
-          onLoad={() => console.log('Image loaded:', normalizedCard.name, normalizedCard.image)}
+          onLoad={() => logger.debug('Image loaded:', normalizedCard.name, normalizedCard.image)}
           onError={(e) => {
-            console.error('Image failed:', normalizedCard.name, normalizedCard.image, e);
+            logger.error('Image failed:', normalizedCard.name, normalizedCard.image, e);
             handleImageError(e);
           }}
         />

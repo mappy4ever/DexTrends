@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Head from 'next/head';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -72,12 +72,31 @@ const Section: React.FC<SectionProps> = ({ title, description, children, id }) =
 
 const CodeExample: React.FC<{ code: string; language?: string }> = ({ code, language = 'tsx' }) => {
   const [copied, setCopied] = useState(false);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
   
   const handleCopy = () => {
     navigator.clipboard.writeText(code);
     setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    
+    // Clear existing timer
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+    
+    timerRef.current = setTimeout(() => {
+      setCopied(false);
+      timerRef.current = null;
+    }, 2000);
   };
+  
+  // Cleanup on unmount
+  React.useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
   
   return (
     <div className="relative">
@@ -111,6 +130,18 @@ const UIShowcase = () => {
   const { isOpen, position, items, openMenu, closeMenu } = useContextMenu();
   const theme = useContextualTheme('ui');
   
+  // Cleanup all timers on unmount
+  useEffect(() => {
+    return () => {
+      if (refreshTimerRef.current) {
+        clearTimeout(refreshTimerRef.current);
+      }
+      if (asyncOperationTimerRef.current) {
+        clearTimeout(asyncOperationTimerRef.current);
+      }
+    };
+  }, []);
+  
   // Sample data
   const steps = [
     { id: 'basic', label: 'Basic Info', description: 'Enter your details' },
@@ -135,21 +166,33 @@ const UIShowcase = () => {
     { label: 'Mobile', href: '#mobile' }
   ];
   
+  const refreshTimerRef = useRef<NodeJS.Timeout | null>(null);
+  
   const handleRefresh = async () => {
     setIsRefreshing(true);
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    await new Promise(resolve => {
+      refreshTimerRef.current = setTimeout(() => {
+        resolve(undefined);
+        refreshTimerRef.current = null;
+      }, 2000);
+    });
+    
     success('Content refreshed!');
     setIsRefreshing(false);
   };
   
+  const asyncOperationTimerRef = useRef<NodeJS.Timeout | null>(null);
+  
   const handleAsyncOperation = () => {
     const fakeAsyncOperation = new Promise((resolve, reject) => {
-      setTimeout(() => {
+      asyncOperationTimerRef.current = setTimeout(() => {
         if (Math.random() > 0.5) {
           resolve({ data: 'Operation successful!' });
         } else {
           reject(new Error('Operation failed!'));
         }
+        asyncOperationTimerRef.current = null;
       }, 2000);
     });
 

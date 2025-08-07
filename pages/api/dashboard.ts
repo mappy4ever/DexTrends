@@ -1,6 +1,7 @@
 // pages/api/dashboard.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { createClient } from '@supabase/supabase-js';
+import logger from '@/utils/logger';
 
 // Initialize Supabase client - This is OK at the top level
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -8,7 +9,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 // Check if environment variables are set
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error("Supabase URL or Anon Key is missing. Check environment variables.");
+  logger.error("Supabase URL or Anon Key is missing. Check environment variables.");
   // Optionally throw an error during build/startup if preferred
 }
 
@@ -115,7 +116,7 @@ export default async function handler(
     ].filter(Boolean);
 
     if (errors.length > 0) {
-        console.error("Supabase errors fetching dashboard data:", errors);
+        logger.error("Supabase errors fetching dashboard data:", errors);
         const combinedErrorMsg = errors.map(e => e?.message || 'Unknown error').join('; ');
         return res.status(500).json({ error: "Failed to fetch dashboard data", details: combinedErrorMsg });
     }
@@ -200,7 +201,7 @@ export default async function handler(
     });
 
   } catch (exception) {
-    console.error("API Route Exception (Dashboard):", exception);
+    logger.error("API Route Exception (Dashboard):", exception);
     res.status(500).json({ error: "An unexpected error occurred.", details: exception.message });
   }
 }

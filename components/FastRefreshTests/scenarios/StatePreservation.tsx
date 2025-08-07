@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import logger from '@/utils/logger';
 import { TestWrapper, RenderCounter } from '../common';
 import styles from './TestScenarios.module.css';
 
@@ -18,11 +19,11 @@ const StatePreservationTest: React.FC = () => {
   }, [simpleState]);
   
   const callbackFunction = useCallback(() => {
-    console.log('Callback with state:', simpleState);
+    logger.debug('Callback with state:', simpleState);
   }, [simpleState]);
   
   useEffect(() => {
-    console.log('Effect ran with state:', simpleState);
+    logger.debug('Effect ran with state:', simpleState);
   }, [simpleState]);
   
   return (

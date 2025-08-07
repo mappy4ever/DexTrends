@@ -11,7 +11,7 @@ import StyledBackButton from '@/components/ui/StyledBackButton';
 import { fetchJSON } from '@/utils/unifiedFetch';
 import { showdownQueries, MoveCompetitiveDataRecord } from '@/utils/supabase';
 import { cn } from '@/utils/cn';
-import { typeColors } from '@/utils/pokemonTypeColors';
+import { typeColors } from '@/utils/unifiedTypeColors';
 import { FaChevronLeft, FaGamepad, FaStar, FaUsers } from 'react-icons/fa';
 import { BsLightning, BsShield, BsTarget, BsSpeedometer } from 'react-icons/bs';
 

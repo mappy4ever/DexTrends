@@ -1,7 +1,7 @@
 // components/ErrorBoundary.tsx
 import React, { Component, ReactNode, ErrorInfo } from 'react';
 import Router from 'next/router';
-import { reportError } from '../../utils/logger';
+import logger, { reportError } from '../../utils/logger';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -37,7 +37,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
         errorMessage.includes('Failed to import') ||
         errorMessage.includes('Unable to preload CSS')) {
       // Return null to not update state - let error propagate
-      console.log('Chunk/module loading error detected, letting Next.js handle it:', errorMessage);
+      logger.debug('Chunk/module loading error detected, letting Next.js handle it:', { errorMessage });
       return null;
     }
     
@@ -89,7 +89,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
                     });
                   } catch (navError) {
                     // If navigation fails, at least try to force reload
-                    console.error('Navigation failed:', navError);
+                    logger.error('Navigation failed:', { navError });
                     window.location.reload();
                   }
                 }}

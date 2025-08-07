@@ -56,9 +56,9 @@ export default function PackOpening({
 
   // Generate pack contents with realistic rarity distribution
   const generatePackCards = (): any => {
-    console.log('Generating pack with', availableCards.length, 'available cards');
+    logger.debug('Generating pack with', availableCards.length, 'available cards');
     if (!availableCards.length) {
-      console.error('No available cards for pack generation!');
+      logger.error('No available cards for pack generation!');
       return [];
     }
 
@@ -174,7 +174,7 @@ export default function PackOpening({
     
     // Check if we got valid cards
     if (!cards || cards.length === 0) {
-      console.error('Failed to generate pack cards');
+      logger.error('Failed to generate pack cards');
       alert('Failed to generate pack. Please try again.');
       return;
     }

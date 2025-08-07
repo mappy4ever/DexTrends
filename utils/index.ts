@@ -28,7 +28,7 @@ export {
 export { sanitizePokemonName } from './pokemonNameSanitizer';
 export * from './pokemonHelpers';
 export { getTypeUIColors } from './pokemonTheme';
-export { tcgTypeColors, typeColors } from './pokemonTypeColors';
+export { tcgTypeColors, typeColors } from './unifiedTypeColors';
 export * from './pokemonTypeGradients';
 export * from './evolutionUtils';
 export * from './moveUtils';

@@ -209,7 +209,7 @@ export const EnhancedUXProvider: React.FC<EnhancedUXProviderProps> = ({ children
       }));
 
     } catch (error) {
-      console.error('Failed to initialize UX settings:', error);
+      logger.error('Failed to initialize UX settings:', error);
     }
   };
 
@@ -325,7 +325,7 @@ export const EnhancedUXProvider: React.FC<EnhancedUXProviderProps> = ({ children
       localStorage.setItem('contextual-help', JSON.stringify(contextualHelp));
       localStorage.setItem('accessibility-settings', JSON.stringify(accessibilitySettings));
     } catch (error) {
-      console.error('Failed to save behavior data:', error);
+      logger.error('Failed to save behavior data:', error);
     }
   };
 

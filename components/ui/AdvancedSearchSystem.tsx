@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useDebounce } from '../../hooks/useDebounce';
 import EnhancedSearchBox from './forms/EnhancedSearchBox';
+import logger from '@/utils/logger';
 
 // Types and Interfaces
 interface SearchFilters {
@@ -117,7 +118,7 @@ const AdvancedSearchSystem: React.FC<AdvancedSearchSystemProps> = ({
       try {
         setSearchHistory(JSON.parse(saved));
       } catch (e) {
-        console.error('Failed to load search history:', e);
+        logger.error('Failed to load search history:', { error: e });
       }
     }
   }, []);
@@ -167,7 +168,7 @@ const AdvancedSearchSystem: React.FC<AdvancedSearchSystemProps> = ({
       }
       
     } catch (error) {
-      console.error('Search failed:', error);
+      logger.error('Search failed:', { error });
       onResults([]);
     } finally {
       onLoading(false);

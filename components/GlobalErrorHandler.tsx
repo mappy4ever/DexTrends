@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import logger from '@/utils/logger';
 
 /**
  * Global error handler component that catches unhandled errors and chunk loading failures
@@ -35,12 +36,12 @@ export default function GlobalErrorHandler(): null {
           errorMessage.includes('Failed to fetch dynamically imported module') ||
           errorMessage.includes('Cannot find module') ||
           errorMessage.includes('Failed to import')) {
-        console.log('Chunk loading error in promise rejection, letting Next.js handle:', errorMessage);
+        logger.debug('Chunk loading error in promise rejection, letting Next.js handle:', { errorMessage });
         return;
       }
       
       // Log other unhandled rejections
-      console.error('Unhandled promise rejection:', event.reason);
+      logger.error('Unhandled promise rejection:', { reason: event.reason });
     };
 
     // Handle global errors
@@ -53,12 +54,12 @@ export default function GlobalErrorHandler(): null {
           errorMessage.includes('Cannot find module') ||
           errorMessage.includes('Failed to import')) {
         // Don't prevent default - let Next.js handle it
-        console.log('Chunk loading error detected, letting Next.js handle:', errorMessage);
+        logger.debug('Chunk loading error detected, letting Next.js handle:', { errorMessage });
         return;
       }
       
       // Log other errors
-      console.error('Global error:', event.error);
+      logger.error('Global error:', { error: event.error });
     };
 
     window.addEventListener('unhandledrejection', handleUnhandledRejection);

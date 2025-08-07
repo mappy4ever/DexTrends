@@ -17,6 +17,7 @@ import {
   calculateUsageStats,
   determinePokemonRole,
 } from '../../../utils/competitiveAnalysis';
+import logger from '@/utils/logger';
 import { 
   FaTrophy, FaChartLine, FaUsers, FaShieldAlt, 
   FaRunning, FaGamepad, FaInfoCircle, FaMedal,
@@ -428,7 +429,7 @@ const CompetitiveTab: React.FC<CompetitiveTabProps> = ({ pokemon, species, typeC
         const stats = calculateUsageStats(pokemon, tier);
         setUsageStats(stats);
       } catch (error) {
-        console.error('Error loading competitive data:', error);
+        logger.error('Error loading competitive data:', { error });
         // Fall back to sample data if needed
         setMovesets(SAMPLE_MOVESETS);
         setTeammates(COMMON_TEAMMATES);
