@@ -244,6 +244,31 @@ export const showdownQueries = {
     }
     
     return data || [];
+  },
+
+  async getAbilityRatings(abilityNames: string[]) {
+    if (!supabase) {
+      console.error('[Showdown] Supabase client not initialized');
+      return {};
+    }
+    
+    const { data, error } = await supabase
+      .from('ability_ratings')
+      .select('*')
+      .in('name', abilityNames.map(name => name.toLowerCase()));
+    
+    if (error) {
+      console.error('Error fetching ability ratings:', error);
+      return {};
+    }
+    
+    // Convert array to object for easy lookup
+    const ratings: Record<string, number> = {};
+    data?.forEach(ability => {
+      ratings[ability.name] = ability.rating;
+    });
+    
+    return ratings;
   }
 };
 

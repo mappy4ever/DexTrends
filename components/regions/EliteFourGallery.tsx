@@ -477,52 +477,38 @@ const EliteFourGallery: React.FC<EliteFourGalleryProps> = ({ region, eliteFour, 
 
   return (
     <div className="mt-12">
-      {/* Elite Four Special Header with Effects */}
+      {/* Elite Four Header */}
       <FadeIn>
-        <div className="text-center mb-8 relative">
-          {/* Background glow effect */}
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-yellow-500/20 to-purple-500/20 blur-3xl -z-10"></div>
-          
-          {/* Main title with special styling */}
-          <div className="relative">
-            <h3 className="text-4xl font-black mb-4 bg-gradient-to-r from-purple-400 via-yellow-400 to-purple-400 bg-clip-text text-transparent animate-pulse">
-              ⚡ ELITE FOUR & CHAMPION ⚡
-            </h3>
-            <div className="flex items-center justify-center gap-4 mb-2">
-              <BsLightning className="text-yellow-400 text-xl animate-bounce" />
-              <BsShieldFill className="text-purple-400 text-xl animate-pulse" />
-              <BsTrophy className="text-yellow-400 text-xl animate-bounce" />
-              <BsShieldFill className="text-purple-400 text-xl animate-pulse" />
-              <BsLightning className="text-yellow-400 text-xl animate-bounce" />
-            </div>
-            <p className="text-lg text-gray-600 dark:text-gray-300 font-semibold">
-              The ultimate challenge awaits at the Pokémon League
-            </p>
-            <div className="mt-4 w-32 h-1 bg-gradient-to-r from-purple-500 to-yellow-500 mx-auto rounded-full"></div>
-          </div>
+        <div className="text-center mb-12">
+          <h3 className="text-3xl font-bold mb-3 text-gray-900 dark:text-white">
+            Elite Four & Champion
+          </h3>
+          <p className="text-lg text-gray-600 dark:text-gray-400">
+            The ultimate challenge awaits at the Pokémon League
+          </p>
         </div>
       </FadeIn>
 
       {/* Elite Four Carousel */}
-      <div className="relative mb-16 px-20">
-        {/* Navigation Buttons - Enhanced Elite Four Style */}
+      <div className="relative">
+        {/* Navigation Buttons */}
         <button
           onClick={handlePrev}
-          className="absolute -left-20 top-1/2 -translate-y-1/2 z-20 bg-gradient-to-r from-purple-900 via-purple-800 to-indigo-800 backdrop-blur-sm rounded-full p-4 shadow-2xl hover:scale-110 transition-all duration-300 border-2 border-yellow-400/50 group hover:shadow-purple-500/50"
+          className="absolute -left-4 sm:-left-8 md:-left-16 top-1/2 -translate-y-1/2 z-20 backdrop-blur-xl bg-white/80 dark:bg-gray-900/80 border border-gray-200 dark:border-gray-700 rounded-full p-3 md:p-4 shadow-xl hover:scale-110 transition-all duration-300 group"
         >
-          <BsChevronLeft className="text-2xl text-yellow-300 group-hover:-translate-x-1 transition-transform group-hover:text-yellow-100" />
+          <BsChevronLeft className="text-2xl text-gray-700 dark:text-gray-200 group-hover:-translate-x-1 transition-transform" />
         </button>
         <button
           onClick={handleNext}
-          className="absolute -right-20 top-1/2 -translate-y-1/2 z-20 bg-gradient-to-l from-purple-900 via-purple-800 to-indigo-800 backdrop-blur-sm rounded-full p-4 shadow-2xl hover:scale-110 transition-all duration-300 border-2 border-yellow-400/50 group hover:shadow-purple-500/50"
+          className="absolute -right-4 sm:-right-8 md:-right-16 top-1/2 -translate-y-1/2 z-20 backdrop-blur-xl bg-white/80 dark:bg-gray-900/80 border border-gray-200 dark:border-gray-700 rounded-full p-3 md:p-4 shadow-xl hover:scale-110 transition-all duration-300 group"
         >
-          <BsChevronRight className="text-2xl text-yellow-300 group-hover:translate-x-1 transition-transform group-hover:text-yellow-100" />
+          <BsChevronRight className="text-2xl text-gray-700 dark:text-gray-200 group-hover:translate-x-1 transition-transform" />
         </button>
 
         {/* Carousel */}
         <div
           ref={carouselRef}
-          className="flex gap-12 overflow-x-auto scrollbar-hide pb-12"
+          className="flex gap-8 overflow-x-auto scrollbar-hide pb-12 px-4 sm:px-8 md:px-16"
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleDragEnd}
@@ -534,8 +520,7 @@ const EliteFourGallery: React.FC<EliteFourGalleryProps> = ({ region, eliteFour, 
             scrollbarWidth: 'none',
             msOverflowStyle: 'none',
             WebkitOverflowScrolling: 'touch',
-            paddingLeft: window.innerWidth <= 850 ? '32px' : '200px', // Left cushion for first card
-            paddingRight: window.innerWidth <= 850 ? '32px' : '200px' // Right cushion for last card
+            minHeight: '500px'
           }}
         >
           {eliteFour.map((member, index) => {
@@ -613,15 +598,12 @@ const EliteFourGallery: React.FC<EliteFourGalleryProps> = ({ region, eliteFour, 
                   
                   <button
                     onClick={() => setRevealChampion(true)}
-                    className={`px-16 py-8 rounded-full bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 text-gray-900 font-black text-3xl hover:scale-110 transition-all duration-300 shadow-2xl animate-pulse border-4 border-amber-300/50 hover:border-amber-200 relative overflow-hidden`}
+                    className="px-8 py-4 rounded-full backdrop-blur-xl bg-gradient-to-r from-yellow-500 to-amber-600 text-white font-bold text-xl hover:scale-110 transition-all duration-300 shadow-xl border border-yellow-400/50"
                   >
-                    {/* Button glow effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-yellow-300/50 to-amber-300/50 animate-pulse"></div>
-                    
-                    <div className="flex items-center gap-4 relative z-10">
-                      <BsTrophy className="text-4xl animate-bounce" />
+                    <div className="flex items-center gap-3">
+                      <BsTrophy className="text-2xl" />
                       <span>REVEAL THE CHAMPION</span>
-                      <BsTrophy className="text-4xl animate-bounce" />
+                      <BsTrophy className="text-2xl" />
                     </div>
                   </button>
                   
@@ -632,27 +614,10 @@ const EliteFourGallery: React.FC<EliteFourGalleryProps> = ({ region, eliteFour, 
               </FadeIn>
             )}
 
-            {/* Champion Card - Using new ChampionCard component */}
+            {/* Champion Card */}
             {revealChampion && champion && championData[champion.name] && (
               <SlideUp>
-                <div className="flex justify-center relative">
-                  {/* Champion aura effects */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/20 via-amber-500/30 to-yellow-500/20 blur-3xl animate-pulse -z-10"></div>
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-amber-500/10 to-transparent blur-2xl animate-pulse -z-10"></div>
-                  
-                  {/* Champion sparkle effects */}
-                  <div className="absolute -top-4 -left-4 text-yellow-400 animate-ping">
-                    <BsStar className="text-2xl" />
-                  </div>
-                  <div className="absolute -top-4 -right-4 text-amber-400 animate-ping" style={{ animationDelay: '0.5s' }}>
-                    <BsStar className="text-2xl" />
-                  </div>
-                  <div className="absolute -bottom-4 -left-4 text-yellow-400 animate-ping" style={{ animationDelay: '1s' }}>
-                    <BsStar className="text-2xl" />
-                  </div>
-                  <div className="absolute -bottom-4 -right-4 text-amber-400 animate-ping" style={{ animationDelay: '1.5s' }}>
-                    <BsStar className="text-2xl" />
-                  </div>
+                <div className="flex justify-center relative mt-8">
                   
                   <ChampionCard
                     name={champion.name}

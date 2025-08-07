@@ -70,3 +70,9 @@ const data = await fetchJSON('/api/endpoint');
 - Pokemon Showdown Integration: `/docs/showdown-integration/`
 - Developer Guide: `/project-resources/docs/DEVELOPER_GUIDE.md`
 - See `.claude/agents/` for specialized AI agents
+
+## Technical Debt Tracking
+- **Active Remediation**: See `/TECHNICAL_DEBT_PLAN.md` for current progress
+- **Status**: 90+ issues identified, 0% resolved
+- **Priority Focus**: Removing console.logs, fixing TypeScript errors, consolidating duplicate code
+- **Session Continuity**: Check TECHNICAL_DEBT_PLAN.md at session start for next tasks

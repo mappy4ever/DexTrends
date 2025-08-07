@@ -13,6 +13,7 @@ import {
 import { GiTwoCoins, GiStoneSphere } from 'react-icons/gi';
 import { HiSparkles } from 'react-icons/hi';
 import { fetchPokemon } from '../../../utils/apiutils';
+import { hasRegionalEvolution, getRegionalEvolution, isRegionalEvolution } from '../../../utils/regionalEvolutions';
 
 interface EvolutionTabV3Props {
   pokemon: Pokemon;
@@ -26,9 +27,23 @@ interface EvolutionNode {
   name: string;
   types?: string[];
   sprite?: string;
-  level?: number;
-  trigger?: string;
-  item?: string;
+  evolutionDetails?: {
+    trigger: string;
+    minLevel?: number;
+    item?: string;
+    minHappiness?: number;
+    location?: string;
+    heldItem?: string;
+    timeOfDay?: string;
+    gender?: number;
+    knownMove?: string;
+    minAffection?: number;
+    needsOverworldRain?: boolean;
+    partySpecies?: string;
+    tradeSpecies?: string;
+    minBeauty?: number;
+    relativePhysicalStats?: number;
+  }[];
 }
 
 // Move component definitions outside to fix React rendering error
@@ -91,25 +106,196 @@ const EvolutionCard = ({ node, isCurrent }: { node: EvolutionNode; isCurrent: bo
   </Link>
 );
 
-const EvolutionArrow = ({ horizontal = true }: { horizontal?: boolean }) => (
-  <motion.div 
-    className={cn(
-      "flex items-center justify-center",
-      horizontal ? "mx-4" : "my-4"
-    )}
-    initial={{ opacity: 0, scale: 0.5 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{ delay: 0.2 }}
-  >
-    <div className="text-gray-500 dark:text-gray-400">
-      {horizontal ? (
-        <FaArrowRight className="w-6 h-6" />
-      ) : (
-        <FaArrowDown className="w-6 h-6" />
+// Helper functions for formatting
+const formatItemName = (item: string) => {
+  return item.split('-').map(part => 
+    part.charAt(0).toUpperCase() + part.slice(1)
+  ).join(' ');
+};
+
+const formatLocationName = (location: string) => {
+  return location.split('-').map(part => 
+    part.charAt(0).toUpperCase() + part.slice(1)
+  ).join(' ');
+};
+
+const formatMoveName = (move: string) => {
+  return move.split('-').map(part => 
+    part.charAt(0).toUpperCase() + part.slice(1)
+  ).join(' ');
+};
+
+// Helper to get Pokemon ID for evolution (simplified - in production would fetch from API)
+const getEvolutionPokemonId = (pokemonName: string): number => {
+  const evolutionIds: Record<string, number> = {
+    'perrserker': 863,
+    'rapidash-galar': 78,
+    'sirfetchd': 865,
+    'slowbro-galar': 80,
+    'slowking-galar': 199,
+    'cursola': 864,
+    'linoone-galar': 264,
+    'obstagoon': 862,
+    'runerigus': 867,
+    'mr-rime': 866,
+    'sneasler': 903,
+    'overqwil': 904,
+    'basculegion': 902,
+    'raichu-alola': 26,
+    'exeggutor-alola': 103,
+    'marowak-alola': 105,
+    'meowth-galar': 52,
+    'ponyta-galar': 77,
+    'farfetchd-galar': 83,
+    'slowpoke-galar': 79,
+    'corsola-galar': 222,
+    'zigzagoon-galar': 263,
+    'yamask-galar': 562,
+    'mr-mime-galar': 122,
+    'sneasel-hisui': 215,
+    'qwilfish-hisui': 211,
+    'basculin-white-striped': 550
+  };
+  
+  return evolutionIds[pokemonName] || 1;
+};
+
+// Helper to get pre-evolution for regional evolutions
+const getPreEvolutionForRegional = (pokemonName: string): { from: string; method: string; level?: number; item?: string } | null => {
+  const preEvolutions: Record<string, any> = {
+    'perrserker': { from: 'meowth-galar', method: 'level-up', level: 28 },
+    'rapidash-galar': { from: 'ponyta-galar', method: 'level-up', level: 40 },
+    'sirfetchd': { from: 'farfetchd-galar', method: 'level-up' },
+    'slowbro-galar': { from: 'slowpoke-galar', method: 'use-item', item: 'galarica-cuff' },
+    'slowking-galar': { from: 'slowpoke-galar', method: 'use-item', item: 'galarica-wreath' },
+    'cursola': { from: 'corsola-galar', method: 'level-up', level: 38 },
+    'obstagoon': { from: 'linoone-galar', method: 'level-up', level: 35 },
+    'runerigus': { from: 'yamask-galar', method: 'level-up' },
+    'mr-rime': { from: 'mr-mime-galar', method: 'level-up', level: 42 },
+    'sneasler': { from: 'sneasel-hisui', method: 'level-up' },
+    'overqwil': { from: 'qwilfish-hisui', method: 'level-up' },
+    'basculegion': { from: 'basculin-white-striped', method: 'level-up' }
+  };
+  
+  return preEvolutions[pokemonName] || null;
+};
+
+const EvolutionArrow = ({ 
+  horizontal = true, 
+  evolutionDetails 
+}: { 
+  horizontal?: boolean; 
+  evolutionDetails?: any[] 
+}) => {
+  // Display evolution requirements
+  const getEvolutionText = () => {
+    if (!evolutionDetails || evolutionDetails.length === 0) return null;
+    
+    const detail = evolutionDetails[0]; // Primary evolution method
+    const parts = [];
+    
+    // Level-based evolution
+    if (detail.minLevel) {
+      parts.push(`Lv. ${detail.minLevel}`);
+    }
+    
+    // Item-based evolution
+    if (detail.item) {
+      parts.push(formatItemName(detail.item));
+    }
+    
+    // Trade evolution
+    if (detail.trigger === 'trade') {
+      if (detail.heldItem) {
+        parts.push(`Trade holding ${formatItemName(detail.heldItem)}`);
+      } else if (detail.tradeSpecies) {
+        parts.push(`Trade for ${detail.tradeSpecies}`);
+      } else {
+        parts.push('Trade');
+      }
+    }
+    
+    // Happiness evolution
+    if (detail.minHappiness) {
+      parts.push(`Happiness ${detail.minHappiness}+`);
+    }
+    
+    // Location-based evolution
+    if (detail.location) {
+      parts.push(`at ${formatLocationName(detail.location)}`);
+    }
+    
+    // Time of day
+    if (detail.timeOfDay && detail.timeOfDay !== '') {
+      parts.push(`(${detail.timeOfDay.charAt(0).toUpperCase() + detail.timeOfDay.slice(1)})`);
+    }
+    
+    // Known move
+    if (detail.knownMove) {
+      parts.push(`knowing ${formatMoveName(detail.knownMove)}`);
+    }
+    
+    // Weather condition
+    if (detail.needsOverworldRain) {
+      parts.push('(Raining)');
+    }
+    
+    // Gender requirement
+    if (detail.gender === 1) {
+      parts.push('(Female)');
+    } else if (detail.gender === 2) {
+      parts.push('(Male)');
+    }
+    
+    // Affection
+    if (detail.minAffection) {
+      parts.push(`Affection ${detail.minAffection}+`);
+    }
+    
+    // Beauty
+    if (detail.minBeauty) {
+      parts.push(`Beauty ${detail.minBeauty}+`);
+    }
+    
+    // Physical stats comparison
+    if (detail.relativePhysicalStats === 1) {
+      parts.push('(Attack > Defense)');
+    } else if (detail.relativePhysicalStats === -1) {
+      parts.push('(Attack < Defense)');
+    } else if (detail.relativePhysicalStats === 0) {
+      parts.push('(Attack = Defense)');
+    }
+    
+    return parts.join(' ');
+  };
+  
+  const evolutionText = getEvolutionText();
+  
+  return (
+    <motion.div 
+      className={cn(
+        "flex flex-col items-center gap-1",
+        horizontal ? "mx-4" : "my-4"
       )}
-    </div>
-  </motion.div>
-);
+      initial={{ opacity: 0, scale: 0.5 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ delay: 0.2 }}
+    >
+      {evolutionText && (
+        <div className="text-xs text-gray-600 dark:text-gray-400 font-medium text-center max-w-[120px]">
+          {evolutionText}
+        </div>
+      )}
+      <div className="text-gray-500 dark:text-gray-400">
+        {horizontal ? (
+          <FaArrowRight className="w-6 h-6" />
+        ) : (
+          <FaArrowDown className="w-6 h-6" />
+        )}
+      </div>
+    </motion.div>
+  );
+};
 
 const EvolutionTabV3: React.FC<EvolutionTabV3Props> = ({
   pokemon,
@@ -120,15 +306,23 @@ const EvolutionTabV3: React.FC<EvolutionTabV3Props> = ({
   const [showShiny, setShowShiny] = useState(false);
   const [megaFormData, setMegaFormData] = useState<Record<string, Pokemon>>({});
   
-  // Fetch mega form sprites
+  // Check if this is a regional variant
+  const isRegionalVariant = pokemon.name.includes('-alola') || 
+                           pokemon.name.includes('-galar') || 
+                           pokemon.name.includes('-hisui') || 
+                           pokemon.name.includes('-paldea');
+  
+  // Fetch mega and gigantamax form sprites
   useEffect(() => {
-    const fetchMegaForms = async () => {
+    const fetchSpecialForms = async () => {
       if (!species?.varieties) return;
       
-      const megaVarieties = species.varieties.filter(v => v.pokemon.name.includes('mega'));
+      const specialVarieties = species.varieties.filter(v => 
+        v.pokemon.name.includes('mega') || v.pokemon.name.includes('gmax')
+      );
       const formData: Record<string, Pokemon> = {};
       
-      for (const variety of megaVarieties) {
+      for (const variety of specialVarieties) {
         try {
           const data = await fetchPokemon(variety.pokemon.name);
           formData[variety.pokemon.name] = data;
@@ -140,14 +334,17 @@ const EvolutionTabV3: React.FC<EvolutionTabV3Props> = ({
       setMegaFormData(formData);
     };
     
-    fetchMegaForms();
+    fetchSpecialForms();
   }, [species?.varieties]);
   
   // Parse evolution chain into a usable structure
   const parseEvolutionChain = (chain: any, isShiny: boolean): EvolutionNode[][] => {
     const stages: EvolutionNode[][] = [];
     
-    const parseNode = (node: any, stageIndex: number = 0) => {
+    // For regional variants, we need to filter the evolution path
+    const currentFormPrefix = isRegionalVariant ? pokemon.name.split('-')[1] : null;
+    
+    const parseNode = (node: any, stageIndex: number = 0, followPath: boolean = true) => {
       if (!node || !node.species) return;
       
       if (!stages[stageIndex]) {
@@ -160,12 +357,32 @@ const EvolutionTabV3: React.FC<EvolutionTabV3Props> = ({
         const pokemonId = parseInt(urlParts[urlParts.length - 2]);
         
         if (!isNaN(pokemonId)) {
+          // Extract evolution details
+          const evolutionDetails = node.evolution_details?.map((detail: any) => ({
+            trigger: detail.trigger?.name || '',
+            minLevel: detail.min_level || null,
+            item: detail.item?.name || null,
+            minHappiness: detail.min_happiness || null,
+            location: detail.location?.name || null,
+            heldItem: detail.held_item?.name || null,
+            timeOfDay: detail.time_of_day || null,
+            gender: detail.gender || null,
+            knownMove: detail.known_move?.name || null,
+            minAffection: detail.min_affection || null,
+            needsOverworldRain: detail.needs_overworld_rain || false,
+            partySpecies: detail.party_species?.name || null,
+            tradeSpecies: detail.trade_species?.name || null,
+            minBeauty: detail.min_beauty || null,
+            relativePhysicalStats: detail.relative_physical_stats || null
+          })) || [];
+          
           stages[stageIndex].push({
             id: pokemonId,
             name: node.species.name,
             sprite: isShiny 
               ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${pokemonId}.png`
-              : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonId}.png`
+              : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonId}.png`,
+            evolutionDetails
           });
         }
       } catch (err) {
@@ -187,7 +404,95 @@ const EvolutionTabV3: React.FC<EvolutionTabV3Props> = ({
     return stages;
   };
   
-  const evolutionStages = parseEvolutionChain(evolutionChain, showShiny);
+  // Create custom evolution chain for regional variants
+  const getEvolutionStages = () => {
+    // Check if this Pokemon has a regional evolution
+    if (hasRegionalEvolution(pokemon.name)) {
+      const regionalEvos = getRegionalEvolution(pokemon.name);
+      if (regionalEvos) {
+        // Create a custom evolution chain
+        const customStages: EvolutionNode[][] = [[]];
+        
+        // Add current Pokemon
+        customStages[0].push({
+          id: pokemon.id,
+          name: pokemon.name,
+          sprite: showShiny 
+            ? pokemon.sprites?.other?.['official-artwork']?.front_shiny || ''
+            : pokemon.sprites?.other?.['official-artwork']?.front_default || '',
+          evolutionDetails: []
+        });
+        
+        // Add evolutions
+        if (regionalEvos.length > 0) {
+          customStages[1] = [];
+          for (const evo of regionalEvos) {
+            // Extract ID from the evolution name
+            // This is a simplification - in production you'd fetch the Pokemon data
+            const evoId = getEvolutionPokemonId(evo.to);
+            
+            const evolutionDetail: any = {
+              trigger: evo.method === 'use-item' ? 'use-item' : 'level-up',
+              minLevel: evo.level || null,
+              item: evo.item || null
+            };
+            
+            customStages[1].push({
+              id: evoId,
+              name: evo.to,
+              sprite: showShiny
+                ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${evoId}.png`
+                : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${evoId}.png`,
+              evolutionDetails: [evolutionDetail]
+            });
+          }
+        }
+        
+        return customStages;
+      }
+    }
+    
+    // Check if this is a regional evolution (evolved from regional form)
+    if (isRegionalEvolution(pokemon.name)) {
+      // For Pokemon like Perrserker, we need to show Galarian Meowth -> Perrserker
+      const preEvolution = getPreEvolutionForRegional(pokemon.name);
+      if (preEvolution) {
+        const customStages: EvolutionNode[][] = [[]];
+        
+        // Add pre-evolution
+        const preEvoId = getEvolutionPokemonId(preEvolution.from);
+        customStages[0].push({
+          id: preEvoId,
+          name: preEvolution.from,
+          sprite: showShiny
+            ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${preEvoId}.png`
+            : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${preEvoId}.png`,
+          evolutionDetails: []
+        });
+        
+        // Add current Pokemon
+        customStages[1] = [{
+          id: pokemon.id,
+          name: pokemon.name,
+          sprite: showShiny 
+            ? pokemon.sprites?.other?.['official-artwork']?.front_shiny || ''
+            : pokemon.sprites?.other?.['official-artwork']?.front_default || '',
+          evolutionDetails: [{
+            trigger: preEvolution.method === 'use-item' ? 'use-item' : 'level-up',
+            minLevel: preEvolution.level || null,
+            item: preEvolution.item || null
+          }]
+        }];
+        
+        return customStages;
+      }
+    }
+    
+    // Use standard evolution chain
+    return parseEvolutionChain(evolutionChain, showShiny);
+  };
+  
+  const evolutionStages = getEvolutionStages();
   
   if (!evolutionChain || evolutionStages.length === 0) {
     return (
@@ -284,7 +589,12 @@ const EvolutionTabV3: React.FC<EvolutionTabV3Props> = ({
             <div className="flex items-center justify-center">
               {evolutionStages.map((stage, stageIndex) => (
                 <React.Fragment key={stageIndex}>
-                  {stageIndex > 0 && <EvolutionArrow horizontal />}
+                  {stageIndex > 0 && (
+                    <EvolutionArrow 
+                      horizontal 
+                      evolutionDetails={stage[0]?.evolutionDetails}
+                    />
+                  )}
                   
                   {/* Stage with multiple Pokemon (branched evolution) */}
                   {stage.length > 1 ? (
@@ -316,7 +626,12 @@ const EvolutionTabV3: React.FC<EvolutionTabV3Props> = ({
             <div className="flex flex-col items-center">
               {evolutionStages.map((stage, stageIndex) => (
                 <React.Fragment key={stageIndex}>
-                  {stageIndex > 0 && <EvolutionArrow horizontal={false} />}
+                  {stageIndex > 0 && (
+                    <EvolutionArrow 
+                      horizontal={false} 
+                      evolutionDetails={stage[0]?.evolutionDetails}
+                    />
+                  )}
                   
                   {/* Stage with multiple Pokemon (branched evolution) */}
                   {stage.length > 1 ? (
@@ -379,9 +694,25 @@ const EvolutionTabV3: React.FC<EvolutionTabV3Props> = ({
                       <FaExchangeAlt className="w-4 h-4 text-purple-400" />
                       <span className="font-semibold text-sm">Evolution Requirements</span>
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      Level requirements, items, or special conditions
-                    </p>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                      {(() => {
+                        const allMethods = evolutionStages.flatMap(stage => 
+                          stage.flatMap(node => node.evolutionDetails || [])
+                        );
+                        const uniqueMethods = new Set<string>();
+                        
+                        allMethods.forEach(detail => {
+                          if (detail.minLevel) uniqueMethods.add('Level up');
+                          if (detail.item) uniqueMethods.add('Evolution item');
+                          if (detail.trigger === 'trade') uniqueMethods.add('Trade');
+                          if (detail.minHappiness) uniqueMethods.add('High friendship');
+                          if (detail.location) uniqueMethods.add('Specific location');
+                          if (detail.timeOfDay) uniqueMethods.add('Time of day');
+                        });
+                        
+                        return Array.from(uniqueMethods).join(' • ') || 'Various methods';
+                      })()}
+                    </div>
                   </div>
                 </motion.div>
                 
@@ -395,9 +726,24 @@ const EvolutionTabV3: React.FC<EvolutionTabV3Props> = ({
                       <GiStoneSphere className="w-4 h-4 text-green-400" />
                       <span className="font-semibold text-sm">Special Items</span>
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      Evolution stones or trade items needed
-                    </p>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                      {(() => {
+                        const allItems = evolutionStages.flatMap(stage => 
+                          stage.flatMap(node => 
+                            node.evolutionDetails?.filter(d => d.item || d.heldItem)
+                              .map(d => d.item || d.heldItem) || []
+                          )
+                        ).filter(Boolean);
+                        
+                        const uniqueItems = Array.from(new Set(allItems));
+                        
+                        if (uniqueItems.length === 0) {
+                          return 'No special items required';
+                        }
+                        
+                        return uniqueItems.map(item => formatItemName(item!)).join(' • ');
+                      })()}
+                    </div>
                   </div>
                 </motion.div>
               </div>
@@ -521,6 +867,123 @@ const EvolutionTabV3: React.FC<EvolutionTabV3Props> = ({
               
               <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
                 <p>Mega Evolution is a temporary transformation that requires a Mega Stone and a strong bond with the trainer.</p>
+              </div>
+            </div>
+          </GlassContainer>
+        </motion.div>
+      )}
+      
+      {/* Gigantamax Section */}
+      {species?.varieties?.some(v => v.pokemon.name.includes('gmax')) && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
+          <GlassContainer 
+            variant="dark" 
+            className="backdrop-blur-xl bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 shadow-xl"
+            animate={false}
+          >
+            <div className="p-6 md:p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-500/20 to-red-600/10 flex items-center justify-center">
+                  <HiSparkles className="w-5 h-5 text-red-400" />
+                </div>
+                <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-gray-500 dark:text-gray-400">
+                  Gigantamax Form
+                </h3>
+              </div>
+              
+              <div className="flex flex-wrap items-center justify-center gap-6">
+                {/* Base Pokemon */}
+                <div>
+                  <EvolutionCard 
+                    node={{
+                      id: species.id,
+                      name: species.name,
+                      sprite: !pokemon.name.includes('gmax') 
+                        ? pokemon.sprites?.other?.['official-artwork']?.front_default || ''
+                        : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${species.id}.png`,
+                      types: pokemon.types?.map(t => t.type.name)
+                    }} 
+                    isCurrent={!pokemon.name.includes('gmax')}
+                  />
+                </div>
+                
+                {/* Gigantamax Arrow */}
+                <motion.div 
+                  className="flex items-center justify-center mx-4"
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.1 }}
+                >
+                  <div className="bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-full p-3 shadow-lg">
+                    <HiSparkles className="w-5 h-5" />
+                  </div>
+                </motion.div>
+                
+                {/* Gigantamax Form */}
+                <div className="flex flex-col gap-4">
+                  {species.varieties
+                    .filter(v => v.pokemon.name.includes('gmax'))
+                    .map(variety => (
+                      <Link key={variety.pokemon.name} href={`/pokedex/${species.id}?form=${variety.pokemon.name.replace(`${species.name}-`, '')}`}>
+                        <motion.div
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                          className={cn(
+                            "relative cursor-pointer rounded-xl",
+                            pokemon.name === variety.pokemon.name && "ring-2 ring-red-500/50"
+                          )}
+                        >
+                          <GlassContainer 
+                            variant="dark" 
+                            animate={false}
+                            className={cn(
+                              "p-4 text-center border transition-all duration-200 hover:border-red-500/30",
+                              pokemon.name === variety.pokemon.name ? "border-red-500/50 bg-red-500/10" : "border-gray-700/50"
+                            )}
+                          >
+                            {pokemon.name === variety.pokemon.name && (
+                              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
+                                <span className="px-3 py-1 text-xs font-bold rounded-full bg-gradient-to-r from-red-600 to-orange-600 text-white">
+                                  CURRENT
+                                </span>
+                              </div>
+                            )}
+                            
+                            <div className="relative w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-3">
+                              {megaFormData[variety.pokemon.name]?.sprites?.other?.['official-artwork']?.front_default ? (
+                                <Image
+                                  src={megaFormData[variety.pokemon.name].sprites.other['official-artwork'].front_default}
+                                  alt={variety.pokemon.name}
+                                  fill
+                                  className="object-contain"
+                                  sizes="(max-width: 640px) 96px, 128px"
+                                />
+                              ) : (
+                                <div className="flex items-center justify-center h-full">
+                                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-500"></div>
+                                </div>
+                              )}
+                            </div>
+                            
+                            <h3 className="font-bold capitalize text-base sm:text-lg mb-2">
+                              Gigantamax
+                            </h3>
+                            
+                            <p className="text-xs sm:text-sm text-red-400">Max Soup Required</p>
+                          </GlassContainer>
+                        </motion.div>
+                      </Link>
+                    ))}
+                </div>
+              </div>
+              
+              <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
+                <p>Gigantamax is a phenomenon that makes Pokemon giant with a special appearance. It requires a Pokemon with the Gigantamax Factor.</p>
               </div>
             </div>
           </GlassContainer>

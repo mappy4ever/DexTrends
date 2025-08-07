@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import type { Pokemon, PokemonSpecies } from '../../types/api/pokemon';
@@ -26,7 +26,6 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
   onShinyToggle,
   onFormChange
 }) => {
-  const [imageLoading, setImageLoading] = useState(true);
   const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
   
   // Check if this Pokemon is already favorited
@@ -111,6 +110,95 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
   const generation = ROMAN_TO_NUMBER[generationRoman] || '1';
   const regionName = GENERATION_TO_REGION[generationRoman] || 'Unknown';
   
+  // Format Pokemon display name properly
+  const formatPokemonDisplayName = (pokemonName: string, speciesName?: string) => {
+    if (!pokemonName) return '';
+    
+    // If it's the base form, just capitalize
+    if (!pokemonName.includes('-') || pokemonName === speciesName) {
+      return pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1);
+    }
+    
+    // Extract base name and form suffix
+    const baseName = speciesName || pokemonName.split('-')[0];
+    const baseNameCapitalized = baseName.charAt(0).toUpperCase() + baseName.slice(1);
+    
+    // Handle Mega forms
+    if (pokemonName.includes('-mega')) {
+      if (pokemonName.includes('-mega-x')) return `Mega ${baseNameCapitalized} X`;
+      if (pokemonName.includes('-mega-y')) return `Mega ${baseNameCapitalized} Y`;
+      return `Mega ${baseNameCapitalized}`;
+    }
+    
+    // Handle Regional forms
+    if (pokemonName.includes('-alola')) return `Alolan ${baseNameCapitalized}`;
+    if (pokemonName.includes('-galar')) return `Galarian ${baseNameCapitalized}`;
+    if (pokemonName.includes('-hisui')) return `Hisuian ${baseNameCapitalized}`;
+    if (pokemonName.includes('-paldea')) return `Paldean ${baseNameCapitalized}`;
+    
+    // Handle Gigantamax
+    if (pokemonName.includes('-gmax')) return `Gigantamax ${baseNameCapitalized}`;
+    
+    // Handle other specific forms
+    const formPatterns: Record<string, string> = {
+      '-origin': 'Origin Forme',
+      '-therian': 'Therian Forme',
+      '-incarnate': 'Incarnate Forme',
+      '-sky': 'Sky Forme',
+      '-land': 'Land Forme',
+      '-blade': 'Blade Forme',
+      '-shield': 'Shield Forme',
+      '-school': 'School Form',
+      '-solo': 'Solo Form',
+      '-complete': 'Complete Forme',
+      '-eternamax': 'Eternamax'
+    };
+    
+    for (const [pattern, formName] of Object.entries(formPatterns)) {
+      if (pokemonName.includes(pattern)) {
+        return `${baseNameCapitalized} ${formName}`;
+      }
+    }
+    
+    // Special cases (Rotom, Castform, etc.)
+    if (baseName === 'rotom') {
+      const rotomForms: Record<string, string> = {
+        'heat': 'Heat Rotom',
+        'wash': 'Wash Rotom',
+        'frost': 'Frost Rotom',
+        'fan': 'Fan Rotom',
+        'mow': 'Mow Rotom'
+      };
+      const formType = pokemonName.split('-')[1];
+      return rotomForms[formType] || baseNameCapitalized;
+    }
+    
+    if (baseName === 'castform') {
+      const castformForms: Record<string, string> = {
+        'sunny': 'Sunny Form Castform',
+        'rainy': 'Rainy Form Castform',
+        'snowy': 'Snowy Form Castform'
+      };
+      const formType = pokemonName.split('-')[1];
+      return castformForms[formType] || baseNameCapitalized;
+    }
+    
+    if (baseName === 'deoxys') {
+      const deoxysForms: Record<string, string> = {
+        'attack': 'Attack Forme Deoxys',
+        'defense': 'Defense Forme Deoxys',
+        'speed': 'Speed Forme Deoxys'
+      };
+      const formType = pokemonName.split('-')[1];
+      return deoxysForms[formType] || baseNameCapitalized;
+    }
+    
+    // Default: capitalize each part
+    return pokemonName.split('-').map(part => 
+      part.charAt(0).toUpperCase() + part.slice(1)
+    ).join(' ');
+  };
+  
   // Prepare forms data - filter out unwanted forms
   const availableForms = species?.varieties?.filter(variety => {
     const name = variety.pokemon.name;
@@ -120,8 +208,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
     if (name.includes('totem') || 
         name.includes('cosplay') || 
         name.includes('cap') ||
-        name.includes('starter') ||
-        name.includes('gmax')) {
+        name.includes('starter')) {
       return false;
     }
     
@@ -132,9 +219,21 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
            name.includes('galar') || 
            name.includes('hisui') || 
            name.includes('paldea') ||
+           name.includes('gmax') ||
            name.includes('rotom') ||
            name.includes('castform') ||
-           name.includes('deoxys');
+           name.includes('deoxys') ||
+           name.includes('origin') ||
+           name.includes('therian') ||
+           name.includes('incarnate') ||
+           name.includes('sky') ||
+           name.includes('land') ||
+           name.includes('blade') ||
+           name.includes('shield') ||
+           name.includes('school') ||
+           name.includes('solo') ||
+           name.includes('complete') ||
+           name.includes('eternamax');
   }).map(variety => ({
     name: variety.pokemon.name,
     displayName: variety.pokemon.name,
@@ -219,32 +318,15 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                 className="absolute inset-0 rounded-full blur-3xl opacity-30 -z-10"
                 style={{ background: typeColors.accent }}
               />
-              {/* Regular Sprite */}
+              {/* Pokemon Sprite - Single container for both regular and shiny */}
               <Image
-                src={pokemon.sprites?.other?.['official-artwork']?.front_default || pokemon.sprites?.front_default || ''}
-                alt={pokemon.name}
+                src={getSpriteUrl()}
+                alt={`${pokemon.name}${showShiny ? ' shiny' : ''}`}
                 fill
-                className={cn(
-                  "drop-shadow-2xl object-contain transition-opacity duration-200",
-                  showShiny ? "opacity-0" : "opacity-100"
-                )}
+                className="drop-shadow-2xl object-contain"
                 priority
                 sizes="340px"
               />
-              {/* Shiny Sprite */}
-              {pokemon.sprites?.other?.['official-artwork']?.front_shiny && (
-                <Image
-                  src={pokemon.sprites.other['official-artwork'].front_shiny}
-                  alt={`${pokemon.name} shiny`}
-                  fill
-                  className={cn(
-                    "drop-shadow-2xl object-contain transition-opacity duration-200",
-                    showShiny ? "opacity-100" : "opacity-0"
-                  )}
-                  priority
-                  sizes="340px"
-                />
-              )}
             </motion.div>
             
             {/* Name and Types */}
@@ -262,7 +344,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                     ease: "easeInOut"
                   }}
                 >
-                  {pokemon.name ? pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1) : ''}
+                  {formatPokemonDisplayName(pokemon.name, species?.name)}
                 </motion.h1>
                 <p className="text-gray-500 dark:text-gray-400 mt-2">
                   {species.genera?.find(g => g.language.name === 'en')?.genus || 'Pokemon'}

@@ -34,7 +34,7 @@ const RegionHero: React.FC<RegionHeroProps> = ({ region, theme }) => {
   const [mapError, setMapError] = useState(false);
   
   // Use smooth parallax hook for jitter-free scrolling
-  const parallaxOffset = useSmoothParallax(0.5);
+  const parallaxOffset = useSmoothParallax(0.3); // Reduced parallax factor
 
   // Get map path with fallback
   const mapPath = getRegionMap(region.id);
@@ -83,11 +83,11 @@ const RegionHero: React.FC<RegionHeroProps> = ({ region, theme }) => {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: '120%',
-            height: '120%',
+            width: '100%',
+            height: '100%',
+            minHeight: '100vh',
             objectFit: 'cover',
             filter: 'brightness(0.8) contrast(1.1)',
-            borderRadius: '0 0 100px 100px',
             maskImage: 'radial-gradient(ellipse 100% 100% at center center, black 50%, transparent 90%)',
             WebkitMaskImage: 'radial-gradient(ellipse 100% 100% at center center, black 50%, transparent 90%)'
           }}

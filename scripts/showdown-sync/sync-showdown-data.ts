@@ -474,6 +474,87 @@ async function syncMoveData(): Promise<SyncResult> {
   }
 }
 
+async function syncAbilities(): Promise<SyncResult> {
+  try {
+    const content = await fetchWithRetry(`${SHOWDOWN_BASE_URL}/abilities.js`);
+    
+    // Use eval approach for abilities since it has complex structure
+    let abilities: any;
+    try {
+      const sandbox = { exports: {} };
+      const wrapped = `(function() { const exports = {}; ${content}; return exports.BattleAbilities; })()`;
+      abilities = eval(wrapped);
+    } catch (error) {
+      console.error('Error parsing abilities:', error);
+      throw new Error('Failed to parse abilities data');
+    }
+    
+    const records: any[] = [];
+    
+    // Sort abilities alphabetically for consistent ID generation
+    const sortedAbilities = Object.entries(abilities).sort(([a], [b]) => a.toLowerCase().localeCompare(b.toLowerCase()));
+    
+    sortedAbilities.forEach(([abilityName, data]: [string, any], index) => {
+      // Skip if no rating available (but allow 0 rating)
+      if (data.rating === undefined) {
+        return;
+      }
+      
+      // Ensure rating is within valid range (likely -5 to 5 based on data)
+      const rating = typeof data.rating === 'number' ? data.rating : 0;
+      
+      records.push({
+        ability_id: data.num || index + 1,  // Use official num or sequential ID
+        name: abilityName.toLowerCase(),
+        rating: Math.max(-5, Math.min(5, rating)), // Clamp to safe range
+        competitive_desc: data.desc || null,
+        flags: data.flags || {},
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      });
+    });
+    
+    console.log(`Prepared ${records.length} ability records`);
+    
+    // Clear existing data for full refresh
+    const { error: deleteError } = await supabase
+      .from('ability_ratings')
+      .delete()
+      .neq('id', 0); // Delete all records
+    
+    if (deleteError) {
+      console.error('Error clearing ability_ratings table:', deleteError);
+    }
+    
+    // Insert in batches
+    for (let i = 0; i < records.length; i += BATCH_SIZE) {
+      const batch = records.slice(i, i + BATCH_SIZE);
+      const { error } = await supabase
+        .from('ability_ratings')
+        .insert(batch);
+      
+      if (error) {
+        throw new Error(`Database insert error: ${error.message}`);
+      }
+      
+      console.log(`Inserted batch ${Math.floor(i / BATCH_SIZE) + 1}/${Math.ceil(records.length / BATCH_SIZE)}`);
+    }
+    
+    return {
+      success: true,
+      file: 'abilities.js',
+      recordsProcessed: records.length
+    };
+  } catch (error) {
+    return {
+      success: false,
+      file: 'abilities.js',
+      recordsProcessed: 0,
+      error: error.message
+    };
+  }
+}
+
 // Main execution
 async function main() {
   console.log('=== Pokemon Showdown Data Sync ===');
@@ -487,6 +568,7 @@ async function main() {
   const tiersOnly = args.includes('--tiers-only');
   const learnsetsOnly = args.includes('--learnsets-only');
   const movesOnly = args.includes('--moves-only');
+  const abilitiesOnly = args.includes('--abilities-only');
   
   if (isDryRun) {
     console.log('DRY RUN MODE - No data will be written to database');
@@ -513,13 +595,16 @@ async function main() {
     syncsToRun.push(syncLearnsets());
   } else if (movesOnly) {
     syncsToRun.push(syncMoveData());
+  } else if (abilitiesOnly) {
+    syncsToRun.push(syncAbilities());
   } else {
     // Run all syncs
     syncsToRun.push(
       syncTypeEffectiveness(),
       syncPokemonTiers(),
       syncLearnsets(),
-      syncMoveData()
+      syncMoveData(),
+      syncAbilities()
     );
   }
   
@@ -560,4 +645,4 @@ if (require.main === module) {
 }
 
 // Export for testing
-export { syncTypeEffectiveness, syncPokemonTiers, syncLearnsets, syncMoveData };
+export { syncTypeEffectiveness, syncPokemonTiers, syncLearnsets, syncMoveData, syncAbilities };

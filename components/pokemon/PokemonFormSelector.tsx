@@ -24,8 +24,8 @@ const formatFormName = (formName: string, basePokemonName: string): string => {
   const baseNameMatch = formName.match(/^([a-z]+)/);
   const actualBaseName = baseNameMatch ? baseNameMatch[1] : basePokemonName;
   
-  // For default form, always return "Normal"
-  if (formName === actualBaseName || formName === basePokemonName) return 'Normal';
+  // For default form, always return "Base"
+  if (formName === actualBaseName || formName === basePokemonName) return 'Base';
   
   // Remove the base pokemon name to get the suffix
   let suffix = formName;
@@ -44,7 +44,8 @@ const formatFormName = (formName: string, basePokemonName: string): string => {
     'galar': 'Galarian', 
     'hisui': 'Hisuian',
     'paldea': 'Paldean',
-    'normal': 'Normal',
+    'gmax': 'Gigantamax',
+    'normal': 'Base',
     // Rotom forms
     'heat': 'Heat',
     'wash': 'Wash',

@@ -221,7 +221,7 @@ const RegionsPage: NextPage = () => {
   const router = useRouter();
   
   // Use smooth parallax hook for jitter-free scrolling
-  const parallaxOffset = useSmoothParallax(0.5);
+  const parallaxOffset = useSmoothParallax(0.3); // Reduced parallax factor
 
   // Clean up transition class on component mount
   useEffect(() => {
@@ -236,15 +236,12 @@ const RegionsPage: NextPage = () => {
         <meta name="keywords" content="Pokemon regions, Kanto, Johto, Hoenn, Sinnoh, Unova, Kalos, Alola, Galar, Paldea" />
       </Head>
 
-      {/* Hero Section with Parallax - Exact copy from RegionHero */}
+      {/* Hero Section with Parallax */}
       <div style={{ 
         position: 'relative', 
         height: '100vh',
         overflow: 'hidden',
-        background: '#16213e',
-        marginTop: '-80px',
-        paddingTop: '80px',
-        marginBottom: '0'
+        background: '#16213e'
       }}>
         {/* Map Background Container */}
         <div style={{ 
@@ -295,9 +292,8 @@ const RegionsPage: NextPage = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'flex-end',
-          padding: '2rem',
-          paddingBottom: '4rem'
+          justifyContent: 'center',
+          padding: '2rem'
         }}>
           {/* Tagline */}
           <p style={{

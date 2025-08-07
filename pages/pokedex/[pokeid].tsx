@@ -194,19 +194,31 @@ const PokemonDetail: NextPage = () => {
 
         // console.log('Loading Pokemon with ID:', pokeid, 'Form:', form);
         
-        // Handle regional forms
-        let pokemonIdentifier: string;
+        // First, determine if we're dealing with a numeric ID or a name
+        let pokemonIdentifier: string = pokeid as string;
+        
+        // If we have a form parameter, we need to construct the full form name
         if (form && typeof form === 'string') {
-          // Construct regional form name (e.g., "vulpix-alolan")
-          pokemonIdentifier = `${pokeid as string}-${form.toLowerCase()}`;
-        } else {
-          pokemonIdentifier = pokeid as string;
+          // Try to load species data first if pokeid is numeric
+          if (/^\d+$/.test(pokeid as string)) {
+            // It's a numeric ID, we need to get the Pokemon name first
+            try {
+              const baseSpeciesData = await fetchPokemonSpecies(pokeid as string);
+              pokemonIdentifier = `${baseSpeciesData.name}-${form.toLowerCase()}`;
+            } catch (error) {
+              // If species fetch fails, try with the form anyway
+              pokemonIdentifier = `${pokeid as string}-${form.toLowerCase()}`;
+            }
+          } else {
+            // It's already a name, just append the form
+            pokemonIdentifier = `${pokeid as string}-${form.toLowerCase()}`;
+          }
         }
         
         // Sanitize the Pokemon identifier for API calls
         const sanitizedId = sanitizePokemonName(pokemonIdentifier);
 
-        // Load critical Pokemon and species data in parallel first
+        // Load Pokemon data
         const pokemonData = await fetchPokemon(sanitizedId);
         
         // For species, always use the base Pokemon ID (numeric part)
