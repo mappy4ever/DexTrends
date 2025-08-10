@@ -19,7 +19,7 @@ test.describe('TCG Set Navigation Test', () => {
     console.log('Clicking on set:', setName);
     
     // Listen for console messages
-    const consoleLogs: any[] = [];
+    const consoleLogs: { type: string; text: string }[] = [];
     page.on('console', msg => {
       consoleLogs.push({
         type: msg.type(),

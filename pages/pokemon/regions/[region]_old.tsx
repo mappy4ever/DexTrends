@@ -773,7 +773,28 @@ export default function RegionDetailPage() {
       <div className="relative z-10">
         {/* Region Info Section - Clean Overview */}
         <section id="region-info" className="relative">
-          <RegionInfo region={region} theme={theme} />
+          <RegionInfo region={{
+            ...region,
+            gymLeaders: region.gymLeaders?.map(leader => ({
+              ...leader,
+              type: [leader.type],
+              location: leader.city
+            })),
+            trialCaptains: region.trialCaptains?.map(captain => ({
+              name: captain.name,
+              type: [captain.type],
+              location: captain.trial
+            })),
+            islandKahunas: region.islandKahunas?.map(kahuna => ({
+              name: kahuna.name,
+              type: [kahuna.type],
+              location: kahuna.island
+            })),
+            legendaries: region.legendaryIds?.map((id, index) => ({
+              id,
+              name: region.legendaries[index] || `Legendary ${id}`
+            })) || []
+          }} theme={theme} />
         </section>
 
         {/* Professor Section - New Enhanced */}

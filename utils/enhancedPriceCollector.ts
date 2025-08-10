@@ -302,7 +302,7 @@ class EnhancedPriceCollector {
             last_updated_at: tcgplayerData.updatedAt ? new Date(tcgplayerData.updatedAt) : null,
             collected_at: currentTime,
             collection_batch_id: this.currentBatchId,
-            raw_data: tcgplayerData as Record<string, unknown>
+            raw_data: tcgplayerData as unknown as Record<string, unknown>
           });
         }
       });

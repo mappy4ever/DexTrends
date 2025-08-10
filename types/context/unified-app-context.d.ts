@@ -281,7 +281,7 @@ export interface SidebarState {
 export interface ModalState {
   isOpen: boolean;
   type: string | null;
-  data: any;
+  data: Record<string, unknown>;
 }
 
 export interface Toast {
@@ -330,7 +330,7 @@ export interface UnifiedAppContextValue {
   
   // Favorites actions
   favorites: FavoritesState;
-  addToFavorites: (type: keyof FavoritesState, item: any) => void;
+  addToFavorites: (type: keyof FavoritesState, item: SimplePokemon | SimpleCard | PocketCard | unknown) => void;
   removeFromFavorites: (type: keyof FavoritesState, itemId: string | number) => void;
   
   // Collection actions
@@ -347,13 +347,13 @@ export interface UnifiedAppContextValue {
   
   // Settings actions
   settings: AppSettings;
-  updateSettings: (section: keyof AppSettings, settings: any) => void;
+  updateSettings: (section: keyof AppSettings, settings: Record<string, unknown>) => void;
   resetSettings: (section?: keyof AppSettings) => void;
   
   // UI actions
   showToast: (toast: Omit<Toast, 'id'>) => void;
   hideToast: (toastId: string) => void;
-  openModal: (modalId: string, data?: any) => void;
+  openModal: (modalId: string, data?: Record<string, unknown>) => void;
   closeModal: (modalId: string) => void;
   toggleSidebar: () => void;
   

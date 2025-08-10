@@ -31,7 +31,7 @@ interface NotificationContextValue {
     messages: {
       loading?: string;
       success?: string | ((data: T) => string);
-      error?: string | ((error: Error) => string);
+      error?: string | ((error: unknown) => string);
     },
     options?: Partial<Notification>
   ) => Promise<T>;

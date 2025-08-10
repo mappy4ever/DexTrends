@@ -3,6 +3,7 @@
  */
 
 import type { UnknownError, AnyObject } from '../common';
+import type { CardSet, TCGCard } from './cards';
 
 // Export UnknownError for external use
 export { UnknownError };
@@ -71,7 +72,7 @@ export interface TCGApiResponse<T = unknown> {
 
 // TCG Sets List API Response (for caching)
 export interface TCGSetListApiResponse {
-  data: any[]; // CardSet[]
+  data: CardSet[]; // CardSet[]
   pagination: {
     page: number;
     pageSize: number;
@@ -87,9 +88,9 @@ export interface TCGSetListApiResponse {
 
 // TCG Cards List API Response (for caching)
 export interface TCGCardListApiResponse {
-  set?: any; // CardSet
-  cards?: any[]; // TCGCard[]
-  data?: any[]; // TCGCard[]
+  set?: CardSet; // CardSet
+  cards?: TCGCard[]; // TCGCard[]
+  data?: TCGCard[]; // TCGCard[]
   pagination: {
     page: number;
     pageSize: number;
@@ -135,7 +136,7 @@ export function isEnhancedApiResponse<T>(value: unknown): value is EnhancedApiRe
   return typeof value === 'object' && 
     value !== null && 
     'success' in value &&
-    typeof (value as any).success === 'boolean';
+    typeof (value as EnhancedApiResponse).success === 'boolean';
 }
 
 export function isSupabaseResponse<T>(value: unknown): value is SupabaseResponse<T> {
@@ -147,5 +148,5 @@ export function isSupabaseResponse<T>(value: unknown): value is SupabaseResponse
 
 export function hasError(response: unknown): boolean {
   if (!response || typeof response !== 'object') return false;
-  return 'error' in response && (response as any).error != null;
+  return 'error' in response && (response as { error: unknown }).error != null;
 }

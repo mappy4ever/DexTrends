@@ -6,6 +6,8 @@
 
 import cache from '../utils/cache';
 import logger from '../utils/logger';
+import type { TCGCard, CardSet } from '../types/api/cards';
+import type { TCGSetListApiResponse, TCGCardListApiResponse } from '../types/api/enhanced-responses';
 
 interface TCGCacheStats {
   hits: number;
@@ -23,7 +25,7 @@ class TCGCacheServiceWrapper {
   };
 
   // Get TCG sets list from cache
-  async getSetsList(page: number, pageSize: number): Promise<any | null> {
+  async getSetsList(page: number, pageSize: number): Promise<TCGSetListApiResponse | null> {
     try {
       const cached = await cache.tcg.getSetsList(page, pageSize);
       if (cached) {
@@ -43,7 +45,7 @@ class TCGCacheServiceWrapper {
   }
 
   // Cache TCG sets list
-  async cacheSetsList(page: number, pageSize: number, data: any): Promise<void> {
+  async cacheSetsList(page: number, pageSize: number, data: TCGSetListApiResponse): Promise<void> {
     try {
       await cache.tcg.setSetsList(page, pageSize, data);
       logger.debug('[TCG Cache] Sets list cached', { page, pageSize });
@@ -54,7 +56,7 @@ class TCGCacheServiceWrapper {
   }
 
   // Get TCG set detail from cache
-  async getSetDetail(setId: string): Promise<any | null> {
+  async getSetDetail(setId: string): Promise<CardSet | null> {
     try {
       const cached = await cache.tcg.getSet(setId);
       if (cached) {
@@ -74,7 +76,7 @@ class TCGCacheServiceWrapper {
   }
 
   // Cache TCG set detail
-  async cacheSetDetail(setId: string, data: any): Promise<void> {
+  async cacheSetDetail(setId: string, data: CardSet): Promise<void> {
     try {
       await cache.tcg.setSet(setId, data);
       logger.debug('[TCG Cache] Set detail cached', { setId });
@@ -85,7 +87,7 @@ class TCGCacheServiceWrapper {
   }
 
   // Get set with cards
-  async getSetWithCards(setId: string, page: number, pageSize: number): Promise<any | null> {
+  async getSetWithCards(setId: string, page: number, pageSize: number): Promise<TCGCardListApiResponse | null> {
     const key = `tcg:set:cards:${setId}:${page}:${pageSize}`;
     try {
       const cached = await cache.get(key);
@@ -106,7 +108,7 @@ class TCGCacheServiceWrapper {
   }
 
   // Cache set with cards
-  async cacheSetWithCards(setId: string, page: number, pageSize: number, data: any): Promise<void> {
+  async cacheSetWithCards(setId: string, page: number, pageSize: number, data: TCGCardListApiResponse): Promise<void> {
     const key = `tcg:set:cards:${setId}:${page}:${pageSize}`;
     try {
       await cache.set(key, data, { priority: 2, ttl: 6 * 60 * 60 * 1000 });
@@ -118,7 +120,7 @@ class TCGCacheServiceWrapper {
   }
 
   // Get individual card
-  async getCard(cardId: string): Promise<any | null> {
+  async getCard(cardId: string): Promise<TCGCard | null> {
     try {
       const cached = await cache.tcg.getCard(cardId);
       if (cached) {
@@ -138,7 +140,7 @@ class TCGCacheServiceWrapper {
   }
 
   // Cache individual card
-  async cacheCard(cardId: string, data: any): Promise<void> {
+  async cacheCard(cardId: string, data: TCGCard): Promise<void> {
     try {
       await cache.tcg.setCard(cardId, data);
       logger.debug('[TCG Cache] Card cached', { cardId });

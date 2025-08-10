@@ -614,7 +614,18 @@ export default function RegionDetailPage() {
               transition={{ duration: 0.5 }}
             >
               <StandardGlassContainer>
-                <RegionInfo region={region} theme={theme} />
+                <RegionInfo region={{
+                  ...region,
+                  gymLeaders: region.gymLeaders?.map(leader => ({
+                    ...leader,
+                    type: [leader.type],
+                    location: leader.city
+                  })),
+                  legendaries: region.legendaryIds?.map((id, index) => ({
+                    id,
+                    name: region.legendaries[index] || `Legendary ${id}`
+                  })) || []
+                }} theme={theme} />
               </StandardGlassContainer>
             </motion.section>
 

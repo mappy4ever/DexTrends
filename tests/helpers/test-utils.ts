@@ -159,7 +159,7 @@ export async function getPerformanceMetrics(page: Page): Promise<{
 /**
  * Mock API responses
  */
-export async function mockApiResponse(page: Page, urlPattern: string | RegExp, response: any): Promise<void> {
+export async function mockApiResponse(page: Page, urlPattern: string | RegExp, response: unknown): Promise<void> {
   await page.route(urlPattern, async route => {
     await route.fulfill({
       status: 200,

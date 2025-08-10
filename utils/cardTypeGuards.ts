@@ -74,61 +74,72 @@ export function tcgCardToSdkCard(tcgCard: TCGCard): Card {
     nationalPokedexNumbers: tcgCard.nationalPokedexNumbers,
     legalities: tcgCard.legalities,
     images: tcgCard.images,
-    tcgplayer: tcgCard.tcgplayer as any // Type casting needed due to interface differences
+    tcgplayer: tcgCard.tcgplayer
   };
 }
 
 /**
  * Type guard to check if a card has a valid SDK-compatible structure
  */
-export function isSdkCompatibleCard(card: any): card is Card {
+export function isSdkCompatibleCard(card: unknown): card is Card {
+  if (!card || typeof card !== "object" || !("id" in card)) return false;
+  
+  const cardObj = card as Record<string, unknown>;
+  
   return (
-    card &&
-    typeof card.id === "string" &&
-    typeof card.name === "string" &&
-    isValidSupertype(card.supertype) &&
-    card.images &&
-    typeof card.images.small === "string" &&
-    typeof card.images.large === "string"
+    typeof cardObj.id === "string" &&
+    typeof cardObj.name === "string" &&
+    isValidSupertype(cardObj.supertype as string) &&
+    typeof cardObj.images === "object" &&
+    cardObj.images !== null &&
+    "small" in cardObj.images &&
+    "large" in cardObj.images &&
+    typeof (cardObj.images as Record<string, unknown>).small === "string" &&
+    typeof (cardObj.images as Record<string, unknown>).large === "string"
   );
 }
 
 /**
  * Ensures a card object is SDK-compatible by normalizing it
  */
-export function ensureSdkCompatibleCard(card: any): Card {
+export function ensureSdkCompatibleCard(card: unknown): Card {
   if (isSdkCompatibleCard(card)) {
     return card;
   }
   
   // Convert from TCGCard or normalize the structure
+  const cardObj = card as Record<string, unknown>;
+  
   return {
-    id: card.id || "unknown",
-    name: card.name || "Unknown Card",
-    supertype: normalizeSupertypeWithFallback(card.supertype, card.name),
-    subtypes: card.subtypes || [],
-    level: card.level,
-    hp: card.hp,
-    types: card.types || [],
-    evolvesFrom: card.evolvesFrom,
-    abilities: card.abilities || [],
-    attacks: card.attacks || [],
-    weaknesses: card.weaknesses || [],
-    resistances: card.resistances || [],
-    retreatCost: card.retreatCost || [],
-    convertedRetreatCost: card.convertedRetreatCost,
-    set: card.set || { id: "unknown", name: "Unknown Set" },
-    number: card.number || "0",
-    artist: card.artist,
-    rarity: card.rarity,
-    flavorText: card.flavorText,
-    nationalPokedexNumbers: card.nationalPokedexNumbers || [],
-    legalities: card.legalities || {},
+    id: typeof cardObj?.id === "string" ? cardObj.id : "unknown",
+    name: typeof cardObj?.name === "string" ? cardObj.name : "Unknown Card",
+    supertype: normalizeSupertypeWithFallback(
+      typeof cardObj?.supertype === "string" ? cardObj.supertype : undefined, 
+      typeof cardObj?.name === "string" ? cardObj.name : undefined
+    ),
+    subtypes: Array.isArray(cardObj?.subtypes) ? cardObj.subtypes as string[] : [],
+    level: typeof cardObj?.level === "string" ? cardObj.level : undefined,
+    hp: typeof cardObj?.hp === "string" ? cardObj.hp : undefined,
+    types: Array.isArray(cardObj?.types) ? cardObj.types as string[] : [],
+    evolvesFrom: typeof cardObj?.evolvesFrom === "string" ? cardObj.evolvesFrom : undefined,
+    abilities: Array.isArray(cardObj?.abilities) ? cardObj.abilities as Card["abilities"] : [],
+    attacks: Array.isArray(cardObj?.attacks) ? cardObj.attacks as Card["attacks"] : [],
+    weaknesses: Array.isArray(cardObj?.weaknesses) ? cardObj.weaknesses as Card["weaknesses"] : [],
+    resistances: Array.isArray(cardObj?.resistances) ? cardObj.resistances as Card["resistances"] : [],
+    retreatCost: Array.isArray(cardObj?.retreatCost) ? cardObj.retreatCost as string[] : [],
+    convertedRetreatCost: typeof cardObj?.convertedRetreatCost === "number" ? cardObj.convertedRetreatCost : undefined,
+    set: cardObj?.set && typeof cardObj.set === "object" ? cardObj.set as Card["set"] : { id: "unknown", name: "Unknown Set" },
+    number: typeof cardObj?.number === "string" ? cardObj.number : "0",
+    artist: typeof cardObj?.artist === "string" ? cardObj.artist : undefined,
+    rarity: typeof cardObj?.rarity === "string" ? cardObj.rarity : undefined,
+    flavorText: typeof cardObj?.flavorText === "string" ? cardObj.flavorText : undefined,
+    nationalPokedexNumbers: Array.isArray(cardObj?.nationalPokedexNumbers) ? cardObj.nationalPokedexNumbers as number[] : [],
+    legalities: cardObj?.legalities && typeof cardObj.legalities === "object" ? cardObj.legalities as Card["legalities"] : {},
     images: {
-      small: card.images?.small || card.image || "/back-card.png",
-      large: card.images?.large || card.image || "/back-card.png"
+      small: (cardObj?.images as Record<string, unknown>)?.small as string || (cardObj?.image as string) || "/back-card.png",
+      large: (cardObj?.images as Record<string, unknown>)?.large as string || (cardObj?.image as string) || "/back-card.png"
     },
-    tcgplayer: card.tcgplayer,
-    currentPrice: card.currentPrice
-  };
+    tcgplayer: cardObj?.tcgplayer as Card["tcgplayer"],
+    currentPrice: typeof cardObj?.currentPrice === "number" ? cardObj.currentPrice : undefined
+  } as Card;
 }

@@ -101,7 +101,7 @@ async function getFiltersFromSupabase(): Promise<FilterData> {
 
     // Get unique sets with counts
     const setsMap = new Map<string, SetInfo>();
-    setsData?.forEach((card: any) => {
+    setsData?.forEach((card: CardRow) => {
       if (card.set_id && card.set_name) {
         if (setsMap.has(card.set_id)) {
           const setInfo = setsMap.get(card.set_id);
@@ -136,7 +136,7 @@ async function getFiltersFromSupabase(): Promise<FilterData> {
     }
 
     const artistsSet = new Set<string>();
-    artistsData?.forEach((card: any) => {
+    artistsData?.forEach((card: CardRow) => {
       if (card.artist) {
         artistsSet.add(card.artist);
       }

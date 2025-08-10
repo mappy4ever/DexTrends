@@ -651,7 +651,7 @@ function getOfflineSVG() {
 }
 
 // Background sync for failed requests and data updates
-self.addEventListener('sync', (event) => {
+self.addEventListener('sync' as any, (event: any) => {
   console.log('Service Worker: Sync event triggered with tag:', event.tag);
   
   switch (event.tag) {

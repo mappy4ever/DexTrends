@@ -1,7 +1,7 @@
 // Cache Manager type definitions
 
 // Cache entry
-export interface CacheEntry<T = any> {
+export interface CacheEntry<T = unknown> {
   key: string;
   value: T;
   timestamp: number;
@@ -9,7 +9,7 @@ export interface CacheEntry<T = any> {
   size?: number;
   hits?: number;
   tags?: string[];
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 // Cache options
@@ -31,8 +31,8 @@ export interface CachePersistence {
   enabled: boolean;
   type: 'localStorage' | 'sessionStorage' | 'indexedDB' | 'database';
   key?: string;
-  serialize?: (value: any) => string;
-  deserialize?: (value: string) => any;
+  serialize?: (value: unknown) => string;
+  deserialize?: (value: string) => unknown;
 }
 
 // Cache statistics
@@ -76,7 +76,7 @@ export interface CacheSetOptions {
   priority?: 'low' | 'normal' | 'high';
   compress?: boolean;
   encrypt?: boolean;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 // Cache get options
@@ -171,24 +171,24 @@ export type CacheEventHandler = (data: CacheEventData) => void;
 export interface CacheEventData {
   event: CacheEvent;
   key?: string;
-  value?: any;
+  value?: unknown;
   layer?: string;
   error?: Error;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 // Cache decorators (for method caching)
 export interface CacheDecoratorOptions {
-  key?: string | ((args: any[]) => string);
+  key?: string | ((args: unknown[]) => string);
   ttl?: number;
-  condition?: (result: any) => boolean;
+  condition?: (result: unknown) => boolean;
   tags?: string[];
 }
 
 // Cache key builders
 export interface CacheKeyBuilder {
-  build: (...parts: any[]) => string;
-  parse: (key: string) => any[];
+  build: (...parts: unknown[]) => string;
+  parse: (key: string) => unknown[];
   pattern: (template: string) => RegExp;
 }
 
@@ -196,8 +196,8 @@ export interface CacheKeyBuilder {
 export interface MemoryCache extends CacheLayer {
   maxMemory: number;
   memoryUsage: () => number;
-  compress: (value: any) => any;
-  decompress: (value: any) => any;
+  compress: (value: unknown) => unknown;
+  decompress: (value: unknown) => unknown;
 }
 
 export interface LocalStorageCache extends CacheLayer {
@@ -207,14 +207,14 @@ export interface LocalStorageCache extends CacheLayer {
 
 export interface DatabaseCache extends CacheLayer {
   tableName: string;
-  connection: any; // Database connection
+  connection: unknown; // Database connection object
   vacuum: () => Promise<void>;
 }
 
 // Cache serialization
 export interface CacheSerializer {
-  serialize: (value: any) => string | Buffer;
-  deserialize: (data: string | Buffer) => any;
+  serialize: (value: unknown) => string | Buffer;
+  deserialize: (data: string | Buffer) => unknown;
   contentType: string;
 }
 

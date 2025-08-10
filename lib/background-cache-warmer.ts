@@ -1,6 +1,8 @@
 import { tcgCache, POPULAR_SETS } from './tcg-cache';
 import { fetchJSON } from '../utils/unifiedFetch';
 import logger from '../utils/logger';
+import type { TCGCard, CardSet } from '../types/api/cards';
+import type { TCGApiResponse } from '../types/api/enhanced-responses';
 
 interface WarmingTask {
   setId: string;
@@ -160,7 +162,7 @@ class BackgroundCacheWarmer {
       }
       
       // Fetch set info
-      const setInfo = await fetchJSON<{ data: any }>(
+      const setInfo = await fetchJSON<TCGApiResponse<CardSet>>(
         `https://api.pokemontcg.io/v2/sets/${setId}`,
         {
           headers,
@@ -181,24 +183,24 @@ class BackgroundCacheWarmer {
       // Fetch all cards
       const pageSize = 250;
       const totalPages = Math.ceil(totalCards / pageSize);
-      const pagePromises: Promise<any>[] = [];
+      const pagePromises: Promise<TCGApiResponse<TCGCard[]>>[] = [];
       
       for (let page = 1; page <= totalPages; page++) {
-        const pagePromise = fetchJSON<{ data: any[] }>(
+        const pagePromise = fetchJSON<TCGApiResponse<TCGCard[]>>(
           `https://api.pokemontcg.io/v2/cards?q=set.id:${setId}&page=${page}&pageSize=${pageSize}`,
           {
             headers,
             timeout: 60000,
             retries: 3
           }
-        );
+        ).then(result => result || { data: [] as TCGCard[] });
         pagePromises.push(pagePromise);
       }
       
       const pageResults = await Promise.all(pagePromises);
       
       // Combine all cards
-      const allCards: any[] = [];
+      const allCards: TCGCard[] = [];
       for (const result of pageResults) {
         if (result?.data) {
           allCards.push(...result.data);
@@ -230,9 +232,9 @@ class BackgroundCacheWarmer {
         duration
       });
       
-    } catch (error: any) {
+    } catch (error: unknown) {
       logger.error(`[Cache Warmer] Failed to warm set ${setId}:`, {
-        error: error.message,
+        error: error instanceof Error ? error.message : String(error),
         setId
       });
     }

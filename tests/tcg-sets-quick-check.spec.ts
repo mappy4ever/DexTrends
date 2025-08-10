@@ -38,7 +38,7 @@ test.describe('TCG Sets Quick Check', () => {
     console.log('Visible sets count:', visibleSets);
     
     // Check console for errors
-    const consoleLogs: any[] = [];
+    const consoleLogs: { type: string; text: string }[] = [];
     page.on('console', msg => {
       consoleLogs.push({
         type: msg.type(),

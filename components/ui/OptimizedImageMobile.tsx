@@ -420,7 +420,7 @@ interface PreloadOptions {
 // Preload utility
 export const preloadImage = (src: string, options: PreloadOptions = {}): Promise<HTMLImageElement> => {
   return new Promise((resolve, reject) => {
-    const img = new Image();
+    const img = document.createElement('img') as HTMLImageElement;
     
     if (options.crossOrigin) {
       img.crossOrigin = options.crossOrigin;

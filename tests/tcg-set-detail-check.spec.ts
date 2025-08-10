@@ -30,7 +30,7 @@ test.describe('TCG Set Detail Page Check', () => {
     console.log('- Card count:', cardCount);
     
     // Check console for errors
-    const consoleLogs: any[] = [];
+    const consoleLogs: { type: string; text: string }[] = [];
     page.on('console', msg => {
       if (msg.type() === 'error' || msg.text().includes('Failed')) {
         consoleLogs.push({
@@ -41,7 +41,7 @@ test.describe('TCG Set Detail Page Check', () => {
     });
     
     // Check network requests
-    const failedRequests: any[] = [];
+    const failedRequests: { url: string; status?: number; error?: string }[] = [];
     page.on('requestfailed', request => {
       failedRequests.push({
         url: request.url(),

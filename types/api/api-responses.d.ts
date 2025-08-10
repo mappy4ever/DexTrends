@@ -7,7 +7,7 @@
 export interface ErrorResponse {
   error: string;
   message?: string;
-  details?: any;
+  details?: unknown;
   statusCode?: number;
   timestamp?: string;
 }
@@ -32,7 +32,7 @@ export interface PaginatedResponse<T> {
 export interface ApiError {
   code: string;
   message: string;
-  details?: any;
+  details?: unknown;
   timestamp?: string;
   path?: string;
 }
@@ -60,7 +60,7 @@ export interface ResponseMetadata {
 // Search/filter response
 export interface SearchResponse<T> extends PaginatedResponse<T> {
   query: string;
-  filters: Record<string, any>;
+  filters: Record<string, unknown>;
   suggestions?: string[];
   facets?: SearchFacets;
 }
@@ -88,7 +88,7 @@ export interface BatchResponse<T> {
 }
 
 export interface BatchFailure {
-  item: any;
+  item: Record<string, unknown>;
   error: ApiError;
   index: number;
 }
@@ -101,7 +101,7 @@ export interface UploadResponse {
   mimeType: string;
   url: string;
   thumbnailUrl?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 // Authentication responses
@@ -151,7 +151,7 @@ export interface CachedResponse<T> {
 // Webhook/notification types
 export interface WebhookPayload {
   event: string;
-  data: any;
+  data: Record<string, unknown>;
   timestamp: string;
   signature?: string;
   webhookId?: string;
@@ -164,7 +164,7 @@ export interface StatsResponse {
     end: string;
   };
   metrics: Record<string, MetricValue>;
-  breakdown?: Record<string, any[]>;
+  breakdown?: Record<string, MetricBreakdown[]>;
 }
 
 export interface MetricValue {
@@ -172,6 +172,13 @@ export interface MetricValue {
   change?: number;
   changePercent?: number;
   trend?: 'up' | 'down' | 'stable';
+}
+
+export interface MetricBreakdown {
+  label: string;
+  value: number;
+  percentage?: number;
+  metadata?: Record<string, unknown>;
 }
 
 // Health check response
@@ -235,10 +242,10 @@ export enum ApiEndpoint {
 }
 
 // Request types
-export interface ApiRequest<T = any> {
+export interface ApiRequest<T = Record<string, unknown>> {
   endpoint: string;
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
-  params?: Record<string, any>;
+  params?: Record<string, unknown>;
   body?: T;
   headers?: Record<string, string>;
   timeout?: number;

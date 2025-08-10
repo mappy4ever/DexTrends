@@ -50,17 +50,17 @@ export interface FavoritesState {
 // Favorites actions
 export interface FavoritesActions {
   // Add/Remove operations
-  addToFavorites: (type: FavoriteType, item: any) => Promise<void>;
+  addToFavorites: (type: FavoriteType, item: SimplePokemon | SimpleCard | PocketCard | FavoriteSet | FavoriteDeck) => Promise<void>;
   removeFromFavorites: (type: FavoriteType, itemId: string | number) => Promise<void>;
-  toggleFavorite: (type: FavoriteType, item: any) => Promise<void>;
+  toggleFavorite: (type: FavoriteType, item: SimplePokemon | SimpleCard | PocketCard | FavoriteSet | FavoriteDeck) => Promise<void>;
   
   // Bulk operations
-  addMultipleToFavorites: (type: FavoriteType, items: any[]) => Promise<void>;
+  addMultipleToFavorites: (type: FavoriteType, items: (SimplePokemon | SimpleCard | PocketCard | FavoriteSet | FavoriteDeck)[]) => Promise<void>;
   removeMultipleFromFavorites: (type: FavoriteType, itemIds: (string | number)[]) => Promise<void>;
   
   // Check operations
   isFavorite: (type: FavoriteType, itemId: string | number) => boolean;
-  getFavorite: (type: FavoriteType, itemId: string | number) => any | undefined;
+  getFavorite: (type: FavoriteType, itemId: string | number) => SimplePokemon | SimpleCard | PocketCard | FavoriteSet | FavoriteDeck | undefined;
   
   // Clear operations
   clearFavorites: (type?: FavoriteType) => Promise<void>;
@@ -83,9 +83,9 @@ export interface FavoritesContextValue extends FavoritesState, FavoritesActions 
   recentFavorites: FavoriteItem[];
   
   // Search and filter
-  searchFavorites: (query: string, type?: FavoriteType) => any[];
-  filterFavorites: (filters: FavoriteFilters) => any[];
-  sortFavorites: (type: FavoriteType, sortBy: FavoriteSort) => any[];
+  searchFavorites: (query: string, type?: FavoriteType) => FavoriteItem[];
+  filterFavorites: (filters: FavoriteFilters) => FavoriteItem[];
+  sortFavorites: (type: FavoriteType, sortBy: FavoriteSort) => FavoriteItem[];
 }
 
 // Filter and sort types
@@ -131,7 +131,7 @@ export interface FavoritesStorage {
 
 // Events
 export interface FavoritesEvents {
-  onFavoriteAdded?: (type: FavoriteType, item: any) => void;
+  onFavoriteAdded?: (type: FavoriteType, item: SimplePokemon | SimpleCard | PocketCard | FavoriteSet | FavoriteDeck) => void;
   onFavoriteRemoved?: (type: FavoriteType, itemId: string | number) => void;
   onFavoritesCleared?: (type?: FavoriteType) => void;
   onFavoritesSynced?: () => void;
@@ -160,10 +160,10 @@ export interface UseFavoritesReturn extends FavoritesContextValue {
 
 // Legacy compatibility types (for migration)
 export interface LegacyFavoritesAPI {
-  toggleCardFavorite: (card: any) => void;
-  isCardFavorite: (card: any) => boolean;
-  togglePokemonFavorite: (pokemon: any) => void;
-  isPokemonFavorite: (pokemon: any) => boolean;
-  favoriteCards: any[];
-  favoritePokemon: any[];
+  toggleCardFavorite: (card: SimpleCard) => void;
+  isCardFavorite: (card: SimpleCard) => boolean;
+  togglePokemonFavorite: (pokemon: SimplePokemon) => void;
+  isPokemonFavorite: (pokemon: SimplePokemon) => boolean;
+  favoriteCards: SimpleCard[];
+  favoritePokemon: SimplePokemon[];
 }

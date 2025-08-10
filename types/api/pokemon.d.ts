@@ -414,7 +414,7 @@ export interface Move {
       url: string;
     };
   }[];
-  effect_changes: any[];
+  effect_changes: MoveEffectChange[];
   flavor_text_entries: {
     flavor_text: string;
     language: {
@@ -430,7 +430,7 @@ export interface Move {
     name: string;
     url: string;
   };
-  machines: any[];
+  machines: TechnicalMachine[];
   meta: {
     ailment: {
       name: string;
@@ -458,7 +458,7 @@ export interface Move {
       url: string;
     };
   }[];
-  past_values: any[];
+  past_values: PastMoveValue[];
   stat_changes: {
     change: number;
     stat: {
@@ -507,7 +507,7 @@ export interface AbilityData {
       url: string;
     };
   }[];
-  effect_changes: any[];
+  effect_changes: AbilityEffectChange[];
   flavor_text_entries: {
     flavor_text: string;
     language: {
@@ -541,7 +541,7 @@ export interface TypeInfo {
     half_damage_from: Array<{ name: string; url: string }>;
     double_damage_from: Array<{ name: string; url: string }>;
   };
-  past_damage_relations: any[];
+  past_damage_relations: PastDamageRelation[];
   game_indices: {
     game_index: number;
     generation: {
@@ -658,7 +658,7 @@ export interface LocationAreaEncounterDetail {
   version_details: {
     encounter_details: {
       chance: number;
-      condition_values: any[];
+      condition_values: EncounterConditionValue[];
       max_level: number;
       method: {
         name: string;
@@ -822,4 +822,86 @@ export interface Location {
     name: string;
     url: string;
   }[];
+}
+
+// Additional type definitions to replace 'any' types
+export interface MoveEffectChange {
+  effect_entries: {
+    effect: string;
+    language: {
+      name: string;
+      url: string;
+    };
+  }[];
+  version_group: {
+    name: string;
+    url: string;
+  };
+}
+
+export interface TechnicalMachine {
+  machine: {
+    url: string;
+  };
+  version_group: {
+    name: string;
+    url: string;
+  };
+}
+
+export interface PastMoveValue {
+  accuracy: number | null;
+  effect_chance: number | null;
+  power: number | null;
+  pp: number;
+  effect_entries: {
+    effect: string;
+    short_effect: string;
+    language: {
+      name: string;
+      url: string;
+    };
+  }[];
+  type: {
+    name: string;
+    url: string;
+  };
+  version_group: {
+    name: string;
+    url: string;
+  };
+}
+
+export interface AbilityEffectChange {
+  effect_entries: {
+    effect: string;
+    language: {
+      name: string;
+      url: string;
+    };
+  }[];
+  version_group: {
+    name: string;
+    url: string;
+  };
+}
+
+export interface PastDamageRelation {
+  damage_relations: {
+    no_damage_to: Array<{ name: string; url: string }>;
+    half_damage_to: Array<{ name: string; url: string }>;
+    double_damage_to: Array<{ name: string; url: string }>;
+    no_damage_from: Array<{ name: string; url: string }>;
+    half_damage_from: Array<{ name: string; url: string }>;
+    double_damage_from: Array<{ name: string; url: string }>;
+  };
+  generation: {
+    name: string;
+    url: string;
+  };
+}
+
+export interface EncounterConditionValue {
+  name: string;
+  url: string;
 }

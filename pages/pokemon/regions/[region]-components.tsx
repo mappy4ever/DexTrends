@@ -810,7 +810,10 @@ const RegionDetailPage: NextPage = () => {
           />
           <BadgeCollection
             region={region}
-            gymLeaders={region.gymLeaders}
+            gymLeaders={region.gymLeaders?.map(leader => ({
+              ...leader,
+              type: [leader.type]
+            })) || []}
             theme={theme}
           />
         </>

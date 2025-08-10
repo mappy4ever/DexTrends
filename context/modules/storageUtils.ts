@@ -3,7 +3,7 @@ import logger from '../../utils/logger';
 
 // Create a persistent state utility
 export const createPersistState = () => {
-  return (key: string, value: any) => {
+  return (key: string, value: unknown) => {
     if (typeof window !== 'undefined') {
       try {
         localStorage.setItem(key, JSON.stringify(value));
@@ -15,7 +15,7 @@ export const createPersistState = () => {
 };
 
 // Theme management utilities
-export const createThemeManager = (persistState: (key: string, value: any) => void) => {
+export const createThemeManager = (persistState: (key: string, value: unknown) => void) => {
   const applyTheme = (theme: 'light' | 'dark') => {
     if (typeof window !== 'undefined') {
       if (theme === 'dark') {

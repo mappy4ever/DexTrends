@@ -1,17 +1,23 @@
 // Global type definitions for the project
 
+// Google Analytics event type
+interface GtagEvent {
+  event: string;
+  [key: string]: string | number | boolean | undefined;
+}
+
 declare global {
   interface Window {
     // Google Analytics
-    gtag?: (...args: any[]) => void;
+    gtag?: (...args: unknown[]) => void;
     
     // Google Analytics data layer
-    dataLayer?: any[];
+    dataLayer?: GtagEvent[];
   }
 
   // Jest globals for test/mock environments
   namespace jest {
-    interface MockedFunction<T extends (...args: any[]) => any> {
+    interface MockedFunction<T extends (...args: unknown[]) => unknown> {
       (...args: Parameters<T>): ReturnType<T>;
       mockReturnValue: (value: ReturnType<T>) => MockedFunction<T>;
       mockImplementation: (fn: T) => MockedFunction<T>;
@@ -22,7 +28,7 @@ declare global {
 
   // Jest mock function
   const jest: {
-    fn: <T extends (...args: any[]) => any>(implementation?: T) => jest.MockedFunction<T>;
+    fn: <T extends (...args: unknown[]) => unknown>(implementation?: T) => jest.MockedFunction<T>;
   };
 
   // Service Worker globals
@@ -31,7 +37,7 @@ declare global {
   }
 
   interface ExtendableEvent extends Event {
-    waitUntil(promise: Promise<any>): void;
+    waitUntil(promise: Promise<unknown>): void;
   }
 }
 

@@ -756,7 +756,7 @@ const UnifiedCard = memo(({
             {showPrice && cardType === "tcg" && (
               <CompactPriceIndicator 
                 cardId={normalizedCard.id}
-                currentPrice={String((card as SdkCard & { currentPrice?: number }).currentPrice || getPrice(card as SdkCard))}
+                currentPrice={String((card as any)?.currentPrice || getPrice(card as any))}
                 variantType="holofoil"
               />
             )}

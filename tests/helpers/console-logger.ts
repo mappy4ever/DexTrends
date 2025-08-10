@@ -5,7 +5,7 @@ export type ConsoleMessageType = 'log' | 'info' | 'warn' | 'error' | 'debug';
 export interface ConsoleLogEntry {
   type: ConsoleMessageType;
   text: string;
-  args: any[];
+  args: unknown[];
   timestamp: Date;
   location?: {
     url?: string;
@@ -36,7 +36,7 @@ export class ConsoleLogger {
       
       // Extract text and arguments
       let text = consoleMessage.text();
-      const args: any[] = [];
+      const args: unknown[] = [];
       
       // Try to get actual argument values
       for (const arg of consoleMessage.args()) {

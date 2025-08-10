@@ -185,6 +185,10 @@ class PerformanceMonitor {
     }
   }
 
+  get supported(): boolean {
+    return this.isSupported;
+  }
+
   private initializeMonitoring(): void {
     try {
       // Monitor Core Web Vitals
@@ -773,7 +777,7 @@ export const usePerformanceMonitor = (componentName?: string): UsePerformanceMon
   const React = require('react') as typeof import('react');
   const { useState, useEffect, useRef } = React;
   const [vitals, setVitals] = useState<Record<string, Metric>>({});
-  const [isSupported] = useState(performanceMonitor.isSupported);
+  const [isSupported] = useState(performanceMonitor.supported);
   const renderCount = useRef(0);
   const renderStartTime = useRef<number | null>(null);
 

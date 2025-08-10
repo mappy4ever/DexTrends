@@ -69,7 +69,7 @@ export const createFavoritesActions = (
       const newFavorites = {
         ...prev.user.favorites,
         [type]: prev.user.favorites[type].filter((item: FavoritePokemon | FavoriteCard | FavoriteDeck) => 
-          (typeof item === 'object' && item.id !== itemId) || item !== itemId
+          typeof item === 'object' ? item.id !== itemId : item !== itemId
         )
       };
       persistState('favorites', newFavorites);
@@ -465,7 +465,7 @@ export const createPersonalizationActions = () => {
   const optimizeForPerformance = (state: State): PerformanceOptimizations => {
     const { metrics } = state.app.performance;
     const connectionSpeed = metrics.connectionSpeed || 'unknown';
-    const deviceMemory = metrics.deviceMemory || 8;
+    const deviceMemory = typeof metrics.deviceMemory === 'number' ? metrics.deviceMemory : 8;
     
     const isSlowConnection = connectionSpeed === 'slow' || connectionSpeed === '2g' || connectionSpeed === '3g';
     const isLowMemory = deviceMemory < 4;
