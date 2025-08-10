@@ -264,15 +264,16 @@ export const getAllForms = async (speciesId: string | number): Promise<PokemonFo
       })
     );
     
-    return forms
-      .filter((form): form is PokemonForm => form !== null)
-      .sort((a, b) => {
-        // Type guard ensures a and b are not null after filter
-        if (!a || !b) return 0;
-        if (a.isDefault) return -1;
-        if (b.isDefault) return 1;
-        return a.name.localeCompare(b.name);
-      });
+    const nonNullForms = forms.filter((form): form is NonNullable<typeof form> => form !== null);
+    const sortedForms = nonNullForms.sort((a, b) => {
+      // Sort by default status then name
+      const aForm = a as any;
+      const bForm = b as any;
+      if (aForm.isDefault) return -1;
+      if (bForm.isDefault) return 1;
+      return aForm.name.localeCompare(bForm.name);
+    });
+    return sortedForms as PokemonForm[];
   } catch (error) {
     logger.error('Error fetching forms:', { error });
     return [];

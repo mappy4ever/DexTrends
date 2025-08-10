@@ -116,13 +116,13 @@ export default function EnhancedSearchBox({
   };
 
   // Handle focus/blur
-  const handleFocus = (): any => {
+  const handleFocus = (): void => {
     if (localValue.length > 0 && suggestions.length > 0) {
       setShowSuggestions(true);
     }
   };
 
-  const handleBlur = (): any => {
+  const handleBlur = (): void => {
     // Delay to allow suggestion clicks
     setTimeout(() => setShowSuggestions(false), 150);
   };
@@ -232,7 +232,7 @@ export default function EnhancedSearchBox({
                   <span>{suggestion}</span>
                 </div>
                 <button
-                  onClick={(e: any) => handleRemoveSuggestion(e, suggestion)}
+                  onClick={(e: React.MouseEvent<HTMLButtonElement>) => handleRemoveSuggestion(e, suggestion)}
                   className="text-gray-400 hover:text-red-500 transition-colors"
                   title="Remove from history"
                 >

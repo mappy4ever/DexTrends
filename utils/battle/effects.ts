@@ -209,8 +209,8 @@ const mapAilmentToStatus = (ailment: string): StatusEffect => {
   return mapping[ailment] || 'none';
 };
 
-const mapStatName = (statName: string): string => {
-  const mapping: { [key: string]: string } = {
+const mapStatName = (statName: string): 'attack' | 'defense' | 'specialAttack' | 'specialDefense' | 'speed' | 'accuracy' | 'evasion' => {
+  const mapping: { [key: string]: 'attack' | 'defense' | 'specialAttack' | 'specialDefense' | 'speed' | 'accuracy' | 'evasion' } = {
     'attack': 'attack',
     'defense': 'defense',
     'special-attack': 'specialAttack',
@@ -219,7 +219,7 @@ const mapStatName = (statName: string): string => {
     'accuracy': 'accuracy',
     'evasion': 'evasion',
   };
-  return mapping[statName] || statName;
+  return mapping[statName] || 'attack'; // Default fallback
 };
 
 export const applyMoveEffects = (

@@ -7,18 +7,18 @@ import "../styles/unified-mobile.css";
 import "../styles/ios-scrolling-fix.css";
 import "../styles/desktop-tabs.css";
 import "../styles/responsive-breakpoint-fixes.css";
-import "../styles/pokemon-animations.css";
+// import "../styles/pokemon-animations.css"; // Consolidated with animations.css
 import "../styles/design-system.css";
 import "../styles/animations.css";
 import "../styles/card-types.css";
 import "../styles/unified-components.css";
-import "../styles/battle-simulator.css";
-import "../styles/tcg-set-detail.css";
-import "../styles/card-performance.css";
-import "../styles/pokedex-redesign.css";
-import "../styles/pokeid-premium.css";
-import "../styles/performance.css";
-import "../styles/holographic-cards.css";
+// import "../styles/battle-simulator.css"; // Only load on battle-simulator pages
+// import "../styles/tcg-set-detail.css"; // Only load on TCG pages
+// import "../styles/card-performance.css"; // Only load when needed
+// import "../styles/pokedex-redesign.css"; // Only load on pokedex pages
+// import "../styles/pokeid-premium.css"; // Only load on Pokemon detail pages
+// import "../styles/performance.css"; // Only when needed
+// import "../styles/holographic-cards.css"; // Only load when needed
 import "../components/typebadge.css";
 import Layout from "../components/layout/Layout";
 import logger from "../utils/logger";

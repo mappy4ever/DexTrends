@@ -74,7 +74,7 @@ export function tcgCardToSdkCard(tcgCard: TCGCard): Card {
     nationalPokedexNumbers: tcgCard.nationalPokedexNumbers,
     legalities: tcgCard.legalities,
     images: tcgCard.images,
-    tcgplayer: tcgCard.tcgplayer
+    tcgplayer: tcgCard.tcgplayer as any // Type casting needed due to interface differences
   };
 }
 

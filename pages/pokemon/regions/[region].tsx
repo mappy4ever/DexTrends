@@ -54,7 +54,7 @@ interface Champion {
   signature: string;
 }
 
-interface RegionData {
+interface PageRegionData {
   id: string;
   name: string;
   generation: number;
@@ -83,7 +83,7 @@ interface RegionData {
 // Keep existing region data
 const regionOrder = ['kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', 'paldea'];
 
-const regionsData: Record<string, RegionData> = {
+const regionsData: Record<string, PageRegionData> = {
   kanto: {
     id: "kanto",
     name: "Kanto",

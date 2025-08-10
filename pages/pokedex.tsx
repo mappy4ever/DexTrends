@@ -13,7 +13,7 @@ import type { Pokemon, PokemonType, PokemonSprites, PokemonSpecies } from "../ty
 import CircularPokemonCard from "../components/ui/cards/CircularPokemonCard";
 import { InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { CircularButton } from "../components/ui/design-system";
-import { FiFilter, FiChevronDown } from "react-icons/fi";
+import { FiFilter, FiChevronDown } from "../components/ui/LazyIcon";
 import { NextPage } from "next";
 import dynamic from 'next/dynamic';
 import logger from "../utils/logger";
@@ -1278,9 +1278,9 @@ const PokedexIndex: NextPage = () => {
 };
 
 // Mark this page as fullBleed
-interface PageComponent extends NextPage {
+type PageComponent = NextPage & {
   fullBleed?: boolean;
-}
+};
 
 (PokedexIndex as PageComponent).fullBleed = true;
 

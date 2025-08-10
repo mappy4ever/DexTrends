@@ -18,9 +18,49 @@ export const AnimatePresence = dynamic(
   }
 ) as any;
 
-// Export hooks directly from framer-motion
-// These can't be dynamically imported as they are hooks
-export { useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
+// Create placeholder hook functions that return safe defaults
+// These prevent the direct import of framer-motion hooks
+export const useScroll = () => ({ scrollY: { current: 0 }, scrollX: { current: 0 } });
+export const useTransform = (input: any, output: any) => ({ current: output?.[0] || 0 });
+export const useSpring = (value: any) => ({ current: value });
+export const useMotionValue = (initialValue: any) => ({ 
+  current: initialValue,
+  set: () => {},
+  get: () => initialValue
+});
+export const useAnimation = () => ({ start: () => {}, stop: () => {}, set: () => {} });
+export const useInView = () => false;
+export const useReducedMotion = () => false;
+
+// Export additional types and interfaces that might be imported
+export interface PanInfo {
+  point: { x: number; y: number };
+  delta: { x: number; y: number };
+  offset: { x: number; y: number };
+  velocity: { x: number; y: number };
+}
+
+export interface HTMLMotionProps<T extends keyof HTMLElementTagNameMap> {
+  [key: string]: any;
+}
+
+export interface Variants {
+  [key: string]: any;
+}
+
+export interface Transition {
+  [key: string]: any;
+}
+
+export interface SpringOptions {
+  [key: string]: any;
+}
+
+export interface MotionValue<T = any> {
+  current: T;
+  set: (value: T) => void;
+  get: () => T;
+}
 
 // Re-export commonly used motion components with lazy loading
 export const MotionDiv = dynamic(

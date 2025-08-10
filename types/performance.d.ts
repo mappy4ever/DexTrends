@@ -84,6 +84,7 @@ interface InteractionProperties {
   target?: string;
   scroll_y?: number;
   scroll_x?: number;
+  scroll_percent?: number;
   input_type?: string;
 }
 

@@ -281,7 +281,7 @@ export const showdownQueries = {
     // Convert array to object for easy lookup
     const ratings: Record<string, number> = {};
     data?.forEach((ability: AbilityRatingRecord) => {
-      ratings[ability.name] = ability.rating;
+      ratings[ability.name] = ability.rating ?? 0; // Default to 0 if rating is null
     });
     
     return ratings;

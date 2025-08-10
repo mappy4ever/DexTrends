@@ -284,7 +284,7 @@ const CardComparisonTool = ({ isOpen, onClose, initialCards = [] }: CardComparis
               <input
                 type="text"
                 value={searchQuery}
-                onChange={(e: any) => setSearchQuery(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
                 placeholder="Enter card name..."
                 className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
               />
@@ -298,7 +298,7 @@ const CardComparisonTool = ({ isOpen, onClose, initialCards = [] }: CardComparis
             {/* Search Results */}
             {searchResults.length > 0 && (
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 max-h-64 overflow-y-auto border border-gray-200 dark:border-gray-600 rounded-lg p-3">
-                {searchResults.map((card: any) => (
+                {searchResults.map((card: Card) => (
                   <button
                     key={card.id}
                     onClick={() => addCardToComparison(card)}
@@ -306,7 +306,7 @@ const CardComparisonTool = ({ isOpen, onClose, initialCards = [] }: CardComparis
                   >
                     <Image
                       src={card.images?.small || '/back-card.png'}
-                      alt={card.name}
+                      alt={card.name || 'Card'}
                       width={80}
                       height={112}
                       className="rounded shadow-sm"
@@ -344,7 +344,7 @@ const CardComparisonTool = ({ isOpen, onClose, initialCards = [] }: CardComparis
                   </tr>
                 </thead>
                 <tbody>
-                  {getComparisonData().map((row: any, index: number) => (
+                  {getComparisonData().map((row: ComparisonRow, index: number) => (
                     <tr key={row.attribute} className={index % 2 === 0 ? 'bg-gray-50 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}>
                       <td className="px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 border-b border-gray-200 dark:border-gray-600">
                         {row.attribute}
@@ -381,7 +381,7 @@ const CardComparisonTool = ({ isOpen, onClose, initialCards = [] }: CardComparis
                 onClick={() => {
                   // Export comparison data
                   const data = getComparisonData();
-                  const csvContent = data.map((row: any) => `${row.attribute},${row.card1},${row.card2}`).join('\n');
+                  const csvContent = data.map((row: ComparisonRow) => `${row.attribute},${row.card1},${row.card2}`).join('\n');
                   const blob = new Blob([csvContent], { type: 'text/csv' });
                   const url = window.URL.createObjectURL(blob);
                   const a = document.createElement('a');

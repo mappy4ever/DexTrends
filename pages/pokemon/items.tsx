@@ -6,9 +6,17 @@ import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../../components/
 import { useTheme } from "../../context/UnifiedAppContext";
 import StyledBackButton from "../../components/ui/StyledBackButton";
 import { ListItemSkeleton } from "../../components/ui/SkeletonLoader";
-import { FiShoppingBag } from "react-icons/fi";
-import { BsSearch, BsHeart, BsShield, BsLightning } from "react-icons/bs";
-import { GiPotionBall, GiSwordWound, GiStoneBlock, GiCrystalGrowth } from "react-icons/gi";
+import { 
+  FiShoppingBag, 
+  BsSearch, 
+  BsHeart, 
+  BsShield, 
+  BsLightning,
+  GiPotionBall, 
+  GiSwordWound, 
+  GiStoneBlock, 
+  GiCrystalGrowth 
+} from "../../components/ui/LazyIcon";
 import { fetchJSON } from "../../utils/unifiedFetch";
 import logger from "../../utils/logger";
 import type { ItemData } from "../../types/pokemon";

@@ -550,7 +550,7 @@ const UnifiedCard = memo(({
       logger.debug('Delete card', { cardName: normalizedCard.name });
     } else {
       // If no delete handler, try to remove from favorites
-      const isCardFavorited = favorites.cards.some((c: any) => c.id === card.id);
+      const isCardFavorited = favorites.cards.some((c: FavoriteCard) => c.id === card.id);
       if (isCardFavorited) {
         removeFromFavorites('cards', card.id);
         logger.debug('Removed from favorites', { cardName: normalizedCard.name });
@@ -571,7 +571,7 @@ const UnifiedCard = memo(({
   }, [card, onMagnifyClick]);
   
   // Check if card is favorited
-  const isFavorited = favorites.cards.some((c: any) => c.id === card.id);
+  const isFavorited = favorites.cards.some((c: FavoriteCard) => c.id === card.id);
 
   const handleImageError = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
     const target = e.target as HTMLImageElement;
@@ -756,7 +756,7 @@ const UnifiedCard = memo(({
             {showPrice && cardType === "tcg" && (
               <CompactPriceIndicator 
                 cardId={normalizedCard.id}
-                currentPrice={(card as any).currentPrice || getPrice(card as any)}
+                currentPrice={String((card as SdkCard & { currentPrice?: number }).currentPrice || getPrice(card as SdkCard))}
                 variantType="holofoil"
               />
             )}

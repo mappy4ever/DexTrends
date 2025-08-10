@@ -2464,9 +2464,9 @@ const BattleSimulator: NextPage = () => {
 };
 
 export default BattleSimulator;
-interface PageComponent extends NextPage {
+type PageComponent = NextPage & {
   fullBleed?: boolean;
-}
+};
 
 (BattleSimulator as PageComponent).fullBleed = true;
 

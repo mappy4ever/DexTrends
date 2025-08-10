@@ -243,7 +243,7 @@ class DatabaseOptimizer {
     const cacheKey = `card_search_${this.generateSearchHash(searchParams)}`;
     
     try {
-      return await this.executeOptimizedQuery(
+      const result = await this.executeOptimizedQuery(
         'cards_search',
         this.buildCardSearchQuery(searchParams, options),
         {
@@ -254,6 +254,15 @@ class DatabaseOptimizer {
           ...options
         }
       );
+      // Convert QueryResult to EnhancedApiResponse
+      return {
+        data: result.data,
+        error: result.error,
+        success: !result.error,
+        metadata: {
+          timestamp: new Date().toISOString()
+        }
+      } as EnhancedApiResponse;
     } catch (error) {
       logger.error('Optimized card search failed:', error);
       throw error;
@@ -324,7 +333,7 @@ class DatabaseOptimizer {
     // Apply pagination
     queryBuilder = queryBuilder.range(offset, offset + limit - 1);
 
-    return queryBuilder;
+    return queryBuilder as any; // Type casting for Supabase query builder compatibility
   }
 
   /**
@@ -345,9 +354,9 @@ class DatabaseOptimizer {
         days_back: daysBack
       });
 
-    return await this.executeOptimizedQuery(
+    const result = await this.executeOptimizedQuery(
       'price_history',
-      queryBuilder,
+      queryBuilder as any, // Type casting for Supabase query builder compatibility
       {
         cacheKey,
         cacheTTL: 300000, // 5 minutes
@@ -356,6 +365,15 @@ class DatabaseOptimizer {
         ...options
       }
     );
+    // Convert QueryResult to EnhancedApiResponse
+    return {
+      data: result.data,
+      error: result.error,
+      success: !result.error,
+      metadata: {
+        timestamp: new Date().toISOString()
+      }
+    } as EnhancedApiResponse;
   }
 
   /**
@@ -428,7 +446,8 @@ class DatabaseOptimizer {
 
     switch (type) {
       case 'insert':
-        return await supabase.from(tableName).insert(data);
+        const insertResult = await supabase.from(tableName).insert(data);
+        return { ...insertResult, success: !insertResult.error } as EnhancedApiResponse;
       
       case 'update':
         let updateQuery = supabase.from(tableName).update(data);
@@ -437,7 +456,8 @@ class DatabaseOptimizer {
             updateQuery = updateQuery.eq(key, value);
           });
         }
-        return await updateQuery;
+        const updateResult = await updateQuery;
+        return { ...updateResult, success: !updateResult.error } as EnhancedApiResponse;
       
       case 'delete':
         let deleteQuery = supabase.from(tableName).delete();
@@ -446,7 +466,8 @@ class DatabaseOptimizer {
             deleteQuery = deleteQuery.eq(key, value);
           });
         }
-        return await deleteQuery;
+        const deleteResult = await deleteQuery;
+        return { ...deleteResult, success: !deleteResult.error } as EnhancedApiResponse;
       
       default:
         throw new Error(`Unsupported operation type: ${type}`);

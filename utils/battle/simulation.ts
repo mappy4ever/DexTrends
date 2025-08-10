@@ -1,6 +1,6 @@
 import { EnhancedBattleState, BattleResult, KeyMoment } from '@/types/battle';
 import { Pokemon, Move, PokemonMove } from "../../types/pokemon";
-import { createInitialBattleState } from './core';
+import { createInitialBattleState, PokemonBattleConfig } from './core';
 import { executeTurn } from './moves';
 import { processEndOfTurn } from './effects';
 
@@ -13,7 +13,10 @@ export const simulateBattleToCompletion = async (
   moves2: PokemonMove[],
   loadMoveData: (moveName: string) => Promise<Move | null>
 ): Promise<BattleResult> => {
-  const state = createInitialBattleState(pokemon1, pokemon2, config1, config2);
+  // Type guard to ensure configs match expected interface
+  const safeConfig1 = config1 as PokemonBattleConfig;
+  const safeConfig2 = config2 as PokemonBattleConfig;
+  const state = createInitialBattleState(pokemon1, pokemon2, safeConfig1, safeConfig2);
   const keyMoments: KeyMoment[] = [];
   const totalDamage: [number, number] = [0, 0];
   

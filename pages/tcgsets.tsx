@@ -609,9 +609,9 @@ const TcgSetsContent: React.FC = () => {
   };
 
   // Mark this page as full bleed to remove Layout padding
-  interface PageComponent extends NextPage {
+  type PageComponent = NextPage & {
     fullBleed?: boolean;
-  }
+  };
   
   (TcgSets as PageComponent).fullBleed = true;
 

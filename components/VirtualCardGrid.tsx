@@ -84,7 +84,7 @@ const VirtualCardItem = memo<{
           showSet={false} // Don't show set info in grid view
           showTypes={true}
           showRarity={true}
-          onCardClick={onCardClick as ((card: any) => void)}
+          onCardClick={onCardClick as ((card: unknown) => void)}
           className={`${styles['virtual-card']} ${isScrolling ? styles.scrolling : ''}`}
           disableLazyLoad={false}
         />

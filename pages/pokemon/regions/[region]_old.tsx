@@ -69,7 +69,7 @@ interface IslandKahuna {
   signature: string;
 }
 
-interface RegionData {
+interface OldPageRegionData {
   id: string;
   name: string;
   generation: number;
@@ -101,7 +101,7 @@ interface RegionData {
 const regionOrder = ['kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', 'paldea'];
 
 // Comprehensive region data with additional details
-const regionsData: Record<string, RegionData> = {
+const regionsData: Record<string, OldPageRegionData> = {
   kanto: {
     id: "kanto",
     name: "Kanto",

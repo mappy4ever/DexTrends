@@ -284,16 +284,6 @@ const nextConfig = {
             chunks: 'all',
           },
           // Separate heavy libraries
-          echarts: {
-            test: /[\/]node_modules[\/](echarts|echarts-for-react)[\/]/,
-            name: 'echarts',
-            chunks: 'all',
-          },
-          leaflet: {
-            test: /[\/]node_modules[\/](leaflet|react-leaflet)[\/]/,
-            name: 'leaflet',
-            chunks: 'all',
-          },
           framerMotion: {
             test: /[\/]node_modules[\/]framer-motion[\/]/,
             name: 'framer-motion',
@@ -314,6 +304,35 @@ const nextConfig = {
       // Tree shake lodash
       'lodash': 'lodash-es',
     };
+    
+    // Better tree shaking
+    config.module.rules.forEach(rule => {
+      if (rule.use && rule.use.loader && rule.use.loader.includes('babel-loader')) {
+        rule.use.options = {
+          ...rule.use.options,
+          // Enable tree shaking for ES modules
+          plugins: [
+            ...(rule.use.options.plugins || []),
+            ['babel-plugin-transform-imports', {
+              'react-icons': {
+                'transform': 'react-icons/${member}',
+                'preventFullImport': true
+              }
+            }]
+          ]
+        };
+      }
+    });
+    
+    // Exclude heavy libraries from server-side bundle when not needed
+    if (!isServer) {
+      config.externals = config.externals || [];
+      // Don't bundle these heavy libraries unless they're actually used
+      config.externals.push({
+        'html2canvas': 'html2canvas',
+        'jspdf': 'jspdf',
+      });
+    }
     
     return config;
   },

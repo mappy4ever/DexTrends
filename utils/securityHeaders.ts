@@ -13,6 +13,10 @@ interface SecurityOptions {
   hstsPreload?: boolean;
   permissionsPolicy?: string;
   customHeaders?: Record<string, string>;
+  customSecurityHeaders?: {
+    includeCSP?: boolean;
+    strictMode?: boolean;
+  };
 }
 
 type ApiHandler = (req: NextApiRequest, res: NextApiResponse) => void | Promise<void>;

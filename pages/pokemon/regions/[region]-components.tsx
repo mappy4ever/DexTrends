@@ -36,7 +36,7 @@ interface Landmark {
   description: string;
 }
 
-interface GymLeader {
+interface ComponentsGymLeader {
   name: string;
   city: string;
   type: string;
@@ -87,7 +87,7 @@ interface Region {
   bgColor: string;
   locations: Location[];
   landmarks: Landmark[];
-  gymLeaders?: GymLeader[];
+  gymLeaders?: ComponentsGymLeader[];
   eliteFour?: EliteFourMember[] | null;
   champion?: Champion;
   trialCaptains?: TrialCaptain[];

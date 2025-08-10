@@ -429,7 +429,7 @@ export const resolvers = {
             .from('card_cache')
             .select('card_data')
             .eq('card_id', id)
-            .single(),
+            .single() as any, // Type casting for Supabase query builder
           {
             cacheKey: `card_${id}`,
             cacheTTL: 600000 // 10 minutes
@@ -466,7 +466,7 @@ export const resolvers = {
           offset: 0 // Calculate based on cursor logic
         };
 
-        const result = await databaseOptimizer.searchCards(searchParams, {
+        const result = await databaseOptimizer.searchCards(searchParams as any, { // Type casting for SearchParams compatibility
           useFullTextSearch: true,
           enableFuzzySearch: true
         });
@@ -491,7 +491,7 @@ export const resolvers = {
             .from('pokemon_cache')
             .select('pokemon_data')
             .eq('pokemon_id', id)
-            .single(),
+            .single() as any, // Type casting for Supabase query builder
           {
             cacheKey: `pokemon_${id}`,
             cacheTTL: 3600000 // 1 hour

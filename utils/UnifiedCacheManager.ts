@@ -748,7 +748,7 @@ export const tcgCache = {
           logger.debug('[TCG Cache] API Response:', result);
           // The SDK returns an object with data property containing the cards array
           const cards = result.data || [];
-          logger.debug('[TCG Cache] Extracted cards:', cards.length);
+          logger.debug('[TCG Cache] Extracted cards:', { count: cards.length });
           return cards;
         } catch (error) {
           logger.error('[TCG Cache] API Error:', error);

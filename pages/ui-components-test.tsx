@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
-import { motion } from 'framer-motion';
+import { motion } from '../components/ui/LazyMotion';
 import { GlassContainer } from '../components/ui/design-system/GlassContainer';
 import { Button } from '../components/ui/design-system/Button';
 import { 
@@ -18,7 +18,7 @@ import { ToastContainer } from '../components/ui/Toast';
 import { useNotifications } from '../hooks/useNotifications';
 import { convertNotificationsToToasts } from '../utils/toastUtils';
 import { ContextMenu, useContextMenu } from '../components/ui/ContextMenu';
-import { FaCopy, FaEdit, FaTrash, FaShare } from 'react-icons/fa';
+import { FaCopy, FaEdit, FaTrash, FaShare } from '../components/ui/LazyIcon';
 
 const UIComponentsTest = () => {
   const [inputValue, setInputValue] = useState('');

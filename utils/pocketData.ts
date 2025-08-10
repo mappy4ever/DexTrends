@@ -57,7 +57,7 @@ export async function fetchPocketData(): Promise<PocketCard[]> {
       
       // Cache in Supabase for 4 hours
       try {
-        await SupabaseCache.setCachedPokemon(SUPABASE_CACHE_ID, data, SUPABASE_CACHE_KEY, 4);
+        await SupabaseCache.setCachedPokemon(SUPABASE_CACHE_ID, data as Record<string, unknown>, SUPABASE_CACHE_KEY, 4);
       } catch (error) {
         // Failed to cache in Supabase, continue normally
       }

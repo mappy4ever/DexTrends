@@ -45,7 +45,7 @@ export default function EvolutionStageCard({ name, id, spriteUrl, types = [], is
             placeholder="blur"
             blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Eve6J4HNvbzTe7+v1+8BvxRf4X3/f/9k="
             sizes="(max-width: 768px) 100vw, 88px"
-            onError={(e: any) => {
+            onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
               const target = e.target as HTMLImageElement;
               if (target && target.src !== window.location.origin + '/dextrendslogo.png') {
                 target.src = '/dextrendslogo.png';
@@ -62,7 +62,7 @@ export default function EvolutionStageCard({ name, id, spriteUrl, types = [], is
         </a>
       </Link>
       <div className="flex gap-1 mt-1">
-        {types.map((type: any) => (
+        {types.map((type: string) => (
           <TypeBadge key={type} type={type} size="sm" />
         ))}
       </div>

@@ -140,7 +140,11 @@ class GymLeaderDirectScraper {
     }
 
     try {
-      const response = await fetch(`${this.archivesApiUrl}?${new URLSearchParams(params)}`);
+      // Convert params to string values for URLSearchParams
+      const stringParams = Object.fromEntries(
+        Object.entries(params).map(([key, value]) => [key, String(value)])
+      );
+      const response = await fetch(`${this.archivesApiUrl}?${new URLSearchParams(stringParams)}`);
       const data = await response.json() as CategoryResponse;
       return data;
     } catch (error) {
@@ -179,7 +183,11 @@ class GymLeaderDirectScraper {
     };
 
     try {
-      const response = await fetch(`${this.archivesApiUrl}?${new URLSearchParams(params)}`);
+      // Convert params to string values for URLSearchParams
+      const stringParams = Object.fromEntries(
+        Object.entries(params).map(([key, value]) => [key, String(value)])
+      );
+      const response = await fetch(`${this.archivesApiUrl}?${new URLSearchParams(stringParams)}`);
       const data = await response.json() as ImageInfoResponse;
       
       if (data.query && data.query.pages) {

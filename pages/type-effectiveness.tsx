@@ -14,7 +14,7 @@ import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { NextPage } from 'next';
 import { motion, AnimatePresence } from '../components/ui/LazyMotion';
 import { FadeIn, SlideUp, StaggeredChildren } from '../components/ui/animations/animations';
-import { BsChevronUp, BsChevronDown } from 'react-icons/bs';
+import { BsChevronUp, BsChevronDown } from '../components/ui/LazyIcon';
 import { THEME, TYPE_GRADIENTS, themeClass } from '../utils/theme';
 import { useTheme } from '../context/UnifiedAppContext';
 import type { TypeInfo } from "../types/pokemon";
@@ -1044,9 +1044,9 @@ const TypeEffectiveness: NextPage = () => {
 };
 
 // Mark this page as fullBleed to remove default padding
-interface PageComponent extends NextPage {
+type PageComponent = NextPage & {
   fullBleed?: boolean;
-}
+};
 
 (TypeEffectiveness as PageComponent).fullBleed = true;
 

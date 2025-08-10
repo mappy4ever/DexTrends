@@ -166,7 +166,7 @@ function isLargeResource(url: string): boolean {
 }
 
 // Install event - cache static assets
-self.addEventListener('install', (event: ExtendableEvent) => {
+self.addEventListener('install', (event) => {
   console.log('Service Worker: Installing enhanced version...');
   isInitialInstall = true;
   
@@ -182,7 +182,9 @@ self.addEventListener('install', (event: ExtendableEvent) => {
         console.log('Service Worker: Initializing performance cache');
         return cache.put('/sw-metrics', new Response(JSON.stringify(performanceMetrics)));
       })
-    ]).catch((error: Error) => {
+    ]).then(() => {
+      console.log('Service Worker: Installation complete');
+    }).catch((error: Error) => {
       console.error('Service Worker: Installation failed:', error);
     })
   );
@@ -197,7 +199,7 @@ self.addEventListener('install', (event: ExtendableEvent) => {
 });
 
 // Activate event - clean old caches and notify updates
-self.addEventListener('activate', (event: ExtendableEvent) => {
+self.addEventListener('activate', (event) => {
   console.log('Service Worker: Activating enhanced version...');
   
   event.waitUntil(
@@ -217,7 +219,7 @@ self.addEventListener('activate', (event: ExtendableEvent) => {
       // Setup connection monitoring
       setupConnectionMonitoring(),
       // Notify clients of successful update
-      self.clients.matchAll().then((clients: Client[]) => {
+      self.clients.matchAll().then((clients: readonly Client[]) => {
         clients.forEach((client: Client) => {
           client.postMessage({
             type: 'APP_UPDATED',
@@ -240,7 +242,7 @@ async function setupConnectionMonitoring() {
     (navigator as any).connection.addEventListener('change', () => {
       detectConnectionSpeed();
       // Notify clients of connection change
-      self.clients.matchAll().then((clients: Client[]) => {
+      self.clients.matchAll().then((clients: readonly Client[]) => {
         clients.forEach((client: Client) => {
           client.postMessage({
             type: 'CONNECTION_CHANGE',
@@ -257,7 +259,7 @@ async function setupConnectionMonitoring() {
 }
 
 // Fetch event - serve from cache with network fallback
-self.addEventListener('fetch', (event: FetchEvent) => {
+self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
   
@@ -649,7 +651,7 @@ function getOfflineSVG() {
 }
 
 // Background sync for failed requests and data updates
-self.addEventListener('sync', (event: SyncEvent) => {
+self.addEventListener('sync', (event) => {
   console.log('Service Worker: Sync event triggered with tag:', event.tag);
   
   switch (event.tag) {
@@ -811,9 +813,9 @@ async function syncCollection() {
 }
 
 // Push notifications (future feature)
-self.addEventListener('push', (event: PushEvent) => {
+self.addEventListener('push', (event) => {
   if (event.data) {
-    const data = event.data.json();
+    const data = event.data.json() as { title: string; body: string; url: string };
     
     event.waitUntil(
       self.registration.showNotification(data.title, {
@@ -828,18 +830,20 @@ self.addEventListener('push', (event: PushEvent) => {
 });
 
 // Notification click handler
-self.addEventListener('notificationclick', (event: NotificationEvent) => {
+self.addEventListener('notificationclick', (event) => {
   event.notification.close();
   
   if (event.notification.data) {
     event.waitUntil(
-      self.clients.openWindow(event.notification.data as string)
+      self.clients.openWindow(event.notification.data as string).then((client) => {
+        console.log('Notification click handled', client ? 'with client' : 'without client');
+      })
     );
   }
 });
 
 // App update notifications
-self.addEventListener('message', (event: ExtendableMessageEvent) => {
+self.addEventListener('message', (event) => {
   if (event.data && typeof event.data === 'object' && (event.data as { type: string }).type === 'SKIP_WAITING') {
     self.skipWaiting();
   } else if (event.data && typeof event.data === 'object' && (event.data as { type: string }).type === 'GET_VERSION') {
@@ -875,7 +879,7 @@ async function checkForUpdates() {
 // Only check for updates when the user is actively using the app
 // Removed automatic interval to prevent refresh loops
 let updateCheckTimeout: any;
-self.addEventListener('message', (event: ExtendableMessageEvent) => {
+self.addEventListener('message', (event) => {
   if (event.data && typeof event.data === 'object' && (event.data as { type: string }).type === 'CHECK_FOR_UPDATES') {
     clearTimeout(updateCheckTimeout);
     updateCheckTimeout = setTimeout(() => {
