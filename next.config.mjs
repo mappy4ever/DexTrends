@@ -178,9 +178,9 @@ const nextConfig = {
     ignoreDuringBuilds: false,
   },
   
-  // TypeScript configuration - temporarily ignore build errors for verification testing
+  // TypeScript configuration - strict checking enabled to enforce zero TypeScript errors at build time
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
 
   // Your environment variables go directly here
@@ -343,8 +343,12 @@ const nextConfig = {
     esmExternals: true,
   },
   
-  // Enable compression
+  // SWC Minifier configuration for better performance
+  swcMinify: true,
+  
+  // Production optimizations
   compress: true,
+  productionBrowserSourceMaps: false,
 };
 
 export default nextConfig;
