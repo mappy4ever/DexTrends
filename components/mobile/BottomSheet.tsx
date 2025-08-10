@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect, ReactNode, TouchEvent, MouseEvent } from 'react';
-import { motion, AnimatePresence, PanInfo, useSpring, useTransform, useMotionValue } from 'framer-motion';
+import { motion, AnimatePresence, PanInfo, useTransform, useMotionValue } from 'framer-motion';
 import { useBottomSheet } from './BottomSheet.hooks';
 import { useMobileUtils } from '../../utils/mobileUtils';
 import logger from '../../utils/logger';
@@ -759,14 +759,5 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
   );
 };
 
-// Hook for managing bottom sheet state
-interface UseBottomSheetReturn {
-  isOpen: boolean;
-  snapPoint: number;
-  open: () => void;
-  close: () => void;
-  toggle: () => void;
-  setSnapPoint: React.Dispatch<React.SetStateAction<number>>;
-}
 
 export default BottomSheet;

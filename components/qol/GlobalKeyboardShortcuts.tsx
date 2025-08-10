@@ -1,14 +1,6 @@
 import React, { useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 
-// Type definitions
-interface KeyboardShortcut {
-  key: string;
-  ctrl?: boolean;
-  meta?: boolean;
-  action: () => void;
-  description: string;
-}
 
 const GlobalKeyboardShortcuts: React.FC = () => {
   const router = useRouter();

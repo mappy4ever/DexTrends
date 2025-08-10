@@ -2,14 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { PriceHistoryManager } from '../lib/supabase';
 import { CardPriceHistory } from '../types/database';
 
-interface PriceDataPoint {
-  collected_date?: string;
-  collected_at: string;
-  price_market?: number;
-  price_low?: number;
-  price_high?: number;
-  day_change_percent?: string | number;
-}
 
 interface PriceStatistics {
   current_price?: string | number;

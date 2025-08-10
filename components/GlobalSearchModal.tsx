@@ -2,7 +2,6 @@ import React, { forwardRef, useImperativeHandle, useState, useRef, useEffect, us
 import Link from "next/link";
 import Image from "next/image";
 import pokemon from "pokemontcgsdk";
-import { toLowercaseUrl } from "../utils/formatters";
 import { fetchJSON } from "../utils/unifiedFetch";
 import { useDebounce } from "../hooks/useDebounce";
 import type { TCGCard, CardSet } from "../types/api/cards";

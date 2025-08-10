@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect, useCallback, ReactNode } from 'react';
-import logger from '../../utils/logger';
 
 /**
  * Enhanced Touch Interactions for Mobile

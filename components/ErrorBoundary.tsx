@@ -1,5 +1,4 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { useErrorBoundary } from './ErrorBoundary.hooks';
 import { useRouter } from 'next/router';
 import logger from '../utils/logger';
 

@@ -10,8 +10,6 @@ import { runBasicPerformanceTests } from '../../utils/performanceTests';
 import logger from '../../utils/logger';
 import type { PerformanceMetrics as PerformanceMetric } from '../../types/utils/performance';
 
-// Type for vitals change callback
-type VitalsChangeCallback = (vitals: Vital[]) => void;
 
 // gtag types are declared in types/global.d.ts
 

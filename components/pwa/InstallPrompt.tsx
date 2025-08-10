@@ -1,5 +1,5 @@
 import React, { useState, useEffect, ReactNode } from 'react';
-import type { BeforeInstallPromptEvent, GTagFunction } from '@/types/pwa';
+import type { BeforeInstallPromptEvent } from '@/types/pwa';
 // Import mobile utils with error handling
 let useMobileUtils: () => { isMobile: boolean; isStandalone: boolean; isDesktopSize: boolean; utils: { isIOS: boolean; hapticFeedback: () => void } };
 try {

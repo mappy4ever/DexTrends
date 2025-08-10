@@ -126,10 +126,7 @@ export const routeTransitions: Record<string, PageTransitionConfig> = {
   '/tcgsets': { type: 'scale' },
   '/tcgsets/[setid]': { type: 'slideLeft' },
   '/team-builder': { type: 'slideUp' },
-  '/battle-simulator': { type: 'rotate' },
-  '/ui-test-lab': { type: 'slideRight' },
-  '/ux-interaction-lab': { type: 'slideRight' },
-  '/toast-demo': { type: 'scale' }
+  '/battle-simulator': { type: 'rotate' }
 };
 
 // Get transition for a specific route

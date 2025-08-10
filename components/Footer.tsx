@@ -10,9 +10,6 @@ import {
 import { 
   BsGrid, 
   BsCardList, 
-  BsBook, 
-  BsCoin,
-  BsHeart,
   BsCollection
 } from 'react-icons/bs';
 import { GiCardPickup, GiCrossedSwords } from 'react-icons/gi';

@@ -1,6 +1,4 @@
-import { useState, useEffect, useCallback, useContext, useRef, useMemo } from 'react';
-import { useMobileUtils } from '../../utils/mobileUtils';
-import logger from '../../utils/logger';
+import { useState, useCallback } from 'react';
 
 interface UseBottomSheetReturn {
   isOpen: boolean;

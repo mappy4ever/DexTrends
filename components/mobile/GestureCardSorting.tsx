@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useMemo } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { useMobileUtils } from '../../utils/mobileUtils';
 import EnhancedSwipeGestures from './EnhancedSwipeGestures';
 import logger from '../../utils/logger';

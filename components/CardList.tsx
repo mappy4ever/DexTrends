@@ -1,15 +1,13 @@
 import React, { useState, useMemo, useCallback, memo, useRef, useEffect } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "./ui/LazyMotion";
+import { motion } from "./ui/LazyMotion";
 import Modal from "./ui/modals/Modal";
 import UnifiedCard from "./ui/cards/UnifiedCard";
 import logger from "@/utils/logger";
 import { CardGridSkeleton } from "./ui/SkeletonLoader";
-import { isFeatureEnabled } from "../utils/featureFlags";
 import { TCGCard } from "../types/api/cards";
 import { getRaritySymbol, getRarityGlowClass } from "../utils/tcgRaritySymbols";
 import performanceMonitor from "../utils/performanceMonitor";
-import type { Card } from "pokemontcgsdk";
 import { tcgCardToSdkCard } from "../utils/cardTypeGuards";
 
 type SortOption = "price" | "releaseDate" | "rarity";

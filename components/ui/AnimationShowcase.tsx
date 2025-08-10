@@ -30,7 +30,6 @@ interface SampleCard {
 }
 
 type PageTransitionVariant = 'fade' | 'slideUp' | 'scale';
-type ScrollDirection = 'up' | 'down' | 'left' | 'right';
 type LoadingSize = 'sm' | 'md' | 'lg';
 type ButtonVariant = 'primary' | 'secondary' | 'success' | 'danger';
 
