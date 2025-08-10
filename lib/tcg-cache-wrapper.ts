@@ -47,6 +47,7 @@ class TCGCacheServiceWrapper {
   // Cache TCG sets list
   async cacheSetsList(page: number, pageSize: number, data: TCGSetListApiResponse): Promise<void> {
     try {
+      // Store the full response object to maintain API contract
       await cache.tcg.setSetsList(page, pageSize, data);
       logger.debug('[TCG Cache] Sets list cached', { page, pageSize });
     } catch (error) {

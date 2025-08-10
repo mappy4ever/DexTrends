@@ -2,8 +2,8 @@
  * Card type guards and converters to ensure type safety between internal and SDK card types
  */
 
-import type { Card } from "pokemontcgsdk";
-import type { TCGCard } from "../types/api/cards";
+import type { Card, TCGPlayerPricing, PriceRange } from "pokemontcgsdk";
+import type { TCGCard, TCGPlayer, PriceData } from "../types/api/cards";
 
 /**
  * Valid supertype values according to pokemontcgsdk
@@ -46,6 +46,44 @@ export function normalizeSupertypeWithFallback(supertype: string | undefined, ca
 }
 
 /**
+ * Converts PriceData (allows null) to PriceRange (no null) by converting null to undefined
+ */
+function convertPriceDataToPriceRange(priceData: PriceData): PriceRange {
+  return {
+    low: priceData.low ?? undefined,
+    mid: priceData.mid ?? undefined,
+    high: priceData.high ?? undefined,
+    market: priceData.market ?? undefined,
+    directLow: priceData.directLow ?? undefined
+  };
+}
+
+/**
+ * Converts TCGPlayer to TCGPlayerPricing by handling null to undefined conversion
+ */
+function convertTCGPlayerToSDK(tcgPlayer: TCGPlayer): TCGPlayerPricing {
+  const result: TCGPlayerPricing = {
+    url: tcgPlayer.url,
+    updatedAt: tcgPlayer.updatedAt
+  };
+
+  if (tcgPlayer.prices) {
+    result.prices = {};
+    if (tcgPlayer.prices.normal) {
+      result.prices.normal = convertPriceDataToPriceRange(tcgPlayer.prices.normal);
+    }
+    if (tcgPlayer.prices.holofoil) {
+      result.prices.holofoil = convertPriceDataToPriceRange(tcgPlayer.prices.holofoil);
+    }
+    if (tcgPlayer.prices.reverseHolofoil) {
+      result.prices.reverseHolofoil = convertPriceDataToPriceRange(tcgPlayer.prices.reverseHolofoil);
+    }
+  }
+
+  return result;
+}
+
+/**
  * Converts TCGCard to pokemontcgsdk Card with type safety
  */
 export function tcgCardToSdkCard(tcgCard: TCGCard): Card {
@@ -74,7 +112,7 @@ export function tcgCardToSdkCard(tcgCard: TCGCard): Card {
     nationalPokedexNumbers: tcgCard.nationalPokedexNumbers,
     legalities: tcgCard.legalities,
     images: tcgCard.images,
-    tcgplayer: tcgCard.tcgplayer
+    tcgplayer: tcgCard.tcgplayer ? convertTCGPlayerToSDK(tcgCard.tcgplayer) : undefined
   };
 }
 
@@ -139,7 +177,7 @@ export function ensureSdkCompatibleCard(card: unknown): Card {
       small: (cardObj?.images as Record<string, unknown>)?.small as string || (cardObj?.image as string) || "/back-card.png",
       large: (cardObj?.images as Record<string, unknown>)?.large as string || (cardObj?.image as string) || "/back-card.png"
     },
-    tcgplayer: cardObj?.tcgplayer as Card["tcgplayer"],
+    tcgplayer: cardObj?.tcgplayer ? convertTCGPlayerToSDK(cardObj.tcgplayer as TCGPlayer) : undefined,
     currentPrice: typeof cardObj?.currentPrice === "number" ? cardObj.currentPrice : undefined
   } as Card;
 }

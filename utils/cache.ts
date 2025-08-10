@@ -7,6 +7,7 @@
 import UnifiedCacheManager, { type CachePriority } from './UnifiedCacheManager';
 import logger from './logger';
 import type { Pokemon, PokemonSpecies, EvolutionChain, TCGCard, CardSet } from '@/types';
+import type { TCGSetListApiResponse } from '@/types/api/enhanced-responses';
 import type { CacheSetOptions } from '@/types/utils/cache';
 import type { AnyObject } from '@/types/common';
 import type { UserPreferences } from '@/types/context/unified-app-context';
@@ -84,7 +85,7 @@ export const cache = {
       }),
     getSetsList: (page: number, pageSize: number) =>
       cacheManager.get(`tcg:sets:list:${page}:${pageSize}`),
-    setSetsList: (page: number, pageSize: number, data: CardSet[]) =>
+    setSetsList: (page: number, pageSize: number, data: TCGSetListApiResponse) =>
       cacheManager.set(`tcg:sets:list:${page}:${pageSize}`, data, {
         priority: 2,
         ttl: 3 * 60 * 60 * 1000 // 3 hours

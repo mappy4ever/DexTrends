@@ -198,7 +198,7 @@ export interface NavigationContext {
 
 export interface NavigateOptions {
   replace?: boolean;
-  state?: any;
+  state?: unknown;  // Navigation state - can be any serializable router state
   shallow?: boolean;
   scroll?: boolean;
   locale?: string;
@@ -305,7 +305,7 @@ export interface HistoryEntry {
   path: string;
   title?: string;
   timestamp: number;
-  state?: any;
+  state?: unknown;  // History state - serializable router/navigation data
 }
 
 export interface NavigationHistory {

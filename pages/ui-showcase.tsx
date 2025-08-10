@@ -202,7 +202,7 @@ const UIShowcase = () => {
       {
         loading: 'Processing...',
         success: 'Successfully completed!',
-        error: (err) => `Error: ${err.message}`
+        error: (err) => `Error: ${err instanceof Error ? err.message : String(err)}`
       }
     );
   };

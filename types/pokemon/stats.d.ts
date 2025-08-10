@@ -77,7 +77,19 @@ export interface AbilityData {
       url: string;
     };
   }[];
-  effect_changes: any[];
+  effect_changes: {  // Ability effect changes across generations
+    effect_entries: {
+      effect: string;
+      language: {
+        name: string;
+        url: string;
+      };
+    }[];
+    version_group: {
+      name: string;
+      url: string;
+    };
+  }[];
   flavor_text_entries: {
     flavor_text: string;
     language: {
@@ -111,7 +123,20 @@ export interface TypeInfo {
     half_damage_from: Array<{ name: string; url: string }>;
     double_damage_from: Array<{ name: string; url: string }>;
   };
-  past_damage_relations: any[];
+  past_damage_relations: {  // Historical type effectiveness changes
+    damage_relations: {
+      no_damage_to: Array<{ name: string; url: string }>;
+      half_damage_to: Array<{ name: string; url: string }>;
+      double_damage_to: Array<{ name: string; url: string }>;
+      no_damage_from: Array<{ name: string; url: string }>;
+      half_damage_from: Array<{ name: string; url: string }>;
+      double_damage_from: Array<{ name: string; url: string }>;
+    };
+    generation: {
+      name: string;
+      url: string;
+    };
+  }[];
   game_indices: {
     game_index: number;
     generation: {

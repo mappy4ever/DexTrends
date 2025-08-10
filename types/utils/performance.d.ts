@@ -100,7 +100,7 @@ export interface PerformanceEntry {
   type: PerformanceEntryType;
   startTime: number;
   duration: number;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;  // Generic metadata - can be any serializable data
 }
 
 export type PerformanceEntryType = 
@@ -121,7 +121,7 @@ export interface ComponentPerformance {
   renderTime: number;
   averageRenderTime: number;
   lastRenderTime: number;
-  props?: Record<string, any>;
+  props?: Record<string, unknown>;  // React component props - can be any serializable value
   children?: ComponentPerformance[];
 }
 
@@ -188,7 +188,7 @@ export interface ComponentPerformanceData {
   baseDuration: number;
   startTime: number;
   commitTime: number;
-  interactions?: Set<any>;
+  interactions?: Set<unknown>;  // React Profiler interactions - internal structure
 }
 
 export interface APICallData {
@@ -199,7 +199,7 @@ export interface APICallData {
   status: number;
   size: number;
   error?: Error;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;  // API call metadata - serializable data
 }
 
 // Performance report
@@ -288,7 +288,7 @@ export interface ProfilerData {
   baseDuration: number;
   startTime: number;
   commitTime: number;
-  interactions: Set<any>;
+  interactions: Set<unknown>;  // React Profiler interactions - internal structure
 }
 
 export interface ProfilerReport {
@@ -337,7 +337,7 @@ export interface PerformanceUtils {
   formatBytes: (bytes: number) => string;
   formatDuration: (ms: number) => string;
   calculateFPS: (frames: number, duration: number) => number;
-  debounce: <T extends (...args: any[]) => any>(fn: T, delay: number) => T;
-  throttle: <T extends (...args: any[]) => any>(fn: T, limit: number) => T;
-  memoize: <T extends (...args: any[]) => any>(fn: T) => T;
+  debounce: <T extends (...args: unknown[]) => unknown>(fn: T, delay: number) => T;
+  throttle: <T extends (...args: unknown[]) => unknown>(fn: T, limit: number) => T;
+  memoize: <T extends (...args: unknown[]) => unknown>(fn: T) => T;
 }

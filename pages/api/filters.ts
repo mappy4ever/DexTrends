@@ -1,12 +1,22 @@
 // pages/api/filters.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { createClient } from '@supabase/supabase-js';
-import logger from '@/utils/logger';
+import logger from '../../utils/logger';
 import type { AnyObject } from '../../types/common';
 
 interface CardRow {
   set_id: string | null;
   set_name: string | null;
+  artist: string | null;
+}
+
+// Partial types for database queries
+interface SetCardRow {
+  set_id: string | null;
+  set_name: string | null;
+}
+
+interface ArtistCardRow {
   artist: string | null;
 }
 
@@ -101,7 +111,7 @@ async function getFiltersFromSupabase(): Promise<FilterData> {
 
     // Get unique sets with counts
     const setsMap = new Map<string, SetInfo>();
-    setsData?.forEach((card: CardRow) => {
+    setsData?.forEach((card: SetCardRow) => {
       if (card.set_id && card.set_name) {
         if (setsMap.has(card.set_id)) {
           const setInfo = setsMap.get(card.set_id);
@@ -136,7 +146,7 @@ async function getFiltersFromSupabase(): Promise<FilterData> {
     }
 
     const artistsSet = new Set<string>();
-    artistsData?.forEach((card: CardRow) => {
+    artistsData?.forEach((card: ArtistCardRow) => {
       if (card.artist) {
         artistsSet.add(card.artist);
       }

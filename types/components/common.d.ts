@@ -202,7 +202,7 @@ export interface Column<T> {
   key: string;
   title: string;
   dataIndex?: keyof T | string;
-  render?: (value: any, record: T, index: number) => ReactNode;
+  render?: (value: unknown, record: T, index: number) => ReactNode;  // Table cell value - can be any table data type
   width?: number | string;
   align?: 'left' | 'center' | 'right';
   sortable?: boolean;

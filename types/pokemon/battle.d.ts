@@ -70,7 +70,19 @@ export interface Move {
       url: string;
     };
   }[];
-  effect_changes: any[];
+  effect_changes: {  // Historical effect changes - often empty or complex nested structures
+    effect_entries: {
+      effect: string;
+      language: {
+        name: string;
+        url: string;
+      };
+    }[];
+    version_group: {
+      name: string;
+      url: string;
+    };
+  }[];
   flavor_text_entries: {
     flavor_text: string;
     language: {
@@ -86,7 +98,15 @@ export interface Move {
     name: string;
     url: string;
   };
-  machines: any[];
+  machines: {
+    machine: {
+      url: string;
+    };
+    version_group: {
+      name: string;
+      url: string;
+    };
+  }[];
   meta: {
     ailment: {
       name: string;
@@ -114,7 +134,27 @@ export interface Move {
       url: string;
     };
   }[];
-  past_values: any[];
+  past_values: {  // Historical data - structure varies by version
+    accuracy: number | null;
+    effect_chance: number | null;
+    effect_entries: {
+      effect: string;
+      language: {
+        name: string;
+        url: string;
+      };
+    }[];
+    power: number | null;
+    pp: number;
+    type: {
+      name: string;
+      url: string;
+    } | null;
+    version_group: {
+      name: string;
+      url: string;
+    };
+  }[];
   stat_changes: {
     change: number;
     stat: {

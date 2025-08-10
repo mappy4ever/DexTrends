@@ -9,7 +9,10 @@ export interface LocationAreaEncounterDetail {
   version_details: {
     encounter_details: {
       chance: number;
-      condition_values: any[];
+      condition_values: {
+        name: string;
+        url: string;
+      }[];
       max_level: number;
       method: {
         name: string;

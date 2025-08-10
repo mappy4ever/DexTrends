@@ -99,7 +99,7 @@ export interface ListEventHandlers<T> {
 
 export interface FormEventHandlers<T = any> {
   onSubmit?: (data: T) => void | Promise<void>;
-  onChange?: (field: keyof T, value: any) => void;
+  onChange?: (field: keyof T, value: unknown) => void;  // Form field value - any input value type
   onFieldChange?: (changes: Partial<T>) => void;
   onValidate?: (data: T) => boolean | Promise<boolean>;
   onReset?: () => void;
@@ -165,7 +165,7 @@ export interface ComponentLifecycleHandlers {
   onMount?: () => void;
   onUnmount?: () => void;
   onUpdate?: () => void;
-  onError?: (error: Error, errorInfo: any) => void;
+  onError?: (error: Error, errorInfo: unknown) => void;  // React error boundary info - internal error details
   onReady?: () => void;
   onDestroy?: () => void;
 }
