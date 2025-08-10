@@ -250,7 +250,7 @@ const ItemsPage: NextPage = () => {
                         'No description available',
             price: item.cost || null,
             generation: item.generation ? parseInt(item.generation.name.replace('generation-', '')) : 1,
-            sprite: item.sprites?.default
+            sprite: item.sprites?.default || undefined
           };
         });
         

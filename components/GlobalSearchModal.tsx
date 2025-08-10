@@ -142,9 +142,9 @@ const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSea
       let sets: CardSet[] = [];
       try {
         const allSets = await pokemon.set.all();
-        sets = allSets.data
+        sets = (allSets.data as CardSet[])
           .filter((s: CardSet) => s.name.toLowerCase().includes(q.toLowerCase()))
-          .slice(0, 5) as CardSet[];
+          .slice(0, 5);
       } catch {}
       
       // Pokémon search

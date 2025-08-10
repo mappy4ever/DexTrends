@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { showdownQueries } from '@/utils/supabase';
+import logger from '@/utils/logger';
 
 interface TypeChart {
   [attackingType: string]: {
@@ -35,7 +36,7 @@ export function useTypeEffectiveness(): TypeEffectivenessHook {
           throw new Error('Failed to load type effectiveness data');
         }
       } catch (err) {
-        console.error('Error loading type effectiveness:', err);
+        logger.error('Error loading type effectiveness:', { error: err });
         setError(err as Error);
         
         // Fallback to hardcoded values if needed
@@ -146,7 +147,7 @@ export function useTypeEffectiveness(): TypeEffectivenessHook {
 function loadFallbackTypeChart() {
   // This would normally import from the existing typeEffectiveness utility
   // For now, we'll just log a warning
-  console.warn('Using fallback type effectiveness data');
+  logger.warn('Using fallback type effectiveness data');
 }
 
 // Helper function to format effectiveness as text

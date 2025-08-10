@@ -765,14 +765,40 @@ const RegionDetailPage: NextPage = () => {
       {/* Region Info Section */}
       <RegionInfo 
         region={{
-          ...region,
-          routes: typeof region.routes === 'string' ? parseInt(region.routes, 10) : region.routes
+          name: region.name,
+          description: region.description,
+          professor: region.professor,
+          generation: region.generation,
+          pokemonRange: region.pokemonRange,
+          games: region.games,
+          color: region.color,
+          cities: region.cities,
+          routes: typeof region.routes === 'string' ? parseInt(region.routes, 10) : region.routes,
+          gymLeaders: region.gymLeaders?.map(gl => ({ name: gl.name, badge: gl.badge, type: [gl.type], location: gl.city })),
+          trialCaptains: region.trialCaptains?.map(tc => ({ name: tc.name, type: [tc.type], location: tc.island })),
+          islandKahunas: region.kahunas?.map(k => ({ name: k.name, type: [k.type], location: k.island })),
+          legendaries: region.legendaryIds.map((id, index) => ({ id, name: region.legendaries[index] || 'Unknown' })),
+          starterIds: region.starterIds,
+          starters: region.starters,
+          starterTypes: region.starterTypes
         }} 
         theme={theme} 
       />
 
       {/* Starter Pokémon Section */}
-      <StarterShowcase region={region} theme={theme} />
+      <StarterShowcase region={{
+        name: region.name,
+        color: region.color,
+        games: region.games,
+        starters: region.starters,
+        starterIds: region.starterIds,
+        starterTypes: region.starterTypes,
+        professor: region.professor,
+        generation: region.generation,
+        pokemonRange: region.pokemonRange,
+        cities: region.cities,
+        routes: typeof region.routes === 'string' ? parseInt(region.routes, 10) : region.routes
+      }} theme={theme} />
 
       {/* Gym Leaders Section */}
       {region.gymLeaders && (

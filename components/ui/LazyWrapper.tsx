@@ -67,11 +67,14 @@ export const withSuspense = <P extends Record<string, any>>(
   variant: LazyWrapperProps['variant'] = 'rectangular',
   height = 200
 ) => {
-  return React.forwardRef<any, P>((props, ref) => (
-    <LazyWrapper fallback={fallback} variant={variant} height={height}>
-      <Component {...props} ref={ref} />
-    </LazyWrapper>
-  ));
+  return React.forwardRef<any, P>((props, ref) => {
+    const componentProps = ref ? { ...props, ref } : props;
+    return (
+      <LazyWrapper fallback={fallback} variant={variant} height={height}>
+        <Component {...componentProps as P} />
+      </LazyWrapper>
+    );
+  });
 };
 
 export default LazyWrapper;

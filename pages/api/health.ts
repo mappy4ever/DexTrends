@@ -281,7 +281,7 @@ async function handler(
       try {
         healthData.database = await checkDatabase();
         healthData.circuitBreakers = globalRegistry.getHealth ? globalRegistry.getHealth() : {};
-        healthData.rateLimiter = getRateLimiterHealth() as Record<string, unknown>;
+        healthData.rateLimiter = getRateLimiterHealth() as unknown as Record<string, unknown>;
       } catch (error) {
         logger.error('Error in detailed health check', { error: error.message });
         healthData.database = { status: 'unhealthy', error: error.message, responseTime: null };

@@ -7,7 +7,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 // Log environment variable status for debugging
 if (typeof window !== 'undefined') {
-  console.log('[Supabase] Environment check:', {
+  logger.debug('[Supabase] Environment check:', {
     hasUrl: !!supabaseUrl,
     hasKey: !!supabaseAnonKey,
     url: supabaseUrl ? 'URL is set' : 'URL is missing'

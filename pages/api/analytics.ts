@@ -126,7 +126,7 @@ async function handleGetAnalytics(
     // Handle different response formats
     const formatStr = Array.isArray(format) ? format[0] : format;
     if (formatStr === 'csv' && type === 'search') {
-      return handleCSVResponse(res as NextApiResponse<string | ErrorResponse>, analyticsData as AnyObject, type);
+      return handleCSVResponse(res as NextApiResponse<string | ErrorResponse>, analyticsData as unknown as AnyObject, type);
     }
 
     return res.status(200).json({
@@ -137,7 +137,7 @@ async function handleGetAnalytics(
         startDate: new Date(Date.now() - parsedDaysBack * 24 * 60 * 60 * 1000).toISOString(),
         endDate: new Date().toISOString()
       },
-      data: analyticsData as AnyObject,
+      data: analyticsData as unknown as AnyObject,
       generatedAt: new Date().toISOString()
     });
 

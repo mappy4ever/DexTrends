@@ -20,7 +20,7 @@ interface AnimationComponents {
 }
 
 interface DynamicComponents extends AnimationComponents {
-  FullBleedWrapper: FC<{ gradient?: string | object; children: React.ReactNode; className?: string }>;
+  FullBleedWrapper: FC<{ gradient?: 'pokedex' | 'tcg' | 'regions' | 'pocket' | 'collections' | 'custom' | 'pokemon-type'; children: React.ReactNode; className?: string; customGradient?: string; pokemonTypes?: Array<{ type: { name: string } }>; disablePadding?: boolean; }>;
   useTheme: () => { theme: string };
   pokemonTheme: Record<string, unknown>;
 }
@@ -126,7 +126,7 @@ const PokemonHubContent: FC<PokemonHubContentProps> = ({
   ];
 
   return (
-    <FullBleedWrapper gradient="pokemon">
+    <FullBleedWrapper gradient="pokedex">
       <Head>
         <title>Pokémon Hub - DexTrends</title>
         <meta name="description" content="Explore the world of Pokémon - Regions, Games, Starters, and more!" />

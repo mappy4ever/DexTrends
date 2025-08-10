@@ -200,7 +200,7 @@ export default function SetStats({ statistics, cards, setId }: SetStatsProps) {
                       <div className="absolute top-1 right-1 w-5 h-5">
                         <Image 
                           src={getRaritySymbol(card.rarity)} 
-                          alt={card.rarity}
+                          alt={card.rarity || 'unknown'}
                           width={20}
                           height={20}
                           className="w-5 h-5"

@@ -38,13 +38,13 @@ interface CacheStats {
 interface BatchRequest<T = unknown> {
   url: string;
   options?: RequestInit;
-  resolve: (value: T) => void;
+  resolve: (value: T | PromiseLike<T>) => void;
   reject: (reason: UnknownError) => void;
 }
 
 interface QueueItem<T> {
   fn: () => Promise<T>;
-  resolve: (value: T) => void;
+  resolve: (value: T | PromiseLike<T>) => void;
   reject: (reason: UnknownError) => void;
 }
 
@@ -303,7 +303,7 @@ const requestBatcher = new RequestBatcher();
 class ConcurrencyLimiter {
   private readonly maxConcurrent: number;
   private running: number;
-  private queue: QueueItem<unknown>[];
+  private queue: QueueItem<any>[];
 
   constructor(maxConcurrent: number = CONFIG.CONCURRENT_REQUESTS) {
     this.maxConcurrent = maxConcurrent;
@@ -312,8 +312,12 @@ class ConcurrencyLimiter {
   }
 
   async execute<T>(fn: () => Promise<T>): Promise<T> {
-    return new Promise((resolve, reject) => {
-      this.queue.push({ fn, resolve, reject });
+    return new Promise<T>((resolve, reject) => {
+      this.queue.push({ 
+        fn, 
+        resolve: (value: T | PromiseLike<T>) => resolve(value), 
+        reject: (reason: UnknownError) => reject(reason) 
+      });
       this.process();
     });
   }
@@ -438,7 +442,7 @@ export const batchedFetch = <T = unknown>(url: string, options: RequestInit = {}
 export const useOptimizedSWR = <T = unknown>(
   key: string, 
   fetcher: (key: string) => Promise<T>, 
-  options: SWROptions = {}
+  options: SWROptions<T> = {}
 ): SWRReturn<T> => {
   const {
     revalidateOnFocus = false,

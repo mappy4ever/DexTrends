@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { NotificationContext } from '../components/qol/NotificationSystem';
 import type { Notification, NotifyHelpers, ToastPosition } from '../utils/notificationTypes';
+import logger from '../utils/logger';
 
 // Toast compatibility types
 export interface ToastOptions {
@@ -80,7 +81,7 @@ export const useNotifications = (): NotificationContextValue => {
   const context = useContext(NotificationContext);
   if (!context) {
     // Return mock instead of throwing during SSR or when provider is missing
-    console.warn('useNotifications called outside of NotificationProvider, returning mock implementation');
+    logger.warn('useNotifications called outside of NotificationProvider, returning mock implementation');
     return createMockNotificationValue();
   }
   

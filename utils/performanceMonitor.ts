@@ -590,7 +590,7 @@ class PerformanceMonitor {
         vitals[metric] = {
           value: latest.value,
           rating: this.getRating(metric, latest.value),
-          metadata: latest.metadata as WebVitalsMetadata
+          metadata: latest.metadata as unknown as WebVitalsMetadata
         };
       }
     });
@@ -607,7 +607,7 @@ class PerformanceMonitor {
         resources[metric] = {
           count: values.length,
           average: values.reduce((acc, m) => acc + m.value, 0) / values.length,
-          total: values.reduce((acc, m) => acc + ((m.metadata as ResourceMetadata).size || 0), 0)
+          total: values.reduce((acc, m) => acc + ((m.metadata as unknown as ResourceMetadata).size || 0), 0)
         };
       }
     });

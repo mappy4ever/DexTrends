@@ -45,6 +45,7 @@ export interface PaginationInfo {
   totalCount: number;
   hasNext: boolean;
   hasPrevious: boolean;
+  hasMore: boolean; // For backwards compatibility
 }
 
 // Response metadata

@@ -1,6 +1,7 @@
 // State initialization utilities - extracted from UnifiedAppContext.tsx
 
 import { State } from './types';
+import logger from '../../utils/logger';
 
 // Get initial state from localStorage if available (client-side only)
 export const getInitialState = (): State => {
@@ -152,7 +153,7 @@ export const getInitialState = (): State => {
       baseState.user.behavior.timeOnPage = Date.now();
     }
   } catch (error) {
-    console.warn('Failed to load persisted state:', error);
+    logger.warn('Failed to load persisted state:', { error });
   }
 
   return baseState;

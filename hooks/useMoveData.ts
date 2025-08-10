@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { showdownQueries, MoveCompetitiveDataRecord } from '@/utils/supabase';
+import logger from '@/utils/logger';
 
 interface UseMoveDataReturn {
   getMoveData: (moveName: string) => Promise<MoveCompetitiveDataRecord | null>;
@@ -30,7 +31,7 @@ export function useMoveData(): UseMoveDataReturn {
       }
       return data;
     } catch (error) {
-      console.error('Error fetching move data:', error);
+      logger.error('Error fetching move data:', { error });
       return null;
     } finally {
       setIsLoading(false);
@@ -47,7 +48,7 @@ export function useMoveData(): UseMoveDataReturn {
       });
       return moves;
     } catch (error) {
-      console.error('Error fetching moves by type:', error);
+      logger.error('Error fetching moves by type:', { error });
       return [];
     } finally {
       setIsLoading(false);
@@ -64,7 +65,7 @@ export function useMoveData(): UseMoveDataReturn {
       });
       return moves;
     } catch (error) {
-      console.error('Error fetching moves by category:', error);
+      logger.error('Error fetching moves by category:', { error });
       return [];
     } finally {
       setIsLoading(false);
@@ -83,7 +84,7 @@ export function useMoveData(): UseMoveDataReturn {
       });
       return moves;
     } catch (error) {
-      console.error('Error searching moves:', error);
+      logger.error('Error searching moves:', { error });
       return [];
     } finally {
       setIsLoading(false);

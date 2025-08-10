@@ -2,18 +2,19 @@
 /// <reference path="../types/service-worker.d.ts" />
 
 // Enhanced Service Worker for DexTrends PWA with Adaptive Loading  
-declare const self: ServiceWorkerGlobalScope & {
-  skipWaiting(): Promise<void>;
-  clients: Clients;
-  registration: ServiceWorkerRegistration;
-};
+declare const self: ServiceWorkerGlobalScope;
 
-// Override global context to ensure service worker types
-declare global {
-  const skipWaiting: () => Promise<void>;
-  const clients: Clients;
-  const registration: ServiceWorkerRegistration;
-}
+// Import service worker types
+import type {
+  ExtendableEvent,
+  FetchEvent,
+  ExtendableMessageEvent,
+  SyncEvent,
+  PushEvent,
+  NotificationEvent
+} from '../types/service-worker';
+
+// Service worker types are available through self
 const CACHE_NAME = 'dextrends-v1.1.0';
 const STATIC_CACHE = 'dextrends-static-v1.1.0';
 const DYNAMIC_CACHE = 'dextrends-dynamic-v1.1.0';

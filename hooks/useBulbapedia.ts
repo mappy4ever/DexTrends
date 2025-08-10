@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { bulbapediaApi } from '../utils/bulbapediaApi';
+import logger from '../utils/logger';
 
 // Types for Bulbapedia data
 interface BulbapediaSearchOptions {
@@ -66,7 +67,7 @@ export const useBulbapedia = () => {
       const data = await fetchFunction();
       return { data, error: null };
     } catch (error) {
-      console.error('Bulbapedia fetch error:', error);
+      logger.error('Bulbapedia fetch error:', { error });
       return { data: null, error: (error as Error).message };
     }
   };

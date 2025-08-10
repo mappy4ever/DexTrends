@@ -3,7 +3,7 @@ import { fetchJSON } from '../../utils/unifiedFetch';
 import logger from '../../utils/logger';
 import { tcgCache } from '../../lib/tcg-cache';
 import { createFallbackResponse } from '../../lib/static-sets-fallback';
-import type { TCGApiResponse } from '../../types/api/enhanced-responses';
+import type { TCGApiResponse, TCGSetListApiResponse } from '../../types/api/enhanced-responses';
 import { isTCGSet, isString, hasProperty } from '../../utils/typeGuards';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

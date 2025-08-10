@@ -203,6 +203,11 @@ export const showdownQueries = {
   },
 
   async getMovesByType(type: string) {
+    if (!supabase) {
+      logger.warn('Supabase client not initialized');
+      return [];
+    }
+    
     const { data, error } = await supabase
       .from('move_competitive_data')
       .select('*')
@@ -218,6 +223,11 @@ export const showdownQueries = {
   },
 
   async getMovesByCategory(category: 'physical' | 'special' | 'status') {
+    if (!supabase) {
+      logger.warn('Supabase client not initialized');
+      return [];
+    }
+    
     const { data, error } = await supabase
       .from('move_competitive_data')
       .select('*')
@@ -233,6 +243,11 @@ export const showdownQueries = {
   },
 
   async searchMoves(searchTerm: string) {
+    if (!supabase) {
+      logger.warn('Supabase client not initialized');
+      return [];
+    }
+    
     const { data, error } = await supabase
       .from('move_competitive_data')
       .select('*')

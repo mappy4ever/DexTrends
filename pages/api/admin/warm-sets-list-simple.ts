@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { tcgCache } from '../../../lib/tcg-cache';
 import { fetchJSON } from '../../../utils/unifiedFetch';
 import logger from '../../../utils/logger';
-import type { TCGApiResponse } from '../../../types/api/enhanced-responses';
+import type { TCGApiResponse, TCGSetListApiResponse } from '../../../types/api/enhanced-responses';
 import type { AnyObject } from '../../../types/common';
 
 interface TCGSet {

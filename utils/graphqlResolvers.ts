@@ -441,7 +441,7 @@ export const resolvers = {
           return null;
         }
 
-        return (data as { card_data?: unknown })?.card_data ? parseCardData((data as { card_data: unknown }).card_data) : null;
+        return (data as unknown as { card_data?: unknown })?.card_data ? parseCardData((data as unknown as { card_data: unknown }).card_data) : null;
       } catch (error) {
         logger.error('Card query error:', error);
         throw new Error('Failed to fetch card');
@@ -503,7 +503,7 @@ export const resolvers = {
           return null;
         }
 
-        return (data as { pokemon_data?: unknown })?.pokemon_data ? parsePokemonData((data as { pokemon_data: unknown }).pokemon_data) : null;
+        return (data as unknown as { pokemon_data?: unknown })?.pokemon_data ? parsePokemonData((data as unknown as { pokemon_data: unknown }).pokemon_data) : null;
       } catch (error) {
         logger.error('Pokemon query error:', error);
         throw new Error('Failed to fetch pokemon');

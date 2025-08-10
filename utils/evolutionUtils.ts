@@ -267,6 +267,8 @@ export const getAllForms = async (speciesId: string | number): Promise<PokemonFo
     return forms
       .filter((form): form is PokemonForm => form !== null)
       .sort((a, b) => {
+        // Type guard ensures a and b are not null after filter
+        if (!a || !b) return 0;
         if (a.isDefault) return -1;
         if (b.isDefault) return 1;
         return a.name.localeCompare(b.name);

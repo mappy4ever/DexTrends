@@ -91,7 +91,7 @@ export default async function handler(
           if (generateTrends) {
             logger.info('Generating market trend analysis');
             const trendAnalysis = await priceCollector.generateMarketTrendAnalysis(trendDaysBack);
-            response.trendAnalysis = trendAnalysis as AnyObject;
+            response.trendAnalysis = trendAnalysis as unknown as AnyObject;
           }
 
           return res.status(200).json(response);
@@ -109,7 +109,7 @@ export default async function handler(
         if (trendAnalysis) {
           return res.status(200).json({
             success: true,
-            trendAnalysis: trendAnalysis as AnyObject
+            trendAnalysis: trendAnalysis as unknown as AnyObject
           });
         } else {
           return res.status(500).json({

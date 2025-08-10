@@ -12,7 +12,7 @@ export async function fetchPokemonWithCache(pokemonId: string | number): Promise
     // Try to get from cache first
     const cachedData = await SupabaseCache.getCachedPokemon(Number(pokemonId));
     if (cachedData) {
-      return cachedData as Pokemon;
+      return cachedData as unknown as Pokemon;
     }
 
     // If not in cache, fetch from API
@@ -40,7 +40,7 @@ export async function fetchPokemonSpeciesWithCache(pokemonId: string | number): 
     // Try to get from cache first
     const cachedData = await SupabaseCache.getCachedPokemon(Number(pokemonId));
     if (cachedData) {
-      return cachedData as PokemonSpecies;
+      return cachedData as unknown as PokemonSpecies;
     }
 
     // If not in cache, fetch from API
@@ -72,7 +72,7 @@ export async function fetchPokemonListWithCache(limit = 1000, offset = 0): Promi
     // Try to get from cache first
     const cachedData = await SupabaseCache.getCachedPokemon(listCacheId);
     if (cachedData) {
-      return cachedData as PokemonListResponse;
+      return cachedData as unknown as PokemonListResponse;
     }
 
     // If not in cache, fetch from API
@@ -100,7 +100,7 @@ export async function fetchPokemonCardWithCache(cardId: string): Promise<TCGCard
     // Try to get from cache first
     const cachedData = await SupabaseCache.getCachedCard(cardId);
     if (cachedData) {
-      return cachedData as TCGCard;
+      return cachedData as unknown as TCGCard;
     }
 
     // If not in cache, fetch from Pokemon TCG API
@@ -132,7 +132,7 @@ export async function searchPokemonCardsWithCache(query: string, filters: Search
     // Try to get from cache first (shorter cache time for searches)
     const cachedData = await SupabaseCache.getCachedCard(searchId);
     if (cachedData) {
-      return cachedData as TCGCard[];
+      return cachedData as unknown as TCGCard[];
     }
 
     // If not in cache, fetch from Pokemon TCG API
@@ -148,7 +148,7 @@ export async function searchPokemonCardsWithCache(query: string, filters: Search
     // Cache search results for 1 hour (searches change more frequently)
     await SupabaseCache.setCachedCard(searchId, searchData, searchId);
     
-    return searchData as TCGCard[];
+    return searchData.data as unknown as TCGCard[];
   } catch (error) {
     throw error;
   }

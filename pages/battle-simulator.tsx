@@ -786,7 +786,7 @@ const BattleSimulator: NextPage = () => {
       
       // Update state with results
       setBattleResults(results);
-      setWinner(results.winner);
+      setWinner(typeof results.winner === 'number' ? results.winner : null);
       setCurrentHP1(results.finalHP[0]);
       setCurrentHP2(results.finalHP[1]);
       setBattleActive(false);
@@ -927,7 +927,7 @@ const BattleSimulator: NextPage = () => {
       moves: battleLog.filter(log => typeof log === 'object' && 'damage' in log && log.damage)
     };
     
-    setBattleHistory(prev => [...prev, battleRecord]);
+    setBattleHistory(prev => [...prev, battleRecord as BattleResult]);
     localStorage.setItem('battleHistory', JSON.stringify([...battleHistory, battleRecord]));
   };
 
@@ -2048,7 +2048,7 @@ const BattleSimulator: NextPage = () => {
                           {battle.winner}'s {battle.winnerPokemon} defeated {battle.loser}'s {battle.loserPokemon}
                         </div>
                         <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                          {battle.moves.length} moves • {new Date(battle.date).toLocaleDateString()}
+                          {battle.moves?.length || 0} moves • {new Date(battle.date || new Date()).toLocaleDateString()}
                         </div>
                       </div>
                       <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-lg flex items-center justify-center">

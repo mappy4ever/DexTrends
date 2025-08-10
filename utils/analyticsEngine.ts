@@ -300,7 +300,7 @@ class AnalyticsEngine {
         }
         break;
       case 'page_view':
-        if (eventData.page) {
+        if (eventData.page && typeof eventData.page === 'string') {
           session.pages.add(eventData.page);
         }
         break;
