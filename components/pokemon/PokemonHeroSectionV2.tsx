@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from '../ui/LazyMotion';
 import type { Pokemon, PokemonSpecies } from "../../types/pokemon";
 import { TypeBadge } from '../ui/TypeBadge';
 import { GlassContainer, CircularCard } from '../ui/design-system';

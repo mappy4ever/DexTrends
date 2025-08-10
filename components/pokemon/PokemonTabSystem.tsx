@@ -201,7 +201,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
     } catch (error) {
       logger.error('Error loading tab preference:', error);
     }
-  }, [pokemon.id, activeTab, onTabChange]); // Add missing dependencies
+  }, [pokemon.id, onTabChange]); // Only run when pokemon changes, not when activeTab changes
   
   // Save tab preference with debouncing to prevent rapid writes
   useEffect(() => {

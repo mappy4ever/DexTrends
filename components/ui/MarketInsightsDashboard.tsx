@@ -12,36 +12,7 @@ import {
   ExclamationTriangleIcon,
   InformationCircleIcon
 } from '@heroicons/react/24/outline';
-import { Line, Bar, Doughnut, Scatter } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  ArcElement,
-  Title,
-  Tooltip,
-  Legend,
-  Filler,
-  ChartData,
-  ChartOptions
-} from 'chart.js';
-
-// Register Chart.js components
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  ArcElement,
-  Title,
-  Tooltip,
-  Legend,
-  Filler
-);
+import { LineChart, BarChart, DoughnutChart, ScatterChart, ChartData, ChartOptions } from './LazyChart';
 
 // Type definitions
 interface Card {
@@ -596,18 +567,18 @@ const MarketInsightsDashboard: React.FC<MarketInsightsDashboardProps> = ({ cards
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Price History */}
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-gray-200 dark:border-gray-700">
-          <Line data={priceHistoryChart.data} options={priceHistoryChart.options} />
+          <LineChart data={priceHistoryChart.data} options={priceHistoryChart.options} />
         </div>
 
         {/* Rarity Distribution */}
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-gray-200 dark:border-gray-700">
-          <Doughnut data={rarityChart.data} options={rarityChart.options} />
+          <DoughnutChart data={rarityChart.data} options={rarityChart.options} />
         </div>
       </div>
 
       {/* Price Range Distribution */}
       <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-gray-200 dark:border-gray-700">
-        <Bar data={priceRangeChart.data} options={priceRangeChart.options} />
+        <BarChart data={priceRangeChart.data} options={priceRangeChart.options} />
       </div>
 
       {/* Top Performers */}

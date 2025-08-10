@@ -2,8 +2,9 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { fetchJSON } from '../../../utils/unifiedFetch';
 import logger from '../../../utils/logger';
 import { tcgCache } from '../../../lib/tcg-cache';
-import type { TCGApiResponse } from '../../../types/api/enhanced-responses';
+import type { TCGApiResponse, TCGCardListApiResponse } from '../../../types/api/enhanced-responses';
 import type { UnknownError } from '../../../types/common';
+import type { CardSet, TCGCard } from '../../../types/api/cards';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { setId, page = '1', pageSize = '100' } = req.query; // Reduced to 100 for better reliability
@@ -89,7 +90,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       [setInfo, cardsData] = await Promise.all([
         // Get set information (always needed)
-        fetchJSON<TCGApiResponse<unknown>>(`https://api.pokemontcg.io/v2/sets/${id}`, { 
+        fetchJSON<TCGApiResponse<CardSet>>(`https://api.pokemontcg.io/v2/sets/${id}`, { 
           headers,
           useCache: true,
           cacheTime: 60 * 60 * 1000, // Cache for 1 hour (increased)
@@ -98,7 +99,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           timeout: 30000 // 30 seconds (increased)
         }),
         // Get cards for this set with pagination
-        fetchJSON<TCGApiResponse<unknown[]> & { page?: number; pageSize?: number; count?: number; totalCount?: number }>(
+        fetchJSON<TCGApiResponse<TCGCard[]> & { page?: number; pageSize?: number; count?: number; totalCount?: number }>(
           cardsUrl, 
           { 
             headers,
@@ -206,15 +207,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     };
     
-    // Cache the response asynchronously
-    tcgCache.cacheSetWithCards(id, pageNum, pageSizeNum, response).catch(err => {
+    // Cache the response asynchronously (cast to expected type)
+    tcgCache.cacheSetWithCards(id, pageNum, pageSizeNum, response as TCGCardListApiResponse).catch(err => {
       logger.error('Failed to cache set details', { error: err, setId: id });
     });
     
     // If this is page 1 and we potentially have all cards, check if we should cache complete set
     if (pageNum === 1 && cardsData?.totalCount && cards.length === cardsData.totalCount) {
       logger.info('Caching complete set', { setId: id, cardCount: cards.length });
-      tcgCache.cacheCompleteSet(id, set, cards).catch(err => {
+      tcgCache.cacheCompleteSet(id, set as CardSet, cards as TCGCard[]).catch(err => {
         logger.error('Failed to cache complete set', { error: err, setId: id });
       });
     }

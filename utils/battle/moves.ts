@@ -1,5 +1,5 @@
 import { EnhancedBattleState, BattleAction, KeyMoment } from '@/types/battle';
-import { Pokemon, Move } from "../types/pokemon";
+import { Pokemon, Move } from "../../types/pokemon";
 import { canPokemonMove, calculateTurnOrder } from './core';
 import { calculateDamage } from './damage';
 import { parseMoveEffects, applyMoveEffects, applyStatusEffect } from './effects';

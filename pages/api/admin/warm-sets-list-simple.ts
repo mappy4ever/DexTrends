@@ -118,8 +118,8 @@ export default async function handler(req: WarmSetsListRequest, res: NextApiResp
       }
     };
     
-    // Cache the response
-    await tcgCache.cacheSetsList(page, pageSize, response);
+    // Cache the response (cast as compatible)
+    await tcgCache.cacheSetsList(page, pageSize, response as TCGSetListApiResponse);
     
     const duration = Date.now() - startTime;
     

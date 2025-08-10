@@ -15,6 +15,7 @@ import OptimizedImage from "../OptimizedImage";
 import { useFavorites } from "../../../context/UnifiedAppContext";
 import type { Card as SdkCard } from "pokemontcgsdk";
 import { ensureSdkCompatibleCard } from "../../../utils/cardTypeGuards";
+import type { FavoriteCard } from "../../../context/modules/types";
 
 // Rarity tiers for holographic effects (illustration rare and above only)
 const getHolographicRarities = () => [
@@ -502,11 +503,24 @@ const UnifiedCard = memo(({
     e.stopPropagation();
     
     // Toggle favorite status
-    const isFavorited = favorites.cards.some((c: any) => c.id === card.id);
+    const isFavorited = favorites.cards.some((c: FavoriteCard) => c.id === card.id);
     if (isFavorited) {
       removeFromFavorites('cards', card.id);
     } else {
-      addToFavorites('cards', card);
+      const favoriteCard: FavoriteCard = {
+        id: card.id,
+        name: normalizedCard.name,
+        set: {
+          id: normalizedCard.set?.id || '',
+          name: normalizedCard.set?.name || ''
+        },
+        images: {
+          small: normalizedCard.image || '',
+          large: normalizedCard.image || ''
+        },
+        addedAt: Date.now()
+      };
+      addToFavorites('cards', favoriteCard);
     }
     
     setShowActions(false);

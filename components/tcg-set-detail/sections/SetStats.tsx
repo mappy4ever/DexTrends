@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import Image from 'next/image';
 import { GlassContainer } from '../../ui/design-system/GlassContainer';
 import MarketAnalytics from '../../MarketAnalytics';
 import CollectionTracker from '../../ui/CollectionTracker';
@@ -80,13 +81,19 @@ export default function SetStats({ statistics, cards, setId }: SetStatsProps) {
                       transition={{ type: "spring", stiffness: 300 }}
                     >
                       <div className="flex items-center gap-3">
-                        <motion.img 
-                          src={getRaritySymbol(rarity)} 
-                          alt={rarity}
-                          className="w-6 h-6"
+                        <motion.div
+                          className="relative w-6 h-6"
                           whileHover={{ scale: 1.2, rotate: 360 }}
                           transition={{ duration: 0.3 }}
-                        />
+                        >
+                          <Image 
+                            src={getRaritySymbol(rarity)} 
+                            alt={rarity}
+                            width={24}
+                            height={24}
+                            className="w-6 h-6"
+                          />
+                        </motion.div>
                         <span className={`text-sm ${
                           tier === 'secret' ? 'text-purple-600 font-semibold' :
                           tier === 'ultra' ? 'text-yellow-600 font-semibold' :
@@ -178,16 +185,27 @@ export default function SetStats({ statistics, cards, setId }: SetStatsProps) {
                     whileHover={{ y: -5 }}
                   >
                     <div className="relative">
-                      <img 
-                        src={card.images.small} 
-                        alt={card.name}
-                        className="w-24 h-32 object-cover rounded-lg shadow-md"
-                      />
-                      <img 
-                        src={getRaritySymbol(card.rarity)} 
-                        alt={card.rarity}
-                        className="absolute top-1 right-1 w-5 h-5"
-                      />
+                      <div className="relative w-24 h-32">
+                        <Image 
+                          src={card.images.small} 
+                          alt={card.name}
+                          width={96}
+                          height={128}
+                          className="object-cover rounded-lg shadow-md"
+                          loading="lazy"
+                          placeholder="blur"
+                          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R"
+                        />
+                      </div>
+                      <div className="absolute top-1 right-1 w-5 h-5">
+                        <Image 
+                          src={getRaritySymbol(card.rarity)} 
+                          alt={card.rarity}
+                          width={20}
+                          height={20}
+                          className="w-5 h-5"
+                        />
+                      </div>
                     </div>
                     <p className="text-xs font-medium mt-2 truncate max-w-[96px]">{card.name}</p>
                     <p className="text-sm font-bold text-green-600">

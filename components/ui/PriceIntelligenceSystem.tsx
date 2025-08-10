@@ -2,33 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { FaChartLine, FaArrowUp, FaArrowDown, FaBrain, FaRobot, FaExclamationTriangle, FaInfoCircle } from 'react-icons/fa';
 import { BsLightningFill, BsGraphUp, BsGraphDown, BsArrowUp, BsArrowDown } from 'react-icons/bs';
 import logger from '@/utils/logger';
-import { Line, Bar, Scatter } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  ScatterController,
-  ChartData,
-  ChartOptions
-} from 'chart.js';
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  ScatterController,
-  Title,
-  Tooltip,
-  Legend
-);
+import { LineChart, BarChart, ScatterChart, ChartData, ChartOptions } from './LazyChart';
 
 // Types and Interfaces
 interface PredictionPoint {
@@ -444,7 +418,7 @@ const PriceIntelligenceSystem: React.FC<PriceIntelligenceSystemProps> = ({
         
         <div className="h-80">
           {chartData && (
-            <Line data={chartData} options={chartOptions} />
+            <LineChart data={chartData} options={chartOptions} />
           )}
         </div>
       </div>

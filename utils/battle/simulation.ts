@@ -1,5 +1,5 @@
 import { EnhancedBattleState, BattleResult, KeyMoment } from '@/types/battle';
-import { Pokemon, Move, PokemonMove } from "../types/pokemon";
+import { Pokemon, Move, PokemonMove } from "../../types/pokemon";
 import { createInitialBattleState } from './core';
 import { executeTurn } from './moves';
 import { processEndOfTurn } from './effects';

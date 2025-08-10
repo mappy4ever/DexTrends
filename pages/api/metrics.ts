@@ -311,7 +311,7 @@ function handleJsonFormat(req: NextApiRequest, res: NextApiResponse<MetricsData 
     };
     
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    return res.status(200).json(data);
+    return res.status(200).json(data as any);
     
   } catch (error) {
     logger.error('JSON metrics error', { error: error.message });

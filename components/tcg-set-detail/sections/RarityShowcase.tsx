@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import Image from 'next/image';
 import { GlassContainer } from '../../ui/design-system/GlassContainer';
 // SmartRecommendationEngine removed - simplified version
 import { CompactPriceIndicator } from '../../ui/PriceIndicator';
@@ -120,13 +121,19 @@ export default function RarityShowcase({ cards, onCardClick }: RarityShowcasePro
                   
                   <div className="relative z-10">
                     <div className="flex items-center gap-3 mb-3">
-                      <motion.img 
-                        src={getRaritySymbol(rarity)} 
-                        alt={rarity}
-                        className="w-7 h-7"
+                      <motion.div
+                        className="relative w-7 h-7"
                         whileHover={{ scale: 1.2, rotate: 360 }}
                         transition={{ duration: 0.3 }}
-                      />
+                      >
+                        <Image 
+                          src={getRaritySymbol(rarity)} 
+                          alt={rarity}
+                          width={28}
+                          height={28}
+                          className="w-7 h-7"
+                        />
+                      </motion.div>
                       <h3 className={`text-lg font-semibold ${
                         tier === 'secret' ? 'text-purple-600' :
                         tier === 'ultra' ? 'text-yellow-600' :

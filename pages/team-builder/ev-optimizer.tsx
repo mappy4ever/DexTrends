@@ -27,7 +27,7 @@ import {
   optimizeEVsForStat
 } from '../../utils/statCalculations';
 import type { TeamMember, StatSpread, Nature } from '../../types/team-builder';
-import type { Pokemon } from "../types/pokemon";
+import type { Pokemon } from "../../types/pokemon";
 import logger from '../../utils/logger';
 
 // Dynamic import for the heat map component

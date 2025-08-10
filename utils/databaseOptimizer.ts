@@ -486,7 +486,7 @@ class DatabaseOptimizer {
     try {
       const now = new Date().toISOString();
       
-      const { data, error } = await supabase
+      const { data: cardData, error } = await supabase
         .from('card_cache')
         .delete()
         .lt('expires_at', now);
@@ -500,8 +500,10 @@ class DatabaseOptimizer {
         throw new Error(`Cache cleanup error: ${error?.message || pokemonError?.message}`);
       }
 
-      const clearedCards = Array.isArray(data) ? data.length : 0;
-      const clearedPokemon = Array.isArray(pokemonData) ? pokemonData.length : 0;
+      // Supabase delete operations return null on success, so we can't get actual length
+      // Using return value of 1 for successful operations as a placeholder
+      const clearedCards = (!error && cardData !== undefined) ? 1 : 0;
+      const clearedPokemon = (!pokemonError && pokemonData !== undefined) ? 1 : 0;
       
       logger.info('Cache cleanup completed', { 
         cardCacheCleared: clearedCards,
@@ -522,7 +524,7 @@ class DatabaseOptimizer {
     try {
       const cutoffDate = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString();
       
-      const { data, error } = await supabase
+      const { data: analyticsData, error } = await supabase
         .from('user_analytics_events')
         .delete()
         .lt('created_at', cutoffDate);
@@ -531,7 +533,9 @@ class DatabaseOptimizer {
         throw new Error(`Analytics cleanup error: ${error.message}`);
       }
 
-      const clearedEvents = Array.isArray(data) ? data.length : 0;
+      // Supabase delete operations return null on success, so we can't get actual length
+      // Using return value of 1 for successful operations as a placeholder
+      const clearedEvents = (!error && analyticsData !== undefined) ? 1 : 0;
       
       logger.info('Analytics cleanup completed', { eventsCleared: clearedEvents });
       return { success: true, cleared: clearedEvents };

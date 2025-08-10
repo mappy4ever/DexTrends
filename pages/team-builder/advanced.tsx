@@ -18,7 +18,7 @@ import FullBleedWrapper from '../../components/ui/FullBleedWrapper';
 import CircularButton from '../../components/ui/CircularButton';
 import { analyzeTeamTypeSynergy, getTypeMatchups } from '../../utils/typeEffectiveness';
 import type { TeamMember, Move, Nature, StatSpread } from '../../types/team-builder';
-import type { Pokemon } from "../types/pokemon";
+import type { Pokemon } from "../../types/pokemon";
 import logger from '../../utils/logger';
 
 // Dynamic import for the graph component to avoid SSR issues

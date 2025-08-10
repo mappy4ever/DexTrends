@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import type { Pokemon, PokemonSpecies } from "../../types/pokemon";
+import type { Pokemon, PokemonSpecies } from "../../types/api/pokemon";
+import type { FavoritePokemon } from "../../context/modules/types";
 import { TypeBadge } from '../ui/TypeBadge';
 import { GlassContainer } from '../ui/design-system';
 import { getTypeUIColors } from '../../utils/pokemonTypeGradients';
@@ -29,7 +30,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
   const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
   
   // Check if this Pokemon is already favorited
-  const isFavorited = favorites.pokemon?.some((fav: { id: string }) => fav.id === pokemon.id.toString());
+  const isFavorited = favorites.pokemon?.some((fav: FavoritePokemon) => fav.id === pokemon.id);
   
   // Safety check - return early if essential data is missing
   if (!pokemon || !species) {
@@ -264,18 +265,17 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                   e.preventDefault();
                   e.stopPropagation();
                   
-                  const pokemonData = {
-                    id: pokemon.id.toString(),
-                    name: pokemon.name,
-                    types: pokemon.types,
-                    sprite: pokemon.sprites?.front_default || '',
-                    stats: pokemon.stats
-                  };
-                  
                   if (isFavorited) {
-                    removeFromFavorites('pokemon', pokemon.id.toString());
+                    removeFromFavorites('pokemon', pokemon.id);
                   } else {
-                    addToFavorites('pokemon', pokemonData);
+                    const favoritePokemon: FavoritePokemon = {
+                      id: typeof pokemon.id === 'string' ? parseInt(pokemon.id) : pokemon.id,
+                      name: pokemon.name,
+                      types: pokemon.types?.map(t => t.type.name),
+                      sprite: pokemon.sprites?.front_default || undefined,
+                      addedAt: Date.now()
+                    };
+                    addToFavorites('pokemon', favoritePokemon);
                   }
                 }}
                 className={cn(

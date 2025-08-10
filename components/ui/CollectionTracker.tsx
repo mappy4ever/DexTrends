@@ -12,8 +12,7 @@ import {
   FaSlidersH
 } from 'react-icons/fa';
 // BsSparkles import removed - not available in react-icons/bs
-import { Doughnut, Bar } from 'react-chartjs-2';
-import { ChartData, ChartOptions } from 'chart.js';
+import { DoughnutChart, BarChart, ChartData, ChartOptions } from './LazyChart';
 import Modal from './modals/Modal';
 import { useNotifications } from '../../hooks/useNotifications';
 import { TCGCard } from '../../types/api/cards';
@@ -663,17 +662,17 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Overall Progress Chart */}
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border">
-              <Doughnut data={completionChart.data} options={completionChart.options} />
+              <DoughnutChart data={completionChart.data} options={completionChart.options} />
             </div>
 
             {/* Rarity Progress Chart */}
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border">
-              <Doughnut data={rarityChart.data} options={rarityChart.options} />
+              <DoughnutChart data={rarityChart.data} options={rarityChart.options} />
             </div>
 
             {/* Set Progress Chart */}
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border lg:col-span-2">
-              <Bar data={setProgressChart.data} options={setProgressChart.options} />
+              <BarChart data={setProgressChart.data} options={setProgressChart.options} />
             </div>
 
             {/* Quick Stats */}

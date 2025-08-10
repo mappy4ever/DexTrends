@@ -6,10 +6,13 @@ import { DualTypeCalculator } from '../components/ui/TypeAnalysis';
 import { GlassContainer } from '../components/ui/design-system/GlassContainer';
 import CircularButton from '../components/ui/CircularButton';
 import { TypeGradientBadge } from '../components/ui/design-system/TypeGradientBadge';
-import CircularTypeMatrix from '../components/ui/CircularTypeMatrix';
+import LazyWrapper from '../components/ui/LazyWrapper';
+
+// Lazy load CircularTypeMatrix
+const LazyCircularTypeMatrix = React.lazy(() => import('../components/ui/CircularTypeMatrix'));
 import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { NextPage } from 'next';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from '../components/ui/LazyMotion';
 import { FadeIn, SlideUp, StaggeredChildren } from '../components/ui/animations/animations';
 import { BsChevronUp, BsChevronDown } from 'react-icons/bs';
 import { THEME, TYPE_GRADIENTS, themeClass } from '../utils/theme';
@@ -488,7 +491,8 @@ const TypeEffectiveness: NextPage = () => {
             
             <FadeIn delay={0.2}>
               {typeData && Object.keys(typeData).length > 0 && (
-                <CircularTypeMatrix
+                <LazyWrapper variant="circular" height={400}>
+                  <LazyCircularTypeMatrix
                   typeData={new Map(Object.entries(typeData))}
                   selectedType={selectedAttackType || undefined}
                   onTypeSelect={(type) => {
@@ -496,7 +500,8 @@ const TypeEffectiveness: NextPage = () => {
                     // Optionally scroll to interactive section
                     scrollToSection('interactive');
                   }}
-                />
+                  />
+                </LazyWrapper>
               )}
             </FadeIn>
           </div>

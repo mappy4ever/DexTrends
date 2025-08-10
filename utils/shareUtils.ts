@@ -7,16 +7,27 @@ import logger from './logger';
 export type ShareMethod = 'link' | 'image' | 'stats' | 'qr';
 
 /**
+ * Interface for notification system
+ */
+interface NotificationSystem {
+  notify?: {
+    success: (message: string) => void;
+    error: (message: string) => void;
+    info: (message: string) => void;
+  };
+}
+
+/**
  * Notification instance that will be set from components using this utility
  * Components should call setNotificationInstance with their notification context
  */
-let notificationInstance: unknown = null;
+let notificationInstance: NotificationSystem | null = null;
 
 /**
  * Set the notification instance for this utility to use
  * Should be called by components that use share functionality
  */
-export const setNotificationInstance = (instance: unknown) => {
+export const setNotificationInstance = (instance: NotificationSystem | null) => {
   notificationInstance = instance;
 };
 

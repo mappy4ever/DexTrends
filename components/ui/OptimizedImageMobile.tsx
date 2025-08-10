@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback, CSSProperties, ImgHTMLAttributes, ComponentType, forwardRef, RefAttributes } from 'react';
+import Image from 'next/image';
 import adaptiveLoading from '../../utils/adaptiveLoading';
 import batteryOptimization from '../../utils/batteryOptimization';
 import logger from '../../utils/logger';
@@ -323,18 +324,19 @@ const OptimizedImageMobile: React.FC<OptimizedImageMobileProps> = ({
   return (
     <div className={`optimized-image ${className}`} style={containerStyle}>
       {isVisible && !hasError && (
-        <img
+        <Image
           ref={imgRef}
           src={optimizedSrc}
           alt={alt}
-          width={width}
-          height={height}
+          width={width || 200}
+          height={height || 200}
           sizes={sizes}
           style={imageStyle}
           onLoad={handleLoad}
           onError={handleError}
-          loading={priority === 'high' ? 'eager' : 'lazy'}
-          decoding="async"
+          priority={priority === 'high'}
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R"
           {...props}
         />
       )}

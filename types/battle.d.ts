@@ -112,11 +112,17 @@ export interface BattleAction {
 }
 
 export interface BattleResult {
-  winner: 1 | 2;
+  winner: 1 | 2 | string; // Allow string names as well as player numbers
   turns: number;
   keyMoments: KeyMoment[];
   finalHP: [number, number];
   totalDamageDealt: [number, number];
+  // Additional properties for battle history display
+  date?: Date;
+  winnerPokemon?: string;
+  loser?: string;
+  loserPokemon?: string;
+  moves?: unknown[]; // Can be string or BattleLog objects
 }
 
 export interface KeyMoment {

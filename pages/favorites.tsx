@@ -9,8 +9,11 @@ import { getGeneration } from '../utils/pokemonutils';
 import { fetchJSON } from '../utils/unifiedFetch';
 import logger from '../utils/logger';
 import PokeballLoader from '../components/ui/PokeballLoader';
-import CollectionDashboard from "../components/ui/layout/CollectionDashboard";
-import AchievementSystem from '../components/ui/AchievementSystem';
+import { AchievementSystem } from '../components/ui/LazyComponents';
+import LazyWrapper from '../components/ui/LazyWrapper';
+
+// Lazy load CollectionDashboard
+const LazyCollectionDashboard = React.lazy(() => import("../components/ui/layout/CollectionDashboard"));
 import CircularPokemonCard from '../components/ui/cards/CircularPokemonCard';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import { CircularButton } from '../components/ui/design-system';
@@ -180,7 +183,9 @@ const FavoritesPage: NextPage = () => {
           {/* Dashboard Tab */}
           {activeTab === 'dashboard' && (
             <div className="animate-fadeIn">
-              <CollectionDashboard />
+              <LazyWrapper variant="dashboard" height={300}>
+                <LazyCollectionDashboard />
+              </LazyWrapper>
             </div>
           )}
 

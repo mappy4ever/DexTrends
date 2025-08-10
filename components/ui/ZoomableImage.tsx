@@ -49,7 +49,7 @@ export const ZoomableImage: React.FC<ZoomableImageProps> = ({
   }, [enableZoom]);
 
   // Handle pinch zoom
-  const handlePinch = useCallback((detail: { scale: number; origin: { x: number; y: number } }) => {
+  const handlePinch = useCallback((detail: { scale: number; delta: number; center: { x: number; y: number } }) => {
     if (!isZoomed) return;
     
     const newScale = Math.max(minZoom, Math.min(maxZoom, detail.scale));

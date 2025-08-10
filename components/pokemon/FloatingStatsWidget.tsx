@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { Pokemon } from "../../types/pokemon";
+import type { Pokemon } from "../../types/api/pokemon";
+import type { FavoritePokemon } from "../../context/modules/types";
 import PokemonGlassCard from './PokemonGlassCard';
 import { TypeBadge } from '../ui/TypeBadge';
 import { useScrollVisibility } from '../../hooks/useScrollVisibility';
@@ -25,7 +26,7 @@ const FloatingStatsWidget: React.FC<FloatingStatsWidgetProps> = ({
   const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
   
   // Check if favorited
-  const isFavorite = favorites.pokemon.some((p: Pokemon) => p.id === pokemon.id);
+  const isFavorite = favorites.pokemon.some((p: FavoritePokemon) => p.id === pokemon.id);
   
   // Calculate total base stats
   const totalStats = pokemon.stats?.reduce((sum, stat) => sum + stat.base_stat, 0) || 0;
@@ -214,7 +215,14 @@ const FloatingStatsWidget: React.FC<FloatingStatsWidgetProps> = ({
                         if (isFavorite) {
                           removeFromFavorites('pokemon', pokemon.id);
                         } else {
-                          addToFavorites('pokemon', pokemon);
+                          const favoritePokemon: FavoritePokemon = {
+                            id: typeof pokemon.id === 'string' ? parseInt(pokemon.id) : pokemon.id,
+                            name: pokemon.name,
+                            types: pokemon.types?.map(t => t.type.name),
+                            sprite: pokemon.sprites?.front_default || undefined,
+                            addedAt: Date.now()
+                          };
+                          addToFavorites('pokemon', favoritePokemon);
                         }
                       }}
                       className="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-sm"

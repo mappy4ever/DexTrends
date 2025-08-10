@@ -4,19 +4,7 @@
  */
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  Filler,
-  RadialLinearScale,
-} from 'chart.js';
-import { Radar, Bar } from 'react-chartjs-2';
+import { RadarChart, BarChart } from '../ui/LazyChart';
 import { 
   calculateAllStats, 
   calculateEVGains, 
@@ -29,17 +17,7 @@ import {
 import type { TeamMember, StatSpread } from '../../types/team-builder';
 import type { Pokemon } from "../../types/pokemon";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  Filler,
-  RadialLinearScale
-);
+// Chart.js registration is handled by LazyChart component
 
 interface EVHeatMapProps {
   pokemon: Pokemon;
@@ -334,7 +312,7 @@ const EVHeatMap: React.FC<EVHeatMapProps> = ({
         <div>
           <h4 className="text-lg font-semibold mb-3">Stat Distribution</h4>
           <div className="h-[300px]">
-            <Radar data={radarData} options={radarOptions} />
+            <RadarChart data={radarData} options={radarOptions} />
           </div>
         </div>
 
@@ -342,7 +320,7 @@ const EVHeatMap: React.FC<EVHeatMapProps> = ({
         <div>
           <h4 className="text-lg font-semibold mb-3">EV Allocation</h4>
           <div className="h-[300px]">
-            <Bar data={barData} options={barOptions} />
+            <BarChart data={barData} options={barOptions} />
           </div>
         </div>
       </div>

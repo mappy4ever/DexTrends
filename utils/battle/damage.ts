@@ -1,5 +1,5 @@
 import { PokemonBattleState, BattleField, DamageCalculation } from '@/types/battle';
-import { Pokemon, Move } from "../types/pokemon";
+import { Pokemon, Move } from "../../types/pokemon";
 import { getStatStageMultiplier, getWeatherDamageMultiplier, getTerrainDamageMultiplier } from './core';
 
 export const calculateDamage = (

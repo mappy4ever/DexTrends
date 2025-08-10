@@ -117,7 +117,7 @@ const TrendingPage: NextPage = () => {
           const cards = Array.isArray(result) ? result : result?.data || [];
           if (cards && cards.length > 0) {
             // Only include cards with price data
-            const cardsWithPrices = cards.filter((card: { tcgplayer?: { prices?: { holofoil?: { market?: number }, normal?: { market?: number }, [key: string]: unknown } } }) => 
+            const cardsWithPrices = cards.filter((card: { tcgplayer?: { prices?: { holofoil?: { market?: number }, normal?: { market?: number }, reverseHolofoil?: { market?: number }, '1stEditionHolofoil'?: { market?: number }, [key: string]: unknown } } }) => 
               card.tcgplayer?.prices?.holofoil?.market || 
               card.tcgplayer?.prices?.normal?.market ||
               card.tcgplayer?.prices?.reverseHolofoil?.market ||

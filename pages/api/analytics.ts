@@ -9,6 +9,15 @@ import logger from '../../utils/logger';
 import { ErrorResponse } from '@/types/api/api-responses';
 import type { UnknownError, AnyObject } from '../../types/common';
 
+interface QueryAnalysis {
+  topQueries?: [string, number][];
+  [key: string]: unknown;
+}
+
+interface AnalyticsData extends AnyObject {
+  queryAnalysis?: QueryAnalysis;
+}
+
 interface AnalyticsResponse {
   success: boolean;
   type?: string;
@@ -117,7 +126,7 @@ async function handleGetAnalytics(
     // Handle different response formats
     const formatStr = Array.isArray(format) ? format[0] : format;
     if (formatStr === 'csv' && type === 'search') {
-      return handleCSVResponse(res as NextApiResponse<string | ErrorResponse>, analyticsData, type);
+      return handleCSVResponse(res as NextApiResponse<string | ErrorResponse>, analyticsData as AnyObject, type);
     }
 
     return res.status(200).json({
@@ -128,7 +137,7 @@ async function handleGetAnalytics(
         startDate: new Date(Date.now() - parsedDaysBack * 24 * 60 * 60 * 1000).toISOString(),
         endDate: new Date().toISOString()
       },
-      data: analyticsData,
+      data: analyticsData as AnyObject,
       generatedAt: new Date().toISOString()
     });
 
@@ -193,7 +202,7 @@ async function handleTrackEvent(
 
 function handleCSVResponse(
   res: NextApiResponse<string | ErrorResponse>,
-  data: AnyObject,
+  data: AnalyticsData,
   type: string
 ) {
   try {

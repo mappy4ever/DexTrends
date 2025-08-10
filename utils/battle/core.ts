@@ -1,5 +1,5 @@
 import { EnhancedBattleState, PokemonBattleState, WeatherType, TerrainType, StatusEffect, StatStage } from '@/types/battle';
-import { Pokemon, Move } from "../types/pokemon";
+import { Pokemon, Move } from "../../types/pokemon";
 
 interface PokemonBattleConfig {
   level: number;

@@ -17,6 +17,7 @@ import { useAppContext } from "../../context/UnifiedAppContext";
 import { fetchJSON } from "../../utils/unifiedFetch";
 import performanceMonitor from "../../utils/performanceMonitor";
 import type { TCGCard, CardSet } from "../../types/api/cards";
+import type { FavoriteCard } from "../../context/modules/types";
 
 // Type color mapping and RGBA helpers
 const typeHexColors: Record<string, string> = {
@@ -53,7 +54,7 @@ export default function CardDetailPage() {
 
   // Check if card is favorite
   const isCardFavorite = (id: string): boolean => {
-    return favorites.cards.some(card => card.id === id);
+    return favorites.cards.some((card: FavoriteCard) => card.id === id);
   };
   
   // Fetch card data when cardId changes
@@ -246,7 +247,14 @@ export default function CardDetailPage() {
       if (isCardFavorite(card.id)) {
         removeFromFavorites('cards', card.id);
       } else {
-        addToFavorites('cards', card);
+        const favoriteCard: FavoriteCard = {
+          id: card.id,
+          name: card.name,
+          set: card.set ? { id: card.set.id, name: card.set.name } : undefined,
+          images: card.images,
+          addedAt: Date.now()
+        };
+        addToFavorites('cards', favoriteCard);
       }
     }
   };

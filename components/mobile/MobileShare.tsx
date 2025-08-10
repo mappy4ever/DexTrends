@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import { useMobileUtils } from '../../utils/mobileUtils';
 import logger from '../../utils/logger';
 
@@ -305,7 +306,17 @@ const MobileShare: React.FC<MobileShareProps> = ({
         <div className="preview-content">
           {shareData.image && (
             <div className="preview-image">
-              <img src={shareData.image} alt="Share preview" />
+              <div className="relative w-full h-full">
+                <Image 
+                  src={shareData.image} 
+                  alt="Share preview" 
+                  fill
+                  className="object-cover rounded"
+                  loading="lazy"
+                  placeholder="blur"
+                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R"
+                />
+              </div>
             </div>
           )}
           <div className="preview-text">

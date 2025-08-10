@@ -69,6 +69,36 @@ export interface TCGApiResponse<T = unknown> {
   totalCount?: number;
 }
 
+// TCG Sets List API Response (for caching)
+export interface TCGSetListApiResponse {
+  data: any[]; // CardSet[]
+  pagination: {
+    page: number;
+    pageSize: number;
+    count: number;
+    totalCount: number;
+    hasMore: boolean;
+  };
+  meta: {
+    responseTime: number;
+    cached: boolean;
+  };
+}
+
+// TCG Cards List API Response (for caching)
+export interface TCGCardListApiResponse {
+  set?: any; // CardSet
+  cards?: any[]; // TCGCard[]
+  data?: any[]; // TCGCard[]
+  pagination: {
+    page: number;
+    pageSize: number;
+    count: number;
+    totalCount: number;
+    hasMore: boolean;
+  };
+}
+
 // Pokemon API specific responses
 export interface PokemonApiResponse<T = unknown> {
   count?: number;

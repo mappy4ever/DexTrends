@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import { TCGCard } from '../../types/api/cards';
 import { getRaritySymbol, getRarityGlowClass } from '../../utils/tcgRaritySymbols';
 import hapticFeedback from '../../utils/hapticFeedback';
@@ -90,12 +91,17 @@ export const CardFlipAnimation: React.FC<CardFlipAnimationProps> = ({
           variants={glowVariants}
           animate={isHovered ? "hover" : "idle"}
         >
-          <img
-            src={card.images.large || card.images.small}
-            alt={card.name}
-            className="w-full h-full object-contain"
-            loading="lazy"
-          />
+          <div className="relative w-full h-full">
+            <Image
+              src={card.images.large || card.images.small}
+              alt={card.name}
+              fill
+              className="object-contain"
+              loading="lazy"
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R"
+            />
+          </div>
           
           {/* Hover Overlay */}
           <AnimatePresence>

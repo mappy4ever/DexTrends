@@ -3,6 +3,7 @@ import { useFavorites } from '../../../context/UnifiedAppContext';
 import { TypeBadge } from '../TypeBadge';
 import Link from 'next/link';
 import logger from '../../../utils/logger';
+import type { FavoriteCard } from '../../../context/modules/types';
 // import { PokemonTCGCard } from '../../../types';
 interface PokemonTCGCard {
   id: string;
@@ -15,6 +16,7 @@ interface PokemonTCGCard {
     large: string;
   };
   set: {
+    id?: string;
     name: string;
     images?: {
       symbol?: string;
@@ -36,14 +38,21 @@ const EnhancedCardModal = ({ card, isOpen, onClose }: { card: PokemonTCGCard; is
   const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
   
   const isCardFavorite = (cardId: string) => {
-    return favorites?.cards?.some((card: PokemonTCGCard) => card.id === cardId) || false;
+    return favorites?.cards?.some((card: FavoriteCard) => card.id === cardId) || false;
   };
   
   const toggleCardFavorite = (card: PokemonTCGCard) => {
     if (isCardFavorite(card.id)) {
       removeFromFavorites('cards', card.id);
     } else {
-      addToFavorites('cards', card);
+      const favoriteCard: FavoriteCard = {
+        id: card.id,
+        name: card.name,
+        set: card.set ? { id: card.set.id || '', name: card.set.name } : undefined,
+        images: card.images,
+        addedAt: Date.now()
+      };
+      addToFavorites('cards', favoriteCard);
     }
   };
 

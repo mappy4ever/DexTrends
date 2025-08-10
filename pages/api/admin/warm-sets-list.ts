@@ -4,6 +4,7 @@ import { fetchJSON } from '../../../utils/unifiedFetch';
 import logger from '../../../utils/logger';
 import type { UnknownError } from '../../../types/common';
 import type { TCGApiResponse } from '../../../types/api/enhanced-responses';
+import type { CardSet } from '../../../types/api/cards';
 
 interface WarmSetsListRequest extends NextApiRequest {
   query: {
@@ -75,12 +76,12 @@ export default async function handler(req: WarmSetsListRequest, res: NextApiResp
           const totalSets = countResponse?.totalCount || 200;
           
           // Fetch all sets in batches
-          const allSets: unknown[] = [];
+          const allSets: CardSet[] = [];
           const pageSize = 250;
           const totalPages = Math.ceil(totalSets / pageSize);
 
           for (let page = 1; page <= totalPages; page++) {
-            const response = await fetchJSON<TCGApiResponse<unknown[]>>(
+            const response = await fetchJSON<TCGApiResponse<CardSet[]>>(
               `https://api.pokemontcg.io/v2/sets?orderBy=-releaseDate&page=${page}&pageSize=${pageSize}`,
               { headers, timeout: 30000, retries: 2 }
             );

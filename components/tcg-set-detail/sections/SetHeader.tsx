@@ -1,5 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import { GlassContainer } from '../../ui/design-system/GlassContainer';
 import { GradientButton } from '../../ui/design-system/GradientButton';
 import { motion } from 'framer-motion';
@@ -64,21 +65,34 @@ export default function SetHeader({ setInfo, onScrollToCards }: SetHeaderProps) 
             transition={{ delay: 0.1 }}
           >
             {setInfo.images?.logo && (
-              <img 
-                src={setInfo.images.logo} 
-                alt={setInfo.name}
-                className="max-w-full h-auto mb-4 drop-shadow-lg"
-                style={{ maxHeight: '200px' }}
-              />
+              <div className="relative max-w-full h-auto mb-4" style={{ maxHeight: '200px' }}>
+                <Image 
+                  src={setInfo.images.logo} 
+                  alt={setInfo.name}
+                  width={400}
+                  height={200}
+                  className="max-w-full h-auto drop-shadow-lg"
+                  style={{ maxHeight: '200px', objectFit: 'contain' }}
+                  priority={true}
+                  placeholder="blur"
+                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R"
+                />
+              </div>
             )}
             {setInfo.images?.symbol && (
-              <motion.img 
-                src={setInfo.images.symbol} 
-                alt={`${setInfo.name} symbol`}
-                className="h-16 w-16 object-contain"
+              <motion.div
+                className="relative h-16 w-16"
                 whileHover={{ scale: 1.1, rotate: 360 }}
                 transition={{ duration: 0.5 }}
-              />
+              >
+                <Image 
+                  src={setInfo.images.symbol} 
+                  alt={`${setInfo.name} symbol`}
+                  width={64}
+                  height={64}
+                  className="h-16 w-16 object-contain"
+                />
+              </motion.div>
             )}
           </motion.div>
 

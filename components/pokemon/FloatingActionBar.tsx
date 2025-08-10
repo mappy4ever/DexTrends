@@ -6,7 +6,8 @@ import { CircularButton } from '../ui/design-system';
 import { useFavorites } from '../../context/UnifiedAppContext';
 import ShareMenu from '../ui/ShareMenu';
 import { sharePokemon } from '../../utils/shareUtils';
-import type { Pokemon } from "../../types/pokemon";
+import type { Pokemon } from "../../types/api/pokemon";
+import type { FavoritePokemon } from "../../context/modules/types";
 
 interface FloatingActionBarProps {
   pokemon: Pokemon;
@@ -21,7 +22,7 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
   const [showScrollTop, setShowScrollTop] = useState(false);
   
   // Check if favorited
-  const isFavorite = favorites.pokemon.some((p: Pokemon) => p.id === pokemon.id);
+  const isFavorite = favorites.pokemon.some((p: FavoritePokemon) => p.id === pokemon.id);
   
   // Handle scroll visibility
   useEffect(() => {
@@ -100,7 +101,14 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
           if (isFavorite) {
             removeFromFavorites('pokemon', pokemon.id);
           } else {
-            addToFavorites('pokemon', pokemon);
+            const favoritePokemon: FavoritePokemon = {
+              id: typeof pokemon.id === 'string' ? parseInt(pokemon.id) : pokemon.id,
+              name: pokemon.name,
+              types: pokemon.types?.map(t => t.type.name),
+              sprite: pokemon.sprites?.front_default || undefined,
+              addedAt: Date.now()
+            };
+            addToFavorites('pokemon', favoritePokemon);
           }
         }}
         className={cn(

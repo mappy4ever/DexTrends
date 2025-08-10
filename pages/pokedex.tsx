@@ -9,7 +9,7 @@ import { TypeBadge } from "../components/ui/TypeBadge";
 import { getGeneration } from "../utils/pokemonutils";
 import PokeballLoader from "../components/ui/PokeballLoader";
 import FullBleedWrapper from "../components/ui/FullBleedWrapper";
-import type { Pokemon, PokemonType, PokemonSprites, PokemonSpecies } from "../../types/pokemon";
+import type { Pokemon, PokemonType, PokemonSprites, PokemonSpecies } from "../types/pokemon";
 import CircularPokemonCard from "../components/ui/cards/CircularPokemonCard";
 import { InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { CircularButton } from "../components/ui/design-system";

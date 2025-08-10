@@ -19,11 +19,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
     // Try exact match first
     const exactResult = await pokemon.card.where({ q: `name:"${pokemonName}"` });
-    logger.debug('[Test TCG API] Exact match result:', { count: exactResult?.length || 0 });
+    logger.debug('[Test TCG API] Exact match result:', { count: (exactResult as { data?: unknown[] }).data?.length || 0 });
     
     // Try partial match
     const partialResult = await pokemon.card.where({ q: `name:${pokemonName}*` });
-    logger.debug('[Test TCG API] Partial match result:', { count: partialResult?.length || 0 });
+    logger.debug('[Test TCG API] Partial match result:', { count: (partialResult as { data?: unknown[] }).data?.length || 0 });
     
     res.status(200).json({
       success: true,

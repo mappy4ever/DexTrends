@@ -4,22 +4,18 @@
  */
 
 import React, { useRef, useEffect, useState, useMemo } from 'react';
-import {
-  Chart as ChartJS,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Tooltip,
-  Legend,
-  ChartOptions,
-  ScatterDataPoint,
-} from 'chart.js';
-import { Scatter } from 'react-chartjs-2';
+import { ScatterChart, ChartOptions } from '../ui/LazyChart';
+
+// Import ScatterDataPoint type separately
+type ScatterDataPoint = {
+  x: number;
+  y: number;
+};
 import { analyzeTeamTypeSynergy, getTypeColor, getTypeMatchups, calculateOffensiveCoverage } from '../../utils/typeEffectiveness';
 import type { TeamMember, NetworkNode, NetworkEdge, GraphData } from '../../types/team-builder';
 import type { Pokemon } from "../../types/pokemon";
 
-ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
+// Chart.js registration is handled by LazyChart component
 
 interface TeamSynergyGraphProps {
   team: TeamMember[];
@@ -309,54 +305,13 @@ const TeamSynergyGraph: React.FC<TeamSynergyGraphProps> = ({
   };
 
   // Draw edges on canvas
+  // Note: Custom drawing functionality disabled in lazy loading mode
+  // TODO: Restore custom drawing functionality if needed
+  /*
   useEffect(() => {
-    const chart = ChartJS.getChart('synergy-graph');
-    if (!chart) return;
-
-    const ctx = chart.ctx;
-    const originalDraw = chart.draw.bind(chart);
-    
-    chart.draw = function() {
-      originalDraw();
-      
-      // Draw edges
-      ctx.save();
-      graphData.edges.forEach(edge => {
-        const sourceNode = graphData.nodes.find(n => n.id === edge.source);
-        const targetNode = graphData.nodes.find(n => n.id === edge.target);
-        
-        if (sourceNode && targetNode && sourceNode.x && targetNode.x && sourceNode.y && targetNode.y) {
-          const sourceX = chart.scales.x.getPixelForValue(sourceNode.x);
-          const sourceY = chart.scales.y.getPixelForValue(sourceNode.y);
-          const targetX = chart.scales.x.getPixelForValue(targetNode.x);
-          const targetY = chart.scales.y.getPixelForValue(targetNode.y);
-          
-          ctx.beginPath();
-          ctx.moveTo(sourceX, sourceY);
-          ctx.lineTo(targetX, targetY);
-          ctx.strokeStyle = edge.color;
-          ctx.lineWidth = edge.weight * 2;
-          ctx.stroke();
-          
-          // Draw edge label if present
-          if (edge.label && (hoveredNode === edge.source || hoveredNode === edge.target)) {
-            const midX = (sourceX + targetX) / 2;
-            const midY = (sourceY + targetY) / 2;
-            
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-            ctx.font = '12px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText(edge.label, midX, midY);
-          }
-        }
-      });
-      ctx.restore();
-    };
-    
-    return () => {
-      chart.draw = originalDraw;
-    };
+    // Chart.js instance access for custom drawing
   }, [graphData, hoveredNode]);
+  */
 
   return (
     <div className="relative w-full h-[500px] bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
@@ -372,7 +327,7 @@ const TeamSynergyGraph: React.FC<TeamSynergyGraphProps> = ({
         </div>
       ) : (
         <>
-          <Scatter 
+          <ScatterChart 
             id="synergy-graph"
             data={chartData} 
             options={options}

@@ -1,5 +1,5 @@
 import { PokemonBattleState, StatusEffect, BattleField, MoveEffect } from '@/types/battle';
-import { Move } from "../types/pokemon";
+import { Move } from "../../types/pokemon";
 import { applyStatStageChange } from './core';
 
 export const applyStatusEffect = (

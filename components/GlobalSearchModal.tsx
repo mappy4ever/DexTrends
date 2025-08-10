@@ -1,5 +1,6 @@
 import React, { forwardRef, useImperativeHandle, useState, useRef, useEffect, useCallback, useMemo, memo } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import pokemon from "pokemontcgsdk";
 import { toLowercaseUrl } from "../utils/formatters";
 import { fetchJSON } from "../utils/unifiedFetch";
@@ -36,7 +37,18 @@ export interface GlobalSearchModalHandle {
 const SearchResultCard = memo(({ card }: { card: TCGCard }) => (
   <Link href={`/cards/${card.id}`} className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
     {card.images?.small && (
-      <img src={card.images.small} alt={card.name} className="w-8 h-12 mr-3 rounded" />
+      <div className="relative w-8 h-12 mr-3 rounded overflow-hidden">
+        <Image 
+          src={card.images.small} 
+          alt={card.name} 
+          width={32} 
+          height={48} 
+          className="rounded object-cover" 
+          loading="lazy"
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R"
+        />
+      </div>
     )}
     <div>
       <div className="font-medium text-sm">{card.name}</div>
@@ -49,7 +61,18 @@ SearchResultCard.displayName = 'SearchResultCard';
 const SearchResultSet = memo(({ set }: { set: CardSet }) => (
   <Link href={`/tcgsets/${set.id}`} className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
     {set.images?.logo && (
-      <img src={set.images.logo} alt={set.name} className="w-8 h-8 mr-3 rounded" />
+      <div className="relative w-8 h-8 mr-3 rounded overflow-hidden">
+        <Image 
+          src={set.images.logo} 
+          alt={set.name} 
+          width={32} 
+          height={32} 
+          className="rounded object-cover" 
+          loading="lazy"
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R"
+        />
+      </div>
     )}
     <div>
       <div className="font-medium text-sm">{set.name}</div>
@@ -63,12 +86,18 @@ const SearchResultPokemon = memo(({ pokemon }: { pokemon: PokemonResult }) => {
   const pokemonId = pokemon.url.split('/').slice(-2, -1)[0];
   return (
     <Link href={`/pokedex/${pokemonId}`} className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-      <img 
-        src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`} 
-        alt={pokemon.name} 
-        className="w-8 h-8 mr-3"
-        loading="lazy"
-      />
+      <div className="relative w-8 h-8 mr-3">
+        <Image 
+          src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`} 
+          alt={pokemon.name} 
+          width={32} 
+          height={32} 
+          className="object-contain" 
+          loading="lazy"
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R"
+        />
+      </div>
       <div className="font-medium text-sm capitalize">{pokemon.name}</div>
     </Link>
   );

@@ -4,6 +4,7 @@ import { TypeBadge } from './TypeBadge';
 import Link from 'next/link';
 import logger from '../../utils/logger';
 import type { TCGCard } from '../../types/api/cards';
+import type { FavoriteCard } from '../../context/modules/types';
 
 interface Position {
   x: number;
@@ -170,11 +171,18 @@ const EnhancedCardModal: React.FC<EnhancedCardModalProps> = ({
 
   const handleFavoriteToggle = () => {
     if (card) {
-      const isCurrentlyFavorite = favorites.cards.some(c => c.id === card.id);
+      const isCurrentlyFavorite = favorites.cards.some((c: FavoriteCard) => c.id === card.id);
       if (isCurrentlyFavorite) {
         removeFromFavorites('cards', card.id);
       } else {
-        addToFavorites('cards', card);
+        const favoriteCard: FavoriteCard = {
+          id: card.id,
+          name: card.name,
+          set: card.set ? { id: card.set.id, name: card.set.name } : undefined,
+          images: card.images,
+          addedAt: Date.now()
+        };
+        addToFavorites('cards', favoriteCard);
       }
       logger.debug('Card favorite toggled from modal', { cardId: card.id });
     }
@@ -182,7 +190,7 @@ const EnhancedCardModal: React.FC<EnhancedCardModalProps> = ({
 
   if (!isOpen || !card) return null;
 
-  const isFavorite = favorites.cards.some(c => c.id === card.id);
+  const isFavorite = favorites.cards.some((c: FavoriteCard) => c.id === card.id);
 
   return (
     <div className={`fixed inset-0 z-50 ${isFullscreen ? 'bg-black' : 'bg-black bg-opacity-75'} flex items-center justify-center transition-all duration-300`}>

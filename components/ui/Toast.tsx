@@ -70,9 +70,9 @@ export const Toast: React.FC<ToastProps> = ({
     return () => clearInterval(timer);
   }, [duration, id, onClose, isDragging]);
 
-  const handleDragEnd = (event: MouseEvent | TouchEvent, info: { offset: { x: number; y: number } }) => {
+  const handleDragEnd = (event: MouseEvent | TouchEvent, info: { offset: { x: number; y: number }; velocity?: { x: number; y: number } }) => {
     const threshold = 100;
-    if (Math.abs(info.offset.x) > threshold || Math.abs(info.velocity.x) > 500) {
+    if (Math.abs(info.offset.x) > threshold || (info.velocity && Math.abs(info.velocity.x) > 500)) {
       onClose(id);
     } else {
       setDragX(0);

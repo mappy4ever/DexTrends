@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
+import Image from 'next/image';
 import { TCGCard } from '../../types/api/cards';
 import { CardFlipAnimation } from './CardFlipAnimation';
 import { InteractiveCard, easings } from '../ui/EnhancedAnimationSystem';
@@ -113,12 +114,18 @@ export const EnhancedCardGrid: React.FC<EnhancedCardGridProps> = ({
                     whileHover={{ scale: 1.1, rotate: 5 }}
                     transition={easings.spring}
                   >
-                    <img
-                      src={card.images.small}
-                      alt={card.name}
-                      className="w-20 h-28 object-contain rounded-lg shadow-lg"
-                      loading="lazy"
-                    />
+                    <div className="relative w-20 h-28">
+                      <Image
+                        src={card.images.small}
+                        alt={card.name}
+                        width={80}
+                        height={112}
+                        className="object-contain rounded-lg shadow-lg"
+                        loading="lazy"
+                        placeholder="blur"
+                        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R"
+                      />
+                    </div>
                     {enableMicroInteractions && hoveredCard === card.id && (
                       <motion.div
                         className="absolute inset-0 bg-gradient-to-t from-purple-500/20 to-transparent rounded-lg"

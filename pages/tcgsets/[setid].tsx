@@ -21,6 +21,7 @@ import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
 import performanceMonitor from "../../utils/performanceMonitor";
 import { CardGridSkeleton } from "../../components/ui/SkeletonLoader";
 import type { TCGCard, CardSet } from "../../types/api/cards";
+import type { FavoriteCard } from "../../context/modules/types";
 import TCGSetErrorBoundary from "../../components/TCGSetErrorBoundary";
 
 // Interface for set statistics
@@ -446,11 +447,18 @@ const SetIdPage: NextPage = () => {
 
   // Handle favorite toggle
   const handleFavoriteToggle = (card: TCGCard) => {
-    const isCurrentlyFavorite = favorites.cards.some((c: TCGCard) => c.id === card.id);
+    const isCurrentlyFavorite = favorites.cards.some((c: FavoriteCard) => c.id === card.id);
     if (isCurrentlyFavorite) {
       removeFromFavorites('cards', card.id);
     } else {
-      addToFavorites('cards', card);
+      const favoriteCard: FavoriteCard = {
+        id: card.id,
+        name: card.name,
+        set: card.set ? { id: card.set.id, name: card.set.name } : undefined,
+        images: card.images,
+        addedAt: Date.now()
+      };
+      addToFavorites('cards', favoriteCard);
     }
   };
 
@@ -1007,12 +1015,12 @@ const SetIdPage: NextPage = () => {
                   <button
                     onClick={() => handleFavoriteToggle(modalCard)}
                     className={`flex-1 px-4 py-2 font-medium rounded-lg transition-colors ${
-                      favorites.cards.some((c: TCGCard) => c.id === modalCard.id)
+                      favorites.cards.some((c: FavoriteCard) => c.id === modalCard.id)
                         ? 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50'
                         : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
-                    {favorites.cards.some((c: TCGCard) => c.id === modalCard.id) ? 'Unfavorite' : 'Favorite'}
+                    {favorites.cards.some((c: FavoriteCard) => c.id === modalCard.id) ? 'Unfavorite' : 'Favorite'}
                   </button>
                 </div>
               </div>

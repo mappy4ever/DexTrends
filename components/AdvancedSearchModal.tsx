@@ -3,6 +3,7 @@ import Modal from './ui/modals/Modal';
 import { CompactPriceIndicator } from './ui/PriceIndicator';
 import { getPokemonSDK } from '../utils/pokemonSDK';
 import type { TCGCard, CardSet } from '../types/api/cards';
+import type { CardSet as SdkCardSet } from 'pokemontcgsdk';
 
 interface SearchParams {
   name: string;
@@ -53,7 +54,7 @@ export default function AdvancedSearchModal({ isOpen, onClose, onSearchResults }
       try {
         const pokemon = getPokemonSDK();
         const setsData = await pokemon.set.all();
-        setSets(setsData.data.sort((a: CardSet, b: CardSet) => a.name.localeCompare(b.name)));
+        setSets(setsData.data.sort((a: SdkCardSet, b: SdkCardSet) => a.name.localeCompare(b.name)) as CardSet[]);
       } catch (error) {
         // Error loading sets
       }

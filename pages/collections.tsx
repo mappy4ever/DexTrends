@@ -8,7 +8,7 @@ import { GlassContainer } from '../components/ui/design-system/GlassContainer';
 import { GradientButton } from '../components/ui/design-system/GradientButton';
 import { CircularCard } from '../components/ui/design-system/CircularCard';
 import { CircularButton, StandardCard, CardHeader, CardTitle, CardContent } from '../components/ui/design-system';
-import { motion } from 'framer-motion';
+import { motion } from '../components/ui/LazyMotion';
 import type { NextPage } from 'next';
 
 interface Tab {

@@ -144,8 +144,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     };
     
-    // Cache the response asynchronously
-    tcgCache.cacheSetsList(pageNum, pageSizeNum, response).catch(err => {
+    // Cache the response asynchronously (cast to expected type)
+    tcgCache.cacheSetsList(pageNum, pageSizeNum, response as TCGSetListApiResponse).catch(err => {
       logger.error('Failed to cache TCG sets', { error: err });
     });
     

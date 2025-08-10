@@ -13,6 +13,7 @@ import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import FullBleedWrapper from "../components/ui/FullBleedWrapper";
 import TCGSetsErrorBoundary from "../components/TCGSetsErrorBoundary";
 import { CardSet } from "../types/api/cards";
+import { PaginationInfo } from "../types/api/api-responses";
 import { NextPage } from "next";
 import logger from "../utils/logger";
 import { getErrorMessage, isObject, hasProperty } from "../utils/typeGuards";

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useCallback, memo, CSSProperties, K
 import { useFavorites } from '../../context/UnifiedAppContext';
 import logger from '../../utils/logger';
 import type { TCGCard } from '../../types/api/cards';
+import type { FavoriteCard } from '../../context/modules/types';
 
 interface InteractionState {
   isHovered: boolean;
@@ -261,11 +262,18 @@ export const useCardInteractions = ({
     if (timeSinceLastTap < 300) {
       // Double tap detected - toggle favorite
       if (card) {
-        const isCurrentlyFavorite = favorites.cards.some(c => c.id === card.id);
+        const isCurrentlyFavorite = favorites.cards.some((c: FavoriteCard) => c.id === card.id);
         if (isCurrentlyFavorite) {
           removeFromFavorites('cards', card.id);
         } else {
-          addToFavorites('cards', card);
+          const favoriteCard: FavoriteCard = {
+            id: card.id,
+            name: card.name,
+            set: card.set ? { id: card.set.id, name: card.set.name } : undefined,
+            images: card.images,
+            addedAt: Date.now()
+          };
+          addToFavorites('cards', favoriteCard);
         }
         
         // Special animation for favorite action
@@ -311,11 +319,18 @@ export const useCardInteractions = ({
         if (e.ctrlKey || e.metaKey) {
           e.preventDefault();
           if (card) {
-            const isCurrentlyFavorite = favorites.cards.some(c => c.id === card.id);
+            const isCurrentlyFavorite = favorites.cards.some((c: FavoriteCard) => c.id === card.id);
             if (isCurrentlyFavorite) {
               removeFromFavorites('cards', card.id);
             } else {
-              addToFavorites('cards', card);
+              const favoriteCard: FavoriteCard = {
+                id: card.id,
+                name: card.name,
+                set: card.set ? { id: card.set.id, name: card.set.name } : undefined,
+                images: card.images,
+                addedAt: Date.now()
+              };
+              addToFavorites('cards', favoriteCard);
             }
           }
         }

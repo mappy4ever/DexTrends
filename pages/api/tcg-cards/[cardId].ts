@@ -5,6 +5,7 @@ import { tcgCache } from '../../../lib/tcg-cache';
 import performanceMonitor from '../../../utils/performanceMonitor';
 import type { TCGApiResponse } from '../../../types/api/enhanced-responses';
 import type { UnknownError } from '../../../types/common';
+import type { TCGCard } from '../../../types/api/cards';
 import { isTCGCard } from '../../../utils/typeGuards';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -52,7 +53,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
     
     // Fetch card from API
-    const cardData = await fetchJSON<TCGApiResponse<unknown>>(
+    const cardData = await fetchJSON<TCGApiResponse<TCGCard>>(
       `https://api.pokemontcg.io/v2/cards/${id}`,
       {
         headers,
@@ -70,8 +71,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
     const card = cardData.data;
     
-    // Cache the card for future requests
-    await tcgCache.cacheCard(id, card);
+    // Cache the card for future requests (ensure card exists)
+    if (card) {
+      await tcgCache.cacheCard(id, card as TCGCard);
+    }
     
     // Also cache related data
     if (card.images) {

@@ -26,7 +26,8 @@ import Modal from "../../components/ui/modals/Modal";
 import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
 import PageErrorBoundary from "../../components/ui/PageErrorBoundary";
 import { getTypeUIColors } from "../../utils/pokemonTypeGradients";
-import type { Pokemon, PokemonSpecies, Nature, EvolutionChain, PokemonAbility, PokemonStat } from "../../types/pokemon";
+import type { Pokemon, PokemonSpecies, Nature, EvolutionChain, PokemonAbility, PokemonStat } from "../../types/api/pokemon";
+import type { FavoritePokemon } from "../../context/modules/types";
 import type { TCGCard } from "../../types/api/cards";
 import type { PocketCard } from "../../types/api/pocket-cards";
 
@@ -922,7 +923,7 @@ const PokemonDetail: NextPage = () => {
 
   // Get UI colors based on types
   const typeColors = getTypeUIColors(pokemon.types || []);
-  const isFavorite = favorites.pokemon.some((p: Pokemon) => p.id === pokemon.id);
+  const isFavorite = favorites.pokemon.some((p: FavoritePokemon) => p.id === pokemon.id);
 
   return (
     <PageErrorBoundary pageName="Pokemon Detail">
@@ -1000,7 +1001,14 @@ const PokemonDetail: NextPage = () => {
                       if (isFavorite) {
                         removeFromFavorites('pokemon', pokemon.id);
                       } else {
-                        addToFavorites('pokemon', pokemon);
+                        const favoritePokemon: FavoritePokemon = {
+                          id: typeof pokemon.id === 'string' ? parseInt(pokemon.id) : pokemon.id,
+                          name: pokemon.name,
+                          types: pokemon.types?.map(t => t.type.name),
+                          sprite: pokemon.sprites?.front_default || undefined,
+                          addedAt: Date.now()
+                        };
+                        addToFavorites('pokemon', favoritePokemon);
                       }
                     }}
                     className={`group flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg backdrop-blur-sm border ${

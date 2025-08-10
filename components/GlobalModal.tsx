@@ -9,7 +9,7 @@ const GlobalModal: React.FC = () => {
 
   return (
     <Modal isOpen={modal.isOpen} onClose={closeModal}>
-      {modal.data}
+      {modal.data as React.ReactNode}
     </Modal>
   );
 };

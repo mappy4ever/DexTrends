@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { Pokemon, PokemonSpecies } from "../../types/pokemon";
+import type { Pokemon, PokemonSpecies } from "../../types/api/pokemon";
+import type { FavoritePokemon } from "../../context/modules/types";
 import { TypeBadge } from '../ui/TypeBadge';
 import PokemonGlassCard from './PokemonGlassCard';
 import { getTypeUIColors, getTypeRingGradient } from '../../utils/pokemonTypeGradients';
@@ -41,7 +42,7 @@ const PokemonHeroSection: React.FC<PokemonHeroSectionProps> = ({
   const genderRatio = calculateGenderRatio(species.gender_rate);
   
   // Check if favorited
-  const isFavorite = favorites.pokemon.some((p: Pokemon) => p.id === pokemon.id);
+  const isFavorite = favorites.pokemon.some((p: FavoritePokemon) => p.id === pokemon.id);
   
   // Get sprite URL
   const getSpriteUrl = () => {
@@ -299,7 +300,14 @@ const PokemonHeroSection: React.FC<PokemonHeroSectionProps> = ({
                 if (isFavorite) {
                   removeFromFavorites('pokemon', pokemon.id);
                 } else {
-                  addToFavorites('pokemon', pokemon);
+                  const favoritePokemon: FavoritePokemon = {
+                    id: typeof pokemon.id === 'string' ? parseInt(pokemon.id) : pokemon.id,
+                    name: pokemon.name,
+                    types: pokemon.types?.map(t => t.type.name),
+                    sprite: pokemon.sprites?.front_default || undefined,
+                    addedAt: Date.now()
+                  };
+                  addToFavorites('pokemon', favoritePokemon);
                 }
               }}
               leftIcon={isFavorite ? <FaHeart className="text-red-500" /> : <FaRegHeart />}

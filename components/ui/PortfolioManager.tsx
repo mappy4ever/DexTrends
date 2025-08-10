@@ -13,34 +13,10 @@ import {
   CheckCircleIcon,
   InformationCircleIcon
 } from '@heroicons/react/24/outline';
-import { Line, Doughnut, Bar } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  ArcElement,
-  Filler
-} from 'chart.js';
+import { LineChart, DoughnutChart, BarChart, ChartData, ChartOptions } from './LazyChart';
 import Modal from './modals/Modal';
 import { useNotifications } from '../../hooks/useNotifications';
 
-// Register Chart.js components
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  ArcElement,
-  Filler
-);
 
 // Type definitions
 interface CardImage {
@@ -570,13 +546,13 @@ const PortfolioManager: React.FC<PortfolioManagerProps> = ({ userCards = [], onU
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {performanceChart && (
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border">
-              <Line data={performanceChart.data} options={performanceChart.options} />
+              <LineChart data={performanceChart.data} options={performanceChart.options} />
             </div>
           )}
           
           {allocationChart && (
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border">
-              <Doughnut data={allocationChart.data} options={allocationChart.options} />
+              <DoughnutChart data={allocationChart.data} options={allocationChart.options} />
             </div>
           )}
         </div>

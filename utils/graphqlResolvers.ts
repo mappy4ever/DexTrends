@@ -441,7 +441,7 @@ export const resolvers = {
           return null;
         }
 
-        return data?.card_data ? parseCardData(data.card_data) : null;
+        return (data as { card_data?: unknown })?.card_data ? parseCardData((data as { card_data: unknown }).card_data) : null;
       } catch (error) {
         logger.error('Card query error:', error);
         throw new Error('Failed to fetch card');
@@ -472,10 +472,10 @@ export const resolvers = {
         });
 
         if (result.error) {
-          throw new Error(`Card search failed: ${result.error.message}`);
+          throw new Error(`Card search failed: ${result.error instanceof Error ? result.error.message : String(result.error)}`);
         }
 
-        return formatConnectionResult(result.data || [], pagination);
+        return formatConnectionResult((result.data as Record<string, unknown>[]) || [], pagination);
       } catch (error) {
         logger.error('Cards query error:', error);
         throw new Error('Failed to search cards');
@@ -503,7 +503,7 @@ export const resolvers = {
           return null;
         }
 
-        return data?.pokemon_data ? parsePokemonData(data.pokemon_data) : null;
+        return (data as { pokemon_data?: unknown })?.pokemon_data ? parsePokemonData((data as { pokemon_data: unknown }).pokemon_data) : null;
       } catch (error) {
         logger.error('Pokemon query error:', error);
         throw new Error('Failed to fetch pokemon');
@@ -521,10 +521,10 @@ export const resolvers = {
         const result = await databaseOptimizer.getPriceHistory(cardId, variantType, daysBack);
         
         if (result.error) {
-          throw new Error(`Price history fetch failed: ${result.error.message}`);
+          throw new Error(`Price history fetch failed: ${result.error instanceof Error ? result.error.message : String(result.error)}`);
         }
 
-        return (result.data || []).map((entry: Record<string, unknown>) => ({
+        return ((result.data as Record<string, unknown>[]) || []).map((entry: Record<string, unknown>) => ({
           date: String(entry.collected_at || ''),
           price: typeof entry.price_market === 'number' ? entry.price_market : 0,
           volume: typeof entry.volume === 'number' ? entry.volume : 0,
