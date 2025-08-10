@@ -16,9 +16,9 @@ interface MarketStats {
 interface CardWithPriceData {
   card_id: string;
   card_name: string;
-  set_name: string;
-  variant_type: string;
-  price_market: string | number;
+  set_name?: string;
+  variant_type?: string;
+  price_market?: number;
   collected_at: string;
 }
 
@@ -96,7 +96,7 @@ export default function MarketAnalytics({ className = '' }: MarketAnalyticsProps
   const generateTopMovers = (cards: CardWithPriceData[]): TopMover[] => {
     // Simulate price changes for demo purposes using deterministic values
     return cards.slice(0, 10).map((card, index) => {
-      const currentPrice = parseFloat(card.price_market?.toString() || '0');
+      const currentPrice = parseFloat(String(card.price_market || 0));
       
       // Use card ID hash for deterministic "random" values
       const hashCode = (card.card_id || '').split('').reduce((acc, char) => {

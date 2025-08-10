@@ -32,15 +32,6 @@ export const DynamicPriceHistoryChart = dynamic(
   }
 );
 
-// Map components (very heavy - leaflet)
-// Commented out due to type issues with react-leaflet module exports
-// export const DynamicReactLeaflet = dynamic(
-//   () => import('react-leaflet'),
-//   {
-//     loading: () => <DynamicLoader>Loading map...</DynamicLoader>,
-//     ssr: false
-//   }
-// ) as any;
 
 // Advanced modals and forms
 export const DynamicAdvancedSearchModal = dynamic(
@@ -58,23 +49,6 @@ export const DynamicMarketAnalytics = dynamic(
   }
 );
 
-// Dashboard components (heavy with charts)
-// Commented out due to missing dependencies - these components are not currently used
-// export const DynamicMarketInsightsDashboard = dynamic(
-//   () => import('../ui/MarketInsightsDashboard'),
-//   {
-//     loading: () => <DynamicLoader>Loading market insights...</DynamicLoader>,
-//     ssr: false
-//   }
-// );
-
-// export const DynamicDataAnalyticsDashboard = dynamic(
-//   () => import('../ui/DataAnalyticsDashboard'),
-//   {
-//     loading: () => <DynamicLoader>Loading data analytics...</DynamicLoader>,
-//     ssr: false
-//   }
-// );
 
 // Collection manager (heavy component)
 export const DynamicCollectionManager = dynamic(
@@ -133,7 +107,7 @@ export const DynamicDatePicker = dynamic(
     loading: () => <DynamicLoader>Loading date picker...</DynamicLoader>,
     ssr: false
   }
-);
+) as ComponentType<any>;
 
 // React Select (heavy component)
 export const DynamicReactSelect = dynamic(
@@ -249,8 +223,6 @@ export default {
   DynamicPriceHistoryChart,
   DynamicAdvancedSearchModal,
   DynamicMarketAnalytics,
-  // DynamicMarketInsightsDashboard, // Commented out - missing dependencies
-  // DynamicDataAnalyticsDashboard, // Commented out - missing dependencies
   DynamicCollectionManager,
   DynamicAdvancedDeckBuilder,
   DynamicTradingMarketplace,

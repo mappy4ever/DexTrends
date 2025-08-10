@@ -1,6 +1,7 @@
 // Energy Type Scraper
 // Downloads high-quality Pokemon TCG energy type images from Bulbapedia
 
+import logger from '../logger';
 import scraperConfig from './scraperConfig';
 import {
   fetchMediaWikiApi,
@@ -57,7 +58,7 @@ class EnergyScraper {
 
   // Scrape all energy types
   async scrapeAllEnergyTypes(): Promise<ScrapedEnergyData> {
-    console.log('Starting energy type scraping...');
+    logger.debug('Starting energy type scraping...');
     
     for (const energyType of this.energyTypes) {
       const energyData = await this.scrapeEnergyType(energyType);
@@ -71,7 +72,7 @@ class EnergyScraper {
     
     // Save all data
     await this.saveAllData();
-    console.log('\nEnergy type scraping completed!');
+    logger.debug('Energy type scraping completed!');
     
     return this.scrapedData;
   }
@@ -79,13 +80,13 @@ class EnergyScraper {
   // Scrape individual energy type
   async scrapeEnergyType(energyType: EnergyTypeInfo): Promise<EnergyData | null> {
     try {
-      console.log(`Scraping energy type: ${energyType.name}`);
+      logger.debug(`Scraping energy type: ${energyType.name}`);
       
       // Check cache first
       const cacheKey = `energy-${energyType.name}`;
       const cachedData = await getCachedData<EnergyData>(cacheKey);
       if (cachedData) {
-        console.log(`Using cached data for ${energyType.name}`);
+        logger.debug(`Using cached data for ${energyType.name}`);
         return cachedData;
       }
 
@@ -155,21 +156,21 @@ class EnergyScraper {
           const localPath = await downloadImage(image.url, fileName, 'energy');
           if (localPath) {
             energyData.images.basic = `/images/scraped/energy/${fileName}`;
-            console.log(`Downloaded basic energy for ${energyType.name}: ${fileName}`);
+            logger.debug(`Downloaded basic energy for ${energyType.name}: ${fileName}`);
           }
         } else if (isSpecial) {
           fileName = `${energyType.name.toLowerCase()}-special-energy-${energyData.images.special.length + 1}.png`;
           const localPath = await downloadImage(image.url, fileName, 'energy');
           if (localPath) {
             energyData.images.special.push(`/images/scraped/energy/${fileName}`);
-            console.log(`Downloaded special energy for ${energyType.name}: ${fileName}`);
+            logger.debug(`Downloaded special energy for ${energyType.name}: ${fileName}`);
           }
         } else {
           fileName = `${energyType.name.toLowerCase()}-energy-card-${energyData.images.cards.length + 1}.png`;
           const localPath = await downloadImage(image.url, fileName, 'energy');
           if (localPath) {
             energyData.images.cards.push(`/images/scraped/energy/${fileName}`);
-            console.log(`Downloaded energy card for ${energyType.name}: ${fileName}`);
+            logger.debug(`Downloaded energy card for ${energyType.name}: ${fileName}`);
           }
         }
       }
@@ -180,7 +181,7 @@ class EnergyScraper {
       return energyData;
       
     } catch (error) {
-      console.error(`Error scraping energy type ${energyType.name}:`, (error as Error).message);
+      logger.error(`Error scraping energy type ${energyType.name}:`, { error: (error as Error).message });
       return null;
     }
   }
@@ -189,9 +190,9 @@ class EnergyScraper {
   private async saveAllData(): Promise<void> {
     try {
       await saveDataToFile(this.scrapedData, 'tcg-energy-types.json', 'energy');
-      console.log('All energy type data saved successfully');
+      logger.debug('All energy type data saved successfully');
     } catch (error) {
-      console.error('Error saving energy type data:', (error as Error).message);
+      logger.error('Error saving energy type data:', { error: (error as Error).message });
     }
   }
 }

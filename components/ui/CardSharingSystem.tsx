@@ -38,10 +38,10 @@ interface JsPDFStatic {
 let html2canvas: Html2CanvasStatic | null = null;
 let jsPDF: JsPDFStatic | null = null;
 
-const loadHtml2Canvas = async () => {
+const loadHtml2Canvas = async (): Promise<Html2CanvasStatic> => {
   if (!html2canvas) {
     const mod = await import('html2canvas');
-    html2canvas = mod.default;
+    html2canvas = mod.default as Html2CanvasStatic;
   }
   return html2canvas;
 };
@@ -303,7 +303,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
     setIsGenerating(true);
     try {
       const html2canvasLib = await loadHtml2Canvas();
-      const canvas = await html2canvasLib(cardPreviewRef.current);
+      const canvas = await html2canvasLib(cardPreviewRef.current!);
       
       canvas.toBlob((blob: Blob | null) => {
         if (blob) {
@@ -318,7 +318,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
   };
 
   // Generate collection image for sharing
-  const generateCollectionImage = () => {
+  const generateCollectionImage = (): React.ReactElement => {
     const template = exportOptions.templateStyle;
     const maxCards = 6; // Show up to 6 cards in preview
     const displayCards = cards.slice(0, maxCards);
@@ -357,7 +357,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
               <p className="text-xs text-gray-600">{getCardSet(card).name}</p>
               {exportOptions.includePrices && (
                 <p className="text-xs font-medium text-green-600">
-                  ${getCardProperty(card, 'currentPrice') || getCardProperty(card, 'price') || 'N/A'}
+                  ${String(getCardProperty(card, 'currentPrice') || getCardProperty(card, 'price') || 'N/A')}
                 </p>
               )}
             </div>

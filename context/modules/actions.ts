@@ -1,10 +1,11 @@
 // Action creators for context state management
-
-import { useCallback } from 'react';
 import { 
   State, 
   ThemeMode, 
-  FavoritesState, 
+  FavoritesState,
+  FavoritePokemon,
+  FavoriteCard,
+  FavoriteDeck,
   ViewSettings, 
   SortingState, 
   PerformanceMetrics,
@@ -18,9 +19,9 @@ import {
 
 export const createThemeActions = (
   setState: React.Dispatch<React.SetStateAction<State>>,
-  persistState: (key: string, value: any) => void
+  persistState: (key: string, value: unknown) => void
 ) => {
-  const updateTheme = useCallback((newTheme: ThemeMode) => {
+  const updateTheme = (newTheme: ThemeMode) => {
     setState(prev => ({
       ...prev,
       user: {
@@ -32,21 +33,21 @@ export const createThemeActions = (
       }
     }));
     persistState('theme', newTheme);
-  }, [setState, persistState]);
+  };
 
-  const toggleTheme = useCallback((currentTheme: ThemeMode) => {
+  const toggleTheme = (currentTheme: ThemeMode) => {
     const newTheme = currentTheme === 'light' ? 'dark' : 'light';
     updateTheme(newTheme);
-  }, [updateTheme]);
+  };
 
   return { updateTheme, toggleTheme };
 };
 
 export const createFavoritesActions = (
   setState: React.Dispatch<React.SetStateAction<State>>,
-  persistState: (key: string, value: any) => void
+  persistState: (key: string, value: unknown) => void
 ) => {
-  const addToFavorites = useCallback((type: keyof FavoritesState, item: any) => {
+  const addToFavorites = (type: keyof FavoritesState, item: FavoritePokemon | FavoriteCard | FavoriteDeck) => {
     setState(prev => {
       const newFavorites = {
         ...prev.user.favorites,
@@ -61,13 +62,13 @@ export const createFavoritesActions = (
         }
       };
     });
-  }, [setState, persistState]);
+  };
 
-  const removeFromFavorites = useCallback((type: keyof FavoritesState, itemId: string | number) => {
+  const removeFromFavorites = (type: keyof FavoritesState, itemId: string | number) => {
     setState(prev => {
       const newFavorites = {
         ...prev.user.favorites,
-        [type]: prev.user.favorites[type].filter((item: any) => 
+        [type]: prev.user.favorites[type].filter((item: FavoritePokemon | FavoriteCard | FavoriteDeck) => 
           (typeof item === 'object' && item.id !== itemId) || item !== itemId
         )
       };
@@ -80,9 +81,9 @@ export const createFavoritesActions = (
         }
       };
     });
-  }, [setState, persistState]);
+  };
 
-  const updateFavorites = useCallback((favorites: Partial<FavoritesState>) => {
+  const updateFavorites = (favorites: Partial<FavoritesState>) => {
     setState(prev => {
       const newFavorites = { ...prev.user.favorites, ...favorites };
       persistState('favorites', newFavorites);
@@ -94,16 +95,16 @@ export const createFavoritesActions = (
         }
       };
     });
-  }, [setState, persistState]);
+  };
 
   return { addToFavorites, removeFromFavorites, updateFavorites };
 };
 
 export const createViewActions = (
   setState: React.Dispatch<React.SetStateAction<State>>,
-  persistState: (key: string, value: any) => void
+  persistState: (key: string, value: unknown) => void
 ) => {
-  const updateViewSettings = useCallback((viewSettings: Partial<ViewSettings>) => {
+  const updateViewSettings = (viewSettings: Partial<ViewSettings>) => {
     setState(prev => {
       const newViewSettings = { ...prev.app.ui.view, ...viewSettings };
       persistState('viewSettings', newViewSettings);
@@ -118,9 +119,9 @@ export const createViewActions = (
         }
       };
     });
-  }, [setState, persistState]);
+  };
 
-  const updateSorting = useCallback((sorting: Partial<SortingState>) => {
+  const updateSorting = (sorting: Partial<SortingState>) => {
     setState(prev => {
       const newSorting = { ...prev.app.ui.sorting, ...sorting };
       persistState('sorting', newSorting);
@@ -135,7 +136,7 @@ export const createViewActions = (
         }
       };
     });
-  }, [setState, persistState]);
+  };
 
   return { updateViewSettings, updateSorting };
 };
@@ -143,7 +144,7 @@ export const createViewActions = (
 export const createModalActions = (
   setState: React.Dispatch<React.SetStateAction<State>>
 ) => {
-  const openModal = useCallback((type: string, data?: any) => {
+  const openModal = (type: string, data?: unknown) => {
     setState(prev => ({
       ...prev,
       app: {
@@ -154,9 +155,9 @@ export const createModalActions = (
         }
       }
     }));
-  }, [setState]);
+  };
 
-  const closeModal = useCallback(() => {
+  const closeModal = () => {
     setState(prev => ({
       ...prev,
       app: {
@@ -167,7 +168,7 @@ export const createModalActions = (
         }
       }
     }));
-  }, [setState]);
+  };
 
   return { openModal, closeModal };
 };
@@ -175,7 +176,7 @@ export const createModalActions = (
 export const createPerformanceActions = (
   setState: React.Dispatch<React.SetStateAction<State>>
 ) => {
-  const updatePerformanceMetrics = useCallback((metrics: Partial<PerformanceMetrics>) => {
+  const updatePerformanceMetrics = (metrics: Partial<PerformanceMetrics>) => {
     setState(prev => ({
       ...prev,
       app: {
@@ -186,9 +187,9 @@ export const createPerformanceActions = (
         }
       }
     }));
-  }, [setState]);
+  };
 
-  const updatePerformanceVitals = useCallback((vitals: Partial<PerformanceMetrics>) => {
+  const updatePerformanceVitals = (vitals: Partial<PerformanceMetrics>) => {
     setState(prev => ({
       ...prev,
       app: {
@@ -199,9 +200,9 @@ export const createPerformanceActions = (
         }
       }
     }));
-  }, [setState]);
+  };
 
-  const updateApiMetrics = useCallback((metrics: Partial<PerformanceMetrics>) => {
+  const updateApiMetrics = (metrics: Partial<PerformanceMetrics>) => {
     setState(prev => ({
       ...prev,
       app: {
@@ -212,9 +213,9 @@ export const createPerformanceActions = (
         }
       }
     }));
-  }, [setState]);
+  };
 
-  const enablePerformanceMonitoring = useCallback(() => {
+  const enablePerformanceMonitoring = () => {
     setState(prev => ({
       ...prev,
       app: {
@@ -225,9 +226,9 @@ export const createPerformanceActions = (
         }
       }
     }));
-  }, [setState]);
+  };
 
-  const disablePerformanceMonitoring = useCallback(() => {
+  const disablePerformanceMonitoring = () => {
     setState(prev => ({
       ...prev,
       app: {
@@ -238,7 +239,7 @@ export const createPerformanceActions = (
         }
       }
     }));
-  }, [setState]);
+  };
 
   return {
     updatePerformanceMetrics,
@@ -251,9 +252,9 @@ export const createPerformanceActions = (
 
 export const createBehaviorActions = (
   setState: React.Dispatch<React.SetStateAction<State>>,
-  persistState: (key: string, value: any) => void
+  persistState: (key: string, value: unknown) => void
 ) => {
-  const trackInteraction = useCallback(() => {
+  const trackInteraction = () => {
     setState(prev => ({
       ...prev,
       user: {
@@ -265,9 +266,9 @@ export const createBehaviorActions = (
         }
       }
     }));
-  }, [setState]);
+  };
 
-  const trackUserAction = useCallback((action: string, data?: Record<string, any>) => {
+  const trackUserAction = (action: string, data?: Record<string, any>) => {
     setState(prev => {
       const newAction: UserAction = {
         action,
@@ -292,16 +293,16 @@ export const createBehaviorActions = (
         }
       };
     });
-  }, [setState, persistState]);
+  };
 
   return { trackInteraction, trackUserAction };
 };
 
 export const createPreferenceActions = (
   setState: React.Dispatch<React.SetStateAction<State>>,
-  persistState: (key: string, value: any) => void
+  persistState: (key: string, value: unknown) => void
 ) => {
-  const updatePreference = useCallback((key: keyof UserPreferences, value: any) => {
+  const updatePreference = (key: keyof UserPreferences, value: unknown) => {
     setState(prev => {
       const newPreferences = {
         ...prev.user.preferences,
@@ -316,9 +317,9 @@ export const createPreferenceActions = (
         }
       };
     });
-  }, [setState, persistState]);
+  };
 
-  const updateAccessibilitySettings = useCallback((key: keyof AccessibilitySettings, value: any) => {
+  const updateAccessibilitySettings = (key: keyof AccessibilitySettings, value: unknown) => {
     setState(prev => {
       const newAccessibility = {
         ...prev.user.preferences.accessibility,
@@ -337,16 +338,16 @@ export const createPreferenceActions = (
         }
       };
     });
-  }, [setState, persistState]);
+  };
 
   return { updatePreference, updateAccessibilitySettings };
 };
 
 export const createOnboardingActions = (
   setState: React.Dispatch<React.SetStateAction<State>>,
-  persistState: (key: string, value: any) => void
+  persistState: (key: string, value: unknown) => void
 ) => {
-  const startOnboarding = useCallback((tourId: string) => {
+  const startOnboarding = (tourId: string) => {
     setState(prev => ({
       ...prev,
       app: {
@@ -362,9 +363,9 @@ export const createOnboardingActions = (
         }
       }
     }));
-  }, [setState]);
+  };
 
-  const completeOnboardingStep = useCallback(() => {
+  const completeOnboardingStep = () => {
     setState(prev => ({
       ...prev,
       app: {
@@ -378,9 +379,9 @@ export const createOnboardingActions = (
         }
       }
     }));
-  }, [setState]);
+  };
 
-  const completeOnboarding = useCallback((tourId: string) => {
+  const completeOnboarding = (tourId: string) => {
     setState(prev => {
       const contextualHelp = {
         ...prev.app.ui.contextualHelp,
@@ -401,14 +402,14 @@ export const createOnboardingActions = (
         }
       };
     });
-  }, [setState, persistState]);
+  };
 
-  const shouldShowTooltip = useCallback((tooltipId: string, state: State): boolean => {
+  const shouldShowTooltip = (tooltipId: string, state: State): boolean => {
     return state.app.ui.contextualHelp.showTooltips && 
            !state.user.behavior.dismissedTooltips.includes(tooltipId);
-  }, []);
+  };
 
-  const dismissTooltip = useCallback((tooltipId: string) => {
+  const dismissTooltip = (tooltipId: string) => {
     setState(prev => {
       const behavior = {
         ...prev.user.behavior,
@@ -423,7 +424,7 @@ export const createOnboardingActions = (
         }
       };
     });
-  }, [setState, persistState]);
+  };
 
   return {
     startOnboarding,
@@ -435,7 +436,7 @@ export const createOnboardingActions = (
 };
 
 export const createPersonalizationActions = () => {
-  const getPersonalizedRecommendations = useCallback((state: State): PersonalizedRecommendations => {
+  const getPersonalizedRecommendations = (state: State): PersonalizedRecommendations => {
     const { behavior } = state.user;
     const { visitCount, interactionCount, preferredCardView, favoriteCategories, searchHistory } = behavior;
     
@@ -459,9 +460,9 @@ export const createPersonalizationActions = () => {
       suggestedSearches,
       adaptiveLayout
     };
-  }, []);
+  };
 
-  const optimizeForPerformance = useCallback((state: State): PerformanceOptimizations => {
+  const optimizeForPerformance = (state: State): PerformanceOptimizations => {
     const { metrics } = state.app.performance;
     const connectionSpeed = metrics.connectionSpeed || 'unknown';
     const deviceMemory = metrics.deviceMemory || 8;
@@ -476,9 +477,9 @@ export const createPersonalizationActions = () => {
       virtualizeGrids: isLowMemory || isSlowConnection,
       cacheStrategy: isSlowConnection ? 'aggressive' : 'conservative'
     };
-  }, []);
+  };
 
-  const getAccessibilityEnhancements = useCallback((state: State): AccessibilityEnhancements => {
+  const getAccessibilityEnhancements = (state: State): AccessibilityEnhancements => {
     const { accessibility } = state.user.preferences;
     
     return {
@@ -489,7 +490,7 @@ export const createPersonalizationActions = () => {
       reducedMotion: accessibility.reducedMotion,
       fontSize: state.user.preferences.fontSize
     };
-  }, []);
+  };
 
   return {
     getPersonalizedRecommendations,

@@ -79,7 +79,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
       // Load egg moves with full data
       const eggMovesPromises = (pokemon.moves || [])
         .filter(move => 
-          move?.version_group_details?.some(v => v?.move_learn_method?.name === 'egg')
+          move?.version_group_details?.some((v: any) => v?.move_learn_method?.name === 'egg')
         )
         .slice(0, 20) // Limit to prevent too many API calls
         .map(async (moveData) => {

@@ -1,14 +1,12 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/router';
 import logger from '@/utils/logger';
+import type { BeforeInstallPromptEvent, ExtendedNavigator } from '@/types/pwa';
 
 // Re-export hook for backward compatibility
 export { usePWA } from '../../hooks/usePWA';
 
-interface BeforeInstallPromptEvent extends Event {
-  prompt: () => Promise<void>;
-  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
-}
+// BeforeInstallPromptEvent is now imported from types
 
 interface PWAContextValue {
   isInstallable: boolean;
@@ -41,7 +39,7 @@ export const PWAProvider: React.FC<PWAProviderProps> = ({ children }) => {
     // Check if app is installed/standalone
     setIsStandalone(
       window.matchMedia('(display-mode: standalone)').matches ||
-      (window.navigator as any).standalone ||
+      (window.navigator as ExtendedNavigator).standalone ||
       document.referrer.includes('android-app://')
     );
 

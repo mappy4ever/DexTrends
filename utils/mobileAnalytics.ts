@@ -7,6 +7,14 @@ import logger from './logger';
 import adaptiveLoading from './adaptiveLoading';
 import batteryOptimization from './batteryOptimization';
 import type { AnyObject, PerformanceMetric, AnalyticsEvent as BaseAnalyticsEvent } from '../types/common';
+import type { 
+  LayoutShiftPerformanceEntry, 
+  LargestContentfulPaintEntry,
+  GtagParameters,
+  PWAUsageData,
+  InteractionProperties,
+  EventProperties
+} from '../types/performance';
 
 interface DeviceInfo {
   isMobile: boolean;
@@ -125,7 +133,7 @@ interface ExtendedPerformance extends Performance {
 declare const gtag: (
   command: string,
   eventName: string,
-  parameters?: Record<string, any>
+  parameters?: GtagParameters
 ) => void;
 
 class MobileAnalytics {
@@ -285,7 +293,7 @@ class MobileAnalytics {
     // Monitor largest contentful paint
     const lcpObserver = new PerformanceObserver((list) => {
       for (const entry of list.getEntries()) {
-        const lcpEntry = entry as any; // LCP entry type
+        const lcpEntry = entry as LargestContentfulPaintEntry;
         this.trackPerformance('lcp', {
           value: lcpEntry.startTime,
           element: lcpEntry.element?.tagName || 'unknown',
@@ -325,7 +333,7 @@ class MobileAnalytics {
     const clsObserver = new PerformanceObserver((list) => {
       let clsValue = 0;
       for (const entry of list.getEntries()) {
-        const layoutEntry = entry as any; // Layout shift entry
+        const layoutEntry = entry as LayoutShiftPerformanceEntry;
         if (!layoutEntry.hadRecentInput) {
           clsValue += layoutEntry.value;
         }
@@ -560,7 +568,7 @@ class MobileAnalytics {
   }
 
   // Core tracking methods
-  trackEvent(eventName: string, properties: Record<string, any> = {}): void {
+  trackEvent(eventName: string, properties: EventProperties = {}): void {
     const event: AnalyticsEvent = {
       type: 'event',
       name: eventName,
@@ -592,7 +600,7 @@ class MobileAnalytics {
     });
   }
 
-  trackInteraction(type: string, properties: Record<string, any> = {}): void {
+  trackInteraction(type: string, properties: InteractionProperties = {}): void {
     this.sessionData.interactions++;
     
     this.queueData({
@@ -671,7 +679,7 @@ class MobileAnalytics {
     });
   }
 
-  trackPWAFeature(feature: string, usage_data: Record<string, any> = {}): void {
+  trackPWAFeature(feature: string, usage_data: PWAUsageData = {}): void {
     this.trackEvent('pwa_feature_usage', {
       feature,
       ...usage_data,

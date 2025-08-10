@@ -31,7 +31,7 @@ export interface UserAction {
   action: string;
   timestamp: number;
   page: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export interface UserBehavior {
@@ -47,10 +47,41 @@ export interface UserBehavior {
   dismissedTooltips: string[];
 }
 
+// Favorite item types
+export interface FavoritePokemon {
+  id: number;
+  name: string;
+  types?: string[];
+  sprite?: string;
+  addedAt: number;
+}
+
+export interface FavoriteCard {
+  id: string;
+  name: string;
+  set?: {
+    id: string;
+    name: string;
+  };
+  images?: {
+    small: string;
+    large: string;
+  };
+  addedAt: number;
+}
+
+export interface FavoriteDeck {
+  id: string;
+  name: string;
+  format: string;
+  cards?: number;
+  addedAt: number;
+}
+
 export interface FavoritesState {
-  pokemon: any[];
-  cards: any[];
-  decks: any[];
+  pokemon: FavoritePokemon[];
+  cards: FavoriteCard[];
+  decks: FavoriteDeck[];
 }
 
 export interface UserState {
@@ -74,7 +105,7 @@ export interface ViewSettings {
 export interface ModalState {
   isOpen: boolean;
   type: string | null;
-  data: any;
+  data: unknown;
 }
 
 export interface ContextualHelp {
@@ -93,7 +124,7 @@ export interface UIState {
 }
 
 export interface PerformanceMetrics {
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export interface PerformanceState {
@@ -103,7 +134,7 @@ export interface PerformanceState {
   apiMetrics: PerformanceMetrics;
   isMonitoring: boolean;
   suggestions: string[];
-  testResults: any;
+  testResults: unknown;
 }
 
 export interface AppState {
@@ -159,7 +190,7 @@ export interface UnifiedAppContextValue {
   
   // Favorites
   favorites: FavoritesState;
-  addToFavorites: (type: keyof FavoritesState, item: any) => void;
+  addToFavorites: (type: keyof FavoritesState, item: FavoritePokemon | FavoriteCard | FavoriteDeck) => void;
   removeFromFavorites: (type: keyof FavoritesState, itemId: string | number) => void;
   updateFavorites: (favorites: Partial<FavoritesState>) => void;
   
@@ -173,7 +204,7 @@ export interface UnifiedAppContextValue {
   
   // Modal
   modal: ModalState;
-  openModal: (type: string, data?: any) => void;
+  openModal: (type: string, data?: unknown) => void;
   closeModal: () => void;
   
   // Performance
@@ -187,12 +218,12 @@ export interface UnifiedAppContextValue {
   // Behavior
   behavior: UserBehavior;
   trackInteraction: () => void;
-  trackUserAction: (action: string, data?: Record<string, any>) => void;
+  trackUserAction: (action: string, data?: Record<string, unknown>) => void;
   
   // UX and Preferences
   userPreferences: UserPreferences;
-  updatePreference: (key: keyof UserPreferences, value: any) => void;
-  updateAccessibilitySettings: (key: keyof AccessibilitySettings, value: any) => void;
+  updatePreference: (key: keyof UserPreferences, value: unknown) => void;
+  updateAccessibilitySettings: (key: keyof AccessibilitySettings, value: unknown) => void;
   
   // Contextual Help and Onboarding
   contextualHelp: ContextualHelp;

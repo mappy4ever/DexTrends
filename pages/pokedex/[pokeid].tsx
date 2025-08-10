@@ -269,19 +269,6 @@ const PokemonDetail: NextPage = () => {
           logger.warn('[Showdown Data] Failed to load competitive tiers:', { error: err instanceof Error ? err.message : String(err) });
         });
         
-        // Reset tab to saved preference on Pokemon change
-        // Temporarily disabled to fix Fast Refresh loop
-        // try {
-        //   if (typeof window !== 'undefined') {
-        //     const pokemonId = pokemonData.id;
-        //     const savedTab = localStorage.getItem(`pokemon-tab-${pokemonId}`);
-        //     if (savedTab && ['overview', 'stats', 'evolution', 'moves', 'breeding', 'locations', 'cards', 'competitive'].includes(savedTab)) {
-        //       setActiveTab(savedTab as PokemonTab);
-        //     }
-        //   }
-        // } catch (err) {
-        //   logger.warn('Failed to read localStorage for tab preference:', { error: err instanceof Error ? err.message : String(err) });
-        // }
 
         // Load secondary data in parallel (non-blocking)
         const secondaryDataPromises = [

@@ -252,7 +252,7 @@ function handleDashboardFormat(req: NextApiRequest, res: NextApiResponse<any>, t
       alertHistory: monitoring.getAlerts(timeRangeMs),
       
       // Circuit breaker details
-      circuitBreakerDetails: (globalRegistry as any).getMetrics ? (globalRegistry as any).getMetrics() : {},
+      circuitBreakerDetails: globalRegistry.getMetrics ? globalRegistry.getMetrics() : {},
       
       // Rate limiter information
       rateLimiterStats: {} // getRateLimiterStats requires a limiter instance
@@ -298,7 +298,7 @@ function handleJsonFormat(req: NextApiRequest, res: NextApiResponse<MetricsData 
       },
       
       // Circuit breakers
-      circuitBreakers: (globalRegistry as any).getHealth ? (globalRegistry as any).getHealth() : {},
+      circuitBreakers: globalRegistry.getHealth ? globalRegistry.getHealth() : {},
       
       // System info
       system: {
@@ -328,4 +328,4 @@ export default withSecurity(handler, {
     includeCSP: false,
     strictMode: false
   }
-} as any);
+});

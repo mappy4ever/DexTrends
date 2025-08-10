@@ -170,8 +170,6 @@ export default function Navbar() {
     };
   }, [mobileOpen]);
 
-  // Remove unused variable that causes hydration issues
-  // const isDarkMode = theme === 'dark';
 
   return (
     <>

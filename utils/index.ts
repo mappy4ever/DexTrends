@@ -82,5 +82,3 @@ export * from '../lib/supabase';
 // === Miscellaneous ===
 // Note: These utilities don't exist yet and have been removed
 
-// === Deprecated - Use specific imports above ===
-// export * from './cacheManager'; // Use UnifiedCacheManager instead

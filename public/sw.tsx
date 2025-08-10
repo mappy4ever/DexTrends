@@ -1,4 +1,8 @@
+/// <reference lib="webworker" />
+/// <reference path="../types/service-worker.d.ts" />
+
 // Enhanced Service Worker for DexTrends PWA with Adaptive Loading
+declare const self: ServiceWorkerGlobalScope;
 const CACHE_NAME = 'dextrends-v1.1.0';
 const STATIC_CACHE = 'dextrends-static-v1.1.0';
 const DYNAMIC_CACHE = 'dextrends-dynamic-v1.1.0';
@@ -40,13 +44,15 @@ const API_CACHE_PATTERNS = [
 ];
 
 // Performance monitoring
-const performanceMetrics: {
+interface PerformanceMetrics {
   loadTimes: number[];
   cacheHits: number;
   cacheMisses: number;
   networkRequests: number;
   imageOptimizations: number;
-} = {
+}
+
+const performanceMetrics: PerformanceMetrics = {
   loadTimes: [],
   cacheHits: 0,
   cacheMisses: 0,
@@ -148,23 +154,23 @@ function isLargeResource(url: string): boolean {
 }
 
 // Install event - cache static assets
-self.addEventListener('install', (event: any) => {
+self.addEventListener('install', (event: ExtendableEvent) => {
   console.log('Service Worker: Installing enhanced version...');
   isInitialInstall = true;
   
   event.waitUntil(
     Promise.all([
       // Cache static assets
-      caches.open(STATIC_CACHE).then((cache: any) => {
+      caches.open(STATIC_CACHE).then((cache: Cache) => {
         console.log('Service Worker: Caching static assets');
-        return cache.addAll(STATIC_ASSETS.filter((url: any) => !url.startsWith('/_next')));
+        return cache.addAll(STATIC_ASSETS.filter((url: string) => !url.startsWith('/_next')));
       }),
       // Initialize performance cache
-      caches.open(PERFORMANCE_CACHE).then((cache: any) => {
+      caches.open(PERFORMANCE_CACHE).then((cache: Cache) => {
         console.log('Service Worker: Initializing performance cache');
         return cache.put('/sw-metrics', new Response(JSON.stringify(performanceMetrics)));
       })
-    ]).catch((error: any) => {
+    ]).catch((error: Error) => {
       console.error('Service Worker: Installation failed:', error);
     })
   );
@@ -174,20 +180,20 @@ self.addEventListener('install', (event: any) => {
   
   // Only skip waiting on initial install, not updates
   if (isInitialInstall) {
-    (self as any).skipWaiting();
+    self.skipWaiting();
   }
 });
 
 // Activate event - clean old caches and notify updates
-self.addEventListener('activate', (event: any) => {
+self.addEventListener('activate', (event: ExtendableEvent) => {
   console.log('Service Worker: Activating enhanced version...');
   
   event.waitUntil(
     Promise.all([
       // Clean old caches
-      caches.keys().then((cacheNames: any) => {
+      caches.keys().then((cacheNames: string[]) => {
         return Promise.all(
-          cacheNames.map((cache: any) => {
+          cacheNames.map((cache: string) => {
             if (![STATIC_CACHE, DYNAMIC_CACHE, IMAGE_CACHE, PERFORMANCE_CACHE].includes(cache)) {
               console.log('Service Worker: Deleting old cache:', cache);
               return caches.delete(cache);
@@ -199,8 +205,8 @@ self.addEventListener('activate', (event: any) => {
       // Setup connection monitoring
       setupConnectionMonitoring(),
       // Notify clients of successful update
-      (self as any).clients.matchAll().then((clients: any) => {
-        clients.forEach((client: any) => {
+      self.clients.matchAll().then((clients: Client[]) => {
+        clients.forEach((client: Client) => {
           client.postMessage({
             type: 'APP_UPDATED',
             version: CACHE_NAME,
@@ -210,7 +216,7 @@ self.addEventListener('activate', (event: any) => {
       })
     ]).then(() => {
       // Take control of all pages immediately
-      return (self as any).clients.claim();
+      return self.clients.claim();
     })
   );
 });
@@ -222,8 +228,8 @@ async function setupConnectionMonitoring() {
     (navigator as any).connection.addEventListener('change', () => {
       detectConnectionSpeed();
       // Notify clients of connection change
-      (self as any).clients.matchAll().then((clients: any) => {
-        clients.forEach((client: any) => {
+      self.clients.matchAll().then((clients: Client[]) => {
+        clients.forEach((client: Client) => {
           client.postMessage({
             type: 'CONNECTION_CHANGE',
             connectionSpeed,
@@ -239,7 +245,7 @@ async function setupConnectionMonitoring() {
 }
 
 // Fetch event - serve from cache with network fallback
-self.addEventListener('fetch', (event: any) => {
+self.addEventListener('fetch', (event: FetchEvent) => {
   const { request } = event;
   const url = new URL(request.url);
   
@@ -631,7 +637,7 @@ function getOfflineSVG() {
 }
 
 // Background sync for failed requests and data updates
-self.addEventListener('sync', (event: any) => {
+self.addEventListener('sync', (event: SyncEvent) => {
   console.log('Service Worker: Sync event triggered with tag:', event.tag);
   
   switch (event.tag) {
@@ -667,8 +673,8 @@ async function doBackgroundSync() {
     await updateCacheWithFreshData();
     
     // Notify clients of successful sync
-    const clients = await (self as any).clients.matchAll();
-    clients.forEach((client: any) => {
+    const clients = await self.clients.matchAll();
+    clients.forEach((client: Client) => {
       client.postMessage({
         type: 'BACKGROUND_SYNC_COMPLETE',
         timestamp: Date.now()
@@ -749,8 +755,8 @@ async function syncPriceData() {
       cache.put('/api/collect-prices', response.clone());
       
       // Notify clients of price update
-      const clients = await (self as any).clients.matchAll();
-      clients.forEach((client: any) => {
+      const clients = await self.clients.matchAll();
+      clients.forEach((client: Client) => {
         client.postMessage({
           type: 'PRICE_DATA_UPDATED',
           timestamp: Date.now()
@@ -793,12 +799,12 @@ async function syncCollection() {
 }
 
 // Push notifications (future feature)
-self.addEventListener('push', (event: any) => {
+self.addEventListener('push', (event: PushEvent) => {
   if (event.data) {
     const data = event.data.json();
     
     event.waitUntil(
-      (self as any).registration.showNotification(data.title, {
+      self.registration.showNotification(data.title, {
         body: data.body,
         icon: '/dextrendslogo.png',
         badge: '/dextrendslogo.png',
@@ -810,21 +816,21 @@ self.addEventListener('push', (event: any) => {
 });
 
 // Notification click handler
-self.addEventListener('notificationclick', (event: any) => {
+self.addEventListener('notificationclick', (event: NotificationEvent) => {
   event.notification.close();
   
   if (event.notification.data) {
     event.waitUntil(
-      (self as any).clients.openWindow(event.notification.data)
+      self.clients.openWindow(event.notification.data as string)
     );
   }
 });
 
 // App update notifications
-self.addEventListener('message', (event: any) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    (self as any).skipWaiting();
-  } else if (event.data && event.data.type === 'GET_VERSION') {
+self.addEventListener('message', (event: ExtendableMessageEvent) => {
+  if (event.data && typeof event.data === 'object' && (event.data as { type: string }).type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  } else if (event.data && typeof event.data === 'object' && (event.data as { type: string }).type === 'GET_VERSION') {
     event.ports[0].postMessage({
       version: CACHE_NAME,
       timestamp: Date.now()
@@ -835,10 +841,10 @@ self.addEventListener('message', (event: any) => {
 // Check for app updates
 async function checkForUpdates() {
   try {
-    const clients = await (self as any).clients.matchAll();
+    const clients = await self.clients.matchAll();
     
     if (clients.length > 0) {
-      clients.forEach((client: any) => {
+      clients.forEach((client: Client) => {
         client.postMessage({
           type: 'UPDATE_AVAILABLE',
           version: CACHE_NAME,
@@ -856,12 +862,12 @@ async function checkForUpdates() {
 // Periodic update check (every 6 hours)
 // Only check for updates when the user is actively using the app
 // Removed automatic interval to prevent refresh loops
-let updateCheckTimeout: NodeJS.Timeout;
-self.addEventListener('message', (event: any) => {
-  if (event.data && event.data.type === 'CHECK_FOR_UPDATES') {
+let updateCheckTimeout: any;
+self.addEventListener('message', (event: ExtendableMessageEvent) => {
+  if (event.data && typeof event.data === 'object' && (event.data as { type: string }).type === 'CHECK_FOR_UPDATES') {
     clearTimeout(updateCheckTimeout);
     updateCheckTimeout = setTimeout(() => {
-      if ((self as any).clients) {
+      if (self.clients) {
         checkForUpdates();
       }
     }, 5000); // Debounced 5-second check instead of constant 6-hour intervals

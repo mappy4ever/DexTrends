@@ -12,7 +12,7 @@ interface CircuitBreakerOptions {
   resetTimeout?: number;
   timeout?: number;
   volumeThreshold?: number;
-  fallback?: () => Promise<any>;
+  fallback?: () => Promise<unknown>;
 }
 
 interface CircuitBreakerStats {
@@ -29,7 +29,7 @@ class CircuitBreaker {
   private resetTimeout: number;
   private timeout: number;
   private volumeThreshold: number;
-  private fallback: () => Promise<any>;
+  private fallback: () => Promise<unknown>;
   
   private state: CircuitState;
   private failures: number;
@@ -129,6 +129,8 @@ interface GlobalRegistry {
   register: () => void;
   getMetricsAsString: () => string;
   clear: () => void;
+  getMetrics?: () => Record<string, unknown>;
+  getHealth?: () => Record<string, unknown>;
 }
 
 export const globalRegistry: GlobalRegistry = {

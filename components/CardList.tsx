@@ -10,35 +10,11 @@ import { TCGCard } from "../types/api/cards";
 import { getRaritySymbol, getRarityGlowClass } from "../utils/tcgRaritySymbols";
 import performanceMonitor from "../utils/performanceMonitor";
 import type { Card } from "pokemontcgsdk";
+import { tcgCardToSdkCard } from "../utils/cardTypeGuards";
 
 type SortOption = "price" | "releaseDate" | "rarity";
 
-// Type converter to make TCGCard compatible with Card
-const tcgCardToCard = (tcgCard: TCGCard): Card => ({
-  id: tcgCard.id,
-  name: tcgCard.name,
-  supertype: tcgCard.supertype,
-  subtypes: tcgCard.subtypes,
-  level: tcgCard.level,
-  hp: tcgCard.hp,
-  types: tcgCard.types,
-  evolvesFrom: tcgCard.evolvesFrom,
-  abilities: tcgCard.abilities,
-  attacks: tcgCard.attacks,
-  weaknesses: tcgCard.weaknesses,
-  resistances: tcgCard.resistances,
-  retreatCost: tcgCard.retreatCost,
-  convertedRetreatCost: tcgCard.convertedRetreatCost,
-  set: tcgCard.set,
-  number: tcgCard.number,
-  artist: tcgCard.artist,
-  rarity: tcgCard.rarity,
-  flavorText: tcgCard.flavorText,
-  nationalPokedexNumbers: tcgCard.nationalPokedexNumbers,
-  legalities: tcgCard.legalities,
-  images: tcgCard.images,
-  tcgplayer: tcgCard.tcgplayer
-});
+// Note: Type converter moved to cardTypeGuards.ts for reusability and type safety
 
 interface CardListProps {
   cards?: TCGCard[];
@@ -98,14 +74,14 @@ const CardItem = memo<CardItemProps>(({ card, onMagnifyClick, onCardClick, isScr
       whileTap={!isScrolling ? { scale: 0.98 } : undefined}
     >
       <UnifiedCard
-        card={tcgCardToCard(card)}
+        card={tcgCardToSdkCard(card)}
         cardType="tcg"
         showPrice={true}
         showSet={true}
         showTypes={true}
         showRarity={true}
-        onMagnifyClick={(_convertedCard: Card) => onMagnifyClick(card)}
-        onCardClick={(_convertedCard: Card) => onCardClick(card)}
+        onMagnifyClick={(_convertedCard) => onMagnifyClick(card)}
+        onCardClick={(_convertedCard) => onCardClick(card)}
         className="will-change-transform"
         disableLazyLoad={false}
       />

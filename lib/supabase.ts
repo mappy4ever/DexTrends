@@ -1,5 +1,6 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import logger from '../utils/logger';
+import type { Database, CardPriceHistory, PriceCollectionJob } from '../types/database';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -14,7 +15,7 @@ if (typeof window !== 'undefined') {
 }
 
 // Create Supabase client with proper error handling
-let supabase: SupabaseClient;
+let supabase: SupabaseClient<Database>;
 
 if (!supabaseUrl || !supabaseAnonKey) {
   // Log warning but create a proper client that will fail gracefully
@@ -24,7 +25,7 @@ if (!supabaseUrl || !supabaseAnonKey) {
   });
   
   // Still create a client to avoid type errors, but it will fail on actual requests
-  supabase = createClient(
+  supabase = createClient<Database>(
     supabaseUrl || 'https://placeholder.supabase.co',
     supabaseAnonKey || 'placeholder-key',
     {
@@ -35,7 +36,7 @@ if (!supabaseUrl || !supabaseAnonKey) {
   );
 } else {
   // Create real Supabase client with proper configuration
-  supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
     auth: {
       persistSession: true,
       autoRefreshToken: true,
@@ -59,14 +60,14 @@ export { supabase };
 // Types
 export interface CachedPokemon {
   pokemon_id: number;
-  pokemon_data: any;
+  pokemon_data: Record<string, unknown>;
   cache_key: string;
   expires_at: string;
 }
 
 export interface CachedCard {
   card_id: string;
-  card_data: any;
+  card_data: Record<string, unknown>;
   cache_key: string;
   expires_at: string;
 }
@@ -74,14 +75,14 @@ export interface CachedCard {
 export interface Favorite {
   item_type: 'pokemon' | 'card' | 'deck';
   item_id: string;
-  item_data: any;
+  item_data: Record<string, unknown>;
   created_at?: string;
 }
 
 export interface GroupedFavorites {
-  pokemon: any[];
-  cards: any[];
-  decks: any[];
+  pokemon: Array<Record<string, unknown>>;
+  cards: Array<Record<string, unknown>>;
+  decks: Array<Record<string, unknown>>;
 }
 
 export interface PriceData {
@@ -113,7 +114,7 @@ export class SupabaseCache {
   }
 
   // Pokemon cache operations
-  static async getCachedPokemon(pokemonId: number): Promise<any | null> {
+  static async getCachedPokemon(pokemonId: number): Promise<Record<string, unknown> | null> {
     if (!this.isConfigured()) {
       logger.debug('[SupabaseCache] Skipping cache lookup - Supabase not configured');
       return null;
@@ -140,14 +141,14 @@ export class SupabaseCache {
         return null;
       }
 
-      return data?.pokemon_data || null;
+      return (data?.pokemon_data as Record<string, unknown>) || null;
     } catch (error) {
       logger.error('[SupabaseCache] Unexpected error:', { pokemonId, error });
       return null;
     }
   }
 
-  static async setCachedPokemon(pokemonId: number, pokemonData: any, cacheKey: string, expiryHours: number = 24): Promise<void> {
+  static async setCachedPokemon(pokemonId: number, pokemonData: Record<string, unknown>, cacheKey: string, expiryHours: number = 24): Promise<void> {
     if (!this.isConfigured()) {
       logger.debug('[SupabaseCache] Skipping cache write - Supabase not configured');
       return;
@@ -181,7 +182,7 @@ export class SupabaseCache {
   }
 
   // Card cache operations
-  static async getCachedCard(cardId: string): Promise<any | null> {
+  static async getCachedCard(cardId: string): Promise<Record<string, unknown> | null> {
     const { data, error } = await supabase
       .from('card_cache')
       .select('card_data')
@@ -194,10 +195,10 @@ export class SupabaseCache {
       return null;
     }
 
-    return data?.card_data || null;
+    return (data?.card_data as Record<string, unknown>) || null;
   }
 
-  static async setCachedCard(cardId: string, cardData: any, cacheKey: string, expiryHours: number = 24): Promise<void> {
+  static async setCachedCard(cardId: string, cardData: Record<string, unknown>, cacheKey: string, expiryHours: number = 24): Promise<void> {
     const expiresAt = new Date();
     expiresAt.setHours(expiresAt.getHours() + expiryHours);
 
@@ -284,7 +285,7 @@ export class FavoritesManager {
   }
 
   // Add favorite
-  static async addFavorite(itemType: 'pokemon' | 'card' | 'deck', itemId: string, itemData: any, userId: string | null = null): Promise<boolean> {
+  static async addFavorite(itemType: 'pokemon' | 'card' | 'deck', itemId: string, itemData: Record<string, unknown>, userId: string | null = null): Promise<boolean> {
     if (userId) {
       // Authenticated user
       const { error } = await supabase
@@ -364,15 +365,16 @@ export class FavoritesManager {
   }
 
   // Group favorites by type
-  static groupFavorites(favorites: any[]): GroupedFavorites {
+  static groupFavorites(favorites: Array<Record<string, unknown>>): GroupedFavorites {
     const grouped: GroupedFavorites = { pokemon: [], cards: [], decks: [] };
     
     favorites.forEach(fav => {
       const itemType = fav.item_type as keyof GroupedFavorites;
       if (itemType in grouped) {
+        const itemData = fav.item_data as Record<string, unknown>;
         grouped[itemType].push({
           id: fav.item_id,
-          ...fav.item_data,
+          ...itemData,
           favorited_at: fav.created_at
         });
       }
@@ -412,7 +414,7 @@ export class FavoritesManager {
 // Price history utilities
 export class PriceHistoryManager {
   // Get price history for a specific card
-  static async getCardPriceHistory(cardId: string, variantType: string = 'holofoil', daysBack: number = 30): Promise<any[]> {
+  static async getCardPriceHistory(cardId: string, variantType: string = 'holofoil', daysBack: number = 30): Promise<CardPriceHistory[]> {
     try {
       // First try RPC function if it exists
       const { data: rpcData, error: rpcError } = await supabase
@@ -450,7 +452,7 @@ export class PriceHistoryManager {
   }
 
   // Get price statistics for a card
-  static async getCardPriceStats(cardId: string, variantType: string = 'holofoil', daysBack: number = 30): Promise<any | null> {
+  static async getCardPriceStats(cardId: string, variantType: string = 'holofoil', daysBack: number = 30): Promise<Record<string, unknown> | null> {
     try {
       // First try RPC function if it exists
       const { data: rpcData, error: rpcError } = await supabase
@@ -492,7 +494,7 @@ export class PriceHistoryManager {
   }
 
   // Get recent price collection jobs
-  static async getRecentCollectionJobs(limit: number = 10): Promise<any[]> {
+  static async getRecentCollectionJobs(limit: number = 10): Promise<PriceCollectionJob[]> {
     const { data, error } = await supabase
       .from('price_collection_jobs')
       .select('*')
@@ -531,7 +533,7 @@ export class PriceHistoryManager {
   }
 
   // Get price history for multiple cards
-  static async getMultipleCardsPriceHistory(cardIds: string[], daysBack: number = 7): Promise<any[]> {
+  static async getMultipleCardsPriceHistory(cardIds: string[], daysBack: number = 7): Promise<CardPriceHistory[]> {
     const { data, error } = await supabase
       .from('card_price_history')
       .select('*')
@@ -612,18 +614,11 @@ export class PriceHistoryManager {
   }
 
   // Get trending cards (biggest price changes)
-  static async getTrendingCards(daysBack: number = 7, limit: number = 10): Promise<PriceData[]> {
+  static async getTrendingCards(daysBack: number = 7, limit: number = 10): Promise<CardPriceHistory[]> {
     // This is a simplified version - you might want to create a more sophisticated function
     const { data, error } = await supabase
       .from('card_price_history')
-      .select(`
-        card_id,
-        card_name,
-        set_name,
-        variant_type,
-        price_market,
-        collected_at
-      `)
+      .select('*')
       .gte('collected_at', new Date(Date.now() - daysBack * 24 * 60 * 60 * 1000).toISOString())
       .order('price_market', { ascending: false })
       .limit(limit);

@@ -280,7 +280,7 @@ async function handler(
     if (level === 'detailed' || level === 'full') {
       try {
         healthData.database = await checkDatabase();
-        healthData.circuitBreakers = (globalRegistry as any).getHealth ? (globalRegistry as any).getHealth() : {};
+        healthData.circuitBreakers = globalRegistry.getHealth ? globalRegistry.getHealth() : {};
         healthData.rateLimiter = getRateLimiterHealth();
       } catch (error) {
         logger.error('Error in detailed health check', { error: error.message });
@@ -389,4 +389,4 @@ export default withSecurity(handler, {
     includeCSP: false,
     strictMode: false
   }
-} as any);
+});

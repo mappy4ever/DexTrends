@@ -1,6 +1,7 @@
 // Game Scraper
 // Downloads Pokemon game data and images from Bulbapedia
 
+import logger from '../logger';
 import scraperConfig from './scraperConfig';
 import {
   fetchMediaWikiApi,
@@ -77,7 +78,7 @@ class GameScraper {
 
   // Scrape all games
   async scrapeAllGames(): Promise<GameData[]> {
-    console.log('Starting game scraping...');
+    logger.debug('Starting game scraping...');
     
     for (const gameTitle of scraperConfig.targets.games.mainSeries) {
       const gameData = await this.scrapeGame(gameTitle);
@@ -91,7 +92,7 @@ class GameScraper {
     
     // Save all data
     await this.saveAllData();
-    console.log('\nGame scraping completed!');
+    logger.debug('Game scraping completed!');
     
     return this.scrapedData;
   }
@@ -99,13 +100,13 @@ class GameScraper {
   // Scrape individual game
   async scrapeGame(pageTitle: string): Promise<GameData | null> {
     try {
-      console.log(`Scraping game: ${pageTitle}`);
+      logger.debug(`Scraping game: ${pageTitle}`);
       
       // Check cache first
       const cacheKey = `game-${pageTitle}`;
       const cachedData = await getCachedData<GameData>(cacheKey);
       if (cachedData) {
-        console.log(`Using cached data for ${pageTitle}`);
+        logger.debug(`Using cached data for ${pageTitle}`);
         return cachedData;
       }
 
@@ -120,13 +121,13 @@ class GameScraper {
       }) as MediaWikiPageResponse;
 
       if (!pageData || !pageData.query || !pageData.query.pages || pageData.query.pages.length === 0) {
-        console.error(`No data found for ${pageTitle}`);
+        logger.error(`No data found for ${pageTitle}`);
         return null;
       }
 
       const page = pageData.query.pages[0];
       if (page.missing) {
-        console.error(`Page not found: ${pageTitle}`);
+        logger.error(`Page not found: ${pageTitle}`);
         return null;
       }
 
@@ -144,7 +145,7 @@ class GameScraper {
       return gameData;
       
     } catch (error) {
-      console.error(`Error scraping game ${pageTitle}:`, (error as Error).message);
+      logger.error(`Error scraping game ${pageTitle}:`, { error: (error as Error).message });
       return null;
     }
   }
@@ -308,7 +309,7 @@ class GameScraper {
   // Download game images
   private async downloadGameImages(pageTitle: string, gameData: GameData): Promise<void> {
     try {
-      console.log(`Downloading images for ${pageTitle}...`);
+      logger.debug(`Downloading images for ${pageTitle}...`);
       
       // Get all images from the page
       const images = await getPageImages(pageTitle, (title: string, info: { width: number; height: number }) => {
@@ -323,7 +324,7 @@ class GameScraper {
       });
 
       if (images.length === 0) {
-        console.log(`No suitable images found for ${pageTitle}`);
+        logger.debug(`No suitable images found for ${pageTitle}`);
         return;
       }
 
@@ -345,7 +346,7 @@ class GameScraper {
         
         if (localPath) {
           gameData.images.cover = `/images/scraped/games/${fileName}`;
-          console.log(`Downloaded cover for ${pageTitle}: ${fileName}`);
+          logger.debug(`Downloaded cover for ${pageTitle}: ${fileName}`);
         }
       }
 
@@ -357,7 +358,7 @@ class GameScraper {
         
         if (localPath) {
           gameData.images.logo = `/images/scraped/games/${fileName}`;
-          console.log(`Downloaded logo for ${pageTitle}: ${fileName}`);
+          logger.debug(`Downloaded logo for ${pageTitle}: ${fileName}`);
         }
       }
 
@@ -377,7 +378,7 @@ class GameScraper {
       }
 
     } catch (error) {
-      console.error(`Error downloading images for ${pageTitle}:`, (error as Error).message);
+      logger.error(`Error downloading images for ${pageTitle}:`, { error: (error as Error).message });
     }
   }
 
@@ -385,9 +386,9 @@ class GameScraper {
   private async saveAllData(): Promise<void> {
     try {
       await saveDataToFile(this.scrapedData, 'all-games.json', 'games');
-      console.log('All game data saved successfully');
+      logger.debug('All game data saved successfully');
     } catch (error) {
-      console.error('Error saving game data:', (error as Error).message);
+      logger.error('Error saving game data:', { error: (error as Error).message });
     }
   }
 
@@ -396,7 +397,7 @@ class GameScraper {
     try {
       return await loadDataFromFile<GameData[]>('all-games.json', 'games');
     } catch (error) {
-      console.error('Error loading game data:', (error as Error).message);
+      logger.error('Error loading game data:', { error: (error as Error).message });
       return null;
     }
   }

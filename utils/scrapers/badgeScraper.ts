@@ -1,6 +1,7 @@
 // Badge Scraper
 // Downloads high-quality gym badge images from Bulbapedia
 
+import logger from '../logger';
 import scraperConfig from './scraperConfig';
 import {
   fetchMediaWikiApi,
@@ -70,10 +71,10 @@ class BadgeScraper {
 
   // Scrape all badges
   async scrapeAllBadges(): Promise<ScrapedBadgeData> {
-    console.log('Starting badge scraping...');
+    logger.debug('Starting badge scraping...');
     
     for (const [region, badges] of Object.entries(scraperConfig.targets.badges)) {
-      console.log(`\nScraping ${region} badges...`);
+      logger.debug(`Scraping ${region} badges...`);
       this.scrapedData[region] = [];
       
       for (const badgePage of badges) {
@@ -89,7 +90,7 @@ class BadgeScraper {
     
     // Save all data
     await this.saveAllData();
-    console.log('\nBadge scraping completed!');
+    logger.debug('Badge scraping completed!');
     
     return this.scrapedData;
   }
@@ -97,13 +98,13 @@ class BadgeScraper {
   // Scrape individual badge
   async scrapeBadge(pageTitle: string, region: string): Promise<BadgeData | null> {
     try {
-      console.log(`Scraping badge: ${pageTitle}`);
+      logger.debug(`Scraping badge: ${pageTitle}`);
       
       // Check cache first
       const cacheKey = `badge-${pageTitle}`;
       const cachedData = await getCachedData<BadgeData>(cacheKey);
       if (cachedData) {
-        console.log(`Using cached data for ${pageTitle}`);
+        logger.debug(`Using cached data for ${pageTitle}`);
         return cachedData;
       }
 
@@ -118,13 +119,13 @@ class BadgeScraper {
       }) as MediaWikiPageResponse;
 
       if (!pageData || !pageData.query || !pageData.query.pages || pageData.query.pages.length === 0) {
-        console.error(`No data found for ${pageTitle}`);
+        logger.error(`No data found for ${pageTitle}`);
         return null;
       }
 
       const page = pageData.query.pages[0];
       if (page.missing) {
-        console.error(`Page not found: ${pageTitle}`);
+        logger.error(`Page not found: ${pageTitle}`);
         return null;
       }
 
@@ -142,7 +143,7 @@ class BadgeScraper {
       return badgeData;
       
     } catch (error) {
-      console.error(`Error scraping badge ${pageTitle}:`, (error as Error).message);
+      logger.error(`Error scraping badge ${pageTitle}:`, { error: (error as Error).message });
       return null;
     }
   }
@@ -211,7 +212,7 @@ class BadgeScraper {
   // Download badge images
   private async downloadBadgeImages(pageTitle: string, badgeData: BadgeData): Promise<void> {
     try {
-      console.log(`Downloading images for ${pageTitle}...`);
+      logger.debug(`Downloading images for ${pageTitle}...`);
       
       // Get all images from the page
       const images = await getPageImages(pageTitle, (title: string, info: { width: number; height: number }) => {
@@ -244,7 +245,7 @@ class BadgeScraper {
       });
 
       if (images.length === 0) {
-        console.log(`No suitable images found for ${pageTitle}`);
+        logger.debug(`No suitable images found for ${pageTitle}`);
         return;
       }
 
@@ -257,12 +258,12 @@ class BadgeScraper {
         
         if (localPath) {
           badgeData.image = `/images/scraped/badges/${fileName}`;
-          console.log(`Downloaded image for ${pageTitle}: ${fileName}`);
+          logger.debug(`Downloaded image for ${pageTitle}: ${fileName}`);
         }
       }
 
     } catch (error) {
-      console.error(`Error downloading images for ${pageTitle}:`, (error as Error).message);
+      logger.error(`Error downloading images for ${pageTitle}:`, { error: (error as Error).message });
     }
   }
 
@@ -277,9 +278,9 @@ class BadgeScraper {
       // Save combined file
       await saveDataToFile(this.scrapedData, 'all-badges.json', 'badges');
       
-      console.log('All badge data saved successfully');
+      logger.debug('All badge data saved successfully');
     } catch (error) {
-      console.error('Error saving badge data:', (error as Error).message);
+      logger.error('Error saving badge data:', { error: (error as Error).message });
     }
   }
 }

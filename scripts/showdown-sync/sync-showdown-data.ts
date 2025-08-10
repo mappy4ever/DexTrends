@@ -4,6 +4,7 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
 import logger from '../../utils/logger';
+import type { Database, TypeEffectivenessRecord, CompetitiveTierRecord, PokemonLearnsetRecord, MoveCompetitiveDataRecord, AbilityRatingRecord } from '../../types/database';
 
 // Load environment variables from root .env file
 const envPath = path.resolve(process.cwd(), '.env.local');
@@ -32,7 +33,7 @@ if (!supabaseUrl || !supabaseServiceKey) {
   process.exit(1);
 }
 
-const supabase = createClient(supabaseUrl, supabaseServiceKey);
+const supabase = createClient<Database>(supabaseUrl, supabaseServiceKey);
 
 // Types
 interface SyncResult {
@@ -124,7 +125,7 @@ async function fetchWithRetry(url: string, retries = RETRY_ATTEMPTS): Promise<st
 }
 
 // Parse JavaScript files from Showdown
-function parseJavaScriptExports(content: string, exportName: string): any {
+function parseJavaScriptExports(content: string, exportName: string): Record<string, unknown> {
   try {
     // Try to extract the exports object
     const regex = new RegExp(`exports\\.${exportName}\\s*=\\s*({[\\s\\S]*?});`, 'm');
@@ -175,7 +176,7 @@ async function syncTypeEffectiveness(): Promise<SyncResult> {
     const content = await fetchWithRetry(`${SHOWDOWN_BASE_URL}/typechart.js`);
     const typeChart = parseJavaScriptExports(content, 'BattleTypeChart') as TypeChartData;
     
-    const records: any[] = [];
+    const records: TypeEffectivenessRecord[] = [];
     
     // Transform Showdown format to our schema
     for (const [attackingType, typeData] of Object.entries(typeChart)) {
@@ -247,7 +248,7 @@ async function syncPokemonTiers(): Promise<SyncResult> {
     const content = await fetchWithRetry(`${SHOWDOWN_BASE_URL}/formats-data.js`);
     const formatsData = parseJavaScriptExports(content, 'BattleFormatsData') as FormatsData;
     
-    const records: any[] = [];
+    const records: CompetitiveTierRecord[] = [];
     
     for (const [pokemonId, data] of Object.entries(formatsData)) {
       if (data.tier || data.doublesTier || data.natDexTier) {
@@ -300,7 +301,7 @@ async function syncLearnsets(): Promise<SyncResult> {
     const content = await fetchWithRetry(`${SHOWDOWN_BASE_URL}/learnsets.json`);
     const learnsets = (typeof content === 'string' ? JSON.parse(content) : content) as LearnsetData;
     
-    const records: any[] = [];
+    const records: PokemonLearnsetRecord[] = [];
     
     for (const [pokemonId, data] of Object.entries(learnsets)) {
       if (data.learnset) {
@@ -387,7 +388,7 @@ async function syncMoveData(): Promise<SyncResult> {
     const content = await fetchWithRetry(`${SHOWDOWN_BASE_URL}/moves.json`);
     const moves = (typeof content === 'string' ? JSON.parse(content) : content) as MoveData;
     
-    const records: any[] = [];
+    const records: MoveCompetitiveDataRecord[] = [];
     
     // Sort moves alphabetically for consistent ID generation
     const sortedMoves = Object.entries(moves).sort(([a], [b]) => a.toLowerCase().localeCompare(b.toLowerCase()));
@@ -482,7 +483,7 @@ async function syncAbilities(): Promise<SyncResult> {
     const content = await fetchWithRetry(`${SHOWDOWN_BASE_URL}/abilities.js`);
     
     // Use Function constructor for abilities since it has complex structure (safer than eval)
-    let abilities: any;
+    let abilities: Record<string, unknown>;
     try {
       const sandbox = { exports: {} };
       // Use Function constructor instead of eval for better security
@@ -493,7 +494,7 @@ async function syncAbilities(): Promise<SyncResult> {
       throw new Error('Failed to parse abilities data');
     }
     
-    const records: any[] = [];
+    const records: AbilityRatingRecord[] = [];
     
     // Sort abilities alphabetically for consistent ID generation
     const sortedAbilities = Object.entries(abilities).sort(([a], [b]) => a.toLowerCase().localeCompare(b.toLowerCase()));

@@ -13,7 +13,7 @@ interface PriceIndicatorProps {
 // Price indicator component that shows current price with trend indicators
 export default function PriceIndicator({ cardId, showTrend = true, currentPrice = 'N/A', variantType = 'market', size = 'md', className = '' }: PriceIndicatorProps) {
   const [priceChange, setPriceChange] = useState<{ amount: number; percentage: number; trend: "UP" | "DOWN" | "STABLE" } | null>(null);
-  const [trend, setTrend] = useState('STABLE');
+  const [trend, setTrend] = useState<'UP' | 'DOWN' | 'STABLE'>('STABLE');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -28,20 +28,28 @@ export default function PriceIndicator({ cardId, showTrend = true, currentPrice 
         if (stats) {
           // Calculate percentage change if we have historical data
           const currentValue = parseFloat(currentPrice.replace('$', ''));
-          const avgPrice = parseFloat(stats.avg_price || 0);
+          const avgPrice = parseFloat(String(stats.avg_price || '0'));
           
           if (avgPrice > 0) {
             const percentChange = ((currentValue - avgPrice) / avgPrice) * 100;
-            setPriceChange(percentChange);
+            const amount = currentValue - avgPrice;
             
-            // Set trend based on percentage change
+            // Determine trend based on percentage change
+            let trendValue: 'UP' | 'DOWN' | 'STABLE';
             if (percentChange > 5) {
-              setTrend('UP');
+              trendValue = 'UP';
             } else if (percentChange < -5) {
-              setTrend('DOWN');
+              trendValue = 'DOWN';
             } else {
-              setTrend('STABLE');
+              trendValue = 'STABLE';
             }
+            
+            setPriceChange({
+              amount,
+              percentage: percentChange,
+              trend: trendValue
+            });
+            setTrend(trendValue);
           }
         }
       } catch (error) {
@@ -62,7 +70,7 @@ export default function PriceIndicator({ cardId, showTrend = true, currentPrice 
   };
 
   // Trend colors and icons
-  const getTrendDisplay = (): { icon: string; color: string; text: string } => {
+  const getTrendDisplay = (): { icon: string; color: string; bgColor: string } | null => {
     if (!showTrend || loading) return null;
 
     const displays = {
@@ -87,7 +95,7 @@ export default function PriceIndicator({ cardId, showTrend = true, currentPrice 
   };
 
   const trendDisplay = getTrendDisplay();
-  const showPercentage = priceChange !== null && Math.abs(priceChange) >= 1;
+  const showPercentage = priceChange !== null && Math.abs(priceChange.percentage) >= 1;
 
   if (currentPrice === 'N/A') {
     return (
@@ -113,7 +121,7 @@ export default function PriceIndicator({ cardId, showTrend = true, currentPrice 
           <span className="font-bold">{trendDisplay.icon}</span>
           {showPercentage && (
             <span className="text-xs">
-              {priceChange > 0 ? '+' : ''}{priceChange.toFixed(1)}%
+              {priceChange.percentage > 0 ? '+' : ''}{priceChange.percentage.toFixed(1)}%
             </span>
           )}
         </span>

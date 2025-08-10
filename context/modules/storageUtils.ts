@@ -1,23 +1,22 @@
 // Storage utilities for context persistence
-
-import { useCallback } from 'react';
+import logger from '../../utils/logger';
 
 // Create a persistent state utility
 export const createPersistState = () => {
-  return useCallback((key: string, value: any) => {
+  return (key: string, value: any) => {
     if (typeof window !== 'undefined') {
       try {
         localStorage.setItem(key, JSON.stringify(value));
       } catch (error) {
-        console.warn(`Failed to persist ${key}:`, error);
+        logger.warn(`Failed to persist ${key}:`, error);
       }
     }
-  }, []);
+  };
 };
 
 // Theme management utilities
 export const createThemeManager = (persistState: (key: string, value: any) => void) => {
-  const applyTheme = useCallback((theme: 'light' | 'dark') => {
+  const applyTheme = (theme: 'light' | 'dark') => {
     if (typeof window !== 'undefined') {
       if (theme === 'dark') {
         document.documentElement.classList.add('dark');
@@ -26,7 +25,7 @@ export const createThemeManager = (persistState: (key: string, value: any) => vo
       }
       localStorage.setItem('theme', theme);
     }
-  }, []);
+  };
 
   return { applyTheme };
 };

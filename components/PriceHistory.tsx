@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { PriceHistoryManager } from '../lib/supabase';
+import { CardPriceHistory } from '../types/database';
 
 interface PriceDataPoint {
-  collected_date: string;
-  price_market: string | number;
-  price_low?: string | number;
-  price_high?: string | number;
+  collected_date?: string;
+  collected_at: string;
+  price_market?: number;
+  price_low?: number;
+  price_high?: number;
   day_change_percent?: string | number;
 }
 
@@ -19,7 +21,7 @@ interface PriceStatistics {
 }
 
 interface SimpleLineChartProps {
-  data: PriceDataPoint[];
+  data: CardPriceHistory[];
   title: string;
   height?: number;
 }
@@ -92,8 +94,8 @@ function SimpleLineChart({ data, title, height = 200 }: SimpleLineChartProps) {
         
         {/* X-axis labels */}
         <div className="ml-12 flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
-          <span>{data[0]?.collected_date}</span>
-          <span>{data[data.length - 1]?.collected_date}</span>
+          <span>{data[0]?.collected_at?.split('T')[0]}</span>
+          <span>{data[data.length - 1]?.collected_at?.split('T')[0]}</span>
         </div>
       </div>
     </div>
@@ -194,7 +196,7 @@ interface PriceHistoryProps {
 }
 
 const PriceHistory: React.FC<PriceHistoryProps> = ({ cardId, cardName, variantType = 'holofoil' }) => {
-  const [priceHistory, setPriceHistory] = useState<PriceDataPoint[]>([]);
+  const [priceHistory, setPriceHistory] = useState<CardPriceHistory[]>([]);
   const [priceStats, setPriceStats] = useState<PriceStatistics | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -319,7 +321,7 @@ const PriceHistory: React.FC<PriceHistoryProps> = ({ cardId, cardName, variantTy
                 {priceHistory.slice(0, 10).map((row, index) => (
                   <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                     <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-                      {row.collected_date}
+                      {row.collected_at?.split('T')[0]}
                     </td>
                     <td className="px-4 py-3 text-sm text-gray-900 dark:text-white font-medium">
                       ${parseFloat(String(row.price_market || 0)).toFixed(2)}
@@ -331,17 +333,9 @@ const PriceHistory: React.FC<PriceHistoryProps> = ({ cardId, cardName, variantTy
                       ${parseFloat(String(row.price_high || 0)).toFixed(2)}
                     </td>
                     <td className="px-4 py-3 text-sm">
-                      {row.day_change_percent && (
-                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                          parseFloat(String(row.day_change_percent)) > 0 
-                            ? 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100'
-                            : parseFloat(String(row.day_change_percent)) < 0
-                            ? 'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100'
-                            : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
-                        }`}>
-                          {parseFloat(String(row.day_change_percent)) > 0 ? '+' : ''}{parseFloat(String(row.day_change_percent)).toFixed(1)}%
-                        </span>
-                      )}
+                      <span className="text-gray-500 dark:text-gray-400">
+                        -
+                      </span>
                     </td>
                   </tr>
                 ))}

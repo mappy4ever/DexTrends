@@ -227,8 +227,18 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }: EnhancedEvol
             }
             
             if (isMounted) {
+              // Convert RegionalEvolutionData[] to FlatPokemon[] by adding the level property
+              const convertedChain: FlatPokemon[] = regionalChain.map((pokemon, index) => ({
+                id: String(pokemon.id),
+                name: pokemon.name,
+                types: pokemon.types,
+                level: index,
+                sprite: pokemon.sprite || '',
+                shinySprite: pokemon.shinySprite || ''
+              }));
+              
               setEvolutionData({
-                chain: regionalChain,
+                chain: convertedChain,
                 structure: structure
               });
             }
@@ -858,9 +868,19 @@ function RegionalVariantEvolutions({ basePokemonName, detectedVariants, currentP
         try {
           const chain = await getRegionalEvolutionChain(variant);
           if (chain && chain.length > 0) {
+            // Convert RegionalEvolutionData[] to FlatPokemon[] by adding the level property
+            const convertedChain: FlatPokemon[] = chain.map((pokemon, index) => ({
+              id: String(pokemon.id),
+              name: pokemon.name,
+              types: pokemon.types,
+              level: index,
+              sprite: pokemon.sprite || '',
+              shinySprite: pokemon.shinySprite || ''
+            }));
+            
             chains.push({
               variant: variant,
-              chain: chain
+              chain: convertedChain
             });
           }
         } catch (error) {

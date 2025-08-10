@@ -9,7 +9,7 @@ export interface Metric {
   name: string;
   value: number;
   timestamp: number;
-  metadata: Record<string, any>;
+  metadata: Record<string, unknown>;
   url: string;
 }
 
@@ -119,6 +119,35 @@ declare global {
       saveData?: boolean;
     };
   }
+
+  // Performance entry extensions for Web Vitals
+  interface LargestContentfulPaintEntry extends PerformanceEntry {
+    element?: Element;
+    loadTime: number;
+    renderTime: number;
+    size: number;
+    url?: string;
+  }
+
+  interface FirstInputEntry extends PerformanceEntry {
+    processingStart: number;
+    processingEnd: number;
+    cancelable?: boolean;
+    target?: Element;
+  }
+
+  interface LayoutShiftEntry extends PerformanceEntry {
+    value: number;
+    hadRecentInput: boolean;
+    lastInputTime: number;
+    sources?: LayoutShiftAttribution[];
+  }
+
+  interface LayoutShiftAttribution {
+    node?: Node;
+    previousRect: DOMRectReadOnly;
+    currentRect: DOMRectReadOnly;
+  }
 }
 
 class PerformanceMonitor {
@@ -198,12 +227,12 @@ class PerformanceMonitor {
     // Largest Contentful Paint (LCP)
     this.observePerformanceEntry('largest-contentful-paint', (entries) => {
       if (entries.length > 0) {
-        const lcpEntry = entries[entries.length - 1];
+        const lcpEntry = entries[entries.length - 1] as LargestContentfulPaintEntry;
         this.recordMetric('lcp', lcpEntry.startTime, {
           threshold: this.thresholds.lcp,
           good: lcpEntry.startTime < 2500,
           needsImprovement: lcpEntry.startTime < 4000,
-          element: (lcpEntry as any).element
+          element: lcpEntry.element
         });
       }
     });
@@ -211,7 +240,7 @@ class PerformanceMonitor {
     // First Input Delay (FID)
     this.observePerformanceEntry('first-input', (entries) => {
       entries.forEach(entry => {
-        const firstInputEntry = entry as any; // PerformanceEventTiming not available in all types
+        const firstInputEntry = entry as FirstInputEntry;
         if (firstInputEntry.processingStart) {
           const fid = firstInputEntry.processingStart - entry.startTime;
           this.recordMetric('fid', fid, {
@@ -228,8 +257,9 @@ class PerformanceMonitor {
     let clsValue = 0;
     this.observePerformanceEntry('layout-shift', (entries) => {
       entries.forEach(entry => {
-        if (!(entry as any).hadRecentInput) {
-          clsValue += (entry as any).value;
+        const layoutShiftEntry = entry as LayoutShiftEntry;
+        if (!layoutShiftEntry.hadRecentInput) {
+          clsValue += layoutShiftEntry.value;
         }
       });
       
@@ -743,7 +773,7 @@ export const usePerformanceMonitor = (componentName?: string): UsePerformanceMon
   const React = require('react') as typeof import('react');
   const { useState, useEffect, useRef } = React;
   const [vitals, setVitals] = useState<Record<string, Metric>>({});
-  const [isSupported] = useState((performanceMonitor as any).isSupported);
+  const [isSupported] = useState(performanceMonitor.isSupported);
   const renderCount = useRef(0);
   const renderStartTime = useRef<number | null>(null);
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, ReactNode } from 'react';
+import type { BeforeInstallPromptEvent, GTagFunction } from '@/types/pwa';
 // Import mobile utils with error handling
 let useMobileUtils: () => { isMobile: boolean; isStandalone: boolean; isDesktopSize: boolean; utils: { isIOS: boolean; hapticFeedback: () => void } };
 try {
@@ -8,14 +9,13 @@ try {
 }
 import logger from '../../utils/logger';
 
+// Note: gtag is already declared in PWA types
+
 interface PWAFeaturesProps {
   isVisible: boolean;
 }
 
-interface BeforeInstallPromptEvent extends Event {
-  prompt: () => Promise<{ outcome: 'accepted' | 'dismissed' }>;
-  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
-}
+// BeforeInstallPromptEvent is imported from types
 
 interface InstallationAnalytics {
   promptShown: boolean;
@@ -147,8 +147,8 @@ const InstallPrompt: React.FC = () => {
           utils.hapticFeedback();
           
           // Track successful installation
-          if (typeof (window as any).gtag !== 'undefined') {
-            (window as any).gtag('event', 'pwa_install_success', {
+          if (window.gtag) {
+            window.gtag('event', 'pwa_install_success', {
               event_category: 'PWA',
               event_label: 'mobile_prompt'
             });
@@ -162,8 +162,8 @@ const InstallPrompt: React.FC = () => {
         } else {
           setInstallStep(0);
           // Track installation declined
-          if (typeof (window as any).gtag !== 'undefined') {
-            (window as any).gtag('event', 'pwa_install_declined', {
+          if (window.gtag) {
+            window.gtag('event', 'pwa_install_declined', {
               event_category: 'PWA',
               event_label: 'mobile_prompt'
             });
@@ -174,8 +174,8 @@ const InstallPrompt: React.FC = () => {
         setInstallStep(0);
         
         // Track installation error
-        if (typeof (window as any).gtag !== 'undefined') {
-          (window as any).gtag('event', 'pwa_install_error', {
+        if (window.gtag) {
+          window.gtag('event', 'pwa_install_error', {
             event_category: 'PWA',
             event_label: error instanceof Error ? error.message : String(error)
           });

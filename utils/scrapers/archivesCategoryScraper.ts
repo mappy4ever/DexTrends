@@ -1,6 +1,7 @@
 // Archives Category Scraper
 // Downloads images directly from Bulbagarden Archives categories
 
+import logger from '../logger';
 import scraperConfig from './scraperConfig';
 import {
   fetchMediaWikiApi,
@@ -306,7 +307,7 @@ class ArchivesCategoryScraper {
       const data = await response.json() as MediaWikiResponse;
       return data;
     } catch (error) {
-      console.error(`Error fetching category ${categoryName}:`, error);
+      logger.error(`Error fetching category ${categoryName}:`, { error });
       return null;
     }
   }
@@ -354,7 +355,7 @@ class ArchivesCategoryScraper {
         }
       }
     } catch (error) {
-      console.error(`Error getting image info for ${fileName}:`, error);
+      logger.error(`Error getting image info for ${fileName}:`, { error });
     }
     
     return null;
@@ -364,27 +365,27 @@ class ArchivesCategoryScraper {
   async scrapeCategory(categoryKey: string, overrideLimit: number | null = null): Promise<CategoryResult | null> {
     const category = this.categories[categoryKey];
     if (!category) {
-      console.error(`Unknown category: ${categoryKey}`);
+      logger.error(`Unknown category: ${categoryKey}`);
       return null;
     }
 
-    console.log(`\nScraping ${category.name} from ${category.category}...`);
+    logger.debug(`Scraping ${category.name} from ${category.category}...`);
 
     // Check cache
     const cacheKey = `archives-category-${categoryKey}`;
     const cachedData = await getCachedData<CategoryResult>(cacheKey);
     if (cachedData) {
-      console.log(`Using cached data for ${category.name}`);
+      logger.debug(`Using cached data for ${category.name}`);
       return cachedData;
     }
 
     // Get all files in category
     const files = await this.getAllCategoryFiles(category.category);
-    console.log(`Found ${files.length} files in ${category.category}`);
+    logger.debug(`Found ${files.length} files in ${category.category}`);
 
     // Filter files
     const filteredFiles = files.filter(file => category.filter(file.title));
-    console.log(`${filteredFiles.length} files match filter criteria`);
+    logger.debug(`${filteredFiles.length} files match filter criteria`);
 
     // Sort files to prioritize newer games and higher quality
     const sortedFiles = this.sortByPriority(filteredFiles, categoryKey);
@@ -411,7 +412,7 @@ class ArchivesCategoryScraper {
 
     for (const file of sortedFiles) {
       if (downloadCount >= maxDownloads) {
-        console.log(`Reached download limit of ${maxDownloads} for ${category.name}`);
+        logger.debug(`Reached download limit of ${maxDownloads} for ${category.name}`);
         break;
       }
 
@@ -437,7 +438,7 @@ class ArchivesCategoryScraper {
           height: imageInfo.height
         });
         downloadCount++;
-        console.log(`Downloaded: ${cleanName}`);
+        logger.debug(`Downloaded: ${cleanName}`);
       }
 
       // Rate limiting
@@ -460,9 +461,9 @@ class ArchivesCategoryScraper {
 
   // Scrape all categories
   async scrapeAllCategories(overrideLimit: number | null = null): Promise<Record<string, CategoryResult>> {
-    console.log('Starting Archives category scraping...');
+    logger.debug('Starting Archives category scraping...');
     if (overrideLimit) {
-      console.log(`Using override limit: ${overrideLimit} images per category`);
+      logger.debug(`Using override limit: ${overrideLimit} images per category`);
     }
     
     for (const categoryKey of Object.keys(this.categories)) {
@@ -474,16 +475,16 @@ class ArchivesCategoryScraper {
 
     // Save all data
     await this.saveAllData();
-    console.log('\nArchives category scraping completed!');
+    logger.debug('Archives category scraping completed!');
     
     return this.scrapedData;
   }
 
   // Scrape specific categories
   async scrapeCategories(categoryKeys: string[], overrideLimit: number | null = null): Promise<Record<string, CategoryResult>> {
-    console.log(`Starting Archives category scraping for: ${categoryKeys.join(', ')}`);
+    logger.debug(`Starting Archives category scraping for: ${categoryKeys.join(', ')}`);
     if (overrideLimit) {
-      console.log(`Using override limit: ${overrideLimit} images per category`);
+      logger.debug(`Using override limit: ${overrideLimit} images per category`);
     }
     
     for (const categoryKey of categoryKeys) {
@@ -495,7 +496,7 @@ class ArchivesCategoryScraper {
 
     // Save data
     await this.saveAllData();
-    console.log('\nSelected category scraping completed!');
+    logger.debug('Selected category scraping completed!');
     
     return this.scrapedData;
   }
@@ -552,9 +553,9 @@ class ArchivesCategoryScraper {
         await saveDataToFile(data, `archives-${key}.json`, 'archives');
       }
       
-      console.log('Archives category data saved successfully');
+      logger.debug('Archives category data saved successfully');
     } catch (error) {
-      console.error('Error saving archives data:', (error as Error).message);
+      logger.error('Error saving archives data:', { error: (error as Error).message });
     }
   }
 }

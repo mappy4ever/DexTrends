@@ -1,6 +1,7 @@
 // Elite Four Scraper
 // Downloads high-quality Elite Four member images from Bulbapedia
 
+import logger from '../logger';
 import scraperConfig from './scraperConfig';
 import {
   fetchMediaWikiApi,
@@ -104,10 +105,10 @@ class EliteFourScraper {
 
   // Scrape all Elite Four members
   async scrapeAllEliteFour(): Promise<ScrapedEliteFourData> {
-    console.log('Starting Elite Four scraping...');
+    logger.debug('Starting Elite Four scraping...');
     
     for (const [region, data] of Object.entries(scraperConfig.targets.eliteFour)) {
-      console.log(`\nScraping ${region} Elite Four...`);
+      logger.debug(`Scraping ${region} Elite Four...`);
       this.scrapedData[region] = [];
       
       for (const memberPage of data.pages) {
@@ -124,7 +125,7 @@ class EliteFourScraper {
     }
     
     // Also scrape champions
-    console.log('\nScraping Champions...');
+    logger.debug('Scraping Champions...');
     this.scrapedData.champions = {};
     
     for (const [region, champions] of Object.entries(scraperConfig.targets.champions)) {
@@ -147,7 +148,7 @@ class EliteFourScraper {
     
     // Save all data
     await this.saveAllData();
-    console.log('\nElite Four scraping completed!');
+    logger.debug('Elite Four scraping completed!');
     
     return this.scrapedData as ScrapedEliteFourData;
   }
@@ -155,13 +156,13 @@ class EliteFourScraper {
   // Scrape individual Elite Four member
   async scrapeEliteFourMember(pageTitle: string, region: string, isChampion: boolean = false): Promise<EliteFourMemberData | null> {
     try {
-      console.log(`Scraping ${isChampion ? 'Champion' : 'Elite Four member'}: ${pageTitle}`);
+      logger.debug(`Scraping ${isChampion ? 'Champion' : 'Elite Four member'}: ${pageTitle}`);
       
       // Check cache first
       const cacheKey = `elite-four-${pageTitle}`;
       const cachedData = await getCachedData<EliteFourMemberData>(cacheKey);
       if (cachedData) {
-        console.log(`Using cached data for ${pageTitle}`);
+        logger.debug(`Using cached data for ${pageTitle}`);
         return cachedData;
       }
 
@@ -176,13 +177,13 @@ class EliteFourScraper {
       }) as MediaWikiPageResponse;
 
       if (!pageData || !pageData.query || !pageData.query.pages || pageData.query.pages.length === 0) {
-        console.error(`No data found for ${pageTitle}`);
+        logger.error(`No data found for ${pageTitle}`);
         return null;
       }
 
       const page = pageData.query.pages[0];
       if (page.missing) {
-        console.error(`Page not found: ${pageTitle}`);
+        logger.error(`Page not found: ${pageTitle}`);
         return null;
       }
 
@@ -206,7 +207,7 @@ class EliteFourScraper {
       return memberData;
       
     } catch (error) {
-      console.error(`Error scraping ${pageTitle}:`, (error as Error).message);
+      logger.error(`Error scraping ${pageTitle}:`, { error: (error as Error).message });
       return null;
     }
   }
@@ -342,11 +343,11 @@ class EliteFourScraper {
   // Download member images
   private async downloadMemberImages(pageTitle: string, memberData: EliteFourMemberData): Promise<void> {
     try {
-      console.log(`Downloading images for ${pageTitle}...`);
+      logger.debug(`Downloading images for ${pageTitle}...`);
       
       // First, try to download the infobox image if we found one
       if (memberData.infoboxImage) {
-        console.log(`Found infobox image: ${memberData.infoboxImage}`);
+        logger.debug(`Found infobox image: ${memberData.infoboxImage}`);
         
         // Get info for the specific infobox image
         const infoboxImageData = await fetchMediaWikiApi({
@@ -367,7 +368,7 @@ class EliteFourScraper {
             
             if (localPath) {
               memberData.image = `/images/scraped/elite-four/${fileName}`;
-              console.log(`Downloaded main image from infobox for ${pageTitle}: ${fileName}`);
+              logger.debug(`Downloaded main image from infobox for ${pageTitle}: ${fileName}`);
               return; // If we got the infobox image, we're done
             }
           }
@@ -375,7 +376,7 @@ class EliteFourScraper {
       }
       
       // If no infobox image or download failed, fall back to searching all images
-      console.log(`Searching for images on ${pageTitle} page...`);
+      logger.debug(`Searching for images on ${pageTitle} page...`);
       
       // Get all images from the page
       const images = await getPageImages(pageTitle, (title: string, info: { width: number; height: number }) => {
@@ -427,7 +428,7 @@ class EliteFourScraper {
       });
 
       if (images.length === 0) {
-        console.log(`No suitable images found for ${pageTitle}`);
+        logger.debug(`No suitable images found for ${pageTitle}`);
         return;
       }
 
@@ -459,12 +460,12 @@ class EliteFourScraper {
         
         const localPath = await downloadImage(image.url, fileName, 'elite-four');
         if (localPath) {
-          console.log(`Downloaded image for ${pageTitle}: ${fileName}`);
+          logger.debug(`Downloaded image for ${pageTitle}: ${fileName}`);
         }
       }
 
     } catch (error) {
-      console.error(`Error downloading images for ${pageTitle}:`, (error as Error).message);
+      logger.error(`Error downloading images for ${pageTitle}:`, { error: (error as Error).message });
     }
   }
 
@@ -486,9 +487,9 @@ class EliteFourScraper {
       // Save combined file
       await saveDataToFile(this.scrapedData, 'all-elite-four.json', 'elite-four');
       
-      console.log('All Elite Four data saved successfully');
+      logger.debug('All Elite Four data saved successfully');
     } catch (error) {
-      console.error('Error saving Elite Four data:', (error as Error).message);
+      logger.error('Error saving Elite Four data:', { error: (error as Error).message });
     }
   }
 }

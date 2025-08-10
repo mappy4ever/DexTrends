@@ -11,11 +11,11 @@ interface PerformanceWithMemory extends Performance {
   };
 }
 
-interface PerformanceWithTiming extends Performance {
-  timing: {
-    navigationStart: number;
-    loadEventEnd: number;
-  };
+interface NavigationTiming {
+  navigationStart?: number;
+  loadEventEnd?: number;
+  domComplete?: number;
+  loadEventStart?: number;
 }
 
 // Re-export hook for backward compatibility
@@ -75,14 +75,21 @@ export const PerformanceMonitor = ({ showInDev = true }: PerformanceMonitorProps
       }
     };
 
-    // Load time measurement
+    // Load time measurement using modern PerformanceNavigationTiming API
     const measureLoadTime = (): void => {
-      if ((performance as PerformanceWithTiming).timing) {
-        const loadTime = (performance as PerformanceWithTiming).timing.loadEventEnd - (performance as PerformanceWithTiming).timing.navigationStart;
-        setMetrics(prev => ({
-          ...prev,
-          loadTime: loadTime
-        }));
+      try {
+        const navigationEntries = performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
+        if (navigationEntries.length > 0) {
+          const navTiming = navigationEntries[0];
+          const loadTime = navTiming.loadEventEnd - navTiming.loadEventStart;
+          setMetrics(prev => ({
+            ...prev,
+            loadTime: loadTime
+          }));
+        }
+      } catch (error) {
+        // Fallback for older browsers - just use current timestamp
+        setMetrics(prev => ({ ...prev, loadTime: Date.now() }));
       }
     };
 

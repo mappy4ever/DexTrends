@@ -28,7 +28,7 @@ export function useKeyboardNavigation() {
       }
     };
 
-    const handleMouseDown = (): any => {
+    const handleMouseDown = (): void => {
       document.body.classList.remove('keyboard-navigation');
     };
 

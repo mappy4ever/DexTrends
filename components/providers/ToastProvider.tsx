@@ -2,6 +2,7 @@ import React, { createContext, useContext, ReactNode } from 'react';
 import { ToastContainer, ToastType } from '../ui/Toast';
 import { useToast as useToastHook, ToastOptions } from '../../hooks/useNotifications';
 import { NotificationType, Notification } from '../../utils/notificationTypes';
+import logger from '../../utils/logger';
 
 interface ToastContextValue {
   showToast: (message: string, options?: ToastOptions) => string;
@@ -142,7 +143,7 @@ export const useToast = () => {
     };
   }
   if (!context) {
-    console.warn('useToast called outside of ToastProvider, returning mock implementation');
+    logger.warn('useToast called outside of ToastProvider, returning mock implementation');
     const noop = () => Date.now().toString();
     const noopPromise = <T,>(promise: Promise<T>) => promise;
     

@@ -1,6 +1,7 @@
 // Region Map Scraper
 // Downloads high-quality region maps from Bulbapedia
 
+import logger from '../logger';
 import scraperConfig from './scraperConfig';
 import {
   fetchMediaWikiApi,
@@ -46,7 +47,7 @@ class RegionMapScraper {
 
   // Scrape all region maps
   async scrapeAllRegionMaps(): Promise<ScrapedMapData> {
-    console.log('Starting region map scraping...');
+    logger.debug('Starting region map scraping...');
     
     for (const [regionKey, regionPage] of Object.entries(scraperConfig.targets.regionMaps)) {
       const mapData = await this.scrapeRegionMap(regionKey, regionPage);
@@ -60,7 +61,7 @@ class RegionMapScraper {
     
     // Save all data
     await this.saveAllData();
-    console.log('\nRegion map scraping completed!');
+    logger.debug('Region map scraping completed!');
     
     return this.scrapedData;
   }
@@ -68,13 +69,13 @@ class RegionMapScraper {
   // Scrape individual region map
   async scrapeRegionMap(regionKey: string, regionPage: string): Promise<MapData | null> {
     try {
-      console.log(`Scraping region map: ${regionPage}`);
+      logger.debug(`Scraping region map: ${regionPage}`);
       
       // Check cache first
       const cacheKey = `region-map-${regionKey}`;
       const cachedData = await getCachedData<MapData>(cacheKey);
       if (cachedData) {
-        console.log(`Using cached data for ${regionPage}`);
+        logger.debug(`Using cached data for ${regionPage}`);
         return cachedData;
       }
 
@@ -122,7 +123,7 @@ class RegionMapScraper {
       });
 
       if (images.length === 0) {
-        console.log(`No suitable map images found for ${regionPage}`);
+        logger.debug(`No suitable map images found for ${regionPage}`);
         return null;
       }
 
@@ -200,13 +201,13 @@ class RegionMapScraper {
             });
           }
           
-          console.log(`Downloaded ${category} map for ${regionPage}: ${fileName}`);
+          logger.debug(`Downloaded ${category} map for ${regionPage}: ${fileName}`);
           downloadCount++;
         }
       }
 
       if (downloadCount === 0) {
-        console.log(`Failed to download any maps for ${regionPage}`);
+        logger.debug(`Failed to download any maps for ${regionPage}`);
         return null;
       }
 
@@ -216,7 +217,7 @@ class RegionMapScraper {
       return mapData;
       
     } catch (error) {
-      console.error(`Error scraping region map ${regionPage}:`, (error as Error).message);
+      logger.error(`Error scraping region map ${regionPage}:`, { error: (error as Error).message });
       return null;
     }
   }
@@ -232,9 +233,9 @@ class RegionMapScraper {
       // Save combined file
       await saveDataToFile(this.scrapedData, 'all-region-maps.json', 'maps');
       
-      console.log('All region map data saved successfully');
+      logger.debug('All region map data saved successfully');
     } catch (error) {
-      console.error('Error saving region map data:', (error as Error).message);
+      logger.error('Error saving region map data:', { error: (error as Error).message });
     }
   }
 }

@@ -53,7 +53,7 @@ export default function AdvancedSearchModal({ isOpen, onClose, onSearchResults }
       try {
         const pokemon = getPokemonSDK();
         const setsData = await pokemon.set.all();
-        setSets((setsData as any[]).sort((a: CardSet, b: CardSet) => a.name.localeCompare(b.name)));
+        setSets(setsData.data.sort((a: CardSet, b: CardSet) => a.name.localeCompare(b.name)));
       } catch (error) {
         // Error loading sets
       }

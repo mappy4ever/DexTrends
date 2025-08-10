@@ -13,6 +13,8 @@ import performanceMonitor from "../../../utils/performanceMonitor";
 import { getPrice } from "../../../utils/pokemonutils";
 import OptimizedImage from "../OptimizedImage";
 import { useFavorites } from "../../../context/UnifiedAppContext";
+import type { Card as SdkCard } from "pokemontcgsdk";
+import { ensureSdkCompatibleCard } from "../../../utils/cardTypeGuards";
 
 // Rarity tiers for holographic effects (illustration rare and above only)
 const getHolographicRarities = () => [
@@ -280,7 +282,8 @@ const pocketRarityMap: Record<string, { label: string; color: string; glow: stri
   '★★': { label: 'Crown', color: 'bg-gradient-to-r from-red-100 to-rose-200 text-red-800 border-red-300', glow: 'shadow-red-200/50' }
 };
 
-interface Card {
+// Internal card interface for component props - more flexible than SDK Card
+interface InternalCard {
   id: string;
   name: string;
   supertype?: string;
@@ -302,7 +305,7 @@ interface Card {
 }
 
 interface UnifiedCardProps {
-  card: Card;
+  card: InternalCard | SdkCard;
   cardType?: "tcg" | "pocket" | "pokedex";
   showPrice?: boolean;
   showSet?: boolean;
@@ -311,9 +314,9 @@ interface UnifiedCardProps {
   showRarity?: boolean;
   showPack?: boolean;
   showArtist?: boolean;
-  onCardClick?: ((card: Card) => void) | null;
-  onMagnifyClick?: ((card: Card) => void) | null;
-  onDelete?: ((card: Card) => void) | null;
+  onCardClick?: ((card: InternalCard | SdkCard) => void) | null;
+  onMagnifyClick?: ((card: InternalCard | SdkCard) => void) | null;
+  onDelete?: ((card: InternalCard | SdkCard) => void) | null;
   className?: string;
   imageWidth?: number;
   imageHeight?: number;
@@ -355,9 +358,16 @@ const UnifiedCard = memo(({
     const startTime = Date.now();
     let normalizedData;
     
+    // Type guard helper functions
+    const hasInternalProps = (c: InternalCard | SdkCard): c is InternalCard => {
+      return 'setCode' in c || 'setTag' in c || 'pack' in c || 'type' in c || 'sprite' in c || 'health' in c;
+    };
+
+    const cardAsInternal = hasInternalProps(card) ? card : null;
+    
     if (cardType === "pocket") {
       // Parse card ID if it contains set code (e.g., "a2a-029" -> set: "A2a", number: "029")
-      let setTag = card.setCode || card.setTag || deriveSetCode(card.pack || '') || 'PKT';
+      let setTag = cardAsInternal?.setCode || cardAsInternal?.setTag || deriveSetCode(cardAsInternal?.pack || '') || 'PKT';
       let cardNumber = card.id || 'unknown';
       
       if (card.id && card.id.includes('-')) {
@@ -372,16 +382,16 @@ const UnifiedCard = memo(({
       normalizedData = {
         id: card.id,
         name: card.name,
-        image: card.image || "/back-card.png",
-        types: card.type ? [card.type] : (card.types || []),
+        image: cardAsInternal?.image || card.images?.small || "/back-card.png",
+        types: cardAsInternal?.type ? [cardAsInternal.type] : (card.types || []),
         set: { 
-          name: card.pack, 
+          name: cardAsInternal?.pack, 
           id: null,
           tag: setTag
         },
         number: cardNumber,
         rarity: card.rarity,
-        hp: card.health || card.hp,
+        hp: cardAsInternal?.health || card.hp,
         artist: card.artist,
         linkPath: `/pocketmode/${card.id}`
       };
@@ -389,7 +399,7 @@ const UnifiedCard = memo(({
       normalizedData = {
         id: card.id,
         name: card.name,
-        image: card.sprite || "/dextrendslogo.png",
+        image: cardAsInternal?.sprite || card.images?.small || "/dextrendslogo.png",
         types: card.types || [],
         set: null,
         number: String(card.id).padStart(3, "0"),

@@ -747,7 +747,7 @@ export const tcgCache = {
           const result = await pokemon.card.where({ q: `name:${pokemonName}` });
           logger.debug('[TCG Cache] API Response:', result);
           // The SDK returns an object with data property containing the cards array
-          const cards = (result as any).data || [];
+          const cards = result.data || [];
           logger.debug('[TCG Cache] Extracted cards:', cards.length);
           return cards;
         } catch (error) {

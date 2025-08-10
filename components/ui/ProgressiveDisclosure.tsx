@@ -641,7 +641,10 @@ export const ProgressiveForm: React.FC<ProgressiveFormProps> = ({
   
   const handleSectionComplete = useCallback((sectionIndex: number, data: unknown) => {
     setCompletedSections(prev => new Set([...prev, sectionIndex]));
-    setFormData((prev: Record<string, unknown>) => ({ ...prev, ...data }));
+    setFormData((prev: Record<string, unknown>) => ({ 
+      ...prev, 
+      ...(data && typeof data === 'object' ? data as Record<string, unknown> : {}) 
+    }));
     
     if (sectionIndex < sections.length - 1) {
       setCurrentSection(sectionIndex + 1);

@@ -230,13 +230,3 @@ export const StaggeredChildren = ({ children, baseDelay = 100, className = '' }:
   );
 };
 
-// Removed the default export to allow named imports
-// export default {
-//   FadeIn,
-//   SlideUp,
-//   Scale,
-//   CardHover,
-//   Pulse,
-//   Bounce,
-//   StaggeredChildren
-// };

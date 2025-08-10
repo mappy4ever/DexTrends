@@ -44,16 +44,6 @@ export default async function handler(
   res: NextApiResponse<MapData[] | ErrorResponse>
 ) {
 
-//    // --- Check for Initialization Errors ---
-//    if (initializationError || !supabaseInstance) {
-//         const errorMessage = initializationError || "Supabase client not available.";
-//         // Log error every time handler is called with faulty init
-//         console.error(`MAP API [Handler - ${req.url}]: Supabase client not ready. Error: ${errorMessage}`);
-//         return res.status(500).json({ message: errorMessage });
-//    }
-
-//    // Use the successfully initialized instance
-//    const supabase = supabaseInstance;
 
     // --- Method Check ---
     if (!supabase) {

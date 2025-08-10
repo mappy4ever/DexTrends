@@ -162,7 +162,6 @@ async function scrapeGymLeaders(options) {
   try {
     if (options.region) {
       colorLog('yellow', `Scraping ${options.region} gym leaders only...`);
-      // TODO: Implement region-specific scraping
       const data = await gymLeaderScraper.scrapeAllGymLeaders();
       return data[options.region] || [];
     } else {

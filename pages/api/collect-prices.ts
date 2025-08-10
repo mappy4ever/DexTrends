@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { supabase } from '../../lib/supabase';
 import logger from '../../utils/logger';
 import { ErrorResponse } from '@/types/api/api-responses';
+import type { CardPriceHistory } from '@/types/database';
 
 // Rate limiting to avoid overwhelming the Pokemon TCG API
 const BATCH_SIZE = 20; // Process 20 cards at a time
@@ -74,9 +75,10 @@ async function fetchCardData(cardId: string): Promise<CardData | null> {
 
 async function getCardsFromDatabase(): Promise<DatabaseCard[]> {
   try {
+    // Use card_cache table since we don't have a dedicated cards table in our schema
     const { data, error } = await supabase
-      .from('cards')
-      .select('id, name')
+      .from('card_cache')
+      .select('card_id, card_data')
       .limit(100);
 
     if (error) {
@@ -84,7 +86,11 @@ async function getCardsFromDatabase(): Promise<DatabaseCard[]> {
       return [];
     }
 
-    return data || [];
+    // Transform card cache data to match expected interface
+    return (data || []).map(item => ({
+      id: item.card_id,
+      name: (item.card_data as Record<string, unknown>)?.name as string || item.card_id
+    }));
   } catch (error) {
     logger.error('Database error:', { error });
     return [];
@@ -129,19 +135,27 @@ async function storePriceHistory(cardId: string, priceData: PriceData, cardName:
     else if (priceData.unlimited?.market) variantType = 'unlimited';
     else if (priceData.unlimitedHolofoil?.market) variantType = 'unlimitedHolofoil';
 
+    const insertData: Omit<CardPriceHistory, 'id' | 'created_at'> = {
+      card_id: cardId,
+      card_name: cardName,
+      set_name: setName || undefined,
+      set_id: undefined,
+      variant_type: variantType || undefined,
+      price_market: marketPrice || undefined,
+      price_low: lowPrice || undefined,
+      price_mid: midPrice || undefined,
+      price_high: highPrice || undefined,
+      price_direct_low: undefined,
+      tcgplayer_url: undefined,
+      last_updated_at: undefined,
+      collected_at: new Date().toISOString(),
+      source: 'pokemon-tcg-api',
+      raw_data: priceData as Record<string, unknown>
+    };
+
     const { error } = await supabase
       .from('card_price_history')
-      .insert({
-        card_id: cardId,
-        card_name: cardName,
-        set_name: setName,
-        variant_type: variantType,
-        price_market: marketPrice,
-        price_low: lowPrice,
-        price_mid: midPrice,
-        price_high: highPrice,
-        collected_at: new Date().toISOString()
-      });
+      .insert(insertData);
 
     if (error) {
       logger.error('Failed to store price history:', { cardId, error });

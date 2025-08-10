@@ -106,14 +106,14 @@ const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSea
       let cards: TCGCard[] = [];
       try {
         const res = await pokemon.card.where({ q: `name:${q}*` });
-        cards = (res?.slice(0, 5) || []) as TCGCard[];
+        cards = (res?.data?.slice(0, 5) || []) as TCGCard[];
       } catch {}
       
       // Set search
       let sets: CardSet[] = [];
       try {
         const allSets = await pokemon.set.all();
-        sets = allSets
+        sets = allSets.data
           .filter((s: CardSet) => s.name.toLowerCase().includes(q.toLowerCase()))
           .slice(0, 5) as CardSet[];
       } catch {}

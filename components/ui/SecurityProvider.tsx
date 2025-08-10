@@ -375,8 +375,8 @@ export const SecurityProvider: React.FC<SecurityProviderProps> = ({ children }) 
   const secureStorage: SecureStorage = {
     setItem: (key: string, value: unknown) => {
       try {
-        const sanitizedKey = sanitizeInput(key);
-        const sanitizedValue = typeof value === 'string' ? sanitizeInput(value) : value;
+        const sanitizedKey = sanitizeInput(key) as string;
+        const sanitizedValue = sanitizeInput(value);
         localStorage.setItem(sanitizedKey, JSON.stringify(sanitizedValue));
       } catch (error) {
         logger.error('Secure storage set failed', { error, key });
@@ -385,7 +385,7 @@ export const SecurityProvider: React.FC<SecurityProviderProps> = ({ children }) 
     
     getItem: (key: string) => {
       try {
-        const sanitizedKey = sanitizeInput(key);
+        const sanitizedKey = sanitizeInput(key) as string;
         const value = localStorage.getItem(sanitizedKey);
         return value ? JSON.parse(value) : null;
       } catch (error) {
@@ -396,7 +396,7 @@ export const SecurityProvider: React.FC<SecurityProviderProps> = ({ children }) 
     
     removeItem: (key: string) => {
       try {
-        const sanitizedKey = sanitizeInput(key);
+        const sanitizedKey = sanitizeInput(key) as string;
         localStorage.removeItem(sanitizedKey);
       } catch (error) {
         logger.error('Secure storage remove failed', { error, key });

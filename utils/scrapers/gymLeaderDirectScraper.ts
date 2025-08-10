@@ -1,6 +1,7 @@
 // Direct Gym Leader Scraper
 // Downloads images from individual character categories
 
+import logger from '../logger';
 import scraperConfig from './scraperConfig';
 import {
   downloadImage,
@@ -143,7 +144,7 @@ class GymLeaderDirectScraper {
       const data = await response.json() as CategoryResponse;
       return data;
     } catch (error) {
-      console.error(`Error fetching category ${categoryName}:`, error);
+      logger.error(`Error fetching category ${categoryName}:`, { error });
       return null;
     }
   }
@@ -188,7 +189,7 @@ class GymLeaderDirectScraper {
         }
       }
     } catch (error) {
-      console.error(`Error getting image info for ${fileName}:`, error);
+      logger.error(`Error getting image info for ${fileName}:`, { error });
     }
     
     return null;
@@ -235,18 +236,18 @@ class GymLeaderDirectScraper {
 
   // Scrape a specific character
   private async scrapeCharacter(characterName: string, subfolder: string): Promise<DownloadedFile[]> {
-    console.log(`\nScraping ${characterName}...`);
+    logger.debug(`Scraping ${characterName}...`);
     
     const files = await this.getAllCategoryFiles(characterName);
     if (!files || files.length === 0) {
-      console.log(`No files found for ${characterName}`);
+      logger.debug(`No files found for ${characterName}`);
       return [];
     }
     
-    console.log(`Found ${files.length} files for ${characterName}`);
+    logger.debug(`Found ${files.length} files for ${characterName}`);
     
     const validFiles = files.filter(file => this.filterCharacterImage(file.title, characterName));
-    console.log(`${validFiles.length} files match criteria`);
+    logger.debug(`${validFiles.length} files match criteria`);
     
     const downloadedFiles: DownloadedFile[] = [];
     let count = 0;
@@ -292,7 +293,7 @@ class GymLeaderDirectScraper {
           height: imageInfo.height
         });
         count++;
-        console.log(`Downloaded: ${cleanName}`);
+        logger.debug(`Downloaded: ${cleanName}`);
       }
       
       await delay(1000);
@@ -303,12 +304,12 @@ class GymLeaderDirectScraper {
 
   // Scrape all gym leaders
   async scrapeAllGymLeaders(): Promise<ScrapedCharacterData> {
-    console.log('Starting direct gym leader scraping...');
+    logger.debug('Starting direct gym leader scraping...');
     
     const allFiles: DownloadedFile[] = [];
     
     for (const [region, leaders] of Object.entries(this.gymLeaders)) {
-      console.log(`\n=== Scraping ${region.toUpperCase()} gym leaders ===`);
+      logger.debug(`=== Scraping ${region.toUpperCase()} gym leaders ===`);
       
       for (const leader of leaders) {
         const files = await this.scrapeCharacter(leader, 'gym-leaders');
@@ -324,19 +325,19 @@ class GymLeaderDirectScraper {
     };
     
     await saveDataToFile(data, 'gym-leaders-direct.json', 'gym-leaders');
-    console.log(`\n✅ Gym leader scraping complete! Downloaded ${allFiles.length} images`);
+    logger.debug(`Gym leader scraping complete! Downloaded ${allFiles.length} images`);
     
     return data;
   }
 
   // Scrape all elite four
   async scrapeAllEliteFour(): Promise<ScrapedCharacterData> {
-    console.log('Starting direct elite four scraping...');
+    logger.debug('Starting direct elite four scraping...');
     
     const allFiles: DownloadedFile[] = [];
     
     for (const [region, members] of Object.entries(this.eliteFour)) {
-      console.log(`\n=== Scraping ${region.toUpperCase()} elite four ===`);
+      logger.debug(`=== Scraping ${region.toUpperCase()} elite four ===`);
       
       for (const member of members) {
         const files = await this.scrapeCharacter(member, 'elite-four');
@@ -352,14 +353,14 @@ class GymLeaderDirectScraper {
     };
     
     await saveDataToFile(data, 'elite-four-direct.json', 'elite-four');
-    console.log(`\n✅ Elite Four scraping complete! Downloaded ${allFiles.length} images`);
+    logger.debug(`Elite Four scraping complete! Downloaded ${allFiles.length} images`);
     
     return data;
   }
 
   // Scrape all champions
   async scrapeAllChampions(): Promise<ScrapedCharacterData> {
-    console.log('Starting direct champion scraping...');
+    logger.debug('Starting direct champion scraping...');
     
     const allFiles: DownloadedFile[] = [];
     
@@ -376,7 +377,7 @@ class GymLeaderDirectScraper {
     };
     
     await saveDataToFile(data, 'champions-direct.json', 'champions');
-    console.log(`\n✅ Champion scraping complete! Downloaded ${allFiles.length} images`);
+    logger.debug(`Champion scraping complete! Downloaded ${allFiles.length} images`);
     
     return data;
   }

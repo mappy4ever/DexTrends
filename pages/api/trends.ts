@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { createClient } from '@supabase/supabase-js';
 import logger from '@/utils/logger';
 import { ErrorResponse } from '@/types/api/api-responses';
+import type { Database } from '@/types/database';
 
 // Initialize Supabase client - This is OK at the top level
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -15,7 +16,7 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 // Create client only if variables are present
-const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null;
+const supabase = supabaseUrl && supabaseAnonKey ? createClient<Database>(supabaseUrl, supabaseAnonKey) : null;
 
 // Initialize Supabase client
 /*const supabase = createClient(
@@ -47,6 +48,7 @@ interface TripData {
 }
 
 interface OrgDetails {
+  owner_org_title_id?: number;
   [key: string]: unknown;
 }
 

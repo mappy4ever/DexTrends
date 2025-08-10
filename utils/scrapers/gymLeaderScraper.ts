@@ -1,6 +1,7 @@
 // Gym Leader Scraper
 // Downloads gym leader data and images from Bulbapedia
 
+import logger from '../logger';
 import scraperConfig from './scraperConfig';
 import {
   fetchMediaWikiApi,
@@ -103,10 +104,10 @@ class GymLeaderScraper {
 
   // Scrape all gym leaders
   async scrapeAllGymLeaders(): Promise<ScrapedGymLeaderData> {
-    console.log('Starting gym leader scraping...');
+    logger.debug('Starting gym leader scraping...');
     
     for (const [region, data] of Object.entries(scraperConfig.targets.gymLeaders)) {
-      console.log(`\nScraping ${region} gym leaders...`);
+      logger.debug(`Scraping ${region} gym leaders...`);
       this.scrapedData[region] = [];
       
       for (const leaderPage of data.pages) {
@@ -122,7 +123,7 @@ class GymLeaderScraper {
     
     // Save all data
     await this.saveAllData();
-    console.log('\nGym leader scraping completed!');
+    logger.debug('Gym leader scraping completed!');
     
     return this.scrapedData;
   }
@@ -130,13 +131,13 @@ class GymLeaderScraper {
   // Scrape individual gym leader
   async scrapeGymLeader(pageTitle: string, region: string): Promise<GymLeaderData | null> {
     try {
-      console.log(`Scraping gym leader: ${pageTitle}`);
+      logger.debug(`Scraping gym leader: ${pageTitle}`);
       
       // Check cache first
       const cacheKey = `gym-leader-${pageTitle}`;
       const cachedData = await getCachedData<GymLeaderData>(cacheKey);
       if (cachedData) {
-        console.log(`Using cached data for ${pageTitle}`);
+        logger.debug(`Using cached data for ${pageTitle}`);
         return cachedData;
       }
 
@@ -151,13 +152,13 @@ class GymLeaderScraper {
       }) as MediaWikiPageResponse;
 
       if (!pageData || !pageData.query || !pageData.query.pages || pageData.query.pages.length === 0) {
-        console.error(`No data found for ${pageTitle}`);
+        logger.error(`No data found for ${pageTitle}`);
         return null;
       }
 
       const page = pageData.query.pages[0];
       if (page.missing) {
-        console.error(`Page not found: ${pageTitle}`);
+        logger.error(`Page not found: ${pageTitle}`);
         return null;
       }
 
@@ -181,7 +182,7 @@ class GymLeaderScraper {
       return gymLeaderData;
       
     } catch (error) {
-      console.error(`Error scraping gym leader ${pageTitle}:`, (error as Error).message);
+      logger.error(`Error scraping gym leader ${pageTitle}:`, { error: (error as Error).message });
       return null;
     }
   }
@@ -354,11 +355,11 @@ class GymLeaderScraper {
   // Download gym leader images
   private async downloadGymLeaderImages(pageTitle: string, gymLeaderData: GymLeaderData): Promise<void> {
     try {
-      console.log(`Downloading images for ${pageTitle}...`);
+      logger.debug(`Downloading images for ${pageTitle}...`);
       
       // First, try to download the infobox image if we found one
       if (gymLeaderData.infoboxImage) {
-        console.log(`Found infobox image: ${gymLeaderData.infoboxImage}`);
+        logger.debug(`Found infobox image: ${gymLeaderData.infoboxImage}`);
         
         // Get info for the specific infobox image
         const infoboxImageData = await fetchMediaWikiApi({
@@ -378,7 +379,7 @@ class GymLeaderScraper {
             
             if (localPath) {
               gymLeaderData.image = `/images/scraped/gym-leaders/${fileName}`;
-              console.log(`Downloaded main image from infobox for ${pageTitle}: ${fileName}`);
+              logger.debug(`Downloaded main image from infobox for ${pageTitle}: ${fileName}`);
               return; // If we got the infobox image, we're done
             }
           }
@@ -386,7 +387,7 @@ class GymLeaderScraper {
       }
       
       // If no infobox image or download failed, fall back to searching all images
-      console.log(`Searching for images on ${pageTitle} page...`);
+      logger.debug(`Searching for images on ${pageTitle} page...`);
       
       // Get all images from the page
       const images = await getPageImages(pageTitle, (title: string, info: { width: number; height: number }) => {
@@ -459,12 +460,12 @@ class GymLeaderScraper {
       });
 
       if (images.length === 0) {
-        console.log(`No suitable images found for ${pageTitle}`);
+        logger.debug(`No suitable images found for ${pageTitle}`);
         // Debug: Show all images that were rejected
         const allImages = await getPageImages(pageTitle, () => true);
-        console.log(`Total images on page: ${allImages.length}`);
+        logger.debug(`Total images on page: ${allImages.length}`);
         if (allImages.length > 0 && allImages.length < 20) {
-          console.log('Available images:', allImages.map(img => ({
+          logger.debug('Available images:', allImages.map(img => ({
             title: img.title,
             width: img.width,
             height: img.height
@@ -545,16 +546,16 @@ class GymLeaderScraper {
         const localPath = await downloadImage(image.url, fileName, 'gym-leaders');
         if (localPath) {
           downloadedImages.push(fileName);
-          console.log(`Downloaded ${mainImageDownloaded && i > 0 ? 'additional' : 'main'} image for ${pageTitle}: ${fileName}`);
+          logger.debug(`Downloaded ${mainImageDownloaded && i > 0 ? 'additional' : 'main'} image for ${pageTitle}: ${fileName}`);
         }
       }
       
       if (downloadedImages.length === 0) {
-        console.log(`Failed to download any images for ${pageTitle}`);
+        logger.debug(`Failed to download any images for ${pageTitle}`);
       }
 
     } catch (error) {
-      console.error(`Error downloading images for ${pageTitle}:`, (error as Error).message);
+      logger.error(`Error downloading images for ${pageTitle}:`, { error: (error as Error).message });
     }
   }
 
@@ -569,9 +570,9 @@ class GymLeaderScraper {
       // Save combined file
       await saveDataToFile(this.scrapedData, 'all-gym-leaders.json', 'gym-leaders');
       
-      console.log('All gym leader data saved successfully');
+      logger.debug('All gym leader data saved successfully');
     } catch (error) {
-      console.error('Error saving gym leader data:', (error as Error).message);
+      logger.error('Error saving gym leader data:', { error: (error as Error).message });
     }
   }
 
@@ -584,7 +585,7 @@ class GymLeaderScraper {
         return await loadDataFromFile<ScrapedGymLeaderData>('all-gym-leaders.json', 'gym-leaders');
       }
     } catch (error) {
-      console.error('Error loading gym leader data:', (error as Error).message);
+      logger.error('Error loading gym leader data:', { error: (error as Error).message });
       return null;
     }
   }

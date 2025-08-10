@@ -46,8 +46,6 @@ interface PokemonType {
   };
 }
 
-// Re-export the extended type color palettes from main theme
-// export { typeColorPalettes } from './pokemonTheme';
 
 // Complete type-based UI color mappings
 const typeUIMapping: Record<string, TypeUIColors> = {
@@ -485,10 +483,6 @@ const typeUIMapping: Record<string, TypeUIColors> = {
   }
 };
 
-/**
- * Re-export functions from main theme file
- */
-// export { generateTypeGradient, getTypeAccentColor } from './pokemonTheme';
 
 /**
  * Generate complete class strings for UI elements based on Pokemon types

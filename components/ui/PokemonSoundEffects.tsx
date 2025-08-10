@@ -27,7 +27,7 @@ export const PokemonSoundController = (): PokemonSoundController => {
   };
 
   // Create simple beep sounds using Web Audio API
-  const playBeep = useCallback((frequency = 440, duration = 200, type = 'sine') => {
+  const playBeep = useCallback((frequency = 440, duration = 200, type: OscillatorType = 'sine') => {
     if (!soundEnabled) return;
 
     try {
@@ -43,7 +43,7 @@ export const PokemonSoundController = (): PokemonSoundController => {
       gainNode.connect(context.destination);
 
       oscillator.frequency.value = frequency;
-      oscillator.type = type;
+      oscillator.type = type as OscillatorType;
 
       gainNode.gain.setValueAtTime(0.1, context.currentTime);
       gainNode.gain.exponentialRampToValueAtTime(0.01, context.currentTime + duration / 1000);
@@ -98,19 +98,12 @@ export const PokemonSoundController = (): PokemonSoundController => {
     };
   }, [soundEnabled, playPokemonSound]);
 
-  return (
-    <button
-      onClick={toggleSound}
-      className={`fixed top-20 right-4 z-30 p-2 rounded-full transition-all duration-300 ${
-        soundEnabled 
-          ? 'bg-green-500 hover:bg-green-600 text-white' 
-          : 'bg-gray-400 hover:bg-gray-500 text-white'
-      }`}
-      title={`Sound effects: ${soundEnabled ? 'ON' : 'OFF'}`}
-    >
-      {soundEnabled ? '🔊' : '🔇'}
-    </button>
-  );
+  return {
+    soundEnabled,
+    toggleSound,
+    playPokemonSound,
+    playBeep
+  };
 };
 
 // Enhanced hover effects with sounds
@@ -120,14 +113,14 @@ export const withSoundEffects = (Component: React.ComponentType<Record<string, u
       if ((window as any).pokemonSounds?.enabled) {
         (window as any).pokemonSounds.play('hover');
       }
-      props.onMouseEnter?.(e);
+      (props as any).onMouseEnter?.(e);
     };
 
     const handleClick = (e: React.MouseEvent) => {
       if ((window as any).pokemonSounds?.enabled) {
         (window as any).pokemonSounds.play('click');
       }
-      props.onClick?.(e);
+      (props as any).onClick?.(e);
     };
 
     return (
@@ -140,4 +133,23 @@ export const withSoundEffects = (Component: React.ComponentType<Record<string, u
   };
 };
 
-export default { PokemonSoundController, withSoundEffects };
+// Sound controller UI component
+export const PokemonSoundButton: React.FC = () => {
+  const { soundEnabled, toggleSound } = PokemonSoundController();
+
+  return (
+    <button
+      onClick={toggleSound}
+      className={`fixed top-20 right-4 z-30 p-2 rounded-full transition-all duration-300 ${
+        soundEnabled 
+          ? 'bg-green-500 hover:bg-green-600 text-white' 
+          : 'bg-gray-400 hover:bg-gray-500 text-white'
+      }`}
+      title={`Sound effects: ${soundEnabled ? 'ON' : 'OFF'}`}
+    >
+      {soundEnabled ? 'SND' : 'MUT'}
+    </button>
+  );
+};
+
+export default { PokemonSoundController, PokemonSoundButton, withSoundEffects };
