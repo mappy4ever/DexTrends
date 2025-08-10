@@ -5,7 +5,7 @@
  * Run with: node scripts/verify-cache-warming.js
  */
 
-const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+// Using native fetch (available in Node 18+)
 
 const BASE_URL = process.env.VERCEL_URL 
   ? `https://${process.env.VERCEL_URL}`

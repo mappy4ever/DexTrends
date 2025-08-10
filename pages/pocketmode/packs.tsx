@@ -8,7 +8,7 @@ import { fetchPocketData } from '../../utils/pocketData';
 import { TypeBadge } from '../../components/ui/TypeBadge';
 import PackOpening from '../../components/ui/PackOpening';
 import StyledBackButton from '../../components/ui/StyledBackButton';
-import { PageLoader } from '../../utils/unifiedLoading';
+import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import logger from '../../utils/logger';
 import type { PocketCard } from '../../types/api/pocket-cards';
 
@@ -129,8 +129,7 @@ const Expansions: NextPage = () => {
              packName !== '';
     });
     
-    console.log('Total cards loaded:', allCards.length);
-    console.log('Main set cards after filtering:', mainSetCards.length);
+    logger.debug('Cards loading summary:', { totalCards: allCards.length, mainSetCards: mainSetCards.length });
     
     // Redistribute shared cards to individual packs based on type
     const redistributedCards = mainSetCards.map(card => {
@@ -192,13 +191,13 @@ const Expansions: NextPage = () => {
       }
       
       // Log pack details for debugging
-      console.log(`Pack: ${name}, Cards: ${cardCount}`);
+      logger.debug(`Pack details:`, { name, cardCount });
       
       // Keep all packs with at least 50 cards to ensure good variety
       return cardCount >= 50;
     });
     
-    console.log('Real expansions found:', realExpansions.map(e => `${e.name}: ${e.totalCards} cards`));
+    logger.debug('Real expansions found:', realExpansions.map(e => ({ name: e.name, totalCards: e.totalCards })));
     
     return realExpansions
     .filter(expansion => expansion.totalCards >= 20) // Adjusted threshold to match actual data

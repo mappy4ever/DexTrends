@@ -7,13 +7,17 @@ import logger from '../../utils/logger';
 interface UpdateInfo {
   version: string;
   timestamp: number;
-  [key: string]: any;
+  size?: number;
+  description?: string;
+  features?: string[];
 }
 
 interface ServiceWorkerMessage {
   data?: {
     type: string;
-    [key: string]: any;
+    payload?: unknown;
+    version?: string;
+    timestamp?: number;
   };
 }
 

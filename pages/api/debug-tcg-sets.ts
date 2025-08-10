@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import logger from '@/utils/logger';
+import { isTCGSet } from '@/utils/typeGuards';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -13,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Fetch all pages to get complete set list
-    let allSets: any[] = [];
+    let allSets: unknown[] = [];
     let page = 1;
     let hasMore = true;
     
@@ -33,8 +34,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     }
     
-    // Sort by release date
-    const sortedSets = allSets.sort((a, b) => 
+    // Sort by release date - only sort valid TCG sets
+    const validSets = allSets.filter(isTCGSet);
+    const sortedSets = validSets.sort((a, b) => 
       new Date(b.releaseDate || '1970-01-01').getTime() - 
       new Date(a.releaseDate || '1970-01-01').getTime()
     );
@@ -72,11 +74,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       hasApiKey: !!apiKey,
       message: `Fetched ${sortedSets.length} total sets across ${page - 1} pages`
     });
-  } catch (error: any) {
-    logger.error('Debug API test failed:', error);
+  } catch (error) {
+    logger.error('Debug API test failed:', { error: error instanceof Error ? error.message : String(error) });
     res.status(500).json({ 
-      error: error.message,
-      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      error: error instanceof Error ? error.message : String(error),
+      stack: process.env.NODE_ENV === 'development' && error instanceof Error ? error.stack : undefined
     });
   }
 }

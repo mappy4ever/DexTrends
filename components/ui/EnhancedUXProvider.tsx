@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { useUX } from './EnhancedUXProvider.hooks';
+import logger from "@/utils/logger";
 import { useRouter } from 'next/router';
 
 // Re-export hook for backward compatibility
@@ -21,7 +22,7 @@ interface ActionData {
   action: string;
   timestamp: number;
   page: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 interface UserBehavior {
@@ -99,11 +100,11 @@ export interface UXContextValue {
   accessibilitySettings: AccessibilitySettings;
   
   // Preference management
-  updatePreference: (key: keyof UserPreferences, value: any) => void;
-  updateAccessibilitySettings: (key: keyof AccessibilitySettings, value: any) => void;
+  updatePreference: <K extends keyof UserPreferences>(key: K, value: UserPreferences[K]) => void;
+  updateAccessibilitySettings: <K extends keyof AccessibilitySettings>(key: K, value: AccessibilitySettings[K]) => void;
   
   // Behavior tracking
-  trackUserAction: (action: string, data?: any) => void;
+  trackUserAction: (action: string, data?: Record<string, unknown>) => void;
   
   // Onboarding and help
   startOnboarding: (tourId: string) => void;
@@ -164,18 +165,7 @@ export const EnhancedUXProvider: React.FC<EnhancedUXProviderProps> = ({ children
     altTextAlways: false
   });
 
-  useEffect(() => {
-    initializeUXSettings();
-    const cleanup = setupBehaviorTracking();
-    setupAccessibilityDetection();
-    
-    return () => {
-      saveBehaviorData();
-      cleanup();
-    };
-  }, []);
-
-  const initializeUXSettings = () => {
+  const initializeUXSettings = useCallback(() => {
     try {
       // Load user preferences
       const savedPreferences = localStorage.getItem('ux-preferences');
@@ -211,9 +201,9 @@ export const EnhancedUXProvider: React.FC<EnhancedUXProviderProps> = ({ children
     } catch (error) {
       logger.error('Failed to initialize UX settings:', error);
     }
-  };
+  }, []);
 
-  const setupBehaviorTracking = () => {
+  const setupBehaviorTracking = useCallback(() => {
     let scrollTimer: NodeJS.Timeout;
     let interactionTimer: NodeJS.Timeout;
 
@@ -264,9 +254,9 @@ export const EnhancedUXProvider: React.FC<EnhancedUXProviderProps> = ({ children
       clearTimeout(scrollTimer);
       clearTimeout(interactionTimer);
     };
-  };
+  }, []);
 
-  const setupAccessibilityDetection = () => {
+  const setupAccessibilityDetection = useCallback(() => {
     // Detect if user prefers reduced motion
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     if (mediaQuery.matches) {
@@ -309,9 +299,9 @@ export const EnhancedUXProvider: React.FC<EnhancedUXProviderProps> = ({ children
         }));
       });
     }
-  };
+  }, [userPreferences.theme]);
 
-  const saveBehaviorData = () => {
+  const saveBehaviorData = useCallback(() => {
     try {
       // Calculate time on page
       const timeSpent = Date.now() - userBehavior.timeOnPage;
@@ -327,7 +317,29 @@ export const EnhancedUXProvider: React.FC<EnhancedUXProviderProps> = ({ children
     } catch (error) {
       logger.error('Failed to save behavior data:', error);
     }
-  };
+  }, [userBehavior, userPreferences, contextualHelp, accessibilitySettings]);
+
+  useEffect(() => {
+    initializeUXSettings();
+  }, [initializeUXSettings]);
+
+  useEffect(() => {
+    const cleanup = setupBehaviorTracking();
+    
+    return () => {
+      cleanup();
+    };
+  }, [setupBehaviorTracking]);
+
+  useEffect(() => {
+    setupAccessibilityDetection();
+  }, [setupAccessibilityDetection]);
+
+  useEffect(() => {
+    return () => {
+      saveBehaviorData();
+    };
+  }, [saveBehaviorData]);
 
   const updatePreference = useCallback(<K extends keyof UserPreferences>(key: K, value: UserPreferences[K]) => {
     setUserPreferences(prev => {
@@ -345,7 +357,7 @@ export const EnhancedUXProvider: React.FC<EnhancedUXProviderProps> = ({ children
     });
   }, []);
 
-  const trackUserAction = useCallback((action: string, data: any = {}) => {
+  const trackUserAction = useCallback((action: string, data: Record<string, unknown> = {}) => {
     const actionData: ActionData = {
       action,
       timestamp: Date.now(),

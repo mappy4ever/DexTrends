@@ -23,6 +23,7 @@ import {
   StepProgress 
 } from '../components/ui/progress';
 import { ToastContainer } from '../components/ui/Toast';
+import { convertNotificationsToToasts } from '../utils/toastUtils';
 import { ContextMenu, useContextMenu } from '../components/ui/ContextMenu';
 import Modal from '../components/ui/modals/Modal';
 import { 
@@ -39,7 +40,7 @@ import {
 } from '../components/mobile';
 
 // Hooks
-import { useToast } from '../hooks/useToast';
+import { useNotifications } from '../hooks/useNotifications';
 import { useContextualTheme } from '../hooks/useContextualTheme';
 
 interface SectionProps {
@@ -126,7 +127,7 @@ const UIShowcase = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   
   // Hooks
-  const { toasts, removeToast, success, error, info, warning, promise } = useToast();
+  const { toasts, removeToast, success, error, info, warning, promise } = useNotifications();
   const { isOpen, position, items, openMenu, closeMenu } = useContextMenu();
   const theme = useContextualTheme('ui');
   
@@ -648,7 +649,7 @@ const UIShowcase = () => {
       </PageTransition>
       
       {/* Toast Container */}
-      <ToastContainer toasts={toasts} onClose={removeToast} />
+      <ToastContainer toasts={convertNotificationsToToasts(toasts)} onClose={removeToast} />
       
       {/* Context Menu */}
       {isOpen && (

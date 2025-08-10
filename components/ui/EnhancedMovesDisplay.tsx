@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { fetchJSON } from '../../utils/unifiedFetch';
+import logger from "@/utils/logger";
 import { TypeBadge } from './TypeBadge';
 
 // Types
@@ -125,11 +126,7 @@ const EnhancedMovesDisplay: React.FC<EnhancedMovesDisplayProps> = ({ moves, poke
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<FilterType>('all');
 
-  useEffect(() => {
-    loadMovesData();
-  }, [moves]);
-
-  const loadMovesData = async () => {
+  const loadMovesData = useCallback(async () => {
     setLoading(true);
     const moveDetails: MovesDataMap = {};
     
@@ -150,7 +147,11 @@ const EnhancedMovesDisplay: React.FC<EnhancedMovesDisplayProps> = ({ moves, poke
     
     setMovesData(moveDetails);
     setLoading(false);
-  };
+  }, [moves]);
+
+  useEffect(() => {
+    loadMovesData();
+  }, [loadMovesData]);
 
   // Group moves by learn method
   const groupedMoves: GroupedMoves = {};

@@ -10,9 +10,10 @@ import { GlassContainer } from "../../components/ui/design-system/GlassContainer
 import { GradientButton } from "../../components/ui/design-system/GradientButton";
 import { CircularCard } from "../../components/ui/design-system/CircularCard";
 import { motion } from "framer-motion";
-import { InlineLoader } from "../../utils/unifiedLoading";
-import { PageLoader } from "../../utils/unifiedLoading";
+import { InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
+import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import StyledBackButton from "../../components/ui/StyledBackButton";
+import logger from '../../utils/logger';
 import PocketCardList from "../../components/PocketCardList";
 import BackToTop from "../../components/ui/SimpleBackToTop";
 import { fetchPocketData } from "../../utils/pocketData";
@@ -203,7 +204,7 @@ const PocketExpansions: NextPage = () => {
     };
     
     // Log total cards for debugging
-    console.log('Processing expansions:', {
+    logger.debug('Processing expansions:', {
       totalCards: cards.length,
       promoCards: promoCards.length,
       mainSetCards: mainSetCards.length,
@@ -229,7 +230,7 @@ const PocketExpansions: NextPage = () => {
       // Skip series with too few cards, but be more lenient for special sets
       const minCardCount = seriesInfo.isPromo ? 5 : seriesName === 'Eevee Grove' ? 10 : 30;
       if (seriesCards.length < minCardCount) {
-        console.log(`Skipping ${seriesName}: only ${seriesCards.length} cards (min: ${minCardCount})`);
+        logger.debug(`Skipping ${seriesName}:`, { cardCount: seriesCards.length, minRequired: minCardCount });
         return;
       }
       
@@ -295,7 +296,7 @@ const PocketExpansions: NextPage = () => {
     
     const missedCards = cards.filter((card: ExtendedPocketCard) => !includedCardIds.has(card.id));
     if (missedCards.length > 0) {
-      console.log(`Found ${missedCards.length} cards not included in any expansion:`, missedCards.slice(0, 5));
+      logger.debug(`Found cards not included in any expansion:`, { count: missedCards.length, sample: missedCards.slice(0, 5) });
     }
     
     return expansions;

@@ -8,7 +8,7 @@ interface GlassCardProps {
   padding?: 'sm' | 'md' | 'lg' | 'xl';
   gradient?: boolean;
   glow?: boolean;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 // Premium Glass Card Component
@@ -42,8 +42,8 @@ export const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(({
   `.trim().replace(/\s+/g, ' ');
 
   return (
-    <div ref={ref} className={baseClasses} {...props}>
-      {children}
+    <div ref={ref} className={baseClasses} {...(props as any)}>
+      {children as React.ReactNode}
     </div>
   );
 });
@@ -58,7 +58,7 @@ interface PremiumButtonProps {
   glow?: boolean;
   loading?: boolean;
   disabled?: boolean;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 // Premium Button Component
@@ -101,13 +101,13 @@ export const PremiumButton = forwardRef<HTMLButtonElement, PremiumButtonProps>((
     <button 
       ref={ref} 
       className={baseClasses} 
-      disabled={disabled || loading}
-      {...props}
+      disabled={(disabled as boolean) || loading}
+      {...(props as any)}
     >
       {loading && (
         <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
       )}
-      {children}
+      {children as React.ReactNode}
     </button>
   );
 });
@@ -119,7 +119,7 @@ interface FloatingActionButtonProps {
   children?: React.ReactNode;
   className?: string;
   position?: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left';
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export const FloatingActionButton = ({ children, className = '', position = 'bottom-right', ...props }: FloatingActionButtonProps) => {
@@ -142,9 +142,9 @@ export const FloatingActionButton = ({ children, className = '', position = 'bot
         ${className}
       `.trim().replace(/\s+/g, ' ')}
       glow
-      {...props}
+      {...(props as any)}
     >
-      {children}
+      {children as React.ReactNode}
     </PremiumButton>
   );
 };
@@ -154,7 +154,7 @@ interface GlassNavbarProps {
   children?: React.ReactNode;
   className?: string;
   fixed?: boolean;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export const GlassNavbar = ({ children, className = '', fixed = true, ...props }: GlassNavbarProps) => {
@@ -169,9 +169,9 @@ export const GlassNavbar = ({ children, className = '', fixed = true, ...props }
         transition-all duration-300 ease-premium
         ${className}
       `.trim().replace(/\s+/g, ' ')}
-      {...props}
+      {...(props as any)}
     >
-      {children}
+      {children as React.ReactNode}
     </nav>
   );
 };
@@ -183,16 +183,15 @@ interface PremiumModalProps {
   onClose?: () => void;
   className?: string;
   size?: 'sm' | 'md' | 'lg' | 'xl';
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export const PremiumModal = ({ children, isOpen, onClose, className = '', size = 'md', ...props }: PremiumModalProps) => {
-  const sizes = {
+  const sizes: Record<'sm' | 'md' | 'lg' | 'xl', string> = {
     sm: 'max-w-md',
     md: 'max-w-lg', 
     lg: 'max-w-2xl',
-    xl: 'max-w-4xl',
-    full: 'max-w-7xl'
+    xl: 'max-w-4xl'
   };
 
   if (!isOpen) return null;
@@ -213,17 +212,17 @@ export const PremiumModal = ({ children, isOpen, onClose, className = '', size =
         className={`
           relative
           w-full
-          ${sizes[size]}
+          ${sizes[size as keyof typeof sizes]}
           max-h-[90vh]
           overflow-auto
           animate-scale-in
           ${className}
         `.trim().replace(/\s+/g, ' ')}
         elevated
-        onClick={(e: any) => e.stopPropagation()}
-        {...props}
+        onClick={(e: React.MouseEvent) => e.stopPropagation()}
+        {...(props as any)}
       >
-        {children}
+        {children as React.ReactNode}
       </GlassCard>
     </div>
   );
@@ -235,11 +234,11 @@ interface PremiumSkeletonProps {
   width?: string;
   height?: string;
   rounded?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export const PremiumSkeleton = ({ className = '', width = '100%', height = '1rem', rounded = 'md', ...props }: PremiumSkeletonProps) => {
-  const roundedClasses = {
+  const roundedClasses: Record<'sm' | 'md' | 'lg' | 'xl' | 'full', string> = {
     'sm': 'rounded-sm',
     'md': 'rounded-md',
     'lg': 'rounded-lg',
@@ -257,7 +256,7 @@ export const PremiumSkeleton = ({ className = '', width = '100%', height = '1rem
         ${className}
       `.trim().replace(/\s+/g, ' ')}
       style={{ width, height }}
-      {...props}
+      {...(props as any)}
     />
   );
 };
@@ -269,11 +268,11 @@ interface PremiumBadgeProps {
   size?: 'sm' | 'md' | 'lg';
   className?: string;
   glow?: boolean;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export const PremiumBadge = ({ children, variant = 'primary', size = 'md', className = '', glow = false, ...props }: PremiumBadgeProps) => {
-  const variants = {
+  const variants: Record<'primary' | 'accent' | 'success' | 'warning' | 'error' | 'glass', string> = {
     primary: 'gradient-primary text-white',
     accent: 'gradient-accent text-white',
     success: 'gradient-success text-white',
@@ -282,7 +281,7 @@ export const PremiumBadge = ({ children, variant = 'primary', size = 'md', class
     glass: 'glass text-gray-900 dark:text-white'
   };
 
-  const sizes = {
+  const sizes: Record<'sm' | 'md' | 'lg', string> = {
     sm: 'px-2 py-1 text-xs',
     md: 'px-3 py-1.5 text-sm',
     lg: 'px-4 py-2 text-base'
@@ -300,9 +299,9 @@ export const PremiumBadge = ({ children, variant = 'primary', size = 'md', class
         ${glow ? 'glow-primary' : ''}
         ${className}
       `.trim().replace(/\s+/g, ' ')}
-      {...props}
+      {...(props as any)}
     >
-      {children}
+      {children as React.ReactNode}
     </span>
   );
 };
@@ -313,7 +312,7 @@ interface PremiumInputProps {
   label?: string;
   error?: string;
   icon?: React.ReactNode;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export const PremiumInput = forwardRef<HTMLInputElement, PremiumInputProps>(({ 
@@ -325,15 +324,15 @@ export const PremiumInput = forwardRef<HTMLInputElement, PremiumInputProps>(({
 }, ref) => {
   return (
     <div className="space-y-2">
-      {label && (
+      {(label as string) && (
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-          {label}
+          {label as React.ReactNode}
         </label>
       )}
       <div className="relative">
-        {icon && (
+        {(icon as React.ReactNode) && (
           <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-            {icon}
+            {icon as React.ReactNode}
           </div>
         )}
         <input
@@ -352,11 +351,11 @@ export const PremiumInput = forwardRef<HTMLInputElement, PremiumInputProps>(({
             ${error ? 'border-red-500 focus:ring-red-500' : ''}
             ${className}
           `.trim().replace(/\s+/g, ' ')}
-          {...props}
+          {...(props as any)}
         />
       </div>
-      {error && (
-        <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+      {(error as string) && (
+        <p className="text-sm text-red-600 dark:text-red-400">{error as React.ReactNode}</p>
       )}
     </div>
   );
@@ -373,13 +372,13 @@ interface PremiumProgressProps {
   size?: 'sm' | 'md' | 'lg';
   showLabel?: boolean;
   animated?: boolean;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export const PremiumProgress = ({ value = 0, max = 100, className = '', variant = 'primary', size = 'md', showLabel = false, animated = true, ...props }: PremiumProgressProps) => {
   const percentage = (value / max) * 100;
   
-  const variants = {
+  const variants: Record<'primary' | 'accent' | 'success' | 'warning' | 'error', string> = {
     primary: 'gradient-primary',
     accent: 'gradient-accent',
     success: 'gradient-success',
@@ -387,7 +386,7 @@ export const PremiumProgress = ({ value = 0, max = 100, className = '', variant 
     error: 'gradient-error'
   };
 
-  const sizes = {
+  const sizes: Record<'sm' | 'md' | 'lg', string> = {
     sm: 'h-2',
     md: 'h-3',
     lg: 'h-4'

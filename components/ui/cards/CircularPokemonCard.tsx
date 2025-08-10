@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import type { Pokemon } from '../../../types/api/pokemon';
+import type { Pokemon } from "../../types/pokemon";
 import { TypeBadge } from '../TypeBadge';
 
 interface CircularPokemonCardProps {

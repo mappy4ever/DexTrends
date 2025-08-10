@@ -2,10 +2,31 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { TypeBadge } from '../TypeBadge';
 import Modal from '../modals/Modal';
 
+interface FilterState {
+  types: string[];
+  rarities: string[];
+  sets: string[];
+  priceRange: { min: string; max: string };
+  hpRange: { min: string; max: string };
+  year: string;
+  sortBy: string;
+  sortOrder: string;
+  searchText: string;
+}
+
+interface CardData {
+  types?: string[];
+  rarity?: string;
+  set?: {
+    name: string;
+    releaseDate?: string;
+  };
+}
+
 interface VisualSearchFiltersProps {
-  onFiltersChange?: (filters: any) => void;
-  initialFilters?: any;
-  cardData?: any[];
+  onFiltersChange?: (filters: FilterState) => void;
+  initialFilters?: Partial<FilterState>;
+  cardData?: CardData[];
   showAdvanced?: boolean;
 }
 
@@ -15,7 +36,7 @@ const VisualSearchFilters = ({
   cardData = [],
   showAdvanced = true 
 }: VisualSearchFiltersProps) => {
-  const [filters, setFilters] = useState<any>({
+  const [filters, setFilters] = useState<FilterState>({
     types: [],
     rarities: [],
     sets: [],
@@ -41,27 +62,27 @@ const VisualSearchFilters = ({
     years: []
   });
 
-  // Pokemon types with their colors
+  // Pokemon types with their colors (removing emoji icons per project guidelines)
   const pokemonTypes = [
-    { name: 'fire', color: 'bg-red-500', textColor: 'text-white', icon: '🔥' },
-    { name: 'water', color: 'bg-blue-500', textColor: 'text-white', icon: '💧' },
-    { name: 'grass', color: 'bg-green-500', textColor: 'text-white', icon: '🌿' },
-    { name: 'electric', color: 'bg-yellow-400', textColor: 'text-black', icon: '⚡' },
-    { name: 'psychic', color: 'bg-purple-500', textColor: 'text-white', icon: '🔮' },
-    { name: 'ice', color: 'bg-cyan-300', textColor: 'text-black', icon: '❄️' },
-    { name: 'dragon', color: 'bg-purple-700', textColor: 'text-white', icon: '🐉' },
-    { name: 'dark', color: 'bg-gray-800', textColor: 'text-white', icon: '🌙' },
-    { name: 'fairy', color: 'bg-pink-400', textColor: 'text-white', icon: '🧚' },
-    { name: 'normal', color: 'bg-gray-400', textColor: 'text-white', icon: '⭐' },
-    { name: 'fighting', color: 'bg-red-700', textColor: 'text-white', icon: '👊' },
-    { name: 'poison', color: 'bg-purple-600', textColor: 'text-white', icon: '☠️' },
-    { name: 'ground', color: 'bg-yellow-600', textColor: 'text-white', icon: '⛰️' },
-    { name: 'flying', color: 'bg-indigo-400', textColor: 'text-white', icon: '🦅' },
-    { name: 'bug', color: 'bg-green-400', textColor: 'text-white', icon: '🐛' },
-    { name: 'rock', color: 'bg-yellow-800', textColor: 'text-white', icon: '🗿' },
-    { name: 'ghost', color: 'bg-purple-800', textColor: 'text-white', icon: '👻' },
-    { name: 'steel', color: 'bg-gray-500', textColor: 'text-white', icon: '⚙️' },
-    { name: 'colorless', color: 'bg-gray-300', textColor: 'text-black', icon: '⚪' }
+    { name: 'fire', color: 'bg-red-500', textColor: 'text-white', icon: 'FIR' },
+    { name: 'water', color: 'bg-blue-500', textColor: 'text-white', icon: 'WAT' },
+    { name: 'grass', color: 'bg-green-500', textColor: 'text-white', icon: 'GRA' },
+    { name: 'electric', color: 'bg-yellow-400', textColor: 'text-black', icon: 'ELE' },
+    { name: 'psychic', color: 'bg-purple-500', textColor: 'text-white', icon: 'PSY' },
+    { name: 'ice', color: 'bg-cyan-300', textColor: 'text-black', icon: 'ICE' },
+    { name: 'dragon', color: 'bg-purple-700', textColor: 'text-white', icon: 'DRA' },
+    { name: 'dark', color: 'bg-gray-800', textColor: 'text-white', icon: 'DAR' },
+    { name: 'fairy', color: 'bg-pink-400', textColor: 'text-white', icon: 'FAI' },
+    { name: 'normal', color: 'bg-gray-400', textColor: 'text-white', icon: 'NOR' },
+    { name: 'fighting', color: 'bg-red-700', textColor: 'text-white', icon: 'FIG' },
+    { name: 'poison', color: 'bg-purple-600', textColor: 'text-white', icon: 'POI' },
+    { name: 'ground', color: 'bg-yellow-600', textColor: 'text-white', icon: 'GRO' },
+    { name: 'flying', color: 'bg-indigo-400', textColor: 'text-white', icon: 'FLY' },
+    { name: 'bug', color: 'bg-green-400', textColor: 'text-white', icon: 'BUG' },
+    { name: 'rock', color: 'bg-yellow-800', textColor: 'text-white', icon: 'ROC' },
+    { name: 'ghost', color: 'bg-purple-800', textColor: 'text-white', icon: 'GHO' },
+    { name: 'steel', color: 'bg-gray-500', textColor: 'text-white', icon: 'STE' },
+    { name: 'colorless', color: 'bg-gray-300', textColor: 'text-black', icon: 'COL' }
   ];
 
   // Rarity options with visual styling
@@ -87,10 +108,10 @@ const VisualSearchFilters = ({
       const sets = new Set<string>();
       const years = new Set<number>();
 
-      cardData.forEach((card: any) => {
+      cardData.forEach((card: CardData) => {
         // Types
         if (card.types) {
-          card.types.forEach((type: any) => types.add(type.toLowerCase()));
+          card.types.forEach((type: string) => types.add(type.toLowerCase()));
         }
         
         // Rarities
@@ -116,7 +137,7 @@ const VisualSearchFilters = ({
         types: Array.from(types) as string[],
         rarities: Array.from(rarities) as string[],
         sets: Array.from(sets).sort() as string[],
-        years: Array.from(years).sort((a: any, b: any) => b - a) as number[]
+        years: Array.from(years).sort((a: number, b: number) => b - a)
       });
     }
   }, [cardData]);
@@ -126,23 +147,23 @@ const VisualSearchFilters = ({
     onFiltersChange(filters);
   }, [filters, onFiltersChange]);
 
-  const handleFilterChange = (key: string, value: any) => {
-    setFilters((prev: any) => ({
+  const handleFilterChange = (key: keyof FilterState, value: string | string[] | { min: string; max: string }) => {
+    setFilters((prev: FilterState) => ({
       ...prev,
       [key]: value
     }));
   };
 
-  const handleArrayFilterToggle = (key: string, value: any) => {
-    setFilters((prev: any) => ({
+  const handleArrayFilterToggle = (key: 'types' | 'rarities' | 'sets', value: string) => {
+    setFilters((prev: FilterState) => ({
       ...prev,
       [key]: prev[key].includes(value)
-        ? prev[key].filter((item: any) => item !== value)
+        ? prev[key].filter((item: string) => item !== value)
         : [...prev[key], value]
     }));
   };
 
-  const clearAllFilters = (): any => {
+  const clearAllFilters = (): void => {
     setFilters({
       types: [],
       rarities: [],
@@ -199,7 +220,7 @@ const VisualSearchFilters = ({
           <input
             type="text"
             value={filters.searchText}
-            onChange={(e: any) => handleFilterChange('searchText', e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleFilterChange('searchText', e.target.value)}
             placeholder="Enter card name, set, or keyword..."
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
           />
@@ -212,8 +233,8 @@ const VisualSearchFilters = ({
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
             {pokemonTypes
-              .filter((type: any) => availableOptions.types.includes(type.name))
-              .map((type: any) => (
+              .filter((type) => availableOptions.types.includes(type.name))
+              .map((type) => (
                 <button
                   key={type.name}
                   onClick={() => handleArrayFilterToggle('types', type.name)}
@@ -226,7 +247,7 @@ const VisualSearchFilters = ({
                   `}
                   title={`Filter by ${type.name} type`}
                 >
-                  <span className="mr-1">{type.icon}</span>
+                  <span className="text-xs font-bold mr-1">{type.icon}</span>
                   <span className="capitalize">{type.name}</span>
                 </button>
               ))
@@ -241,8 +262,8 @@ const VisualSearchFilters = ({
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
             {rarityOptions
-              .filter((rarity: any) => availableOptions.rarities.includes(rarity.name))
-              .map((rarity: any) => (
+              .filter((rarity) => availableOptions.rarities.includes(rarity.name))
+              .map((rarity) => (
                 <button
                   key={rarity.name}
                   onClick={() => handleArrayFilterToggle('rarities', rarity.name)}
@@ -275,14 +296,14 @@ const VisualSearchFilters = ({
                 type="number"
                 placeholder="Min"
                 value={filters.priceRange.min}
-                onChange={(e: any) => handleFilterChange('priceRange', { ...filters.priceRange, min: e.target.value })}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleFilterChange('priceRange', { ...filters.priceRange, min: e.target.value })}
                 className="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded focus:ring-1 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
               />
               <input
                 type="number"
                 placeholder="Max"
                 value={filters.priceRange.max}
-                onChange={(e: any) => handleFilterChange('priceRange', { ...filters.priceRange, max: e.target.value })}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleFilterChange('priceRange', { ...filters.priceRange, max: e.target.value })}
                 className="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded focus:ring-1 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
               />
             </div>
@@ -298,14 +319,14 @@ const VisualSearchFilters = ({
                 type="number"
                 placeholder="Min"
                 value={filters.hpRange.min}
-                onChange={(e: any) => handleFilterChange('hpRange', { ...filters.hpRange, min: e.target.value })}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleFilterChange('hpRange', { ...filters.hpRange, min: e.target.value })}
                 className="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded focus:ring-1 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
               />
               <input
                 type="number"
                 placeholder="Max"
                 value={filters.hpRange.max}
-                onChange={(e: any) => handleFilterChange('hpRange', { ...filters.hpRange, max: e.target.value })}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleFilterChange('hpRange', { ...filters.hpRange, max: e.target.value })}
                 className="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded focus:ring-1 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
               />
             </div>
@@ -318,11 +339,11 @@ const VisualSearchFilters = ({
             </label>
             <select
               value={filters.year}
-              onChange={(e: any) => handleFilterChange('year', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleFilterChange('year', e.target.value)}
               className="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded focus:ring-1 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
             >
               <option value="">All Years</option>
-              {availableOptions.years.map((year: any) => (
+              {availableOptions.years.map((year: number) => (
                 <option key={year} value={year}>{year}</option>
               ))}
             </select>
@@ -336,7 +357,7 @@ const VisualSearchFilters = ({
             <div className="flex space-x-1">
               <select
                 value={filters.sortBy}
-                onChange={(e: any) => handleFilterChange('sortBy', e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleFilterChange('sortBy', e.target.value)}
                 className="flex-1 px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-l focus:ring-1 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
               >
                 <option value="name">Name</option>
@@ -381,7 +402,7 @@ const VisualSearchFilters = ({
               Sets ({filters.sets.length} selected)
             </label>
             <div className="max-h-60 overflow-y-auto border border-gray-300 dark:border-gray-600 rounded-lg">
-              {availableOptions.sets.map((set: any) => (
+              {availableOptions.sets.map((set: string) => (
                 <label
                   key={set}
                   className="flex items-center p-3 hover:bg-gray-50 dark:hover:bg-gray-700 border-b border-gray-200 dark:border-gray-600 last:border-b-0 cursor-pointer"

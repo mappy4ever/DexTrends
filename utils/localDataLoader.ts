@@ -30,7 +30,7 @@ interface Pokemon {
   id?: string;
   name?: string;
   level?: number;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 interface Game {
@@ -117,7 +117,7 @@ export async function loadLocalData<T = any>(
     
     return data;
   } catch (error) {
-    logger.error(`Error loading local data for ${dataType}:`, (error as Error).message);
+    logger.error(`Error loading local data for ${dataType}:`, { errorMessage: (error as Error).message });
     return null;
   }
 }
@@ -251,7 +251,7 @@ export async function checkLocalDataAvailability(): Promise<DataAvailability> {
     checks.games = gamesResponse.ok;
 
   } catch (error) {
-    logger.debug('Local data check failed:', (error as Error).message);
+    logger.debug('Local data check failed:', { errorMessage: (error as Error).message });
   }
 
   return checks;

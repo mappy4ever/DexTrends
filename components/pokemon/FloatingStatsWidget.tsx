@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { Pokemon } from '../../types/api/pokemon';
+import type { Pokemon } from "../../types/pokemon";
 import PokemonGlassCard from './PokemonGlassCard';
 import { TypeBadge } from '../ui/TypeBadge';
 import { useScrollVisibility } from '../../hooks/useScrollVisibility';

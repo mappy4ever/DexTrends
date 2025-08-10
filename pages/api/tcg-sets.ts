@@ -3,6 +3,8 @@ import { fetchJSON } from '../../utils/unifiedFetch';
 import logger from '../../utils/logger';
 import { tcgCache } from '../../lib/tcg-cache';
 import { createFallbackResponse } from '../../lib/static-sets-fallback';
+import type { TCGApiResponse } from '../../types/api/enhanced-responses';
+import { isTCGSet, isString, hasProperty } from '../../utils/typeGuards';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const startTime = Date.now();
@@ -52,7 +54,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Try API with aggressive timeout - if it's slow, fall back immediately
     let data;
     try {
-      data = await fetchJSON<{ data: any[], page?: number, pageSize?: number, count?: number, totalCount?: number }>(apiUrl, { 
+      data = await fetchJSON<TCGApiResponse<unknown[]> & { page?: number; pageSize?: number; count?: number; totalCount?: number }>(apiUrl, { 
         headers,
         useCache: true,
         cacheTime: 30 * 60 * 1000, // Cache for 30 minutes
@@ -62,9 +64,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         retryDelay: 1000,
         throwOnError: false
       });
-    } catch (apiError: any) {
+    } catch (apiError) {
       logger.warn('Pokemon TCG API slow/unavailable, using fallback', { 
-        error: apiError.message,
+        error: apiError instanceof Error ? apiError.message : String(apiError),
         duration: Date.now() - startTime
       });
       
@@ -106,7 +108,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
     // Log the newest sets on page 1
     if (pageNum === 1 && sets.length > 0) {
-      const sortedByDate = [...sets].sort((a, b) => 
+      const validSets = sets.filter(isTCGSet);
+      const sortedByDate = validSets.sort((a, b) => 
         new Date(b.releaseDate || '1970-01-01').getTime() - new Date(a.releaseDate || '1970-01-01').getTime()
       );
       logger.info('Newest 5 sets from API page 1:', sortedByDate.slice(0, 5).map(s => ({ 
@@ -192,10 +195,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
     
     res.status(200).json(response);
-  } catch (error: any) {
+  } catch (error) {
     logger.error('Failed to fetch TCG sets', { 
-      error: error.message,
-      stack: error.stack,
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
       url: `https://api.pokemontcg.io/v2/sets?page=${pageNum}&pageSize=${pageSizeNum}`,
       apiKey: !!apiKey
     });
@@ -206,12 +209,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       logger.warn('Returning stale cached sets due to API error', {
         page: pageNum,
         pageSize: pageSizeNum,
-        error: error.message
+        error: error instanceof Error ? error.message : String(error)
       });
       
       res.setHeader('X-Cache-Status', 'stale-fallback');
       res.setHeader('X-Response-Time', `${Date.now() - startTime}ms`);
-      res.setHeader('X-Error', error.message);
+      res.setHeader('X-Error', error instanceof Error ? error.message : String(error));
       res.setHeader('Cache-Control', 'public, s-maxage=1800, stale-while-revalidate=172800');
       
       return res.status(200).json({
@@ -224,14 +227,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     logger.warn('No stale cache available, using static fallback', {
       page: pageNum,
       pageSize: pageSizeNum,
-      error: error.message
+      error: error instanceof Error ? error.message : String(error)
     });
     
     const fallback = createFallbackResponse(pageNum, pageSizeNum);
     
     res.setHeader('X-Cache-Status', 'static-fallback');
     res.setHeader('X-Response-Time', `${Date.now() - startTime}ms`);
-    res.setHeader('X-Error', error.message);
+    res.setHeader('X-Error', error instanceof Error ? error.message : String(error));
     res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
     
     return res.status(200).json({

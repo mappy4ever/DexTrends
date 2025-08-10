@@ -2,6 +2,25 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { tcgCache } from '../../../../lib/tcg-cache';
 import { fetchJSON } from '../../../../utils/unifiedFetch';
 import logger from '../../../../utils/logger';
+import type { TCGApiResponse, UnknownError } from '../../../../types/api/enhanced-responses';
+import type { AnyObject } from '../../../../types/common';
+
+interface TCGCard {
+  id: string;
+  name: string;
+  set?: { name: string };
+  rarity?: string;
+  tcgplayer?: {
+    prices?: AnyObject;
+  };
+}
+
+interface PriceData {
+  market?: number;
+  low?: number;
+  high?: number;
+  [key: string]: unknown;
+}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { cardId } = req.query;
@@ -46,7 +65,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
     
     // Fetch card data from Pokemon TCG API
-    const cardData = await fetchJSON<{ data: any }>(
+    const cardData = await fetchJSON<TCGApiResponse<TCGCard>>(
       `https://api.pokemontcg.io/v2/cards/${id}`, 
       { 
         headers,
@@ -84,9 +103,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
     for (const [variant, prices] of Object.entries(priceData)) {
       if (prices && typeof prices === 'object') {
-        const market = (prices as any).market;
-        const low = (prices as any).low;
-        const high = (prices as any).high;
+        const priceData = prices as PriceData;
+        const market = priceData.market;
+        const low = priceData.low;
+        const high = priceData.high;
         
         if (typeof market === 'number') {
           priceSummary.highest = Math.max(priceSummary.highest, market);
@@ -129,11 +149,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       responseTime
     });
     
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const errorStack = error instanceof Error ? error.stack : undefined;
     logger.error('Failed to fetch card price', { 
       cardId: id,
-      error: error.message,
-      stack: error.stack
+      error: errorMessage,
+      stack: errorStack
     });
     
     // Try to return stale cache if available as fallback
@@ -141,12 +163,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (stalePrice) {
       logger.warn('Returning stale cached price due to API error', {
         cardId: id,
-        error: error.message
+        error: errorMessage
       });
       
       res.setHeader('X-Cache-Status', 'stale-fallback');
       res.setHeader('X-Response-Time', `${Date.now() - startTime}ms`);
-      res.setHeader('X-Error', error.message);
+      res.setHeader('X-Error', errorMessage);
       res.setHeader('Cache-Control', 'public, s-maxage=1800, stale-while-revalidate=172800');
       
       return res.status(200).json({
@@ -160,7 +182,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
     res.status(500).json({ 
       error: 'Failed to fetch card price',
-      message: error.message,
+      message: errorMessage,
       cardId: id
     });
   }

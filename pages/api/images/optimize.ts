@@ -65,12 +65,12 @@ export default async function handler(req: OptimizeImageRequest, res: NextApiRes
     // Redirect to Next.js Image optimization
     res.redirect(302, optimizedUrl);
     
-  } catch (error: any) {
-    logger.error('[Image Optimize] Failed to optimize image:', error);
+  } catch (error: unknown) {
+    logger.error('[Image Optimize] Failed to optimize image:', { error: error instanceof Error ? error.message : String(error) });
     
     res.status(500).json({
       error: 'Failed to optimize image',
-      message: error.message
+      message: error instanceof Error ? error.message : String(error)
     });
   }
 }

@@ -5,7 +5,7 @@ import type {
   CalculatorSettings,
   BreedingData,
   PokemonSpecies
-} from '../types/api/pokemon';
+} from "../types/pokemon";
 
 /**
  * Calculate a Pokemon's stat with EVs, IVs, and Nature modifiers
@@ -284,10 +284,11 @@ export function getStatRanking(baseStat: number, statName: string): {
  * @param evolutionDetails - Evolution detail object
  * @returns Human-readable evolution method
  */
-export function parseEvolutionMethod(evolutionDetails: any): string {
-  if (!evolutionDetails || evolutionDetails.length === 0) return 'Unknown method';
+export function parseEvolutionMethod(evolutionDetails: unknown): string {
+  if (!Array.isArray(evolutionDetails) || evolutionDetails.length === 0) return 'Unknown method';
   
   const detail = evolutionDetails[0];
+  if (!detail || typeof detail !== 'object') return 'Unknown method';
   const methods: string[] = [];
   
   if (detail.min_level) {

@@ -4,9 +4,11 @@ import Head from "next/head";
 import { NextPage } from "next";
 import { motion } from "framer-motion";
 import { fetchJSON } from "../../utils/unifiedFetch";
+import RouteErrorBoundary from "../../components/RouteErrorBoundary";
 import { sanitizePokemonName } from "../../utils/pokemonNameSanitizer";
 import { fetchTCGCards, fetchPocketCards } from "../../utils/apiutils";
 import logger from "../../utils/logger";
+import { POKEAPI } from "../../config/api";
 import { showdownQueries, CompetitiveTierRecord } from "../../utils/supabase";
 import { loadTypeChart } from "../../utils/typeEffectiveness";
 import type { 
@@ -20,13 +22,13 @@ import type {
   PokemonTab,
   PokemonType,
   LocationAreaEncounterDetail
-} from "../../types/api/pokemon";
+} from "../../types/pokemon";
 import type { TCGCard } from "../../types/api/cards";
 import type { PocketCard } from "../../types/api/pocket-cards";
 import PokemonHeroSectionV3 from "../../components/pokemon/PokemonHeroSectionV3";
 import PokemonTabSystem from "../../components/pokemon/PokemonTabSystem";
 import FloatingActionBar from "../../components/pokemon/FloatingActionBar";
-import { PageLoader } from "../../utils/unifiedLoading";
+import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { FullBleedWrapper } from "../../components/ui";
 import { PageErrorBoundary } from "../../components/ui";
 import { CircularButton } from "../../components/ui/design-system";
@@ -78,14 +80,14 @@ const PokemonDetail: NextPage = () => {
       
       // Load previous Pokemon if valid ID
       if (prevId > 0) {
-        promises.push(fetchJSON<Pokemon>(`https://pokeapi.co/api/v2/pokemon/${prevId}`));
+        promises.push(fetchJSON<Pokemon>(POKEAPI.pokemon(prevId)));
       } else {
         promises.push(Promise.resolve(null));
       }
       
       // Load next Pokemon if within known range (Gen 9 limit)
       if (nextId <= 1025) {
-        promises.push(fetchJSON<Pokemon>(`https://pokeapi.co/api/v2/pokemon/${nextId}`));
+        promises.push(fetchJSON<Pokemon>(POKEAPI.pokemon(nextId)));
       } else {
         promises.push(Promise.resolve(null));
       }
@@ -105,7 +107,7 @@ const PokemonDetail: NextPage = () => {
         } : null
       });
     } catch (err) {
-      console.error('Error loading adjacent Pokemon:', err);
+      logger.error('Error loading adjacent Pokemon:', { error: err instanceof Error ? err.message : String(err) });
     }
   }, []);
 
@@ -131,23 +133,23 @@ const PokemonDetail: NextPage = () => {
   // Load specific nature data (cached)
   const loadNatureData = useCallback(async (natureName: string) => {
     try {
-      const data = await fetchJSON<Nature>(`https://pokeapi.co/api/v2/nature/${natureName}`);
+      const data = await fetchJSON<Nature>(POKEAPI.nature(natureName));
       if (data) {
         setNatureData(data);
       } else {
-        console.error('Failed to fetch nature data:', natureName);
+        logger.error('Failed to fetch nature data:', { natureName });
       }
     } catch (err) {
-      console.error('Error loading nature data:', err);
+      logger.error('Error loading nature data:', { error: err instanceof Error ? err.message : String(err) });
     }
   }, []);
 
   // Load all available natures
   const loadAllNatures = useCallback(async () => {
     try {
-      const response = await fetchJSON<{ results: { name: string; url: string }[] }>('https://pokeapi.co/api/v2/nature/');
+      const response = await fetchJSON<{ results: { name: string; url: string }[] }>(POKEAPI.natureList());
       if (!response) {
-        console.error('Failed to fetch natures list');
+        logger.error('Failed to fetch natures list');
         return;
       }
       // Load full data for each nature
@@ -157,7 +159,7 @@ const PokemonDetail: NextPage = () => {
             const natureData = await fetchJSON<Nature>(nature.url);
             return natureData || { name: nature.name };
           } catch (err) {
-            console.error(`Error loading nature ${nature.name}:`, err);
+            logger.error(`Error loading nature ${nature.name}:`, { error: err instanceof Error ? err.message : String(err) });
             return { name: nature.name };
           }
         })
@@ -166,7 +168,7 @@ const PokemonDetail: NextPage = () => {
       // Load default nature data
       await loadNatureData('hardy');
     } catch (err) {
-      console.error('Error loading natures:', err);
+      logger.error('Error loading natures:', { error: err instanceof Error ? err.message : String(err) });
     }
   }, [loadNatureData]);
 
@@ -203,7 +205,7 @@ const PokemonDetail: NextPage = () => {
         setLoading(true);
         setError(null);
 
-        // console.log('Loading Pokemon with ID:', pokeid, 'Form:', form);
+        // logger.debug('Loading Pokemon with ID:', { pokeid, form });
         
         // First, determine if we're dealing with a numeric ID or a name
         let pokemonIdentifier: string = pokeid as string;
@@ -214,7 +216,7 @@ const PokemonDetail: NextPage = () => {
           if (/^\d+$/.test(pokeid as string)) {
             // It's a numeric ID, we need to get the Pokemon name first
             try {
-              const baseSpeciesData = await fetchJSON<PokemonSpecies>(`https://pokeapi.co/api/v2/pokemon-species/${pokeid}`);
+              const baseSpeciesData = await fetchJSON<PokemonSpecies>(POKEAPI.species(pokeid as string));
               if (baseSpeciesData) {
                 pokemonIdentifier = `${baseSpeciesData.name}-${form.toLowerCase()}`;
               } else {
@@ -234,14 +236,14 @@ const PokemonDetail: NextPage = () => {
         const sanitizedId = sanitizePokemonName(pokemonIdentifier);
 
         // Load Pokemon data
-        const pokemonData = await fetchJSON<Pokemon>(`https://pokeapi.co/api/v2/pokemon/${sanitizedId}`);
+        const pokemonData = await fetchJSON<Pokemon>(POKEAPI.pokemon(sanitizedId));
         if (!pokemonData) {
           throw new Error(`Pokemon not found: ${sanitizedId}`);
         }
         
         // For species, always use the base Pokemon ID (numeric part)
-        const baseSpeciesId = pokemonData.species?.url?.split('/').filter(Boolean).pop() || pokeid;
-        const speciesData = await fetchJSON<PokemonSpecies>(`https://pokeapi.co/api/v2/pokemon-species/${baseSpeciesId}`);
+        const baseSpeciesId = pokemonData.species?.url?.split('/').filter(Boolean).pop() || (typeof pokeid === 'string' ? pokeid : pokeid[0]);
+        const speciesData = await fetchJSON<PokemonSpecies>(POKEAPI.species(baseSpeciesId));
         if (!speciesData) {
           throw new Error(`Species not found: ${baseSpeciesId}`);
         }
@@ -264,7 +266,7 @@ const PokemonDetail: NextPage = () => {
             setCompetitiveTiers(tiers);
           }
         }).catch(err => {
-          console.warn('[Showdown Data] Failed to load competitive tiers:', err);
+          logger.warn('[Showdown Data] Failed to load competitive tiers:', { error: err instanceof Error ? err.message : String(err) });
         });
         
         // Reset tab to saved preference on Pokemon change
@@ -278,7 +280,7 @@ const PokemonDetail: NextPage = () => {
         //     }
         //   }
         // } catch (err) {
-        //   console.warn('Failed to read localStorage for tab preference:', err);
+        //   logger.warn('Failed to read localStorage for tab preference:', { error: err instanceof Error ? err.message : String(err) });
         // }
 
         // Load secondary data in parallel (non-blocking)
@@ -293,7 +295,7 @@ const PokemonDetail: NextPage = () => {
 
         // Start secondary data loading without waiting
         Promise.allSettled(secondaryDataPromises).catch(err => {
-          console.warn('[Secondary Data] Some secondary data failed to load:', err);
+          logger.warn('[Secondary Data] Some secondary data failed to load:', { error: err instanceof Error ? err.message : String(err) });
         });
 
         // Defer heavy/optional data loading using requestIdleCallback
@@ -302,14 +304,14 @@ const PokemonDetail: NextPage = () => {
             // Load location encounters (deferred)
             if (pokemonData.location_area_encounters) {
               loadLocationEncounters(pokemonData.location_area_encounters).catch(err => {
-                console.warn('[Location Data] Failed to load location data:', err);
+                logger.warn('[Location Data] Failed to load location data:', { error: err instanceof Error ? err.message : String(err) });
               });
             }
 
             // Load evolution chain (deferred)
             if (speciesData.evolution_chain) {
               loadEvolutionChain(speciesData.evolution_chain.url).catch(err => {
-                console.warn('[Evolution Data] Failed to load evolution data:', err);
+                logger.warn('[Evolution Data] Failed to load evolution data:', { error: err instanceof Error ? err.message : String(err) });
               });
             }
 
@@ -317,7 +319,7 @@ const PokemonDetail: NextPage = () => {
             // Delay card loading to prevent Fast Refresh loops
             setTimeout(() => {
               loadCards(pokemonData.name).catch(err => {
-                console.warn('[Card Loading] Background card load failed:', err);
+                logger.warn('[Card Loading] Background card load failed:', { error: err instanceof Error ? err.message : String(err) });
               });
             }, 500);
           });
@@ -326,28 +328,28 @@ const PokemonDetail: NextPage = () => {
           setTimeout(() => {
             if (pokemonData.location_area_encounters) {
               loadLocationEncounters(pokemonData.location_area_encounters).catch(err => {
-                console.warn('[Location Data] Failed to load location data:', err);
+                logger.warn('[Location Data] Failed to load location data:', { error: err instanceof Error ? err.message : String(err) });
               });
             }
 
             if (speciesData.evolution_chain) {
               loadEvolutionChain(speciesData.evolution_chain.url).catch(err => {
-                console.warn('[Evolution Data] Failed to load evolution data:', err);
+                logger.warn('[Evolution Data] Failed to load evolution data:', { error: err instanceof Error ? err.message : String(err) });
               });
             }
 
             // Delay card loading to prevent Fast Refresh loops
             setTimeout(() => {
               loadCards(pokemonData.name).catch(err => {
-                console.warn('[Card Loading] Background card load failed:', err);
+                logger.warn('[Card Loading] Background card load failed:', { error: err instanceof Error ? err.message : String(err) });
               });
             }, 500);
           }, 100);
         }
 
-      } catch (err: any) {
-        console.error('Error loading Pokemon:', err);
-        setError(`Failed to load Pokemon data: ${err.message}`);
+      } catch (err: unknown) {
+        logger.error('Error loading Pokemon:', { error: err instanceof Error ? err.message : String(err) });
+        setError(`Failed to load Pokemon data: ${err instanceof Error ? err.message : String(err)}`);
         setLoading(false);
       }
     };
@@ -367,7 +369,7 @@ const PokemonDetail: NextPage = () => {
         setLocationAreaEncounters([]);
       }
     } catch (err) {
-      console.error('Error loading location encounters:', err);
+      logger.error('Error loading location encounters:', { error: err instanceof Error ? err.message : String(err) });
       setLocationAreaEncounters([]);
     }
   };
@@ -384,7 +386,7 @@ const PokemonDetail: NextPage = () => {
         setEvolutionChain(null);
       }
     } catch (err) {
-      console.error('Error loading evolution chain:', err);
+      logger.error('Error loading evolution chain:', { error: err instanceof Error ? err.message : String(err) });
       setEvolutionChain(null);
     }
   };
@@ -406,7 +408,7 @@ const PokemonDetail: NextPage = () => {
       try {
         const abilityData = await fetchJSON<AbilityApiData>(abilityInfo.ability.url);
         if (!abilityData) {
-          console.error(`Failed to fetch ability data for ${abilityInfo.ability.name}`);
+          logger.error(`Failed to fetch ability data for ${abilityInfo.ability.name}`);
           continue;
         }
         const englishEntry = abilityData.effect_entries.find(entry => entry.language.name === 'en');
@@ -418,7 +420,7 @@ const PokemonDetail: NextPage = () => {
           short_effect: englishEntry?.short_effect || 'No short description available.'
         };
       } catch (err) {
-        console.error(`Error loading ability ${abilityInfo.ability.name}:`, err);
+        logger.error(`Error loading ability ${abilityInfo.ability.name}:`, { error: err instanceof Error ? err.message : String(err) });
       }
     }
     
@@ -442,18 +444,20 @@ const PokemonDetail: NextPage = () => {
         Promise.all([
           fetchTCGCards(pokemonName)
             .catch(err => {
-              console.error('[Card Loading] TCG cards error:', err);
-              console.error('[Card Loading] TCG cards error details:', err.message, err.stack);
+              logger.error('[Card Loading] TCG cards error:', {
+                error: err instanceof Error ? err.message : String(err),
+                stack: err instanceof Error ? err.stack : undefined
+              });
               return [];
             }),
           fetchPocketCards(pokemonName).catch(err => {
-            console.error('[Card Loading] Pocket cards error:', err);
+            logger.error('[Card Loading] Pocket cards error:', { error: err instanceof Error ? err.message : String(err) });
             return [];
           })
         ]),
         timeoutPromise
       ]).catch(() => {
-        console.warn('[Card Loading] Timeout reached, using empty arrays');
+        logger.warn('[Card Loading] Timeout reached, using empty arrays');
         return [[], []];
       });
       
@@ -461,7 +465,7 @@ const PokemonDetail: NextPage = () => {
       setTcgCards(tcgCardsData || []);
       setPocketCards(pocketCardsData || []);
     } catch (err) {
-      console.error('[Card Loading] Unexpected error:', err);
+      logger.error('[Card Loading] Unexpected error:', { error: err instanceof Error ? err.message : String(err) });
       setTcgCards([]);
       setPocketCards([]);
     } finally {

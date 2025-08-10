@@ -12,7 +12,7 @@ export default function Tooltip({ children, text, position = 'top', className = 
   const [isVisible, setIsVisible] = useState(false);
 
   // Position classes - adjust these pixel values as needed for your design
-  const getPositionClasses = (): any => {
+  const getPositionClasses = (): Record<string, string> => {
     switch (position) {
       case 'top':
         return 'bottom-full left-1/2 -translate-x-1/2 mb-2';
@@ -27,7 +27,7 @@ export default function Tooltip({ children, text, position = 'top', className = 
     }
   };
 
-  const getArrowClasses = (): any => {
+  const getArrowClasses = (): Record<string, string> => {
     switch (position) {
       case 'top':
         return 'absolute left-1/2 -translate-x-1/2 top-full border-x-8 border-x-transparent border-t-8';

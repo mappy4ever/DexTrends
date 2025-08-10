@@ -1,9 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 // Sound effects controller
-export const PokemonSoundController = (): any => {
+interface PokemonSoundController {
+  soundEnabled: boolean;
+  toggleSound: () => void;
+  playPokemonSound: (soundType: string) => void;
+  playBeep: (frequency?: number, duration?: number, type?: OscillatorType) => void;
+}
+
+export const PokemonSoundController = (): PokemonSoundController => {
   const [soundEnabled, setSoundEnabled] = useState(false);
-  const [audioContext, setAudioContext] = useState<any>(null);
+  const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
 
   useEffect(() => {
     // Check if user has sound preference
@@ -13,18 +20,20 @@ export const PokemonSoundController = (): any => {
     }
   }, []);
 
-  const toggleSound = (): any => {
+  const toggleSound = () => {
     const newState = !soundEnabled;
     setSoundEnabled(newState);
     localStorage.setItem('pokemon-sound-enabled', newState.toString());
   };
 
   // Create simple beep sounds using Web Audio API
-  const playBeep = (frequency = 440, duration = 200, type = 'sine') => {
+  const playBeep = useCallback((frequency = 440, duration = 200, type = 'sine') => {
     if (!soundEnabled) return;
 
     try {
-      const context = audioContext || new (window.AudioContext || (window as any).webkitAudioContext)();
+      const AudioContextClass = window.AudioContext || (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+      if (!AudioContextClass) return;
+      const context = audioContext || new AudioContextClass();
       if (!audioContext) setAudioContext(context);
 
       const oscillator = context.createOscillator();
@@ -44,10 +53,10 @@ export const PokemonSoundController = (): any => {
     } catch (e) {
       // Audio not supported on this device
     }
-  };
+  }, [soundEnabled, audioContext, setAudioContext]);
 
   // Predefined Pokemon-style sounds
-  const playPokemonSound = (soundType: string) => {
+  const playPokemonSound = useCallback((soundType: string) => {
     switch (soundType) {
       case 'pokeball':
         playBeep(800, 100);
@@ -79,7 +88,7 @@ export const PokemonSoundController = (): any => {
       default:
         playBeep();
     }
-  };
+  }, [playBeep]);
 
   // Expose sound functions globally
   useEffect(() => {
@@ -87,7 +96,7 @@ export const PokemonSoundController = (): any => {
       play: playPokemonSound,
       enabled: soundEnabled
     };
-  }, [soundEnabled, audioContext]);
+  }, [soundEnabled, playPokemonSound]);
 
   return (
     <button
@@ -105,8 +114,8 @@ export const PokemonSoundController = (): any => {
 };
 
 // Enhanced hover effects with sounds
-export const withSoundEffects = (Component: any) => {
-  return (props: any) => {
+export const withSoundEffects = (Component: React.ComponentType<Record<string, unknown>>) => {
+  return (props: Record<string, unknown>) => {
     const handleMouseEnter = (e: React.MouseEvent) => {
       if ((window as any).pokemonSounds?.enabled) {
         (window as any).pokemonSounds.play('hover');

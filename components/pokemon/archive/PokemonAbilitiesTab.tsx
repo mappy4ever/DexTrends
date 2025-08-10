@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { FadeIn } from '../ui/animations/animations';
-import type { Pokemon } from '../../types/api/pokemon';
+import type { Pokemon } from "../../types/pokemon";
 
 interface DetailedAbility {
   name: string;

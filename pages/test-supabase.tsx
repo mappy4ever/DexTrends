@@ -1,11 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { testSupabaseConnection, showdownQueries } from '@/utils/supabase';
+import type { AnyObject } from '../types/common';
+
+interface ConnectionStatus {
+  success: boolean;
+  error?: string;
+  [key: string]: unknown;
+}
+
+interface TypeEffectivenessData {
+  attacking: string;
+  defending: string;
+  multiplier: number;
+}
+
+interface LearnsetData {
+  pokemon: string;
+  moveCount: number;
+  sampleMoves: string[];
+}
 
 export default function TestSupabase() {
-  const [connectionStatus, setConnectionStatus] = useState<any>(null);
-  const [typeEffectiveness, setTypeEffectiveness] = useState<any>(null);
-  const [learnsetData, setLearnsetData] = useState<any>(null);
-  const [tierData, setTierData] = useState<any>(null);
+  const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus | null>(null);
+  const [typeEffectiveness, setTypeEffectiveness] = useState<TypeEffectivenessData | null>(null);
+  const [learnsetData, setLearnsetData] = useState<LearnsetData | null>(null);
+  const [tierData, setTierData] = useState<AnyObject | null>(null);
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState<string[]>([]);
 
@@ -20,16 +39,18 @@ export default function TestSupabase() {
         if (!result.success) {
           newErrors.push(`Connection test failed: ${result.error}`);
         }
-      } catch (err) {
-        newErrors.push(`Connection test error: ${err.message}`);
+      } catch (err: unknown) {
+        const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+        newErrors.push(`Connection test error: ${errorMessage}`);
       }
 
       // Test 2: Type Effectiveness
       try {
         const effectiveness = await showdownQueries.getTypeEffectiveness('fire', 'water');
         setTypeEffectiveness({ attacking: 'fire', defending: 'water', multiplier: effectiveness });
-      } catch (err) {
-        newErrors.push(`Type effectiveness error: ${err.message}`);
+      } catch (err: unknown) {
+        const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+        newErrors.push(`Type effectiveness error: ${errorMessage}`);
       }
 
       // Test 3: Pokemon Learnset
@@ -40,16 +61,18 @@ export default function TestSupabase() {
           moveCount: learnset.length,
           sampleMoves: learnset.slice(0, 5)
         });
-      } catch (err) {
-        newErrors.push(`Learnset error: ${err.message}`);
+      } catch (err: unknown) {
+        const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+        newErrors.push(`Learnset error: ${errorMessage}`);
       }
 
       // Test 4: Competitive Tiers
       try {
         const tiers = await showdownQueries.getPokemonTiers('pikachu');
         setTierData(tiers);
-      } catch (err) {
-        newErrors.push(`Tiers error: ${err.message}`);
+      } catch (err: unknown) {
+        const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+        newErrors.push(`Tiers error: ${errorMessage}`);
       }
 
       setErrors(newErrors);

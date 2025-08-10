@@ -12,7 +12,10 @@ interface RegionData {
   generation: string | number;
   games: string[];
   color: string;
-  [key: string]: any;
+  id?: string;
+  description?: string;
+  professor?: string;
+  pokemonRange?: string;
 }
 
 interface GameShowcaseProps {

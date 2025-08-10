@@ -1,16 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { PokeballSVG } from './PokeballSVG';
+import type { ClickHandler } from '@/types/components/events';
+
+interface WeatherCondition {
+  type: 'sunny' | 'clear' | 'sunset' | 'dark';
+  suggestion: string;
+}
+
+interface MouseTrailPoint {
+  x: number;
+  y: number;
+  id: number;
+}
+
+type MilestoneMessage = string | null;
+type PackState = 'closed' | 'shaking' | 'opening' | 'revealing' | 'complete';
+type WeatherPeriod = 'morning' | 'afternoon' | 'evening' | 'night';
+type WeatherMap = Record<WeatherPeriod, WeatherCondition>;
 
 // Konami Code Easter Egg
-export const KonamiCode = (): any => {
-  const [sequence, setSequence] = useState<unknown[]>([]);
+export const KonamiCode: React.FC = () => {
+  const [sequence, setSequence] = useState<string[]>([]);
   const [showEasterEgg, setShowEasterEgg] = useState(false);
   
-  const konamiCode = [
+  const konamiCode = useMemo(() => [
     'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
     'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
     'KeyB', 'KeyA'
-  ];
+  ], []);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -56,12 +73,12 @@ export const KonamiCode = (): any => {
 };
 
 // Click counter easter egg (like Cookie Clicker but with Pokéballs)
-export const PokeballClicker = (): any => {
+export const PokeballClicker: React.FC = () => {
   const [clicks, setClicks] = useState(0);
   const [showFloatingText, setShowFloatingText] = useState(false);
   const [ballSize, setBallSize] = useState(60);
 
-  const handleClick = (): any => {
+  const handleClick = (): void => {
     setClicks(prev => prev + 1);
     setShowFloatingText(true);
     setBallSize(80);
@@ -70,7 +87,7 @@ export const PokeballClicker = (): any => {
     setTimeout(() => setBallSize(60), 200);
   };
 
-  const getMilestoneMessage = (count: any) => {
+  const getMilestoneMessage = (count: number): MilestoneMessage => {
     if (count === 10) return "🎉 You're getting the hang of this!";
     if (count === 50) return "⭐ Wow, you really like clicking!";
     if (count === 100) return "🏆 Century Club! Professor Oak would be proud!";
@@ -115,7 +132,7 @@ export const PokeballClicker = (): any => {
 };
 
 // Random Pokémon fact tooltip that appears occasionally
-export const RandomFactTooltip = (): any => {
+export const RandomFactTooltip: React.FC = () => {
   const [showFact, setShowFact] = useState(false);
   const [currentFact, setCurrentFact] = useState(0);
 
@@ -164,21 +181,21 @@ export const RandomFactTooltip = (): any => {
 };
 
 // Weather-based theme suggestions
-export const WeatherThemeChanger = (): any => {
-  const [weather, setWeather] = useState<any>(null);
+export const WeatherThemeChanger: React.FC = () => {
+  const [weather, setWeather] = useState<WeatherCondition | null>(null);
   const [showSuggestion, setShowSuggestion] = useState(false);
 
   useEffect(() => {
     // Simulate weather detection (in real app, use weather API)
     const hour = new Date().getHours();
-    const mockWeather = {
+    const mockWeather: WeatherMap = {
       morning: { type: 'sunny', suggestion: 'Perfect weather for Electric-types!' },
       afternoon: { type: 'clear', suggestion: 'Great day for Fire-types!' },
       evening: { type: 'sunset', suggestion: 'Beautiful time for Psychic-types!' },
       night: { type: 'dark', suggestion: 'Perfect atmosphere for Ghost-types!' }
     };
 
-    let currentWeather;
+    let currentWeather: WeatherCondition;
     if (hour >= 6 && hour < 12) currentWeather = mockWeather.morning;
     else if (hour >= 12 && hour < 17) currentWeather = mockWeather.afternoon;
     else if (hour >= 17 && hour < 20) currentWeather = mockWeather.evening;
@@ -214,14 +231,14 @@ export const WeatherThemeChanger = (): any => {
 
 // Catch notification system
 interface CatchNotificationProps {
-  show?: any;
-  pokemon?: any;
-  onClose?: any;
+  show?: boolean;
+  pokemon?: string;
+  onClose?: () => void;
 }
 
 export const CatchNotification = ({ show, pokemon, onClose }: CatchNotificationProps) => {
   useEffect(() => {
-    if (show) {
+    if (show && onClose) {
       const timer = setTimeout(onClose, 3000);
       return () => clearTimeout(timer);
     }
@@ -245,11 +262,11 @@ export const CatchNotification = ({ show, pokemon, onClose }: CatchNotificationP
 
 // Mouse trail effect
 interface MouseTrailProps {
-  enabled?: any;
+  enabled?: boolean;
 }
 
 export const MouseTrail = ({ enabled = false }: MouseTrailProps) => {
-  const [trail, setTrail] = useState<unknown[]>([]);
+  const [trail, setTrail] = useState<MouseTrailPoint[]>([]);
 
   useEffect(() => {
     if (!enabled) return;
@@ -270,7 +287,7 @@ export const MouseTrail = ({ enabled = false }: MouseTrailProps) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTrail(prev => prev.filter((point: any) => Date.now() - point.id < 1000));
+      setTrail(prev => prev.filter((point: MouseTrailPoint) => Date.now() - point.id < 1000));
     }, 100);
 
     return () => clearInterval(interval);
@@ -280,7 +297,7 @@ export const MouseTrail = ({ enabled = false }: MouseTrailProps) => {
 
   return (
     <div className="fixed inset-0 pointer-events-none z-10">
-      {trail.map((point: any, index: number) => (
+      {trail.map((point: MouseTrailPoint, index: number) => (
         <div
           key={point.id}
           className="absolute w-2 h-2 bg-yellow-400 rounded-full animate-ping"

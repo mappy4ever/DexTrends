@@ -1,22 +1,25 @@
 import React, { useState, useCallback, useMemo, CSSProperties, useEffect, useRef } from 'react';
 import { FixedSizeGrid as Grid, GridOnScrollProps } from 'react-window';
 import UnifiedCard from './cards/UnifiedCard';
-import { InlineLoader } from '../../utils/unifiedLoading';
+import { InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { TCGCard } from '../../types/api/cards';
+import logger from '@/utils/logger';
 import { PocketCard } from '../../types/api/pocket-cards';
-import { Pokemon } from '../../types/api/pokemon';
+import { Pokemon } from "../../types/pokemon";
 import { getRaritySymbol, getRarityGlowClass } from '../../utils/tcgRaritySymbols';
 import OptimizedImage from './OptimizedImage';
 
+type CardUnion = TCGCard | PocketCard | Pokemon;
+
 interface VirtualizedCardGridProps {
-  cards?: Array<TCGCard | PocketCard | Pokemon>;
+  cards?: CardUnion[];
   cardType?: 'tcg' | 'pocket' | 'pokedex';
   showPrice?: boolean;
   showSet?: boolean;
   showTypes?: boolean;
   showRarity?: boolean;
-  onCardClick?: ((card: TCGCard | PocketCard | Pokemon) => void) | null;
-  onMagnifyClick?: ((card: TCGCard | PocketCard | Pokemon) => void) | null;
+  onCardClick?: ((card: CardUnion) => void) | null;
+  onMagnifyClick?: ((card: CardUnion) => void) | null;
   className?: string;
   itemsPerPage?: number;
 }
@@ -61,7 +64,7 @@ const VirtualizedCardGrid: React.FC<VirtualizedCardGridProps> = ({
   // Debug container width changes
   useEffect(() => {
     if (containerRef) {
-      logger.debug('Container ref set. Width:', containerRef.clientWidth, 'Viewport:', window.innerWidth);
+      logger.debug('Container ref set', { width: containerRef.clientWidth, viewport: window.innerWidth });
     }
   }, [containerRef]);
   
@@ -91,7 +94,7 @@ const VirtualizedCardGrid: React.FC<VirtualizedCardGridProps> = ({
   useEffect(() => {
     if (actualColumnCount > 4 && initialColumnCountRef.current === null) {
       initialColumnCountRef.current = actualColumnCount;
-      logger.debug('🔒 Locking initial column count with useRef:', actualColumnCount);
+      logger.debug('🔒 Locking initial column count with useRef:', { actualColumnCount });
     }
   }, [actualColumnCount]);
   
@@ -143,29 +146,29 @@ const VirtualizedCardGrid: React.FC<VirtualizedCardGridProps> = ({
     
     if (!card) return null;
     
-    const isTCGCard = cardType === 'tcg' && 'rarity' in card;
+    const isTCGCard = cardType === 'tcg' && card && typeof card === 'object' && 'rarity' in card;
     
     return (
       <div style={style}>
         <div style={{ padding: GAP / 2 }} className="relative">
-          <div className={isTCGCard && card.rarity ? getRarityGlowClass(card.rarity) : ''}>
+          <div className={isTCGCard && 'rarity' in card && card.rarity ? getRarityGlowClass(card.rarity as string) : ''}>
             <UnifiedCard
-              card={card}
+              card={card as any}
               cardType={cardType}
               showPrice={showPrice}
               showSet={showSet}
               showTypes={showTypes}
               showRarity={showRarity}
-              onCardClick={onCardClick}
-              onMagnifyClick={onMagnifyClick}
+              onCardClick={onCardClick as any}
+              onMagnifyClick={onMagnifyClick as any}
               disableLazyLoad={true}
               className="h-full" />
           </div>
           {/* Rarity symbol overlay for TCG cards */}
-          {isTCGCard && card.rarity && (
+          {isTCGCard && 'rarity' in card && card.rarity && (
             <img 
-              src={getRaritySymbol(card.rarity)} 
-              alt={card.rarity}
+              src={getRaritySymbol(card.rarity as string)} 
+              alt={card.rarity as string}
               className="absolute top-3 right-3 w-6 h-6 z-10 pointer-events-none"
               loading="lazy"
             />

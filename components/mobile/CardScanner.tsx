@@ -1,16 +1,9 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { useMobileUtils } from '../../utils/mobileUtils';
 import logger from '../../utils/logger';
+import type { DetectedCard } from '../../types/common';
 
 // Type definitions
-interface DetectedCard {
-  id: string;
-  name: string;
-  set: string;
-  number: string;
-  rarity: string;
-  confidence: number;
-}
 
 interface CardScannerProps {
   onCardDetected?: (card: DetectedCard, imageData: string) => void;
@@ -69,81 +62,52 @@ const CardScanner: React.FC<CardScannerProps> = ({
     checkSupport();
   }, []);
 
-  // Start camera stream
-  const startCamera = useCallback(async () => {
-    if (!isSupported || disabled) return false;
+  // Simulate card image analysis (would use real ML/OCR in production)
+  const analyzeCardImage = useCallback(async (imageData: string): Promise<DetectedCard | null> => {
+    // Simulate processing delay
+    await new Promise(resolve => setTimeout(resolve, 500));
     
-    try {
-      setError(null);
-      
-      // Prefer rear camera on mobile devices
-      const constraints: MediaStreamConstraints = {
-        video: {
-          facingMode: isMobile ? { ideal: 'environment' } : 'user',
-          width: { ideal: 1280 },
-          height: { ideal: 720 }
-        }
-      };
-      
-      const stream = await navigator.mediaDevices.getUserMedia(constraints);
-      
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        streamRef.current = stream;
-        
-        await new Promise<void>((resolve) => {
-          if (videoRef.current) {
-            videoRef.current.onloadedmetadata = () => resolve();
-          }
-        });
-        
-        setIsScanning(true);
-        utils.hapticFeedback('light');
-        
-        if (autoCapture) {
-          startAutoCapture();
-        }
-        
-        logger.debug('Camera started successfully');
-        return true;
+    // Mock card detection - in real implementation this would:
+    // 1. Use OCR to extract card text
+    // 2. Use image recognition to identify the card
+    // 3. Use image recognition to identify the card
+    // 4. Match against card database
+    // 5. Return card information
+    
+    const mockCards: DetectedCard[] = [
+      {
+        id: 'charizard-base-4',
+        name: 'Charizard',
+        set: 'Base Set',
+        number: '4/102',
+        rarity: 'Holo Rare',
+        confidence: 0.85
+      },
+      {
+        id: 'pikachu-base-58',
+        name: 'Pikachu',
+        set: 'Base Set',
+        number: '58/102',
+        rarity: 'Common',
+        confidence: 0.92
+      },
+      {
+        id: 'blastoise-base-2',
+        name: 'Blastoise',
+        set: 'Base Set',
+        number: '2/102',
+        rarity: 'Holo Rare',
+        confidence: 0.78
       }
-    } catch (err: any) {
-      const errorMessage = err.name === 'NotAllowedError' 
-        ? 'Camera permission denied' 
-        : err.name === 'NotFoundError'
-        ? 'No camera found'
-        : 'Failed to access camera';
-        
-      setError(errorMessage);
-      onError && onError(err);
-      logger.error('Failed to start camera:', err);
-      return false;
+    ];
+    
+    // Randomly return a detected card (70% chance)
+    if (Math.random() > 0.7) {
+      return mockCards[Math.floor(Math.random() * mockCards.length)];
     }
     
-    return false;
-  }, [isSupported, disabled, isMobile, autoCapture, utils, onError]);
-
-  // Stop camera stream
-  const stopCamera = useCallback(() => {
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach(track => track.stop());
-      streamRef.current = null;
-    }
-    
-    if (videoRef.current) {
-      videoRef.current.srcObject = null;
-    }
-    
-    if (captureTimeoutRef.current) {
-      clearTimeout(captureTimeoutRef.current);
-      captureTimeoutRef.current = null;
-    }
-    
-    setIsScanning(false);
-    setScanProgress(0);
-    utils.hapticFeedback('light');
-    logger.debug('Camera stopped');
-  }, [utils]);
+    return null;
+  }, []);
 
   // Capture frame and analyze
   const captureFrame = useCallback(async () => {
@@ -187,7 +151,7 @@ const CardScanner: React.FC<CardScannerProps> = ({
     } catch (err) {
       logger.error('Card analysis failed:', err);
     }
-  }, [jpegQuality, utils, onCardDetected]);
+  }, [jpegQuality, utils, onCardDetected, analyzeCardImage]);
 
   // Auto capture functionality
   const startAutoCapture = useCallback(() => {
@@ -203,51 +167,83 @@ const CardScanner: React.FC<CardScannerProps> = ({
     captureTimeoutRef.current = setTimeout(capture, captureDelay);
   }, [autoCapture, captureDelay, isScanning, captureFrame]);
 
-  // Simulate card image analysis (would use real ML/OCR in production)
-  const analyzeCardImage = useCallback(async (imageData: string): Promise<DetectedCard | null> => {
-    // Simulate processing delay
-    await new Promise(resolve => setTimeout(resolve, 500));
+  // Start camera stream
+  const startCamera = useCallback(async () => {
+    if (!isSupported || disabled) return false;
     
-    // Mock card detection - in real implementation this would:
-    // 1. Use OCR to extract card text
-    // 2. Use image recognition to identify the card
-    // 3. Match against card database
-    // 4. Return card information
-    
-    const mockCards: DetectedCard[] = [
-      {
-        id: 'charizard-base-4',
-        name: 'Charizard',
-        set: 'Base Set',
-        number: '4/102',
-        rarity: 'Holo Rare',
-        confidence: 0.85
-      },
-      {
-        id: 'pikachu-base-58',
-        name: 'Pikachu',
-        set: 'Base Set',
-        number: '58/102',
-        rarity: 'Common',
-        confidence: 0.92
-      },
-      {
-        id: 'blastoise-base-2',
-        name: 'Blastoise',
-        set: 'Base Set',
-        number: '2/102',
-        rarity: 'Holo Rare',
-        confidence: 0.78
+    try {
+      setError(null);
+      
+      // Prefer rear camera on mobile devices
+      const constraints: MediaStreamConstraints = {
+        video: {
+          facingMode: isMobile ? { ideal: 'environment' } : 'user',
+          width: { ideal: 1280 },
+          height: { ideal: 720 }
+        }
+      };
+      
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        streamRef.current = stream;
+        
+        await new Promise<void>((resolve) => {
+          if (videoRef.current) {
+            videoRef.current.onloadedmetadata = () => resolve();
+          }
+        });
+        
+        setIsScanning(true);
+        utils.hapticFeedback('light');
+        
+        if (autoCapture) {
+          startAutoCapture();
+        }
+        
+        logger.debug('Camera started successfully');
+        return true;
       }
-    ];
-    
-    // Randomly detect a card (simulate real detection)
-    if (Math.random() > 0.7) {
-      return mockCards[Math.floor(Math.random() * mockCards.length)];
+    } catch (err: unknown) {
+      const error = err as Error;
+      const errorMessage = error.name === 'NotAllowedError' 
+        ? 'Camera permission denied' 
+        : error.name === 'NotFoundError'
+        ? 'No camera found'
+        : 'Failed to access camera';
+        
+      setError(errorMessage);
+      onError && onError(error);
+      logger.error('Failed to start camera:', { error: err });
+      return false;
     }
     
-    return null;
-  }, []);
+    return false;
+  }, [isSupported, disabled, isMobile, autoCapture, utils, onError, startAutoCapture]);
+
+  // Stop camera stream
+  const stopCamera = useCallback(() => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
+    }
+    
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
+    
+    if (captureTimeoutRef.current) {
+      clearTimeout(captureTimeoutRef.current);
+      captureTimeoutRef.current = null;
+    }
+    
+    setIsScanning(false);
+    setScanProgress(0);
+    utils.hapticFeedback('light');
+    logger.debug('Camera stopped');
+  }, [utils]);
+
 
   // Manual capture
   const manualCapture = useCallback(() => {

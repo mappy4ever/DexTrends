@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { FaUser, FaUsers, FaHeart, FaComment, FaShare, FaTrophy, FaEye, FaPlus, FaUserPlus, FaUserMinus } from 'react-icons/fa';
 import { BsCardList, BsGrid3X3Gap, BsChat, BsStar, BsFire } from 'react-icons/bs';
 import { supabase } from '../../lib/supabase';
+import logger from '@/utils/logger';
 
 // Type definitions
 interface User {
@@ -72,11 +73,35 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
   const [following, setFollowing] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadSocialData();
+  const loadUserProfile = useCallback(async () => {
+    if (!currentUserId) return;
+
+    // Mock current user profile
+    const mockProfile: UserProfile = {
+      id: currentUserId,
+      username: 'YourUsername',
+      displayName: 'Your Name',
+      avatar: '/api/placeholder/80/80',
+      verified: false,
+      title: 'Trainer',
+      followers: 45,
+      following: 67,
+      totalCards: 234,
+      favoriteSet: 'Evolutions',
+      joinedDate: '2023-01-15',
+      bio: 'New to collecting but loving every moment!',
+      isFollowing: false,
+      stats: {
+        postsCount: 12,
+        likesReceived: 89,
+        commentsReceived: 34
+      }
+    };
+
+    setUserProfile(mockProfile);
   }, [currentUserId]);
 
-  const loadSocialData = async () => {
+  const loadSocialData = useCallback(async () => {
     setLoading(true);
     try {
       await Promise.all([
@@ -90,7 +115,11 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
     } finally {
       setLoading(false);
     }
-  };
+  }, [loadUserProfile]);
+
+  useEffect(() => {
+    loadSocialData();
+  }, [currentUserId, loadSocialData]);
 
   const loadFeedPosts = async () => {
     // Mock social feed data
@@ -212,34 +241,6 @@ const SocialPlatform: React.FC<SocialPlatformProps> = ({ currentUserId = null })
     ];
 
     setUsers(mockUsers);
-  };
-
-  const loadUserProfile = async () => {
-    if (!currentUserId) return;
-
-    // Mock current user profile
-    const mockProfile: UserProfile = {
-      id: currentUserId,
-      username: 'YourUsername',
-      displayName: 'Your Name',
-      avatar: '/api/placeholder/80/80',
-      verified: false,
-      title: 'Trainer',
-      followers: 45,
-      following: 67,
-      totalCards: 234,
-      favoriteSet: 'Evolutions',
-      joinedDate: '2023-01-15',
-      bio: 'New to collecting but loving every moment!',
-      isFollowing: false,
-      stats: {
-        postsCount: 12,
-        likesReceived: 89,
-        commentsReceived: 34
-      }
-    };
-
-    setUserProfile(mockProfile);
   };
 
   const loadFollowing = async () => {

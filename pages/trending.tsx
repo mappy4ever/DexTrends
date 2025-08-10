@@ -3,10 +3,10 @@ import Link from 'next/link';
 import Head from 'next/head';
 import CardList from '../components/CardList';
 import { useTheme } from '../context/UnifiedAppContext';
-import { PageLoader } from "../utils/unifiedLoading";
+import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import logger from '../utils/logger';
 import { getPokemonSDK } from '../utils/pokemonSDK';
-import { retryWithBackoff } from '../utils/retryWithBackoff';
+import { fetchJSON } from '../utils/unifiedFetch';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import type { NextPage } from 'next';
 import type { TCGCard } from '../types/api/cards';
@@ -101,25 +101,23 @@ const TrendingPage: NextPage = () => {
         const selectedPokemon = popularPokemon.sort(() => 0.5 - Math.random()).slice(0, 5);
         
         // Fetch cards for these Pokémon
-        const promises = selectedPokemon.map(name => 
-          retryWithBackoff(
-            () => pokemon.card.where({ q: `name:${name}*` }),
-            {
-              maxRetries: 3,
-              onRetry: (error, attempt) => {
-                logger.warn(`Retrying card fetch for ${name}, attempt ${attempt}`, error);
-              }
-            }
-          )
-        );
+        const promises = selectedPokemon.map(async (name) => {
+          try {
+            return await pokemon.card.where({ q: `name:${name}*` });
+          } catch (error) {
+            logger.error('Failed to fetch cards for Pokemon', { name, error });
+            return { data: [] };
+          }
+        });
         
         const results = await Promise.all(promises);
         let allCards: TCGCard[] = [];
         
         results.forEach(result => {
-          if (result && result.length > 0) {
+          const cards = Array.isArray(result) ? result : result?.data || [];
+          if (cards && cards.length > 0) {
             // Only include cards with price data
-            const cardsWithPrices = result.filter((card: any) => 
+            const cardsWithPrices = cards.filter((card: { tcgplayer?: { prices?: { holofoil?: { market?: number }, normal?: { market?: number }, [key: string]: unknown } } }) => 
               card.tcgplayer?.prices?.holofoil?.market || 
               card.tcgplayer?.prices?.normal?.market ||
               card.tcgplayer?.prices?.reverseHolofoil?.market ||

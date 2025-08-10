@@ -9,8 +9,19 @@ interface TypeMatchup {
   effectiveness: number;
 }
 
+interface TypeData {
+  damageRelations: {
+    double_damage_to?: Array<{ name: string }>;
+    half_damage_to?: Array<{ name: string }>;
+    no_damage_to?: Array<{ name: string }>;
+    double_damage_from?: Array<{ name: string }>;
+    half_damage_from?: Array<{ name: string }>;
+    no_damage_from?: Array<{ name: string }>;
+  };
+}
+
 interface CircularTypeMatrixProps {
-  typeData: Map<string, any>;
+  typeData: Map<string, TypeData>;
   selectedType?: string;
   onTypeSelect?: (type: string) => void;
 }
@@ -42,9 +53,9 @@ export const CircularTypeMatrix: React.FC<CircularTypeMatrixProps> = ({
 
     const damageRelations = attackerData.damageRelations;
     
-    if (damageRelations.double_damage_to?.some((t: any) => t.name === defender)) return 2;
-    if (damageRelations.half_damage_to?.some((t: any) => t.name === defender)) return 0.5;
-    if (damageRelations.no_damage_to?.some((t: any) => t.name === defender)) return 0;
+    if (damageRelations.double_damage_to?.some((t) => t.name === defender)) return 2;
+    if (damageRelations.half_damage_to?.some((t) => t.name === defender)) return 0.5;
+    if (damageRelations.no_damage_to?.some((t) => t.name === defender)) return 0;
     
     return 1;
   };
@@ -56,12 +67,12 @@ export const CircularTypeMatrix: React.FC<CircularTypeMatrixProps> = ({
     const damageRelations = data.damageRelations;
     
     return {
-      superEffective: damageRelations.double_damage_to?.map((t: any) => t.name) || [],
-      notVeryEffective: damageRelations.half_damage_to?.map((t: any) => t.name) || [],
-      noEffect: damageRelations.no_damage_to?.map((t: any) => t.name) || [],
-      resistantTo: damageRelations.half_damage_from?.map((t: any) => t.name) || [],
-      weakTo: damageRelations.double_damage_from?.map((t: any) => t.name) || [],
-      immuneTo: damageRelations.no_damage_from?.map((t: any) => t.name) || []
+      superEffective: damageRelations.double_damage_to?.map((t) => t.name) || [],
+      notVeryEffective: damageRelations.half_damage_to?.map((t) => t.name) || [],
+      noEffect: damageRelations.no_damage_to?.map((t) => t.name) || [],
+      resistantTo: damageRelations.half_damage_from?.map((t) => t.name) || [],
+      weakTo: damageRelations.double_damage_from?.map((t) => t.name) || [],
+      immuneTo: damageRelations.no_damage_from?.map((t) => t.name) || []
     };
   };
 

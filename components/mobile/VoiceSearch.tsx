@@ -1,6 +1,12 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useCallback, useEffect, useMemo } from 'react';
 import { useMobileUtils } from '../../utils/mobileUtils';
 import logger from '../../utils/logger';
+import { 
+  SpeechRecognition, 
+  SpeechRecognitionEvent, 
+  SpeechRecognitionErrorEvent,
+  SpeechRecognitionConstructor 
+} from '../../types/speech-recognition';
 
 // Type definitions
 interface VoiceCommand {
@@ -26,8 +32,8 @@ interface VoiceSearchProps {
 
 // Extend window interface for vendor prefixes
 interface WindowWithVendorPrefixes extends Window {
-  SpeechRecognition?: any;
-  webkitSpeechRecognition?: any;
+  SpeechRecognition?: SpeechRecognitionConstructor;
+  webkitSpeechRecognition?: SpeechRecognitionConstructor;
   AudioContext?: typeof AudioContext;
   webkitAudioContext?: typeof AudioContext;
 }
@@ -54,13 +60,13 @@ const VoiceSearch: React.FC<VoiceSearchProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [audioLevel, setAudioLevel] = useState(0);
   
-  const recognitionRef = useRef<any>(null);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyzerRef = useRef<AnalyserNode | null>(null);
   const animationFrameRef = useRef<number | null>(null);
 
   // Voice commands mapping
-  const voiceCommands: Record<string, VoiceCommandHandler> = {
+  const voiceCommands: Record<string, VoiceCommandHandler> = useMemo(() => ({
     'search for': (query) => ({ type: 'search', query }),
     'find': (query) => ({ type: 'search', query }),
     'show me': (query) => ({ type: 'search', query }),
@@ -71,7 +77,7 @@ const VoiceSearch: React.FC<VoiceSearchProps> = ({
     'add to collection': () => ({ type: 'action', action: 'collection' }),
     'clear search': () => ({ type: 'clear' }),
     'help': () => ({ type: 'help' })
-  };
+  }), []);
 
   // Initialize speech recognition
   useEffect(() => {
@@ -93,11 +99,11 @@ const VoiceSearch: React.FC<VoiceSearchProps> = ({
           setError(null);
           setTranscript('');
           utils.hapticFeedback('light');
-          startAudioVisualization();
+          // Audio visualization will be started when listening state changes
           logger.debug('Voice recognition started');
         };
         
-        recognition.onresult = (event: any) => {
+        recognition.onresult = (event: SpeechRecognitionEvent) => {
           let finalTranscript = '';
           let interimTranscript = '';
           
@@ -117,33 +123,43 @@ const VoiceSearch: React.FC<VoiceSearchProps> = ({
           setTranscript(fullTranscript);
           
           if (finalTranscript) {
-            processVoiceCommand(finalTranscript.trim());
+            // Store final transcript for processing
+            setTranscript(finalTranscript.trim());
           }
         };
         
-        recognition.onerror = (event: any) => {
+        recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
           setError(event.error);
           setIsListening(false);
-          stopAudioVisualization();
+          // Audio visualization will be stopped when listening state changes
           utils.hapticFeedback('heavy');
           
           if (onError) {
             onError(event.error);
           }
           
-          logger.error('Voice recognition error:', event.error);
+          logger.error('Voice recognition error:', { error: event.error });
         };
         
         recognition.onend = () => {
           setIsListening(false);
-          stopAudioVisualization();
+          // Audio visualization will be stopped when listening state changes
           logger.debug('Voice recognition ended');
         };
         
         recognitionRef.current = recognition;
         
         if (autoStart) {
-          startListening();
+          // Will start listening after component mounts
+          setTimeout(() => {
+            if (recognitionRef.current) {
+              try {
+                recognitionRef.current.start();
+              } catch (error) {
+                logger.error('Failed to auto-start voice recognition:', error);
+              }
+            }
+          }, 100);
         }
       } else {
         setIsSupported(false);
@@ -155,7 +171,7 @@ const VoiceSearch: React.FC<VoiceSearchProps> = ({
       if (recognitionRef.current) {
         recognitionRef.current.abort();
       }
-      stopAudioVisualization();
+      // Cleanup audio visualization if needed
     };
   }, [language, continuous, interimResults, maxAlternatives, autoStart, utils, onError]);
 
@@ -241,10 +257,12 @@ const VoiceSearch: React.FC<VoiceSearchProps> = ({
     
     try {
       recognitionRef.current.start();
-    } catch (error: any) {
-      if (error.name !== 'InvalidStateError') {
-        logger.error('Failed to start voice recognition:', error);
-        setError(error.message);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      const errorName = error instanceof Error ? error.name : 'UnknownError';
+      if (errorName !== 'InvalidStateError') {
+        logger.error('Failed to start voice recognition:', { error: errorMessage, name: errorName });
+        setError(errorMessage);
       }
     }
   }, [isSupported, disabled]);

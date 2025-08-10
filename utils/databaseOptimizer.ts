@@ -6,6 +6,15 @@
 import { supabase } from '../lib/supabase';
 import logger from './logger';
 import cacheManager, { CONFIG as CACHE_CONFIG } from './UnifiedCacheManager';
+import type { QueryResult } from '../types/api/api-responses';
+import type { AnyObject } from '../types/common';
+import type { EnhancedApiResponse } from '../types/api/enhanced-responses';
+
+// Type for Supabase query builder - flexible to match actual library types
+type SupabaseQueryBuilder = {
+  then?: (onfulfilled?: (value: unknown) => unknown) => Promise<unknown>;
+  [key: string]: unknown;
+};
 
 // Type definitions
 interface QueryOptions {
@@ -19,7 +28,7 @@ interface QueryOptions {
 
 interface SearchParams {
   query?: string;
-  filters?: Record<string, any>;
+  filters?: AnyObject;
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
   limit?: number;
@@ -35,12 +44,12 @@ interface SearchOptions {
 
 interface BatchOperation {
   type: 'insert' | 'update' | 'delete';
-  data?: any;
-  conditions?: Record<string, any>;
+  data?: unknown;
+  conditions?: AnyObject;
 }
 
 interface BatchOperationResult {
-  successful: any[];
+  successful: unknown[];
   failed: Array<{
     operation?: BatchOperation;
     batch?: number;
@@ -79,7 +88,7 @@ interface ConnectionPool {
 }
 
 interface CachedQuery {
-  data: any;
+  data: unknown;
   timestamp: number;
   ttl: number;
 }
@@ -118,11 +127,11 @@ class DatabaseOptimizer {
   /**
    * Optimized query execution with caching and performance monitoring
    */
-  async executeOptimizedQuery(
+  async executeOptimizedQuery<T = unknown>(
     tableName: string, 
-    queryBuilder: any, 
+    queryBuilder: SupabaseQueryBuilder, 
     options: QueryOptions = {}
-  ): Promise<any> {
+  ): Promise<QueryResult<T>> {
     const {
       cacheKey = null,
       cacheTTL = 300000, // 5 minutes default
@@ -164,7 +173,7 @@ class DatabaseOptimizer {
             this.recordQueryMetrics(tableName, queryHash, Date.now() - startTime, true, attempt);
           }
 
-          return result;
+          return result as QueryResult<T>;
         } catch (error) {
           lastError = error as Error;
           logger.warn(`Query attempt ${attempt} failed for ${tableName}:`, { 
@@ -195,14 +204,17 @@ class DatabaseOptimizer {
   /**
    * Execute query with timeout
    */
-  private async executeWithTimeout(queryBuilder: any, timeout: number): Promise<any> {
+  private async executeWithTimeout<T = unknown>(queryBuilder: SupabaseQueryBuilder, timeout: number): Promise<QueryResult<T>> {
     return new Promise((resolve, reject) => {
       const timeoutId = setTimeout(() => {
         reject(new Error(`Query timeout after ${timeout}ms`));
       }, timeout);
 
-      queryBuilder
-        .then((result: any) => {
+      // Cast queryBuilder to a Promise-like object for type safety
+      const promiseLike = queryBuilder as unknown as Promise<QueryResult<T>>;
+      
+      promiseLike
+        .then((result) => {
           clearTimeout(timeoutId);
           resolve(result);
         })
@@ -216,7 +228,7 @@ class DatabaseOptimizer {
   /**
    * Optimized card search with intelligent caching
    */
-  async searchCards(searchParams: SearchParams, options: SearchOptions = {}): Promise<any> {
+  async searchCards(searchParams: SearchParams, options: SearchOptions = {}): Promise<EnhancedApiResponse> {
     const {
       query = '',
       filters = {},
@@ -251,7 +263,7 @@ class DatabaseOptimizer {
   /**
    * Build optimized card search query
    */
-  private buildCardSearchQuery(searchParams: SearchParams, options: SearchOptions = {}): any {
+  private buildCardSearchQuery(searchParams: SearchParams, options: SearchOptions = {}): SupabaseQueryBuilder {
     const {
       query = '',
       filters = {},
@@ -323,7 +335,7 @@ class DatabaseOptimizer {
     variantType: string = 'holofoil', 
     daysBack: number = 30, 
     options: QueryOptions = {}
-  ): Promise<any> {
+  ): Promise<EnhancedApiResponse> {
     const cacheKey = `price_history_${cardId}_${variantType}_${daysBack}`;
     
     const queryBuilder = supabase
@@ -354,7 +366,7 @@ class DatabaseOptimizer {
     operations: BatchOperation[], 
     batchSize: number = 100
   ): Promise<BatchOperationResult> {
-    const results: any[] = [];
+    const results: unknown[] = [];
     const errors: Array<{ operation?: BatchOperation; batch?: number; error: string | Error }> = [];
 
     logger.info(`Starting batch operation on ${tableName}: ${operations.length} operations`);
@@ -411,7 +423,7 @@ class DatabaseOptimizer {
   /**
    * Execute single operation for batch processing
    */
-  private async executeSingleOperation(tableName: string, operation: BatchOperation): Promise<any> {
+  private async executeSingleOperation(tableName: string, operation: BatchOperation): Promise<EnhancedApiResponse> {
     const { type, data, conditions } = operation;
 
     switch (type) {
@@ -488,8 +500,8 @@ class DatabaseOptimizer {
         throw new Error(`Cache cleanup error: ${error?.message || pokemonError?.message}`);
       }
 
-      const clearedCards = Array.isArray(data) ? (data as any[]).length : 0;
-      const clearedPokemon = Array.isArray(pokemonData) ? (pokemonData as any[]).length : 0;
+      const clearedCards = Array.isArray(data) ? data.length : 0;
+      const clearedPokemon = Array.isArray(pokemonData) ? pokemonData.length : 0;
       
       logger.info('Cache cleanup completed', { 
         cardCacheCleared: clearedCards,
@@ -519,7 +531,7 @@ class DatabaseOptimizer {
         throw new Error(`Analytics cleanup error: ${error.message}`);
       }
 
-      const clearedEvents = Array.isArray(data) ? (data as any[]).length : 0;
+      const clearedEvents = Array.isArray(data) ? data.length : 0;
       
       logger.info('Analytics cleanup completed', { eventsCleared: clearedEvents });
       return { success: true, cleared: clearedEvents };
@@ -662,7 +674,7 @@ class DatabaseOptimizer {
   /**
    * Cache management
    */
-  private getFromCache(key: string, maxAge: number): any | null {
+  private getFromCache(key: string, maxAge: number): unknown | null {
     const cached = this.queryCache.get(key);
     if (!cached) return null;
 
@@ -674,7 +686,7 @@ class DatabaseOptimizer {
     return cached.data;
   }
 
-  private setCache(key: string, data: any, ttl: number): void {
+  private setCache(key: string, data: unknown, ttl: number): void {
     // Limit cache size
     if (this.queryCache.size > 1000) {
       const oldestKey = this.queryCache.keys().next().value;
@@ -698,7 +710,7 @@ class DatabaseOptimizer {
   /**
    * Utility methods
    */
-  private generateQueryHash(tableName: string, queryBuilder: any, options: QueryOptions): string {
+  private generateQueryHash(tableName: string, queryBuilder: SupabaseQueryBuilder, options: QueryOptions): string {
     const hashData = {
       table: tableName,
       options: JSON.stringify(options),

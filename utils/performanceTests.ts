@@ -76,7 +76,7 @@ class TestResult {
     };
   }
 
-  addDetail(key: string, value: any): void {
+  addDetail(key: string, value: unknown): void {
     this.details[key] = value;
   }
 }

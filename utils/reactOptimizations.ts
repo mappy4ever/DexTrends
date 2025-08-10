@@ -229,7 +229,7 @@ export function useSmartMemo<T>(
 }
 
 // Smart useCallback with dependency optimization
-export function useSmartCallback<T extends (...args: any[]) => any>(
+export function useSmartCallback<T extends (...args: unknown[]) => unknown>(
   callback: T,
   deps: React.DependencyList = [],
   options: SmartCallbackOptions = {}
@@ -515,12 +515,10 @@ export function withOptimizations<P extends object>(
       if (enableSuggestions) {
         const suggestions = useOptimizationSuggestions(componentName);
         if (suggestions.length > 0) {
-          console.group(`🔧 Optimization Suggestions for ${componentName}`);
+          logger.debug(`Optimization Suggestions for ${componentName}`);
           suggestions.forEach(suggestion => {
-            console.log(`${suggestion.severity.toUpperCase()}: ${suggestion.message}`);
-            console.log('Suggestions:', suggestion.suggestions);
+            logger.debug(`${suggestion.severity.toUpperCase()}: ${suggestion.message}`, { suggestions: suggestion.suggestions });
           });
-          console.groupEnd();
         }
       }
       

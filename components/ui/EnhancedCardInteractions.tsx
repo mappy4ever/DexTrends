@@ -72,7 +72,6 @@ export const useCardInteractions = ({
 
   const cardRef = useRef<HTMLDivElement | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const animationFrameRef = useRef<number | null>(null);
   const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
 
   // Enhanced hover effect with 3D tilt
@@ -297,7 +296,7 @@ export const useCardInteractions = ({
     }
     
     lastTapRef.current = now;
-  }, [card, favorites, addToFavorites, removeFromFavorites, onCardClick]);
+  }, [card, favorites.cards, addToFavorites, removeFromFavorites, onCardClick]);
 
   // Keyboard interactions
   const handleKeyDown = useCallback((e: KeyboardEvent<HTMLDivElement>) => {
@@ -322,16 +321,13 @@ export const useCardInteractions = ({
         }
         break;
     }
-  }, [card, handleDoubleInteraction, favorites, addToFavorites, removeFromFavorites]);
+  }, [card, handleDoubleInteraction, favorites.cards, addToFavorites, removeFromFavorites]);
 
   // Cleanup effects
   useEffect(() => {
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
-      }
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
       }
     };
   }, []);
@@ -371,7 +367,7 @@ export const useCardInteractions = ({
         borderWidth: '2px'
       })
     };
-  }, [animation, interactionState, card, favorites, getCardShadow]);
+  }, [animation, interactionState, card, favorites.cards, getCardShadow]);
 
   // Interaction event handlers
   const eventHandlers: EventHandlers = {
@@ -406,7 +402,7 @@ interface InteractiveCardProps {
   onCardClick?: (card: TCGCard) => void;
   className?: string;
   enableAdvancedInteractions?: boolean;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 /**

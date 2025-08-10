@@ -2,7 +2,7 @@ export interface FastRefreshEvent {
   type: 'status' | 'error' | 'warning' | 'update';
   message: string;
   timestamp: Date;
-  details?: any;
+  details?: unknown;
 }
 
 export class FastRefreshMonitor {
@@ -30,7 +30,7 @@ export class FastRefreshMonitor {
         });
       });
 
-      hot.addDisposeHandler((data: any) => {
+      hot.addDisposeHandler((data: unknown) => {
         this.logEvent({
           type: 'update',
           message: 'Module disposing',

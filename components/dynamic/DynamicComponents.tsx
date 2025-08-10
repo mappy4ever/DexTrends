@@ -4,13 +4,15 @@
  */
 
 import dynamic from 'next/dynamic';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, ComponentType } from 'react';
 import type { DynamicOptions } from 'next/dynamic';
 
 // Type definitions
 interface DynamicLoaderProps {
   children?: ReactNode;
-  [key: string]: any;
+  className?: string;
+  style?: React.CSSProperties;
+  [key: string]: unknown;
 }
 
 // Loading component for dynamic imports
@@ -122,11 +124,11 @@ export const DynamicFontAwesome = dynamic(
     loading: () => <span className="inline-block w-4 h-4 bg-gray-200 rounded animate-pulse"></span>,
     ssr: false
   }
-) as any; // FontAwesomeIcon has complex types
+) as ComponentType<any>; // FontAwesome icon component
 
 // Date picker (heavy component)
-export const DynamicDatePicker: any = dynamic(
-  () => import('react-datepicker') as any,
+export const DynamicDatePicker = dynamic(
+  () => import('react-datepicker').then(mod => ({ default: mod.default })),
   {
     loading: () => <DynamicLoader>Loading date picker...</DynamicLoader>,
     ssr: false
@@ -135,12 +137,12 @@ export const DynamicDatePicker: any = dynamic(
 
 // React Select (heavy component)
 export const DynamicReactSelect = dynamic(
-  () => import('react-select'),
+  () => import('react-select').then(mod => ({ default: mod.default })),
   {
     loading: () => <DynamicLoader>Loading selector...</DynamicLoader>,
     ssr: false
   }
-) as any; // react-select has complex generic types
+) as ComponentType<any>; // react-select component
 
 // File processing components - These are not React components but utilities
 // Commenting out dynamic imports for non-component libraries
@@ -150,7 +152,7 @@ export const DynamicFileSaver = null; // Use regular import instead
 
 // Particles effect (decorative, can be loaded later)
 export const DynamicParticles = dynamic(
-  () => import('react-tsparticles'),
+  () => import('@tsparticles/react').then(mod => ({ default: mod.default })),
   {
     loading: () => null,
     ssr: false
@@ -165,21 +167,21 @@ export const DynamicMotion = {
       loading: () => <div />,
       ssr: false
     }
-  ) as any,
+  ) as ComponentType<any>,
   span: dynamic(
     () => import('./MotionSpan'),
     {
       loading: () => <span />,
       ssr: false
     }
-  ) as any,
+  ) as ComponentType<any>,
   button: dynamic(
     () => import('./MotionButton'),
     {
       loading: () => <button />,
       ssr: false
     }
-  ) as any
+  ) as ComponentType<any>
 };
 
 // Analytics components (non-critical)
@@ -208,7 +210,7 @@ export const DynamicErrorBoundary = dynamic(
 );
 
 // Utility function to preload components
-export const preloadComponent = (componentImport: () => Promise<any>) => {
+export const preloadComponent = (componentImport: () => Promise<unknown>) => {
   if (typeof window !== 'undefined') {
     componentImport();
   }
@@ -227,15 +229,15 @@ export const preloadCriticalComponents = () => {
 };
 
 // Component factory for creating dynamically imported components
-interface CreateDynamicComponentOptions extends Partial<DynamicOptions<any>> {
+interface CreateDynamicComponentOptions extends Partial<DynamicOptions<ComponentType<any>>> {
   loadingText?: string;
 }
 
 export const createDynamicComponent = (
-  importFunc: () => Promise<any>, 
+  importFunc: () => Promise<{ default: ComponentType<any> }>, 
   options: CreateDynamicComponentOptions = {}
 ) => {
-  const defaultOptions: DynamicOptions<any> = {
+  const defaultOptions: DynamicOptions<ComponentType<any>> = {
     loading: () => <DynamicLoader>{options.loadingText || 'Loading...'}</DynamicLoader>,
     ssr: options.ssr !== false // SSR enabled by default unless explicitly disabled
   };

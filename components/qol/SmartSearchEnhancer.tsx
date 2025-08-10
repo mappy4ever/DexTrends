@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { useNotifications } from '../../hooks/useNotifications';
 import logger from '../../utils/logger';
@@ -35,36 +35,7 @@ export const SmartSearchEnhancer: React.FC<SmartSearchEnhancerProps> = ({
   const router = useRouter();
   const { notify } = useNotifications();
 
-  // Load search history and popular searches on mount
-  useEffect(() => {
-    loadSearchData();
-  }, []);
-
-  // Update suggestions when search term changes
-  useEffect(() => {
-    if (searchTerm.length > 0) {
-      generateSuggestions(searchTerm);
-      setIsOpen(true);
-    } else {
-      setSuggestions([]);
-      setIsOpen(false);
-    }
-    setSelectedIndex(-1);
-  }, [searchTerm]);
-
-  // Handle clicking outside to close suggestions
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  const loadSearchData = () => {
+  const loadSearchData = useCallback(() => {
     try {
       const history = JSON.parse(localStorage.getItem('searchHistory') || '[]');
       const popular = JSON.parse(localStorage.getItem('popularSearches') || '[]');
@@ -74,34 +45,9 @@ export const SmartSearchEnhancer: React.FC<SmartSearchEnhancerProps> = ({
     } catch (error) {
       logger.error('Failed to load search data', { error });
     }
-  };
+  }, []);
 
-  const saveSearchTerm = (term: string) => {
-    try {
-      // Add to search history
-      const newHistory = [term, ...searchHistory.filter(h => h !== term)].slice(0, 10);
-      setSearchHistory(newHistory);
-      localStorage.setItem('searchHistory', JSON.stringify(newHistory));
-
-      // Update popular searches (simplified frequency tracking)
-      const popular = JSON.parse(localStorage.getItem('popularSearches') || '[]') as PopularSearch[];
-      const existingIndex = popular.findIndex(p => p.term === term);
-      
-      if (existingIndex >= 0) {
-        popular[existingIndex].count++;
-      } else {
-        popular.push({ term, count: 1 });
-      }
-      
-      const sortedPopular = popular.sort((a, b) => b.count - a.count).slice(0, 5);
-      setPopularSearches(sortedPopular);
-      localStorage.setItem('popularSearches', JSON.stringify(sortedPopular));
-    } catch (error) {
-      logger.error('Failed to save search term', { error, term });
-    }
-  };
-
-  const generateSuggestions = (term: string) => {
+  const generateSuggestions = useCallback((term: string) => {
     const lowerTerm = term.toLowerCase();
     const suggestions: SearchSuggestion[] = [];
 
@@ -137,9 +83,63 @@ export const SmartSearchEnhancer: React.FC<SmartSearchEnhancerProps> = ({
       .slice(0, 8);
 
     setSuggestions(uniqueSuggestions);
-  };
+  }, [searchHistory, popularSearches]);  // Add dependencies
 
-  const handleSearch = (term: string = searchTerm) => {
+  // Load search history and popular searches on mount
+  useEffect(() => {
+    loadSearchData();
+  }, [loadSearchData]);
+
+  // Update suggestions when search term changes
+  useEffect(() => {
+    if (searchTerm.length > 0) {
+      generateSuggestions(searchTerm);
+      setIsOpen(true);
+    } else {
+      setSuggestions([]);
+      setIsOpen(false);
+    }
+    setSelectedIndex(-1);
+  }, [searchTerm, generateSuggestions]);  // Add generateSuggestions dependency
+
+  // Handle clicking outside to close suggestions
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const saveSearchTerm = useCallback((term: string) => {
+    try {
+      // Add to search history
+      const newHistory = [term, ...searchHistory.filter(h => h !== term)].slice(0, 10);
+      setSearchHistory(newHistory);
+      localStorage.setItem('searchHistory', JSON.stringify(newHistory));
+
+      // Update popular searches (simplified frequency tracking)
+      const popular = JSON.parse(localStorage.getItem('popularSearches') || '[]') as PopularSearch[];
+      const existingIndex = popular.findIndex(p => p.term === term);
+      
+      if (existingIndex >= 0) {
+        popular[existingIndex].count++;
+      } else {
+        popular.push({ term, count: 1 });
+      }
+      
+      const sortedPopular = popular.sort((a, b) => b.count - a.count).slice(0, 5);
+      setPopularSearches(sortedPopular);
+      localStorage.setItem('popularSearches', JSON.stringify(sortedPopular));
+    } catch (error) {
+      logger.error('Failed to save search term', { error, term });
+    }
+  }, [searchHistory]);
+
+  const handleSearch = useCallback((term: string = searchTerm) => {
     if (term.trim()) {
       saveSearchTerm(term.trim());
       setIsOpen(false);
@@ -154,7 +154,7 @@ export const SmartSearchEnhancer: React.FC<SmartSearchEnhancerProps> = ({
       
       logger.debug('Search performed', { term: term.trim() });
     }
-  };
+  }, [searchTerm, saveSearchTerm, onSearch, notify]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!isOpen) return;
@@ -202,11 +202,11 @@ export const SmartSearchEnhancer: React.FC<SmartSearchEnhancerProps> = ({
     }
   };
 
-  const clearSearchHistory = () => {
+  const clearSearchHistory = useCallback(() => {
     setSearchHistory([]);
     localStorage.removeItem('searchHistory');
     notify.success('Search history cleared');
-  };
+  }, [notify]);
 
   return (
     <div ref={searchRef} className="relative w-full max-w-md">

@@ -3,13 +3,13 @@ import { useRouter } from 'next/router';
 import { PokeballSVG } from '../PokeballSVG';
 
 // Page transition loader with route-specific themes
-export const RouteTransitionLoader = (): any => {
+export const RouteTransitionLoader = (): React.ReactElement | null => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [currentRoute, setCurrentRoute] = useState('');
 
   useEffect(() => {
-    const handleStart = (url: any) => {
+    const handleStart = (url: string) => {
       setCurrentRoute(url);
       setLoading(true);
     };
@@ -74,7 +74,7 @@ export const RouteTransitionLoader = (): any => {
           {theme.icon} {theme.message}
         </h2>
         <div className="flex justify-center space-x-1">
-          {[0, 1, 2].map((i: any) => (
+          {[0, 1, 2].map((i: number) => (
             <div 
               key={i}
               className="w-2 h-2 bg-white rounded-full animate-bounce"
@@ -88,8 +88,14 @@ export const RouteTransitionLoader = (): any => {
 };
 
 // Breadcrumb navigation with Pokémon theming
+interface BreadcrumbItem {
+  icon: string;
+  label: string;
+  path: string;
+}
+
 interface PokemonBreadcrumbsProps {
-  items?: any;
+  items?: BreadcrumbItem[];
 }
 
 export const PokemonBreadcrumbs = ({ items = [] }: PokemonBreadcrumbsProps) => {
@@ -119,7 +125,7 @@ export const PokemonBreadcrumbs = ({ items = [] }: PokemonBreadcrumbsProps) => {
 
   return (
     <nav className="flex items-center space-x-2 text-sm mb-4 px-4 py-2 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-lg">
-      {breadcrumbs.map((crumb: any, index: number) => (
+      {breadcrumbs.map((crumb: BreadcrumbItem, index: number) => (
         <React.Fragment key={index}>
           {index > 0 && (
             <span className="text-gray-400 mx-2">
@@ -143,7 +149,7 @@ export const PokemonBreadcrumbs = ({ items = [] }: PokemonBreadcrumbsProps) => {
 };
 
 // Quick action floating button
-export const QuickActionFAB = (): any => {
+export const QuickActionFAB = (): React.ReactElement => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
@@ -203,11 +209,11 @@ export const QuickActionFAB = (): any => {
 };
 
 // Page progress indicator
-export const PageProgressIndicator = (): any => {
+export const PageProgressIndicator = (): React.ReactElement => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const updateProgress = (): any => {
+    const updateProgress = (): void => {
       const scrollTop = window.scrollY;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const scrollPercent = scrollTop / docHeight * 100;
@@ -229,11 +235,11 @@ export const PageProgressIndicator = (): any => {
 };
 
 // Back to top button with Pokémon style
-export const BackToTopButton = (): any => {
+export const BackToTopButton = (): React.ReactElement => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const toggleVisibility = (): any => {
+    const toggleVisibility = (): void => {
       setIsVisible(window.scrollY > 500);
     };
 
@@ -241,7 +247,7 @@ export const BackToTopButton = (): any => {
     return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);
 
-  const scrollToTop = (): any => {
+  const scrollToTop = (): void => {
     window.scrollTo({
       top: 0,
       behavior: 'smooth'
@@ -264,7 +270,7 @@ export const BackToTopButton = (): any => {
 };
 
 // Keyboard shortcuts helper
-export const KeyboardShortcuts = (): any => {
+export const KeyboardShortcuts = (): React.ReactElement => {
   const [showShortcuts, setShowShortcuts] = useState(false);
   const router = useRouter();
 

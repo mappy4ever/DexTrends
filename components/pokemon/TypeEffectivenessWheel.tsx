@@ -87,7 +87,7 @@ const TypeEffectivenessWheel: React.FC<TypeEffectivenessWheelProps> = ({
     });
     
     return relations;
-  }, [pokemonTypes, getWeaknesses, getResistances, getImmunities, loading, typeNames]);
+  }, [getWeaknesses, getResistances, getImmunities, loading, typeNames]);
   
   // Group relations by category
   const groupedRelations = useMemo(() => {

@@ -1,5 +1,5 @@
 // Breeding utility functions
-import type { PokemonSpecies } from '../types/api/pokemon';
+import type { PokemonSpecies } from "../types/pokemon";
 
 export interface BreedingInfo {
   canBreed: boolean;

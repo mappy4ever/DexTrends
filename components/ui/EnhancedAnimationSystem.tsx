@@ -177,7 +177,7 @@ interface InteractiveCardProps {
   enableGlow?: boolean;
   glowColor?: string;
   onClick?: () => void;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 // Advanced Card Interaction with 3D effects
@@ -431,7 +431,7 @@ interface AnimatedButtonProps {
   size?: 'sm' | 'md' | 'lg';
   onClick?: () => void;
   disabled?: boolean;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 // Micro-interaction Button
@@ -533,7 +533,7 @@ interface AnimatedInputProps {
   placeholder?: string;
   error?: boolean;
   className?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 // Animated Input Field

@@ -1,6 +1,8 @@
 import React, { Component, ErrorInfo, ReactNode, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { Pokemon, PokemonSpecies } from '../../../types/api/pokemon';
+import logger from "@/utils/logger";
+import type { Pokemon, PokemonSpecies } from "../../../types/pokemon";
+import type { TypeColors } from '../../../types/pokemon-tabs';
 import { GlassContainer } from '../../ui/design-system';
 import { PokemonLearnset } from '../PokemonLearnset';
 import { cn } from '../../../utils/cn';
@@ -17,7 +19,7 @@ import { HiSparkles } from 'react-icons/hi';
 interface MovesTabProps {
   pokemon: Pokemon;
   species: PokemonSpecies;
-  typeColors: Record<string, string>;
+  typeColors: TypeColors;
 }
 
 interface ErrorBoundaryState {
@@ -35,11 +37,11 @@ class MovesTabErrorBoundary extends Component<{ children: ReactNode }, ErrorBoun
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    logger.error('MovesTab error:', error, errorInfo);
+  override componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    logger.error('MovesTab error', { error, errorInfo });
   }
 
-  render() {
+  override render() {
     if (this.state.hasError) {
       return (
         <GlassContainer 
@@ -92,7 +94,7 @@ const MovesTab: React.FC<MovesTabProps> = ({ pokemon, species, typeColors }) => 
   }
 
   const getTypeIcon = (type: string) => {
-    const typeIcons: Record<string, any> = {
+    const typeIcons: Record<string, React.ComponentType> = {
       normal: FaRunning,
       fire: FaFire,
       water: FaWater,

@@ -62,7 +62,7 @@ interface ImageInfoResponse {
 
 class GymLeaderDirectScraper {
   private archivesApiUrl: string;
-  private scrapedData: { [key: string]: any };
+  private scrapedData: { [key: string]: unknown };
   private gymLeaders: { [region: string]: string[] };
   private eliteFour: { [region: string]: string[] };
   private champions: string[];
@@ -124,7 +124,7 @@ class GymLeaderDirectScraper {
 
   // Fetch files from a specific category
   private async fetchCategoryFiles(categoryName: string, continueFrom: string | null = null): Promise<CategoryResponse | null> {
-    const params: any = {
+    const params: Record<string, unknown> = {
       action: 'query',
       list: 'categorymembers',
       cmtitle: `Category:${categoryName}`,

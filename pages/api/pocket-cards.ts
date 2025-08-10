@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { fetchJSON } from '../../utils/unifiedFetch';
 import logger from '../../utils/logger';
+import { ErrorResponse } from '@/types/api/api-responses';
 
 interface PocketCard {
   id?: string;
@@ -40,10 +41,6 @@ interface PocketCard {
   legalities?: Record<string, string>;
 }
 
-interface ErrorResponse {
-  error: string;
-  message?: string;
-}
 
 export default async function handler(
   req: NextApiRequest,

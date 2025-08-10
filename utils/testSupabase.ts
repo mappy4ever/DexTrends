@@ -1,12 +1,13 @@
 import { supabase } from '../lib/supabase';
+import logger from '@/utils/logger';
 
 export async function testSupabaseConnection(): Promise<{
   connected: boolean;
   error?: string;
-  details?: any;
+  details?: Record<string, unknown>;
 }> {
   try {
-    console.log('[Test] Testing Supabase connection...');
+    logger.debug('[Test] Testing Supabase connection...');
     
     // Test 1: Simple health check query
     const { data, error } = await supabase
@@ -15,7 +16,7 @@ export async function testSupabaseConnection(): Promise<{
       .limit(1);
     
     if (error) {
-      console.error('[Test] Supabase connection failed:', error);
+      logger.error('[Test] Supabase connection failed:', { error });
       return {
         connected: false,
         error: error.message,
@@ -27,7 +28,7 @@ export async function testSupabaseConnection(): Promise<{
       };
     }
     
-    console.log('[Test] Supabase connection successful!');
+    logger.debug('[Test] Supabase connection successful!');
     
     // Test 2: Check if we can access the tables
     const tables = ['pokemon_cache', 'card_cache', 'user_favorites', 'session_favorites'];
@@ -42,7 +43,7 @@ export async function testSupabaseConnection(): Promise<{
         
         tableChecks[table] = !tableError;
         if (tableError) {
-          console.warn(`[Test] Table '${table}' check failed:`, tableError.message);
+          logger.warn(`[Test] Table '${table}' check failed:`, { message: tableError.message });
         }
       } catch (e) {
         tableChecks[table] = false;
@@ -59,7 +60,7 @@ export async function testSupabaseConnection(): Promise<{
     };
     
   } catch (error) {
-    console.error('[Test] Unexpected error during connection test:', error);
+    logger.error('[Test] Unexpected error during connection test:', { error });
     return {
       connected: false,
       error: error instanceof Error ? error.message : 'Unknown error',

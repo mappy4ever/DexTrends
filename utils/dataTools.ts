@@ -33,7 +33,7 @@ interface ValidationRules {
 interface ValidationError {
   field: string;
   message: string;
-  value: any;
+  value: unknown;
 }
 
 interface ValidationResult {
@@ -59,15 +59,15 @@ interface ImportResult {
   invalidRecords: number;
   insertedRecords: number;
   skippedRecords: number;
-  errors: any[];
-  warnings: any[];
+  errors: ValidationErrorDetail[];
+  warnings: ValidationWarning[];
   startTime: string;
   endTime: string | null;
 }
 
 interface ExportOptions {
   format?: 'json' | 'csv' | 'xlsx';
-  filters?: Record<string, any>;
+  filters?: Record<string, string | number | boolean | string[]>;
   limit?: number;
   includeMetadata?: boolean;
   compression?: boolean;
@@ -78,10 +78,243 @@ interface ExportResult {
   format: string;
   recordCount: number;
   exportedAt: string;
-  data?: any;
+  data?: unknown;
   mimeType?: string;
   filename?: string;
   compressed?: boolean;
+}
+
+// Additional type definitions for comprehensive typing
+interface DatabaseRecord {
+  id: string;
+  [key: string]: unknown;
+}
+
+interface CardRecord extends DatabaseRecord {
+  name: string;
+  set: {
+    id: string;
+    name: string;
+    [key: string]: unknown;
+  };
+  rarity?: string;
+  hp?: number;
+  types?: string[];
+  artist?: string;
+  [key: string]: unknown;
+}
+
+interface PokemonRecord extends DatabaseRecord {
+  name: string;
+  nationalPokedexNumber?: number;
+  types: string[];
+  height?: string;
+  weight?: string;
+  [key: string]: unknown;
+}
+
+interface PriceRecord extends DatabaseRecord {
+  card_id: string;
+  variant_type: 'normal' | 'holofoil' | 'reverseHolofoil' | 'unlimited' | 'firstEdition';
+  price_market?: number;
+  price_low?: number;
+  price_high?: number;
+  collected_at: string;
+  [key: string]: unknown;
+}
+
+interface ImportQueueItem {
+  importId: string;
+  source: string;
+  dataType: string;
+  status: 'pending' | 'processing' | 'completed' | 'failed';
+  totalRecords: number;
+  processedRecords: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface ValidationErrorDetail {
+  recordIndex: number;
+  field: string;
+  message: string;
+  value: unknown;
+}
+
+interface ValidationWarning {
+  recordIndex: number;
+  field: string;
+  message: string;
+  value: unknown;
+}
+
+interface InvalidRecord {
+  index: number;
+  record: DatabaseRecord;
+  errors: ValidationError[];
+}
+
+interface BatchInsertResult<T extends DatabaseRecord> {
+  successful: T[];
+  skipped: Array<{ record: T; reason: string }>;
+  errors: Array<{
+    message: string;
+    details?: string;
+    batch?: T[];
+  }>;
+}
+
+interface CardStatistics {
+  cardId: string;
+  cardName: string;
+  viewCount: number;
+  searchCount: number;
+  popularity: number;
+  [key: string]: unknown;
+}
+
+interface PerformanceMetrics {
+  queryCount: number;
+  averageQueryTime: number;
+  slowQueries: Array<{
+    query: string;
+    duration: number;
+    timestamp: string;
+  }>;
+  memoryUsage: number;
+  cpuUsage: number;
+  [key: string]: unknown;
+}
+
+interface CacheStats {
+  hitRate: number;
+  missRate: number;
+  totalRequests: number;
+  hitCount: number;
+  missCount: number;
+}
+
+interface SystemMetrics {
+  cardCount: number;
+  pokemonCount: number;
+  performance: PerformanceMetrics;
+  cacheHitRate: number;
+  averageResponseTime: number;
+  errorRate: number;
+}
+
+interface UserAnalytics {
+  overview: {
+    uniqueUsers: number;
+    uniqueSessions: number;
+    averageEventsPerSession: number;
+    [key: string]: unknown;
+  };
+  hourlyDistribution: Record<string, number>;
+  popularCards: CardStatistics[];
+  [key: string]: unknown;
+}
+
+interface SearchAnalytics {
+  overview: {
+    totalSearches: number;
+    uniqueQueries: number;
+    [key: string]: unknown;
+  };
+  trends: {
+    byDay: Record<string, number>;
+    [key: string]: unknown;
+  };
+  queryAnalysis: {
+    emptyResults: string[];
+    [key: string]: unknown;
+  };
+  [key: string]: unknown;
+}
+
+interface PriceAnalytics {
+  marketOverview: {
+    mostVolatile: Array<{
+      cardName: string;
+      volatility: number;
+      priceChangePercent: number;
+      [key: string]: unknown;
+    }>;
+    trendDistribution: {
+      bullish: number;
+      bearish: number;
+      neutral: number;
+    };
+    [key: string]: unknown;
+  };
+  [key: string]: unknown;
+}
+
+interface ChartData {
+  userActivity: Array<{ hour: number; count: number }>;
+  searchTrends: Array<{ date: string; searches: number }>;
+  priceVolatility: Array<{ cardName: string; volatility: number; priceChange: number }>;
+  popularCards: CardStatistics[];
+}
+
+interface DashboardInsight {
+  type: string;
+  level: string;
+  message: string;
+  details: string;
+}
+
+interface ExportData {
+  data: unknown;
+  mimeType: string;
+  filename: string;
+  compressed?: boolean;
+}
+
+// Discriminated union for data types
+type DataTypeRecord = CardRecord | PokemonRecord | PriceRecord;
+
+// Local interface definitions to match external analytics engines
+interface LocalUserBehaviorAnalytics {
+  overview: {
+    totalEvents: number;
+    uniqueSessions: number;
+    uniqueUsers: number;
+    averageEventsPerSession: number;
+  };
+  hourlyDistribution: Record<number, number>;
+  popularCards: Array<[string, number]>;
+  [key: string]: unknown;
+}
+
+interface LocalSearchAnalytics {
+  overview: {
+    totalSearches: number;
+    uniqueQueries: number;
+  };
+  trends: {
+    byDay: Record<string, number>;
+  };
+  queryAnalysis: {
+    emptyResults: string[];
+  };
+  [key: string]: unknown;
+}
+
+interface LocalTrendAnalysis {
+  marketOverview: {
+    mostVolatile: Array<{
+      cardName: string;
+      volatility: number;
+      priceChangePercent: number;
+    }>;
+    trendDistribution: {
+      bullish: number;
+      bearish: number;
+      neutral: number;
+    };
+  };
+  [key: string]: unknown;
 }
 
 interface DashboardData {
@@ -92,29 +325,19 @@ interface DashboardData {
     totalCards: number;
     totalPokemon: number;
   };
-  charts: {
-    userActivity: Array<{ hour: number; count: number }>;
-    searchTrends: Array<{ date: string; searches: number }>;
-    priceVolatility: Array<{ cardName: string; volatility: number; priceChange: number }>;
-    popularCards: any[];
-  };
+  charts: ChartData;
   metrics: {
-    performance: any;
+    performance: PerformanceMetrics;
     cacheHitRate: number;
     averageResponseTime: number;
     errorRate: number;
   };
-  insights: Array<{
-    type: string;
-    level: string;
-    message: string;
-    details: string;
-  }>;
+  insights: DashboardInsight[];
   generatedAt: string;
 }
 
 class DataTools {
-  private importQueue: any[];
+  private importQueue: ImportQueueItem[];
   private validationRules: Map<string, ValidationRules>;
   private exportFormats: string[];
   private isProcessing: boolean;
@@ -176,7 +399,7 @@ class DataTools {
   /**
    * Import data from various sources
    */
-  async importData(source: string, data: any[], options: ImportOptions = {}): Promise<ImportResult> {
+  async importData(source: string, data: DataTypeRecord[], options: ImportOptions = {}): Promise<ImportResult> {
     const {
       dataType = 'card',
       batchSize = 100,
@@ -236,7 +459,15 @@ class DataTools {
 
       importResult.insertedRecords = insertResults.successful.length;
       importResult.skippedRecords = insertResults.skipped.length;
-      importResult.errors.push(...insertResults.errors);
+      // Convert batch errors to validation error details
+      insertResults.errors.forEach((error, index) => {
+        importResult.errors.push({
+          recordIndex: index,
+          field: 'batch_operation',
+          message: error.message,
+          value: undefined
+        });
+      });
 
       importResult.endTime = new Date().toISOString();
 
@@ -249,30 +480,31 @@ class DataTools {
 
       return importResult;
 
-    } catch (error: any) {
-      logger.error(`Data import failed: ${importId}`, error);
-      throw new Error(`Import failed: ${error.message}`);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown import error';
+      logger.error(`Data import failed: ${importId}`, { error: this.formatErrorForLogging(error) });
+      throw new Error(`Import failed: ${errorMessage}`);
     }
   }
 
   /**
    * Validate bulk data against rules
    */
-  validateBulkData(data: any[], dataType: string): {
-    validRecords: any[];
-    invalidRecords: any[];
-    errors: any[];
-    warnings: any[];
+  validateBulkData(data: DataTypeRecord[], dataType: string): {
+    validRecords: DataTypeRecord[];
+    invalidRecords: InvalidRecord[];
+    errors: ValidationErrorDetail[];
+    warnings: ValidationWarning[];
   } {
     const rules = this.validationRules.get(dataType);
     if (!rules) {
       throw new Error(`No validation rules found for data type: ${dataType}`);
     }
 
-    const validRecords: any[] = [];
-    const invalidRecords: any[] = [];
-    const errors: any[] = [];
-    const warnings: any[] = [];
+    const validRecords: DataTypeRecord[] = [];
+    const invalidRecords: InvalidRecord[] = [];
+    const errors: ValidationErrorDetail[] = [];
+    const warnings: ValidationWarning[] = [];
 
     data.forEach((record, index) => {
       try {
@@ -307,11 +539,12 @@ class DataTools {
           });
         });
 
-      } catch (error: any) {
+      } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown validation error';
         invalidRecords.push({
           index,
           record,
-          errors: [{ field: 'general', message: error.message }]
+          errors: [{ field: 'general', message: errorMessage, value: undefined }]
         });
       }
     });
@@ -327,24 +560,25 @@ class DataTools {
   /**
    * Validate individual record
    */
-  validateRecord(record: any, rules: ValidationRules): ValidationResult {
+  validateRecord(record: DataTypeRecord, rules: ValidationRules): ValidationResult {
     const errors: ValidationError[] = [];
     const warnings: ValidationError[] = [];
+    const recordData = record as Record<string, unknown>;
 
     // Check required fields
     rules.required.forEach(field => {
-      if (!record[field] && record[field] !== 0 && record[field] !== false) {
+      if (!recordData[field] && recordData[field] !== 0 && recordData[field] !== false) {
         errors.push({
           field,
           message: `Required field '${field}' is missing`,
-          value: record[field]
+          value: recordData[field]
         });
       }
     });
 
     // Validate field types and constraints
     Object.entries(rules.fields).forEach(([field, fieldRules]) => {
-      const value = record[field];
+      const value = recordData[field];
       
       if (value === undefined || value === null) {
         return; // Skip validation for optional missing fields
@@ -404,7 +638,7 @@ class DataTools {
       }
 
       // Enum validation
-      if (fieldRules.enum && !fieldRules.enum.includes(value)) {
+      if (fieldRules.enum && typeof value === 'string' && !fieldRules.enum.includes(value)) {
         errors.push({
           field,
           message: `Field '${field}' must be one of: ${fieldRules.enum.join(', ')}`,
@@ -444,13 +678,14 @@ class DataTools {
       }
 
       // Object validation
-      if (fieldRules.type === 'object' && typeof value === 'object' && fieldRules.required) {
+      if (fieldRules.type === 'object' && typeof value === 'object' && value !== null && fieldRules.required) {
+        const objectValue = value as Record<string, unknown>;
         fieldRules.required.forEach(requiredField => {
-          if (!value[requiredField]) {
+          if (!objectValue[requiredField]) {
             errors.push({
               field: `${field}.${requiredField}`,
               message: `Required nested field '${requiredField}' is missing`,
-              value: value[requiredField]
+              value: objectValue[requiredField]
             });
           }
         });
@@ -479,7 +714,7 @@ class DataTools {
   /**
    * Validate field type
    */
-  validateFieldType(value: any, expectedType: string): boolean {
+  validateFieldType(value: unknown, expectedType: string): boolean {
     switch (expectedType) {
       case 'string':
         return typeof value === 'string';
@@ -500,14 +735,14 @@ class DataTools {
    * Process batch insert with duplicate checking
    */
   async processBatchInsert(
-    data: any[], 
+    data: DataTypeRecord[], 
     dataType: string, 
     batchSize: number, 
     skipDuplicates: boolean
-  ): Promise<{ successful: any[]; skipped: any[]; errors: any[] }> {
-    const successful: any[] = [];
-    const skipped: any[] = [];
-    const errors: any[] = [];
+  ): Promise<{ successful: DataTypeRecord[]; skipped: Array<{ record: DataTypeRecord; reason: string }>; errors: ValidationErrorDetail[] }> {
+    const successful: DataTypeRecord[] = [];
+    const skipped: Array<{ record: DataTypeRecord; reason: string }> = [];
+    const errors: ValidationErrorDetail[] = [];
 
     for (let i = 0; i < data.length; i += batchSize) {
       const batch = data.slice(i, i + batchSize);
@@ -517,19 +752,30 @@ class DataTools {
         
         successful.push(...batchResult.successful);
         skipped.push(...batchResult.skipped);
-        errors.push(...batchResult.errors);
+        // Convert batch insert errors to validation error details
+        batchResult.errors.forEach((error, index) => {
+          const baseIndex = Math.floor(i / batchSize) * batchSize;
+          errors.push({
+            recordIndex: baseIndex + index,
+            field: 'batch_insert',
+            message: error.message,
+            value: undefined
+          });
+        });
 
         // Small delay between batches
         if (i + batchSize < data.length) {
           await this.delay(100);
         }
 
-      } catch (error: any) {
-        logger.error(`Batch insert failed for batch ${Math.floor(i / batchSize) + 1}:`, error);
+      } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown batch insert error';
+        logger.error(`Batch insert failed for batch ${Math.floor(i / batchSize) + 1}:`, { error: this.formatErrorForLogging(error) });
         errors.push({
-          batch: Math.floor(i / batchSize) + 1,
-          error: error.message,
-          records: batch.length
+          recordIndex: Math.floor(i / batchSize),
+          field: 'batch_processing',
+          message: `Batch ${Math.floor(i / batchSize) + 1}: ${errorMessage}`,
+          value: undefined
         });
       }
     }
@@ -541,18 +787,18 @@ class DataTools {
    * Insert single batch of records
    */
   async insertBatch(
-    batch: any[], 
+    batch: DataTypeRecord[], 
     dataType: string, 
     skipDuplicates: boolean
-  ): Promise<{ successful: any[]; skipped: any[]; errors: any[] }> {
+  ): Promise<{ successful: DataTypeRecord[]; skipped: Array<{ record: DataTypeRecord; reason: string }>; errors: ValidationErrorDetail[] }> {
     const tableName = this.getTableName(dataType);
-    const successful: any[] = [];
-    const skipped: any[] = [];
-    const errors: any[] = [];
+    const successful: DataTypeRecord[] = [];
+    const skipped: Array<{ record: DataTypeRecord; reason: string }> = [];
+    const errors: ValidationErrorDetail[] = [];
 
     // Check for duplicates if skip is enabled
     if (skipDuplicates) {
-      const processedBatch: any[] = [];
+      const processedBatch: DataTypeRecord[] = [];
       
       for (const record of batch) {
         const exists = await this.checkRecordExists(record, dataType);
@@ -578,18 +824,22 @@ class DataTools {
 
       if (error) {
         errors.push({
+          recordIndex: 0,
+          field: 'database_insert',
           message: error.message,
-          details: error.details,
-          batch: batch
+          value: undefined
         });
       } else {
         successful.push(...(data || batch));
       }
 
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown insert error';
       errors.push({
-        message: error.message,
-        batch: batch
+        recordIndex: 0,
+        field: 'insert_exception',
+        message: errorMessage,
+        value: undefined
       });
     }
 
@@ -599,15 +849,16 @@ class DataTools {
   /**
    * Check if record already exists
    */
-  async checkRecordExists(record: any, dataType: string): Promise<boolean> {
+  async checkRecordExists(record: DataTypeRecord, dataType: string): Promise<boolean> {
     const tableName = this.getTableName(dataType);
     const idField = this.getIdField(dataType);
     
     try {
+      const recordValue = (record as Record<string, unknown>)[idField];
       const { data, error } = await supabase
         .from(tableName)
         .select('id')
-        .eq(idField, record[idField])
+        .eq(idField, recordValue)
         .limit(1);
 
       return !error && data && data.length > 0;
@@ -620,32 +871,34 @@ class DataTools {
   /**
    * Transform record for database insertion
    */
-  transformRecordForInsert(record: any, dataType: string): any {
+  transformRecordForInsert(record: DataTypeRecord, dataType: string): Record<string, unknown> {
+    const recordData = record as Record<string, unknown>;
+    
     switch (dataType) {
       case 'card':
         return {
-          card_id: record.id,
+          card_id: recordData.id,
           card_data: record,
-          cache_key: `import_${record.id}`,
+          cache_key: `import_${recordData.id}`,
           expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24 hours
         };
       
       case 'pokemon':
         return {
-          pokemon_id: record.id,
+          pokemon_id: recordData.id,
           pokemon_data: record,
-          cache_key: `import_${record.id}`,
+          cache_key: `import_${recordData.id}`,
           expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
         };
       
       case 'price':
         return {
-          ...record,
-          collected_at: record.collected_at || new Date().toISOString()
+          ...recordData,
+          collected_at: recordData.collected_at || new Date().toISOString()
         };
       
       default:
-        return record;
+        return recordData;
     }
   }
 
@@ -694,16 +947,17 @@ class DataTools {
         ...exportData
       };
 
-    } catch (error: any) {
-      logger.error('Data export failed:', error);
-      throw new Error(`Export failed: ${error.message}`);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown export error';
+      logger.error('Data export failed:', { error: this.formatErrorForLogging(error) });
+      throw new Error(`Export failed: ${errorMessage}`);
     }
   }
 
   /**
    * Fetch data for export based on type and filters
    */
-  async fetchDataForExport(dataType: string, filters: Record<string, any>, limit: number): Promise<any[]> {
+  async fetchDataForExport(dataType: string, filters: Record<string, string | number | boolean | string[]>, limit: number): Promise<Record<string, unknown>[]> {
     const tableName = this.getTableName(dataType);
     
     let queryBuilder = supabase
@@ -734,7 +988,7 @@ class DataTools {
   /**
    * Generate export in specified format
    */
-  async generateExport(data: any[], format: string, includeMetadata: boolean): Promise<any> {
+  async generateExport(data: Record<string, unknown>[], format: string, includeMetadata: boolean): Promise<ExportData> {
     switch (format) {
       case 'json':
         return {
@@ -772,7 +1026,7 @@ class DataTools {
   /**
    * Convert data to CSV format
    */
-  convertToCSV(data: any[]): string {
+  convertToCSV(data: Record<string, unknown>[]): string {
     if (!data.length) return '';
 
     // Get all unique keys
@@ -813,7 +1067,7 @@ class DataTools {
   /**
    * Convert data to XLSX format (simplified)
    */
-  async convertToXLSX(data: any[], includeMetadata: boolean): Promise<any> {
+  async convertToXLSX(data: Record<string, unknown>[], includeMetadata: boolean): Promise<{ worksheets: Array<{ name: string; data: Record<string, unknown>[] }> }> {
     // This would typically use a library like xlsx or exceljs
     // For now, return a JSON representation that could be converted
     return {
@@ -837,13 +1091,13 @@ class DataTools {
   /**
    * Compress data (simplified base64 encoding)
    */
-  compressData(data: any): string {
+  compressData(data: unknown): string {
     try {
       const jsonString = typeof data === 'string' ? data : JSON.stringify(data);
       return Buffer.from(jsonString).toString('base64');
     } catch (error) {
       logger.warn('Data compression failed, returning uncompressed:', error);
-      return data;
+      return typeof data === 'string' ? data : JSON.stringify(data);
     }
   }
 
@@ -875,37 +1129,39 @@ class DataTools {
           totalPokemon: systemMetrics.pokemonCount
         },
         charts: {
-          userActivity: this.prepareUserActivityChart(userAnalytics),
-          searchTrends: this.prepareSearchTrendsChart(searchAnalytics),
-          priceVolatility: this.preparePriceVolatilityChart(priceAnalytics),
-          popularCards: Array.isArray(userAnalytics?.popularCards) ? userAnalytics.popularCards.slice(0, 10) : []
+          userActivity: this.prepareUserActivityChart(userAnalytics as LocalUserBehaviorAnalytics | null),
+          searchTrends: this.prepareSearchTrendsChart(searchAnalytics as LocalSearchAnalytics | null),
+          priceVolatility: this.preparePriceVolatilityChart(priceAnalytics as LocalTrendAnalysis | null),
+          popularCards: this.transformPopularCards((userAnalytics as unknown as LocalUserBehaviorAnalytics)?.popularCards || [])
         },
         metrics: {
-          performance: systemMetrics.performance,
+          performance: this.normalizePerformanceMetrics(systemMetrics.performance),
           cacheHitRate: systemMetrics.cacheHitRate,
           averageResponseTime: systemMetrics.averageResponseTime,
           errorRate: systemMetrics.errorRate
         },
-        insights: this.generateDashboardInsights(userAnalytics, searchAnalytics, priceAnalytics),
+        insights: this.generateDashboardInsights(userAnalytics as LocalUserBehaviorAnalytics | null, searchAnalytics as LocalSearchAnalytics | null, priceAnalytics as LocalTrendAnalysis | null),
         generatedAt: new Date().toISOString()
       };
 
       logger.info('Analytics dashboard generated successfully');
       return dashboard;
 
-    } catch (error: any) {
-      logger.error('Failed to generate analytics dashboard:', error);
-      throw new Error(`Dashboard generation failed: ${error.message}`);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown dashboard error';
+      logger.error('Failed to generate analytics dashboard:', { error: this.formatErrorForLogging(error) });
+      throw new Error(`Dashboard generation failed: ${errorMessage}`);
     }
   }
 
   /**
    * Get price analytics data
    */
-  async getPriceAnalytics(): Promise<any> {
+  async getPriceAnalytics(): Promise<LocalTrendAnalysis | null> {
     try {
       const priceCollector = new EnhancedPriceCollector();
-      return await priceCollector.generateMarketTrendAnalysis(30);
+      const result = await priceCollector.generateMarketTrendAnalysis(30);
+      return result as unknown as LocalTrendAnalysis;
     } catch (error) {
       logger.warn('Error getting price analytics:', error);
       return null;
@@ -915,7 +1171,7 @@ class DataTools {
   /**
    * Get system metrics
    */
-  async getSystemMetrics(): Promise<any> {
+  async getSystemMetrics(): Promise<SystemMetrics> {
     try {
       const [cardCount, pokemonCount, performanceMetrics] = await Promise.all([
         this.getTableCount('card_cache'),
@@ -926,8 +1182,8 @@ class DataTools {
       return {
         cardCount: cardCount || 0,
         pokemonCount: pokemonCount || 0,
-        performance: performanceMetrics.metrics || {},
-        cacheHitRate: performanceMetrics.cacheStats?.hitRate || 0,
+        performance: this.normalizePerformanceMetrics(performanceMetrics?.metrics || {}),
+        cacheHitRate: performanceMetrics?.cacheStats?.hitRate || 0,
         averageResponseTime: 150, // Would be calculated from real metrics
         errorRate: 0.02 // Would be calculated from real metrics
       };
@@ -936,7 +1192,7 @@ class DataTools {
       return {
         cardCount: 0,
         pokemonCount: 0,
-        performance: {},
+        performance: this.getDefaultPerformanceMetrics(),
         cacheHitRate: 0,
         averageResponseTime: 0,
         errorRate: 0
@@ -963,13 +1219,13 @@ class DataTools {
   /**
    * Prepare chart data for user activity
    */
-  prepareUserActivityChart(userAnalytics: any): Array<{ hour: number; count: number }> {
+  prepareUserActivityChart(userAnalytics: LocalUserBehaviorAnalytics | null): Array<{ hour: number; count: number }> {
     if (!userAnalytics?.hourlyDistribution) return [];
 
     return Object.entries(userAnalytics.hourlyDistribution)
       .map(([hour, count]) => ({
         hour: parseInt(hour),
-        count: count as number || 0
+        count: typeof count === 'number' ? count : 0
       }))
       .sort((a, b) => a.hour - b.hour);
   }
@@ -977,13 +1233,13 @@ class DataTools {
   /**
    * Prepare chart data for search trends
    */
-  prepareSearchTrendsChart(searchAnalytics: any): Array<{ date: string; searches: number }> {
+  prepareSearchTrendsChart(searchAnalytics: LocalSearchAnalytics | null): Array<{ date: string; searches: number }> {
     if (!searchAnalytics?.trends?.byDay) return [];
 
     return Object.entries(searchAnalytics.trends.byDay)
       .map(([date, count]) => ({
         date,
-        searches: count as number || 0
+        searches: typeof count === 'number' ? count : 0
       }))
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   }
@@ -991,13 +1247,13 @@ class DataTools {
   /**
    * Prepare chart data for price volatility
    */
-  preparePriceVolatilityChart(priceAnalytics: any): Array<{ cardName: string; volatility: number; priceChange: number }> {
+  preparePriceVolatilityChart(priceAnalytics: LocalTrendAnalysis | null): Array<{ cardName: string; volatility: number; priceChange: number }> {
     if (!priceAnalytics?.marketOverview?.mostVolatile) return [];
 
     return priceAnalytics.marketOverview.mostVolatile
       .slice(0, 10)
-      .map((card: any) => ({
-        cardName: card.cardName,
+      .map((card: { cardName: string; volatility: number; priceChangePercent: number }) => ({
+        cardName: card.cardName || 'Unknown',
         volatility: card.volatility || 0,
         priceChange: card.priceChangePercent || 0
       }));
@@ -1006,21 +1262,11 @@ class DataTools {
   /**
    * Generate dashboard insights
    */
-  generateDashboardInsights(userAnalytics: any, searchAnalytics: any, priceAnalytics: any): Array<{
-    type: string;
-    level: string;
-    message: string;
-    details: string;
-  }> {
-    const insights: Array<{
-      type: string;
-      level: string;
-      message: string;
-      details: string;
-    }> = [];
+  generateDashboardInsights(userAnalytics: LocalUserBehaviorAnalytics | null, searchAnalytics: LocalSearchAnalytics | null, priceAnalytics: LocalTrendAnalysis | null): DashboardInsight[] {
+    const insights: DashboardInsight[] = [];
 
     // User engagement insights
-    if (userAnalytics?.overview?.averageEventsPerSession > 10) {
+    if (userAnalytics?.overview?.averageEventsPerSession && userAnalytics.overview.averageEventsPerSession > 10) {
       insights.push({
         type: 'engagement',
         level: 'positive',
@@ -1030,7 +1276,7 @@ class DataTools {
     }
 
     // Search insights
-    if (searchAnalytics?.queryAnalysis?.emptyResults?.length > 0) {
+    if (searchAnalytics?.queryAnalysis?.emptyResults && searchAnalytics.queryAnalysis.emptyResults.length > 0) {
       insights.push({
         type: 'search',
         level: 'warning',
@@ -1040,8 +1286,10 @@ class DataTools {
     }
 
     // Price insights
-    if (priceAnalytics?.marketOverview?.trendDistribution?.bullish > 
-        priceAnalytics?.marketOverview?.trendDistribution?.bearish * 2) {
+    if (priceAnalytics?.marketOverview?.trendDistribution?.bullish && 
+        priceAnalytics?.marketOverview?.trendDistribution?.bearish &&
+        priceAnalytics.marketOverview.trendDistribution.bullish > 
+        priceAnalytics.marketOverview.trendDistribution.bearish * 2) {
       insights.push({
         type: 'market',
         level: 'positive',
@@ -1078,6 +1326,46 @@ class DataTools {
 
   delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  private formatErrorForLogging(error: unknown): string {
+    if (error instanceof Error) {
+      return error.message;
+    }
+    if (typeof error === 'string') {
+      return error;
+    }
+    return 'Unknown error occurred';
+  }
+
+  private transformPopularCards(popularCards: Array<[string, number]>): CardStatistics[] {
+    return popularCards.slice(0, 10).map(([cardName, count], index) => ({
+      cardId: `card-${index}`,
+      cardName,
+      viewCount: count,
+      searchCount: count,
+      popularity: count
+    }));
+  }
+
+  private normalizePerformanceMetrics(metrics: Record<string, unknown>): PerformanceMetrics {
+    return {
+      queryCount: (metrics.queryCount as number) || 0,
+      averageQueryTime: (metrics.averageQueryTime as number) || 0,
+      slowQueries: (metrics.slowQueries as Array<{ query: string; duration: number; timestamp: string }>) || [],
+      memoryUsage: (metrics.memoryUsage as number) || 0,
+      cpuUsage: (metrics.cpuUsage as number) || 0
+    };
+  }
+
+  private getDefaultPerformanceMetrics(): PerformanceMetrics {
+    return {
+      queryCount: 0,
+      averageQueryTime: 0,
+      slowQueries: [],
+      memoryUsage: 0,
+      cpuUsage: 0
+    };
   }
 }
 

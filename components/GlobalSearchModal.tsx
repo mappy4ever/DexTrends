@@ -3,6 +3,7 @@ import Link from "next/link";
 import pokemon from "pokemontcgsdk";
 import { toLowercaseUrl } from "../utils/formatters";
 import { fetchJSON } from "../utils/unifiedFetch";
+import { useDebounce } from "../hooks/useDebounce";
 import type { TCGCard, CardSet } from "../types/api/cards";
 
 const POKE_API = "https://pokeapi.co/api/v2/pokemon?limit=10&offset=0";
@@ -30,26 +31,6 @@ export interface GlobalSearchModalHandle {
   open: () => void;
 }
 
-type DebouncedFunction<T extends (...args: any[]) => any> = (
-  ...args: Parameters<T>
-) => void;
-
-function debounce<T extends (...args: any[]) => any>(
-  fn: T,
-  ms: number
-): DebouncedFunction<T> & { cancel: () => void } {
-  let timer: NodeJS.Timeout | undefined;
-  const debouncedFn = (...args: Parameters<T>) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => fn(...args), ms);
-  };
-  
-  debouncedFn.cancel = () => {
-    clearTimeout(timer);
-  };
-  
-  return debouncedFn;
-}
 
 // Memoized search result components for better performance
 const SearchResultCard = memo(({ card }: { card: TCGCard }) => (
@@ -157,20 +138,13 @@ const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSea
     setLoading(false);
   }, []);
 
-  // Create debounced search function with useMemo
-  const debouncedSearch = useMemo(() => debounce(searchFunction, 350), [searchFunction]);
+  // Use the centralized debounce hook
+  const debouncedQuery = useDebounce(query, 350);
   
-  // Cleanup on unmount
   useEffect(() => {
-    return () => {
-      debouncedSearch.cancel();
-    };
-  }, [debouncedSearch]);
-
-  useEffect(() => {
-    if (!open) return;
-    debouncedSearch(query);
-  }, [query, open, debouncedSearch]);
+    if (!open || !debouncedQuery) return;
+    searchFunction(debouncedQuery);
+  }, [debouncedQuery, open, searchFunction]);
 
   useEffect(() => {
     if (open && inputRef.current) inputRef.current.focus();

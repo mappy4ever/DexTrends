@@ -1,6 +1,6 @@
 import React, { useState, useEffect, ReactNode } from 'react';
 // Import mobile utils with error handling
-let useMobileUtils: any;
+let useMobileUtils: () => { isMobile: boolean; isStandalone: boolean; isDesktopSize: boolean; utils: { isIOS: boolean; hapticFeedback: () => void } };
 try {
   useMobileUtils = require('../../utils/mobileUtils').useMobileUtils;
 } catch (error) {
@@ -136,7 +136,7 @@ const InstallPrompt: React.FC = () => {
     if (installPrompt && isInstallable) {
       try {
         setInstallStep(1); // Installing
-        utils.hapticFeedback('medium');
+        utils.hapticFeedback();
         
         const result = await installPrompt.prompt();
         logger.debug('Install prompt result:', result);
@@ -144,7 +144,7 @@ const InstallPrompt: React.FC = () => {
         if (result.outcome === 'accepted') {
           setInstallStep(2); // Success
           setInstallationAnalytics(prev => ({ ...prev, installSucceeded: true }));
-          utils.hapticFeedback('heavy');
+          utils.hapticFeedback();
           
           // Track successful installation
           if (typeof (window as any).gtag !== 'undefined') {
@@ -169,15 +169,15 @@ const InstallPrompt: React.FC = () => {
             });
           }
         }
-      } catch (error: any) {
-        logger.error('Install prompt error:', error);
+      } catch (error: unknown) {
+        logger.error('Install prompt error:', { error: error instanceof Error ? error.message : String(error) });
         setInstallStep(0);
         
         // Track installation error
         if (typeof (window as any).gtag !== 'undefined') {
           (window as any).gtag('event', 'pwa_install_error', {
             event_category: 'PWA',
-            event_label: error.message
+            event_label: error instanceof Error ? error.message : String(error)
           });
         }
       }
@@ -188,7 +188,7 @@ const InstallPrompt: React.FC = () => {
     setShowPrompt(false);
     setDismissed(true);
     localStorage.setItem('pwa-install-dismissed', 'true');
-    utils.hapticFeedback('light');
+    utils.hapticFeedback();
   };
 
   const handleRemindLater = () => {

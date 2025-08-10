@@ -4,7 +4,7 @@
  * Monitor cache warming progress
  */
 
-const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+// Using native fetch (available in Node 18+)
 
 async function checkCacheProgress() {
   const baseUrl = 'http://localhost:3000';

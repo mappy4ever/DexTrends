@@ -2,6 +2,8 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { fetchJSON } from '../../../utils/unifiedFetch';
 import logger from '../../../utils/logger';
 import { tcgCache } from '../../../lib/tcg-cache';
+import type { TCGApiResponse } from '../../../types/api/enhanced-responses';
+import type { UnknownError } from '../../../types/common';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { setId, page = '1', pageSize = '100' } = req.query; // Reduced to 100 for better reliability
@@ -87,7 +89,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       [setInfo, cardsData] = await Promise.all([
         // Get set information (always needed)
-        fetchJSON<{ data: any }>(`https://api.pokemontcg.io/v2/sets/${id}`, { 
+        fetchJSON<TCGApiResponse<unknown>>(`https://api.pokemontcg.io/v2/sets/${id}`, { 
           headers,
           useCache: true,
           cacheTime: 60 * 60 * 1000, // Cache for 1 hour (increased)
@@ -96,7 +98,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           timeout: 30000 // 30 seconds (increased)
         }),
         // Get cards for this set with pagination
-        fetchJSON<{ data: any[], page?: number, pageSize?: number, count?: number, totalCount?: number }>(
+        fetchJSON<TCGApiResponse<unknown[]> & { page?: number; pageSize?: number; count?: number; totalCount?: number }>(
           cardsUrl, 
           { 
             headers,
@@ -108,15 +110,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           }
         )
       ]);
-    } catch (fetchError: any) {
+    } catch (fetchError) {
       logger.error('Failed to fetch from Pokemon TCG API', {
         setId: id,
-        error: fetchError.message,
-        type: fetchError.name
+        error: fetchError instanceof Error ? fetchError.message : String(fetchError),
+        type: fetchError instanceof Error ? fetchError.name : typeof fetchError
       });
       
       // Try to provide more specific error messages
-      if (fetchError.message?.includes('404')) {
+      const errorMessage = fetchError instanceof Error ? fetchError.message : String(fetchError);
+      if (errorMessage?.includes('404')) {
         return res.status(404).json({ 
           error: 'Set not found',
           message: `Set "${id}" does not exist in the Pokemon TCG database.`,
@@ -125,7 +128,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
       
       // Handle timeout and connection errors
-      if (fetchError.message?.includes('timeout') || fetchError.message?.includes('ETIMEDOUT')) {
+      if (errorMessage?.includes('timeout') || errorMessage?.includes('ETIMEDOUT')) {
         return res.status(503).json({
           error: 'Service temporarily unavailable',
           message: 'The Pokemon TCG API is currently experiencing issues. Please try again later.',
@@ -135,7 +138,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
       
       // Handle network errors
-      if (fetchError.message?.includes('ECONNREFUSED') || fetchError.message?.includes('ENOTFOUND')) {
+      if (errorMessage?.includes('ECONNREFUSED') || errorMessage?.includes('ENOTFOUND')) {
         return res.status(503).json({
           error: 'Service temporarily unavailable',
           message: 'Unable to connect to the Pokemon TCG API. Please try again later.',
@@ -231,29 +234,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
     
     res.status(200).json(response);
-  } catch (error: any) {
+  } catch (error) {
     logger.error('Failed to fetch TCG set details', { 
       setId: id,
-      error: error.message,
-      stack: error.stack?.substring(0, 500), // Limit stack trace size
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack?.substring(0, 500) : undefined, // Limit stack trace size
       apiUrl: `https://api.pokemontcg.io/v2/sets/${id}`,
-      errorType: error.name || 'UnknownError'
+      errorType: error instanceof Error ? error.name : typeof error
     });
     
     // Provide user-friendly error messages
     let userMessage = 'An unexpected error occurred while fetching set details.';
     let statusCode = 500;
     
-    if (error.message?.includes('timeout') || error.message?.includes('ETIMEDOUT')) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    if (errorMessage?.includes('timeout') || errorMessage?.includes('ETIMEDOUT')) {
       userMessage = 'Request timed out. The Pokemon TCG API is responding slowly.';
       statusCode = 504;
-    } else if (error.message?.includes('ECONNREFUSED') || error.message?.includes('ENOTFOUND')) {
+    } else if (errorMessage?.includes('ECONNREFUSED') || errorMessage?.includes('ENOTFOUND')) {
       userMessage = 'Unable to connect to the Pokemon TCG API.';
       statusCode = 503;
-    } else if (error.message?.includes('429')) {
+    } else if (errorMessage?.includes('429')) {
       userMessage = 'Rate limit exceeded. Please wait a moment before trying again.';
       statusCode = 429;
-    } else if (error.message?.includes('401') || error.message?.includes('403')) {
+    } else if (errorMessage?.includes('401') || errorMessage?.includes('403')) {
       userMessage = 'API authentication failed. Please check configuration.';
       statusCode = 502;
     }
@@ -265,8 +269,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       timestamp: new Date().toISOString(),
       ...(process.env.NODE_ENV === 'development' && { 
         debug: {
-          originalError: error.message,
-          errorType: error.name
+          originalError: errorMessage,
+          errorType: error instanceof Error ? error.name : typeof error
         }
       })
     });

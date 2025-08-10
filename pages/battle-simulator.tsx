@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { fetchJSON } from '../utils/unifiedFetch';
 import { POKEMON_TYPE_COLORS } from '../utils/unifiedTypeColors';
+import { POKEAPI } from '../config/api';
 import { TypeBadge } from '../components/ui/TypeBadge';
 import { GlassContainer } from '../components/ui/design-system/GlassContainer';
 // Removed div and button imports - using standard rectangular designs
@@ -13,11 +14,11 @@ import { motion } from 'framer-motion';
 import { EnhancedPokemonSelector, type Pokemon as SelectorPokemon } from '../components/ui/EnhancedPokemonSelector';
 import Modal from '../components/ui/modals/Modal';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
-import { InlineLoader } from '../utils/unifiedLoading';
+import { InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
 import PageErrorBoundary from '../components/ui/PageErrorBoundary';
 import { SmartTooltip } from '../components/qol/ContextualHelp';
 import logger from '../utils/logger';
-import type { Pokemon, PokemonMove, PokemonType, PokemonStat, PokemonSpecies, Nature, Move } from '../types/api/pokemon';
+import type { Pokemon, PokemonMove, PokemonType, PokemonStat, PokemonSpecies, Nature, Move } from "../types/pokemon";
 import type { EnhancedBattleState, BattleResult, StatusEffect } from '../types/battle';
 import { createInitialBattleState } from '../utils/battle/core';
 import { simulateBattleToCompletion } from '../utils/battle/simulation';
@@ -229,10 +230,10 @@ const BattleSimulator: NextPage = () => {
   const [currentTurn, setCurrentTurn] = useState<1 | 2 | null>(null);
   const [selectedMove1, setSelectedMove1] = useState<PokemonMove | null>(null);
   const [selectedMove2, setSelectedMove2] = useState<PokemonMove | null>(null);
-  const [battleHistory, setBattleHistory] = useState<any[]>([]);
+  const [battleHistory, setBattleHistory] = useState<BattleResult[]>([]);
   const [showVictoryScreen, setShowVictoryScreen] = useState(false);
   const [winner, setWinner] = useState<1 | 2 | null>(null);
-  const [battleStats, setBattleStats] = useState<any>({});
+  const [battleStats, setBattleStats] = useState<Record<string, number>>({});
   const [weather, setWeather] = useState('none');
   const [battleFormat, setBattleFormat] = useState('singles');
   const [battleRules, setBattleRules] = useState('standard');
@@ -286,7 +287,7 @@ const BattleSimulator: NextPage = () => {
       try {
         setBattleHistory(JSON.parse(savedHistory));
       } catch (e) {
-        console.error('Failed to load battle history:', e);
+        logger.error('Failed to load battle history:', { error: e instanceof Error ? e.message : String(e) });
       }
     }
   }, []);
@@ -330,18 +331,18 @@ const BattleSimulator: NextPage = () => {
 
   const loadPokemonList = async () => {
     try {
-      const response = await fetchJSON<{ results: SelectorPokemon[] }>('https://pokeapi.co/api/v2/pokemon?limit=1010'); // All Pokemon
+      const response = await fetchJSON<{ results: SelectorPokemon[] }>(POKEAPI.pokemonList(1010, 0)); // All Pokemon
       
       // Handle case where response doesn't have results (e.g., mocked API)
       if (!response || !response.results || !Array.isArray(response.results)) {
         logger.warn('No Pokemon list available, using defaults');
         // Provide some default Pokemon for testing
         setPokemonList([
-          { name: 'pikachu', url: 'https://pokeapi.co/api/v2/pokemon/25/' },
-          { name: 'charizard', url: 'https://pokeapi.co/api/v2/pokemon/6/' },
-          { name: 'bulbasaur', url: 'https://pokeapi.co/api/v2/pokemon/1/' },
-          { name: 'mewtwo', url: 'https://pokeapi.co/api/v2/pokemon/150/' },
-          { name: 'garchomp', url: 'https://pokeapi.co/api/v2/pokemon/445/' },
+          { name: 'pikachu', url: POKEAPI.pokemon(25) },
+          { name: 'charizard', url: POKEAPI.pokemon(6) },
+          { name: 'bulbasaur', url: POKEAPI.pokemon(1) },
+          { name: 'mewtwo', url: POKEAPI.pokemon(150) },
+          { name: 'garchomp', url: POKEAPI.pokemon(445) },
         ]);
         return;
       }
@@ -351,14 +352,14 @@ const BattleSimulator: NextPage = () => {
       logger.error('Failed to load Pokemon list:', { error });
       // Provide default Pokemon on error
       setPokemonList([
-        { name: 'pikachu', url: 'https://pokeapi.co/api/v2/pokemon/25/' },
+        { name: 'pikachu', url: POKEAPI.pokemon(25) },
       ]);
     }
   };
 
   const loadNatures = async () => {
     try {
-      const response = await fetchJSON<{ results: Array<{ name: string; url: string }> }>('https://pokeapi.co/api/v2/nature?limit=25');
+      const response = await fetchJSON<{ results: Array<{ name: string; url: string }> }>(POKEAPI.natureList());
       
       // Handle case where response doesn't have results (e.g., mocked API)
       if (!response || !response.results || !Array.isArray(response.results)) {
@@ -2463,5 +2464,9 @@ const BattleSimulator: NextPage = () => {
 };
 
 export default BattleSimulator;
-(BattleSimulator as any).fullBleed = true;
+interface PageComponent extends NextPage {
+  fullBleed?: boolean;
+}
+
+(BattleSimulator as PageComponent).fullBleed = true;
 

@@ -9,8 +9,8 @@ import { GlassContainer } from "../../components/ui/design-system/GlassContainer
 import { GradientButton } from "../../components/ui/design-system/GradientButton";
 import { TypeGradientBadge } from "../../components/ui/design-system/TypeGradientBadge";
 import { motion } from "framer-motion";
-import { InlineLoader } from "../../utils/unifiedLoading";
-import { PageLoader } from "../../utils/unifiedLoading";
+import { InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
+import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import StyledBackButton from "../../components/ui/StyledBackButton";
 import { fetchJSON } from "../../utils/unifiedFetch";
 import BackToTop from "../../components/ui/SimpleBackToTop";

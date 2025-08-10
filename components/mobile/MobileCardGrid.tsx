@@ -52,6 +52,7 @@ const MobileCardGrid: React.FC<MobileCardGridProps> = ({
   const { isMobile, screenCategory, utils } = useMobileUtils();
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
 
   // Responsive grid configuration
   const gridConfig = useMemo<GridConfig>(() => {
@@ -69,6 +70,14 @@ const MobileCardGrid: React.FC<MobileCardGridProps> = ({
     }
   }, [screenCategory]);
 
+  // Filter cards based on favorites if needed
+  const filteredCards = useMemo(() => {
+    if (showFavoritesOnly) {
+      return cards.filter(card => favorites.has(card.id));
+    }
+    return cards;
+  }, [cards, favorites, showFavoritesOnly]);
+
   // Infinite scroll hook
   const {
     visibleItems,
@@ -77,7 +86,7 @@ const MobileCardGrid: React.FC<MobileCardGridProps> = ({
     loadMore,
     sentinelRef
   } = useInfiniteScroll(
-    cards,
+    filteredCards,
     gridConfig.itemsPerLoad,
     gridConfig.itemsPerLoad,
     100,
@@ -266,10 +275,12 @@ const MobileCardGrid: React.FC<MobileCardGridProps> = ({
           {/* Favorites filter */}
           <button
             onClick={() => {
-              // TODO: Implement favorites filter
+              setShowFavoritesOnly(!showFavoritesOnly);
               utils.hapticFeedback('light');
             }}
-            className="p-2 text-gray-600 hover:text-red-500 transition-colors"
+            className={`p-2 transition-colors ${
+              showFavoritesOnly ? 'text-red-500' : 'text-gray-600 hover:text-red-500'
+            }`}
           >
             ❤️
           </button>

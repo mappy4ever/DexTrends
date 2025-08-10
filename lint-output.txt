@@ -1,0 +1,162 @@
+
+> my-bi-website@1.0.0 lint
+> next lint
+
+
+./pages/ux-interaction-lab.tsx
+335:25  Warning: The ref value 'rippleTimersRef.current' will likely have changed by the time this effect cleanup function runs. If this ref points to a node rendered by React, copy 'rippleTimersRef.current' to a variable inside the effect, and use that variable in the cleanup function.  react-hooks/exhaustive-deps
+
+./components/FastRefreshTests/scenarios/ConditionalHooks.tsx
+18:8  Warning: React Hook useEffect has an unnecessary dependency: 'showHook'. Either exclude it or remove the dependency array. Outer scope values like 'showHook' aren't valid dependencies because mutating them doesn't re-render the component.  react-hooks/exhaustive-deps
+
+./components/mobile/BottomSheet.tsx
+171:6  Warning: React Hook useCallback has an unnecessary dependency: 'utils'. Either exclude it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/mobile/CardScanner.tsx
+124:6  Warning: React Hook useCallback has a missing dependency: 'startAutoCapture'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+190:6  Warning: React Hook useCallback has a missing dependency: 'analyzeCardImage'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/mobile/GestureCardSorting.tsx
+79:9  Warning: The 'sortGestures' object makes the dependencies of useCallback Hook (at line 128) change on every render. Move it inside the useCallback callback. Alternatively, wrap the initialization of 'sortGestures' in its own useMemo() Hook.  react-hooks/exhaustive-deps
+159:6  Warning: React Hook useCallback has a missing dependency: 'showContextMenu'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/mobile/MobileIntegration.tsx
+224:6  Warning: React Hook useEffect has missing dependencies: 'handleShareReceived' and 'shareSheet'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/mobile/PushNotifications.tsx
+93:6  Warning: React Hook useEffect has a missing dependency: 'initializePushSubscription'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+127:6  Warning: React Hook useCallback has missing dependencies: 'initializePushSubscription' and 'showWelcomeNotification'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+209:6  Warning: React Hook useCallback has a missing dependency: 'sendSubscriptionToServer'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/mobile/TouchGestures.tsx
+237:6  Warning: React Hook useCallback has a missing dependency: 'enableSwipe'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/mobile/VoiceSearch.tsx
+63:9  Warning: The 'voiceCommands' object makes the dependencies of useCallback Hook (at line 236) change on every render. Move it inside the useCallback callback. Alternatively, wrap the initialization of 'voiceCommands' in its own useMemo() Hook.  react-hooks/exhaustive-deps
+160:6  Warning: React Hook useEffect has missing dependencies: 'processVoiceCommand', 'startAudioVisualization', 'startListening', and 'stopAudioVisualization'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/pokemon/PokemonHeroSectionV2.tsx
+34:9  Warning: The 'stats' logical expression could make the dependencies of useMemo Hook (at line 47) change on every render. To fix this, wrap the initialization of 'stats' in its own useMemo() Hook.  react-hooks/exhaustive-deps
+
+./components/pokemon/PokemonTabSystem.tsx
+194:6  Warning: React Hook useEffect has missing dependencies: 'activeTab' and 'onTabChange'. Either include them or remove the dependency array. If 'onTabChange' changes too often, find the parent component that defines it and wrap that definition in useCallback.  react-hooks/exhaustive-deps
+
+./components/pokemon/TypeEffectivenessWheel.tsx
+90:6  Warning: React Hook useMemo has an unnecessary dependency: 'pokemonTypes'. Either exclude it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/providers/PerformanceProvider.tsx
+146:6  Warning: React Hook useEffect has missing dependencies: 'generatePerformanceReport' and 'updateSuggestions'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/qol/ContextualHelp.tsx
+205:6  Warning: React Hook useEffect has a missing dependency: 'toggleHelpMode'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+211:6  Warning: React Hook useEffect has a missing dependency: 'helpContent'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/qol/NotificationSystem.tsx
+176:9  Warning: The 'notify' object makes the dependencies of useEffect Hook (at line 266) change on every render. To fix this, wrap the initialization of 'notify' in its own useMemo() Hook.  react-hooks/exhaustive-deps
+
+./components/qol/SmartSearchEnhancer.tsx
+53:6  Warning: React Hook useEffect has a missing dependency: 'generateSuggestions'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/AchievementSystem.tsx
+336:6  Warning: React Hook useEffect has missing dependencies: 'achievementDefinitions', 'calculateCollectionStats', 'favorites.cards', and 'onAchievementUnlocked'. Either include them or remove the dependency array. If 'onAchievementUnlocked' changes too often, find the parent component that defines it and wrap that definition in useCallback.  react-hooks/exhaustive-deps
+
+./components/ui/AdvancedDeckBuilder.tsx
+114:6  Warning: React Hook useEffect has missing dependencies: 'analyzeMetaGame', 'generateSuggestions', and 'validateDeck'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/AdvancedKeyboardShortcuts.tsx
+480:6  Warning: React Hook useEffect has missing dependencies: 'advancedCommands' and 'executeMacro'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/AdvancedModalSystem.tsx
+276:6  Warning: React Hook useEffect has a missing dependency: 'handleClose'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/AdvancedSearchSystem.tsx
+133:6  Warning: React Hook useEffect has missing dependencies: 'onResults' and 'performSearch'. Either include them or remove the dependency array. If 'onResults' changes too often, find the parent component that defines it and wrap that definition in useCallback.  react-hooks/exhaustive-deps
+176:6  Warning: React Hook useCallback has missing dependencies: 'applySorting' and 'saveToHistory'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/BreadcrumbNavigation.tsx
+41:9  Warning: The 'routeMap' object makes the dependencies of useMemo Hook (at line 145) change on every render. Move it inside the useMemo callback. Alternatively, wrap the initialization of 'routeMap' in its own useMemo() Hook.  react-hooks/exhaustive-deps
+
+./components/ui/CardSharingSystem.tsx
+19:5  Warning: Do not assign to the variable `module`. See: https://nextjs.org/docs/messages/no-assign-module-variable  @next/next/no-assign-module-variable
+27:5  Warning: Do not assign to the variable `module`. See: https://nextjs.org/docs/messages/no-assign-module-variable  @next/next/no-assign-module-variable
+
+./components/ui/CollectionTracker.tsx
+132:6  Warning: React Hook useEffect has a missing dependency: 'checkAchievements'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/EnhancedCardInteractions.tsx
+334:48  Warning: The ref value 'animationFrameRef.current' will likely have changed by the time this effect cleanup function runs. If this ref points to a node rendered by React, copy 'animationFrameRef.current' to a variable inside the effect, and use that variable in the cleanup function.  react-hooks/exhaustive-deps
+
+./components/ui/EnhancedCardModal.tsx
+85:6  Warning: React Hook useEffect has a missing dependency: 'toggleFullscreen'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/EnhancedMovesDisplay.tsx
+131:6  Warning: React Hook useEffect has a missing dependency: 'loadMovesData'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/EnhancedUXProvider.tsx
+177:6  Warning: React Hook useEffect has missing dependencies: 'saveBehaviorData' and 'setupAccessibilityDetection'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/FloatingActionSystem.hooks.tsx
+96:6  Warning: React Hook useCallback has a missing dependency: 'router.asPath'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/IntelligentRecommendations.tsx
+604:6  Warning: React Hook useEffect has a missing dependency: 'generateSmartRecommendations'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/MarketInsightsDashboard.tsx
+415:6  Warning: React Hook useEffect has a missing dependency: 'generateInsights'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/OptimizedImageMobile.tsx
+113:6  Warning: React Hook useCallback has unnecessary dependencies: 'height' and 'src'. Either exclude them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/PillBadgeGroup.tsx
+51:9  Warning: The 'selectedValues' conditional could make the dependencies of useCallback Hook (at line 71) change on every render. To fix this, wrap the initialization of 'selectedValues' in its own useMemo() Hook.  react-hooks/exhaustive-deps
+51:9  Warning: The 'selectedValues' conditional could make the dependencies of useCallback Hook (at line 81) change on every render. To fix this, wrap the initialization of 'selectedValues' in its own useMemo() Hook.  react-hooks/exhaustive-deps
+
+./components/ui/PokemonEasterEggs.tsx
+9:9  Warning: The 'konamiCode' array makes the dependencies of useEffect Hook (at line 35) change on every render. Move it inside the useEffect callback. Alternatively, wrap the initialization of 'konamiCode' in its own useMemo() Hook.  react-hooks/exhaustive-deps
+
+./components/ui/PokemonSoundEffects.tsx
+90:6  Warning: React Hook useEffect has a missing dependency: 'playPokemonSound'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/PortfolioManager.tsx
+180:6  Warning: React Hook useEffect has a missing dependency: 'selectedPortfolio'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/PriceIntelligenceSystem.tsx
+105:6  Warning: React Hook useEffect has a missing dependency: 'generatePricePredictions'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/SecurityProvider.tsx
+64:6  Warning: React Hook useEffect has missing dependencies: 'initializeSecurity' and 'runSecurityCheck'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/SimplifiedMovesDisplay.tsx
+60:6  Warning: React Hook useEffect has a missing dependency: 'loadMovesData'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/SmartRecommendationEngine.tsx
+364:6  Warning: React Hook useCallback has unnecessary dependencies: 'currentCard', 'userBehavior', 'userCollection', and 'userFavorites'. Either exclude them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/SocialPlatform.tsx
+78:6  Warning: React Hook useEffect has a missing dependency: 'loadSocialData'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/UserExperienceEnhancer.tsx
+116:6  Warning: React Hook useEffect has a missing dependency: 'pokemonSuggestions'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/VisualCardSearch.tsx
+221:6  Warning: React Hook useCallback has a missing dependency: 'handleFileSelect'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/VoiceSearchInterface.tsx
+119:6  Warning: React Hook useEffect has missing dependencies: 'handleVoiceSearch', 'onTranscript', and 'setupAudioAnalyzer'. Either include them or remove the dependency array. If 'onTranscript' changes too often, find the parent component that defines it and wrap that definition in useCallback.  react-hooks/exhaustive-deps
+
+./components/ui/cards/UnifiedCard.tsx
+410:6  Warning: React Hook useMemo has missing dependencies: 'card.artist', 'card.health', 'card.hp', 'card.number', 'card.set?.id', 'card.set?.name', 'card.setCode', 'card.setTag', 'card.sprite', 'card.type', and 'card.types'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/design-system/CircularCard.tsx
+66:9  Warning: The 'contextMenuItems' array makes the dependencies of useMemo Hook (at line 132) change on every render. Move it inside the useMemo callback. Alternatively, wrap the initialization of 'contextMenuItems' in its own useMemo() Hook.  react-hooks/exhaustive-deps
+
+./components/ui/forms/EnhancedSearchBox.tsx
+142:6  Warning: React Hook useEffect has a missing dependency: 'localValue'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/forms/EnhancedSelect.tsx
+140:9  Warning: Elements with the ARIA role "combobox" must have the following attributes defined: aria-controls,aria-expanded  jsx-a11y/role-has-required-aria-props
+
+./components/ui/modals/EnhancedCardModal.tsx
+85:6  Warning: React Hook useEffect has missing dependencies: 'onClose' and 'toggleFullscreen'. Either include them or remove the dependency array. If 'onClose' changes too often, find the parent component that defines it and wrap that definition in useCallback.  react-hooks/exhaustive-deps
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules

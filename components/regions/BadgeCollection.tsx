@@ -7,13 +7,16 @@ import { FadeIn, SlideUp, Scale, StaggeredChildren } from '../ui/animations/anim
 interface GymLeader {
   name: string;
   badge: string;
-  [key: string]: any;
+  type?: string[];
+  location?: string;
+  specialty?: string;
 }
 
 interface RegionData {
   id: string;
   color: string;
-  [key: string]: any;
+  name?: string;
+  generation?: string | number;
 }
 
 interface BadgeCollectionProps {

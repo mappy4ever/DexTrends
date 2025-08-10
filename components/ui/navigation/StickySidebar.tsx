@@ -1,10 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import { TypeBadge } from '../TypeBadge';
 import { BsFilter, BsX, BsChevronDown, BsChevronUp, BsFunnel } from 'react-icons/bs';
 
+interface FilterOption {
+  value: string | number;
+  label: string;
+}
+
+// Generic filter interface that can accommodate various filter types
+interface GenericFilter {
+  id: string;
+  label: string;
+  type: string; // More flexible than strict union
+  value?: string | string[] | number;
+  placeholder?: string;
+  options?: FilterOption[];
+  min?: number;
+  max?: number;
+}
+
+type FilterValue = string | string[] | number;
+
 interface StickySidebarProps {
-  filters?: any[];
-  onFilterChange?: (filterId: string, value: any) => void;
+  filters?: GenericFilter[];
+  onFilterChange?: (filterId: string, value: FilterValue) => void;
   isOpen?: boolean;
   onToggle?: () => void;
   className?: string;
@@ -15,10 +34,10 @@ export default function StickySidebar({
   filters = [], onFilterChange, isOpen = true, onToggle, className = "", children
 }: StickySidebarProps) {
   const [isMobile, setIsMobile] = useState(false);
-  const [collapsedSections, setCollapsedSections] = useState<Record<string, any>>({});
+  const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
-    const checkMobile = (): any => {
+    const checkMobile = (): void => {
       setIsMobile(window.innerWidth < 768);
     };
     
@@ -34,7 +53,7 @@ export default function StickySidebar({
     }));
   };
 
-  const renderFilter = (filter: any) => {
+  const renderFilter = (filter: GenericFilter) => {
     switch (filter.type) {
       case 'search':
         return (
@@ -46,7 +65,7 @@ export default function StickySidebar({
               <input
                 type="text"
                 value={filter.value || ''}
-                onChange={(e: any) => onFilterChange?.(filter.id, e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => onFilterChange?.(filter.id, e.target.value)}
                 placeholder={filter.placeholder}
                 className="w-full px-4 py-3 rounded-lg bg-white border border-border-color focus:border-pokemon-blue focus:ring-2 focus:ring-pokemon-blue/20 focus:outline-none placeholder-text-grey transition-all duration-300 text-sm"
               />
@@ -67,11 +86,11 @@ export default function StickySidebar({
             </label>
             <select
               value={filter.value || ''}
-              onChange={(e: any) => onFilterChange?.(filter.id, e.target.value)}
+              onChange={(e: ChangeEvent<HTMLSelectElement>) => onFilterChange?.(filter.id, e.target.value)}
               className="w-full px-4 py-3 rounded-lg bg-white border border-border-color focus:border-pokemon-blue focus:ring-2 focus:ring-pokemon-blue/20 focus:outline-none transition-all duration-300 text-sm"
             >
               <option value="">{filter.placeholder || `All ${filter.label}`}</option>
-              {filter.options?.map((option: any) => (
+              {filter.options?.map((option: FilterOption) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
                 </option>
@@ -96,16 +115,16 @@ export default function StickySidebar({
             </div>
             {!collapsedSections[filter.id] && (
               <div className="space-y-2 max-h-48 overflow-y-auto">
-                {filter.options?.map((option: any) => (
+                {filter.options?.map((option: FilterOption) => (
                   <label key={option.value} className="flex items-center space-x-2 cursor-pointer group">
                     <input
                       type="checkbox"
-                      checked={filter.value?.includes(option.value) || false}
-                      onChange={(e: any) => {
-                        const currentValues = filter.value || [];
+                      checked={((filter.value as string[]) || []).includes(option.value as string) || false}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                        const currentValues = (filter.value as string[]) || [];
                         const newValues = e.target.checked
-                          ? [...currentValues, option.value]
-                          : currentValues.filter((v: any) => v !== option.value);
+                          ? [...currentValues, option.value as string]
+                          : currentValues.filter((v: string) => v !== option.value);
                         onFilterChange?.(filter.id, newValues);
                       }}
                       className="rounded border-border-color text-pokemon-red focus:ring-pokemon-red focus:ring-2"
@@ -140,18 +159,18 @@ export default function StickySidebar({
                   'normal', 'fire', 'water', 'electric', 'grass', 'ice',
                   'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug',
                   'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy'
-                ].map((type: any) => (
+                ].map((type: string) => (
                   <button
                     key={type}
                     onClick={() => {
-                      const currentTypes = filter.value || [];
+                      const currentTypes = (filter.value as string[]) || [];
                       const newTypes = currentTypes.includes(type)
-                        ? currentTypes.filter((t: any) => t !== type)
+                        ? currentTypes.filter((t: string) => t !== type)
                         : [...currentTypes, type];
                       onFilterChange?.(filter.id, newTypes);
                     }}
                     className={`transition-all duration-300 ${
-                      filter.value?.includes(type) ? 'scale-105 ring-2 ring-white/50' : 'opacity-80 hover:opacity-100'
+                      Array.isArray(filter.value) && filter.value.includes(type) ? 'scale-105 ring-2 ring-white/50' : 'opacity-80 hover:opacity-100'
                     }`}
                   >
                     <TypeBadge type={type} size="md" />
@@ -174,7 +193,7 @@ export default function StickySidebar({
                 min={filter.min || 0}
                 max={filter.max || 100}
                 value={filter.value || filter.min || 0}
-                onChange={(e: any) => onFilterChange?.(filter.id, Number(e.target.value))}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => onFilterChange?.(filter.id, Number(e.target.value))}
                 className="w-full h-2 bg-light-grey rounded-lg appearance-none cursor-pointer slider-thumb"
               />
               <div className="flex justify-between text-xs text-text-grey">
@@ -243,7 +262,7 @@ export default function StickySidebar({
           <div className="p-4 border-t border-border-color">
             <button
               onClick={() => {
-                filters.forEach((filter: any) => {
+                filters.forEach((filter: GenericFilter) => {
                   onFilterChange?.(filter.id, Array.isArray(filter.value) ? [] : '');
                 });
               }}

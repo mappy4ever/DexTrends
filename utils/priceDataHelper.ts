@@ -140,24 +140,31 @@ export function calculatePriceStats(priceData: PriceDataPoint[]): PriceHistoryDa
 
 // Format price data for the chart component
 export function formatPriceDataForChart(
-  data: any[],
+  data: unknown[],
   variantType: string = 'market'
 ): PriceDataPoint[] {
   if (!data || data.length === 0) return [];
   
-  return data.map(item => ({
-    date: item.collected_at?.split('T')[0] || item.collected_date || item.date,
-    price: parseFloat(
-      item[`price_${variantType}`] || 
-      item.price_market || 
-      item.price || 
-      0
+  return data
+    .filter((item): item is Record<string, unknown> => 
+      typeof item === 'object' && item !== null
     )
-  })).filter(d => d.price > 0);
+    .map(item => ({
+      date: (typeof item.collected_at === 'string' ? item.collected_at.split('T')[0] : '') || 
+            (typeof item.collected_date === 'string' ? item.collected_date : '') ||
+            (typeof item.date === 'string' ? item.date : ''),
+      price: parseFloat(
+        String(item[`price_${variantType}`] || 
+              item.price_market || 
+              item.price || 
+              0)
+      )
+    }))
+    .filter(d => d.price > 0);
 }
 
 // Mock Supabase response for development
-export function mockSupabasePriceData(cardId: string, days: number = 30): any[] {
+export function mockSupabasePriceData(cardId: string, days: number = 30): unknown[] {
   const sampleData = generateSamplePriceHistory(cardId, 15 + Math.random() * 20, days);
   
   return sampleData.map(point => ({

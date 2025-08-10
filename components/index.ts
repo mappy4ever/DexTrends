@@ -4,7 +4,7 @@
 export * from './ui';
 
 // Re-export hooks from the hooks directory
-export { useToast } from '../hooks/useToast';
+export { useToast } from '../hooks/useNotifications';
 export { useContextualTheme } from '../hooks/useContextualTheme';
 export { useAnimations } from '../hooks/useAnimations';
 export { useKeyboardNavigation } from '../hooks/useKeyboardNavigation';

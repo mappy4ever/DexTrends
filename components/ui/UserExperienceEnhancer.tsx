@@ -1,18 +1,46 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
+import logger from '@/utils/logger';
+import type { ClickHandler } from '@/types/components/events';
+import type { AnyObject, StringRecord } from '@/types/common';
+
+interface SearchSuggestion {
+  text: string;
+  filter: AnyObject;
+  icon: string;
+}
+
+interface PageRecommendation {
+  title: string;
+  path: string;
+  icon: string;
+  description: string;
+}
+
+type AccessibilityFontSize = 'normal' | 'small' | 'large';
+
+type AccessibilityPreferences = {
+  highContrast: boolean;
+  fontSize: AccessibilityFontSize;
+  reducedMotion: boolean;
+};
+
+type PageRecommendationMap = Record<string, PageRecommendation[]>;
+
+type VisitedPagesArray = string[];
 
 // Connection status indicator
-export const ConnectionStatusIndicator = (): any => {
+export const ConnectionStatusIndicator: React.FC = () => {
   const [isOnline, setIsOnline] = useState(true);
   const [showOfflineMessage, setShowOfflineMessage] = useState(false);
 
   useEffect(() => {
-    const handleOnline = (): any => {
+    const handleOnline = (): void => {
       setIsOnline(true);
       setShowOfflineMessage(false);
     };
 
-    const handleOffline = (): any => {
+    const handleOffline = (): void => {
       setIsOnline(false);
       setShowOfflineMessage(true);
       setTimeout(() => setShowOfflineMessage(false), 5000);
@@ -51,12 +79,12 @@ export const ConnectionStatusIndicator = (): any => {
 };
 
 // Reading progress indicator for long pages
-export const ReadingProgressIndicator = (): any => {
+export const ReadingProgressIndicator: React.FC = () => {
   const [progress, setProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const updateProgress = (): any => {
+    const updateProgress = (): void => {
       const scrollTop = window.scrollY;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const scrollPercent = scrollTop / docHeight * 100;
@@ -83,15 +111,15 @@ export const ReadingProgressIndicator = (): any => {
 
 // Smart search suggestions
 interface SmartSearchSuggestionsProps {
-  searchTerm?: any;
-  onSelect?: any;
+  searchTerm?: string;
+  onSelect?: (suggestion: SearchSuggestion) => void;
 }
 
 export const SmartSearchSuggestions = ({ searchTerm, onSelect }: SmartSearchSuggestionsProps) => {
-  const [suggestions, setSuggestions] = useState<unknown[]>([]);
+  const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
-  const pokemonSuggestions = [
+  const pokemonSuggestions = useMemo(() => [
     { text: 'Legendary Pokémon', filter: { category: 'legendary' }, icon: '⭐' },
     { text: 'Fire-type Pokémon', filter: { type: 'fire' }, icon: '🔥' },
     { text: 'Water-type Pokémon', filter: { type: 'water' }, icon: '💧' },
@@ -100,11 +128,11 @@ export const SmartSearchSuggestions = ({ searchTerm, onSelect }: SmartSearchSugg
     { text: 'Generation 1 Pokémon', filter: { generation: '1' }, icon: '1️⃣' },
     { text: 'Mythical Pokémon', filter: { category: 'mythical' }, icon: '✨' },
     { text: 'Ultra Beasts', filter: { category: 'ultra-beast' }, icon: '🌌' },
-  ];
+  ], []);
 
   useEffect(() => {
-    if (searchTerm.length > 2) {
-      const filtered = pokemonSuggestions.filter((suggestion: any) =>
+    if (searchTerm && searchTerm.length > 2) {
+      const filtered = pokemonSuggestions.filter((suggestion: SearchSuggestion) =>
         suggestion.text.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setSuggestions(filtered);
@@ -112,16 +140,16 @@ export const SmartSearchSuggestions = ({ searchTerm, onSelect }: SmartSearchSugg
     } else {
       setShowSuggestions(false);
     }
-  }, [searchTerm]);
+  }, [searchTerm, pokemonSuggestions]);
 
   if (!showSuggestions || suggestions.length === 0) return null;
 
   return (
     <div className="absolute top-full left-0 right-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-50 mt-1">
-      {suggestions.map((suggestion: any, index: number) => (
+      {suggestions.map((suggestion: SearchSuggestion, index: number) => (
         <button
           key={index}
-          onClick={() => onSelect(suggestion)}
+          onClick={() => onSelect?.(suggestion)}
           className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center space-x-2 transition-colors"
         >
           <span>{suggestion.icon}</span>
@@ -133,9 +161,9 @@ export const SmartSearchSuggestions = ({ searchTerm, onSelect }: SmartSearchSugg
 };
 
 // Page visit tracker and recommendations
-export const PageRecommendations = (): any => {
+export const PageRecommendations: React.FC = () => {
   const router = useRouter();
-  const [recommendations, setRecommendations] = useState<unknown[]>([]);
+  const [recommendations, setRecommendations] = useState<PageRecommendation[]>([]);
   const [showRecommendations, setShowRecommendations] = useState(false);
 
   useEffect(() => {
@@ -146,7 +174,7 @@ export const PageRecommendations = (): any => {
     
     // Use try-catch to prevent localStorage errors from causing re-renders
     try {
-      const visited = JSON.parse(localStorage.getItem('visited-pages') || '[]');
+      const visited: VisitedPagesArray = JSON.parse(localStorage.getItem('visited-pages') || '[]');
       if (!visited.includes(currentPage)) {
         const updatedVisited = [...visited, currentPage].slice(-10); // Keep last 10
         localStorage.setItem('visited-pages', JSON.stringify(updatedVisited));
@@ -156,7 +184,7 @@ export const PageRecommendations = (): any => {
     }
 
     // Generate recommendations based on current page
-    const pageRecommendations = {
+    const pageRecommendations: PageRecommendationMap = {
       '/pokedex': [
         { title: 'Explore TCG Sets', path: '/tcgsets', icon: '🃏', description: 'Check out Pokémon cards' },
         { title: 'Try Pocket Mode', path: '/pocketmode', icon: '📱', description: 'Mobile-optimized experience' }
@@ -175,7 +203,7 @@ export const PageRecommendations = (): any => {
       ]
     };
 
-    setRecommendations((pageRecommendations as any)[currentPage] || []);
+    setRecommendations(pageRecommendations[currentPage] || []);
   }, [router.pathname, router.isReady]);
 
   // Show recommendations after user has been on page for 30 seconds
@@ -203,12 +231,14 @@ export const PageRecommendations = (): any => {
         </button>
       </div>
       <div className="space-y-2">
-        {recommendations.map((rec: any, index: number) => (
+        {recommendations.map((rec: PageRecommendation, index: number) => (
           <button
             key={index}
             onClick={() => {
-              router.push(rec.path);
-              setShowRecommendations(false);
+              if (rec.path) {
+                router.push(rec.path);
+                setShowRecommendations(false);
+              }
             }}
             className="w-full p-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
           >
@@ -227,14 +257,14 @@ export const PageRecommendations = (): any => {
 };
 
 // Accessibility enhancements
-export const AccessibilityEnhancer = (): any => {
+export const AccessibilityEnhancer: React.FC = () => {
   const [highContrast, setHighContrast] = useState(false);
-  const [fontSize, setFontSize] = useState('normal');
+  const [fontSize, setFontSize] = useState<AccessibilityFontSize>('normal');
   const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
     // Load accessibility preferences
-    const preferences = JSON.parse(localStorage.getItem('accessibility-preferences') || '{}');
+    const preferences: Partial<AccessibilityPreferences> = JSON.parse(localStorage.getItem('accessibility-preferences') || '{}');
     setHighContrast(preferences.highContrast || false);
     setFontSize(preferences.fontSize || 'normal');
     setReducedMotion(preferences.reducedMotion || false);
@@ -251,24 +281,25 @@ export const AccessibilityEnhancer = (): any => {
     }
   }, []);
 
-  const updatePreference = (key: string, value: any) => {
-    const preferences = JSON.parse(localStorage.getItem('accessibility-preferences') || '{}');
-    preferences[key] = value;
-    localStorage.setItem('accessibility-preferences', JSON.stringify(preferences));
-
-    // Apply changes
-    if (key === 'highContrast') {
+  const updatePreference = (key: keyof AccessibilityPreferences, value: boolean | AccessibilityFontSize) => {
+    const preferences: Partial<AccessibilityPreferences> = JSON.parse(localStorage.getItem('accessibility-preferences') || '{}');
+    
+    if (key === 'highContrast' && typeof value === 'boolean') {
+      preferences[key] = value;
+      localStorage.setItem('accessibility-preferences', JSON.stringify(preferences));
       setHighContrast(value);
       document.documentElement.classList.toggle('high-contrast', value);
-    }
-    if (key === 'fontSize') {
+    } else if (key === 'fontSize' && typeof value === 'string') {
+      preferences[key] = value;
+      localStorage.setItem('accessibility-preferences', JSON.stringify(preferences));
       setFontSize(value);
       document.documentElement.classList.remove('font-size-small', 'font-size-large');
       if (value !== 'normal') {
         document.documentElement.classList.add(`font-size-${value}`);
       }
-    }
-    if (key === 'reducedMotion') {
+    } else if (key === 'reducedMotion' && typeof value === 'boolean') {
+      preferences[key] = value;
+      localStorage.setItem('accessibility-preferences', JSON.stringify(preferences));
       setReducedMotion(value);
       document.documentElement.classList.toggle('reduced-motion', value);
     }

@@ -93,7 +93,7 @@ export const useContextualFAB = () => {
       tooltip: 'Share',
       position: 'bottom-right'
     });
-  }, [showFAB]);
+  }, [showFAB, router.asPath]);
   
   return {
     showFAB,

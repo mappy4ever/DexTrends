@@ -3,7 +3,7 @@
  * Provides centralized performance monitoring, automatic optimizations, and reporting
  */
 
-import React, { createContext, useContext, useEffect, useState, useRef, ReactNode, ComponentType } from 'react';
+import React, { createContext, useContext, useEffect, useState, useRef, ReactNode, ComponentType, useCallback } from 'react';
 import performanceMonitor from '../../utils/performanceMonitor';
 import { cleanupAPIOptimizations, getAPIPerformanceReport } from '../../utils/apiOptimizations';
 import { runBasicPerformanceTests } from '../../utils/performanceTests';
@@ -34,26 +34,42 @@ interface Suggestion {
 }
 
 interface TestResults {
-  recommendations?: Suggestion[];
-  [key: string]: any;
+  summary: {
+    totalTests: number;
+    passedTests: number;
+    failedTests: number;
+    successRate: number;
+    timestamp: number;
+  };
+  results: unknown[];
+  recommendations: Suggestion[];
+  [key: string]: unknown;
 }
 
 interface PerformanceReport {
   timestamp: number;
   vitals: Record<string, Vital>;
-  api: any;
+  api: Record<string, unknown>;
   suggestions: Suggestion[];
   testResults: TestResults | null;
   system: {
     userAgent: string;
-    connection: any;
-    memory: any;
+    connection: {
+      effectiveType?: string;
+      downlink?: number;
+      rtt?: number;
+    } | null;
+    memory: {
+      used: number;
+      total: number;
+      limit: number;
+    } | null;
   };
 }
 
 interface PerformanceContextValue {
   vitals: Record<string, Vital>;
-  apiMetrics: any;
+  apiMetrics: Record<string, unknown>;
   isMonitoring: boolean;
   enableOptimizations: () => void;
   disableOptimizations: () => void;
@@ -70,7 +86,11 @@ const PerformanceContext = createContext<PerformanceContextValue>({
   isMonitoring: false,
   enableOptimizations: () => {},
   disableOptimizations: () => {},
-  runPerformanceTests: async () => ({ passed: 0, failed: 0, total: 0, tests: [] } as TestResults),
+  runPerformanceTests: async () => ({
+    summary: { totalTests: 0, passedTests: 0, failedTests: 0, successRate: 0, timestamp: Date.now() },
+    results: [],
+    recommendations: []
+  } as TestResults),
   getReport: () => ({ timestamp: Date.now(), vitals: {}, api: {}, suggestions: [], testResults: null, system: { userAgent: '', connection: null, memory: null } } as PerformanceReport),
   suggestions: []
 });
@@ -84,7 +104,7 @@ interface PerformanceProviderProps {
 // Performance provider component
 export const PerformanceProvider: React.FC<PerformanceProviderProps> = ({ children, enabledByDefault = true, testingMode = false }) => {
   const [vitals, setVitals] = useState<Record<string, Vital>>({});
-  const [apiMetrics, setApiMetrics] = useState<any>({});
+  const [apiMetrics, setApiMetrics] = useState<Record<string, unknown>>({});
   const [isMonitoring, setIsMonitoring] = useState<boolean>(enabledByDefault);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [testResults, setTestResults] = useState<TestResults | null>(null);
@@ -93,60 +113,8 @@ export const PerformanceProvider: React.FC<PerformanceProviderProps> = ({ childr
   const reportInterval = useRef<NodeJS.Timeout | null>(null);
   const testInterval = useRef<NodeJS.Timeout | null>(null);
 
-  // Initialize performance monitoring
-  useEffect(() => {
-    if (!isMonitoring) return;
-
-    logger.info('Performance monitoring initialized');
-
-    // Subscribe to vitals changes
-    const unsubscribeVitals = performanceMonitor.onVitalsChange((metric) => {
-      setVitals(prev => ({
-        ...prev,
-        [metric.name]: metric
-      }));
-    });
-
-    // Update API metrics periodically
-    const updateApiMetrics = () => {
-      const report = getAPIPerformanceReport();
-      setApiMetrics(report);
-    };
-
-    // Set up intervals
-    const apiMetricsInterval = setInterval(updateApiMetrics, 5000);
-    
-    // Performance report generation
-    reportInterval.current = setInterval(() => {
-      generatePerformanceReport();
-    }, 60000); // Every minute
-
-    // Automated testing in development
-    if (testingMode && process.env.NODE_ENV === 'development') {
-      testInterval.current = setInterval(async () => {
-        try {
-          const results = await runBasicPerformanceTests();
-          setTestResults(results);
-          updateSuggestions(results);
-        } catch (error) {
-          logger.error('Automated performance test failed', { error });
-        }
-      }, 300000); // Every 5 minutes
-    }
-
-    // Cleanup function
-    cleanupRef.current = () => {
-      unsubscribeVitals();
-      clearInterval(apiMetricsInterval);
-      if (reportInterval.current) clearInterval(reportInterval.current);
-      if (testInterval.current) clearInterval(testInterval.current);
-    };
-
-    return cleanupRef.current;
-  }, [isMonitoring, testingMode]);
-
   // Generate performance suggestions
-  const updateSuggestions = (testResults: TestResults | null) => {
+  const updateSuggestions = useCallback((testResults: TestResults | null) => {
     const newSuggestions = [];
     
     if (testResults && testResults.recommendations) {
@@ -163,15 +131,15 @@ export const PerformanceProvider: React.FC<PerformanceProviderProps> = ({ childr
           message: `${metric.toUpperCase()} is ${data.metadata.needsImprovement ? 'needs improvement' : 'poor'}`,
           value: data.value,
           suggestions: getMetricSuggestions(metric)
-        });
+        } as Suggestion);
       }
     });
 
     setSuggestions(newSuggestions);
-  };
+  }, [vitals]);
 
   // Generate performance report
-  const generatePerformanceReport = (): PerformanceReport => {
+  const generatePerformanceReport = useCallback((): PerformanceReport => {
     const report = {
       timestamp: Date.now(),
       vitals: vitals,
@@ -200,7 +168,68 @@ export const PerformanceProvider: React.FC<PerformanceProviderProps> = ({ childr
 
     logger.debug('Performance report generated', report);
     return report;
-  };
+  }, [vitals, apiMetrics, suggestions, testResults]);
+
+  // Initialize performance monitoring
+  useEffect(() => {
+    if (!isMonitoring) return;
+
+    logger.info('Performance monitoring initialized');
+
+    // Subscribe to vitals changes
+    const unsubscribeVitals = performanceMonitor.onVitalsChange((metric) => {
+      setVitals(prev => ({
+        ...prev,
+        [metric.name]: metric
+      }));
+    });
+
+    // Update API metrics periodically
+    const updateApiMetrics = async () => {
+      try {
+        const report = await getAPIPerformanceReport();
+        setApiMetrics((report as unknown as Record<string, unknown>) || {});
+      } catch (error) {
+        setApiMetrics({});
+      }
+    };
+
+    // Set up intervals
+    const apiMetricsInterval = setInterval(updateApiMetrics, 5000);
+    
+    // Performance report generation
+    reportInterval.current = setInterval(() => {
+      generatePerformanceReport();
+    }, 60000); // Every minute
+
+    // Automated testing in development
+    if (testingMode && process.env.NODE_ENV === 'development') {
+      testInterval.current = setInterval(async () => {
+        try {
+          const results = await runBasicPerformanceTests();
+          const testResults: TestResults = {
+            summary: results.summary,
+            results: results.results,
+            recommendations: results.recommendations
+          };
+          setTestResults(testResults);
+          updateSuggestions(testResults);
+        } catch (error) {
+          logger.error('Automated performance test failed', { error });
+        }
+      }, 300000); // Every 5 minutes
+    }
+
+    // Cleanup function
+    cleanupRef.current = () => {
+      unsubscribeVitals();
+      clearInterval(apiMetricsInterval);
+      if (reportInterval.current) clearInterval(reportInterval.current);
+      if (testInterval.current) clearInterval(testInterval.current);
+    };
+
+    return cleanupRef.current;
+  }, [isMonitoring, testingMode, generatePerformanceReport, updateSuggestions]);
 
   // Send performance data to analytics
   const sendPerformanceAnalytics = (report: PerformanceReport) => {
@@ -215,8 +244,8 @@ export const PerformanceProvider: React.FC<PerformanceProviderProps> = ({ childr
             lcp: report.vitals.lcp?.value,
             fid: report.vitals.fid?.value,
             cls: report.vitals.cls?.value,
-            api_success_rate: report.api.requests?.successful / report.api.requests?.total * 100,
-            api_avg_response_time: report.api.requests?.averageResponseTime
+            api_success_rate: (report.api as any)?.requests?.successful / (report.api as any)?.requests?.total * 100,
+            api_avg_response_time: (report.api as any)?.requests?.averageResponseTime
           }
         });
       }
@@ -246,9 +275,14 @@ export const PerformanceProvider: React.FC<PerformanceProviderProps> = ({ childr
     try {
       logger.info('Running manual performance tests');
       const results = await runBasicPerformanceTests();
-      setTestResults(results);
-      updateSuggestions(results);
-      return results;
+      const testResults: TestResults = {
+        summary: results.summary,
+        results: results.results,
+        recommendations: results.recommendations
+      };
+      setTestResults(testResults);
+      updateSuggestions(testResults);
+      return testResults;
     } catch (error) {
       logger.error('Manual performance test failed', { error });
       throw error;
@@ -260,38 +294,38 @@ export const PerformanceProvider: React.FC<PerformanceProviderProps> = ({ childr
     return generatePerformanceReport();
   };
 
+  // Auto-optimize based on performance metrics
+  const autoOptimize = useCallback(() => {
+    // Enable virtualization for large lists
+    if (vitals.lcp && vitals.lcp.value > 4000) {
+      logger.info('LCP is slow, enabling virtualization recommendations');
+      // This could automatically enable virtualization features
+    }
+
+    // Suggest image optimization
+    if (vitals.fcp && vitals.fcp.value > 3000) {
+      logger.info('FCP is slow, image optimization recommended');
+      // This could automatically optimize images
+    }
+
+    // Memory cleanup
+    if (performance.memory) {
+      const memoryUsage = (performance.memory.usedJSHeapSize / performance.memory.totalJSHeapSize) * 100;
+      if (memoryUsage > 85) {
+        logger.warn('High memory usage detected, running cleanup');
+        cleanupAPIOptimizations();
+      }
+    }
+  }, [vitals]);
+
   // Automatic optimizations based on metrics
   useEffect(() => {
     if (!isMonitoring) return;
 
-    // Auto-optimize based on performance metrics
-    const autoOptimize = () => {
-      // Enable virtualization for large lists
-      if (vitals.lcp && vitals.lcp.value > 4000) {
-        logger.info('LCP is slow, enabling virtualization recommendations');
-        // This could automatically enable virtualization features
-      }
-
-      // Suggest image optimization
-      if (vitals.fcp && vitals.fcp.value > 3000) {
-        logger.info('FCP is slow, image optimization recommended');
-        // This could automatically optimize images
-      }
-
-      // Memory cleanup
-      if (performance.memory) {
-        const memoryUsage = (performance.memory.usedJSHeapSize / performance.memory.totalJSHeapSize) * 100;
-        if (memoryUsage > 85) {
-          logger.warn('High memory usage detected, running cleanup');
-          cleanupAPIOptimizations();
-        }
-      }
-    };
-
     const autoOptimizeInterval = setInterval(autoOptimize, 30000); // Every 30 seconds
 
     return () => clearInterval(autoOptimizeInterval);
-  }, [isMonitoring, vitals]);
+  }, [isMonitoring, autoOptimize]);
 
   // Cleanup on unmount
   useEffect(() => {

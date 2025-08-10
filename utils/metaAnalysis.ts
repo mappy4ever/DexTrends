@@ -1,6 +1,7 @@
 // Meta game analysis utilities for deck evaluation
 
 import { DeckCard, DeckFormat, calculateDeckStats } from './deckValidation';
+import { isObject, hasProperty, isNumber } from './typeGuards';
 
 export interface MetaAnalysis {
   score: number;
@@ -129,10 +130,24 @@ function identifyArchetype(cards: DeckCard[]): string {
   return pokemon.length > 0 ? pokemon[0].name : 'Unknown';
 }
 
+// Type guard for deck stats
+function isDeckStats(stats: unknown): stats is {
+  pokemon: number;
+  trainers: number;
+  totalCards: number;
+  typeDistribution: Record<string, number>;
+} {
+  return isObject(stats) &&
+    hasProperty(stats, 'pokemon') && isNumber(stats.pokemon) &&
+    hasProperty(stats, 'trainers') && isNumber(stats.trainers) &&
+    hasProperty(stats, 'totalCards') && isNumber(stats.totalCards) &&
+    hasProperty(stats, 'typeDistribution') && isObject(stats.typeDistribution);
+}
+
 // Calculate meta score and tier
 function calculateMetaScore(
   cards: DeckCard[], 
-  stats: any, 
+  stats: unknown, 
   format: DeckFormat
 ): { score: number, tier: string } {
   let score = 50; // Base score
@@ -146,20 +161,22 @@ function calculateMetaScore(
   if (hasVSTAR) score += 20;
   if (hasVMAX) score += 18;
   
-  // Balance bonus
-  if (format === 'pocket') {
-    const pokemonRatio = stats.pokemon / stats.totalCards;
-    if (pokemonRatio >= 0.4 && pokemonRatio <= 0.6) score += 10;
-  } else {
-    const trainerRatio = stats.trainers / stats.totalCards;
-    if (trainerRatio >= 0.33 && trainerRatio <= 0.5) score += 15;
+  // Balance bonus - only if stats is valid
+  if (isDeckStats(stats)) {
+    if (format === 'pocket') {
+      const pokemonRatio = stats.pokemon / stats.totalCards;
+      if (pokemonRatio >= 0.4 && pokemonRatio <= 0.6) score += 10;
+    } else {
+      const trainerRatio = stats.trainers / stats.totalCards;
+      if (trainerRatio >= 0.33 && trainerRatio <= 0.5) score += 15;
+    }
+    
+    // Type focus bonus
+    const typeCount = Object.keys(stats.typeDistribution).length;
+    if (typeCount === 1) score += 15;
+    else if (typeCount === 2) score += 10;
+    else if (typeCount > 3) score -= 10;
   }
-  
-  // Type focus bonus
-  const typeCount = Object.keys(stats.typeDistribution).length;
-  if (typeCount === 1) score += 15;
-  else if (typeCount === 2) score += 10;
-  else if (typeCount > 3) score -= 10;
   
   // Evolution line bonus
   const hasEvolutions = cards.some(c => c.evolvesFrom);
@@ -279,7 +296,7 @@ function calculateMatchups(
 // Calculate deck consistency rating
 function calculateConsistency(
   cards: DeckCard[], 
-  stats: any,
+  stats: unknown,
   format: DeckFormat
 ): number {
   let consistency = 50; // Base consistency

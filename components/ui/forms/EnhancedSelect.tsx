@@ -141,6 +141,7 @@ export const EnhancedSelect = forwardRef<HTMLDivElement, EnhancedSelectProps>(({
         aria-expanded={isOpen}
         aria-haspopup="listbox"
         aria-labelledby={label}
+        aria-controls="select-listbox"
       >
         <div className="select-value">
           {selectedOption ? (
@@ -212,7 +213,7 @@ export const EnhancedSelect = forwardRef<HTMLDivElement, EnhancedSelectProps>(({
               </div>
             )}
 
-            <div className="options-list" role="listbox">
+            <div className="options-list" role="listbox" id="select-listbox">
               {filteredOptions.length > 0 ? (
                 filteredOptions.map((option, index) => (
                   <motion.div

@@ -140,16 +140,14 @@ const HolographicCard: React.FC<HolographicCardProps> = ({
           '--pointer-from-center': isHovered ? 1 : 0,
           '--card-scale': isHovered ? 1.1 : 1,
           transformStyle: 'preserve-3d',
-        } as React.CSSProperties}
-        onMouseMove={handleMouseMove}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        animate={{
           rotateX: isHovered ? rotateX : 0,
           rotateY: isHovered ? rotateY : 0,
           scale: isHovered ? 1.1 : 1,
           z: isHovered ? 50 : 0,
-        }}
+        } as React.CSSProperties}
+        onMouseMove={handleMouseMove}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         transition={{
           type: 'spring',
           stiffness: 300,

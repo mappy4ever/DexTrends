@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
+import logger from '@/utils/logger';
 
 interface MapImageProps {
   src: string;
@@ -49,7 +50,19 @@ export default function MapImage({
   }
 
   // Use Next/Image with proper configuration
-  const imageProps: any = {
+  const imageProps: {
+    src: string;
+    alt?: string;
+    className?: string;
+    style?: React.CSSProperties;
+    priority: boolean;
+    onError: () => void;
+    onLoad: () => void;
+    placeholder: 'empty';
+    fill?: boolean;
+    width?: number;
+    height?: number;
+  } = {
     src,
     alt,
     className,

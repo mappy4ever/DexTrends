@@ -7,6 +7,7 @@ import React from 'react';
 import performanceMonitor from './performanceMonitor';
 import logger from './logger';
 import cacheManager from './UnifiedCacheManager';
+import type { UnknownError } from '../types/common';
 
 // Type definitions
 interface Config {
@@ -20,7 +21,7 @@ interface Config {
   CONCURRENT_REQUESTS: number;
 }
 
-interface CacheEntry<T = any> {
+interface CacheEntry<T = unknown> {
   data: T;
   timestamp: number;
   lastAccess: number;
@@ -34,27 +35,27 @@ interface CacheStats {
   maxSize: number;
 }
 
-interface BatchRequest {
+interface BatchRequest<T = unknown> {
   url: string;
   options?: RequestInit;
-  resolve: (value: any) => void;
-  reject: (reason: any) => void;
+  resolve: (value: T) => void;
+  reject: (reason: UnknownError) => void;
 }
 
 interface QueueItem<T> {
   fn: () => Promise<T>;
   resolve: (value: T) => void;
-  reject: (reason: any) => void;
+  reject: (reason: UnknownError) => void;
 }
 
-interface SWROptions {
+interface SWROptions<T = unknown> {
   revalidateOnFocus?: boolean;
   revalidateOnReconnect?: boolean;
   refreshInterval?: number;
   dedupingInterval?: number;
   errorRetryCount?: number;
   errorRetryInterval?: number;
-  fallbackData?: any;
+  fallbackData?: T;
   suspense?: boolean;
 }
 
@@ -131,7 +132,7 @@ class RequestCache {
     return JSON.stringify(keyData);
   }
 
-  get<T = any>(key: string): T | null {
+  get<T = unknown>(key: string): T | null {
     const entry = this.cache.get(key);
     if (!entry) {
       this.misses++;
@@ -277,17 +278,18 @@ class RequestBatcher {
       });
       
       return results;
-    } catch (error: any) {
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
       performanceMonitor.recordMetric('api-batch-request', Date.now() - startTime, {
         batchSize: batch.length,
         success: false,
-        error: error.message
+        error: errorMessage
       });
       throw error;
     }
   }
 
-  private async executeRequest(url: string, options?: RequestInit): Promise<any> {
+  private async executeRequest(url: string, options?: RequestInit): Promise<unknown> {
     // This would be implemented based on your specific batching needs
     // For now, just execute individual requests
     return optimizedFetch(url, options);
@@ -301,7 +303,7 @@ const requestBatcher = new RequestBatcher();
 class ConcurrencyLimiter {
   private readonly maxConcurrent: number;
   private running: number;
-  private queue: QueueItem<any>[];
+  private queue: QueueItem<unknown>[];
 
   constructor(maxConcurrent: number = CONFIG.CONCURRENT_REQUESTS) {
     this.maxConcurrent = maxConcurrent;
@@ -394,18 +396,18 @@ async function optimizedFetch<T = any>(url: string, options: RequestInit = {}): 
 
         return data as T;
 
-      } catch (error: any) {
-        lastError = error;
+      } catch (error) {
+        lastError = error instanceof Error ? error : new Error(String(error));
         
         performanceMonitor.recordMetric('api-request-error', Date.now() - startTime, {
           url,
           attempt: attempt + 1,
-          error: error.message,
-          type: error.name
+          error: lastError.message,
+          type: lastError.name
         });
 
         // Don't retry on certain errors
-        if (error.name === 'AbortError' || error.message.includes('404')) {
+        if (lastError.name === 'AbortError' || lastError.message.includes('404')) {
           break;
         }
 
@@ -428,12 +430,12 @@ async function optimizedFetch<T = any>(url: string, options: RequestInit = {}): 
 }
 
 // Batched request utility
-export const batchedFetch = <T = any>(url: string, options: RequestInit = {}): Promise<T> => {
+export const batchedFetch = <T = unknown>(url: string, options: RequestInit = {}): Promise<T> => {
   return requestBatcher.add({ url, options });
 };
 
 // SWR-like data fetching hook with optimizations
-export const useOptimizedSWR = <T = any>(
+export const useOptimizedSWR = <T = unknown>(
   key: string, 
   fetcher: (key: string) => Promise<T>, 
   options: SWROptions = {}
@@ -508,7 +510,7 @@ export const useAPIPerformance = (): APIMetrics => {
           const totalRequests = successRequests.length + errorRequests.length;
           const successRate = totalRequests > 0 ? (successRequests.length / totalRequests) * 100 : 0;
           const averageResponseTime = successRequests.length > 0 
-            ? successRequests.reduce((acc: number, m: any) => acc + m.value, 0) / successRequests.length 
+            ? successRequests.reduce((acc: number, m) => acc + (typeof m === 'object' && m !== null && 'value' in m ? Number(m.value) : 0), 0) / successRequests.length 
             : 0;
           
           requestCache.getStats().then(cacheStats => {
@@ -534,7 +536,7 @@ export const useAPIPerformance = (): APIMetrics => {
 
 // Request deduplication
 class RequestDeduplicator {
-  private inFlight: Map<string, Promise<any>>;
+  private inFlight: Map<string, Promise<unknown>>;
 
   constructor() {
     this.inFlight = new Map();
@@ -588,12 +590,12 @@ export const getAPIPerformanceReport = async (): Promise<PerformanceReport> => {
       failed: errorRequests.length,
       batched: batchRequests.length,
       averageResponseTime: successRequests.length > 0 
-        ? successRequests.reduce((acc: number, m: any) => acc + m.value, 0) / successRequests.length 
+        ? successRequests.reduce((acc: number, m) => acc + (typeof m === 'object' && m !== null && 'value' in m ? Number(m.value) : 0), 0) / successRequests.length 
         : 0
     },
     performance: {
-      fastRequests: successRequests.filter((m: any) => m.value < 1000).length,
-      slowRequests: successRequests.filter((m: any) => m.value > 5000).length
+      fastRequests: successRequests.filter((m) => typeof m === 'object' && m !== null && 'value' in m && Number(m.value) < 1000).length,
+      slowRequests: successRequests.filter((m) => typeof m === 'object' && m !== null && 'value' in m && Number(m.value) > 5000).length
     }
   };
 };

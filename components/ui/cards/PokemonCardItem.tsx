@@ -8,7 +8,7 @@ interface Pokemon {
   id: number | string;
   name: string;
   types?: string[];
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 interface PokemonCardItemProps {
@@ -68,7 +68,7 @@ const PokemonCardItem = memo(({
               ? 'text-red-500 bg-red-50 dark:bg-red-900/30 shadow-sm rotate-0'
               : 'text-gray-400 bg-gray-100/70 dark:bg-gray-800/70 opacity-0 group-hover:opacity-100 hover:rotate-12'
           }`}
-          onClick={(e: any) => {
+          onClick={(e: React.MouseEvent) => {
             e.stopPropagation();
             onToggleFavorite(pokeId);
           }}
@@ -90,7 +90,7 @@ const PokemonCardItem = memo(({
             width={120} // Base width, actual size controlled by className
             height={120} // Base height
             className={`${currentGridSizeClass} object-contain drop-shadow-sm transition-all duration-500 group-hover:scale-110 group-hover:rotate-2 z-10`}
-            onError={(e: any) => { e.currentTarget.src = "/back-card.png"; }}
+            onError={(e: React.SyntheticEvent<HTMLImageElement>) => { e.currentTarget.src = "/back-card.png"; }}
             priority={false} // Consider priority for above-the-fold items if applicable
           />
           <div className="absolute bottom-0 right-0 bg-gradient-to-br from-blue-500 to-blue-600 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center shadow-sm border border-blue-400/30 z-20">
@@ -101,7 +101,7 @@ const PokemonCardItem = memo(({
           {poke.name.replace(/-/g, ' ')}
         </h3>
         <div className="flex gap-1.5 mt-1 flex-wrap justify-center z-10">
-          {poke.types && poke.types.map((type: any) => (
+          {poke.types && poke.types.map((type: string) => (
             <TypeBadge key={type} type={type} size="sm" className="shadow-sm" />
           ))}
         </div>
@@ -128,7 +128,7 @@ const PokemonCardItem = memo(({
               width={80}
               height={80}
               className="w-14 h-14 sm:w-16 sm:h-16 object-contain drop-shadow-sm transition-all duration-300 group-hover:scale-110"
-              onError={(e: any) => { e.currentTarget.src = "/back-card.png"; }}
+              onError={(e: React.SyntheticEvent<HTMLImageElement>) => { e.currentTarget.src = "/back-card.png"; }}
             />
           </div>
           <div className="absolute -bottom-1 -right-1 bg-gradient-to-br from-blue-500 to-blue-600 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center shadow-md border border-white dark:border-gray-800">
@@ -145,7 +145,7 @@ const PokemonCardItem = memo(({
             </span>
           </div>
           <div className="flex flex-wrap gap-1.5 mt-1.5">
-            {poke.types && poke.types.map((type: any) => (
+            {poke.types && poke.types.map((type: string) => (
               <TypeBadge key={type} type={type} size="sm" className="shadow-sm" />
             ))}
           </div>
@@ -157,7 +157,7 @@ const PokemonCardItem = memo(({
                 ? 'bg-red-50 dark:bg-red-500/20 text-red-500'
                 : 'bg-gray-100 dark:bg-gray-700 text-gray-400 opacity-70 group-hover:opacity-100 hover:scale-110'
             }`}
-            onClick={(e: any) => {
+            onClick={(e: React.MouseEvent) => {
               e.stopPropagation();
               onToggleFavorite(pokeId);
             }}

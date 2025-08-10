@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { createClient } from '@supabase/supabase-js';
 import logger from '@/utils/logger';
+import { ErrorResponse } from '@/types/api/api-responses';
 
 // Initialize Supabase client - This is OK at the top level
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -65,10 +66,6 @@ interface DashboardResponse {
   heatmapData: HeatmapData;
 }
 
-interface ErrorResponse {
-  error: string;
-  details?: string;
-}
 
 export default async function handler(
   req: NextApiRequest,

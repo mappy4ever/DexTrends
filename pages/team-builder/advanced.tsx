@@ -13,12 +13,13 @@ import Image from 'next/image';
 import { getPokemonSDK } from '../../utils/pokemonSDK';
 import { FadeIn, SlideUp } from '../../components/ui/animations/animations';
 import { TypeBadge } from '../../components/ui/TypeBadge';
-import { PageLoader } from '../../utils/unifiedLoading';
+import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import FullBleedWrapper from '../../components/ui/FullBleedWrapper';
 import CircularButton from '../../components/ui/CircularButton';
 import { analyzeTeamTypeSynergy, getTypeMatchups } from '../../utils/typeEffectiveness';
 import type { TeamMember, Move, Nature, StatSpread } from '../../types/team-builder';
-import type { Pokemon } from '../../types/api/pokemon';
+import type { Pokemon } from "../types/pokemon";
+import logger from '../../utils/logger';
 
 // Dynamic import for the graph component to avoid SSR issues
 const TeamSynergyGraph = dynamic(
@@ -77,7 +78,7 @@ const AdvancedTeamBuilder: NextPage = () => {
       const results = await sdk.pokemon.list({ limit: 20 });
       
       // Filter by name
-      const filtered = results.results.filter((p: any) => 
+      const filtered = results.results.filter((p: { name: string }) => 
         p.name.toLowerCase().includes(query.toLowerCase())
       );
       
@@ -89,7 +90,7 @@ const AdvancedTeamBuilder: NextPage = () => {
       
       setSearchResults(detailedResults as Pokemon[]);
     } catch (error) {
-      console.error('Error searching Pokemon:', error);
+      logger.error('Error searching Pokemon:', { error });
       setSearchResults([]);
     }
     setLoading(false);
@@ -325,7 +326,7 @@ const AdvancedTeamBuilder: NextPage = () => {
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
                 <TeamSynergyGraph
                   team={team}
-                  onPokemonClick={(member) => console.log('Clicked:', member)}
+                  onPokemonClick={(member) => logger.debug('Pokemon clicked:', { member })}
                   highlightWeaknesses={true}
                   showRoles={true}
                 />

@@ -135,7 +135,7 @@ export function AccessibilityProvider({ children }: AccessibilityProviderProps) 
   };
 
   // Reset to defaults
-  const resetPreferences = (): any => {
+  const resetPreferences = (): void => {
     setPreferences(DEFAULT_PREFERENCES);
     applyPreferences(DEFAULT_PREFERENCES);
     
@@ -147,7 +147,7 @@ export function AccessibilityProvider({ children }: AccessibilityProviderProps) 
   };
 
   // Skip to main content
-  const skipToMain = (): any => {
+  const skipToMain = (): void => {
     const main = document.querySelector('main') || document.querySelector('[role="main"]');
     if (main) {
       main.focus();
@@ -191,7 +191,7 @@ export function AccessibilityProvider({ children }: AccessibilityProviderProps) 
       {/* Skip to main content link */}
       <a
         href="#main-content"
-        onClick={(e: any) => {
+        onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
           e.preventDefault();
           skipToMain();
         }}

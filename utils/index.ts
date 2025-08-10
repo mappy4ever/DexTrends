@@ -35,7 +35,13 @@ export * from './moveUtils';
 
 // === UI & Animation utilities ===
 export * from './motion';
-export * from './unifiedLoading';
+export { 
+  PageLoader, 
+  InlineLoader, 
+  SectionLoader, 
+  ProgressLoader, 
+  UnifiedLoader 
+} from '../components/ui/SkeletonLoadingSystem';
 export * from './cn';
 export * from './icons';
 export * from './formatters';
@@ -65,8 +71,8 @@ export * from './theme';
 export * from './analyticsEngine';
 export * from './logger';
 
-// === Error Handling ===
-// Note: errorHandling module doesn't exist yet
+// === Error Handling & Type Guards ===
+export * from './typeGuards';
 
 // === Database & Storage ===
 // Export from correct location

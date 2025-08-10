@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { FaPlus, FaMinus, FaSearch, FaChartBar, FaExclamationTriangle, FaCheckCircle, FaSave, FaShare, FaDownload } from 'react-icons/fa';
 import { BsCardList, BsLightning, BsDroplet, BsFire, BsSnow, BsFlower1, BsFillCircleFill } from 'react-icons/bs';
 import { GiHighGrass, GiPsychicWaves, GiMetalBar, GiFairyWand, GiDragonHead } from 'react-icons/gi';
@@ -107,13 +107,7 @@ export default function AdvancedDeckBuilder({
     }
   }, [initialDeck]);
 
-  useEffect(() => {
-    validateDeck();
-    analyzeMetaGame();
-    generateSuggestions();
-  }, [deck]);
-
-  const validateDeck = (): void => {
+  const validateDeck = useCallback((): void => {
     const cards = deck.cards;
     const totalCards = cards.reduce((sum, card) => sum + card.quantity, 0);
     const pokemon = cards.filter(card => card.supertype === 'Pokémon');
@@ -168,9 +162,9 @@ export default function AdvancedDeckBuilder({
         energy: totalEnergy
       }
     });
-  };
+  }, [deck]);
 
-  const analyzeMetaGame = (): void => {
+  const analyzeMetaGame = useCallback((): void => {
     const typeDistribution: Record<string, number> = {};
     const pokemon = deck.cards.filter(card => card.supertype === 'Pokémon');
     
@@ -204,9 +198,9 @@ export default function AdvancedDeckBuilder({
       matchups,
       popularity: Math.floor(Math.random() * 20) + 5 // 5-25%
     });
-  };
+  }, [deck]);
 
-  const generateSuggestions = (): void => {
+  const generateSuggestions = useCallback((): void => {
     const suggestions: Suggestion[] = [];
     
     // Card suggestions based on deck composition
@@ -244,7 +238,13 @@ export default function AdvancedDeckBuilder({
     });
 
     setSuggestions(suggestions);
-  };
+  }, [deck]);
+
+  useEffect(() => {
+    validateDeck();
+    analyzeMetaGame();
+    generateSuggestions();
+  }, [deck, validateDeck, analyzeMetaGame, generateSuggestions]);
 
   const searchCards = async (query: string): Promise<void> => {
     if (!query.trim()) {

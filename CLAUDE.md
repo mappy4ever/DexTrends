@@ -14,12 +14,30 @@ Before creating ANY new file or function:
 2. **Reuse over recreate** - Extend existing code instead of creating new files
 3. Common locations: `/utils/`, `/components/ui/`, `/hooks/`, `/types/`
 
+## Process Management & Resource Usage
+**IMPORTANT**: To prevent process accumulation and system slowdown:
+1. **Use `npx tsc --noEmit`** for type checking (doesn't leave processes running)
+2. **Kill dev servers immediately** after use: `pkill -f "next dev"`
+3. **Only run `npm run dev`** when actively testing functionality
+4. **Monitor processes**: `ps aux | grep jest-worker | wc -l` (if > 20, run cleanup)
+5. **After completing tasks**: Always run `pkill -9 -f "jest-worker"`
+
 ## Key Commands
 ```bash
-npm run dev              # Start dev server
+# Development (use sparingly)
+npm run dev              # Start dev server (ALWAYS KILL AFTER USE)
+
+# Type checking (preferred - no lingering processes)
+npx tsc --noEmit         # One-time type check
+
+# Other commands
 npm run lint             # Run ESLint  
-npm run typecheck        # TypeScript check
 npm test                 # Run Playwright tests
+
+# Cleanup commands
+pkill -f "next dev"      # Kill dev server
+pkill -9 -f "jest-worker" # Kill stuck processes
+rm -rf .next node_modules/.cache # Clear caches
 ```
 
 ## Core Utilities Reference

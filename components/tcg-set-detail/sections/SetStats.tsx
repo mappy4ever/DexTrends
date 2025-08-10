@@ -5,7 +5,7 @@ import CollectionTracker from '../../ui/CollectionTracker';
 import PriceHistoryChart from '../../ui/charts/PriceHistoryChart';
 import { motion } from 'framer-motion';
 import { getRaritySymbol, getRarityTier } from '../../../utils/tcgRaritySymbols';
-import type { SetStatistics } from '../types';
+import type { SetStatistics, CardWithMarketPrice } from '../types';
 import type { TCGCard } from '../../../types/api/cards';
 
 interface SetStatsProps {
@@ -168,7 +168,7 @@ export default function SetStats({ statistics, cards, setId }: SetStatsProps) {
                 Top Value Cards
               </h3>
               <div className="flex gap-4 overflow-x-auto pb-2">
-                {statistics.highestValueCards.slice(0, 5).map((card: any, index) => (
+                {statistics.highestValueCards.slice(0, 5).map((card: CardWithMarketPrice, index) => (
                   <motion.div 
                     key={card.id} 
                     className="flex-shrink-0 text-center"

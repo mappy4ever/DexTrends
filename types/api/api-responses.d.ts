@@ -1,5 +1,17 @@
 // Generic API response wrappers and common types
 
+/**
+ * Standard error response structure used across all API endpoints
+ * This is the primary error format for consistency
+ */
+export interface ErrorResponse {
+  error: string;
+  message?: string;
+  details?: any;
+  statusCode?: number;
+  timestamp?: string;
+}
+
 // Base API response
 export interface ApiResponse<T> {
   data: T;
@@ -240,4 +252,45 @@ export interface CommonQueryParams {
   fields?: string[];
   include?: string[];
   exclude?: string[];
+}
+
+// Database/Query Builder Types (Phase 2 - High)
+export interface DatabaseQueryBuilder {
+  select: (columns?: string | string[]) => DatabaseQueryBuilder;
+  from: (table: string) => DatabaseQueryBuilder;
+  where: (condition: string | Record<string, unknown>) => DatabaseQueryBuilder;
+  order: (column: string, direction?: 'asc' | 'desc') => DatabaseQueryBuilder;
+  limit: (count: number) => DatabaseQueryBuilder;
+  offset?: (count: number) => DatabaseQueryBuilder;
+  join?: (table: string, condition: string) => DatabaseQueryBuilder;
+  groupBy?: (columns: string | string[]) => DatabaseQueryBuilder;
+  having?: (condition: string) => DatabaseQueryBuilder;
+  execute?: () => Promise<QueryResult>;
+  [key: string]: unknown;
+}
+
+export interface QueryResult<T = unknown> {
+  data: T[] | null;
+  count?: number;
+  error?: ApiError | null;
+  status?: number;
+}
+
+// Supabase specific query types
+export interface SupabaseQueryBuilder extends DatabaseQueryBuilder {
+  eq: (column: string, value: unknown) => SupabaseQueryBuilder;
+  neq: (column: string, value: unknown) => SupabaseQueryBuilder;
+  gt: (column: string, value: unknown) => SupabaseQueryBuilder;
+  gte: (column: string, value: unknown) => SupabaseQueryBuilder;
+  lt: (column: string, value: unknown) => SupabaseQueryBuilder;
+  lte: (column: string, value: unknown) => SupabaseQueryBuilder;
+  like: (column: string, pattern: string) => SupabaseQueryBuilder;
+  ilike: (column: string, pattern: string) => SupabaseQueryBuilder;
+  is: (column: string, value: boolean | null) => SupabaseQueryBuilder;
+  in: (column: string, values: unknown[]) => SupabaseQueryBuilder;
+  contains: (column: string, value: unknown) => SupabaseQueryBuilder;
+  containedBy: (column: string, value: unknown) => SupabaseQueryBuilder;
+  range: (column: string, from: unknown, to: unknown) => SupabaseQueryBuilder;
+  single: () => SupabaseQueryBuilder;
+  maybeSingle: () => SupabaseQueryBuilder;
 }

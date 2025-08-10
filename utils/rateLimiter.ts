@@ -478,7 +478,7 @@ type RateLimiter = TokenBucketLimiter | SlidingWindowLimiter | FixedWindowLimite
  * Rate limiter factory
  */
 export class RateLimiterFactory {
-  static create(type: RateLimiterType = 'sliding', options: any = {}): RateLimiter {
+  static create(type: RateLimiterType = 'sliding', options: Record<string, unknown> = {}): RateLimiter {
     const store = new RateLimiterStore();
     
     switch (type.toLowerCase() as RateLimiterType) {
@@ -569,8 +569,8 @@ export function createRateLimitMiddleware(options: RateLimitMiddlewareOptions = 
 
       return next ? next() : true;
 
-    } catch (error: any) {
-      logger.error('Rate limiting error', { error: error.message, stack: error.stack });
+    } catch (error) {
+      logger.error('Rate limiting error', { error: error instanceof Error ? error.message : String(error), stack: error instanceof Error ? error.stack : undefined });
       
       // Don't block requests on rate limiter errors
       return next ? next() : true;

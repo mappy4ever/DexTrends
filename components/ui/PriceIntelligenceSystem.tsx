@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { FaChartLine, FaArrowUp, FaArrowDown, FaBrain, FaRobot, FaExclamationTriangle, FaInfoCircle } from 'react-icons/fa';
 import { BsLightningFill, BsGraphUp, BsGraphDown, BsArrowUp, BsArrowDown } from 'react-icons/bs';
+import logger from '@/utils/logger';
 import { Line, Bar, Scatter } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -97,13 +98,7 @@ const PriceIntelligenceSystem: React.FC<PriceIntelligenceSystemProps> = ({
   const [factors, setFactors] = useState<PriceFactor[]>([]);
   const [similarCards, setSimilarCards] = useState<SimilarCard[]>([]);
 
-  useEffect(() => {
-    if (cardId) {
-      generatePricePredictions();
-    }
-  }, [cardId, timeframe]);
-
-  const generatePricePredictions = async () => {
+  const generatePricePredictions = useCallback(async () => {
     setLoading(true);
     try {
       // Simulate AI prediction algorithm
@@ -136,7 +131,13 @@ const PriceIntelligenceSystem: React.FC<PriceIntelligenceSystemProps> = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [onPredictionUpdate, timeframe]);
+
+  useEffect(() => {
+    if (cardId) {
+      generatePricePredictions();
+    }
+  }, [cardId, timeframe, generatePricePredictions]);
 
   const generatePredictionPoints = (basePrice: number, volatility: number, timeframe: Timeframe): PredictionPoint[] => {
     const days = timeframe === '7d' ? 7 : timeframe === '30d' ? 30 : 90;

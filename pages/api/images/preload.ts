@@ -116,12 +116,12 @@ export default async function handler(req: PreloadImagesRequest, res: NextApiRes
       timestamp: new Date().toISOString()
     });
     
-  } catch (error: any) {
-    logger.error('[Image Preload] Failed to generate preload URLs:', error);
+  } catch (error: unknown) {
+    logger.error('[Image Preload] Failed to generate preload URLs:', { error: error instanceof Error ? error.message : String(error) });
     
     res.status(500).json({
       error: 'Failed to generate preload URLs',
-      message: error.message
+      message: error instanceof Error ? error.message : String(error)
     });
   }
 }

@@ -2,6 +2,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { createClient } from '@supabase/supabase-js';
 import logger from '@/utils/logger';
+import type { AnyObject } from '../../types/common';
+
+interface CardRow {
+  set_id: string | null;
+  set_name: string | null;
+  artist: string | null;
+}
 
 // Initialize Supabase client
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -94,7 +101,7 @@ async function getFiltersFromSupabase(): Promise<FilterData> {
 
     // Get unique sets with counts
     const setsMap = new Map<string, SetInfo>();
-    setsData?.forEach((card: any) => {
+    setsData?.forEach((card: CardRow) => {
       if (card.set_id && card.set_name) {
         if (setsMap.has(card.set_id)) {
           const setInfo = setsMap.get(card.set_id);
@@ -129,7 +136,7 @@ async function getFiltersFromSupabase(): Promise<FilterData> {
     }
 
     const artistsSet = new Set<string>();
-    artistsData?.forEach((card: any) => {
+    artistsData?.forEach((card: CardRow) => {
       if (card.artist) {
         artistsSet.add(card.artist);
       }
@@ -144,8 +151,8 @@ async function getFiltersFromSupabase(): Promise<FilterData> {
       artists: artists.slice(0, 100) // Limit to first 100 artists
     };
 
-  } catch (error) {
-    logger.error('Database query error:', error);
+  } catch (error: unknown) {
+    logger.error('Database query error:', { error: error instanceof Error ? error.message : String(error) });
     throw error;
   }
 }
@@ -195,8 +202,8 @@ export default async function handler(
     try {
       // Try to get data from Supabase
       filterData = await getFiltersFromSupabase();
-    } catch (error) {
-      logger.error('Failed to fetch from database, using fallback:', error);
+    } catch (error: unknown) {
+      logger.error('Failed to fetch from database, using fallback:', { error: error instanceof Error ? error.message : String(error) });
       // Use fallback data if database fails
       filterData = getFallbackFilters();
     }
@@ -215,8 +222,8 @@ export default async function handler(
       timestamp: new Date().toISOString()
     });
 
-  } catch (error) {
-    logger.error('Filter API error:', error);
+  } catch (error: unknown) {
+    logger.error('Filter API error:', { error: error instanceof Error ? error.message : String(error) });
     
     // Return fallback data even on error
     const fallbackData = getFallbackFilters();

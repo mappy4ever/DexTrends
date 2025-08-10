@@ -3,17 +3,19 @@ import cacheManager, { cachedFetchData, pokemonCache, tcgCache, CONFIG } from '.
 import { sanitizePokemonName } from './pokemonNameSanitizer';
 import { fetchJSON, postJSON } from './unifiedFetch';
 import logger from './logger';
-import type { Pokemon, PokemonSpecies, Nature, Move } from '../types/api/pokemon';
+import { POKEAPI } from '../config/api';
+import type { Pokemon, PokemonSpecies, Nature, Move } from "../types/pokemon";
 import type { TCGCard } from '../types/api/cards';
 import type { PocketCard } from '../types/api/pocket-cards';
-import type { ApiError as ApiErrorType, CachedResponse } from '../types/api/api-responses';
+import type { ApiError as ApiErrorType, CachedResponse, ResponseMetadata } from '../types/api/api-responses';
+import type { AnyObject } from '../types/common';
 
 // Custom error class with status code
 export class ApiError extends Error {
   status: number;
-  details?: any;
+  details?: AnyObject;
 
-  constructor(message: string, status: number, details?: any) {
+  constructor(message: string, status: number, details?: AnyObject) {
     super(message);
     this.name = 'ApiError';
     this.status = status;
@@ -71,9 +73,9 @@ export const fetchPokemonSpecies = async (id: string | number): Promise<PokemonS
 export const fetchNature = async (name: string): Promise<Nature> => {
   const key = cacheManager.generateKey('nature', { name });
   return cacheManager.cachedFetch<Nature>(
-    `https://pokeapi.co/api/v2/nature/${name}`,
+    POKEAPI.nature(name),
     async () => {
-      const result = await fetchJSON<Nature>(`https://pokeapi.co/api/v2/nature/${name}`, {
+      const result = await fetchJSON<Nature>(POKEAPI.nature(name), {
         useCache: false, // Let cacheManager handle caching
         timeout: 8000,
         retries: 3 // Nature data is critical for calculations
@@ -88,9 +90,9 @@ export const fetchNature = async (name: string): Promise<Nature> => {
 export const fetchMove = async (name: string): Promise<Move> => {
   const key = cacheManager.generateKey('move', { name });
   return cacheManager.cachedFetch<Move>(
-    `https://pokeapi.co/api/v2/move/${name}`,
+    POKEAPI.move(name),
     async () => {
-      const result = await fetchJSON<Move>(`https://pokeapi.co/api/v2/move/${name}`, {
+      const result = await fetchJSON<Move>(POKEAPI.move(name), {
         useCache: false, // Let cacheManager handle caching
         timeout: 8000,
         retries: 3 // Move data is critical for battle calculations
@@ -114,7 +116,7 @@ export const fetchTCGCards = async (pokemonName: string): Promise<TCGCard[]> => 
     const cards = await cacheManager.cachedFetch<TCGCard[]>(
       `tcg-${sanitizedName}`,
       async () => {
-        const response = await fetchJSON<{ data: TCGCard[], meta?: any }>(`/api/tcg-cards?name=${encodeURIComponent(sanitizedName)}`, {
+        const response = await fetchJSON<{ data: TCGCard[], meta?: ResponseMetadata }>(`/api/tcg-cards?name=${encodeURIComponent(sanitizedName)}`, {
           useCache: false, // Let cacheManager handle caching
           timeout: 12000, // Longer timeout for TCG API
           retries: 2
@@ -125,7 +127,7 @@ export const fetchTCGCards = async (pokemonName: string): Promise<TCGCard[]> => 
         logger.debug('TCG API response', { 
           sanitizedName, 
           cardCount: Array.isArray(data) ? data.length : 0,
-          responseTime: response?.meta?.responseTime 
+          timestamp: response?.meta?.timestamp 
         });
         return Array.isArray(data) ? data : [];
       },

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import cacheManager from '../../utils/UnifiedCacheManager';
 import type { CacheStats } from '../../types/utils/cache';
+import logger from '@/utils/logger';
 
 interface CacheStatusProps {
   showDetails?: boolean;

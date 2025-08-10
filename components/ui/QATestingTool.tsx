@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import UnifiedCard from './cards/UnifiedCard';
+import logger from '@/utils/logger';
 
 /**
  * QA Testing Tool for Card Standardization
@@ -360,7 +361,7 @@ const QATestingTool: React.FC = () => {
                 {[1, 2, 3, 4].map(i => (
                   <UnifiedCard
                     key={i}
-                    card={testData[config.cardType]}
+                    card={testData[config.cardType] as any}
                     cardType={config.cardType}
                     {...config.props}
                     onMagnifyClick={() => logger.debug('Magnify clicked')}

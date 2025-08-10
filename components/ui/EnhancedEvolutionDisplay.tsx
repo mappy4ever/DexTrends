@@ -6,7 +6,7 @@ import { sanitizePokemonName } from '../../utils/pokemonNameSanitizer';
 import { fetchJSON } from '../../utils/unifiedFetch';
 import logger from '../../utils/logger';
 import { getRegionalEvolutionChain } from './RegionalEvolutionHandler';
-import { Pokemon } from '../../types/api/pokemon';
+import { Pokemon } from "../../types/pokemon";
 
 // Types
 interface EvolutionDetails {
@@ -83,7 +83,7 @@ interface EvolutionTreeDisplayProps {
   node: EvolutionNode;
   currentPokemonId: string | number;
   isShiny: boolean;
-  parentPosition?: any;
+  parentPosition?: { x: number; y: number } | null;
 }
 
 interface EeveeEvolutionDisplayProps {
@@ -192,13 +192,13 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }: EnhancedEvol
           if (regionalChain && regionalChain.length > 0) {
             // Convert regional chain to our format
             const structure: EvolutionNode = {
-              id: regionalChain[0].id,
+              id: String(regionalChain[0].id),
               name: regionalChain[0].name,
               types: regionalChain[0].types,
               level: 0,
               parentId: null,
-              sprite: regionalChain[0].sprite,
-              shinySprite: regionalChain[0].shinySprite,
+              sprite: regionalChain[0].sprite || '',
+              shinySprite: regionalChain[0].shinySprite || '',
               evolutions: []
             };
             
@@ -206,18 +206,18 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }: EnhancedEvol
             let currentNode = structure;
             for (let i = 1; i < regionalChain.length; i++) {
               const evolution: EvolutionNode = {
-                id: regionalChain[i].id,
+                id: String(regionalChain[i].id),
                 name: regionalChain[i].name,
                 types: regionalChain[i].types,
                 level: i,
-                parentId: regionalChain[i-1].id,
-                sprite: regionalChain[i].sprite,
-                shinySprite: regionalChain[i].shinySprite,
+                parentId: String(regionalChain[i-1].id),
+                sprite: regionalChain[i].sprite || '',
+                shinySprite: regionalChain[i].shinySprite || '',
                 evolutions: [],
-                isSplitEvolution: regionalChain[i].isSplitEvolution
+                isSplitEvolution: regionalChain[i].isSplitEvolution || false
               };
               
-              if (regionalChain[i].isSplitEvolution) {
+              if (regionalChain[i].isSplitEvolution || false) {
                 // Handle split evolutions (like Galarian Slowpoke)
                 currentNode.evolutions.push(evolution);
               } else {
@@ -246,7 +246,11 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }: EnhancedEvol
         // Get evolution chain for non-regional forms
         let evoData;
         try {
-          evoData = await fetchJSON<any>(speciesData.evolution_chain.url);
+          interface EvolutionChainResponse {
+            chain: unknown;
+            id: number;
+          }
+          evoData = await fetchJSON<EvolutionChainResponse>(speciesData.evolution_chain.url);
         } catch (error) {
           logger.error('Failed to fetch evolution chain:', error);
           if (isMounted) {
@@ -256,7 +260,12 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }: EnhancedEvol
         }
         
         // Parse the chain into a tree structure
-        const parseEvolutionNode = async (node: any, parentId: string | null = null, level: number = 0): Promise<EvolutionNode | null> => {
+        interface ChainNode {
+          species: { name: string; url: string };
+          evolves_to: ChainNode[];
+          evolution_details?: EvolutionDetails[];
+        }
+        const parseEvolutionNode = async (node: ChainNode | null, parentId: string | null = null, level: number = 0): Promise<EvolutionNode | null> => {
           if (!node) return null;
           
           const speciesId = node.species.url.split('/').slice(-2, -1)[0];
@@ -265,19 +274,30 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }: EnhancedEvol
           let types: string[] = [];
           let forms: PokemonForm[] = [];
           try {
-            const pokeData = await fetchJSON<any>(`https://pokeapi.co/api/v2/pokemon/${speciesId}`);
+            interface PokemonResponse {
+              types: Array<{ type: { name: string } }>;
+            }
+            const pokeData = await fetchJSON<PokemonResponse>(`https://pokeapi.co/api/v2/pokemon/${speciesId}`);
             if (pokeData) {
-              types = pokeData.types.map((t: any) => t.type.name);
+              types = pokeData.types.map((t) => t.type.name);
             }
             
             // Get available forms including mega evolutions
-            const speciesDetail = await fetchJSON<any>(node.species.url);
+            interface SpeciesDetail {
+              varieties?: Array<{ is_default: boolean; pokemon: { name: string; url: string } }>;
+            }
+            const speciesDetail = await fetchJSON<SpeciesDetail>(node.species.url);
             if (speciesDetail && speciesDetail.varieties && speciesDetail.varieties.length > 1) {
-              forms = await Promise.all(
+              const formPromises = await Promise.all(
                 speciesDetail.varieties
-                  .filter((v: any) => !v.is_default || isRegionalForm(v.pokemon.name) || isMegaEvolution(v.pokemon.name))
-                  .map(async (variety: any) => {
-                    const formData = await fetchJSON<any>(variety.pokemon.url);
+                  .filter((v) => !v.is_default || isRegionalForm(v.pokemon.name) || isMegaEvolution(v.pokemon.name))
+                  .map(async (variety) => {
+                    interface FormDataResponse {
+                      id: string;
+                      types: Array<{ type: { name: string } }>;
+                      sprites?: { front_default?: string; front_shiny?: string };
+                    }
+                    const formData = await fetchJSON<FormDataResponse>(variety.pokemon.url);
                     if (formData) {
                       // Check if this regional form should show its own evolution chain
                       const isRegional = isRegionalForm(variety.pokemon.name);
@@ -285,9 +305,9 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }: EnhancedEvol
                         name: variety.pokemon.name,
                         displayName: formatFormName(variety.pokemon.name, node.species.name),
                         id: formData.id,
-                        types: formData.types.map((t: any) => t.type.name),
-                        sprite: formData.sprites?.front_default,
-                        shinySprite: formData.sprites?.front_shiny,
+                        types: formData.types.map((t) => t.type.name),
+                        sprite: formData.sprites?.front_default || null,
+                        shinySprite: formData.sprites?.front_shiny || null,
                         isMega: isMegaEvolution(variety.pokemon.name),
                         isRegional: isRegional,
                         hasOwnEvolution: isRegional // Regional forms have their own evolution chains
@@ -297,7 +317,7 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }: EnhancedEvol
                     }
                   })
               );
-              forms = forms.filter((f): f is PokemonForm => f !== null && isValidForm(f.name));
+              forms = formPromises.filter((f): f is PokemonForm => f !== null && isValidForm(f.name));
             }
           } catch (e) {
             logger.error('Failed to fetch Pokemon data:', e);
@@ -349,7 +369,13 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }: EnhancedEvol
           return pokemonNode;
         };
         
-        const evolutionTree = await parseEvolutionNode(evoData.chain);
+        if (!evoData) {
+          if (isMounted) {
+            setEvolutionData({ chain: [], structure: null });
+          }
+          return;
+        }
+        const evolutionTree = await parseEvolutionNode(evoData.chain as ChainNode);
         
         // Flatten the tree for easy access
         const flattenTree = (node: EvolutionNode | null, result: FlatPokemon[] = []): FlatPokemon[] => {
@@ -377,10 +403,10 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }: EnhancedEvol
           });
         }
         
-      } catch (err: any) {
-        logger.error('Error loading evolution:', err);
+      } catch (err: unknown) {
+        logger.error('Error loading evolution:', { error: err instanceof Error ? err.message : String(err) });
         if (isMounted) {
-          setError(err.message);
+          setError(err instanceof Error ? err.message : String(err));
         }
       } finally {
         if (isMounted) {
@@ -414,8 +440,8 @@ function EnhancedEvolutionDisplay({ speciesUrl, currentPokemonId }: EnhancedEvol
           // Filter for regional variants using naming pattern
           const regionalPattern = /-(alola|galar|hisui|paldea)($|-)/;
           const variants = speciesData.varieties
-            .filter((v: any) => !v.is_default && regionalPattern.test(v.pokemon.name))
-            .map((v: any) => v.pokemon.name);
+            .filter((v: { is_default: boolean; pokemon: { name: string } }) => !v.is_default && regionalPattern.test(v.pokemon.name))
+            .map((v: { is_default: boolean; pokemon: { name: string } }) => v.pokemon.name);
           
           if (variants.length > 0) {
             setHasRegionalVariants(true);

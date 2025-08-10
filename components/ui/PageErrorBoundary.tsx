@@ -1,6 +1,8 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { useErrorHandler } from './PageErrorBoundary.hooks';
 import { useRouter } from 'next/router';
+import logger from '@/utils/logger';
+import errorTracking from '@/utils/errorTracking';
 
 interface Props {
   children: ReactNode;
@@ -95,13 +97,19 @@ class PageErrorBoundary extends Component<Props, State> {
   override componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // Log error to console in development
     if (process.env.NODE_ENV === 'development') {
-      logger.error('Page Error Boundary caught an error:', error, errorInfo);
+      logger.error('Page Error Boundary caught an error', { error, errorInfo });
     }
     
     // Log to error tracking service in production
     if (process.env.NODE_ENV === 'production') {
-      // TODO: Send to error tracking service like Sentry
-      logger.error(`[${this.props.pageName || 'Unknown Page'}] Error:`, error.message);
+      // Send to error tracking service (Sentry or custom)
+      errorTracking.captureException(error, {
+        pageName: this.props.pageName || 'Unknown Page',
+        componentStack: errorInfo.componentStack || undefined,
+        extra: {
+          props: this.props
+        }
+      });
     }
 
     this.setState({

@@ -6,6 +6,10 @@
 import { supabase } from '../lib/supabase';
 import logger from './logger';
 import analyticsEngine from './analyticsEngine';
+import type { TCGCard, Pokemon, CardSet } from '@/types';
+import type { AnyObject } from '@/types/common';
+
+
 
 // Type definitions
 interface SearchOptions {
@@ -23,7 +27,7 @@ interface SearchFilters {
   cards?: CardFilters;
   pokemon?: PokemonFilters;
   sets?: SetFilters;
-  [key: string]: any;
+  [key: string]: CardFilters | PokemonFilters | SetFilters | undefined;
 }
 
 interface CardFilters {
@@ -69,7 +73,7 @@ interface SearchCondition {
 interface SearchResultItem {
   type: 'card' | 'pokemon' | 'set';
   id: string;
-  data: any;
+  data: TCGCard | Pokemon | CardSet;
   score: number;
   matchedFields: string[];
   isFuzzy?: boolean;
@@ -232,7 +236,7 @@ class AdvancedSearchEngine {
 
     } catch (error) {
       logger.error('Advanced search error:', error);
-      throw new Error(`Search failed: ${(error as Error).message}`);
+      throw new Error(`Search failed: ${(error as unknown as Error).message}`);
     }
   }
 
@@ -341,7 +345,7 @@ class AdvancedSearchEngine {
     }
 
     // Process and score results
-    const results: SearchResultItem[] = (data || []).map((item: any) => {
+    const results: SearchResultItem[] = (data || []).map((item: { card_data: string | TCGCard; created_at: string; cache_key: string }) => {
       const cardData = typeof item.card_data === 'string' 
         ? JSON.parse(item.card_data) 
         : item.card_data;
@@ -397,7 +401,7 @@ class AdvancedSearchEngine {
       throw new Error(`Pokemon search failed: ${error.message}`);
     }
 
-    return (data || []).map((item: any) => {
+    return (data || []).map((item: { pokemon_data: string | Pokemon; created_at: string }) => {
       const pokemonData = typeof item.pokemon_data === 'string' 
         ? JSON.parse(item.pokemon_data) 
         : item.pokemon_data;
@@ -432,9 +436,9 @@ class AdvancedSearchEngine {
     }
 
     // Extract and deduplicate sets
-    const sets = new Map<string, any>();
-    (data || []).forEach((item: any) => {
-      const setData = item['card_data->set'];
+    const sets = new Map<string, CardSet>();
+    (data || []).forEach((item: { set: unknown }) => {
+      const setData = item.set as CardSet;
       if (setData && typeof setData === 'object' && 'id' in setData) {
         sets.set(setData.id, setData);
       }
@@ -495,7 +499,7 @@ class AdvancedSearchEngine {
       }
 
       // Perform fuzzy matching
-      data.forEach((item: any) => {
+      data.forEach((item: { card_data: string | TCGCard }) => {
         const cardData = typeof item.card_data === 'string' 
           ? JSON.parse(item.card_data) 
           : item.card_data;
@@ -571,39 +575,47 @@ class AdvancedSearchEngine {
 
   /**
    * Apply card-specific filters
+   * @param queryBuilder - Supabase query builder instance
+   * @param filters - Card filters to apply
+   * @returns The modified query builder
+   * 
+   * Note: Uses type assertion for Supabase methods as they are not
+   * easily typed without importing the full Supabase client types
    */
-  private applyCardFilters(queryBuilder: any, filters: CardFilters): any {
+  private applyCardFilters<T>(queryBuilder: T, filters: CardFilters): T {
     Object.entries(filters).forEach(([key, value]) => {
       if (value !== null && value !== undefined && value !== '') {
+        // Safe type assertion for Supabase query builder methods
+        const qb = queryBuilder as any;
         switch (key) {
           case 'setId':
-            queryBuilder = queryBuilder.eq('card_data->set->>id', value);
+            queryBuilder = qb.eq('card_data->set->>id', value);
             break;
           case 'rarity':
-            queryBuilder = queryBuilder.eq('card_data->>rarity', value);
+            queryBuilder = qb.eq('card_data->>rarity', value);
             break;
           case 'types':
             if (Array.isArray(value)) {
-              queryBuilder = queryBuilder.overlaps('card_data->types', value);
+              queryBuilder = qb.overlaps('card_data->types', value);
             } else {
-              queryBuilder = queryBuilder.contains('card_data->types', [value]);
+              queryBuilder = qb.contains('card_data->types', [value]);
             }
             break;
           case 'artist':
-            queryBuilder = queryBuilder.eq('card_data->>artist', value);
+            queryBuilder = qb.eq('card_data->>artist', value);
             break;
           case 'supertype':
-            queryBuilder = queryBuilder.eq('card_data->>supertype', value);
+            queryBuilder = qb.eq('card_data->>supertype', value);
             break;
           case 'priceMin':
-            queryBuilder = queryBuilder.gte('card_data->tcgplayer->prices->holofoil->>market', parseFloat(value.toString()));
+            queryBuilder = qb.gte('card_data->tcgplayer->prices->holofoil->>market', parseFloat(value.toString()));
             break;
           case 'priceMax':
-            queryBuilder = queryBuilder.lte('card_data->tcgplayer->prices->holofoil->>market', parseFloat(value.toString()));
+            queryBuilder = qb.lte('card_data->tcgplayer->prices->holofoil->>market', parseFloat(value.toString()));
             break;
           case 'hasPrice':
             if (value) {
-              queryBuilder = queryBuilder.not('card_data->tcgplayer->prices', 'is', null);
+              queryBuilder = qb.not('card_data->tcgplayer->prices', 'is', null);
             }
             break;
         }
@@ -616,19 +628,20 @@ class AdvancedSearchEngine {
   /**
    * Apply Pokemon-specific filters
    */
-  private applyPokemonFilters(queryBuilder: any, filters: PokemonFilters): any {
+  private applyPokemonFilters<T>(queryBuilder: T, filters: PokemonFilters): T {
     Object.entries(filters).forEach(([key, value]) => {
       if (value !== null && value !== undefined && value !== '') {
+        const qb = queryBuilder as any; // Cast for Supabase methods
         switch (key) {
           case 'types':
             if (Array.isArray(value)) {
-              queryBuilder = queryBuilder.overlaps('pokemon_data->types', value);
+              queryBuilder = qb.overlaps('pokemon_data->types', value);
             } else {
-              queryBuilder = queryBuilder.contains('pokemon_data->types', [value]);
+              queryBuilder = qb.contains('pokemon_data->types', [value]);
             }
             break;
           case 'generation':
-            queryBuilder = queryBuilder.eq('pokemon_data->>generation', value);
+            queryBuilder = qb.eq('pokemon_data->>generation', value);
             break;
         }
       }
@@ -640,7 +653,7 @@ class AdvancedSearchEngine {
   /**
    * Calculate relevance score for cards
    */
-  private calculateRelevanceScore(cardData: any, searchConditions: SearchCondition[]): number {
+  private calculateRelevanceScore(cardData: TCGCard, searchConditions: SearchCondition[]): number {
     let score = 0;
 
     searchConditions.forEach(condition => {
@@ -652,7 +665,7 @@ class AdvancedSearchEngine {
     });
 
     // Boost score for popular cards (could be based on analytics data)
-    if (cardData.tcgplayer?.prices?.holofoil?.market > 50) {
+    if (cardData.tcgplayer?.prices?.holofoil?.market && cardData.tcgplayer.prices.holofoil.market > 50) {
       score += 2; // High value cards get slight boost
     }
 
@@ -662,7 +675,7 @@ class AdvancedSearchEngine {
   /**
    * Calculate relevance score for Pokemon
    */
-  private calculatePokemonRelevanceScore(pokemonData: any, terms: string[], phrases: string[]): number {
+  private calculatePokemonRelevanceScore(pokemonData: Pokemon, terms: string[], phrases: string[]): number {
     let score = 0;
 
     // Name matching
@@ -688,7 +701,7 @@ class AdvancedSearchEngine {
   /**
    * Calculate relevance score for sets
    */
-  private calculateSetRelevanceScore(setData: any, terms: string[]): number {
+  private calculateSetRelevanceScore(setData: CardSet, terms: string[]): number {
     let score = 0;
 
     if (this.matchesTerms(setData.name, terms)) {
@@ -715,7 +728,7 @@ class AdvancedSearchEngine {
   /**
    * Check if field value matches search condition
    */
-  private matchesCondition(fieldValue: any, condition: SearchCondition): boolean {
+  private matchesCondition(fieldValue: unknown, condition: SearchCondition): boolean {
     if (!fieldValue) return false;
 
     const value = fieldValue.toString().toLowerCase();
@@ -738,8 +751,8 @@ class AdvancedSearchEngine {
   /**
    * Get field value from data object
    */
-  private getFieldValue(data: any, field: string): any {
-    const fieldMap: Record<string, any> = {
+  private getFieldValue(data: TCGCard, field: string): string {
+    const fieldMap: Record<string, string | undefined> = {
       'name': data.name,
       'set_name': data.set?.name,
       'artist': data.artist,
@@ -753,18 +766,23 @@ class AdvancedSearchEngine {
   /**
    * Get matched fields for highlighting
    */
-  private getMatchedFields(data: any, terms: string[], phrases: string[]): string[] {
+  private getMatchedFields(data: TCGCard | Pokemon | CardSet | AnyObject, terms: string[], phrases: string[]): string[] {
     const matched: string[] = [];
     
-    if (data.name && this.matchesTerms(data.name, terms)) {
+    // Check common properties
+    if ('name' in data && typeof data.name === 'string' && this.matchesTerms(data.name, terms)) {
       matched.push('name');
     }
     
-    if (data.set?.name && this.matchesTerms(data.set.name, terms)) {
-      matched.push('set');
+    // Check TCGCard-specific properties
+    if ('set' in data && data.set && typeof data.set === 'object' && 'name' in data.set) {
+      if (typeof data.set.name === 'string' && this.matchesTerms(data.set.name, terms)) {
+        matched.push('set');
+      }
     }
     
-    if (data.artist && this.matchesTerms(data.artist, terms)) {
+    // Check artist property (TCGCard-specific)
+    if ('artist' in data && typeof data.artist === 'string' && this.matchesTerms(data.artist, terms)) {
       matched.push('artist');
     }
 
@@ -785,16 +803,20 @@ class AdvancedSearchEngine {
           comparison = b.score - a.score;
           break;
         case 'name':
-          comparison = (a.data.name || '').localeCompare(b.data.name || '');
+          const aName = (a.data as TCGCard | Pokemon).name || '';
+          const bName = (b.data as TCGCard | Pokemon).name || '';
+          comparison = aName.localeCompare(bName);
           break;
         case 'price':
-          const aPrice = this.getPrice(a.data);
-          const bPrice = this.getPrice(b.data);
+          const aPrice = this.getPrice(a.data as TCGCard);
+          const bPrice = this.getPrice(b.data as TCGCard);
           comparison = bPrice - aPrice;
           break;
         case 'date':
-          const aDate = new Date(a.data.set?.releaseDate || 0).getTime();
-          const bDate = new Date(b.data.set?.releaseDate || 0).getTime();
+          const aData = a.data as TCGCard | CardSet;
+          const bData = b.data as TCGCard | CardSet;
+          const aDate = new Date('releaseDate' in aData ? aData.releaseDate : ('set' in aData && aData.set?.releaseDate) || 0).getTime();
+          const bDate = new Date('releaseDate' in bData ? bData.releaseDate : ('set' in bData && bData.set?.releaseDate) || 0).getTime();
           comparison = bDate - aDate;
           break;
         default:
@@ -810,9 +832,9 @@ class AdvancedSearchEngine {
   /**
    * Get price from card data for sorting
    */
-  private getPrice(cardData: any): number {
-    return cardData.tcgplayer?.prices?.holofoil?.market || 
-           cardData.tcgplayer?.prices?.normal?.market || 0;
+  private getPrice(cardData: TCGCard): number {
+    return cardData?.tcgplayer?.prices?.holofoil?.market || 
+           cardData?.tcgplayer?.prices?.normal?.market || 0;
   }
 
   /**
@@ -884,8 +906,8 @@ class AdvancedSearchEngine {
 
     const suggestions: SearchSuggestion[] = [];
     
-    (data || []).forEach((item: any) => {
-      const name = item['card_data->name'];
+    (data || []).forEach((item) => {
+      const name = (item as AnyObject)['card_data->name'];
       if (typeof name === 'string') {
         suggestions.push({
           text: name,
@@ -918,8 +940,8 @@ class AdvancedSearchEngine {
 
     const suggestions: SearchSuggestion[] = [];
     
-    (data || []).forEach((item: any) => {
-      const name = item['pokemon_data->name'];
+    (data || []).forEach((item) => {
+      const name = (item as AnyObject)['pokemon_data->name'];
       if (typeof name === 'string') {
         suggestions.push({
           text: name,

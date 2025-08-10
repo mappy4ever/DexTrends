@@ -329,10 +329,13 @@ const UXInteractionLab = () => {
     const rippleTimersRef = useRef<Set<NodeJS.Timeout>>(new Set());
     
     useEffect(() => {
+      // Capture ref value at effect creation time
+      const timers = rippleTimersRef.current;
+      
       return () => {
-        // Cleanup all ripple timers on unmount
-        rippleTimersRef.current.forEach(timer => clearTimeout(timer));
-        rippleTimersRef.current.clear();
+        // Use captured value in cleanup
+        timers.forEach(timer => clearTimeout(timer));
+        timers.clear();
       };
     }, []);
     

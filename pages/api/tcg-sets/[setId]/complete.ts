@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { fetchJSON } from '../../../../utils/unifiedFetch';
 import logger from '../../../../utils/logger';
 import { tcgCache } from '../../../../lib/tcg-cache';
+import type { TCGCard, CardSet, PriceData } from '../../../../types/api/cards';
 
 // This endpoint loads ALL cards for a set at once (optimized for performance)
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -44,7 +45,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             logger.info(`[Background Refresh] Starting stale cache refresh for set ${id}`);
             await refreshSetInBackground(id);
           } catch (error) {
-            logger.error(`[Background Refresh] Failed for set ${id}:`, error);
+            logger.error(`[Background Refresh] Failed for set ${id}:`, { error: error instanceof Error ? error.message : String(error) });
             // If refresh fails, extend the existing cache TTL to prevent frequent failures
             await tcgCache.extendCacheTTL(id, 24 * 60 * 60); // Extend by 24 hours
           }
@@ -68,7 +69,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Fetch set info first
     let setInfo;
     try {
-      setInfo = await fetchJSON<{ data: any }>(
+      setInfo = await fetchJSON<{ data: CardSet }>(
         `https://api.pokemontcg.io/v2/sets/${id}`, 
         { 
           headers,
@@ -79,19 +80,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           retryDelay: 2000 // 2 second delay between retries
         }
       );
-    } catch (fetchError: any) {
+    } catch (fetchError: unknown) {
       // Check if this is a known subset pattern that often has 404 issues
       const isKnownSubset = /^sv\d+pt5$/.test(id) || /^swsh\d+pt5$/.test(id);
       
-      if (fetchError.message?.includes('404') && isKnownSubset) {
+      const fetchErrorMessage = fetchError instanceof Error ? fetchError.message : String(fetchError);
+      if (fetchErrorMessage.includes('404') && isKnownSubset) {
         logger.warn(`Known subset ${id} returned 404, will retry with longer timeout`, {
           setId: id,
-          error: fetchError.message
+          error: fetchErrorMessage
         });
         
         // Try once more with longer timeout for known problematic sets
         try {
-          setInfo = await fetchJSON<{ data: any }>(
+          setInfo = await fetchJSON<{ data: CardSet }>(
             `https://api.pokemontcg.io/v2/sets/${id}`,
             {
               headers,
@@ -124,13 +126,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Load all cards in parallel batches
     const pageSize = 250; // Maximum allowed by API
     const totalPages = Math.ceil(totalCards / pageSize);
-    const pagePromises: Promise<any>[] = [];
+    const pagePromises: Promise<{ data: TCGCard[] } | null>[] = [];
     
     logger.info(`Loading ${totalCards} cards in ${totalPages} parallel requests`, { setId: id });
     
     // Create promises for all pages
     for (let page = 1; page <= totalPages; page++) {
-      const pagePromise = fetchJSON<{ data: any[] }>(
+      const pagePromise = fetchJSON<{ data: TCGCard[] }>(
         `https://api.pokemontcg.io/v2/cards?q=set.id:${id}&page=${page}&pageSize=${pageSize}`,
         {
           headers,
@@ -147,7 +149,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const pageResults = await Promise.all(pagePromises);
     
     // Combine all cards
-    const allCards: any[] = [];
+    const allCards: TCGCard[] = [];
     for (const result of pageResults) {
       if (result?.data) {
         allCards.push(...result.data);
@@ -162,7 +164,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
     
     // Sort cards by number
-    allCards.sort((a, b) => {
+    allCards.sort((a: TCGCard, b: TCGCard) => {
       const numA = parseInt(a.number) || 0;
       const numB = parseInt(b.number) || 0;
       return numA - numB;
@@ -200,11 +202,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
     res.status(200).json(response);
     
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const errorStack = error instanceof Error ? error.stack : undefined;
     logger.error('Failed to fetch complete set', { 
       setId: id,
-      error: error.message,
-      stack: error.stack
+      error: errorMessage,
+      stack: errorStack
     });
     
     // Try to return stale cache if available as fallback
@@ -236,7 +240,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
     res.status(500).json({ 
       error: 'Failed to fetch complete set',
-      message: error.message,
+      message: errorMessage,
       setId: id
     });
   }
@@ -255,7 +259,7 @@ async function refreshSetInBackground(setId: string) {
     }
     
     // Fetch set info first
-    const setInfo = await fetchJSON<{ data: any }>(
+    const setInfo = await fetchJSON<{ data: CardSet }>(
       `https://api.pokemontcg.io/v2/sets/${setId}`, 
       { 
         headers,
@@ -275,13 +279,13 @@ async function refreshSetInBackground(setId: string) {
     // Load all cards in parallel batches
     const pageSize = 250;
     const totalPages = Math.ceil(totalCards / pageSize);
-    const pagePromises: Promise<any>[] = [];
+    const pagePromises: Promise<{ data: TCGCard[] } | null>[] = [];
     
     logger.info(`[Background Refresh] Loading ${totalCards} cards in ${totalPages} parallel requests`, { setId });
     
     // Create promises for all pages
     for (let page = 1; page <= totalPages; page++) {
-      const pagePromise = fetchJSON<{ data: any[] }>(
+      const pagePromise = fetchJSON<{ data: TCGCard[] }>(
         `https://api.pokemontcg.io/v2/cards?q=set.id:${setId}&page=${page}&pageSize=${pageSize}`,
         {
           headers,
@@ -296,7 +300,7 @@ async function refreshSetInBackground(setId: string) {
     const pageResults = await Promise.all(pagePromises);
     
     // Combine all cards
-    const allCards: any[] = [];
+    const allCards: TCGCard[] = [];
     for (const result of pageResults) {
       if (result?.data) {
         allCards.push(...result.data);
@@ -304,7 +308,7 @@ async function refreshSetInBackground(setId: string) {
     }
     
     // Sort cards by number
-    allCards.sort((a, b) => {
+    allCards.sort((a: TCGCard, b: TCGCard) => {
       const numA = parseInt(a.number) || 0;
       const numB = parseInt(b.number) || 0;
       return numA - numB;
@@ -327,9 +331,10 @@ async function refreshSetInBackground(setId: string) {
     logger.info(`[Background Refresh] Successfully refreshed set ${setId}`, {
       cardCount: allCards.length
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     logger.error(`[Background Refresh] Failed to refresh set ${setId}:`, {
-      error: error.message,
+      error: errorMessage,
       setId
     });
     // Don't throw - just log the error and continue using cached data
@@ -337,8 +342,21 @@ async function refreshSetInBackground(setId: string) {
   }
 }
 
+interface SetStatistics {
+  totalCards: number;
+  rarityDistribution: Record<string, number>;
+  typeDistribution: Record<string, number>;
+  priceStats: {
+    total: number;
+    highest: number;
+    average: number;
+    cardWithPrices: number;
+  };
+  calculatedAt: string;
+}
+
 // Calculate statistics for the set
-function calculateSetStatistics(cards: any[]) {
+function calculateSetStatistics(cards: TCGCard[]): SetStatistics {
   const rarityCount: Record<string, number> = {};
   const typeCount: Record<string, number> = {};
   const priceStats = {
@@ -368,7 +386,8 @@ function calculateSetStatistics(cards: any[]) {
       
       for (const priceData of prices) {
         if (priceData && typeof priceData === 'object') {
-          const price = (priceData as any).market || (priceData as any).mid || 0;
+          const typedPriceData = priceData as PriceData;
+          const price = typedPriceData.market || typedPriceData.mid || 0;
           if (price > highestPrice) {
             highestPrice = price;
           }

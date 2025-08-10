@@ -29,8 +29,28 @@ export { default as CollectionDashboard } from './layout/CollectionDashboard';
 export * from './loading';
 
 // Animation Components
-export * from './animations';
-export { default as AnimationSystem } from './animations/AnimationSystem';
+// Export all except HoverCard to avoid conflict with design-system
+export { 
+  FadeIn, 
+  SlideUp, 
+  Scale,
+  CardHover, 
+  StaggeredChildren,
+  Bounce,
+  Pulse,
+  AnimationProvider,
+  PageTransition,
+  StaggerContainer,
+  StaggerItem,
+  FloatingElement,
+  RevealElement,
+  PulseElement,
+  LoadingDots,
+  ModalAnimation,
+  PressableButton,
+  useAnimation
+} from './animations';
+export { default as AnimationSystem, HoverCard as AnimatedHoverCard } from './animations/AnimationSystem';
 export { default as EnhancedAnimationSystem } from './EnhancedAnimationSystem';
 export { useEnhancedAnimation } from './EnhancedAnimationSystem.hooks';
 
@@ -42,7 +62,7 @@ export { default as PriceHistoryChart } from './charts/PriceHistoryChart';
 export { default as chartcontainer } from './charts/chartcontainer';
 
 // Common Components (remaining in root)
-export { TypeBadge, TypeBadgeWithIcon, TypeBadgeSelector } from './TypeBadge';
+export { TypeBadge, default as TypeBadgeDefault } from './TypeBadge';
 export { default as Tooltip } from './Tooltip';
 export { default as ErrorMessage } from './ErrorMessage';
 export { default as KpiCard } from './KpiCard';

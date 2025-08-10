@@ -6,7 +6,7 @@ import { CircularButton } from '../ui/design-system';
 import { useFavorites } from '../../context/UnifiedAppContext';
 import ShareMenu from '../ui/ShareMenu';
 import { sharePokemon } from '../../utils/shareUtils';
-import type { Pokemon } from '../../types/api/pokemon';
+import type { Pokemon } from "../../types/pokemon";
 
 interface FloatingActionBarProps {
   pokemon: Pokemon;

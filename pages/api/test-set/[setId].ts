@@ -21,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Direct API call to test set existence
     const setUrl = `https://api.pokemontcg.io/v2/sets/${id}`;
-    logger.debug('Testing direct API call to:', setUrl);
+    logger.debug('Testing direct API call to:', { setUrl });
     
     const response = await fetch(setUrl, {
       headers,
@@ -29,14 +29,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
     
     const responseText = await response.text();
-    logger.debug('Response status:', response.status);
-    logger.debug('Response headers:', Object.fromEntries(response.headers.entries()));
+    logger.debug('Response status:', { status: response.status });
+    logger.debug('Response headers:', { headers: Object.fromEntries(response.headers.entries()) });
     
     let data;
     try {
       data = JSON.parse(responseText);
     } catch (e) {
-      logger.error('Failed to parse response:', responseText);
+      logger.error('Failed to parse response:', { responseText });
       return res.status(500).json({ 
         error: 'Invalid JSON response',
         responsePreview: responseText.substring(0, 200),
@@ -60,12 +60,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       hasApiKey: !!apiKey,
       message: data?.data ? `Set "${data.data.name}" found successfully` : 'No set data returned'
     });
-  } catch (error: any) {
-    logger.error('Test API failed:', error);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const errorStack = error instanceof Error ? error.stack : undefined;
+    logger.error('Test API failed:', { error: error instanceof Error ? error.message : String(error) });
     res.status(500).json({ 
-      error: error.message,
+      error: errorMessage,
       setId: id,
-      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      stack: process.env.NODE_ENV === 'development' ? errorStack : undefined
     });
   }
 }

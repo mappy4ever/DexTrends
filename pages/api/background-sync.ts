@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import logger from '../../utils/logger';
 import cacheManager from '../../utils/UnifiedCacheManager';
+import { ErrorResponse } from '@/types/api/api-responses';
 
 interface SyncChanges {
   prices: {
@@ -33,7 +34,7 @@ interface SyncChanges {
 interface SyncCheckResponse {
   timestamp: number;
   changes: SyncChanges;
-  cacheStatus: any;
+  cacheStatus: Record<string, unknown>;
   networkStatus: string;
   hasChanges: boolean;
   nextSyncRecommended: number;
@@ -42,15 +43,10 @@ interface SyncCheckResponse {
 interface SyncRequestResponse {
   success: boolean;
   syncType: string;
-  result: any;
+  result: Record<string, unknown>;
   timestamp: number;
 }
 
-interface ErrorResponse {
-  error: string;
-  syncType?: string;
-  message?: string;
-}
 
 export default async function handler(
   req: NextApiRequest,
@@ -69,10 +65,10 @@ export default async function handler(
         return res.status(405).json({ error: 'Method not allowed' });
     }
   } catch (error) {
-    logger.error('Background sync API error:', error);
+    logger.error('Background sync API error:', { error: error instanceof Error ? error.message : String(error) });
     return res.status(500).json({ 
       error: 'Internal server error',
-      message: error.message 
+      message: error instanceof Error ? error.message : String(error) 
     });
   }
 }
@@ -101,7 +97,7 @@ async function handleSyncCheck(
 
     // Return only what has actually changed
     const hasChanges = Object.values(syncData.changes).some(change => 
-      change.hasUpdates || ((change as any).items && (change as any).items.length > 0)
+      change.hasUpdates || ('items' in change && Array.isArray(change.items) && change.items.length > 0)
     );
 
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
@@ -111,7 +107,7 @@ async function handleSyncCheck(
       nextSyncRecommended: Date.now() + (5 * 60 * 1000) // 5 minutes
     });
   } catch (error) {
-    logger.error('Sync check failed:', error);
+    logger.error('Sync check failed:', { error: error instanceof Error ? error.message : String(error) });
     return res.status(500).json({ error: 'Failed to check sync status' });
   }
 }
@@ -150,11 +146,11 @@ async function handleSyncRequest(
       timestamp: Date.now()
     });
   } catch (error) {
-    logger.error(`${syncType} failed:`, error);
+    logger.error(`${syncType} failed:`, { error: error instanceof Error ? error.message : String(error) });
     return res.status(500).json({ 
       error: 'Sync failed',
       syncType,
-      message: error.message 
+      message: error instanceof Error ? error.message : String(error) 
     });
   }
 }
@@ -175,7 +171,7 @@ async function checkPriceUpdates(lastSync: string | undefined) {
       updateCount: hasUpdates ? Math.floor(Math.random() * 50) + 1 : 0
     };
   } catch (error) {
-    logger.error('Price update check failed:', error);
+    logger.error('Price update check failed:', { error: error instanceof Error ? error.message : String(error) });
     return { hasUpdates: false, error: error.message };
   }
 }
@@ -196,7 +192,7 @@ async function checkFavoritesUpdates(userId: string | undefined, lastSync: strin
       lastUpdate: hasUpdates ? Date.now() : lastSync
     };
   } catch (error) {
-    logger.error('Favorites update check failed:', error);
+    logger.error('Favorites update check failed:', { error: error instanceof Error ? error.message : String(error) });
     return { hasUpdates: false, error: error.message };
   }
 }
@@ -217,7 +213,7 @@ async function checkCollectionUpdates(userId: string | undefined, lastSync: stri
       lastUpdate: hasUpdates ? Date.now() : lastSync
     };
   } catch (error) {
-    logger.error('Collection update check failed:', error);
+    logger.error('Collection update check failed:', { error: error instanceof Error ? error.message : String(error) });
     return { hasUpdates: false, error: error.message };
   }
 }
@@ -238,7 +234,7 @@ async function checkTrendingUpdates(lastSync: string | undefined) {
       updateInterval: 15 * 60 * 1000 // 15 minutes
     };
   } catch (error) {
-    logger.error('Trending update check failed:', error);
+    logger.error('Trending update check failed:', { error: error instanceof Error ? error.message : String(error) });
     return { hasUpdates: false, error: error.message };
   }
 }
@@ -246,7 +242,7 @@ async function checkTrendingUpdates(lastSync: string | undefined) {
 // Get cache status
 async function getCacheStatus() {
   try {
-    const stats: any = await cacheManager.getStats();
+    const stats = await cacheManager.getStats() as { memory?: { size: number }, localStorage?: { size: number }, database?: { size: number }, overall?: { hitRate: number } };
     return {
       size: `${((stats.memory?.size || 0) + (stats.localStorage?.size || 0)) * 0.001}MB`, // Rough estimate
       entries: (stats.memory?.size || 0) + (stats.localStorage?.size || 0) + (stats.database?.size || 0),
@@ -275,7 +271,7 @@ async function syncPriceData() {
 }
 
 // Sync favorites
-async function syncFavorites(userId: string | undefined, data: any) {
+async function syncFavorites(userId: string | undefined, data: { favorites?: string[] }) {
   try {
     if (!userId) {
       throw new Error('User ID required for favorites sync');
@@ -294,7 +290,7 @@ async function syncFavorites(userId: string | undefined, data: any) {
 }
 
 // Sync collections
-async function syncCollections(userId: string | undefined, data: any) {
+async function syncCollections(userId: string | undefined, data: { collections?: string[], cards?: string[] }) {
   try {
     if (!userId) {
       throw new Error('User ID required for collections sync');

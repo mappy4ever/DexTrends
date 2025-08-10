@@ -1,5 +1,5 @@
 import { EnhancedBattleState, BattleResult, KeyMoment } from '@/types/battle';
-import { Pokemon, Move, PokemonMove } from '@/types/api/pokemon';
+import { Pokemon, Move, PokemonMove } from "../types/pokemon";
 import { createInitialBattleState } from './core';
 import { executeTurn } from './moves';
 import { processEndOfTurn } from './effects';
@@ -7,8 +7,8 @@ import { processEndOfTurn } from './effects';
 export const simulateBattleToCompletion = async (
   pokemon1: Pokemon,
   pokemon2: Pokemon,
-  config1: any,
-  config2: any,
+  config1: unknown,
+  config2: unknown,
   moves1: PokemonMove[],
   moves2: PokemonMove[],
   loadMoveData: (moveName: string) => Promise<Move | null>

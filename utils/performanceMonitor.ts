@@ -5,7 +5,7 @@
 import logger from './logger';
 
 // Performance metric types
-interface Metric {
+export interface Metric {
   name: string;
   value: number;
   timestamp: number;
@@ -336,14 +336,16 @@ class PerformanceMonitor {
   }
 
   private monitorMemoryUsage(): void {
-    if ('memory' in performance) {
+    if ('memory' in performance && performance.memory) {
       const interval = setInterval(() => {
-        const memory = performance.memory!;
-        this.recordMetric('memory-usage', memory.usedJSHeapSize, {
-          total: memory.totalJSHeapSize,
-          limit: memory.jsHeapSizeLimit,
-          percentage: (memory.usedJSHeapSize / memory.totalJSHeapSize) * 100
-        });
+        const memory = performance.memory;
+        if (memory) {
+          this.recordMetric('memory-usage', memory.usedJSHeapSize, {
+            total: memory.totalJSHeapSize,
+            limit: memory.jsHeapSizeLimit,
+            percentage: (memory.usedJSHeapSize / memory.totalJSHeapSize) * 100
+          });
+        }
       }, 30000); // Every 30 seconds
       this.intervals.push(interval);
     }
@@ -603,9 +605,9 @@ class PerformanceMonitor {
   }
 
   private getMemoryReport(): MemoryReport | null {
-    if (!('memory' in performance)) return null;
+    if (!('memory' in performance) || !performance.memory) return null;
     
-    const memory = performance.memory!;
+    const memory = performance.memory;
     return {
       used: memory.usedJSHeapSize,
       total: memory.totalJSHeapSize,
@@ -615,9 +617,9 @@ class PerformanceMonitor {
   }
 
   private getConnectionInfo(): ConnectionInfo | null {
-    if (!('connection' in navigator)) return null;
+    if (!('connection' in navigator) || !navigator.connection) return null;
     
-    const connection = navigator.connection!;
+    const connection = navigator.connection;
     return {
       effectiveType: connection.effectiveType,
       downlink: connection.downlink,
@@ -651,7 +653,7 @@ class PerformanceMonitor {
       logger.debug('Web Vitals:', report.vitals);
       logger.debug('Resources:', report.resources);
       logger.debug('Custom Metrics:', report.custom);
-      logger.debug('Memory:', report.memory);
+      logger.debug('Memory:', { memory: report.memory });
       logger.groupEnd();
     }
   }

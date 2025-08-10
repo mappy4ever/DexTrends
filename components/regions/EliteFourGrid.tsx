@@ -173,7 +173,7 @@ const EliteFourGrid: React.FC<EliteFourGridProps> = ({ region, eliteFour, champi
                     
                     {/* Type Badge */}
                     <div className="absolute top-4 right-4 z-20">
-                      <TypeBadge type={member.type} size="lg" variant="gradient" />
+                      <TypeBadge type={member.type} size="lg" />
                     </div>
                     
                     {/* Minimal info at bottom */}
@@ -280,7 +280,7 @@ const EliteFourGrid: React.FC<EliteFourGridProps> = ({ region, eliteFour, champi
                           Weak Against
                         </p>
                         <div className="flex justify-center flex-wrap gap-2">
-                          {weaknesses.slice(0, 3).map((type) => (
+                          {weaknesses.slice(0, 3).map((type: string) => (
                             <TypeBadge key={type} type={type} size="sm" />
                           ))}
                         </div>

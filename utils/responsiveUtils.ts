@@ -3,6 +3,8 @@
  * across different device sizes and orientations
  */
 
+import logger from '@/utils/logger';
+
 // Standard breakpoints used throughout the app
 export const BREAKPOINTS = {
   sm: 640,
@@ -96,29 +98,29 @@ export const getSafeAreaInsets = () => {
 // Test responsive behavior across different viewports
 export const testResponsiveLayout = async (testCallback: (device: typeof DEVICE_CATEGORIES[keyof typeof DEVICE_CATEGORIES]) => void) => {
   if (typeof window === 'undefined') {
-    console.warn('Responsive testing is only available in browser environment');
+    logger.warn('Responsive testing is only available in browser environment');
     return;
   }
   
   const originalSize = { width: window.innerWidth, height: window.innerHeight };
   
   for (const [category, device] of Object.entries(DEVICE_CATEGORIES)) {
-    console.group(`Testing ${category} (${device.name})`);
+    logger.info(`Testing ${category} (${device.name})`);
     
     try {
       // Note: This would require browser dev tools or testing framework
       // to actually resize the viewport. This is more of a testing utility
       // that can be used with tools like Playwright or Cypress
       await testCallback(device);
-      console.log(`✅ ${category} test completed`);
+      logger.info(`✅ ${category} test completed`);
     } catch (error) {
-      console.error(`❌ ${category} test failed:`, error);
+      logger.error(`❌ ${category} test failed:`, { error });
     }
     
-    console.groupEnd();
+    // Group end - not needed with logger
   }
   
-  console.log('Responsive testing completed');
+  logger.info('Responsive testing completed');
 };
 
 // Create responsive class names based on current breakpoint

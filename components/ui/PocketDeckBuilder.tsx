@@ -2,36 +2,91 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import Image from 'next/image';
 import { TypeBadge } from './TypeBadge';
 import { getHolographicEffect } from '../../utils/cardEffects';
+import type { PocketCard } from '../../types/api/pocket-cards';
+
+// Enhanced interfaces for the deck builder
+interface PocketDeckCard {
+  id: string;
+  name: string;
+  image?: string;
+  type?: string;
+  types?: string[];
+  rarity?: string;
+  count: number;
+  hp?: number;
+  attacks?: Array<{
+    name: string;
+    cost: string[];
+    damage?: string;
+    text?: string;
+  }>;
+  weaknesses?: Array<{
+    type: string;
+    value: string;
+  }>;
+  resistances?: Array<{
+    type: string;
+    value: string;
+  }>;
+  retreatCost?: string[];
+  convertedRetreatCost?: number;
+  images?: {
+    small?: string;
+    large?: string;
+  };
+  abilities?: Array<{
+    name: string;
+    text: string;
+    type: string;
+  }>;
+  rules?: string[];
+  legalities?: Record<string, string>;
+}
+
+interface PocketDeck {
+  name: string;
+  cards: PocketDeckCard[];
+  types: string[];
+}
+
+interface DeckStatistics {
+  totalCards: number;
+  remainingSlots: number;
+  typeDistribution: Record<string, number>;
+}
+
+type DeckViewMode = '5x4' | '2x10' | 'list' | 'grid';
 
 interface PocketDeckBuilderProps {
-  availableCards?: any[];
-  onDeckChange?: (deck: React.MouseEvent | React.KeyboardEvent) => void;
-  initialDeck?: any;
+  availableCards?: PocketDeckCard[];
+  onDeckChange?: (deck: PocketDeck) => void;
+  initialDeck?: PocketDeck | null;
 }
 
 export default function PocketDeckBuilder({  
-  availableCards = [], onDeckChange = () => {},
+  availableCards = [], 
+  onDeckChange = () => {},
   initialDeck = null 
 }: PocketDeckBuilderProps) {
-  const [deck, setDeck] = useState(initialDeck || {
+  const [deck, setDeck] = useState<PocketDeck>(initialDeck || {
     name: 'New Deck',
     cards: [],
     types: []
   });
-  const [selectedCard, setSelectedCard] = useState<any>(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [typeFilter, setTypeFilter] = useState('all');
-  const [deckView, setDeckView] = useState('5x4'); // Default to 5x4 view
-  const [visibleCardCount, setVisibleCardCount] = useState(24); // Start with 24 cards for faster initial load
+  const [selectedCard, setSelectedCard] = useState<PocketDeckCard | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [typeFilter, setTypeFilter] = useState<string>('all');
+  const [deckView, setDeckView] = useState<DeckViewMode>('5x4'); // Default to 5x4 view
+  const [visibleCardCount, setVisibleCardCount] = useState<number>(24); // Start with 24 cards for faster initial load
 
   // Maximum deck size for Pocket TCG (typically 20 cards)
   const MAX_DECK_SIZE = 20;
   const MAX_COPIES_PER_CARD = 2; // Pocket TCG allows max 2 copies
 
   // Filter available cards with performance optimization
-  const filteredCards = useMemo(() => {
+  const filteredCards = useMemo((): PocketDeckCard[] => {
     if (!availableCards.length) return [];
-    return availableCards.filter((card: any) => {
+    return availableCards.filter((card: PocketDeckCard) => {
       const matchesSearch = searchTerm === '' || card.name.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesType = typeFilter === 'all' || 
         (card.types && card.types.includes(typeFilter)) ||
@@ -41,7 +96,7 @@ export default function PocketDeckBuilder({
   }, [availableCards, searchTerm, typeFilter]);
 
   // Get visible cards for performance
-  const visibleCards = useMemo(() => {
+  const visibleCards = useMemo((): PocketDeckCard[] => {
     return filteredCards.slice(0, visibleCardCount);
   }, [filteredCards, visibleCardCount]);
 
@@ -51,23 +106,29 @@ export default function PocketDeckBuilder({
   }, [filteredCards.length]);
 
   // Calculate deck statistics
-  const deckStats = {
-    totalCards: deck.cards.reduce((sum: number, card: any) => sum + card.count, 0),
-    remainingSlots: MAX_DECK_SIZE - deck.cards.reduce((sum: number, card: any) => sum + card.count, 0),
-    typeDistribution: {} as { [key: string]: number }
-  };
-
-  // Calculate type distribution
-  deck.cards.forEach((deckCard: any) => {
-    const cardTypes = deckCard.types || [deckCard.type].filter(Boolean);
-    cardTypes.forEach((type: any) => {
-      deckStats.typeDistribution[type] = (deckStats.typeDistribution[type] || 0) + deckCard.count;
+  const deckStats: DeckStatistics = useMemo(() => {
+    const stats: DeckStatistics = {
+      totalCards: deck.cards.reduce((sum: number, card: PocketDeckCard) => sum + card.count, 0),
+      remainingSlots: 0,
+      typeDistribution: {}
+    };
+    
+    stats.remainingSlots = MAX_DECK_SIZE - stats.totalCards;
+    
+    // Calculate type distribution
+    deck.cards.forEach((deckCard: PocketDeckCard) => {
+      const cardTypes = deckCard.types || [deckCard.type].filter((t): t is string => Boolean(t));
+      cardTypes.forEach((type: string) => {
+        stats.typeDistribution[type] = (stats.typeDistribution[type] || 0) + deckCard.count;
+      });
     });
-  });
+    
+    return stats;
+  }, [deck.cards]);
 
   // Add card to deck
-  const addCardToDeck = (card: any) => {
-    const existingCard = deck.cards.find((c: any) => c.id === card.id);
+  const addCardToDeck = useCallback((card: PocketDeckCard): void => {
+    const existingCard = deck.cards.find((c: PocketDeckCard) => c.id === card.id);
     
     if (deckStats.totalCards >= MAX_DECK_SIZE) {
       alert('Deck is full! Remove cards to add more.');
@@ -80,44 +141,49 @@ export default function PocketDeckBuilder({
         return;
       }
       // Increase count
-      setDeck((prev: any) => ({
+      setDeck((prev: PocketDeck) => ({
         ...prev,
-        cards: prev.cards.map((c: any) => 
+        cards: prev.cards.map((c: PocketDeckCard) => 
           c.id === card.id ? { ...c, count: c.count + 1 } : c
         )
       }));
     } else {
       // Add new card
-      setDeck((prev: any) => ({
+      setDeck((prev: PocketDeck) => ({
         ...prev,
         cards: [...prev.cards, { ...card, count: 1 }]
       }));
     }
-  };
+  }, [deck.cards, deckStats.totalCards]);
 
   // Remove card from deck
-  const removeCardFromDeck = (cardId: any) => {
-    setDeck((prev: any) => ({
+  const removeCardFromDeck = useCallback((cardId: string): void => {
+    setDeck((prev: PocketDeck) => ({
       ...prev,
-      cards: prev.cards.map((c: any) => 
+      cards: prev.cards.map((c: PocketDeckCard) => 
         c.id === cardId ? { ...c, count: Math.max(0, c.count - 1) } : c
-      ).filter((c: any) => c.count > 0)
+      ).filter((c: PocketDeckCard) => c.count > 0)
     }));
-  };
+  }, []);
 
   // Update parent component when deck changes
   useEffect(() => {
     onDeckChange(deck);
   }, [deck, onDeckChange]);
 
+  // Define interface for deck slots with additional properties
+  interface DeckSlotCard extends PocketDeckCard {
+    slotIndex?: number;
+  }
+
   // Create a comprehensive deck view that shows all 20 slots
-  const renderDeckView = (): any => {
+  const renderDeckView = (): React.ReactNode => {
     // Create an array of 20 slots, filled with cards or empty slots
-    const allSlots = Array(MAX_DECK_SIZE).fill(null);
+    const allSlots: (DeckSlotCard | null)[] = Array(MAX_DECK_SIZE).fill(null);
     let cardIndex = 0;
     
     // Fill slots with cards, accounting for multiple copies
-    deck.cards.forEach((card: any) => {
+    deck.cards.forEach((card: PocketDeckCard) => {
       for (let i = 0; i < card.count; i++) {
         if (cardIndex < MAX_DECK_SIZE) {
           allSlots[cardIndex] = { ...card, slotIndex: cardIndex };
@@ -130,7 +196,7 @@ export default function PocketDeckBuilder({
       return (
         <div className="grid grid-cols-5 gap-1">
           {allSlots.map((card, index) => (
-            <DeckSlot key={index} card={card} index={index} onRemove={removeCardFromDeck} isHorizontal={false} />
+            <DeckSlotComponent key={index} card={card} index={index} onRemove={removeCardFromDeck} isHorizontal={false} />
           ))}
         </div>
       );
@@ -140,7 +206,7 @@ export default function PocketDeckBuilder({
       return (
         <div className="grid grid-cols-2 gap-1">
           {allSlots.map((card, index) => (
-            <DeckSlot key={index} card={card} index={index} onRemove={removeCardFromDeck} isHorizontal={true} />
+            <DeckSlotComponent key={index} card={card} index={index} onRemove={removeCardFromDeck} isHorizontal={true} />
           ))}
         </div>
       );
@@ -155,7 +221,7 @@ export default function PocketDeckBuilder({
               <p className="text-xs">Tap cards to add them</p>
             </div>
           ) : (
-            deck.cards.map((card: any) => (
+            deck.cards.map((card: PocketDeckCard) => (
               <div
                 key={card.id}
                 className="group cursor-pointer bg-off-white border border-border-color rounded p-2 hover:bg-white transition-all flex items-center gap-3"
@@ -175,7 +241,7 @@ export default function PocketDeckBuilder({
                     {card.name}
                   </p>
                   <div className="flex items-center gap-1">
-                    {(card.types || [card.type].filter(Boolean)).slice(0, 2).map((type: any) => (
+                    {(card.types || [card.type].filter((t): t is string => Boolean(t))).slice(0, 2).map((type: string) => (
                       <TypeBadge key={type} type={type} size="sm" />
                     ))}
                   </div>
@@ -204,7 +270,7 @@ export default function PocketDeckBuilder({
             <p className="text-xs">Tap cards to add them</p>
           </div>
         ) : (
-          deck.cards.map((card: any) => (
+          deck.cards.map((card: PocketDeckCard) => (
             <div
               key={card.id}
               className="group cursor-pointer bg-off-white border border-border-color rounded p-2 hover:bg-white transition-all text-center"
@@ -235,8 +301,16 @@ export default function PocketDeckBuilder({
     );
   };
 
+  // Define props interface for DeckSlot component
+  interface DeckSlotProps {
+    card: DeckSlotCard | null;
+    index: number;
+    onRemove: (cardId: string) => void;
+    isHorizontal: boolean;
+  }
+
   // Component for individual deck slots
-  const DeckSlot = ({ card, index, onRemove, isHorizontal }: { card: any, index: any, onRemove: any, isHorizontal: any }) => {
+  const DeckSlotComponent = ({ card, index, onRemove, isHorizontal }: DeckSlotProps): React.ReactElement => {
     if (!card) {
       return (
         <div className={`border-2 border-dashed border-border-grey rounded bg-off-white flex items-center justify-center ${
@@ -310,13 +384,13 @@ export default function PocketDeckBuilder({
                 placeholder="Search cards..."
                 className="input-clean w-full"
                 value={searchTerm}
-                onChange={(e: any) => setSearchTerm(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
               />
             </div>
             <select
               className="select-clean w-full sm:w-auto"
               value={typeFilter}
-              onChange={(e: any) => setTypeFilter(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setTypeFilter(e.target.value)}
             >
               <option value="all">All Types</option>
               <option value="fire">Fire</option>
@@ -343,8 +417,8 @@ export default function PocketDeckBuilder({
         {/* Card Grid */}
         <div className="flex-1 overflow-y-auto p-2 sm:p-4" id="card-collection-scroll">
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3">
-            {visibleCards.map((card: any) => {
-              const inDeck = deck.cards.find((c: any) => c.id === card.id);
+            {visibleCards.map((card: PocketDeckCard) => {
+              const inDeck = deck.cards.find((c: PocketDeckCard) => c.id === card.id);
               const canAdd = !inDeck || inDeck.count < MAX_COPIES_PER_CARD;
               const holographicClass = getHolographicEffect(card.rarity);
 
@@ -374,7 +448,7 @@ export default function PocketDeckBuilder({
                       
                       {/* Types */}
                       <div className="flex justify-center gap-0.5 sm:gap-1 mb-1">
-                        {(card.types || [card.type].filter(Boolean)).slice(0, 2).map((type: any) => (
+                        {(card.types || [card.type].filter((t): t is string => Boolean(t))).slice(0, 2).map((type: string) => (
                           <TypeBadge key={type} type={type} size="sm" />
                         ))}
                       </div>
@@ -430,7 +504,7 @@ export default function PocketDeckBuilder({
           <input
             type="text"
             value={deck.name}
-            onChange={(e: any) => setDeck((prev: any) => ({ ...prev, name: e.target.value }))}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDeck((prev: PocketDeck) => ({ ...prev, name: e.target.value }))}
             className="w-full bg-white/10 border border-white/20 rounded px-3 py-2 text-white placeholder-white/70 focus:outline-none focus:bg-white/20"
             placeholder="Enter deck name..."
           />

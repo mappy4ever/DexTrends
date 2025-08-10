@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { useSecurity } from './SecurityProvider.hooks';
 import logger from '../../utils/logger';
 
@@ -22,19 +22,19 @@ interface SecurityIncident {
   description: string;
   severity: string;
   timestamp: Date;
-  details?: any;
+  details?: Record<string, unknown>;
 }
 
 interface SecureStorage {
-  setItem: (key: string, value: any) => void;
-  getItem: (key: string) => any;
+  setItem: (key: string, value: unknown) => void;
+  getItem: (key: string) => unknown;
   removeItem: (key: string) => void;
 }
 
 export interface SecurityContextValue {
   securityStatus: SecurityStatus;
   runSecurityCheck: () => Promise<Threat[]>;
-  sanitizeInput: (input: any) => any;
+  sanitizeInput: (input: unknown) => unknown;
   validateCSRFToken: (token: string) => boolean;
   secureStorage: SecureStorage;
   reportSecurityIncident: (incident: SecurityIncident) => void;
@@ -54,52 +54,7 @@ export const SecurityProvider: React.FC<SecurityProviderProps> = ({ children }) 
     csrfToken: null
   });
 
-  useEffect(() => {
-    initializeSecurity();
-    
-    // Check security every 5 minutes
-    const interval = setInterval(runSecurityCheck, 5 * 60 * 1000);
-    
-    return () => clearInterval(interval);
-  }, []);
-
-  const initializeSecurity = async () => {
-    try {
-      // Generate CSRF token
-      const csrfToken = generateCSRFToken();
-      
-      // Initial security check
-      const threats = await runSecurityCheck();
-      
-      setSecurityStatus({
-        isSecure: threats.length === 0,
-        threats,
-        lastCheck: new Date(),
-        csrfToken
-      });
-
-      // Set up Content Security Policy
-      setupCSP();
-      
-      // Set up XSS protection
-      setupXSSProtection();
-      
-      // Monitor for suspicious activity
-      monitorSuspiciousActivity();
-      
-      logger.info('Security provider initialized', { threatsFound: threats.length });
-    } catch (error) {
-      logger.error('Failed to initialize security', { error });
-    }
-  };
-
-  const generateCSRFToken = (): string => {
-    const array = new Uint8Array(32);
-    crypto.getRandomValues(array);
-    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
-  };
-
-  const runSecurityCheck = async (): Promise<Threat[]> => {
+  const runSecurityCheck = useCallback(async (): Promise<Threat[]> => {
     const threats: Threat[] = [];
 
     try {
@@ -171,6 +126,51 @@ export const SecurityProvider: React.FC<SecurityProviderProps> = ({ children }) 
       logger.error('Security check failed', { error });
       return threats;
     }
+  }, []);
+
+  const initializeSecurity = useCallback(async () => {
+    try {
+      // Generate CSRF token
+      const csrfToken = generateCSRFToken();
+      
+      // Initial security check
+      const threats = await runSecurityCheck();
+      
+      setSecurityStatus({
+        isSecure: threats.length === 0,
+        threats,
+        lastCheck: new Date(),
+        csrfToken
+      });
+
+      // Set up Content Security Policy
+      setupCSP();
+      
+      // Set up XSS protection
+      setupXSSProtection();
+      
+      // Monitor for suspicious activity
+      monitorSuspiciousActivity();
+      
+      logger.info('Security provider initialized', { threatsFound: threats.length });
+    } catch (error) {
+      logger.error('Failed to initialize security', { error });
+    }
+  }, [runSecurityCheck]);
+
+  useEffect(() => {
+    initializeSecurity();
+    
+    // Check security every 5 minutes
+    const interval = setInterval(runSecurityCheck, 5 * 60 * 1000);
+    
+    return () => clearInterval(interval);
+  }, [initializeSecurity, runSecurityCheck]);
+
+  const generateCSRFToken = (): string => {
+    const array = new Uint8Array(32);
+    crypto.getRandomValues(array);
+    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
   };
 
   const checkForXSS = (): boolean => {
@@ -357,7 +357,7 @@ export const SecurityProvider: React.FC<SecurityProviderProps> = ({ children }) 
     });
   };
 
-  const sanitizeInput = (input: any): any => {
+  const sanitizeInput = (input: unknown): unknown => {
     if (typeof input !== 'string') return input;
     
     return input
@@ -373,7 +373,7 @@ export const SecurityProvider: React.FC<SecurityProviderProps> = ({ children }) 
   };
 
   const secureStorage: SecureStorage = {
-    setItem: (key: string, value: any) => {
+    setItem: (key: string, value: unknown) => {
       try {
         const sanitizedKey = sanitizeInput(key);
         const sanitizedValue = typeof value === 'string' ? sanitizeInput(value) : value;

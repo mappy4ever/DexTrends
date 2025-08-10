@@ -263,18 +263,6 @@ const Modal: React.FC<ModalProps> = ({
     }, 50);
   }, []);
   
-  // Handle escape key
-  useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && options.closable && isLast) {
-        handleClose();
-      }
-    };
-    
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
-  }, [options.closable, isLast]);
-  
   const handleClose = useCallback(() => {
     if (!options.closable) return;
     
@@ -285,6 +273,18 @@ const Modal: React.FC<ModalProps> = ({
       onClose(modal.id);
     }, 200);
   }, [modal.id, onClose, options.closable]);
+  
+  // Handle escape key
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && options.closable && isLast) {
+        handleClose();
+      }
+    };
+    
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [options.closable, isLast, handleClose]);
   
   const handleBackdropClick = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
     if (event.target === backdropRef.current && options.backdrop && options.closable) {

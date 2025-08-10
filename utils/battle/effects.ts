@@ -1,5 +1,5 @@
 import { PokemonBattleState, StatusEffect, BattleField, MoveEffect } from '@/types/battle';
-import { Move } from '@/types/api/pokemon';
+import { Move } from "../types/pokemon";
 import { applyStatStageChange } from './core';
 
 export const applyStatusEffect = (
@@ -209,7 +209,7 @@ const mapAilmentToStatus = (ailment: string): StatusEffect => {
   return mapping[ailment] || 'none';
 };
 
-const mapStatName = (statName: string): any => {
+const mapStatName = (statName: string): string => {
   const mapping: { [key: string]: string } = {
     'attack': 'attack',
     'defense': 'defense',

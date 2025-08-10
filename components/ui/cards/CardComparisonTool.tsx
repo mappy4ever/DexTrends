@@ -3,17 +3,33 @@ import Image from 'next/image';
 import Modal from '../modals/Modal';
 import { TypeBadge } from '../TypeBadge';
 import Enhanced3DCard from './Enhanced3DCard';
+import logger from '@/utils/logger';
+
+interface Card {
+  id?: string;
+  name?: string;
+  images?: { small?: string; large?: string };
+  set?: { name?: string; releaseDate?: string };
+  rarity?: string;
+  hp?: string;
+  types?: string[];
+  artist?: string;
+  attacks?: Array<{ name?: string; damage?: string; text?: string }>;
+  weaknesses?: Array<{ type?: string; value?: string }>;
+  resistances?: Array<{ type?: string; value?: string }>;
+  retreatCost?: string[];
+}
 
 interface CardComparisonToolProps {
   isOpen: boolean;
   onClose: () => void;
-  initialCards?: any[];
+  initialCards?: Card[];
 }
 
 const CardComparisonTool = ({ isOpen, onClose, initialCards = [] }: CardComparisonToolProps) => {
-  const [comparisonCards, setComparisonCards] = useState<(any | null)[]>([null, null]);
+  const [comparisonCards, setComparisonCards] = useState<(Card | null)[]>([null, null]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<unknown[]>([]);
+  const [searchResults, setSearchResults] = useState<Card[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(0);
 
@@ -57,7 +73,7 @@ const CardComparisonTool = ({ isOpen, onClose, initialCards = [] }: CardComparis
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  const addCardToComparison = (card: any) => {
+  const addCardToComparison = (card: Card) => {
     const newCards = [...comparisonCards];
     newCards[selectedSlot] = card;
     setComparisonCards(newCards);
@@ -71,11 +87,11 @@ const CardComparisonTool = ({ isOpen, onClose, initialCards = [] }: CardComparis
     setComparisonCards(newCards);
   };
 
-  const swapCards = (): any => {
+  const swapCards = (): void => {
     setComparisonCards([comparisonCards[1], comparisonCards[0]]);
   };
 
-  const getMockPrice = (card: any) => {
+  const getMockPrice = (card: Card) => {
     // Mock pricing based on rarity
     const rarityPrices: Record<string, number> = {
       'Common': Math.random() * 5 + 0.5,
@@ -89,22 +105,29 @@ const CardComparisonTool = ({ isOpen, onClose, initialCards = [] }: CardComparis
       'Rare Ultra': Math.random() * 200 + 75,
       'Rare Secret': Math.random() * 300 + 100,
     };
-    return rarityPrices[card?.rarity as string] || Math.random() * 10 + 1;
+    return rarityPrices[card?.rarity || ''] || Math.random() * 10 + 1;
   };
 
   const formatPrice = (price: number) => `$${Math.round(price * 100) / 100}`;
 
-  const getComparisonData = (): any => {
+  interface ComparisonRow {
+    attribute: string;
+    card1: string | number;
+    card2: string | number;
+    comparison: 'card1' | 'card2' | 'tie' | null;
+  }
+
+  const getComparisonData = (): ComparisonRow[] => {
     if (!comparisonCards[0] || !comparisonCards[1]) return [];
 
-    const card1 = comparisonCards[0] as any;
-    const card2 = comparisonCards[1] as any;
+    const card1 = comparisonCards[0];
+    const card2 = comparisonCards[1];
 
     return [
       {
         attribute: 'Name',
-        card1: card1.name,
-        card2: card2.name,
+        card1: card1.name || 'Unknown',
+        card2: card2.name || 'Unknown',
         comparison: null
       },
       {
@@ -192,7 +215,7 @@ const CardComparisonTool = ({ isOpen, onClose, initialCards = [] }: CardComparis
                   <div className="flex items-center space-x-4">
                     <Image
                       src={card.images?.small || '/back-card.png'}
-                      alt={card.name}
+                      alt={card.name || 'Card'}
                       width={120}
                       height={168}
                       className="rounded-lg shadow-md"

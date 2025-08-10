@@ -6,7 +6,8 @@
 import { sanitizePokemonName } from './pokemonNameSanitizer';
 import { fetchJSON } from './unifiedFetch';
 import { extractIdFromUrl } from './pokemonutils';
-import type { Pokemon, PokemonSpecies, EvolutionChain, EvolutionLink, EvolutionDetail } from '../types/api/pokemon';
+import logger from '@/utils/logger';
+import type { Pokemon, PokemonSpecies, EvolutionChain, EvolutionLink, EvolutionDetail } from "../types/pokemon";
 
 // Evolution tree node interface
 interface EvolutionTreeNode {
@@ -26,8 +27,8 @@ interface PokemonForm {
   name: string;
   displayName: string;
   isDefault: boolean;
-  sprites: any;
-  types: any[];
+  sprites: unknown;
+  types: unknown[];
 }
 
 // Cache entry interface
@@ -87,7 +88,7 @@ export const buildEvolutionTree = async (
         formName = variantMatch[1];
       }
     } catch (fetchError) {
-      console.error('Error fetching Pokemon data for evolution tree:', fetchError);
+      logger.error('Error fetching Pokemon data for evolution tree:', { fetchError });
     }
     
     // Handle special evolution cases
@@ -119,7 +120,7 @@ export const buildEvolutionTree = async (
       isCurrent: currentSpeciesId !== null && String(currentSpeciesId) === String(speciesId)
     };
   } catch (error) {
-    console.error('Error in buildEvolutionTree:', error);
+    logger.error('Error in buildEvolutionTree:', { error });
     return null;
   }
 };
@@ -224,7 +225,7 @@ export const getEvolutionChain = async (speciesId: string | number): Promise<Evo
     
     return await buildEvolutionTree(evolutionData.chain, speciesId);
   } catch (error) {
-    console.error('Error fetching evolution chain:', error);
+    logger.error('Error fetching evolution chain:', { error });
     return null;
   }
 };
@@ -257,7 +258,7 @@ export const getAllForms = async (speciesId: string | number): Promise<PokemonFo
             types: pokemonData.types || []
           };
         } catch (error) {
-          console.error(`Error fetching form data for ${variety.pokemon.name}:`, error);
+          logger.error(`Error fetching form data for ${variety.pokemon.name}:`, { error });
           return null;
         }
       })
@@ -271,7 +272,7 @@ export const getAllForms = async (speciesId: string | number): Promise<PokemonFo
         return a.name.localeCompare(b.name);
       });
   } catch (error) {
-    console.error('Error fetching forms:', error);
+    logger.error('Error fetching forms:', { error });
     return [];
   }
 };

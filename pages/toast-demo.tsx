@@ -2,12 +2,13 @@ import React from 'react';
 import Head from 'next/head';
 import { motion } from 'framer-motion';
 import { ToastContainer } from '../components/ui/Toast';
-import { useToast } from '../hooks/useToast';
+import { useNotifications } from '../hooks/useNotifications';
+import { convertNotificationsToToasts } from '../utils/toastUtils';
 import { Button } from '../components/ui/design-system/Button';
 import { GlassContainer } from '../components/ui/design-system/GlassContainer';
 
 const ToastDemo = () => {
-  const { toasts, removeToast, success, error, info, warning, promise } = useToast();
+  const { toasts, removeToast, success, error, info, warning, promise } = useNotifications();
 
   const handleAsyncOperation = () => {
     const fakeAsyncOperation = new Promise((resolve, reject) => {
@@ -183,7 +184,7 @@ const ToastDemo = () => {
       </div>
 
       {/* Toast Container */}
-      <ToastContainer toasts={toasts} onClose={removeToast} />
+      <ToastContainer toasts={convertNotificationsToToasts(toasts)} onClose={removeToast} />
     </>
   );
 };

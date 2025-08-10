@@ -37,8 +37,8 @@ const BreadcrumbNavigation: React.FC<BreadcrumbNavigationProps> = ({
 }) => {
   const router = useRouter();
 
-  // Route mapping for breadcrumb generation
-  const routeMap: Record<string, RouteInfo> = {
+  // Route mapping for breadcrumb generation - wrapped in useMemo to prevent recreation
+  const routeMap: Record<string, RouteInfo> = useMemo(() => ({
     '/': { title: 'Home', icon: '🏠' },
     '/cards': { title: 'Cards', icon: '🃏' },
     '/cards/[cardId]': { title: 'Card Details', icon: '🔍' },
@@ -57,7 +57,7 @@ const BreadcrumbNavigation: React.FC<BreadcrumbNavigationProps> = ({
     '/collections': { title: 'Collections', icon: '💎' },
     '/fun': { title: 'Fun Zone', icon: '🎮' },
     '/qa-test': { title: 'QA Testing', icon: '🧪' }
-  };
+  }), []);
 
   // Generate breadcrumbs from current route
   const breadcrumbs = useMemo(() => {

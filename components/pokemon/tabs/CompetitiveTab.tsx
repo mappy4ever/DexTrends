@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import type { Pokemon, PokemonSpecies } from '../../../types/api/pokemon';
+import type { Pokemon, PokemonSpecies } from "../../../types/pokemon";
 import type { CompetitiveTierRecord } from '../../../utils/supabase';
 import { showdownQueries } from '../../../utils/supabase';
 import { TierBadge, TierBadgeGroup } from '../../ui/TierBadge';
@@ -33,7 +33,7 @@ import { MdCatchingPokemon } from 'react-icons/md';
 interface CompetitiveTabProps {
   pokemon: Pokemon;
   species: PokemonSpecies;
-  typeColors: any;
+  typeColors: Record<string, unknown>;
   competitiveTiers?: CompetitiveTierRecord | null;
 }
 
@@ -596,7 +596,7 @@ const CompetitiveTab: React.FC<CompetitiveTabProps> = ({ pokemon, species, typeC
                 return (
                   <button
                     key={key}
-                    onClick={() => setSelectedFormat(key as any)}
+                    onClick={() => setSelectedFormat(key as 'standard' | 'nationalDex' | 'otherFormats')}
                     className={cn(
                       "p-4 rounded-xl transition-all duration-200",
                       "border-2 flex flex-col items-center gap-2",

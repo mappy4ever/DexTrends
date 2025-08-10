@@ -2,6 +2,8 @@
  * Comprehensive mapping for scraped trainer images based on actual files
  */
 
+import logger from './logger';
+
 type ImageMapping = Record<string, string[]>;
 
 // Gym Leader image mappings - Using organized folder structure
@@ -126,92 +128,82 @@ const gymLeaderImages: ImageMapping = {
     '/images/scraped/gym-leaders/volkner-3.png'
   ],
   
-  // Unova
+  // Unova (use available assets under /images/scraped/gym-leaders)
   'Cilan': [
-    '/images/scraped/gym-leaders-organized/cilan.png'
+    '/images/scraped/gym-leaders/cilan-2.png'
   ],
   'Chili': [
-    '/images/scraped/gym-leaders-organized/chili.png'
+    '/images/scraped/gym-leaders/chili-1.png',
+    '/images/scraped/gym-leaders/chili-2.png'
   ],
   'Cress': [
-    '/images/scraped/gym-leaders-organized/cress.png'
+    '/images/scraped/gym-leaders/cress-1.png'
   ],
   'Cilan/Chili/Cress': [
-    '/images/scraped/gym-leaders-organized/cilan.png'
+    '/images/scraped/gym-leaders/cilan-2.png'
   ],
   'Lenora': [
-    '/images/scraped/gym-leaders-organized/lenora.png',
-    '/images/scraped/gym-leaders-organized/lenora-alt2.png'
+    '/images/scraped/gym-leaders/lenora-1.png'
   ],
   'Burgh': [
-    '/images/scraped/gym-leaders-organized/burgh.png'
+    '/images/scraped/gym-leaders/burgh-1.png'
   ],
   'Elesa': [
-    '/images/scraped/gym-leaders-organized/elesa.png',
-    '/images/scraped/gym-leaders-organized/elesa-alt2.png'
+    '/images/scraped/gym-leaders/elesa-1.png'
   ],
   'Clay': [
-    '/images/scraped/gym-leaders-organized/clay.png'
+    '/images/scraped/gym-leaders/clay-1.png'
   ],
   'Skyla': [
-    '/images/scraped/gym-leaders-organized/skyla.png'
+    '/images/scraped/gym-leaders/skyla-1.png'
   ],
   'Brycen': [
-    '/images/scraped/gym-leaders-organized/brycen.png',
-    '/images/scraped/gym-leaders-organized/brycen-alt1.png'
+    '/images/scraped/gym-leaders/brycen-1.png'
   ],
   'Drayden': [
-    '/images/scraped/gym-leaders-organized/drayden.png'
+    '/images/scraped/gym-leaders/drayden-1.png'
   ],
   'Iris': [
-    '/images/scraped/gym-leaders-organized/iris.png',
-    '/images/scraped/gym-leaders-organized/iris-alt2.png'
+    '/images/scraped/gym-leaders/iris-5.png'
   ],
   'Drayden/Iris': [
-    '/images/scraped/gym-leaders-organized/drayden.png'
+    '/images/scraped/gym-leaders/drayden-1.png'
   ],
   'Cheren': [
-    '/images/scraped/gym-leaders-organized/cheren.png',
-    '/images/scraped/gym-leaders-organized/cheren-alt1.png',
-    '/images/scraped/gym-leaders-organized/cheren-alt2.png'
+    '/images/scraped/gym-leaders/cheren-1.png'
   ],
   'Roxie': [
-    '/images/scraped/gym-leaders-organized/roxie.png'
+    '/images/scraped/gym-leaders/roxie-1.png'
   ],
   'Marlon': [
-    '/images/scraped/gym-leaders-organized/marlon.png'
+    '/images/scraped/gym-leaders/marlon-1.png'
   ],
   
-  // Kalos
-  'Viola': [
-    '/images/scraped/gym-leaders-organized/viola.png',
-    '/images/scraped/gym-leaders-organized/viola-alt1.png',
-    '/images/scraped/gym-leaders-organized/viola-alt2.png'
-  ],
+  // Kalos (use available assets under /images/scraped/gym-leaders)
+  // Note: If a leader isn't listed here, getGymLeaderImage will fall back to placeholder
   'Grant': [
-    '/images/scraped/gym-leaders-organized/grant.png'
+    '/images/scraped/gym-leaders/grant-1.png'
+  ],
+  'Viola': [
+    '/images/scraped/gym-leaders/viola.png'
   ],
   'Korrina': [
-    '/images/scraped/gym-leaders-organized/korrina.png'
+    '/images/scraped/gym-leaders/korrina-1.png'
   ],
   'Ramos': [
-    '/images/scraped/gym-leaders-organized/ramos.png'
+    '/images/scraped/gym-leaders/ramos.png'
   ],
   'Clemont': [
-    '/images/scraped/gym-leaders-organized/clemont.png',
-    '/images/scraped/gym-leaders-organized/clemont-alt1.png'
+    '/images/scraped/gym-leaders/clemont-2.png'
   ],
   'Valerie': [
-    '/images/scraped/gym-leaders-organized/valerie.png'
+    '/images/scraped/gym-leaders/valerie.png'
   ],
   'Olympia': [
-    '/images/scraped/gym-leaders-organized/olympia.png',
-    '/images/scraped/gym-leaders-organized/olympia-alt1.png'
+    '/images/scraped/gym-leaders/olympia-1.png'
   ],
   'Wulfric': [
-    '/images/scraped/gym-leaders-organized/wulfric.png',
-    '/images/scraped/gym-leaders-organized/wulfric-alt1.png',
-    '/images/scraped/gym-leaders-organized/wulfric-alt2.png'
+    '/images/scraped/gym-leaders/wulfric.png'
   ],
   
   // Alola
@@ -244,70 +236,68 @@ const gymLeaderImages: ImageMapping = {
     '/images/scraped/gym-leaders-organized/hapu.png'
   ],
   
-  // Galar
+  // Galar (normalized to existing files)
   'Milo': [
-    '/images/scraped/gym-leaders-organized/milo.png'
+    '/images/scraped/gym-leaders/milo-alt2.png'
   ],
   'Nessa': [
-    '/images/scraped/gym-leaders-organized/nessa.png'
+    '/images/gym-leader-placeholder.svg'
   ],
   'Kabu': [
-    '/images/scraped/gym-leaders-organized/kabu.png'
+    '/images/scraped/gym-leaders/kabu.png'
   ],
   'Bea': [
-    '/images/scraped/gym-leaders-organized/bea.png'
+    '/images/scraped/gym-leaders/bea.png'
   ],
   'Bea/Allister': [
-    '/images/scraped/gym-leaders-organized/bea.png'
+    '/images/scraped/gym-leaders/bea.png'
   ],
   'Allister': [
-    '/images/scraped/gym-leaders-organized/allister.png'
+    '/images/gym-leader-placeholder.svg'
   ],
   'Opal': [
-    '/images/scraped/gym-leaders-organized/opal.png'
+    '/images/scraped/gym-leaders/opal.png'
   ],
   'Gordie': [
-    '/images/scraped/gym-leaders-organized/gordie.png',
-    '/images/scraped/gym-leaders-organized/gordie-alt2.png'
+    '/images/scraped/gym-leaders/gordie-alt2.png'
   ],
   'Gordie/Melony': [
-    '/images/scraped/gym-leaders-organized/gordie.png'
+    '/images/scraped/gym-leaders/gordie-alt2.png'
   ],
   'Melony': [
-    '/images/scraped/gym-leaders-organized/melony.png'
+    '/images/scraped/gym-leaders/melony.png'
   ],
   'Piers': [
-    '/images/scraped/gym-leaders-organized/piers.png'
+    '/images/scraped/gym-leaders/piers.png'
   ],
   'Raihan': [
-    '/images/scraped/gym-leaders-organized/raihan.png'
+    '/images/scraped/gym-leaders/raihan-3.png'
   ],
   
-  // Paldea
+  // Paldea (normalized to existing files)
   'Katy': [
-    '/images/scraped/gym-leaders-organized/katy.png'
+    '/images/scraped/gym-leaders/katy-4.png'
   ],
   'Brassius': [
-    '/images/scraped/gym-leaders-organized/brassius.png'
+    '/images/scraped/gym-leaders/brassius.png'
   ],
   'Iono': [
-    '/images/scraped/gym-leaders-organized/iono.png'
+    '/images/scraped/gym-leaders/iono-1.png'
   ],
   'Kofu': [
-    '/images/scraped/gym-leaders-organized/kofu.png'
+    '/images/scraped/gym-leaders/kofu.png'
   ],
   'Larry': [
-    '/images/scraped/gym-leaders-organized/larry.png'
+    '/images/scraped/gym-leaders/Scarlet_Violet_Larry.png'
   ],
   'Ryme': [
-    '/images/scraped/gym-leaders-organized/ryme.png',
-    '/images/scraped/gym-leaders-organized/ryme-alt2.png'
+    '/images/scraped/gym-leaders/ryme-alt2.png'
   ],
   'Tulip': [
-    '/images/scraped/gym-leaders-organized/tulip.png'
+    '/images/gym-leader-placeholder.svg'
   ],
   'Grusha': [
-    '/images/scraped/gym-leaders-organized/grusha.png'
+    '/images/scraped/gym-leaders/grusha.png'
   ]
 };
 
@@ -336,9 +326,8 @@ const eliteFourImages: ImageMapping = {
     '/images/scraped/elite-four/will-1.png',
     '/images/scraped/elite-four/HeartGold_SoulSilver_Will.png'
   ],
-  'Koga (Elite Four)': [
-    '/images/scraped/elite-four/HeartGold_SoulSilver_Koga.png',
-    '/images/scraped/elite-four/koga.png'
+  'Koga': [
+    '/images/scraped/gym-leaders/koga-1.png'
   ],
   'Bruno (Johto)': [
     '/images/scraped/elite-four/bruno-2.png',
@@ -405,12 +394,10 @@ const eliteFourImages: ImageMapping = {
   
   // Kalos Elite Four
   'Malva': [
-    '/images/scraped/elite-four/malva-1.png',
-    '/images/scraped/elite-four/XY_Malva.png'
+    '/images/scraped/elite-four/malva-1.png'
   ],
   'Siebold': [
-    '/images/scraped/elite-four/siebold-2.png',
-    '/images/scraped/elite-four/XY_Siebold.png'
+    '/images/scraped/elite-four/siebold-2.png'
   ],
   'Wikstrom': [
     '/images/scraped/elite-four/wikstrom-1.png',
@@ -460,7 +447,7 @@ const eliteFourImages: ImageMapping = {
     '/images/scraped/elite-four/poppy-2.png',
     '/images/scraped/elite-four/Scarlet_Violet_Poppy.png'
   ],
-  'Larry (Elite Four)': [
+  'Larry': [
     '/images/scraped/elite-four/larry-1.png',
     '/images/scraped/elite-four/Scarlet_Violet_Larry.png'
   ],
@@ -474,64 +461,23 @@ const eliteFourImages: ImageMapping = {
   ]
 };
 
-// Champion image mappings
+// Champion image mappings (normalized to files we have)
 const championImages: ImageMapping = {
-  'Blue': [
-    '/images/scraped/champions/blue.png',
-    '/images/scraped/champions/FireRed_LeafGreen_Blue.png'
-  ],
-  'Red': [
-    '/images/scraped/champions/red.png',
-    '/images/scraped/champions/FireRed_LeafGreen_Red.png'
-  ],
-  'Lance (Champion)': [
-    '/images/scraped/champions/lance.png',
-    '/images/scraped/champions/HeartGold_SoulSilver_Lance.png'
-  ],
-  'Steven': [
-    '/images/scraped/champions/steven.png',
-    '/images/scraped/champions/Omega_Ruby_Alpha_Sapphire_Steven.png'
-  ],
-  'Wallace (Champion)': [
-    '/images/scraped/champions/wallace.png',
-    '/images/scraped/champions/Emerald_Wallace.png'
-  ],
-  'Cynthia': [
-    '/images/scraped/champions/cynthia.png',
-    '/images/scraped/champions/Diamond_Pearl_Cynthia.png'
-  ],
-  'Alder': [
-    '/images/scraped/champions/alder.png',
-    '/images/scraped/champions/Black_White_Alder.png'
-  ],
-  'Iris (Champion)': [
-    '/images/scraped/champions/iris.png',
-    '/images/scraped/champions/Black2_White2_Iris.png'
-  ],
-  'Diantha': [
-    '/images/scraped/champions/diantha.png',
-    '/images/scraped/champions/XY_Diantha.png'
-  ],
-  'Kukui': [
-    '/images/scraped/champions/kukui.png',
-    '/images/scraped/champions/Sun_Moon_Kukui.png'
-  ],
-  'Hau': [
-    '/images/scraped/champions/hau.png',
-    '/images/scraped/champions/Ultra_Sun_Ultra_Moon_Hau.png'
-  ],
-  'Leon': [
-    '/images/scraped/champions/leon.png',
-    '/images/scraped/champions/Sword_Shield_Leon.png'
-  ],
-  'Geeta': [
-    '/images/scraped/champions/geeta.png',
-    '/images/scraped/champions/Scarlet_Violet_Geeta.png'
-  ],
-  'Nemona': [
-    '/images/scraped/champions/nemona.png',
-    '/images/scraped/champions/Scarlet_Violet_Nemona.png'
-  ]
+  'Blue': ['/images/scraped/champions/blue-1.png'],
+  'Red': ['/images/scraped/champions/red-1.png'],
+  'Lance (Champion)': ['/images/scraped/champions/lance-1.png'],
+  'Lance': ['/images/scraped/champions/lance-1.png'],
+  'Steven': ['/images/scraped/champions/steven-1.png'],
+  'Wallace (Champion)': ['/images/scraped/champions/wallace-1.png'],
+  'Cynthia': ['/images/scraped/champions/cynthia-1.png'],
+  'Alder': ['/images/scraped/champions/alder-1.png'],
+  'Iris (Champion)': ['/images/scraped/champions/iris-1.png'],
+  'Diantha': ['/images/scraped/champions/diantha-1.png'],
+  'Kukui': ['/images/scraped/champions/kukui-1.png'],
+  'Hau': ['/images/scraped/champions/hau-1.png'],
+  'Leon': ['/images/scraped/champions/leon-1.png'],
+  'Geeta': ['/images/scraped/champions/geeta-1.png'],
+  'Nemona': ['/images/scraped/champions/nemona-1.png']
 };
 
 // Badge image mappings
@@ -784,7 +730,7 @@ export function getProfessorImage(name: string): string {
   const images = professorImages[name];
   if (!images || images.length === 0) {
     // Try to find a fallback with a more generic search
-    console.log(`Professor image not found for: ${name}`);
+    logger.debug(`Professor image not found for: ${name}`);
     return '/images/professor-placeholder.svg';
   }
   return images[0];

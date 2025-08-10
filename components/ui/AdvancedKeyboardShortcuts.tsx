@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { 
   CommandLineIcon, 
@@ -56,13 +56,13 @@ interface CurrentContext {
 }
 
 interface AdvancedKeyboardShortcutsProps {
-  onBulkOperations?: (operation: string, items: any[]) => void;
+  onBulkOperations?: (operation: string, items: unknown[]) => void;
   onCardSelection?: (type: 'all' | 'none') => void;
   onViewMode?: (mode: 'grid' | 'list' | 'compact') => void;
-  onExport?: (items: any[]) => void;
+  onExport?: (items: unknown[]) => void;
   onShare?: () => void;
   currentContext?: CurrentContext;
-  selectedItems?: any[];
+  selectedItems?: unknown[];
 }
 
 type ActiveMode = 'command' | 'search' | 'macro';
@@ -94,6 +94,36 @@ const AdvancedKeyboardShortcuts: React.FC<AdvancedKeyboardShortcutsProps> = ({
   const { notify } = useNotifications();
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Macro recording functions
+  const startMacroRecording = useCallback(() => {
+    setMacroRecording(true);
+    setRecordedMacro([]);
+    notify.info('Macro recording started');
+  }, [notify]);
+
+  const stopMacroRecording = useCallback(() => {
+    setMacroRecording(false);
+    if (recordedMacro.length > 0) {
+      // Show save macro dialog
+      const name = prompt('Enter macro name:');
+      if (name) {
+        const newShortcuts = {
+          ...customShortcuts,
+          [name]: {
+            title: name,
+            description: `Custom macro with ${recordedMacro.length} steps`,
+            macro: recordedMacro,
+            created: Date.now()
+          }
+        };
+        setCustomShortcuts(newShortcuts);
+        saveShortcuts(newShortcuts, recentCommands);
+        notify.success(`Macro "${name}" saved`);
+      }
+    }
+    setRecordedMacro([]);
+  }, [recordedMacro, customShortcuts, recentCommands, notify]);
+
   // Load saved shortcuts and macros
   useEffect(() => {
     const saved = localStorage.getItem('advancedShortcuts');
@@ -113,7 +143,7 @@ const AdvancedKeyboardShortcuts: React.FC<AdvancedKeyboardShortcutsProps> = ({
   };
 
   // Advanced command registry
-  const advancedCommands: Record<string, Command> = {
+  const advancedCommands: Record<string, Command> = useMemo(() => ({
     // Navigation & UI
     'nav:home': {
       title: 'Go to Home',
@@ -307,7 +337,7 @@ const AdvancedKeyboardShortcuts: React.FC<AdvancedKeyboardShortcutsProps> = ({
       shortcut: 'ctrl+shift+s',
       condition: () => macroRecording
     }
-  };
+  }), [onBulkOperations, onCardSelection, onViewMode, onExport, selectedItems, router, notify, setActiveMode, setSearchQuery, macroRecording, startMacroRecording, stopMacroRecording]);
 
   // Filter commands based on context and conditions
   const getAvailableCommands = (): CommandWithId[] => {
@@ -373,38 +403,9 @@ const AdvancedKeyboardShortcuts: React.FC<AdvancedKeyboardShortcutsProps> = ({
     }
   }, [customShortcuts, recentCommands, macroRecording, notify]);
 
-  // Macro recording functions
-  const startMacroRecording = () => {
-    setMacroRecording(true);
-    setRecordedMacro([]);
-    notify.info('Macro recording started');
-  };
-
-  const stopMacroRecording = () => {
-    setMacroRecording(false);
-    if (recordedMacro.length > 0) {
-      // Show save macro dialog
-      const name = prompt('Enter macro name:');
-      if (name) {
-        const newShortcuts = {
-          ...customShortcuts,
-          [name]: {
-            title: name,
-            description: `Custom macro with ${recordedMacro.length} steps`,
-            macro: recordedMacro,
-            created: Date.now()
-          }
-        };
-        setCustomShortcuts(newShortcuts);
-        saveShortcuts(newShortcuts, recentCommands);
-        notify.success(`Macro "${name}" saved`);
-      }
-    }
-    setRecordedMacro([]);
-  };
 
   // Execute macro
-  const executeMacro = async (macro: CustomShortcut) => {
+  const executeMacro = useCallback(async (macro: CustomShortcut) => {
     if (!macro.macro) return;
     
     for (const step of macro.macro) {
@@ -415,7 +416,7 @@ const AdvancedKeyboardShortcuts: React.FC<AdvancedKeyboardShortcutsProps> = ({
       }
     }
     notify.success(`Executed macro: ${macro.title}`);
-  };
+  }, [advancedCommands, notify]);
 
   // Keyboard event handler
   useEffect(() => {
@@ -477,7 +478,7 @@ const AdvancedKeyboardShortcuts: React.FC<AdvancedKeyboardShortcutsProps> = ({
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [commandPalette, customShortcuts, executeCommand]);
+  }, [commandPalette, customShortcuts, executeCommand, executeMacro, advancedCommands]);
 
   // Focus input when palette opens
   useEffect(() => {

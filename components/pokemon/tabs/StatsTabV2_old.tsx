@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { Pokemon, PokemonSpecies, Nature } from '../../../types/api/pokemon';
+import type { Pokemon, PokemonSpecies, Nature } from "../../../types/pokemon";
+import type { TypeColors } from '../../../types/pokemon-tabs';
 import { GlassContainer } from '../../ui/design-system';
 import CircularButton from '../../ui/CircularButton';
 import PokemonStatRadar from '../PokemonStatRadar';
@@ -24,7 +25,7 @@ interface StatsTabV2Props {
   selectedNature?: string;
   selectedLevel?: number;
   onLevelChange?: (level: number) => void;
-  typeColors: Record<string, string>;
+  typeColors: TypeColors;
 }
 
 const STAT_NAMES: Record<string, string> = {

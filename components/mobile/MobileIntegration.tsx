@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ReactNode } from 'react';
+import React, { useEffect, useState, useCallback, ReactNode } from 'react';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import { useMobileUtils } from '../../utils/mobileUtils';
@@ -8,6 +8,7 @@ import hapticFeedback from '../../utils/hapticFeedback';
 import deepLinking from '../../utils/deepLinking';
 import mobileAnalytics from '../../utils/mobileAnalytics';
 import logger from '../../utils/logger';
+import type { DetectedCard } from '../../types/common';
 
 // Import components
 import PullToRefresh from './PullToRefresh';
@@ -33,7 +34,7 @@ interface MobileIntegrationProps {
   enableQuickActions?: boolean;
   enablePushNotifications?: boolean;
   onRefresh?: () => Promise<void>;
-  onVoiceSearch?: (result: any, transcript: string, confidence: number) => void;
+  onVoiceSearch?: (result: VoiceCommand, transcript: string, confidence: number) => void;
   onCardScan?: (card: DetectedCard, imageData: string) => void;
   onShare?: (data: ShareData) => void;
 }
@@ -51,10 +52,13 @@ interface Notification {
   timestamp: number;
 }
 
-interface DetectedCard {
-  name: string;
-  confidence: number;
-  [key: string]: any;
+
+interface VoiceCommand {
+  type: 'search' | 'filter' | 'sort' | 'navigate' | 'action' | 'clear' | 'help';
+  query?: string;
+  value?: string;
+  page?: string;
+  action?: string;
 }
 
 interface ShareData {
@@ -67,7 +71,7 @@ interface DeepLinkEvent extends Event {
   detail: {
     type: 'card' | 'search' | 'share';
     query?: string;
-    filters?: any;
+    filters?: Record<string, unknown>;
     shareData?: ShareData;
     source?: string;
   };
@@ -114,6 +118,29 @@ const MobileIntegration: React.FC<MobileIntegrationProps> = ({
   const voiceSheet = useBottomSheet(false);
   const shareSheet = useBottomSheet(false);
 
+  // Show notification
+  const showNotification = useCallback((message: string, type: 'success' | 'error' | 'warning' | 'info' = 'info') => {
+    const notification: Notification = {
+      id: Date.now(),
+      message,
+      type,
+      timestamp: Date.now()
+    };
+    
+    setNotifications(prev => [...prev, notification]);
+    
+    // Auto-remove after 3 seconds
+    setTimeout(() => {
+      setNotifications(prev => prev.filter(n => n.id !== notification.id));
+    }, 3000);
+  }, []);
+
+  // Handle share received
+  const handleShareReceived = useCallback((shareData: ShareData) => {
+    showNotification('Shared content received', 'info');
+    // Process shared content
+  }, [showNotification]);
+
   // Initialize mobile features
   useEffect(() => {
     if (!isMobile) return;
@@ -140,7 +167,11 @@ const MobileIntegration: React.FC<MobileIntegrationProps> = ({
           break;
         case 'search':
           if (onVoiceSearch && detail.query) {
-            onVoiceSearch(detail.query, detail.query, detail.filters);
+            const voiceCommand: VoiceCommand = {
+              type: 'search',
+              query: detail.query
+            };
+            onVoiceSearch(voiceCommand, detail.query, 1.0);
           }
           break;
         case 'share':
@@ -221,7 +252,7 @@ const MobileIntegration: React.FC<MobileIntegrationProps> = ({
       window.removeEventListener('online', handleNetworkStatus);
       window.removeEventListener('offline', handleNetworkStatus);
     };
-  }, [isMobile, isStandalone, onVoiceSearch]);
+  }, [isMobile, isStandalone, onVoiceSearch, handleShareReceived, shareSheet, showNotification]);
 
   // Handle pull to refresh
   const handlePullToRefresh = async () => {
@@ -242,7 +273,7 @@ const MobileIntegration: React.FC<MobileIntegrationProps> = ({
   };
 
   // Handle voice search
-  const handleVoiceSearchResult = (result: any, transcript: string, confidence: number) => {
+  const handleVoiceSearchResult = (result: VoiceCommand, transcript: string, confidence: number) => {
     hapticFeedback.medium();
     mobileAnalytics.trackPWAFeature('voice_search', {
       command_type: result.type,
@@ -288,29 +319,6 @@ const MobileIntegration: React.FC<MobileIntegrationProps> = ({
       mobileAnalytics.trackPWAFeature('native_share', { success: false });
       showNotification('Failed to share content', 'error');
     }
-  };
-
-  // Handle share received
-  const handleShareReceived = (shareData: ShareData) => {
-    showNotification('Shared content received', 'info');
-    // Process shared content
-  };
-
-  // Show notification
-  const showNotification = (message: string, type: 'success' | 'error' | 'warning' | 'info' = 'info') => {
-    const notification: Notification = {
-      id: Date.now(),
-      message,
-      type,
-      timestamp: Date.now()
-    };
-    
-    setNotifications(prev => [...prev, notification]);
-    
-    // Auto-remove after 3 seconds
-    setTimeout(() => {
-      setNotifications(prev => prev.filter(n => n.id !== notification.id));
-    }, 3000);
   };
 
   // Quick action handlers
@@ -453,8 +461,9 @@ const MobileIntegration: React.FC<MobileIntegrationProps> = ({
               granted: permission === 'granted'
             });
           }}
-          onNotificationReceived={(data: any) => {
-            showNotification(data.title || 'New notification', 'info');
+          onNotificationReceived={(data: unknown) => {
+            const notificationData = data as { title?: string; [key: string]: unknown };
+            showNotification(notificationData.title || 'New notification', 'info');
           }}
         />
       )}

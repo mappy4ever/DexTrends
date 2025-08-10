@@ -19,7 +19,16 @@ interface AchievementData {
   uniqueTypes: number;
   totalValue: number;
   highestValue: number;
-  [key: string]: any;
+  secretRares: number;
+  shinyCards: number;
+  legendaryCards: number;
+  completedSets: number;
+  mostValuableCardPrice: number;
+  consecutiveDays: number;
+  comparisonsUsed: number;
+  typeDistribution: Record<string, number>;
+  totalPokemon: number;
+  [key: string]: unknown;
 }
 
 interface Achievement {
@@ -266,9 +275,9 @@ const AchievementSystem = ({ onAchievementUnlocked = () => {} }: AchievementSyst
     // Mock calculations (in real app, this would use actual card data)
     if (favorites.cards && favorites.cards.length > 0) {
       // For now, mock the card data since we only have IDs
-      favorites.cards.forEach((card: any) => {
+      favorites.cards.forEach((card: unknown) => {
         // Mock rarity detection based on ID patterns
-        const cardName = (typeof card === 'string' ? card : card.id || '').toLowerCase();
+        const cardName = (typeof card === 'string' ? card : (card as { id?: string })?.id || '').toLowerCase();
         if (cardName.includes('rare') || cardName.includes('holo')) stats.rareCards++;
         if (cardName.includes('holo') || cardName.includes('holographic')) stats.holoCards++;
         if (cardName.includes('secret')) stats.secretRares++;
@@ -311,20 +320,20 @@ const AchievementSystem = ({ onAchievementUnlocked = () => {} }: AchievementSyst
     const previouslyUnlocked: string[] = JSON.parse(localStorage.getItem('unlocked_achievements') || '[]');
     const newUnlocked: Achievement[] = [];
 
-    achievementDefinitions.forEach((achievement: any) => {
+    achievementDefinitions.forEach((achievement: Achievement) => {
       if (achievement.requirement(stats) && !previouslyUnlocked.includes(achievement.id)) {
         newUnlocked.push(achievement);
       }
     });
 
     if (newUnlocked.length > 0) {
-      const allUnlocked = [...previouslyUnlocked, ...newUnlocked.map((a: any) => a.id)];
+      const allUnlocked = [...previouslyUnlocked, ...newUnlocked.map((a: Achievement) => a.id)];
       localStorage.setItem('unlocked_achievements', JSON.stringify(allUnlocked));
       setNewlyUnlocked(newUnlocked);
       setUnlockedAchievements(allUnlocked);
       
       // Trigger notifications for each new achievement
-      newUnlocked.forEach((achievement: any) => {
+      newUnlocked.forEach((achievement: Achievement) => {
         onAchievementUnlocked(achievement);
         showAchievementNotification(achievement);
       });
@@ -333,7 +342,8 @@ const AchievementSystem = ({ onAchievementUnlocked = () => {} }: AchievementSyst
     }
 
     setAchievements(achievementDefinitions);
-  }, [favorites.cards?.length]); // Only trigger on count changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [favorites.cards?.length]); // Only trigger on count changes, onAchievementUnlocked excluded to prevent loops
 
   const showAchievementNotification = (achievement: Achievement) => {
     if (typeof window !== 'undefined' && window.showNotification) {
@@ -366,7 +376,7 @@ const AchievementSystem = ({ onAchievementUnlocked = () => {} }: AchievementSyst
     }
   };
 
-  const getProgressPercentage = (): any => {
+  const getProgressPercentage = (): number => {
     return Math.round((unlockedAchievements.length / achievements.length) * 100);
   };
 
@@ -488,7 +498,7 @@ const AchievementSystem = ({ onAchievementUnlocked = () => {} }: AchievementSyst
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Achievement Stats</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {Object.entries(groupedAchievements).map(([category, categoryAchievements]) => {
-            const unlockedCount = categoryAchievements.filter((a: any) => unlockedAchievements.includes(a.id)).length;
+            const unlockedCount = categoryAchievements.filter((a: Achievement) => unlockedAchievements.includes(a.id)).length;
             const percentage = Math.round((unlockedCount / categoryAchievements.length) * 100);
             
             return (

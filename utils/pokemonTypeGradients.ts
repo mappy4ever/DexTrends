@@ -3,6 +3,8 @@
  * Creates beautiful, soft gradients based on Pokemon types while maintaining design consistency
  */
 
+import logger from './logger';
+
 // Type definitions
 interface GradientPalette {
   light: string[];
@@ -548,7 +550,7 @@ export const getTypeRingGradient = (types: PokemonType[]): string => {
   
   // Ensure ringGradient exists
   if (!typeConfig || !typeConfig.ringGradient) {
-    console.warn(`Missing type config or ringGradient for type: ${primaryType}`);
+    logger.warn(`Missing type config or ringGradient for type: ${primaryType}`);
     return 'from-gray-400 to-gray-500'; // Safe fallback gradient
   }
   
@@ -573,7 +575,7 @@ export const getTypeRingGradient = (types: PokemonType[]): string => {
         return `from-${primaryColor} via-${primaryColor}/50 via-${secondaryColor} via-${secondaryColor}/50 to-${primaryColor}`;
       }
     } catch (e) {
-      console.error('Error parsing gradient:', e);
+      logger.error('Error parsing gradient:', { error: e });
     }
     
     // Fallback to primary gradient if parsing fails

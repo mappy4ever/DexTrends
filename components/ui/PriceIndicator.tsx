@@ -12,7 +12,7 @@ interface PriceIndicatorProps {
 
 // Price indicator component that shows current price with trend indicators
 export default function PriceIndicator({ cardId, showTrend = true, currentPrice = 'N/A', variantType = 'market', size = 'md', className = '' }: PriceIndicatorProps) {
-  const [priceChange, setPriceChange] = useState<any>(null);
+  const [priceChange, setPriceChange] = useState<{ amount: number; percentage: number; trend: "UP" | "DOWN" | "STABLE" } | null>(null);
   const [trend, setTrend] = useState('STABLE');
   const [loading, setLoading] = useState(false);
 
@@ -62,7 +62,7 @@ export default function PriceIndicator({ cardId, showTrend = true, currentPrice 
   };
 
   // Trend colors and icons
-  const getTrendDisplay = (): any => {
+  const getTrendDisplay = (): { icon: string; color: string; text: string } => {
     if (!showTrend || loading) return null;
 
     const displays = {

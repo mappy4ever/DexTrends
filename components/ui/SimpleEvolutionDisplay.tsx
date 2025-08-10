@@ -58,7 +58,7 @@ const SimpleEvolutionDisplay: React.FC<SimpleEvolutionDisplayProps> = ({ species
         setError(null);
         
         // Get species data
-        const speciesData = await fetchJSON<any>(speciesUrl);
+        const speciesData = await fetchJSON<{ evolution_chain?: { url: string } }>(speciesUrl);
         if (!speciesData) {
           logger.warn('Failed to fetch species data');
           setEvolutionChain([]);
@@ -70,7 +70,7 @@ const SimpleEvolutionDisplay: React.FC<SimpleEvolutionDisplayProps> = ({ species
         }
         
         // Get evolution chain
-        const evoData = await fetchJSON<any>(speciesData.evolution_chain.url);
+        const evoData = await fetchJSON<{ chain: EvolutionNode }>(speciesData.evolution_chain.url);
         if (!evoData) {
           logger.warn('Failed to fetch evolution chain data');
           setEvolutionChain([]);
@@ -85,9 +85,9 @@ const SimpleEvolutionDisplay: React.FC<SimpleEvolutionDisplayProps> = ({ species
           
           // Get Pokemon data for types
           let types: string[] = [];
-          const pokeData = await fetchJSON<any>(`https://pokeapi.co/api/v2/pokemon/${speciesId}`);
+          const pokeData = await fetchJSON<{ types: Array<{ type: { name: string } }> }>(`https://pokeapi.co/api/v2/pokemon/${speciesId}`);
           if (pokeData) {
-            types = pokeData.types.map((t: any) => t.type.name);
+            types = pokeData.types.map((t) => t.type.name);
           } else {
             logger.warn(`Failed to fetch Pokemon data for ${speciesId}`);
           }
@@ -117,9 +117,9 @@ const SimpleEvolutionDisplay: React.FC<SimpleEvolutionDisplayProps> = ({ species
         const chain = await parseChain(evoData.chain);
         setEvolutionChain(chain);
         
-      } catch (err: any) {
-        logger.error('Error loading evolution:', err);
-        setError(err.message);
+      } catch (err: unknown) {
+        logger.error('Error loading evolution:', { error: err });
+        setError(err instanceof Error ? err.message : 'Unknown error');
       } finally {
         setLoading(false);
       }

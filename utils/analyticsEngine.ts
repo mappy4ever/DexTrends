@@ -8,7 +8,7 @@ import logger from './logger';
 
 // Types for analytics data
 interface EventData {
-  [key: string]: any;
+  [key: string]: unknown;
   timestamp?: string;
   user_agent?: string | null;
   url?: string | null;
@@ -72,7 +72,7 @@ interface UserBehaviorAnalytics {
   hourlyDistribution: Record<number, number>;
   popularCards: Array<[string, number]>;
   searchTerms: Array<[string, number]>;
-  userJourneys: any[];
+  userJourneys: unknown[];
 }
 
 interface SearchAnalytics {

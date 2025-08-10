@@ -110,7 +110,7 @@ const OptimizedImageMobile: React.FC<OptimizedImageMobileProps> = ({
       logger.warn('Failed to optimize image URL:', { error });
       return originalSrc;
     }
-  }, [src, width, height, format, quality]);
+  }, [width, format, quality]);
 
   // Update optimized source when src changes or strategy changes
   useEffect(() => {

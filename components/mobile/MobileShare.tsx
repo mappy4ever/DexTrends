@@ -18,7 +18,7 @@ interface CardData {
   rarity?: string;
   price?: number;
   image?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 interface ShareOption {
@@ -168,10 +168,10 @@ const MobileShare: React.FC<MobileShareProps> = ({
       logger.debug('Native share completed', shareData);
       
       return true;
-    } catch (error: any) {
-      if (error.name !== 'AbortError') {
-        logger.error('Native share failed:', error);
-        onShareError && onShareError(error);
+    } catch (error: unknown) {
+      if ((error as Error).name !== 'AbortError') {
+        logger.error('Native share failed:', { error });
+        onShareError && onShareError(error as Error);
       }
       return false;
     } finally {
@@ -246,9 +246,9 @@ const MobileShare: React.FC<MobileShareProps> = ({
       }
       
       return success;
-    } catch (error: any) {
-      logger.error('Fallback share failed:', error);
-      onShareError && onShareError(error);
+    } catch (error: unknown) {
+      logger.error('Fallback share failed:', { error });
+      onShareError && onShareError(error as Error);
       return false;
     } finally {
       setIsSharing(false);

@@ -6,7 +6,7 @@
 import React, { useState } from 'react';
 import { FadeIn } from '../ui/animations/animations';
 import EvolutionTreeRenderer from '../ui/EvolutionTreeRenderer';
-import type { Pokemon, EvolutionDetail } from '../../types/api/pokemon';
+import type { Pokemon, EvolutionDetail } from "../../types/pokemon";
 
 interface ProcessedEvolutionNode {
   id: string;
@@ -30,7 +30,7 @@ const PokemonEvolutionTab: React.FC<PokemonEvolutionTabProps> = ({
   const [showShinyEvolutionSprite, setShowShinyEvolutionSprite] = useState(false);
 
   // Convert ProcessedEvolutionNode to EvolutionNode format
-  const convertToEvolutionNode = (node: ProcessedEvolutionNode): any => {
+  const convertToEvolutionNode = (node: ProcessedEvolutionNode): Record<string, unknown> => {
     if (!node) return null;
     
     return {

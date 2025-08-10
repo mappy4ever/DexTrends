@@ -16,7 +16,7 @@ import {
 import { GiCardPickup } from 'react-icons/gi';
 import { FiTrendingUp } from 'react-icons/fi';
 // Import mobile utils with error handling
-let useMobileUtils: any;
+let useMobileUtils: () => { isMobile: boolean; isTouch: boolean; utils: { hapticFeedback: (type: string) => void } };
 try {
   useMobileUtils = require('../../utils/mobileUtils').useMobileUtils;
 } catch (error) {

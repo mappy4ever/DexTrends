@@ -48,8 +48,28 @@ const REGIONAL_EVOLUTION_MAP: { [key: string]: string | string[] | null } = {
 };
 
 // Get the regional evolution chain for a Pokemon
-export async function getRegionalEvolutionChain(pokemonName: string, currentForm: string | null = null): Promise<any[] | null> {
-  const evolutionChain: any[] = [];
+interface RegionalEvolutionData {
+  id: number;
+  name: string;
+  types: string[];
+  sprite?: string;
+  shinySprite?: string;
+  isRegional: boolean;
+  region: string;
+  isSplitEvolution?: boolean;
+}
+
+interface PokemonApiData {
+  id: number;
+  types?: Array<{ type: { name: string } }>;
+  sprites?: {
+    front_default?: string;
+    front_shiny?: string;
+  };
+}
+
+export async function getRegionalEvolutionChain(pokemonName: string, currentForm: string | null = null): Promise<RegionalEvolutionData[] | null> {
+  const evolutionChain: RegionalEvolutionData[] = [];
   
   // Check if this is a regional form
   const isRegional = pokemonName.includes('-alola') || 
@@ -70,12 +90,12 @@ export async function getRegionalEvolutionChain(pokemonName: string, currentForm
   const sanitizedRegionalName = sanitizePokemonName(regionalName);
   
   // Add the current Pokemon
-  const pokemonData = await fetchJSON(`https://pokeapi.co/api/v2/pokemon/${sanitizedRegionalName}`);
-  if (pokemonData) {
+  const pokemonData = await fetchJSON<PokemonApiData>(`https://pokeapi.co/api/v2/pokemon/${sanitizedRegionalName}`);
+  if (pokemonData && pokemonData.id) {
     evolutionChain.push({
       id: pokemonData.id,
       name: regionalName,
-      types: pokemonData.types.map((t: any) => t.type.name),
+      types: pokemonData.types?.map((t) => t.type.name) || [],
       sprite: pokemonData.sprites?.front_default,
       shinySprite: pokemonData.sprites?.front_shiny,
       isRegional: true,
@@ -91,12 +111,12 @@ export async function getRegionalEvolutionChain(pokemonName: string, currentForm
     if (Array.isArray(evolution)) {
       // Split evolution (like Galarian Slowpoke)
       for (const evo of evolution) {
-        const evoData = await fetchJSON(`https://pokeapi.co/api/v2/pokemon/${sanitizePokemonName(evo)}`);
-        if (evoData) {
+        const evoData = await fetchJSON<PokemonApiData>(`https://pokeapi.co/api/v2/pokemon/${sanitizePokemonName(evo)}`);
+        if (evoData && evoData.id) {
           evolutionChain.push({
             id: evoData.id,
             name: evo,
-            types: evoData.types.map((t: any) => t.type.name),
+            types: evoData.types?.map((t) => t.type.name) || [],
             sprite: evoData.sprites?.front_default,
             shinySprite: evoData.sprites?.front_shiny,
             isRegional: true,
@@ -109,12 +129,12 @@ export async function getRegionalEvolutionChain(pokemonName: string, currentForm
       }
     } else {
       // Single evolution
-      const evoData = await fetchJSON(`https://pokeapi.co/api/v2/pokemon/${sanitizePokemonName(evolution)}`);
-      if (evoData) {
+      const evoData = await fetchJSON<PokemonApiData>(`https://pokeapi.co/api/v2/pokemon/${sanitizePokemonName(evolution)}`);
+      if (evoData && evoData.id) {
         evolutionChain.push({
           id: evoData.id,
           name: evolution,
-          types: evoData.types.map((t: any) => t.type.name),
+          types: evoData.types?.map((t) => t.type.name) || [],
           sprite: evoData.sprites?.front_default,
           shinySprite: evoData.sprites?.front_shiny,
           isRegional: true,
@@ -124,12 +144,12 @@ export async function getRegionalEvolutionChain(pokemonName: string, currentForm
         // Check if this evolution has further evolutions
         const furtherEvolution = REGIONAL_EVOLUTION_MAP[evolution];
         if (furtherEvolution && !Array.isArray(furtherEvolution)) {
-          const furtherEvoData = await fetchJSON(`https://pokeapi.co/api/v2/pokemon/${sanitizePokemonName(furtherEvolution)}`);
-          if (furtherEvoData) {
+          const furtherEvoData = await fetchJSON<PokemonApiData>(`https://pokeapi.co/api/v2/pokemon/${sanitizePokemonName(furtherEvolution)}`);
+          if (furtherEvoData && furtherEvoData.id) {
             evolutionChain.push({
               id: furtherEvoData.id,
               name: furtherEvolution,
-              types: furtherEvoData.types.map((t: any) => t.type.name),
+              types: furtherEvoData.types?.map((t) => t.type.name) || [],
               sprite: furtherEvoData.sprites?.front_default,
               shinySprite: furtherEvoData.sprites?.front_shiny,
               isRegional: true,
@@ -151,12 +171,12 @@ export async function getRegionalEvolutionChain(pokemonName: string, currentForm
   );
   
   for (const [preEvo] of preEvolutions) {
-    const preEvoData = await fetchJSON(`https://pokeapi.co/api/v2/pokemon/${sanitizePokemonName(preEvo)}`);
-    if (preEvoData) {
+    const preEvoData = await fetchJSON<PokemonApiData>(`https://pokeapi.co/api/v2/pokemon/${sanitizePokemonName(preEvo)}`);
+    if (preEvoData && preEvoData.id) {
       evolutionChain.unshift({
         id: preEvoData.id,
         name: preEvo,
-        types: preEvoData.types.map((t: any) => t.type.name),
+        types: preEvoData.types?.map((t) => t.type.name) || [],
         sprite: preEvoData.sprites?.front_default,
         shinySprite: preEvoData.sprites?.front_shiny,
         isRegional: true,

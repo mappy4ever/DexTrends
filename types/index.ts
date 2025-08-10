@@ -45,6 +45,9 @@ export type {
 export * from './utils/cache';
 export * from './utils/performance';
 
+// === Speech Recognition Types ===
+export * from './speech-recognition';
+
 // === Third-party Types ===
 // Module declarations are in pokemontcgsdk.d.ts and graphql-subscriptions.d.ts
 // They are automatically available when imported

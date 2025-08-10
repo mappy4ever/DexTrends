@@ -2,8 +2,8 @@ declare module 'pokemontcgsdk' {
   export interface Card {
     id: string;
     name: string;
-    supertype: string;
-    subtypes: string[];
+    supertype: 'Pokémon' | 'Trainer' | 'Energy';
+    subtypes?: string[];
     level?: string;
     hp?: string;
     types?: string[];
@@ -21,12 +21,13 @@ declare module 'pokemontcgsdk' {
     flavorText?: string;
     nationalPokedexNumbers?: number[];
     legalities?: any;
-    images?: {
+    images: {
       small: string;
       large: string;
     };
     tcgplayer?: any;
     cardmarket?: any;
+    currentPrice?: number;
   }
 
   export const card: {

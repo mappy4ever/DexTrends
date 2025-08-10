@@ -16,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Test the exact endpoint that the frontend calls
     const testUrl = `http://localhost:3002/api/tcg-sets/${setId}?page=1&pageSize=20`;
-    logger.debug('Testing local API endpoint:', testUrl);
+    logger.debug('Testing local API endpoint', { testUrl });
     
     const response = await fetch(testUrl);
     const data = await response.json();
@@ -42,11 +42,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         message: 'Visit /api/test-set/sv5 for direct API test'
       }
     });
-  } catch (error: any) {
-    logger.error('Test failed:', error);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const errorStack = error instanceof Error ? error.stack : undefined;
+    logger.error('Test failed:', { error: error instanceof Error ? error.message : String(error) });
     res.status(500).json({
-      error: error.message,
-      stack: error.stack
+      error: errorMessage,
+      stack: errorStack
     });
   }
 }

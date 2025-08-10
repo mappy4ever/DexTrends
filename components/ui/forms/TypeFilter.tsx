@@ -24,11 +24,11 @@ export function TypeFilter({ types = [], selectedType, onTypeChange, compact = f
   }
 
   // Make sure "all" is always the first option
-  const sortedTypes = ["all", ...types.filter((t: any) => t !== "all")];
+  const sortedTypes = ["all", ...types.filter((t: string) => t !== "all")];
 
   return (
     <div className={`flex ${compact ? 'flex-wrap gap-1.5' : 'gap-2 overflow-x-auto py-2 px-1'}`}>
-      {sortedTypes.map((type: any) => (
+      {sortedTypes.map((type: string) => (
         <button
           key={type}
           onClick={() => onTypeChange?.(type)}
@@ -48,7 +48,7 @@ export function TypeFilter({ types = [], selectedType, onTypeChange, compact = f
               All Types
             </div>
           ) : (
-            <TypeBadge type={type} size={compact ? "sm" : "md"} isPocketCard={isPocketCard} />
+            <TypeBadge type={type} size={compact ? "sm" : "md"} />
           )}
         </button>
       ))}

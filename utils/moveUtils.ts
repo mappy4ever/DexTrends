@@ -7,7 +7,7 @@ import { fetchJSON } from './unifiedFetch';
 import { extractIdFromUrl } from './pokemonutils';
 import logger from './logger';
 import { POKEMON_TYPE_COLORS } from './unifiedTypeColors';
-import type { Move, Pokemon } from '../types/api/pokemon';
+import type { Move, Pokemon } from "../types/pokemon";
 
 // Move-related interfaces
 interface MoveReference {
@@ -49,7 +49,7 @@ interface MoveDetails {
 }
 
 interface CachedMove {
-  data: any;
+  data: unknown;
   timestamp: number;
 }
 
@@ -135,7 +135,7 @@ export const fetchMoveDetails = async (move: ProcessedMove): Promise<MoveDetails
       target: moveData.target?.name || 'selected-pokemon'
     };
   } catch (error) {
-    console.error(`Failed to fetch move details for ${move.name}:`, error);
+    logger.error(`Failed to fetch move details for ${move.name}:`, { error });
     return {
       name: move.name,
       type: 'normal',

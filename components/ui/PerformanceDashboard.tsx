@@ -5,12 +5,13 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { usePerformanceMonitor } from '../../utils/performanceMonitor';
+import type { Metric } from '../../utils/performanceMonitor';
 import { useAPIPerformance, getAPIPerformanceReport } from '../../utils/apiOptimizations';
 // import { useImagePerformance } from './OptimizedImage';
 import logger from '../../utils/logger';
 
 // Types and Interfaces
-interface Metric {
+interface SimpleMetric {
   value: number;
   timestamp?: number;
 }
@@ -48,15 +49,21 @@ interface APIPerformanceProps {
 }
 
 interface ComponentPerformanceProps {
-  performanceData: any; // TODO: Replace with proper type from performanceMonitor
+  performanceData: {
+    getMetrics: (name?: string) => Metric[] | Record<string, Metric[]>;
+  };
 }
 
 interface MemoryUsageProps {
-  performanceData: any; // TODO: Replace with proper type from performanceMonitor
+  performanceData: {
+    getMetrics: (name?: string) => Metric[] | Record<string, Metric[]>;
+  };
 }
 
 interface OptimizationSuggestionsProps {
-  performanceData: any; // TODO: Replace with proper type from performanceMonitor
+  performanceData: {
+    getMetrics: (name?: string) => Metric[] | Record<string, Metric[]>;
+  };
 }
 
 interface PerformanceDashboardProps {
@@ -211,8 +218,11 @@ const ComponentPerformance: React.FC<ComponentPerformanceProps> = ({ performance
   const [componentMetrics, setComponentMetrics] = useState<Record<string, Metric[]>>({});
 
   useEffect(() => {
-    const metrics = performanceData.getMetrics();
+    const metricsData = performanceData.getMetrics();
     const componentData: Record<string, Metric[]> = {};
+
+    // Ensure metrics is a Record, not an array
+    const metrics = Array.isArray(metricsData) ? {} : metricsData;
 
     // Aggregate component metrics
     Object.entries(metrics).forEach(([key, values]) => {
@@ -326,8 +336,11 @@ const OptimizationSuggestions: React.FC<OptimizationSuggestionsProps> = ({ perfo
 
   useEffect(() => {
     const generateSuggestions = () => {
-      const metrics = performanceData.getMetrics();
+      const metricsData = performanceData.getMetrics();
       const newSuggestions: OptimizationSuggestion[] = [];
+
+      // Ensure metrics is a Record, not an array
+      const metrics = Array.isArray(metricsData) ? {} : metricsData;
 
       // Check render performance
       const renderTimes = metrics['component-render-time'] || [];

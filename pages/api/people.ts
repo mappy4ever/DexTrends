@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { createClient } from '@supabase/supabase-js';
 import logger from '@/utils/logger';
+import { ErrorResponse } from '@/types/api/api-responses';
 
 // Initialize Supabase client - This is OK at the top level
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -26,7 +27,7 @@ interface PersonDetails {
   // Define based on your name_dim table structure
   name_id: number;
   name?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 interface TripData {
@@ -56,10 +57,6 @@ interface PeopleResponse {
   personTrips: TripData[];
 }
 
-interface ErrorResponse {
-  error: string;
-  details?: string;
-}
 
 export default async function handler(
   req: NextApiRequest,

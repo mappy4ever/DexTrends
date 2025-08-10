@@ -3,7 +3,7 @@ import logger from '../../utils/logger';
 import hapticFeedback from '../../utils/hapticFeedback';
 
 // Import mobile utils with error handling
-let useMobileUtils: any;
+let useMobileUtils: () => { isTouch: boolean; utils: Record<string, unknown> };
 try {
   useMobileUtils = require('../../utils/mobileUtils').useMobileUtils;
 } catch (error) {
@@ -234,7 +234,7 @@ const TouchGestures: React.FC<TouchGesturesProps> = ({
 
     touchState.current.endX = touch.clientX;
     touchState.current.endY = touch.clientY;
-  }, [disabled, isTouch, enablePinch, onPinch]);
+  }, [disabled, isTouch, enablePinch, enableSwipe, onPinch]);
 
   const handleTouchEnd = useCallback((e: TouchEvent) => {
     if (disabled || !isTouch) return;

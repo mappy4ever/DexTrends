@@ -8,7 +8,6 @@ import { TypeBadge } from '../components/ui/TypeBadge';
 import { getGeneration } from '../utils/pokemonutils';
 import { fetchJSON } from '../utils/unifiedFetch';
 import logger from '../utils/logger';
-import { retryWithBackoff } from '../utils/retryWithBackoff';
 import PokeballLoader from '../components/ui/PokeballLoader';
 import CollectionDashboard from "../components/ui/layout/CollectionDashboard";
 import AchievementSystem from '../components/ui/AchievementSystem';
@@ -20,7 +19,7 @@ import { TCGCard } from '../types/api/cards';
 import Head from 'next/head';
 
 // Type definitions
-import type { Pokemon as APIPokemon } from '../types/api/pokemon';
+import type { Pokemon as APIPokemon } from "../types/pokemon";
 
 interface SimplePokemon {
   id: number;
@@ -57,20 +56,12 @@ const FavoritesPage: NextPage = () => {
         setLoading(true);
         const pokemonPromises = favorites.pokemon.map(async (id) => {
           try {
-            const data = await retryWithBackoff(
-              () => fetchJSON<APIPokemon>(`https://pokeapi.co/api/v2/pokemon/${id}`, {
+            const data = await fetchJSON<APIPokemon>(`https://pokeapi.co/api/v2/pokemon/${id}`, {
                 useCache: true,
                 cacheTime: 10 * 60 * 1000, // Cache for 10 minutes - Pokemon data is stable
                 timeout: 8000,
                 retries: 2
-              }),
-              {
-                maxRetries: 3,
-                onRetry: (error, attempt) => {
-                  logger.warn(`Retrying Pokemon fetch for ID ${id}, attempt ${attempt}`, error);
-                }
-              }
-            );
+              });
             if (data && data.types) {
               return {
                 id: data.id,
@@ -110,20 +101,12 @@ const FavoritesPage: NextPage = () => {
         setLoading(true);
         const cardsPromises = favorites.cards.map(async (id) => {
           try {
-            const response = await retryWithBackoff(
-              () => fetchJSON<TCGCardApiResponse>(`https://api.pokemontcg.io/v2/cards/${id}`, {
+            const response = await fetchJSON<TCGCardApiResponse>(`https://api.pokemontcg.io/v2/cards/${id}`, {
                 useCache: true,
                 cacheTime: 15 * 60 * 1000, // Cache for 15 minutes - card data is very stable
                 timeout: 10000,
                 retries: 2
-              }),
-              {
-                maxRetries: 3,
-                onRetry: (error, attempt) => {
-                  logger.warn(`Retrying TCG card fetch for ID ${id}, attempt ${attempt}`, error);
-                }
-              }
-            );
+              });
             return response?.data || null;
           } catch (err) {
             logger.error(`Error fetching card ${id}:`, { error: err, id });
@@ -206,7 +189,7 @@ const FavoritesPage: NextPage = () => {
             <div className="animate-fadeIn">
               <AchievementSystem 
                 onAchievementUnlocked={(achievement) => {
-                  console.log('New achievement unlocked:', achievement);
+                  logger.debug('New achievement unlocked:', { achievement });
                   // Could trigger notifications or other effects here
                 }}
               />

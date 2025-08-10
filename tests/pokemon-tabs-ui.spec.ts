@@ -1,9 +1,10 @@
 import { test, expect } from '@playwright/test';
+import { TEST_URLS } from '../config/api';
 
 test.describe('Pokemon Tabs UI Testing', () => {
   test.beforeEach(async ({ page }) => {
     // Go to a Pokemon page
-    await page.goto('http://localhost:3001/pokedex/25'); // Pikachu
+    await page.goto(TEST_URLS.pokemon(25)); // Pikachu
     await page.waitForLoadState('networkidle');
   });
 

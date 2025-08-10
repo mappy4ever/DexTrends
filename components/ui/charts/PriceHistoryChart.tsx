@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useTheme } from '../../../context/UnifiedAppContext';
 import { PriceHistoryManager } from '../../../lib/supabase';
 import { postJSON } from '../../../utils/unifiedFetch';
+import logger from '@/utils/logger';
 import { 
   generateSamplePriceHistory, 
   getSamplePriceData, 
@@ -15,23 +16,47 @@ import {
 // A component to show REAL price history for TCG cards
 // Uses actual price data from our Supabase database with fallback to sample data
 
+interface PriceDataPoint {
+  date: string;
+  price: number;
+}
+
 interface PriceHistoryChartProps {
   cardId: string;
   variantType?: string;
   initialPrice?: number;
 }
 
+type DataSource = 'supabase' | 'sample' | 'fallback';
+
+interface ChartTick {
+  x: number;
+  label: string;
+}
+
+interface YAxisTick {
+  y: number;
+  label: string;
+}
+
+interface ChartColors {
+  line: string;
+  area: string;
+  text: string;
+  grid: string;
+}
+
 export default function PriceHistoryChart({ cardId, variantType = 'market', initialPrice = 0 }: PriceHistoryChartProps) {
   const router = useRouter();
   const { theme } = useTheme();
-  const [priceData, setPriceData] = useState<unknown[]>([]);
+  const [priceData, setPriceData] = useState<PriceDataPoint[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedRange, setSelectedRange] = useState('1m');
   const [highestPrice, setHighestPrice] = useState(0);
   const [lowestPrice, setLowestPrice] = useState(0);
   const [averagePrice, setAveragePrice] = useState(0);
-  const [dataSource, setDataSource] = useState<'supabase' | 'sample' | 'fallback'>('supabase');
+  const [dataSource, setDataSource] = useState<DataSource>('supabase');
 
   // Fetch real price history data from Supabase
   useEffect(() => {
@@ -68,7 +93,7 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
           setDataSource('sample');
           
           // Calculate statistics
-          const prices = transformedData.map((d: any) => d.price);
+          const prices = transformedData.map((d: PriceDataPoint) => d.price);
           if (prices.length > 0) {
             setHighestPrice(Math.max(...prices));
             setLowestPrice(Math.min(...prices));
@@ -81,7 +106,7 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
             setPriceData(cachedData);
             setDataSource('sample');
             
-            const prices = cachedData.map(d => d.price);
+            const prices = cachedData.map((d: PriceDataPoint) => d.price);
             setHighestPrice(Math.max(...prices));
             setLowestPrice(Math.min(...prices));
             setAveragePrice(parseFloat((prices.reduce((sum, price) => sum + price, 0) / prices.length).toFixed(2)));
@@ -100,7 +125,7 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
               storeSamplePriceData(cardId, transformedData);
 
               // Calculate statistics from the data
-              const prices = transformedData.map((d: any) => d.price);
+              const prices = transformedData.map((d: PriceDataPoint) => d.price);
               const highest = Math.max(...prices);
               const lowest = Math.min(...prices);
               const average = prices.reduce((sum: number, price: number) => sum + price, 0) / prices.length;
@@ -117,23 +142,23 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
               // Cache the sample data
               storeSamplePriceData(cardId, sampleData);
               
-              const prices = sampleData.map(d => d.price);
+              const prices = sampleData.map((d: PriceDataPoint) => d.price);
               setHighestPrice(Math.max(...prices));
               setLowestPrice(Math.min(...prices));
               setAveragePrice(parseFloat((prices.reduce((sum, price) => sum + price, 0) / prices.length).toFixed(2)));
             }
           }
         }
-      } catch (error: any) {
-        logger.error('Error fetching price data:', error);
-        setError(error.message || 'Failed to load price data');
+      } catch (error: unknown) {
+        logger.error('Error fetching price data:', error as any);
+        setError(error instanceof Error ? error.message : 'Failed to load price data');
         
         // Fallback to sample data on error
         const sampleData = generateSamplePriceHistory(cardId, initialPrice || 10, 30);
         setPriceData(sampleData);
         setDataSource('fallback');
         
-        const prices = sampleData.map(d => d.price);
+        const prices = sampleData.map((d: PriceDataPoint) => d.price);
         if (prices.length > 0) {
           setHighestPrice(Math.max(...prices));
           setLowestPrice(Math.min(...prices));
@@ -165,12 +190,12 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
   const chartInnerHeight = chartHeight - (paddingY * 2);
 
   // Generate SVG path for the price chart
-  const generateChartPath = (): any => {
+  const generateChartPath = (): string => {
     if (priceData.length === 0) return '';
 
     // Find min and max for scaling
-    const maxPrice = Math.max(...priceData.map((d: any) => d.price));
-    const minPrice = Math.min(...priceData.map((d: any) => d.price));
+    const maxPrice = Math.max(...priceData.map((d: PriceDataPoint) => d.price));
+    const minPrice = Math.min(...priceData.map((d: PriceDataPoint) => d.price));
     const priceRange = maxPrice - minPrice;
     
     // Add 10% padding to the top and bottom
@@ -178,7 +203,7 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
     const xScale = chartInnerWidth / (priceData.length - 1);
     
     // Generate the path
-    return priceData.map((point: any, i) => {
+    return priceData.map((point: PriceDataPoint, i: number) => {
       const x = paddingX + i * xScale;
       const y = paddingY + chartInnerHeight - ((point.price - minPrice) * yScale);
       return `${i === 0 ? 'M' : 'L'} ${x} ${y}`;
@@ -186,7 +211,7 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
   };
 
   // Generate area fill below the line
-  const generateAreaPath = (): any => {
+  const generateAreaPath = (): string => {
     if (priceData.length === 0) return '';
 
     const linePath = generateChartPath();
@@ -198,17 +223,17 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
   };
 
   // Generate x-axis tick marks
-  const generateXAxisTicks = (): any => {
+  const generateXAxisTicks = (): ChartTick[] => {
     if (priceData.length === 0) return [];
     
     const tickCount = 5; // Number of ticks to show
     const interval = Math.floor((priceData.length - 1) / (tickCount - 1));
-    const ticks = [];
+    const ticks: ChartTick[] = [];
     
     for (let i = 0; i < tickCount; i++) {
       const index = i === tickCount - 1 ? priceData.length - 1 : i * interval;
       const x = paddingX + (index * chartInnerWidth / (priceData.length - 1));
-      const date = new Date((priceData[index] as any).date);
+      const date = new Date(priceData[index].date);
       const month = date.toLocaleString('default', { month: 'short' });
       const year = date.getFullYear();
       
@@ -222,13 +247,13 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
   };
 
   // Generate y-axis tick marks
-  const generateYAxisTicks = (): any => {
+  const generateYAxisTicks = (): YAxisTick[] => {
     if (priceData.length === 0) return [];
     
-    const maxPrice = Math.max(...priceData.map((d: any) => d.price));
-    const minPrice = Math.min(...priceData.map((d: any) => d.price));
+    const maxPrice = Math.max(...priceData.map((d: PriceDataPoint) => d.price));
+    const minPrice = Math.min(...priceData.map((d: PriceDataPoint) => d.price));
     const tickCount = 5;
-    const ticks = [];
+    const ticks: YAxisTick[] = [];
     
     for (let i = 0; i < tickCount; i++) {
       const price = minPrice + ((maxPrice - minPrice) * i / (tickCount - 1));
@@ -244,7 +269,7 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
   };
 
   // Chart colors based on theme
-  const getChartColors = (): any => {
+  const getChartColors = (): ChartColors => {
     return theme === 'dark' 
       ? {
           line: '#3b82f6',
@@ -350,7 +375,7 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
       {/* Time Range Selector */}
       <div className="flex justify-center mb-4">
         <div className="inline-flex rounded-md shadow-sm">
-          {ranges.map((range: any) => (
+          {ranges.map((range) => (
             <button
               key={range.value}
               type="button"
@@ -389,7 +414,7 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
           />
           
           {/* X axis ticks */}
-          {generateXAxisTicks().map((tick: any, i: number) => (
+          {generateXAxisTicks().map((tick, i) => (
             <g key={`x-tick-${i}`}>
               <line 
                 x1={tick.x} 
@@ -412,7 +437,7 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
           ))}
           
           {/* Y axis ticks */}
-          {generateYAxisTicks().map((tick: any, i: number) => (
+          {generateYAxisTicks().map((tick, i) => (
             <g key={`y-tick-${i}`}>
               <line 
                 x1={paddingX - 5} 
@@ -465,7 +490,7 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
           {priceData.length > 0 && (
             <circle
               cx={paddingX + chartInnerWidth}
-              cy={paddingY + chartInnerHeight - (((priceData[priceData.length - 1] as any).price - Math.min(...priceData.map((d: any) => d.price))) * chartInnerHeight / (Math.max(...priceData.map((d: any) => d.price)) - Math.min(...priceData.map((d: any) => d.price))))}
+              cy={paddingY + chartInnerHeight - ((priceData[priceData.length - 1].price - Math.min(...priceData.map((d: PriceDataPoint) => d.price))) * chartInnerHeight / (Math.max(...priceData.map((d: PriceDataPoint) => d.price)) - Math.min(...priceData.map((d: PriceDataPoint) => d.price))))}
               r="3"
               fill={chartColors.line}
               stroke="white"
@@ -476,7 +501,7 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
         
         {/* Current price */}
         <div className="absolute top-0 right-0 bg-blue-100 text-blue-800 font-bold px-2 py-1 rounded-bl-md text-sm">
-          ${(priceData[priceData.length - 1] as any).price.toFixed(2)}
+          ${priceData[priceData.length - 1].price.toFixed(2)}
         </div>
       </div>
       
@@ -488,7 +513,7 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
         </div>
         {priceData.length > 0 && (
           <div>
-            Showing {priceData.length} data points • Last updated: {new Date((priceData[priceData.length - 1] as any).date).toLocaleDateString()}
+            Showing {priceData.length} data points • Last updated: {new Date(priceData[priceData.length - 1].date).toLocaleDateString()}
           </div>
         )}
         {dataSource !== 'supabase' && (

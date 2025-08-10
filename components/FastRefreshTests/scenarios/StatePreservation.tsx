@@ -19,11 +19,11 @@ const StatePreservationTest: React.FC = () => {
   }, [simpleState]);
   
   const callbackFunction = useCallback(() => {
-    logger.debug('Callback with state:', simpleState);
+    logger.debug('Callback with state', { state: simpleState });
   }, [simpleState]);
   
   useEffect(() => {
-    logger.debug('Effect ran with state:', simpleState);
+    logger.debug('Effect ran with state', { state: simpleState });
   }, [simpleState]);
   
   return (

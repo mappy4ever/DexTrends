@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { PokemonType } from '../../types/api/pokemon';
+import type { PokemonType } from "../../types/pokemon";
 import type { CompetitiveTierRecord } from '../../utils/supabase';
 import { POKEMON_TYPE_COLORS } from '../../utils/unifiedTypeColors';
 import { cn } from '../../utils/cn';

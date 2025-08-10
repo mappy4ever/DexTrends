@@ -1,7 +1,22 @@
 import React, { useState } from 'react';
 import CardComparisonTool from './cards/CardComparisonTool';
 
-const ComparisonFAB = ({ selectedCards = [], className = '' }: { selectedCards?: any; className?: string }) => {
+interface Card {
+  id?: string;
+  name?: string;
+  images?: { small?: string; large?: string };
+  set?: { name?: string; releaseDate?: string };
+  rarity?: string;
+  hp?: string;
+  types?: string[];
+  artist?: string;
+  attacks?: Array<{ name?: string; damage?: string; text?: string }>;
+  weaknesses?: Array<{ type?: string; value?: string }>;
+  resistances?: Array<{ type?: string; value?: string }>;
+  retreatCost?: string[];
+}
+
+const ComparisonFAB = ({ selectedCards = [], className = '' }: { selectedCards?: Card[]; className?: string }) => {
   const [isComparisonOpen, setIsComparisonOpen] = useState(false);
 
   return (

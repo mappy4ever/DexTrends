@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { TypeBadge } from './TypeBadge';
 import { fetchJSON } from '../../utils/unifiedFetch';
+import logger from '../../utils/logger';
 
 interface Move {
   move: {
@@ -54,9 +55,31 @@ const SimplifiedMovesDisplay: React.FC<SimplifiedMovesDisplayProps> = ({ moves, 
   const [selectedVersion, setSelectedVersion] = useState('all');
   const [showFilters, setShowFilters] = useState(false);
 
+  const loadMovesData = useCallback(async (): Promise<void> => {
+    setLoading(true);
+    const newMovesData: Record<string, MoveData> = {};
+    
+    // Get unique move names to avoid loading duplicates
+    const uniqueMoveNames = [...new Set(moves.map(m => m.move.name))];
+    // Load data for first 30 unique moves to balance performance and data
+    const movesToLoad = uniqueMoveNames.slice(0, 30);
+    
+    for (const moveName of movesToLoad) {
+      try {
+        const moveData = await fetchJSON<any>(`https://pokeapi.co/api/v2/move/${moveName}`);
+        newMovesData[moveName] = moveData;
+      } catch (error) {
+        logger.error(`Failed to load move: ${moveName}`, error);
+      }
+    }
+    
+    setMovesData(newMovesData);
+    setLoading(false);
+  }, [moves]);
+
   useEffect(() => {
     loadMovesData();
-  }, [moves]);
+  }, [moves, loadMovesData]);
 
   // Version groups mapping
   const versionGroups: Record<string, string> = {
@@ -77,28 +100,6 @@ const SimplifiedMovesDisplay: React.FC<SimplifiedMovesDisplayProps> = ({ moves, 
     // The API doesn't directly provide TM/HM numbers, so we'll need to parse them
     // This is a simplified approach - in a real app, you'd want a comprehensive mapping
     return null; // For now, return null as the API doesn't provide this directly
-  };
-
-  const loadMovesData = async (): Promise<void> => {
-    setLoading(true);
-    const newMovesData: Record<string, MoveData> = {};
-    
-    // Get unique move names to avoid loading duplicates
-    const uniqueMoveNames = [...new Set(moves.map(m => m.move.name))];
-    // Load data for first 30 unique moves to balance performance and data
-    const movesToLoad = uniqueMoveNames.slice(0, 30);
-    
-    for (const moveName of movesToLoad) {
-      try {
-        const moveData = await fetchJSON<any>(`https://pokeapi.co/api/v2/move/${moveName}`);
-        newMovesData[moveName] = moveData;
-      } catch (error) {
-        logger.error(`Failed to load move: ${moveName}`, error);
-      }
-    }
-    
-    setMovesData(newMovesData);
-    setLoading(false);
   };
 
   // Group moves by learn method and deduplicate

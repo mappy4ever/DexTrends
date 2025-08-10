@@ -1,15 +1,27 @@
 import React, { useState, lazy, Suspense, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { Pokemon, PokemonSpecies, PokemonTab } from '../../types/api/pokemon';
+import type { Pokemon, PokemonSpecies, PokemonTab, Nature, LocationAreaEncounterDetail } from "../../types/pokemon";
+import type { TCGCard } from '../../types/api/cards';
+import type { PocketCard } from '../../types/api/pocket-cards';
 import type { CompetitiveTierRecord } from '../../utils/supabase';
+import type { TypeColors } from '../../types/pokemon-tabs';
 import { getTypeUIColors, getTypeAnimationAccent } from '../../utils/pokemonTypeGradients';
 import PokemonGlassCard from './PokemonGlassCard';
 import { cn } from '../../utils/cn';
-import { PageLoader } from '../../utils/unifiedLoading';
+import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { FaClipboardList, FaChartBar, FaExchangeAlt, FaMapMarkerAlt, FaTrophy, FaLayerGroup } from 'react-icons/fa';
 import { GiCrossedSwords, GiEggClutch } from 'react-icons/gi';
 import { getAnimationProps, UI_ANIMATION_SETS } from '../../utils/standardizedAnimations';
 import { useTheme } from '../../context/UnifiedAppContext';
+import logger from '../../utils/logger';
+
+interface ExtendedPocketCard extends PocketCard {
+  health?: string | number;
+  pack?: string;
+  ex?: "Yes" | "No";
+  fullart?: "Yes" | "No";
+  type?: string;
+}
 
 // Lazy load tab components
 const OverviewTab = lazy(() => import('./tabs/OverviewTabV3'));
@@ -27,13 +39,13 @@ interface PokemonTabSystemProps {
   activeTab: PokemonTab;
   onTabChange: (tab: PokemonTab) => void;
   // Additional props for specific tabs
-  tcgCards?: any[];
-  pocketCards?: any[];
-  abilities?: Record<string, any>;
-  evolutionChain?: any;
-  locationEncounters?: any[];
-  natureData?: any;
-  allNatures?: any[];
+  tcgCards?: TCGCard[];
+  pocketCards?: ExtendedPocketCard[];
+  abilities?: Record<string, unknown>;
+  evolutionChain?: unknown;
+  locationEncounters?: unknown[];
+  natureData?: unknown;
+  allNatures?: unknown[];
   onNatureChange?: (nature: string) => void;
   selectedNature?: string;
   selectedLevel?: number;
@@ -139,8 +151,17 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
   onLevelChange,
   competitiveTiers = null
 }) => {
-  const typeColors = getTypeUIColors(pokemon.types || []);
+  const typeUIColors = getTypeUIColors(pokemon.types || []);
   const typeAccentHex = getTypeAnimationAccent(pokemon.types || []);
+  
+  // Create a proper TypeColors object for tabs
+  const typeColors: TypeColors = {
+    primary: typeUIColors.accent || '',
+    accent: typeUIColors.accent || '',
+    animationAccent: typeAccentHex || typeUIColors.accent || '',
+    secondary: typeUIColors.button,
+    tabActive: typeUIColors.tabActive
+  };
   const [swipeDirection, setSwipeDirection] = useState(0);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
@@ -180,7 +201,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
     } catch (error) {
       logger.error('Error loading tab preference:', error);
     }
-  }, [pokemon.id]); // Only depend on pokemon.id, not activeTab
+  }, [pokemon.id, activeTab, onTabChange]); // Add missing dependencies
   
   // Save tab preference with debouncing to prevent rapid writes
   useEffect(() => {
@@ -196,8 +217,8 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
         const tabData = JSON.stringify({ tab: activeTab, timestamp: Date.now() });
         localStorage.setItem(`pokemon-tab-${pokemon.id}`, tabData);
         lastSavedTab.current = activeTab;
-      } catch (error: any) {
-        if (error.name === 'QuotaExceededError') {
+      } catch (error: unknown) {
+        if (error instanceof Error && error.name === 'QuotaExceededError') {
           logger.warn('localStorage quota exceeded, attempting cleanup...');
           // Try to clean up old Pokemon tab preferences
           cleanupOldTabPreferences();
@@ -270,7 +291,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
         return (
           <OverviewTab 
             {...commonProps}
-            abilities={abilities}
+            abilities={abilities as Record<string, any>}
             typeColors={typeColors}
             competitiveTiers={competitiveTiers}
           />
@@ -280,8 +301,8 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
         return (
           <StatsTab
             {...commonProps}
-            natureData={natureData}
-            allNatures={allNatures}
+            natureData={natureData as any}
+            allNatures={allNatures as Nature[]}
             onNatureChange={onNatureChange}
             selectedNature={selectedNature}
             selectedLevel={selectedLevel}
@@ -294,7 +315,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
         return (
           <EvolutionTab
             {...commonProps}
-            evolutionChain={evolutionChain}
+            evolutionChain={evolutionChain as any}
             typeColors={typeColors}
           />
         );
@@ -329,7 +350,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
           return (
             <LocationsTab
               {...commonProps}
-              locationEncounters={locationEncounters}
+              locationEncounters={locationEncounters as LocationAreaEncounterDetail[]}
               typeColors={typeColors}
             />
           );

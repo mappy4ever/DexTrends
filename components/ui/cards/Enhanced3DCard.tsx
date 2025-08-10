@@ -4,14 +4,30 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 interface Enhanced3DCardProps {
-  card: any;
+  card: {
+    id?: string;
+    name?: string;
+    image?: string;
+    images?: { small?: string; large?: string };
+    set?: { name?: string; releaseDate?: string };
+    hp?: string;
+    types?: string[];
+    rarity?: string;
+    fullart?: string;
+    ex?: string;
+    [key: string]: unknown;
+  };
   cardClassName?: string;
   isPocketCard?: boolean;
   showHP?: boolean;
   showRarity?: boolean;
-  rarity?: any;
+  rarity?: {
+    name?: string;
+    color?: string;
+    [key: string]: unknown;
+  };
   cardFeatures?: string[];
-  setZoomedCard?: (card: any) => void;
+  setZoomedCard?: (card: Enhanced3DCardProps['card']) => void;
   children?: React.ReactNode;
 }
 
@@ -282,8 +298,8 @@ const Enhanced3DCard = ({
               >
                 <div className="relative">
                   <Image
-                    src={card.image || "/back-card.png"}
-                    alt={card.name}
+                    src={card.image || card.images?.small || "/back-card.png"}
+                    alt={card.name || 'Pokemon Card'}
                     width={220}
                     height={308}
                     className="rounded-app-md mb-2 object-cover shadow-md hover:shadow-lg transition-all"

@@ -15,7 +15,7 @@ import HolographicCard from "../../components/ui/HolographicCard";
 import { useTheme } from "../../context/UnifiedAppContext";
 import { useFavorites } from "../../context/UnifiedAppContext";
 import { useViewSettings } from "../../context/UnifiedAppContext";
-import { PageLoader, InlineLoader } from "../../utils/unifiedLoading";
+import { PageLoader, InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
 import logger from "../../utils/logger";
 import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
 import performanceMonitor from "../../utils/performanceMonitor";
@@ -31,7 +31,7 @@ interface CardWithMarketPrice extends TCGCard {
 interface SetStatistics {
   rarityDistribution: Record<string, number>;
   valueByRarity: Record<string, { total: number; average: number; count: number }>;
-  highestValueCards: TCGCard[];
+  highestValueCards: CardWithMarketPrice[];
 }
 
 // Interface for price data
@@ -79,7 +79,7 @@ const SetIdPage: NextPage = () => {
   const [modalCard, setModalCard] = useState<TCGCard | null>(null);
   
   // Pagination state for tracking loading
-  const [paginationInfo, setPaginationInfo] = useState<any>(null);
+  const [paginationInfo, setPaginationInfo] = useState<{ totalCount: number } | null>(null);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   // Calculate set statistics when cards are loaded
@@ -104,9 +104,10 @@ const SetIdPage: NextPage = () => {
             const prices = Object.values(card.tcgplayer.prices);
             let highestPrice = 0;
             
-            prices.forEach((priceData: any) => {
+            prices.forEach((priceData: unknown) => {
               if (priceData && typeof priceData === 'object') {
-                const marketPrice = priceData.market || priceData.mid || 0;
+                const typedPriceData = priceData as PriceDataType;
+                const marketPrice = typedPriceData.market || typedPriceData.mid || 0;
                 if (marketPrice > highestPrice) {
                   highestPrice = marketPrice;
                 }
@@ -135,7 +136,7 @@ const SetIdPage: NextPage = () => {
       
       // Sort cards by value and get top 10
       const highestValueCards = valuedCards
-        .sort((a: any, b: any) => b.marketPrice - a.marketPrice)
+        .sort((a: CardWithMarketPrice, b: CardWithMarketPrice) => b.marketPrice - a.marketPrice)
         .slice(0, 10);
       
       setStatistics({
@@ -158,7 +159,7 @@ const SetIdPage: NextPage = () => {
 
   // Add debug logging
   useEffect(() => {
-    console.log('[SetIdPage] Router state:', {
+    logger.debug('[SetIdPage] Router state:', {
       isReady: router.isReady,
       query: router.query,
       setid: setid,
@@ -173,7 +174,7 @@ const SetIdPage: NextPage = () => {
     
     // Wait for router to be ready and setid to be available
     if (!router.isReady || !setid) {
-      console.log('[SetIdPage] Skipping fetch - router not ready or no setid', { isReady: router.isReady, setid });
+      logger.debug('[SetIdPage] Skipping fetch - router not ready or no setid', { isReady: router.isReady, setid });
       return;
     }
 
@@ -204,7 +205,7 @@ const SetIdPage: NextPage = () => {
         let data;
         try {
           // Use fetchJSON with proper error handling and abort signal
-          data = await fetchJSON<{ set: any; cards: any[]; stats?: any; cachedAt?: string; error?: string; warning?: string }>(
+          data = await fetchJSON<{ set: CardSet; cards: TCGCard[]; stats?: SetStatistics; cachedAt?: string; error?: string; warning?: string }>(
             url,
             {
               signal: abortController.signal,
@@ -219,7 +220,7 @@ const SetIdPage: NextPage = () => {
           
           // Check if the response is an error
           if (data && typeof data === 'object' && 'error' in data && !data.set) {
-            console.error('[SetIdPage] API returned error response:', data);
+            logger.error('[SetIdPage] API returned error response:', { data });
             throw new Error(data.error || 'API returned an error');
           }
           
@@ -234,12 +235,12 @@ const SetIdPage: NextPage = () => {
               cardCount: data.cards?.length 
             });
           }
-        } catch (fetchError: any) {
+        } catch (fetchError: unknown) {
           // Clear the slow load timeout
           clearTimeout(slowLoadTimeout);
           
           // Check if request was aborted
-          if (fetchError.name === 'AbortError' || !mounted) {
+          if ((fetchError as Error)?.name === 'AbortError' || !mounted) {
             return;
           }
           throw fetchError;
@@ -262,7 +263,7 @@ const SetIdPage: NextPage = () => {
         }
         
         // Log the response structure to debug
-        console.log('[SetIdPage] API Response structure:', {
+        logger.debug('[SetIdPage] API Response structure:', {
           hasData: !!data,
           dataKeys: Object.keys(data || {}),
           hasSet: !!data?.set,
@@ -282,7 +283,7 @@ const SetIdPage: NextPage = () => {
         
         // Validate set data
         if (!setData || !setData.id || !setData.name) {
-          console.error('[SetIdPage] Invalid set data structure:', { 
+          logger.error('[SetIdPage] Invalid set data structure:', { 
             setData, 
             hasId: setData?.id,
             hasName: setData?.name
@@ -295,7 +296,7 @@ const SetIdPage: NextPage = () => {
         // Check for warnings (e.g., stale data)
         if (data?.warning) {
           setDataWarning(data.warning);
-          console.warn('[SetIdPage] Data warning:', data.warning);
+          logger.warn('[SetIdPage] Data warning:', { warning: data.warning });
         }
         
         // Handle cards data
@@ -341,30 +342,33 @@ const SetIdPage: NextPage = () => {
             hasWarning: !!data.warning
           });
         } else {
-          console.warn('[SetIdPage] No cards found in response');
+          logger.warn('[SetIdPage] No cards found in response');
           setCards([]); // Set empty array to show "no cards" state
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         // Ignore abort errors
-        if (err.name === 'AbortError' || !mounted) {
+        if ((err as Error)?.name === 'AbortError' || !mounted) {
           return;
         }
+        
+        const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+        const errorResponse = err as { response?: { status?: number }; status?: number };
         
         logger.error("Error fetching set data:", { 
           error: err,
           setId: setid,
-          message: err.message
+          message: errorMessage
         });
         
         // More specific error messages
-        if (err.message?.includes('404') || err.response?.status === 404 || err.status === 404) {
+        if (errorMessage.includes('404') || errorResponse?.response?.status === 404 || errorResponse?.status === 404) {
           setError(`Set "${setid}" not found. Please check the set ID.`);
-        } else if (err.message?.includes('network') || err.message?.includes('fetch')) {
+        } else if (errorMessage.includes('network') || errorMessage.includes('fetch')) {
           setError("Network error. Please check your connection.");
-        } else if (err.message?.includes('timeout')) {
+        } else if (errorMessage.includes('timeout')) {
           setError("Request timed out. Please try again.");
         } else {
-          setError(`Failed to load set information: ${err.message || 'Unknown error'}`);
+          setError(`Failed to load set information: ${errorMessage}`);
         }
       } finally {
         setLoading(false);
@@ -457,9 +461,10 @@ const SetIdPage: NextPage = () => {
     const prices = Object.values(card.tcgplayer.prices);
     let highestPrice = 0;
     
-    prices.forEach((priceData: any) => {
+    prices.forEach((priceData: unknown) => {
       if (priceData && typeof priceData === 'object') {
-        const price = priceData.market || priceData.mid || 0;
+        const typedPriceData = priceData as PriceDataType;
+        const price = typedPriceData.market || typedPriceData.mid || 0;
         if (price > highestPrice) {
           highestPrice = price;
         }
@@ -711,7 +716,7 @@ const SetIdPage: NextPage = () => {
                 <div className="mt-8">
                   <h3 className="text-lg font-semibold mb-4">Highest Value Cards</h3>
                   <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                    {statistics.highestValueCards.slice(0, 5).map((card: any) => (
+                    {statistics.highestValueCards.slice(0, 5).map((card: CardWithMarketPrice) => (
                       <div key={card.id} className="text-center">
                         <HolographicCard
                           rarity={card.rarity}
@@ -755,7 +760,7 @@ const SetIdPage: NextPage = () => {
                       
                       for (let page = Math.ceil(cards.length / actualPageSize) + 1; page <= totalPages; page++) {
                         const url = `/api/tcg-sets/${setid}?page=${page}&pageSize=${actualPageSize}`;
-                        const pageData = await fetchJSON<{ cards: TCGCard[]; pagination: any }>(url, {
+                        const pageData = await fetchJSON<{ cards: TCGCard[]; pagination: { totalCount: number } }>(url, {
                           useCache: true,
                           timeout: 30000
                         });
@@ -768,7 +773,8 @@ const SetIdPage: NextPage = () => {
                       
                       calculateSetStatistics(allCards);
                     } catch (error) {
-                      console.error('Manual load failed:', error);
+                      const errorMessage = error instanceof Error ? error.message : String(error);
+                      logger.error('Manual load failed:', { error: errorMessage });
                     } finally {
                       setIsLoadingMore(false);
                     }
@@ -1028,6 +1034,6 @@ const SetIdPageWithErrorBoundary: NextPage = () => {
 };
 
 // Mark this page as full bleed to remove Layout padding
-(SetIdPageWithErrorBoundary as any).fullBleed = true;
+(SetIdPageWithErrorBoundary as NextPage & { fullBleed?: boolean }).fullBleed = true;
 
 export default SetIdPageWithErrorBoundary;

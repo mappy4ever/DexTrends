@@ -1,12 +1,12 @@
 import React from 'react';
-import type { Pokemon, PokemonSpecies, EvolutionChain } from '../../../types/api/pokemon';
+import type { Pokemon, PokemonSpecies, EvolutionChain } from "../../../types/pokemon";
 import EvolutionFlow from '../EvolutionFlow';
 
 interface EvolutionTabV2Props {
   pokemon: Pokemon;
   species: PokemonSpecies;
   evolutionChain: EvolutionChain | null;
-  typeColors: any;
+  typeColors: Record<string, unknown>;
 }
 
 const EvolutionTabV2: React.FC<EvolutionTabV2Props> = ({

@@ -61,8 +61,8 @@ interface HealthData {
   system?: SystemResources;
   configuration?: Configuration;
   database?: DatabaseHealth;
-  circuitBreakers?: any;
-  rateLimiter?: any;
+  circuitBreakers?: Record<string, unknown>;
+  rateLimiter?: Record<string, unknown>;
   externalAPIs?: Record<string, APIHealth>;
   responseTime?: number;
 }

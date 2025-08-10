@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import type { PokemonType } from '../../types/api/pokemon';
+import type { PokemonType } from "../../types/pokemon";
 import { getTypeUIColors } from '../../utils/pokemonTypeGradients';
 import { cn } from '../../utils/cn';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';

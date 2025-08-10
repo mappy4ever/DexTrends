@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useFavorites } from '../../../context/UnifiedAppContext';
 import { TypeBadge } from '../TypeBadge';
 import Link from 'next/link';
@@ -7,7 +7,22 @@ import logger from '../../../utils/logger';
 interface PokemonTCGCard {
   id: string;
   name: string;
-  [key: string]: any;
+  number?: string;
+  artist?: string;
+  rarity?: string;
+  images: {
+    small: string;
+    large: string;
+  };
+  set: {
+    name: string;
+    images?: {
+      symbol?: string;
+    };
+  };
+  types?: string[];
+  hp?: string;
+  [key: string]: unknown;
 }
 
 const EnhancedCardModal = ({ card, isOpen, onClose }: { card: PokemonTCGCard; isOpen: boolean; onClose: () => void }) => {
@@ -21,7 +36,7 @@ const EnhancedCardModal = ({ card, isOpen, onClose }: { card: PokemonTCGCard; is
   const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
   
   const isCardFavorite = (cardId: string) => {
-    return favorites?.cards?.some((card: any) => card.id === cardId) || false;
+    return favorites?.cards?.some((card: PokemonTCGCard) => card.id === cardId) || false;
   };
   
   const toggleCardFavorite = (card: PokemonTCGCard) => {
@@ -31,6 +46,23 @@ const EnhancedCardModal = ({ card, isOpen, onClose }: { card: PokemonTCGCard; is
       addToFavorites('cards', card);
     }
   };
+
+  const zoomIn = useCallback((): void => {
+    setZoom(prev => Math.min(prev * 1.25, 5));
+  }, []);
+
+  const zoomOut = useCallback((): void => {
+    setZoom(prev => Math.max(prev / 1.25, 0.5));
+  }, []);
+
+  const resetZoom = useCallback((): void => {
+    setZoom(1);
+    setDragPosition({ x: 0, y: 0 });
+  }, []);
+
+  const toggleFullscreen = useCallback((): void => {
+    setIsFullscreen(!isFullscreen);
+  }, [isFullscreen]);
 
   // Reset zoom and position when modal opens/closes
   useEffect(() => {
@@ -82,24 +114,7 @@ const EnhancedCardModal = ({ card, isOpen, onClose }: { card: PokemonTCGCard; is
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, isFullscreen]);
-
-  const zoomIn = (): any => {
-    setZoom(prev => Math.min(prev * 1.25, 5));
-  };
-
-  const zoomOut = (): any => {
-    setZoom(prev => Math.max(prev / 1.25, 0.5));
-  };
-
-  const resetZoom = (): any => {
-    setZoom(1);
-    setDragPosition({ x: 0, y: 0 });
-  };
-
-  const toggleFullscreen = (): any => {
-    setIsFullscreen(!isFullscreen);
-  };
+  }, [isOpen, isFullscreen, onClose, zoomIn, zoomOut, resetZoom, toggleFullscreen]);
 
   // Mouse wheel zoom
   const handleWheel = (e: React.WheelEvent) => {
@@ -148,7 +163,7 @@ const EnhancedCardModal = ({ card, isOpen, onClose }: { card: PokemonTCGCard; is
     });
   };
 
-  const handleMouseUp = (): any => {
+  const handleMouseUp = (): void => {
     setIsDragging(false);
   };
 
@@ -168,7 +183,7 @@ const EnhancedCardModal = ({ card, isOpen, onClose }: { card: PokemonTCGCard; is
     }
   };
 
-  const handleFavoriteToggle = (): any => {
+  const handleFavoriteToggle = (): void => {
     if (card) {
       toggleCardFavorite(card);
       logger.debug('Card favorite toggled from modal', { cardId: card.id });
@@ -292,7 +307,7 @@ const EnhancedCardModal = ({ card, isOpen, onClose }: { card: PokemonTCGCard; is
           <div className="flex items-center justify-center h-full min-h-[400px]">
             <img
               ref={imageRef}
-              src={card.images.large}
+              src={card.images?.large || '/dextrendslogo.png'}
               alt={card.name}
               className="max-w-none transition-transform duration-200 select-none"
               style={{
@@ -310,14 +325,14 @@ const EnhancedCardModal = ({ card, isOpen, onClose }: { card: PokemonTCGCard; is
             <div className="flex justify-between items-end text-white">
               <div>
                 <div className="flex items-center space-x-2 mb-1">
-                  {card.set.images?.symbol && (
+                  {card.set?.images?.symbol && (
                     <img 
                       src={card.set.images.symbol} 
-                      alt={card.set.name}
+                      alt={card.set?.name || 'Set'}
                       className="h-4 w-4 object-contain"
                     />
                   )}
-                  <span className="text-sm opacity-75">{card.set.name}</span>
+                  <span className="text-sm opacity-75">{card.set?.name || 'Unknown Set'}</span>
                   {card.rarity && (
                     <span className="text-xs px-2 py-0.5 bg-white/20 rounded">
                       {card.rarity}
@@ -327,7 +342,7 @@ const EnhancedCardModal = ({ card, isOpen, onClose }: { card: PokemonTCGCard; is
                 
                 {card.types && card.types.length > 0 && (
                   <div className="flex space-x-1">
-                    {card.types.map((type: any) => (
+                    {card.types.map((type: string) => (
                       <TypeBadge key={type} type={type} size="sm" />
                     ))}
                   </div>

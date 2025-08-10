@@ -4,6 +4,15 @@
 
 import { useState, useEffect } from 'react';
 import { bulbapediaApi, fetchAndCacheBulbapediaData } from './bulbapediaApi';
+import logger from './logger';
+import { isObject, hasProperty, isString } from './typeGuards';
+
+interface PokemonTeamMember {
+  name: string;
+  level?: number;
+  type?: string;
+  sprite?: string;
+}
 
 interface GymLeader {
   name: string;
@@ -12,7 +21,7 @@ interface GymLeader {
   type?: string;
   badge?: string;
   quote?: string;
-  team: any[];
+  team: PokemonTeamMember[];
 }
 
 interface Badge {
@@ -37,15 +46,21 @@ interface RaritySymbol {
   fullImage: string;
 }
 
+interface BulbapediaImage {
+  title: string;
+  url: string;
+  thumburl?: string;
+}
+
 interface PocketRarityImages {
-  common?: any;
-  uncommon?: any;
-  rare?: any;
-  doubleRare?: any;
-  artRare?: any;
-  superRare?: any;
-  immersiveRare?: any;
-  crown?: any;
+  common?: BulbapediaImage;
+  uncommon?: BulbapediaImage;
+  rare?: BulbapediaImage;
+  doubleRare?: BulbapediaImage;
+  artRare?: BulbapediaImage;
+  superRare?: BulbapediaImage;
+  immersiveRare?: BulbapediaImage;
+  crown?: BulbapediaImage;
 }
 
 type DataType = 'gymLeaders' | 'badges' | 'game' | 'tcgRarity' | 'pocketRarity';
@@ -81,7 +96,23 @@ export const fetchRegionGymLeaders = async (region: string): Promise<GymLeader[]
         })
       );
       
-      return leaders.filter((leader): leader is GymLeader => leader !== null && leader !== undefined) as GymLeader[];
+      // Filter out null values and convert to GymLeader format
+      return leaders
+        .filter((leader): leader is NonNullable<typeof leader> => leader !== null && leader !== undefined)
+        .map((leader): GymLeader => ({
+          name: leader.name,
+          image: leader.image,
+          region: leader.region,
+          type: leader.type,
+          badge: leader.badge,
+          quote: leader.quote,
+          team: leader.team.map(pokemon => ({
+            name: pokemon.name || 'Unknown',
+            level: parseInt(pokemon.level?.toString() || '0') || undefined,
+            type: pokemon.type,
+            sprite: pokemon.sprite
+          }))
+        }));
     },
     86400000 // Cache for 24 hours
   );
@@ -158,7 +189,7 @@ export const fetchTCGRarityData = async (): Promise<Record<string, RaritySymbol>
       const images = await bulbapediaApi.getPageImages('Rarity');
       
       // Map common rarity names to their symbols
-      const rarityMap: Record<string, any> = {
+      const rarityMap: Record<string, BulbapediaImage | undefined> = {
         'Common': images.find(img => img.title.includes('SetSymbolCommon')),
         'Uncommon': images.find(img => img.title.includes('SetSymbolUncommon')),
         'Rare': images.find(img => img.title.includes('SetSymbolRare')),
@@ -176,7 +207,7 @@ export const fetchTCGRarityData = async (): Promise<Record<string, RaritySymbol>
         if (image) {
           rarities[name.toLowerCase().replace(/\s+/g, '')] = {
             name,
-            symbol: image.thumburl,
+            symbol: image.thumburl || '',
             fullImage: image.url
           };
         }
@@ -207,15 +238,24 @@ export const fetchPocketRarityData = async (): Promise<PocketRarityImages> => {
           .map(member => bulbapediaApi.getImageInfo(member.title))
       );
       
+      const filterImage = (predicate: (img: unknown) => boolean) => {
+        const found = rarityImages.find(img => img && predicate(img));
+        return found || undefined;
+      };
+      
+      const hasTitle = (img: unknown): img is { title: string } => {
+        return isObject(img) && hasProperty(img, 'title') && isString(img.title);
+      };
+
       return {
-        common: rarityImages.find(img => img?.title.includes('Common')),
-        uncommon: rarityImages.find(img => img?.title.includes('Uncommon')),
-        rare: rarityImages.find(img => img?.title.includes('Rare') && !img.title.includes('Double')),
-        doubleRare: rarityImages.find(img => img?.title.includes('Double rare')),
-        artRare: rarityImages.find(img => img?.title.includes('Art rare')),
-        superRare: rarityImages.find(img => img?.title.includes('Super rare')),
-        immersiveRare: rarityImages.find(img => img?.title.includes('Immersive rare')),
-        crown: rarityImages.find(img => img?.title.includes('Crown rare'))
+        common: filterImage(img => hasTitle(img) && img.title.includes('Common')),
+        uncommon: filterImage(img => hasTitle(img) && img.title.includes('Uncommon')),
+        rare: filterImage(img => hasTitle(img) && img.title.includes('Rare') && !img.title.includes('Double')),
+        doubleRare: filterImage(img => hasTitle(img) && img.title.includes('Double rare')),
+        artRare: filterImage(img => hasTitle(img) && img.title.includes('Art rare')),
+        superRare: filterImage(img => hasTitle(img) && img.title.includes('Super rare')),
+        immersiveRare: filterImage(img => hasTitle(img) && img.title.includes('Immersive rare')),
+        crown: filterImage(img => hasTitle(img) && img.title.includes('Crown rare'))
       };
     },
     2592000000 // Cache for 30 days
@@ -225,7 +265,7 @@ export const fetchPocketRarityData = async (): Promise<PocketRarityImages> => {
 /**
  * React hook for fetching Bulbapedia data
  */
-export const useBulbapediaData = <T = any>(
+export const useBulbapediaData = <T = unknown>(
   dataType: DataType, 
   params: UseBulbapediaDataParams
 ): UseBulbapediaDataResult<T> => {
@@ -237,38 +277,39 @@ export const useBulbapediaData = <T = any>(
     const fetchData = async () => {
       try {
         setLoading(true);
-        let result: any;
+        let result: T | null = null;
         
         switch (dataType) {
           case 'gymLeaders':
             if (params.region) {
-              result = await fetchRegionGymLeaders(params.region);
+              result = (await fetchRegionGymLeaders(params.region)) as T;
             }
             break;
           case 'badges':
             if (params.region) {
-              result = await fetchRegionBadges(params.region);
+              result = (await fetchRegionBadges(params.region)) as T;
             }
             break;
           case 'game':
             if (params.gameName) {
-              result = await fetchPokemonGameData(params.gameName);
+              result = (await fetchPokemonGameData(params.gameName)) as T;
             }
             break;
           case 'tcgRarity':
-            result = await fetchTCGRarityData();
+            result = (await fetchTCGRarityData()) as T;
             break;
           case 'pocketRarity':
-            result = await fetchPocketRarityData();
+            result = (await fetchPocketRarityData()) as T;
             break;
           default:
             throw new Error(`Unknown data type: ${dataType}`);
         }
         
         setData(result);
-      } catch (err: any) {
-        setError(err.message);
-        console.error('Bulbapedia fetch error:', err);
+      } catch (err) {
+        const errorMsg = err instanceof Error ? err.message : String(err);
+        setError(errorMsg);
+        logger.error('Bulbapedia fetch error:', { error: err });
       } finally {
         setLoading(false);
       }

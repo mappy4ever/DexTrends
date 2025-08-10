@@ -6,6 +6,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { useTheme } from "../../../context/UnifiedAppContext";
 import { FullBleedWrapper } from "../../../components/ui";
+import RouteErrorBoundary from "../../../components/RouteErrorBoundary";
 import { StandardGlassContainer, SectionHeader } from "../../../components/ui/design-system";
 import { CircularButton } from "../../../components/ui/design-system";
 
@@ -521,13 +522,13 @@ export default function RegionDetailPage() {
   ];
 
   return (
-    <>
+    <RouteErrorBoundary routeName={`Region: ${region.name}`}>
       <Head>
         <title>{region.name} Region | Pokémon | DexTrends</title>
         <meta name="description" content={region.description} />
       </Head>
 
-      <FullBleedWrapper gradient="subtle">
+      <FullBleedWrapper gradient="regions">
         {/* Hero Section - Keep unchanged */}
         <RegionHero region={region} theme={theme} />
 
@@ -678,7 +679,7 @@ export default function RegionDetailPage() {
                       <EliteFourGrid 
                         region={region} 
                         eliteFour={region.eliteFour} 
-                        champion={region.champion} 
+                        champion={region.champion || null} 
                         theme={theme} 
                       />
                     </div>
@@ -808,7 +809,7 @@ export default function RegionDetailPage() {
           </div>
         </main>
       </FullBleedWrapper>
-    </>
+    </RouteErrorBoundary>
   );
 }
 

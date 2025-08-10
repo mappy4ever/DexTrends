@@ -50,7 +50,6 @@ const EliteFourCard: React.FC<EliteFourCardProps> = ({
             <TypeBadge
               type={type}
               size="lg"
-              showIcon={true}
               className={styles.mainTypeBadge}
             />
           </div>
@@ -106,7 +105,6 @@ const EliteFourCard: React.FC<EliteFourCardProps> = ({
                     key={index}
                     type={type}
                     size="xs"
-                    showIcon={true}
                     className={styles.typeIcon}
                   />
                 ))}

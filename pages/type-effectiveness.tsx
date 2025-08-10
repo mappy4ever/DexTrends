@@ -7,14 +7,17 @@ import { GlassContainer } from '../components/ui/design-system/GlassContainer';
 import CircularButton from '../components/ui/CircularButton';
 import { TypeGradientBadge } from '../components/ui/design-system/TypeGradientBadge';
 import CircularTypeMatrix from '../components/ui/CircularTypeMatrix';
-import { PageLoader } from '../utils/unifiedLoading';
+import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { NextPage } from 'next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FadeIn, SlideUp, StaggeredChildren } from '../components/ui/animations/animations';
 import { BsChevronUp, BsChevronDown } from 'react-icons/bs';
 import { THEME, TYPE_GRADIENTS, themeClass } from '../utils/theme';
 import { useTheme } from '../context/UnifiedAppContext';
-import type { TypeInfo } from '../types/api/pokemon';
+import type { TypeInfo } from "../types/pokemon";
+import { useAccessibilityPreferences } from '../hooks/useUserPreferences';
+import logger from '../utils/logger';
+import type { ClickHandler, KeyHandler } from '../types/common';
 
 // Type definitions
 interface DamageRelations {
@@ -222,9 +225,7 @@ const POKEMON_TYPES: PokemonType[] = [
 
 const TypeEffectiveness: NextPage = () => {
   const { theme } = useTheme();
-  // TODO: Update when userPreferences is available in context
-  const isHighContrast = false;
-  const reduceMotion = false;
+  const { highContrast: isHighContrast, reduceMotion } = useAccessibilityPreferences();
   const [typeData, setTypeData] = useState<Record<string, TypeData>>({});
   const [loading, setLoading] = useState(true);
   const [selectedAttackType, setSelectedAttackType] = useState<PokemonType | null>(null);
@@ -248,8 +249,9 @@ const TypeEffectiveness: NextPage = () => {
             moves: typeInfo!.moves?.slice(0, 5) || [],
             generation: typeInfo!.generation
           };
-        } catch (error) {
-          console.error(`Failed to load type ${type}:`, error);
+        } catch (error: unknown) {
+          const errorMessage = error instanceof Error ? error.message : String(error);
+          logger.error(`Failed to load type ${type}:`, { error: errorMessage });
         }
       }
       
@@ -432,7 +434,7 @@ const TypeEffectiveness: NextPage = () => {
                                   role="button"
                                   tabIndex={0}
                                   aria-label={`${attackType} attacks ${defendType}: ${effectiveness}x damage`}
-                                  onKeyDown={(e) => {
+                                  onKeyDown={(e: React.KeyboardEvent) => {
                                     if (e.key === 'Enter' || e.key === ' ') {
                                       e.preventDefault();
                                       setSelectedAttackType(attackType);
@@ -724,7 +726,7 @@ const TypeEffectiveness: NextPage = () => {
                     <div className="mb-6">
                       <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-4">
-                          <TypeBadge type={expandedType} size="xl" />
+                          <TypeBadge type={expandedType} size="lg" />
                           <div>
                             <h3 className="text-2xl font-semibold capitalize text-gray-800">{expandedType} Type</h3>
                             <p className="text-gray-600 mt-1">{TYPE_INFO[expandedType].description}</p>
@@ -1037,6 +1039,10 @@ const TypeEffectiveness: NextPage = () => {
 };
 
 // Mark this page as fullBleed to remove default padding
-(TypeEffectiveness as any).fullBleed = true;
+interface PageComponent extends NextPage {
+  fullBleed?: boolean;
+}
+
+(TypeEffectiveness as PageComponent).fullBleed = true;
 
 export default TypeEffectiveness;

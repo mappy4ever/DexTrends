@@ -10,6 +10,19 @@ import EnhancedPriceCollector from './enhancedPriceCollector';
 import logger from './logger';
 import { PubSub } from 'graphql-subscriptions';
 import cacheManager from './UnifiedCacheManager';
+// GraphQL types - will be available when graphql package is installed
+type GraphQLResolveInfo = {
+  fieldName: string;
+  fieldNodes: unknown[];
+  returnType: unknown;
+  parentType: unknown;
+  path: unknown;
+  schema: unknown;
+  fragments: Record<string, unknown>;
+  rootValue: unknown;
+  operation: unknown;
+  variableValues: Record<string, unknown>;
+};
 
 const pubsub = new PubSub();
 const priceCollector = new EnhancedPriceCollector();
@@ -53,7 +66,7 @@ interface CardFilters {
 interface FavoriteInput {
   itemType: 'card' | 'pokemon';
   itemId: string;
-  itemData?: any;
+  itemData?: Card | Pokemon;
 }
 
 interface PriceAlertInput {
@@ -66,7 +79,7 @@ interface PriceAlertInput {
 
 interface EventInput {
   eventType: string;
-  eventData: Record<string, any>;
+  eventData: Record<string, unknown>;
 }
 
 interface PriceCollectionInput {
@@ -148,7 +161,7 @@ interface Pokemon {
   weight?: number;
   description?: string;
   imageUrl?: string;
-  stats?: Record<string, any>;
+  stats?: Record<string, number>;
 }
 
 interface PriceHistoryEntry {
@@ -178,13 +191,22 @@ interface TrendingCard {
   rank: number;
 }
 
+interface CardTrend {
+  [key: string]: unknown;
+  priceChange?: number;
+  priceChangePercent?: number;
+  volume?: number;
+  currentPrice?: number;
+}
+
 interface MarketOverview {
+  [key: string]: unknown;
   totalCards: number;
   averagePrice: number;
   totalVolume: number;
-  topGainers: TrendingCard[];
-  topLosers: TrendingCard[];
-  mostVolatile: TrendingCard[];
+  topGainers: CardTrend[];
+  topLosers: CardTrend[];
+  mostVolatile: CardTrend[];
   marketSentiment: 'bullish' | 'bearish' | 'neutral';
   lastUpdated: string;
 }
@@ -198,7 +220,7 @@ interface AnalyticsPeriod {
 interface AnalyticsData {
   type: string;
   period: AnalyticsPeriod;
-  data: any;
+  data: Record<string, unknown>;
   insights: string[];
 }
 
@@ -252,10 +274,152 @@ interface MutationResult<T> {
   item?: T | null;
 }
 
+// Resolver argument interfaces
+interface CardArgs {
+  id: string;
+}
+
+interface CardsArgs {
+  search?: string;
+  filters?: CardFilters;
+  sort?: SortInput;
+  pagination?: PaginationInput;
+}
+
+interface PokemonArgs {
+  id: number;
+}
+
+interface PriceHistoryArgs {
+  cardId: string;
+  variantType?: string;
+  daysBack?: number;
+}
+
+interface PriceStatsArgs {
+  cardId: string;
+  variantType?: string;
+  daysBack?: number;
+}
+
+interface TrendingCardsArgs {
+  limit?: number;
+}
+
+interface AnalyticsArgs {
+  type: string;
+  cardId?: string;
+  daysBack?: number;
+}
+
+interface SearchSuggestionsArgs {
+  query: string;
+  limit?: number;
+}
+
+interface MarketOverviewArgs {
+  daysBack?: number;
+}
+
+interface AddFavoriteArgs {
+  input: FavoriteInput;
+}
+
+interface RemoveFavoriteArgs {
+  input: FavoriteInput;
+}
+
+interface CreatePriceAlertArgs {
+  input: PriceAlertInput;
+}
+
+interface TrackEventArgs {
+  input: EventInput;
+}
+
+interface TriggerPriceCollectionArgs {
+  input?: PriceCollectionInput;
+}
+
+interface RefreshCacheArgs {
+  type: string;
+}
+
+interface PriceUpdatesArgs {
+  cardIds?: string[];
+}
+
+interface CollectionUpdatesArgs {
+  userId: string;
+}
+
+interface PriceAlertsArgs {
+  userId: string;
+}
+
+// Parent object types (for field resolvers)
+type QueryParent = Record<string, never>;
+type MutationParent = Record<string, never>;
+type SubscriptionParent = Record<string, never>;
+
+// Supabase manager interfaces
+interface FavoritesManager {
+  addFavorite(itemType: string, itemId: string, itemData?: unknown, userId?: string | null): Promise<boolean>;
+  removeFavorite(itemType: string, itemId: string, userId?: string | null): Promise<boolean>;
+}
+
+interface PriceHistoryManager {
+  addPriceAlert(
+    userId: string,
+    cardId: string,
+    cardName: string,
+    alertType: string,
+    targetPrice?: number,
+    percentageChange?: number
+  ): Promise<{
+    id: string;
+    card_id: string;
+    card_name: string;
+    alert_type: string;
+    target_price?: number;
+    percentage_change?: number;
+    is_active: boolean;
+    created_at: string;
+    triggered_at?: string;
+  } | null>;
+}
+
+interface ExtendedSupabase {
+  FavoritesManager: FavoritesManager;
+  PriceHistoryManager: PriceHistoryManager;
+}
+
+// Resolver function types
+type QueryResolver<TArgs = Record<string, unknown>, TResult = unknown> = (
+  parent: QueryParent,
+  args: TArgs,
+  context: GraphQLContext,
+  info: GraphQLResolveInfo
+) => Promise<TResult>;
+
+type MutationResolver<TArgs = Record<string, unknown>, TResult = unknown> = (
+  parent: MutationParent,
+  args: TArgs,
+  context: GraphQLContext,
+  info: GraphQLResolveInfo
+) => Promise<TResult>;
+
+type SubscriptionResolver<TArgs = Record<string, unknown>, TResult = unknown> = (
+  parent: SubscriptionParent,
+  args: TArgs,
+  context: GraphQLContext,
+  info: GraphQLResolveInfo
+) => AsyncIterator<TResult>;
+
 export const resolvers = {
   Query: {
     // Card queries
-    card: async (parent: any, { id }: { id: string }, context: GraphQLContext): Promise<Card | null> => {
+    card: async (parent: QueryParent, { id }: CardArgs, context: GraphQLContext, info: GraphQLResolveInfo): Promise<Card | null> => {
       try {
         logger.debug('Fetching card:', { id });
         
@@ -285,14 +449,10 @@ export const resolvers = {
     },
 
     cards: async (
-      parent: any, 
-      { search, filters, sort, pagination }: {
-        search?: string;
-        filters?: CardFilters;
-        sort?: SortInput;
-        pagination?: PaginationInput;
-      }, 
-      context: GraphQLContext
+      parent: QueryParent, 
+      { search, filters, sort, pagination }: CardsArgs, 
+      context: GraphQLContext,
+      info: GraphQLResolveInfo
     ): Promise<ConnectionResult<Card>> => {
       try {
         logger.debug('Searching cards:', { search, filters, sort, pagination });
@@ -323,7 +483,7 @@ export const resolvers = {
     },
 
     // Pokemon queries
-    pokemon: async (parent: any, { id }: { id: number }, context: GraphQLContext): Promise<Pokemon | null> => {
+    pokemon: async (parent: QueryParent, { id }: PokemonArgs, context: GraphQLContext, info: GraphQLResolveInfo): Promise<Pokemon | null> => {
       try {
         const { data, error } = await databaseOptimizer.executeOptimizedQuery(
           'pokemon_cache',
@@ -352,9 +512,10 @@ export const resolvers = {
 
     // Price queries
     priceHistory: async (
-      parent: any, 
-      { cardId, variantType, daysBack }: { cardId: string; variantType?: string; daysBack?: number },
-      context: GraphQLContext
+      parent: QueryParent, 
+      { cardId, variantType, daysBack }: PriceHistoryArgs,
+      context: GraphQLContext,
+      info: GraphQLResolveInfo
     ): Promise<PriceHistoryEntry[]> => {
       try {
         const result = await databaseOptimizer.getPriceHistory(cardId, variantType, daysBack);
@@ -363,11 +524,11 @@ export const resolvers = {
           throw new Error(`Price history fetch failed: ${result.error.message}`);
         }
 
-        return (result.data || []).map((entry: any) => ({
-          date: entry.collected_at,
-          price: entry.price_market,
-          volume: entry.volume || 0,
-          marketCap: entry.market_cap_estimate || 0,
+        return (result.data || []).map((entry: Record<string, unknown>) => ({
+          date: String(entry.collected_at || ''),
+          price: typeof entry.price_market === 'number' ? entry.price_market : 0,
+          volume: typeof entry.volume === 'number' ? entry.volume : 0,
+          marketCap: typeof entry.market_cap_estimate === 'number' ? entry.market_cap_estimate : 0,
           source: 'tcgplayer'
         }));
       } catch (error) {
@@ -377,9 +538,10 @@ export const resolvers = {
     },
 
     priceStats: async (
-      parent: any,
-      { cardId, variantType, daysBack }: { cardId: string; variantType?: string; daysBack?: number },
-      context: GraphQLContext
+      parent: QueryParent,
+      { cardId, variantType, daysBack }: PriceStatsArgs,
+      context: GraphQLContext,
+      info: GraphQLResolveInfo
     ): Promise<PriceStats | null> => {
       try {
         const { data, error } = await supabase
@@ -413,9 +575,10 @@ export const resolvers = {
     },
 
     trendingCards: async (
-      parent: any,
-      { limit }: { limit?: number },
-      context: GraphQLContext
+      parent: QueryParent,
+      { limit }: TrendingCardsArgs,
+      context: GraphQLContext,
+      info: GraphQLResolveInfo
     ): Promise<TrendingCard[]> => {
       try {
         const trendAnalysis = await priceCollector.generateMarketTrendAnalysis(7);
@@ -424,9 +587,11 @@ export const resolvers = {
           return [];
         }
 
-        return trendAnalysis.marketOverview.topGainers
+        const overview = trendAnalysis.marketOverview as unknown as Record<string, unknown>;
+        const topGainers = overview.topGainers as CardTrend[];
+        return topGainers
           .slice(0, limit || 10)
-          .map((card: any, index: number) => ({
+          .map((card: CardTrend, index: number) => ({
             card: parseCardData(card),
             priceChange: card.priceChange || 0,
             priceChangePercent: card.priceChangePercent || 0,
@@ -441,32 +606,33 @@ export const resolvers = {
 
     // Analytics queries
     analytics: async (
-      parent: any,
-      { type, cardId, daysBack }: { type: string; cardId?: string; daysBack?: number },
-      context: GraphQLContext
+      parent: QueryParent,
+      { type, cardId, daysBack }: AnalyticsArgs,
+      context: GraphQLContext,
+      info: GraphQLResolveInfo
     ): Promise<AnalyticsData> => {
       try {
-        let analyticsData: any;
+        let analyticsData: Record<string, unknown> | null;
 
         switch (type) {
           case 'OVERVIEW':
-            analyticsData = await analyticsEngine.generateAnalyticsReport(daysBack);
+            analyticsData = (await analyticsEngine.generateAnalyticsReport(daysBack)) as unknown as Record<string, unknown> || {};
             break;
           case 'USER_BEHAVIOR':
-            analyticsData = await analyticsEngine.getUserBehaviorAnalytics(daysBack);
+            analyticsData = (await analyticsEngine.getUserBehaviorAnalytics(daysBack)) as unknown as Record<string, unknown> || {};
             break;
           case 'SEARCH':
-            analyticsData = await analyticsEngine.getSearchAnalytics(daysBack);
+            analyticsData = (await analyticsEngine.getSearchAnalytics(daysBack)) as unknown as Record<string, unknown> || {};
             break;
           case 'CARD_PERFORMANCE':
             if (!cardId) throw new Error('cardId required for CARD_PERFORMANCE analytics');
-            analyticsData = await analyticsEngine.getCardPerformanceAnalytics(cardId, daysBack);
+            analyticsData = (await analyticsEngine.getCardPerformanceAnalytics(cardId, daysBack)) as unknown as Record<string, unknown> || {};
             break;
           default:
             throw new Error(`Unsupported analytics type: ${type}`);
         }
 
-        if (!analyticsData) {
+        if (!analyticsData || Object.keys(analyticsData).length === 0) {
           throw new Error('Failed to generate analytics data');
         }
 
@@ -488,9 +654,10 @@ export const resolvers = {
 
     // Search suggestions
     searchSuggestions: async (
-      parent: any,
-      { query, limit }: { query: string; limit?: number },
-      context: GraphQLContext
+      parent: QueryParent,
+      { query, limit }: SearchSuggestionsArgs,
+      context: GraphQLContext,
+      info: GraphQLResolveInfo
     ): Promise<SearchSuggestion[]> => {
       try {
         // Simple implementation - could be enhanced with ML-based suggestions
@@ -504,12 +671,16 @@ export const resolvers = {
           throw new Error(`Search suggestions failed: ${error.message}`);
         }
 
-        return (data || []).map((item: any) => ({
-          text: item.card_data.name,
-          type: 'card',
-          category: item.card_data.set?.name || 'Unknown',
-          popularity: 0 // Could be calculated from analytics
-        }));
+        return (data || []).map((item: Record<string, unknown>) => {
+          const cardData = item.card_data as Record<string, unknown> | undefined;
+          const cardSet = cardData?.set as Record<string, unknown> | undefined;
+          return {
+            text: cardData?.name ? String(cardData.name) : '',
+            type: 'card',
+            category: cardSet?.name ? String(cardSet.name) : 'Unknown',
+            popularity: 0 // Could be calculated from analytics
+          };
+        });
       } catch (error) {
         logger.error('Search suggestions query error:', error);
         throw new Error('Failed to fetch search suggestions');
@@ -518,9 +689,10 @@ export const resolvers = {
 
     // Market overview
     marketOverview: async (
-      parent: any,
-      { daysBack }: { daysBack?: number },
-      context: GraphQLContext
+      parent: QueryParent,
+      { daysBack }: MarketOverviewArgs,
+      context: GraphQLContext,
+      info: GraphQLResolveInfo
     ): Promise<MarketOverview> => {
       try {
         const trendAnalysis = await priceCollector.generateMarketTrendAnalysis(daysBack || 7);
@@ -529,27 +701,38 @@ export const resolvers = {
           throw new Error('Market overview data not available');
         }
 
-        const overview = trendAnalysis.marketOverview;
+        const rawOverview = trendAnalysis.marketOverview as unknown as Record<string, unknown>;
+        const overview: MarketOverview = {
+          ...rawOverview,
+          totalCards: typeof rawOverview.totalCards === 'number' ? rawOverview.totalCards : 0,
+          topGainers: Array.isArray(rawOverview.topGainers) ? rawOverview.topGainers as CardTrend[] : [],
+          topLosers: Array.isArray(rawOverview.topLosers) ? rawOverview.topLosers as CardTrend[] : [],
+          mostVolatile: Array.isArray(rawOverview.mostVolatile) ? rawOverview.mostVolatile as CardTrend[] : [],
+          averagePrice: 0, // Will be calculated
+          totalVolume: 0, // Will be calculated
+          marketSentiment: 'neutral' as const, // Will be calculated
+          lastUpdated: String(trendAnalysis.generatedAt || '')
+        };
         
         return {
           totalCards: overview.totalCards,
           averagePrice: calculateAveragePrice(overview),
           totalVolume: calculateTotalVolume(overview),
-          topGainers: overview.topGainers.slice(0, 5).map((card: any, index: number) => ({
+          topGainers: overview.topGainers.slice(0, 5).map((card: CardTrend, index: number) => ({
             card: parseCardData(card),
             priceChange: card.priceChange || 0,
             priceChangePercent: card.priceChangePercent || 0,
             volume: card.volume || 0,
             rank: index + 1
           })),
-          topLosers: overview.topLosers.slice(0, 5).map((card: any, index: number) => ({
+          topLosers: overview.topLosers.slice(0, 5).map((card: CardTrend, index: number) => ({
             card: parseCardData(card),
             priceChange: card.priceChange || 0,
             priceChangePercent: card.priceChangePercent || 0,
             volume: card.volume || 0,
             rank: index + 1
           })),
-          mostVolatile: overview.mostVolatile.slice(0, 5).map((card: any, index: number) => ({
+          mostVolatile: overview.mostVolatile.slice(0, 5).map((card: CardTrend, index: number) => ({
             card: parseCardData(card),
             priceChange: card.priceChange || 0,
             priceChangePercent: card.priceChangePercent || 0,
@@ -557,7 +740,7 @@ export const resolvers = {
             rank: index + 1
           })),
           marketSentiment: calculateMarketSentiment(overview),
-          lastUpdated: trendAnalysis.generatedAt
+          lastUpdated: overview.lastUpdated
         };
       } catch (error) {
         logger.error('Market overview query error:', error);
@@ -569,15 +752,16 @@ export const resolvers = {
   Mutation: {
     // Favorites
     addFavorite: async (
-      parent: any,
-      { input }: { input: FavoriteInput },
-      context: GraphQLContext
-    ): Promise<MutationResult<any>> => {
+      parent: MutationParent,
+      { input }: AddFavoriteArgs,
+      context: GraphQLContext,
+      info: GraphQLResolveInfo
+    ): Promise<MutationResult<Card | Pokemon>> => {
       try {
         const { itemType, itemId, itemData } = input;
         const userId = context.user?.id || null;
 
-        const success = await (supabase as any).FavoritesManager.addFavorite(
+        const success = await (supabase as unknown as ExtendedSupabase).FavoritesManager.addFavorite(
           itemType,
           itemId,
           itemData,
@@ -596,15 +780,16 @@ export const resolvers = {
     },
 
     removeFavorite: async (
-      parent: any,
-      { input }: { input: FavoriteInput },
-      context: GraphQLContext
-    ): Promise<MutationResult<any>> => {
+      parent: MutationParent,
+      { input }: RemoveFavoriteArgs,
+      context: GraphQLContext,
+      info: GraphQLResolveInfo
+    ): Promise<MutationResult<null>> => {
       try {
         const { itemType, itemId } = input;
         const userId = context.user?.id || null;
 
-        const success = await (supabase as any).FavoritesManager.removeFavorite(
+        const success = await (supabase as unknown as ExtendedSupabase).FavoritesManager.removeFavorite(
           itemType,
           itemId,
           userId
@@ -623,9 +808,10 @@ export const resolvers = {
 
     // Price alerts
     createPriceAlert: async (
-      parent: any,
-      { input }: { input: PriceAlertInput },
-      context: GraphQLContext
+      parent: MutationParent,
+      { input }: CreatePriceAlertArgs,
+      context: GraphQLContext,
+      info: GraphQLResolveInfo
     ): Promise<PriceAlert> => {
       try {
         const userId = context.user?.id;
@@ -633,7 +819,7 @@ export const resolvers = {
           throw new Error('Authentication required');
         }
 
-        const alert = await (supabase as any).PriceHistoryManager.addPriceAlert(
+        const alert = await (supabase as unknown as ExtendedSupabase).PriceHistoryManager.addPriceAlert(
           userId,
           input.cardId,
           input.cardName,
@@ -665,9 +851,10 @@ export const resolvers = {
 
     // Analytics events
     trackEvent: async (
-      parent: any,
-      { input }: { input: EventInput },
-      context: GraphQLContext
+      parent: MutationParent,
+      { input }: TrackEventArgs,
+      context: GraphQLContext,
+      info: GraphQLResolveInfo
     ): Promise<boolean> => {
       try {
         const { eventType, eventData } = input;
@@ -684,9 +871,10 @@ export const resolvers = {
 
     // Data operations
     triggerPriceCollection: async (
-      parent: any,
-      { input }: { input?: PriceCollectionInput },
-      context: GraphQLContext
+      parent: MutationParent,
+      { input }: TriggerPriceCollectionArgs,
+      context: GraphQLContext,
+      info: GraphQLResolveInfo
     ): Promise<JobStatus> => {
       try {
         if (!context.user?.isAdmin) {
@@ -718,9 +906,10 @@ export const resolvers = {
     },
 
     refreshCache: async (
-      parent: any,
-      { type }: { type: string },
-      context: GraphQLContext
+      parent: MutationParent,
+      { type }: RefreshCacheArgs,
+      context: GraphQLContext,
+      info: GraphQLResolveInfo
     ): Promise<boolean> => {
       try {
         if (!context.user?.isAdmin) {
@@ -755,7 +944,7 @@ export const resolvers = {
   Subscription: {
     // Real-time price updates
     priceUpdates: {
-      subscribe: (parent: any, { cardIds }: { cardIds?: string[] }, context: GraphQLContext) => {
+      subscribe: (parent: SubscriptionParent, { cardIds }: PriceUpdatesArgs, context: GraphQLContext, info: GraphQLResolveInfo) => {
         // Filter updates for specific cards
         return pubsub.asyncIterator([PRICE_UPDATE]);
       }
@@ -763,12 +952,12 @@ export const resolvers = {
 
     // Market trend updates
     marketTrends: {
-      subscribe: () => pubsub.asyncIterator([MARKET_TREND_UPDATE])
+      subscribe: (parent: SubscriptionParent, args: Record<string, never>, context: GraphQLContext, info: GraphQLResolveInfo) => pubsub.asyncIterator([MARKET_TREND_UPDATE])
     },
 
     // Collection updates
     collectionUpdates: {
-      subscribe: (parent: any, { userId }: { userId: string }, context: GraphQLContext) => {
+      subscribe: (parent: SubscriptionParent, { userId }: CollectionUpdatesArgs, context: GraphQLContext, info: GraphQLResolveInfo) => {
         if (context.user?.id !== userId && !context.user?.isAdmin) {
           throw new Error('Access denied');
         }
@@ -778,7 +967,7 @@ export const resolvers = {
 
     // Price alert notifications
     priceAlerts: {
-      subscribe: (parent: any, { userId }: { userId: string }, context: GraphQLContext) => {
+      subscribe: (parent: SubscriptionParent, { userId }: PriceAlertsArgs, context: GraphQLContext, info: GraphQLResolveInfo) => {
         if (context.user?.id !== userId && !context.user?.isAdmin) {
           throw new Error('Access denied');
         }
@@ -789,91 +978,110 @@ export const resolvers = {
 };
 
 // Helper functions
-function parseCardData(cardData: any): Card {
+function parseCardData(cardData: unknown): Card {
+  let data = cardData;
   if (typeof cardData === 'string') {
-    cardData = JSON.parse(cardData);
+    data = JSON.parse(cardData);
   }
+  
+  const card = data as Record<string, unknown>;
+  const set = card.set as Record<string, unknown> | undefined;
+  const images = card.images as Record<string, unknown> | undefined;
+  const tcgplayer = card.tcgplayer as Record<string, unknown> | undefined;
+  const setImages = set?.images as Record<string, unknown> | undefined;
 
   return {
-    id: cardData.id,
-    name: cardData.name,
+    id: String(card.id || ''),
+    name: String(card.name || ''),
     set: {
-      id: cardData.set?.id,
-      name: cardData.set?.name,
-      series: cardData.set?.series,
-      releaseDate: cardData.set?.releaseDate,
-      total: cardData.set?.total,
-      logoUrl: cardData.set?.images?.logo,
-      symbolUrl: cardData.set?.images?.symbol
+      id: String(set?.id || ''),
+      name: String(set?.name || ''),
+      series: set?.series ? String(set.series) : undefined,
+      releaseDate: set?.releaseDate ? String(set.releaseDate) : undefined,
+      total: typeof set?.total === 'number' ? set.total : undefined,
+      logoUrl: setImages?.logo ? String(setImages.logo) : undefined,
+      symbolUrl: setImages?.symbol ? String(setImages.symbol) : undefined
     },
-    rarity: cardData.rarity,
-    artist: cardData.artist,
-    imageUrl: cardData.images?.small,
-    imageUrlHiRes: cardData.images?.large,
-    types: cardData.types || [],
-    supertype: cardData.supertype,
-    subtypes: cardData.subtypes || [],
-    hp: cardData.hp ? parseInt(cardData.hp) : null,
-    number: cardData.number,
-    prices: parsePrices(cardData.tcgplayer?.prices),
-    tcgplayerUrl: cardData.tcgplayer?.url,
-    marketData: parseMarketData(cardData),
-    analytics: parseCardAnalytics(cardData)
+    rarity: card.rarity ? String(card.rarity) : undefined,
+    artist: card.artist ? String(card.artist) : undefined,
+    imageUrl: images?.small ? String(images.small) : undefined,
+    imageUrlHiRes: images?.large ? String(images.large) : undefined,
+    types: Array.isArray(card.types) ? card.types.map(String) : [],
+    supertype: card.supertype ? String(card.supertype) : undefined,
+    subtypes: Array.isArray(card.subtypes) ? card.subtypes.map(String) : [],
+    hp: card.hp ? parseInt(String(card.hp)) : null,
+    number: card.number ? String(card.number) : undefined,
+    prices: parsePrices(tcgplayer?.prices),
+    tcgplayerUrl: tcgplayer?.url ? String(tcgplayer.url) : undefined,
+    marketData: parseMarketData(card),
+    analytics: parseCardAnalytics(card)
   };
 }
 
-function parsePokemonData(pokemonData: any): Pokemon {
+function parsePokemonData(pokemonData: unknown): Pokemon {
+  let data = pokemonData;
   if (typeof pokemonData === 'string') {
-    pokemonData = JSON.parse(pokemonData);
+    data = JSON.parse(pokemonData);
   }
+  
+  const pokemon = data as Record<string, unknown>;
+  const images = pokemon.images as Record<string, unknown> | undefined;
+  const stats = pokemon.stats as Record<string, number> | undefined;
 
   return {
-    id: pokemonData.id,
-    name: pokemonData.name,
-    nationalPokedexNumber: pokemonData.nationalPokedexNumber,
-    types: pokemonData.types || [],
-    height: pokemonData.height,
-    weight: pokemonData.weight,
-    description: pokemonData.flavorText,
-    imageUrl: pokemonData.images?.large,
-    stats: pokemonData.stats || {}
+    id: typeof pokemon.id === 'number' ? pokemon.id : Number(pokemon.id) || 0,
+    name: String(pokemon.name || ''),
+    nationalPokedexNumber: typeof pokemon.nationalPokedexNumber === 'number' ? pokemon.nationalPokedexNumber : undefined,
+    types: Array.isArray(pokemon.types) ? pokemon.types.map(String) : [],
+    height: typeof pokemon.height === 'number' ? pokemon.height : undefined,
+    weight: typeof pokemon.weight === 'number' ? pokemon.weight : undefined,
+    description: pokemon.flavorText ? String(pokemon.flavorText) : undefined,
+    imageUrl: images?.large ? String(images.large) : undefined,
+    stats: stats || {}
   };
 }
 
-function parsePrices(tcgplayerPrices: any): PriceData | null {
+function parsePrices(tcgplayerPrices: unknown): PriceData | null {
   if (!tcgplayerPrices) return null;
 
-  const parseVariant = (variant: any): PriceVariant | null => variant ? {
-    low: variant.low,
-    mid: variant.mid,
-    high: variant.high,
-    market: variant.market,
-    directLow: variant.directLow
-  } : null;
+  const parseVariant = (variant: unknown): PriceVariant | null => {
+    if (!variant || typeof variant !== 'object') return null;
+    const v = variant as Record<string, unknown>;
+    return {
+      low: typeof v.low === 'number' ? v.low : undefined,
+      mid: typeof v.mid === 'number' ? v.mid : undefined,
+      high: typeof v.high === 'number' ? v.high : undefined,
+      market: typeof v.market === 'number' ? v.market : undefined,
+      directLow: typeof v.directLow === 'number' ? v.directLow : undefined
+    };
+  };
+  
+  const prices = tcgplayerPrices as Record<string, unknown>;
 
   return {
-    normal: parseVariant(tcgplayerPrices.normal),
-    holofoil: parseVariant(tcgplayerPrices.holofoil),
-    reverseHolofoil: parseVariant(tcgplayerPrices.reverseHolofoil),
-    unlimited: parseVariant(tcgplayerPrices.unlimited),
-    firstEdition: parseVariant(tcgplayerPrices['1stEdition'])
+    normal: parseVariant(prices.normal),
+    holofoil: parseVariant(prices.holofoil),
+    reverseHolofoil: parseVariant(prices.reverseHolofoil),
+    unlimited: parseVariant(prices.unlimited),
+    firstEdition: parseVariant(prices['1stEdition'])
   };
 }
 
-function parseMarketData(cardData: any): MarketData {
+function parseMarketData(cardData: unknown): MarketData {
+  const data = cardData as Record<string, unknown>;
   return {
-    volatility: cardData.price_volatility || 0,
-    spread: cardData.price_spread || 0,
-    stabilityScore: cardData.price_stability_score || 0,
-    liquidityIndicator: cardData.liquidity_indicator || 0,
-    trendDirection: cardData.trend_direction || 'neutral',
+    volatility: typeof data.price_volatility === 'number' ? data.price_volatility : 0,
+    spread: typeof data.price_spread === 'number' ? data.price_spread : 0,
+    stabilityScore: typeof data.price_stability_score === 'number' ? data.price_stability_score : 0,
+    liquidityIndicator: typeof data.liquidity_indicator === 'number' ? data.liquidity_indicator : 0,
+    trendDirection: typeof data.trend_direction === 'string' ? data.trend_direction : 'neutral',
     priceChangePercent24h: 0, // Would need to calculate from price history
     priceChangePercent7d: 0,
     priceChangePercent30d: 0
   };
 }
 
-function parseCardAnalytics(cardData: any): CardAnalytics {
+function parseCardAnalytics(cardData: unknown): CardAnalytics {
   return {
     views: 0, // Would come from analytics data
     favorites: 0,
@@ -883,7 +1091,7 @@ function parseCardAnalytics(cardData: any): CardAnalytics {
   };
 }
 
-function formatConnectionResult(data: any[], pagination?: PaginationInput): ConnectionResult<Card> {
+function formatConnectionResult(data: Array<Record<string, unknown>>, pagination?: PaginationInput): ConnectionResult<Card> {
   const edges = data.map((item, index) => ({
     node: parseCardData(item.card_data || item),
     cursor: Buffer.from(`${index}`).toString('base64')
@@ -901,35 +1109,42 @@ function formatConnectionResult(data: any[], pagination?: PaginationInput): Conn
   };
 }
 
-function extractInsights(analyticsData: any, type: string): string[] {
+function extractInsights(analyticsData: unknown, type: string): string[] {
   // Extract insights based on analytics type
   const insights: string[] = [];
   
-  if (type === 'SEARCH' && analyticsData.insights) {
-    return analyticsData.insights;
+  if (type === 'SEARCH' && analyticsData && typeof analyticsData === 'object') {
+    const data = analyticsData as Record<string, unknown>;
+    if (Array.isArray(data.insights)) {
+      return data.insights.map(String);
+    }
   }
   
   return insights;
 }
 
-function calculateAveragePrice(overview: any): number {
+function calculateAveragePrice(overview: MarketOverview): number {
   // Calculate from trending cards
-  const allCards = [...(overview.topGainers || []), ...(overview.topLosers || [])];
+  const allCards = [...overview.topGainers, ...overview.topLosers];
   if (allCards.length === 0) return 0;
   
-  const totalPrice = allCards.reduce((sum: number, card: any) => sum + (card.currentPrice || 0), 0);
+  const totalPrice = allCards.reduce((sum: number, card: CardTrend) => {
+    return sum + (card.currentPrice || 0);
+  }, 0);
   return totalPrice / allCards.length;
 }
 
-function calculateTotalVolume(overview: any): number {
+function calculateTotalVolume(overview: MarketOverview): number {
   // Calculate from trending cards
-  const allCards = [...(overview.topGainers || []), ...(overview.topLosers || [])];
-  return allCards.reduce((sum: number, card: any) => sum + (card.volume || 0), 0);
+  const allCards = [...overview.topGainers, ...overview.topLosers];
+  return allCards.reduce((sum: number, card: CardTrend) => {
+    return sum + (card.volume || 0);
+  }, 0);
 }
 
-function calculateMarketSentiment(overview: any): 'bullish' | 'bearish' | 'neutral' {
-  const gainers = (overview.topGainers || []).length;
-  const losers = (overview.topLosers || []).length;
+function calculateMarketSentiment(overview: MarketOverview): 'bullish' | 'bearish' | 'neutral' {
+  const gainers = overview.topGainers.length;
+  const losers = overview.topLosers.length;
   
   if (gainers > losers * 1.5) return 'bullish';
   if (losers > gainers * 1.5) return 'bearish';

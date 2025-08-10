@@ -5,7 +5,7 @@
  * Run with: node scripts/cache-all-sets.js
  */
 
-const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+// Using native fetch (available in Node 18+)
 const logger = require('./utils/logger');
 
 async function cacheAllSets() {

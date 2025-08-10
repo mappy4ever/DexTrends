@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import CardList from "../../../components/CardList";
-import { PageLoader } from "../../../utils/unifiedLoading";
+import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { getPokemonSDK } from "../../../utils/pokemonSDK";
 import type { TCGCard } from "../../../types/api/cards";
 
@@ -45,7 +45,24 @@ export default function CardsByRarityPage() {
         const pokemon = getPokemonSDK();
         const rarityName = rarityLabelToName[rarity] || rarity;
         const res = await pokemon.card.where({ q: `rarity:"${rarityName}"` });
-        setCards(res as unknown as TCGCard[]);
+        
+        // Validate API response structure
+        if (Array.isArray(res) && res.length > 0) {
+          // Basic validation - check if items have expected card properties
+          const validCards = res.filter(item => 
+            item && 
+            typeof item === 'object' && 
+            'id' in item && 
+            'name' in item
+          ) as TCGCard[];
+          setCards(validCards);
+        } else if (Array.isArray(res)) {
+          // Empty but valid array
+          setCards([]);
+        } else {
+          // Invalid response structure
+          throw new Error('Invalid API response structure');
+        }
         setLoading(false);
       } catch (err) {
         setError("Failed to load cards for this rarity.");

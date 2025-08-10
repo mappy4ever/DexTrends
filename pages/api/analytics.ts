@@ -6,6 +6,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import analyticsEngine from '../../utils/analyticsEngine';
 import logger from '../../utils/logger';
+import { ErrorResponse } from '@/types/api/api-responses';
+import type { UnknownError, AnyObject } from '../../types/common';
 
 interface AnalyticsResponse {
   success: boolean;
@@ -15,21 +17,16 @@ interface AnalyticsResponse {
     startDate: string;
     endDate: string;
   };
-  data?: any;
+  data?: AnyObject;
   generatedAt?: string;
   message?: string;
   eventType?: string;
   timestamp?: string;
   validTypes?: string[];
   validEventTypes?: string[];
+  [key: string]: unknown;
 }
 
-interface ErrorResponse {
-  error: string;
-  message?: string;
-  validTypes?: string[];
-  validEventTypes?: string[];
-}
 
 export default async function handler(
   req: NextApiRequest,
@@ -50,10 +47,10 @@ export default async function handler(
         return res.status(405).json({ error: `Method ${method} Not Allowed` });
     }
   } catch (error) {
-    logger.error('Analytics API error:', error);
+    logger.error('Analytics API error:', { error: error instanceof Error ? error.message : String(error) });
     return res.status(500).json({ 
       error: 'Internal server error',
-      message: error.message 
+      message: error instanceof Error ? error.message : String(error) 
     });
   }
 }
@@ -136,10 +133,10 @@ async function handleGetAnalytics(
     });
 
   } catch (error) {
-    logger.error(`Error fetching ${type} analytics:`, error);
+    logger.error(`Error fetching ${type} analytics:`, { error: error instanceof Error ? error.message : String(error) });
     return res.status(500).json({ 
       error: `Failed to fetch ${type} analytics`,
-      message: error.message 
+      message: error instanceof Error ? error.message : String(error) 
     });
   }
 }
@@ -186,17 +183,17 @@ async function handleTrackEvent(
     });
 
   } catch (error) {
-    logger.error('Error tracking event:', error);
+    logger.error('Error tracking event:', { error: error instanceof Error ? error.message : String(error) });
     return res.status(500).json({ 
       error: 'Failed to track event',
-      message: error.message 
+      message: error instanceof Error ? error.message : String(error) 
     });
   }
 }
 
 function handleCSVResponse(
   res: NextApiResponse<string | ErrorResponse>,
-  data: any,
+  data: AnyObject,
   type: string
 ) {
   try {
@@ -218,7 +215,7 @@ function handleCSVResponse(
     return res.status(200).send(csvContent);
 
   } catch (error) {
-    logger.error('Error generating CSV response:', error);
+    logger.error('Error generating CSV response:', { error: error instanceof Error ? error.message : String(error) });
     return res.status(500).json({ 
       error: 'Failed to generate CSV response' 
     });
@@ -227,7 +224,7 @@ function handleCSVResponse(
 
 interface BatchEvent {
   eventType: string;
-  eventData: any;
+  eventData: AnyObject;
   userId?: string | null;
 }
 
@@ -245,8 +242,8 @@ export async function handleBatchTracking(events: BatchEvent[]) {
     
     return { success: true, processed: events.length };
   } catch (error) {
-    logger.error('Error in batch tracking:', error);
-    return { success: false, error: error.message };
+    logger.error('Error in batch tracking:', { error: error instanceof Error ? error.message : String(error) });
+    return { success: false, error: error instanceof Error ? error.message : String(error) };
   }
 }
 

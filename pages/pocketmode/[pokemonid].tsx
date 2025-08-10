@@ -10,7 +10,7 @@ import PocketCardList from "../../components/PocketCardList";
 import Modal from "../../components/ui/modals/Modal";
 import logger from "../../utils/logger";
 import { getEvolutionChain } from "../../utils/evolutionUtils";
-import { PageLoader } from "../../utils/unifiedLoading";
+import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { GlassContainer } from "../../components/ui/design-system/GlassContainer";
 import { GradientButton } from "../../components/ui/design-system/GradientButton";
 import { TypeGradientBadge } from "../../components/ui/design-system/TypeGradientBadge";
@@ -332,14 +332,14 @@ export default function PocketPokemonDetail() {
         setError(null);
 
         const data = await fetchPocketData();
-        console.log('[Pocket Card Detail] Total cards loaded:', data.length);
-        console.log('[Pocket Card Detail] Looking for card ID:', pokemonid);
+        logger.debug('[Pocket Card Detail] Total cards loaded:', { count: data.length });
+        logger.debug('[Pocket Card Detail] Looking for card ID:', { pokemonid });
         
         const card = data.find((c: PocketCard) => c.id === pokemonid);
-        console.log('[Pocket Card Detail] Found card:', card);
+        logger.debug('[Pocket Card Detail] Found card:', { card });
         
         if (!card) {
-          console.error('[Pocket Card Detail] Card not found in data');
+          logger.error('[Pocket Card Detail] Card not found in data');
           setError("Pokemon card not found");
           setLoading(false);
           return;

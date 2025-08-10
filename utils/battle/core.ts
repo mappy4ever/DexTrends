@@ -1,11 +1,38 @@
 import { EnhancedBattleState, PokemonBattleState, WeatherType, TerrainType, StatusEffect, StatStage } from '@/types/battle';
-import { Pokemon, Move } from '@/types/api/pokemon';
+import { Pokemon, Move } from "../types/pokemon";
+
+interface PokemonBattleConfig {
+  level: number;
+  ivs?: {
+    hp?: number;
+    attack?: number;
+    defense?: number;
+    specialAttack?: number;
+    specialDefense?: number;
+    speed?: number;
+  };
+  evs?: {
+    hp?: number;
+    attack?: number;
+    defense?: number;
+    specialAttack?: number;
+    specialDefense?: number;
+    speed?: number;
+  };
+  stats: {
+    attack: number;
+    defense: number;
+    specialAttack: number;
+    specialDefense: number;
+    speed: number;
+  };
+}
 
 export const createInitialBattleState = (
   pokemon1: Pokemon,
   pokemon2: Pokemon,
-  config1: any,
-  config2: any
+  config1: PokemonBattleConfig,
+  config2: PokemonBattleConfig
 ): EnhancedBattleState => {
   return {
     field: {
@@ -24,7 +51,7 @@ export const createInitialBattleState = (
   };
 };
 
-const createPokemonBattleState = (pokemon: Pokemon, config: any): PokemonBattleState => {
+const createPokemonBattleState = (pokemon: Pokemon, config: PokemonBattleConfig): PokemonBattleState => {
   const maxHp = calculateHP(
     pokemon.stats?.find(s => s.stat.name === 'hp')?.base_stat || 100,
     config.ivs?.hp || 31,

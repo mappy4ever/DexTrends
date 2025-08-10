@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, MouseEvent, TouchEvent, WheelEvent } from 'react';
+import React, { useState, useRef, useEffect, useCallback, MouseEvent, TouchEvent, WheelEvent } from 'react';
 import { useFavorites } from '../../context/UnifiedAppContext';
 import { TypeBadge } from './TypeBadge';
 import Link from 'next/link';
@@ -41,6 +41,23 @@ const EnhancedCardModal: React.FC<EnhancedCardModalProps> = ({
     }
   }, [isOpen]);
 
+  const zoomIn = useCallback(() => {
+    setZoom(prev => Math.min(prev * 1.25, 5));
+  }, []);
+
+  const zoomOut = useCallback(() => {
+    setZoom(prev => Math.max(prev / 1.25, 0.5));
+  }, []);
+
+  const resetZoom = useCallback(() => {
+    setZoom(1);
+    setDragPosition({ x: 0, y: 0 });
+  }, []);
+
+  const toggleFullscreen = useCallback(() => {
+    setIsFullscreen(!isFullscreen);
+  }, [isFullscreen]);
+
   // Handle keyboard shortcuts
   useEffect(() => {
     if (!isOpen) return;
@@ -82,24 +99,7 @@ const EnhancedCardModal: React.FC<EnhancedCardModalProps> = ({
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, isFullscreen, onClose]);
-
-  const zoomIn = () => {
-    setZoom(prev => Math.min(prev * 1.25, 5));
-  };
-
-  const zoomOut = () => {
-    setZoom(prev => Math.max(prev / 1.25, 0.5));
-  };
-
-  const resetZoom = () => {
-    setZoom(1);
-    setDragPosition({ x: 0, y: 0 });
-  };
-
-  const toggleFullscreen = () => {
-    setIsFullscreen(!isFullscreen);
-  };
+  }, [isOpen, isFullscreen, onClose, zoomIn, zoomOut, resetZoom, toggleFullscreen]);
 
   // Mouse wheel zoom
   const handleWheel = (e: WheelEvent<HTMLDivElement>) => {

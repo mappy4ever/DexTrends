@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { 
   ArrowTrendingUpIcon as TrendingUpIcon, 
   ArrowTrendingDownIcon as TrendingDownIcon,
@@ -217,7 +217,7 @@ const MarketInsightsDashboard: React.FC<MarketInsightsDashboardProps> = ({ cards
   }, [cards, timeframe]);
 
   // Generate market insights
-  const generateInsights = (): Insight[] => {
+  const generateInsights = useCallback((): Insight[] => {
     if (!marketMetrics) return [];
 
     const insights: Insight[] = [];
@@ -292,7 +292,7 @@ const MarketInsightsDashboard: React.FC<MarketInsightsDashboardProps> = ({ cards
     }
 
     return insights;
-  };
+  }, [marketMetrics, timeframe]);
 
   // Chart configurations
   const priceHistoryChart: { data: ChartData<'line'>; options: ChartOptions<'line'> } = {
@@ -412,7 +412,7 @@ const MarketInsightsDashboard: React.FC<MarketInsightsDashboardProps> = ({ cards
       setInsights(generateInsights());
       setIsLoading(false);
     }, 1000);
-  }, [marketMetrics]);
+  }, [marketMetrics, generateInsights]);
 
   const getInsightIcon = (type: Insight['type']) => {
     switch (type) {

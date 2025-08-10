@@ -5,7 +5,7 @@
  * This will return immediately while warming continues in background
  */
 
-const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+// Using native fetch (available in Node 18+)
 
 async function triggerCacheWarming() {
   const baseUrl = 'http://localhost:3000';

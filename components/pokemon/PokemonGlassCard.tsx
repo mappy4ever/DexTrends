@@ -1,7 +1,7 @@
 import React, { forwardRef, HTMLAttributes } from 'react';
 import { cn } from '../../utils/cn';
 // Removed design-tokens as we're using simple, classic styling
-import type { PokemonType } from '../../types/api/pokemon';
+import type { PokemonType } from "../../types/pokemon";
 
 export interface PokemonGlassCardProps extends HTMLAttributes<HTMLDivElement> {
   variant?: 'default' | 'hero' | 'stat' | 'compact';

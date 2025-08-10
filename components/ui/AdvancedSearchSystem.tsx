@@ -111,35 +111,76 @@ const AdvancedSearchSystem: React.FC<AdvancedSearchSystemProps> = ({
   const debouncedQuery = useDebounce(searchQuery, 300);
   const debouncedFilters = useDebounce(filters, 500);
 
-  // Load search history on mount
-  useEffect(() => {
-    const saved = localStorage.getItem('advanced-search-history');
-    if (saved) {
-      try {
-        setSearchHistory(JSON.parse(saved));
-      } catch (e) {
-        logger.error('Failed to load search history:', { error: e });
-      }
-    }
-  }, []);
-
-  // Perform search when query or filters change
-  useEffect(() => {
-    if (debouncedQuery.trim() || hasActiveFilters(debouncedFilters)) {
-      performSearch(debouncedQuery, debouncedFilters);
-    } else {
-      onResults([]);
-    }
-  }, [debouncedQuery, debouncedFilters, sortBy, sortOrder]);
-
-  const hasActiveFilters = (filterObj: SearchFilters): boolean => {
+  const hasActiveFilters = useCallback((filterObj: SearchFilters): boolean => {
     return Object.entries(filterObj).some(([key, value]) => {
       if (key === 'priceRange') return value[0] > 0 || value[1] < 1000;
       if (key === 'hp') return value.min !== '' || value.max !== '';
       if (key === 'cardType') return value !== 'all';
       return value !== '' && value !== null && value !== undefined;
     });
-  };
+  }, []);
+
+  // Apply sorting function
+  const applySorting = useCallback((cards: SearchResult[], sortKey: string, order: string, query = ''): SearchResult[] => {
+    const sortedCards = [...cards].sort((a, b) => {
+      let aValue: number | string, bValue: number | string;
+
+      switch (sortKey) {
+        case 'name':
+          aValue = a.name.toLowerCase();
+          bValue = b.name.toLowerCase();
+          break;
+        case 'price':
+          aValue = a.tcgplayer?.prices?.holofoil?.market || 
+                  a.tcgplayer?.prices?.normal?.market || 0;
+          bValue = b.tcgplayer?.prices?.holofoil?.market || 
+                  b.tcgplayer?.prices?.normal?.market || 0;
+          break;
+        case 'hp':
+          aValue = parseInt(a.hp || '0') || 0;
+          bValue = parseInt(b.hp || '0') || 0;
+          break;
+        case 'releaseDate':
+          aValue = new Date(a.set?.releaseDate || '1999-01-01').getTime();
+          bValue = new Date(b.set?.releaseDate || '1999-01-01').getTime();
+          break;
+        case 'rarity':
+          const rarityOrder = ['Common', 'Uncommon', 'Rare', 'Rare Holo', 'Ultra Rare', 'Secret Rare'];
+          aValue = rarityOrder.indexOf(a.rarity || '') || 0;
+          bValue = rarityOrder.indexOf(b.rarity || '') || 0;
+          break;
+        case 'relevance':
+        default:
+          // For relevance, consider name match, then type match, then set match
+          const query = searchQuery.toLowerCase();
+          aValue = calculateRelevanceScore(a, query);
+          bValue = calculateRelevanceScore(b, query);
+          break;
+      }
+
+      if (aValue < bValue) return order === 'asc' ? -1 : 1;
+      if (aValue > bValue) return order === 'asc' ? 1 : -1;
+      return 0;
+    });
+
+    return sortedCards;
+  }, [searchQuery]);
+
+  const saveToHistory = useCallback((query: string, currentFilters: SearchFilters, resultCount: number) => {
+    const historyItem: SearchHistoryItem = {
+      query,
+      filters: currentFilters,
+      resultCount,
+      timestamp: new Date().toISOString()
+    };
+
+    const newHistory = [historyItem, ...searchHistory.filter(item => 
+      item.query !== query || JSON.stringify(item.filters) !== JSON.stringify(currentFilters)
+    )].slice(0, 20); // Keep last 20 searches
+
+    setSearchHistory(newHistory);
+    localStorage.setItem('advanced-search-history', JSON.stringify(newHistory));
+  }, [searchHistory]);
 
   const performSearch = useCallback(async (query: string, currentFilters: SearchFilters) => {
     onLoading(true);
@@ -173,7 +214,28 @@ const AdvancedSearchSystem: React.FC<AdvancedSearchSystemProps> = ({
     } finally {
       onLoading(false);
     }
-  }, [sortBy, sortOrder, onResults, onLoading]);
+  }, [sortBy, sortOrder, onLoading, saveToHistory, applySorting, onResults]);
+
+  // Load search history on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('advanced-search-history');
+    if (saved) {
+      try {
+        setSearchHistory(JSON.parse(saved));
+      } catch (e) {
+        logger.error('Failed to load search history:', { error: e });
+      }
+    }
+  }, []);
+
+  // Perform search when query or filters change
+  useEffect(() => {
+    if (debouncedQuery.trim() || hasActiveFilters(debouncedFilters)) {
+      performSearch(debouncedQuery, debouncedFilters);
+    } else {
+      onResults([]);
+    }
+  }, [debouncedQuery, debouncedFilters, performSearch, onResults, hasActiveFilters]);
 
   const mockAdvancedSearch = async (params: SearchParams): Promise<SearchResult[]> => {
     // Simulate API delay
@@ -332,51 +394,6 @@ const AdvancedSearchSystem: React.FC<AdvancedSearchSystemProps> = ({
     });
   };
 
-  const applySorting = (cards: SearchResult[], sortKey: string, order: string): SearchResult[] => {
-    const sortedCards = [...cards].sort((a, b) => {
-      let aValue: any, bValue: any;
-
-      switch (sortKey) {
-        case 'name':
-          aValue = a.name.toLowerCase();
-          bValue = b.name.toLowerCase();
-          break;
-        case 'price':
-          aValue = a.tcgplayer?.prices?.holofoil?.market || 
-                  a.tcgplayer?.prices?.normal?.market || 0;
-          bValue = b.tcgplayer?.prices?.holofoil?.market || 
-                  b.tcgplayer?.prices?.normal?.market || 0;
-          break;
-        case 'hp':
-          aValue = parseInt(a.hp || '0') || 0;
-          bValue = parseInt(b.hp || '0') || 0;
-          break;
-        case 'releaseDate':
-          aValue = new Date(a.set?.releaseDate || '1999-01-01');
-          bValue = new Date(b.set?.releaseDate || '1999-01-01');
-          break;
-        case 'rarity':
-          const rarityOrder = ['Common', 'Uncommon', 'Rare', 'Rare Holo', 'Ultra Rare', 'Secret Rare'];
-          aValue = rarityOrder.indexOf(a.rarity || '') || 0;
-          bValue = rarityOrder.indexOf(b.rarity || '') || 0;
-          break;
-        case 'relevance':
-        default:
-          // For relevance, consider name match, then type match, then set match
-          const query = searchQuery.toLowerCase();
-          aValue = calculateRelevanceScore(a, query);
-          bValue = calculateRelevanceScore(b, query);
-          break;
-      }
-
-      if (aValue < bValue) return order === 'asc' ? -1 : 1;
-      if (aValue > bValue) return order === 'asc' ? 1 : -1;
-      return 0;
-    });
-
-    return sortedCards;
-  };
-
   const calculateRelevanceScore = (card: SearchResult, query: string): number => {
     let score = 0;
     
@@ -399,21 +416,6 @@ const AdvancedSearchSystem: React.FC<AdvancedSearchSystemProps> = ({
     return score;
   };
 
-  const saveToHistory = (query: string, currentFilters: SearchFilters, resultCount: number) => {
-    const historyItem: SearchHistoryItem = {
-      query,
-      filters: currentFilters,
-      resultCount,
-      timestamp: new Date().toISOString()
-    };
-
-    const newHistory = [historyItem, ...searchHistory.filter(item => 
-      item.query !== query || JSON.stringify(item.filters) !== JSON.stringify(currentFilters)
-    )].slice(0, 20); // Keep last 20 searches
-
-    setSearchHistory(newHistory);
-    localStorage.setItem('advanced-search-history', JSON.stringify(newHistory));
-  };
 
   const handleSearch = (query: string, searchFilters: Partial<SearchFilters> = {}) => {
     setSearchQuery(query);

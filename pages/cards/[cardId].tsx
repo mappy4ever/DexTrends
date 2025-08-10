@@ -8,7 +8,7 @@ import PriceHistoryChart from "../../components/ui/charts/PriceHistoryChart";
 import { TypeBadge } from "../../components/ui/TypeBadge";
 import Image from "next/image";
 import { getPrice as getCardPrice } from "../../utils/pokemonutils";
-import { PageLoader } from "../../utils/unifiedLoading";
+import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import UnifiedCard from "../../components/ui/cards/UnifiedCard";
 import StyledBackButton from "../../components/ui/StyledBackButton";
 import HolographicCard from "../../components/ui/HolographicCard";
@@ -226,9 +226,9 @@ export default function CardDetailPage() {
           });
         }
         
-      } catch (err: any) {
+      } catch (err: unknown) {
         logger.error("Error fetching card:", { 
-          error: err.message,
+          error: err instanceof Error ? err.message : String(err),
           cardId 
         });
         setError("Failed to load card details. Please try again.");

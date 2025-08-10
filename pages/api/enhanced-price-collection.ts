@@ -6,6 +6,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import EnhancedPriceCollector from '../../utils/enhancedPriceCollector';
 import logger from '../../utils/logger';
+import { ErrorResponse } from '@/types/api/api-responses';
+import type { AnyObject, UnknownError } from '../../types/common';
 
 const priceCollector = new EnhancedPriceCollector();
 
@@ -34,18 +36,12 @@ interface CollectionResponse {
     cardsFailed: number;
     duration: number;
   };
-  trendAnalysis?: any;
+  trendAnalysis?: AnyObject;
   message?: string;
   isRunning?: boolean;
-  currentStats?: any;
+  currentStats?: AnyObject;
 }
 
-interface ErrorResponse {
-  error: string;
-  message?: string;
-  stats?: CollectionStats;
-  validActions?: string[];
-}
 
 export default async function handler(
   req: NextApiRequest,
@@ -78,7 +74,7 @@ export default async function handler(
         const collectionResult: CollectionResult = await priceCollector.collectPricesForTrendingCards(limit);
         
         if (collectionResult.success) {
-          const response: any = {
+          const response: CollectionResponse = {
             success: true,
             jobId: collectionResult.jobId,
             summary: {
@@ -102,8 +98,7 @@ export default async function handler(
         } else {
           return res.status(500).json({
             error: 'Enhanced price collection failed',
-            message: collectionResult.error,
-            stats: collectionResult.stats
+            message: collectionResult.error
           });
         }
 
@@ -134,23 +129,24 @@ export default async function handler(
         });
 
       case 'status':
+        const status = priceCollector as unknown as { isRunning?: boolean; collectionStats?: AnyObject };
         return res.status(200).json({
           success: true,
-          isRunning: (priceCollector as any).isRunning,
-          currentStats: (priceCollector as any).collectionStats
+          isRunning: status.isRunning,
+          currentStats: status.collectionStats
         });
 
       default:
         return res.status(400).json({
           error: 'Invalid action',
-          validActions: ['collect', 'trends', 'schedule', 'status']
+          message: 'Valid actions: collect, trends, schedule, status'
         });
     }
   } catch (error) {
-    logger.error('Enhanced price collection API error:', error);
+    logger.error('Enhanced price collection API error:', { error: error instanceof Error ? error.message : String(error) });
     return res.status(500).json({
       error: 'Internal server error',
-      message: error.message
+      message: error instanceof Error ? error.message : String(error)
     });
   }
 }

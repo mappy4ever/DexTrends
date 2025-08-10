@@ -6,7 +6,7 @@
 import React from 'react';
 import { TypeBadge } from '../ui/TypeBadge';
 import { FadeIn } from '../ui/animations/animations';
-import type { Pokemon, PokemonSpecies } from '../../types/api/pokemon';
+import type { Pokemon, PokemonSpecies } from "../../types/pokemon";
 
 interface TypeEffectivenessItem {
   type: string;

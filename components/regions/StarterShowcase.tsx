@@ -13,7 +13,11 @@ interface RegionData {
   starters: string[];
   starterIds: number[];
   starterTypes: string[][];
-  [key: string]: any;
+  professor?: string;
+  generation?: string | number;
+  pokemonRange?: string;
+  cities?: number;
+  routes?: number;
 }
 
 interface StarterShowcaseProps {

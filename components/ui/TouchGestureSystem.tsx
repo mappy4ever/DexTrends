@@ -10,6 +10,7 @@ import React, {
   ReactNode
 } from 'react';
 import { HapticFeedback, VisualFeedback } from './MicroInteractionSystem';
+import logger from '@/utils/logger';
 
 /**
  * Advanced Touch Gesture System for Mobile Interactions
@@ -35,7 +36,7 @@ interface GestureSettings {
 }
 
 interface GestureConfig {
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 interface TouchGestureContextType {
@@ -460,7 +461,7 @@ interface SwipeableCardProps {
   snapBackThreshold?: number;
   className?: string;
   disabled?: boolean;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export const SwipeableCard: React.FC<SwipeableCardProps> = ({
@@ -918,7 +919,7 @@ interface GestureAreaProps {
   gestures?: GestureDefinitions;
   className?: string;
   disabled?: boolean;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export const GestureArea: React.FC<GestureAreaProps> = ({

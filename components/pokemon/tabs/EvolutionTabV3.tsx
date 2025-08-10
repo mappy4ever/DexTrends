@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import type { Pokemon, PokemonSpecies, EvolutionChain } from '../../../types/api/pokemon';
+import type { Pokemon, PokemonSpecies, EvolutionChain } from "../../../types/pokemon";
+import type { TypeColors } from '../../../types/pokemon-tabs';
 import { GlassContainer } from '../../ui/design-system';
 import { TypeBadge } from '../../ui/TypeBadge';
 import { cn } from '../../../utils/cn';
@@ -20,7 +21,7 @@ interface EvolutionTabV3Props {
   pokemon: Pokemon;
   species: PokemonSpecies;
   evolutionChain: EvolutionChain | null;
-  typeColors: Record<string, string>;
+  typeColors: TypeColors;
 }
 
 interface EvolutionNode {
@@ -163,7 +164,7 @@ const getEvolutionPokemonId = (pokemonName: string): number => {
 
 // Helper to get pre-evolution for regional evolutions
 const getPreEvolutionForRegional = (pokemonName: string): { from: string; method: string; level?: number; item?: string } | null => {
-  const preEvolutions: Record<string, any> = {
+  const preEvolutions: Record<string, { from: string; method: string; level?: number; item?: string }> = {
     'perrserker': { from: 'meowth-galar', method: 'level-up', level: 28 },
     'rapidash-galar': { from: 'ponyta-galar', method: 'level-up', level: 40 },
     'sirfetchd': { from: 'farfetchd-galar', method: 'level-up' },
@@ -186,7 +187,23 @@ const EvolutionArrow = ({
   evolutionDetails 
 }: { 
   horizontal?: boolean; 
-  evolutionDetails?: any[] 
+  evolutionDetails?: Array<{
+    trigger: string;
+    minLevel?: number;
+    item?: string;
+    minHappiness?: number;
+    location?: string;
+    heldItem?: string;
+    timeOfDay?: string;
+    gender?: number;
+    knownMove?: string;
+    minAffection?: number;
+    needsOverworldRain?: boolean;
+    partySpecies?: string;
+    tradeSpecies?: string;
+    minBeauty?: number;
+    relativePhysicalStats?: number;
+  }> 
 }) => {
   // Display evolution requirements
   const getEvolutionText = () => {
@@ -338,14 +355,54 @@ const EvolutionTabV3: React.FC<EvolutionTabV3Props> = ({
     fetchSpecialForms();
   }, [species?.varieties]);
   
-  // Parse evolution chain into a usable structure
-  const parseEvolutionChain = (chain: any, isShiny: boolean): EvolutionNode[][] => {
+  interface EvolutionDetail {
+  trigger: string;
+  minLevel?: number;
+  item?: string;
+  minHappiness?: number;
+  location?: string;
+  heldItem?: string;
+  timeOfDay?: string;
+  gender?: number;
+  knownMove?: string;
+  minAffection?: number;
+  needsOverworldRain?: boolean;
+  partySpecies?: string;
+  tradeSpecies?: string;
+  minBeauty?: number;
+  relativePhysicalStats?: number;
+}
+
+interface EvolutionChainNode {
+  species: { name: string; url: string };
+  evolution_details?: Array<{
+    trigger?: { name: string } | null;
+    min_level?: number | null;
+    item?: { name: string } | null;
+    min_happiness?: number | null;
+    location?: { name: string } | null;
+    held_item?: { name: string } | null;
+    time_of_day?: string;
+    gender?: number | null;
+    known_move?: { name: string } | null;
+    min_affection?: number | null;
+    needs_overworld_rain?: boolean;
+    party_species?: { name: string } | null;
+    trade_species?: { name: string } | null;
+    min_beauty?: number | null;
+    relative_physical_stats?: number | null;
+  }>;
+  evolves_to?: EvolutionChainNode[];
+}
+
+// Parse evolution chain into a usable structure
+  const parseEvolutionChain = (chain: EvolutionChainNode, isShiny: boolean): EvolutionNode[][] => {
     const stages: EvolutionNode[][] = [];
     
     // For regional variants, we need to filter the evolution path
     const currentFormPrefix = isRegionalVariant ? pokemon.name.split('-')[1] : null;
     
-    const parseNode = (node: any, stageIndex: number = 0, followPath: boolean = true) => {
+    const parseNode = (node: EvolutionChainNode, stageIndex: number = 0, followPath: boolean = true) => {
       if (!node || !node.species) return;
       
       if (!stages[stageIndex]) {
@@ -359,22 +416,22 @@ const EvolutionTabV3: React.FC<EvolutionTabV3Props> = ({
         
         if (!isNaN(pokemonId)) {
           // Extract evolution details
-          const evolutionDetails = node.evolution_details?.map((detail: any) => ({
+          const evolutionDetails = node.evolution_details?.map((detail) => ({
             trigger: detail.trigger?.name || '',
-            minLevel: detail.min_level || null,
-            item: detail.item?.name || null,
-            minHappiness: detail.min_happiness || null,
-            location: detail.location?.name || null,
-            heldItem: detail.held_item?.name || null,
-            timeOfDay: detail.time_of_day || null,
-            gender: detail.gender || null,
-            knownMove: detail.known_move?.name || null,
-            minAffection: detail.min_affection || null,
+            minLevel: detail.min_level ?? undefined,
+            item: detail.item?.name ?? undefined,
+            minHappiness: detail.min_happiness ?? undefined,
+            location: detail.location?.name ?? undefined,
+            heldItem: detail.held_item?.name ?? undefined,
+            timeOfDay: detail.time_of_day || undefined,
+            gender: detail.gender ?? undefined,
+            knownMove: detail.known_move?.name ?? undefined,
+            minAffection: detail.min_affection ?? undefined,
             needsOverworldRain: detail.needs_overworld_rain || false,
-            partySpecies: detail.party_species?.name || null,
-            tradeSpecies: detail.trade_species?.name || null,
-            minBeauty: detail.min_beauty || null,
-            relativePhysicalStats: detail.relative_physical_stats || null
+            partySpecies: detail.party_species?.name ?? undefined,
+            tradeSpecies: detail.trade_species?.name ?? undefined,
+            minBeauty: detail.min_beauty ?? undefined,
+            relativePhysicalStats: detail.relative_physical_stats ?? undefined
           })) || [];
           
           stages[stageIndex].push({
@@ -392,7 +449,7 @@ const EvolutionTabV3: React.FC<EvolutionTabV3Props> = ({
       
       // Process evolutions
       if (node.evolves_to && node.evolves_to.length > 0) {
-        node.evolves_to.forEach((evolution: any) => {
+        node.evolves_to.forEach((evolution) => {
           parseNode(evolution, stageIndex + 1);
         });
       }
@@ -416,7 +473,7 @@ const EvolutionTabV3: React.FC<EvolutionTabV3Props> = ({
         
         // Add current Pokemon
         customStages[0].push({
-          id: pokemon.id,
+          id: Number(pokemon.id),
           name: pokemon.name,
           sprite: showShiny 
             ? pokemon.sprites?.other?.['official-artwork']?.front_shiny || ''
@@ -432,10 +489,14 @@ const EvolutionTabV3: React.FC<EvolutionTabV3Props> = ({
             // This is a simplification - in production you'd fetch the Pokemon data
             const evoId = getEvolutionPokemonId(evo.to);
             
-            const evolutionDetail: any = {
+            const evolutionDetail: {
+              trigger: string;
+              minLevel?: number;
+              item?: string;
+            } = {
               trigger: evo.method === 'use-item' ? 'use-item' : 'level-up',
-              minLevel: evo.level || null,
-              item: evo.item || null
+              minLevel: evo.level,
+              item: evo.item
             };
             
             customStages[1].push({
@@ -473,15 +534,15 @@ const EvolutionTabV3: React.FC<EvolutionTabV3Props> = ({
         
         // Add current Pokemon
         customStages[1] = [{
-          id: pokemon.id,
+          id: Number(pokemon.id),
           name: pokemon.name,
           sprite: showShiny 
             ? pokemon.sprites?.other?.['official-artwork']?.front_shiny || ''
             : pokemon.sprites?.other?.['official-artwork']?.front_default || '',
           evolutionDetails: [{
             trigger: preEvolution.method === 'use-item' ? 'use-item' : 'level-up',
-            minLevel: preEvolution.level || null,
-            item: preEvolution.item || null
+            minLevel: preEvolution.level || undefined,
+            item: preEvolution.item || undefined
           }]
         }];
         
@@ -490,7 +551,7 @@ const EvolutionTabV3: React.FC<EvolutionTabV3Props> = ({
     }
     
     // Use standard evolution chain
-    return parseEvolutionChain(evolutionChain, showShiny);
+    return evolutionChain ? parseEvolutionChain(evolutionChain.chain, showShiny) : [];
   };
   
   const evolutionStages = getEvolutionStages();
@@ -839,7 +900,7 @@ const EvolutionTabV3: React.FC<EvolutionTabV3Props> = ({
                               <div className="relative w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-3">
                                 {megaFormData[variety.pokemon.name]?.sprites?.other?.['official-artwork']?.front_default ? (
                                   <Image
-                                    src={megaFormData[variety.pokemon.name].sprites.other['official-artwork'].front_default}
+                                    src={megaFormData[variety.pokemon.name]?.sprites?.other?.['official-artwork']?.front_default || '/dextrendslogo.png'}
                                     alt={variety.pokemon.name}
                                     fill
                                     className="object-contain"
@@ -958,7 +1019,7 @@ const EvolutionTabV3: React.FC<EvolutionTabV3Props> = ({
                             <div className="relative w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-3">
                               {megaFormData[variety.pokemon.name]?.sprites?.other?.['official-artwork']?.front_default ? (
                                 <Image
-                                  src={megaFormData[variety.pokemon.name].sprites.other['official-artwork'].front_default}
+                                  src={megaFormData[variety.pokemon.name]?.sprites?.other?.['official-artwork']?.front_default || '/dextrendslogo.png'}
                                   alt={variety.pokemon.name}
                                   fill
                                   className="object-contain"

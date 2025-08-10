@@ -50,7 +50,7 @@ interface EnhancedPriceEntry {
   last_updated_at: Date | null;
   collected_at: string;
   collection_batch_id: string;
-  raw_data: any;
+  raw_data: Record<string, unknown>;
 }
 
 interface CollectionJob {
@@ -179,7 +179,7 @@ class EnhancedPriceCollector {
 
       const data = await response.json();
       return data.data as TCGCard;
-    } catch (error: any) {
+    } catch (error) {
       if (retryCount < this.maxRetries && error.name !== 'AbortError') {
         logger.warn(`Error fetching card ${cardId}, retry ${retryCount + 1}:`, { error: error.message });
         await this.delay(1000 * (retryCount + 1));
@@ -235,7 +235,7 @@ class EnhancedPriceCollector {
           
           // Small delay between queries
           await this.delay(200);
-        } catch (error: any) {
+        } catch (error) {
           logger.warn(`Error fetching cards for query ${query}:`, { error: error.message });
         }
       }
@@ -422,7 +422,7 @@ class EnhancedPriceCollector {
             totalInserted += batch.length;
             logger.debug(`Stored price batch ${i / batchSize + 1}: ${batch.length} entries`);
           }
-        } catch (batchError: any) {
+        } catch (batchError) {
           logger.error(`Batch storage error:`, batchError);
           totalErrors += batch.length;
         }
@@ -678,7 +678,7 @@ class EnhancedPriceCollector {
         stats: this.collectionStats
       };
 
-    } catch (error: any) {
+    } catch (error) {
       logger.error('Enhanced price collection failed:', error);
       this.collectionStats.endTime = new Date();
       

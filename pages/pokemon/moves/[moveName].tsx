@@ -13,7 +13,9 @@ import { showdownQueries, MoveCompetitiveDataRecord } from '@/utils/supabase';
 import { cn } from '@/utils/cn';
 import { typeColors } from '@/utils/unifiedTypeColors';
 import { FaChevronLeft, FaGamepad, FaStar, FaUsers } from 'react-icons/fa';
-import { BsLightning, BsShield, BsTarget, BsSpeedometer } from 'react-icons/bs';
+import { BsLightning, BsShield, BsSpeedometer } from 'react-icons/bs';
+import { GiOnTarget } from 'react-icons/gi';
+import logger from '@/utils/logger';
 
 interface MoveDetailPageProps {
   moveName: string;
@@ -72,11 +74,11 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
               setCompetitiveData(compData);
             }
           } catch (err) {
-            console.error('Failed to fetch competitive data:', err);
+            logger.error('Failed to fetch competitive data:', { error: err instanceof Error ? err.message : String(err) });
           }
         }
       } catch (err) {
-        console.error('Failed to fetch move data:', err);
+        logger.error('Failed to fetch move data:', { error: err instanceof Error ? err.message : String(err) });
         setError('Failed to load move data');
       } finally {
         setLoading(false);
@@ -154,7 +156,7 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
                 <div className="flex items-center gap-3">
                   <TypeBadge type={moveType} size="lg" />
                   <div className="flex items-center gap-2">
-                    <CategoryIcon category={moveCategory} size={24} />
+                    <CategoryIcon category={moveCategory as 'physical' | 'special' | 'status' | null} size={24} />
                     <span className="text-sm font-medium capitalize">{moveCategory}</span>
                   </div>
                   <span className="text-sm text-gray-500 dark:text-gray-400">Gen {generation}</span>
@@ -179,7 +181,7 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              <GlassContainer variant="default" className="p-6">
+              <GlassContainer variant="medium" className="p-6">
                 <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
                   <BsLightning className="text-yellow-500" />
                   Battle Statistics
@@ -229,7 +231,7 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <GlassContainer variant="default" className="p-6">
+              <GlassContainer variant="medium" className="p-6">
                 <h2 className="text-xl font-bold mb-4">Effect</h2>
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
                   {englishEffect?.effect || englishFlavor?.flavor_text || 'No effect description available.'}
@@ -253,7 +255,7 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
               >
-                <GlassContainer variant="default" className="p-6">
+                <GlassContainer variant="medium" className="p-6">
                   <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
                     <FaStar className="text-yellow-500" />
                     Competitive Information
@@ -296,7 +298,7 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <GlassContainer variant="default" className="p-6">
+            <GlassContainer variant="medium" className="p-6">
               <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
                 <FaUsers className="text-blue-500" />
                 Pokémon that can learn {displayName}
@@ -338,7 +340,7 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="mt-8"
         >
-          <GlassContainer variant="default" className="p-6">
+          <GlassContainer variant="medium" className="p-6">
             <h2 className="text-xl font-bold mb-4">Quick Navigation</h2>
             <div className="flex flex-wrap gap-4">
               <Link

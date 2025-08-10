@@ -116,22 +116,8 @@ export interface SubscriptionInfo {
   features?: string[];
 }
 
-// Favorites types - Temporarily using inline types to avoid conflicts
-// TODO: Migrate to use types from './favorites' 
-interface FavoritesState {
-  cards: SimpleCard[];
-  pokemon: SimplePokemon[];
-  decks: string[];
-  sets: string[];
-}
-
-interface FavoritesActions {
-  addToFavorites: (type: keyof FavoritesState, item: any) => void;
-  removeFromFavorites: (type: keyof FavoritesState, itemId: string | number) => void;
-  isFavorite: (type: keyof FavoritesState, itemId: string | number) => boolean;
-  clearFavorites: (type?: keyof FavoritesState) => void;
-  toggleFavorite: (type: keyof FavoritesState, item: any) => void;
-}
+// Import favorites types from the dedicated favorites module
+import { FavoritesState, FavoritesActions } from './favorites';
 
 // Settings types
 export interface AppSettings {

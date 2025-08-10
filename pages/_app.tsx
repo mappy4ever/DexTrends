@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { AppProps } from 'next/app';
 import Head from "next/head";
-import { useRouter } from "next/router";
+import { useRouter, NextRouter } from "next/router";
 import "../styles/globals.css";
 import "../styles/unified-mobile.css";
 import "../styles/ios-scrolling-fix.css";
@@ -23,12 +23,11 @@ import "../components/typebadge.css";
 import Layout from "../components/layout/Layout";
 import logger from "../utils/logger";
 import ErrorBoundary from "../components/layout/ErrorBoundary";
-import { AnimatePresence, motion } from "framer-motion";
-import { PageTransition } from "../components/ui/animations/AnimationSystem";
+import { PageTransition } from "../components/layout/PageTransition";
 import { UnifiedAppProvider } from '../context/UnifiedAppContext';
 import GlobalErrorHandler from '../components/GlobalErrorHandler';
 import { PWAProvider } from '../components/pwa/PWAProvider';
-import { pageVariants, defaultTransition, getRouteTransition, prefersReducedMotion } from '../utils/pageTransitions';
+import { scrollHandlerUtils } from '../utils/scrollHandler';
 
 // Initialize cache warming on server startup
 if (typeof window === 'undefined') {
@@ -44,15 +43,16 @@ import { PreferencesProvider } from '../components/qol/UserPreferences';
 
 // Toast system imports
 import { ToastProvider } from '../components/providers/ToastProvider';
+// Modal system imports
+import { ModalProvider } from '../components/ui/AdvancedModalSystem';
 
 // Enhanced dynamic imports with comprehensive loading
 import dynamic from 'next/dynamic';
-import { initializeFeatureFlags, isFeatureEnabled } from '../utils/featureFlags';
 
 // Create stable references for dynamic imports to improve Fast Refresh
 const dynamicImports = {
   SimpleBackToTop: () => import('../components/ui/SimpleBackToTop').catch(() => ({ default: () => null })),
-  AccessibilityProvider: () => import('../components/ui/AccessibilityProvider').catch(() => ({ default: ({ children }: any) => children })),
+  AccessibilityProvider: () => import('../components/ui/AccessibilityProvider').catch(() => ({ default: ({ children }: { children: React.ReactNode }) => children })),
   KeyboardShortcutsManager: () => import('../components/qol/KeyboardShortcuts').catch(() => ({ default: () => null })),
   PushNotifications: () => import('../components/mobile/PushNotifications').catch(() => ({ default: () => null })),
   GlobalSearchShortcuts: () => import('../components/qol/GlobalSearchShortcuts').catch(() => ({ default: () => null })),
@@ -95,109 +95,6 @@ const PreferencesManager = dynamic(dynamicImports.PreferencesManager, {
   loading: () => null
 });
 
-// Test Supabase connection on app start (development only)
-// COMMENTED OUT: This was causing app startup to hang at "ready"
-/*
-if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
-  import('@/utils/supabase').then(({ testSupabaseConnection }) => {
-    testSupabaseConnection().then(result => {
-      if (result.success) {
-        console.log('[App] Supabase connection test:', result.message);
-      } else {
-        console.error('[App] Supabase connection test failed:', result.error);
-      }
-    });
-  }).catch(err => {
-    console.error('[App] Failed to load Supabase test:', err);
-  });
-}
-*/
-
-// Enhanced Page Transition Component
-interface EnhancedPageTransitionProps {
-  children: React.ReactNode;
-  pathname: string;
-}
-
-const EnhancedPageTransition: React.FC<EnhancedPageTransitionProps> = ({ children, pathname }) => {
-  const routeTransition = getRouteTransition(pathname);
-  const variants = pageVariants[routeTransition.type];
-  const reducedMotion = prefersReducedMotion();
-
-  if (reducedMotion) {
-    return <>{children}</>;
-  }
-
-  return (
-    <motion.div
-      initial="initial"
-      animate="in"
-      exit="out"
-      variants={variants}
-      transition={defaultTransition}
-      style={{ width: '100%', height: '100%' }}
-    >
-      {children}
-    </motion.div>
-  );
-};
-
-// Simple throttle function with proper cleanup
-const throttle = <T extends (...args: any[]) => any>(func: T, limit: number): T => {
-  let inThrottle: boolean = false;
-  let timer: NodeJS.Timeout | null = null;
-  
-  const throttledFunc = function(this: any, ...args: Parameters<T>) {
-    if (!inThrottle) {
-      func.apply(this, args);
-      inThrottle = true;
-      timer = setTimeout(() => {
-        inThrottle = false;
-        timer = null;
-      }, limit);
-    }
-  } as T;
-  
-  // Add cleanup method
-  (throttledFunc as any).cleanup = () => {
-    if (timer) {
-      clearTimeout(timer);
-      timer = null;
-    }
-    inThrottle = false;
-  };
-  
-  return throttledFunc;
-};
-
-// Scroll handler state and callbacks
-let scrollTimer: NodeJS.Timeout;
-let scrollHandlerIsScrolling = false;
-let scrollStateSetters: {
-  setIsScrolling?: React.Dispatch<React.SetStateAction<boolean>>;
-} = {};
-
-// Scroll handler object to avoid function detection issues
-const scrollHandlerUtils = {
-  handleScroll: () => {
-    if (!scrollHandlerIsScrolling) {
-      document.body.classList.add('is-scrolling');
-      scrollStateSetters.setIsScrolling?.(true);
-      scrollHandlerIsScrolling = true;
-    }
-    clearTimeout(scrollTimer);
-    scrollTimer = setTimeout(() => {
-      document.body.classList.remove('is-scrolling');
-      scrollStateSetters.setIsScrolling?.(false);
-      scrollHandlerIsScrolling = false;
-    }, 150);
-  },
-  cleanup: () => {
-    clearTimeout(scrollTimer);
-    scrollStateSetters = {};
-  }
-};
-
 interface MyAppProps extends AppProps {
   Component: AppProps['Component'] & {
     fullBleed?: boolean;
@@ -207,10 +104,10 @@ interface MyAppProps extends AppProps {
 // Extracted component to fix Fast Refresh nested component issue
 interface AppContentProps {
   Component: MyAppProps['Component'];
-  pageProps: any;
+  pageProps: Record<string, unknown>;
   fullBleed?: boolean;
   isClient: boolean;
-  nextRouterPath: string;
+  router: NextRouter;
 }
 
 const AppContent: React.FC<AppContentProps> = ({ 
@@ -218,7 +115,7 @@ const AppContent: React.FC<AppContentProps> = ({
   pageProps, 
   fullBleed, 
   isClient,
-  nextRouterPath 
+  router 
 }) => {
   return (
     <>
@@ -243,15 +140,14 @@ const AppContent: React.FC<AppContentProps> = ({
         
         <UnifiedAppProvider>
           <ToastProvider>
-            <NotificationProvider>
-              <ContextualHelpProvider>
-                <PreferencesProvider>
-                <Layout fullBleed={fullBleed}>
-                  <AnimatePresence mode="wait" initial={false}>
-                    <EnhancedPageTransition pathname={nextRouterPath} key={nextRouterPath}>
+            <ModalProvider>
+              <NotificationProvider>
+                <ContextualHelpProvider>
+                  <PreferencesProvider>
+                  <Layout fullBleed={fullBleed}>
+                    <PageTransition>
                       <Component {...pageProps} />
-                    </EnhancedPageTransition>
-                  </AnimatePresence>
+                    </PageTransition>
                   
                   {/* QOL System Components */}
                   {isClient && (
@@ -265,9 +161,10 @@ const AppContent: React.FC<AppContentProps> = ({
                     </>
                   )}
                 </Layout>
-                </PreferencesProvider>
-              </ContextualHelpProvider>
-            </NotificationProvider>
+                  </PreferencesProvider>
+                </ContextualHelpProvider>
+              </NotificationProvider>
+            </ModalProvider>
           </ToastProvider>
         </UnifiedAppProvider>
       </PWAProvider>
@@ -278,7 +175,6 @@ const AppContent: React.FC<AppContentProps> = ({
 function MyApp({ Component, pageProps, router }: MyAppProps) {
   const nextRouter = useRouter();
   const [isClient, setIsClient] = useState(false);
-  const [featuresEnabled, setFeaturesEnabled] = useState<Record<string, boolean>>({});
   const [isScrolling, setIsScrolling] = useState(false);
   
   // Check if this is an error page
@@ -301,7 +197,7 @@ function MyApp({ Component, pageProps, router }: MyAppProps) {
     
     // iOS scroll performance optimization
     // Store state setter in external object to avoid nested functions
-    scrollStateSetters.setIsScrolling = setIsScrolling;
+    scrollHandlerUtils.setStateSetters({ setIsScrolling });
     
     // Use passive event listener for better performance
     window.addEventListener('scroll', scrollHandlerUtils.handleScroll, { passive: true });
@@ -315,7 +211,7 @@ function MyApp({ Component, pageProps, router }: MyAppProps) {
 
   // Create minimal content for error pages
   if (isErrorPage) {
-    console.log('Rendering error page with minimal wrapper:', router.pathname);
+    logger.debug('Rendering error page with minimal wrapper:', { pathname: router.pathname });
     return (
       <>
         <Head>
@@ -336,13 +232,10 @@ function MyApp({ Component, pageProps, router }: MyAppProps) {
         pageProps={pageProps}
         fullBleed={Component.fullBleed}
         isClient={isClient}
-        nextRouterPath={nextRouter.asPath}
+        router={nextRouter}
       />
     </ErrorBoundary>
   );
 }
-
-
-// Removed getInitialProps to prevent refresh loops and improve performance
 
 export default MyApp;

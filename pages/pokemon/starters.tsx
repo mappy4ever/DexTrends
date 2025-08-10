@@ -7,12 +7,13 @@ import Image from "next/image";
 import { motion, AnimatePresence } from 'framer-motion';
 import { FadeIn, SlideUp, StaggeredChildren } from "../../components/ui/animations/animations";
 import { TypeBadge } from "../../components/ui/TypeBadge";
-import { PageLoader } from "../../utils/unifiedLoading";
+import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { BsChevronRight, BsChevronDown, BsChevronUp, BsStar, BsStarFill } from "react-icons/bs";
 import { GiSwordWound, GiShield, GiSpeedometer, GiHearts, GiBrain, GiEyeShield } from "react-icons/gi";
 import { FaFire, FaLeaf, FaWater } from "react-icons/fa";
 import { THEME, themeClass, getTypeGradient } from "../../utils/theme";
 import { useTheme } from "../../context/UnifiedAppContext";
+import { useAccessibilityPreferences } from '../../hooks/useUserPreferences';
 
 // Type definitions
 interface Evolution {
@@ -565,9 +566,7 @@ const STARTER_TYPE_GRADIENTS = {
 const StartersPage: NextPage = () => {
   const router = useRouter();
   const { theme } = useTheme();
-  // TODO: Update when userPreferences is available in context
-  const isHighContrast = false;
-  const reduceMotion = false;
+  const { highContrast: isHighContrast, reduceMotion } = useAccessibilityPreferences();
   const [selectedGen, setSelectedGen] = useState(0);
   const [expandedStarters, setExpandedStarters] = useState<Record<number, boolean>>({});
   const [selectedForComparison, setSelectedForComparison] = useState<number[]>([]);

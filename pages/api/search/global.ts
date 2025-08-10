@@ -1,6 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { fetchJSON } from '../../../utils/unifiedFetch';
 import logger from '../../../utils/logger';
+import type { TCGApiResponse } from '../../../types/api/enhanced-responses';
+import { isTCGCard, isTCGSet, isObject, isString, hasProperty } from '../../../utils/typeGuards';
 
 interface SearchResult {
   category: 'pokemon' | 'card' | 'set' | 'move' | 'item' | 'ability';
@@ -60,7 +62,7 @@ export default async function handler(
         const pokemonResults = await searchPokemon(query, resultLimit);
         results.push(...pokemonResults);
       } catch (error) {
-        logger.error('[Global Search] Pokemon search failed:', error);
+        logger.error('[Global Search] Pokemon search failed:', { error: error instanceof Error ? error.message : String(error) });
       }
     }
 
@@ -70,7 +72,7 @@ export default async function handler(
         const cardResults = await searchTCGCards(query, resultLimit);
         results.push(...cardResults);
       } catch (error) {
-        logger.error('[Global Search] Card search failed:', error);
+        logger.error('[Global Search] Card search failed:', { error: error instanceof Error ? error.message : String(error) });
       }
     }
 
@@ -80,7 +82,7 @@ export default async function handler(
         const setResults = await searchTCGSets(query, resultLimit);
         results.push(...setResults);
       } catch (error) {
-        logger.error('[Global Search] Set search failed:', error);
+        logger.error('[Global Search] Set search failed:', { error: error instanceof Error ? error.message : String(error) });
       }
     }
 
@@ -116,7 +118,7 @@ export default async function handler(
 
     res.status(200).json(response);
   } catch (error) {
-    logger.error('[Global Search] Error:', error);
+    logger.error('[Global Search] Error:', { error: error instanceof Error ? error.message : String(error) });
     res.status(500).json({ error: 'Internal server error' });
   }
 }
@@ -164,23 +166,25 @@ async function searchPokemon(query: string, limit: number): Promise<SearchResult
 // Helper function to search TCG Cards
 async function searchTCGCards(query: string, limit: number): Promise<SearchResult[]> {
   try {
-    const response = await fetchJSON<{ data: any[] }>(
+    const response = await fetchJSON<TCGApiResponse<unknown[]>>(
       `/api/tcg-cards?q=${encodeURIComponent(query)}&pageSize=${limit}`
     );
     
     if (!response?.data) return [];
 
-    return response.data.map((card: any) => ({
-      category: 'card' as const,
-      id: card.id,
-      name: card.name,
-      description: `${card.set?.name || 'Unknown Set'} - ${card.rarity || 'Common'}`,
-      image: card.images?.small,
-      url: `/tcgsets/${card.set?.id}#${card.id}`,
-      relevance: card.name.toLowerCase().startsWith(query) ? 0.9 : 0.6
-    }));
+    return response.data
+      .filter(isTCGCard)
+      .map((card) => ({
+        category: 'card' as const,
+        id: card.id,
+        name: card.name,
+        description: `${card.set?.name || 'Unknown Set'} - ${card.rarity || 'Common'}`,
+        image: card.images?.small,
+        url: `/tcgsets/${card.set?.id}#${card.id}`,
+        relevance: card.name.toLowerCase().startsWith(query) ? 0.9 : 0.6
+      }));
   } catch (error) {
-    logger.error('[Global Search] TCG card search error:', error);
+    logger.error('[Global Search] TCG card search error:', { error: error instanceof Error ? error.message : String(error) });
     return [];
   }
 }
@@ -188,18 +192,20 @@ async function searchTCGCards(query: string, limit: number): Promise<SearchResul
 // Helper function to search TCG Sets
 async function searchTCGSets(query: string, limit: number): Promise<SearchResult[]> {
   try {
-    const response = await fetchJSON<{ data: any[] }>('/api/tcg-sets?pageSize=100');
+    const response = await fetchJSON<TCGApiResponse<unknown[]>>('/api/tcg-sets?pageSize=100');
     
     if (!response?.data) return [];
 
+    const validSets = response.data.filter(isTCGSet);
     const results: SearchResult[] = [];
-    for (const set of response.data) {
+    
+    for (const set of validSets) {
       if (set.name.toLowerCase().includes(query) || set.series?.toLowerCase().includes(query)) {
         results.push({
           category: 'set' as const,
           id: set.id,
           name: set.name,
-          description: `${set.series} - ${set.total} cards`,
+          description: `${set.series || 'Unknown Series'} - ${set.total || 0} cards`,
           image: set.images?.logo,
           url: `/tcgsets/${set.id}`,
           relevance: set.name.toLowerCase().startsWith(query) ? 0.8 : 0.5
@@ -210,7 +216,7 @@ async function searchTCGSets(query: string, limit: number): Promise<SearchResult
 
     return results;
   } catch (error) {
-    logger.error('[Global Search] TCG set search error:', error);
+    logger.error('[Global Search] TCG set search error:', { error: error instanceof Error ? error.message : String(error) });
     return [];
   }
 }

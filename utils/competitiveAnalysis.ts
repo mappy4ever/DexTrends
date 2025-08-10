@@ -1,4 +1,4 @@
-import type { Pokemon, PokemonSpecies } from '../types/api/pokemon';
+import type { Pokemon, PokemonSpecies } from "../types/pokemon";
 import { showdownQueries } from './supabase';
 
 interface MovesetSuggestion {
@@ -223,13 +223,20 @@ export function suggestNature(pokemon: Pokemon, role: string): string {
 export async function generateMovesets(
   pokemon: Pokemon,
   species: PokemonSpecies,
-  learnset: any[]
+  learnset: unknown[]
 ): Promise<MovesetSuggestion[]> {
   const movesets: MovesetSuggestion[] = [];
   const role = determinePokemonRole(pokemon);
   
   // Get all learnable moves
-  const learnableMoves = learnset.map(entry => entry.move_name);
+  const learnableMoves = learnset
+    .filter((entry): entry is { move_name: string } => 
+      typeof entry === 'object' && 
+      entry !== null && 
+      'move_name' in entry && 
+      typeof (entry as any).move_name === 'string'
+    )
+    .map(entry => entry.move_name);
   
   // Categories of moves for different roles
   const setupMoves = ['swords-dance', 'dragon-dance', 'calm-mind', 'nasty-plot', 'shell-smash', 'quiver-dance'];

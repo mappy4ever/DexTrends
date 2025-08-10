@@ -16,7 +16,7 @@ import { GlassContainer } from '../../components/ui/design-system/GlassContainer
 import { CircularCard } from '../../components/ui/design-system/CircularCard';
 import { GradientButton } from '../../components/ui/design-system/GradientButton';
 import { TypeGradientBadge } from '../../components/ui/design-system/TypeGradientBadge';
-import { PageLoader } from '../../utils/unifiedLoading';
+import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import FullBleedWrapper from '../../components/ui/FullBleedWrapper';
 import StyledBackButton from '../../components/ui/StyledBackButton';
 import { 
@@ -27,7 +27,8 @@ import {
   optimizeEVsForStat
 } from '../../utils/statCalculations';
 import type { TeamMember, StatSpread, Nature } from '../../types/team-builder';
-import type { Pokemon } from '../../types/api/pokemon';
+import type { Pokemon } from "../types/pokemon";
+import logger from '../../utils/logger';
 
 // Dynamic import for the heat map component
 const EVHeatMap = dynamic(
@@ -89,7 +90,7 @@ const EVOptimizer: NextPage = () => {
       // @ts-ignore - Pokemon SDK types issue
       const results = await sdk.pokemon.list({ limit: 20 });
       
-      const filtered = results.results.filter((p: any) => 
+      const filtered = results.results.filter((p: { name: string }) => 
         p.name.toLowerCase().includes(query.toLowerCase())
       );
       
@@ -100,7 +101,7 @@ const EVOptimizer: NextPage = () => {
       
       setSearchResults(detailedResults as Pokemon[]);
     } catch (error) {
-      console.error('Error searching Pokemon:', error);
+      logger.error('Error searching Pokemon:', { error });
       setSearchResults([]);
     }
     setLoading(false);

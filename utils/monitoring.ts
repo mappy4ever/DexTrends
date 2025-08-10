@@ -11,13 +11,13 @@ import performanceMonitor from './performanceMonitor';
 interface Request {
   method: string;
   url: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 interface Response {
   statusCode: number;
   on(event: string, callback: () => void): void;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 type NextFunction = () => void;
@@ -51,7 +51,7 @@ export type AlertType = typeof ALERT_TYPES[keyof typeof ALERT_TYPES];
 interface MetricSample {
   value: number;
   timestamp: number;
-  labels: Record<string, any>;
+  labels: Record<string, unknown>;
 }
 
 interface Metric {
@@ -65,7 +65,7 @@ interface Alert {
   type: AlertType;
   level: MonitoringLevel;
   message: string;
-  metadata: Record<string, any>;
+  metadata: Record<string, unknown>;
   timestamp: string;
   resolved: boolean;
   resolvedAt?: string;
@@ -118,8 +118,14 @@ interface DashboardData {
     warnings: number;
     recent: Alert[];
   };
-  circuitBreakers: any; // Type depends on circuit breaker implementation
-  performance: any; // Type depends on performance monitor implementation
+  circuitBreakers: {
+    status: string;
+    breakers: Array<{
+      name: string;
+      status: string;
+    }>;
+  };
+  performance: Record<string, unknown>;
 }
 
 interface HealthSummary {
@@ -288,7 +294,7 @@ export class MonitoringSystem {
   /**
    * Record a metric
    */
-  recordMetric(name: string, value: number, labels: Record<string, any> = {}): void {
+  recordMetric(name: string, value: number, labels: Record<string, unknown> = {}): void {
     if (!this.metrics.has(name)) {
       this.metrics.set(name, {
         value: 0,
@@ -317,7 +323,7 @@ export class MonitoringSystem {
   /**
    * Increment a counter metric
    */
-  incrementMetric(name: string, amount = 1, labels: Record<string, any> = {}): void {
+  incrementMetric(name: string, amount = 1, labels: Record<string, unknown> = {}): void {
     const current = this.getMetricValue(name) || 0;
     this.recordMetric(name, current + amount, labels);
   }
@@ -360,17 +366,17 @@ export class MonitoringSystem {
       const startTime = Date.now();
       
       // Check circuit breakers - create a mock getHealth if it doesn't exist
-      const circuitBreakerHealth = (globalRegistry as any).getHealth?.() || {
+      const circuitBreakerHealth = (globalRegistry as { getHealth?: () => { status: string; breakers: Array<{ name: string; status: string }> } }).getHealth?.() || {
         status: 'healthy',
         breakers: []
       };
       
-      const openBreakers = circuitBreakerHealth.breakers?.filter((b: any) => b.status === 'unhealthy') || [];
+      const openBreakers = circuitBreakerHealth.breakers?.filter((b) => b.status === 'unhealthy') || [];
       
       if (openBreakers.length > 0) {
         this.createAlert(ALERT_TYPES.AVAILABILITY, MONITORING_LEVELS.WARNING, 
           `${openBreakers.length} circuit breaker(s) open`, {
-          breakers: openBreakers.map((b: any) => b.name)
+          breakers: openBreakers.map((b) => b.name)
         });
       }
 
@@ -391,10 +397,11 @@ export class MonitoringSystem {
       this.recordMetric('health_check_duration', responseTime);
       this.lastHealthCheck = new Date().toISOString();
 
-    } catch (error: any) {
-      logger.error('Health check failed', { error: error.message });
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      logger.error('Health check failed', { error: errorMsg });
       this.createAlert(ALERT_TYPES.AVAILABILITY, MONITORING_LEVELS.ERROR,
-        'Health check failed', { error: error.message });
+        'Health check failed', { error: errorMsg });
     }
   }
 
@@ -429,8 +436,9 @@ export class MonitoringSystem {
           `High error rate: ${(errorRate * 100).toFixed(1)}%`);
       }
 
-    } catch (error: any) {
-      logger.error('Performance check failed', { error: error.message });
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      logger.error('Performance check failed', { error: errorMsg });
     }
   }
 
@@ -461,8 +469,9 @@ export class MonitoringSystem {
           `High rate limit violations: ${rateLimitExceeded}`);
       }
 
-    } catch (error: any) {
-      logger.error('Security check failed', { error: error.message });
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      logger.error('Security check failed', { error: errorMsg });
     }
   }
 
@@ -476,22 +485,28 @@ export class MonitoringSystem {
       this.recordMetric('uptime_seconds', uptime);
 
       // Check active handles and requests
-      if ((process as any)._getActiveHandles) {
-        this.recordMetric('active_handles', (process as any)._getActiveHandles().length);
+      const processWithInternals = process as NodeJS.Process & {
+        _getActiveHandles?: () => unknown[];
+        _getActiveRequests?: () => unknown[];
+      };
+      
+      if (processWithInternals._getActiveHandles) {
+        this.recordMetric('active_handles', processWithInternals._getActiveHandles().length);
       }
-      if ((process as any)._getActiveRequests) {
-        this.recordMetric('active_requests', (process as any)._getActiveRequests().length);
+      if (processWithInternals._getActiveRequests) {
+        this.recordMetric('active_requests', processWithInternals._getActiveRequests().length);
       }
 
-    } catch (error: any) {
-      logger.error('Resource check failed', { error: error.message });
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      logger.error('Resource check failed', { error: errorMsg });
     }
   }
 
   /**
    * Create an alert
    */
-  createAlert(type: AlertType, level: MonitoringLevel, message: string, metadata: Record<string, any> = {}): string {
+  createAlert(type: AlertType, level: MonitoringLevel, message: string, metadata: Record<string, unknown> = {}): string {
     const alertId = `${type}_${level}_${Date.now()}`;
     const alert: Alert = {
       id: alertId,
@@ -573,8 +588,9 @@ export class MonitoringSystem {
     for (const callback of this.subscribers) {
       try {
         callback(alert);
-      } catch (error: any) {
-        logger.error('Error notifying subscriber', { error: error.message });
+      } catch (error) {
+        const errorMsg = error instanceof Error ? error.message : String(error);
+        logger.error('Error notifying subscriber', { error: errorMsg });
       }
     }
   }
@@ -608,9 +624,9 @@ export class MonitoringSystem {
         recent: this.getAlerts(3600000).slice(0, 10)
       },
       
-      circuitBreakers: (globalRegistry as any).getHealth?.() || { status: 'unknown', breakers: [] },
+      circuitBreakers: (globalRegistry as { getHealth?: () => { status: string; breakers: Array<{ name: string; status: string }> } }).getHealth?.() || { status: 'unknown', breakers: [] },
       
-      performance: performanceMonitor.generateReport()
+      performance: performanceMonitor.generateReport() as unknown as Record<string, unknown> || {}
     };
   }
 

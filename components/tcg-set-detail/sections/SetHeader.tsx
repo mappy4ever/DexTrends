@@ -2,7 +2,6 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { GlassContainer } from '../../ui/design-system/GlassContainer';
 import { GradientButton } from '../../ui/design-system/GradientButton';
-import CardSharingSystem from '../../ui/CardSharingSystem';
 import { motion } from 'framer-motion';
 import type { CardSet } from '../../../types/api/cards';
 
@@ -35,14 +34,24 @@ export default function SetHeader({ setInfo, onScrollToCards }: SetHeaderProps) 
           Back to Sets
         </GradientButton>
         
-        {/* TODO: Replace with proper share button component
-        <CardSharingSystem 
-          shareData={{
-            title: setInfo.name,
-            text: `Check out the ${setInfo.name} TCG set with ${setInfo.total} cards!`,
-            url: typeof window !== 'undefined' ? window.location.href : ''
+        <GradientButton
+          onClick={() => {
+            if (navigator.share) {
+              navigator.share({
+                title: setInfo.name,
+                text: `Check out the ${setInfo.name} TCG set with ${setInfo.total} cards!`,
+                url: window.location.href
+              });
+            } else {
+              // Fallback: copy URL to clipboard
+              navigator.clipboard.writeText(window.location.href);
+            }
           }}
-        /> */}
+          variant="secondary"
+          className="px-4 py-2"
+        >
+          Share
+        </GradientButton>
       </div>
 
       <GlassContainer variant="medium" className="mb-8">

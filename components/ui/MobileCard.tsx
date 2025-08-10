@@ -6,13 +6,13 @@ import { TypeBadge } from './TypeBadge';
 interface TCGPrices {
   normal?: {
     market?: number;
-    [key: string]: any;
+    [key: string]: unknown;
   };
   holofoil?: {
     market?: number;
-    [key: string]: any;
+    [key: string]: unknown;
   };
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 interface Card {
@@ -20,12 +20,12 @@ interface Card {
   name: string;
   images?: {
     small?: string;
-    [key: string]: any;
+    [key: string]: unknown;
   };
   image?: string;
   set?: {
     name: string;
-    [key: string]: any;
+    [key: string]: unknown;
   };
   number?: string;
   types?: string[];
@@ -33,9 +33,9 @@ interface Card {
   rarity?: string;
   tcgplayer?: {
     prices: TCGPrices;
-    [key: string]: any;
+    [key: string]: unknown;
   };
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 type CardVariant = 'default' | 'compact' | 'detailed';

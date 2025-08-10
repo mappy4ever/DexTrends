@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { FaHeart, FaShare, FaInfo } from 'react-icons/fa';
 import { useContextMenu, ContextMenuItem } from '../ContextMenu';
-import { useToast } from '../../../hooks/useToast';
+import { useNotifications } from '../../../hooks/useNotifications';
 
 interface CircularCardProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
@@ -51,7 +51,7 @@ export const CircularCard: React.FC<CircularCardProps> = ({
   onShare,
   onInfo
 }) => {
-  const { success, info } = useToast();
+  const { success, info } = useNotifications();
   const { handleLongPress, openMenu } = useContextMenu();
   const [swipeX, setSwipeX] = useState(0);
   const [showActions, setShowActions] = useState(false);
@@ -62,8 +62,8 @@ export const CircularCard: React.FC<CircularCardProps> = ({
     hover: { scale: 1.05, y: -4 }
   };
 
-  // Context menu items
-  const contextMenuItems: ContextMenuItem[] = [
+  // Context menu items - memoized to avoid unnecessary re-renders
+  const contextMenuItems = React.useMemo((): ContextMenuItem[] => [
     {
       id: 'favorite',
       icon: <FaHeart />,
@@ -103,7 +103,7 @@ export const CircularCard: React.FC<CircularCardProps> = ({
       },
       color: 'text-gray-500'
     }
-  ];
+  ], [onFavorite, onShare, onInfo, success, info]);
 
   const handleClick = useCallback((e: React.MouseEvent) => {
     if (!isDragging && onClick) {

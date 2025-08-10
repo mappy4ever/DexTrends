@@ -168,7 +168,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
     setDragOffset(0);
     
     logger.debug('Bottom sheet drag ended', { currentSnapPoint });
-  }, [isDragging, allowDrag, dragOffset, startHeight, snapPoints, currentSnapPoint, onClose, findNearestSnapPoint, getSheetHeight, onSnapPointChange, utils]);
+  }, [isDragging, allowDrag, dragOffset, startHeight, snapPoints, currentSnapPoint, onClose, findNearestSnapPoint, getSheetHeight, onSnapPointChange]);
 
   // Handle backdrop click
   const handleBackdropClick = useCallback((e: MouseEvent<HTMLDivElement>) => {

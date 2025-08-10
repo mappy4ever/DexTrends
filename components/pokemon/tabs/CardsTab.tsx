@@ -1,23 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { Pokemon, PokemonSpecies } from '../../../types/api/pokemon';
+import type { Pokemon, PokemonSpecies } from "../../../types/pokemon";
+import type { TypeColors } from '../../../types/pokemon-tabs';
+import type { PocketCard } from '../../../types/api/pocket-cards';
+import type { TCGCard } from '../../../types/api/cards';
 import { GlassContainer } from '../../ui/design-system';
 import CardList from '../../CardList';
 import PocketCardList from '../../PocketCardList';
 import { cn } from '../../../utils/cn';
 import { 
   FaLayerGroup, FaMobileAlt, FaGamepad, FaImages,
-  FaStar, FaSparkles, FaTrophy, FaGem
+  FaStar, FaTrophy, FaGem
 } from 'react-icons/fa';
 import { GiCardPlay, GiCardPick } from 'react-icons/gi';
 import { HiSparkles } from 'react-icons/hi';
 
+interface ExtendedPocketCard extends PocketCard {
+  health?: string | number;
+  pack?: string;
+  ex?: "Yes" | "No";
+  fullart?: "Yes" | "No";
+  type?: string;
+}
+
 interface CardsTabProps {
   pokemon: Pokemon;
   species: PokemonSpecies;
-  tcgCards?: any[];
-  pocketCards?: any[];
-  typeColors: Record<string, string>;
+  tcgCards?: TCGCard[];
+  pocketCards?: ExtendedPocketCard[];
+  typeColors: TypeColors;
 }
 
 const CardsTab: React.FC<CardsTabProps> = ({ 
@@ -233,7 +244,7 @@ const CardsTab: React.FC<CardsTabProps> = ({
               <h3 className="font-bold text-sm uppercase tracking-wider text-green-400">Sets Featured</h3>
             </div>
             <div className="text-3xl font-bold text-gray-800 dark:text-gray-100">
-              {new Set(tcgCards.map(card => card.set?.name).filter(Boolean)).size || 0}
+              {new Set(tcgCards?.map(card => card.set?.name).filter(Boolean)).size || 0}
             </div>
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
               Different TCG sets

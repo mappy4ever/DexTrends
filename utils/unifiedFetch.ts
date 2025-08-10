@@ -7,6 +7,26 @@
 import logger from './logger';
 import cacheManager from './UnifiedCacheManager';
 
+// Type guards for response parsing
+function isValidResponseType<T>(
+  data: unknown, 
+  responseType: 'json' | 'text' | 'blob' | 'arrayBuffer'
+): data is T {
+  switch (responseType) {
+    case 'text':
+      return typeof data === 'string';
+    case 'blob':
+      return data instanceof Blob;
+    case 'arrayBuffer':
+      return data instanceof ArrayBuffer;
+    case 'json':
+      // For JSON, we accept any value as it could be object, array, string, number, etc.
+      return true;
+    default:
+      return false;
+  }
+}
+
 // Types
 export interface UnifiedFetchOptions extends Omit<RequestInit, 'cache'> {
   // Caching
@@ -130,20 +150,34 @@ export async function unifiedFetch<T = unknown>(
       }
       
       // Parse response based on type
+      let rawData: unknown;
       let data: T;
-      switch (opts.responseType) {
-        case 'text':
-          data = await response.text() as any;
-          break;
-        case 'blob':
-          data = await response.blob() as any;
-          break;
-        case 'arrayBuffer':
-          data = await response.arrayBuffer() as any;
-          break;
-        case 'json':
-        default:
-          data = await response.json();
+      
+      try {
+        switch (opts.responseType) {
+          case 'text':
+            rawData = await response.text();
+            break;
+          case 'blob':
+            rawData = await response.blob();
+            break;
+          case 'arrayBuffer':
+            rawData = await response.arrayBuffer();
+            break;
+          case 'json':
+          default:
+            rawData = await response.json();
+            break;
+        }
+        
+        // Validate the parsed data matches the expected type
+        if (isValidResponseType<T>(rawData, opts.responseType || 'json')) {
+          data = rawData;
+        } else {
+          throw new Error(`Response type mismatch: expected ${opts.responseType || 'json'}, got ${typeof rawData}`);
+        }
+      } catch (parseError) {
+        throw new Error(`Failed to parse response as ${opts.responseType || 'json'}: ${parseError}`);
       }
       
       // Cache successful GET responses
@@ -284,7 +318,7 @@ export async function fetchText(
  */
 export async function postJSON<T = unknown>(
   url: string,
-  data: any,
+  data: unknown,
   options?: Omit<UnifiedFetchOptions, 'method' | 'body'>
 ): Promise<T | null> {
   const result = await unifiedFetch<T>(url, {

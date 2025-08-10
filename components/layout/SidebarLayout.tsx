@@ -6,13 +6,13 @@ interface SidebarFilter {
   label: string;
   type: string;
   options?: Array<{ value: string; label: string }>;
-  value?: any;
+  value?: string | string[] | number;
 }
 
 interface SidebarLayoutProps {
   children: ReactNode;
   sidebarFilters?: SidebarFilter[];
-  onFilterChange?: (filterId: string, value: any) => void;
+  onFilterChange?: (filterId: string, value: string | string[] | number) => void;
   sidebarContent?: ReactNode;
   className?: string;
 }

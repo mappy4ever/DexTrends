@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { cn } from '@/utils/cn';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PillBadge, PillBadgeProps } from './PillBadge';
@@ -48,7 +48,9 @@ export const PillBadgeGroup: React.FC<PillBadgeGroupProps> = ({
 }) => {
   const [showMore, setShowMore] = useState(false);
   
-  const selectedValues = Array.isArray(value) ? value : (value ? [value] : []);
+  const selectedValues = useMemo(() => 
+    Array.isArray(value) ? value : (value ? [value] : []),
+  [value]);
   const visibleOptions = maxVisible && !showMore ? options.slice(0, maxVisible) : options;
   const hiddenCount = maxVisible ? Math.max(0, options.length - maxVisible) : 0;
 

@@ -12,7 +12,7 @@ import { fetchJSON } from "../../utils/unifiedFetch";
 import { sanitizePokemonName } from "../../utils/pokemonNameSanitizer";
 import { fetchTCGCards, fetchPocketCards } from "../../utils/apiutils";
 import logger from "../../utils/logger";
-import type { AbilityData as AbilityApiData } from "../../types/api/pokemon";
+import type { AbilityData as AbilityApiData } from "../../types/pokemon";
 import EnhancedEvolutionDisplay from "../../components/ui/EnhancedEvolutionDisplay";
 import PokemonFormSelector from "../../components/ui/PokemonFormSelector";
 import SimplifiedMovesDisplay from "../../components/ui/SimplifiedMovesDisplay";
@@ -20,13 +20,13 @@ import CardList from "../../components/CardList";
 import PocketCardList from "../../components/PocketCardList";
 import { fetchPocketData } from "../../utils/pocketData";
 import { getPokemonSDK } from "../../utils/pokemonSDK";
-import { PageLoader } from "../../utils/unifiedLoading";
+import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { CardGridSkeleton } from "../../components/ui/SkeletonLoader";
 import Modal from "../../components/ui/modals/Modal";
 import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
 import PageErrorBoundary from "../../components/ui/PageErrorBoundary";
 import { getTypeUIColors } from "../../utils/pokemonTypeGradients";
-import type { Pokemon, PokemonSpecies, Nature, EvolutionChain, PokemonAbility, PokemonStat } from "../../types/api/pokemon";
+import type { Pokemon, PokemonSpecies, Nature, EvolutionChain, PokemonAbility, PokemonStat } from "../../types/pokemon";
 import type { TCGCard } from "../../types/api/cards";
 import type { PocketCard } from "../../types/api/pocket-cards";
 
@@ -47,7 +47,7 @@ interface LocationAreaEncounter {
   version_details: {
     encounter_details: {
       chance: number;
-      condition_values: any[];
+      condition_values: { name: string; url: string }[];
       max_level: number;
       method: {
         name: string;
@@ -101,10 +101,10 @@ const PokemonDetail: NextPage = () => {
       if (data) {
         setNatureData(data);
       } else {
-        logger.error('Failed to fetch nature data:', natureName);
+        logger.error('Failed to fetch nature data:', { natureName });
       }
     } catch (err) {
-      console.error('Error loading nature data:', err);
+      logger.error('Error loading nature data:', { error: err });
     }
   }, []);
 
@@ -123,7 +123,7 @@ const PokemonDetail: NextPage = () => {
             const natureData = await fetchJSON<Nature>(nature.url);
             return natureData || { name: nature.name };
           } catch (err) {
-            console.error(`Error loading nature ${nature.name}:`, err);
+            logger.error(`Error loading nature:`, { natureName: nature.name, error: err });
             return { name: nature.name };
           }
         })
@@ -132,7 +132,7 @@ const PokemonDetail: NextPage = () => {
       // Load default nature data
       await loadNatureData('hardy');
     } catch (err) {
-      console.error('Error loading natures:', err);
+      logger.error('Error loading natures:', { error: err });
     }
   }, [loadNatureData]);
 
@@ -145,7 +145,7 @@ const PokemonDetail: NextPage = () => {
         setLoading(true);
         setError(null);
 
-        console.log('Loading Pokemon with ID:', pokeid, 'Form:', form);
+        logger.debug('Loading Pokemon with ID:', { pokeid, form });
         
         // Handle regional forms
         let pokemonIdentifier: string;
@@ -158,7 +158,7 @@ const PokemonDetail: NextPage = () => {
         
         // Sanitize the Pokemon identifier for API calls
         const sanitizedId = sanitizePokemonName(pokemonIdentifier);
-        console.log('Sanitized Pokemon ID:', sanitizedId);
+        logger.debug('Sanitized Pokemon ID:', { sanitizedId });
 
         // Load Pokemon basic data (cached)
         const pokemonData = await fetchJSON<Pokemon>(`https://pokeapi.co/api/v2/pokemon/${sanitizedId}`);
@@ -191,9 +191,9 @@ const PokemonDetail: NextPage = () => {
         // Load TCG cards for this Pokemon
         await loadCards(pokemonData.name);
 
-      } catch (err: any) {
-        console.error('Error loading Pokemon:', err);
-        setError(`Failed to load Pokemon data: ${err.message}`);
+      } catch (err: unknown) {
+        logger.error('Error loading Pokemon:', { error: err });
+        setError(`Failed to load Pokemon data: ${err instanceof Error ? err.message : String(err)}`);
       } finally {
         setLoading(false);
       }
@@ -214,7 +214,7 @@ const PokemonDetail: NextPage = () => {
       }
       setLocationAreaEncounters(encounters as LocationAreaEncounter[]);
     } catch (err) {
-      console.error('Error loading location encounters:', err);
+      logger.error('Error loading location encounters:', { error: err });
       setLocationAreaEncounters([]);
     }
   };
@@ -232,7 +232,7 @@ const PokemonDetail: NextPage = () => {
       }
       setEvolutionChain(chainData as EvolutionChain);
     } catch (err) {
-      console.error('Error loading evolution chain:', err);
+      logger.error('Error loading evolution chain:', { error: err });
       setEvolutionChain(null);
     }
   };
@@ -287,7 +287,7 @@ const PokemonDetail: NextPage = () => {
           short_effect: englishEntry?.short_effect || 'No short description available.'
         };
       } catch (err) {
-        console.error(`Error loading ability ${abilityInfo.ability.name}:`, err);
+        logger.error('Error loading ability:', { abilityName: abilityInfo.ability.name, error: err });
       }
     }
     
@@ -299,20 +299,20 @@ const PokemonDetail: NextPage = () => {
     if (!pokemonName) return;
     
     setCardsLoading(true);
-    console.log('[Card Loading] Starting to load cards for:', pokemonName);
+    logger.debug('[Card Loading] Starting to load cards for:', { pokemonName });
     
     try {
       // Load TCG cards (cached) - sanitization is handled internally
       const tcgCardsData = await fetchTCGCards(pokemonName);
-      console.log('[Card Loading] TCG cards loaded:', tcgCardsData?.length || 0);
+      logger.debug('[Card Loading] TCG cards loaded:', { count: tcgCardsData?.length || 0 });
       setTcgCards(tcgCardsData || []);
       
       // Load Pocket cards (cached) - sanitization is handled internally
       const pocketCardsData = await fetchPocketCards(pokemonName);
-      console.log('[Card Loading] Pocket cards loaded:', pocketCardsData?.length || 0);
+      logger.debug('[Card Loading] Pocket cards loaded:', { count: pocketCardsData?.length || 0 });
       setPocketCards(pocketCardsData || []);
     } catch (err) {
-      console.error('[Card Loading] Error loading cards:', err);
+      logger.error('[Card Loading] Error loading cards:', { error: err });
       setTcgCards([]);
       setPocketCards([]);
     } finally {
@@ -1247,7 +1247,7 @@ const PokemonDetail: NextPage = () => {
                               short_effect: englishShortEffect?.flavor_text || englishEffect?.short_effect || ''
                             };
                           } catch (error) {
-                            console.error(`Error loading ability ${ab.ability.name}:`, error);
+                            logger.error('Error loading ability:', { abilityName: ab.ability.name, error });
                           }
                         }
                         setAbilities(newAbilities);
@@ -1266,7 +1266,7 @@ const PokemonDetail: NextPage = () => {
                             await loadEvolutionChain(newSpeciesData.evolution_chain.url);
                           }
                         } catch (error) {
-                          console.error('Error loading species data for form:', error);
+                          logger.error('Error loading species data for form:', { error });
                         }
                         
                         // Reload location encounters for the new form

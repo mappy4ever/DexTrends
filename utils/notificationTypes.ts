@@ -2,6 +2,7 @@
 // Separated from NotificationSystem.tsx to avoid Fast Refresh issues
 
 export type NotificationType = 'SUCCESS' | 'ERROR' | 'WARNING' | 'INFO' | 'LOADING' | 'CARD_ADDED' | 'POKEMON_FOUND';
+export type ToastPosition = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center';
 
 export interface NotificationAction {
   label: string;
@@ -17,6 +18,9 @@ export interface Notification {
   persistent?: boolean;
   actions?: NotificationAction[];
   timestamp: number;
+  // Toast-specific properties
+  position?: ToastPosition;
+  showProgress?: boolean;
 }
 
 export interface NotificationConfig {
@@ -35,6 +39,16 @@ export interface NotifyHelpers {
   cardAdded: (cardName: string, options?: Partial<Notification>) => string | number;
   pokemonFound: (pokemonName: string, options?: Partial<Notification>) => string | number;
   priceAlert: (cardName: string, oldPrice: number, newPrice: number, options?: Partial<Notification>) => string | number;
+  // Promise-based helper for async operations (from '../../hooks/useNotifications';
+  promise: <T>(
+    promise: Promise<T>,
+    messages: {
+      loading?: string;
+      success?: string | ((data: T) => string);
+      error?: string | ((error: any) => string);
+    },
+    options?: Partial<Notification>
+  ) => Promise<T>;
 }
 
 // Notification types and configurations

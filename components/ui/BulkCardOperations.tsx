@@ -32,7 +32,7 @@ interface BulkCardOperationsProps {
   cards?: Card[];
   selectedCardIds?: string[];
   onSelectionChange: (ids: string[]) => void;
-  onBulkAction: (action: string, cardIds: string[], options?: any) => Promise<void>;
+  onBulkAction: (action: string, cardIds: string[], options?: unknown) => Promise<void>;
   isVisible?: boolean;
   onClose: () => void;
 }

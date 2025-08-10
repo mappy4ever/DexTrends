@@ -100,22 +100,24 @@ export default async function handler(req: MarketTrendsRequest, res: NextApiResp
       }
     });
     
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const errorStack = error instanceof Error ? error.stack : undefined;
     logger.error('Failed to generate market trends', { 
-      error: error.message,
-      stack: error.stack
+      error: errorMessage,
+      stack: errorStack
     });
     
     // Try to return stale cache if available as fallback
     const staleCache = await tcgCache.getMarketTrends();
     if (staleCache) {
       logger.warn('Returning stale cached trends due to error', {
-        error: error.message
+        error: errorMessage
       });
       
       res.setHeader('X-Cache-Status', 'stale-fallback');
       res.setHeader('X-Response-Time', `${Date.now() - startTime}ms`);
-      res.setHeader('X-Error', error.message);
+      res.setHeader('X-Error', errorMessage);
       res.setHeader('Cache-Control', 'public, s-maxage=1800, stale-while-revalidate=172800');
       
       return res.status(200).json({
@@ -124,14 +126,14 @@ export default async function handler(req: MarketTrendsRequest, res: NextApiResp
         meta: {
           cached: true,
           stale: true,
-          error: error.message
+          error: errorMessage
         }
       });
     }
     
     res.status(500).json({ 
       error: 'Failed to generate market trends',
-      message: error.message 
+      message: errorMessage 
     });
   }
 }

@@ -11,7 +11,7 @@ import { BsSearch, BsHeart, BsShield, BsLightning } from "react-icons/bs";
 import { GiPotionBall, GiSwordWound, GiStoneBlock, GiCrystalGrowth } from "react-icons/gi";
 import { fetchJSON } from "../../utils/unifiedFetch";
 import logger from "../../utils/logger";
-import type { ItemData } from "../../types/api/pokemon";
+import type { ItemData } from "../../types/pokemon";
 
 // Interfaces
 interface Item {
@@ -214,7 +214,7 @@ const ItemsPage: NextPage = () => {
         // Process item data - filter out any null values
         const processedItems = itemDetails
           .filter((item): item is ItemApiResponse => item !== null)
-          .map((item) => {
+          .map((item: ItemApiResponse): Item => {
           // Determine category based on item attributes
           let category = 'other';
           if (item.category) {
@@ -251,12 +251,13 @@ const ItemsPage: NextPage = () => {
             price: item.cost || null,
             generation: item.generation ? parseInt(item.generation.name.replace('generation-', '')) : 1,
             sprite: item.sprites?.default
-          } as Item;
+          };
         });
         
         setItems(processedItems);
-      } catch (error) {
-        logger.error("Failed to fetch items", { error });
+      } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        logger.error("Failed to fetch items", { error: errorMessage });
         setError("Failed to fetch items from PokeAPI");
       } finally {
         setLoading(false);

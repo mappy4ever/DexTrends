@@ -15,16 +15,17 @@ const ConditionalHooksTest: React.FC = () => {
       if (showHook) {
         logger.debug('This hook is conditional!');
       }
-    }, [showHook]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [showHook]); // Testing Fast Refresh behavior - showHook is outer scope for testing
     
     // Simulate error for testing
     try {
       if (showHook && !error) {
         // Simulate conditional hook error for demo
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       if (!error) {
-        setError(e.message);
+        setError(e instanceof Error ? e.message : 'An error occurred');
       }
     }
     

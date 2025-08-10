@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { Pokemon, PokemonSpecies } from '../../types/api/pokemon';
+import type { Pokemon, PokemonSpecies } from "../../types/pokemon";
 import { TypeBadge } from '../ui/TypeBadge';
 import { GlassContainer, CircularCard } from '../ui/design-system';
 import { getTypeUIColors, getTypeRingGradient } from '../../utils/pokemonTypeGradients';
@@ -31,8 +31,8 @@ const PokemonHeroSectionV2: React.FC<PokemonHeroSectionV2Props> = ({
   const ringGradient = getTypeRingGradient(pokemon.types || []);
   
   // Calculate key stats
-  const stats = pokemon.stats || [];
-  const totalStats = stats.reduce((sum, stat) => sum + stat.base_stat, 0);
+  const stats = useMemo(() => pokemon.stats || [], [pokemon.stats]);
+  const totalStats = useMemo(() => stats.reduce((sum, stat) => sum + stat.base_stat, 0), [stats]);
   const catchRate = calculateCatchRate(species.capture_rate);
   const genderRatio = calculateGenderRatio(species.gender_rate);
   

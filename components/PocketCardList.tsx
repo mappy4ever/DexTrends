@@ -4,7 +4,7 @@ import Image from "next/image";
 import Modal from "./ui/modals/Modal";
 import UnifiedCard from "./ui/cards/UnifiedCard";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
-import { InlineLoader } from "../utils/unifiedLoading";
+import { InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { SmartSkeleton } from "./ui/SkeletonLoader";
 import { isFeatureEnabled } from "../utils/featureFlags";
 import type { PocketCard } from "../types/api/pocket-cards";
@@ -34,7 +34,7 @@ interface PocketCardProps {
   showHP: boolean;
   showRarity: boolean;
   rarity?: string;
-  cardFeatures?: any;
+  cardFeatures?: unknown;
   setZoomedCard?: (card: ExtendedPocketCard | null) => void;
   imageWidth: number;
   imageHeight: number;
@@ -56,7 +56,7 @@ const PocketCard = memo<PocketCardProps>(({
 }) => {
   return (
     <UnifiedCard
-      card={card}
+      card={card as any}
       cardType="pocket"
       showHP={showHP}
       showRarity={showRarity}
@@ -64,7 +64,7 @@ const PocketCard = memo<PocketCardProps>(({
       showArtist={true}
       showTypes={true}
       onMagnifyClick={setZoomedCard ? (card) => setZoomedCard(card as ExtendedPocketCard) : undefined}
-      onCardClick={onCardClick}
+      onCardClick={onCardClick as any}
       className={cardClassName}
       imageWidth={imageWidth}
       imageHeight={imageHeight}

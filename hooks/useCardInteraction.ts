@@ -27,8 +27,8 @@ export const useCardInteraction = (options: UseCardInteractionOptions = {}) => {
   } = options;
 
   const cardRef = useRef<HTMLDivElement>(null);
-  const resetTimeoutRef = useRef<NodeJS.Timeout>();
-  const rafRef = useRef<number>();
+  const resetTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const rafRef = useRef<number | undefined>(undefined);
 
   const [mousePosition, setMousePosition] = useState<MousePosition>({ x: 0.5, y: 0.5 });
   const [isHovered, setIsHovered] = useState(false);

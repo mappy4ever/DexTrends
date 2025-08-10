@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { fetchJSON } from '../../utils/unifiedFetch';
 import logger from '../../utils/logger';
+import type { TCGApiResponse } from '../../types/api/enhanced-responses';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const startTime = Date.now();
@@ -33,7 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
     logger.debug('Fetching TCG cards from API', { url: apiUrl, pokemonName, fields: requestedFields });
     
-    const data = await fetchJSON<{ data: any[] }>(apiUrl, { 
+    const data = await fetchJSON<TCGApiResponse<unknown[]>>(apiUrl, { 
       headers,
       useCache: true,
       cacheTime: 30 * 60 * 1000, // Cache for 30 minutes (cards don't change often)
@@ -72,15 +73,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         fields: requestedFields || 'all'
       }
     });
-  } catch (error: any) {
+  } catch (error) {
     logger.error('Failed to fetch TCG cards', { 
       pokemonName, 
-      error: error.message,
-      stack: error.stack 
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined 
     });
     res.status(500).json({ 
       error: 'Failed to fetch TCG cards',
-      message: error.message 
+      message: error instanceof Error ? error.message : String(error) 
     });
   }
 }

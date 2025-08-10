@@ -11,7 +11,7 @@ import { fetchJSON } from '../../../utils/unifiedFetch';
 import { GlassContainer } from '../../../components/ui/design-system/GlassContainer';
 import { GradientButton } from '../../../components/ui/design-system/GradientButton';
 import FullBleedWrapper from '../../../components/ui/FullBleedWrapper';
-import { PageLoader } from '../../../utils/unifiedLoading';
+import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { useDebounce } from '../../../hooks/useDebounce';
 import type { PocketCard } from '../../../types/api/pocket-cards';
 import logger from '../../../utils/logger';
@@ -93,7 +93,7 @@ function SetView() {
         logger.debug('SetView cards loaded', { setId, totalCards: cards.length });
         logger.debug('SetView sample pack names', { 
           setId, 
-          samplePackNames: [...new Set(cards.slice(0, 20).map((c: any) => c.pack))].filter(Boolean) 
+          samplePackNames: [...new Set(cards.slice(0, 20).map((c: { pack?: string }) => c.pack))].filter(Boolean) 
         });
         setAllCards(cards || []);
         

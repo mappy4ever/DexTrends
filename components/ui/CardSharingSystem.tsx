@@ -10,11 +10,52 @@ import {
 } from 'react-icons/fa';
 import Modal from './modals/Modal';
 import { useNotifications } from '../../hooks/useNotifications';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+// Type definitions for dynamic imports
+interface Html2CanvasStatic {
+  (element: HTMLElement, options?: object): Promise<HTMLCanvasElement>;
+}
+
+interface JsPDFInstance {
+  addImage(image: string, format: string, x: number, y: number, width: number, height: number): void;
+  save(filename: string): void;
+  text(text: string, x: number, y: number, options?: { align?: string }): void;
+  setFontSize(size: number): void;
+  setFont(font: string, style?: string): void;
+  addPage(): void;
+  internal: {
+    pageSize: {
+      getWidth(): number;
+      getHeight(): number;
+    };
+  };
+}
+
+interface JsPDFStatic {
+  new (format?: string, unit?: string, orientation?: string): JsPDFInstance;
+}
+
+// Lazy load heavy libraries
+let html2canvas: Html2CanvasStatic | null = null;
+let jsPDF: JsPDFStatic | null = null;
+
+const loadHtml2Canvas = async () => {
+  if (!html2canvas) {
+    const mod = await import('html2canvas');
+    html2canvas = mod.default;
+  }
+  return html2canvas;
+};
+
+const loadJsPDF = async () => {
+  if (!jsPDF) {
+    const mod = await import('jspdf');
+    jsPDF = mod.default;
+  }
+  return jsPDF;
+};
 import { TCGCard } from '../../types/api/cards';
 import { PocketCard } from '../../types/api/pocket-cards';
-import { Pokemon } from '../../types/api/pokemon';
+import { Pokemon } from "../../types/pokemon";
 
 type Card = TCGCard | PocketCard | Pokemon;
 
@@ -98,8 +139,26 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
   };
 
   // Helper to get card properties safely
-  const getCardProperty = (card: Card, property: string): any => {
-    return (card as any)[property];
+  const getCardProperty = (card: Card, property: string): unknown => {
+    return (card as unknown as Record<string, unknown>)[property];
+  };
+
+  // Type-safe helper to get card images
+  const getCardImages = (card: Card): { small?: string; large?: string } => {
+    const images = getCardProperty(card, 'images');
+    if (images && typeof images === 'object' && images !== null) {
+      return images as { small?: string; large?: string };
+    }
+    return {};
+  };
+
+  // Type-safe helper to get card set
+  const getCardSet = (card: Card): { name?: string; id?: string } => {
+    const set = getCardProperty(card, 'set');
+    if (set && typeof set === 'object' && set !== null) {
+      return set as { name?: string; id?: string };
+    }
+    return {};
   };
 
   // Export as JSON
@@ -149,11 +208,13 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
         row.push(String(getCardProperty(card, 'currentPrice') || getCardProperty(card, 'price') || ''));
       }
       if (exportOptions.includeStats) {
+        const types = getCardProperty(card, 'types');
+        const typesStr = Array.isArray(types) ? (types as string[]).join(';') : String(types || '');
         row.push(
           String(getCardProperty(card, 'hp') || ''),
-          Array.isArray(getCardProperty(card, 'types')) ? getCardProperty(card, 'types').join(';') : String(getCardProperty(card, 'types') || ''),
+          typesStr,
           String(getCardProperty(card, 'rarity') || ''),
-          String(getCardProperty(card, 'set')?.name || '')
+          String(getCardSet(card).name || '')
         );
       }
       if (exportOptions.includeDescription) {
@@ -174,7 +235,8 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
   const exportAsPDF = async () => {
     setIsGenerating(true);
     try {
-      const pdf = new jsPDF();
+      const jsPDFClass = await loadJsPDF();
+      const pdf = new jsPDFClass();
       const pageWidth = pdf.internal.pageSize.getWidth();
       const pageHeight = pdf.internal.pageSize.getHeight();
       
@@ -200,16 +262,16 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
         
         // Card name
         pdf.setFontSize(12);
-        pdf.setFont(undefined, 'bold');
+        pdf.setFont('helvetica', 'bold');
         pdf.text(card.name, 20, yPosition);
         
         // Card details
         pdf.setFontSize(10);
-        pdf.setFont(undefined, 'normal');
+        pdf.setFont('helvetica', 'normal');
         yPosition += lineHeight;
         
         if (exportOptions.includeStats) {
-          pdf.text(`Set: ${getCardProperty(card, 'set')?.name || 'Unknown'}`, 20, yPosition);
+          pdf.text(`Set: ${getCardSet(card).name || 'Unknown'}`, 20, yPosition);
           yPosition += lineHeight;
           pdf.text(`Rarity: ${getCardProperty(card, 'rarity') || 'Unknown'}`, 20, yPosition);
           yPosition += lineHeight;
@@ -240,9 +302,10 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
     
     setIsGenerating(true);
     try {
-      const canvas = await html2canvas(cardPreviewRef.current);
+      const html2canvasLib = await loadHtml2Canvas();
+      const canvas = await html2canvasLib(cardPreviewRef.current);
       
-      canvas.toBlob((blob) => {
+      canvas.toBlob((blob: Blob | null) => {
         if (blob) {
           downloadFile(blob, `dextrends-cards-${Date.now()}.png`);
         }
@@ -279,9 +342,9 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
           {displayCards.map((card, index) => (
             <div key={card.id} className="text-center">
               <div className="bg-gray-100 rounded-lg p-4 mb-3">
-                {getCardProperty(card, 'images')?.small ? (
+                {getCardImages(card).small ? (
                   <img 
-                    src={getCardProperty(card, 'images').small} 
+                    src={getCardImages(card).small} 
                     alt={card.name}
                     className="w-full h-32 object-contain mx-auto"  />
                 ) : (
@@ -291,7 +354,7 @@ const CardSharingSystem: React.FC<CardSharingSystemProps> = ({
                 )}
               </div>
               <h3 className="font-semibold text-sm text-gray-900">{card.name}</h3>
-              <p className="text-xs text-gray-600">{getCardProperty(card, 'set')?.name}</p>
+              <p className="text-xs text-gray-600">{getCardSet(card).name}</p>
               {exportOptions.includePrices && (
                 <p className="text-xs font-medium text-green-600">
                   ${getCardProperty(card, 'currentPrice') || getCardProperty(card, 'price') || 'N/A'}

@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { motion, AnimatePresence } from "framer-motion";
+import logger from "@/utils/logger";
 import { FaHeart, FaRegHeart, FaShare, FaTrash } from "react-icons/fa";
 import { TypeBadge } from "../TypeBadge";
 import { CompactPriceIndicator } from "../PriceIndicator";
@@ -118,7 +119,7 @@ const deriveSetCode = (packName: string) => {
 };
 
 // Helper function to get display type (handles trainer subtypes)
-const getDisplayType = (type: string, card: any) => {
+const getDisplayType = (type: string, card: { name?: string }) => {
   const lowerType = type.toLowerCase();
   
   // Check if it's a trainer card and infer subtype from patterns
@@ -279,8 +280,29 @@ const pocketRarityMap: Record<string, { label: string; color: string; glow: stri
   '★★': { label: 'Crown', color: 'bg-gradient-to-r from-red-100 to-rose-200 text-red-800 border-red-300', glow: 'shadow-red-200/50' }
 };
 
+interface Card {
+  id: string;
+  name: string;
+  supertype?: string;
+  image?: string;
+  images?: { small?: string; large?: string };
+  types?: string[] | Array<{ type?: { name?: string } }>;
+  sprite?: string;
+  type?: string;
+  setCode?: string;
+  setTag?: string;
+  pack?: string;
+  number?: string;
+  rarity?: string;
+  hp?: string | number;
+  health?: string | number;
+  artist?: string;
+  set?: { name?: string; id?: string };
+  prices?: unknown;
+}
+
 interface UnifiedCardProps {
-  card: any;
+  card: Card;
   cardType?: "tcg" | "pocket" | "pokedex";
   showPrice?: boolean;
   showSet?: boolean;
@@ -289,8 +311,9 @@ interface UnifiedCardProps {
   showRarity?: boolean;
   showPack?: boolean;
   showArtist?: boolean;
-  onCardClick?: ((card: any) => void) | null;
-  onMagnifyClick?: ((card: any) => void) | null;
+  onCardClick?: ((card: Card) => void) | null;
+  onMagnifyClick?: ((card: Card) => void) | null;
+  onDelete?: ((card: Card) => void) | null;
   className?: string;
   imageWidth?: number;
   imageHeight?: number;
@@ -313,6 +336,7 @@ const UnifiedCard = memo(({
   showArtist = false,
   onCardClick = null,
   onMagnifyClick = null,
+  onDelete = null,
   className = "",
   imageWidth = 220,
   imageHeight = 308,
@@ -333,15 +357,15 @@ const UnifiedCard = memo(({
     
     if (cardType === "pocket") {
       // Parse card ID if it contains set code (e.g., "a2a-029" -> set: "A2a", number: "029")
-      let setTag = card.setCode || card.setTag || deriveSetCode(card.pack) || 'PKT';
-      let cardNumber = card.id;
+      let setTag = card.setCode || card.setTag || deriveSetCode(card.pack || '') || 'PKT';
+      let cardNumber = card.id || 'unknown';
       
       if (card.id && card.id.includes('-')) {
         const parts = card.id.split('-');
         if (parts.length === 2) {
           // Capitalize first letter, keep rest as is (e.g., a2a -> A2a)
-          setTag = parts[0].charAt(0).toUpperCase() + parts[0].slice(1).toLowerCase();
-          cardNumber = parts[1];
+          setTag = parts[0] ? parts[0].charAt(0).toUpperCase() + parts[0].slice(1).toLowerCase() : 'PKT';
+          cardNumber = parts[1] || card.id;
         }
       }
       
@@ -380,7 +404,13 @@ const UnifiedCard = memo(({
         id: card.id,
         name: card.name,
         image: card.images?.small || card.images?.large || "/back-card.png",
-        types: card.types?.map((t: any) => t.type?.name || t) || [],
+        types: card.types?.map((t) => {
+          if (typeof t === 'string') {
+            return t;
+          }
+          const typeObj = t as { type?: { name?: string } };
+          return typeObj.type?.name || '';
+        }).filter(Boolean) || [],
         set: {
           name: card.set?.name,
           id: card.set?.id,
@@ -404,24 +434,24 @@ const UnifiedCard = memo(({
     }
     
     return normalizedData;
-  }, [card.id, card.name, card.image, card.images, cardType, card.pack, card.rarity]);
+  }, [card, cardType]);
 
   // Memoized visual effects to prevent recalculation
   const visualEffects = useMemo(() => ({
     // holographicClass: getHolographicEffect(normalizedCard.rarity), // Disabled - using HolographicCard component instead
-    glowClass: getRarityGlowClass(normalizedCard.rarity)
+    glowClass: getRarityGlowClass(normalizedCard.rarity || undefined)
   }), [normalizedCard.rarity]);
 
   // Optimized rarity info calculation
   const rarityInfo = useMemo(() => {
     if (cardType === "pocket") {
-      return pocketRarityMap[normalizedCard.rarity] || { 
+      return pocketRarityMap[normalizedCard.rarity || ''] || { 
         label: '?', 
         color: 'bg-gray-100 text-gray-500 border-gray-200', 
         glow: 'shadow-gray-100/50' 
       };
     }
-    return rarityMap[normalizedCard.rarity] || { 
+    return rarityMap[normalizedCard.rarity || ''] || { 
       label: '?', 
       color: 'bg-gray-100 text-gray-500 border-gray-200' 
     };
@@ -432,9 +462,6 @@ const UnifiedCard = memo(({
 
   // Optimized event handlers with useCallback
   const handleCardClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    // Prevent default to ensure our navigation works
-    e.preventDefault();
-    
     const target = e.target as HTMLElement;
     if (
       target.closest('a') ||
@@ -447,9 +474,13 @@ const UnifiedCard = memo(({
     // Don't trigger click if we're dragging
     if (isDragging) return;
     
+    // Only prevent default if we have a custom click handler
     if (onCardClick) {
+      e.preventDefault();
       onCardClick(card);
     } else if (router && normalizedCard.linkPath) {
+      // Let the navigation happen naturally by not preventing default
+      // This allows the URL to update and triggers page navigation
       router.push(normalizedCard.linkPath);
     }
     
@@ -489,13 +520,24 @@ const UnifiedCard = memo(({
   const handleDelete = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     
-    // TODO: Implement delete functionality
-    // This would typically call a parent handler or context method
-    logger.debug('Delete card:', normalizedCard.name);
+    // Call the delete handler if provided
+    if (onDelete) {
+      onDelete(card);
+      logger.debug('Delete card', { cardName: normalizedCard.name });
+    } else {
+      // If no delete handler, try to remove from favorites
+      const isCardFavorited = favorites.cards.some((c: any) => c.id === card.id);
+      if (isCardFavorited) {
+        removeFromFavorites('cards', card.id);
+        logger.debug('Removed from favorites', { cardName: normalizedCard.name });
+      } else {
+        logger.warn('No delete handler provided for card', { cardName: normalizedCard.name });
+      }
+    }
     
     setShowActions(false);
     setSwipeX(0);
-  }, [normalizedCard.name]);
+  }, [normalizedCard.name, onDelete, card, favorites.cards, removeFromFavorites]);
 
   const handleMagnifyClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -513,7 +555,7 @@ const UnifiedCard = memo(({
       setImageError(true);
       target.src = '/back-card.png';
     }
-  }, [imageError]);
+  }, []);
 
 
 
@@ -575,9 +617,9 @@ const UnifiedCard = memo(({
           className="w-full h-auto object-cover"
           loading={disableLazyLoad ? "eager" : "lazy"}
           decoding="async"
-          onLoad={() => logger.debug('Image loaded:', normalizedCard.name, normalizedCard.image)}
+          onLoad={() => logger.debug('Image loaded', { name: normalizedCard.name, image: normalizedCard.image })}
           onError={(e) => {
-            logger.error('Image failed:', normalizedCard.name, normalizedCard.image, e);
+            logger.error('Image failed', { name: normalizedCard.name, image: normalizedCard.image, error: e });
             handleImageError(e);
           }}
         />
@@ -616,14 +658,14 @@ const UnifiedCard = memo(({
         <div className="bg-white rounded-xl p-2 mt-2 text-center">
           {/* Type and Set badges in one row */}
           <div className="flex justify-center items-center gap-2">
-            {normalizedCard.types.length > 0 && (
+            {normalizedCard.types.length > 0 && normalizedCard.types[0] && typeof normalizedCard.types[0] === 'string' && (
               <span className={`px-3 py-1 text-sm font-semibold rounded-full border ${
                 getTypeColorClass(normalizedCard.types[0].toLowerCase(), getDisplayType(normalizedCard.types[0], card))
               }`}>
                 {getDisplayType(normalizedCard.types[0], card)}
               </span>
             )}
-            {normalizedCard.set && normalizedCard.number && (
+            {normalizedCard.set?.tag && normalizedCard.number && (
               <span className="px-3 py-1 bg-gray-100 text-gray-700 text-xs font-semibold rounded-full border border-gray-500">
                 {normalizedCard.set.tag.charAt(0).toUpperCase() + normalizedCard.set.tag.slice(1).toLowerCase()}-{normalizedCard.number.padStart(3, '0')}
               </span>
@@ -657,7 +699,7 @@ const UnifiedCard = memo(({
           {/* Types */}
           {showTypes && normalizedCard.types.length > 0 && (
             <div className="flex justify-center gap-1 flex-wrap">
-              {normalizedCard.types.slice(0, 2).map((type: string) => (
+              {normalizedCard.types.slice(0, 2).filter((type): type is string => Boolean(type && typeof type === 'string')).map((type: string) => (
                 <span 
                   key={type} 
                   className={`px-2 py-1 text-xs font-semibold rounded-full border ${
@@ -690,7 +732,7 @@ const UnifiedCard = memo(({
             {showPrice && cardType === "tcg" && (
               <CompactPriceIndicator 
                 cardId={normalizedCard.id}
-                currentPrice={card.currentPrice || getPrice(card)}
+                currentPrice={(card as any).currentPrice || getPrice(card as any)}
                 variantType="holofoil"
               />
             )}

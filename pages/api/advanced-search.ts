@@ -6,6 +6,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import advancedSearchEngine from '../../utils/advancedSearchEngine';
 import logger from '../../utils/logger';
+import { ErrorResponse } from '@/types/api/api-responses';
 
 interface SearchFilters {
   setId?: string;
@@ -15,40 +16,42 @@ interface SearchFilters {
   priceMin?: number;
   priceMax?: number;
   hasPrice?: boolean;
+  [key: string]: string | string[] | number | boolean | undefined;
 }
 
 interface SearchOptions {
-  filters: SearchFilters;
-  sortBy: string;
-  sortOrder: string;
-  limit: number;
-  offset: number;
-  enableFuzzy: boolean;
-  enableSuggestions: boolean;
-  searchType: string;
+  filters?: SearchFilters;
+  sortBy?: 'relevance' | 'name' | 'price' | 'date';
+  sortOrder?: 'asc' | 'desc';
+  limit?: number;
+  offset?: number;
+  enableFuzzy?: boolean;
+  enableSuggestions?: boolean;
+  searchType?: 'all' | 'cards' | 'pokemon' | 'sets';
 }
 
 interface SearchResponse {
   success: boolean;
-  results?: any[];
+  results?: Array<{ type: string; id: string; data: Record<string, unknown>; score: number; matchedFields: string[]; isFuzzy?: boolean }>;
   totalResults?: number;
-  suggestions?: any[];
-  analytics?: any;
+  suggestions?: Array<{ text: string; type: string; category: string; relevance: number }>;
+  analytics?: Record<string, unknown>;
   pagination: {
     limit: number;
     offset: number;
     hasMore: boolean;
     totalPages?: number;
   };
-  [key: string]: any; // Allow additional properties from searchResult
+  query?: string;
+  processedQuery?: unknown;
+  searchTime?: number;
+  filters?: unknown;
+  searchType?: string;
+  timestamp?: string;
+  message?: string;
+  [key: string]: unknown; // Allow additional properties from searchResult
 }
 
-interface ErrorResponse {
-  error: string;
-  message?: string;
-  validTypes?: string[];
-  validEventTypes?: string[];
-}
 
 export default async function handler(
   req: NextApiRequest,
@@ -69,10 +72,10 @@ export default async function handler(
         return res.status(405).json({ error: `Method ${method} Not Allowed` });
     }
   } catch (error) {
-    logger.error('Advanced search API error:', error);
+    logger.error('Advanced search API error:', { error: error instanceof Error ? error.message : String(error) });
     return res.status(500).json({ 
       error: 'Internal server error',
-      message: error.message 
+      message: error instanceof Error ? error.message : String(error) 
     });
   }
 }
@@ -135,35 +138,67 @@ async function handleSearchRequest(
   const orderStr = Array.isArray(order) ? order[0] : order;
   const options: SearchOptions = {
     filters,
-    sortBy: sortStr || 'relevance',
-    sortOrder: orderStr || 'desc',
+    sortBy: (sortStr as 'relevance' | 'name' | 'price' | 'date') || 'relevance',
+    sortOrder: (orderStr as 'asc' | 'desc') || 'desc',
     limit: parsedLimit,
     offset: parsedOffset,
     enableFuzzy: (Array.isArray(fuzzy) ? fuzzy[0] : fuzzy) === 'true',
     enableSuggestions: (Array.isArray(suggestions) ? suggestions[0] : suggestions) === 'true',
-    searchType: Array.isArray(type) ? type[0] : type || 'all'
+    searchType: (Array.isArray(type) ? type[0] : type || 'all') as 'all' | 'cards' | 'pokemon' | 'sets'
   };
 
   try {
     logger.info('Advanced search request:', { query: queryStr, type, filters });
 
-    const searchResult = await advancedSearchEngine.search(queryStr, options as any);
+    const searchOptions = {
+      filters: options.filters ? {
+        cards: options.filters,
+        pokemon: {},
+        sets: {}
+      } : undefined,
+      sortBy: options.sortBy,
+      sortOrder: options.sortOrder,
+      limit: options.limit,
+      offset: options.offset,
+      enableFuzzy: options.enableFuzzy,
+      enableSuggestions: options.enableSuggestions,
+      searchType: options.searchType
+    };
+    const searchResult = await advancedSearchEngine.search(queryStr, searchOptions);
 
-    return res.status(200).json({
+    const response: SearchResponse = {
       success: true,
-      ...searchResult,
+      results: searchResult.results?.map(result => ({
+        type: result.type,
+        id: result.id,
+        data: result.data as unknown as Record<string, unknown>,
+        score: result.score,
+        matchedFields: result.matchedFields,
+        isFuzzy: result.isFuzzy
+      })),
+      totalResults: searchResult.totalResults,
+      suggestions: searchResult.suggestions,
+      query: searchResult.query,
+      processedQuery: searchResult.processedQuery,
+      searchTime: searchResult.searchTime,
+      filters: searchResult.filters,
+      searchType: searchResult.searchType,
+      timestamp: searchResult.timestamp,
+      message: searchResult.message,
       pagination: {
         limit: parsedLimit,
         offset: parsedOffset,
         hasMore: searchResult.totalResults > parsedOffset + parsedLimit
       }
-    });
+    };
+
+    return res.status(200).json(response);
 
   } catch (error) {
-    logger.error('Search execution error:', error);
+    logger.error('Search execution error:', { error: error instanceof Error ? error.message : String(error) });
     return res.status(500).json({ 
       error: 'Search failed',
-      message: error.message 
+      message: error instanceof Error ? error.message : String(error) 
     });
   }
 }
@@ -191,13 +226,13 @@ async function handleAdvancedSearchRequest(
   // Build search options
   const searchOptions: SearchOptions = {
     filters: filters || {},
-    sortBy: sorting.field || 'relevance',
-    sortOrder: sorting.direction || 'desc',
+    sortBy: (sorting.field as 'relevance' | 'name' | 'price' | 'date') || 'relevance',
+    sortOrder: (sorting.direction as 'asc' | 'desc') || 'desc',
     limit: Math.min(pagination.limit || 50, 200),
     offset: Math.max(pagination.offset || 0, 0),
     enableFuzzy: options.enableFuzzy !== false,
     enableSuggestions: options.enableSuggestions !== false,
-    searchType: searchType
+    searchType: searchType as 'all' | 'cards' | 'pokemon' | 'sets'
   };
 
   try {
@@ -207,31 +242,63 @@ async function handleAdvancedSearchRequest(
       filtersCount: Object.keys(filters).length 
     });
 
-    const searchResult = await advancedSearchEngine.search(query, searchOptions as any);
+    const engineOptions = {
+      filters: searchOptions.filters ? {
+        cards: searchOptions.filters,
+        pokemon: {},
+        sets: {}
+      } : undefined,
+      sortBy: searchOptions.sortBy,
+      sortOrder: searchOptions.sortOrder,
+      limit: searchOptions.limit,
+      offset: searchOptions.offset,
+      enableFuzzy: searchOptions.enableFuzzy,
+      enableSuggestions: searchOptions.enableSuggestions,
+      searchType: searchOptions.searchType
+    };
+    const searchResult = await advancedSearchEngine.search(query, engineOptions);
 
     // Add search analytics if requested
-    let analytics = null;
+    let analytics: Record<string, unknown> | undefined = undefined;
     if (options.includeAnalytics) {
-      analytics = (advancedSearchEngine as any).getSearchAnalytics();
+      analytics = (advancedSearchEngine as unknown as { getSearchAnalytics(): Record<string, unknown> }).getSearchAnalytics();
     }
 
-    return res.status(200).json({
+    const response: SearchResponse = {
       success: true,
-      ...searchResult,
+      results: searchResult.results?.map(result => ({
+        type: result.type,
+        id: result.id,
+        data: result.data as unknown as Record<string, unknown>,
+        score: result.score,
+        matchedFields: result.matchedFields,
+        isFuzzy: result.isFuzzy
+      })),
+      totalResults: searchResult.totalResults,
+      suggestions: searchResult.suggestions,
       analytics,
+      query: searchResult.query,
+      processedQuery: searchResult.processedQuery,
+      searchTime: searchResult.searchTime,
+      filters: searchResult.filters,
+      searchType: searchResult.searchType,
+      timestamp: searchResult.timestamp,
+      message: searchResult.message,
       pagination: {
-        limit: searchOptions.limit,
-        offset: searchOptions.offset,
-        hasMore: searchResult.totalResults > searchOptions.offset + searchOptions.limit,
-        totalPages: Math.ceil(searchResult.totalResults / searchOptions.limit)
+        limit: searchOptions.limit!,
+        offset: searchOptions.offset!,
+        hasMore: searchResult.totalResults > searchOptions.offset! + searchOptions.limit!,
+        totalPages: Math.ceil(searchResult.totalResults / searchOptions.limit!)
       }
-    });
+    };
+
+    return res.status(200).json(response);
 
   } catch (error) {
-    logger.error('Advanced search execution error:', error);
+    logger.error('Advanced search execution error:', { error: error instanceof Error ? error.message : String(error) });
     return res.status(500).json({ 
       error: 'Advanced search failed',
-      message: error.message 
+      message: error instanceof Error ? error.message : String(error) 
     });
   }
 }
@@ -260,7 +327,7 @@ export async function handleSuggestions(
   }
 
   try {
-    const suggestions = await (advancedSearchEngine as any).generateSuggestions(
+    const suggestions = await (advancedSearchEngine as unknown as { generateSuggestions(query: string, type: string): Promise<string[]> }).generateSuggestions(
       queryStr, 
       typeStr
     );
@@ -273,17 +340,17 @@ export async function handleSuggestions(
     });
 
   } catch (error) {
-    logger.error('Suggestions generation error:', error);
+    logger.error('Suggestions generation error:', { error: error instanceof Error ? error.message : String(error) });
     return res.status(500).json({ 
       error: 'Failed to generate suggestions',
-      message: error.message 
+      message: error instanceof Error ? error.message : String(error) 
     });
   }
 }
 
 interface AnalyticsResponse {
   success: boolean;
-  analytics: any;
+  analytics: Record<string, unknown>;
   generatedAt: string;
 }
 
@@ -292,7 +359,7 @@ export async function handleSearchAnalytics(
   res: NextApiResponse<AnalyticsResponse | ErrorResponse>
 ) {
   try {
-    const analytics = (advancedSearchEngine as any).getSearchAnalytics();
+    const analytics = (advancedSearchEngine as unknown as { getSearchAnalytics(): Record<string, unknown> }).getSearchAnalytics();
 
     return res.status(200).json({
       success: true,
@@ -301,10 +368,10 @@ export async function handleSearchAnalytics(
     });
 
   } catch (error) {
-    logger.error('Search analytics error:', error);
+    logger.error('Search analytics error:', { error: error instanceof Error ? error.message : String(error) });
     return res.status(500).json({ 
       error: 'Failed to get search analytics',
-      message: error.message 
+      message: error instanceof Error ? error.message : String(error) 
     });
   }
 }

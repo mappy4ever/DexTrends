@@ -4,7 +4,12 @@
  * @param {'grid' | 'list'} props.viewMode
  * @param {'compact' | 'regular' | 'large'} [props.cardSize='regular']
  */
-const PokemonCardSkeleton = ({ viewMode, cardSize = 'regular' }: any) => {
+interface PokemonCardSkeletonProps {
+  viewMode: 'grid' | 'list';
+  cardSize?: 'compact' | 'regular' | 'large';
+}
+
+const PokemonCardSkeleton = ({ viewMode, cardSize = 'regular' }: PokemonCardSkeletonProps) => {
   const sizeClasses: Record<string, string> = {
     compact: 'w-22 h-22 sm:w-28 sm:h-28',
     regular: 'w-32 h-32 sm:w-36 sm:h-36',

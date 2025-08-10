@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { createClient } from '@supabase/supabase-js';
 import logger from '@/utils/logger';
+import { ErrorResponse } from '@/types/api/api-responses';
 
 // Initialize Supabase client - This is OK at the top level
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -46,7 +47,7 @@ interface TripData {
 }
 
 interface OrgDetails {
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 interface PurposeBreakdown {
@@ -60,10 +61,6 @@ interface TrendsResponse {
   purposeBreakdown: PurposeBreakdown[];
 }
 
-interface ErrorResponse {
-  error: string;
-  details?: string;
-}
 
 export default async function handler(
   req: NextApiRequest,
@@ -140,7 +137,7 @@ export default async function handler(
 
     // Error handling for individual promises
     if (orgResult.error) {
-        logger.warn("Supabase warning fetching org details:", orgResult.error.message);
+        logger.warn("Supabase warning fetching org details:", { errorMessage: orgResult.error.message });
         // Non-critical, proceed without org details if it fails but trips succeed
     }
     if (tripsResult.error) {

@@ -1127,7 +1127,7 @@ const StarterPokemonShowcase: React.FC<StarterPokemonShowcaseProps> = ({ region,
                             <p className="font-semibold text-sm group-hover:text-blue-500 transition-colors">{evo.name}</p>
                             <div className="flex flex-wrap gap-1 justify-center mt-1">
                               {evo.types?.map((type, typeIdx) => (
-                                <TypeBadge key={typeIdx} type={type} size="xxs" />
+                                <TypeBadge key={typeIdx} type={type} size="xs" />
                               ))}
                             </div>
                           </div>

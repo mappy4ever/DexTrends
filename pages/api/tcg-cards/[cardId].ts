@@ -3,6 +3,9 @@ import { fetchJSON } from '../../../utils/unifiedFetch';
 import logger from '../../../utils/logger';
 import { tcgCache } from '../../../lib/tcg-cache';
 import performanceMonitor from '../../../utils/performanceMonitor';
+import type { TCGApiResponse } from '../../../types/api/enhanced-responses';
+import type { UnknownError } from '../../../types/common';
+import { isTCGCard } from '../../../utils/typeGuards';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { cardId } = req.query;
@@ -49,7 +52,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
     
     // Fetch card from API
-    const cardData = await fetchJSON<{ data: any }>(
+    const cardData = await fetchJSON<TCGApiResponse<unknown>>(
       `https://api.pokemontcg.io/v2/cards/${id}`,
       {
         headers,
@@ -101,22 +104,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       responseTime
     });
     
-  } catch (error: any) {
+  } catch (error) {
     logger.error('[TCG Card API] Error fetching card', {
       cardId: id,
-      error: error.message,
-      stack: error.stack
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined
     });
     
     res.status(500).json({ 
       error: 'Failed to fetch card',
-      message: error.message
+      message: error instanceof Error ? error.message : String(error)
     });
   }
 }
 
 // API endpoint for fetching related cards (cards with the same Pokemon name)
-export async function getRelatedCards(pokemonName: string, excludeId?: string): Promise<any[]> {
+export async function getRelatedCards(pokemonName: string, excludeId?: string): Promise<unknown[]> {
   try {
     // Start performance monitoring
     performanceMonitor.startTimer('api-request', `related-cards-${pokemonName}`);
@@ -134,7 +137,7 @@ export async function getRelatedCards(pokemonName: string, excludeId?: string): 
     const baseName = pokemonName.split(" ")[0];
     
     // Fetch related cards
-    const relatedData = await fetchJSON<{ data: any[] }>(
+    const relatedData = await fetchJSON<TCGApiResponse<unknown[]>>(
       `https://api.pokemontcg.io/v2/cards?q=name:${encodeURIComponent(baseName)}&pageSize=20`,
       {
         headers,
@@ -153,6 +156,7 @@ export async function getRelatedCards(pokemonName: string, excludeId?: string): 
     
     // Filter out the current card and limit results
     return relatedData.data
+      .filter(isTCGCard)
       .filter(card => card.id !== excludeId)
       .slice(0, 8);
       

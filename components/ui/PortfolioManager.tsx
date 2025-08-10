@@ -161,9 +161,13 @@ const PortfolioManager: React.FC<PortfolioManagerProps> = ({ userCards = [], onU
     if (saved) {
       const parsedPortfolios = JSON.parse(saved) as Portfolio[];
       setPortfolios(parsedPortfolios);
-      if (!selectedPortfolio && parsedPortfolios.length > 0) {
-        setSelectedPortfolio(parsedPortfolios[0]);
-      }
+      // Use functional setState to avoid dependency on selectedPortfolio
+      setSelectedPortfolio(current => {
+        if (!current && parsedPortfolios.length > 0) {
+          return parsedPortfolios[0];
+        }
+        return current;
+      });
     } else {
       // Create default portfolio
       const defaultPortfolio: Portfolio = {
@@ -177,7 +181,7 @@ const PortfolioManager: React.FC<PortfolioManagerProps> = ({ userCards = [], onU
       setPortfolios([defaultPortfolio]);
       setSelectedPortfolio(defaultPortfolio);
     }
-  }, []);
+  }, []); // Only run on mount
 
   // Save portfolios to localStorage
   const savePortfolios = (newPortfolios: Portfolio[]) => {
@@ -398,7 +402,7 @@ const PortfolioManager: React.FC<PortfolioManagerProps> = ({ userCards = [], onU
         y: {
           beginAtZero: false,
           ticks: {
-            callback: function(value: any) {
+            callback: function(value: unknown) {
               return '$' + Number(value).toLocaleString();
             }
           }

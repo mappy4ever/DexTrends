@@ -1,6 +1,7 @@
 import React from 'react';
 import EvolutionStageCard from './cards/EvolutionStageCard';
-import type { EvolutionDetail } from '../../types/api/pokemon';
+import type { EvolutionDetail } from "../../types/pokemon";
+import logger from '@/utils/logger';
 
 interface EvolutionNode {
   name: string;
@@ -26,10 +27,10 @@ export default function EvolutionTreeRenderer({
   currentId = null, 
   formatEvolutionDetails 
 }: EvolutionTreeRendererProps) {
-  logger.debug('EvolutionTreeRenderer received node:', node);
+  logger.debug('EvolutionTreeRenderer received node', { node });
   
   if (!node || !node.name) {
-    logger.warn('EvolutionTreeRenderer: Invalid node data', node);
+    logger.warn('EvolutionTreeRenderer: Invalid node data', { node });
     return null;
   }
 

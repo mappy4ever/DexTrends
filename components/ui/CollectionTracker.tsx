@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, ReactNode } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, ReactNode } from 'react';
 import { 
   FaChartPie,
   FaTrophy,
@@ -18,7 +18,7 @@ import Modal from './modals/Modal';
 import { useNotifications } from '../../hooks/useNotifications';
 import { TCGCard } from '../../types/api/cards';
 import { PocketCard } from '../../types/api/pocket-cards';
-import { Pokemon } from '../../types/api/pokemon';
+import { Pokemon } from "../../types/pokemon";
 
 type Card = TCGCard | PocketCard | Pokemon;
 
@@ -126,15 +126,22 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
     
     if (savedAchievements) {
       setAchievements(JSON.parse(savedAchievements));
-    } else {
-      checkAchievements();
     }
-  }, [userCards]);
+  }, []);
 
   // Helper to get card properties safely
-  const getCardProperty = (card: Card, property: string): any => {
-    return (card as any)[property];
+  const getCardProperty = (card: Card, property: string): unknown => {
+    return (card as unknown as Record<string, unknown>)[property];
   };
+
+  // Type-safe helper to get card set (wrapped in useCallback for stable reference)
+  const getCardSet = useCallback((card: Card): { id?: string; name?: string; releaseDate?: string; series?: string } => {
+    const set = getCardProperty(card, 'set');
+    if (set && typeof set === 'object' && set !== null) {
+      return set as { id?: string; name?: string; releaseDate?: string; series?: string };
+    }
+    return {};
+  }, []);
 
   // Collection analysis
   const collectionAnalysis = useMemo((): CollectionAnalysis => {
@@ -147,9 +154,9 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
     
     // Set completion analysis
     const setAnalysis: Record<string, SetAnalysis> = allCards.reduce<Record<string, SetAnalysis>>((acc, card) => {
-      const cardSet = getCardProperty(card, 'set');
-      const setName = cardSet?.name || 'Unknown';
-      const setId = cardSet?.id || 'unknown';
+      const cardSet = getCardSet(card);
+      const setName = cardSet.name || 'Unknown';
+      const setId = cardSet.id || 'unknown';
       
       if (!acc[setId]) {
         acc[setId] = {
@@ -157,8 +164,8 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
           name: setName,
           totalCards: 0,
           ownedCards: 0,
-          releaseDate: cardSet?.releaseDate,
-          series: cardSet?.series,
+          releaseDate: cardSet.releaseDate,
+          series: cardSet.series,
           completionRate: 0,
           missingCards: 0
         };
@@ -180,7 +187,8 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
 
     // Rarity completion analysis
     const rarityAnalysis: Record<string, RarityAnalysis> = allCards.reduce<Record<string, RarityAnalysis>>((acc, card) => {
-      const rarity = getCardProperty(card, 'rarity') || 'Unknown';
+      const rarityValue = getCardProperty(card, 'rarity');
+      const rarity = String(rarityValue || 'Unknown');
       
       if (!acc[rarity]) {
         acc[rarity] = {
@@ -237,23 +245,35 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
     // High priority missing cards (rare/valuable)
     const highPriorityMissing = missingCards
       .filter(card => {
-        const price = parseFloat(getCardProperty(card, 'currentPrice') || getCardProperty(card, 'price') || '0');
-        const rarity = getCardProperty(card, 'rarity');
-        return rarity?.includes('Rare') || price > 20;
+        const currentPrice = getCardProperty(card, 'currentPrice');
+        const price = getCardProperty(card, 'price');
+        const priceValue = parseFloat(String(currentPrice || price || '0'));
+        const rarityValue = getCardProperty(card, 'rarity');
+        const rarity = String(rarityValue || '');
+        return rarity.includes('Rare') || priceValue > 20;
       })
       .sort((a, b) => {
-        const priceA = parseFloat(getCardProperty(a, 'currentPrice') || getCardProperty(a, 'price') || '0');
-        const priceB = parseFloat(getCardProperty(b, 'currentPrice') || getCardProperty(b, 'price') || '0');
-        return priceB - priceA;
+        const currentPriceA = getCardProperty(a, 'currentPrice');
+        const priceA = getCardProperty(a, 'price');
+        const priceValueA = parseFloat(String(currentPriceA || priceA || '0'));
+        const currentPriceB = getCardProperty(b, 'currentPrice');
+        const priceB = getCardProperty(b, 'price');
+        const priceValueB = parseFloat(String(currentPriceB || priceB || '0'));
+        return priceValueB - priceValueA;
       })
       .slice(0, 10);
 
     // Recent additions
     const recentAdditions = userCards
-      .filter(card => getCardProperty(card, 'addedToCollection'))
+      .filter(card => {
+        const addedDate = getCardProperty(card, 'addedToCollection');
+        return addedDate && String(addedDate).trim() !== '';
+      })
       .sort((a, b) => {
-        const dateA = new Date(getCardProperty(a, 'addedToCollection'));
-        const dateB = new Date(getCardProperty(b, 'addedToCollection'));
+        const addedDateA = getCardProperty(a, 'addedToCollection');
+        const addedDateB = getCardProperty(b, 'addedToCollection');
+        const dateA = new Date(String(addedDateA || 0));
+        const dateB = new Date(String(addedDateB || 0));
         return dateB.getTime() - dateA.getTime();
       })
       .slice(0, 10);
@@ -278,10 +298,10 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
       nearCompleteSets,
       averageSetCompletion: Object.values(setAnalysis).reduce((sum, set) => sum + set.completionRate, 0) / Object.values(setAnalysis).length
     };
-  }, [userCards, allCards]);
+  }, [userCards, allCards, getCardSet]);
 
   // Achievement system
-  const achievementDefinitions: Achievement[] = [
+  const achievementDefinitions: Achievement[] = useMemo(() => [
     {
       id: 'first_card',
       name: 'Getting Started',
@@ -362,10 +382,11 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
       icon: '💫',
       condition: () => {
         return userCards.filter(card => {
-          const rarity = getCardProperty(card, 'rarity');
-          return rarity?.includes('Rare') || 
-                 rarity?.includes('Ultra') || 
-                 rarity?.includes('Secret');
+          const rarityValue = getCardProperty(card, 'rarity');
+          const rarity = String(rarityValue || '');
+          return rarity.includes('Rare') || 
+                 rarity.includes('Ultra') || 
+                 rarity.includes('Secret');
         }).length >= 10;
       },
       points: 75
@@ -378,16 +399,17 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
       condition: () => {
         const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
         return userCards.filter(card => {
-          const addedDate = getCardProperty(card, 'addedToCollection');
+          const addedDateValue = getCardProperty(card, 'addedToCollection');
+          const addedDate = String(addedDateValue || '');
           return addedDate && new Date(addedDate) > oneWeekAgo;
         }).length >= 20;
       },
       points: 100
     }
-  ];
+  ], [userCards, collectionAnalysis]);
 
   // Check for new achievements
-  const checkAchievements = () => {
+  const checkAchievements = useCallback(() => {
     const currentAchievements = achievements.map(a => a.id);
     const newAchievements: Achievement[] = [];
 
@@ -409,7 +431,15 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
         notify.success(`Achievement unlocked: ${achievement.name}!`);
       });
     }
-  };
+  }, [achievements, achievementDefinitions, notify]);
+
+  // Check achievements on mount if not loaded from storage
+  useEffect(() => {
+    const savedAchievements = localStorage.getItem('collectionAchievements');
+    if (!savedAchievements) {
+      checkAchievements();
+    }
+  }, [checkAchievements]);
 
   // Progress tracking goals
   const createGoal = () => {
@@ -435,43 +465,47 @@ const CollectionTracker: React.FC<CollectionTrackerProps> = ({
   };
 
   // Update goal progress
-  const updateGoalProgress = () => {
-    const updatedGoals = trackingGoals.map(goal => {
-      let progress = 0;
-      let completed = false;
+  const updateGoalProgress = useCallback(() => {
+    setTrackingGoals(prevGoals => {
+      const updatedGoals = prevGoals.map(goal => {
+        let progress = 0;
+        let completed = false;
 
-      switch (goal.type) {
-        case 'set':
-          const setData = Object.values(collectionAnalysis.setAnalysis).find(s => s.name === goal.target);
-          if (setData) {
-            progress = setData.completionRate;
-            completed = setData.completionRate === 100;
-          }
-          break;
-        case 'count':
-          const targetCount = parseInt(goal.target);
-          progress = Math.min((userCards.length / targetCount) * 100, 100);
-          completed = userCards.length >= targetCount;
-          break;
-        case 'rarity':
-          const rarityCards = userCards.filter(card => getCardProperty(card, 'rarity') === goal.target);
-          const targetRarityCount = parseInt(goal.description.match(/\d+/)?.[0] || '1');
-          progress = Math.min((rarityCards.length / targetRarityCount) * 100, 100);
-          completed = rarityCards.length >= targetRarityCount;
-          break;
-      }
+        switch (goal.type) {
+          case 'set':
+            const setData = Object.values(collectionAnalysis.setAnalysis).find(s => s.name === goal.target);
+            if (setData) {
+              progress = setData.completionRate;
+              completed = setData.completionRate === 100;
+            }
+            break;
+          case 'count':
+            const targetCount = parseInt(goal.target);
+            progress = Math.min((userCards.length / targetCount) * 100, 100);
+            completed = userCards.length >= targetCount;
+            break;
+          case 'rarity':
+            const rarityCards = userCards.filter(card => {
+              const rarityValue = getCardProperty(card, 'rarity');
+              return String(rarityValue || '') === goal.target;
+            });
+            const targetRarityCount = parseInt(goal.description.match(/\d+/)?.[0] || '1');
+            progress = Math.min((rarityCards.length / targetRarityCount) * 100, 100);
+            completed = rarityCards.length >= targetRarityCount;
+            break;
+        }
 
-      return { ...goal, progress, completed };
+        return { ...goal, progress, completed };
+      });
+
+      localStorage.setItem('collectionGoals', JSON.stringify(updatedGoals));
+      return updatedGoals;
     });
-
-    setTrackingGoals(updatedGoals);
-    localStorage.setItem('collectionGoals', JSON.stringify(updatedGoals));
-  };
+  }, [collectionAnalysis, userCards]);
 
   useEffect(() => {
     updateGoalProgress();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userCards, collectionAnalysis]);
+  }, [updateGoalProgress]);
 
   // Chart configurations
   const completionChart: {

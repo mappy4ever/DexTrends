@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Test direct fetch to Pokemon TCG API
     const apiUrl = `https://api.pokemontcg.io/v2/sets/${testId}`;
-    logger.debug('Testing set ID:', testId);
+    logger.debug('Testing set ID', { testId });
     
     const response = await fetch(apiUrl, { headers });
     const data = await response.json();
@@ -43,12 +43,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         message: `Set "${testId}" was not found in the Pokemon TCG API`
       });
     }
-  } catch (error: any) {
-    logger.error('Test failed:', error);
+  } catch (error) {
+    logger.error('Test failed:', { error: error instanceof Error ? error.message : String(error) });
     res.status(500).json({ 
       success: false,
       setId: testId,
-      error: error.message
+      error: error instanceof Error ? error.message : String(error)
     });
   }
 }

@@ -97,7 +97,7 @@ interface StaggerContainerProps {
   children?: React.ReactNode;
   className?: string;
   staggerDelay?: number;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export const StaggerContainer = ({ children, className = '', staggerDelay = 0.1, ...props }: StaggerContainerProps) => {
@@ -132,7 +132,7 @@ interface StaggerItemProps {
   children?: React.ReactNode;
   className?: string;
   direction?: 'up' | 'down' | 'left' | 'right';
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export const StaggerItem = ({ children, className = '', direction = 'up', ...props }: StaggerItemProps) => {
@@ -184,7 +184,7 @@ interface HoverCardProps {
   y?: number;
   rotateX?: number;
   rotateY?: number;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export const HoverCard = ({ children, className = '', scale = 1.02, y = -4, rotateX = 0, rotateY = 0, ...props }: HoverCardProps) => {
@@ -225,7 +225,7 @@ interface FloatingElementProps {
   className?: string;
   amplitude?: number;
   duration?: number;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export const FloatingElement = ({ children, className = '', amplitude = 10, duration = 3, ...props }: FloatingElementProps) => {
@@ -256,7 +256,7 @@ interface RevealElementProps {
   direction?: 'up' | 'down' | 'left' | 'right';
   delay?: number;
   threshold?: number;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export const RevealElement = ({ children, className = '', direction = 'up', delay = 0, threshold = 0.1, ...props }: RevealElementProps) => {
@@ -307,7 +307,7 @@ interface PulseElementProps {
   className?: string;
   scale?: number;
   duration?: number;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export const PulseElement = ({ children, className = '', scale = 1.05, duration = 2, ...props }: PulseElementProps) => {
@@ -356,7 +356,7 @@ export const LoadingDots = ({ className = '', size = 'md' }: LoadingDotsProps) =
   if (prefersReducedMotion) {
     return (
       <div className={`flex space-x-1 ${className}`}>
-        {[0, 1, 2].map((i: any) => (
+        {[0, 1, 2].map((i: number) => (
           <div key={i} className={`${sizes[size]} bg-current rounded-full opacity-60`} />
         ))}
       </div>
@@ -365,7 +365,7 @@ export const LoadingDots = ({ className = '', size = 'md' }: LoadingDotsProps) =
 
   return (
     <div className={`flex space-x-1 ${className}`}>
-      {[0, 1, 2].map((i: any) => (
+      {[0, 1, 2].map((i: number) => (
         <motion.div
           key={i}
           className={`${sizes[size]} bg-current rounded-full`}
@@ -434,7 +434,7 @@ export const ModalAnimation = ({ children, isOpen, onClose, className = '' }: { 
             initial="hidden"
             animate="visible"
             exit="exit"
-            onClick={(e: any) => e.stopPropagation()}
+            onClick={(e: React.MouseEvent) => e.stopPropagation()}
           >
             {children}
           </motion.div>
@@ -449,7 +449,7 @@ interface PressableButtonProps {
   children?: React.ReactNode;
   className?: string;
   pressScale?: number;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export const PressableButton = ({ children, className = '', pressScale = 0.95, ...props }: PressableButtonProps) => {

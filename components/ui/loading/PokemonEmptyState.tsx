@@ -114,14 +114,14 @@ const PokemonEmptyState = ({
   useEffect(() => {
     if (showAnimation) {
       const interval = setInterval(() => {
-        setCurrentMessage((prev: any) => (prev + 1) % currentData.messages.length);
+        setCurrentMessage((prev: number) => (prev + 1) % currentData.messages.length);
       }, 3000);
       return () => clearInterval(interval);
     }
     return undefined;
   }, [currentData.messages.length, showAnimation]);
 
-  const PokemonIllustration = (): any => {
+  const PokemonIllustration = (): React.ReactElement => {
     // CSS-based Pokémon illustrations
     const illustrations = {
       search: (

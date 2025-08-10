@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useFavorites } from '../../../context/UnifiedAppContext';
+import logger from '@/utils/logger';
 
 // Type definition
 interface PokemonTCGCard {
@@ -29,6 +30,12 @@ interface CollectionStats {
   monthlyGrowth: number;
   mostValuableCard: { name: string; value: number } | null;
   completionPercentage: number;
+  // Additional optional fields for extended stats
+  totalPokemon?: number;
+  recentAdditions?: number;
+  generationDistribution?: Record<string, number>;
+  valueByRarity?: Record<string, number>;
+  setDistribution?: Record<string, number>;
 }
 
 const CollectionDashboard = () => {
@@ -36,6 +43,21 @@ const CollectionDashboard = () => {
   const [collectionStats, setCollectionStats] = useState<CollectionStats | null>(null);
   const [priceHistory, setPriceHistory] = useState<Array<{ date: string; value: number }>>([]);
   const [loadingStats, setLoadingStats] = useState(true);
+
+  // Generate price history for chart
+  const generatePriceHistory = useCallback((currentValue: number): void => {
+    const history: Array<{ date: string; value: number }> = [];
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+    let value = currentValue * 0.7; // Start lower
+
+    months.forEach((month) => {
+      value += (Math.random() - 0.4) * (currentValue * 0.1);
+      value = Math.max(value, 0);
+      history.push({ date: month, value: Math.round(value) });
+    });
+
+    setPriceHistory(history);
+  }, []);
 
   // Calculate analytics from favorites data without API calls
   useEffect(() => {
@@ -71,27 +93,29 @@ const CollectionDashboard = () => {
     } finally {
       setLoadingStats(false);
     }
-  }, [favoriteIds.cards]); // Only trigger on favorites changes
+  }, [favoriteIds.cards, generatePriceHistory]); // Only trigger on favorites changes
 
-  const calculateCollectionStats = (cards: any[], pokemon: any[]) => {
-    const stats: any = {
+  const calculateCollectionStats = (cards: PokemonTCGCard[], pokemon: unknown[]) => {
+    const stats: CollectionStats = {
       totalCards: cards.length,
       totalPokemon: pokemon.length,
       totalValue: 0,
+      rareCards: 0,
+      uniqueSets: 0,
       averageValue: 0,
-      rarityDistribution: {} as Record<string, number>,
-      typeDistribution: {} as Record<string, number>,
-      setDistribution: {} as Record<string, number>,
+      rarityDistribution: {},
+      typeDistribution: {},
+      setDistribution: {},
       recentAdditions: 0,
       mostValuableCard: null,
       completionPercentage: 0,
-      generationDistribution: {} as Record<string, number>,
-      valueByRarity: {} as Record<string, number>,
+      generationDistribution: {},
+      valueByRarity: {},
       monthlyGrowth: 0
     };
 
     // Process cards (using simple mock data to avoid API calls)
-    cards.forEach((card: any, index: number) => {
+    cards.forEach((card: PokemonTCGCard, index: number) => {
       // Simple mock price calculation
       const mockPrice = 10 + (index * 5) + Math.random() * 20;
       stats.totalValue += mockPrice;
@@ -100,7 +124,9 @@ const CollectionDashboard = () => {
       const rarities = ['Common', 'Uncommon', 'Rare', 'Rare Holo', 'Rare Secret'];
       const rarity = rarities[index % rarities.length];
       stats.rarityDistribution[rarity] = (stats.rarityDistribution[rarity] || 0) + 1;
-      stats.valueByRarity[rarity] = (stats.valueByRarity[rarity] || 0) + mockPrice;
+      if (stats.valueByRarity) {
+        stats.valueByRarity[rarity] = (stats.valueByRarity[rarity] || 0) + mockPrice;
+      }
 
       // Mock type distribution
       const types = ['Fire', 'Water', 'Grass', 'Electric', 'Psychic'];
@@ -111,8 +137,7 @@ const CollectionDashboard = () => {
       if (index === 0) {
         stats.mostValuableCard = { 
           name: card.name || `Card ${index + 1}`,
-          images: { small: '/back-card.png' },
-          rarity: rarity
+          value: mockPrice
         };
       }
     });
@@ -120,7 +145,9 @@ const CollectionDashboard = () => {
     // Process Pokemon with simple generation distribution
     pokemon.forEach((poke, index) => {
       const generation = Math.ceil((index + 1) / 151) || 1;
-      stats.generationDistribution[`Gen ${generation}`] = (stats.generationDistribution[`Gen ${generation}`] || 0) + 1;
+      if (stats.generationDistribution) {
+        stats.generationDistribution[`Gen ${generation}`] = (stats.generationDistribution[`Gen ${generation}`] || 0) + 1;
+      }
     });
 
     stats.averageValue = stats.totalCards > 0 ? stats.totalValue / stats.totalCards : 0;
@@ -130,7 +157,7 @@ const CollectionDashboard = () => {
     return stats;
   };
 
-  const getMockCardPrice = (card: any) => {
+  const getMockCardPrice = (card: PokemonTCGCard) => {
     // Mock pricing logic based on rarity
     const rarityPrices: Record<string, number> = {
       'Common': Math.random() * 5 + 0.5,
@@ -146,34 +173,20 @@ const CollectionDashboard = () => {
       'Rare Rainbow': Math.random() * 250 + 150,
     };
 
-    return rarityPrices[card.rarity] || Math.random() * 10 + 1;
-  };
-
-  const generatePriceHistory = (currentValue: number): void => {
-    const history: Array<{ date: string; value: number }> = [];
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-    let value = currentValue * 0.7; // Start lower
-
-    months.forEach((month) => {
-      value += (Math.random() - 0.4) * (currentValue * 0.1);
-      value = Math.max(value, 0);
-      history.push({ date: month, value: Math.round(value) });
-    });
-
-    setPriceHistory(history);
+    return rarityPrices[card.rarity || 'Common'] || Math.random() * 10 + 1;
   };
 
   // Custom chart components
-  const PriceHistoryChart = (): any => {
+  const PriceHistoryChart = (): React.ReactElement | null => {
     if (!priceHistory.length) return null;
 
-    const maxValue = Math.max(...priceHistory.map((item: any) => item.value));
+    const maxValue = Math.max(...priceHistory.map((item) => item.value));
     
     return (
       <div className="space-y-3">
         <div className="flex justify-between items-end h-48 bg-gradient-to-t from-blue-50 to-transparent dark:from-blue-900/20 rounded-lg p-4">
-          {priceHistory.map((item: any, index: number) => (
-            <div key={item.month} className="flex flex-col items-center flex-1">
+          {priceHistory.map((item, index: number) => (
+            <div key={item.date} className="flex flex-col items-center flex-1">
               <div 
                 className="w-8 bg-gradient-to-t from-blue-500 to-blue-400 rounded-t-lg transition-all duration-1000 ease-out"
                 style={{ 
@@ -181,9 +194,9 @@ const CollectionDashboard = () => {
                   minHeight: '4px',
                   animationDelay: `${index * 100}ms`
                 }}
-                title={`${item.month}: $${item.value}`}
+                title={`${item.date}: $${item.value}`}
               ></div>
-              <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">{item.month}</span>
+              <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">{item.date}</span>
             </div>
           ))}
         </div>
@@ -194,11 +207,11 @@ const CollectionDashboard = () => {
     );
   };
 
-  const RarityDonutChart = (): any => {
+  const RarityDonutChart = (): React.ReactElement | null => {
     if (!collectionStats?.rarityDistribution) return null;
 
     const data = Object.entries(collectionStats.rarityDistribution);
-    const total = data.reduce((sum: number, [_, count]: [string, any]) => sum + count, 0);
+    const total = data.reduce((sum: number, [_, count]) => sum + (count as number), 0);
     const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b'];
     
     let cumulativePercentage = 0;
@@ -215,7 +228,7 @@ const CollectionDashboard = () => {
               stroke="#e5e7eb"
               strokeWidth="10"
             />
-            {data.map(([rarity, count]: [string, any], index: number) => {
+            {data.map(([rarity, count], index: number) => {
               const percentage = (count / total) * 100;
               const strokeDasharray = `${percentage * 2.51} 251`;
               const strokeDashoffset = -cumulativePercentage * 2.51;
@@ -248,7 +261,7 @@ const CollectionDashboard = () => {
           </div>
         </div>
         <div className="grid grid-cols-2 gap-2">
-          {data.map(([rarity, count]: [string, any], index: number) => (
+          {data.map(([rarity, count], index: number) => (
             <div key={rarity} className="flex items-center text-sm">
               <div 
                 className="w-3 h-3 rounded-full mr-2"
@@ -264,15 +277,15 @@ const CollectionDashboard = () => {
     );
   };
 
-  const TypeBarChart = (): any => {
+  const TypeBarChart = (): React.ReactElement | null => {
     if (!collectionStats?.typeDistribution) return null;
 
     const data = Object.entries(collectionStats.typeDistribution);
-    const maxValue = Math.max(...data.map(([_, count]: [string, any]) => count));
+    const maxValue = Math.max(...data.map(([_, count]) => count as number));
     
     return (
       <div className="space-y-4">
-        {data.map(([type, count]: [string, any], index: number) => (
+        {data.map(([type, count], index: number) => (
           <div key={type} className="flex items-center space-x-3">
             <div className="w-20 text-sm font-medium text-gray-700 dark:text-gray-300 capitalize">
               {type}

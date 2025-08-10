@@ -15,6 +15,7 @@ import {
   getCachedData,
   cacheData
 } from './scraperUtils';
+import { isObject, hasProperty, isArray } from '../typeGuards';
 
 // Interfaces for type safety
 interface TeamMember {
@@ -95,7 +96,7 @@ interface MediaWikiImageResponse {
 }
 
 class EliteFourScraper {
-  private scrapedData: any; // Using any internally, will cast to proper type on return
+  private scrapedData: Record<string, unknown>; // Using unknown internally, will cast to proper type on return
 
   constructor() {
     this.scrapedData = {};
@@ -112,7 +113,9 @@ class EliteFourScraper {
       for (const memberPage of data.pages) {
         const memberData = await this.scrapeEliteFourMember(memberPage, region);
         if (memberData) {
-          this.scrapedData[region].push(memberData);
+          if (isArray(this.scrapedData[region])) {
+            this.scrapedData[region].push(memberData);
+          }
         }
         
         // Rate limiting
@@ -125,12 +128,17 @@ class EliteFourScraper {
     this.scrapedData.champions = {};
     
     for (const [region, champions] of Object.entries(scraperConfig.targets.champions)) {
-      this.scrapedData.champions[region] = [];
+      if (isObject(this.scrapedData.champions)) {
+        this.scrapedData.champions[region] = [];
+      }
       
       for (const championPage of champions) {
         const championData = await this.scrapeEliteFourMember(championPage, region, true);
         if (championData) {
-          this.scrapedData.champions[region].push(championData);
+          if (isObject(this.scrapedData.champions) && hasProperty(this.scrapedData.champions, region) &&
+              isArray(this.scrapedData.champions[region])) {
+            this.scrapedData.champions[region].push(championData);
+          }
         }
         
         await delay(scraperConfig.settings.requestDelay);

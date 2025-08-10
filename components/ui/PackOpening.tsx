@@ -1,6 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { getHolographicEffect, getRarityGlowClass } from '../../utils/cardEffects';
+import logger from '@/utils/logger';
+import type { PocketCard } from '@/types/api/pocket-cards';
+
+interface CardsByRarity {
+  'Secret Rare': PocketCard[];
+  'Ultra Rare': PocketCard[];
+  'Rare Holo': PocketCard[];
+  'Rare': PocketCard[];
+  'Uncommon': PocketCard[];
+  'Common': PocketCard[];
+}
+
+interface PackCard extends PocketCard {
+  packPosition: number;
+  isRare: boolean;
+  cardRarity: 'secret' | 'ultra' | 'holo' | 'rare' | 'uncommon' | 'common';
+}
+
+interface Expansion {
+  id: string;
+  name: string;
+  cards: PocketCard[];
+  types: string[];
+  rarities: string[];
+  totalCards: number;
+  featuredCards: PocketCard[];
+  displayName: string;
+  setCode: string;
+  setName: string;
+  packImage: string | null;
+  packPrice: number;
+  guaranteedRare: boolean;
+}
+
+type PackState = 'closed' | 'shaking' | 'opening' | 'revealing' | 'complete';
+type CardRarity = 'secret' | 'ultra' | 'holo' | 'rare' | 'uncommon' | 'common';
 
 // Realistic Pokemon TCG rarity rates
 const RARITY_RATES = {
@@ -15,9 +51,9 @@ const RARITY_RATES = {
 const PACK_SIZE = 5; // Standard pocket pack size
 
 interface PackOpeningProps {
-  expansion: any;
-  availableCards?: any[];
-  onPackOpened?: (cards: any[]) => void;
+  expansion: Expansion | null;
+  availableCards?: PocketCard[];
+  onPackOpened?: (cards: PackCard[]) => void;
   onClose?: () => void;
   isOpen?: boolean;
 }
@@ -28,9 +64,9 @@ export default function PackOpening({
   isOpen = false 
 }: PackOpeningProps) {
   const [packState, setPackState] = useState('closed'); // closed, shaking, opening, revealing, complete
-  const [revealedCards, setRevealedCards] = useState<unknown[]>([]);
+  const [revealedCards, setRevealedCards] = useState<PackCard[]>([]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
-  const [packImage, setPackImage] = useState<any>(null);
+  const [packImage, setPackImage] = useState<string | null>(null);
   const [hasRareCard, setHasRareCard] = useState(false);
   const [timeoutIds, setTimeoutIds] = useState<NodeJS.Timeout[]>([]);
 
@@ -55,46 +91,46 @@ export default function PackOpening({
   }, [timeoutIds]);
 
   // Generate pack contents with realistic rarity distribution
-  const generatePackCards = (): any => {
-    logger.debug('Generating pack with', availableCards.length, 'available cards');
+  const generatePackCards = (): PackCard[] => {
+    logger.debug('Generating pack with available cards', { count: availableCards.length });
     if (!availableCards.length) {
       logger.error('No available cards for pack generation!');
       return [];
     }
 
-    const packCards = [];
+    const packCards: PackCard[] = [];
     let hasRareInPack = false;
 
     // Organize cards by rarity
-    const cardsByRarity = {
-      'Secret Rare': availableCards.filter((card: any) => 
+    const cardsByRarity: CardsByRarity = {
+      'Secret Rare': availableCards.filter((card: PocketCard) => 
         card.rarity?.toLowerCase().includes('secret') || 
         card.rarity?.toLowerCase().includes('rainbow') ||
         card.rarity?.includes('★★★')),
-      'Ultra Rare': availableCards.filter((card: any) => 
+      'Ultra Rare': availableCards.filter((card: PocketCard) => 
         card.rarity?.toLowerCase().includes('ultra') ||
         card.rarity?.toLowerCase().includes('full art') ||
         card.rarity?.includes('★★')),
-      'Rare Holo': availableCards.filter((card: any) => 
+      'Rare Holo': availableCards.filter((card: PocketCard) => 
         card.rarity?.toLowerCase().includes('rare holo') ||
         card.rarity?.toLowerCase().includes('holo') ||
         card.rarity?.includes('★')),
-      'Rare': availableCards.filter((card: any) => 
+      'Rare': availableCards.filter((card: PocketCard) => 
         card.rarity?.toLowerCase().includes('rare') && 
         !card.rarity?.toLowerCase().includes('holo') &&
         !card.rarity?.toLowerCase().includes('ultra')),
-      'Uncommon': availableCards.filter((card: any) => 
+      'Uncommon': availableCards.filter((card: PocketCard) => 
         card.rarity?.toLowerCase().includes('uncommon') ||
         card.rarity?.includes('◊◊◊')),
-      'Common': availableCards.filter((card: any) => 
+      'Common': availableCards.filter((card: PocketCard) => 
         card.rarity?.toLowerCase().includes('common') ||
         card.rarity?.includes('◊'))
     };
 
     // Generate 5 cards with proper rarity distribution
     for (let i = 0; i < PACK_SIZE; i++) {
-      let selectedCard = null;
-      let cardRarity = 'common';
+      let selectedCard: PocketCard | null = null;
+      let cardRarity: CardRarity = 'common';
       const rand = Math.random();
       
       // Only force rare in last slot if NO rare cards have been selected yet
@@ -148,7 +184,7 @@ export default function PackOpening({
     return packCards;
   };
 
-  const getRandomCard = (cardArray: any) => {
+  const getRandomCard = (cardArray: PocketCard[] | undefined): PocketCard | null => {
     if (!cardArray?.length) return null;
     return cardArray[Math.floor(Math.random() * cardArray.length)];
   };
@@ -323,7 +359,7 @@ export default function PackOpening({
               </h3>
               
               <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                {revealedCards.map((card: any, index: number) => {
+                {revealedCards.map((card: PackCard, index: number) => {
                   const isRevealed = index <= currentCardIndex || packState === 'complete';
                   const holographicClass = getHolographicEffect(card.rarity);
                   const rarityGlow = getRarityGlowClass(card.rarity);

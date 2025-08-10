@@ -1,4 +1,5 @@
-import type { Pokemon } from '../types/api/pokemon';
+import type { Pokemon } from "../types/pokemon";
+import logger from './logger';
 
 /**
  * Share methods for Pokemon data
@@ -6,21 +7,39 @@ import type { Pokemon } from '../types/api/pokemon';
 export type ShareMethod = 'link' | 'image' | 'stats' | 'qr';
 
 /**
- * Show a toast notification (placeholder - should use your app's toast system)
+ * Notification instance that will be set from components using this utility
+ * Components should call setNotificationInstance with their notification context
+ */
+let notificationInstance: unknown = null;
+
+/**
+ * Set the notification instance for this utility to use
+ * Should be called by components that use share functionality
+ */
+export const setNotificationInstance = (instance: unknown) => {
+  notificationInstance = instance;
+};
+
+/**
+ * Show a toast notification using the app's notification system
  */
 const showToast = (message: string) => {
-  // TODO: Replace with your app's toast notification system
-  console.log('Toast:', message);
-  
-  // Temporary implementation using native alert
-  const toast = document.createElement('div');
-  toast.className = 'fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in';
-  toast.textContent = message;
-  document.body.appendChild(toast);
-  
-  setTimeout(() => {
-    toast.remove();
-  }, 3000);
+  if (notificationInstance && notificationInstance.notify) {
+    notificationInstance.notify.success(message);
+  } else {
+    // Fallback to logger if notification system not available
+    logger.debug('Share notification:', { message });
+    
+    // Temporary visual feedback
+    const toast = document.createElement('div');
+    toast.className = 'fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+      toast.remove();
+    }, 3000);
+  }
 };
 
 /**
@@ -226,7 +245,7 @@ export async function sharePokemon(pokemon: Pokemon, method: ShareMethod) {
         break;
     }
   } catch (error) {
-    console.error('Share error:', error);
+    logger.error('Share error:', { error });
     showToast('Failed to share. Please try again.');
   }
 }

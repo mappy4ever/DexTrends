@@ -15,7 +15,7 @@ export const useSkeleton = (): SkeletonContextType => {
   return context;
 };
 
-export const useSkeletonState = <T extends (...args: any[]) => Promise<any>>(
+export const useSkeletonState = <T extends (...args: unknown[]) => Promise<unknown>>(
   initialLoading = false
 ): UseSkeletonStateReturn<T> => {
   const [loading, setLoading] = useState(initialLoading);

@@ -69,7 +69,7 @@ interface Logger {
   timeEnd: (label: string) => void;
   group: (label: string) => void;
   groupEnd: () => void;
-  table: (data: any) => void;
+  table: (data: unknown) => void;
 }
 
 /**
@@ -179,7 +179,7 @@ const logger: Logger = {
   /**
    * Log tables for structured data
    */
-  table: (data: any) => {
+  table: (data: unknown) => {
     if (isDevelopment && typeof console !== 'undefined' && console.table) {
       console.table(data);
     }

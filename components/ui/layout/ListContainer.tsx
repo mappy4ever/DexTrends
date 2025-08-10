@@ -1,7 +1,15 @@
 // components/ui/ListContainer.js
 import React from 'react';
 
-const ListContainer = ({ title, items, isLoading, renderItem, className = '' }: { title: any; items: any; isLoading: boolean; renderItem: any; className?: string }) => (
+interface ListContainerProps<T> {
+  title: React.ReactNode;
+  items: T[];
+  isLoading: boolean;
+  renderItem: (item: T, index: number) => React.ReactNode;
+  className?: string;
+}
+
+const ListContainer = <T,>({ title, items, isLoading, renderItem, className = '' }: ListContainerProps<T>) => (
     <div className={`card card-padding-default ${className}`}>
         <h2 className="text-section-heading mb-3">{title}</h2>
         {isLoading ? (
@@ -11,7 +19,7 @@ const ListContainer = ({ title, items, isLoading, renderItem, className = '' }: 
                 ))}
             </ul>
         ) : items && items.length > 0 ? (
-            <ul className="space-y-2 text-sm text-foreground">{items.map(renderItem)}</ul>
+            <ul className="space-y-2 text-sm text-foreground">{items.map((item, index) => renderItem(item, index))}</ul>
         ) : (
             <p className="text-foreground-muted text-sm">No data available.</p>
         )}

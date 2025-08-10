@@ -234,10 +234,10 @@ class LocalStorageCache extends CacheStorage {
         version: '1.0'
       };
       localStorage.setItem(this.generateKey(key), JSON.stringify(entry));
-    } catch (error: any) {
+    } catch (error) {
       logger.warn('LocalStorage set error:', error);
       // Try to clear some space
-      if (error.name === 'QuotaExceededError') {
+      if (error instanceof Error && error.name === 'QuotaExceededError') {
         logger.debug('QuotaExceededError detected, running aggressive cleanup...');
         
         // First try normal cleanup
@@ -252,8 +252,8 @@ class LocalStorageCache extends CacheStorage {
             version: '1.0'
           };
           localStorage.setItem(this.generateKey(key), JSON.stringify(entry));
-        } catch (retryError: any) {
-          if (retryError.name === 'QuotaExceededError') {
+        } catch (retryError) {
+          if (retryError instanceof Error && retryError.name === 'QuotaExceededError') {
             // More aggressive cleanup - remove oldest 50% of cache entries
             await this.aggressiveCleanup();
             
@@ -742,7 +742,7 @@ export const tcgCache = {
           }
         }
         
-        logger.debug('[TCG Cache] Querying Pokemon TCG API for:', pokemonName);
+        logger.debug('[TCG Cache] Querying Pokemon TCG API for', { pokemonName });
         try {
           const result = await pokemon.card.where({ q: `name:${pokemonName}` });
           logger.debug('[TCG Cache] API Response:', result);

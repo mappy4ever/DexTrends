@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { supabase } from '../../lib/supabase';
 import logger from '../../utils/logger';
+import { ErrorResponse } from '@/types/api/api-responses';
 
 // Rate limiting to avoid overwhelming the Pokemon TCG API
 const BATCH_SIZE = 20; // Process 20 cards at a time
@@ -164,11 +165,6 @@ interface CollectionResponse {
   };
 }
 
-interface ErrorResponse {
-  success: boolean;
-  error: string;
-  message: string;
-}
 
 export default async function handler(
   req: NextApiRequest,
@@ -176,7 +172,6 @@ export default async function handler(
 ) {
   if (req.method !== 'POST') {
     return res.status(405).json({ 
-      success: false,
       error: 'Method not allowed',
       message: 'Only POST method is allowed'
     });
@@ -254,9 +249,8 @@ export default async function handler(
   } catch (error) {
     logger.error('Price collection failed:', { error });
     res.status(500).json({
-      success: false,
       error: 'Price collection failed',
-      message: error.message || 'Unknown error'
+      message: error instanceof Error ? error.message : String(error) || 'Unknown error'
     });
   }
 }

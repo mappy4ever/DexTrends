@@ -1,15 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { FaMicrophone, FaMicrophoneSlash, FaSpinner } from 'react-icons/fa';
 import { BsSoundwave } from 'react-icons/bs';
 import { TCGCard } from '../../types/api/cards';
 import logger from '@/utils/logger';
+import { 
+  SpeechRecognition, 
+  SpeechRecognitionEvent, 
+  SpeechRecognitionErrorEvent,
+  SpeechRecognitionConstructor 
+} from '../../types/speech-recognition';
 
-// Extend Window interface for Speech Recognition API
+// Window interface extension for audio context
 interface IWindow extends Window {
-  SpeechRecognition?: any;
-  webkitSpeechRecognition?: any;
-  AudioContext?: any;
-  webkitAudioContext?: any;
+  AudioContext?: typeof AudioContext;
+  webkitAudioContext?: typeof AudioContext;
 }
 
 interface VoiceSearchResult {
@@ -40,17 +44,75 @@ export default function VoiceSearchInterface({
   const [confidence, setConfidence] = useState(0);
   const [audioLevel, setAudioLevel] = useState(0);
 
-  const recognitionRef = useRef<any>(null);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const animationFrameRef = useRef<number | null>(null);
+
+  const updateAudioLevel = useCallback(() => {
+    const updateFrame = () => {
+      if (!analyserRef.current) return;
+
+      const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
+      analyserRef.current.getByteFrequencyData(dataArray);
+      
+      const average = dataArray.reduce((sum, value) => sum + value, 0) / dataArray.length;
+      setAudioLevel(Math.min(average / 128, 1));
+
+      if (isListening) {
+        animationFrameRef.current = requestAnimationFrame(updateFrame);
+      }
+    };
+    updateFrame();
+  }, [isListening]);
+
+  const setupAudioAnalyzer = useCallback(async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const windowWithAudio = window as IWindow;
+      const AudioContext = windowWithAudio.AudioContext || windowWithAudio.webkitAudioContext;
+      
+      if (!AudioContext) return;
+      
+      audioContextRef.current = new AudioContext();
+      
+      if (!audioContextRef.current) return;
+      
+      const source = audioContextRef.current.createMediaStreamSource(stream);
+      analyserRef.current = audioContextRef.current.createAnalyser();
+      analyserRef.current.fftSize = 256;
+      
+      source.connect(analyserRef.current);
+      updateAudioLevel();
+    } catch (err) {
+      logger.warn('Could not setup audio analyzer:', { error: err });
+    }
+  }, [updateAudioLevel]);
+
+  const handleVoiceSearch = useCallback(async (searchText: string) => {
+    setIsProcessing(true);
+    try {
+      // Process the voice command
+      const processedQuery = processVoiceCommand(searchText);
+      
+      // Simulate search with the processed query
+      // In a real implementation, this would call your search API
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const mockResults = generateMockResults(processedQuery);
+      onSearchResults?.(mockResults, processedQuery);
+    } catch (error) {
+      setError('Failed to process voice search');
+    } finally {
+      setIsProcessing(false);
+    }
+  }, [onSearchResults]);
 
   // Initialize speech recognition
   useEffect(() => {
     if (!isEnabled || typeof window === 'undefined') return;
 
-    const windowWithSpeech = window as IWindow;
-    const SpeechRecognition = windowWithSpeech.SpeechRecognition || windowWithSpeech.webkitSpeechRecognition;
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     
     if (!SpeechRecognition) {
       setError('Speech recognition not supported in this browser');
@@ -69,7 +131,7 @@ export default function VoiceSearchInterface({
       setupAudioAnalyzer();
     };
 
-    recognition.onresult = (event: any) => {
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
       let interimResult = '';
       let finalResult = '';
 
@@ -95,7 +157,7 @@ export default function VoiceSearchInterface({
       }
     };
 
-    recognition.onerror = (event: any) => {
+    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
       setError(`Speech recognition error: ${event.error}`);
       setIsListening(false);
       setIsProcessing(false);
@@ -116,42 +178,7 @@ export default function VoiceSearchInterface({
       }
       cleanupAudio();
     };
-  }, [isEnabled]);
-
-  const setupAudioAnalyzer = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const windowWithAudio = window as IWindow;
-      const AudioContext = windowWithAudio.AudioContext || windowWithAudio.webkitAudioContext;
-      
-      if (!AudioContext) return;
-      
-      audioContextRef.current = new AudioContext();
-      
-      if (!audioContextRef.current) return;
-      
-      const source = audioContextRef.current.createMediaStreamSource(stream);
-      analyserRef.current = audioContextRef.current.createAnalyser();
-      analyserRef.current.fftSize = 256;
-      
-      source.connect(analyserRef.current);
-      updateAudioLevel();
-    } catch (err) {
-      logger.warn('Could not setup audio analyzer:', { error: err });
-    }
-  };
-
-  const updateAudioLevel = () => {
-    if (!analyserRef.current || !isListening) return;
-
-    const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
-    analyserRef.current.getByteFrequencyData(dataArray);
-    
-    const average = dataArray.reduce((sum, value) => sum + value, 0) / dataArray.length;
-    setAudioLevel(Math.min(average / 128, 1));
-
-    animationFrameRef.current = requestAnimationFrame(updateAudioLevel);
-  };
+  }, [isEnabled, handleVoiceSearch, onTranscript, setupAudioAnalyzer]);
 
   const cleanupAudio = () => {
     if (animationFrameRef.current) {
@@ -159,25 +186,6 @@ export default function VoiceSearchInterface({
     }
     if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
       audioContextRef.current.close();
-    }
-  };
-
-  const handleVoiceSearch = async (searchText: string) => {
-    setIsProcessing(true);
-    try {
-      // Process the voice command
-      const processedQuery = processVoiceCommand(searchText);
-      
-      // Simulate search with the processed query
-      // In a real implementation, this would call your search API
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      const mockResults = generateMockResults(processedQuery);
-      onSearchResults?.(mockResults, processedQuery);
-    } catch (error) {
-      setError('Failed to process voice search');
-    } finally {
-      setIsProcessing(false);
     }
   };
 

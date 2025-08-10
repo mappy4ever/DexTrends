@@ -8,10 +8,11 @@ import TouchGestures from '../components/mobile/TouchGestures';
 import BottomSheet from '../components/mobile/BottomSheet';
 import { ContextMenu, useContextMenu, ContextMenuItem } from '../components/ui/ContextMenu';
 import { ToastContainer } from '../components/ui/Toast';
-import { useToast } from '../hooks/useToast';
+import { useNotifications } from '../hooks/useNotifications';
+import { convertNotificationsToToasts } from '../utils/toastUtils';
 
 const MobileGesturesDemo = () => {
-  const { toasts, removeToast, success, info, warning } = useToast();
+  const { toasts, removeToast, success, info, warning } = useNotifications();
   const { isOpen: isContextOpen, position, items, openMenu, closeMenu, handleLongPress } = useContextMenu();
   const [bottomSheetOpen, setBottomSheetOpen] = useState(false);
   const [currentSnapPoint, setCurrentSnapPoint] = useState(0.5);
@@ -58,13 +59,13 @@ const MobileGesturesDemo = () => {
     }
   ];
 
-  const handleSwipe = (direction: string, detail: any) => {
+  const handleSwipe = (direction: string, detail: { distance: number }) => {
     setSwipeDirection(direction);
     info(`Swiped ${direction} - Distance: ${Math.round(detail.distance)}px`);
     setTimeout(() => setSwipeDirection(null), 1000);
   };
 
-  const handlePinch = (detail: any) => {
+  const handlePinch = (detail: { scale: number }) => {
     setPinchScale(detail.scale);
     if (detail.scale > 1.5) {
       success('Zoomed in!');
@@ -73,7 +74,7 @@ const MobileGesturesDemo = () => {
     }
   };
 
-  const handleDoubleTap = (detail: any) => {
+  const handleDoubleTap = (detail: { x: number; y: number }) => {
     success(`Double tapped at (${Math.round(detail.x)}, ${Math.round(detail.y)})`);
   };
 
@@ -321,7 +322,7 @@ const MobileGesturesDemo = () => {
         )}
 
         {/* Toast Container */}
-        <ToastContainer toasts={toasts} onClose={removeToast} />
+        <ToastContainer toasts={convertNotificationsToToasts(toasts)} onClose={removeToast} />
       </div>
     </>
   );

@@ -6,6 +6,7 @@
 import logger from './logger';
 import adaptiveLoading from './adaptiveLoading';
 import batteryOptimization from './batteryOptimization';
+import type { AnyObject, PerformanceMetric, AnalyticsEvent as BaseAnalyticsEvent } from '../types/common';
 
 interface DeviceInfo {
   isMobile: boolean;
@@ -52,11 +53,11 @@ interface SessionData {
   interactions: number;
   errors: number;
   performance: {
-    loadTimes: any[];
-    interactionTimes: any[];
-    memoryUsage: any[];
-    networkRequests: any[];
-    [key: string]: any[];
+    loadTimes: PerformanceMetric[];
+    interactionTimes: PerformanceMetric[];
+    memoryUsage: PerformanceMetric[];
+    networkRequests: PerformanceMetric[];
+    [key: string]: PerformanceMetric[];
   };
 }
 
@@ -67,14 +68,14 @@ interface ElementInfo {
   text: string | null;
 }
 
-interface AnalyticsEvent {
+interface AnalyticsEvent extends BaseAnalyticsEvent {
   type: 'event' | 'interaction' | 'performance' | 'error';
   name?: string;
   interaction_type?: string;
   metric?: string;
-  error?: any;
-  data?: any;
-  properties?: Record<string, any>;
+  error?: ErrorData;
+  data?: AnyObject;
+  properties?: AnyObject;
 }
 
 interface ErrorData {
@@ -605,7 +606,7 @@ class MobileAnalytics {
     });
   }
 
-  trackPerformance(metric: string, data: any): void {
+  trackPerformance(metric: string, data: PerformanceMetric): void {
     this.sessionData.performance[metric] = this.sessionData.performance[metric] || [];
     this.sessionData.performance[metric].push(data);
 
@@ -678,7 +679,7 @@ class MobileAnalytics {
     });
   }
 
-  trackMobileConversion(type: string, value: any = null): void {
+  trackMobileConversion(type: string, value: unknown = null): void {
     this.trackEvent('mobile_conversion', {
       conversion_type: type,
       value,
@@ -734,7 +735,7 @@ class MobileAnalytics {
     }
 
     // Mock API call
-    console.log('Analytics data would be sent:', data);
+    logger.debug('Analytics data would be sent:', { data });
   }
 
   private storeOfflineData(data: AnalyticsEvent[]): void {

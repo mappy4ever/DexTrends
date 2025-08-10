@@ -8,7 +8,7 @@ interface TestResponse {
     name: string;
     passed: boolean;
     message: string;
-    data?: any;
+    data?: Record<string, unknown>;
   }[];
 }
 
@@ -54,12 +54,12 @@ export default async function handler(
       message: error ? `Error accessing table: ${error.message}` : 'Successfully accessed card_price_history table',
       data: error ? { error: error.message } : { rowCount: data?.length || 0 }
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     tests.push({
       name: 'Database Table Access',
       passed: false,
       message: 'Failed to access database',
-      data: { error: error.message }
+      data: { error: error instanceof Error ? error.message : String(error) }
     });
   }
 
@@ -87,12 +87,12 @@ export default async function handler(
         hasApiKey: !!apiKey
       }
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     tests.push({
       name: 'Pokemon TCG API Access',
       passed: false,
       message: 'Failed to connect to Pokemon TCG API',
-      data: { error: error.message }
+      data: { error: error instanceof Error ? error.message : String(error) }
     });
   }
 
@@ -110,12 +110,12 @@ export default async function handler(
         : `Found ${count || 0} price records in database`,
       data: { recordCount: count || 0 }
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     tests.push({
       name: 'Existing Price Data',
       passed: false,
       message: 'Failed to check existing data',
-      data: { error: error.message }
+      data: { error: error instanceof Error ? error.message : String(error) }
     });
   }
 
@@ -150,12 +150,12 @@ export default async function handler(
       message: error ? `Error inserting: ${error.message}` : 'Successfully inserted and cleaned up test record',
       data: error ? { error: error.message } : { success: true }
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     tests.push({
       name: 'Insert Price Record',
       passed: false,
       message: 'Failed to test insert operation',
-      data: { error: error.message }
+      data: { error: error instanceof Error ? error.message : String(error) }
     });
   }
 

@@ -2,6 +2,8 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { tcgCache } from '../../../lib/tcg-cache';
 import { fetchJSON } from '../../../utils/unifiedFetch';
 import logger from '../../../utils/logger';
+import type { UnknownError } from '../../../types/common';
+import type { TCGApiResponse } from '../../../types/api/enhanced-responses';
 
 interface WarmSetsListRequest extends NextApiRequest {
   query: {
@@ -51,7 +53,7 @@ export default async function handler(req: WarmSetsListRequest, res: NextApiResp
         if (existingComprehensive) {
           comprehensiveResults = {
             status: 'already-cached',
-            totalSets: existingComprehensive.totalCount || existingComprehensive.sets?.length || 0
+            totalSets: (existingComprehensive as { totalCount?: number; sets?: unknown[] }).totalCount || (existingComprehensive as { sets?: unknown[] }).sets?.length || 0
           };
         } else {
           // Fetch ALL sets using the existing logic from warm-cache.ts
@@ -65,7 +67,7 @@ export default async function handler(req: WarmSetsListRequest, res: NextApiResp
           }
 
           // First, get total count
-          const countResponse = await fetchJSON<{ totalCount: number }>(
+          const countResponse = await fetchJSON<TCGApiResponse<never> & { totalCount: number }>(
             `https://api.pokemontcg.io/v2/sets?pageSize=1`,
             { headers, timeout: 30000, retries: 2 }
           );
@@ -73,12 +75,12 @@ export default async function handler(req: WarmSetsListRequest, res: NextApiResp
           const totalSets = countResponse?.totalCount || 200;
           
           // Fetch all sets in batches
-          const allSets: any[] = [];
+          const allSets: unknown[] = [];
           const pageSize = 250;
           const totalPages = Math.ceil(totalSets / pageSize);
 
           for (let page = 1; page <= totalPages; page++) {
-            const response = await fetchJSON<{ data: any[] }>(
+            const response = await fetchJSON<TCGApiResponse<unknown[]>>(
               `https://api.pokemontcg.io/v2/sets?orderBy=-releaseDate&page=${page}&pageSize=${pageSize}`,
               { headers, timeout: 30000, retries: 2 }
             );
@@ -101,11 +103,11 @@ export default async function handler(req: WarmSetsListRequest, res: NextApiResp
             totalSets: allSets.length
           };
         }
-      } catch (error: any) {
-        logger.error('[Warm Sets List] Failed to cache comprehensive sets list:', error);
+      } catch (error) {
+        logger.error('[Warm Sets List] Failed to cache comprehensive sets list:', { error: error instanceof Error ? error.message : String(error) });
         comprehensiveResults = {
           status: 'failed',
-          error: error.message
+          error: error instanceof Error ? error.message : String(error)
         };
       }
     }
@@ -125,12 +127,12 @@ export default async function handler(req: WarmSetsListRequest, res: NextApiResp
     
     res.status(200).json(results);
     
-  } catch (error: any) {
-    logger.error('[Warm Sets List] Failed:', error);
+  } catch (error) {
+    logger.error('[Warm Sets List] Failed:', { error: error instanceof Error ? error.message : String(error) });
     
     res.status(500).json({
       error: 'Sets list cache warming failed',
-      message: error.message
+      message: error instanceof Error ? error.message : String(error)
     });
   }
 }

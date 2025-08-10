@@ -40,7 +40,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         totalSamples: cachedSamples.filter(s => s.exists).length
       };
     } catch (error) {
-      logger.error('Error getting Redis info:', error);
+      logger.error('Error getting Redis info:', { error: error instanceof Error ? error.message : String(error) });
     }
 
     // Get background warmer status
@@ -65,11 +65,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
       timestamp: new Date().toISOString()
     });
-  } catch (error: any) {
-    logger.error('Error getting cache status:', error);
+  } catch (error: unknown) {
+    logger.error('Error getting cache status:', { error: error instanceof Error ? error.message : String(error) });
     res.status(500).json({
       error: 'Failed to get cache status',
-      message: error.message
+      message: error instanceof Error ? error.message : String(error)
     });
   }
 }

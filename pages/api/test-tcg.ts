@@ -30,20 +30,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       pokemonName,
       apiKeyPresent: !!apiKey,
       exactMatch: {
-        count: (exactResult as any).data?.length || 0,
-        sample: (exactResult as any).data?.slice(0, 2)
+        count: (exactResult as { data?: unknown[] }).data?.length || 0,
+        sample: (exactResult as { data?: unknown[] }).data?.slice(0, 2)
       },
       partialMatch: {
-        count: (partialResult as any).data?.length || 0,
-        sample: (partialResult as any).data?.slice(0, 2)
+        count: (partialResult as { data?: unknown[] }).data?.length || 0,
+        sample: (partialResult as { data?: unknown[] }).data?.slice(0, 2)
       }
     });
-  } catch (error: any) {
-    logger.error('[Test TCG API] Error:', { error: error.message, stack: error.stack });
+  } catch (error) {
+    logger.error('[Test TCG API] Error:', { 
+      error: error instanceof Error ? error.message : String(error), 
+      stack: error instanceof Error ? error.stack : undefined 
+    });
     res.status(500).json({
       success: false,
-      error: error.message || 'Unknown error',
-      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      error: error instanceof Error ? error.message : String(error),
+      stack: process.env.NODE_ENV === 'development' && error instanceof Error ? error.stack : undefined
     });
   }
 }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaChartLine, FaChartBar, FaChartPie, FaArrowUp, FaArrowDown, FaUsers, FaEye, FaHeart } from 'react-icons/fa';
+import logger from "@/utils/logger";
 import { BsGraphUp, BsGraphDown, BsClock, BsCalendar } from 'react-icons/bs';
 
 // Types and Interfaces

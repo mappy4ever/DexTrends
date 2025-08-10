@@ -13,7 +13,7 @@ All UI components are already integrated into the DexTrends project. To use them
 import { EnhancedInput, Button, CircularProgress } from '@/components/ui';
 
 // Import hooks
-import { useToast } from '@/hooks/useToast';
+import { useNotifications } from '@/hooks/useNotifications';
 ```
 
 ## Form Components
@@ -231,7 +231,7 @@ const {
   info,          // Show info toast
   warning,       // Show warning toast
   promise        // Toast for async operations
-} = useToast();
+} = useNotifications();
 ```
 
 **Usage:**
@@ -558,7 +558,7 @@ Most components accept color props that map to Tailwind classes:
 alert('Success!');
 
 // New
-const { success } = useToast();
+const { success } = useNotifications();
 success('Operation completed!');
 ```
 

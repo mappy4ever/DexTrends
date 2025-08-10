@@ -1,6 +1,8 @@
 // Unified Type Definitions for Pokemon Tab Components
 
-import type { Pokemon, PokemonSpecies, EvolutionChain, Nature } from './api/pokemon';
+import type { Pokemon, PokemonSpecies, EvolutionChain, Nature, LocationAreaEncounterDetail } from './api/pokemon';
+import type { TCGCard } from './api/cards';
+import type { PocketCard } from './api/pocket-cards';
 import type { CompetitiveTierRecord } from '../utils/supabase';
 
 // Consistent type colors interface used across all tabs
@@ -13,6 +15,7 @@ export interface TypeColors {
   via?: string;
   to?: string;
   tabActive?: string;
+  [key: string]: string | undefined;
 }
 
 // Base props that all tabs receive
@@ -55,12 +58,12 @@ export interface BreedingTabProps extends BaseTabProps {
 }
 
 export interface LocationsTabProps extends BaseTabProps {
-  locationEncounters?: any[]; // TODO: Add proper type for location encounters
+  locationEncounters?: LocationAreaEncounterDetail[];
 }
 
 export interface CardsTabProps extends BaseTabProps {
-  tcgCards?: any[]; // TODO: Add proper type for TCG cards
-  pocketCards?: any[]; // TODO: Add proper type for Pocket cards
+  tcgCards?: TCGCard[];
+  pocketCards?: PocketCard[];
 }
 
 export interface CompetitiveTabProps extends BaseTabProps {
@@ -98,7 +101,7 @@ export interface AnimationConfig {
 }
 
 // Standard animation presets
-export const STANDARD_ANIMATIONS: Record<string, AnimationConfig> = {
+export const STANDARD_ANIMATIONS: Record<string, AnimationConfig | ((delay: number) => AnimationConfig)> = {
   fadeInUp: {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },

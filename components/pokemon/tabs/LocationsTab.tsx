@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { Pokemon, PokemonSpecies, LocationAreaEncounterDetail } from '../../../types/api/pokemon';
+import type { Pokemon, PokemonSpecies, LocationAreaEncounterDetail } from "../../../types/pokemon";
 import { GlassContainer } from '../../ui/design-system';
 import { cn } from '../../../utils/cn';
 import { 
@@ -8,7 +8,7 @@ import {
   FaMountain, FaTree, FaWater, FaCity, FaCampground,
   FaSnowflake, FaFire, FaCloud, FaSun
 } from 'react-icons/fa';
-import { GiCave, GiIsland, GiForest, GiDesert } from 'react-icons/gi';
+import { GiCage, GiIsland, GiForest, GiDesert } from 'react-icons/gi';
 import { HiSparkles } from 'react-icons/hi';
 
 // Animation helper
@@ -22,7 +22,7 @@ interface LocationsTabProps {
   pokemon: Pokemon;
   species: PokemonSpecies;
   locationEncounters?: LocationAreaEncounterDetail[];
-  typeColors: any;
+  typeColors: Record<string, unknown>;
 }
 
 interface GameLocation {
@@ -109,21 +109,11 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
   const [selectedConsole, setSelectedConsole] = useState<string | null>(null);
   const [expandedGame, setExpandedGame] = useState<string | null>(null);
   
-  // Early return if no data to prevent processing errors
-  if (!pokemon || !species) {
-    return (
-      <GlassContainer 
-        variant="dark" 
-        className="backdrop-blur-xl bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 shadow-xl p-8 text-center"
-        animate={false}
-      >
-        <p className="text-gray-500 dark:text-gray-400">Loading location data...</p>
-      </GlassContainer>
-    );
-  }
-  
   // Safety check for locationEncounters
-  const safeLocationEncounters = Array.isArray(locationEncounters) ? locationEncounters : [];
+  const safeLocationEncounters = useMemo(() => 
+    Array.isArray(locationEncounters) ? locationEncounters : [], 
+    [locationEncounters]
+  );
 
   // Process location encounters by game
   const gameLocations = useMemo(() => {
@@ -199,7 +189,20 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
   }, [filteredGameLocations]);
 
   // Get habitat info
-  const habitat = species.habitat ? species.habitat.name.replace(/-/g, ' ') : null;
+  const habitat = species?.habitat ? species.habitat.name.replace(/-/g, ' ') : null;
+
+  // Early return if no data to prevent processing errors
+  if (!pokemon || !species) {
+    return (
+      <GlassContainer 
+        variant="dark" 
+        className="backdrop-blur-xl bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 shadow-xl p-8 text-center"
+        animate={false}
+      >
+        <p className="text-gray-500 dark:text-gray-400">Loading location data...</p>
+      </GlassContainer>
+    );
+  }
 
   return (
     <div className="space-y-4">

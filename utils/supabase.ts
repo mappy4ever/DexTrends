@@ -1,25 +1,25 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import logger from '@/utils/logger';
 
 // Initialize Supabase client
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-let supabase: any = null;
+let supabase: SupabaseClient | null = null;
 
 try {
   if (!supabaseUrl || !supabaseAnonKey) {
     logger.warn('[Supabase] Missing environment variables');
-    logger.warn('[Supabase] URL:', supabaseUrl ? 'Present' : 'Missing');
-    logger.warn('[Supabase] Key:', supabaseAnonKey ? 'Present' : 'Missing');
+    logger.warn('[Supabase] URL', { status: supabaseUrl ? 'Present' : 'Missing' });
+    logger.warn('[Supabase] Key', { status: supabaseAnonKey ? 'Present' : 'Missing' });
     supabase = null;
   } else {
     supabase = createClient(supabaseUrl, supabaseAnonKey);
     logger.info('[Supabase] Client initialized successfully');
-    logger.debug('[Supabase] URL:', supabaseUrl);
+    logger.debug('[Supabase] URL', { url: supabaseUrl });
   }
 } catch (error) {
-  logger.error('[Supabase] Failed to initialize client:', error);
+  logger.error('[Supabase] Failed to initialize client', { error });
   supabase = null;
 }
 
@@ -65,7 +65,7 @@ export interface MoveCompetitiveDataRecord {
   type: string | null;
   target: string | null;
   flags: string[];
-  secondary_effects: Record<string, any> | null;
+  secondary_effects: Record<string, unknown> | null;
   description: string | null;
   short_description: string | null;
   created_at?: string;
@@ -78,7 +78,7 @@ export interface AbilityRatingRecord {
   name: string;
   rating: number | null;
   competitive_desc: string | null;
-  flags: Record<string, any>;
+  flags: Record<string, unknown>;
   created_at?: string;
   updated_at?: string;
 }
@@ -173,7 +173,7 @@ export const showdownQueries = {
     // Transform flat records into nested object for easier lookup
     const chart: Record<string, Record<string, number>> = {};
     
-    data?.forEach(record => {
+    data?.forEach((record: TypeEffectivenessRecord) => {
       if (!chart[record.attacking_type]) {
         chart[record.attacking_type] = {};
       }
@@ -265,7 +265,7 @@ export const showdownQueries = {
     
     // Convert array to object for easy lookup
     const ratings: Record<string, number> = {};
-    data?.forEach(ability => {
+    data?.forEach((ability: AbilityRatingRecord) => {
       ratings[ability.name] = ability.rating;
     });
     

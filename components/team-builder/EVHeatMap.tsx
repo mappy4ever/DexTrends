@@ -27,7 +27,7 @@ import {
   generateEVHeatMapData
 } from '../../utils/statCalculations';
 import type { TeamMember, StatSpread } from '../../types/team-builder';
-import type { Pokemon } from '../../types/api/pokemon';
+import type { Pokemon } from "../../types/pokemon";
 
 ChartJS.register(
   CategoryScale,
@@ -224,7 +224,7 @@ const EVHeatMap: React.FC<EVHeatMapProps> = ({
       },
       tooltip: {
         callbacks: {
-          label: (context: any) => {
+          label: (context: { dataset: { label?: string }, parsed: { r: number }, dataIndex: number }) => {
             const label = context.dataset.label || '';
             const value = context.parsed.r;
             const statIndex = context.dataIndex;
@@ -279,7 +279,7 @@ const EVHeatMap: React.FC<EVHeatMapProps> = ({
       },
       tooltip: {
         callbacks: {
-          label: (context: any) => {
+          label: (context: { parsed: { y: number }, dataIndex: number }) => {
             const value = context.parsed.y;
             const statIndex = context.dataIndex;
             const statKey = Object.keys(evs)[statIndex] as keyof StatSpread;
@@ -294,7 +294,7 @@ const EVHeatMap: React.FC<EVHeatMapProps> = ({
         },
       },
     },
-    onClick: (event: any, elements: any) => {
+    onClick: (event: unknown, elements: Array<{ index: number }>) => {
       if (elements.length > 0) {
         const index = elements[0].index;
         const stat = Object.keys(evs)[index] as keyof StatSpread;

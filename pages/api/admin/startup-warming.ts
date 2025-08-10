@@ -51,12 +51,12 @@ export default async function handler(req: StartupWarmingRequest, res: NextApiRe
     
     res.status(200).json(result);
     
-  } catch (error: any) {
-    logger.error('[Startup Warming] Failed:', error);
+  } catch (error: unknown) {
+    logger.error('[Startup Warming] Failed:', { error: error instanceof Error ? error.message : String(error) });
     
     res.status(500).json({
       error: 'Startup warming failed',
-      message: error.message
+      message: error instanceof Error ? error.message : String(error)
     });
   }
 }

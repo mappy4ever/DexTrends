@@ -15,7 +15,7 @@ import React, {
 import { HapticFeedback, VisualFeedback } from './MicroInteractionSystem';
 import { TCGCard } from '../../types/api/cards';
 import { PocketCard } from '../../types/api/pocket-cards';
-import { Pokemon } from '../../types/api/pokemon';
+import { Pokemon } from "../../types/pokemon";
 import { useDragDrop } from '../../hooks/useDragDrop';
 import { useDragDropLogic } from '../../utils/dragDrop';
 
@@ -24,7 +24,7 @@ import { useDragDropLogic } from '../../utils/dragDrop';
  */
 
 // Types
-type DragItem = TCGCard | PocketCard | Pokemon | any;
+type DragItem = TCGCard | PocketCard | Pokemon | Record<string, unknown>;
 
 interface Position {
   x: number;
@@ -161,7 +161,7 @@ interface DraggableItemProps {
   style?: CSSProperties;
   onDragStart?: (item: DragItem) => void;
   onDragEnd?: (item: DragItem) => void;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 // Draggable Item Component
@@ -399,7 +399,7 @@ interface DropZoneProps {
   className?: string;
   dropIndicator?: boolean;
   highlightOnHover?: boolean;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 // Drop Zone Component
@@ -521,7 +521,7 @@ interface SortableListProps<T> {
   direction?: 'vertical' | 'horizontal';
   className?: string;
   itemClassName?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 // Sortable List Component
@@ -652,7 +652,7 @@ interface DraggableCardGridProps {
   columns?: number;
   renderCard?: (card: CardType, index: number) => ReactNode;
   keyExtractor?: (card: CardType) => string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 // Card Grid with Drag and Drop

@@ -2,6 +2,22 @@ import React, { useState, useEffect } from 'react';
 
 import { useIntersectionObserver } from './PerformanceMonitor.hooks';
 
+// Type extensions for performance API
+interface PerformanceWithMemory extends Performance {
+  memory: {
+    usedJSHeapSize: number;
+    totalJSHeapSize: number;
+    jsHeapSizeLimit: number;
+  };
+}
+
+interface PerformanceWithTiming extends Performance {
+  timing: {
+    navigationStart: number;
+    loadEventEnd: number;
+  };
+}
+
 // Re-export hook for backward compatibility
 export { useIntersectionObserver } from './PerformanceMonitor.hooks';
 
@@ -32,7 +48,7 @@ export const PerformanceMonitor = ({ showInDev = true }: PerformanceMonitorProps
     let rafId: number;
 
     // FPS monitoring
-    const measureFPS = (): any => {
+    const measureFPS = () => {
       frameCount++;
       const currentTime = performance.now();
       
@@ -50,19 +66,19 @@ export const PerformanceMonitor = ({ showInDev = true }: PerformanceMonitorProps
     };
 
     // Memory monitoring (if supported)
-    const measureMemory = (): any => {
-      if ((performance as any).memory) {
+    const measureMemory = (): void => {
+      if ((performance as PerformanceWithMemory).memory) {
         setMetrics(prev => ({
           ...prev,
-          memory: Math.round((performance as any).memory.usedJSHeapSize / 1048576) // MB
+          memory: Math.round((performance as PerformanceWithMemory).memory.usedJSHeapSize / 1048576) // MB
         }));
       }
     };
 
     // Load time measurement
-    const measureLoadTime = (): any => {
-      if ((performance as any).timing) {
-        const loadTime = (performance as any).timing.loadEventEnd - (performance as any).timing.navigationStart;
+    const measureLoadTime = (): void => {
+      if ((performance as PerformanceWithTiming).timing) {
+        const loadTime = (performance as PerformanceWithTiming).timing.loadEventEnd - (performance as PerformanceWithTiming).timing.navigationStart;
         setMetrics(prev => ({
           ...prev,
           loadTime: loadTime
@@ -83,7 +99,7 @@ export const PerformanceMonitor = ({ showInDev = true }: PerformanceMonitorProps
   }, [showInDev, isDev]);
 
   // Performance optimization suggestions
-  const getOptimizationSuggestions = (): any => {
+  const getOptimizationSuggestions = (): string[] => {
     const suggestions = [];
     
     if (metrics.fps < 30) {
@@ -165,7 +181,7 @@ interface OptimizedImageProps {
   alt: string;
   className?: string;
   priority?: boolean;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export const OptimizedImage = ({ src, alt, className, priority = false, ...props }: OptimizedImageProps) => {

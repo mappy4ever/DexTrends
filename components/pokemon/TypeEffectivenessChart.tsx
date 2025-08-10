@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import type { PokemonType } from '../../types/api/pokemon';
+import type { PokemonType } from "../../types/pokemon";
 import { getTypeMatchups, getTypeEffectivenessColor, getEffectivenessLabel, getTypeColor, POKEMON_TYPES } from '../../utils/typeEffectiveness';
 import { cn } from '../../utils/cn';
 

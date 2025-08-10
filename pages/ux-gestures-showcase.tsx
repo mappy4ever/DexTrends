@@ -9,12 +9,13 @@ import TouchGestures from '../components/mobile/TouchGestures';
 import BottomSheet from '../components/mobile/BottomSheet';
 import { ContextMenu, useContextMenu, ContextMenuItem } from '../components/ui/ContextMenu';
 import { ToastContainer } from '../components/ui/Toast';
-import { useToast } from '../hooks/useToast';
+import { useNotifications } from '../hooks/useNotifications';
+import { convertNotificationsToToasts } from '../utils/toastUtils';
 import UnifiedCard from '../components/ui/cards/UnifiedCard';
 import ZoomableImage from '../components/ui/ZoomableImage';
 
 const UXGesturesShowcase = () => {
-  const { toasts, removeToast, success, info, warning } = useToast();
+  const { toasts, removeToast, success, info, warning } = useNotifications();
   const { isOpen: isContextOpen, position, items, openMenu, closeMenu, handleLongPress } = useContextMenu();
   const [bottomSheetOpen, setBottomSheetOpen] = useState(false);
   const [currentSnapPoint, setCurrentSnapPoint] = useState(0.5);
@@ -375,7 +376,7 @@ const UXGesturesShowcase = () => {
         )}
 
         {/* Toast Container */}
-        <ToastContainer toasts={toasts} onClose={removeToast} />
+        <ToastContainer toasts={convertNotificationsToToasts(toasts)} onClose={removeToast} />
       </div>
     </>
   );

@@ -11,7 +11,7 @@ import { BsSearch, BsShield, BsLightning, BsDroplet, BsFire } from "react-icons/
 import { GiPunch, GiHealing, GiSpeedometer, GiShieldBounces } from "react-icons/gi";
 import { fetchJSON } from "../../utils/unifiedFetch";
 import logger from "../../utils/logger";
-import type { AbilityData } from "../../types/api/pokemon";
+import type { AbilityData } from "../../types/pokemon";
 
 // Interfaces
 interface Ability {

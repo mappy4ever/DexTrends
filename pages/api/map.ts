@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { createClient } from '@supabase/supabase-js';
 import logger from '@/utils/logger';
+import { ErrorResponse } from '@/types/api/api-responses';
 
 // Initialize Supabase client - This is OK at the top level
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -37,11 +38,6 @@ interface MapData {
   month: string;
 }
 
-interface ErrorResponse {
-  message: string;
-  error?: string;
-  details?: string;
-}
 
 export default async function handler(
   req: NextApiRequest,
@@ -61,11 +57,11 @@ export default async function handler(
 
     // --- Method Check ---
     if (!supabase) {
-      return res.status(500).json({ message: "Supabase URL or Anon Key is not configured." });
+      return res.status(500).json({ error: "Supabase URL or Anon Key is not configured." });
     } 
 	if (req.method !== 'GET') {
         res.setHeader('Allow', ['GET']);
-        return res.status(405).json({ message: `Method ${req.method} Not Allowed` });
+        return res.status(405).json({ error: `Method ${req.method} Not Allowed` });
     }
 
     // --- Main Logic ---
@@ -79,10 +75,10 @@ export default async function handler(
         // --- Input Validation ---
         const dateRegex = /^\d{4}-\d{2}$/; // YYYY-MM format
         if (!startMonthStr || !dateRegex.test(startMonthStr)) {
-            return res.status(400).json({ message: "Invalid or missing 'startMonth' parameter. Expected format: YYYY-MM" });
+            return res.status(400).json({ error: "Invalid or missing 'startMonth' parameter. Expected format: YYYY-MM" });
         }
         if (!endMonthStr || !dateRegex.test(endMonthStr)) {
-            return res.status(400).json({ message: "Invalid or missing 'endMonth' parameter. Expected format: YYYY-MM" });
+            return res.status(400).json({ error: "Invalid or missing 'endMonth' parameter. Expected format: YYYY-MM" });
         }
         // Optional: Add more validation (e.g., is startMonth <= endMonth?)
 
@@ -119,8 +115,8 @@ export default async function handler(
         const { data, error } = await query;
 
         if (error) {
-            logger.error(`MAP API [Handler - ${req.url}]: Supabase error fetching map data:`, error);
-            return res.status(500).json({ message: `Database error: ${error.message}`, details: error.details });
+            logger.error(`MAP API [Handler - ${req.url}]: Supabase error fetching map data:`, { error: error instanceof Error ? error.message : String(error) });
+            return res.status(500).json({ error: `Database error: ${error.message}`, details: error.details });
         }
 
         // --- Success Response ---
@@ -128,7 +124,7 @@ export default async function handler(
 
     } catch (error) {
         // --- Catch Unexpected Errors ---
-        logger.error(`MAP API [Handler - ${req.url}]: Unexpected error:`, error);
-        res.status(500).json({ message: 'An unexpected server error occurred.', error: error.message });
+        logger.error(`MAP API [Handler - ${req.url}]: Unexpected error:`, { error: error instanceof Error ? error.message : String(error) });
+        res.status(500).json({ error: 'An unexpected server error occurred.', message: error instanceof Error ? error.message : String(error) });
     }
 }

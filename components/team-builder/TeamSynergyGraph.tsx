@@ -17,7 +17,7 @@ import {
 import { Scatter } from 'react-chartjs-2';
 import { analyzeTeamTypeSynergy, getTypeColor, getTypeMatchups, calculateOffensiveCoverage } from '../../utils/typeEffectiveness';
 import type { TeamMember, NetworkNode, NetworkEdge, GraphData } from '../../types/team-builder';
-import type { Pokemon } from '../../types/api/pokemon';
+import type { Pokemon } from "../../types/pokemon";
 
 ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
 

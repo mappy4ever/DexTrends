@@ -54,7 +54,6 @@ const GymLeaderCard: React.FC<GymLeaderCardProps> = ({
             <TypeBadge
               type={type}
               size="lg"
-              showIcon={true}
               className={styles.mainTypeBadge}
             />
           </div>
@@ -114,8 +113,7 @@ const GymLeaderCard: React.FC<GymLeaderCardProps> = ({
                     key={index}
                     type={type}
                     size="xs"
-                    showIcon={true}
-                    className={styles.typeIcon}
+                          className={styles.typeIcon}
                   />
                 ))}
               </div>

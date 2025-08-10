@@ -59,18 +59,6 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
     setMounted(true);
   }, []);
 
-  useEffect(() => {
-    if (mounted) {
-      loadCollections();
-    }
-  }, [userId, mounted]);
-
-  useEffect(() => {
-    if (selectedCollection) {
-      calculatePortfolioValue();
-    }
-  }, [selectedCollection]);
-
   const getSessionId = useCallback(() => {
     if (typeof window === 'undefined') return null;
     
@@ -92,6 +80,22 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
     } catch (error) {
       // If localStorage is not available, return a temporary session ID
       return 'session_temp_' + Date.now();
+    }
+  }, []);
+
+  const getCurrentCardPrice = useCallback(async (cardId: string): Promise<number> => {
+    try {
+      // In a real implementation, this would fetch from Pokemon TCG API or local cache
+      // Use deterministic price based on card ID for consistency
+      const hashCode = cardId.split('').reduce((acc, char) => {
+        return char.charCodeAt(0) + ((acc << 5) - acc);
+      }, 0);
+      
+      // Generate price between $5-$105 based on hash
+      const normalizedHash = (Math.abs(hashCode) % 1000) / 1000;
+      return (normalizedHash * 100) + 5;
+    } catch (error) {
+      return 0;
     }
   }, []);
 
@@ -120,7 +124,7 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
     } finally {
       setLoading(false);
     }
-  }, [userId, getSessionId]);
+  }, [userId, getSessionId, selectedCollection]);
 
   const calculatePortfolioValue = useCallback(async () => {
     if (!selectedCollection?.cards) return;
@@ -132,23 +136,19 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
       totalValue += currentPrice * quantity;
     }
     setPortfolioValue(totalValue);
-  }, [selectedCollection]);
+  }, [selectedCollection, getCurrentCardPrice]);
 
-  const getCurrentCardPrice = useCallback(async (cardId: string): Promise<number> => {
-    try {
-      // In a real implementation, this would fetch from Pokemon TCG API or local cache
-      // Use deterministic price based on card ID for consistency
-      const hashCode = cardId.split('').reduce((acc, char) => {
-        return char.charCodeAt(0) + ((acc << 5) - acc);
-      }, 0);
-      
-      // Generate price between $5-$105 based on hash
-      const normalizedHash = (Math.abs(hashCode) % 1000) / 1000;
-      return (normalizedHash * 100) + 5;
-    } catch (error) {
-      return 0;
+  useEffect(() => {
+    if (mounted) {
+      loadCollections();
     }
-  }, []);
+  }, [mounted, loadCollections]);
+
+  useEffect(() => {
+    if (selectedCollection) {
+      calculatePortfolioValue();
+    }
+  }, [selectedCollection, calculatePortfolioValue]);
 
   const createCollection = useCallback(async (name: string, description: string) => {
     try {
@@ -397,7 +397,7 @@ const CollectionManager = memo<CollectionManagerProps>(({ userId = null }) => {
     } catch (error) {
       logger.error('Error updating collection:', { error });
     }
-  }, [userId, getSessionId]);
+  }, [userId, getSessionId, selectedCollection?.id]);
 
   const importCollection = useCallback(async (file: File) => {
     setImportError(null);

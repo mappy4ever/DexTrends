@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 // Image optimization and lazy loading enhancement
-export const ImageOptimizer = (): any => {
+export const ImageOptimizer = (): null => {
   useEffect(() => {
     // Preload critical images
     const criticalImages = [
@@ -10,7 +10,7 @@ export const ImageOptimizer = (): any => {
       '/back-card.png'
     ];
 
-    criticalImages.forEach((src: any) => {
+    criticalImages.forEach((src: string) => {
       const link = document.createElement('link');
       link.rel = 'preload';
       link.as = 'image';
@@ -19,10 +19,10 @@ export const ImageOptimizer = (): any => {
     });
 
     // Optimize images that come into viewport
-    const imageObserver = new IntersectionObserver((entries: any) => {
-      entries.forEach((entry: any) => {
+    const imageObserver = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry: IntersectionObserverEntry) => {
         if (entry.isIntersecting) {
-          const img = entry.target;
+          const img = entry.target as HTMLImageElement;
           if (img.dataset.src) {
             img.src = img.dataset.src;
             img.removeAttribute('data-src');
@@ -33,7 +33,7 @@ export const ImageOptimizer = (): any => {
     }, { rootMargin: '50px' });
 
     // Observe all data-src images
-    document.querySelectorAll('img[data-src]').forEach((img: any) => {
+    document.querySelectorAll('img[data-src]').forEach((img: Element) => {
       imageObserver.observe(img);
     });
 
@@ -44,7 +44,7 @@ export const ImageOptimizer = (): any => {
 };
 
 // Bundle size optimization
-export const BundleOptimizer = (): any => {
+export const BundleOptimizer = (): null => {
   const router = useRouter();
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export const BundleOptimizer = (): any => {
     
     if ('requestIdleCallback' in window) {
       requestIdleCallback(() => {
-        prefetchRoutes.forEach((route: any) => {
+        prefetchRoutes.forEach((route: string) => {
           if (route !== router.pathname) {
             router.prefetch(route);
           }
@@ -62,7 +62,7 @@ export const BundleOptimizer = (): any => {
     } else {
       // Fallback for browsers without requestIdleCallback
       setTimeout(() => {
-        prefetchRoutes.forEach((route: any) => {
+        prefetchRoutes.forEach((route: string) => {
           if (route !== router.pathname) {
             router.prefetch(route);
           }
@@ -75,22 +75,23 @@ export const BundleOptimizer = (): any => {
 };
 
 // Memory management
-export const MemoryManager = (): any => {
+export const MemoryManager = (): null => {
   useEffect(() => {
     let memoryCheckInterval: NodeJS.Timeout;
 
     // Monitor memory usage if supported
-    if ((performance as any).memory) {
+    if ('memory' in performance && (performance as any).memory) {
       memoryCheckInterval = setInterval(() => {
-        const used = (performance as any).memory.usedJSHeapSize;
-        const total = (performance as any).memory.totalJSHeapSize;
-        const limit = (performance as any).memory.jsHeapSizeLimit;
+        const memoryInfo = (performance as any).memory;
+        const used = memoryInfo.usedJSHeapSize;
+        const total = memoryInfo.totalJSHeapSize;
+        const limit = memoryInfo.jsHeapSizeLimit;
 
         // If memory usage is getting high, trigger cleanup
         if (used / limit > 0.8) {
           // Clear cached data
           const keys = Object.keys(localStorage);
-          keys.forEach((key: any) => {
+          keys.forEach((key: string) => {
             if (key.startsWith('cache-') && Math.random() > 0.5) {
               localStorage.removeItem(key);
             }
@@ -115,16 +116,16 @@ export const MemoryManager = (): any => {
 };
 
 // Performance monitoring
-export const PerformanceTracker = (): any => {
+export const PerformanceTracker = (): null => {
   const router = useRouter();
 
   useEffect(() => {
     // Track Core Web Vitals
-    const trackWebVitals = (): any => {
+    const trackWebVitals = (): void => {
       if ('web-vital' in window) return; // Already tracked
 
       // First Contentful Paint
-      new PerformanceObserver((list: any) => {
+      new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
           if (entry.name === 'first-contentful-paint') {
             // First Contentful Paint measured
@@ -133,7 +134,7 @@ export const PerformanceTracker = (): any => {
       }).observe({ type: 'paint', buffered: true });
 
       // Largest Contentful Paint
-      new PerformanceObserver((list: any) => {
+      new PerformanceObserver((list) => {
         const entries = list.getEntries();
         const lastEntry = entries[entries.length - 1];
         // Largest Contentful Paint measured
@@ -141,10 +142,10 @@ export const PerformanceTracker = (): any => {
 
       // Cumulative Layout Shift
       let clsValue = 0;
-      new PerformanceObserver((list: any) => {
+      new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
-          if (!entry.hadRecentInput) {
-            clsValue += entry.value;
+          if (!(entry as any).hadRecentInput) {
+            clsValue += (entry as any).value;
           }
         }
         // Cumulative Layout Shift measured
@@ -154,11 +155,11 @@ export const PerformanceTracker = (): any => {
     };
 
     // Track route change performance
-    const handleRouteChangeStart = (): any => {
+    const handleRouteChangeStart = (): void => {
       (window as any).routeChangeStart = performance.now();
     };
 
-    const handleRouteChangeComplete = (): any => {
+    const handleRouteChangeComplete = (): void => {
       if ((window as any).routeChangeStart) {
         const duration = performance.now() - (window as any).routeChangeStart;
         // Route change performance measured
@@ -180,25 +181,26 @@ export const PerformanceTracker = (): any => {
 };
 
 // Resource optimization
-export const ResourceOptimizer = (): any => {
+export const ResourceOptimizer = (): null => {
   useEffect(() => {
     // Remove unused CSS
-    const removeUnusedCSS = (): any => {
+    const removeUnusedCSS = (): void => {
       const stylesheets = document.querySelectorAll('link[rel="stylesheet"]');
-      stylesheets.forEach((sheet: any) => {
+      stylesheets.forEach((sheet: Element) => {
         try {
-          if (sheet.sheet && sheet.sheet.cssRules) {
-            const rules = Array.from(sheet.sheet.cssRules);
-            const usedRules = rules.filter((rule: any) => {
-              if (rule.selectorText) {
-                return document.querySelector(rule.selectorText);
+          const linkElement = sheet as HTMLLinkElement;
+          if (linkElement.sheet && linkElement.sheet.cssRules) {
+            const rules = Array.from(linkElement.sheet.cssRules);
+            const usedRules = rules.filter((rule: CSSRule) => {
+              if ((rule as CSSStyleRule).selectorText) {
+                return document.querySelector((rule as CSSStyleRule).selectorText);
               }
               return true;
             });
             
             // If less than 50% of rules are used, mark for potential removal
             if (usedRules.length / rules.length < 0.5) {
-              sheet.setAttribute('data-low-usage', 'true');
+              linkElement.setAttribute('data-low-usage', 'true');
             }
           }
         } catch (e) {
@@ -208,7 +210,7 @@ export const ResourceOptimizer = (): any => {
     };
 
     // Optimize fonts
-    const optimizeFonts = (): any => {
+    const optimizeFonts = (): void => {
       // Use font-display: swap for better loading
       const style = document.createElement('style');
       style.textContent = `
@@ -221,15 +223,15 @@ export const ResourceOptimizer = (): any => {
     };
 
     // Clean up localStorage
-    const cleanupStorage = (): any => {
+    const cleanupStorage = (): void => {
       const now = Date.now();
       const keys = Object.keys(localStorage);
       
-      keys.forEach((key: any) => {
+      keys.forEach((key: string) => {
         try {
           const value = localStorage.getItem(key);
           if (value) {
-            const item = JSON.parse(value);
+            const item = JSON.parse(value) as { expiry?: number };
             if (item && item.expiry && now > item.expiry) {
               localStorage.removeItem(key);
             }
@@ -241,7 +243,7 @@ export const ResourceOptimizer = (): any => {
     };
 
     // Run optimizations after page load
-    const runOptimizations = (): any => {
+    const runOptimizations = (): void => {
       removeUnusedCSS();
       optimizeFonts();
       cleanupStorage();
@@ -262,7 +264,7 @@ export const ResourceOptimizer = (): any => {
 };
 
 // Service Worker registration for offline support
-export const ServiceWorkerManager = (): any => {
+export const ServiceWorkerManager = (): null => {
   useEffect(() => {
     if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
       window.addEventListener('load', () => {

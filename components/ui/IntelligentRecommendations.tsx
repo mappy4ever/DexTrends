@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import logger from '@/utils/logger';
 import { 
   SparklesIcon, 
   ArrowTrendingUpIcon, 
@@ -151,30 +152,8 @@ const IntelligentRecommendations: React.FC<IntelligentRecommendationsProps> = ({
     return profile;
   }, [userCards, favorites, viewHistory]);
 
-  // Generate smart recommendations
-  const generateSmartRecommendations = async () => {
-    setIsLoading(true);
-    try {
-      // This would typically call your backend API
-      // For now, we'll simulate intelligent recommendations
-      
-      const allCards = await fetchAllCards();
-      const scored = allCards.map(card => ({
-        ...card,
-        score: calculateRecommendationScore(card, analyzeUserProfile)
-      }));
-
-      scored.sort((a, b) => (b.score || 0) - (a.score || 0));
-      setRecommendations(scored.slice(0, maxRecommendations));
-    } catch (error) {
-      logger.error('Failed to generate recommendations:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   // Calculate recommendation score for a card
-  const calculateRecommendationScore = (card: RecommendationCard, profile: UserProfile): number => {
+  const calculateRecommendationScore = useCallback((card: RecommendationCard, profile: UserProfile): number => {
     let score = 0;
 
     // Type preference matching
@@ -244,7 +223,30 @@ const IntelligentRecommendations: React.FC<IntelligentRecommendationsProps> = ({
     if (!hasType) score += 1; // Small bonus for new types
 
     return score;
-  };
+  }, [userCards]);
+
+  // Generate smart recommendations
+  const generateSmartRecommendations = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      // This would typically call your backend API
+      // For now, we'll simulate intelligent recommendations
+      
+      const allCards = await fetchAllCards();
+      const scored = allCards.map(card => ({
+        ...card,
+        score: calculateRecommendationScore(card, analyzeUserProfile)
+      }));
+
+      scored.sort((a, b) => (b.score || 0) - (a.score || 0));
+      setRecommendations(scored.slice(0, maxRecommendations));
+    } catch (error) {
+      logger.error('Failed to generate recommendations:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [maxRecommendations, calculateRecommendationScore, analyzeUserProfile]);
+
 
   // Generate trending recommendations
   const generateTrendingRecommendations = (): RecommendationCard[] => {
@@ -598,9 +600,10 @@ const IntelligentRecommendations: React.FC<IntelligentRecommendationsProps> = ({
   };
 
   useEffect(() => {
-    setUserProfile(analyzeUserProfile);
+    const profile = analyzeUserProfile;
+    setUserProfile(profile);
     generateSmartRecommendations();
-  }, [userCards, favorites, viewHistory, analyzeUserProfile]);
+  }, [generateSmartRecommendations, analyzeUserProfile]);
 
   const tabs: Tab[] = [
     { 

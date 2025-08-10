@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import type { Pokemon, PokemonSpecies } from '../../types/api/pokemon';
+import type { Pokemon, PokemonSpecies } from "../../types/pokemon";
 import { TypeBadge } from '../ui/TypeBadge';
 import { GlassContainer } from '../ui/design-system';
 import { getTypeUIColors } from '../../utils/pokemonTypeGradients';
@@ -29,7 +29,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
   const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
   
   // Check if this Pokemon is already favorited
-  const isFavorited = favorites.pokemon?.some((fav: any) => fav.id === pokemon.id.toString());
+  const isFavorited = favorites.pokemon?.some((fav: { id: string }) => fav.id === pokemon.id.toString());
   
   // Safety check - return early if essential data is missing
   if (!pokemon || !species) {

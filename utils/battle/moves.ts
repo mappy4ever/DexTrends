@@ -1,8 +1,9 @@
 import { EnhancedBattleState, BattleAction, KeyMoment } from '@/types/battle';
-import { Pokemon, Move } from '@/types/api/pokemon';
+import { Pokemon, Move } from "../types/pokemon";
 import { canPokemonMove, calculateTurnOrder } from './core';
 import { calculateDamage } from './damage';
 import { parseMoveEffects, applyMoveEffects, applyStatusEffect } from './effects';
+import { isObject, hasProperty, isNumber } from '../typeGuards';
 
 export interface MoveExecutionResult {
   success: boolean;
@@ -166,17 +167,23 @@ export const executeMove = (
   return { success: true, damage: totalDamage, messages, keyMoments };
 };
 
-const calculateAccuracy = (move: Move, attacker: any, defender: any): number => {
+const calculateAccuracy = (move: Move, attacker: unknown, defender: unknown): number => {
   if (!move.accuracy) return 1; // Moves with no accuracy always hit
   
   let accuracy = move.accuracy / 100;
   
-  // Apply accuracy/evasion stages
-  const accuracyMultiplier = attacker.statStages.accuracy - defender.statStages.evasion;
-  if (accuracyMultiplier > 0) {
-    accuracy *= (3 + accuracyMultiplier) / 3;
-  } else if (accuracyMultiplier < 0) {
-    accuracy *= 3 / (3 - accuracyMultiplier);
+  // Apply accuracy/evasion stages if stat stages exist
+  if (isObject(attacker) && hasProperty(attacker, 'statStages') &&
+      isObject(defender) && hasProperty(defender, 'statStages') &&
+      isObject(attacker.statStages) && hasProperty(attacker.statStages, 'accuracy') &&
+      isObject(defender.statStages) && hasProperty(defender.statStages, 'evasion') &&
+      isNumber(attacker.statStages.accuracy) && isNumber(defender.statStages.evasion)) {
+    const accuracyMultiplier = attacker.statStages.accuracy - defender.statStages.evasion;
+    if (accuracyMultiplier > 0) {
+      accuracy *= (3 + accuracyMultiplier) / 3;
+    } else if (accuracyMultiplier < 0) {
+      accuracy *= 3 / (3 - accuracyMultiplier);
+    }
   }
   
   // Weather effects

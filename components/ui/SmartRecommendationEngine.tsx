@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback, ReactNode } from 'react';
 import { useUX } from './EnhancedUXProvider';
+import logger from '@/utils/logger';
+import { isObject, hasProperty, isString } from '@/utils/typeGuards';
 
 // Type definitions
 interface CardType {
@@ -124,8 +126,98 @@ const SmartRecommendationEngine: React.FC<SmartRecommendationEngineProps> = ({
   });
   const [loading, setLoading] = useState(false);
 
+  // Helper functions - defined before algorithms that use them
+  const analyzeUserInterests = useCallback((): UserInterests => {
+    const interests: UserInterests = {
+      favoriteTypes: {},
+      favoriteSets: {},
+      favoriteRarities: {},
+      priceRange: { min: 0, max: 100 },
+      followsTrends: false
+    };
+    
+    // Analyze user's favorite cards
+    userFavorites.forEach(card => {
+      // Type preferences
+      if (card.types) {
+        card.types.forEach(type => {
+          const typeName = typeof type === 'string' ? type : type.type?.name;
+          if (typeName) {
+            interests.favoriteTypes[typeName] = (interests.favoriteTypes[typeName] || 0) + 1;
+          }
+        });
+      }
+      
+      // Set preferences
+      if (card.set) {
+        interests.favoriteSets[card.set.id] = (interests.favoriteSets[card.set.id] || 0) + 1;
+      }
+      
+      // Rarity preferences
+      if (card.rarity) {
+        interests.favoriteRarities[card.rarity] = (interests.favoriteRarities[card.rarity] || 0) + 1;
+      }
+    });
+    
+    // Analyze price range from user behavior
+    const userPrices = userFavorites
+      .map(getCurrentPrice)
+      .filter((price): price is number => price !== null)
+      .sort((a, b) => a - b);
+    
+    if (userPrices.length > 0) {
+      interests.priceRange.min = userPrices[Math.floor(userPrices.length * 0.1)];
+      interests.priceRange.max = userPrices[Math.floor(userPrices.length * 0.9)];
+    }
+    
+    // Determine if user follows trends
+    interests.followsTrends = userBehavior.recentActions?.some((action: unknown) => 
+      isObject(action) && hasProperty(action, 'action') && action.action === 'view_trending'
+    ) || false;
+    
+    return interests;
+  }, [userFavorites, userBehavior]);
+
+  const calculateCardPriority = useCallback((card: Card, completionRate: number): number => {
+    let priority = 0;
+    
+    // Higher priority for rarer cards
+    const rarityScores: Record<string, number> = {
+      'Common': 1,
+      'Uncommon': 2,
+      'Rare': 3,
+      'Rare Holo': 4,
+      'Ultra Rare': 5,
+      'Secret Rare': 6
+    };
+    priority += (card.rarity ? rarityScores[card.rarity] || 1 : 1) * 10;
+    
+    // Higher priority when closer to completion
+    priority += completionRate * 50;
+    
+    // Lower priority for expensive cards
+    const price = getCurrentPrice(card);
+    if (price) {
+      priority -= Math.log(price + 1) * 5;
+    }
+    
+    return priority;
+  }, []);
+
+  const getCollectionSets = useCallback((): Record<string, SetData> => {
+    // Mock collection analysis
+    return {
+      'base1': {
+        name: 'Base Set',
+        cards: getMockCardDatabase().filter(c => c.set?.id === 'base1'),
+        userCards: userCollection.filter(c => c.set?.id === 'base1'),
+        totalCards: 102
+      }
+    };
+  }, [userCollection]);
+
   // Algorithm 1: Content-based filtering for similar cards
-  const getSimilarCards = async (): Promise<EnhancedCard[]> => {
+  const getSimilarCards = useCallback(async (): Promise<EnhancedCard[]> => {
     if (!currentCard) return [];
 
     const similarityScores: { card: Card; score: number }[] = [];
@@ -189,10 +281,10 @@ const SmartRecommendationEngine: React.FC<SmartRecommendationEngineProps> = ({
         similarityScore: item.score,
         reason: generateSimilarityReason(currentCard, item.card)
       }));
-  };
+  }, [currentCard, userFavorites]);
 
   // Algorithm 2: Collaborative filtering for personalized picks
-  const getPersonalizedPicks = async (): Promise<EnhancedCard[]> => {
+  const getPersonalizedPicks = useCallback(async (): Promise<EnhancedCard[]> => {
     const userInterests = analyzeUserInterests();
     const weightedCards: { card: Card; score: number }[] = [];
     
@@ -250,10 +342,10 @@ const SmartRecommendationEngine: React.FC<SmartRecommendationEngineProps> = ({
         personalityScore: item.score,
         reason: 'Based on your interests and collection'
       }));
-  };
+  }, [userCollection, analyzeUserInterests]);
 
   // Algorithm 3: Market-based price alerts
-  const getPriceAlerts = async (): Promise<PriceAlert[]> => {
+  const getPriceAlerts = useCallback(async (): Promise<PriceAlert[]> => {
     const alerts: PriceAlert[] = [];
     
     for (const favorite of userFavorites) {
@@ -287,10 +379,10 @@ const SmartRecommendationEngine: React.FC<SmartRecommendationEngineProps> = ({
     }
     
     return alerts.slice(0, 5);
-  };
+  }, [userFavorites]);
 
   // Algorithm 4: Collection completion suggestions
-  const getCollectionSuggestions = async (): Promise<CollectionSuggestion[]> => {
+  const getCollectionSuggestions = useCallback(async (): Promise<CollectionSuggestion[]> => {
     const suggestions: CollectionSuggestion[] = [];
     const collectionSets = getCollectionSets();
     
@@ -323,10 +415,10 @@ const SmartRecommendationEngine: React.FC<SmartRecommendationEngineProps> = ({
     }
     
     return suggestions.slice(0, 3);
-  };
+  }, [calculateCardPriority, getCollectionSets]);
 
   // Algorithm 5: Trend-based recommendations
-  const getTrendingCards = async (): Promise<EnhancedCard[]> => {
+  const getTrendingCards = useCallback(async (): Promise<EnhancedCard[]> => {
     const trendingData = getMockTrendingData();
     
     return trendingData.map(item => ({
@@ -335,7 +427,7 @@ const SmartRecommendationEngine: React.FC<SmartRecommendationEngineProps> = ({
       trendReason: item.reason,
       priceChange: item.priceChange
     })).slice(0, 6);
-  };
+  }, []);
 
   const generateRecommendations = useCallback(async () => {
     setLoading(true);
@@ -360,63 +452,13 @@ const SmartRecommendationEngine: React.FC<SmartRecommendationEngineProps> = ({
     } finally {
       setLoading(false);
     }
-  }, [currentCard, userFavorites, userCollection, userBehavior, getSimilarCards, getPriceAlerts, getCollectionSuggestions, getTrendingCards, getPersonalizedPicks]);
+  }, [getSimilarCards, getPriceAlerts, getCollectionSuggestions, getTrendingCards, getPersonalizedPicks]);
 
   useEffect(() => {
     generateRecommendations();
   }, [generateRecommendations]);
 
-  // Helper functions
-  const analyzeUserInterests = (): UserInterests => {
-    const interests: UserInterests = {
-      favoriteTypes: {},
-      favoriteSets: {},
-      favoriteRarities: {},
-      priceRange: { min: 0, max: 100 },
-      followsTrends: false
-    };
-    
-    // Analyze user's favorite cards
-    userFavorites.forEach(card => {
-      // Type preferences
-      if (card.types) {
-        card.types.forEach(type => {
-          const typeName = typeof type === 'string' ? type : type.type?.name;
-          if (typeName) {
-            interests.favoriteTypes[typeName] = (interests.favoriteTypes[typeName] || 0) + 1;
-          }
-        });
-      }
-      
-      // Set preferences
-      if (card.set) {
-        interests.favoriteSets[card.set.id] = (interests.favoriteSets[card.set.id] || 0) + 1;
-      }
-      
-      // Rarity preferences
-      if (card.rarity) {
-        interests.favoriteRarities[card.rarity] = (interests.favoriteRarities[card.rarity] || 0) + 1;
-      }
-    });
-    
-    // Analyze price range from user behavior
-    const userPrices = userFavorites
-      .map(getCurrentPrice)
-      .filter((price): price is number => price !== null)
-      .sort((a, b) => a - b);
-    
-    if (userPrices.length > 0) {
-      interests.priceRange.min = userPrices[Math.floor(userPrices.length * 0.1)];
-      interests.priceRange.max = userPrices[Math.floor(userPrices.length * 0.9)];
-    }
-    
-    // Determine if user follows trends
-    interests.followsTrends = userBehavior.recentActions?.some((action: any) => 
-      action.action === 'view_trending'
-    ) || false;
-    
-    return interests;
-  };
+  // Helper functions (moved before algorithms)
 
   const generateSimilarityReason = (cardA: Card, cardB: Card): string => {
     const reasons: string[] = [];
@@ -448,32 +490,6 @@ const SmartRecommendationEngine: React.FC<SmartRecommendationEngineProps> = ({
     }
     
     return reasons.length > 0 ? reasons.join(', ') : 'Similar characteristics';
-  };
-
-  const calculateCardPriority = (card: Card, completionRate: number): number => {
-    let priority = 0;
-    
-    // Higher priority for rarer cards
-    const rarityScores: Record<string, number> = {
-      'Common': 1,
-      'Uncommon': 2,
-      'Rare': 3,
-      'Rare Holo': 4,
-      'Ultra Rare': 5,
-      'Secret Rare': 6
-    };
-    priority += (card.rarity ? rarityScores[card.rarity] || 1 : 1) * 10;
-    
-    // Higher priority when closer to completion
-    priority += completionRate * 50;
-    
-    // Lower priority for expensive cards
-    const price = getCurrentPrice(card);
-    if (price) {
-      priority -= Math.log(price + 1) * 5;
-    }
-    
-    return priority;
   };
 
   // Mock data functions (replace with real API calls)
@@ -510,18 +526,6 @@ const SmartRecommendationEngine: React.FC<SmartRecommendationEngineProps> = ({
   const getHistoricalPrices = (card: Card): number[] => {
     // Mock historical price data
     return Array.from({ length: 30 }, () => Math.random() * 50 + 20);
-  };
-
-  const getCollectionSets = (): Record<string, SetData> => {
-    // Mock collection analysis
-    return {
-      'base1': {
-        name: 'Base Set',
-        cards: getMockCardDatabase().filter(c => c.set?.id === 'base1'),
-        userCards: userCollection.filter(c => c.set?.id === 'base1'),
-        totalCards: 102
-      }
-    };
   };
 
   const isTrendingCard = (card: Card): boolean => {

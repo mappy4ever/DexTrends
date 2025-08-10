@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { FaUsers, FaComments, FaTrophy, FaHeart, FaShare, FaStar, FaFire, FaCrown } from 'react-icons/fa';
 import { BsChatDots, BsHeart, BsShare, BsBookmark, BsThreeDots } from 'react-icons/bs';
+import logger from '@/utils/logger';
 
 // Types
 interface User {

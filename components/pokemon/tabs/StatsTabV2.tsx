@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { Pokemon, PokemonSpecies, Nature } from '../../../types/api/pokemon';
+import type { Pokemon, PokemonSpecies, Nature } from "../../../types/pokemon";
+import type { TypeColors } from '../../../types/pokemon-tabs';
 import { GlassContainer } from '../../ui/design-system';
 import CircularButton from '../../ui/CircularButton';
 import PokemonStatRadar from '../PokemonStatRadar';
@@ -23,7 +24,7 @@ interface StatsTabV2Props {
   selectedNature?: string;
   selectedLevel?: number;
   onLevelChange?: (level: number) => void;
-  typeColors: Record<string, string>;
+  typeColors: TypeColors;
 }
 
 const STAT_NAMES: Record<string, string> = {
@@ -48,9 +49,12 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
 }) => {
   // State for perfect IVs/EVs toggle
   const [usePerfectStats, setUsePerfectStats] = useState(false);
+  
+  // Memoize stats to prevent recreation on every render
+  const stats = useMemo(() => pokemon.stats || [], [pokemon.stats]);
+  
   // Calculate stats with nature modifiers
   const calculatedStats = useMemo(() => {
-    const stats = pokemon.stats || [];
     
     // For realistic EV distribution when max EVs is checked:
     // Typically invest 252 EVs in two best stats, 4 in another
@@ -99,7 +103,7 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
         natureModifier
       };
     });
-  }, [pokemon.stats, natureData, selectedLevel, usePerfectStats]);
+  }, [stats, natureData, selectedLevel, usePerfectStats]);
   
   // Calculate total base stats (for ranking)
   const totalBaseStats = useMemo(() => {

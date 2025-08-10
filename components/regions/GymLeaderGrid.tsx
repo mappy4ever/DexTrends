@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { getGymLeaderImage, getBadgeImage } from '../../utils/scrapedImageMapping';
-import { TypeBadge } from '../ui/TypeBadge';
+import { TypeGradientBadge } from '../ui/design-system/TypeGradientBadge';
 import { gymLeaderTeams } from '../../data/gymLeaderTeams';
 import { typeEffectiveness } from '../../utils/pokemonutils';
 
@@ -38,6 +38,7 @@ interface TeamData {
     level: number;
   }>;
   weakAgainst?: string[];
+  resistantTo?: string[];
 }
 
 const GymLeaderGrid: React.FC<GymLeaderGridProps> = ({ region, gymLeaders, theme }) => {
@@ -72,45 +73,47 @@ const GymLeaderGrid: React.FC<GymLeaderGridProps> = ({ region, gymLeaders, theme
       <style jsx>{`
         .perspective-1000 { perspective: 1000px; }
         .transform-style-preserve-3d { transform-style: preserve-3d; }
-        .backface-hidden { backface-visibility: hidden; }
+        .backface-hidden { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
         .rotate-y-180 { transform: rotateY(180deg); }
+        .will-change-transform { will-change: transform; }
       `}</style>
       {gymLeaders.map((leader, index) => {
         const leaderData = gymLeaderData[leader.name] || {} as GymLeaderData;
         const teamData = (gymLeaderTeams as any)[leader.name] as TeamData;
         const weaknesses = teamData?.weakAgainst || (typeEffectiveness as any)[leader.type]?.weakTo || [];
+        const resistances = teamData?.resistantTo || [];
+        const acePokemon = (teamData?.team && teamData.team.length > 0)
+          ? teamData.team.reduce((best, p) => best && best.level >= p.level ? best : p)
+          : null;
         
         return (
           <motion.div
             key={leader.name}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="group relative h-[500px] cursor-pointer perspective-1000"
+            transition={{ duration: 0.45, ease: 'easeOut', delay: index * 0.06 }}
+            className="group relative h-[500px] md:h-[560px] cursor-pointer perspective-1000 select-none"
             onClick={() => handleCardFlip(index)}
           >
-            <div className={`relative w-full h-full transition-all duration-700 transform-style-preserve-3d ${
+            <div className={`relative w-full h-full transition-transform duration-700 transform-style-preserve-3d will-change-transform ${
               flippedCards.has(index) ? 'rotate-y-180' : ''
             }`}>
               {/* Front of card - Full image with minimal info */}
-              <div className="absolute inset-0 backface-hidden">
-                <div className="relative h-full bg-gradient-to-br from-gray-900/90 to-gray-800/90 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden border border-gray-700/50">
-                  {/* Full card image */}
-                  <Image
-                    src={getGymLeaderImage(leader.name, 1)}
-                    alt={leader.name}
-                    fill
-                    className="object-cover object-top"
-                    priority={index < 4}
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = '/images/placeholder-trainer.png';
-                    }}
-                  />
+              <div className="absolute inset-0 backface-hidden will-change-transform">
+                <div className="relative h-full bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl shadow-2xl overflow-hidden border border-gray-700/50">
+                  {/* Full card image (plain img for reliable fallback) */}
+                  <div className="absolute inset-0">
+                    <img
+                      src={getGymLeaderImage(leader.name, 1)}
+                      alt={leader.name}
+                      className="w-full h-full object-contain object-top md:object-center p-4"
+                      loading={index < 4 ? 'eager' : 'lazy'}
+                      onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/images/gym-leader-placeholder.svg'; }}
+                    />
+                  </div>
                   
                   {/* Gradient overlay for text readability */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
                   
                   {/* Badge Number */}
                   <div className="absolute top-4 left-4 z-20 w-14 h-14 bg-gradient-to-br from-yellow-500 to-amber-600 text-white rounded-full flex items-center justify-center font-bold text-xl shadow-lg">
@@ -119,7 +122,7 @@ const GymLeaderGrid: React.FC<GymLeaderGridProps> = ({ region, gymLeaders, theme
                   
                   {/* Type Badge */}
                   <div className="absolute top-4 right-4 z-20">
-                    <TypeBadge type={leader.type} size="lg" variant="gradient" />
+                    <TypeGradientBadge type={leader.type} size="sm" gradient={true} />
                   </div>
                   
                   {/* Minimal info at bottom */}
@@ -133,6 +136,22 @@ const GymLeaderGrid: React.FC<GymLeaderGridProps> = ({ region, gymLeaders, theme
                     <p className="text-sm text-gray-300 mt-1 drop-shadow-lg">
                       {leader.type.charAt(0).toUpperCase() + leader.type.slice(1)} Type Specialist
                     </p>
+
+                    {acePokemon && (
+                      <div className="mt-4 flex items-center gap-3 bg-black/30 rounded-xl p-2 border border-white/10 w-fit">
+                        {/* Ace sprite */}
+                        <img
+                          src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${acePokemon.id}.png`}
+                          alt={acePokemon.name}
+                          className="w-10 h-10 object-contain"
+                          loading="lazy"
+                        />
+                        <div className="text-gray-200 text-sm font-medium">
+                          Ace: <span className="text-white font-semibold">{acePokemon.name}</span>
+                          <span className="ml-2 text-xs text-gray-300">Lv. {acePokemon.level}</span>
+                        </div>
+                      </div>
+                    )}
                     
                     {/* Flip indicator */}
                     <div className="mt-4 text-center">
@@ -145,7 +164,7 @@ const GymLeaderGrid: React.FC<GymLeaderGridProps> = ({ region, gymLeaders, theme
               </div>
               
               {/* Back of card - All details */}
-              <div className="absolute inset-0 rotate-y-180 backface-hidden">
+              <div className="absolute inset-0 rotate-y-180 backface-hidden will-change-transform">
                 <div className="relative h-full bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl shadow-2xl overflow-hidden border border-gray-700/50 p-8">
                   {/* Glass morphism overlay */}
                   <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-gray-500/5 rounded-3xl" />
@@ -165,6 +184,7 @@ const GymLeaderGrid: React.FC<GymLeaderGridProps> = ({ region, gymLeaders, theme
                             src={getBadgeImage(leader.badge)}
                             alt={leader.badge}
                             fill
+                            unoptimized
                             className="object-contain filter drop-shadow-lg"
                           />
                         </div>
@@ -173,38 +193,77 @@ const GymLeaderGrid: React.FC<GymLeaderGridProps> = ({ region, gymLeaders, theme
                     </div>
                     
                     {/* Quote */}
-                    <div className="mb-4">
-                      <p className="text-sm italic text-gray-300 text-center">
-                        "{leaderData.quote}"
-                      </p>
-                    </div>
+                    {leaderData?.quote && (
+                      <div className="mb-4">
+                        <p className="text-sm italic text-gray-300 text-center">
+                          "{leaderData.quote}"
+                        </p>
+                      </div>
+                    )}
                     
-                    {/* Signature Pokemon */}
-                    {leaderData.signature && (
+                    {/* Ace / Signature Pokemon */}
+                    {(acePokemon || leaderData.signature) && (
                       <div className="mb-4 p-3 rounded-xl bg-gray-800/50 border border-gray-700">
                         <p className="text-xs font-semibold text-gray-400 text-center mb-2">
-                          Signature Pokémon
+                          {acePokemon ? 'Ace Pokémon' : 'Signature Pokémon'}
                         </p>
                         <div className="flex items-center justify-center gap-3">
                           <img
-                            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${leaderData.signatureId}.png`}
-                            alt={leaderData.signature}
+                            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${(acePokemon?.id ?? leaderData.signatureId) || 0}.png`}
+                            alt={(acePokemon?.name ?? leaderData.signature) || 'Ace'}
                             className="w-16 h-16 object-contain"
+                            loading="lazy"
                           />
-                          <span className="font-bold text-white">{leaderData.signature}</span>
+                          <div className="text-center">
+                            <span className="font-bold text-white block">{(acePokemon?.name ?? leaderData.signature) || ''}</span>
+                            {acePokemon && (
+                              <span className="text-xs text-gray-300">Lv. {acePokemon.level}</span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Team preview */}
+                    {teamData?.team && teamData.team.length > 0 && (
+                      <div className="mb-4">
+                        <p className="text-xs font-semibold text-gray-400 text-center mb-2">Team</p>
+                        <div className="flex justify-center flex-wrap gap-3">
+                          {teamData.team.slice(0, 6).map((p) => (
+                            <div key={`${p.id}-${p.level}`} className="flex items-center gap-2 bg-gray-800/40 rounded-lg px-2 py-1 border border-gray-700/60">
+                              <img
+                                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${p.id}.png`}
+                                alt={p.name}
+                                className="w-8 h-8 object-contain"
+                                loading="lazy"
+                              />
+                              <div className="text-xs text-gray-200 font-medium">
+                                {p.name}
+                                <span className="ml-1 text-[11px] text-gray-400">Lv. {p.level}</span>
+                              </div>
+                            </div>
+                          ))}
                         </div>
                       </div>
                     )}
                     
-                    {/* Weaknesses */}
-                    <div className="text-center">
-                      <p className="text-xs font-semibold text-gray-400 mb-2">
-                        Weak Against
-                      </p>
-                      <div className="flex justify-center flex-wrap gap-2">
-                        {weaknesses.slice(0, 3).map((type) => (
-                          <TypeBadge key={type} type={type} size="sm" />
-                        ))}
+                    {/* Weaknesses & Resistances */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div className="text-center">
+                        <p className="text-xs font-semibold text-gray-400 mb-2">Weak Against</p>
+                        <div className="flex justify-center flex-wrap gap-2">
+                          {weaknesses.slice(0, 4).map((type: string) => (
+                            <TypeGradientBadge key={`w-${type}`} type={type} size="xs" gradient={true} />
+                          ))}
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-xs font-semibold text-gray-400 mb-2">Resistant To</p>
+                        <div className="flex justify-center flex-wrap gap-2">
+                          {resistances.slice(0, 4).map((type: string) => (
+                            <TypeGradientBadge key={`r-${type}`} type={type} size="xs" gradient={true} />
+                          ))}
+                        </div>
                       </div>
                     </div>
                     

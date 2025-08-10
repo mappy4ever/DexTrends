@@ -11,7 +11,9 @@ interface CustomSiteLogoProps {
   variant?: LogoVariantType;
   context?: LogoContext;
   enhanced?: boolean;
-  [key: string]: any; // For additional props
+  style?: React.CSSProperties;
+  title?: string;
+  id?: string;
 }
 
 const CustomSiteLogo: React.FC<CustomSiteLogoProps> = ({ 

@@ -219,7 +219,7 @@ export const TypeAnalysisCard: React.FC<TypeAnalysisCardProps> = ({ type, onClos
             <div className="space-y-6">
               <div className="text-center">
                 <h3 className="text-xl font-bold text-gray-800 mb-3">Type Matchup Summary</h3>
-                <TypeBadge type={type} size="xl" />
+                <TypeBadge type={type} size="lg" />
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

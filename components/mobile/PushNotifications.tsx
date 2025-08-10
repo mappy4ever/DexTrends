@@ -17,7 +17,7 @@ interface PriceAlert {
 
 interface PushNotificationsProps {
   onPermissionChange?: (permission: NotificationPermission) => void;
-  onNotificationReceived?: (data: any) => void;
+  onNotificationReceived?: (data: unknown) => void;
   className?: string;
   vapidPublicKey?: string;
 }
@@ -79,53 +79,6 @@ const PushNotifications: React.FC<PushNotificationsProps> = ({
     return () => setIsMounted(false);
   }, []);
 
-  // Initialize service worker and push subscription
-  useEffect(() => {
-    if (isSupported && permission === 'granted' && isMounted) {
-      // Add small delay to ensure browser APIs are ready
-      const timer = setTimeout(() => {
-        initializePushSubscription();
-      }, 100);
-      
-      return () => clearTimeout(timer);
-    }
-    return undefined;
-  }, [isSupported, permission, isMounted]);
-
-  // Request notification permission
-  const requestPermission = useCallback(async (): Promise<NotificationPermission> => {
-    if (!isSupported) {
-      throw new Error('Push notifications not supported');
-    }
-    
-    try {
-      if (!window.Notification) {
-        logger.debug('Notification API not available');
-        return 'denied';
-      }
-      
-      const result = await Notification.requestPermission();
-      setPermission(result);
-      
-      if (onPermissionChange) {
-        onPermissionChange(result);
-      }
-      
-      utils.hapticFeedback(result === 'granted' ? 'medium' : 'heavy');
-      
-      if (result === 'granted') {
-        await initializePushSubscription();
-        showWelcomeNotification();
-      }
-      
-      logger.debug('Notification permission result:', { result });
-      return result;
-    } catch (error) {
-      logger.error('Failed to request notification permission:', error);
-      throw error;
-    }
-  }, [isSupported, onPermissionChange, utils, isMounted]);
-
   // Convert VAPID key
   const urlBase64ToUint8Array = useCallback((base64String: string): Uint8Array => {
     try {
@@ -155,6 +108,42 @@ const PushNotifications: React.FC<PushNotificationsProps> = ({
       return new Uint8Array(0);
     }
   }, []);
+
+  // Send subscription to server
+  const sendSubscriptionToServer = useCallback(async (subscription: PushSubscription) => {
+    try {
+      // In a real implementation, send to your backend
+      const data: PushSubscriptionData = {
+        subscription: subscription,
+        userId: 'current-user-id', // Get from auth context
+        preferences: {
+          priceAlerts: true,
+          marketAlerts: true,
+          systemAlerts: true
+        }
+      };
+
+      await postJSON('/api/push-subscription', data);
+      
+      logger.debug('Subscription saved to server');
+    } catch (error) {
+      logger.error('Failed to send subscription to server:', error);
+      // Don't throw - allow local functionality to continue
+    }
+  }, []);
+
+  // Show welcome notification
+  const showWelcomeNotification = useCallback(() => {
+    if (permission === 'granted') {
+      new Notification('DexTrends Notifications Enabled! 🎉', {
+        body: 'You\'ll now receive price alerts and market updates',
+        icon: '/dextrendslogo.png',
+        badge: '/dextrendslogo.png',
+        tag: 'welcome',
+        requireInteraction: false
+      });
+    }
+  }, [permission]);
 
   // Initialize push subscription
   const initializePushSubscription = useCallback(async (): Promise<PushSubscription | null> => {
@@ -206,43 +195,55 @@ const PushNotifications: React.FC<PushNotificationsProps> = ({
       logger.error('Failed to initialize push subscription:', error);
       throw error;
     }
-  }, [vapidPublicKey, urlBase64ToUint8Array, isMounted]);
+  }, [vapidPublicKey, urlBase64ToUint8Array, isMounted, sendSubscriptionToServer]);
 
-  // Send subscription to server
-  const sendSubscriptionToServer = useCallback(async (subscription: PushSubscription) => {
-    try {
-      // In a real implementation, send to your backend
-      const data: PushSubscriptionData = {
-        subscription: subscription,
-        userId: 'current-user-id', // Get from auth context
-        preferences: {
-          priceAlerts: true,
-          marketAlerts: true,
-          systemAlerts: true
-        }
-      };
-
-      await postJSON('/api/push-subscription', data);
+  // Initialize service worker and push subscription
+  useEffect(() => {
+    if (isSupported && permission === 'granted' && isMounted) {
+      // Add small delay to ensure browser APIs are ready
+      const timer = setTimeout(() => {
+        initializePushSubscription();
+      }, 100);
       
-      logger.debug('Subscription saved to server');
-    } catch (error) {
-      logger.error('Failed to send subscription to server:', error);
-      // Don't throw - allow local functionality to continue
+      return () => clearTimeout(timer);
     }
-  }, []);
+    return undefined;
+  }, [isSupported, permission, isMounted, initializePushSubscription]);
 
-  // Show welcome notification
-  const showWelcomeNotification = useCallback(() => {
-    if (permission === 'granted') {
-      new Notification('DexTrends Notifications Enabled! 🎉', {
-        body: 'You\'ll now receive price alerts and market updates',
-        icon: '/dextrendslogo.png',
-        badge: '/dextrendslogo.png',
-        tag: 'welcome',
-        requireInteraction: false
-      });
+  // Request notification permission
+  const requestPermission = useCallback(async (): Promise<NotificationPermission> => {
+    if (!isSupported) {
+      throw new Error('Push notifications not supported');
     }
-  }, [permission]);
+    
+    try {
+      if (!window.Notification) {
+        logger.debug('Notification API not available');
+        return 'denied';
+      }
+      
+      const result = await Notification.requestPermission();
+      setPermission(result);
+      
+      if (onPermissionChange) {
+        onPermissionChange(result);
+      }
+      
+      utils.hapticFeedback(result === 'granted' ? 'medium' : 'heavy');
+      
+      if (result === 'granted') {
+        await initializePushSubscription();
+        showWelcomeNotification();
+      }
+      
+      logger.debug('Notification permission result:', { result });
+      return result;
+    } catch (error) {
+      logger.error('Failed to request notification permission:', error);
+      throw error;
+    }
+  }, [isSupported, onPermissionChange, utils, initializePushSubscription, showWelcomeNotification]);
+
 
   // Add price alert
   const addPriceAlert = useCallback((

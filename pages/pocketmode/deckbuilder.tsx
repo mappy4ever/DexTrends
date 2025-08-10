@@ -7,7 +7,7 @@ import { fetchPocketData } from '../../utils/pocketData';
 import { TypeBadge } from '../../components/ui/TypeBadge';
 import { FadeIn, SlideUp } from '../../components/ui/animations';
 import BackToTop from '../../components/ui/SimpleBackToTop';
-import { PageLoader } from '../../utils/unifiedLoading';
+import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { validateDeck, getDeckSuggestions, ValidationResult } from '../../utils/deckValidation';
 import { analyzeDeckMeta, getMetaSuggestions, MetaAnalysis } from '../../utils/metaAnalysis';
 import type { PocketCard } from '../../types/api/pocket-cards';

@@ -8,12 +8,14 @@ import { useTheme } from "../context/UnifiedAppContext";
 import { useViewSettings } from "../context/UnifiedAppContext";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import { StandardCard, CardHeader, CardTitle, CardContent, CircularButton } from "../components/ui/design-system";
-import { InlineLoader } from "../utils/unifiedLoading";
-import { PageLoader } from "../utils/unifiedLoading";
+import { InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
+import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import FullBleedWrapper from "../components/ui/FullBleedWrapper";
 import TCGSetsErrorBoundary from "../components/TCGSetsErrorBoundary";
 import { CardSet } from "../types/api/cards";
 import { NextPage } from "next";
+import logger from "../utils/logger";
+import { getErrorMessage, isObject, hasProperty } from "../utils/typeGuards";
 
 type SortOption = "releaseDate" | "name" | "cardCount";
 type SortDirection = "asc" | "desc";
@@ -39,7 +41,7 @@ const TcgSetsContent: React.FC = () => {
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
 
   const fetchSets = async (page = 1, append = false) => {
-      console.log(`Fetching TCG sets page ${page}...`);
+      logger.debug(`Fetching TCG sets page ${page}...`);
       
       if (!append) {
         setLoading(true);
@@ -51,7 +53,7 @@ const TcgSetsContent: React.FC = () => {
       setError(null);
       
       try {
-        const res = await fetchJSON<{ data: CardSet[], pagination: any }>(
+        const res = await fetchJSON<{ data: CardSet[], pagination: PaginationInfo }>(
           `/api/tcg-sets?page=${page}&pageSize=25`,
           {
             useCache: page > 1,
@@ -64,12 +66,12 @@ const TcgSetsContent: React.FC = () => {
         
         // Check if response is null (error case)
         if (!res) {
-          console.error(`Failed to fetch page ${page} - response is null`);
+          logger.error(`Failed to fetch page ${page} - response is null`);
           throw new Error('API returned null response');
         }
         
         // Debug logging
-        console.log(`Page ${page} response:`, {
+        logger.debug(`Page ${page} response:`, {
           dataLength: res?.data?.length || 0,
           pagination: res?.pagination,
           hasData: !!res?.data
@@ -89,14 +91,14 @@ const TcgSetsContent: React.FC = () => {
           const hasMore = res.pagination?.hasMore || (res.data.length === 25);
           setHasMorePages(hasMore);
           
-          console.log(`✓ Successfully fetched ${res.data.length} sets from page ${page}`);
+          logger.debug(`✓ Successfully fetched ${res.data.length} sets from page ${page}`);
           
           // Log newest sets on first page
           if (page === 1) {
             const sortedByDate = [...res.data].sort((a, b) => 
               new Date(b.releaseDate || '1970-01-01').getTime() - new Date(a.releaseDate || '1970-01-01').getTime()
             );
-            console.log('Newest 5 sets:', sortedByDate.slice(0, 5).map(s => `${s.id} (${s.name}, ${s.releaseDate})`));
+            logger.debug('Newest 5 sets:', { sets: sortedByDate.slice(0, 5).map(s => `${s.id} (${s.name}, ${s.releaseDate})`) });
           }
         } else {
           if (!append) {
@@ -105,16 +107,15 @@ const TcgSetsContent: React.FC = () => {
           setHasMorePages(false);
         }
         
-      } catch (err: any) {
-        console.error("Failed to load TCG sets:", err);
-        console.error("Error details:", {
-          message: err.message,
-          response: err.response,
-          data: err.data,
-          stack: err.stack
+      } catch (err: unknown) {
+        logger.error("Failed to load TCG sets:", {
+          error: getErrorMessage(err),
+          response: isObject(err) && hasProperty(err, 'response') ? err.response : undefined,
+          data: isObject(err) && hasProperty(err, 'data') ? err.data : undefined,
+          stack: err instanceof Error ? err.stack : undefined
         });
         
-        setError(`Failed to load TCG sets: ${err.message || 'Unknown error'}`);
+        setError(`Failed to load TCG sets: ${getErrorMessage(err)}`);
         if (!append) {
           setSets([]);
         }
@@ -320,9 +321,9 @@ const TcgSetsContent: React.FC = () => {
                           key.includes('tcg-sets') || key.includes('tcgsets')
                         );
                         cacheKeys.forEach(key => localStorage.removeItem(key));
-                        console.log(`Cleared ${cacheKeys.length} cached TCG sets entries`);
+                        logger.debug(`Cleared ${cacheKeys.length} cached TCG sets entries`);
                       } catch (e) {
-                        console.warn('Failed to clear cache:', e);
+                        logger.warn('Failed to clear cache:', { error: e instanceof Error ? e.message : String(e) });
                       }
                       
                       await fetchSets(1, false);
@@ -368,7 +369,7 @@ const TcgSetsContent: React.FC = () => {
                   key={set.id}
                   className="animate-fadeIn group"
                   onClick={() => {
-                    console.log('Navigating to set:', set.id, set.name);
+                    logger.debug('Navigating to set:', { setId: set.id, setName: set.name });
                     setSelectedSetId(set.id);
                     router.push(`/tcgsets/${set.id}`);
                   }}
@@ -607,6 +608,10 @@ const TcgSetsContent: React.FC = () => {
   };
 
   // Mark this page as full bleed to remove Layout padding
-  (TcgSets as any).fullBleed = true;
+  interface PageComponent extends NextPage {
+    fullBleed?: boolean;
+  }
+  
+  (TcgSets as PageComponent).fullBleed = true;
 
   export default TcgSets;

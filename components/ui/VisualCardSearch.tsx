@@ -52,6 +52,53 @@ const VisualCardSearch: React.FC<VisualCardSearchProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
 
+  const processImageFile = useCallback(async (file: File | Blob) => {
+    setIsProcessing(true);
+    setError(null);
+
+    try {
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target?.result && typeof e.target.result === 'string') {
+          setPreviewImage(e.target.result);
+        }
+      };
+      reader.readAsDataURL(file);
+
+      // Process image for card recognition
+      const recognitionResults = await recognizeCard(file);
+      
+      setResults(recognitionResults);
+      onSearchResults?.(recognitionResults);
+      onImageProcessed?.(file, recognitionResults);
+      
+    } catch (err) {
+      setError('Failed to process image. Please try another image.');
+    } finally {
+      setIsProcessing(false);
+    }
+  }, [onSearchResults, onImageProcessed]);
+
+  const handleFileSelect = useCallback((files: FileList | null) => {
+    if (!files || files.length === 0) return;
+    
+    const file = files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      setError('Please select an image file');
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) { // 10MB limit
+      setError('Image file too large. Please select a file under 10MB.');
+      return;
+    }
+
+    processImageFile(file);
+  }, [processImageFile]);
+
   // Initialize camera for live scanning
   const startCamera = async () => {
     try {
@@ -100,53 +147,6 @@ const VisualCardSearch: React.FC<VisualCardSearchProps> = ({
         processImageFile(blob);
       }
     }, 'image/jpeg', 0.9);
-  };
-
-  const handleFileSelect = (files: FileList | null) => {
-    if (!files || files.length === 0) return;
-    
-    const file = files[0];
-    if (!file) return;
-
-    if (!file.type.startsWith('image/')) {
-      setError('Please select an image file');
-      return;
-    }
-
-    if (file.size > 10 * 1024 * 1024) { // 10MB limit
-      setError('Image file too large. Please select a file under 10MB.');
-      return;
-    }
-
-    processImageFile(file);
-  };
-
-  const processImageFile = async (file: File | Blob) => {
-    setIsProcessing(true);
-    setError(null);
-
-    try {
-      // Create preview
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (e.target?.result && typeof e.target.result === 'string') {
-          setPreviewImage(e.target.result);
-        }
-      };
-      reader.readAsDataURL(file);
-
-      // Process image for card recognition
-      const recognitionResults = await recognizeCard(file);
-      
-      setResults(recognitionResults);
-      onSearchResults?.(recognitionResults);
-      onImageProcessed?.(file, recognitionResults);
-      
-    } catch (err) {
-      setError('Failed to process image. Please try another image.');
-    } finally {
-      setIsProcessing(false);
-    }
   };
 
   const recognizeCard = async (imageFile: File | Blob): Promise<RecognitionResult[]> => {
@@ -218,7 +218,7 @@ const VisualCardSearch: React.FC<VisualCardSearchProps> = ({
     if (files.length > 0) {
       handleFileSelect(e.dataTransfer.files);
     }
-  }, []);
+  }, [handleFileSelect]);
 
   const ConfidenceBar: React.FC<ConfidenceBarProps> = ({ confidence }) => (
     <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">

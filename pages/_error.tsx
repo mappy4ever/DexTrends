@@ -1,5 +1,6 @@
 import React from "react";
 import { NextPageContext } from "next";
+import logger from "../utils/logger";
 
 interface ErrorProps {
   statusCode?: number;

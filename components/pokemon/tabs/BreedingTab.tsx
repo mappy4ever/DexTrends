@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import type { Pokemon, PokemonSpecies } from '../../../types/api/pokemon';
+import type { Pokemon, PokemonSpecies } from "../../../types/pokemon";
+import type { TypeColors } from '../../../types/pokemon-tabs';
 import { GlassContainer } from '../../ui/design-system';
 import { TypeBadge } from '../../ui/TypeBadge';
 import { fetchJSON } from '../../../utils/unifiedFetch';
@@ -35,7 +36,7 @@ import { POKEMON_TYPE_COLORS } from '../../../utils/unifiedTypeColors';
 interface BreedingTabProps {
   pokemon: Pokemon;
   species: PokemonSpecies;
-  typeColors: Record<string, string>;
+  typeColors: TypeColors;
 }
 
 interface EggMove {
@@ -70,12 +71,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
 
   const breedingInfo = useMemo(() => calculateBreedingInfo(species), [species]);
 
-  useEffect(() => {
-    loadBreedingData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pokemon.id, species.id]);
-
-  const loadBreedingData = async () => {
+  const loadBreedingData = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -87,7 +83,18 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
         )
         .slice(0, 20) // Limit to prevent too many API calls
         .map(async (moveData) => {
-          const moveDetails: any = await fetchJSON(moveData.move.url);
+          const moveDetails = await fetchJSON<{
+            name: string;
+            type?: { name: string };
+            damage_class?: { name: string };
+            power: number | null;
+            accuracy: number | null;
+            pp: number;
+            machines?: Array<{
+              machine?: { url: string };
+              version_group: { name: string };
+            }>;
+          }>(moveData.move.url);
           if (moveDetails) {
             return {
               name: moveDetails.name,
@@ -96,7 +103,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
               power: moveDetails.power,
               accuracy: moveDetails.accuracy,
               pp: moveDetails.pp || 0,
-              machine: moveDetails.machines?.find((m: any) => 
+              machine: moveDetails.machines?.find((m) => 
                 m.version_group.name === 'sword-shield'
               )?.machine?.url
             };
@@ -119,22 +126,28 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
         for (const group of species.egg_groups) {
           if (group.name === 'no-eggs') continue;
           
-          const groupData: any = await fetchJSON(group.url);
+          const groupData = await fetchJSON<{
+            pokemon_species?: Array<{ name: string }>;
+          }>(group.url);
           if (groupData) {
             const pokemonInGroup = groupData.pokemon_species || [];
             
             // Get a sample of compatible Pokemon (limit to avoid too many requests)
             const samplePokemon = pokemonInGroup
-              .filter((p: any) => p.name !== pokemon.name)
+              .filter((p: { name: string }) => p.name !== pokemon.name)
               .slice(0, 10);
             
             for (const compatibleSpecies of samplePokemon) {
-              const pokemonData: any = await fetchJSON(`https://pokeapi.co/api/v2/pokemon/${compatibleSpecies.name}`);
+              const pokemonData = await fetchJSON<{
+                name: string;
+                sprites?: { front_default?: string };
+                types?: Array<{ type: { name: string } }>;
+              }>(`https://pokeapi.co/api/v2/pokemon/${compatibleSpecies.name}`);
               if (pokemonData) {
                 compatibleList.push({
                   name: pokemonData.name,
                   sprite: pokemonData.sprites?.front_default || '',
-                  types: pokemonData.types?.map((t: any) => t.type.name) || [],
+                  types: pokemonData.types?.map((t) => t.type.name) || [],
                   eggGroups: [group.name]
                 });
               }
@@ -153,7 +166,11 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
     } finally {
       setLoading(false);
     }
-  };
+  }, [pokemon.name, pokemon.moves, breedingInfo.canBreed, species.egg_groups]);
+
+  useEffect(() => {
+    loadBreedingData();
+  }, [loadBreedingData]);
 
   // Filter egg moves based on search and category
   const filteredMoves = useMemo(() => {
@@ -468,7 +485,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
                 
                 <select
                   value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value as any)}
+                  onChange={(e) => setSelectedCategory(e.target.value as typeof selectedCategory)}
                   className="px-4 py-2 bg-white/10 dark:bg-gray-800/50 rounded-lg 
                            border border-gray-300 dark:border-gray-600
                            focus:outline-none focus:ring-2 focus:ring-blue-500"

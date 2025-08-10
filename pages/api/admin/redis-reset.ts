@@ -52,12 +52,12 @@ export default async function handler(req: RedisResetRequest, res: NextApiRespon
     
     res.status(200).json(result);
     
-  } catch (error: any) {
-    logger.error('[Redis Reset] Failed:', error);
+  } catch (error: unknown) {
+    logger.error('[Redis Reset] Failed:', { error: error instanceof Error ? error.message : String(error) });
     
     res.status(500).json({
       error: 'Redis reset failed',
-      message: error.message
+      message: error instanceof Error ? error.message : String(error)
     });
   }
 }

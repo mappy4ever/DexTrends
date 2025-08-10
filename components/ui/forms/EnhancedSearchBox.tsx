@@ -139,7 +139,7 @@ export default function EnhancedSearchBox({
     if (value !== localValue) {
       setLocalValue(value);
     }
-  }, [value]);
+  }, [value, localValue]);
 
   return (
     <div className={`relative ${className}`}>

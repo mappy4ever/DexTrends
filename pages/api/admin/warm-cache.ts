@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { POPULAR_SETS, tcgCache } from '../../../lib/tcg-cache';
 import { fetchJSON } from '../../../utils/unifiedFetch';
 import logger from '../../../utils/logger';
+import type { TCGCard, CardSet } from '../../../types/api/cards';
 
 // Function to fetch ALL TCG sets from Pokemon TCG API
 async function fetchAllTCGSets(): Promise<string[]> {
@@ -31,12 +32,12 @@ async function fetchAllTCGSets(): Promise<string[]> {
     logger.info(`[Cache Warm] Found ${totalSets} total sets`);
 
     // Fetch all sets in batches
-    const allSets: any[] = [];
+    const allSets: CardSet[] = [];
     const pageSize = 250; // Max page size
     const totalPages = Math.ceil(totalSets / pageSize);
 
     for (let page = 1; page <= totalPages; page++) {
-      const response = await fetchJSON<{ data: any[] }>(
+      const response = await fetchJSON<{ data: CardSet[] }>(
         `https://api.pokemontcg.io/v2/sets?orderBy=-releaseDate&page=${page}&pageSize=${pageSize}`,
         {
           headers,
@@ -55,12 +56,12 @@ async function fetchAllTCGSets(): Promise<string[]> {
       }
     }
 
-    const setIds = allSets.map((set: any) => set.id);
+    const setIds = allSets.map((set: CardSet) => set.id);
     logger.info(`[Cache Warm] Fetched ${setIds.length} total sets`);
     
     return setIds;
   } catch (error) {
-    logger.error('[Cache Warm] Error fetching all sets:', error);
+    logger.error('[Cache Warm] Error fetching all sets:', { error: error instanceof Error ? error.message : String(error) });
     return FALLBACK_RECENT_SETS; // fallback to recent sets
   }
 }
@@ -78,7 +79,7 @@ async function fetchMostRecentSets(limit: number = 25): Promise<string[]> {
     }
 
     // Fetch sets ordered by release date (newest first)
-    const response = await fetchJSON<{ data: any[] }>(
+    const response = await fetchJSON<{ data: CardSet[] }>(
       `https://api.pokemontcg.io/v2/sets?orderBy=-releaseDate&pageSize=${limit}`,
       {
         headers,
@@ -92,12 +93,12 @@ async function fetchMostRecentSets(limit: number = 25): Promise<string[]> {
       return FALLBACK_RECENT_SETS.slice(0, limit);
     }
 
-    const setIds = response.data.map((set: any) => set.id);
+    const setIds = response.data.map((set: CardSet) => set.id);
     logger.info(`[Cache Warm] Fetched ${setIds.length} most recent sets`, { sets: setIds.slice(0, 10) });
     
     return setIds;
   } catch (error) {
-    logger.error('[Cache Warm] Error fetching recent sets:', error);
+    logger.error('[Cache Warm] Error fetching recent sets:', { error: error instanceof Error ? error.message : String(error) });
     return FALLBACK_RECENT_SETS.slice(0, limit);
   }
 }
@@ -153,7 +154,7 @@ export default async function handler(req: WarmCacheRequest, res: NextApiRespons
   
   const startTime = Date.now();
   const limit = parseInt(req.query.limit as string) || 25; // Default to 25 most recent
-  const useRecent = req.query.recent !== 'false'; // Default to true
+  const useRecent = (req.query as { recent?: string }).recent !== 'false'; // Default to true
   const cacheAll = req.query.all === 'true'; // Cache ALL sets
   const cacheCards = req.query.cards !== 'false'; // Cache individual cards and images by default (was 'true')
   
@@ -235,7 +236,7 @@ export default async function handler(req: WarmCacheRequest, res: NextApiRespons
           }
 
           // Fetch set info first
-          const setInfo = await fetchJSON<{ data: any }>(
+          const setInfo = await fetchJSON<{ data: CardSet }>(
             `https://api.pokemontcg.io/v2/sets/${setId}`, 
             { 
               headers,
@@ -256,11 +257,11 @@ export default async function handler(req: WarmCacheRequest, res: NextApiRespons
           // Load all cards in parallel batches (faster than sequential)
           const pageSize = 250;
           const totalPages = Math.ceil(totalCards / pageSize);
-          const pagePromises: Promise<any>[] = [];
+          const pagePromises: Promise<{ data: TCGCard[] } | null>[] = [];
           
           // Create promises for all pages
           for (let page = 1; page <= totalPages; page++) {
-            const pagePromise = fetchJSON<{ data: any[] }>(
+            const pagePromise = fetchJSON<{ data: TCGCard[] }>(
               `https://api.pokemontcg.io/v2/cards?q=set.id:${setId}&page=${page}&pageSize=${pageSize}`,
               {
                 headers,
@@ -275,7 +276,7 @@ export default async function handler(req: WarmCacheRequest, res: NextApiRespons
           const pageResults = await Promise.all(pagePromises);
           
           // Combine all cards
-          const allCards: any[] = [];
+          const allCards: TCGCard[] = [];
           for (const result of pageResults) {
             if (result?.data) {
               allCards.push(...result.data);
@@ -283,7 +284,7 @@ export default async function handler(req: WarmCacheRequest, res: NextApiRespons
           }
           
           // Sort cards by number
-          allCards.sort((a, b) => {
+          allCards.sort((a: TCGCard, b: TCGCard) => {
             const numA = parseInt(a.number) || 0;
             const numB = parseInt(b.number) || 0;
             return numA - numB;
@@ -321,14 +322,15 @@ export default async function handler(req: WarmCacheRequest, res: NextApiRespons
             status: cacheCards ? 'cached-with-cards' : 'cached'
           });
           
-        } catch (error: any) {
+        } catch (error: unknown) {
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
           const duration = Date.now() - setStartTime;
-          logger.error(`[Cache Warm] Failed to warm cache for set ${setId}:`, error);
+          logger.error(`[Cache Warm] Failed to warm cache for set ${setId}:`, { error: errorMessage });
           
           results.failed++;
           results.errors.push({
             setId,
-            error: error.message
+            error: errorMessage
           });
           results.sets.push({
             setId,
@@ -365,12 +367,13 @@ export default async function handler(req: WarmCacheRequest, res: NextApiRespons
       timestamp: new Date().toISOString()
     });
     
-  } catch (error: any) {
-    logger.error('[Cache Warming] Failed:', error);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    logger.error('[Cache Warming] Failed:', { error: errorMessage });
     
     res.status(500).json({
       error: 'Cache warming failed',
-      message: error.message
+      message: errorMessage
     });
   }
 }
@@ -395,7 +398,7 @@ export async function warmCache() {
     logger.info('Cache warming result:', result);
     return result;
   } catch (error) {
-    logger.error('Cache warming failed:', error);
+    logger.error('Cache warming failed:', { error: error instanceof Error ? error.message : String(error) });
     throw error;
   }
 }

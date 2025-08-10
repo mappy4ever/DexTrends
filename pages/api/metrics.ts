@@ -199,9 +199,9 @@ function handlePrometheusFormat(req: NextApiRequest, res: NextApiResponse<string
       metrics += `# HELP dextrends_circuit_breaker_state Circuit breaker state (0=closed, 1=half-open, 2=open)\n`;
       metrics += `# TYPE dextrends_circuit_breaker_state gauge\n`;
       
-      dashboardData.circuitBreakers.breakers.forEach((breaker: CircuitBreakerStatus) => {
-        const stateValue = breaker.state === 'closed' ? 0 : 
-                          breaker.state === 'half-open' ? 1 : 2;
+      dashboardData.circuitBreakers.breakers.forEach((breaker: { name: string; status: string }) => {
+        const stateValue = breaker.status === 'closed' ? 0 : 
+                          breaker.status === 'half-open' ? 1 : 2;
         metrics += `dextrends_circuit_breaker_state{name="${breaker.name || 'unknown'}"} ${stateValue}\n`;
       });
       metrics += '\n';
@@ -265,7 +265,7 @@ function handleDashboardFormat(req: NextApiRequest, res: NextApiResponse<any>, t
     logger.error('Dashboard metrics error', { error: error.message });
     return res.status(500).json({
       error: 'Failed to generate dashboard data',
-      message: error.message
+      message: error instanceof Error ? error.message : String(error)
     });
   }
 }
@@ -317,7 +317,7 @@ function handleJsonFormat(req: NextApiRequest, res: NextApiResponse<MetricsData 
     logger.error('JSON metrics error', { error: error.message });
     return res.status(500).json({
       error: 'Failed to generate metrics',
-      message: error.message
+      message: error instanceof Error ? error.message : String(error)
     });
   }
 }

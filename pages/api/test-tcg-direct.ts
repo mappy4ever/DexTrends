@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Direct fetch to Pokemon TCG API
     const apiUrl = 'https://api.pokemontcg.io/v2/sets?page=1&pageSize=10';
-    logger.debug('Testing direct API call to:', apiUrl);
+    logger.debug('Testing direct API call to', { apiUrl });
     
     const response = await fetch(apiUrl, {
       headers,
@@ -22,14 +22,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
     
     const responseText = await response.text();
-    logger.debug('Response status:', response.status);
-    logger.debug('Response headers:', Object.fromEntries(response.headers.entries()));
+    logger.debug('Response status', { status: response.status });
+    logger.debug('Response headers', { headers: Object.fromEntries(response.headers.entries()) });
     
     let data;
     try {
       data = JSON.parse(responseText);
     } catch (e) {
-      logger.error('Failed to parse response:', responseText);
+      logger.error('Failed to parse response', { responseText });
       throw new Error(`Invalid JSON response: ${responseText.substring(0, 200)}`);
     }
     
@@ -42,12 +42,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       hasApiKey: !!apiKey,
       rawResponse: process.env.NODE_ENV === 'development' ? responseText.substring(0, 500) : undefined
     });
-  } catch (error: any) {
-    logger.error('Direct API test failed:', error);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const errorStack = error instanceof Error ? error.stack : undefined;
+    logger.error('Direct API test failed:', { error: error instanceof Error ? error.message : String(error) });
     res.status(500).json({ 
       success: false,
-      error: error.message,
-      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      error: errorMessage,
+      stack: process.env.NODE_ENV === 'development' ? errorStack : undefined
     });
   }
 }

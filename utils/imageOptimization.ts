@@ -53,7 +53,7 @@ interface LazyLoadOptions {
   placeholder?: string;
   quality?: ImageQuality;
   onLoad?: ((img: HTMLImageElement) => void) | null;
-  onError?: ((error: any) => void) | null;
+  onError?: ((error: Error | unknown) => void) | null;
 }
 
 interface CardImagesOptions {
@@ -81,7 +81,7 @@ interface CardImageProps {
   sizes: string;
   placeholder: 'blur' | 'empty';
   blurDataURL: string;
-  onError: (e: any) => void;
+  onError: (e: Error | unknown) => void;
 }
 
 interface CacheStats {
@@ -427,9 +427,10 @@ class ImageOptimizer {
       sizes,
       placeholder: 'blur',
       blurDataURL: this.generateBlurDataURL(),
-      onError: (e: any) => {
-        if (e.target.src !== '/back-card.png') {
-          e.target.src = '/back-card.png';
+      onError: (e: Error | unknown) => {
+        const event = e as { target?: { src?: string } };
+        if (event.target && event.target.src !== '/back-card.png') {
+          event.target.src = '/back-card.png';
         }
       }
     };

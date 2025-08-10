@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useMemo } from 'react';
 import { useMobileUtils } from '../../utils/mobileUtils';
 import EnhancedSwipeGestures from './EnhancedSwipeGestures';
 import logger from '../../utils/logger';
@@ -13,7 +13,7 @@ interface Card {
   rarity: string;
   isFavorite?: boolean;
   inCollection?: boolean;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 interface SwipeAction {
@@ -32,7 +32,7 @@ interface SwipeActions {
 
 interface GestureCardSortingProps {
   cards?: Card[];
-  onCardAction?: (cardId: string, action: string, swipeData: any) => void;
+  onCardAction?: (cardId: string, action: string, swipeData: unknown) => void;
   onSort?: (sortType: string) => void;
   onFilter?: (filterType: string) => void;
   className?: string;
@@ -74,17 +74,18 @@ const GestureCardSorting: React.FC<GestureCardSortingProps> = ({
   const [sortMode, setSortMode] = useState('gesture');
   const [filterMode, setFilterMode] = useState('all');
   const gestureTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const showContextMenuRef = useRef<((position: Position) => void) | undefined>(undefined);
 
-  // Gesture patterns for sorting
-  const sortGestures: Record<string, SortGesture> = {
+  // Gesture patterns for sorting - wrapped in useMemo to prevent recreation
+  const sortGestures: Record<string, SortGesture> = React.useMemo(() => ({
     'circle-clockwise': { sort: 'price-asc', label: 'Price Low to High' },
     'circle-counter': { sort: 'price-desc', label: 'Price High to Low' },
     'zigzag-horizontal': { sort: 'name-asc', label: 'Name A-Z' },
     'zigzag-vertical': { sort: 'rarity', label: 'By Rarity' }
-  };
+  }), []);
 
   // Handle individual card swipe actions
-  const handleCardSwipe = useCallback((cardId: string, direction: keyof SwipeActions, swipeData: any) => {
+  const handleCardSwipe = useCallback((cardId: string, direction: keyof SwipeActions, swipeData: unknown) => {
     const action = swipeActions[direction];
     if (!action) return;
 
@@ -148,15 +149,36 @@ const GestureCardSorting: React.FC<GestureCardSortingProps> = ({
     }
   }, [utils, handleCardSwipe]);
 
-  // Handle long press for context menu
+  // Handle long press for context menu - using forward reference to avoid circular deps
   const handleLongPress = useCallback((position: Position) => {
     utils.hapticFeedback('heavy');
     
     // Show context menu (simplified for demo)
-    showContextMenu(position);
+    showContextMenuRef.current?.(position);
     
     logger.debug('Long press context menu', { position });
   }, [utils]);
+
+  // Handle context menu actions - moved before showContextMenu
+  const handleContextAction = useCallback((action: string) => {
+    switch (action) {
+      case 'Select All':
+        // Implement select all logic
+        break;
+      case 'Clear Filters':
+        setFilterMode('all');
+        if (onFilter) onFilter('all');
+        break;
+      case 'Sort Options':
+        // Show sort options
+        break;
+      case 'View Settings':
+        // Show view settings
+        break;
+    }
+    
+    logger.debug('Context action executed', { action });
+  }, [onFilter]);
 
   // Show gesture feedback
   const showGestureFeedback = (message: string) => {
@@ -187,7 +209,7 @@ const GestureCardSorting: React.FC<GestureCardSortingProps> = ({
   };
 
   // Show context menu
-  const showContextMenu = (position: Position) => {
+  const showContextMenu = useCallback((position: Position) => {
     // Simplified context menu implementation
     const menu = document.createElement('div');
     menu.style.cssText = `
@@ -232,28 +254,10 @@ const GestureCardSorting: React.FC<GestureCardSortingProps> = ({
       };
       document.addEventListener('click', clickHandler);
     }, 100);
-  };
+  }, [handleContextAction]);
 
-  // Handle context menu actions
-  const handleContextAction = (action: string) => {
-    switch (action) {
-      case 'Select All':
-        // Implement select all logic
-        break;
-      case 'Clear Filters':
-        setFilterMode('all');
-        if (onFilter) onFilter('all');
-        break;
-      case 'Sort Options':
-        // Show sort options
-        break;
-      case 'View Settings':
-        // Show view settings
-        break;
-    }
-    
-    logger.debug('Context action executed', { action });
-  };
+  // Set ref for forward reference
+  showContextMenuRef.current = showContextMenu;
 
   // Filter cards based on gestures or other criteria
   const getFilteredCards = (): Card[] => {
@@ -312,10 +316,10 @@ const GestureCardSorting: React.FC<GestureCardSortingProps> = ({
 
       {/* Cards Grid with Gesture Support */}
       <EnhancedSwipeGestures
-        onSwipeLeft={(data: any) => activeCard && handleCardSwipe(activeCard, 'left', data)}
-        onSwipeRight={(data: any) => activeCard && handleCardSwipe(activeCard, 'right', data)}
-        onSwipeUp={(data: any) => activeCard && handleCardSwipe(activeCard, 'up', data)}
-        onSwipeDown={(data: any) => activeCard && handleCardSwipe(activeCard, 'down', data)}
+        onSwipeLeft={(data: unknown) => activeCard && handleCardSwipe(activeCard, 'left', data)}
+        onSwipeRight={(data: unknown) => activeCard && handleCardSwipe(activeCard, 'right', data)}
+        onSwipeUp={(data: unknown) => activeCard && handleCardSwipe(activeCard, 'up', data)}
+        onSwipeDown={(data: unknown) => activeCard && handleCardSwipe(activeCard, 'down', data)}
         onDoubleTap={handleDoubleTap}
         onLongPress={handleLongPress}
         enableSwipe={true}

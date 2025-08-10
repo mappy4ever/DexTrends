@@ -5,7 +5,9 @@ import { BsPerson, BsController, BsGlobe, BsBarChart } from 'react-icons/bs';
 // Type definitions
 interface Leader {
   name: string;
-  [key: string]: any;
+  badge?: string;
+  type?: string[];
+  location?: string;
 }
 
 interface RegionData {
@@ -21,8 +23,10 @@ interface RegionData {
   gymLeaders?: Leader[];
   trialCaptains?: Leader[];
   islandKahunas?: Leader[];
-  legendaries: any[];
-  [key: string]: any;
+  legendaries: { id: number; name: string }[];
+  starterIds?: number[];
+  starters?: string[];
+  starterTypes?: string[][];
 }
 
 interface RegionInfoProps {

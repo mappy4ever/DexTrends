@@ -1,4 +1,4 @@
-import type { PokemonType, PokemonTheme } from '../types/api/pokemon';
+import type { PokemonType, PokemonTheme } from "../types/pokemon";
 
 /**
  * Particle configuration for type-based effects

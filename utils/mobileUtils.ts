@@ -504,8 +504,8 @@ class MobileUtils {
     try {
       await navigator.share(data);
       return true;
-    } catch (error: any) {
-      if (error.name !== 'AbortError') {
+    } catch (error) {
+      if (error instanceof Error && error.name !== 'AbortError') {
         logger.error('Share failed:', error);
       }
       return false;

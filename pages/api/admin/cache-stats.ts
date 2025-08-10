@@ -41,7 +41,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           cacheHitRate: calculateHitRate(stats)
         };
       } catch (error) {
-        logger.error('Failed to get Redis info:', error);
+        logger.error('Failed to get Redis info:', { error: error instanceof Error ? error.message : String(error) });
       }
     }
     
@@ -53,7 +53,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const keys = await redisClient.keys('tcg:*');
         sampleKeys = keys.slice(0, 10);
       } catch (error) {
-        logger.error('Failed to get sample keys:', error);
+        logger.error('Failed to get sample keys:', { error: error instanceof Error ? error.message : String(error) });
       }
     }
     
@@ -72,11 +72,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       timestamp: new Date().toISOString()
     });
     
-  } catch (error: any) {
-    logger.error('Failed to get cache stats:', error);
+  } catch (error: unknown) {
+    logger.error('Failed to get cache stats:', { error: error instanceof Error ? error.message : String(error) });
     res.status(500).json({
       error: 'Failed to get cache stats',
-      message: error.message
+      message: error instanceof Error ? error.message : String(error)
     });
   }
 }

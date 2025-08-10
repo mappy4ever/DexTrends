@@ -1,7 +1,7 @@
 // Cached Pokemon utilities with Supabase integration
 import { SupabaseCache } from '../lib/supabase';
 import { fetchJSON } from './unifiedFetch';
-import type { Pokemon, PokemonSpecies, PokemonListResponse } from '../types/api/pokemon';
+import type { Pokemon, PokemonSpecies, PokemonListResponse } from "../types/pokemon";
 import type { TCGCard } from '../types/api/cards';
 
 // Enhanced Pokemon fetching with Supabase caching
@@ -118,7 +118,7 @@ export async function fetchPokemonCardWithCache(cardId: string): Promise<TCGCard
 
 // Search filters interface
 interface SearchFilters {
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 // Cached Pokemon card search

@@ -10,7 +10,7 @@ interface NotificationOptions {
 
 // This function should be called once after NotificationProvider is mounted
 export function initializeGlobalNotifications(
-  addNotification: (notification: any) => string | number
+  addNotification: (notification: unknown) => string | number
 ) {
   // Legacy window.showNotification for backwards compatibility
   if (typeof window !== 'undefined') {

@@ -1,8 +1,9 @@
 import React from 'react';
 import FlippableCard from './FlippableCard';
+import { TCGCard } from '../../../types/api/cards';
 
 interface FlippableTCGCardProps {
-  card: any;
+  card: TCGCard;
   className?: string;
   width?: string | number;
   height?: string | number;
@@ -45,7 +46,9 @@ export const FlippableTCGCard: React.FC<FlippableTCGCardProps> = ({
             <p className="text-2xl font-bold">
               ${(() => {
                 const prices = Object.values(card.tcgplayer.prices);
-                const priceWithMarket = prices.find((price: any) => price && typeof price === 'object' && 'market' in price) as any;
+                const priceWithMarket = prices.find((price: unknown): price is { market: number } => 
+                  Boolean(price && typeof price === 'object' && price !== null && 'market' in price)
+                );
                 return priceWithMarket?.market || 'N/A';
               })()}
             </p>

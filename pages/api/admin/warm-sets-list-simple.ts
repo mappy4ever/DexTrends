@@ -2,6 +2,31 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { tcgCache } from '../../../lib/tcg-cache';
 import { fetchJSON } from '../../../utils/unifiedFetch';
 import logger from '../../../utils/logger';
+import type { TCGApiResponse } from '../../../types/api/enhanced-responses';
+import type { AnyObject } from '../../../types/common';
+
+interface TCGSet {
+  id: string;
+  name: string;
+  releaseDate?: string;
+  series?: string;
+  printedTotal?: number;
+  total?: number;
+  legalities?: AnyObject;
+  ptcgoCode?: string;
+  updatedAt?: string;
+  images?: {
+    symbol?: string;
+    logo?: string;
+  };
+  [key: string]: unknown;
+}
+
+interface SetsListResponse {
+  data: TCGSet[];
+  count?: number;
+  totalCount?: number;
+}
 
 interface WarmSetsListRequest extends NextApiRequest {
   query: {
@@ -61,7 +86,7 @@ export default async function handler(req: WarmSetsListRequest, res: NextApiResp
     
     logger.info(`[Warm Sets Simple] Fetching from ${apiUrl}`);
     
-    const data = await fetchJSON<{ data: any[], count?: number, totalCount?: number }>(apiUrl, { 
+    const data = await fetchJSON<SetsListResponse>(apiUrl, { 
       headers,
       timeout: 60000,
       retries: 2
@@ -72,8 +97,14 @@ export default async function handler(req: WarmSetsListRequest, res: NextApiResp
     }
     
     // Format response like the main API does
+    // Add updatedAt field to each set to match CardSet interface
+    const processedData = data.data.map(set => ({
+      ...set,
+      updatedAt: set.updatedAt || new Date().toISOString()
+    }));
+    
     const response = {
-      data: data.data,
+      data: processedData,
       pagination: {
         page: page,
         pageSize: pageSize,
@@ -111,12 +142,13 @@ export default async function handler(req: WarmSetsListRequest, res: NextApiResp
       duration
     });
     
-  } catch (error: any) {
-    logger.error('[Warm Sets Simple] Failed:', error);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    logger.error('[Warm Sets Simple] Failed:', { error: error instanceof Error ? error.message : String(error) });
     
     res.status(500).json({
       error: 'Sets list cache warming failed',
-      message: error.message,
+      message: errorMessage,
       page,
       pageSize
     });

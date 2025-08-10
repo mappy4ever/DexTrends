@@ -2,6 +2,8 @@
  * Pokemon helper utilities for handling special cases
  */
 
+import logger from './logger';
+
 /**
  * Sanitizes Pokemon names for API calls
  * Handles special characters, gender symbols, and forms
@@ -147,10 +149,10 @@ export function testPokemonSanitization(): void {
     { input: 'Tapu Koko', expected: 'tapu-koko' },
   ];
   
-  console.log('Testing Pokemon name sanitization:');
+  logger.debug('Testing Pokemon name sanitization:');
   testCases.forEach(({ input, expected }) => {
     const result = sanitizePokemonName(input);
     const passed = result === expected;
-    console.log(`${passed ? '✅' : '❌'} ${input} → ${result} (expected: ${expected})`);
+    logger.debug(`${passed ? '✅' : '❌'} ${input} → ${result} (expected: ${expected})`);
   });
 }

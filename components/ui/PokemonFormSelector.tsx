@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchJSON } from '../../utils/unifiedFetch';
-import type { Pokemon } from '../../types/api/pokemon';
+import type { Pokemon } from "../../types/pokemon";
+import logger from '@/utils/logger';
 
 interface PokemonVariety {
   is_default: boolean;
@@ -15,7 +16,7 @@ interface Species {
   varieties?: PokemonVariety[];
 }
 
-// Using the Pokemon type from types/api/pokemon.d.ts
+// Using the Pokemon type from "../../types/pokemon.d.ts
 
 interface Form {
   name: string;
@@ -195,14 +196,14 @@ export default function PokemonFormSelector({
   const handleFormChange = async (form: Form): Promise<void> => {
     if (form.name === selectedForm?.name || isChangingForm) return;
     
-    logger.debug('Switching to form:', form.name, 'from:', selectedForm?.name);
+    logger.debug('Switching to form', { to: form.name, from: selectedForm?.name });
     setIsChangingForm(true);
     
     try {
       // Load the form's data
       const formData = await fetchJSON<Pokemon>(form.url);
       if (!formData) throw new Error('No form data received');
-      logger.debug('Form data loaded:', formData.name);
+      logger.debug('Form data loaded', { name: formData.name });
       
       // Validate the form data has required fields
       if (!formData || !formData.name) {

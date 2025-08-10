@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FaPlay, FaStop, FaBug, FaCheckCircle, FaExclamationTriangle, FaDownload, FaApple } from 'react-icons/fa';
 import dynamic from 'next/dynamic';
+import { isError, getErrorMessage } from '@/utils/typeGuards';
 
 // Dynamic import of iPhone QA Tests
 const IPhoneQATests = dynamic<{ onClose: () => void }>(
@@ -210,14 +211,14 @@ const QATestingSuite: React.FC<QATestingSuiteProps> = ({ isVisible = false, onTo
         duration: Date.now() - startTime,
         timestamp: new Date().toISOString()
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         id: `${suite}-${testName}`,
         suite,
         testName,
         status: 'error',
-        message: error.message,
-        details: { error: error.stack },
+        message: getErrorMessage(error),
+        details: { error: isError(error) ? error.stack : String(error) },
         duration: Date.now() - startTime,
         timestamp: new Date().toISOString()
       };
@@ -500,11 +501,11 @@ const QATestingSuite: React.FC<QATestingSuiteProps> = ({ isVisible = false, onTo
         message: `API response time: ${responseTime}ms`,
         details: { responseTime }
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         status: 'fail',
         message: 'API request failed',
-        details: { error: error.message }
+        details: { error: getErrorMessage(error) }
       };
     }
   };

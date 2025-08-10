@@ -4,7 +4,7 @@ import { cn } from '../../utils/cn';
 import { CircularCard } from '../ui/design-system';
 import { TypeBadge } from '../ui/TypeBadge';
 import { GlassContainer } from '../ui/design-system';
-import type { EvolutionChain, Pokemon, PokemonSpecies } from '../../types/api/pokemon';
+import type { EvolutionChain, EvolutionLink, Pokemon, PokemonSpecies } from "../../types/pokemon";
 
 interface EvolutionFlowProps {
   evolutionChain: EvolutionChain | null;
@@ -52,16 +52,16 @@ const EvolutionFlow: React.FC<EvolutionFlowProps> = ({
   const evolutionTree = useMemo(() => {
     if (!evolutionChain?.chain) return null;
     
-    const parseNode = (node: any): EvolutionNode => {
+    const parseNode = (node: EvolutionLink): EvolutionNode => {
       const speciesId = parseInt(node.species.url.split('/').slice(-2, -1)[0]);
-      const evolutionDetails = node.evolution_details.map((detail: any) => ({
+      const evolutionDetails = node.evolution_details.map((detail) => ({
         trigger: detail.trigger.name,
-        level: detail.min_level,
-        item: detail.item?.name,
-        location: detail.location?.name,
-        happiness: detail.min_happiness,
-        timeOfDay: detail.time_of_day,
-        condition: detail.known_move?.name || detail.held_item?.name
+        level: detail.min_level || undefined,
+        item: detail.item?.name || undefined,
+        location: detail.location?.name || undefined,
+        happiness: detail.min_happiness || undefined,
+        timeOfDay: detail.time_of_day || undefined,
+        condition: detail.known_move?.name || detail.held_item?.name || undefined
       }));
       
       return {

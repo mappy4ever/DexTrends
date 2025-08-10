@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Pokemon, PokemonSpecies } from '../../../types/api/pokemon';
+import type { Pokemon, PokemonSpecies } from "../../../types/pokemon";
 import type { CompetitiveTierRecord } from '../../../utils/supabase';
 import { GlassContainer } from '../../ui/design-system';
 import TypeEffectivenessWheel from '../TypeEffectivenessWheel';

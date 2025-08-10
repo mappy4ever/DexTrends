@@ -4,13 +4,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { fetchJSON } from "../utils/unifiedFetch";
+import { useDebounce } from "../hooks/useDebounce";
 import { TypeBadge } from "../components/ui/TypeBadge";
 import { getGeneration } from "../utils/pokemonutils";
 import PokeballLoader from "../components/ui/PokeballLoader";
 import FullBleedWrapper from "../components/ui/FullBleedWrapper";
-import type { Pokemon, PokemonType, PokemonSprites, PokemonSpecies } from "../types/api/pokemon";
+import type { Pokemon, PokemonType, PokemonSprites, PokemonSpecies } from "../../types/pokemon";
 import CircularPokemonCard from "../components/ui/cards/CircularPokemonCard";
-import { InlineLoader } from "../utils/unifiedLoading";
+import { InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { CircularButton } from "../components/ui/design-system";
 import { FiFilter, FiChevronDown } from "react-icons/fi";
 import { NextPage } from "next";
@@ -23,7 +24,7 @@ const PullToRefresh = dynamic(() => import('../components/mobile/PullToRefresh')
 });
 
 // Type definitions
-// Using types from ../types/api/pokemon
+// Using types from "../../types/pokemon
 
 interface EnhancedPokemon {
   id: number;
@@ -105,7 +106,9 @@ const PokedexIndex: NextPage = () => {
   const [pendingCategories, setPendingCategories] = useState<PokemonCategory[]>([]);
   const [pendingStages, setPendingStages] = useState<EvolutionStage[]>([]);
   const [pendingSortBy, setPendingSortBy] = useState<SortOption>("id");
-  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  
+  // Use centralized debounce hook
+  const debouncedSearchTerm = useDebounce(pendingSearchTerm, 300);
   
   // Intersection observer ref for infinite scroll
   const loadMoreRef = useRef<HTMLDivElement>(null);
@@ -113,21 +116,9 @@ const PokedexIndex: NextPage = () => {
 
   // Handle search with debounce
   useEffect(() => {
-    if (searchTimeoutRef.current) {
-      clearTimeout(searchTimeoutRef.current);
-    }
-    
-    searchTimeoutRef.current = setTimeout(() => {
-      setSearchTerm(pendingSearchTerm);
-      setVisibleCount(INITIAL_LOAD);
-    }, 300);
-    
-    return () => {
-      if (searchTimeoutRef.current) {
-        clearTimeout(searchTimeoutRef.current);
-      }
-    };
-  }, [pendingSearchTerm]);
+    setSearchTerm(debouncedSearchTerm);
+    setVisibleCount(INITIAL_LOAD);
+  }, [debouncedSearchTerm]);
 
   // Handle search trigger
   const handleSearch = () => {
@@ -341,11 +332,11 @@ const PokedexIndex: NextPage = () => {
     const isUltraBeastPokemon = speciesData?.genera?.some(g => g.genus.toLowerCase().includes('ultra beast')) || checkIfUltraBeast(details.id, details.name);
     
     // Determine evolution stage based on evolution chain position
-    let stage = 1; // Default to first stage
+    let stage: number | string = 1; // Default to first stage
     if (details.name.includes('-mega') || details.name.includes('-gmax')) {
-      stage = 'mega' as any;
+      stage = 'mega';
     } else if (isLegendary || isMythical) {
-      stage = 'legendary' as any;
+      stage = 'legendary';
     }
     
     return {
@@ -386,9 +377,10 @@ const PokedexIndex: NextPage = () => {
                 return enhancePokemonData(details);
               }
             })
-            .catch((err: any) => {
+            .catch((err: unknown) => {
               // Return placeholder for failed loads
-              logger.error('Failed to load Pokemon', { pokemonId: i, error: err });
+              const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+              logger.error('Failed to load Pokemon', { pokemonId: i, error: errorMessage });
               return {
                 id: i,
                 name: `pokemon-${i}`,
@@ -414,6 +406,134 @@ const PokedexIndex: NextPage = () => {
       logger.error('Batch fetch error', { error: err });
       return [];
     }
+  }, [enhancePokemonData]);
+
+  // Fetch mega evolutions separately
+  const fetchMegaEvolutions = useCallback(async (): Promise<EnhancedPokemon[]> => {
+    const megaForms: EnhancedPokemon[] = [];
+    const megaPokemon = [
+      { id: 10033, name: 'venusaur-mega' },
+      { id: 10034, name: 'charizard-mega-x' },
+      { id: 10035, name: 'charizard-mega-y' },
+      { id: 10036, name: 'blastoise-mega' },
+      { id: 10037, name: 'alakazam-mega' },
+      { id: 10038, name: 'gengar-mega' },
+      { id: 10039, name: 'kangaskhan-mega' },
+      { id: 10040, name: 'pinsir-mega' },
+      { id: 10041, name: 'gyarados-mega' },
+      { id: 10042, name: 'aerodactyl-mega' },
+      { id: 10043, name: 'mewtwo-mega-x' },
+      { id: 10044, name: 'mewtwo-mega-y' },
+      { id: 10045, name: 'ampharos-mega' },
+      { id: 10046, name: 'scizor-mega' },
+      { id: 10047, name: 'heracross-mega' },
+      { id: 10048, name: 'houndoom-mega' },
+      { id: 10049, name: 'tyranitar-mega' },
+      { id: 10050, name: 'blaziken-mega' },
+      { id: 10051, name: 'gardevoir-mega' },
+      { id: 10052, name: 'mawile-mega' },
+      { id: 10053, name: 'aggron-mega' },
+      { id: 10054, name: 'medicham-mega' },
+      { id: 10055, name: 'manectric-mega' },
+      { id: 10056, name: 'banette-mega' },
+      { id: 10057, name: 'absol-mega' },
+      { id: 10058, name: 'garchomp-mega' },
+      { id: 10059, name: 'lucario-mega' },
+      { id: 10060, name: 'abomasnow-mega' },
+      { id: 10062, name: 'beedrill-mega' },
+      { id: 10063, name: 'pidgeot-mega' },
+      { id: 10064, name: 'slowbro-mega' },
+      { id: 10065, name: 'steelix-mega' },
+      { id: 10066, name: 'sceptile-mega' },
+      { id: 10067, name: 'swampert-mega' },
+      { id: 10068, name: 'sableye-mega' },
+      { id: 10069, name: 'sharpedo-mega' },
+      { id: 10070, name: 'camerupt-mega' },
+      { id: 10071, name: 'altaria-mega' },
+      { id: 10072, name: 'glalie-mega' },
+      { id: 10073, name: 'salamence-mega' },
+      { id: 10074, name: 'metagross-mega' },
+      { id: 10075, name: 'latias-mega' },
+      { id: 10076, name: 'latios-mega' },
+      { id: 10077, name: 'lopunny-mega' },
+      { id: 10078, name: 'gallade-mega' },
+      { id: 10079, name: 'audino-mega' },
+      { id: 10087, name: 'diancie-mega' },
+      { id: 10090, name: 'rayquaza-mega' }
+    ];
+
+    for (const mega of megaPokemon) {
+      try {
+        const details = await fetchJSON<ApiPokemonResponse>(`https://pokeapi.co/api/v2/pokemon/${mega.id}`);
+        if (!details) continue;
+        const speciesData = await fetchJSON<PokemonSpecies>(details.species.url);
+        const enhancedData = enhancePokemonData(details, speciesData);
+        megaForms.push(enhancedData);
+      } catch (err) {
+        logger.error('Failed to fetch mega evolution', { megaName: mega.name, error: err });
+      }
+    }
+
+    return megaForms;
+  }, [enhancePokemonData]);
+
+  // Fetch regional variants separately
+  const fetchRegionalVariants = useCallback(async (): Promise<EnhancedPokemon[]> => {
+    const regionalForms: EnhancedPokemon[] = [];
+    
+    // Alolan forms
+    for (let id = 10091; id <= 10115; id++) {
+      try {
+        const details = await fetchJSON<ApiPokemonResponse>(`https://pokeapi.co/api/v2/pokemon/${id}`);
+        if (!details) continue;
+        const speciesData = await fetchJSON<PokemonSpecies>(details.species.url);
+        const enhancedData = enhancePokemonData(details, speciesData);
+        regionalForms.push(enhancedData);
+      } catch (err) {
+        // Skip if not found
+      }
+    }
+    
+    // More Alolan forms
+    for (let id = 10123; id <= 10126; id++) {
+      try {
+        const details = await fetchJSON<ApiPokemonResponse>(`https://pokeapi.co/api/v2/pokemon/${id}`);
+        if (!details) continue;
+        const speciesData = await fetchJSON<PokemonSpecies>(details.species.url);
+        const enhancedData = enhancePokemonData(details, speciesData);
+        regionalForms.push(enhancedData);
+      } catch (err) {
+        // Skip if not found
+      }
+    }
+    
+    // Galarian forms
+    for (let id = 10158; id <= 10184; id++) {
+      try {
+        const details = await fetchJSON<ApiPokemonResponse>(`https://pokeapi.co/api/v2/pokemon/${id}`);
+        if (!details) continue;
+        const speciesData = await fetchJSON<PokemonSpecies>(details.species.url);
+        const enhancedData = enhancePokemonData(details, speciesData);
+        regionalForms.push(enhancedData);
+      } catch (err) {
+        // Skip if not found
+      }
+    }
+    
+    // Hisuian forms
+    for (let id = 10221; id <= 10249; id++) {
+      try {
+        const details = await fetchJSON<ApiPokemonResponse>(`https://pokeapi.co/api/v2/pokemon/${id}`);
+        if (!details) continue;
+        const speciesData = await fetchJSON<PokemonSpecies>(details.species.url);
+        const enhancedData = enhancePokemonData(details, speciesData);
+        regionalForms.push(enhancedData);
+      } catch (err) {
+        // Skip if not found
+      }
+    }
+    
+    return regionalForms;
   }, [enhancePokemonData]);
 
   // Background loading function for remaining Pokemon
@@ -474,16 +594,17 @@ const PokedexIndex: NextPage = () => {
         }
       }
       
-      // Load special forms in background - temporarily disabled to fix infinite loop
-      // TODO: Re-enable special forms loading with proper useCallback handling
+      // Load special forms in background
       try {
-        // const megaEvolutions = await fetchMegaEvolutions();
-        // allPokemonData = [...allPokemonData, ...megaEvolutions];
+        const megaEvolutions = await fetchMegaEvolutions();
+        allPokemonData = [...allPokemonData, ...megaEvolutions];
         
-        // const regionalVariants = await fetchRegionalVariants();
-        // allPokemonData = [...allPokemonData, ...regionalVariants];
+        const regionalVariants = await fetchRegionalVariants();
+        allPokemonData = [...allPokemonData, ...regionalVariants];
+        
+        logger.debug(`Special forms loaded: ${megaEvolutions.length} mega evolutions, ${regionalVariants.length} regional variants`);
       } catch (err) {
-        logger.debug('Special forms loading failed, continuing with basic Pokemon');
+        logger.debug('Special forms loading failed, continuing with basic Pokemon', { error: err });
       }
       
       // Final update
@@ -492,7 +613,7 @@ const PokedexIndex: NextPage = () => {
     } catch (err) {
       logger.error('Background loading failed', { error: err });
     }
-  }, [fetchPokemonBatch]);
+  }, [fetchPokemonBatch, fetchMegaEvolutions, fetchRegionalVariants]);
 
   // Load initial Pokémon data for faster page load
   useEffect(() => {
@@ -605,134 +726,6 @@ const PokedexIndex: NextPage = () => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // Fetch mega evolutions separately
-  const fetchMegaEvolutions = async (): Promise<EnhancedPokemon[]> => {
-    const megaForms: EnhancedPokemon[] = [];
-    const megaPokemon = [
-      { id: 10033, name: 'venusaur-mega' },
-      { id: 10034, name: 'charizard-mega-x' },
-      { id: 10035, name: 'charizard-mega-y' },
-      { id: 10036, name: 'blastoise-mega' },
-      { id: 10037, name: 'alakazam-mega' },
-      { id: 10038, name: 'gengar-mega' },
-      { id: 10039, name: 'kangaskhan-mega' },
-      { id: 10040, name: 'pinsir-mega' },
-      { id: 10041, name: 'gyarados-mega' },
-      { id: 10042, name: 'aerodactyl-mega' },
-      { id: 10043, name: 'mewtwo-mega-x' },
-      { id: 10044, name: 'mewtwo-mega-y' },
-      { id: 10045, name: 'ampharos-mega' },
-      { id: 10046, name: 'scizor-mega' },
-      { id: 10047, name: 'heracross-mega' },
-      { id: 10048, name: 'houndoom-mega' },
-      { id: 10049, name: 'tyranitar-mega' },
-      { id: 10050, name: 'blaziken-mega' },
-      { id: 10051, name: 'gardevoir-mega' },
-      { id: 10052, name: 'mawile-mega' },
-      { id: 10053, name: 'aggron-mega' },
-      { id: 10054, name: 'medicham-mega' },
-      { id: 10055, name: 'manectric-mega' },
-      { id: 10056, name: 'banette-mega' },
-      { id: 10057, name: 'absol-mega' },
-      { id: 10058, name: 'garchomp-mega' },
-      { id: 10059, name: 'lucario-mega' },
-      { id: 10060, name: 'abomasnow-mega' },
-      { id: 10062, name: 'beedrill-mega' },
-      { id: 10063, name: 'pidgeot-mega' },
-      { id: 10064, name: 'slowbro-mega' },
-      { id: 10065, name: 'steelix-mega' },
-      { id: 10066, name: 'sceptile-mega' },
-      { id: 10067, name: 'swampert-mega' },
-      { id: 10068, name: 'sableye-mega' },
-      { id: 10069, name: 'sharpedo-mega' },
-      { id: 10070, name: 'camerupt-mega' },
-      { id: 10071, name: 'altaria-mega' },
-      { id: 10072, name: 'glalie-mega' },
-      { id: 10073, name: 'salamence-mega' },
-      { id: 10074, name: 'metagross-mega' },
-      { id: 10075, name: 'latias-mega' },
-      { id: 10076, name: 'latios-mega' },
-      { id: 10077, name: 'lopunny-mega' },
-      { id: 10078, name: 'gallade-mega' },
-      { id: 10079, name: 'audino-mega' },
-      { id: 10087, name: 'diancie-mega' },
-      { id: 10090, name: 'rayquaza-mega' }
-    ];
-
-    for (const mega of megaPokemon) {
-      try {
-        const details = await fetchJSON<ApiPokemonResponse>(`https://pokeapi.co/api/v2/pokemon/${mega.id}`);
-        if (!details) continue;
-        const speciesData = await fetchJSON<PokemonSpecies>(details.species.url);
-        const enhancedData = enhancePokemonData(details, speciesData);
-        megaForms.push(enhancedData);
-      } catch (err) {
-        logger.error('Failed to fetch mega evolution', { megaName: mega.name, error: err });
-      }
-    }
-
-    return megaForms;
-  };
-
-  // Fetch regional variants separately
-  const fetchRegionalVariants = async (): Promise<EnhancedPokemon[]> => {
-    const regionalForms: EnhancedPokemon[] = [];
-    
-    // Alolan forms
-    for (let id = 10091; id <= 10115; id++) {
-      try {
-        const details = await fetchJSON<ApiPokemonResponse>(`https://pokeapi.co/api/v2/pokemon/${id}`);
-        if (!details) continue;
-        const speciesData = await fetchJSON<PokemonSpecies>(details.species.url);
-        const enhancedData = enhancePokemonData(details, speciesData);
-        regionalForms.push(enhancedData);
-      } catch (err) {
-        // Skip if not found
-      }
-    }
-    
-    // More Alolan forms
-    for (let id = 10123; id <= 10126; id++) {
-      try {
-        const details = await fetchJSON<ApiPokemonResponse>(`https://pokeapi.co/api/v2/pokemon/${id}`);
-        if (!details) continue;
-        const speciesData = await fetchJSON<PokemonSpecies>(details.species.url);
-        const enhancedData = enhancePokemonData(details, speciesData);
-        regionalForms.push(enhancedData);
-      } catch (err) {
-        // Skip if not found
-      }
-    }
-    
-    // Galarian forms
-    for (let id = 10158; id <= 10184; id++) {
-      try {
-        const details = await fetchJSON<ApiPokemonResponse>(`https://pokeapi.co/api/v2/pokemon/${id}`);
-        if (!details) continue;
-        const speciesData = await fetchJSON<PokemonSpecies>(details.species.url);
-        const enhancedData = enhancePokemonData(details, speciesData);
-        regionalForms.push(enhancedData);
-      } catch (err) {
-        // Skip if not found
-      }
-    }
-    
-    // Hisuian forms
-    for (let id = 10221; id <= 10249; id++) {
-      try {
-        const details = await fetchJSON<ApiPokemonResponse>(`https://pokeapi.co/api/v2/pokemon/${id}`);
-        if (!details) continue;
-        const speciesData = await fetchJSON<PokemonSpecies>(details.species.url);
-        const enhancedData = enhancePokemonData(details, speciesData);
-        regionalForms.push(enhancedData);
-      } catch (err) {
-        // Skip if not found
-      }
-    }
-    
-    return regionalForms;
-  };
 
   // Enhanced filtering logic
   const filteredPokemon = useMemo(() => {
@@ -1285,6 +1278,10 @@ const PokedexIndex: NextPage = () => {
 };
 
 // Mark this page as fullBleed
-(PokedexIndex as any).fullBleed = true;
+interface PageComponent extends NextPage {
+  fullBleed?: boolean;
+}
+
+(PokedexIndex as PageComponent).fullBleed = true;
 
 export default PokedexIndex;

@@ -131,7 +131,7 @@ interface GymLeaderTemplate {
   type: string;
   badge: string;
   image: string;
-  team: any[];
+  team: unknown[];
   quote: string;
   description: string;
   generation: number;

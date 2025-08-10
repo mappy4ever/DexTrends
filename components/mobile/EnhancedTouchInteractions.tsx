@@ -80,7 +80,8 @@ interface SwipeableCardProps {
   className?: string;
   swipeThreshold?: number;
   showSwipeHints?: boolean;
-  [key: string]: any;
+  disabled?: boolean;
+  sensitivity?: number;
 }
 
 interface PullToRefreshProps {
@@ -157,7 +158,7 @@ export const useTouchGestures = ({
     // Multi-touch (pinch) detection
     if (e.touches.length === 2) {
       gestureStateRef.current.isPinching = true;
-      gestureStateRef.current.initialDistance = getDistance(e.touches[0] as any as Touch, e.touches[1] as any as Touch);
+      gestureStateRef.current.initialDistance = getDistance(e.touches[0] as Touch, e.touches[1] as Touch);
       hapticFeedback('light');
     } else if (e.touches.length === 1) {
       // Double tap detection
@@ -194,7 +195,7 @@ export const useTouchGestures = ({
     
     // Handle pinch gestures
     if (e.touches.length === 2 && gestureStateRef.current.isPinching) {
-      const currentDistance = getDistance(e.touches[0] as any as Touch, e.touches[1] as any as Touch);
+      const currentDistance = getDistance(e.touches[0] as Touch, e.touches[1] as Touch);
       const scale = currentDistance / gestureStateRef.current.initialDistance;
       
       if (onPinch) {

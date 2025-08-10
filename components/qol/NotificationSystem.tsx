@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, createContext, useContext, ReactNode } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, createContext, useContext, ReactNode } from 'react';
 import { useRouter } from 'next/router';
 import logger from '../../utils/logger';
 import { 
@@ -43,7 +43,8 @@ export const NotificationContext = createContext<NotificationContextValue | unde
 const NotificationItem: React.FC<NotificationItemProps> = ({ notification, onDismiss }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
-  const { type, title, message, duration, persistent, actions } = notification;
+  const [progress, setProgress] = useState(100);
+  const { type, title, message, duration, persistent, actions, showProgress } = notification;
   const config = NOTIFICATION_TYPES[type] || NOTIFICATION_TYPES.INFO;
 
   const handleDismiss = useCallback(() => {
@@ -61,14 +62,35 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ notification, onDis
 
   useEffect(() => {
     if (duration && !persistent) {
-      const timer = setTimeout(() => {
-        handleDismiss();
-      }, duration);
-      return () => clearTimeout(timer);
+      if (showProgress !== false && duration > 0) {
+        // Progress bar animation (like Toast)
+        const interval = 50; // Update every 50ms
+        const decrement = (100 / duration) * interval;
+
+        const timer = setInterval(() => {
+          setProgress((prev) => {
+            const newProgress = prev - decrement;
+            if (newProgress <= 0) {
+              clearInterval(timer);
+              handleDismiss();
+              return 0;
+            }
+            return newProgress;
+          });
+        }, interval);
+
+        return () => clearInterval(timer);
+      } else {
+        // Simple timeout without progress
+        const timer = setTimeout(() => {
+          handleDismiss();
+        }, duration);
+        return () => clearTimeout(timer);
+      }
     }
     // Return undefined for the else case
     return undefined;
-  }, [duration, persistent, handleDismiss]);
+  }, [duration, persistent, showProgress, handleDismiss]);
 
   return (
     <div
@@ -119,27 +141,77 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ notification, onDis
             </button>
           )}
         </div>
+        
+        {/* Progress bar (from Toast component) */}
+        {showProgress !== false && duration && duration > 0 && !persistent && (
+          <div className="h-1 bg-gray-200 dark:bg-gray-700 mt-3 -mx-4 -mb-4">
+            <div
+              className={`h-full transition-all duration-75 ease-linear ${
+                type === 'SUCCESS' ? 'bg-green-500' :
+                type === 'ERROR' ? 'bg-red-500' :
+                type === 'WARNING' ? 'bg-yellow-500' :
+                type === 'INFO' ? 'bg-blue-500' :
+                'bg-gray-500'
+              }`}
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-// Notification container component
+// Notification container component with position support
 const NotificationContainer: React.FC<{ notifications: Notification[]; onDismiss: (id: string | number) => void }> = ({ notifications, onDismiss }) => {
   if (notifications.length === 0) return null;
 
+  // Group notifications by position (similar to Toast)
+  const groupedNotifications = notifications.reduce((acc, notification) => {
+    const position = notification.position || 'top-right';
+    if (!acc[position]) {
+      acc[position] = [];
+    }
+    acc[position].push(notification);
+    return acc;
+  }, {} as Record<string, Notification[]>);
+
+  const getPositionClasses = (position: string) => {
+    const positions: Record<string, string> = {
+      'top-right': 'top-4 right-4',
+      'top-left': 'top-4 left-4',
+      'bottom-right': 'bottom-4 right-4',
+      'bottom-left': 'bottom-4 left-4',
+      'top-center': 'top-4 left-1/2 -translate-x-1/2',
+      'bottom-center': 'bottom-4 left-1/2 -translate-x-1/2'
+    };
+    return positions[position] || positions['top-right'];
+  };
+
   return (
-    <div className="fixed top-4 right-4 z-50 space-y-3 pointer-events-none">
-      <div className="pointer-events-auto">
-        {notifications.map(notification => (
-          <NotificationItem
-            key={notification.id}
-            notification={notification}
-            onDismiss={onDismiss}
-          />
-        ))}
-      </div>
-    </div>
+    <>
+      {Object.entries(groupedNotifications).map(([position, positionNotifications]) => (
+        <div
+          key={position}
+          className={`fixed ${getPositionClasses(position)} z-50 pointer-events-none`}
+          style={{
+            display: 'flex',
+            flexDirection: position.includes('bottom') ? 'column-reverse' : 'column',
+            gap: '0.75rem'
+          }}
+        >
+          <div className="pointer-events-auto space-y-3">
+            {positionNotifications.map(notification => (
+              <NotificationItem
+                key={notification.id}
+                notification={notification}
+                onDismiss={onDismiss}
+              />
+            ))}
+          </div>
+        </div>
+      ))}
+    </>
   );
 };
 
@@ -172,8 +244,56 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
     setNotifications([]);
   }, []);
 
+  // Promise-based notification helper (moved outside useMemo to fix hooks rule violation)
+  const promiseNotification = useCallback(
+    <T,>(
+      promise: Promise<T>,
+      messages: {
+        loading?: string;
+        success?: string | ((data: T) => string);
+        error?: string | ((error: any) => string);
+      },
+      options: Partial<Notification> = {}
+    ): Promise<T> => {
+      const loadingId = addNotification({
+        type: 'LOADING',
+        message: messages.loading || 'Loading...',
+        persistent: true,
+        ...options
+      });
+
+      return promise
+        .then((data) => {
+          dismissNotification(loadingId);
+          const successMessage = typeof messages.success === 'function' 
+            ? messages.success(data) 
+            : messages.success || 'Success!';
+          addNotification({
+            type: 'SUCCESS',
+            message: successMessage,
+            ...options
+          });
+          return data;
+        })
+        .catch((error) => {
+          dismissNotification(loadingId);
+          const errorMessage = typeof messages.error === 'function'
+            ? messages.error(error)
+            : messages.error || 'Something went wrong';
+          addNotification({
+            type: 'ERROR',
+            message: errorMessage,
+            persistent: true,
+            ...options
+          });
+          throw error;
+        });
+    },
+    [addNotification, dismissNotification]
+  );
+
   // Smart notification helpers
-  const notify: NotifyHelpers = {
+  const notify: NotifyHelpers = useMemo(() => ({
     success: (message: string, options = {}) => addNotification({
       type: 'SUCCESS',
       message,
@@ -248,8 +368,11 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
         ],
         ...options
       });
-    }
-  };
+    },
+    
+    // Promise-based toast for async operations
+    promise: promiseNotification
+  }), [addNotification, router, promiseNotification]);
 
   // Expose notification functions globally
   useEffect(() => {
@@ -257,7 +380,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
     setGlobalNotificationAPI(notify);
     
     // Initialize legacy window.showNotification (moved to separate file for Fast Refresh)
-    initializeGlobalNotifications(addNotification);
+    initializeGlobalNotifications(addNotification as (notification: unknown) => string | number);
     
     // Cleanup on unmount
     return () => {

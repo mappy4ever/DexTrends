@@ -86,12 +86,12 @@ interface DetailsSummaryProps {
 }
 
 interface FormSection {
-  content: (props: { onComplete: (data: any) => void; formData: any }) => ReactNode;
+  content: (props: { onComplete: (data: unknown) => void; formData: unknown }) => ReactNode;
 }
 
 interface ProgressiveFormProps {
   sections: FormSection[];
-  onSubmit?: (formData: any) => void;
+  onSubmit?: (formData: unknown) => void;
   showProgress?: boolean;
   allowSkip?: boolean;
   className?: string;
@@ -637,11 +637,11 @@ export const ProgressiveForm: React.FC<ProgressiveFormProps> = ({
 }) => {
   const [currentSection, setCurrentSection] = useState(0);
   const [completedSections, setCompletedSections] = useState<Set<number>>(new Set());
-  const [formData, setFormData] = useState<any>({});
+  const [formData, setFormData] = useState<Record<string, unknown>>({});
   
-  const handleSectionComplete = useCallback((sectionIndex: number, data: any) => {
+  const handleSectionComplete = useCallback((sectionIndex: number, data: unknown) => {
     setCompletedSections(prev => new Set([...prev, sectionIndex]));
-    setFormData((prev: any) => ({ ...prev, ...data }));
+    setFormData((prev: Record<string, unknown>) => ({ ...prev, ...data }));
     
     if (sectionIndex < sections.length - 1) {
       setCurrentSection(sectionIndex + 1);
@@ -677,7 +677,7 @@ export const ProgressiveForm: React.FC<ProgressiveFormProps> = ({
         {sections[currentSection] && (
           <div className="animate-in slide-in-from-right-2 fade-in duration-300">
             {sections[currentSection].content({
-              onComplete: (data: any) => handleSectionComplete(currentSection, data),
+              onComplete: (data: unknown) => handleSectionComplete(currentSection, data),
               formData
             })}
           </div>

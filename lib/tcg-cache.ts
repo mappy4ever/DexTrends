@@ -1,5 +1,7 @@
 import { redisHelpers } from './redis';
 import logger from '../utils/logger';
+import cache from '../utils/cache';
+import type { TCGCard, CardSet, SetListResponse, CardListResponse, TCGPlayer } from '../types/api/cards';
 
 // Cache key prefixes
 const CACHE_KEYS = {
@@ -51,15 +53,138 @@ export const POPULAR_SETS = [
   'sv8pt5',          // Prismatic Evolutions
 ];
 
-export interface TCGCacheStats {
+// Core cache interfaces
+export interface CacheEntry<T = unknown> {
+  data: T;
+  cachedAt: string;
+  ttl?: number;
+}
+
+export interface CacheOptions {
+  ttl?: number;
+  extend?: boolean;
+}
+
+export interface CacheStatistics {
   hits: number;
   misses: number;
   errors: number;
   lastReset: Date;
 }
 
+// TCG-specific data types
+export interface TCGSetData {
+  set: CardSet;
+  cards: TCGCard[];
+  cachedAt: string;
+  cardCount: number;
+}
+
+// API Response wrappers (for caching responses with pagination)
+export interface TCGSetListApiResponse {
+  data: CardSet[];
+  pagination: {
+    page: number;
+    pageSize: number;
+    count: number;
+    totalCount: number;
+    hasMore: boolean;
+  };
+  meta: {
+    responseTime: number;
+    cached: boolean;
+  };
+}
+
+export interface TCGCardListApiResponse {
+  set?: CardSet;
+  cards?: TCGCard[];
+  data?: TCGCard[];
+  pagination: {
+    page: number;
+    pageSize: number;
+    count: number;
+    totalCount: number;
+    hasMore: boolean;
+  };
+}
+
+export interface TCGPrice {
+  cardId: string;
+  prices: TCGPlayer['prices'];
+  cachedAt: string;
+}
+
+export interface TCGSearchResult {
+  query: string;
+  results: TCGCard[];
+  cachedAt: string;
+}
+
+export interface TCGMarketTrends {
+  trending: MarketCard[];
+  mostExpensive: MarketCard[];
+  priceChanges: PriceChange[];
+  setAnalysis: SetAnalysis[];
+  cachedAt: string;
+}
+
+export interface MarketCard {
+  id: string;
+  name: string;
+  set: string;
+  setId: string;
+  rarity?: string;
+  marketPrice: number;
+  priceData: TCGPlayer['prices'];
+  lastUpdated: string;
+}
+
+export interface PriceChange {
+  cardId: string;
+  oldPrice: number;
+  newPrice: number;
+  change: number;
+  changePercent: number;
+  period: string;
+}
+
+export interface SetAnalysis {
+  setId?: string;
+  avgPrice?: number;
+  cardCount?: number;
+  totalValue?: number;
+  topCards?: MarketCard[];
+  // Additional properties found in actual usage
+  totalCards?: number;
+  rarityDistribution?: Record<string, number>;
+  typeDistribution?: Record<string, number>;
+  priceStats?: {
+    total: number;
+    highest: number;
+    average: number;
+    cardWithPrices: number;
+  };
+  calculatedAt?: string;
+}
+
+export interface ImageUrls {
+  small?: string;
+  large?: string;
+  cachedAt?: string;
+}
+
+export interface CacheWarmingResult {
+  successful: number;
+  failed: number;
+  cached: number;
+}
+
+// Legacy alias for backwards compatibility
+export interface TCGCacheStats extends CacheStatistics {}
+
 class TCGCacheService {
-  private stats: TCGCacheStats = {
+  private stats: CacheStatistics = {
     hits: 0,
     misses: 0,
     errors: 0,
@@ -67,11 +192,9 @@ class TCGCacheService {
   };
 
   // Get TCG sets list from cache
-  async getSetsList(page: number, pageSize: number): Promise<any | null> {
-    const key = `${CACHE_KEYS.TCG_SETS_LIST}:${page}:${pageSize}`;
-    
+  async getSetsList(page: number, pageSize: number): Promise<TCGSetListApiResponse | null> {
     try {
-      const cached = await redisHelpers.getJSON(key);
+      const cached = await cache.tcg.getSetsList(page, pageSize);
       if (cached) {
         this.stats.hits++;
         logger.debug('[TCG Cache] Sets list hit', { page, pageSize });
@@ -89,7 +212,7 @@ class TCGCacheService {
   }
 
   // Cache TCG sets list
-  async cacheSetsList(page: number, pageSize: number, data: any): Promise<void> {
+  async cacheSetsList(page: number, pageSize: number, data: TCGSetListApiResponse): Promise<void> {
     const key = `${CACHE_KEYS.TCG_SETS_LIST}:${page}:${pageSize}`;
     
     try {
@@ -101,7 +224,7 @@ class TCGCacheService {
   }
 
   // Get set detail with cards
-  async getSetWithCards(setId: string, page: number, pageSize: number): Promise<any | null> {
+  async getSetWithCards(setId: string, page: number, pageSize: number): Promise<TCGCardListApiResponse | null> {
     const key = `${CACHE_KEYS.TCG_SET_DETAIL}${setId}:${page}:${pageSize}`;
     
     try {
@@ -123,7 +246,7 @@ class TCGCacheService {
   }
 
   // Cache set detail with cards
-  async cacheSetWithCards(setId: string, page: number, pageSize: number, data: any): Promise<void> {
+  async cacheSetWithCards(setId: string, page: number, pageSize: number, data: TCGCardListApiResponse): Promise<void> {
     const key = `${CACHE_KEYS.TCG_SET_DETAIL}${setId}:${page}:${pageSize}`;
     
     try {
@@ -135,7 +258,7 @@ class TCGCacheService {
   }
 
   // Get complete set (all cards combined)
-  async getCompleteSet(setId: string): Promise<any | null> {
+  async getCompleteSet(setId: string): Promise<TCGSetData | null> {
     const key = `${CACHE_KEYS.TCG_SET_CARDS}${setId}:complete`;
     
     try {
@@ -156,7 +279,7 @@ class TCGCacheService {
   }
 
   // Get complete set with TTL info for stale-while-revalidate
-  async getCompleteSetWithTTL(setId: string): Promise<{ data: any; ttl: number } | null> {
+  async getCompleteSetWithTTL(setId: string): Promise<{ data: TCGSetData; ttl: number } | null> {
     const key = `${CACHE_KEYS.TCG_SET_CARDS}${setId}:complete`;
     
     try {
@@ -181,7 +304,7 @@ class TCGCacheService {
   }
 
   // Cache complete set
-  async cacheCompleteSet(setId: string, setInfo: any, allCards: any[]): Promise<void> {
+  async cacheCompleteSet(setId: string, setInfo: CardSet, allCards: TCGCard[]): Promise<void> {
     const key = `${CACHE_KEYS.TCG_SET_CARDS}${setId}:complete`;
     
     try {
@@ -220,7 +343,7 @@ class TCGCacheService {
   }
 
   // Cache set statistics
-  async cacheSetStats(setId: string, stats: any): Promise<void> {
+  async cacheSetStats(setId: string, stats: SetAnalysis): Promise<void> {
     const key = `${CACHE_KEYS.TCG_STATS}${setId}`;
     
     try {
@@ -232,7 +355,7 @@ class TCGCacheService {
   }
 
   // Get set statistics
-  async getSetStats(setId: string): Promise<any | null> {
+  async getSetStats(setId: string): Promise<SetAnalysis | null> {
     const key = `${CACHE_KEYS.TCG_STATS}${setId}`;
     
     try {
@@ -296,7 +419,7 @@ class TCGCacheService {
   }
 
   // Get cache statistics
-  getStats(): TCGCacheStats {
+  getStats(): CacheStatistics {
     return { ...this.stats };
   }
 
@@ -311,7 +434,7 @@ class TCGCacheService {
   }
 
   // Get individual card from cache
-  async getCard(cardId: string): Promise<any | null> {
+  async getCard(cardId: string): Promise<TCGCard | null> {
     const key = `${CACHE_KEYS.TCG_INDIVIDUAL_CARD}${cardId}`;
     
     try {
@@ -332,7 +455,7 @@ class TCGCacheService {
   }
 
   // Cache individual card
-  async cacheCard(cardId: string, cardData: any): Promise<void> {
+  async cacheCard(cardId: string, cardData: TCGCard): Promise<void> {
     const key = `${CACHE_KEYS.TCG_INDIVIDUAL_CARD}${cardId}`;
     
     try {
@@ -349,7 +472,7 @@ class TCGCacheService {
   }
 
   // Cache multiple cards at once (bulk operation)
-  async cacheCards(cards: any[]): Promise<number> {
+  async cacheCards(cards: TCGCard[]): Promise<number> {
     let cached = 0;
     
     // Process in batches to avoid overwhelming Redis
@@ -379,7 +502,7 @@ class TCGCacheService {
   }
 
   // Cache search results
-  async cacheSearchResults(query: string, results: any): Promise<void> {
+  async cacheSearchResults(query: string, results: TCGCard[]): Promise<void> {
     const key = `${CACHE_KEYS.TCG_SEARCH}${Buffer.from(query).toString('base64')}`;
     
     try {
@@ -397,7 +520,7 @@ class TCGCacheService {
   }
 
   // Get cached search results
-  async getSearchResults(query: string): Promise<any | null> {
+  async getSearchResults(query: string): Promise<TCGSearchResult | null> {
     const key = `${CACHE_KEYS.TCG_SEARCH}${Buffer.from(query).toString('base64')}`;
     
     try {
@@ -418,7 +541,7 @@ class TCGCacheService {
   }
 
   // Cache price data for a card
-  async cachePriceData(cardId: string, priceData: any): Promise<void> {
+  async cachePriceData(cardId: string, priceData: TCGPlayer['prices']): Promise<void> {
     const key = `${CACHE_KEYS.TCG_PRICES}${cardId}`;
     
     try {
@@ -435,7 +558,7 @@ class TCGCacheService {
   }
 
   // Get cached price data
-  async getPriceData(cardId: string): Promise<any | null> {
+  async getPriceData(cardId: string): Promise<TCGPrice | null> {
     const key = `${CACHE_KEYS.TCG_PRICES}${cardId}`;
     
     try {
@@ -456,7 +579,7 @@ class TCGCacheService {
   }
 
   // Extract and cache price data from cards in bulk
-  async bulkCachePriceData(cards: any[]): Promise<number> {
+  async bulkCachePriceData(cards: TCGCard[]): Promise<number> {
     let cached = 0;
     
     const BATCH_SIZE = 100;
@@ -488,10 +611,10 @@ class TCGCacheService {
 
   // Cache market trends and analytics
   async cacheMarketTrends(trendData: {
-    trending: any[];
-    mostExpensive: any[];
-    priceChanges: any[];
-    setAnalysis: any[];
+    trending: MarketCard[];
+    mostExpensive: MarketCard[];
+    priceChanges: PriceChange[];
+    setAnalysis: SetAnalysis[];
   }): Promise<void> {
     const key = 'tcg:market:trends';
     
@@ -509,7 +632,7 @@ class TCGCacheService {
   }
 
   // Get cached market trends
-  async getMarketTrends(): Promise<any | null> {
+  async getMarketTrends(): Promise<TCGMarketTrends | null> {
     const key = 'tcg:market:trends';
     
     try {
@@ -531,22 +654,22 @@ class TCGCacheService {
 
   // Generate market analytics from cached price data
   async generateMarketAnalytics(setIds: string[] = []): Promise<{
-    trending: any[];
-    mostExpensive: any[];
-    priceChanges: any[];
-    setAnalysis: any[];
+    trending: MarketCard[];
+    mostExpensive: MarketCard[];
+    priceChanges: PriceChange[];
+    setAnalysis: SetAnalysis[];
   }> {
     const analytics = {
-      trending: [],
-      mostExpensive: [],
-      priceChanges: [],
-      setAnalysis: []
+      trending: [] as MarketCard[],
+      mostExpensive: [] as MarketCard[],
+      priceChanges: [] as PriceChange[],
+      setAnalysis: [] as SetAnalysis[]
     };
 
     try {
       // Get trending cards (cards with high recent price activity)
-      const trendingCards = [];
-      const expensiveCards = [];
+      const trendingCards: MarketCard[] = [];
+      const expensiveCards: MarketCard[] = [];
       
       // Analyze cached sets for price data
       for (const setId of setIds.length > 0 ? setIds : ['sv8', 'sv7', 'sv6', 'sv5']) {
@@ -615,14 +738,15 @@ class TCGCacheService {
   }
 
   // Helper to extract highest market price from price data
-  private extractHighestMarketPrice(prices: any): number {
+  private extractHighestMarketPrice(prices: TCGPlayer['prices']): number {
     if (!prices || typeof prices !== 'object') return 0;
     
     let highestPrice = 0;
     
     for (const variant of Object.values(prices)) {
       if (variant && typeof variant === 'object' && 'market' in variant) {
-        const market = (variant as any).market;
+        const marketData = variant as { market?: number };
+        const market = marketData.market;
         if (typeof market === 'number' && market > highestPrice) {
           highestPrice = market;
         }
@@ -633,7 +757,7 @@ class TCGCacheService {
   }
 
   // Warm sets list cache for common page combinations
-  async warmSetsListCache(): Promise<{ successful: number; failed: number; cached: number }> {
+  async warmSetsListCache(): Promise<CacheWarmingResult> {
     const results = { successful: 0, failed: 0, cached: 0 };
     
     // Common page/pageSize combinations that users typically request
@@ -673,8 +797,7 @@ class TCGCacheService {
         const apiUrl = `https://api.pokemontcg.io/v2/sets?page=${page}&pageSize=${pageSize}&orderBy=-releaseDate`;
         
         const data = await fetch(apiUrl, { 
-          headers,
-          timeout: 60000
+          headers
         }).then(res => res.json());
         
         if (!data?.data) {
@@ -708,9 +831,10 @@ class TCGCacheService {
         // Small delay between requests to be nice to the API
         await new Promise(resolve => setTimeout(resolve, 500));
         
-      } catch (error: any) {
+      } catch (error: unknown) {
         results.failed++;
-        logger.error(`[TCG Cache] Failed to warm sets list ${page}:${pageSize}:`, error);
+        logger.error(`[TCG Cache] Failed to warm sets list ${page}:${pageSize}:`, 
+          error instanceof Error ? { error: error.message, stack: error.stack } : { error: String(error) });
       }
     }
     
@@ -719,7 +843,7 @@ class TCGCacheService {
   }
 
   // Get comprehensive sets list (all sets, cached for a week)
-  async getComprehensiveSetsList(): Promise<any[] | null> {
+  async getComprehensiveSetsList(): Promise<CardSet[] | null> {
     const key = 'tcg:sets:comprehensive';
     
     try {
@@ -740,7 +864,7 @@ class TCGCacheService {
   }
 
   // Cache comprehensive sets list (all sets)
-  async cacheComprehensiveSetsList(allSets: any[]): Promise<void> {
+  async cacheComprehensiveSetsList(allSets: CardSet[]): Promise<void> {
     const key = 'tcg:sets:comprehensive';
     
     try {
@@ -765,7 +889,7 @@ class TCGCacheService {
   }
 
   // Warm cache for a specific set
-  async warmCacheForSet(setId: string, fetcher: () => Promise<any>): Promise<void> {
+  async warmCacheForSet(setId: string, fetcher: () => Promise<TCGSetData>): Promise<void> {
     try {
       logger.info(`[TCG Cache] Warming cache for set: ${setId}`);
       
@@ -779,7 +903,7 @@ class TCGCacheService {
   }
 
   // Cache image metadata and URLs
-  async cacheImageUrls(cardId: string, imageUrls: { small?: string; large?: string }): Promise<void> {
+  async cacheImageUrls(cardId: string, imageUrls: ImageUrls): Promise<void> {
     const key = `${CACHE_KEYS.TCG_IMAGES}${cardId}`;
     
     try {
@@ -796,7 +920,7 @@ class TCGCacheService {
   }
 
   // Get cached image URLs
-  async getImageUrls(cardId: string): Promise<{ small?: string; large?: string } | null> {
+  async getImageUrls(cardId: string): Promise<ImageUrls | null> {
     const key = `${CACHE_KEYS.TCG_IMAGES}${cardId}`;
     
     try {
@@ -817,7 +941,7 @@ class TCGCacheService {
   }
 
   // Extract and cache image URLs from cards in bulk
-  async bulkCacheImageUrls(cards: any[]): Promise<number> {
+  async bulkCacheImageUrls(cards: TCGCard[]): Promise<number> {
     let cached = 0;
     
     const BATCH_SIZE = 100;
@@ -881,7 +1005,7 @@ class TCGCacheService {
   }
 
   // Get cache key info (for debugging)
-  getCacheKey(type: string, ...params: any[]): string {
+  getCacheKey(type: string, ...params: (string | number)[]): string {
     switch (type) {
       case 'sets':
         return `${CACHE_KEYS.TCG_SETS_LIST}:${params.join(':')}`;
@@ -907,7 +1031,7 @@ class TCGCacheService {
 export const tcgCache = new TCGCacheService();
 
 // Export cache warming utility
-export async function warmPopularSets(fetcher: (setId: string) => Promise<any>): Promise<void> {
+export async function warmPopularSets(fetcher: (setId: string) => Promise<TCGSetData>): Promise<void> {
   logger.info('[TCG Cache] Starting cache warming for popular sets');
   
   // Warm caches in batches to avoid overwhelming the API

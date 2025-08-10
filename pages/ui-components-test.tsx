@@ -15,7 +15,8 @@ import {
   StepProgress 
 } from '../components/ui/progress';
 import { ToastContainer } from '../components/ui/Toast';
-import { useToast } from '../hooks/useToast';
+import { useNotifications } from '../hooks/useNotifications';
+import { convertNotificationsToToasts } from '../utils/toastUtils';
 import { ContextMenu, useContextMenu } from '../components/ui/ContextMenu';
 import { FaCopy, FaEdit, FaTrash, FaShare } from 'react-icons/fa';
 
@@ -27,7 +28,7 @@ const UIComponentsTest = () => {
   const [progress, setProgress] = useState(30);
   const [currentStep, setCurrentStep] = useState(1);
   
-  const { toasts, removeToast, success, error, info } = useToast();
+  const { toasts, removeToast, success, error, info } = useNotifications();
   const { isOpen, position, items, openMenu, closeMenu } = useContextMenu();
 
   const steps = [
@@ -214,7 +215,7 @@ const UIComponentsTest = () => {
       </div>
 
       {/* Toast Container */}
-      <ToastContainer toasts={toasts} onClose={removeToast} />
+      <ToastContainer toasts={convertNotificationsToToasts(toasts)} onClose={removeToast} />
       
       {/* Context Menu */}
       {isOpen && (

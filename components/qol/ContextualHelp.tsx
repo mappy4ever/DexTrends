@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, ReactNode } from 'react';
+import React, { useState, useEffect, useRef, ReactNode, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { useNotifications } from '../../hooks/useNotifications';
 import logger from '../../utils/logger';
@@ -124,7 +124,7 @@ export const ContextualHelpProvider: React.FC<ContextualHelpProviderProps> = ({ 
   const { notify } = useNotifications();
 
   // Page-specific help content
-  const helpContent: Record<string, HelpContent> = {
+  const helpContent: Record<string, HelpContent> = useMemo(() => ({
     '/': {
       title: 'DexTrends Home',
       sections: [
@@ -185,7 +185,16 @@ export const ContextualHelpProvider: React.FC<ContextualHelpProviderProps> = ({ 
         }
       ]
     }
-  };
+  }), []);
+
+  const toggleHelpMode = useCallback(() => {
+    setHelpMode(!helpMode);
+    if (!helpMode) {
+      notify.info('Help mode activated! Click on elements to learn more.', {
+        duration: 3000
+      });
+    }
+  }, [helpMode, notify]);
 
   // Keyboard shortcut to toggle help mode
   useEffect(() => {
@@ -202,24 +211,15 @@ export const ContextualHelpProvider: React.FC<ContextualHelpProviderProps> = ({ 
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [helpMode]);
+  }, [helpMode, toggleHelpMode]);
 
   // Update help content when route changes
   useEffect(() => {
     const content = helpContent[router.pathname] || helpContent['/'];
     setCurrentHelp(content);
-  }, [router.pathname]);
+  }, [router.pathname, helpContent]);
 
-  const toggleHelpMode = () => {
-    setHelpMode(!helpMode);
-    if (!helpMode) {
-      notify.info('Help mode activated! Click on elements to learn more.', {
-        duration: 3000
-      });
-    }
-  };
-
-  const showQuickTips = () => {
+  const showQuickTips = useCallback(() => {
     const tips = [
       'Press Ctrl+K to quickly search anywhere on the site',
       'Double-click any card image for detailed zoom view',
@@ -230,7 +230,7 @@ export const ContextualHelpProvider: React.FC<ContextualHelpProviderProps> = ({ 
 
     const randomTip = tips[Math.floor(Math.random() * tips.length)];
     notify.info(`💡 Tip: ${randomTip}`, { duration: 5000 });
-  };
+  }, [notify]);
 
   return (
     <>

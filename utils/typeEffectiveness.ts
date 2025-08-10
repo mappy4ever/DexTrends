@@ -3,6 +3,7 @@
  */
 
 import { showdownQueries } from '@/utils/supabase';
+import logger from '@/utils/logger';
 
 // Type effectiveness chart - attacking type vs defending type
 // This serves as a fallback when Supabase data is not available
@@ -188,12 +189,12 @@ export async function loadTypeChart(): Promise<void> {
       if (chart) {
         TYPE_CHART = chart;
         typeChartLoaded = true;
-        console.log('Successfully loaded type effectiveness data from Showdown');
+        logger.debug('Successfully loaded type effectiveness data from Showdown');
       } else {
-        console.warn('Failed to load type chart from Supabase, using fallback');
+        logger.warn('Failed to load type chart from Supabase, using fallback');
       }
     } catch (error) {
-      console.error('Error loading type effectiveness data:', error);
+      logger.error('Error loading type effectiveness data:', { error });
       // Keep using fallback
     }
   })();

@@ -9,6 +9,7 @@ import { GiPokerHand, GiCardPickup } from "react-icons/gi";
 import { FiShoppingBag } from "react-icons/fi";
 import { AiOutlineBulb } from "react-icons/ai";
 import type { FC } from "react";
+import logger from '../../utils/logger';
 
 // Types for dynamic imports
 interface AnimationComponents {
@@ -19,9 +20,9 @@ interface AnimationComponents {
 }
 
 interface DynamicComponents extends AnimationComponents {
-  FullBleedWrapper: FC<{ gradient?: any; children: React.ReactNode; className?: string }>;
+  FullBleedWrapper: FC<{ gradient?: string | object; children: React.ReactNode; className?: string }>;
   useTheme: () => { theme: string };
-  pokemonTheme: any;
+  pokemonTheme: Record<string, unknown>;
 }
 
 type PokemonHubContentProps = DynamicComponents;
@@ -235,7 +236,7 @@ const PokemonHub: NextPage = () => {
       setComponentsLoaded(true);
     })
     .catch(err => {
-      console.error("Failed to load components:", err);
+      logger.error("Failed to load components:", { error: err });
       setLoadError(err.message);
     });
   }, []);

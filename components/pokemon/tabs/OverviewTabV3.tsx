@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import type { Pokemon, PokemonSpecies } from '../../../types/api/pokemon';
+import type { Pokemon, PokemonSpecies } from "../../../types/pokemon";
 import type { CompetitiveTierRecord } from '../../../utils/supabase';
 import { GlassContainer } from '../../ui/design-system';
 import CompactTypeEffectiveness from '../CompactTypeEffectiveness';
@@ -54,7 +54,7 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
   };
   
   // Info card component for consistent styling
-  const InfoCard = ({ icon: Icon, title, children, iconColor = "text-gray-500", className = "" }: any) => (
+  const InfoCard = ({ icon: Icon, title, children, iconColor = "text-gray-500", className = "" }: { icon: React.ComponentType<{ className?: string }>, title: string, children: React.ReactNode, iconColor?: string, className?: string }) => (
     <div className="transform transition-transform duration-300 hover:scale-[1.02] will-change-transform">
       <GlassContainer variant="dark" className={cn("h-full", className)} animate={false}>
         <div className="p-6">
@@ -72,7 +72,7 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
     </div>
   );
   
-  const StatRow = ({ label, value, icon: Icon }: any) => (
+  const StatRow = ({ label, value, icon: Icon }: { label: string, value: string | number, icon: React.ComponentType<{ className?: string }> }) => (
     <div className="flex items-center justify-between py-2 border-b border-gray-800/50 last:border-0">
       <span className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
         {Icon && <Icon className="w-3 h-3" />}

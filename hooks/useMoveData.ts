@@ -42,7 +42,7 @@ export function useMoveData(): UseMoveDataReturn {
     try {
       const moves = await showdownQueries.getMovesByType(type);
       // Cache individual moves
-      moves.forEach(move => {
+      moves.forEach((move: MoveCompetitiveDataRecord) => {
         moveCache.set(move.move_name, move);
       });
       return moves;
@@ -59,7 +59,7 @@ export function useMoveData(): UseMoveDataReturn {
     try {
       const moves = await showdownQueries.getMovesByCategory(category);
       // Cache individual moves
-      moves.forEach(move => {
+      moves.forEach((move: MoveCompetitiveDataRecord) => {
         moveCache.set(move.move_name, move);
       });
       return moves;
@@ -78,7 +78,7 @@ export function useMoveData(): UseMoveDataReturn {
     try {
       const moves = await showdownQueries.searchMoves(searchTerm);
       // Cache individual moves
-      moves.forEach(move => {
+      moves.forEach((move: MoveCompetitiveDataRecord) => {
         moveCache.set(move.move_name, move);
       });
       return moves;
