@@ -136,7 +136,7 @@ const MobileIntegration: React.FC<MobileIntegrationProps> = ({
   }, []);
 
   // Handle share received
-  const handleShareReceived = useCallback((shareData: ShareData) => {
+  const handleShareReceived = useCallback((_shareData: ShareData) => {
     showNotification('Shared content received', 'info');
     // Process shared content
   }, [showNotification]);

@@ -62,19 +62,19 @@ export const SwipeToRefresh: React.FC<SwipeToRefreshProps> = ({
         drag={disabled || isRefreshing ? false : "y"}
         dragConstraints={{ top: 0, bottom: maxPull }}
         dragElastic={0.5}
-        onDragStart={(event, info) => {
+        onDragStart={(_event, _info) => {
           if (checkScrollPosition()) {
             setIsPulling(true);
           }
           // Note: Cannot cancel drag from onDragStart
         }}
-        onDrag={(event, info) => {
+        onDrag={(_event, info) => {
           if (!isPulling) return;
           
           const distance = Math.max(0, Math.min(info.offset.y, maxPull));
           pullDistance.set(distance);
         }}
-        onDragEnd={(event, info) => {
+        onDragEnd={(_event, _info) => {
           setIsPulling(false);
           
           if (pullDistance.get() >= threshold && !isRefreshing) {

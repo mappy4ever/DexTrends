@@ -25,7 +25,7 @@ interface PocketExpansion {
 }
 
 export default function handler(
-  req: NextApiRequest,
+  _req: NextApiRequest,
   res: NextApiResponse<PocketExpansion[]>
 ) {
   res.status(200).json([

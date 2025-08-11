@@ -105,19 +105,6 @@ const TYPE_DESCRIPTIONS: Record<PokemonType, TypeInfo> = {
   }
 };
 
-const DUAL_TYPE_CALCULATOR = {
-  // Common dual type combinations and their effectiveness
-  calculateDualTypeEffectiveness: (
-    attackType: string, 
-    defendType1: string, 
-    defendType2: string, 
-    typeChart: Record<string, Record<string, number>>
-  ): number => {
-    const eff1 = typeChart[attackType]?.[defendType1] || 1;
-    const eff2 = typeChart[attackType]?.[defendType2] || 1;
-    return eff1 * eff2;
-  }
-};
 
 interface TypeAnalysisCardProps {
   type: PokemonType;

@@ -8,7 +8,30 @@ import databaseOptimizer from './databaseOptimizer';
 import analyticsEngine from './analyticsEngine';
 import EnhancedPriceCollector from './enhancedPriceCollector';
 import logger from './logger';
-import { PubSub } from 'graphql-subscriptions';
+// Using local mock instead of graphql-subscriptions package
+// import { PubSub } from 'graphql-subscriptions';
+class MockPubSub {
+  async publish(_triggerName: string, _payload: unknown): Promise<void> {
+    // Mock implementation
+  }
+  
+  async subscribe(_triggerName: string, _onMessage: Function): Promise<number> {
+    // Mock implementation
+    return 1;
+  }
+  
+  unsubscribe(_subId: number): void {
+    // Mock implementation
+  }
+  
+  asyncIterator<T>(_triggers: string | string[]): AsyncIterator<T> {
+    // Mock implementation
+    return {
+      [Symbol.asyncIterator]() { return this; },
+      async next() { return { done: true, value: undefined }; }
+    } as AsyncIterator<T>;
+  }
+}
 import cacheManager from './UnifiedCacheManager';
 // GraphQL types - will be available when graphql package is installed
 type GraphQLResolveInfo = {
@@ -24,7 +47,7 @@ type GraphQLResolveInfo = {
   variableValues: Record<string, unknown>;
 };
 
-const pubsub = new PubSub();
+const pubsub = new MockPubSub();
 const priceCollector = new EnhancedPriceCollector();
 
 // Subscription event names
@@ -419,7 +442,7 @@ type SubscriptionResolver<TArgs = Record<string, unknown>, TResult = unknown> = 
 export const resolvers = {
   Query: {
     // Card queries
-    card: async (parent: QueryParent, { id }: CardArgs, context: GraphQLContext, info: GraphQLResolveInfo): Promise<Card | null> => {
+    card: async (_parent: QueryParent, { id }: CardArgs, _context: GraphQLContext, _info: GraphQLResolveInfo): Promise<Card | null> => {
       try {
         logger.debug('Fetching card:', { id });
         
@@ -449,10 +472,10 @@ export const resolvers = {
     },
 
     cards: async (
-      parent: QueryParent, 
+      _parent: QueryParent, 
       { search, filters, sort, pagination }: CardsArgs, 
-      context: GraphQLContext,
-      info: GraphQLResolveInfo
+      _context: GraphQLContext,
+      _info: GraphQLResolveInfo
     ): Promise<ConnectionResult<Card>> => {
       try {
         logger.debug('Searching cards:', { search, filters, sort, pagination });
@@ -483,7 +506,7 @@ export const resolvers = {
     },
 
     // Pokemon queries
-    pokemon: async (parent: QueryParent, { id }: PokemonArgs, context: GraphQLContext, info: GraphQLResolveInfo): Promise<Pokemon | null> => {
+    pokemon: async (_parent: QueryParent, { id }: PokemonArgs, _context: GraphQLContext, _info: GraphQLResolveInfo): Promise<Pokemon | null> => {
       try {
         const { data, error } = await databaseOptimizer.executeOptimizedQuery(
           'pokemon_cache',
@@ -512,10 +535,10 @@ export const resolvers = {
 
     // Price queries
     priceHistory: async (
-      parent: QueryParent, 
+      _parent: QueryParent, 
       { cardId, variantType, daysBack }: PriceHistoryArgs,
-      context: GraphQLContext,
-      info: GraphQLResolveInfo
+      _context: GraphQLContext,
+      _info: GraphQLResolveInfo
     ): Promise<PriceHistoryEntry[]> => {
       try {
         const result = await databaseOptimizer.getPriceHistory(cardId, variantType, daysBack);
@@ -538,10 +561,10 @@ export const resolvers = {
     },
 
     priceStats: async (
-      parent: QueryParent,
+      _parent: QueryParent,
       { cardId, variantType, daysBack }: PriceStatsArgs,
-      context: GraphQLContext,
-      info: GraphQLResolveInfo
+      _context: GraphQLContext,
+      _info: GraphQLResolveInfo
     ): Promise<PriceStats | null> => {
       try {
         const { data, error } = await supabase
@@ -575,10 +598,10 @@ export const resolvers = {
     },
 
     trendingCards: async (
-      parent: QueryParent,
+      _parent: QueryParent,
       { limit }: TrendingCardsArgs,
-      context: GraphQLContext,
-      info: GraphQLResolveInfo
+      _context: GraphQLContext,
+      _info: GraphQLResolveInfo
     ): Promise<TrendingCard[]> => {
       try {
         const trendAnalysis = await priceCollector.generateMarketTrendAnalysis(7);
@@ -606,10 +629,10 @@ export const resolvers = {
 
     // Analytics queries
     analytics: async (
-      parent: QueryParent,
+      _parent: QueryParent,
       { type, cardId, daysBack }: AnalyticsArgs,
-      context: GraphQLContext,
-      info: GraphQLResolveInfo
+      _context: GraphQLContext,
+      _info: GraphQLResolveInfo
     ): Promise<AnalyticsData> => {
       try {
         let analyticsData: Record<string, unknown> | null;
@@ -654,10 +677,10 @@ export const resolvers = {
 
     // Search suggestions
     searchSuggestions: async (
-      parent: QueryParent,
+      _parent: QueryParent,
       { query, limit }: SearchSuggestionsArgs,
-      context: GraphQLContext,
-      info: GraphQLResolveInfo
+      _context: GraphQLContext,
+      _info: GraphQLResolveInfo
     ): Promise<SearchSuggestion[]> => {
       try {
         // Simple implementation - could be enhanced with ML-based suggestions
@@ -689,10 +712,10 @@ export const resolvers = {
 
     // Market overview
     marketOverview: async (
-      parent: QueryParent,
+      _parent: QueryParent,
       { daysBack }: MarketOverviewArgs,
-      context: GraphQLContext,
-      info: GraphQLResolveInfo
+      _context: GraphQLContext,
+      _info: GraphQLResolveInfo
     ): Promise<MarketOverview> => {
       try {
         const trendAnalysis = await priceCollector.generateMarketTrendAnalysis(daysBack || 7);
@@ -752,10 +775,10 @@ export const resolvers = {
   Mutation: {
     // Favorites
     addFavorite: async (
-      parent: MutationParent,
+      _parent: MutationParent,
       { input }: AddFavoriteArgs,
       context: GraphQLContext,
-      info: GraphQLResolveInfo
+      _info: GraphQLResolveInfo
     ): Promise<MutationResult<Card | Pokemon>> => {
       try {
         const { itemType, itemId, itemData } = input;
@@ -780,10 +803,10 @@ export const resolvers = {
     },
 
     removeFavorite: async (
-      parent: MutationParent,
+      _parent: MutationParent,
       { input }: RemoveFavoriteArgs,
       context: GraphQLContext,
-      info: GraphQLResolveInfo
+      _info: GraphQLResolveInfo
     ): Promise<MutationResult<null>> => {
       try {
         const { itemType, itemId } = input;
@@ -808,10 +831,10 @@ export const resolvers = {
 
     // Price alerts
     createPriceAlert: async (
-      parent: MutationParent,
+      _parent: MutationParent,
       { input }: CreatePriceAlertArgs,
       context: GraphQLContext,
-      info: GraphQLResolveInfo
+      _info: GraphQLResolveInfo
     ): Promise<PriceAlert> => {
       try {
         const userId = context.user?.id;
@@ -851,10 +874,10 @@ export const resolvers = {
 
     // Analytics events
     trackEvent: async (
-      parent: MutationParent,
+      _parent: MutationParent,
       { input }: TrackEventArgs,
       context: GraphQLContext,
-      info: GraphQLResolveInfo
+      _info: GraphQLResolveInfo
     ): Promise<boolean> => {
       try {
         const { eventType, eventData } = input;
@@ -871,17 +894,17 @@ export const resolvers = {
 
     // Data operations
     triggerPriceCollection: async (
-      parent: MutationParent,
+      _parent: MutationParent,
       { input }: TriggerPriceCollectionArgs,
       context: GraphQLContext,
-      info: GraphQLResolveInfo
+      _info: GraphQLResolveInfo
     ): Promise<JobStatus> => {
       try {
         if (!context.user?.isAdmin) {
           throw new Error('Admin access required');
         }
 
-        const { jobType, limit, specificCards } = input || {};
+        const { jobType: _jobType, limit, specificCards: _specificCards } = input || {};
         
         const result = await priceCollector.collectPricesForTrendingCards(limit || 100);
         
@@ -906,10 +929,10 @@ export const resolvers = {
     },
 
     refreshCache: async (
-      parent: MutationParent,
+      _parent: MutationParent,
       { type }: RefreshCacheArgs,
       context: GraphQLContext,
-      info: GraphQLResolveInfo
+      _info: GraphQLResolveInfo
     ): Promise<boolean> => {
       try {
         if (!context.user?.isAdmin) {
@@ -944,7 +967,7 @@ export const resolvers = {
   Subscription: {
     // Real-time price updates
     priceUpdates: {
-      subscribe: (parent: SubscriptionParent, { cardIds }: PriceUpdatesArgs, context: GraphQLContext, info: GraphQLResolveInfo) => {
+      subscribe: (_parent: SubscriptionParent, { cardIds: _cardIds }: PriceUpdatesArgs, _context: GraphQLContext, _info: GraphQLResolveInfo) => {
         // Filter updates for specific cards
         return pubsub.asyncIterator([PRICE_UPDATE]);
       }
@@ -952,12 +975,12 @@ export const resolvers = {
 
     // Market trend updates
     marketTrends: {
-      subscribe: (parent: SubscriptionParent, args: Record<string, never>, context: GraphQLContext, info: GraphQLResolveInfo) => pubsub.asyncIterator([MARKET_TREND_UPDATE])
+      subscribe: (_parent: SubscriptionParent, _args: Record<string, never>, _context: GraphQLContext, _info: GraphQLResolveInfo) => pubsub.asyncIterator([MARKET_TREND_UPDATE])
     },
 
     // Collection updates
     collectionUpdates: {
-      subscribe: (parent: SubscriptionParent, { userId }: CollectionUpdatesArgs, context: GraphQLContext, info: GraphQLResolveInfo) => {
+      subscribe: (_parent: SubscriptionParent, { userId }: CollectionUpdatesArgs, context: GraphQLContext, _info: GraphQLResolveInfo) => {
         if (context.user?.id !== userId && !context.user?.isAdmin) {
           throw new Error('Access denied');
         }
@@ -967,7 +990,7 @@ export const resolvers = {
 
     // Price alert notifications
     priceAlerts: {
-      subscribe: (parent: SubscriptionParent, { userId }: PriceAlertsArgs, context: GraphQLContext, info: GraphQLResolveInfo) => {
+      subscribe: (_parent: SubscriptionParent, { userId }: PriceAlertsArgs, context: GraphQLContext, _info: GraphQLResolveInfo) => {
         if (context.user?.id !== userId && !context.user?.isAdmin) {
           throw new Error('Access denied');
         }

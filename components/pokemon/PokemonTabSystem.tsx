@@ -11,7 +11,7 @@ import { cn } from '../../utils/cn';
 import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { FaClipboardList, FaChartBar, FaExchangeAlt, FaMapMarkerAlt, FaTrophy, FaLayerGroup } from 'react-icons/fa';
 import { GiCrossedSwords, GiEggClutch } from 'react-icons/gi';
-import { getAnimationProps, UI_ANIMATION_SETS } from '../../utils/standardizedAnimations';
+import { getAnimationProps } from '../../utils/standardizedAnimations';
 import { useTheme } from '../../context/UnifiedAppContext';
 import logger from '../../utils/logger';
 
@@ -292,7 +292,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
           <OverviewTab 
             {...commonProps}
             abilities={abilities as Record<string, any>}
-            typeColors={typeColors}
+            _typeColors={typeColors}
             competitiveTiers={competitiveTiers}
           />
         );
@@ -300,7 +300,8 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
       case 'stats':
         return (
           <StatsTab
-            {...commonProps}
+            pokemon={pokemon}
+            _species={species}
             natureData={natureData as any}
             allNatures={allNatures as Nature[]}
             onNatureChange={onNatureChange}
@@ -316,15 +317,16 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
           <EvolutionTab
             {...commonProps}
             evolutionChain={evolutionChain as any}
-            typeColors={typeColors}
+            _typeColors={typeColors}
           />
         );
       
       case 'moves':
         return (
           <MovesTab
-            {...commonProps}
-            typeColors={typeColors}
+            pokemon={pokemon}
+            _species={species}
+            _typeColors={typeColors}
           />
         );
       
@@ -333,7 +335,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
           return (
             <BreedingTab
               {...commonProps}
-              typeColors={typeColors}
+              _typeColors={typeColors}
             />
           );
         } catch (error) {
@@ -351,7 +353,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
             <LocationsTab
               {...commonProps}
               locationEncounters={locationEncounters as LocationAreaEncounterDetail[]}
-              typeColors={typeColors}
+              _typeColors={typeColors}
             />
           );
         } catch (error) {
@@ -369,7 +371,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
             {...commonProps}
             tcgCards={tcgCards}
             pocketCards={pocketCards}
-            typeColors={typeColors}
+            _typeColors={typeColors}
           />
         );
       
@@ -377,7 +379,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
         return (
           <CompetitiveTab
             {...commonProps}
-            typeColors={typeColors}
+            _typeColors={typeColors}
             competitiveTiers={competitiveTiers}
           />
         );

@@ -107,7 +107,7 @@ interface AppContentProps {
   pageProps: Record<string, unknown>;
   fullBleed?: boolean;
   isClient: boolean;
-  router: NextRouter;
+  _router: NextRouter;
 }
 
 const AppContent: React.FC<AppContentProps> = ({ 
@@ -115,7 +115,7 @@ const AppContent: React.FC<AppContentProps> = ({
   pageProps, 
   fullBleed, 
   isClient,
-  router 
+  _router 
 }) => {
   return (
     <>
@@ -232,7 +232,7 @@ function MyApp({ Component, pageProps, router }: MyAppProps) {
         pageProps={pageProps}
         fullBleed={Component.fullBleed}
         isClient={isClient}
-        router={nextRouter}
+        _router={nextRouter}
       />
     </ErrorBoundary>
   );

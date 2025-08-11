@@ -281,7 +281,7 @@ export const PokemonRadarChart: React.FC<PokemonRadarChartProps> = ({
         ))}
         
         {/* Stat labels */}
-        {showLabels && hexagonPoints.map((point, index) => {
+        {showLabels && hexagonPoints.map((_, index) => {
           const stat = orderedStats[index];
           const labelDistance = radius + 30;
           const angle = (index * 2 * Math.PI) / 6 - Math.PI / 2;

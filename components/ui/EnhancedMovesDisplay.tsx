@@ -75,51 +75,6 @@ interface MoveCardProps {
 
 type FilterType = 'all' | 'level' | 'tm' | 'egg' | 'tutor';
 
-// Sample moves data for testing/demo purposes
-const SAMPLE_MOVES_DATA: MovesDataMap = {
-  'mega-punch': {
-    name: 'mega-punch',
-    type: { name: 'normal' },
-    damage_class: { name: 'physical' },
-    power: 80,
-    accuracy: 85,
-    pp: 20,
-    effect_entries: [
-      {
-        language: { name: 'en' },
-        short_effect: 'Inflicts regular damage with no additional effect.'
-      }
-    ]
-  },
-  'ice-punch': {
-    name: 'ice-punch',
-    type: { name: 'ice' },
-    damage_class: { name: 'physical' },
-    power: 75,
-    accuracy: 100,
-    pp: 15,
-    effect_entries: [
-      {
-        language: { name: 'en' },
-        short_effect: 'Has a 10% chance to freeze the target.'
-      }
-    ]
-  },
-  'body-slam': {
-    name: 'body-slam',
-    type: { name: 'normal' },
-    damage_class: { name: 'physical' },
-    power: 85,
-    accuracy: 100,
-    pp: 15,
-    effect_entries: [
-      {
-        language: { name: 'en' },
-        short_effect: 'Has a 30% chance to paralyze the target.'
-      }
-    ]
-  }
-};
 
 const EnhancedMovesDisplay: React.FC<EnhancedMovesDisplayProps> = ({ moves, pokemonName }) => {
   const [movesData, setMovesData] = useState<MovesDataMap>({});

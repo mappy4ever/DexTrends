@@ -76,7 +76,6 @@ type PokemonCategory = 'all' | 'starter' | 'legendary' | 'mythical' | 'ultra-bea
 type EvolutionStage = 'all' | 'basic' | 'stage1' | 'stage2' | 'single';
 
 // Constants
-const BATCH_SIZE = 50;
 const INITIAL_LOAD = 48;
 const LOAD_MORE_COUNT = 48;
 const TOTAL_POKEMON = 1025; // Updated to include Gen 9

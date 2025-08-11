@@ -14,7 +14,7 @@ import { motion } from 'framer-motion';
 import { EnhancedPokemonSelector, type Pokemon as SelectorPokemon } from '../components/ui/EnhancedPokemonSelector';
 import Modal from '../components/ui/modals/Modal';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
-import { InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
+import { InlineLoader } from '../components/ui/SkeletonLoadingSystem';
 import PageErrorBoundary from '../components/ui/PageErrorBoundary';
 import { SmartTooltip } from '../components/qol/ContextualHelp';
 import logger from '../utils/logger';

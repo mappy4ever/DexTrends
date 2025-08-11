@@ -17,7 +17,7 @@ import type {
 
 // Import Supabase statically to avoid chunk loading errors
 import { supabase } from '../lib/supabase';
-import logger from '@/utils/logger';
+import logger from './logger';
 
 // Removed circular import - using direct fetch instead
 
@@ -179,12 +179,18 @@ class MemoryCache extends CacheStorage {
   // Cleanup expired entries
   async cleanup(): Promise<void> {
     const now = Date.now();
-    for (const [key, entry] of this.cache.entries()) {
+    const keysToDelete: string[] = [];
+    
+    this.cache.forEach((entry, key) => {
       if (now > entry.expiry) {
-        this.cache.delete(key);
-        this.accessOrder.delete(key);
+        keysToDelete.push(key);
       }
-    }
+    });
+    
+    keysToDelete.forEach(key => {
+      this.cache.delete(key);
+      this.accessOrder.delete(key);
+    });
   }
 }
 

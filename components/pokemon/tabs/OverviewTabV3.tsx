@@ -33,7 +33,7 @@ interface OverviewTabV3Props {
   pokemon: Pokemon;
   species: PokemonSpecies;
   abilities: Record<string, AbilityData>;
-  typeColors: TypeColors;
+  _typeColors: TypeColors;
   competitiveTiers?: CompetitiveTierRecord | null;
 }
 
@@ -41,7 +41,7 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
   pokemon, 
   species, 
   abilities,
-  typeColors,
+  _typeColors,
   competitiveTiers 
 }) => {
   // Get flavor text

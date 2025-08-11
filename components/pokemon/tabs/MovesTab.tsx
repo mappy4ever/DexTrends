@@ -18,8 +18,8 @@ import { HiSparkles } from 'react-icons/hi';
 
 interface MovesTabProps {
   pokemon: Pokemon;
-  species: PokemonSpecies;
-  typeColors: TypeColors;
+  _species: PokemonSpecies;
+  _typeColors: TypeColors;
 }
 
 interface ErrorBoundaryState {
@@ -70,7 +70,7 @@ class MovesTabErrorBoundary extends Component<{ children: ReactNode }, ErrorBoun
   }
 }
 
-const MovesTab: React.FC<MovesTabProps> = ({ pokemon, species, typeColors }) => {
+const MovesTab: React.FC<MovesTabProps> = ({ pokemon, _species, _typeColors }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedGeneration, setSelectedGeneration] = useState(9);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');

@@ -473,7 +473,7 @@ export default function Navbar() {
       <DynamicAdvancedSearchModal
         isOpen={showAdvancedSearch}
         onClose={() => setShowAdvancedSearch(false)}
-        onSearchResults={(results) => {
+        onSearchResults={(_results) => {
           setShowAdvancedSearch(false);
           // Navigate to a search results page or handle results
           router.push('/cards');

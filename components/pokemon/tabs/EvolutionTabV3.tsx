@@ -21,7 +21,7 @@ interface EvolutionTabV3Props {
   pokemon: Pokemon;
   species: PokemonSpecies;
   evolutionChain: EvolutionChain | null;
-  typeColors: TypeColors;
+  _typeColors: TypeColors;
 }
 
 interface EvolutionNode {
@@ -319,7 +319,7 @@ const EvolutionTabV3: React.FC<EvolutionTabV3Props> = ({
   pokemon,
   species,
   evolutionChain,
-  typeColors
+  _typeColors
 }) => {
   const [showShiny, setShowShiny] = useState(false);
   const [megaFormData, setMegaFormData] = useState<Record<string, Pokemon>>({});
@@ -396,13 +396,13 @@ interface EvolutionChainNode {
 }
 
 // Parse evolution chain into a usable structure
-  const parseEvolutionChain = (chain: EvolutionChainNode, isShiny: boolean): EvolutionNode[][] => {
+  const parseEvolutionChain = (_chain: EvolutionChainNode, isShiny: boolean): EvolutionNode[][] => {
     const stages: EvolutionNode[][] = [];
     
     // For regional variants, we need to filter the evolution path
     const currentFormPrefix = isRegionalVariant ? pokemon.name.split('-')[1] : null;
     
-    const parseNode = (node: EvolutionChainNode, stageIndex: number = 0, followPath: boolean = true) => {
+    const parseNode = (node: EvolutionChainNode, stageIndex: number = 0, _followPath: boolean = true) => {
       if (!node || !node.species) return;
       
       if (!stages[stageIndex]) {

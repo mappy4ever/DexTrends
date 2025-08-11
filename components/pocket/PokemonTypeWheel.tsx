@@ -163,7 +163,7 @@ export const PokemonTypeWheel: React.FC<PokemonTypeWheelProps> = ({
         />
         
         {/* Type segments */}
-        {typeSegments.map((segment, index) => (
+        {typeSegments.map((segment) => (
           <g key={segment.type}>
             <motion.path
               d={segment.path}

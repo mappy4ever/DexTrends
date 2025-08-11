@@ -207,7 +207,7 @@ const getEvolutionCards = async (card: PocketCard, allCards: PocketCard[]): Prom
   
   // Extract all Pokemon names from the evolution tree recursively
   // This includes the root, all children, and siblings
-  const getAllPokemonFromTree = (node: EvolutionTreeNode, isRoot = true): string[] => {
+  const getAllPokemonFromTree = (node: EvolutionTreeNode, _isRoot = true): string[] => {
     const names = [node.name];
     
     if (node.children && node.children.length > 0) {

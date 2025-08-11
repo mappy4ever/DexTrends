@@ -4,10 +4,9 @@ import { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
-import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../../../components/ui/animations";
+import { FadeIn, SlideUp, CardHover } from "../../../components/ui/animations";
 import { useTheme } from "../../../context/UnifiedAppContext";
 import StyledBackButton from "../../../components/ui/StyledBackButton";
-import { TypeBadge } from "../../../components/ui/TypeBadge";
 
 // Region Components
 import RegionHero from "../../../components/regions/RegionHero";
@@ -18,11 +17,8 @@ import StarterShowcase from "../../../components/regions/StarterShowcase";
 import GameShowcase from "../../../components/regions/GameShowcase";
 import BadgeCollection from "../../../components/regions/BadgeCollection";
 
-import { BsGlobeEuropeAfrica, BsChevronRight, BsMap, BsController, BsTrophy, BsChevronDown, BsChevronUp, BsGeoAlt, BsCompass } from "react-icons/bs";
-import { GiMountainRoad, GiModernCity, GiIsland, GiStoneSphere, GiWaterDrop, GiLightningStorm, GiLeafSwirl, GiPoisonGas, GiPsychicWaves, GiFist, GiGhost, GiDragonBreath, GiFeather, GiBugNet, GiFairyWand, GiMoon, GiSteelClaws } from "react-icons/gi";
-import { RiGovernmentFill } from "react-icons/ri";
-import { FaFire, FaSnowflake } from "react-icons/fa";
-import { gymLeaderImages, eliteFourImages, championImages, gymBadgeImages } from "../../../data/gymLeaderImages";
+import { BsMap, BsGeoAlt, BsCompass } from "react-icons/bs";
+import { GiModernCity } from "react-icons/gi";
 
 // Type definitions
 interface Location {

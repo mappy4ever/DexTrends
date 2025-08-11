@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import logger from '@/utils/logger';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(_req: NextApiRequest, res: NextApiResponse) {
   logger.debug('===== TCG TEST SIMPLE =====');
   
   const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;

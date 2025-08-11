@@ -24,7 +24,7 @@ interface PocketDeck {
 }
 
 export default function handler(
-  req: NextApiRequest,
+  _req: NextApiRequest,
   res: NextApiResponse<PocketDeck[]>
 ) {
   res.status(200).json([

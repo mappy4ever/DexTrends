@@ -60,7 +60,7 @@ const CardScanner: React.FC<CardScannerProps> = ({
   }, []);
 
   // Simulate card image analysis (would use real ML/OCR in production)
-  const analyzeCardImage = useCallback(async (imageData: string): Promise<DetectedCard | null> => {
+  const analyzeCardImage = useCallback(async (_imageData: string): Promise<DetectedCard | null> => {
     // Simulate processing delay
     await new Promise(resolve => setTimeout(resolve, 500));
     

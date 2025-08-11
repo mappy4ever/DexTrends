@@ -10,7 +10,7 @@ interface PocketTypeCard {
 }
 
 export default function handler(
-  req: NextApiRequest,
+  _req: NextApiRequest,
   res: NextApiResponse<PocketTypeCard[]>
 ) {
   res.status(200).json([

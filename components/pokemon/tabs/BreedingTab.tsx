@@ -36,7 +36,7 @@ import { POKEMON_TYPE_COLORS } from '../../../utils/unifiedTypeColors';
 interface BreedingTabProps {
   pokemon: Pokemon;
   species: PokemonSpecies;
-  typeColors: TypeColors;
+  _typeColors: TypeColors;
 }
 
 interface EggMove {
@@ -56,7 +56,7 @@ interface CompatiblePokemon {
   eggGroups: string[];
 }
 
-const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors }) => {
+const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, _typeColors }) => {
   const router = useRouter();
   const [eggMoves, setEggMoves] = useState<EggMove[]>([]);
   const [compatiblePokemon, setCompatiblePokemon] = useState<CompatiblePokemon[]>([]);

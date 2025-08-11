@@ -26,7 +26,7 @@ const Custom404: NextPage = () => {
       <div className="absolute inset-0 gradient-bg-primary opacity-20" />
       
       {/* Floating Pokemon */}
-      {pokemonSprites.map((sprite, index) => (
+      {pokemonSprites.map((_sprite, index) => (
         <motion.div
           key={index}
           className="absolute w-24 h-24 opacity-10"

@@ -236,7 +236,7 @@ const TouchGestures: React.FC<TouchGesturesProps> = ({
     touchState.current.endY = touch.clientY;
   }, [disabled, isTouch, enablePinch, enableSwipe, onPinch]);
 
-  const handleTouchEnd = useCallback((e: TouchEvent) => {
+  const handleTouchEnd = useCallback((_e: TouchEvent) => {
     if (disabled || !isTouch) return;
     
     const endTime = Date.now();

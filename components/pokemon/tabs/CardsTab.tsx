@@ -28,15 +28,16 @@ interface CardsTabProps {
   species: PokemonSpecies;
   tcgCards?: TCGCard[];
   pocketCards?: ExtendedPocketCard[];
-  typeColors: TypeColors;
+  _typeColors: TypeColors;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const CardsTab: React.FC<CardsTabProps> = ({ 
   pokemon, 
   species, 
   tcgCards = [], 
   pocketCards = [],
-  typeColors 
+  _typeColors 
 }) => {
   const [cardType, setCardType] = useState<'tcg' | 'pocket'>('tcg');
   
@@ -84,7 +85,7 @@ const CardsTab: React.FC<CardsTabProps> = ({
             className={cn(
               "px-5 py-2.5 rounded-full font-semibold transition-all duration-300 transform hover:scale-105",
               cardType === 'pocket'
-                ? cn(typeColors.tabActive, "text-white shadow-lg")
+                ? cn(_typeColors.tabActive, "text-white shadow-lg")
                 : "bg-white/80 dark:bg-gray-700/80 text-gray-600 dark:text-gray-300 border border-gray-200/50 dark:border-gray-600/50"
             )}
           >

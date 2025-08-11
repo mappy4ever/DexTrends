@@ -4,22 +4,13 @@ import React from 'react';
 import Modal from './ModalWrapper';
 import type { ModalProps } from './ModalWrapper';
 
-type ModalVariant = "scale" | "slide" | "flip" | "fade";
-type ModalPosition = "center" | "top" | "bottom";
-
 interface EnhancedModalProps extends ModalProps {
-  variant?: ModalVariant;
-  position?: ModalPosition;
   closeOnBackdrop?: boolean;
-  backdropClassName?: string;
   contentClassName?: string;
 }
 
 const EnhancedModal: React.FC<EnhancedModalProps> = ({ 
-  variant,
-  position,
   closeOnBackdrop = true,
-  backdropClassName,
   contentClassName,
   className,
   ...modalProps

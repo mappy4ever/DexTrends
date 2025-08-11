@@ -1,23 +1,17 @@
 import React, { useMemo, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import type { Pokemon, PokemonSpecies, Nature } from "../../../types/pokemon";
 import type { TypeColors } from '../../../types/pokemon-tabs';
 import { GlassContainer } from '../../ui/design-system';
-import CircularButton from '../../ui/CircularButton';
-import PokemonStatRadar from '../PokemonStatRadar';
 import PokemonStatBars from '../PokemonStatBars';
 import { cn } from '../../../utils/cn';
 import { 
-  FaChartBar, FaChartLine, FaCalculator, FaDna, 
-  FaFlask, FaRunning, FaShieldAlt, FaBolt,
-  FaHeart, FaStar, FaMedal, FaGamepad
+  FaDna, FaFlask, FaGamepad
 } from 'react-icons/fa';
-import { GiSwordWound, GiMagicShield } from 'react-icons/gi';
-import { HiSparkles } from 'react-icons/hi';
 
 interface StatsTabV2Props {
   pokemon: Pokemon;
-  species: PokemonSpecies;
+  _species: PokemonSpecies;
   natureData?: Nature | null;
   allNatures?: Nature[];
   onNatureChange?: (nature: string) => void;
@@ -38,7 +32,7 @@ const STAT_NAMES: Record<string, string> = {
 
 const StatsTabV2: React.FC<StatsTabV2Props> = ({
   pokemon,
-  species,
+  _species,
   natureData,
   allNatures = [],
   onNatureChange,

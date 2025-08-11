@@ -260,7 +260,7 @@ const EnhancedSwipeGestures: React.FC<EnhancedSwipeGesturesProps> = ({
     touchState.current.endY = touch.clientY;
   }, [disabled, isTouch, enableSwipe, enablePinch, swipeThreshold, onPinchZoom, utils, calculateVelocity, updateSwipeIndicator]);
 
-  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+  const handleTouchEnd = useCallback((_e: React.TouchEvent) => {
     if (disabled || !isTouch) return;
     
     // Clear long press timer

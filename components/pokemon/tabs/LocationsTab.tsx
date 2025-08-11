@@ -5,14 +5,11 @@ import { GlassContainer } from '../../ui/design-system';
 import { cn } from '../../../utils/cn';
 import { 
   FaGamepad, FaMapMarkerAlt, FaGlobeAmericas, FaFilter,
-  FaMountain, FaTree, FaWater, FaCity, FaCampground,
-  FaSnowflake, FaFire, FaCloud, FaSun
+  FaTree
 } from 'react-icons/fa';
-import { GiCage, GiIsland, GiForest, GiDesert } from 'react-icons/gi';
-import { HiSparkles } from 'react-icons/hi';
 
 // Animation helper
-const getAnimationProps = (variant: string, delay: number = 0) => ({
+const getAnimationProps = (_variant: string, delay: number = 0) => ({
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
   transition: { duration: 0.5, delay }
@@ -22,7 +19,7 @@ interface LocationsTabProps {
   pokemon: Pokemon;
   species: PokemonSpecies;
   locationEncounters?: LocationAreaEncounterDetail[];
-  typeColors: Record<string, unknown>;
+  _typeColors: Record<string, unknown>;
 }
 
 interface GameLocation {
@@ -103,7 +100,7 @@ const getConsoleIcon = (console: string): React.ReactNode => {
   }
 };
 
-const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationEncounters = [], typeColors }) => {
+const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationEncounters = [], _typeColors }) => {
   // Hooks must be called before any conditional returns
   const [selectedGeneration, setSelectedGeneration] = useState<number | null>(null);
   const [selectedConsole, setSelectedConsole] = useState<string | null>(null);

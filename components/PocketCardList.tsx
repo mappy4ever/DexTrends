@@ -46,8 +46,6 @@ const PocketCard = memo<PocketCardProps>(({
   cardClassName, 
   showHP, 
   showRarity, 
-  rarity, 
-  cardFeatures, 
   setZoomedCard,
   imageWidth,
   imageHeight,
@@ -108,11 +106,9 @@ export default function PocketCardList({
   hideCardCount = false, 
   cardClassName = "", 
   gridClassName = "",
-  showPack = true,
   showRarity = true,
   showHP = true,
   showSort = true,
-  itemsPerPage = 48, // 6 columns x 8 rows = reasonable page size
   imageWidth = 110, // 50% smaller than 220
   imageHeight = 154, // 50% smaller than 308
   onCardClick

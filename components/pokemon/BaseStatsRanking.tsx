@@ -3,7 +3,6 @@ import { FaStar } from 'react-icons/fa';
 
 interface BaseStatsRankingProps {
   totalStats: number;
-  pokemonName: string;
 }
 
 const getStatRating = (total: number): { label: string; color: string; bgColor: string } => {
@@ -17,7 +16,7 @@ const getStatRating = (total: number): { label: string; color: string; bgColor: 
   return { label: 'Weak', color: 'text-red-600', bgColor: 'bg-red-500' };
 };
 
-export const BaseStatsRanking: React.FC<BaseStatsRankingProps> = ({ totalStats, pokemonName }) => {
+export const BaseStatsRanking: React.FC<BaseStatsRankingProps> = ({ totalStats }) => {
   const rating = getStatRating(totalStats);
   
   return (
