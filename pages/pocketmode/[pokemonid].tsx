@@ -16,7 +16,7 @@ import { GradientButton } from "../../components/ui/design-system/GradientButton
 import { TypeGradientBadge } from "../../components/ui/design-system/TypeGradientBadge";
 import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
 import { motion, useScroll, useTransform } from "framer-motion";
-import PokemonRadarChart from "../../components/pocket/PokemonRadarChart";
+import { PokemonRadarChart } from "../../components/ui/LazyComponents";
 import PokemonTypeWheel from "../../components/pocket/PokemonTypeWheel";
 import PokemonEvolutionFlow from "../../components/pocket/PokemonEvolutionFlow";
 import { POKEMON_TYPE_COLORS as pokemonTypeColors } from "../../utils/unifiedTypeColors";

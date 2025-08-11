@@ -7,8 +7,6 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { usePerformanceMonitor } from '../../utils/performanceMonitor';
 import type { Metric } from '../../utils/performanceMonitor';
 import { useAPIPerformance, getAPIPerformanceReport } from '../../utils/apiOptimizations';
-// import { useImagePerformance } from './OptimizedImage';
-import logger from '../../utils/logger';
 
 // Types and Interfaces
 interface SimpleMetric {

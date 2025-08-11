@@ -197,6 +197,51 @@ export const PokemonStatRadar = dynamic(
   }
 );
 
+// Chart Components
+export const PriceHistoryChart = dynamic(
+  () => import('./charts/PriceHistoryChart'),
+  {
+    loading: () => <Skeleton variant="rectangular" width="100%" height={280} animation="wave" />,
+    ssr: false
+  }
+);
+
+export const PokemonRadarChart = dynamic(
+  () => import('../pocket/PokemonRadarChart'),
+  {
+    loading: () => <Skeleton variant="circular" width={250} height={250} animation="wave" />,
+    ssr: false
+  }
+);
+
+// Heavy Animation Components  
+export const PokemonTypeWheel = dynamic(
+  () => import('../pocket/PokemonTypeWheel'),
+  {
+    loading: () => <Skeleton variant="circular" width={300} height={300} animation="wave" />,
+    ssr: false
+  }
+);
+
+export const PokemonEvolutionFlow = dynamic(
+  () => import('../pocket/PokemonEvolutionFlow'),
+  {
+    loading: () => <Skeleton variant="rectangular" width="100%" height={300} animation="wave" />,
+    ssr: false
+  }
+);
+
+// Battle Simulator Components - Removed (component doesn't exist)
+
+// Large Feature Components  
+export const EnhancedPokemonSelector = dynamic(
+  () => import('./EnhancedPokemonSelector'),
+  {
+    loading: () => <FormSkeleton />,
+    ssr: false
+  }
+);
+
 // Third-party heavy components wrapper
 export const LazyVirtualizedGrid = dynamic(
   () => import('./VirtualizedCardGrid'),

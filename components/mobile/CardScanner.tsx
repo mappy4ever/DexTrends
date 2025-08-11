@@ -12,7 +12,6 @@ interface CardScannerProps {
   disabled?: boolean;
   autoCapture?: boolean;
   captureDelay?: number;
-  maxImageSize?: number;
   jpegQuality?: number;
   overlayEnabled?: boolean;
 }
@@ -24,7 +23,6 @@ const CardScanner: React.FC<CardScannerProps> = ({
   disabled = false,
   autoCapture = true,
   captureDelay = 2000,
-  maxImageSize = 1920,
   jpegQuality = 0.8,
   overlayEnabled = true
 }) => {
@@ -39,7 +37,6 @@ const CardScanner: React.FC<CardScannerProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [detectedCards, setDetectedCards] = useState<DetectedCard[]>([]);
   const [scanProgress, setScanProgress] = useState(0);
-  const [lastCapture, setLastCapture] = useState<string | null>(null);
 
   // Check for camera support
   useEffect(() => {
@@ -128,7 +125,6 @@ const CardScanner: React.FC<CardScannerProps> = ({
     
     // Convert to image data for analysis
     const imageData = canvas.toDataURL('image/jpeg', jpegQuality);
-    setLastCapture(imageData);
     
     // Simulate card detection progress
     setScanProgress(prev => (prev + 10) % 100);

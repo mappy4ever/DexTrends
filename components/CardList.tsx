@@ -327,7 +327,7 @@ const CardList = memo<CardListProps>(({
           initial="hidden"
           animate="visible"
         >
-          {sortedCards.map((card, index) => {
+          {sortedCards.map((card, _index) => {
             // Add current price to card object for UnifiedCard to access
             const cardWithPrice: CardWithPrice = {
               ...card,

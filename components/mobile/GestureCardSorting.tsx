@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useMemo, useCallback } from 'react';
 import { useMobileUtils } from '../../utils/mobileUtils';
 import EnhancedSwipeGestures from './EnhancedSwipeGestures';
 import logger from '../../utils/logger';
@@ -77,7 +77,7 @@ const GestureCardSorting: React.FC<GestureCardSortingProps> = ({
   const showContextMenuRef = useRef<((position: Position) => void) | undefined>(undefined);
 
   // Gesture patterns for sorting - wrapped in useMemo to prevent recreation
-  const sortGestures: Record<string, SortGesture> = React.useMemo(() => ({
+  const sortGestures: Record<string, SortGesture> = useMemo(() => ({
     'circle-clockwise': { sort: 'price-asc', label: 'Price Low to High' },
     'circle-counter': { sort: 'price-desc', label: 'Price High to Low' },
     'zigzag-horizontal': { sort: 'name-asc', label: 'Name A-Z' },

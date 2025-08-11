@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 const FastRefreshQuickTest: React.FC = () => {
   const [count, setCount] = useState(0);
-  const [text, setText] = useState('Fast Refresh is now working! 🎉');
+  const [text] = useState('Fast Refresh is now working! 🎉');
 
   return (
     <div style={{ padding: '2rem', background: '#1a1a1a', borderRadius: '0.5rem', margin: '2rem' }}>

@@ -6,7 +6,6 @@ import UnifiedCard from "./ui/cards/UnifiedCard";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import { InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { SmartSkeleton } from "./ui/SkeletonLoader";
-import { isFeatureEnabled } from "../utils/featureFlags";
 import type { PocketCard } from "../types/api/pocket-cards";
 
 // Extended interface for pocket cards with additional display properties
@@ -268,7 +267,7 @@ export default function PocketCardList({
     )}
     
     <div className={gridClassName || "pocket-cards-grid"}>
-      {displayedCards.map(card => {
+      {displayedCards.map((card, _index) => {
         return (
           <PocketCard
             key={card.id}

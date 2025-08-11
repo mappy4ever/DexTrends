@@ -4,7 +4,7 @@ import Link from "next/link";
 import Modal from "../../components/ui/modals/Modal";
 import EnhancedCardModal from "../../components/ui/EnhancedCardModal";
 import { FadeIn, SlideUp } from "../../components/ui/animations";
-import PriceHistoryChart from "../../components/ui/charts/PriceHistoryChart";
+import { PriceHistoryChart } from "../../components/ui/LazyComponents";
 import { TypeBadge } from "../../components/ui/TypeBadge";
 import Image from "next/image";
 import { getPrice as getCardPrice } from "../../utils/pokemonutils";

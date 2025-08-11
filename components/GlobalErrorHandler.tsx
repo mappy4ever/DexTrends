@@ -12,10 +12,6 @@ export default function GlobalErrorHandler(): null {
   // Use sessionStorage instead of window mutation for Fast Refresh compatibility
   const RELOAD_KEY = 'error-handler-has-reloaded';
   
-  const hasReloaded = () => {
-    if (typeof window === 'undefined') return false;
-    return sessionStorage.getItem(RELOAD_KEY) === 'true';
-  };
   
   const setReloaded = (value: boolean) => {
     if (typeof window === 'undefined') return;

@@ -280,7 +280,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
               document.body.style.cursor = 'grabbing';
               hapticFeedback.light();
             }}
-            onDrag={(event, info: PanInfo) => {
+            onDrag={(_event, info: PanInfo) => {
               setDragOffset(info.offset.y);
               y.set(info.offset.y);
               
@@ -299,7 +299,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
                 setHasReachedThreshold(true);
               }
             }}
-            onDragEnd={(event, info: PanInfo) => {
+            onDragEnd={(_event, info: PanInfo) => {
               const velocity = info.velocity.y;
               const offset = info.offset.y;
               document.body.style.cursor = '';

@@ -7,7 +7,6 @@ import logger from "@/utils/logger";
 import { FaHeart, FaRegHeart, FaShare, FaTrash } from "react-icons/fa";
 import { TypeBadge } from "../TypeBadge";
 import { CompactPriceIndicator } from "../PriceIndicator";
-import { isFeatureEnabled } from "../../../utils/featureFlags";
 import performanceMonitor from "../../../utils/performanceMonitor";
 // import { useSmartMemo, useSmartCallback, withOptimizations } from "../../../utils/reactOptimizations";
 import { getPrice } from "../../../utils/pokemonutils";
