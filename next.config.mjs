@@ -349,9 +349,6 @@ const nextConfig = {
     esmExternals: true,
   },
   
-  // SWC Minifier configuration for better performance
-  swcMinify: true,
-  
   // Production optimizations
   compress: true,
   productionBrowserSourceMaps: false,

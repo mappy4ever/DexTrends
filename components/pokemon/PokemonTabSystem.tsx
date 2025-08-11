@@ -292,7 +292,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
           <OverviewTab 
             {...commonProps}
             abilities={abilities as Record<string, any>}
-            _typeColors={typeColors}
+            typeColors={typeColors}
             competitiveTiers={competitiveTiers}
           />
         );
@@ -301,7 +301,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
         return (
           <StatsTab
             pokemon={pokemon}
-            _species={species}
+            species={species}
             natureData={natureData as any}
             allNatures={allNatures as Nature[]}
             onNatureChange={onNatureChange}
@@ -317,7 +317,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
           <EvolutionTab
             {...commonProps}
             evolutionChain={evolutionChain as any}
-            _typeColors={typeColors}
+            typeColors={typeColors}
           />
         );
       
@@ -325,8 +325,8 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
         return (
           <MovesTab
             pokemon={pokemon}
-            _species={species}
-            _typeColors={typeColors}
+            species={species}
+            typeColors={typeColors}
           />
         );
       
@@ -335,7 +335,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
           return (
             <BreedingTab
               {...commonProps}
-              _typeColors={typeColors}
+              typeColors={typeColors}
             />
           );
         } catch (error) {
@@ -353,7 +353,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
             <LocationsTab
               {...commonProps}
               locationEncounters={locationEncounters as LocationAreaEncounterDetail[]}
-              _typeColors={typeColors}
+              typeColors={typeColors}
             />
           );
         } catch (error) {
@@ -371,7 +371,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
             {...commonProps}
             tcgCards={tcgCards}
             pocketCards={pocketCards}
-            _typeColors={typeColors}
+            typeColors={typeColors}
           />
         );
       
@@ -379,7 +379,7 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
         return (
           <CompetitiveTab
             {...commonProps}
-            _typeColors={typeColors}
+            typeColors={typeColors}
             competitiveTiers={competitiveTiers}
           />
         );

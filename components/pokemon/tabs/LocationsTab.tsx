@@ -19,7 +19,7 @@ interface LocationsTabProps {
   pokemon: Pokemon;
   species: PokemonSpecies;
   locationEncounters?: LocationAreaEncounterDetail[];
-  _typeColors: Record<string, unknown>;
+  typeColors?: Record<string, unknown>;
 }
 
 interface GameLocation {
@@ -100,7 +100,7 @@ const getConsoleIcon = (console: string): React.ReactNode => {
   }
 };
 
-const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationEncounters = [], _typeColors }) => {
+const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationEncounters = [], typeColors }) => {
   // Hooks must be called before any conditional returns
   const [selectedGeneration, setSelectedGeneration] = useState<number | null>(null);
   const [selectedConsole, setSelectedConsole] = useState<string | null>(null);

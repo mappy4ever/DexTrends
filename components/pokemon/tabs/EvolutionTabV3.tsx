@@ -21,7 +21,7 @@ interface EvolutionTabV3Props {
   pokemon: Pokemon;
   species: PokemonSpecies;
   evolutionChain: EvolutionChain | null;
-  _typeColors: TypeColors;
+  typeColors: TypeColors;
 }
 
 interface EvolutionNode {
@@ -319,7 +319,7 @@ const EvolutionTabV3: React.FC<EvolutionTabV3Props> = ({
   pokemon,
   species,
   evolutionChain,
-  _typeColors
+  typeColors
 }) => {
   const [showShiny, setShowShiny] = useState(false);
   const [megaFormData, setMegaFormData] = useState<Record<string, Pokemon>>({});

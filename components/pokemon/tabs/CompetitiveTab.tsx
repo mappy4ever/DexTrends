@@ -25,12 +25,12 @@ import { SAMPLE_MOVESETS, COMMON_TEAMMATES, COUNTERS } from './competitive/const
 interface CompetitiveTabProps {
   pokemon: Pokemon;
   species: PokemonSpecies;
-  _typeColors: Record<string, unknown>;
+  typeColors: Record<string, unknown>;
   competitiveTiers?: CompetitiveTierRecord | null;
 }
 
 
-const CompetitiveTab: React.FC<CompetitiveTabProps> = ({ pokemon, species, _typeColors, competitiveTiers }) => {
+const CompetitiveTab: React.FC<CompetitiveTabProps> = ({ pokemon, species, typeColors, competitiveTiers }) => {
   
   // State for real competitive data
   const [movesets, setMovesets] = useState<MovesetData[]>([]);

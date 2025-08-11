@@ -11,7 +11,7 @@ import {
 
 interface StatsTabV2Props {
   pokemon: Pokemon;
-  _species: PokemonSpecies;
+  species: PokemonSpecies;
   natureData?: Nature | null;
   allNatures?: Nature[];
   onNatureChange?: (nature: string) => void;
@@ -32,7 +32,7 @@ const STAT_NAMES: Record<string, string> = {
 
 const StatsTabV2: React.FC<StatsTabV2Props> = ({
   pokemon,
-  _species,
+  species,
   natureData,
   allNatures = [],
   onNatureChange,
