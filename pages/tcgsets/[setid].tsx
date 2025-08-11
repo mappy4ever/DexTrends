@@ -329,7 +329,11 @@ const SetIdPage: NextPage = () => {
           
           // Use pre-calculated stats if available
           if (data.stats) {
-            setStatistics(data.stats);
+            setStatistics({
+              rarityDistribution: data.stats?.rarityDistribution || {},
+              valueByRarity: data.stats?.valueByRarity || {},
+              highestValueCards: data.stats?.highestValueCards || []
+            });
           } else {
             // Calculate statistics if not provided
             calculateSetStatistics(cardsData);
@@ -671,7 +675,7 @@ const SetIdPage: NextPage = () => {
                 <div>
                   <h3 className="text-lg font-semibold mb-3">Rarity Distribution</h3>
                   <div className="space-y-2">
-                    {Object.entries(statistics.rarityDistribution)
+                    {Object.entries(statistics.rarityDistribution || {})
                       .sort(([,a], [,b]) => b - a)
                       .map(([rarity, count]) => (
                         <div key={rarity} className="flex justify-between">
@@ -686,7 +690,7 @@ const SetIdPage: NextPage = () => {
                 <div>
                   <h3 className="text-lg font-semibold mb-3">Average Value by Rarity</h3>
                   <div className="space-y-2">
-                    {Object.entries(statistics.valueByRarity)
+                    {Object.entries(statistics.valueByRarity || {})
                       .sort(([,a], [,b]) => b.average - a.average)
                       .map(([rarity, data]) => (
                         <div key={rarity} className="flex justify-between">
@@ -979,7 +983,7 @@ const SetIdPage: NextPage = () => {
                   <div className="mb-4">
                     <h3 className="text-lg font-semibold mb-2">Market Prices</h3>
                     <div className="space-y-2">
-                      {Object.entries(modalCard.tcgplayer.prices).map(([type, prices]) => {
+                      {Object.entries(modalCard.tcgplayer.prices || {}).map(([type, prices]) => {
                         const priceData = prices as PriceDataType;
                         if (!priceData || !priceData.market) return null;
                         
