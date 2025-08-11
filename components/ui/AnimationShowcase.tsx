@@ -14,7 +14,6 @@ import {
   useEnhancedAnimation
 } from './EnhancedAnimationSystem';
 import {
-  HolographicCard,
   FlippableCard,
   PackOpeningAnimation,
   CardStack,
@@ -125,7 +124,7 @@ const AnimationShowcase: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {sampleCards.map((card, index) => (
                 <ScrollReveal key={card.id} direction="up" delay={index * 0.1}>
-                  <HolographicCard rarity={card.rarity}>
+                  <div className="transition-transform hover:scale-105">
                     <InteractiveCard 
                       className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg cursor-pointer"
                       glowColor={
@@ -140,7 +139,7 @@ const AnimationShowcase: React.FC = () => {
                         {card.rarity} Card
                       </p>
                     </InteractiveCard>
-                  </HolographicCard>
+                  </div>
                 </ScrollReveal>
               ))}
             </div>

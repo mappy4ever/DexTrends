@@ -8,9 +8,6 @@
 /* Import theme-aware utilities */
 @import './theme-utilities.css';
 
-/* Import holographic card effects */
-@import './holographic-cards.css';
-
 /* CSS Variables - Design System */
 :root {
   /* Base colors */

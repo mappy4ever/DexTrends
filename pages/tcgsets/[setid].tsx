@@ -11,7 +11,7 @@ import { GradientButton } from "../../components/ui/design-system/GradientButton
 import Modal from "../../components/ui/modals/Modal";
 import CardList from "../../components/CardList";
 import VirtualCardGrid from "../../components/VirtualCardGrid";
-import HolographicCard from "../../components/ui/HolographicCard";
+import SimpleCardWrapper from "../../components/ui/SimpleCardWrapper";
 import { useTheme } from "../../context/UnifiedAppContext";
 import { useFavorites } from "../../context/UnifiedAppContext";
 import { useViewSettings } from "../../context/UnifiedAppContext";
@@ -730,9 +730,8 @@ const SetIdPage: NextPage = () => {
                   <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                     {statistics.highestValueCards.slice(0, 5).map((card: CardWithMarketPrice) => (
                       <div key={card.id} className="text-center">
-                        <HolographicCard
+                        <SimpleCardWrapper
                           rarity={card.rarity}
-                          intensity="medium"
                           className="rounded-lg overflow-hidden mb-2"
                         >
                           <img 
@@ -741,7 +740,7 @@ const SetIdPage: NextPage = () => {
                             className="w-full h-auto cursor-pointer"
                             onClick={() => handleCardClick(card)}
                           />
-                        </HolographicCard>
+                        </SimpleCardWrapper>
                         <p className="text-sm font-medium truncate">{card.name}</p>
                         <p className="text-sm text-green-600 dark:text-green-400">
                           ${card.marketPrice.toFixed(2)}

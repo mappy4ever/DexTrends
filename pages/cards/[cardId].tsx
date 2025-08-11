@@ -11,7 +11,7 @@ import { getPrice as getCardPrice } from "../../utils/pokemonutils";
 import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import UnifiedCard from "../../components/ui/cards/UnifiedCard";
 import StyledBackButton from "../../components/ui/StyledBackButton";
-import HolographicCard from "../../components/ui/HolographicCard";
+import SimpleCardWrapper from "../../components/ui/SimpleCardWrapper";
 import logger from "../../utils/logger";
 import { useAppContext } from "../../context/UnifiedAppContext";
 import { fetchJSON } from "../../utils/unifiedFetch";
@@ -348,9 +348,8 @@ export default function CardDetailPage() {
               {/* Apply gradient background here */}
               <div className="p-4 rounded-xl shadow-lg" style={{ background: bgGradient }}>
                 {/* Card image with holographic effects and zoom functionality */}
-                <HolographicCard 
+                <SimpleCardWrapper 
                   rarity={card.rarity}
-                  intensity="high"
                   className="mb-4"
                 >
                   <div className="relative cursor-zoom-in" onClick={() => setMagnifyImage(true)}>
@@ -365,7 +364,7 @@ export default function CardDetailPage() {
                       </svg>
                     </div>
                   </div>
-                </HolographicCard>
+                </SimpleCardWrapper>
 
                 {/* Favorite button */}
                 <button 

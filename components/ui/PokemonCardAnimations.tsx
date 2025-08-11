@@ -67,7 +67,7 @@ interface PackConfig {
   sparkleColor: string;
 }
 
-// Holographic card effect
+// Simple card wrapper (replaced heavy holographic effect)
 export const HolographicCard: React.FC<HolographicCardProps> = ({ 
   children, 
   className = '',
@@ -75,155 +75,19 @@ export const HolographicCard: React.FC<HolographicCardProps> = ({
   isActive = false,
   onClick,
 }) => {
-  const { prefersReducedMotion, enableMicroInteractions } = useEnhancedAnimation();
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const controls = useAnimation();
-
-  const rarityConfigs: Record<Rarity, RarityConfig> = {
-    common: {
-      gradient: 'from-gray-400 to-gray-600',
-      shimmerColor: 'rgba(255, 255, 255, 0.3)',
-      glowColor: 'rgba(156, 163, 175, 0.4)',
-    },
-    uncommon: {
-      gradient: 'from-green-400 to-emerald-600',
-      shimmerColor: 'rgba(34, 197, 94, 0.4)',
-      glowColor: 'rgba(34, 197, 94, 0.5)',
-    },
-    rare: {
-      gradient: 'from-blue-400 to-indigo-600',
-      shimmerColor: 'rgba(59, 130, 246, 0.5)',
-      glowColor: 'rgba(59, 130, 246, 0.6)',
-    },
-    holo: {
-      gradient: 'from-purple-400 via-pink-500 to-blue-500',
-      shimmerColor: 'rgba(168, 85, 247, 0.6)',
-      glowColor: 'rgba(168, 85, 247, 0.7)',
-      animate: true,
-    },
-    ultra: {
-      gradient: 'from-yellow-400 via-orange-500 to-red-600',
-      shimmerColor: 'rgba(251, 191, 36, 0.7)',
-      glowColor: 'rgba(251, 191, 36, 0.8)',
-      animate: true,
-    },
-    secret: {
-      gradient: 'from-pink-400 via-purple-500 to-indigo-600',
-      shimmerColor: 'rgba(236, 72, 153, 0.8)',
-      glowColor: 'rgba(236, 72, 153, 0.9)',
-      animate: true,
-      rainbow: true,
-    },
-  };
-
-  const config = rarityConfigs[rarity] || rarityConfigs.common;
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!enableMicroInteractions || prefersReducedMotion) return;
-    
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width;
-    const y = (e.clientY - rect.top) / rect.height;
-    setMousePosition({ x, y });
-  };
-
-  useEffect(() => {
-    if (config.animate && !prefersReducedMotion) {
-      controls.start({
-        backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-        transition: {
-          duration: 3,
-          repeat: Infinity,
-          ease: "linear",
-        },
-      });
-    }
-  }, [config.animate, prefersReducedMotion, controls]);
-
+  // Simplified version - just return children with basic wrapper
   return (
-    <motion.div
-      className={`relative overflow-hidden ${className}`}
-      onMouseMove={handleMouseMove}
+    <div 
+      className={`${className} transition-transform hover:scale-105`}
       onClick={onClick}
-      whileHover={enableMicroInteractions && !prefersReducedMotion ? {
-        scale: 1.05,
-        rotateY: 5,
-        rotateX: -5,
-      } : {}}
-      whileTap={enableMicroInteractions && !prefersReducedMotion ? {
-        scale: 0.98,
-      } : {}}
-      transition={easings.springSmooth}
-      style={{
-        transformStyle: 'preserve-3d',
-        perspective: '1000px',
-      }}
     >
-      {/* Base card content */}
-      <div className="relative z-10">
-        {children}
-      </div>
-
-      {/* Holographic overlay */}
-      {enableMicroInteractions && !prefersReducedMotion && (
-        <>
-          {/* Gradient background */}
-          <motion.div
-            className={`absolute inset-0 bg-gradient-to-br ${config.gradient} opacity-30`}
-            animate={config.animate ? controls : {}}
-            style={{
-              backgroundSize: '200% 200%',
-            }}
-          />
-
-          {/* Shimmer effect */}
-          <motion.div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: `radial-gradient(circle at ${mousePosition.x * 100}% ${mousePosition.y * 100}%, ${config.shimmerColor}, transparent)`,
-              opacity: 0.6,
-            }}
-          />
-
-          {/* Rainbow effect for secret rares */}
-          {config.rainbow && (
-            <motion.div
-              className="absolute inset-0 pointer-events-none"
-              animate={{
-                backgroundPosition: ['0% 0%', '100% 100%'],
-              }}
-              transition={{
-                duration: 5,
-                repeat: Infinity,
-                ease: "linear",
-              }}
-              style={{
-                background: 'linear-gradient(45deg, rgba(255,0,0,0.1) 0%, rgba(255,154,0,0.1) 10%, rgba(208,222,33,0.1) 20%, rgba(79,220,74,0.1) 30%, rgba(63,218,216,0.1) 40%, rgba(47,201,226,0.1) 50%, rgba(28,127,238,0.1) 60%, rgba(95,21,242,0.1) 70%, rgba(186,12,248,0.1) 80%, rgba(251,7,217,0.1) 90%, rgba(255,0,0,0.1) 100%)',
-                backgroundSize: '200% 200%',
-                mixBlendMode: 'overlay',
-              }}
-            />
-          )}
-
-          {/* Glow effect */}
-          <AnimatePresence>
-            {isActive && (
-              <motion.div
-                className="absolute inset-0 pointer-events-none"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                style={{
-                  boxShadow: `0 0 30px ${config.glowColor}, 0 0 60px ${config.glowColor}`,
-                }}
-              />
-            )}
-          </AnimatePresence>
-        </>
-      )}
-    </motion.div>
+      {children}
+    </div>
   );
 };
+
+// Original holographic implementation removed for performance
+// (Large block of complex animation code deleted to improve performance)
 
 // Card flip animation for reveal effects
 export const FlippableCard: React.FC<FlippableCardProps> = ({ 

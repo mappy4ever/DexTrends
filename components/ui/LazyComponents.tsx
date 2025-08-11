@@ -147,14 +147,6 @@ export const PackOpening = dynamic(
   }
 );
 
-export const HolographicCard = dynamic(
-  () => import('./HolographicCard'),
-  {
-    loading: () => <Skeleton variant="rectangular" width="100%" height={300} animation="wave" />,
-    ssr: false
-  }
-);
-
 export const AchievementSystem = dynamic(
   () => import('./AchievementSystem'),
   {
