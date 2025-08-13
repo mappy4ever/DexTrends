@@ -40,7 +40,9 @@ const CompetitiveTab: React.FC<CompetitiveTabProps> = ({ pokemon, species, typeC
   const [loading, setLoading] = useState(true);
   
   // Calculate base stat total for fallback tier estimation
-  const baseStatTotal = pokemon.stats?.reduce((sum, stat) => sum + stat.base_stat, 0) || 0;
+  const baseStatTotal = Array.isArray(pokemon.stats) 
+    ? pokemon.stats.reduce((sum, stat) => sum + (stat?.base_stat || 0), 0) 
+    : 0;
   const estimatedTier = baseStatTotal >= 600 ? 'Uber' : 
     baseStatTotal >= 500 ? 'OU' : 
     baseStatTotal >= 450 ? 'UU' : 

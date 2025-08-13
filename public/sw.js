@@ -15,7 +15,8 @@ self.addEventListener('install', (event) => {
       });
     })
   );
-  self.skipWaiting();
+  // Removed automatic skipWaiting to prevent refresh loops
+  // Will only skip waiting when user explicitly requests update
 });
 
 // Activate event - clean up old caches
@@ -79,4 +80,12 @@ self.addEventListener('fetch', (event) => {
       });
     })
   );
+});
+
+// Message event - handle skip waiting requests from user
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    console.log('Service Worker: Skip waiting requested by user');
+    self.skipWaiting();
+  }
 });

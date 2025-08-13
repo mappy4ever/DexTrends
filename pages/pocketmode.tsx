@@ -4,11 +4,13 @@ import Link from "next/link";
 import Image from "next/image";
 import Head from "next/head";
 import dynamic from "next/dynamic";
+import { FaCrown } from "react-icons/fa";
 import { FadeIn, SlideUp } from "../components/ui/animations/animations";
 import { TypeBadge } from "../components/ui/TypeBadge";
 import { TypeFilter } from "../components/ui/forms/TypeFilter";
 import { GlassContainer } from "../components/ui/design-system/GlassContainer";
 import { GradientButton } from "../components/ui/design-system/GradientButton";
+import { createGlassStyle, GLASS_BLUR, GLASS_OPACITY, GLASS_BORDER, GLASS_SHADOW } from '../components/ui/design-system/glass-constants';
 import CircularButton from "../components/ui/CircularButton";
 import { motion } from "framer-motion";
 import PocketCardList from "../components/PocketCardList";
@@ -189,7 +191,8 @@ const PocketMode: NextPage = () => {
        (typeFilter === "tool" && poke.type && getCardDisplayType(poke.type, poke).toLowerCase() === "tool")) &&
       (rarityFilter === "all" || 
        (poke.rarity as string) === rarityFilter || 
-       (rarityFilter === "★" && poke.ex === "Yes" && poke.fullart === "Yes") ||
+       (rarityFilter === "★" && (poke.rarity as string) === "☆") ||
+       (rarityFilter === "☆☆" && (poke.rarity as string) === "☆☆") ||
        (rarityFilter === "★★" && (poke.rarity as string) === "♕") ||
        (rarityFilter === "fullart" && poke.fullart === "Yes") ||
        (rarityFilter === "immersive" && (poke.rarity as string) === "☆☆☆"))
@@ -224,7 +227,7 @@ const PocketMode: NextPage = () => {
   const viewError = error.pokemon;
 
   return (
-    <FullBleedWrapper gradient="pocket">
+    <FullBleedWrapper gradient="tcg">
       <div className="section-spacing-y-default max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 animate-fadeIn">
         <Head>
         <title>Pokémon TCG Pocket | DexTrends</title>
@@ -235,190 +238,218 @@ const PocketMode: NextPage = () => {
         <meta name="keywords" content="Pokemon TCG Pocket, Pokemon cards, TCG mobile, Pocket decks, Pokemon expansions" />
       </Head>
       <FadeIn>
-        <div className="flex flex-col items-center justify-center mb-8">
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full mb-6 shadow-2xl"
-          >
-            <span className="text-4xl">🎴</span>
-          </motion.div>
-          <h1 className="text-4xl md:text-5xl font-bold text-center mb-4 bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 bg-clip-text text-transparent">Pokémon TCG Pocket</h1>
-          <p className="text-lg text-center text-gray-600 dark:text-gray-400 max-w-2xl mb-4">
-            Explore the streamlined mobile version of the Pokémon Trading Card Game with simplified rules and unique cards.
-          </p>
+        {/* Ultra Compact Unified Section */}
+        <motion.div 
+          className="mb-6 bg-gray-200/60 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl p-4 shadow-2xl"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          {/* Header with Centered Title */}
+          <div className="text-center mb-3">
+            <h1 className="text-xl md:text-2xl font-black bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent inline-block">
+              Pokémon TCG Pocket Cards
+            </h1>
+            <div className="flex justify-center mt-2">
+              <div className="px-2 py-1 rounded-full backdrop-blur-xl bg-gradient-to-r from-purple-100/60 to-purple-200/60 dark:from-purple-900/20 dark:to-purple-800/20 border border-purple-200/30">
+                <span className="text-xs font-bold text-purple-700 dark:text-purple-300">{pokemon.length} Total Cards</span>
+              </div>
+            </div>
+          </div>
           
-          {/* Keyboard Shortcuts Help */}
-          <div className="mt-6 text-center">
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              Press <kbd className="px-1 py-0.5 text-xs font-semibold text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded">/ or Cmd+K</kbd> to search, 
-              <kbd className="px-1 py-0.5 text-xs font-semibold text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded ml-1">Esc</kbd> to clear
-            </p>
+          {/* Tab Navigation */}
+          <div className="flex justify-center mb-3">
+            <div className="backdrop-blur-md bg-white/60 dark:bg-gray-800/60 rounded-2xl p-2 shadow-lg border border-white/30 inline-flex gap-2">
+              <button
+                onClick={() => router.push('/pocketmode')}
+                className="px-3 py-1.5 rounded-full backdrop-blur-xl bg-gradient-to-r from-purple-100/80 to-pink-100/80 dark:from-purple-900/30 dark:to-pink-900/30 border border-white/50 font-semibold text-xs text-purple-700 dark:text-purple-300 transition-all"
+              >
+                Card List
+              </button>
+              <button
+                onClick={() => router.push('/pocketmode/deckbuilder')}
+                className="px-3 py-1.5 rounded-full backdrop-blur-xl bg-white/60 dark:bg-gray-800/60 border border-white/30 font-semibold text-xs text-gray-600 dark:text-gray-400 hover:bg-white/80 transition-all"
+              >
+                Deck Builder
+              </button>
+              <button
+                onClick={() => router.push('/pocketmode/decks')}
+                className="px-3 py-1.5 rounded-full backdrop-blur-xl bg-white/60 dark:bg-gray-800/60 border border-white/30 font-semibold text-xs text-gray-600 dark:text-gray-400 hover:bg-white/80 transition-all"
+              >
+                Pre-Built Decks
+              </button>
+            </div>
           </div>
-        </div>
-        
-        {/* Filters */}
-        {(
-          <div className="mb-4 px-4">
-            {/* Enhanced Search and Filters */}
-            <GlassContainer variant="medium" className="mb-6">
-              {/* Search Bar */}
-              <div className="relative mb-6">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
-                  <svg className="w-5 h-5 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                </div>
-                <input
-                  type="text"
-                  className="w-full pl-12 pr-12 py-3 glass-light rounded-full text-lg border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-all"
-                  placeholder="Search Pocket cards... (Press / to focus)"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                />
-                {search && (
-                  <CircularButton
-                    size="sm"
-                    variant="ghost"
-                    className="absolute inset-y-0 right-0 !p-0 pr-4 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
-                    onClick={() => setSearch('')}
-                  >
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </CircularButton>
-                )}
+          
+          {/* Filters without labels */}
+          <div className="space-y-2">
+            {/* Rarity Filter - Inline Label */}
+            <div className="flex items-center gap-2 bg-gray-100/90 dark:bg-gray-700/90 rounded-2xl p-2 shadow-lg border border-gray-300">
+              <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 ml-2">Rarity</span>
+              <div className="flex flex-wrap gap-1 flex-1">
+                <button
+                  onClick={() => setRarityFilter('all')}
+                  className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-all backdrop-blur-md border ${
+                    rarityFilter === 'all' 
+                      ? 'bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 border-purple-300/50 text-purple-700 dark:text-purple-300' 
+                      : 'bg-white/60 dark:bg-gray-800/60 border-white/30 text-gray-600 dark:text-gray-400 hover:bg-white/80'
+                  }`}
+                >
+                  All
+                </button>
+                <button
+                  onClick={() => setRarityFilter('◊')}
+                  className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-all backdrop-blur-md border ${
+                    rarityFilter === '◊' 
+                      ? 'bg-gray-100 dark:bg-gray-800 border-gray-400/50 text-gray-700 dark:text-gray-300' 
+                      : 'bg-white/60 dark:bg-gray-800/60 border-white/30 text-gray-500 dark:text-gray-400 hover:bg-white/80'
+                  }`}
+                >
+                  <span className="text-gray-500">♦</span>
+                </button>
+                <button
+                  onClick={() => setRarityFilter('◊◊')}
+                  className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-all backdrop-blur-md border ${
+                    rarityFilter === '◊◊' 
+                      ? 'bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30 border-green-400/50 text-green-700 dark:text-green-300' 
+                      : 'bg-white/60 dark:bg-gray-800/60 border-white/30 text-gray-500 dark:text-gray-400 hover:bg-white/80'
+                  }`}
+                >
+                  <span className="text-gray-500">♦♦</span>
+                </button>
+                <button
+                  onClick={() => setRarityFilter('◊◊◊')}
+                  className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-all backdrop-blur-md border ${
+                    rarityFilter === '◊◊◊' 
+                      ? 'bg-gradient-to-r from-blue-100 to-sky-100 dark:from-blue-900/30 dark:to-sky-900/30 border-blue-400/50 text-blue-700 dark:text-blue-300' 
+                      : 'bg-white/60 dark:bg-gray-800/60 border-white/30 text-gray-500 dark:text-gray-400 hover:bg-white/80'
+                  }`}
+                >
+                  <span className="text-gray-500">♦♦♦</span>
+                </button>
+                <button
+                  onClick={() => setRarityFilter('◊◊◊◊')}
+                  className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-all backdrop-blur-md border ${
+                    rarityFilter === '◊◊◊◊' 
+                      ? 'bg-gradient-to-r from-purple-100 to-violet-100 dark:from-purple-900/30 dark:to-violet-900/30 border-purple-400/50 text-purple-700 dark:text-purple-300' 
+                      : 'bg-white/60 dark:bg-gray-800/60 border-white/30 text-gray-500 dark:text-gray-400 hover:bg-white/80'
+                  }`}
+                >
+                  <span className="text-gray-500">♦♦♦♦</span>
+                </button>
+                <button
+                  onClick={() => setRarityFilter('★')}
+                  className={`px-2.5 py-1 rounded-full text-xs font-black transition-all backdrop-blur-md border ${
+                    rarityFilter === '★' 
+                      ? 'bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 border-yellow-400/50' 
+                      : 'bg-white/60 dark:bg-gray-800/60 border-white/30 hover:bg-white/80'
+                  }`}
+                >
+                  <span className={rarityFilter === '★' ? 'bg-gradient-to-r from-yellow-500 via-amber-400 to-yellow-600 bg-clip-text text-transparent' : 'text-gray-500 dark:text-gray-400'}>
+                    ★
+                  </span>
+                </button>
+                <button
+                  onClick={() => setRarityFilter('☆☆')}
+                  className={`px-2.5 py-1 rounded-full text-xs font-black transition-all backdrop-blur-md border ${
+                    rarityFilter === '☆☆' 
+                      ? 'bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 border-yellow-400/50' 
+                      : 'bg-white/60 dark:bg-gray-800/60 border-white/30 hover:bg-white/80'
+                  }`}
+                >
+                  <span className={rarityFilter === '☆☆' ? 'bg-gradient-to-r from-yellow-500 via-amber-400 to-yellow-600 bg-clip-text text-transparent' : 'text-gray-500 dark:text-gray-400'}>
+                    ★★
+                  </span>
+                </button>
+                <button
+                  onClick={() => setRarityFilter('immersive')}
+                  className={`px-2.5 py-1 rounded-full text-xs font-black transition-all backdrop-blur-md border ${
+                    rarityFilter === 'immersive' 
+                      ? 'bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 border-yellow-400/50' 
+                      : 'bg-white/60 dark:bg-gray-800/60 border-white/30 hover:bg-white/80'
+                  }`}
+                >
+                  <span className={rarityFilter === 'immersive' ? 'bg-gradient-to-r from-yellow-500 via-amber-400 to-orange-500 bg-clip-text text-transparent' : 'text-gray-500 dark:text-gray-400'}>
+                    ★★★
+                  </span>
+                </button>
+                <button
+                  onClick={() => setRarityFilter('★★')}
+                  className={`px-2.5 py-1 rounded-full text-xs font-black transition-all backdrop-blur-md border inline-flex items-center gap-1 ${
+                    rarityFilter === '★★' 
+                      ? 'bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 border-yellow-400/50' 
+                      : 'bg-white/60 dark:bg-gray-800/60 border-white/30 hover:bg-white/80'
+                  }`}
+                >
+                  <FaCrown className={rarityFilter === '★★' ? 'text-yellow-500' : 'text-gray-500 dark:text-gray-400'} size={16} />
+                </button>
+                <button
+                  onClick={() => setRarityFilter('fullart')}
+                  className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-all backdrop-blur-md border ${
+                    rarityFilter === 'fullart' 
+                      ? 'bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 border-purple-300/50 text-purple-700 dark:text-purple-300' 
+                      : 'bg-white/60 dark:bg-gray-800/60 border-white/30 text-gray-500 dark:text-gray-400 hover:bg-white/80'
+                  }`}
+                >
+                  Full Art
+                </button>
               </div>
-              
-              {/* Filter Pills */}
-              <div className="space-y-4">
-                {/* Rarity Filter - Simplified */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Rarity</label>
-                  <div className="flex flex-wrap gap-2">
-                    <GradientButton
-                      onClick={() => setRarityFilter('all')}
-                      variant={rarityFilter === 'all' ? 'primary' : 'secondary'}
-                      size="sm"
+            </div>
+            
+            {/* Type Filter - Inline with better selection */}
+            <div className="flex items-center gap-2 bg-gray-100/90 dark:bg-gray-700/90 rounded-2xl p-2 shadow-lg border border-gray-300">
+              <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 ml-2">Type</span>
+              <div className="flex flex-wrap gap-1 flex-1">
+                <button
+                  onClick={() => setTypeFilter('all')}
+                  className={`px-2.5 py-1 rounded-full text-xs font-semibold uppercase transition-all backdrop-blur-md border ${
+                    typeFilter === 'all' 
+                      ? 'bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 border-purple-300/50 text-purple-700 dark:text-purple-300 ring-2 ring-purple-400/50' 
+                      : 'bg-white/60 dark:bg-gray-800/60 border-white/30 text-gray-600 dark:text-gray-400 hover:bg-white/80'
+                  }`}
+                >
+                  All Types
+                </button>
+                {uniqueTypes.filter(t => t !== 'all').map(type => {
+                  const typeColors: Record<string, { bg: string; border: string; text: string; ring: string }> = {
+                    'grass': { bg: 'from-green-200 to-green-300', border: 'border-green-500', text: 'text-green-800 dark:text-green-200', ring: 'ring-green-500' },
+                    'fire': { bg: 'from-red-200 to-orange-200', border: 'border-red-500', text: 'text-red-800 dark:text-red-200', ring: 'ring-red-500' },
+                    'water': { bg: 'from-blue-200 to-cyan-200', border: 'border-blue-500', text: 'text-blue-800 dark:text-blue-200', ring: 'ring-blue-500' },
+                    'lightning': { bg: 'from-yellow-200 to-amber-200', border: 'border-yellow-500', text: 'text-yellow-800 dark:text-yellow-200', ring: 'ring-yellow-500' },
+                    'electric': { bg: 'from-yellow-200 to-amber-200', border: 'border-yellow-500', text: 'text-yellow-800 dark:text-yellow-200', ring: 'ring-yellow-500' },
+                    'psychic': { bg: 'from-purple-200 to-pink-200', border: 'border-purple-500', text: 'text-purple-800 dark:text-purple-200', ring: 'ring-purple-500' },
+                    'fighting': { bg: 'from-orange-200 to-red-200', border: 'border-orange-500', text: 'text-orange-800 dark:text-orange-200', ring: 'ring-orange-500' },
+                    'darkness': { bg: 'from-gray-300 to-purple-200', border: 'border-gray-600', text: 'text-gray-800 dark:text-gray-200', ring: 'ring-gray-600' },
+                    'dark': { bg: 'from-gray-300 to-purple-200', border: 'border-gray-600', text: 'text-gray-800 dark:text-gray-200', ring: 'ring-gray-600' },
+                    'metal': { bg: 'from-gray-200 to-slate-200', border: 'border-gray-500', text: 'text-gray-800 dark:text-gray-200', ring: 'ring-gray-500' },
+                    'steel': { bg: 'from-gray-200 to-slate-200', border: 'border-gray-500', text: 'text-gray-800 dark:text-gray-200', ring: 'ring-gray-500' },
+                    'dragon': { bg: 'from-indigo-200 to-purple-200', border: 'border-indigo-500', text: 'text-indigo-800 dark:text-indigo-200', ring: 'ring-indigo-500' },
+                    'colorless': { bg: 'from-gray-100 to-gray-200', border: 'border-gray-400', text: 'text-gray-700 dark:text-gray-300', ring: 'ring-gray-400' },
+                    'fairy': { bg: 'from-pink-200 to-rose-200', border: 'border-pink-500', text: 'text-pink-800 dark:text-pink-200', ring: 'ring-pink-500' },
+                    'item': { bg: 'from-blue-200 to-blue-300', border: 'border-blue-500', text: 'text-blue-800 dark:text-blue-200', ring: 'ring-blue-500' },
+                    'supporter': { bg: 'from-amber-200 to-orange-200', border: 'border-amber-500', text: 'text-amber-800 dark:text-amber-200', ring: 'ring-amber-500' },
+                    'tool': { bg: 'from-slate-200 to-gray-200', border: 'border-slate-500', text: 'text-slate-800 dark:text-slate-200', ring: 'ring-slate-500' },
+                  };
+                  const colors = typeColors[type.toLowerCase()] || { bg: 'from-gray-200 to-gray-300', border: 'border-gray-500', text: 'text-gray-700 dark:text-gray-300', ring: 'ring-gray-400' };
+                  
+                  return (
+                    <button
+                      key={type}
+                      onClick={() => setTypeFilter(type)}
+                      className={`px-2.5 py-1 rounded-full text-xs font-semibold uppercase transition-all backdrop-blur-md border bg-gradient-to-r ${colors.bg} ${
+                        typeFilter === type 
+                          ? `${colors.border}/70 ${colors.text} ring-2 ${colors.ring}/50 opacity-100` 
+                          : `${colors.border}/40 ${colors.text} opacity-60 hover:opacity-90`
+                      }`}
                     >
-                      All
-                    </GradientButton>
-                    <CircularButton
-                      onClick={() => setRarityFilter('◊')}
-                      variant={rarityFilter === '◊' ? 'primary' : 'secondary'}
-                      size="sm"
-                      className={rarityFilter === '◊' ? 'border-gray-500 bg-gray-500/20' : ''}
-                    >
-                      ◊ Common
-                    </CircularButton>
-                    <CircularButton
-                      onClick={() => setRarityFilter('◊◊')}
-                      variant={rarityFilter === '◊◊' ? 'primary' : 'secondary'}
-                      size="sm"
-                      className={rarityFilter === '◊◊' ? 'border-green-500 bg-green-500/20' : ''}
-                    >
-                      ◊◊ Uncommon
-                    </CircularButton>
-                    <CircularButton
-                      onClick={() => setRarityFilter('◊◊◊')}
-                      variant={rarityFilter === '◊◊◊' ? 'primary' : 'secondary'}
-                      size="sm"
-                      className={rarityFilter === '◊◊◊' ? 'border-blue-500 bg-blue-500/20' : ''}
-                    >
-                      ◊◊◊ Rare
-                    </CircularButton>
-                    <CircularButton
-                      onClick={() => setRarityFilter('◊◊◊◊')}
-                      variant={rarityFilter === '◊◊◊◊' ? 'primary' : 'secondary'}
-                      size="sm"
-                      className={rarityFilter === '◊◊◊◊' ? 'border-purple-500 bg-purple-500/20' : ''}
-                    >
-                      ◊◊◊◊ Double Rare
-                    </CircularButton>
-                    <CircularButton
-                      onClick={() => setRarityFilter('★')}
-                      variant={rarityFilter === '★' ? 'primary' : 'secondary'}
-                      size="sm"
-                      className={rarityFilter === '★' ? 'border-yellow-500 bg-yellow-500/20' : ''}
-                    >
-                      ★ EX
-                    </CircularButton>
-                    <CircularButton
-                      onClick={() => setRarityFilter('immersive')}
-                      variant={rarityFilter === 'immersive' ? 'primary' : 'secondary'}
-                      size="sm"
-                      className={rarityFilter === 'immersive' ? 'border-pink-500 bg-pink-500/20' : ''}
-                    >
-                      ★★★ Immersive
-                    </CircularButton>
-                    <CircularButton
-                      onClick={() => setRarityFilter('★★')}
-                      variant={rarityFilter === '★★' ? 'primary' : 'secondary'}
-                      size="sm"
-                      className={rarityFilter === '★★' ? 'border-red-500 bg-red-500/20' : ''}
-                    >
-                      ★★ Crown
-                    </CircularButton>
-                    <CircularButton
-                      onClick={() => setRarityFilter('fullart')}
-                      variant={rarityFilter === 'fullart' ? 'primary' : 'secondary'}
-                      size="sm"
-                      className={rarityFilter === 'fullart' ? 'border-gradient-to-r from-yellow-500 to-pink-500 bg-gradient-to-r from-yellow-500/20 to-pink-500/20' : ''}
-                    >
-                      Full Art
-                    </CircularButton>
-                  </div>
-                </div>
-                
-                {/* Type Filter */}
-                <TypeFilter 
-                  types={uniqueTypes}
-                  selectedType={typeFilter}
-                  onTypeChange={(type) => setTypeFilter(type || 'all')}
-                />
-                
-                {/* Sort Options */}
-                <div className="flex items-center gap-4">
-                  <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">Sort by:</label>
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value as SortBy)}
-                    className="px-4 py-2 glass-light rounded-full border border-gray-200 dark:border-gray-700"
-                  >
-                    <option value="name">Name</option>
-                    <option value="rarity">Rarity</option>
-                  </select>
-                </div>
+                      {type}
+                    </button>
+                  );
+                })}
               </div>
-            </GlassContainer>
+            </div>
           </div>
-        )}
-        
-        {/* Tabs for Card List and Deck Builder */}
-        <div className="flex justify-center mb-6 gap-4">
-          <GradientButton
-            onClick={() => router.push('/pocketmode')}
-            variant="primary"
-            size="md"
-          >
-            Card List
-          </GradientButton>
-          <GradientButton
-            onClick={() => router.push('/pocketmode/deckbuilder')}
-            variant="secondary"
-            size="md"
-          >
-            Deck Builder
-          </GradientButton>
-          <GradientButton
-            onClick={() => router.push('/pocketmode/decks')}
-            variant="secondary"
-            size="md"
-          >
-            Pre-Built Decks
-          </GradientButton>
-        </div>
+        </motion.div>
         
         <SlideUp>
           {isViewLoading ? (
@@ -437,7 +468,11 @@ const PocketMode: NextPage = () => {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 className="text-6xl mb-4"
-              >😕</motion.div>
+              >
+                <svg className="w-16 h-16 text-red-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </motion.div>
               <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">Oops! Something went wrong</h2>
               <p className="text-gray-600 dark:text-gray-400 text-center mb-6">{viewError}</p>
               <GradientButton 
@@ -457,38 +492,40 @@ const PocketMode: NextPage = () => {
             />
           ) : (
             <>
-              <div className="text-center mb-4 text-gray-600 dark:text-gray-400">
-                <p className="text-sm font-medium">
+              <div className="text-center mb-3">
+                <p className="text-xs text-gray-500 dark:text-gray-400">
                   Showing {filteredPokemon.length} {filteredPokemon.length === 1 ? 'card' : 'cards'}
                   {(search || typeFilter !== 'all' || rarityFilter !== 'all') && ' (filtered)'}
                 </p>
               </div>
-              <PocketCardList 
-                cards={filteredPokemon} 
-                loading={false}
-              />
+              {/* Glass Container for Cards - Simplified */}
+              <div className="bg-gray-200/60 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl p-6 md:p-8 shadow-2xl">
+                <PocketCardList 
+                  cards={filteredPokemon} 
+                  loading={false}
+                  selectedRarityFilter={rarityFilter}
+                  searchValue={search}
+                  onSearchChange={setSearch}
+                />
+              </div>
             </>
           )}
         </SlideUp>
         
-        {/* Actions */}
-        <div className="flex flex-wrap justify-center gap-4 mt-8">
-          <GradientButton
+        {/* Actions with Glass Morphism */}
+        <div className="flex flex-wrap justify-center gap-3 mt-6">
+          <button
             onClick={() => router.push('/pocketmode/expansions')}
-            variant="primary"
-            size="lg"
-            icon={<span>🎯</span>}
+            className="px-5 py-2.5 rounded-full backdrop-blur-xl bg-gradient-to-r from-purple-100/80 to-pink-100/80 dark:from-purple-900/30 dark:to-pink-900/30 border border-white/50 shadow-lg font-semibold text-sm text-purple-700 dark:text-purple-300 hover:shadow-xl hover:scale-105 transition-all"
           >
             Explore Expansions
-          </GradientButton>
-          <GradientButton
+          </button>
+          <button
             onClick={() => router.push('/pocketmode/packs')}
-            variant="success"
-            size="lg"
-            icon={<span>🎰</span>}
+            className="px-5 py-2.5 rounded-full backdrop-blur-xl bg-gradient-to-r from-green-100/80 to-teal-100/80 dark:from-green-900/30 dark:to-teal-900/30 border border-white/50 shadow-lg font-semibold text-sm text-green-700 dark:text-green-300 hover:shadow-xl hover:scale-105 transition-all"
           >
             Pack Opening
-          </GradientButton>
+          </button>
         </div>
         
         {/* Pocket Mode Rules Guide Link */}

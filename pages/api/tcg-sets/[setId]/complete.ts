@@ -4,6 +4,9 @@ import logger from '../../../../utils/logger';
 import { tcgCache } from '../../../../lib/tcg-cache';
 import type { TCGCard, CardSet, PriceData } from '../../../../types/api/cards';
 
+// In-memory cache for pending requests to prevent duplicate API calls
+const pendingRequests = new Map<string, Promise<any>>();
+
 // This endpoint loads ALL cards for a set at once (optimized for performance)
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { setId } = req.query;
@@ -16,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const startTime = Date.now();
   
   try {
-    // Check complete set cache first with TTL info
+    // Check complete set cache first with TTL info - ALWAYS return cache if available
     const cachedResult = await tcgCache.getCompleteSetWithTTL(id);
     if (cachedResult) {
       const { data: cached, ttl } = cachedResult;
@@ -37,9 +40,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.setHeader('X-Response-Time', `${Date.now() - startTime}ms`);
       res.setHeader('Cache-Control', 'public, s-maxage=7200, stale-while-revalidate=86400');
       
-      // If cache is getting stale, trigger background refresh (but still return cached data)
+      // If cache is getting stale, trigger background refresh (but still return cached data immediately)
       if (isStale && ttl > 0) {
-        // Fire and forget background refresh
+        // Fire and forget background refresh - don't wait for it
         setImmediate(async () => {
           try {
             logger.info(`[Background Refresh] Starting stale cache refresh for set ${id}`);
@@ -52,10 +55,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         });
       }
       
+      // Return cached data IMMEDIATELY - don't wait for anything
       return res.status(200).json(cached);
     }
     
-    logger.info('Loading complete set from API', { setId: id });
+    // No cache found - check if there's already a pending request for this set
+    if (pendingRequests.has(id)) {
+      logger.info('Reusing pending request for set', { setId: id });
+      try {
+        // Wait for the existing request to complete
+        const result = await pendingRequests.get(id);
+        
+        res.setHeader('X-Cache-Status', 'coalesced');
+        res.setHeader('X-Response-Time', `${Date.now() - startTime}ms`);
+        res.setHeader('Cache-Control', 'public, s-maxage=7200, stale-while-revalidate=86400');
+        
+        return res.status(200).json(result);
+      } catch (error) {
+        logger.error('Coalesced request failed', { setId: id, error });
+        // Continue to make a new request if the coalesced one failed
+      }
+    }
+    
+    // No cache and no pending request - now try to load from API
+    logger.info('No cache found, loading complete set from API', { setId: id });
     
     const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
     const headers: Record<string, string> = {
@@ -66,10 +89,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       headers['X-Api-Key'] = apiKey;
     }
     
-    // Fetch set info first
-    let setInfo;
-    try {
-      setInfo = await fetchJSON<{ data: CardSet }>(
+    // Create a function to fetch the data
+    const fetchSetData = async () => {
+      // Fetch set info first
+      let setInfo;
+      try {
+        setInfo = await fetchJSON<{ data: CardSet }>(
         `https://api.pokemontcg.io/v2/sets/${id}`, 
         { 
           headers,
@@ -130,6 +155,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
     logger.info(`Loading ${totalCards} cards in ${totalPages} parallel requests`, { setId: id });
     
+    // Determine timeout based on set size
+    const isLargeSet = totalCards > 200;
+    const timeout = isLargeSet ? 60000 : 45000; // 60s for large sets, 45s for normal
+    
     // Create promises for all pages
     for (let page = 1; page <= totalPages; page++) {
       const pagePromise = fetchJSON<{ data: TCGCard[] }>(
@@ -138,8 +167,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           headers,
           useCache: true,
           cacheTime: 60 * 60 * 1000,
-          timeout: 30000,
-          retries: 2
+          timeout: timeout, // Dynamic timeout based on set size
+          retries: 3, // More retries for reliability
+          retryDelay: 2000 // 2 second delay between retries
         }
       );
       pagePromises.push(pagePromise);
@@ -180,27 +210,39 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       tcgCache.bulkCachePriceData(allCards)
     ]);
     
-    // Calculate and cache statistics
-    const stats = calculateSetStatistics(allCards);
-    await tcgCache.cacheSetStats(id, stats);
-    
-    const responseTime = Date.now() - startTime;
-    
-    res.setHeader('X-Cache-Status', 'miss');
-    res.setHeader('X-Response-Time', `${responseTime}ms`);
-    res.setHeader('Cache-Control', 'public, s-maxage=7200, stale-while-revalidate=86400');
-    
-    // Return consistent structure
-    const response = {
-      set,
-      cards: allCards,
-      cachedAt: new Date().toISOString(),
-      cardCount: allCards.length,
-      stats,
-      loadTime: responseTime
+      // Calculate and cache statistics
+      const stats = calculateSetStatistics(allCards);
+      await tcgCache.cacheSetStats(id, stats);
+      
+      // Return consistent structure
+      const response = {
+        set,
+        cards: allCards,
+        cachedAt: new Date().toISOString(),
+        cardCount: allCards.length,
+        stats,
+        loadTime: Date.now() - startTime
+      };
+      
+      return response;
     };
     
-    res.status(200).json(response);
+    // Store the promise in the pending requests map
+    const fetchPromise = fetchSetData();
+    pendingRequests.set(id, fetchPromise);
+    
+    try {
+      const response = await fetchPromise;
+      
+      res.setHeader('X-Cache-Status', 'miss');
+      res.setHeader('X-Response-Time', `${Date.now() - startTime}ms`);
+      res.setHeader('Cache-Control', 'public, s-maxage=7200, stale-while-revalidate=86400');
+      
+      res.status(200).json(response);
+    } finally {
+      // Clean up the pending request
+      pendingRequests.delete(id);
+    }
     
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
@@ -283,14 +325,19 @@ async function refreshSetInBackground(setId: string) {
     
     logger.info(`[Background Refresh] Loading ${totalCards} cards in ${totalPages} parallel requests`, { setId });
     
+    // Determine timeout based on set size
+    const isLargeSet = totalCards > 200;
+    const timeout = isLargeSet ? 60000 : 45000; // 60s for large sets, 45s for normal
+    
     // Create promises for all pages
     for (let page = 1; page <= totalPages; page++) {
       const pagePromise = fetchJSON<{ data: TCGCard[] }>(
         `https://api.pokemontcg.io/v2/cards?q=set.id:${setId}&page=${page}&pageSize=${pageSize}`,
         {
           headers,
-          timeout: 30000,
-          retries: 2
+          timeout: timeout, // Dynamic timeout based on set size
+          retries: 3, // More retries for reliability
+          retryDelay: 2000 // 2 second delay between retries
         }
       );
       pagePromises.push(pagePromise);

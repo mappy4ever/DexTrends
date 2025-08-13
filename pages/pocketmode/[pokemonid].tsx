@@ -453,7 +453,7 @@ export default function PocketPokemonDetail() {
   };
 
   return (
-    <FullBleedWrapper gradient="pocket">
+    <FullBleedWrapper gradient="tcg">
       {/* Animated Background Elements */}
       <motion.div
         className="fixed inset-0 pointer-events-none"

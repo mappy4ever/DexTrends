@@ -7,21 +7,54 @@ export const STATIC_SETS_FALLBACK = {
   // Recent sets (updated manually when new sets release)
   recentSets: [
     {
-      id: "sv8",
-      name: "Surging Sparks",
+      id: "zsv10pt5",
+      name: "Black Bolt",
       series: "Scarlet & Violet",
-      releaseDate: "2024-11-08",
-      total: 252,
+      releaseDate: "2025/07/18",
+      total: 172,
       images: {
-        symbol: "https://images.pokemontcg.io/sv8/symbol.png",
-        logo: "https://images.pokemontcg.io/sv8/logo.png"
+        symbol: "https://images.pokemontcg.io/zsv10pt5/symbol.png",
+        logo: "https://images.pokemontcg.io/zsv10pt5/logo.png"
+      }
+    },
+    {
+      id: "rsv10pt5",
+      name: "White Flare",
+      series: "Scarlet & Violet",
+      releaseDate: "2025/07/18",
+      total: 173,
+      images: {
+        symbol: "https://images.pokemontcg.io/rsv10pt5/symbol.png",
+        logo: "https://images.pokemontcg.io/rsv10pt5/logo.png"
+      }
+    },
+    {
+      id: "sv10",
+      name: "Destined Rivals",
+      series: "Scarlet & Violet",
+      releaseDate: "2025/05/30",
+      total: 244,
+      images: {
+        symbol: "https://images.pokemontcg.io/sv10/symbol.png",
+        logo: "https://images.pokemontcg.io/sv10/logo.png"
+      }
+    },
+    {
+      id: "sv9",
+      name: "Journey Together",
+      series: "Scarlet & Violet",
+      releaseDate: "2025/03/28",
+      total: 190,
+      images: {
+        symbol: "https://images.pokemontcg.io/sv9/symbol.png",
+        logo: "https://images.pokemontcg.io/sv9/logo.png"
       }
     },
     {
       id: "sv8pt5",
       name: "Prismatic Evolutions",
       series: "Scarlet & Violet",
-      releaseDate: "2025-01-17",
+      releaseDate: "2025/01/17",
       total: 180,
       images: {
         symbol: "https://images.pokemontcg.io/sv8pt5/symbol.png",
@@ -29,10 +62,21 @@ export const STATIC_SETS_FALLBACK = {
       }
     },
     {
+      id: "sv8",
+      name: "Surging Sparks",
+      series: "Scarlet & Violet",
+      releaseDate: "2024/11/08",
+      total: 252,
+      images: {
+        symbol: "https://images.pokemontcg.io/sv8/symbol.png",
+        logo: "https://images.pokemontcg.io/sv8/logo.png"
+      }
+    },
+    {
       id: "sv7",
       name: "Stellar Crown", 
       series: "Scarlet & Violet",
-      releaseDate: "2024-08-09",
+      releaseDate: "2024/09/13",
       total: 175,
       images: {
         symbol: "https://images.pokemontcg.io/sv7/symbol.png",
@@ -40,10 +84,21 @@ export const STATIC_SETS_FALLBACK = {
       }
     },
     {
+      id: "sv6pt5",
+      name: "Shrouded Fable",
+      series: "Scarlet & Violet",
+      releaseDate: "2024/08/02",
+      total: 99,
+      images: {
+        symbol: "https://images.pokemontcg.io/sv6pt5/symbol.png",
+        logo: "https://images.pokemontcg.io/sv6pt5/logo.png"
+      }
+    },
+    {
       id: "sv6",
       name: "Twilight Masquerade",
       series: "Scarlet & Violet", 
-      releaseDate: "2024-05-24",
+      releaseDate: "2024/05/24",
       total: 226,
       images: {
         symbol: "https://images.pokemontcg.io/sv6/symbol.png",
@@ -54,7 +109,7 @@ export const STATIC_SETS_FALLBACK = {
       id: "sv5",
       name: "Temporal Forces",
       series: "Scarlet & Violet",
-      releaseDate: "2024-03-22", 
+      releaseDate: "2024/03/22", 
       total: 218,
       images: {
         symbol: "https://images.pokemontcg.io/sv5/symbol.png",
@@ -65,7 +120,7 @@ export const STATIC_SETS_FALLBACK = {
       id: "sv4pt5",
       name: "Paldean Fates",
       series: "Scarlet & Violet",
-      releaseDate: "2024-01-26",
+      releaseDate: "2024/01/26",
       total: 245,
       images: {
         symbol: "https://images.pokemontcg.io/sv4pt5/symbol.png",
@@ -73,21 +128,10 @@ export const STATIC_SETS_FALLBACK = {
       }
     },
     {
-      id: "sv6pt5",
-      name: "Shrouded Fable",
-      series: "Scarlet & Violet",
-      releaseDate: "2024-08-02",
-      total: 99,
-      images: {
-        symbol: "https://images.pokemontcg.io/sv6pt5/symbol.png",
-        logo: "https://images.pokemontcg.io/sv6pt5/logo.png"
-      }
-    },
-    {
       id: "sv4",
       name: "Paradox Rift",
       series: "Scarlet & Violet",
-      releaseDate: "2023-11-03",
+      releaseDate: "2023/11/03",
       total: 266,
       images: {
         symbol: "https://images.pokemontcg.io/sv4/symbol.png",
@@ -98,7 +142,7 @@ export const STATIC_SETS_FALLBACK = {
       id: "sv3pt5",
       name: "151",
       series: "Scarlet & Violet",
-      releaseDate: "2023-09-22",
+      releaseDate: "2023/09/22",
       total: 207,
       images: {
         symbol: "https://images.pokemontcg.io/sv3pt5/symbol.png",
@@ -109,7 +153,7 @@ export const STATIC_SETS_FALLBACK = {
       id: "sv3",
       name: "Obsidian Flames",
       series: "Scarlet & Violet",
-      releaseDate: "2023-08-11",
+      releaseDate: "2023/08/11",
       total: 230,
       images: {
         symbol: "https://images.pokemontcg.io/sv3/symbol.png",
@@ -120,7 +164,7 @@ export const STATIC_SETS_FALLBACK = {
       id: "sv2",
       name: "Paldea Evolved",
       series: "Scarlet & Violet",
-      releaseDate: "2023-06-09",
+      releaseDate: "2023/06/09",
       total: 279,
       images: {
         symbol: "https://images.pokemontcg.io/sv2/symbol.png",
@@ -131,7 +175,7 @@ export const STATIC_SETS_FALLBACK = {
       id: "sv1",
       name: "Scarlet & Violet Base",
       series: "Scarlet & Violet",
-      releaseDate: "2023-03-31",
+      releaseDate: "2023/03/31",
       total: 264,
       images: {
         symbol: "https://images.pokemontcg.io/sv1/symbol.png",
@@ -143,7 +187,7 @@ export const STATIC_SETS_FALLBACK = {
       id: "swsh12pt5",
       name: "Crown Zenith",
       series: "Sword & Shield",
-      releaseDate: "2023-01-20",
+      releaseDate: "2023/01/20",
       total: 230,
       images: {
         symbol: "https://images.pokemontcg.io/swsh12pt5/symbol.png",
@@ -154,7 +198,7 @@ export const STATIC_SETS_FALLBACK = {
       id: "swsh12",
       name: "Silver Tempest",
       series: "Sword & Shield",
-      releaseDate: "2022-11-11",
+      releaseDate: "2022/11/11",
       total: 245,
       images: {
         symbol: "https://images.pokemontcg.io/swsh12/symbol.png",
@@ -165,7 +209,7 @@ export const STATIC_SETS_FALLBACK = {
       id: "base1",
       name: "Base Set",
       series: "Base",
-      releaseDate: "1999-01-09",
+      releaseDate: "1999/01/09",
       total: 102,
       images: {
         symbol: "https://images.pokemontcg.io/base1/symbol.png",

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import { getRegionMap } from '../../utils/scrapedImageMapping';
-import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { useSmoothParallax } from '../../hooks/useSmoothParallax';
 import logger from '@/utils/logger';
 
@@ -25,17 +23,11 @@ interface GameLogos {
 }
 
 const RegionHero: React.FC<RegionHeroProps> = ({ region, theme }) => {
-  const router = useRouter();
-  
-  // Define region order for navigation
-  const regionOrder: RegionId[] = ['kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', 'paldea'];
-  const currentRegionIndex = regionOrder.indexOf(region.id as RegionId);
-  const prevRegion = currentRegionIndex > 0 ? regionOrder[currentRegionIndex - 1] : null;
-  const nextRegion = currentRegionIndex < regionOrder.length - 1 ? regionOrder[currentRegionIndex + 1] : null;
   const [mapError, setMapError] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   
   // Use smooth parallax hook for jitter-free scrolling
-  const parallaxOffset = useSmoothParallax(0.3); // Reduced parallax factor
+  const parallaxOffset = useSmoothParallax(0.5); // Increased parallax factor for more noticeable effect
 
   // Get map path with fallback
   const mapPath = getRegionMap(region.id);
@@ -72,7 +64,7 @@ const RegionHero: React.FC<RegionHeroProps> = ({ region, theme }) => {
         left: 0,
         right: 0,
         bottom: 0,
-        transform: `translate3d(0, ${parallaxOffset}px, 0)`,
+        transform: `translate3d(0, ${parallaxOffset * -0.5}px, 0)`,
         willChange: 'transform'
       }}>
         {/* Map Image */}
@@ -83,16 +75,23 @@ const RegionHero: React.FC<RegionHeroProps> = ({ region, theme }) => {
             position: 'absolute',
             top: '50%',
             left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '100%',
-            height: '100%',
-            minHeight: '100vh',
+            transform: imageLoaded 
+              ? 'translate(-50%, -50%) scale(1.2)' 
+              : 'translate(-50%, -50%) scale(1.5)',
+            minWidth: '120%',
+            minHeight: '120%',
+            width: 'auto',
+            height: 'auto',
             objectFit: 'cover',
+            objectPosition: 'center',
             filter: 'brightness(0.8) contrast(1.1)',
-            maskImage: 'radial-gradient(ellipse 100% 100% at center center, black 50%, transparent 90%)',
-            WebkitMaskImage: 'radial-gradient(ellipse 100% 100% at center center, black 50%, transparent 90%)'
+            transition: 'transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            opacity: imageLoaded ? 1 : 0
           }}
-          onLoad={(e) => logger.debug('Region map loaded!', { src: (e.target as HTMLImageElement).src })}
+          onLoad={(e) => {
+            logger.debug('Region map loaded!', { src: (e.target as HTMLImageElement).src });
+            setImageLoaded(true);
+          }}
           onError={(e) => {
             logger.error('Region map failed!', { src: (e.target as HTMLImageElement).src });
             setMapError(true);
@@ -114,7 +113,7 @@ const RegionHero: React.FC<RegionHeroProps> = ({ region, theme }) => {
       {/* Content Container */}
       <div style={{
         position: 'relative',
-        zIndex: 10,
+        zIndex: 1,
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
@@ -147,77 +146,6 @@ const RegionHero: React.FC<RegionHeroProps> = ({ region, theme }) => {
           {region.description}
         </p>
       </div>
-      
-      {/* Navigation Arrows */}
-      {prevRegion && (
-        <button
-          onClick={() => router.push(`/pokemon/regions/${prevRegion}`)}
-          style={{
-            position: 'absolute',
-            left: '2rem',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
-            backdropFilter: 'blur(8px)',
-            border: '1px solid rgba(255, 255, 255, 0.3)',
-            borderRadius: '2.5rem',
-            width: '3.5rem',
-            height: '6rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            transition: 'all 0.3s ease',
-            zIndex: 20
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
-            e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
-            e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
-          }}
-          aria-label="Previous region"
-        >
-          <BsChevronLeft style={{ fontSize: '2.5rem', color: 'white' }} />
-        </button>
-      )}
-      
-      {nextRegion && (
-        <button
-          onClick={() => router.push(`/pokemon/regions/${nextRegion}`)}
-          style={{
-            position: 'absolute',
-            right: '2rem',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
-            backdropFilter: 'blur(8px)',
-            border: '1px solid rgba(255, 255, 255, 0.3)',
-            borderRadius: '2.5rem',
-            width: '3.5rem',
-            height: '6rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            transition: 'all 0.3s ease',
-            zIndex: 20
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
-            e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
-            e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
-          }}
-          aria-label="Next region"
-        >
-          <BsChevronRight style={{ fontSize: '2.5rem', color: 'white' }} />
-        </button>
-      )}
     </div>
   );
 };

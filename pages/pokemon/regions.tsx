@@ -174,7 +174,7 @@ const RegionTile: React.FC<RegionTileProps> = ({ region }) => {
               filter: isHovered 
                 ? 'grayscale(0%) brightness(1.2) contrast(1.1) saturate(1.3)' 
                 : 'grayscale(100%) brightness(1) contrast(1) saturate(1)',
-              transform: isHovered ? 'scale(1.1)' : 'scale(1)',
+              transform: isHovered ? 'scale(1.15)' : 'scale(1.05)',
               transformOrigin: 'center'
             }}
           >
@@ -221,7 +221,7 @@ const RegionsPage: NextPage = () => {
   const router = useRouter();
   
   // Use smooth parallax hook for jitter-free scrolling
-  const parallaxOffset = useSmoothParallax(0.3); // Reduced parallax factor
+  const parallaxOffset = useSmoothParallax(0.5); // Increased parallax factor for more noticeable effect
 
   // Clean up transition class on component mount
   useEffect(() => {
@@ -240,8 +240,10 @@ const RegionsPage: NextPage = () => {
       <div style={{ 
         position: 'relative', 
         height: '100vh',
+        marginTop: '-80px',
+        paddingTop: '80px',
         overflow: 'hidden',
-        background: '#16213e'
+        background: 'linear-gradient(to bottom right, #4B5563, #6B46C1, #4B5563)'
       }}>
         {/* Map Background Container */}
         <div style={{ 
@@ -250,7 +252,7 @@ const RegionsPage: NextPage = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          transform: `translate3d(0, ${parallaxOffset}px, 0)`,
+          transform: `translate3d(0, ${parallaxOffset * -0.5}px, 0)`,
           willChange: 'transform'
         }}>
           {/* Arceus Map Image */}
@@ -259,26 +261,26 @@ const RegionsPage: NextPage = () => {
             alt="Arceus Pokemon Map"
             style={{
               position: 'absolute',
-              top: '50%',
+              top: '45%',
               left: '50%',
-              transform: 'translate(-50%, -50%)',
-              width: '120%',
-              height: '120%',
+              transform: 'translate(-50%, -50%) scale(1.3)',
+              minWidth: '130%',
+              minHeight: '130%',
+              width: 'auto',
+              height: 'auto',
               objectFit: 'cover',
-              filter: 'brightness(0.8) contrast(1.1)',
-              borderRadius: '0 0 100px 100px',
-              maskImage: 'radial-gradient(ellipse 100% 100% at center center, black 50%, transparent 90%)',
-              WebkitMaskImage: 'radial-gradient(ellipse 100% 100% at center center, black 50%, transparent 90%)'
+              objectPosition: 'center',
+              filter: 'brightness(0.8) contrast(1.1)'
             }}
           />
           
           {/* Gradient Overlay */}
           <div style={{
             position: 'absolute',
-            top: 0,
+            top: '-20px',
             left: 0,
             right: 0,
-            bottom: 0,
+            bottom: '-50px',
             background: 'radial-gradient(ellipse at center, transparent 0%, rgba(26, 26, 46, 0.3) 60%, rgba(26, 26, 46, 0.8) 100%)',
             pointerEvents: 'none'
           }} />
@@ -310,11 +312,9 @@ const RegionsPage: NextPage = () => {
         </div>
       </div>
 
-      <div className="relative" style={{ marginTop: '0' }}>
-        <div className="absolute inset-0 bg-black" style={{ zIndex: -1 }} />
-
+      <div className="relative bg-gradient-to-br from-gray-50 via-purple-50/30 to-gray-100 dark:from-gray-900 dark:via-purple-900/20 dark:to-gray-900" style={{ marginTop: '0', zIndex: 1 }}>
         {/* Regions Grid - Full Width */}
-        <div className="relative z-10 w-full">
+        <div className="relative w-full">
           <div>
             {regions.map((region, index) => (
               <div key={region.id}>
@@ -385,8 +385,8 @@ const RegionsPage: NextPage = () => {
         }
         
         .region-zoom-transition .region-map-image {
-          transform: scale(2) !important;
-          transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+          transform: scale(3) !important;
+          transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
         }
 
         /* Next.js page transition */

@@ -3,6 +3,7 @@
   width: 100%;
   max-width: 900px; /* Reduced for better container fit */
   margin: 1.5rem auto;
+  padding-left: 280px; /* Add padding to accommodate leader image overflow */
   perspective: 1000px;
   overflow: visible;
 }
@@ -104,7 +105,7 @@
     0 20px 60px rgba(0, 0, 0, 0.15),
     0 0 0 1px rgba(255, 255, 255, 0.5) inset,
     0 0 120px rgba(var(--type-rgb), 0.1);
-  overflow: hidden;
+  overflow: visible; /* Changed from hidden to allow leader images to show */
   height: 580px; /* Increased to prevent content cutoff */
   padding: 2.5rem;
   padding-left: 300px; /* Space for character image on left */
@@ -278,7 +279,8 @@
 .typeInfo {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  margin-bottom: 0.5rem;
 }
 
 /* Content Area */
@@ -346,16 +348,37 @@
   white-space: nowrap;
 }
 
-.typeSpecialization {
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
+/* Badge Above Name - Bottom left position */
+.badgeAboveName {
+  width: 120px;
+  height: 120px;
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.5rem;
-  text-align: right;
-  z-index: 10;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.7));
+  border-radius: 50%;
+  box-shadow: 
+    0 8px 32px rgba(var(--type-rgb), 0.4),
+    0 0 0 3px rgba(var(--type-rgb), 0.2),
+    inset 0 2px 4px rgba(255, 255, 255, 0.9);
+  margin-bottom: 0.75rem;
+  transition: all 0.3s ease;
+  z-index: 15;
+}
+
+.cardWrapper:hover .badgeAboveName {
+  transform: rotate(360deg) scale(1.1);
+  box-shadow: 
+    0 12px 40px rgba(var(--type-rgb), 0.5),
+    0 0 0 4px rgba(var(--type-rgb), 0.3),
+    inset 0 2px 4px rgba(255, 255, 255, 0.9);
+}
+
+.gymBadgeLarge {
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+  object-fit: contain;
+  width: 100px;
+  height: 100px;
 }
 
 /* Bottom Right Section - Contains Gym Leader tag and level */
@@ -383,11 +406,10 @@
   white-space: nowrap;
 }
 
-/* Name Section - Badge and Name Side by Side */
+/* Name Section - Full width for name info */
 .nameSection {
   display: flex;
-  align-items: center;
-  gap: 1rem;
+  align-items: flex-start;
   width: 100%;
 }
 
@@ -403,36 +425,7 @@
   margin: 0.5rem 0 0 0;
 }
 
-/* Badge Container - Left aligned with name */
-.badgeContainer {
-  width: 72px;
-  height: 72px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.6));
-  border-radius: 50%;
-  box-shadow: 
-    0 4px 20px rgba(var(--type-rgb), 0.3),
-    0 0 0 2px rgba(var(--type-rgb), 0.2);
-  transition: all 0.3s ease;
-  flex-shrink: 0;
-  margin-left: 4px;
-}
-
-.cardWrapper:hover .badgeContainer {
-  transform: rotate(360deg) scale(1.1);
-  box-shadow: 
-    0 6px 30px rgba(var(--type-rgb), 0.5),
-    0 0 0 3px rgba(var(--type-rgb), 0.3);
-}
-
-.badge {
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2));
-  width: 56px;
-  height: 56px;
-  object-fit: contain;
-}
+/* Removed old badge container styles - badge is now in top right */
 
 
 /* Team Section - Enhanced with glass effect */

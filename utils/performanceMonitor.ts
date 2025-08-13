@@ -178,7 +178,8 @@ class PerformanceMonitor {
     
     this.vitalsCallbacks = new Set();
     this.customMetrics = new Map();
-    this.isEnabled = process.env.NODE_ENV === 'development';
+    // Enable performance monitoring in production unless explicitly disabled
+    this.isEnabled = process.env.NEXT_PUBLIC_DISABLE_PERFORMANCE_MONITORING !== 'true';
     
     if (this.isClient && this.isSupported) {
       this.initializeMonitoring();

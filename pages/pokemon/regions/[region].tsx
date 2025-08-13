@@ -14,14 +14,17 @@ import { CircularButton } from "../../../components/ui/design-system";
 import RegionHero from "../../../components/regions/RegionHero";
 import RegionInfo from "../../../components/regions/RegionInfo";
 import ProfessorShowcase from "../../../components/regions/ProfessorShowcase";
-import StarterPokemonShowcase from "../../../components/regions/StarterPokemonShowcase";
+import StarterShowcaseComplete from "../../../components/regions/StarterShowcaseComplete";
 import SpecialPokemonShowcase from "../../../components/regions/SpecialPokemonShowcase";
 import GameShowcase from "../../../components/regions/GameShowcase";
 import EvilTeamShowcase from "../../../components/regions/EvilTeamShowcase";
-import GymLeaderGrid from "../../../components/regions/GymLeaderGrid"; // New component
-import EliteFourGrid from "../../../components/regions/EliteFourGrid"; // New component
+import GymLeaderGrid from "../../../components/regions/GymLeaderGrid";
+import EliteFourGrid from "../../../components/regions/EliteFourGrid";
+import IslandKahunasGrid from "../../../components/regions/IslandKahunasGrid";
+import LegendaryPokemonShowcase from "../../../components/regions/LegendaryPokemonShowcase";
+import RegionalFormsGallery from "../../../components/regions/RegionalFormsGallery";
 
-import { BsChevronLeft, BsChevronRight, BsGeoAlt, BsCompass, BsStar } from "react-icons/bs";
+import { BsChevronLeft, BsChevronRight, BsGeoAlt, BsCompass, BsStar, BsLightbulb } from "react-icons/bs";
 
 // Type definitions (keeping existing ones)
 interface Location {
@@ -475,6 +478,19 @@ export default function RegionDetailPage() {
   const { region: regionId } = router.query;
   const { theme } = useTheme();
   const [activeSection, setActiveSection] = useState('overview');
+  const [isNavSticky, setIsNavSticky] = useState(false);
+  
+  // Handle scroll for sticky navigation
+  useEffect(() => {
+    const handleScroll = () => {
+      const heroHeight = window.innerHeight; // Height of hero section
+      const scrollPosition = window.scrollY;
+      setIsNavSticky(scrollPosition > heroHeight - 100);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
   
   // Handle loading state
   if (!regionId) {
@@ -513,6 +529,7 @@ export default function RegionDetailPage() {
     { id: 'overview', label: 'Overview' },
     { id: 'professor', label: 'Professor' },
     { id: 'starters', label: 'Starters' },
+    { id: 'legendaries', label: 'Legendaries' },
     { id: 'leaders', label: region.gymLeaders ? 'Gym Leaders' : 'Trial Captains' },
     { id: 'elite-four', label: 'Elite Four' },
     { id: 'locations', label: 'Locations' },
@@ -529,25 +546,28 @@ export default function RegionDetailPage() {
       </Head>
 
       <FullBleedWrapper gradient="regions">
-        {/* Hero Section - Keep unchanged */}
-        <RegionHero region={region} theme={theme} />
-
-        {/* Main Content */}
-        <main className="relative bg-gray-50 dark:bg-gray-900">
-          {/* Sticky Navigation */}
+        {/* Hero Section with overlapping navigation */}
+        <div className="relative">
+          <RegionHero region={region} theme={theme} />
+          
+          {/* Overlapping Navigation Bar */}
           <motion.div 
-            className="sticky top-0 z-40 backdrop-blur-xl bg-white/80 dark:bg-gray-900/80 border-b border-gray-200 dark:border-gray-700"
-            initial={{ opacity: 0, y: -20 }}
+            className={`${isNavSticky ? 'fixed top-20' : 'absolute bottom-0'} left-0 right-0 z-30 bg-gray-50/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200/50 dark:border-gray-700/50 transition-all duration-300`}
+            style={{ 
+              transform: isNavSticky ? 'translateY(0)' : 'translateY(50%)'
+            }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
           >
             <div className="container mx-auto px-4">
-              <div className="flex items-center justify-between py-4">
+              <div className="flex items-center justify-between py-2">
                 {/* Back Button */}
                 <CircularButton
                   onClick={() => router.push('/pokemon/regions')}
                   variant="secondary"
-                  leftIcon={<BsChevronLeft className="w-5 h-5" />}
+                  size="sm"
+                  leftIcon={<BsChevronLeft className="w-4 h-4" />}
                 >
                   Back to Regions
                 </CircularButton>
@@ -561,10 +581,10 @@ export default function RegionDetailPage() {
                         setActiveSection(section.id);
                         document.getElementById(section.id)?.scrollIntoView({ behavior: 'smooth' });
                       }}
-                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                      className={`px-3 py-1 rounded-full text-xs font-medium transition-all duration-300 ${
                         activeSection === section.id
-                          ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900'
-                          : 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300'
+                          ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900'
+                          : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
                       }`}
                     >
                       {section.label}
@@ -603,7 +623,10 @@ export default function RegionDetailPage() {
               </div>
             </div>
           </motion.div>
+        </div>
 
+        {/* Main Content */}
+        <main className="relative bg-gradient-to-br from-gray-50 via-purple-50/30 to-gray-100 dark:from-gray-900 dark:via-purple-900/20 dark:to-gray-900 pt-16">
           {/* Content Sections */}
           <div className="container mx-auto px-4 py-8 space-y-16">
             {/* Overview Section */}
@@ -641,17 +664,62 @@ export default function RegionDetailPage() {
               </StandardGlassContainer>
             </motion.section>
 
-            {/* Starters Section */}
+            {/* Unified Starters Section */}
             <motion.section 
               id="starters"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <StandardGlassContainer>
-                <StarterPokemonShowcase region={region.name} starters={region.starters} theme={theme} />
-              </StandardGlassContainer>
+              <StarterShowcaseComplete 
+                region={region.name} 
+                starters={region.starters}
+                starterIds={region.starterIds}
+                theme={theme} 
+              />
             </motion.section>
+
+            {/* Legendary Pokémon Section */}
+            <motion.section 
+              id="legendaries"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.25 }}
+            >
+              <LegendaryPokemonShowcase 
+                region={region} 
+                legendaries={region.legendaries}
+                legendaryIds={region.legendaryIds}
+                theme={theme} 
+              />
+            </motion.section>
+
+            {/* Island Kahunas - Only for Alola */}
+            {region.id === 'alola' && (
+              <motion.section 
+                id="island-kahunas"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.26 }}
+              >
+                <IslandKahunasGrid theme={theme} />
+              </motion.section>
+            )}
+
+            {/* Regional Forms Gallery - Only for regions with forms */}
+            {(region.id === 'alola' || region.id === 'galar' || region.id === 'paldea') && (
+              <motion.section 
+                id="regional-forms"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.27 }}
+              >
+                <RegionalFormsGallery 
+                  region={region}
+                  theme={theme} 
+                />
+              </motion.section>
+            )}
 
             {/* Gym Leaders / Elite Four Section */}
             <motion.section 
@@ -660,7 +728,7 @@ export default function RegionDetailPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              <StandardGlassContainer>
+              <div className="backdrop-blur-xl bg-gradient-to-br from-gray-100/90 to-gray-200/80 dark:from-gray-900/50 dark:to-gray-800/50 border border-gray-200 dark:border-gray-700 shadow-xl rounded-2xl p-8">
                 <div className="space-y-12">
                   <div className="text-center">
                     <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
@@ -673,20 +741,26 @@ export default function RegionDetailPage() {
 
                   {/* Gym Leaders Grid */}
                   {region.gymLeaders && (
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                        Gym Leaders
-                      </h3>
+                    <div className="space-y-6">
+                      <div className="text-center">
+                        <h3 className="text-xl font-semibold uppercase tracking-wider text-gray-700 dark:text-gray-300">
+                          Gym Leaders
+                        </h3>
+                        <div className="mt-2 h-1 w-24 mx-auto bg-gradient-to-r from-transparent via-gray-400 to-transparent rounded-full"></div>
+                      </div>
                       <GymLeaderGrid region={region} gymLeaders={region.gymLeaders} theme={theme} />
                     </div>
                   )}
 
                   {/* Elite Four Grid */}
                   {region.eliteFour && (
-                    <div id="elite-four">
-                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                        Elite Four & Champion
-                      </h3>
+                    <div id="elite-four" className="space-y-6">
+                      <div className="text-center">
+                        <h3 className="text-xl font-semibold uppercase tracking-wider text-gray-700 dark:text-gray-300">
+                          Elite Four & Champion
+                        </h3>
+                        <div className="mt-2 h-1 w-24 mx-auto bg-gradient-to-r from-transparent via-gray-400 to-transparent rounded-full"></div>
+                      </div>
                       <EliteFourGrid 
                         region={region} 
                         eliteFour={region.eliteFour} 
@@ -696,73 +770,207 @@ export default function RegionDetailPage() {
                     </div>
                   )}
                 </div>
-              </StandardGlassContainer>
+              </div>
             </motion.section>
 
-            {/* Locations Section */}
+            {/* Enhanced Locations Section with Glass Cards */}
             <motion.section 
               id="locations"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              <StandardGlassContainer>
-                <SectionHeader 
-                  icon={<BsGeoAlt className="text-xl" />}
-                  title="Explore"
-                  subtitle={`Discover the cities and landmarks of ${region.name}`}
-                />
-                
-                <div className="grid md:grid-cols-2 gap-8">
-                  {/* Cities */}
-                  {region.locations && (
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                        <BsGeoAlt /> Cities & Towns
-                      </h3>
-                      <div className="space-y-3">
-                        {region.locations.map((location, index) => (
-                          <div 
-                            key={index} 
-                            className="p-4 rounded-xl bg-white/50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all"
-                          >
-                            <h4 className="font-semibold text-gray-900 dark:text-white">
-                              {location.name}
-                            </h4>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
-                              {location.description}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Landmarks */}
-                  {region.landmarks && (
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                        <BsCompass /> Notable Landmarks
-                      </h3>
-                      <div className="space-y-3">
-                        {region.landmarks.map((landmark, index) => (
-                          <div 
-                            key={index} 
-                            className="p-4 rounded-xl bg-white/50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all"
-                          >
-                            <h4 className="font-semibold text-gray-900 dark:text-white">
-                              {landmark.name}
-                            </h4>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
-                              {landmark.description}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+              <div className="relative">
+                {/* Animated Map Background */}
+                <div className="absolute inset-0 opacity-5 pointer-events-none">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 animate-pulse" />
                 </div>
-              </StandardGlassContainer>
+                
+                <StandardGlassContainer>
+                  <SectionHeader 
+                    icon={<BsGeoAlt className="text-2xl text-purple-500" />}
+                    title="Explore the Region"
+                    subtitle={`Journey through the diverse landscapes of ${region.name}`}
+                  />
+                  
+                  <div className="grid lg:grid-cols-2 gap-8">
+                    {/* Cities & Towns Glass Gallery */}
+                    {region.locations && (
+                      <div>
+                        <div className="flex items-center gap-3 mb-6">
+                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
+                            <BsGeoAlt className="text-white text-xl" />
+                          </div>
+                          <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                            Cities & Towns
+                          </h3>
+                        </div>
+                        
+                        <div className="space-y-4">
+                          {region.locations.map((location, index) => (
+                            <motion.div
+                              key={index}
+                              initial={{ opacity: 0, x: -20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: index * 0.1 }}
+                              whileHover={{ scale: 1.02, x: 10 }}
+                              className="relative group cursor-pointer"
+                            >
+                              <div className="relative rounded-2xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/80 via-blue-50/60 to-white/70 dark:from-gray-800/80 dark:via-blue-900/30 dark:to-gray-900/70 shadow-lg hover:shadow-2xl transition-all duration-300 border border-white/30 dark:border-gray-700/30">
+                                {/* Location Type Badge */}
+                                <div className="absolute top-3 right-3 z-10">
+                                  <span className="px-3 py-1 rounded-full text-xs font-bold backdrop-blur-md bg-gradient-to-r from-blue-500/80 to-purple-500/80 text-white shadow-md">
+                                    {location.type?.toUpperCase() || 'CITY'}
+                                  </span>
+                                </div>
+                                
+                                {/* Glass Content */}
+                                <div className="p-6">
+                                  <div className="flex items-start gap-4">
+                                    {/* Location Icon */}
+                                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center flex-shrink-0 shadow-lg group-hover:shadow-xl transition-shadow">
+                                      <BsGeoAlt className="text-white text-2xl" />
+                                    </div>
+                                    
+                                    {/* Location Info */}
+                                    <div className="flex-1">
+                                      <h4 className="text-lg font-bold text-gray-800 dark:text-white mb-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+                                        {location.name}
+                                      </h4>
+                                      <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                                        {location.description}
+                                      </p>
+                                      
+                                      {/* Hover Indicator */}
+                                      <div className="flex items-center gap-2 mt-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <span className="text-xs font-medium text-purple-600 dark:text-purple-400">Explore</span>
+                                        <BsChevronRight className="text-xs text-purple-600 dark:text-purple-400 group-hover:translate-x-1 transition-transform" />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                
+                                {/* Animated Border Gradient */}
+                                <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                                  <div className="absolute inset-[-1px] rounded-2xl bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 opacity-50 blur-sm" />
+                                </div>
+                              </div>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Landmarks Glass Gallery */}
+                    {region.landmarks && (
+                      <div>
+                        <div className="flex items-center gap-3 mb-6">
+                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shadow-lg">
+                            <BsCompass className="text-white text-xl" />
+                          </div>
+                          <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                            Notable Landmarks
+                          </h3>
+                        </div>
+                        
+                        <div className="space-y-4">
+                          {region.landmarks.map((landmark, index) => (
+                            <motion.div
+                              key={index}
+                              initial={{ opacity: 0, x: 20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: index * 0.1 }}
+                              whileHover={{ scale: 1.02, x: -10 }}
+                              className="relative group cursor-pointer"
+                            >
+                              <div className="relative rounded-2xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/80 via-purple-50/60 to-white/70 dark:from-gray-800/80 dark:via-purple-900/30 dark:to-gray-900/70 shadow-lg hover:shadow-2xl transition-all duration-300 border border-white/30 dark:border-gray-700/30">
+                                {/* Special Location Indicator */}
+                                <div className="absolute top-3 right-3 z-10">
+                                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center shadow-md animate-pulse">
+                                    <BsStar className="text-white text-sm" />
+                                  </div>
+                                </div>
+                                
+                                {/* Glass Content */}
+                                <div className="p-6">
+                                  <div className="flex items-start gap-4">
+                                    {/* Landmark Icon */}
+                                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center flex-shrink-0 shadow-lg group-hover:shadow-xl transition-shadow">
+                                      <BsCompass className="text-white text-2xl" />
+                                    </div>
+                                    
+                                    {/* Landmark Info */}
+                                    <div className="flex-1">
+                                      <h4 className="text-lg font-bold text-gray-800 dark:text-white mb-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+                                        {landmark.name}
+                                      </h4>
+                                      <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                                        {landmark.description}
+                                      </p>
+                                      
+                                      {/* Special Features Tags */}
+                                      <div className="flex flex-wrap gap-2 mt-3">
+                                        {landmark.name.toLowerCase().includes('cave') && (
+                                          <span className="px-2 py-1 rounded-full text-xs font-medium bg-gray-200/50 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300">Cave</span>
+                                        )}
+                                        {landmark.name.toLowerCase().includes('tower') && (
+                                          <span className="px-2 py-1 rounded-full text-xs font-medium bg-purple-200/50 dark:bg-purple-700/50 text-purple-700 dark:text-purple-300">Tower</span>
+                                        )}
+                                        {landmark.name.toLowerCase().includes('forest') && (
+                                          <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-200/50 dark:bg-green-700/50 text-green-700 dark:text-green-300">Forest</span>
+                                        )}
+                                        {landmark.name.toLowerCase().includes('island') && (
+                                          <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-200/50 dark:bg-blue-700/50 text-blue-700 dark:text-blue-300">Island</span>
+                                        )}
+                                      </div>
+                                      
+                                      {/* Hover Indicator */}
+                                      <div className="flex items-center gap-2 mt-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <span className="text-xs font-medium text-purple-600 dark:text-purple-400">Discover</span>
+                                        <BsChevronRight className="text-xs text-purple-600 dark:text-purple-400 group-hover:translate-x-1 transition-transform" />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                
+                                {/* Animated Border Gradient */}
+                                <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                                  <div className="absolute inset-[-1px] rounded-2xl bg-gradient-to-r from-purple-400 via-pink-400 to-yellow-400 opacity-50 blur-sm" />
+                                </div>
+                              </div>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* Map Preview Card */}
+                  {region.map && (
+                    <motion.div 
+                      className="mt-8 p-6 rounded-3xl backdrop-blur-xl bg-gradient-to-br from-purple-100/60 via-pink-100/40 to-blue-100/60 dark:from-purple-900/30 dark:via-pink-900/20 dark:to-blue-900/30 border border-purple-200/30 dark:border-purple-700/30"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 }}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-md">
+                            <BsCompass className="text-white text-lg" />
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-gray-800 dark:text-white">Region Map Available</h4>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">Explore the full {region.name} region map</p>
+                          </div>
+                        </div>
+                        <button className="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                          View Map
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </StandardGlassContainer>
+              </div>
             </motion.section>
 
             {/* Games Section */}
@@ -789,7 +997,7 @@ export default function RegionDetailPage() {
               </StandardGlassContainer>
             </motion.section>
 
-            {/* Trivia Section */}
+            {/* Enhanced Trivia Section - Glass Knowledge Cards */}
             {region.trivia && (
               <motion.section 
                 id="trivia"
@@ -797,24 +1005,101 @@ export default function RegionDetailPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.7 }}
               >
-                <StandardGlassContainer>
-                  <SectionHeader 
-                    icon={<BsStar className="text-xl" />}
-                    title="Did You Know?"
-                    subtitle={`Interesting facts about ${region.name}`}
-                  />
-                  
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    {region.trivia.map((fact, index) => (
-                      <div 
-                        key={index}
-                        className="p-4 rounded-xl bg-white/50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all"
-                      >
-                        <p className="text-gray-700 dark:text-gray-300">{fact}</p>
-                      </div>
-                    ))}
+                <div className="relative">
+                  {/* Animated Knowledge Background */}
+                  <div className="absolute inset-0 opacity-5 pointer-events-none">
+                    <div className="absolute inset-0 bg-gradient-to-br from-yellow-400 via-purple-500 to-pink-500 animate-pulse" />
                   </div>
-                </StandardGlassContainer>
+                  
+                  <StandardGlassContainer>
+                    <div className="text-center mb-10">
+                      <div className="flex items-center justify-center gap-3 mb-4">
+                        <BsStar className="text-3xl text-yellow-500 animate-pulse" />
+                        <h2 className="text-3xl font-bold bg-gradient-to-r from-yellow-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                          Did You Know?
+                        </h2>
+                        <BsStar className="text-3xl text-yellow-500 animate-pulse" />
+                      </div>
+                      <p className="text-lg text-gray-600 dark:text-gray-400">
+                        Fascinating facts and hidden secrets about {region.name}
+                      </p>
+                    </div>
+                    
+                    <div className="grid sm:grid-cols-2 gap-6">
+                      {region.trivia.map((fact, index) => (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, rotateY: -180 }}
+                          animate={{ opacity: 1, rotateY: 0 }}
+                          transition={{ delay: index * 0.15, duration: 0.6 }}
+                          whileHover={{ scale: 1.05, rotateY: 5 }}
+                          className="relative group"
+                        >
+                          <div className="relative rounded-3xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/90 via-yellow-50/60 to-white/80 dark:from-gray-800/90 dark:via-yellow-900/20 dark:to-gray-900/80 shadow-xl hover:shadow-2xl transition-all duration-500 border border-white/30 dark:border-gray-700/30">
+                            {/* Fact Number Badge */}
+                            <div className="absolute top-4 left-4 z-10">
+                              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center shadow-lg transform -rotate-12 group-hover:rotate-0 transition-transform duration-300">
+                                <span className="text-white font-bold text-sm">#{index + 1}</span>
+                              </div>
+                            </div>
+                            
+                            {/* Decorative Star */}
+                            <div className="absolute top-4 right-4 opacity-20 group-hover:opacity-40 transition-opacity">
+                              <BsStar className="text-4xl text-yellow-500" />
+                            </div>
+                            
+                            {/* Fact Content */}
+                            <div className="p-8 pt-16">
+                              <p className="text-gray-700 dark:text-gray-300 leading-relaxed font-medium">
+                                {fact}
+                              </p>
+                              
+                              {/* Category Tags */}
+                              <div className="flex flex-wrap gap-2 mt-4">
+                                {fact.toLowerCase().includes('based on') && (
+                                  <span className="px-3 py-1 rounded-full text-xs font-medium bg-purple-200/50 dark:bg-purple-700/30 text-purple-700 dark:text-purple-300 backdrop-blur-sm">Real World</span>
+                                )}
+                                {fact.toLowerCase().includes('first') && (
+                                  <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-200/50 dark:bg-green-700/30 text-green-700 dark:text-green-300 backdrop-blur-sm">Pioneer</span>
+                                )}
+                                {fact.toLowerCase().includes('only') && (
+                                  <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-200/50 dark:bg-blue-700/30 text-blue-700 dark:text-blue-300 backdrop-blur-sm">Unique</span>
+                                )}
+                                {(fact.toLowerCase().includes('team') || fact.toLowerCase().includes('evil')) && (
+                                  <span className="px-3 py-1 rounded-full text-xs font-medium bg-red-200/50 dark:bg-red-700/30 text-red-700 dark:text-red-300 backdrop-blur-sm">Villains</span>
+                                )}
+                              </div>
+                            </div>
+                            
+                            {/* Animated Shimmer Effect */}
+                            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
+                              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                            </div>
+                            
+                            {/* Bottom Gradient Edge */}
+                            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-yellow-400 via-purple-500 to-pink-500 opacity-60 group-hover:opacity-100 transition-opacity" />
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                    
+                    {/* Fun Fact Footer */}
+                    <motion.div 
+                      className="mt-10 p-6 rounded-2xl backdrop-blur-md bg-gradient-to-r from-yellow-100/50 via-purple-100/50 to-pink-100/50 dark:from-yellow-900/20 dark:via-purple-900/20 dark:to-pink-900/20 border border-yellow-200/30 dark:border-yellow-700/30 text-center"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.5 }}
+                    >
+                      <div className="flex items-center justify-center gap-2 mb-2">
+                        <BsLightbulb className="text-yellow-500 text-xl" />
+                        <span className="font-bold text-gray-800 dark:text-white">Pro Tip:</span>
+                      </div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        Share these facts with fellow trainers to become a {region.name} expert!
+                      </p>
+                    </motion.div>
+                  </StandardGlassContainer>
+                </div>
               </motion.section>
             )}
           </div>

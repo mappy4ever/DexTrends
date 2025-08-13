@@ -186,7 +186,7 @@ const PocketDecks: NextPage = () => {
         <title>Pocket Decks | Top Meta Builds | DexTrends</title>
         <meta name="description" content="Discover the best Pokémon TCG Pocket deck builds from top players. Browse meta decks, strategies, and win rates." />
       </Head>
-      <FullBleedWrapper gradient="pocket">
+      <FullBleedWrapper gradient="tcg">
         <div className="section-spacing-y-default max-w-7xl mx-auto animate-fadeIn pt-8">
         
         <FadeIn>
@@ -208,7 +208,7 @@ const PocketDecks: NextPage = () => {
             >
               <span className="text-4xl">🃏</span>
             </motion.div>
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-4 bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-4 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
               Top Pocket Decks
             </h1>
             <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">

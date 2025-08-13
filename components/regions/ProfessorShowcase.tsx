@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getProfessorImage } from '../../utils/scrapedImageMapping';
+// Using direct PokeAPI URLs for Pokémon images
 import { FadeIn, SlideUp } from '../ui/animations/animations';
+import { GlassContainer } from '../ui/design-system';
 import { 
   BsBook, 
   BsTrophy, 
@@ -16,8 +19,10 @@ import {
   BsChatQuote,
   BsChevronLeft,
   BsChevronRight,
-  BsSearch
+  BsSearch,
+  BsArrowRight
 } from 'react-icons/bs';
+import { GiPokecog } from 'react-icons/gi';
 
 // Types
 interface StarterPokemon {
@@ -271,9 +276,9 @@ Juniper is known for her friendly and approachable demeanor, making her popular 
         'Published Mega Evolution thesis',
         'Identified all Kalos Mega Stones'
       ],
-      biography: `Professor Sycamore is perhaps the most charismatic of all regional professors. His research into Mega Evolution has revolutionized Pokémon battling and understanding of temporary evolution forms.
+      biography: `Professor Augustine Sycamore is perhaps the most charismatic of all regional professors. His research into Mega Evolution has revolutionized Pokémon battling and understanding of temporary evolution forms.
 
-As a former student of the stern Professor Rowan, Sycamore developed a contrasting personality - warm, flirtatious, and enthusiastic. His laboratory in Lumiose City is known for its welcoming atmosphere and cutting-edge technology.
+As a former student of the stern Professor Rowan, Augustine Sycamore developed a contrasting personality - warm, flirtatious, and enthusiastic. His laboratory in Lumiose City is known for its welcoming atmosphere and cutting-edge technology.
 
 Sycamore's discovery of Mega Evolution came from studying ancient texts and artifacts in Kalos. His research showed that certain Pokémon could temporarily evolve beyond their final forms using Mega Stones and a strong bond with their trainers.`,
       signature: 'Mega Evolution research and Kalos charm',
@@ -492,7 +497,7 @@ His unwavering commitment to his research vision led to both remarkable scientif
             )}
             
             <div className="flex flex-col items-center">
-              <h2 className="text-4xl font-bold mb-2">Meet {currentProfessor}</h2>
+              <h2 className="text-4xl font-bold mb-2">Meet the Professor</h2>
               {isDualProfessor && versionInfo[currentProfessor] && (
                 <div className={`px-4 py-2 rounded-full text-sm font-semibold text-white bg-gradient-to-r ${
                   versionInfo[currentProfessor].color
@@ -553,7 +558,7 @@ His unwavering commitment to his research vision led to both remarkable scientif
               <FadeIn delay={0.3}>
                 <div className="text-center">
                   <h3 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-3">
-                    {professorInfo.fullName || currentProfessor}
+                    {currentProfessor}
                   </h3>
                   <p className="text-lg lg:text-xl text-blue-600 dark:text-blue-400 font-medium mb-6">
                     {professorInfo.specialization}
@@ -589,6 +594,71 @@ His unwavering commitment to his research vision led to both remarkable scientif
 
           {/* Right Column - Professor Information */}
           <div className="space-y-6">
+            {/* Starter Pokémon Showcase */}
+            {professorInfo.starterPokemon && (
+              <SlideUp delay={0.05}>
+                <GlassContainer variant="dark" blur="lg" rounded="2xl" padding="md" hover gradient>
+                  <h4 className="text-lg font-bold mb-4 flex items-center gap-2">
+                    <GiPokecog className="text-purple-500" />
+                    Starter Pokémon Given
+                  </h4>
+                  <div className="grid grid-cols-3 gap-4">
+                    {Object.entries(professorInfo.starterPokemon).map(([type, pokemon]) => (
+                      <Link 
+                        key={pokemon.id} 
+                        href={`/pokemon/${pokemon.id}`}
+                        className="group"
+                      >
+                        <div className="relative transform transition-all duration-300 hover:scale-110 hover:-translate-y-2">
+                          {/* Glass Card for Each Starter */}
+                          <div className="relative rounded-2xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/80 to-white/60 dark:from-gray-800/80 dark:to-gray-900/60 shadow-lg group-hover:shadow-2xl border border-white/30 dark:border-gray-700/30">
+                            {/* Type-based Gradient Background */}
+                            <div className={`absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity bg-gradient-to-br ${
+                              type === 'grass' ? 'from-green-400 to-emerald-600' :
+                              type === 'fire' ? 'from-orange-400 to-red-600' :
+                              'from-blue-400 to-cyan-600'
+                            }`} />
+                            
+                            {/* Pokémon Image */}
+                            <div className="relative p-4">
+                              <div className="relative w-24 h-24 mx-auto">
+                                <Image
+                                  src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`}
+                                  alt={pokemon.name}
+                                  fill
+                                  className="object-contain drop-shadow-lg"
+                                />
+                              </div>
+                            </div>
+                            
+                            {/* Info Panel */}
+                            <div className="p-3 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm">
+                              <p className="text-sm font-bold text-center text-gray-800 dark:text-white">
+                                {pokemon.name}
+                              </p>
+                              <p className="text-xs text-center text-gray-600 dark:text-gray-400 capitalize">
+                                {type} Type
+                              </p>
+                              
+                              {/* Hover Indicator */}
+                              <div className="flex items-center justify-center gap-1 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <span className="text-xs text-purple-600 dark:text-purple-400 font-medium">View</span>
+                                <BsArrowRight className="text-xs text-purple-600 dark:text-purple-400" />
+                              </div>
+                            </div>
+                          </div>
+                          
+                          {/* Floating Pokédex Number */}
+                          <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-xs font-bold shadow-lg">
+                            #{pokemon.id}
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </GlassContainer>
+              </SlideUp>
+            )}
             {/* Biography */}
             <SlideUp delay={0.1}>
               <div className={`p-6 rounded-xl ${

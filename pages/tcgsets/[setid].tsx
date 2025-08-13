@@ -58,8 +58,9 @@ const SetIdPage: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
-  const [loadingMessage, setLoadingMessage] = useState<string>("Loading set information...");
+  const [loadingMessage, setLoadingMessage] = useState<string>("Initializing...");
   const [dataWarning, setDataWarning] = useState<string | null>(null);
+  const [fetchAttempted, setFetchAttempted] = useState<boolean>(false);
   
   // Filter states
   const [filterRarity, setFilterRarity] = useState<string>("");
@@ -184,11 +185,14 @@ const SetIdPage: NextPage = () => {
       abortController = new AbortController();
       setLoading(true);
       setError(null);
+      setFetchAttempted(true);
       setLoadingMessage("Connecting to Pokemon TCG database...");
       
       // Start performance monitoring
       performanceMonitor.startTimer('api-request', `tcg-set-${setid}`);
       performanceMonitor.startTimer('page-load', `tcg-set-page-${setid}`);
+      
+      let slowLoadTimeout: NodeJS.Timeout | null = null;
       
       try {
         // Use new complete endpoint for better performance
@@ -197,7 +201,7 @@ const SetIdPage: NextPage = () => {
         setLoadingMessage("Loading set information...");
         
         // Add timeout to show additional message if taking too long
-        const slowLoadTimeout = setTimeout(() => {
+        slowLoadTimeout = setTimeout(() => {
           if (mounted) {
             setLoadingMessage("Loading all cards... This may take a moment for large sets.");
           }
@@ -219,14 +223,14 @@ const SetIdPage: NextPage = () => {
             }
           );
           
+          // Clear the slow load timeout immediately after getting response
+          clearTimeout(slowLoadTimeout);
+          
           // Check if the response is an error
           if (data && typeof data === 'object' && 'error' in data && !data.set) {
             logger.error('[SetIdPage] API returned error response:', { data });
             throw new Error(data.error || 'API returned an error');
           }
-          
-          // Clear the slow load timeout
-          clearTimeout(slowLoadTimeout);
           
           // Log cache status
           if (data?.cachedAt) {
@@ -304,6 +308,10 @@ const SetIdPage: NextPage = () => {
         if (Array.isArray(cardsData) && cardsData.length > 0) {
           setCards(cardsData);
           
+          // Clear loading state IMMEDIATELY when we have cards
+          setLoading(false);
+          setLoadingMessage(''); // Clear loading message
+          
           // Pre-populate browser cache for individual cards for instant navigation
           if (typeof window !== 'undefined') {
             cardsData.forEach(card => {
@@ -338,8 +346,6 @@ const SetIdPage: NextPage = () => {
             // Calculate statistics if not provided
             calculateSetStatistics(cardsData);
           }
-          
-          setLoadingMessage(''); // Clear loading message
           
           logger.info(`[TCG Set] Successfully loaded ${cardsData.length} cards`, {
             setId: setid,
@@ -376,7 +382,15 @@ const SetIdPage: NextPage = () => {
           setError(`Failed to load set information: ${errorMessage}`);
         }
       } finally {
-        setLoading(false);
+        // Clear any pending timeouts
+        if (slowLoadTimeout) {
+          clearTimeout(slowLoadTimeout);
+        }
+        // Only set loading false if we didn't already do it when cards were loaded
+        if (mounted && loading) {
+          setLoading(false);
+          setLoadingMessage(''); // Always clear loading message when done
+        }
         // End page load monitoring
         performanceMonitor.endTimer('page-load', `tcg-set-page-${setid}`);
       }
@@ -517,15 +531,15 @@ const SetIdPage: NextPage = () => {
     );
   }
 
-  // Loading state for set data
-  if (loading && !setInfo) {
+  // Show loading state while router is initializing or data is loading
+  if (!router.isReady || (loading && !setInfo)) {
     return (
       <PageLoader text={loadingMessage} />
     );
   }
 
-  // Error state
-  if (error) {
+  // Error state - only show after fetch attempt
+  if (error && fetchAttempted) {
     return (
       <div className="container mx-auto p-4 flex flex-col items-center justify-center min-h-screen">
         <GlassContainer variant="colored" className="text-center">
@@ -543,8 +557,8 @@ const SetIdPage: NextPage = () => {
     );
   }
 
-  // No set found state
-  if (!setInfo) {
+  // No set found state - only show after fetch has been attempted and failed
+  if (!setInfo && fetchAttempted && !loading) {
     return (
       <div className="container mx-auto p-4 flex flex-col items-center justify-center min-h-screen">
         <GlassContainer variant="medium" className="text-center">
@@ -560,6 +574,11 @@ const SetIdPage: NextPage = () => {
         </GlassContainer>
       </div>
     );
+  }
+
+  // If we're still loading or haven't fetched yet, show loader
+  if (!setInfo) {
+    return <PageLoader text={loadingMessage} />;
   }
 
   const totalValue = statistics.valueByRarity ? Object.values(statistics.valueByRarity).reduce((sum, rarity) => sum + rarity.total, 0) : 0;

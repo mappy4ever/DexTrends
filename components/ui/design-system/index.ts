@@ -20,3 +20,6 @@ export {
 
 // New standardized glass container components
 export { StandardGlassContainer, SectionHeader, HoverCard } from './GlassContainerStandard';
+
+// Glass design system constants
+export * from './glass-constants';

@@ -19,6 +19,7 @@ import BackToTop from "../../components/ui/SimpleBackToTop";
 import { fetchPocketData } from "../../utils/pocketData";
 import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
 import PageErrorBoundary from "../../components/ui/PageErrorBoundary";
+import { FaCrown } from "react-icons/fa";
 import type { PocketCard } from "../../types/api/pocket-cards";
 import type { NextPage } from "next";
 
@@ -381,7 +382,7 @@ const PocketExpansions: NextPage = () => {
           <title>{selectedExpansion.name} Cards | Pokémon Pocket | DexTrends</title>
           <meta name="description" content={`Browse all cards from ${selectedExpansion.name} expansion in Pokémon TCG Pocket.`} />
         </Head>
-        <FullBleedWrapper gradient="pocket">
+        <FullBleedWrapper gradient="tcg">
           <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto animate-fadeIn pt-8">
           
           <FadeIn>
@@ -401,15 +402,20 @@ const PocketExpansions: NextPage = () => {
             </div>
             
             <PocketCardList 
-              cards={selectedExpansion.cards}
+              cards={selectedExpansion.cards.filter(card => 
+                card.name.toLowerCase().includes(search.toLowerCase())
+              )}
               loading={false}
               error={undefined}
               emptyMessage={`No cards found in ${selectedExpansion.name}.`}
               showPack={true}
               showRarity={true}
               showHP={true}
+              showSort={true}
               imageWidth={110}
               imageHeight={154}
+              searchValue={search}
+              onSearchChange={setSearch}
             />
           </FadeIn>
           </div>
@@ -424,60 +430,91 @@ const PocketExpansions: NextPage = () => {
         <title>Pokémon Pocket Expansions | DexTrends</title>
         <meta name="description" content="Browse Pokémon TCG Pocket expansion sets and discover cards from each collection." />
       </Head>
-      <FullBleedWrapper gradient="pocket">
+      <FullBleedWrapper gradient="tcg">
         <div className="section-spacing-y-default max-w-7xl mx-auto animate-fadeIn pt-8">
         
         <FadeIn>
-          {/* Hero Section */}
-          <div className="text-center mb-12">
-            <div className="mb-6">
-              <StyledBackButton 
-                variant="pocket" 
-                text="Back to Pocket Mode" 
-                onClick={() => router.push('/pocketmode')} 
-                className="mx-auto mb-6"
-              />
+          {/* Hero Section with Glass Morphism */}
+          <motion.div 
+            className="mb-6 backdrop-blur-xl bg-white/90 dark:bg-gray-800/90 rounded-3xl p-4 border border-white/50 dark:border-gray-700/50 shadow-2xl shadow-gray-400/30 dark:shadow-black/50"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="text-center mb-3">
+              <h1 className="text-xl md:text-2xl font-black bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
+                Pokémon TCG Pocket Expansions
+              </h1>
             </div>
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full mb-6 shadow-2xl"
-            >
-              <span className="text-4xl">🌟</span>
-            </motion.div>
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-4 bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 bg-clip-text text-transparent">
-              Pocket Expansions
-            </h1>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Discover exclusive Pokémon TCG Pocket expansion sets and their unique cards
-            </p>
-          </div>
+            
+            {/* Total Expansions Count */}
+            <div className="text-center mb-3">
+              <span className="text-sm font-bold text-purple-600">
+                {expansions.length} Total Expansions
+              </span>
+            </div>
+            
+            {/* Navigation Tabs */}
+            <div className="flex justify-center gap-2 mb-3">
+              <button
+                onClick={() => router.push('/pocketmode')}
+                className="px-3 py-1.5 rounded-full backdrop-blur-xl bg-white/60 dark:bg-gray-800/60 border border-white/30 font-semibold text-xs text-gray-600 dark:text-gray-400 hover:bg-white/80 transition-all"
+              >
+                Card List
+              </button>
+              <button
+                className="px-3 py-1.5 rounded-full backdrop-blur-xl bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 border border-purple-300/50 font-semibold text-xs text-purple-700 dark:text-purple-300 shadow-sm"
+              >
+                Expansions
+              </button>
+              <button
+                onClick={() => router.push('/pocketmode/deck-builder')}
+                className="px-3 py-1.5 rounded-full backdrop-blur-xl bg-white/60 dark:bg-gray-800/60 border border-white/30 font-semibold text-xs text-gray-600 dark:text-gray-400 hover:bg-white/80 transition-all"
+              >
+                Deck Builder
+              </button>
+            </div>
+          </motion.div>
           
-          {/* Search and Filters Card */}
-          <GlassContainer variant="medium" className="mb-8">
-            {/* Search and Filters */}
-            <div className="flex flex-col gap-6">
-              {/* Search Bar */}
-              <div className="relative">
-                <input
-                  id="searchInput"
-                  type="text"
-                  className="w-full pr-6 py-4 pl-12 glass-light border border-gray-200 dark:border-gray-700 rounded-full text-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all"
-                  placeholder="Search for an expansion (e.g., Genetic Apex, Mythical Island)"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                />
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className="h-6 w-6 text-gray-400 dark:text-gray-500 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
-                  stroke="currentColor"
-                >
+          {/* Search and Filters with Glass Morphism */}
+          <motion.div 
+            className="mb-6 backdrop-blur-xl bg-white/90 dark:bg-gray-800/90 rounded-3xl p-4 border border-white/50 dark:border-gray-700/50 shadow-xl"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            {/* Search Bar */}
+            <div className="relative mb-3">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <svg className="w-4 h-4 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
+              <input
+                type="text"
+                className="w-full pl-9 pr-9 py-2 backdrop-blur-xl bg-white/80 dark:bg-gray-800/80 rounded-full text-sm border border-white/40 dark:border-gray-700/40 focus:outline-none focus:ring-2 focus:ring-purple-400/40 focus:border-purple-400/60 focus:ring-offset-0 transition-all shadow-sm"
+                placeholder="Search expansions... (Press / to focus)"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                style={{
+                  WebkitAppearance: 'none',
+                  MozAppearance: 'none',
+                  appearance: 'none',
+                  outline: 'none',
+                  boxShadow: 'none'
+                }}
+              />
+              {search && (
+                <button
+                  className="absolute inset-y-0 right-0 pr-3 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+                  onClick={() => setSearch('')}
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
+            </div>
               
               {/* Filter Controls */}
               <div className="flex flex-col md:flex-row gap-4 items-end">
@@ -558,8 +595,7 @@ const PocketExpansions: NextPage = () => {
                   Clear Filters
                 </GradientButton>
               </div>
-            </div>
-          </GlassContainer>
+          </motion.div>
         </FadeIn>
       
       {loading ? (

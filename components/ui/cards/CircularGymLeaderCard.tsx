@@ -26,6 +26,7 @@ interface CircularGymLeaderCardProps {
   funFact: string;
   gymTown: string;
   recommendedLevel?: number;
+  acePokemon?: { name: string; sprite: string; id?: number };
 }
 
 const CircularGymLeaderCard: React.FC<CircularGymLeaderCardProps> = ({
@@ -41,7 +42,8 @@ const CircularGymLeaderCard: React.FC<CircularGymLeaderCardProps> = ({
   quote,
   funFact,
   gymTown,
-  recommendedLevel
+  recommendedLevel,
+  acePokemon
 }) => {
   const typeGradients: { [key: string]: { from: string; to: string } } = {
     rock: { from: 'amber-600', to: 'yellow-900' },
@@ -107,9 +109,9 @@ const CircularGymLeaderCard: React.FC<CircularGymLeaderCardProps> = ({
               </div>
             </div>
             
-            {/* Floating badge */}
+            {/* Gym Badge - Bottom right corner of circle */}
             <motion.div
-              className="absolute -top-2 -right-2 z-30"
+              className="absolute -bottom-2 -right-2 z-30"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.3, type: "spring", stiffness: 500 }}
@@ -129,8 +131,13 @@ const CircularGymLeaderCard: React.FC<CircularGymLeaderCardProps> = ({
 
         {/* Content sections */}
         <div className="px-6 pb-6 mt-4">
-          {/* Name and location */}
+
+          {/* Name and location with type above */}
           <div className="text-center mb-4">
+            {/* Type specialization above name */}
+            <div className="flex justify-center mb-2">
+              <TypeGradientBadge type={type} size="md" gradient={true} />
+            </div>
             <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">{name}</h2>
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{gymTown} Gym Leader</p>
             {recommendedLevel && (
@@ -138,11 +145,6 @@ const CircularGymLeaderCard: React.FC<CircularGymLeaderCardProps> = ({
                 Recommended Level: {recommendedLevel}
               </p>
             )}
-          </div>
-
-          {/* Type specialization */}
-          <div className="flex justify-center mb-4">
-            <TypeGradientBadge type={type} size="md" gradient={true} />
           </div>
 
           {/* Quote */}
@@ -153,39 +155,6 @@ const CircularGymLeaderCard: React.FC<CircularGymLeaderCardProps> = ({
               </p>
             </div>
           )}
-
-          {/* Team preview - circular mini sprites */}
-          <div className="mb-4">
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 text-center">
-              Team
-            </h3>
-            <div className="flex justify-center gap-2 flex-wrap">
-              {team.slice(0, 6).map((pokemon, index) => (
-                <Link
-                  key={index}
-                  href={pokemon.id ? `/pokedex/${pokemon.id}` : `/pokedex/${pokemon.name.toLowerCase()}`}
-                >
-                  <motion.div
-                    className="relative w-12 h-12 cursor-pointer"
-                    whileHover={{ scale: 1.2, zIndex: 10 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <div className={`absolute inset-0 rounded-full bg-gradient-to-br from-${gradient.from}/30 to-${gradient.to}/30 p-0.5`}>
-                      <div className="w-full h-full rounded-full bg-white dark:bg-gray-800 overflow-hidden">
-                        <Image
-                          src={pokemon.sprite}
-                          alt={pokemon.name}
-                          width={48}
-                          height={48}
-                          className="p-1"
-                        />
-                      </div>
-                    </div>
-                  </motion.div>
-                </Link>
-              ))}
-            </div>
-          </div>
 
           {/* Strengths and Weaknesses */}
           <div className="grid grid-cols-2 gap-3 mb-4">
@@ -230,6 +199,39 @@ const CircularGymLeaderCard: React.FC<CircularGymLeaderCardProps> = ({
             </div>
           )}
         </div>
+        
+        {/* Ace Pokemon - Bottom right corner */}
+        {acePokemon && (
+          <motion.div
+            className="absolute bottom-4 right-4 z-20"
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.4, type: "spring", stiffness: 300 }}
+          >
+            <Link href={acePokemon.id ? `/pokedex/${acePokemon.id}` : `/pokedex/${acePokemon.name.toLowerCase()}`}>
+              <div className="relative group cursor-pointer">
+                <div className={`w-20 h-20 rounded-full bg-gradient-to-br from-${gradient.from} to-${gradient.to} p-1 shadow-lg group-hover:shadow-xl transition-shadow`}>
+                  <div className="w-full h-full rounded-full bg-white dark:bg-gray-800 p-1">
+                    <div className="relative w-full h-full rounded-full overflow-hidden bg-gradient-to-br from-white/50 to-gray-100/50">
+                      <Image
+                        src={acePokemon.sprite}
+                        alt={acePokemon.name}
+                        width={72}
+                        height={72}
+                        className="p-1 group-hover:scale-110 transition-transform"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="absolute -bottom-5 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
+                  <span className="text-xs font-semibold text-gray-700 dark:text-gray-300 bg-white/90 dark:bg-gray-800/90 px-2 py-0.5 rounded-full">
+                    Ace
+                  </span>
+                </div>
+              </div>
+            </Link>
+          </motion.div>
+        )}
       </GlassContainer>
     </motion.div>
   );

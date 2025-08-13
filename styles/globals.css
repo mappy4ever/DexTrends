@@ -8,6 +8,23 @@
 /* Import theme-aware utilities */
 @import './theme-utilities.css';
 
+/* Override browser default focus styles for search inputs */
+@layer base {
+  input[type="text"]:focus,
+  input[type="search"]:focus {
+    outline: none !important;
+    outline-offset: 0 !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+  }
+  
+  /* Ensure search inputs stay rounded on focus */
+  input.rounded-full:focus {
+    border-radius: 9999px !important;
+  }
+}
+
 /* CSS Variables - Design System */
 :root {
   /* Base colors */
@@ -61,6 +78,26 @@
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Prevent white overlay on mobile */
+@media (max-width: 768px) {
+  body > div:first-child {
+    background: transparent !important;
+  }
+  
+  /* Prevent any full-screen white overlays */
+  .fixed[style*="inset: 0"],
+  .fixed[style*="top: 0"][style*="bottom: 0"][style*="left: 0"][style*="right: 0"] {
+    background: transparent !important;
+    pointer-events: none;
+  }
+  
+  /* Allow pointer events for actual content */
+  .fixed[style*="inset: 0"] > *,
+  .fixed[style*="top: 0"][style*="bottom: 0"][style*="left: 0"][style*="right: 0"] > * {
+    pointer-events: auto;
+  }
 }
 
 /* Glass Morphism Effects */

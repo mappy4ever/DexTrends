@@ -47,33 +47,29 @@ const GymLeaderCard: React.FC<GymLeaderCardProps> = ({
 
       {/* Main Card Content */}
       <div className={styles.card} data-type={type}>
-        {/* Type Specialist at Top */}
-        <div className={styles.typeSpecialization}>
-          <span className={styles.typeSpecLabel}>TYPE SPECIALIST</span>
-          <div className={styles.typeInfo}>
-            <TypeBadge
-              type={type}
-              size="lg"
-              className={styles.mainTypeBadge}
-            />
-          </div>
-        </div>
 
         {/* Content Area */}
         <div className={styles.content}>
           {/* Leader Info */}
           <div className={styles.leaderInfo}>
+            <div className={styles.badgeAboveName}>
+              <Image
+                src={badgeImage || `/images/scraped/badges/${badge.toLowerCase().replace(' badge', '-badge').replace(' ', '-')}.png`}
+                alt={`${badge} Badge`}
+                width={120}
+                height={120}
+                className={styles.gymBadgeLarge}
+              />
+            </div>
             <div className={styles.nameSection}>
-              <div className={styles.badgeContainer}>
-                <Image
-                  src={badgeImage || `/images/scraped/badges/${badge.toLowerCase().replace(' badge', '-badge').replace(' ', '-')}.png`}
-                  alt={`${badge} Badge`}
-                  width={72}
-                  height={72}
-                  className={styles.badge}
-                />
-              </div>
               <div className={styles.nameInfo}>
+                <div className={styles.typeInfo}>
+                  <TypeBadge
+                    type={type}
+                    size="lg"
+                    className={styles.mainTypeBadge}
+                  />
+                </div>
                 <h2 className={styles.leaderName}>{name}</h2>
                 <p className={styles.gymLocation}>{gymTown}</p>
               </div>

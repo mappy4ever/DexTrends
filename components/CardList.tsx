@@ -9,6 +9,7 @@ import { TCGCard } from "../types/api/cards";
 import { getRaritySymbol, getRarityGlowClass } from "../utils/tcgRaritySymbols";
 import performanceMonitor from "../utils/performanceMonitor";
 import { tcgCardToSdkCard } from "../utils/cardTypeGuards";
+import { createGlassStyle } from './ui/design-system/glass-constants';
 
 type SortOption = "price" | "releaseDate" | "rarity";
 
@@ -39,65 +40,138 @@ interface CardItemProps {
 }
 
 const CardItem = memo<CardItemProps>(({ card, onMagnifyClick, onCardClick, isScrolling = false }) => {
-  logger.debug('Rendering card', { id: card.id, name: card.name }); // Debug log
+  logger.debug('Rendering card', { id: card.id, name: card.name });
+  
+  // Get price for the card
+  const price = card.currentPrice || 0;
+  const setNumber = card.number || '???';
+  const setId = card.set?.id || '';
+  
+  // Determine rarity color
+  const getRarityPillColor = (rarity?: string) => {
+    if (!rarity) return 'from-gray-100/80 to-gray-200/80';
+    const lower = rarity.toLowerCase();
+    if (lower.includes('rare')) {
+      if (lower.includes('ultra') || lower.includes('secret')) return 'from-purple-200/90 to-pink-200/90';
+      if (lower.includes('holo')) return 'from-blue-200/90 to-purple-200/90';
+      return 'from-blue-100/80 to-blue-200/80';
+    }
+    if (lower.includes('uncommon')) return 'from-green-100/80 to-green-200/80';
+    return 'from-gray-100/80 to-gray-200/80';
+  };
   
   return (
     <motion.div 
-      className={`relative ${getRarityGlowClass(card.rarity)} ${isScrolling ? 'pointer-events-none' : ''}`}
-      style={{
-        minHeight: '280px',
-        contain: 'layout style paint',
-        visibility: 'visible',
-        opacity: 1,
-        display: 'block'
-      }}
+      className="group relative"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ 
-        type: "spring" as const, 
-        stiffness: 300, 
+        type: "spring",
+        stiffness: 300,
         damping: 24,
         duration: 0.4
       }}
-      whileHover={!isScrolling ? { 
-        scale: 1.02,
-        y: -4,
-        transition: { 
-          type: "spring" as const, 
-          stiffness: 400, 
-          damping: 17,
-          duration: 0.2
-        }
-      } : undefined}
-      whileTap={!isScrolling ? { scale: 0.98 } : undefined}
     >
-      <UnifiedCard
-        card={tcgCardToSdkCard(card)}
-        cardType="tcg"
-        showPrice={true}
-        showSet={true}
-        showTypes={true}
-        showRarity={true}
-        onMagnifyClick={(_convertedCard) => onMagnifyClick(card)}
-        onCardClick={(_convertedCard) => onCardClick(card)}
-        className="will-change-transform"
-        disableLazyLoad={false}
-      />
-      {card.rarity && (
-        <img 
-          src={getRaritySymbol(card.rarity)} 
-          alt={card.rarity}
-          className="absolute top-2 right-2 w-6 h-6 z-10 pointer-events-none"
-          loading="lazy"
-          decoding="async"
-        />
-      )}
-      {/* Hover overlay effect */}
+      {/* Main Card Container with Glass Effect */}
       <motion.div
-        className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 rounded-lg pointer-events-none"
-        whileHover={!isScrolling ? { opacity: 1 } : undefined}
-        transition={{ duration: 0.2 }}
-      />
+        className="
+          backdrop-blur-xl bg-white/95 dark:bg-gray-800/95
+          rounded-2xl p-4
+          border border-white/50 dark:border-gray-700/50
+          shadow-lg hover:shadow-2xl
+          transform transition-all duration-300
+          cursor-pointer
+        "
+        whileHover={!isScrolling ? {
+          scale: 1.02,
+          y: -4
+        } : undefined}
+        whileTap={!isScrolling ? { scale: 0.98 } : undefined}
+        onClick={() => onCardClick(card)}
+      >
+        {/* Card Image Container */}
+        <div className="relative rounded-xl overflow-hidden mb-3 bg-gradient-to-br from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-800">
+          <img
+            src={card.images?.small || '/back-card.png'}
+            alt={card.name}
+            className="w-full h-auto object-contain"
+            loading="lazy"
+            decoding="async"
+          />
+          
+          {/* Rarity Badge - Floating Glass Orb */}
+          {card.rarity && (
+            <div className="absolute top-2 right-2">
+              <div className={`
+                w-10 h-10 rounded-full
+                backdrop-blur-md bg-gradient-to-br ${getRarityPillColor(card.rarity)}
+                flex items-center justify-center
+                shadow-md border border-white/50
+                text-xs font-bold
+              `}>
+                {card.rarity.charAt(0).toUpperCase()}
+              </div>
+            </div>
+          )}
+          
+          {/* Magnify Button */}
+          <button
+            className="
+              absolute bottom-2 right-2
+              w-8 h-8 rounded-full
+              backdrop-blur-md bg-white/80 dark:bg-gray-800/80
+              flex items-center justify-center
+              shadow-md border border-white/50
+              opacity-0 group-hover:opacity-100
+              transition-opacity duration-200
+            "
+            onClick={(e) => {
+              e.stopPropagation();
+              onMagnifyClick(card);
+            }}
+          >
+            <svg className="w-4 h-4 text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Card Info Section */}
+        <div className="space-y-2">
+          {/* Name */}
+          <h3 className="font-semibold text-gray-800 dark:text-white text-sm truncate">
+            {card.name}
+          </h3>
+
+          {/* Glass Divider */}
+          <div className="h-px bg-gradient-to-r from-transparent via-purple-200/30 to-transparent" />
+
+          {/* Price & Set Info */}
+          <div className="flex justify-between items-center">
+            {/* Price Pill */}
+            {price > 0 && (
+              <div className="
+                px-3 py-1 rounded-full
+                bg-gradient-to-r from-purple-100/80 to-pink-100/80 dark:from-purple-900/30 dark:to-pink-900/30
+                backdrop-blur-sm
+                text-xs font-bold text-purple-700 dark:text-purple-300
+              ">
+                ${price.toFixed(2)}
+              </div>
+            )}
+
+            {/* Set Badge */}
+            <div className="
+              px-2 py-1 rounded-full
+              bg-gray-100/80 dark:bg-gray-700/80
+              text-xs text-gray-600 dark:text-gray-400
+              font-medium
+            ">
+              {setId} #{setNumber}
+            </div>
+          </div>
+        </div>
+      </motion.div>
     </motion.div>
   );
 });
@@ -281,18 +355,31 @@ const CardList = memo<CardListProps>(({
       {error && <p className="text-center text-red-500">{error}</p>}
 
       {!loading && (
-        <div className="flex justify-center mb-6">
-          <label htmlFor="sort" className="mr-2 font-semibold">Sort by:</label>
-          <select
-            id="sort"
-            value={sortOption}
-            onChange={handleSortChange}
-            className="border border-gray-300 rounded px-3 py-1"
-          >
-            <option value="price">Price</option>
-            <option value="releaseDate">Release Date</option>
-            <option value="rarity">Rarity</option>
-          </select>
+        <div className="flex justify-center mb-8">
+          <div className={createGlassStyle({ 
+            blur: 'md', 
+            opacity: 'medium', 
+            gradient: false, 
+            rounded: 'full',
+            shadow: 'lg'
+          })} style={{ 
+            padding: '0.75rem 1.5rem',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.75rem'
+          }}>
+            <label htmlFor="sort" className="text-sm font-bold text-gray-700 dark:text-gray-300">Sort by:</label>
+            <select
+              id="sort"
+              value={sortOption}
+              onChange={handleSortChange}
+              className="px-4 py-2 backdrop-blur-xl bg-white/80 dark:bg-gray-800/80 rounded-full text-sm font-medium border border-white/40 dark:border-gray-700/40 shadow-md focus:outline-none focus:ring-4 focus:ring-purple-500/30 transition-all cursor-pointer"
+            >
+              <option value="price">Price</option>
+              <option value="releaseDate">Release Date</option>
+              <option value="rarity">Rarity</option>
+            </select>
+          </div>
         </div>
       )}
 
@@ -307,9 +394,9 @@ const CardList = memo<CardListProps>(({
           className=""
         />
       ) : (
-        /* Card grid with performance optimizations */
+        /* Card grid with improved spacing for glass cards */
         <motion.div 
-          className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-8 gap-2 sm:gap-4"
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 p-6"
           style={{
             transform: 'translateZ(0)',
             backfaceVisibility: 'hidden'
@@ -348,15 +435,51 @@ const CardList = memo<CardListProps>(({
       )}
 
       {!loading && !error && cards.length === 0 && (
-        <p className="text-center text-content-muted mt-12">
-          No cards found for this Pokémon.
-        </p>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-center mt-12"
+        >
+          <div className={createGlassStyle({ 
+            blur: 'xl', 
+            opacity: 'strong', 
+            gradient: false, 
+            rounded: 'xl',
+            shadow: 'xl'
+          })} style={{ 
+            maxWidth: '24rem',
+            margin: '0 auto',
+            padding: '2rem'
+          }}>
+            <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+              </svg>
+            </div>
+            <p className="text-lg font-semibold text-gray-700 dark:text-gray-300">
+              No cards found
+            </p>
+          </div>
+        </motion.div>
       )}
 
       {!loading && cards.length > 0 && (
-        <div className="text-center mt-8 text-gray-500 dark:text-gray-400">
-          {cards.length} cards
-        </div>
+        <motion.div 
+          className="text-center mt-12"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          <div className="inline-flex items-center gap-2 backdrop-blur-xl bg-white/80 dark:bg-gray-800/80 rounded-full px-6 py-3 shadow-lg border border-white/50 dark:border-gray-700/50">
+            <svg className="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+            <span className="text-sm font-bold text-gray-700 dark:text-gray-300">
+              {cards.length} cards displayed
+            </span>
+          </div>
+        </motion.div>
       )}
 
       {/* Modal for zoomed card */}

@@ -274,6 +274,11 @@ const GymLeaderCarousel: React.FC<GymLeaderCarouselProps> = ({ region, gymLeader
                     funFact={leaderData.strategy || `${leader.name} is the ${leader.city} Gym Leader specializing in ${leader.type}-type Pokémon.`}
                     gymTown={leader.city}
                     recommendedLevel={recommendedLevel}
+                    acePokemon={leaderData.signature && leaderData.signatureId ? {
+                      name: leaderData.signature,
+                      id: leaderData.signatureId,
+                      sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${leaderData.signatureId}.png`
+                    } : undefined}
                   />
                 </div>
               );

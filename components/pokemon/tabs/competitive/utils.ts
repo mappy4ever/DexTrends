@@ -3,7 +3,9 @@ import type { FormatEligibility } from './types';
 
 // Special format checks
 export const checkFormatEligibility = (pokemon: Pokemon, species: PokemonSpecies): FormatEligibility => {
-  const baseStatTotal = pokemon.stats?.reduce((sum, stat) => sum + stat.base_stat, 0) || 0;
+  const baseStatTotal = Array.isArray(pokemon.stats) 
+    ? pokemon.stats.reduce((sum, stat) => sum + (stat?.base_stat || 0), 0) 
+    : 0;
   
   return {
     littleCup: species.evolves_from_species === null && species.is_baby === false && 

@@ -241,7 +241,7 @@ const gymLeaderImages: ImageMapping = {
     '/images/scraped/gym-leaders/milo-alt2.png'
   ],
   'Nessa': [
-    '/images/gym-leader-placeholder.svg'
+    '/images/scraped/gym-leaders/Sword_Shield_Nessa.png'
   ],
   'Kabu': [
     '/images/scraped/gym-leaders/kabu.png'
@@ -259,7 +259,7 @@ const gymLeaderImages: ImageMapping = {
     '/images/scraped/gym-leaders/opal.png'
   ],
   'Gordie': [
-    '/images/scraped/gym-leaders/gordie-alt2.png'
+    '/images/scraped/gym-leaders/Sword_Shield_Gordie.png'
   ],
   'Gordie/Melony': [
     '/images/scraped/gym-leaders/gordie-alt2.png'
@@ -294,7 +294,7 @@ const gymLeaderImages: ImageMapping = {
     '/images/scraped/gym-leaders/ryme-alt2.png'
   ],
   'Tulip': [
-    '/images/gym-leader-placeholder.svg'
+    '/images/scraped/gym-leaders/tulip.png'
   ],
   'Grusha': [
     '/images/scraped/gym-leaders/grusha.png'
@@ -583,7 +583,7 @@ const badgeImages: Record<string, string> = {
 const gameCoverArt: ImageMapping = {
   'Red': ['/images/scraped/games/covers/red-en-boxart.png', '/images/scraped/games/covers/red-jp-boxart.png'],
   'Blue': ['/images/scraped/games/covers/blue-en-boxart.png', '/images/scraped/games/covers/blue-jp-boxart.png'],
-  'Yellow': ['/images/scraped/games/covers/yellow-en-boxart.png', '/images/scraped/games/covers/yellow-jp-boxart.png'],
+  'Yellow': ['/images/scraped/games/covers/pok-mon-yellow-nintendo-2ds-bundle-australia.png', '/images/scraped/games/covers/yellow-jp-boxart.png'],
   'Gold': ['/images/scraped/games/covers/gold-en-boxart.png', '/images/scraped/games/covers/gold-jp-boxart.png'],
   'Silver': ['/images/scraped/games/covers/silver-en-boxart.png', '/images/scraped/games/covers/silver-jp-boxart.png'],
   'Crystal': ['/images/scraped/games/covers/crystal-en-boxart.png', '/images/scraped/games/covers/crystal-jp-boxart.png'],
@@ -611,8 +611,13 @@ const gameCoverArt: ImageMapping = {
   'Ultra Moon': ['/images/scraped/games/covers/ultra-moon-en-boxart.png', '/images/scraped/games/covers/ultra-moon-jp-boxart.png'],
   'Sword': ['/images/scraped/games/covers/sword-en-boxart.jpg', '/images/scraped/games/covers/sword-jp-boxart.jpg'],
   'Shield': ['/images/scraped/games/covers/shield-en-boxart.jpg', '/images/scraped/games/covers/shield-jp-boxart.jpg'],
-  'Scarlet': ['/images/scraped/games/covers/scarlet-en-boxart.jpg', '/images/scraped/games/covers/scarlet-jp-boxart.jpg'],
-  'Violet': ['/images/scraped/games/covers/violet-en-boxart.jpg', '/images/scraped/games/covers/violet-jp-boxart.jpg']
+  'Scarlet': ['/images/scraped/games/covers/scarlet-en-boxart.png', '/images/scraped/games/covers/scarlet-jp-boxart.png'],
+  'Violet': ['/images/scraped/games/covers/violet-en-boxart.png', '/images/scraped/games/covers/violet-jp-boxart.png'],
+  "Let's Go Pikachu/Eevee": ['/images/scraped/games/covers/lets-go-pikachu-en-boxart.png', '/images/scraped/games/covers/lets-go-eevee-en-boxart.png'],
+  "Let's Go Pikachu": ['/images/scraped/games/covers/lets-go-pikachu-en-boxart.png'],
+  "Let's Go Eevee": ['/images/scraped/games/covers/lets-go-eevee-en-boxart.png'],
+  "Brilliant Diamond": ['/images/scraped/games/covers/brilliant-diamond-en-boxart.png'],
+  "Shining Pearl": ['/images/scraped/games/covers/shining-pearl-en-boxart.png']
 };
 
 // Professor image mappings

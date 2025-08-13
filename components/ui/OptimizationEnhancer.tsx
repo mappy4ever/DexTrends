@@ -263,22 +263,11 @@ export const ResourceOptimizer = (): null => {
   return null;
 };
 
-// Service Worker registration for offline support
+// Service Worker registration moved to PWAProvider to prevent duplicate registrations
+// This component is kept for backward compatibility but no longer registers SW
 export const ServiceWorkerManager = (): null => {
-  useEffect(() => {
-    if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .then(registration => {
-            // Service worker registered successfully
-          })
-          .catch(registrationError => {
-            // Service worker registration failed
-          });
-      });
-    }
-  }, []);
-
+  // Service worker registration has been moved to PWAProvider
+  // to prevent duplicate registrations and Safari compatibility issues
   return null;
 };
 

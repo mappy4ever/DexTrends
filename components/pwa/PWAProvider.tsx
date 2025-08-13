@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/router';
 import logger from '@/utils/logger';
+import { getServiceWorkerFile, getBrowserInfo } from '@/utils/browserDetection';
 import type { BeforeInstallPromptEvent, ExtendedNavigator } from '@/types/pwa';
 
 // Re-export hook for backward compatibility
@@ -66,9 +67,12 @@ export const PWAProvider: React.FC<PWAProviderProps> = ({ children }) => {
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
 
-    // Register service worker
+    // Register service worker with cleanup of old workers
     if ('serviceWorker' in navigator) {
-      registerServiceWorker();
+      // First clean up any old service workers that might cause conflicts
+      cleanupOldServiceWorkers().then(() => {
+        registerServiceWorker();
+      });
     }
 
     return () => {
@@ -79,9 +83,52 @@ export const PWAProvider: React.FC<PWAProviderProps> = ({ children }) => {
     };
   }, []);
 
+  const cleanupOldServiceWorkers = async (): Promise<void> => {
+    try {
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      const currentSWFile = getServiceWorkerFile();
+      
+      for (const registration of registrations) {
+        // Check if this is an old or conflicting service worker
+        const scriptURL = registration.active?.scriptURL || registration.installing?.scriptURL || registration.waiting?.scriptURL;
+        
+        if (scriptURL) {
+          const url = new URL(scriptURL);
+          const filename = url.pathname;
+          
+          // Unregister old service workers that don't match current one
+          if (filename !== currentSWFile && (filename === '/sw.js' || filename === '/sw.tsx' || filename === '/sw-safari.js')) {
+            logger.info('Unregistering old service worker:', { file: filename });
+            await registration.unregister();
+          }
+        }
+      }
+    } catch (error) {
+      logger.warn('Failed to cleanup old service workers:', { error });
+    }
+  };
+
   const registerServiceWorker = async (): Promise<void> => {
     try {
-      const registration = await navigator.serviceWorker.register('/sw.js');
+      // Get the appropriate service worker file based on browser
+      const swFile = getServiceWorkerFile();
+      
+      if (!swFile) {
+        logger.info('Service worker not supported in this browser');
+        return;
+      }
+      
+      const browserInfo = getBrowserInfo();
+      logger.info('Registering service worker', { 
+        file: swFile, 
+        browser: {
+          isSafari: browserInfo.isSafari,
+          isChrome: browserInfo.isChrome,
+          version: browserInfo.browserVersion
+        }
+      });
+      
+      const registration = await navigator.serviceWorker.register(swFile);
       setServiceWorkerRegistration(registration);
 
       // Check for updates
@@ -91,12 +138,16 @@ export const PWAProvider: React.FC<PWAProviderProps> = ({ children }) => {
           newWorker.addEventListener('statechange', () => {
             if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
               setHasUpdate(true);
+              logger.info('New service worker available');
             }
           });
         }
       });
+      
+      logger.info('Service worker registered successfully', { scope: registration.scope });
     } catch (error) {
       logger.error('Service worker registration failed:', { error });
+      // Continue running the app even if SW registration fails
     }
   };
 

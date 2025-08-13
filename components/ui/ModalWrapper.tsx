@@ -94,7 +94,7 @@ const Modal: React.FC<ModalProps> = ({
       // Open modal using AdvancedModalSystem
       modalIdRef.current = openModal(ModalContent, {
         size: mapSize(size),
-        closable: true,
+        closable: false, // Disable AdvancedModalSystem's close button to avoid duplicates
         backdrop: closeOnBackdrop,
         animation: 'scale'
       });

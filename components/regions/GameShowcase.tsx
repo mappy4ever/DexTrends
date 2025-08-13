@@ -44,84 +44,123 @@ const GameShowcase: React.FC<GameShowcaseProps> = ({ region, theme }) => {
           </div>
         </FadeIn>
         
-        <StaggeredChildren className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+        {/* Enhanced Glass Morphism Game Grid */}
+        <StaggeredChildren className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {region.games.map((game, index) => (
             <SlideUp key={game} delay={index * 0.05}>
               <Link href={`/pokemon/games/${game.toLowerCase().replace(/\s+/g, '-')}`} className="block group">
                 <CardHover>
-                    <div className={`relative transform transition-all duration-300 hover:-translate-y-2`}>
-                      {/* Card container with border */}
-                      <div className={`relative h-80 rounded-2xl overflow-hidden ${
+                  <div className="relative transform transition-all duration-500 hover:-translate-y-3 hover:rotate-1">
+                    {/* Liquid Glass Card Container */}
+                    <div className={`
+                      relative rounded-3xl overflow-hidden
+                      backdrop-blur-xl
+                      ${
                         theme === 'dark' 
-                          ? 'bg-gradient-to-br from-gray-800 via-gray-800 to-gray-700' 
-                          : 'bg-gradient-to-br from-white via-gray-50 to-gray-100'
-                      } shadow-xl group-hover:shadow-2xl transition-all duration-300 border-2 ${
-                        theme === 'dark' ? 'border-gray-700' : 'border-gray-200'
-                      } group-hover:border-transparent`}>
-                        
-                        {/* Animated gradient border on hover */}
-                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl p-[2px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 -z-10" />
-                        
-                        {/* Game cover image */}
-                        <div className="relative h-60 overflow-hidden">
-                          <Image
-                            src={getGameCover(game)}
-                            alt={`Pokémon ${game} cover`}
-                            layout="fill"
-                            objectFit="cover"
-                            objectPosition="center"
-                            className="group-hover:scale-110 transition-transform duration-700 ease-out"
-                            onError={(e) => {
-                              const paths = getGameCoverArt(game);
-                              const target = e.target as HTMLImageElement;
-                              const currentIndex = paths.findIndex(p => target.src.includes(p));
-                              if (currentIndex < paths.length - 1) {
-                                target.src = paths[currentIndex + 1];
-                              } else {
-                                // Fallback to placeholder
-                                target.style.display = 'none';
-                                const parent = target.parentElement;
-                                if (parent) {
-                                  parent.classList.add('game-cover-fallback');
-                                }
+                          ? 'bg-gradient-to-br from-gray-800/90 via-purple-900/30 to-gray-900/90' 
+                          : 'bg-gradient-to-br from-white/90 via-purple-100/40 to-white/80'
+                      }
+                      shadow-[0_8px_32px_rgba(139,92,246,0.15)]
+                      group-hover:shadow-[0_16px_48px_rgba(139,92,246,0.25)]
+                      transition-all duration-500
+                      border border-white/20
+                      group-hover:border-purple-400/40
+                    `}>
+                      
+                      {/* Animated Gradient Border Glow */}
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        <div className="absolute inset-[-2px] rounded-3xl bg-gradient-to-r from-pink-400/30 via-purple-400/30 to-blue-400/30 blur-xl" />
+                      </div>
+                      
+                      {/* Large Game Cover Display */}
+                      <div className="relative aspect-[3/4] w-full overflow-hidden bg-gradient-to-br from-purple-200/20 to-pink-200/20">
+                        <Image
+                          src={getGameCover(game)}
+                          alt={`Pokémon ${game} cover`}
+                          fill
+                          className="object-cover object-center group-hover:scale-110 transition-transform duration-700 ease-out"
+                          sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                          priority={index < 4}
+                          onError={(e) => {
+                            const paths = getGameCoverArt(game);
+                            const target = e.target as HTMLImageElement;
+                            const currentIndex = paths.findIndex(p => target.src.includes(p));
+                            if (currentIndex < paths.length - 1) {
+                              target.src = paths[currentIndex + 1];
+                            } else {
+                              // Enhanced fallback with gradient
+                              target.style.display = 'none';
+                              const parent = target.parentElement;
+                              if (parent) {
+                                parent.classList.add('game-cover-fallback-enhanced');
                               }
-                            }}
-                          />
-                          
-                          {/* Subtle gradient overlay */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+                            }
+                          }}
+                        />
+                        
+                        {/* Soft Glass Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-white/10 opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
+                        
+                        {/* Floating Version Badge */}
+                        <div className="absolute top-4 left-4 backdrop-blur-md bg-white/80 dark:bg-gray-900/80 px-3 py-1.5 rounded-full shadow-lg transform -rotate-2 group-hover:rotate-0 transition-transform duration-300">
+                          <span className="text-xs font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                            Gen {region.generation}
+                          </span>
                         </div>
                         
-                        {/* Game info section */}
-                        <div className={`absolute bottom-0 left-0 right-0 p-4 ${
-                          theme === 'dark' 
-                            ? 'bg-gradient-to-t from-gray-900 via-gray-900/95 to-transparent' 
-                            : 'bg-gradient-to-t from-white via-white/95 to-transparent'
-                        }`}>
-                          <h3 className="font-bold text-lg mb-2 group-hover:text-blue-500 transition-colors">
-                            Pokémon {game}
-                          </h3>
-                          
-                          {/* Hover overlay with explore button */}
-                          <div className="opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                            <button className="flex items-center gap-2 text-sm font-semibold text-blue-500 hover:text-blue-600">
-                              <span>Explore More</span>
-                              <BsArrowRight className="group-hover:translate-x-1 transition-transform" />
-                            </button>
-                          </div>
-                        </div>
-                        
-                        {/* Decorative elements */}
-                        <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                          <div className="flex items-center gap-1">
-                            {[...Array(3)].map((_, i) => (
-                              <BsStarFill key={i} className="text-yellow-400 text-xs" />
-                            ))}
+                        {/* Interactive Play Button */}
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <div className="w-20 h-20 rounded-full backdrop-blur-xl bg-white/90 dark:bg-gray-900/90 flex items-center justify-center shadow-2xl transform scale-0 group-hover:scale-100 transition-transform duration-500 delay-100">
+                            <BsArrowRight className="text-3xl text-purple-600 dark:text-purple-400 translate-x-0.5" />
                           </div>
                         </div>
                       </div>
+                      
+                      {/* Glass Info Panel */}
+                      <div className="relative p-5">
+                        {/* Glass Divider */}
+                        <div className="absolute top-0 left-5 right-5 h-px bg-gradient-to-r from-transparent via-purple-400/30 to-transparent" />
+                        
+                        {/* Title with Gradient */}
+                        <h3 className="font-bold text-lg mb-2 text-gray-800 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors duration-300">
+                          Pokémon {game}
+                        </h3>
+                        
+                        {/* Release Info Pills */}
+                        <div className="flex flex-wrap gap-2 mb-3">
+                          <span className="px-2.5 py-1 rounded-full text-xs font-medium backdrop-blur-sm bg-purple-100/50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border border-purple-200/30">
+                            {region.name}
+                          </span>
+                          {game.includes('&') && game.split(' & ').map((version, idx) => (
+                            <span key={idx} className="px-2.5 py-1 rounded-full text-xs font-medium backdrop-blur-sm bg-pink-100/50 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300 border border-pink-200/30">
+                              {version}
+                            </span>
+                          ))}
+                        </div>
+                        
+                        {/* Interactive Elements */}
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-1">
+                            {[...Array(5)].map((_, i) => (
+                              <BsStarFill key={i} className={`text-xs ${
+                                i < 4 ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600'
+                              }`} />
+                            ))}
+                          </div>
+                          
+                          {/* Play Now Text */}
+                          <span className="text-sm font-semibold text-purple-600 dark:text-purple-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1">
+                            Play
+                            <BsArrowRight className="group-hover:translate-x-1 transition-transform" />
+                          </span>
+                        </div>
+                      </div>
+                      
+                      {/* Bottom Glass Edge Effect */}
+                      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent" />
                     </div>
-                  </CardHover>
+                  </div>
+                </CardHover>
               </Link>
             </SlideUp>
           ))}
@@ -173,34 +212,44 @@ const GameShowcase: React.FC<GameShowcaseProps> = ({ region, theme }) => {
       </div>
 
       <style jsx>{`
-        .game-cover-fallback {
+        .game-cover-fallback-enhanced {
           display: flex !important;
           align-items: center;
           justify-content: center;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          background: linear-gradient(135deg, 
+            rgba(196, 181, 253, 0.3) 0%, 
+            rgba(244, 114, 182, 0.3) 50%, 
+            rgba(147, 197, 253, 0.3) 100%);
           position: relative;
           overflow: hidden;
         }
-        .game-cover-fallback::before {
+        .game-cover-fallback-enhanced::before {
           content: '';
           position: absolute;
           inset: 0;
           background: repeating-linear-gradient(
             45deg,
             transparent,
-            transparent 10px,
-            rgba(255,255,255,0.1) 10px,
-            rgba(255,255,255,0.1) 20px
+            transparent 20px,
+            rgba(255,255,255,0.1) 20px,
+            rgba(255,255,255,0.1) 40px
           );
+          animation: slide 20s linear infinite;
         }
-        .game-cover-fallback::after {
+        .game-cover-fallback-enhanced::after {
           content: 'Pokémon';
-          color: white;
-          font-size: 1.5rem;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          font-size: 2rem;
           font-weight: bold;
-          text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
           position: relative;
           z-index: 1;
+        }
+        @keyframes slide {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(40px); }
         }
       `}</style>
     </div>
