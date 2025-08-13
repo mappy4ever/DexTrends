@@ -387,7 +387,7 @@ const PocketMode: NextPage = () => {
                   onClick={() => setRarityFilter('fullart')}
                   className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-all backdrop-blur-md border ${
                     rarityFilter === 'fullart' 
-                      ? 'bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 border-purple-300/50 text-purple-700 dark:text-purple-300' 
+                      ? 'bg-gradient-to-r from-purple-100/90 to-pink-100/90 dark:from-purple-900/40 dark:to-pink-900/40 border-purple-300/50 text-purple-700 dark:text-purple-300 shadow-lg shadow-purple-500/20 dark:shadow-purple-500/10' 
                       : 'bg-white/60 dark:bg-gray-800/60 border-white/30 text-gray-500 dark:text-gray-400 hover:bg-white/80'
                   }`}
                 >

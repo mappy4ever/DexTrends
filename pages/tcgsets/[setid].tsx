@@ -9,7 +9,7 @@ import { safeRequestIdleCallback } from "../../utils/requestIdleCallback";
 import { GlassContainer } from "../../components/ui/design-system/GlassContainer";
 import { GradientButton } from "../../components/ui/design-system/GradientButton";
 import Modal from "../../components/ui/modals/Modal";
-import CardList from "../../components/CardList";
+import TCGCardList from "../../components/TCGCardList";
 import VirtualCardGrid from "../../components/VirtualCardGrid";
 import SimpleCardWrapper from "../../components/ui/SimpleCardWrapper";
 import { useTheme } from "../../context/UnifiedAppContext";
@@ -500,6 +500,27 @@ const SetIdPage: NextPage = () => {
     return highestPrice;
   }, []);
 
+  // Get rarity rank for sorting
+  const getRarityRank = useCallback((card: TCGCard): number => {
+    const rarityOrder: Record<string, number> = {
+      'Common': 1,
+      'Uncommon': 2,
+      'Rare': 3,
+      'Rare Holo': 4,
+      'Rare Holo EX': 5,
+      'Rare Holo GX': 6,
+      'Rare Holo V': 7,
+      'Rare Holo VMAX': 8,
+      'Rare Holo VSTAR': 9,
+      'Rare Ultra': 10,
+      'Rare Secret': 11,
+      'Rare Rainbow': 12,
+      'Rare Gold': 13
+    };
+    
+    return rarityOrder[card.rarity || ''] || 0;
+  }, []);
+
   // Scroll to cards section
   const scrollToCards = () => {
     if (cardsGridRef.current) {
@@ -746,22 +767,20 @@ const SetIdPage: NextPage = () => {
               {statistics.highestValueCards.length > 0 && (
                 <div className="mt-8">
                   <h3 className="text-lg font-semibold mb-4">Highest Value Cards</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                    {statistics.highestValueCards.slice(0, 5).map((card: CardWithMarketPrice) => (
-                      <div key={card.id} className="text-center">
-                        <SimpleCardWrapper
-                          rarity={card.rarity}
-                          className="rounded-lg overflow-hidden mb-2"
-                        >
+                  <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-3">
+                    {statistics.highestValueCards.slice(0, 8).map((card: CardWithMarketPrice) => (
+                      <div key={card.id} className="text-center group">
+                        <div className="rounded-lg overflow-hidden mb-1 transform hover:scale-105 transition-all duration-200 shadow-md hover:shadow-xl bg-white dark:bg-gray-800">
                           <img 
                             src={card.images.small} 
                             alt={card.name}
                             className="w-full h-auto cursor-pointer"
+                            style={{ maxWidth: '120px', margin: '0 auto' }}
                             onClick={() => handleCardClick(card)}
                           />
-                        </SimpleCardWrapper>
-                        <p className="text-sm font-medium truncate">{card.name}</p>
-                        <p className="text-sm text-green-600 dark:text-green-400">
+                        </div>
+                        <p className="text-xs font-medium truncate px-1">{card.name}</p>
+                        <p className="text-xs text-green-600 dark:text-green-400 font-semibold">
                           ${card.marketPrice.toFixed(2)}
                         </p>
                       </div>
@@ -824,7 +843,7 @@ const SetIdPage: NextPage = () => {
             </GlassContainer>
           )}
 
-          {/* Filters */}
+          {/* Filters Section */}
           <GlassContainer variant="medium" className="mb-8">
             <h2 className="text-2xl font-bold mb-4">Filter Cards</h2>
             
@@ -907,44 +926,39 @@ const SetIdPage: NextPage = () => {
 
           {/* Cards Grid */}
           <div ref={cardsGridRef}>
-            <GlassContainer variant="light">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-bold">
-                  Cards ({filteredCards.length} {filteredCards.length !== cards.length && `of ${cards.length}`})
-                </h2>
-              </div>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold">
+                Cards ({filteredCards.length} {filteredCards.length !== cards.length && `of ${cards.length}`})
+              </h2>
+            </div>
 
-              {cards.length === 0 && loading ? (
-                <CardGridSkeleton count={12} />
-              ) : filteredCards.length > 0 ? (
+            {cards.length === 0 && loading ? (
+              <CardGridSkeleton count={12} />
+            ) : filteredCards.length > 0 ? (
+              <div className="bg-gray-200/60 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl p-6 md:p-8 shadow-2xl">
                 <div key={`card-grid-${cards.length}`} className="card-grid-container">
-                  {/* Use VirtualCardGrid for larger sets, CardList for smaller ones */}
-                  {filteredCards.length > 50 ? (
-                    <>
-                      <VirtualCardGrid
-                        cards={filteredCards}
-                        onCardClick={handleCardClick}
-                        getPrice={getCardPrice}
-                      />
-                      <p className="text-center mt-4 text-sm text-gray-600 dark:text-gray-400">
-                        Showing {filteredCards.length} cards with virtual scrolling
-                      </p>
-                    </>
-                  ) : (
-                    <CardList
-                      cards={filteredCards}
-                      onCardClick={handleCardClick}
-                    />
-                  )}
+                  {/* Use TCGCardList for all sets with glass morphism design */}
+                  <TCGCardList
+                    cards={filteredCards}
+                    onCardClick={handleCardClick}
+                    getPrice={getCardPrice}
+                    getReleaseDate={(card) => card.set?.releaseDate || ""}
+                    getRarityRank={getRarityRank}
+                    showPrice={true}
+                    showRarity={true}
+                    showSet={true}
+                    showSort={true}
+                    showSearch={false}
+                  />
                 </div>
-              ) : (
-                <div className="text-center py-12">
-                  <p className="text-gray-500 dark:text-gray-400">
-                    No cards found matching your filters.
-                  </p>
-                </div>
-              )}
-            </GlassContainer>
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <p className="text-gray-500 dark:text-gray-400">
+                  No cards found matching your filters.
+                </p>
+              </div>
+            )}
           </div>
         </div>
 

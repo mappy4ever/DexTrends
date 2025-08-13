@@ -2,21 +2,11 @@ import React, { useState, useMemo, useCallback, memo } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Modal from "./ui/modals/Modal";
-import UnifiedCard from "./ui/cards/UnifiedCard";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import { InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { SmartSkeleton } from "./ui/SkeletonLoader";
-import { FaCrown } from "react-icons/fa";
-import type { PocketCard } from "../types/api/pocket-cards";
-
-// Extended interface for pocket cards with additional display properties
-interface ExtendedPocketCard extends PocketCard {
-  health?: string | number;
-  pack?: string;
-  ex?: "Yes" | "No";
-  fullart?: "Yes" | "No";
-  type?: string;
-}
+import type { TCGCard } from "../types/api/cards";
+import logger from "@/utils/logger";
 
 // Dynamic import for react-window to reduce bundle size
 const VirtualizedGrid = dynamic(
@@ -27,83 +17,59 @@ const VirtualizedGrid = dynamic(
   }
 );
 
-// Pocket Card wrapper props
-interface PocketCardProps {
-  card: ExtendedPocketCard;
+// TCG Card wrapper props
+interface TCGCardProps {
+  card: TCGCard;
   cardClassName?: string;
-  showHP: boolean;
+  showPrice: boolean;
   showRarity: boolean;
-  rarity?: string;
-  cardFeatures?: unknown;
-  setZoomedCard?: (card: ExtendedPocketCard | null) => void;
+  showSet: boolean;
+  setZoomedCard?: (card: TCGCard | null) => void;
   imageWidth: number;
   imageHeight: number;
-  onCardClick?: (card: ExtendedPocketCard) => void;
-  selectedRarityFilter?: string;
+  onCardClick?: (card: TCGCard) => void;
+  getPrice?: (card: TCGCard) => number;
 }
 
-// Pocket Card wrapper with new glass design
-const PocketCard = memo<PocketCardProps>(({ 
+// TCG Card wrapper with glass design matching PocketCard
+const TCGCardItem = memo<TCGCardProps>(({ 
   card, 
   cardClassName, 
-  showHP, 
-  showRarity, 
+  showPrice, 
+  showRarity,
+  showSet,
   setZoomedCard,
   imageWidth,
   imageHeight,
   onCardClick,
-  selectedRarityFilter = 'all'
+  getPrice
 }) => {
-  // Parse card details
-  const setId = card.id?.split('-')[0]?.toUpperCase() || 'A1';
-  const cardNumber = card.id?.split('-')[1] || '???';
+  // Get card details
+  const setId = card.set?.id || '';
+  const setName = card.set?.name || '';
+  const cardNumber = card.number || '???';
+  const price = getPrice ? getPrice(card) : 0;
   
-  // Get rarity display
-  const getRarityDisplay = (rarity?: string) => {
-    if (!rarity) return null;
-    // Convert outline stars (☆) to filled stars (★) for better visual impact
-    // Convert outline diamonds (◊) to filled diamonds (♦) with grey color
-    // and ensure we use consistent crown emoji
-    let displayRarity = rarity
-      .replace(/☆/g, '★')  // Replace white/outline stars with black/filled stars
-      .replace(/◊/g, '♦')  // Replace outline diamonds with filled diamonds
-      .replace(/♕/g, '👑'); // Replace chess queen with crown emoji for consistency
-    return displayRarity;
-  };
-  
-  // Determine rarity color for glass pill
+  // Get rarity display and colors
   const getRarityPillColor = (rarity?: string) => {
     if (!rarity) return 'from-gray-100/80 to-gray-200/80';
-    switch(rarity) {
-      case '◊': return 'from-gray-100/80 to-gray-200/80';
-      case '◊◊': return 'from-purple-100/80 to-purple-200/80';
-      case '◊◊◊': return 'from-pink-100/80 to-pink-200/80';
-      case '◊◊◊◊': return 'from-purple-200/80 to-pink-200/80';
-      case '★': return 'from-yellow-300 via-yellow-400 to-amber-400';
-      case '★★': return 'from-yellow-400 via-amber-400 to-yellow-500';
-      case '★★★': return 'from-yellow-400 via-amber-500 to-orange-400';
-      case '☆': return 'from-yellow-300 via-yellow-400 to-amber-400';
-      case '☆☆': return 'from-yellow-400 via-amber-400 to-yellow-500';
-      case '☆☆☆': return 'from-yellow-400 via-amber-500 to-orange-400';
-      case '👑': return 'from-yellow-400 via-amber-400 to-yellow-500';
-      case '♕': return 'from-yellow-400 via-amber-400 to-yellow-500';
-      default: return 'from-gray-100/80 to-gray-200/80';
+    const lower = rarity.toLowerCase();
+    
+    if (lower.includes('secret')) return 'from-purple-300/90 to-pink-300/90';
+    if (lower.includes('ultra')) return 'from-purple-200/90 to-pink-200/90';
+    if (lower.includes('rare')) {
+      if (lower.includes('holo')) return 'from-blue-200/90 to-purple-200/90';
+      return 'from-blue-100/80 to-blue-200/80';
     }
-  };
-  
-  // Check if rarity should have gold/shiny text
-  const isGoldRarity = (rarity?: string) => {
-    if (!rarity) return false;
-    // Always apply gold styling to star and crown rarities
-    // Check for both black star (★) and white star (☆) and other star variations
-    return rarity.includes('★') || rarity.includes('☆') || rarity.includes('⭐') || 
-           rarity === '👑' || rarity === '♕' || rarity === '⚜️' ||
-           rarity === '☆☆' || rarity === '☆☆☆';
+    if (lower.includes('uncommon')) return 'from-green-100/80 to-green-200/80';
+    return 'from-gray-100/80 to-gray-200/80';
   };
   
   // Get subtle type-based gradient for card background
-  const getTypeGradient = (type?: string) => {
-    if (!type) return '';
+  const getTypeGradient = (types?: string[]) => {
+    if (!types || types.length === 0) return '';
+    const primaryType = types[0].toLowerCase();
+    
     const typeColors: Record<string, string> = {
       'grass': 'from-green-100/60 via-green-50/40 via-70% to-transparent',
       'fire': 'from-red-100/60 via-orange-50/40 via-70% to-transparent',
@@ -120,8 +86,8 @@ const PocketCard = memo<PocketCardProps>(({
       'colorless': 'from-gray-50/60 via-gray-50/40 via-70% to-transparent',
       'fairy': 'from-pink-100/60 via-rose-50/40 via-70% to-transparent',
     };
-    const typeLower = type.toLowerCase();
-    return typeColors[typeLower] || '';
+    
+    return typeColors[primaryType] || '';
   };
   
   return (
@@ -143,177 +109,174 @@ const PocketCard = memo<PocketCardProps>(({
         onClick={() => onCardClick?.(card)}
       >
         {/* Subtle type-based gradient overlay */}
-        {card.type && (
-          <div className={`absolute inset-0 bg-gradient-to-b ${getTypeGradient(card.type)} pointer-events-none rounded-3xl opacity-80`} />
+        {card.types && (
+          <div className={`absolute inset-0 bg-gradient-to-b ${getTypeGradient(card.types)} pointer-events-none rounded-3xl opacity-80`} />
         )}
         
         {/* Card content with relative positioning to be above gradient */}
         <div className="relative z-10">
-        {/* Compact Image Container */}
-        <div className="relative rounded-2xl overflow-hidden mb-2 bg-gradient-to-br from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-800">
-          <img
-            src={card.image || '/back-card.png'}
-            alt={card.name}
-            width={imageWidth}
-            height={imageHeight}
-            className="w-full h-auto object-contain"
-            loading="lazy"
-          />
-          
-          
-          {/* Magnify Button - Small and Subtle */}
-          {setZoomedCard && (
-            <button
-              className="
-                absolute bottom-1 right-1
-                w-6 h-6 rounded-full
-                backdrop-blur-md bg-white/70 dark:bg-gray-800/70
-                flex items-center justify-center
-                shadow-sm border border-white/30
-                opacity-0 group-hover:opacity-100
-                transition-opacity duration-200
-              "
-              onClick={(e) => {
-                e.stopPropagation();
-                setZoomedCard(card);
-              }}
-            >
-              <svg className="w-3 h-3 text-gray-600 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </button>
-          )}
-        </div>
-        
-        {/* Simple Info Row */}
-        <div className="flex items-center justify-between px-1">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300 truncate flex-1">
-            {card.name}
-          </span>
-          <div className="flex gap-1 flex-shrink-0 items-center">
-            {/* Rarity Display - No pill for gold rarities */}
-            {showRarity && getRarityDisplay(card.rarity) && (
-              isGoldRarity(card.rarity) ? (
-                // Gold rarities - check if it's a crown or star
-                (card.rarity === '👑' || card.rarity === '♕') ? (
-                  // Crown - use React icon
-                  <FaCrown className="text-yellow-500" size={14} />
-                ) : (
-                  // Stars - just the symbol with gold gradient fill
-                  <span className="text-xs font-black bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500 bg-clip-text text-transparent">
-                    {getRarityDisplay(card.rarity)}
-                  </span>
-                )
-              ) : (
-                // Non-gold rarities - keep the pill style
-                <span className={`
-                  text-xs px-2 py-0.5 rounded-full
-                  backdrop-blur-sm
-                  font-bold
-                  border border-white/30
-                  bg-gradient-to-r ${getRarityPillColor(card.rarity)}
+          {/* Compact Image Container */}
+          <div className="relative rounded-2xl overflow-hidden mb-2 bg-gradient-to-br from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-800">
+            <img
+              src={card.images?.small || '/back-card.png'}
+              alt={card.name}
+              width={imageWidth}
+              height={imageHeight}
+              className="w-full h-auto object-contain"
+              loading="lazy"
+            />
+            
+            {/* Rarity Badge - Top Right */}
+            {showRarity && card.rarity && (
+              <div className="absolute top-2 right-2">
+                <div className={`
+                  px-2 py-1 rounded-full
+                  backdrop-blur-md bg-gradient-to-r ${getRarityPillColor(card.rarity)}
+                  text-xs font-bold
+                  border border-white/50
+                  shadow-sm
                 `}>
-                  <span className="text-gray-500">
-                    {getRarityDisplay(card.rarity)}
-                  </span>
-                </span>
-              )
+                  {card.rarity.split(' ')[0]}
+                </div>
+              </div>
             )}
-            {/* Set Badge */}
-            <span className="
-              text-xs px-2 py-0.5 rounded-full
-              bg-gray-100/70 dark:bg-gray-700/70
-              text-gray-600 dark:text-gray-400
-              font-medium
-            ">
-              {setId}
-            </span>
+            
+            {/* Magnify Button - Small and Subtle */}
+            {setZoomedCard && (
+              <button
+                className="
+                  absolute bottom-1 right-1
+                  w-6 h-6 rounded-full
+                  backdrop-blur-md bg-white/70 dark:bg-gray-800/70
+                  flex items-center justify-center
+                  shadow-sm border border-white/30
+                  opacity-0 group-hover:opacity-100
+                  transition-opacity duration-200
+                "
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setZoomedCard(card);
+                }}
+              >
+                <svg className="w-3 h-3 text-gray-600 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </button>
+            )}
           </div>
-        </div>
+          
+          {/* Card Info Section */}
+          <div className="space-y-1.5">
+            {/* Name */}
+            <div className="px-1">
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300 truncate block">
+                {card.name}
+              </span>
+            </div>
+            
+            {/* Price and Set Info Row */}
+            <div className="flex items-center justify-between px-1 gap-1">
+              {/* Price Display */}
+              {showPrice && price > 0 && (
+                <span className="
+                  text-xs px-2.5 py-1 rounded-full
+                  bg-gradient-to-r from-purple-100/90 to-pink-100/90 dark:from-purple-900/40 dark:to-pink-900/40
+                  backdrop-blur-md
+                  font-bold text-purple-700 dark:text-purple-300
+                  border border-white/50 dark:border-purple-400/30
+                  shadow-lg shadow-purple-500/20 dark:shadow-purple-500/10
+                  hover:shadow-xl hover:shadow-purple-500/30 dark:hover:shadow-purple-500/20
+                  transition-all duration-200
+                ">
+                  ${price.toFixed(2)}
+                </span>
+              )}
+              
+              {/* Set Badge */}
+              {showSet && (
+                <span className="
+                  text-xs px-2 py-0.5 rounded-full
+                  bg-gray-100/70 dark:bg-gray-700/70
+                  text-gray-600 dark:text-gray-400
+                  font-medium
+                  truncate
+                ">
+                  {setId} #{cardNumber}
+                </span>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
 });
 
-PocketCard.displayName = 'PocketCard';
+TCGCardItem.displayName = 'TCGCardItem';
 
 // Component props
-interface PocketCardListProps {
-  cards: ExtendedPocketCard[];
-  loading: boolean;
+interface TCGCardListProps {
+  cards: TCGCard[];
+  loading?: boolean;
   error?: string;
   emptyMessage?: string;
   hideCardCount?: boolean;
   cardClassName?: string;
   gridClassName?: string;
-  showPack?: boolean;
+  showPrice?: boolean;
   showRarity?: boolean;
-  showHP?: boolean;
+  showSet?: boolean;
   showSort?: boolean;
+  showSearch?: boolean;
   itemsPerPage?: number;
   imageWidth?: number;
   imageHeight?: number;
-  onCardClick?: (card: ExtendedPocketCard) => void;
-  selectedRarityFilter?: string;
-  searchValue?: string;
-  onSearchChange?: (value: string) => void;
+  onCardClick?: (card: TCGCard) => void;
+  getPrice?: (card: TCGCard) => number;
+  getReleaseDate?: (card: TCGCard) => string;
+  getRarityRank?: (card: TCGCard) => number;
 }
 
-// Helper interface for parsed card ID
-interface ParsedCardId {
-  setCode: string;
-  number: number;
-  isPromo: boolean;
-}
-
-// PocketCardList: displays cards from the Pocket API with enhanced visual design
-export default function PocketCardList({ 
+// TCGCardList: displays TCG cards with enhanced visual design matching PocketCardList
+export default function TCGCardList({ 
   cards, 
-  loading, 
+  loading = false, 
   error, 
-  emptyMessage = "No Pocket cards found.",
+  emptyMessage = "No cards found.",
   hideCardCount = false, 
   cardClassName = "", 
   gridClassName = "",
+  showPrice = true,
   showRarity = true,
-  showHP = true,
+  showSet = true,
   showSort = true,
-  imageWidth = 110, // 50% smaller than 220
-  imageHeight = 154, // 50% smaller than 308
+  showSearch = true,
+  imageWidth = 110,
+  imageHeight = 154,
   onCardClick,
-  selectedRarityFilter = 'all',
-  searchValue = '',
-  onSearchChange
-}: PocketCardListProps) {
-  const [zoomedCard, setZoomedCard] = useState<ExtendedPocketCard | null>(null);
-  const [sortOption, setSortOption] = useState<string>("number");
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  getPrice = () => 0,
+  getReleaseDate = () => "0000-00-00",
+  getRarityRank = () => 0
+}: TCGCardListProps) {
+  const [zoomedCard, setZoomedCard] = useState<TCGCard | null>(null);
+  const [sortOption, setSortOption] = useState<string>("price");
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
+  const [searchValue, setSearchValue] = useState<string>('');
 
-  // Helper function to parse set code and number for sorting
-  const parseCardId = (cardId: string): ParsedCardId => {
-    if (!cardId) return { setCode: 'zzz', number: 9999, isPromo: false };
-    
-    const id = cardId.toLowerCase();
-    
-    // Check if it's a promo card
-    const isPromo = id.includes('promo') || id.includes('p-') || id.includes('-p');
-    
-    // Parse set code and number (e.g., "a1-001", "a2b-045")
-    const parts = id.split('-');
-    if (parts.length >= 2) {
-      const setCode = parts[0];
-      const number = parseInt(parts[1]) || 0;
-      return { setCode, number, isPromo };
-    }
-    
-    // Fallback for cards without proper format
-    return { setCode: 'zzz', number: 9999, isPromo };
-  };
+  // Filter cards by search
+  const searchedCards = useMemo(() => {
+    if (!searchValue) return cards;
+    const search = searchValue.toLowerCase();
+    return cards.filter(card => 
+      card.name.toLowerCase().includes(search) ||
+      card.set?.name?.toLowerCase().includes(search) ||
+      card.number?.includes(search)
+    );
+  }, [cards, searchValue]);
 
-  // Sorting logic for Pocket cards
+  // Sorting logic for TCG cards
   const sortedCards = useMemo(() => {
-    const sorted = [...cards].sort((a, b) => {
+    const sorted = [...searchedCards].sort((a, b) => {
       let result = 0;
       
       switch (sortOption) {
@@ -321,60 +284,18 @@ export default function PocketCardList({
           result = a.name.localeCompare(b.name);
           break;
         case "number":
-          const parsedA = parseCardId(a.id);
-          const parsedB = parseCardId(b.id);
-          
-          // Promos go to the end
-          if (parsedA.isPromo !== parsedB.isPromo) {
-            result = parsedA.isPromo ? 1 : -1;
-          } else {
-            // Sort by set code first (A1, A1a, A2, A2a, A2b, etc.)
-            const setCompare = parsedA.setCode.localeCompare(parsedB.setCode);
-            if (setCompare !== 0) {
-              result = setCompare;
-            } else {
-              // Then by number within the set
-              result = parsedA.number - parsedB.number;
-            }
-          }
+          const numA = parseInt(a.number || '9999');
+          const numB = parseInt(b.number || '9999');
+          result = numA - numB;
           break;
-        case "hp":
-          const hpA = parseInt(String(a.health || a.hp || 0)) || 0;
-          const hpB = parseInt(String(b.health || b.hp || 0)) || 0;
-          result = hpA - hpB; // Will be reversed if desc
+        case "price":
+          result = getPrice(a) - getPrice(b);
+          break;
+        case "releaseDate":
+          result = new Date(getReleaseDate(a)).getTime() - new Date(getReleaseDate(b)).getTime();
           break;
         case "rarity":
-          const rarityOrder: Record<string, number> = { 
-            '👑': 8,     // Crown - highest
-            '★★★': 7,   // Three stars
-            '★★': 6,    // Two stars
-            '★': 5,     // One star
-            '◊◊◊◊': 4,  // Four diamonds
-            '◊◊◊': 3,   // Three diamonds
-            '◊◊': 2,    // Two diamonds
-            '◊': 1      // One diamond
-          };
-          result = (rarityOrder[a.rarity] || 0) - (rarityOrder[b.rarity] || 0); // Will be reversed if desc
-          break;
-        case "type":
-          const typeA = a.type || '';
-          const typeB = b.type || '';
-          result = typeA.localeCompare(typeB);
-          break;
-        case "pack":
-          const packA = a.pack || '';
-          const packB = b.pack || '';
-          result = packA.localeCompare(packB);
-          break;
-        case "ex":
-          const exA = a.ex === "Yes" ? 1 : 0;
-          const exB = b.ex === "Yes" ? 1 : 0;
-          result = exA - exB; // Will be reversed if desc
-          break;
-        case "fullart":
-          const faA = a.fullart === "Yes" ? 1 : 0;
-          const faB = b.fullart === "Yes" ? 1 : 0;
-          result = faA - faB; // Will be reversed if desc
+          result = getRarityRank(a) - getRarityRank(b);
           break;
         default:
           return 0;
@@ -385,7 +306,7 @@ export default function PocketCardList({
     });
     
     return sorted;
-  }, [cards, sortOption, sortDirection]);
+  }, [searchedCards, sortOption, sortDirection, getPrice, getReleaseDate, getRarityRank]);
 
   // Infinite scroll for cards
   const { visibleItems: displayedCards, hasMore, isLoading: scrollLoading, sentinelRef } = useInfiniteScroll(
@@ -394,15 +315,14 @@ export default function PocketCardList({
     12  // Load 12 more at a time
   );
 
-
   if (loading) {
     return (
       <SmartSkeleton 
         type="card-grid"
         count={20}
-        showPrice={false}
+        showPrice={true}
         showTypes={true}
-        showHP={true}
+        showHP={false}
         className="animate-fadeIn"
       />
     );
@@ -436,10 +356,10 @@ export default function PocketCardList({
   return (
     <>
     {/* Search and Sort Controls in One Row */}
-    {((showSort || onSearchChange) && cards.length > 0) && (
+    {((showSort || showSearch) && cards.length > 0) && (
       <div className="flex justify-between items-center mb-6 gap-4">
         {/* Search Bar on Left */}
-        {onSearchChange && (
+        {showSearch && (
           <div className="relative flex-1 max-w-xs bg-gray-50/90 dark:bg-gray-800/90 rounded-full p-1 shadow-lg border border-gray-300 dark:border-gray-700/40">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -452,7 +372,7 @@ export default function PocketCardList({
                 className="w-full pl-9 pr-9 py-1.5 bg-transparent rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-purple-400/40 focus:ring-offset-0 transition-all"
                 placeholder="Search cards..."
                 value={searchValue}
-                onChange={(e) => onSearchChange(e.target.value)}
+                onChange={(e) => setSearchValue(e.target.value)}
                 style={{
                   WebkitAppearance: 'none',
                   MozAppearance: 'none',
@@ -464,7 +384,7 @@ export default function PocketCardList({
               {searchValue && (
                 <button
                   className="absolute inset-y-0 right-0 pr-3 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
-                  onClick={() => onSearchChange('')}
+                  onClick={() => setSearchValue('')}
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -486,24 +406,24 @@ export default function PocketCardList({
         ">
           <span className="text-xs font-semibold text-gray-600 dark:text-gray-400 mr-1">Sort by:</span>
           
-          {/* Sort by Collector # */}
+          {/* Sort by Price */}
           <button
             onClick={() => {
-              if (sortOption === 'number') {
+              if (sortOption === 'price') {
                 setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
               } else {
-                setSortOption('number');
-                setSortDirection('asc');
+                setSortOption('price');
+                setSortDirection('desc');
               }
             }}
             className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all backdrop-blur-md border inline-flex items-center gap-1 ${
-              sortOption === 'number' 
+              sortOption === 'price' 
                 ? 'bg-gradient-to-r from-purple-100/80 to-pink-100/80 dark:from-purple-900/30 dark:to-pink-900/30 border-purple-300/50 text-purple-700 dark:text-purple-300' 
                 : 'bg-white/60 dark:bg-gray-800/60 border-white/30 text-gray-600 dark:text-gray-400 hover:bg-white/80'
             }`}
           >
-            <span>Collector #</span>
-            {sortOption === 'number' && (
+            <span>Price</span>
+            {sortOption === 'price' && (
               <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d={sortDirection === 'asc' ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"} />
               </svg>
@@ -541,7 +461,7 @@ export default function PocketCardList({
                 setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
               } else {
                 setSortOption('rarity');
-                setSortDirection('desc'); // Default to highest rarity first
+                setSortDirection('desc');
               }
             }}
             className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all backdrop-blur-md border inline-flex items-center gap-1 ${
@@ -558,48 +478,24 @@ export default function PocketCardList({
             )}
           </button>
           
-          {/* Sort by Type */}
+          {/* Sort by Number */}
           <button
             onClick={() => {
-              if (sortOption === 'type') {
+              if (sortOption === 'number') {
                 setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
               } else {
-                setSortOption('type');
+                setSortOption('number');
                 setSortDirection('asc');
               }
             }}
             className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all backdrop-blur-md border inline-flex items-center gap-1 ${
-              sortOption === 'type' 
+              sortOption === 'number' 
                 ? 'bg-gradient-to-r from-purple-100/80 to-pink-100/80 dark:from-purple-900/30 dark:to-pink-900/30 border-purple-300/50 text-purple-700 dark:text-purple-300' 
                 : 'bg-white/60 dark:bg-gray-800/60 border-white/30 text-gray-600 dark:text-gray-400 hover:bg-white/80'
             }`}
           >
-            <span>Type</span>
-            {sortOption === 'type' && (
-              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d={sortDirection === 'asc' ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"} />
-              </svg>
-            )}
-          </button>
-
-          {/* Sort by HP */}
-          <button
-            onClick={() => {
-              if (sortOption === 'hp') {
-                setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
-              } else {
-                setSortOption('hp');
-                setSortDirection('desc'); // Default to highest HP first
-              }
-            }}
-            className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all backdrop-blur-md border inline-flex items-center gap-1 ${
-              sortOption === 'hp' 
-                ? 'bg-gradient-to-r from-purple-100/80 to-pink-100/80 dark:from-purple-900/30 dark:to-pink-900/30 border-purple-300/50 text-purple-700 dark:text-purple-300' 
-                : 'bg-white/60 dark:bg-gray-800/60 border-white/30 text-gray-600 dark:text-gray-400 hover:bg-white/80'
-            }`}
-          >
-            <span>HP</span>
-            {sortOption === 'hp' && (
+            <span>#</span>
+            {sortOption === 'number' && (
               <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d={sortDirection === 'asc' ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"} />
               </svg>
@@ -611,19 +507,20 @@ export default function PocketCardList({
     )}
     
     <div className={gridClassName || "grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"}>
-      {displayedCards.map((card, _index) => {
+      {displayedCards.map((card) => {
         return (
-          <PocketCard
+          <TCGCardItem
             key={card.id}
             card={card}
             cardClassName={cardClassName}
-            showHP={showHP}
+            showPrice={showPrice}
             showRarity={showRarity}
+            showSet={showSet}
             setZoomedCard={setZoomedCard}
             imageWidth={imageWidth}
             imageHeight={imageHeight}
             onCardClick={onCardClick}
-            selectedRarityFilter={selectedRarityFilter}
+            getPrice={getPrice}
           />
         );
       })}
@@ -672,18 +569,18 @@ export default function PocketCardList({
       >
         <div className="flex flex-col items-center">
           <Image
-            src={zoomedCard.image || "/back-card.png"}
+            src={zoomedCard.images?.large || "/back-card.png"}
             alt={zoomedCard.name}
             width={400}
             height={560}
             className="rounded-lg shadow-lg"
             placeholder="blur"
-            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aaAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Eve6J4HNvbzTe7+v1+8BvxRf4X3/f/9k="
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Eve6J4HNvbzTe7+v1+8BvxRf4X3/f/9k="
             sizes="400px"
           />
           <h3 className="mt-4 text-xl font-bold text-center">{zoomedCard.name}</h3>
-          {zoomedCard.pack && (
-            <p className="text-gray-600 dark:text-gray-400 mt-2">{zoomedCard.pack}</p>
+          {zoomedCard.set?.name && (
+            <p className="text-gray-600 dark:text-gray-400 mt-2">{zoomedCard.set.name}</p>
           )}
         </div>
       </Modal>
