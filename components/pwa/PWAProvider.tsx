@@ -86,18 +86,39 @@ export const PWAProvider: React.FC<PWAProviderProps> = ({ children }) => {
   const cleanupOldServiceWorkers = async (): Promise<void> => {
     try {
       const registrations = await navigator.serviceWorker.getRegistrations();
-      const currentSWFile = getServiceWorkerFile();
       
+      // Clear all caches if we detect issues
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const hasRecoveryFlag = localStorage.getItem('sw-recovery-needed');
+        if (hasRecoveryFlag === 'true') {
+          logger.info('Service worker recovery mode activated');
+          
+          // Clear all caches
+          if ('caches' in window) {
+            const cacheNames = await caches.keys();
+            await Promise.all(
+              cacheNames.map(name => {
+                logger.info('Deleting cache:', { name });
+                return caches.delete(name);
+              })
+            );
+          }
+          
+          // Clear the recovery flag
+          localStorage.removeItem('sw-recovery-needed');
+        }
+      }
+      
+      // Unregister all old service workers except the current one
       for (const registration of registrations) {
-        // Check if this is an old or conflicting service worker
         const scriptURL = registration.active?.scriptURL || registration.installing?.scriptURL || registration.waiting?.scriptURL;
         
         if (scriptURL) {
           const url = new URL(scriptURL);
           const filename = url.pathname;
           
-          // Unregister old service workers that don't match current one
-          if (filename !== currentSWFile && (filename === '/sw.js' || filename === '/sw.tsx' || filename === '/sw-safari.js')) {
+          // Keep only sw.js, unregister everything else
+          if (filename !== '/sw.js') {
             logger.info('Unregistering old service worker:', { file: filename });
             await registration.unregister();
           }
@@ -105,33 +126,27 @@ export const PWAProvider: React.FC<PWAProviderProps> = ({ children }) => {
       }
     } catch (error) {
       logger.warn('Failed to cleanup old service workers:', { error });
+      // Don't let SW errors break the app
     }
   };
 
   const registerServiceWorker = async (): Promise<void> => {
     try {
-      // Get the appropriate service worker file based on browser
-      const swFile = getServiceWorkerFile();
+      // Always use sw.js now that we've cleaned up
+      const swFile = '/sw.js';
       
-      if (!swFile) {
-        logger.info('Service worker not supported in this browser');
-        return;
-      }
+      logger.info('Registering service worker', { file: swFile });
       
-      const browserInfo = getBrowserInfo();
-      logger.info('Registering service worker', { 
-        file: swFile, 
-        browser: {
-          isSafari: browserInfo.isSafari,
-          isChrome: browserInfo.isChrome,
-          version: browserInfo.browserVersion
-        }
-      });
-      
-      const registration = await navigator.serviceWorker.register(swFile);
+      // Add timestamp to force update
+      const registration = await navigator.serviceWorker.register(`${swFile}?v=${Date.now()}`);
       setServiceWorkerRegistration(registration);
 
-      // Check for updates
+      // Force immediate activation of new service worker
+      if (registration.waiting) {
+        registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+      }
+
+      // Check for updates periodically
       registration.addEventListener('updatefound', () => {
         const newWorker = registration.installing;
         if (newWorker) {
@@ -139,14 +154,35 @@ export const PWAProvider: React.FC<PWAProviderProps> = ({ children }) => {
             if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
               setHasUpdate(true);
               logger.info('New service worker available');
+              
+              // Auto-activate new worker to prevent stale cache issues
+              newWorker.postMessage({ type: 'SKIP_WAITING' });
+              
+              // Reload after a short delay to ensure new SW is active
+              setTimeout(() => {
+                window.location.reload();
+              }, 100);
             }
           });
         }
       });
       
+      // Check for updates every 30 seconds in development
+      if (process.env.NODE_ENV === 'development') {
+        setInterval(() => {
+          registration.update().catch(() => {});
+        }, 30000);
+      }
+      
       logger.info('Service worker registered successfully', { scope: registration.scope });
     } catch (error) {
       logger.error('Service worker registration failed:', { error });
+      
+      // Set recovery flag if registration fails
+      if (typeof window !== 'undefined' && window.localStorage) {
+        localStorage.setItem('sw-recovery-needed', 'true');
+      }
+      
       // Continue running the app even if SW registration fails
     }
   };
@@ -164,10 +200,20 @@ export const PWAProvider: React.FC<PWAProviderProps> = ({ children }) => {
   };
 
   const refreshApp = (): void => {
-    if (serviceWorkerRegistration && serviceWorkerRegistration.waiting) {
-      serviceWorkerRegistration.waiting.postMessage({ type: 'SKIP_WAITING' });
-      router.reload();
+    // Clear all caches and reload
+    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({ type: 'CLEAR_CACHE' });
     }
+    
+    // Clear localStorage recovery flags
+    if (typeof window !== 'undefined' && window.localStorage) {
+      localStorage.setItem('sw-recovery-needed', 'true');
+    }
+    
+    // Force reload
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
   };
 
   const value: PWAContextValue = {

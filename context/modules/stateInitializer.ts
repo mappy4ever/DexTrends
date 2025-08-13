@@ -91,60 +91,83 @@ export const getInitialState = (): State => {
     return baseState;
   }
 
+  // Helper function to safely parse JSON from localStorage
+  const safeParseJSON = (key: string, fallback: any = null): any => {
+    try {
+      const item = localStorage.getItem(key);
+      if (!item) return fallback;
+      
+      // Check if it's valid JSON before parsing
+      if (item.startsWith('{') || item.startsWith('[')) {
+        return JSON.parse(item);
+      }
+      return fallback;
+    } catch (error) {
+      logger.warn(`Failed to parse localStorage item: ${key}`, { error });
+      // Remove corrupted item
+      try {
+        localStorage.removeItem(key);
+      } catch (e) {
+        // Ignore removal errors
+      }
+      return fallback;
+    }
+  };
+
   try {
-    // Load theme
+    // Load theme with validation
     const savedTheme = localStorage.getItem('theme');
-    if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
+    if (savedTheme === 'light' || savedTheme === 'dark') {
       baseState.user.preferences.theme = savedTheme;
-    } else {
+    } else if (savedTheme) {
+      // Remove invalid theme
+      localStorage.removeItem('theme');
       // Check system preference
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       baseState.user.preferences.theme = prefersDark ? 'dark' : 'light';
     }
 
-    // Load favorites
-    const savedFavorites = localStorage.getItem('favorites');
-    if (savedFavorites) {
-      const favorites = JSON.parse(savedFavorites);
-      baseState.user.favorites = { ...baseState.user.favorites, ...favorites };
+    // Load favorites with validation
+    const favorites = safeParseJSON('favorites', {});
+    if (favorites && typeof favorites === 'object') {
+      baseState.user.favorites = { 
+        pokemon: Array.isArray(favorites.pokemon) ? favorites.pokemon : [],
+        cards: Array.isArray(favorites.cards) ? favorites.cards : [],
+        decks: Array.isArray(favorites.decks) ? favorites.decks : []
+      };
     }
 
-    // Load view settings
-    const savedViewSettings = localStorage.getItem('viewSettings');
-    if (savedViewSettings) {
-      const viewSettings = JSON.parse(savedViewSettings);
+    // Load view settings with validation
+    const viewSettings = safeParseJSON('viewSettings', {});
+    if (viewSettings && typeof viewSettings === 'object') {
       baseState.app.ui.view = { ...baseState.app.ui.view, ...viewSettings };
     }
 
-    // Load sorting settings
-    const savedSorting = localStorage.getItem('sorting');
-    if (savedSorting) {
-      const sorting = JSON.parse(savedSorting);
+    // Load sorting settings with validation
+    const sorting = safeParseJSON('sorting', {});
+    if (sorting && typeof sorting === 'object') {
       baseState.app.ui.sorting = { ...baseState.app.ui.sorting, ...sorting };
     }
 
-    // Load contextual help
-    const savedHelp = localStorage.getItem('contextual-help');
-    if (savedHelp) {
-      const contextualHelp = JSON.parse(savedHelp);
+    // Load contextual help with validation
+    const contextualHelp = safeParseJSON('contextual-help', {});
+    if (contextualHelp && typeof contextualHelp === 'object') {
       baseState.app.ui.contextualHelp = { ...baseState.app.ui.contextualHelp, ...contextualHelp };
     }
 
-    // Load UX preferences
-    const savedUXPrefs = localStorage.getItem('ux-preferences');
-    if (savedUXPrefs) {
-      const uxPrefs = JSON.parse(savedUXPrefs);
+    // Load UX preferences with validation
+    const uxPrefs = safeParseJSON('ux-preferences', {});
+    if (uxPrefs && typeof uxPrefs === 'object') {
       baseState.user.preferences = { ...baseState.user.preferences, ...uxPrefs };
     }
 
-    // Load user behavior data
-    const savedBehavior = localStorage.getItem('user-behavior');
-    if (savedBehavior) {
-      const behavior = JSON.parse(savedBehavior);
+    // Load user behavior data with validation
+    const behavior = safeParseJSON('user-behavior', {});
+    if (behavior && typeof behavior === 'object') {
       baseState.user.behavior = { 
         ...baseState.user.behavior, 
         ...behavior,
-        visitCount: (behavior.visitCount || 0) + 1,
+        visitCount: (typeof behavior.visitCount === 'number' ? behavior.visitCount : 0) + 1,
         timeOnPage: Date.now()
       };
     } else {
@@ -153,7 +176,14 @@ export const getInitialState = (): State => {
       baseState.user.behavior.timeOnPage = Date.now();
     }
   } catch (error) {
-    logger.warn('Failed to load persisted state:', { error });
+    logger.error('Critical error loading persisted state:', { error });
+    // Clear all localStorage if there's a critical error
+    try {
+      localStorage.clear();
+      logger.info('Cleared localStorage due to critical error');
+    } catch (e) {
+      // Ignore clear errors
+    }
   }
 
   return baseState;

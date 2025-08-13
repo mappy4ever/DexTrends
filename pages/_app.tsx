@@ -28,6 +28,8 @@ import { UnifiedAppProvider } from '../context/UnifiedAppContext';
 import GlobalErrorHandler from '../components/GlobalErrorHandler';
 import { PWAProvider } from '../components/pwa/PWAProvider';
 import { scrollHandlerUtils } from '../utils/scrollHandler';
+import { initializeRecovery, isRecoveryNeeded } from '../utils/localStorageRecovery';
+import RecoveryMode from '../components/RecoveryMode';
 
 // Initialize cache warming on server startup
 if (typeof window === 'undefined') {
@@ -176,6 +178,7 @@ function MyApp({ Component, pageProps, router }: MyAppProps) {
   const nextRouter = useRouter();
   const [isClient, setIsClient] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
+  const [needsRecovery, setNeedsRecovery] = useState(false);
   
   // Check if this is an error page
   // Error pages should not be wrapped in ErrorBoundary to prevent infinite loops
@@ -187,6 +190,18 @@ function MyApp({ Component, pageProps, router }: MyAppProps) {
   // EMERGENCY: Minimal initialization only
   useEffect(() => {
     setIsClient(true);
+    
+    // Initialize recovery system
+    try {
+      if (isRecoveryNeeded()) {
+        setNeedsRecovery(true);
+      } else {
+        initializeRecovery();
+      }
+    } catch (error) {
+      logger.error('Failed to initialize recovery:', { error });
+      setNeedsRecovery(true);
+    }
     
     // Apply iOS-specific fixes
     import('../utils/iosFixes').then(({ applyIOSFixes }) => {
@@ -208,6 +223,11 @@ function MyApp({ Component, pageProps, router }: MyAppProps) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Remove isScrolling dependency to prevent re-renders
+
+  // Show recovery mode if needed
+  if (needsRecovery && isClient) {
+    return <RecoveryMode />;
+  }
 
   // Create minimal content for error pages
   if (isErrorPage) {

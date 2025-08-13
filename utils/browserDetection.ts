@@ -130,13 +130,8 @@ export function getServiceWorkerFile(): string {
     return ''; // No service worker
   }
   
-  // Use simplified service worker for Safari and limited browsers
-  if (shouldUseSimplifiedServiceWorker()) {
-    return '/sw-safari.js';
-  }
-  
-  // Use the basic service worker for all browsers now
-  // The enhanced sw.tsx has too many compatibility issues
+  // Always use the fixed sw.js for all browsers
+  // Old service workers have been removed
   return '/sw.js';
 }
 
