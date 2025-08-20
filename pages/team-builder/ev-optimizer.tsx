@@ -177,7 +177,7 @@ const EVOptimizer: NextPage = () => {
             />
             <div className="text-center">
               <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-green-600 to-teal-600 bg-clip-text text-transparent">
-                EV Optimizer
+                Team Builder
               </h1>
               <p className="text-gray-600 dark:text-gray-400 text-lg">
                 Visualize and optimize your Pokemon's effort values with advanced heat mapping

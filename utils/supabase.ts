@@ -57,17 +57,21 @@ export interface PokemonLearnsetRecord {
 
 export interface MoveCompetitiveDataRecord {
   id?: number;
-  move_name: string;
-  base_power: number | null;
+  move_id?: number;
+  name: string;
+  type: string | null;
+  power: number | null;
   accuracy: number | null;
+  pp: number | null;
   priority: number;
   category: 'physical' | 'special' | 'status' | null;
-  type: string | null;
   target: string | null;
   flags: string[];
-  secondary_effects: Record<string, unknown> | null;
+  secondary_effect: Record<string, unknown> | null;
   description: string | null;
   short_description: string | null;
+  drain_ratio?: number | null;
+  recoil_ratio?: number | null;
   created_at?: string;
   updated_at?: string;
 }
@@ -260,6 +264,62 @@ export const showdownQueries = {
     }
     
     return data || [];
+  },
+
+  async getAllMoves() {
+    if (!supabase) {
+      logger.warn('Supabase client not initialized');
+      return [];
+    }
+    
+    const { data, error } = await supabase
+      .from('move_competitive_data')
+      .select('*')
+      .order('name', { ascending: true });
+    
+    if (error) {
+      logger.error('Error fetching all moves:', error);
+      return [];
+    }
+    
+    return data || [];
+  },
+
+  async getPokemonByMove(moveName: string) {
+    if (!supabase) {
+      logger.warn('Supabase client not initialized');
+      return [];
+    }
+    
+    // Normalize move name to match learnsets format (lowercase, no spaces or special chars)
+    const normalizedMoveName = moveName.toLowerCase().replace(/[\s\-_]/g, '');
+    
+    const { data, error } = await supabase
+      .from('pokemon_learnsets')
+      .select('*')
+      .eq('move_name', normalizedMoveName)
+      .order('pokemon_id', { ascending: true })
+      .order('learn_method', { ascending: true })
+      .order('level', { ascending: true, nullsFirst: false });
+    
+    if (error) {
+      logger.error('Error fetching Pokemon learners for move:', error);
+      return [];
+    }
+    
+    // Deduplicate: keep only the best entry for each pokemon + learn_method combo
+    const seen = new Map<string, typeof data[0]>();
+    (data || []).forEach(item => {
+      const key = `${item.pokemon_id}-${item.learn_method}`;
+      const existing = seen.get(key);
+      
+      // Keep the entry with the lowest level (or first if no level)
+      if (!existing || (item.level && (!existing.level || item.level < existing.level))) {
+        seen.set(key, item);
+      }
+    });
+    
+    return Array.from(seen.values());
   },
 
   async getAbilityRatings(abilityNames: string[]) {

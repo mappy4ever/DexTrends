@@ -7,6 +7,7 @@ import { cn } from '../../utils/cn';
 import { FaShieldAlt } from 'react-icons/fa';
 import { GiSwordWound } from 'react-icons/gi';
 import { TierBadgeGroup } from '../ui/TierBadge';
+import { TypeBadge as GradientTypeBadge } from '../ui/TypeBadge';
 
 interface CompactTypeEffectivenessProps {
   types: PokemonType[];
@@ -286,34 +287,13 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
   };
   
   const TypeBadge = ({ matchup }: { matchup: TypeMatchup }) => (
-    <div
-      className="relative group transform transition-transform duration-200 hover:scale-[1.02] badge-no-cull mb-2 mr-2"
-      style={{ 
-        transform: 'translate3d(0,0,0)',
-        WebkitTransform: 'translate3d(0,0,0)',
-        backfaceVisibility: 'visible',
-        WebkitBackfaceVisibility: 'visible'
-      }}
-    >
-      {/* Type and Multiplier Stack */}
-      <div className="inline-flex flex-col items-center gap-0.5">
-        {/* Type Pill Badge */}
-        <div 
-          className="px-4 py-2 rounded-full flex items-center justify-center shadow-lg"
-          style={{ backgroundColor: POKEMON_TYPE_COLORS[matchup.type] || '#68A090' }}
-        >
-          <span className="text-sm font-bold text-white uppercase tracking-wide">
-            {matchup.type}
-          </span>
-        </div>
-        
-        {/* Multiplier Text - Directly below */}
-        <div className={cn(
-          "text-xs font-bold",
-          getMultiplierTextColor(matchup.multiplier)
-        )}>
-          {formatMultiplier(matchup.multiplier)}×
-        </div>
+    <div className="relative group inline-flex flex-col items-center gap-1">
+      <GradientTypeBadge type={matchup.type} size="sm" variant="gradient" />
+      <div className={cn(
+        "text-xs font-bold",
+        getMultiplierTextColor(matchup.multiplier)
+      )}>
+        {formatMultiplier(matchup.multiplier)}×
       </div>
       
       {/* Tooltip */}

@@ -382,8 +382,72 @@ async function syncLearnsets(): Promise<SyncResult> {
   }
 }
 
+// Store official move names from PokeAPI
+let officialMoveNames: Record<string, string> | null = null;
+
+// Fetch official move names from PokeAPI for proper formatting
+async function fetchOfficialMoveNames(): Promise<Record<string, string>> {
+  if (officialMoveNames) return officialMoveNames;
+  
+  try {
+    logger.info('Fetching official move names from PokeAPI...');
+    const response = await axios.get('https://pokeapi.co/api/v2/move?limit=2000');
+    const names: Record<string, string> = {};
+    
+    response.data.results.forEach((move: any) => {
+      const simplifiedName = move.name.replace(/-/g, '').toLowerCase();
+      const properName = move.name
+        .split('-')
+        .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+      names[simplifiedName] = properName;
+    });
+    
+    officialMoveNames = names;
+    logger.info(`Loaded ${Object.keys(names).length} official move names`);
+    return names;
+  } catch (error) {
+    logger.error('Failed to fetch official move names:', error);
+    return {};
+  }
+}
+
+// Format move names properly using official reference
+function formatMoveName(name: string, officialNames?: Record<string, string>): string {
+  if (!name) return 'Unknown';
+  
+  // Check official names first
+  const simplified = name.toLowerCase().replace(/[\s-_]/g, '');
+  if (officialNames && officialNames[simplified]) {
+    return officialNames[simplified];
+  }
+  
+  // Special cases for moves not in PokeAPI (G-Max, Max, etc.)
+  const specialCases: Record<string, string> = {
+    '10000000voltthunderbolt': '10,000,000 Volt Thunderbolt',
+  };
+  
+  if (specialCases[name.toLowerCase()]) {
+    return specialCases[name.toLowerCase()];
+  }
+  
+  // Handle G-Max and Max moves
+  if (name.toLowerCase().startsWith('gmax')) {
+    return 'G-Max ' + formatMoveName(name.slice(4), officialNames);
+  }
+  if (name.toLowerCase().startsWith('max') && /^max[a-z]/.test(name.toLowerCase())) {
+    return 'Max ' + formatMoveName(name.slice(3), officialNames);
+  }
+  
+  // Fallback: capitalize first letter
+  return name.charAt(0).toUpperCase() + name.slice(1);
+}
+
 async function syncMoveData(): Promise<SyncResult> {
   try {
+    // First fetch official move names for formatting
+    const officialNames = await fetchOfficialMoveNames();
+    
     // Moves are served as JSON from Showdown
     const content = await fetchWithRetry(`${SHOWDOWN_BASE_URL}/moves.json`);
     const moves = (typeof content === 'string' ? JSON.parse(content) : content) as MoveData;
@@ -421,7 +485,8 @@ async function syncMoveData(): Promise<SyncResult> {
       
       records.push({
         move_id: index + 1,  // Use sequential ID to avoid duplicates
-        name: moveName.toLowerCase(),  // Changed from move_name to name
+        name: formatMoveName(moveName, officialNames),  // Format name using official reference
+        type: data.type ? data.type.toLowerCase() : 'normal',  // Add type field
         power: data.basePower || null,  // Changed from base_power to power
         accuracy: data.accuracy === true ? 100 : (data.accuracy || null),
         pp: data.pp || null,  // Added PP field
@@ -430,6 +495,8 @@ async function syncMoveData(): Promise<SyncResult> {
         target: data.target || null,
         flags: flagsArray,
         secondary_effect: secondaryEffects,  // Changed from secondary_effects to secondary_effect
+        description: data.desc || data.shortDesc || null,  // Add description
+        short_description: data.shortDesc || null,  // Add short description
         drain_ratio: drainRatio,
         recoil_ratio: recoilRatio,
         created_at: new Date().toISOString(),

@@ -61,7 +61,7 @@ const CollectionsPage: NextPage = () => {
         <meta name="description" content="Manage your Pokemon TCG collection, track portfolio value, set price alerts, and monitor market trends for your cards" />
       </Head>
       <PageErrorBoundary pageName="Collections">
-        <FullBleedWrapper gradient="collections">
+        <FullBleedWrapper gradient="pokedex">
       <div className="container mx-auto px-4 py-8">
         {/* Header with Gradient */}
         <div className="text-center mb-12">

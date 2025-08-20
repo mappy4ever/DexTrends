@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import CardList from "../../../components/CardList";
 import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
+import { FullBleedWrapper } from '../../../components/ui/FullBleedWrapper';
 import { getPokemonSDK } from "../../../utils/pokemonSDK";
 import type { TCGCard } from "../../../types/api/cards";
 
@@ -74,17 +75,19 @@ export default function CardsByRarityPage() {
   }, [rarity]);
 
   return (
-    <div className="w-full max-w-[1800px] mx-auto px-2 sm:px-4 transition-all duration-300 animate-fadeIn">
-      <h1 className="text-2xl font-bold text-center mb-6">
-        Cards with Rarity: <span className="uppercase text-primary">{rarity}</span>
-      </h1>
-      {loading ? (
-        <PageLoader text="Loading cards..." />
-      ) : error ? (
-        <div className="text-center text-red-500 my-8">{error}</div>
-      ) : (
-        <CardList cards={cards} loading={loading} error={error} initialSortOption="price" />
-      )}
-    </div>
+    <FullBleedWrapper gradient="tcg">
+      <div className="w-full max-w-[1800px] mx-auto px-2 sm:px-4 transition-all duration-300 animate-fadeIn">
+        <h1 className="text-2xl font-bold text-center mb-6">
+          Cards with Rarity: <span className="uppercase text-primary">{rarity}</span>
+        </h1>
+        {loading ? (
+          <PageLoader text="Loading cards..." />
+        ) : error ? (
+          <div className="text-center text-red-500 my-8">{error}</div>
+        ) : (
+          <CardList cards={cards} loading={loading} error={error} initialSortOption="price" />
+        )}
+      </div>
+    </FullBleedWrapper>
   );
 }

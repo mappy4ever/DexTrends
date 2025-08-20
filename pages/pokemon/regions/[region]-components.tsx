@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { FadeIn, SlideUp, CardHover } from "../../../components/ui/animations";
 import { useTheme } from "../../../context/UnifiedAppContext";
+import { FullBleedWrapper } from "../../../components/ui/FullBleedWrapper";
 import StyledBackButton from "../../../components/ui/StyledBackButton";
 
 // Region Components
@@ -733,7 +734,7 @@ const RegionDetailPage: NextPage = () => {
 
 
   return (
-    <div className="min-h-screen">
+    <FullBleedWrapper gradient="regions">
       <Head>
         <title>{region.name} Region | Pokémon | DexTrends</title>
         <meta name="description" content={region.description} />
@@ -996,7 +997,7 @@ const RegionDetailPage: NextPage = () => {
           </FadeIn>
         </div>
       </div>
-    </div>
+    </FullBleedWrapper>
   );
 }
 

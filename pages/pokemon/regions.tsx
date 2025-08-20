@@ -4,10 +4,14 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
-import { FadeIn, SlideUp } from "../../components/ui/animations/animations";
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from "../../context/UnifiedAppContext";
-import { BsGlobeEuropeAfrica } from "react-icons/bs";
+import { createGlassStyle } from '../../components/ui/design-system/glass-constants';
+import { GradientButton, CircularButton } from '../../components/ui/design-system';
+import { EmptyStateGlass, LoadingStateGlass, UnifiedSearchBar } from '../../components/ui/glass-components';
+import { FiMapPin, FiChevronLeft, FiGlobe, FiMap } from 'react-icons/fi';
 import { useSmoothParallax } from "../../hooks/useSmoothParallax";
+import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
 
 // Type definitions
 interface Region {
@@ -145,7 +149,7 @@ const getGenerationColor = (generation: number): string => {
   return colors[generation] || 'rgba(156, 163, 175, 1)';
 };
 
-// Region Tile Component with consistent styling
+// Enhanced Region Tile Component with Glass Morphism
 const RegionTile: React.FC<RegionTileProps> = ({ region }) => {
   const [isHovered, setIsHovered] = useState(false);
   const router = useRouter();
@@ -159,13 +163,26 @@ const RegionTile: React.FC<RegionTileProps> = ({ region }) => {
   };
 
   return (
-    <Link href={`/pokemon/regions/${region.id}`}>
-      <div
-        className="relative h-40 md:h-48 overflow-hidden cursor-pointer transform transition-all duration-700 hover:scale-105 hover:z-10"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        onClick={handleClick}
-      >
+    <motion.div
+      initial={{ opacity: 0, x: -50 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.5, delay: region.generation * 0.1 }}
+      whileHover={{ scale: 1.02 }}
+    >
+      <Link href={`/pokemon/regions/${region.id}`}>
+        <div
+          className={`relative h-40 md:h-48 overflow-hidden cursor-pointer transform transition-all duration-700 hover:z-10 ${createGlassStyle({
+            blur: 'md',
+            opacity: 'subtle',
+            gradient: false,
+            border: 'subtle',
+            shadow: 'lg',
+            rounded: 'md',
+          })}`}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          onClick={handleClick}
+        >
         {/* Map Background Image */}
         <div className="absolute inset-0">
           <div
@@ -192,27 +209,49 @@ const RegionTile: React.FC<RegionTileProps> = ({ region }) => {
           }} />
         </div>
 
-        {/* Region Content */}
+        {/* Enhanced Region Content with Glass Overlay */}
         <div className="relative z-10 h-full flex items-center justify-center">
-          <h2 style={{
-            fontSize: 'clamp(3rem, 6vw, 5rem)',
-            fontWeight: '900',
-            color: 'white',
-            textTransform: 'uppercase',
-            letterSpacing: isHovered ? '0.1em' : '0.05em',
-            transform: isHovered ? 'scale(1.1)' : 'scale(1)',
-            transition: 'all 0.5s'
-          }}>
-            {region.name}
-          </h2>
+          <motion.div
+            className={`${createGlassStyle({
+              blur: 'xl',
+              opacity: 'medium',
+              gradient: true,
+              border: 'medium',
+              shadow: 'glow',
+              rounded: 'xl',
+            })} px-8 py-4 rounded-2xl`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isHovered ? 1 : 0.8 }}
+            transition={{ duration: 0.3 }}
+          >
+            <h2 className="text-5xl md:text-6xl font-black text-white uppercase tracking-wider"
+                style={{
+                  textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)',
+                  transform: isHovered ? 'scale(1.1)' : 'scale(1)',
+                  transition: 'all 0.5s'
+                }}>
+              {region.name}
+            </h2>
+            {isHovered && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-2 text-center"
+              >
+                <p className="text-white/90 text-sm font-medium">Generation {region.generation}</p>
+                <p className="text-white/80 text-xs mt-1">{region.starters}</p>
+              </motion.div>
+            )}
+          </motion.div>
         </div>
 
         {/* Subtle Border Effect on Hover */}
         <div className="absolute inset-x-0 bottom-0 h-1 transition-all duration-500" style={{
           backgroundColor: isHovered ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0)'
         }} />
-      </div>
-    </Link>
+        </div>
+      </Link>
+    </motion.div>
   );
 };
 
@@ -229,7 +268,7 @@ const RegionsPage: NextPage = () => {
   }, []);
 
   return (
-    <>
+    <FullBleedWrapper gradient="pokedex">
       <Head>
         <title>Pokémon Regions | DexTrends</title>
         <meta name="description" content="Explore all Pokémon regions from Kanto to Paldea. Discover the unique features, Pokémon, and stories of each region." />
@@ -297,76 +336,178 @@ const RegionsPage: NextPage = () => {
           justifyContent: 'center',
           padding: '2rem'
         }}>
-          {/* Tagline */}
-          <p style={{
-            fontSize: '1.75rem',
-            color: 'rgba(255, 255, 255, 0.7)',
-            textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)',
-            maxWidth: '800px',
-            textAlign: 'center',
-            fontWeight: '400',
-            letterSpacing: '0.05em'
-          }}>
-            Explore diverse regions in the world of Pokémon
-          </p>
+          {/* Enhanced Title with Glass Background */}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className={`${createGlassStyle({
+              blur: '3xl',
+              opacity: 'strong',
+              gradient: true,
+              border: 'strong',
+              shadow: 'glow',
+              rounded: 'xl',
+            })} p-8 md:p-12 rounded-3xl`}
+          >
+            <h1 className="text-6xl md:text-8xl font-black text-white uppercase tracking-wider text-center mb-4"
+                style={{ textShadow: '3px 3px 6px rgba(0, 0, 0, 0.8)' }}>
+              <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent animate-gradient">
+                Pokemon Regions
+              </span>
+            </h1>
+            
+            <p className="text-xl md:text-2xl text-white/90 text-center font-medium"
+               style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)' }}>
+              Explore diverse regions in the world of Pokémon
+            </p>
+            
+            <div className="flex justify-center gap-4 mt-6">
+              <GradientButton
+                onClick={() => document.getElementById('regions-grid')?.scrollIntoView({ behavior: 'smooth' })}
+                variant="primary"
+                className="px-6 py-3"
+              >
+                <FiMap className="w-5 h-5 mr-2" />
+                Explore All Regions
+              </GradientButton>
+            </div>
+          </motion.div>
         </div>
       </div>
 
-      <div className="relative bg-gradient-to-br from-gray-50 via-purple-50/30 to-gray-100 dark:from-gray-900 dark:via-purple-900/20 dark:to-gray-900" style={{ marginTop: '0', zIndex: 1 }}>
+      <div className="relative" style={{ marginTop: '0', zIndex: 1 }}>
+        {/* Back Button */}
+        <div className="container mx-auto px-4 py-6">
+          <CircularButton
+            onClick={() => router.push('/pokemon')}
+            variant="secondary"
+            size="md"
+            className="hover:scale-105 transition-transform"
+          >
+            <FiChevronLeft className="w-5 h-5" />
+            Back to Pokemon Hub
+          </CircularButton>
+        </div>
+
         {/* Regions Grid - Full Width */}
-        <div className="relative w-full">
-          <div>
+        <div id="regions-grid" className="relative w-full">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
             {regions.map((region, index) => (
               <div key={region.id}>
-                {/* Generation Separator Bar */}
-                <div className="relative w-full h-8 flex items-center justify-between px-8 border-y overflow-visible" style={{
-                  background: 'rgba(55, 65, 81, 0.8)',
-                  borderColor: 'rgba(75, 85, 99, 0.5)',
-                  backdropFilter: 'blur(4px)'
-                }}>
-                  <span style={{
-                    color: 'rgba(209, 213, 219, 1)',
-                    fontSize: '0.875rem',
-                    fontWeight: '600',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.2em'
-                  }}>
-                    Generation {region.generation}
-                  </span>
-                  
-                  {/* Starters Section */}
+                {/* Enhanced Generation Separator with Glass Style */}
+                <motion.div 
+                  initial={{ opacity: 0, x: -100 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className={`relative w-full h-12 flex items-center px-8 ${createGlassStyle({
+                    blur: 'xl',
+                    opacity: 'strong',
+                    gradient: false,
+                    border: 'medium',
+                    shadow: 'md',
+                    rounded: 'md',
+                  })}`}
+                >
                   <div className="flex items-center gap-3">
-                    <span style={{
-                      color: 'rgba(209, 213, 219, 1)',
-                      fontSize: '0.8125rem',
-                      fontWeight: '600',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.1em'
-                    }}>
-                      Starters:
+                    <span className="text-2xl">{region.icon}</span>
+                    <span className="text-sm font-bold uppercase tracking-wider bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                      Generation {region.generation}
                     </span>
-                    <div className="flex gap-2 relative">
-                      {region.starterIds && region.starterIds.map((id) => (
-                        <div key={id} className="relative group">
-                          <div className="w-10 h-10 rounded-full bg-white/90 p-1 shadow-md group-hover:shadow-lg transition-all transform group-hover:scale-110">
-                            <img
-                              src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`}
-                              alt={`Starter ${id}`}
-                              className="w-full h-full object-contain"
-                              style={{ imageRendering: 'pixelated' }}
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                    <span className="text-gray-400">•</span>
+                    <span className="text-sm font-semibold text-gray-300 uppercase tracking-wide">
+                      {region.name} Region
+                    </span>
                   </div>
-                </div>
+                  <div className="ml-auto flex items-center gap-2">
+                    <span className="text-xs text-gray-400">{region.starters}</span>
+                  </div>
+                </motion.div>
                 
                 {/* Region Tile */}
                 <RegionTile region={region} />
               </div>
             ))}
-          </div>
+          </motion.div>
+        </div>
+
+        {/* Stats Section */}
+        <div className="container mx-auto px-4 py-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className={`${createGlassStyle({
+              blur: '3xl',
+              opacity: 'strong',
+              gradient: true,
+              border: 'strong',
+              shadow: 'glow',
+              rounded: 'xl',
+            })} p-8 rounded-3xl`}
+          >
+            <h2 className="text-3xl font-bold text-center mb-8">
+              <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
+                Regional Statistics
+              </span>
+            </h2>
+            <div className="grid md:grid-cols-3 gap-6">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className={`${createGlassStyle({
+                  blur: 'md',
+                  opacity: 'medium',
+                  gradient: false,
+                  border: 'subtle',
+                  shadow: 'md',
+                  rounded: 'xl',
+                })} p-6 rounded-2xl text-center`}
+              >
+                <div className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent mb-2">
+                  9
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Total Regions</p>
+              </motion.div>
+              
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className={`${createGlassStyle({
+                  blur: 'md',
+                  opacity: 'medium',
+                  gradient: false,
+                  border: 'subtle',
+                  shadow: 'md',
+                  rounded: 'xl',
+                })} p-6 rounded-2xl text-center`}
+              >
+                <div className="text-4xl font-bold bg-gradient-to-r from-pink-600 to-pink-400 bg-clip-text text-transparent mb-2">
+                  1000+
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Total Pokemon</p>
+              </motion.div>
+              
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className={`${createGlassStyle({
+                  blur: 'md',
+                  opacity: 'medium',
+                  gradient: false,
+                  border: 'subtle',
+                  shadow: 'md',
+                  rounded: 'xl',
+                })} p-6 rounded-2xl text-center`}
+              >
+                <div className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent mb-2">
+                  27
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Starter Pokemon</p>
+              </motion.div>
+            </div>
+          </motion.div>
         </div>
       </div>
 
@@ -412,7 +553,7 @@ const RegionsPage: NextPage = () => {
           transition: opacity 0.3s ease-out, transform 0.3s ease-out;
         }
       `}</style>
-    </>
+    </FullBleedWrapper>
   );
 };
 

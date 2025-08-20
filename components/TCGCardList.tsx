@@ -5,6 +5,9 @@ import Modal from "./ui/modals/Modal";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import { InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { SmartSkeleton } from "./ui/SkeletonLoader";
+import { CleanRaritySymbol } from './ui/CleanRaritySymbol';
+import PriceDisplay from './ui/PriceDisplay';
+import { ErrorBoundaryWrapper } from "./ui/ErrorBoundary";
 import type { TCGCard } from "../types/api/cards";
 import logger from "@/utils/logger";
 
@@ -126,18 +129,14 @@ const TCGCardItem = memo<TCGCardProps>(({
               loading="lazy"
             />
             
-            {/* Rarity Badge - Top Right */}
+            {/* Clean Rarity Symbol - Top Right */}
             {showRarity && card.rarity && (
-              <div className="absolute top-2 right-2">
-                <div className={`
-                  px-2 py-1 rounded-full
-                  backdrop-blur-md bg-gradient-to-r ${getRarityPillColor(card.rarity)}
-                  text-xs font-bold
-                  border border-white/50
-                  shadow-sm
-                `}>
-                  {card.rarity.split(' ')[0]}
-                </div>
+              <div className="absolute top-2 right-2 z-20 bg-white/90 dark:bg-gray-800/90 rounded-lg p-1">
+                <CleanRaritySymbol
+                  rarity={card.rarity}
+                  size="sm"
+                  showLabel={false}
+                />
               </div>
             )}
             
@@ -176,20 +175,14 @@ const TCGCardItem = memo<TCGCardProps>(({
             
             {/* Price and Set Info Row */}
             <div className="flex items-center justify-between px-1 gap-1">
-              {/* Price Display */}
+              {/* Enhanced Price Display */}
               {showPrice && price > 0 && (
-                <span className="
-                  text-xs px-2.5 py-1 rounded-full
-                  bg-gradient-to-r from-purple-100/90 to-pink-100/90 dark:from-purple-900/40 dark:to-pink-900/40
-                  backdrop-blur-md
-                  font-bold text-purple-700 dark:text-purple-300
-                  border border-white/50 dark:border-purple-400/30
-                  shadow-lg shadow-purple-500/20 dark:shadow-purple-500/10
-                  hover:shadow-xl hover:shadow-purple-500/30 dark:hover:shadow-purple-500/20
-                  transition-all duration-200
-                ">
-                  ${price.toFixed(2)}
-                </span>
+                <PriceDisplay
+                  price={price}
+                  size="sm"
+                  variant={price >= 100 ? 'premium' : price >= 50 ? 'sale' : 'default'}
+                  animated={true}
+                />
               )}
               
               {/* Set Badge */}
@@ -238,7 +231,7 @@ interface TCGCardListProps {
 }
 
 // TCGCardList: displays TCG cards with enhanced visual design matching PocketCardList
-export default function TCGCardList({ 
+function TCGCardListInner({ 
   cards, 
   loading = false, 
   error, 
@@ -586,5 +579,31 @@ export default function TCGCardList({
       </Modal>
     )}
     </>
+  );
+}
+
+// Export component wrapped with error boundary
+export default function TCGCardList(props: TCGCardListProps) {
+  return (
+    <ErrorBoundaryWrapper
+      context="TCGCardList"
+      fallback={
+        <div className="min-h-96 flex items-center justify-center p-8">
+          <div className="glass-medium rounded-xl p-6 text-center max-w-md">
+            <div className="text-4xl mb-4">🎴</div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Unable to load TCG cards</h3>
+            <p className="text-gray-600 mb-4">There was an error loading the Trading Card Game cards. Please try refreshing the page.</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Refresh
+            </button>
+          </div>
+        </div>
+      }
+    >
+      <TCGCardListInner {...props} />
+    </ErrorBoundaryWrapper>
   );
 }

@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { TypeBadge } from '@/components/ui/TypeBadge';
 import { CategoryIcon } from '@/components/ui/CategoryIcon';
 import { GlassContainer } from '@/components/ui/design-system';
+import { FullBleedWrapper } from '@/components/ui/FullBleedWrapper';
 import StyledBackButton from '@/components/ui/StyledBackButton';
 import { fetchJSON } from '@/utils/unifiedFetch';
 import { showdownQueries, MoveCompetitiveDataRecord } from '@/utils/supabase';
@@ -128,7 +129,7 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
   const generation = moveData.generation.name.replace('generation-', '').toUpperCase();
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <FullBleedWrapper gradient="pokedex">
       <Head>
         <title>{displayName} - Move Details | DexTrends</title>
         <meta name="description" content={`Details about the Pokemon move ${displayName}`} />
@@ -364,7 +365,7 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
           </GlassContainer>
         </motion.div>
       </div>
-    </div>
+    </FullBleedWrapper>
   );
 };
 

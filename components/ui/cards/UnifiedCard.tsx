@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { motion, AnimatePresence } from "framer-motion";
 import logger from "@/utils/logger";
-import { FaHeart, FaRegHeart, FaShare, FaTrash } from "react-icons/fa";
+import { FaHeart, FaRegHeart, FaShare, FaTrash, FaCrown } from "react-icons/fa";
 import { TypeBadge } from "../TypeBadge";
 import { CompactPriceIndicator } from "../PriceIndicator";
 import performanceMonitor from "../../../utils/performanceMonitor";
@@ -746,9 +746,16 @@ const UnifiedCard = memo(({
 
             {/* Rarity */}
             {showRarity && normalizedCard.rarity && (
-              <span className={`px-2 py-1 text-xs rounded-full font-bold ${rarityInfo.color}`}>
-                {rarityInfo.label}
-              </span>
+              rarityInfo.label === 'Crown' ? (
+                <span className={`inline-flex items-center gap-1 px-2 py-1 text-xs rounded-full font-bold ${rarityInfo.color}`}>
+                  <FaCrown className="w-3 h-3" />
+                  <span>Crown</span>
+                </span>
+              ) : (
+                <span className={`px-2 py-1 text-xs rounded-full font-bold ${rarityInfo.color}`}>
+                  {rarityInfo.label}
+                </span>
+              )
             )}
 
             {/* Price */}

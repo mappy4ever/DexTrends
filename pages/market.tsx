@@ -58,7 +58,7 @@ const MarketPage: NextPage = () => {
         <meta name="keywords" content="pokemon tcg market, card prices, market trends, trading analytics, price tracker" />
       </Head>
       
-      <FullBleedWrapper gradient="tcg">
+      <FullBleedWrapper gradient="pokedex">
         <div className="container mx-auto px-4 py-8 max-w-7xl">
           
           <FadeIn>

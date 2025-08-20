@@ -137,8 +137,8 @@ export const PWAProvider: React.FC<PWAProviderProps> = ({ children }) => {
       
       logger.info('Registering service worker', { file: swFile });
       
-      // Add timestamp to force update
-      const registration = await navigator.serviceWorker.register(`${swFile}?v=${Date.now()}`);
+      // Register service worker without timestamp to prevent constant updates
+      const registration = await navigator.serviceWorker.register(swFile);
       setServiceWorkerRegistration(registration);
 
       // Force immediate activation of new service worker
@@ -146,22 +146,15 @@ export const PWAProvider: React.FC<PWAProviderProps> = ({ children }) => {
         registration.waiting.postMessage({ type: 'SKIP_WAITING' });
       }
 
-      // Check for updates periodically
+      // Check for updates but don't auto-reload
       registration.addEventListener('updatefound', () => {
         const newWorker = registration.installing;
         if (newWorker) {
           newWorker.addEventListener('statechange', () => {
             if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
               setHasUpdate(true);
-              logger.info('New service worker available');
-              
-              // Auto-activate new worker to prevent stale cache issues
-              newWorker.postMessage({ type: 'SKIP_WAITING' });
-              
-              // Reload after a short delay to ensure new SW is active
-              setTimeout(() => {
-                window.location.reload();
-              }, 100);
+              logger.info('New service worker available - refresh to update');
+              // Don't auto-reload - let user decide when to refresh
             }
           });
         }

@@ -175,7 +175,7 @@ const TrendingPage: NextPage = () => {
         <title>Trending Cards - Market Movers | DexTrends</title>
         <meta name="description" content="Discover rising and falling Pokemon TCG card prices. Track market trends and find the hottest cards in the trading card game market" />
       </Head>
-      <FullBleedWrapper gradient="tcg">
+      <FullBleedWrapper gradient="pokedex">
         <div className="container max-w-6xl mx-auto px-4 py-8">
       <div className="mb-8">
         <div className="flex justify-between items-center">

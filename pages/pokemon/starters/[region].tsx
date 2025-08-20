@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../../../components/ui/animations/animations";
 import { useTheme } from "../../../context/UnifiedAppContext";
+import { FullBleedWrapper } from "../../../components/ui/FullBleedWrapper";
 import StyledBackButton from "../../../components/ui/StyledBackButton";
 import { TypeBadge } from "../../../components/ui/TypeBadge";
 import { GiPokerHand, GiSwordWound, GiShield, GiSpeedometer, GiHearts } from "react-icons/gi";
@@ -798,7 +799,7 @@ export default function StarterDetailPage() {
   };
 
   return (
-    <div className="min-h-screen">
+    <FullBleedWrapper gradient="regions">
       <Head>
         <title>{regionData.region} Starters | DexTrends</title>
         <meta name="description" content={`Meet the starter Pokémon from the ${regionData.region} region`} />
@@ -1130,6 +1131,6 @@ export default function StarterDetailPage() {
           )}
         </div>
       </FadeIn>
-    </div>
+    </FullBleedWrapper>
   );
 }

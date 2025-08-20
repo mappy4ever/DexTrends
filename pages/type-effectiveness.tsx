@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
-import CircularButton from '../components/ui/CircularButton';
-import { GlassContainer } from '../components/ui/design-system/GlassContainer';
+import { createGlassStyle } from '../components/ui/design-system/glass-constants';
+import { UnifiedSearchBar, EmptyStateGlass, LoadingStateGlass } from '../components/ui/glass-components';
+import { GradientButton, CircularButton } from '../components/ui/design-system';
 import { TypeBadge } from '../components/ui/TypeBadge';
 import { 
   calculateTypeEffectiveness, 
@@ -15,8 +16,8 @@ import {
   loadTypeChart
 } from '../utils/typeEffectiveness';
 import logger from '../utils/logger';
-import { BsSearch } from 'react-icons/bs';
 import { fetchJSON } from '../utils/unifiedFetch';
+import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 
 interface TypeDetails {
   name: string;
@@ -38,8 +39,11 @@ const TypeEffectivenessPage = () => {
   const [teamTypes, setTeamTypes] = useState<string[][]>([]);
   const [typeDetails, setTypeDetails] = useState<Record<string, TypeDetails>>({});
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
   const [viewMode, setViewMode] = useState<'calculator' | 'chart' | 'team'>('calculator');
+
+  // Glass morphism styles
+  const glassStyle = createGlassStyle({});
+  const glassButtonStyle = createGlassStyle({ opacity: 'subtle', blur: 'md' });
 
   useEffect(() => {
     const init = async () => {
@@ -94,84 +98,94 @@ const TypeEffectivenessPage = () => {
     return 'Normal Damage';
   };
 
-  const filteredTypes = POKEMON_TYPES.filter(type => 
-    type.includes(searchTerm.toLowerCase())
-  );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <FullBleedWrapper gradient="pokedex">
       <Head>
         <title>Type Effectiveness Calculator | DexTrends</title>
         <meta name="description" content="Master Pokemon type matchups with our interactive type effectiveness calculator and team analyzer" />
       </Head>
 
-      {/* Header */}
+      {/* Enhanced Glass Header */}
       <motion.div 
-        className="sticky top-0 z-50 backdrop-blur-xl bg-white/5 dark:bg-gray-900/5 border-b border-white/20"
+        className={`sticky top-0 z-50 ${glassStyle}`}
+        style={{
+          borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+        }}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        <div className="container mx-auto px-4 py-4">
+        <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
-            <CircularButton
-              onClick={() => router.push('/pokemon')}
-              variant="secondary"
-              size="sm"
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              Back
-            </CircularButton>
+              <CircularButton
+                onClick={() => router.push('/pokemon')}
+                variant="secondary"
+                size="sm"
+              >
+                Back
+              </CircularButton>
+            </motion.div>
             
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+            <motion.h1 
+              className="text-3xl font-bold bg-gradient-to-r from-purple-400 via-blue-500 to-indigo-600 bg-clip-text text-transparent"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+            >
               Type Effectiveness
-            </h1>
+            </motion.h1>
             
-            <div className="text-sm text-gray-600 dark:text-gray-400">
+            <motion.div 
+              className={`text-sm font-medium text-gray-600 dark:text-gray-300 px-3 py-1 rounded-full ${glassButtonStyle}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
               Calculator
-            </div>
+            </motion.div>
           </div>
         </div>
       </motion.div>
 
       <div className="container mx-auto px-4 py-8 max-w-7xl">
-        {/* View Mode Selector */}
+        {/* Enhanced Glass View Mode Selector */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
+          transition={{ delay: 0.1, duration: 0.6 }}
           className="flex justify-center mb-8"
         >
-          <GlassContainer className="inline-flex gap-2 p-2" rounded="full">
-            <button
-              onClick={() => setViewMode('calculator')}
-              className={`px-6 py-2 rounded-full font-medium text-sm transition-all ${
-                viewMode === 'calculator'
-                  ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg'
-                  : 'hover:bg-white/50 dark:hover:bg-gray-700/50'
-              }`}
-            >
-              Calculator
-            </button>
-            <button
-              onClick={() => setViewMode('chart')}
-              className={`px-6 py-2 rounded-full font-medium text-sm transition-all ${
-                viewMode === 'chart'
-                  ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg'
-                  : 'hover:bg-white/50 dark:hover:bg-gray-700/50'
-              }`}
-            >
-              Type Chart
-            </button>
-            <button
-              onClick={() => setViewMode('team')}
-              className={`px-6 py-2 rounded-full font-medium text-sm transition-all ${
-                viewMode === 'team'
-                  ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg'
-                  : 'hover:bg-white/50 dark:hover:bg-gray-700/50'
-              }`}
-            >
-              Team Analyzer
-            </button>
-          </GlassContainer>
+          <motion.div 
+            className={`inline-flex gap-1 p-1.5 rounded-full ${glassStyle}`}
+            whileHover={{ scale: 1.02 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+          >
+            {[
+              { key: 'calculator', label: 'Calculator' },
+              { key: 'chart', label: 'Type Chart' },
+              { key: 'team', label: 'Team Analyzer' }
+            ].map(({ key, label }) => (
+              <motion.button
+                key={key}
+                onClick={() => setViewMode(key as any)}
+                className={`px-6 py-3 rounded-full font-semibold text-sm transition-all duration-300 ${
+                  viewMode === key
+                    ? 'bg-gradient-to-r from-purple-500 via-blue-500 to-indigo-600 text-white shadow-xl'
+                    : `text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white ${glassButtonStyle}`
+                }`}
+                whileHover={{ scale: viewMode === key ? 1.05 : 1.02 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 20 }}
+              >
+                {label}
+              </motion.button>
+            ))}
+          </motion.div>
         </motion.div>
 
         {/* Calculator Mode */}
@@ -183,11 +197,14 @@ const TypeEffectivenessPage = () => {
           >
             {/* Type Selector */}
             <div className="grid md:grid-cols-2 gap-6">
-              {/* Attacking Type */}
+              {/* Enhanced Glass Attacking Type */}
               <motion.div
-                whileHover={{ scale: 1.02, y: -4 }}
+                className={`rounded-3xl p-8 border border-white/20 dark:border-gray-700/50 ${glassStyle}`}
+                whileHover={{ scale: 1.02, y: -6 }}
                 transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                className="bg-white dark:bg-gray-900/50 rounded-3xl p-6 backdrop-blur-md border border-gray-200 dark:border-gray-700 shadow-xl"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
               >
                 <div className="flex items-center gap-3 mb-5">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-500/20 to-orange-500/10 flex items-center justify-center shadow-md shadow-red-500/10">
@@ -225,11 +242,14 @@ const TypeEffectivenessPage = () => {
                 </div>
               </motion.div>
 
-              {/* Defending Type(s) */}
+              {/* Enhanced Glass Defending Type(s) */}
               <motion.div
-                whileHover={{ scale: 1.02, y: -4 }}
+                className={`rounded-3xl p-8 border border-white/20 dark:border-gray-700/50 ${glassStyle}`}
+                whileHover={{ scale: 1.02, y: -6 }}
                 transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                className="bg-white dark:bg-gray-900/50 rounded-3xl p-6 backdrop-blur-md border border-gray-200 dark:border-gray-700 shadow-xl"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
               >
                 <div className="flex items-center gap-3 mb-5">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-cyan-500/10 flex items-center justify-center shadow-md shadow-blue-500/10">
@@ -316,14 +336,22 @@ const TypeEffectivenessPage = () => {
               </motion.div>
             </div>
 
-            {/* Result Display */}
+            {/* Enhanced Glass Result Display */}
             {selectedAttacker && selectedDefender1 && (
               <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3 }}
+                initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.8, y: -20 }}
+                transition={{ duration: 0.5, type: "spring", stiffness: 300, damping: 25 }}
               >
-                <GlassContainer className="text-center py-8" rounded="3xl" hover>
+                <motion.div 
+                  className={`text-center py-10 px-8 rounded-3xl border border-white/20 dark:border-gray-700/50 ${glassStyle}`}
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%)'
+                  }}
+                  whileHover={{ scale: 1.02, y: -4 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                >
                   <div className="flex items-center justify-center gap-6 mb-6">
                     <div>
                       <TypeBadge type={selectedAttacker} size="md" />
@@ -361,13 +389,19 @@ const TypeEffectivenessPage = () => {
                       </motion.div>
                     );
                   })()}
-                </GlassContainer>
+                </motion.div>
               </motion.div>
             )}
 
             {/* Type Details */}
             {selectedAttacker && typeDetails[selectedAttacker] && (
-              <GlassContainer padding="lg" rounded="2xl">
+              <motion.div 
+                className={`p-8 rounded-3xl border border-white/20 dark:border-gray-700/50 ${glassStyle}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+                whileHover={{ scale: 1.01, y: -2 }}
+              >
                 <h3 className="text-lg font-bold mb-6 capitalize text-gray-800 dark:text-gray-200">
                   {selectedAttacker} Type Matchups
                 </h3>
@@ -449,7 +483,7 @@ const TypeEffectivenessPage = () => {
                     )}
                   </div>
                 </div>
-              </GlassContainer>
+              </motion.div>
             )}
           </motion.div>
         )}
@@ -460,7 +494,11 @@ const TypeEffectivenessPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
-            <GlassContainer className="overflow-x-auto" padding="lg" rounded="2xl">
+            <motion.div 
+              className={`overflow-x-auto p-8 rounded-3xl border border-white/20 dark:border-gray-700/50 ${glassStyle}`}
+              whileHover={{ scale: 1.005 }}
+              transition={{ type: "spring", stiffness: 400, damping: 30 }}
+            >
               <h3 className="text-xl font-bold mb-6 text-center text-gray-800 dark:text-gray-200">Complete Type Effectiveness Chart</h3>
             
               <div className="min-w-[800px]">
@@ -533,7 +571,7 @@ const TypeEffectivenessPage = () => {
                   <span>0×</span>
                 </div>
               </div>
-            </GlassContainer>
+            </motion.div>
           </motion.div>
         )}
 
@@ -544,11 +582,16 @@ const TypeEffectivenessPage = () => {
             animate={{ opacity: 1 }}
             className="space-y-8"
           >
-            {/* Team Builder */}
+            {/* Enhanced Glass Team Builder */}
             <motion.div
-              className="bg-white dark:bg-gray-900/50 rounded-3xl p-8 backdrop-blur-md border border-gray-200 dark:border-gray-700 shadow-xl"
-              whileHover={{ scale: 1.01 }}
-              transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              className={`rounded-3xl p-10 border border-white/20 dark:border-gray-700/50 ${glassStyle}`}
+              style={{
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 100%)'
+              }}
+              whileHover={{ scale: 1.015, y: -6 }}
+              transition={{ type: "spring", stiffness: 400, damping: 25 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
             >
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/10 flex items-center justify-center shadow-md shadow-purple-500/10">
@@ -569,8 +612,11 @@ const TypeEffectivenessPage = () => {
                 {[0, 1, 2, 3, 4, 5].map(slot => (
                   <motion.div 
                     key={slot} 
-                    className="bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-4 border border-gray-200 dark:border-gray-700"
-                    whileHover={{ y: -2, boxShadow: '0 10px 30px -10px rgba(0,0,0,0.2)' }}
+                    className={`rounded-2xl p-5 border border-white/15 dark:border-gray-600/30 ${glassButtonStyle}`}
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)'
+                    }}
+                    whileHover={{ y: -4, scale: 1.02 }}
                     transition={{ type: "spring", stiffness: 400, damping: 20 }}
                   >
                     <div className="flex items-center justify-between mb-3">
@@ -668,14 +714,17 @@ const TypeEffectivenessPage = () => {
               </div>
             </motion.div>
 
-            {/* Team Analysis Results */}
+            {/* Enhanced Glass Team Analysis Results */}
             {teamTypes.filter(t => t.length > 0).length > 0 && (
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="bg-white dark:bg-gray-900/50 rounded-3xl p-8 backdrop-blur-md border border-gray-200 dark:border-gray-700 shadow-xl"
-                whileHover={{ scale: 1.01 }}
-                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                className={`rounded-3xl p-10 border border-white/20 dark:border-gray-700/50 ${glassStyle}`}
+                style={{
+                  background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 100%)'
+                }}
+                whileHover={{ scale: 1.015, y: -6 }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
               >
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-500/10 flex items-center justify-center shadow-md shadow-green-500/10">
@@ -781,8 +830,12 @@ const TypeEffectivenessPage = () => {
                             return (
                               <motion.div 
                                 key={idx} 
-                                className="bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-4 border border-gray-200 dark:border-gray-700"
-                                whileHover={{ scale: 1.02, y: -2 }}
+                                className={`rounded-2xl p-5 border border-white/15 dark:border-gray-600/30 ${glassButtonStyle}`}
+                                style={{
+                                  background: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)'
+                                }}
+                                whileHover={{ scale: 1.03, y: -4 }}
+                                transition={{ type: "spring", stiffness: 400, damping: 20 }}
                               >
                                 <div className="flex items-center justify-between mb-3">
                                   <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -821,7 +874,7 @@ const TypeEffectivenessPage = () => {
           </motion.div>
         )}
       </div>
-    </div>
+    </FullBleedWrapper>
   );
 };
 

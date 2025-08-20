@@ -9,6 +9,7 @@ import { TypeBadge } from '../../components/ui/TypeBadge';
 import PackOpening from '../../components/ui/PackOpening';
 import StyledBackButton from '../../components/ui/StyledBackButton';
 import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
+import { FullBleedWrapper } from '../../components/ui/FullBleedWrapper';
 import logger from '../../utils/logger';
 import type { PocketCard } from '../../types/api/pocket-cards';
 
@@ -531,18 +532,19 @@ const Expansions: NextPage = () => {
 
   if (loading) {
     return (
-      <>
+      <FullBleedWrapper gradient="pocket">
         <Head>
           <title>Expansions | Pokemon Pocket | DexTrends</title>
         </Head>
         <PageLoader text="Loading Expansions..." />
-      </>
+      </FullBleedWrapper>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 flex items-center justify-center">
+      <FullBleedWrapper gradient="pocket">
+        <div className="min-h-screen flex items-center justify-center">
         <Head>
           <title>Expansions | Pokemon Pocket | DexTrends</title>
         </Head>
@@ -557,16 +559,18 @@ const Expansions: NextPage = () => {
             🔄 Try Again
           </button>
         </div>
-      </div>
+        </div>
+      </FullBleedWrapper>
     );
   }
 
   return (
-    <div className="min-h-screen bg-off-white">
+    <FullBleedWrapper gradient="pocket">
       <Head>
         <title>Pack Opening | Pokemon Pocket | DexTrends</title>
         <meta name="description" content="Experience realistic Pokemon Pocket booster pack opening with authentic rarity rates" />
       </Head>
+      <div className="min-h-screen">
       {/* Clean Header */}
       <div className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-border-color shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-4">
@@ -814,7 +818,8 @@ const Expansions: NextPage = () => {
         onClose={closePackOpening}
         isOpen={showPackOpening}
       />
-    </div>
+      </div>
+    </FullBleedWrapper>
   );
 };
 

@@ -7,6 +7,7 @@ import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import { InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { SmartSkeleton } from "./ui/SkeletonLoader";
 import { FaCrown } from "react-icons/fa";
+import { ErrorBoundaryWrapper } from "./ui/ErrorBoundary";
 import type { PocketCard } from "../types/api/pocket-cards";
 
 // Extended interface for pocket cards with additional display properties
@@ -195,7 +196,7 @@ const PocketCard = memo<PocketCardProps>(({
             {showRarity && getRarityDisplay(card.rarity) && (
               isGoldRarity(card.rarity) ? (
                 // Gold rarities - check if it's a crown or star
-                (card.rarity === '👑' || card.rarity === '♕') ? (
+                (card.rarity === 'Crown Rare') ? (
                   // Crown - use React icon
                   <FaCrown className="text-yellow-500" size={14} />
                 ) : (
@@ -268,7 +269,7 @@ interface ParsedCardId {
 }
 
 // PocketCardList: displays cards from the Pocket API with enhanced visual design
-export default function PocketCardList({ 
+function PocketCardListInner({ 
   cards, 
   loading, 
   error, 
@@ -689,5 +690,31 @@ export default function PocketCardList({
       </Modal>
     )}
     </>
+  );
+}
+
+// Export component wrapped with error boundary
+export default function PocketCardList(props: PocketCardListProps) {
+  return (
+    <ErrorBoundaryWrapper
+      context="PocketCardList"
+      fallback={
+        <div className="min-h-96 flex items-center justify-center p-8">
+          <div className="glass-medium rounded-xl p-6 text-center max-w-md">
+            <div className="text-4xl mb-4">🎴</div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Unable to load cards</h3>
+            <p className="text-gray-600 mb-4">There was an error loading the Pocket cards. Please try refreshing the page.</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Refresh
+            </button>
+          </div>
+        </div>
+      }
+    >
+      <PocketCardListInner {...props} />
+    </ErrorBoundaryWrapper>
   );
 }

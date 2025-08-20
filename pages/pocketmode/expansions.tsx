@@ -6,8 +6,7 @@ import Link from "next/link";
 import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../../components/ui/animations/animations";
 import { useTheme } from "../../context/UnifiedAppContext";
 import { useInfiniteScroll } from "../../hooks/useInfiniteScroll";
-import { GlassContainer } from "../../components/ui/design-system/GlassContainer";
-import { GradientButton } from "../../components/ui/design-system/GradientButton";
+import { createGlassStyle, GradientButton, CircularButton } from '../../components/ui/design-system';
 import { CircularCard } from "../../components/ui/design-system/CircularCard";
 import { motion } from "framer-motion";
 import { InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
@@ -483,38 +482,45 @@ const PocketExpansions: NextPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            {/* Search Bar */}
-            <div className="relative mb-3">
-              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <svg className="w-4 h-4 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </div>
-              <input
-                type="text"
-                className="w-full pl-9 pr-9 py-2 backdrop-blur-xl bg-white/80 dark:bg-gray-800/80 rounded-full text-sm border border-white/40 dark:border-gray-700/40 focus:outline-none focus:ring-2 focus:ring-purple-400/40 focus:border-purple-400/60 focus:ring-offset-0 transition-all shadow-sm"
-                placeholder="Search expansions... (Press / to focus)"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                style={{
-                  WebkitAppearance: 'none',
-                  MozAppearance: 'none',
-                  appearance: 'none',
-                  outline: 'none',
-                  boxShadow: 'none'
-                }}
-              />
-              {search && (
-                <button
-                  className="absolute inset-y-0 right-0 pr-3 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
-                  onClick={() => setSearch('')}
-                >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            {/* Enhanced Search Bar */}
+            <motion.div 
+              className="mb-4"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <svg className="w-4 h-4 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
-                </button>
-              )}
-            </div>
+                </div>
+                <input
+                  type="text"
+                  className={`${createGlassStyle({
+                    blur: 'md',
+                    opacity: 'medium',
+                    gradient: false,
+                    border: 'medium',
+                    shadow: 'sm',
+                    rounded: 'full'
+                  })} w-full pl-9 pr-9 py-3 text-sm transition-all`}
+                  placeholder="Search expansions... (Press / to focus)"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+                {search && (
+                  <button
+                    className="absolute inset-y-0 right-0 pr-3 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+                    onClick={() => setSearch('')}
+                  >
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                )}
+              </div>
+            </motion.div>
               
               {/* Filter Controls */}
               <div className="flex flex-col md:flex-row gap-4 items-end">
@@ -601,10 +607,17 @@ const PocketExpansions: NextPage = () => {
       {loading ? (
         <PageLoader text="Loading Pocket expansions..." />
         ) : error ? (
-          <GlassContainer variant="colored" className="text-center">
-            <h2 className="text-2xl font-bold text-red-600">Error</h2>
-            <p className="text-red-600 mt-2">{error}</p>
-          </GlassContainer>
+          <div className={`${createGlassStyle({
+            blur: 'xl',
+            opacity: 'medium',
+            gradient: true,
+            border: 'medium',
+            shadow: 'xl',
+            rounded: 'xl'
+          })} text-center p-8 rounded-3xl`}>
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent mb-4">Failed to Load Expansions</h2>
+            <p className="text-gray-600 dark:text-gray-400">{error}</p>
+          </div>
         ) : (
           <StaggeredChildren className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {visibleExpansions.map((expansion) => (
@@ -707,24 +720,27 @@ const PocketExpansions: NextPage = () => {
         )}
       
         {!loading && !error && sortedExpansions.length === 0 && (
-          <div className="text-center py-20">
-            <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-12 max-w-md mx-auto shadow-xl">
-              <div className="w-20 h-20 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className="h-10 w-10 text-orange-600" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
-                  stroke="currentColor"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">No Expansions Found</h2>
-              <p className="text-gray-600">
-                {search ? `No expansions match "${search}". Try a different search term.` : "No Pocket expansions available at the moment."}
-              </p>
-            </div>
+          <div className={`${createGlassStyle({
+            blur: 'xl',
+            opacity: 'medium',
+            gradient: true,
+            border: 'medium',
+            shadow: 'xl',
+            rounded: 'xl'
+          })} text-center py-20 p-8 rounded-3xl`}>
+            <div className="text-6xl mb-4">🔍</div>
+            <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">No Expansions Found</h2>
+            <p className="text-gray-600 dark:text-gray-400 max-w-md mx-auto mb-6">
+              {search ? `No expansions match "${search}". Try a different search term.` : "No Pocket expansions available at the moment."}
+            </p>
+            {search && (
+              <GradientButton
+                onClick={() => setSearch('')}
+                variant="secondary"
+              >
+                Clear Search
+              </GradientButton>
+            )}
           </div>
         )}
         </div>

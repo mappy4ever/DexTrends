@@ -197,18 +197,18 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
         transition={{ duration: 0.5, delay: 0.2 }}
         className="grid grid-cols-1 md:grid-cols-3 gap-4"
       >
-        {/* Nature Selector - Compact */}
-        <div className="bg-white dark:bg-gray-900/50 rounded-2xl p-4 backdrop-blur-md border border-gray-200 dark:border-gray-700 shadow-lg">
-          <div className="flex items-center gap-2 mb-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-500/20 to-green-600/10 flex items-center justify-center">
-              <FaFlask className="w-4 h-4 text-green-400" />
+        {/* Nature Selector - Glass Morphism */}
+        <div className="relative rounded-3xl p-5 bg-white/30 dark:bg-gray-900/30 backdrop-blur-xl border border-white/40 dark:border-gray-700/40 shadow-xl">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center shadow-lg">
+              <FaFlask className="w-5 h-5 text-white" />
             </div>
-            <h3 className="font-bold text-xs uppercase tracking-wider text-green-400">Nature</h3>
+            <h3 className="font-bold text-xs uppercase tracking-wider text-gray-700 dark:text-gray-300">Nature</h3>
           </div>
           <select
             value={selectedNature}
             onChange={(e) => onNatureChange?.(e.target.value)}
-            className="w-full p-2 text-sm bg-white/10 dark:bg-gray-800/50 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all"
+            className="w-full p-3 text-sm bg-white/50 dark:bg-gray-800/50 rounded-2xl border border-white/50 dark:border-gray-600/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-green-400 transition-all"
           >
             {allNatures.map(nature => (
               <option key={nature.name} value={nature.name}>
@@ -228,16 +228,16 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
           )}
         </div>
         
-        {/* Level Selector - Compact */}
-        <div className="bg-white dark:bg-gray-900/50 rounded-2xl p-4 backdrop-blur-md border border-gray-200 dark:border-gray-700 shadow-lg">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500/20 to-blue-600/10 flex items-center justify-center">
-                <FaGamepad className="w-4 h-4 text-blue-400" />
+        {/* Level Selector - Glass Morphism */}
+        <div className="relative rounded-3xl p-5 bg-white/30 dark:bg-gray-900/30 backdrop-blur-xl border border-white/40 dark:border-gray-700/40 shadow-xl">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center shadow-lg">
+                <FaGamepad className="w-5 h-5 text-white" />
               </div>
-              <h3 className="font-bold text-xs uppercase tracking-wider text-blue-400">Level</h3>
+              <h3 className="font-bold text-xs uppercase tracking-wider text-gray-700 dark:text-gray-300">Level</h3>
             </div>
-            <span className="text-xl font-bold">{selectedLevel}</span>
+            <span className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-indigo-500 bg-clip-text text-transparent">{selectedLevel}</span>
           </div>
           
           <input
@@ -246,7 +246,7 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
             max="100"
             value={selectedLevel}
             onChange={(e) => onLevelChange?.(parseInt(e.target.value))}
-            className="w-full mb-4"
+            className="w-full mb-4 accent-blue-500"
           />
           
           {/* Quick level buttons */}
@@ -255,10 +255,10 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
               <div key={level} className="flex flex-col items-center">
                 <button
                   className={cn(
-                    "w-10 h-10 text-xs rounded-full transition-all flex items-center justify-center font-semibold",
+                    "w-12 h-12 text-xs rounded-full transition-all flex items-center justify-center font-bold backdrop-blur-sm border",
                     selectedLevel === level 
-                      ? "bg-blue-500 text-white shadow-lg" 
-                      : "bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
+                      ? "bg-gradient-to-br from-blue-400 to-indigo-500 text-white shadow-lg scale-110 border-white/50" 
+                      : "bg-white/30 dark:bg-gray-800/30 text-gray-600 dark:text-gray-300 hover:bg-white/50 dark:hover:bg-gray-700/50 border-white/30 dark:border-gray-700/30"
                   )}
                   onClick={() => onLevelChange?.(level)}
                 >
@@ -274,13 +274,13 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
           </div>
         </div>
         
-        {/* EV Yield - Compact */}
-        <div className="bg-white dark:bg-gray-900/50 rounded-2xl p-4 backdrop-blur-md border border-gray-200 dark:border-gray-700 shadow-lg">
-          <div className="flex items-center gap-2 mb-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500/20 to-purple-600/10 flex items-center justify-center">
-              <FaDna className="w-4 h-4 text-purple-400" />
+        {/* EV Yield - Glass Morphism */}
+        <div className="relative rounded-3xl p-5 bg-white/30 dark:bg-gray-900/30 backdrop-blur-xl border border-white/40 dark:border-gray-700/40 shadow-xl">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center shadow-lg">
+              <FaDna className="w-5 h-5 text-white" />
             </div>
-            <h3 className="font-bold text-xs uppercase tracking-wider text-purple-400">EV Yield</h3>
+            <h3 className="font-bold text-xs uppercase tracking-wider text-gray-700 dark:text-gray-300">EV Yield</h3>
           </div>
           
           <div className="space-y-2">

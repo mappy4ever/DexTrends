@@ -4,6 +4,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../../../components/ui/animations";
 import { useTheme } from "../../../context/UnifiedAppContext";
+import { FullBleedWrapper } from "../../../components/ui/FullBleedWrapper";
 import StyledBackButton from "../../../components/ui/StyledBackButton";
 import { TypeBadge } from "../../../components/ui/TypeBadge";
 import { gameCovers } from "../../../data/gameCovers";
@@ -1016,7 +1017,7 @@ export default function GameDetailPage() {
   };
 
   return (
-    <div className="min-h-screen">
+    <FullBleedWrapper gradient="pokedex">
       <Head>
         <title>{game.names.join(" / ")} | Pokémon Games | DexTrends</title>
         <meta name="description" content={game.description} />
@@ -1362,6 +1363,6 @@ export default function GameDetailPage() {
           )}
         </div>
       </FadeIn>
-    </div>
+    </FullBleedWrapper>
   );
 }

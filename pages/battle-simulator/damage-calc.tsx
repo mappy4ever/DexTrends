@@ -15,7 +15,7 @@ const DamageCalcPage: NextPage = () => {
   };
 
   return (
-    <FullBleedWrapper>
+    <FullBleedWrapper gradient="pokedex">
       <div className="max-w-md mx-auto p-4">
         <h1 className="text-2xl font-bold mb-4">Damage Calculator</h1>
         <div className="space-y-3">

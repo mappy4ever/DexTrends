@@ -1,670 +1,577 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { useRouter } from "next/router";
-import Head from "next/head";
-import { NextPage } from "next";
-import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../../components/ui/animations/animations";
-import { useTheme } from "../../context/UnifiedAppContext";
-import StyledBackButton from "../../components/ui/StyledBackButton";
-import { ListItemSkeleton } from "../../components/ui/SkeletonLoader";
-import { AiOutlineBulb } from "react-icons/ai";
-import { BsSearch, BsShield, BsLightning, BsDroplet, BsFire } from "react-icons/bs";
-import { GiPunch, GiHealing, GiSpeedometer, GiShieldBounces } from "react-icons/gi";
-import { fetchJSON } from "../../utils/unifiedFetch";
-import logger from "../../utils/logger";
-import type { AbilityData } from "../../types/pokemon";
+import React, { useState, useEffect, useMemo } from 'react';
+import { useRouter } from 'next/router';
+import Head from 'next/head';
+import { NextPage } from 'next';
+import { motion, AnimatePresence } from 'framer-motion';
+import { CircularButton, GradientButton } from '../../components/ui/design-system';
+import { GlassContainer } from '../../components/ui/design-system/GlassContainer';
+import { createGlassStyle } from '../../components/ui/design-system/glass-constants';
+import FullBleedWrapper from '../../components/ui/FullBleedWrapper';
+import logger from '../../utils/logger';
+import { BsSearch, BsEye, BsEyeSlash } from 'react-icons/bs';
+import { fetchJSON } from '../../utils/unifiedFetch';
+import { requestCache } from '../../utils/UnifiedCacheManager';
 
-// Interfaces
 interface Ability {
   id: number;
   name: string;
-  category: string;
   effect: string;
-  description: string;
+  short_effect: string;
   generation: number;
-  hidden: boolean;
-}
-
-interface AbilityWithPokemon extends Ability {
-  pokemon?: string[];
+  is_hidden: boolean;
+  pokemon: string[];
 }
 
 interface AbilityApiResponse {
   id: number;
   name: string;
   is_main_series: boolean;
-  generation: {
-    name: string;
-    url: string;
-  };
+  generation: { name: string };
   effect_entries: Array<{
     effect: string;
     short_effect: string;
-    language: {
-      name: string;
-      url: string;
-    };
-  }>;
-  flavor_text_entries?: Array<{
-    flavor_text: string;
-    language: {
-      name: string;
-      url: string;
-    };
-    version_group: {
-      name: string;
-      url: string;
-    };
+    language: { name: string };
   }>;
   pokemon: Array<{
     is_hidden: boolean;
-    slot: number;
-    pokemon: {
-      name: string;
-      url: string;
-    };
+    pokemon: { name: string };
   }>;
 }
 
-interface AbilityListResponse {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: Array<{
-    name: string;
-    url: string;
-  }>;
-}
-
-// Comprehensive abilities data
-const abilitiesData: Ability[] = [
-  // Attack-boosting abilities
-  { id: 1, name: "Adaptability", category: "attack", effect: "Powers up moves of the same type as the Pokémon.", description: "Powers up moves of the same type as the Pokémon. STAB moves deal 2x damage instead of 1.5x.", generation: 4, hidden: false },
-  { id: 2, name: "Blaze", category: "attack", effect: "Powers up Fire-type moves when HP is low.", description: "When HP is below 1/3rd its maximum, power of Fire-type moves is increased by 50%.", generation: 3, hidden: false },
-  { id: 3, name: "Torrent", category: "attack", effect: "Powers up Water-type moves when HP is low.", description: "When HP is below 1/3rd its maximum, power of Water-type moves is increased by 50%.", generation: 3, hidden: false },
-  { id: 4, name: "Overgrow", category: "attack", effect: "Powers up Grass-type moves when HP is low.", description: "When HP is below 1/3rd its maximum, power of Grass-type moves is increased by 50%.", generation: 3, hidden: false },
-  { id: 5, name: "Swarm", category: "attack", effect: "Powers up Bug-type moves when HP is low.", description: "When HP is below 1/3rd its maximum, power of Bug-type moves is increased by 50%.", generation: 3, hidden: false },
-  { id: 6, name: "Huge Power", category: "attack", effect: "Doubles the Pokémon's Attack stat.", description: "The Pokémon's Attack stat is doubled. This boost is calculated after all other modifiers.", generation: 3, hidden: false },
-  { id: 7, name: "Pure Power", category: "attack", effect: "Doubles the Pokémon's Attack stat.", description: "The Pokémon's Attack stat is doubled. This boost is calculated after all other modifiers.", generation: 3, hidden: false },
-  { id: 8, name: "Technician", category: "attack", effect: "Powers up weak moves.", description: "Moves with a base power of 60 or less are boosted in power by 50%.", generation: 4, hidden: false },
-  { id: 9, name: "Sheer Force", category: "attack", effect: "Removes secondary effects but increases move power.", description: "Moves with secondary effects have their power increased by 30%, but the secondary effects are removed.", generation: 5, hidden: false },
-  { id: 10, name: "Iron Fist", category: "attack", effect: "Powers up punching moves.", description: "The power of punching moves is increased by 20%.", generation: 4, hidden: false },
-  { id: 11, name: "Strong Jaw", category: "attack", effect: "Powers up biting moves.", description: "The power of biting moves is increased by 50%.", generation: 6, hidden: false },
-  { id: 12, name: "Mega Launcher", category: "attack", effect: "Powers up pulse moves.", description: "The power of pulse and aura moves is increased by 50%.", generation: 6, hidden: false },
-  { id: 13, name: "Tough Claws", category: "attack", effect: "Powers up contact moves.", description: "The power of contact moves is increased by 30%.", generation: 6, hidden: false },
-  { id: 14, name: "Pixilate", category: "attack", effect: "Normal moves become Fairy-type and powered up.", description: "Normal-type moves become Fairy-type and have their power increased by 20%.", generation: 6, hidden: false },
-  { id: 15, name: "Aerilate", category: "attack", effect: "Normal moves become Flying-type and powered up.", description: "Normal-type moves become Flying-type and have their power increased by 20%.", generation: 6, hidden: false },
-  { id: 16, name: "Refrigerate", category: "attack", effect: "Normal moves become Ice-type and powered up.", description: "Normal-type moves become Ice-type and have their power increased by 20%.", generation: 6, hidden: false },
-  { id: 17, name: "Galvanize", category: "attack", effect: "Normal moves become Electric-type and powered up.", description: "Normal-type moves become Electric-type and have their power increased by 20%.", generation: 7, hidden: false },
-  { id: 18, name: "Guts", category: "attack", effect: "Boosts Attack when suffering from status.", description: "Attack is increased by 50% when affected by a status condition. Burn's attack reduction is ignored.", generation: 3, hidden: false },
-  { id: 19, name: "Hustle", category: "attack", effect: "Boosts Attack but lowers accuracy.", description: "Attack is increased by 50%, but physical moves' accuracy is reduced by 20%.", generation: 3, hidden: false },
-  { id: 20, name: "Moxie", category: "attack", effect: "Boosts Attack after knocking out a Pokémon.", description: "Attack is raised by one stage when the Pokémon knocks out another Pokémon.", generation: 5, hidden: false },
-
-  // Defense abilities
-  { id: 21, name: "Sturdy", category: "defense", effect: "Protects from one-hit KO moves.", description: "The Pokémon is protected against 1-hit KO attacks. If at full HP, survives any hit with 1 HP.", generation: 3, hidden: false },
-  { id: 22, name: "Levitate", category: "defense", effect: "Immunity to Ground-type moves.", description: "Ground-type moves have no effect on this Pokémon. Also unaffected by Spikes, Toxic Spikes, etc.", generation: 3, hidden: false },
-  { id: 23, name: "Volt Absorb", category: "defense", effect: "Restores HP when hit by Electric moves.", description: "Restores 25% of max HP when hit by an Electric-type move instead of taking damage.", generation: 3, hidden: false },
-  { id: 24, name: "Water Absorb", category: "defense", effect: "Restores HP when hit by Water moves.", description: "Restores 25% of max HP when hit by a Water-type move instead of taking damage.", generation: 3, hidden: false },
-  { id: 25, name: "Flash Fire", category: "defense", effect: "Powers up Fire moves when hit by Fire.", description: "Grants immunity to Fire-type moves and increases the power of Fire-type moves by 50% when hit by one.", generation: 3, hidden: false },
-  { id: 26, name: "Lightning Rod", category: "defense", effect: "Draws in Electric moves and raises Sp. Attack.", description: "Electric-type moves are drawn to this Pokémon. Raises Special Attack when hit by one.", generation: 3, hidden: false },
-  { id: 27, name: "Storm Drain", category: "defense", effect: "Draws in Water moves and raises Sp. Attack.", description: "Water-type moves are drawn to this Pokémon. Raises Special Attack when hit by one.", generation: 4, hidden: false },
-  { id: 28, name: "Thick Fat", category: "defense", effect: "Reduces damage from Fire and Ice moves.", description: "Damage from Fire-type and Ice-type moves is reduced by 50%.", generation: 3, hidden: false },
-  { id: 29, name: "Filter", category: "defense", effect: "Reduces damage from super-effective moves.", description: "Damage from super-effective attacks is reduced by 25%.", generation: 4, hidden: false },
-  { id: 30, name: "Solid Rock", category: "defense", effect: "Reduces damage from super-effective moves.", description: "Damage from super-effective attacks is reduced by 25%.", generation: 4, hidden: false },
-  { id: 31, name: "Multiscale", category: "defense", effect: "Reduces damage when HP is full.", description: "Damage taken is halved when HP is full.", generation: 5, hidden: false },
-  { id: 32, name: "Magic Guard", category: "defense", effect: "Only takes damage from attacks.", description: "The Pokémon only takes damage from attacks. Indirect damage is prevented.", generation: 4, hidden: false },
-  { id: 33, name: "Wonder Guard", category: "defense", effect: "Only super-effective moves hit.", description: "Only super-effective moves will hit. All other moves have no effect.", generation: 3, hidden: false },
-  { id: 34, name: "Bulletproof", category: "defense", effect: "Protects from ball and bomb moves.", description: "Protects the Pokémon from ball and bomb moves.", generation: 6, hidden: false },
-  { id: 35, name: "Fur Coat", category: "defense", effect: "Halves damage from physical moves.", description: "Damage from physical moves is halved.", generation: 6, hidden: false },
-  { id: 36, name: "Ice Scales", category: "defense", effect: "Halves damage from special moves.", description: "Damage from special moves is halved.", generation: 8, hidden: false },
-  { id: 37, name: "Fluffy", category: "defense", effect: "Halves damage from contact moves.", description: "Damage from contact moves is halved, but damage from Fire-type moves is doubled.", generation: 7, hidden: false },
-  { id: 38, name: "Water Bubble", category: "defense", effect: "Halves damage from Fire moves, powers up Water moves.", description: "Halves damage from Fire-type moves, doubles power of Water-type moves, and prevents burns.", generation: 7, hidden: false },
-  { id: 39, name: "Prism Armor", category: "defense", effect: "Reduces damage from super-effective moves.", description: "Reduces the power of super-effective attacks by 25%.", generation: 7, hidden: false },
-  { id: 40, name: "Shadow Shield", category: "defense", effect: "Reduces damage when HP is full.", description: "Damage taken is reduced when HP is full.", generation: 7, hidden: false },
-
-  // Speed abilities
-  { id: 41, name: "Speed Boost", category: "speed", effect: "Gradually boosts Speed.", description: "Speed stat is boosted by one stage at the end of each turn.", generation: 3, hidden: false },
-  { id: 42, name: "Chlorophyll", category: "speed", effect: "Doubles Speed in harsh sunlight.", description: "Speed stat is doubled during harsh sunlight weather.", generation: 3, hidden: false },
-  { id: 43, name: "Swift Swim", category: "speed", effect: "Doubles Speed in rain.", description: "Speed stat is doubled during rain weather.", generation: 3, hidden: false },
-  { id: 44, name: "Sand Rush", category: "speed", effect: "Doubles Speed in sandstorm.", description: "Speed stat is doubled during sandstorm weather. Immune to sandstorm damage.", generation: 5, hidden: false },
-  { id: 45, name: "Slush Rush", category: "speed", effect: "Doubles Speed in hail.", description: "Speed stat is doubled during hail weather.", generation: 7, hidden: false },
-  { id: 46, name: "Surge Surfer", category: "speed", effect: "Doubles Speed on Electric Terrain.", description: "Speed stat is doubled when Electric Terrain is active.", generation: 7, hidden: false },
-  { id: 47, name: "Quick Feet", category: "speed", effect: "Boosts Speed when suffering from status.", description: "Speed is increased by 50% when affected by a status condition. Ignores paralysis speed drop.", generation: 4, hidden: false },
-  { id: 48, name: "Unburden", category: "speed", effect: "Doubles Speed when item is used or lost.", description: "Speed is doubled when the held item is consumed or lost.", generation: 4, hidden: false },
-  { id: 49, name: "Motor Drive", category: "speed", effect: "Raises Speed when hit by Electric moves.", description: "Grants immunity to Electric-type moves and raises Speed by one stage when hit by one.", generation: 4, hidden: false },
-  { id: 50, name: "Steadfast", category: "speed", effect: "Raises Speed when flinched.", description: "Speed is raised by one stage when the Pokémon flinches.", generation: 4, hidden: false },
-
-  // Status abilities
-  { id: 51, name: "Intimidate", category: "status", effect: "Lowers opponent's Attack on switch-in.", description: "Lowers the Attack stat of all opposing Pokémon by one stage when entering battle.", generation: 3, hidden: false },
-  { id: 52, name: "Pressure", category: "status", effect: "Increases PP usage of opponents.", description: "When this Pokémon is hit by a move, the opponent's PP usage is doubled.", generation: 3, hidden: false },
-  { id: 53, name: "Unnerve", category: "status", effect: "Prevents opponents from eating berries.", description: "Opposing Pokémon cannot eat berries while this Pokémon is in battle.", generation: 5, hidden: false },
-  { id: 54, name: "Drought", category: "status", effect: "Summons harsh sunlight.", description: "The weather becomes harsh sunlight when the Pokémon enters battle.", generation: 3, hidden: false },
-  { id: 55, name: "Drizzle", category: "status", effect: "Summons rain.", description: "The weather becomes rain when the Pokémon enters battle.", generation: 3, hidden: false },
-  { id: 56, name: "Sand Stream", category: "status", effect: "Summons sandstorm.", description: "The weather becomes sandstorm when the Pokémon enters battle.", generation: 3, hidden: false },
-  { id: 57, name: "Snow Warning", category: "status", effect: "Summons hail.", description: "The weather becomes hail when the Pokémon enters battle.", generation: 4, hidden: false },
-  { id: 58, name: "Electric Surge", category: "status", effect: "Creates Electric Terrain.", description: "Electric Terrain is created when the Pokémon enters battle.", generation: 7, hidden: false },
-  { id: 59, name: "Grassy Surge", category: "status", effect: "Creates Grassy Terrain.", description: "Grassy Terrain is created when the Pokémon enters battle.", generation: 7, hidden: false },
-  { id: 60, name: "Misty Surge", category: "status", effect: "Creates Misty Terrain.", description: "Misty Terrain is created when the Pokémon enters battle.", generation: 7, hidden: false },
-  { id: 61, name: "Psychic Surge", category: "status", effect: "Creates Psychic Terrain.", description: "Psychic Terrain is created when the Pokémon enters battle.", generation: 7, hidden: false },
-  { id: 62, name: "Poison Point", category: "status", effect: "May poison on contact.", description: "30% chance to poison opponents that make contact with this Pokémon.", generation: 3, hidden: false },
-  { id: 63, name: "Static", category: "status", effect: "May paralyze on contact.", description: "30% chance to paralyze opponents that make contact with this Pokémon.", generation: 3, hidden: false },
-  { id: 64, name: "Flame Body", category: "status", effect: "May burn on contact.", description: "30% chance to burn opponents that make contact with this Pokémon.", generation: 3, hidden: false },
-  { id: 65, name: "Effect Spore", category: "status", effect: "May inflict status on contact.", description: "30% chance to poison, paralyze, or sleep opponents that make contact.", generation: 3, hidden: false },
-  { id: 66, name: "Cute Charm", category: "status", effect: "May infatuate on contact.", description: "30% chance to infatuate opponents of the opposite gender that make contact.", generation: 3, hidden: false },
-  { id: 67, name: "Cursed Body", category: "status", effect: "May disable a move on contact.", description: "30% chance to disable the move used by opponents that make contact.", generation: 5, hidden: false },
-  { id: 68, name: "Perish Body", category: "status", effect: "Both Pokémon faint in 3 turns after contact.", description: "When hit by a contact move, both Pokémon will faint in 3 turns unless switched out.", generation: 8, hidden: false },
-  { id: 69, name: "Wandering Spirit", category: "status", effect: "Swaps abilities on contact.", description: "When hit by a contact move, swaps abilities with the attacker.", generation: 8, hidden: false },
-  { id: 70, name: "Neutralizing Gas", category: "status", effect: "Nullifies all abilities.", description: "While this Pokémon is active, all other Pokémon's abilities have no effect.", generation: 8, hidden: false },
-
-  // Healing abilities
-  { id: 71, name: "Regenerator", category: "healing", effect: "Restores HP when switching out.", description: "Restores 1/3 of max HP when switching out.", generation: 5, hidden: false },
-  { id: 72, name: "Natural Cure", category: "healing", effect: "Cures status when switching out.", description: "Status conditions are cured when switching out.", generation: 3, hidden: false },
-  { id: 73, name: "Poison Heal", category: "healing", effect: "Restores HP when poisoned.", description: "Restores 1/8 of max HP each turn when poisoned instead of taking damage.", generation: 4, hidden: false },
-  { id: 74, name: "Rain Dish", category: "healing", effect: "Restores HP in rain.", description: "Restores 1/16 of max HP each turn during rain.", generation: 3, hidden: false },
-  { id: 75, name: "Ice Body", category: "healing", effect: "Restores HP in hail.", description: "Restores 1/16 of max HP each turn during hail. Immune to hail damage.", generation: 4, hidden: false },
-  { id: 76, name: "Grassy Pelt", category: "healing", effect: "Boosts Defense on Grassy Terrain.", description: "Defense is increased by 50% when Grassy Terrain is active.", generation: 7, hidden: false },
-  { id: 77, name: "Triage", category: "healing", effect: "Gives priority to healing moves.", description: "Healing moves gain +3 priority.", generation: 7, hidden: false },
-  { id: 78, name: "Healer", category: "healing", effect: "May heal ally's status conditions.", description: "30% chance to heal an ally's status condition at the end of each turn.", generation: 5, hidden: false },
-  { id: 79, name: "Hydration", category: "healing", effect: "Heals status in rain.", description: "Status conditions are healed at the end of each turn during rain.", generation: 4, hidden: false },
-  { id: 80, name: "Shed Skin", category: "healing", effect: "May heal status conditions.", description: "33% chance to heal status conditions at the end of each turn.", generation: 3, hidden: false },
-
-  // Immunity abilities
-  { id: 81, name: "Immunity", category: "immunity", effect: "Prevents poison.", description: "This Pokémon cannot be poisoned.", generation: 3, hidden: false },
-  { id: 82, name: "Insomnia", category: "immunity", effect: "Prevents sleep.", description: "This Pokémon cannot fall asleep.", generation: 3, hidden: false },
-  { id: 83, name: "Vital Spirit", category: "immunity", effect: "Prevents sleep.", description: "This Pokémon cannot fall asleep.", generation: 3, hidden: false },
-  { id: 84, name: "Limber", category: "immunity", effect: "Prevents paralysis.", description: "This Pokémon cannot be paralyzed.", generation: 3, hidden: false },
-  { id: 85, name: "Magma Armor", category: "immunity", effect: "Prevents freezing.", description: "This Pokémon cannot be frozen.", generation: 3, hidden: false },
-  { id: 86, name: "Water Veil", category: "immunity", effect: "Prevents burns.", description: "This Pokémon cannot be burned.", generation: 3, hidden: false },
-  { id: 87, name: "Own Tempo", category: "immunity", effect: "Prevents confusion.", description: "This Pokémon cannot be confused.", generation: 3, hidden: false },
-  { id: 88, name: "Inner Focus", category: "immunity", effect: "Prevents flinching.", description: "This Pokémon cannot flinch.", generation: 3, hidden: false },
-  { id: 89, name: "Oblivious", category: "immunity", effect: "Prevents infatuation and Taunt.", description: "This Pokémon cannot be infatuated or taunted. Immune to Intimidate.", generation: 3, hidden: false },
-  { id: 90, name: "Clear Body", category: "immunity", effect: "Prevents stat reduction.", description: "Prevents other Pokémon from lowering this Pokémon's stats.", generation: 3, hidden: false },
-
-  // Unique abilities
-  { id: 91, name: "Protean", category: "unique", effect: "Changes type to match move used.", description: "Changes the Pokémon's type to the type of the move it's about to use.", generation: 6, hidden: false },
-  { id: 92, name: "Libero", category: "unique", effect: "Changes type to match move used.", description: "Changes the Pokémon's type to the type of the move it's about to use.", generation: 8, hidden: false },
-  { id: 93, name: "Illusion", category: "unique", effect: "Enters battle disguised as last party member.", description: "Enters battle disguised as the last non-fainted Pokémon in the party.", generation: 5, hidden: false },
-  { id: 94, name: "Imposter", category: "unique", effect: "Transforms into opponent on switch-in.", description: "Transforms into the opposing Pokémon upon entering battle.", generation: 5, hidden: false },
-  { id: 95, name: "Stance Change", category: "unique", effect: "Changes form when using attack or King's Shield.", description: "Changes to Blade Forme when using an attack move, Shield Forme when using King's Shield.", generation: 6, hidden: false },
-  { id: 96, name: "Schooling", category: "unique", effect: "Forms school when HP is high.", description: "When HP is above 25%, changes to School Form for better stats.", generation: 7, hidden: false },
-  { id: 97, name: "Battle Bond", category: "unique", effect: "Transforms after KO.", description: "After knocking out a Pokémon, transforms into Ash-Greninja form.", generation: 7, hidden: false },
-  { id: 98, name: "Power Construct", category: "unique", effect: "Transforms when HP drops.", description: "When HP falls below 50%, transforms into Complete Forme.", generation: 7, hidden: false },
-  { id: 99, name: "RKS System", category: "unique", effect: "Changes type based on held Memory.", description: "Changes type to match the Memory disc held.", generation: 7, hidden: false },
-  { id: 100, name: "Multitype", category: "unique", effect: "Changes type based on held Plate.", description: "Changes type to match the Plate or Z-Crystal held.", generation: 4, hidden: false }
+const ABILITY_CATEGORIES = [
+  { key: 'all', name: 'All', color: 'from-gray-400 to-gray-500' },
+  { key: 'offensive', name: 'Offensive', color: 'from-red-400 to-orange-500' },
+  { key: 'defensive', name: 'Defensive', color: 'from-blue-400 to-cyan-500' },
+  { key: 'speed', name: 'Speed', color: 'from-yellow-400 to-amber-500' },
+  { key: 'healing', name: 'Healing', color: 'from-green-400 to-emerald-500' },
+  { key: 'status', name: 'Status', color: 'from-purple-400 to-pink-500' },
 ];
 
 const AbilitiesPage: NextPage = () => {
   const router = useRouter();
-  const { theme } = useTheme();
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [selectedGeneration, setSelectedGeneration] = useState<string>("all");
-  const [sortBy, setSortBy] = useState<string>("name");
-  const [abilities, setAbilities] = useState<AbilityWithPokemon[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [abilitiesPerPage] = useState(30);
+  const [abilities, setAbilities] = useState<Ability[]>([]);
+  const [filteredAbilities, setFilteredAbilities] = useState<Ability[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedGeneration, setSelectedGeneration] = useState('all');
+  const [showHidden, setShowHidden] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [abilitiesPerPage] = useState(24);
 
-  // Fetch abilities from PokeAPI
+  const generations = ['all', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
   useEffect(() => {
-    const fetchAbilities = async () => {
+    const fetchAllAbilities = async () => {
       setLoading(true);
+      
       try {
-        // PokeAPI has many abilities, fetch them with pagination
-        const response = await fetchJSON<AbilityListResponse>(`https://pokeapi.co/api/v2/ability?limit=350`);
+        const cacheKey = 'all-abilities-data';
+        const cached = await requestCache.get(cacheKey);
         
-        // Fetch details for abilities
-        const abilityDetailsPromises = (response?.results?.slice(0, 200) || []).map(ability => 
-          fetchJSON<AbilityApiResponse>(ability.url)
+        if (cached) {
+          setAbilities(cached);
+          setFilteredAbilities(cached);
+          setLoading(false);
+          return;
+        }
+
+        const response = await fetchJSON<{ results: Array<{ name: string; url: string }> }>(
+          'https://pokeapi.co/api/v2/ability?limit=400'
         );
         
-        const abilityDetails = await Promise.all(abilityDetailsPromises);
-        
-        // Process ability data - filter out any null values
-        const processedAbilities = abilityDetails
-          .filter((ability): ability is AbilityData => ability !== null)
-          .map((ability) => {
-          // Categorize abilities based on their effects
-          let category = 'other';
-          const englishEntry = ability.effect_entries.find(entry => entry.language.name === 'en');
-          const effectText = englishEntry?.effect || '';
-          const shortEffect = englishEntry?.short_effect || '';
-          const combinedText = (effectText + ' ' + shortEffect).toLowerCase();
+        if (!response?.results) {
+          throw new Error('Failed to fetch abilities list');
+        }
 
-          if (combinedText.includes('attack') || combinedText.includes('damage') || combinedText.includes('power')) {
-            category = 'attack';
-          } else if (combinedText.includes('defense') || combinedText.includes('resist') || combinedText.includes('reduce') || combinedText.includes('absorb')) {
-            category = 'defense';
-          } else if (combinedText.includes('speed') || combinedText.includes('priority')) {
-            category = 'speed';
-          } else if (combinedText.includes('heal') || combinedText.includes('recover') || combinedText.includes('restore')) {
-            category = 'healing';
-          } else if (combinedText.includes('prevent') || combinedText.includes('immunity') || combinedText.includes('cannot')) {
-            category = 'immunity';
-          } else if (combinedText.includes('weather') || combinedText.includes('terrain') || combinedText.includes('intimidate') || combinedText.includes('pressure')) {
-            category = 'status';
-          } else if (combinedText.includes('transform') || combinedText.includes('form') || combinedText.includes('type')) {
-            category = 'unique';
+        const batchSize = 50;
+        const allAbilities: Ability[] = [];
+        
+        for (let i = 0; i < response.results.length; i += batchSize) {
+          const batch = response.results.slice(i, i + batchSize);
+          const batchPromises = batch.map(async (ability) => {
+            try {
+              const abilityData = await fetchJSON<AbilityApiResponse>(ability.url);
+              if (!abilityData) return null;
+              
+              const englishEntry = abilityData.effect_entries?.find(e => e.language.name === 'en');
+              const pokemonSet = new Set<string>();
+              let hasHidden = false;
+              
+              abilityData.pokemon?.forEach(p => {
+                pokemonSet.add(p.pokemon.name);
+                if (p.is_hidden) hasHidden = true;
+              });
+              
+              return {
+                id: abilityData.id,
+                name: abilityData.name.replace(/-/g, ' '),
+                effect: englishEntry?.effect || '',
+                short_effect: englishEntry?.short_effect || 'No description available',
+                generation: parseInt(abilityData.generation?.name?.replace('generation-', '') || '1'),
+                is_hidden: hasHidden,
+                pokemon: Array.from(pokemonSet).slice(0, 10)
+              } as Ability;
+            } catch (error) {
+              logger.error(`Failed to fetch ability ${ability.name}`, { error });
+              return null;
+            }
+          });
+          
+          const batchResults = await Promise.all(batchPromises);
+          allAbilities.push(...batchResults.filter((a): a is Ability => a !== null));
+          
+          if (i % 100 === 0) {
+            setAbilities([...allAbilities]);
+            setFilteredAbilities([...allAbilities]);
           }
-
-          return {
-            id: ability.id,
-            name: ability.name.replace(/-/g, ' '),
-            category: category,
-            effect: englishEntry?.short_effect || 'No effect description available',
-            description: englishEntry?.effect || 
-                        ability.flavor_text_entries?.find(entry => entry.language.name === 'en')?.flavor_text || 
-                        'No description available',
-            generation: ability.generation ? parseInt(ability.generation.name.replace('generation-', '')) : 1,
-            hidden: ability.is_main_series === false
-          } as AbilityWithPokemon;
-        });
+        }
         
-        setAbilities(processedAbilities);
+        await requestCache.set(cacheKey, allAbilities);
+        setAbilities(allAbilities);
+        setFilteredAbilities(allAbilities);
       } catch (error) {
-        logger.error("Failed to fetch abilities", { error });
-        setError("Failed to fetch abilities from PokeAPI");
+        logger.error('Failed to fetch abilities', { error });
+        setAbilities([]);
+        setFilteredAbilities([]);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchAbilities();
+    fetchAllAbilities();
   }, []);
 
-  // Get all unique generations from fetched abilities
-  const allGenerations = useMemo(() => {
-    const gens = new Set<number>();
-    abilities.forEach(ability => gens.add(ability.generation));
-    return ["all", ...Array.from(gens).sort((a, b) => a - b).map(g => String(g))];
-  }, [abilities]);
+  useEffect(() => {
+    let filtered = [...abilities];
 
-  // Filter and sort abilities
-  const filteredAbilities = useMemo(() => {
-    let filtered = abilities;
-
-    // Search filter
-    if (searchQuery) {
+    if (searchTerm) {
       filtered = filtered.filter(ability =>
-        ability.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        ability.effect.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        ability.description.toLowerCase().includes(searchQuery.toLowerCase())
+        ability.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        ability.short_effect.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
-    // Category filter
-    if (selectedCategory !== "all") {
-      filtered = filtered.filter(ability => ability.category === selectedCategory);
+    if (selectedCategory !== 'all') {
+      filtered = filtered.filter(ability => {
+        const effect = ability.effect.toLowerCase();
+        const name = ability.name.toLowerCase();
+        
+        switch (selectedCategory) {
+          case 'offensive':
+            return effect.includes('damage') || effect.includes('attack') || effect.includes('power');
+          case 'defensive':
+            return effect.includes('defense') || effect.includes('protect') || effect.includes('resist');
+          case 'speed':
+            return effect.includes('speed') || effect.includes('priority') || name.includes('swift');
+          case 'healing':
+            return effect.includes('heal') || effect.includes('recover') || effect.includes('restore');
+          case 'status':
+            return effect.includes('status') || effect.includes('paralyze') || effect.includes('burn');
+          default:
+            return true;
+        }
+      });
     }
 
-    // Generation filter
-    if (selectedGeneration !== "all") {
+    if (selectedGeneration !== 'all') {
       filtered = filtered.filter(ability => ability.generation === parseInt(selectedGeneration));
     }
 
-    // Sort
-    return filtered.sort((a, b) => {
-      switch (sortBy) {
-        case "name":
-          return a.name.localeCompare(b.name);
-        case "generation":
-          return a.generation - b.generation;
-        case "category":
-          return a.category.localeCompare(b.category);
-        default:
-          return 0;
-      }
-    });
-  }, [searchQuery, selectedCategory, selectedGeneration, sortBy, abilities]);
-
-  const getCategoryIcon = (category: string) => {
-    switch (category) {
-      case "attack":
-        return <GiPunch className="text-red-500" />;
-      case "defense":
-        return <BsShield className="text-blue-500" />;
-      case "speed":
-        return <GiSpeedometer className="text-yellow-500" />;
-      case "status":
-        return <BsLightning className="text-purple-500" />;
-      case "healing":
-        return <GiHealing className="text-green-500" />;
-      case "immunity":
-        return <GiShieldBounces className="text-gray-500" />;
-      case "unique":
-        return <AiOutlineBulb className="text-pink-500" />;
-      default:
-        return <AiOutlineBulb className="text-gray-500" />;
+    if (!showHidden) {
+      filtered = filtered.filter(ability => !ability.is_hidden);
     }
-  };
 
-  const getCategoryName = (category: string) => {
-    const names: Record<string, string> = {
-      attack: "Attack",
-      defense: "Defense",
-      speed: "Speed",
-      status: "Status",
-      healing: "Healing",
-      immunity: "Immunity",
-      unique: "Unique"
-    };
-    return names[category] || category;
-  };
+    filtered.sort((a, b) => a.name.localeCompare(b.name));
+    setFilteredAbilities(filtered);
+    setCurrentPage(1);
+  }, [searchTerm, selectedCategory, selectedGeneration, showHidden, abilities]);
 
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case "attack":
-        return "bg-red-100 dark:bg-red-900 text-red-900 dark:text-red-100";
-      case "defense":
-        return "bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100";
-      case "speed":
-        return "bg-yellow-100 dark:bg-yellow-900 text-yellow-900 dark:text-yellow-100";
-      case "status":
-        return "bg-purple-100 dark:bg-purple-900 text-purple-900 dark:text-purple-100";
-      case "healing":
-        return "bg-green-100 dark:bg-green-900 text-green-900 dark:text-green-100";
-      case "immunity":
-        return "bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100";
-      case "unique":
-        return "bg-pink-100 dark:bg-pink-900 text-pink-900 dark:text-pink-100";
-      default:
-        return "bg-gray-100 dark:bg-gray-700";
-    }
-  };
+  const currentAbilities = useMemo(() => {
+    const indexOfLastAbility = currentPage * abilitiesPerPage;
+    const indexOfFirstAbility = indexOfLastAbility - abilitiesPerPage;
+    return filteredAbilities.slice(indexOfFirstAbility, indexOfLastAbility);
+  }, [filteredAbilities, currentPage, abilitiesPerPage]);
+
+  const totalPages = Math.ceil(filteredAbilities.length / abilitiesPerPage);
 
   return (
-    <div className="min-h-screen">
+    <FullBleedWrapper gradient="pokedex">
       <Head>
-        <title>Pokémon Abilities | DexTrends</title>
-        <meta name="description" content="Discover all Pokémon abilities and their effects" />
+        <title>Abilities Database | DexTrends</title>
+        <meta name="description" content="Explore all Pokemon abilities with effects and Pokemon that have them" />
       </Head>
 
-      <FadeIn>
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          {/* Header */}
-          <div className="mb-8">
-            <StyledBackButton 
-              text="Back to Pokémon Hub" 
-              onClick={() => router.push('/pokemon')} 
-            />
+      {/* Enhanced Header */}
+      <motion.div 
+        className={`sticky top-0 z-50 ${createGlassStyle({
+          blur: '2xl',
+          opacity: 'medium',
+          gradient: true,
+          border: 'subtle',
+          shadow: 'lg',
+          rounded: 'sm'
+        })} border-b border-white/20`}
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex items-center justify-between">
+            <CircularButton
+              onClick={() => router.push('/pokemon')}
+              variant="secondary"
+              size="sm"
+            >
+              ← Back
+            </CircularButton>
+            
+            <div className="text-center">
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-1 tracking-tight">
+                Abilities
+              </h1>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                Discover Pokemon abilities and their effects
+              </p>
+            </div>
+            
+            <div className={`${createGlassStyle({
+              blur: 'sm',
+              opacity: 'subtle',
+              gradient: false,
+              border: 'subtle',
+              shadow: 'sm',
+              rounded: 'lg'
+            })} px-3 py-2 rounded-lg text-center`}>
+              <div className="text-lg font-bold text-indigo-600 dark:text-indigo-400">
+                {loading ? '...' : abilities.length}
+              </div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">
+                abilities
+              </div>
+            </div>
           </div>
+        </div>
+      </motion.div>
 
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold mb-4 flex items-center justify-center gap-3">
-              <AiOutlineBulb className="text-pokemon-indigo" />
-              <span className="bg-gradient-to-r from-pokemon-indigo to-pokemon-violet bg-clip-text text-transparent">
-                Pokémon Abilities
-              </span>
-            </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-400">
-              Explore {abilities.length} unique abilities
-            </p>
-            <p className="text-sm text-gray-500 dark:text-gray-500 mt-2">
-              Data from PokeAPI
-            </p>
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
+        {/* Search and Filters */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+        >
+          <div className={`${createGlassStyle({
+            blur: 'xl',
+            opacity: 'medium',
+            gradient: true,
+            border: 'medium',
+            shadow: 'xl',
+            rounded: 'xl',
+            hover: 'subtle'
+          })} mb-8 p-8 rounded-3xl`}>
+            {/* Enhanced Search Bar */}
+            <div className="relative mb-6">
+              <BsSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-indigo-400 text-lg z-10" />
+              <input
+                type="text"
+                placeholder="Search abilities..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className={`${createGlassStyle({
+                  blur: 'md',
+                  opacity: 'medium',
+                  gradient: false,
+                  border: 'medium',
+                  shadow: 'md',
+                  rounded: 'full'
+                })} w-full pl-12 pr-4 py-4 rounded-full text-gray-800 dark:text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-300 transition-all duration-300`}
+              />
+            </div>
+
+            {/* Enhanced Category Pills */}
+            <div className="flex flex-wrap gap-3 mb-6">
+              {ABILITY_CATEGORIES.map(category => (
+                <motion.button
+                  key={category.key}
+                  onClick={() => setSelectedCategory(category.key)}
+                  className={`px-6 py-3 rounded-full text-sm font-semibold transition-all duration-300 ${
+                    selectedCategory === category.key
+                      ? `bg-gradient-to-r ${category.color} text-white shadow-lg scale-105`
+                      : `${createGlassStyle({
+                          blur: 'sm',
+                          opacity: 'subtle',
+                          gradient: false,
+                          border: 'subtle',
+                          shadow: 'sm',
+                          rounded: 'full',
+                          hover: 'lift'
+                        })} text-gray-700 dark:text-gray-300 hover:scale-105`
+                  }`}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {category.name}
+                </motion.button>
+              ))}
+            </div>
+
+            {/* Enhanced Generation Filter and Hidden Toggle */}
+            <div className="flex flex-wrap justify-between items-center gap-4">
+              <div className="flex gap-2">
+                {generations.map(gen => (
+                  <motion.button
+                    key={gen}
+                    onClick={() => setSelectedGeneration(gen)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                      selectedGeneration === gen
+                        ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg'
+                        : `${createGlassStyle({
+                            blur: 'sm',
+                            opacity: 'subtle',
+                            gradient: false,
+                            border: 'subtle',
+                            shadow: 'sm',
+                            rounded: 'full',
+                            hover: 'subtle'
+                          })} text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200`
+                    }`}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {gen === 'all' ? 'All Gen' : `Gen ${gen}`}
+                  </motion.button>
+                ))}
+              </div>
+
+              <motion.button
+                onClick={() => setShowHidden(!showHidden)}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${
+                  showHidden
+                    ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
+                    : `${createGlassStyle({
+                        blur: 'sm',
+                        opacity: 'medium',
+                        gradient: false,
+                        border: 'medium',
+                        shadow: 'md',
+                        rounded: 'full',
+                        hover: 'lift'
+                      })} text-gray-700 dark:text-gray-300`
+                }`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {showHidden ? <BsEye /> : <BsEyeSlash />}
+                Hidden Abilities
+              </motion.button>
+            </div>
           </div>
+        </motion.div>
 
-          {/* Search and Filters */}
-          <SlideUp>
-            <div className={`mb-8 p-6 rounded-2xl ${
-              theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
-            }`}>
-              {/* Search Bar */}
-              <div className="mb-6">
-                <div className="relative">
-                  <BsSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                  <input
-                    type="text"
-                    placeholder="Search abilities by name, effect, or description..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className={`w-full pl-10 pr-4 py-3 rounded-lg ${
-                      theme === 'dark' 
-                        ? 'bg-gray-700 text-white' 
-                        : 'bg-white text-gray-900'
-                    } focus:ring-2 focus:ring-pokemon-indigo outline-none`}
+        {/* Enhanced Abilities Grid */}
+        {loading ? (
+          <div className="space-y-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="mb-8"
+            >
+              <div className={`${createGlassStyle({
+                blur: 'xl',
+                opacity: 'medium',
+                gradient: true,
+                border: 'medium',
+                shadow: 'lg',
+                rounded: 'xl'
+              })} p-6 rounded-2xl`}>
+                <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-3">
+                  <span>Loading abilities...</span>
+                  <span className="text-indigo-500 font-medium">Please wait</span>
+                </div>
+                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
+                  <motion.div 
+                    className="bg-gradient-to-r from-indigo-500 to-purple-500 h-2 rounded-full"
+                    animate={{ 
+                      x: ['-100%', '100%'],
+                      transition: { 
+                        repeat: Infinity,
+                        duration: 2,
+                        ease: "easeInOut"
+                      }
+                    }}
                   />
                 </div>
               </div>
-
-              {/* Filter Options */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {/* Category Filter */}
-                <div>
-                  <label className="block text-sm font-medium mb-1">Category</label>
-                  <select
-                    value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)}
-                    className={`w-full px-3 py-2 rounded-lg ${
-                      theme === 'dark' 
-                        ? 'bg-gray-700 text-white' 
-                        : 'bg-white text-gray-900'
-                    } focus:ring-2 focus:ring-pokemon-indigo outline-none`}
-                  >
-                    <option value="all">All Categories</option>
-                    <option value="attack">Attack</option>
-                    <option value="defense">Defense</option>
-                    <option value="speed">Speed</option>
-                    <option value="status">Status</option>
-                    <option value="healing">Healing</option>
-                    <option value="immunity">Immunity</option>
-                    <option value="unique">Unique</option>
-                  </select>
+            </motion.div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className={`${createGlassStyle({
+                  blur: 'lg',
+                  opacity: 'subtle',
+                  gradient: true,
+                  border: 'subtle',
+                  shadow: 'md',
+                  rounded: 'xl'
+                })} h-48 animate-pulse rounded-2xl`}>
+                  <div className="h-full bg-gradient-to-br from-white/10 to-indigo-100/10 dark:from-gray-700/10 dark:to-purple-700/10 rounded-2xl" />
                 </div>
-
-                {/* Generation Filter */}
-                <div>
-                  <label className="block text-sm font-medium mb-1">Generation</label>
-                  <select
-                    value={selectedGeneration}
-                    onChange={(e) => setSelectedGeneration(e.target.value)}
-                    className={`w-full px-3 py-2 rounded-lg ${
-                      theme === 'dark' 
-                        ? 'bg-gray-700 text-white' 
-                        : 'bg-white text-gray-900'
-                    } focus:ring-2 focus:ring-pokemon-indigo outline-none`}
-                  >
-                    {allGenerations.map(gen => (
-                      <option key={gen} value={gen}>
-                        {gen === 'all' ? 'All Generations' : `Generation ${gen}`}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Sort By */}
-                <div>
-                  <label className="block text-sm font-medium mb-1">Sort By</label>
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                    className={`w-full px-3 py-2 rounded-lg ${
-                      theme === 'dark' 
-                        ? 'bg-gray-700 text-white' 
-                        : 'bg-white text-gray-900'
-                    } focus:ring-2 focus:ring-pokemon-indigo outline-none`}
-                  >
-                    <option value="name">Name</option>
-                    <option value="generation">Generation</option>
-                    <option value="category">Category</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* Results Count */}
-              <div className="mt-4 text-sm text-gray-600 dark:text-gray-400">
-                Showing {filteredAbilities.length} abilities
-              </div>
-            </div>
-          </SlideUp>
-
-          {/* Category Quick Filters */}
-          <div className="mb-8 flex flex-wrap justify-center gap-2">
-            {["all", "attack", "defense", "speed", "status", "healing", "immunity", "unique"].map(category => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-4 py-2 rounded-full font-semibold transition-all flex items-center gap-2 ${
-                  selectedCategory === category
-                    ? 'bg-gradient-to-r from-pokemon-indigo to-pokemon-violet text-white scale-110'
-                    : 'bg-gray-200 dark:bg-gray-700 hover:scale-105'
-                }`}
-              >
-                {category !== 'all' && getCategoryIcon(category)}
-                {category === 'all' ? 'All Abilities' : getCategoryName(category)}
-              </button>
-            ))}
-          </div>
-
-          {/* Abilities List */}
-          {loading ? (
-            <div className="space-y-4">
-              {[...Array(12)].map((_, index) => (
-                <ListItemSkeleton 
-                  key={index} 
-                  showAvatar={true} 
-                  showSecondaryText={true}
-                  className="bg-white dark:bg-gray-800 rounded-xl"
-                />
               ))}
             </div>
-          ) : error ? (
-            <div className="text-center py-12">
-              <p className="text-red-500">{error}</p>
-            </div>
-          ) : (
-            <>
-              <div className="mb-4 text-gray-600 dark:text-gray-400">
-                Showing {filteredAbilities.length} abilities
-              </div>
-
-              <StaggeredChildren className="space-y-4">
-                {filteredAbilities.slice((currentPage - 1) * abilitiesPerPage, currentPage * abilitiesPerPage).map((ability) => (
-                  <CardHover key={ability.id}>
-                    <div className={`rounded-xl overflow-hidden transition-all duration-300 ${
-                      theme === 'dark' ? 'bg-gray-800' : 'bg-white'
-                    } shadow-lg`}>
-                      <div className="p-6">
-                        <div className="flex items-start justify-between mb-4">
-                          <div className="flex items-center gap-4">
-                            <div className={`p-3 rounded-lg ${getCategoryColor(ability.category)}`}>
-                              {getCategoryIcon(ability.category)}
-                            </div>
-                            <div>
-                              <h3 className="text-2xl font-bold capitalize">{ability.name}</h3>
-                              <p className="text-pokemon-indigo font-semibold">{ability.effect}</p>
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <span className="text-sm text-gray-500 dark:text-gray-400">
-                              Gen {ability.generation}
-                            </span>
-                            {ability.hidden && (
-                              <span className="ml-2 px-2 py-1 bg-pokemon-yellow text-black rounded-full text-xs font-semibold">
-                                Hidden
-                              </span>
-                            )}
-                          </div>
-                        </div>
-
-                        <p className="text-gray-600 dark:text-gray-400 line-clamp-3">
-                          {ability.description}
-                        </p>
-
-                        <div className="mt-4 flex items-center gap-4">
-                          <span className={`px-3 py-1 rounded-full text-sm font-semibold ${getCategoryColor(ability.category)}`}>
-                            {getCategoryName(ability.category)}
+          </div>
+        ) : (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+              data-testid="abilities-grid"
+            >
+              {currentAbilities.map((ability, index) => (
+                <motion.div
+                  key={ability.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.02 }}
+                >
+                  <div className={`${createGlassStyle({
+                    blur: 'lg',
+                    opacity: 'medium',
+                    gradient: true,
+                    border: 'medium',
+                    shadow: 'lg',
+                    rounded: 'xl',
+                    hover: 'lift'
+                  })} h-full p-6 group cursor-pointer rounded-2xl`}>
+                    <div className="flex items-start justify-between mb-4">
+                      <h3 className="text-lg font-bold capitalize bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent group-hover:from-indigo-700 group-hover:to-purple-700 transition-all duration-300">
+                        {ability.name}
+                      </h3>
+                      <div className="flex items-center gap-2">
+                        {ability.is_hidden && (
+                          <span className={`${createGlassStyle({
+                            blur: 'sm',
+                            opacity: 'subtle',
+                            gradient: false,
+                            border: 'subtle',
+                            shadow: 'sm',
+                            rounded: 'full'
+                          })} px-3 py-1 text-xs text-gray-700 dark:text-gray-300 rounded-full`}>
+                            Hidden
                           </span>
-                        </div>
+                        )}
+                        <span className="px-3 py-1 text-xs bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-full shadow-sm">
+                          Gen {ability.generation}
+                        </span>
                       </div>
                     </div>
-                  </CardHover>
-                ))}
-              </StaggeredChildren>
 
-              {/* Pagination */}
-              {Math.ceil(filteredAbilities.length / abilitiesPerPage) > 1 && (
-                <div className="mt-8 flex justify-center gap-2">
-                  <button
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-3 leading-relaxed">
+                      {ability.short_effect}
+                    </p>
+
+                    {ability.pokemon.length > 0 && (
+                      <div>
+                        <p className="text-xs font-medium text-gray-500 dark:text-gray-500 mb-2">Pokemon with this ability:</p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {ability.pokemon.slice(0, 4).map(pokemon => (
+                            <span 
+                              key={pokemon} 
+                              className={`${createGlassStyle({
+                                blur: 'sm',
+                                opacity: 'subtle',
+                                gradient: false,
+                                border: 'subtle',
+                                shadow: 'sm',
+                                rounded: 'full'
+                              })} text-xs px-3 py-1 capitalize hover:scale-105 transition-transform duration-200`}
+                            >
+                              {pokemon.replace(/-/g, ' ')}
+                            </span>
+                          ))}
+                          {ability.pokemon.length > 4 && (
+                            <span className="text-xs px-2 py-1 text-indigo-500 font-medium">
+                              +{ability.pokemon.length - 4} more
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {/* Enhanced Pagination with Glass Morphism */}
+            {totalPages > 1 && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="mt-8 flex justify-center"
+              >
+                <div className={`${createGlassStyle({
+                  blur: 'xl',
+                  opacity: 'medium',
+                  gradient: true,
+                  border: 'medium',
+                  shadow: 'lg',
+                  rounded: 'full'
+                })} inline-flex gap-3 p-3 rounded-full`}>
+                  <GradientButton
                     onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                     disabled={currentPage === 1}
-                    className={`px-4 py-2 rounded-lg ${
-                      currentPage === 1
-                        ? 'bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-not-allowed'
-                        : 'bg-indigo-400 text-white hover:bg-indigo-500'
-                    }`}
+                    variant="secondary"
+                    size="sm"
+                    className="rounded-full min-w-0"
                   >
-                    Previous
-                  </button>
+                    ← Previous
+                  </GradientButton>
                   
-                  <span className="px-4 py-2">
-                    Page {currentPage} of {Math.ceil(filteredAbilities.length / abilitiesPerPage)}
-                  </span>
+                  <div className="flex gap-2 items-center">
+                    {[...Array(Math.min(5, totalPages))].map((_, i) => {
+                      const pageNum = currentPage <= 3 ? i + 1 : currentPage - 2 + i;
+                      if (pageNum > totalPages) return null;
+                      return (
+                        <motion.button
+                          key={pageNum}
+                          onClick={() => setCurrentPage(pageNum)}
+                          className={`w-10 h-10 rounded-full text-sm font-semibold transition-all duration-300 ${
+                            currentPage === pageNum
+                              ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg'
+                              : `${createGlassStyle({
+                                  blur: 'sm',
+                                  opacity: 'subtle',
+                                  gradient: false,
+                                  border: 'subtle',
+                                  shadow: 'sm',
+                                  rounded: 'full',
+                                  hover: 'lift'
+                                })} text-gray-700 dark:text-gray-300`
+                          }`}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          {pageNum}
+                        </motion.button>
+                      );
+                    })}
+                  </div>
                   
-                  <button
-                    onClick={() => setCurrentPage(prev => Math.min(Math.ceil(filteredAbilities.length / abilitiesPerPage), prev + 1))}
-                    disabled={currentPage === Math.ceil(filteredAbilities.length / abilitiesPerPage)}
-                    className={`px-4 py-2 rounded-lg ${
-                      currentPage === Math.ceil(filteredAbilities.length / abilitiesPerPage)
-                        ? 'bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-not-allowed'
-                        : 'bg-indigo-400 text-white hover:bg-indigo-500'
-                    }`}
+                  <GradientButton
+                    onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                    disabled={currentPage === totalPages}
+                    variant="secondary"
+                    size="sm"
+                    className="rounded-full min-w-0"
                   >
-                    Next
-                  </button>
+                    Next →
+                  </GradientButton>
                 </div>
-              )}
-            </>
-          )}
-
-          {/* No Results */}
-          {filteredAbilities.length === 0 && (
-            <div className="text-center py-16">
-              <AiOutlineBulb className="text-6xl text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-bold mb-2">No abilities found</h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                Try adjusting your search or filters
-              </p>
-            </div>
-          )}
-
-          {/* Stats Section */}
-          <SlideUp>
-            <div className={`mt-12 p-8 rounded-2xl ${
-              theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'
-            }`}>
-              <h2 className="text-2xl font-bold mb-6 text-center">Ability Statistics</h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-                <div>
-                  <div className="text-3xl font-bold text-pokemon-red">
-                    {abilities.filter(a => a.category === 'attack').length}
-                  </div>
-                  <div className="text-gray-600 dark:text-gray-400">Attack Abilities</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-bold text-pokemon-blue">
-                    {abilities.filter(a => a.category === 'defense').length}
-                  </div>
-                  <div className="text-gray-600 dark:text-gray-400">Defense Abilities</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-bold text-pokemon-yellow">
-                    {abilities.filter(a => a.category === 'speed').length}
-                  </div>
-                  <div className="text-gray-600 dark:text-gray-400">Speed Abilities</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-bold text-pokemon-violet">
-                    {abilities.filter(a => a.category === 'unique').length}
-                  </div>
-                  <div className="text-gray-600 dark:text-gray-400">Unique Abilities</div>
-                </div>
-              </div>
-            </div>
-          </SlideUp>
-        </div>
-      </FadeIn>
-    </div>
+              </motion.div>
+            )}
+          </>
+        )}
+      </div>
+    </FullBleedWrapper>
   );
 };
 

@@ -5,7 +5,8 @@ import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 import { fetchPocketData } from '../../../utils/pocketData';
 import StyledBackButton from '../../../components/ui/StyledBackButton';
-import { GlassContainer } from '../../../components/ui/design-system/GlassContainer';
+import { createGlassStyle, GradientButton, CircularButton } from '../../../components/ui/design-system';
+import { UnifiedSearchBar, EmptyStateGlass, LoadingStateGlass } from '../../../components/ui/glass-components';
 import { FaCrown } from 'react-icons/fa';
 import FullBleedWrapper from '../../../components/ui/FullBleedWrapper';
 import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
@@ -14,11 +15,9 @@ import type { PocketCard } from '../../../types/api/pocket-cards';
 import logger from '../../../utils/logger';
 
 // Extended PocketCard type with additional properties from actual data
-interface ExtendedPocketCard extends Omit<PocketCard, 'rarity' | 'hp'> {
+interface ExtendedPocketCard extends PocketCard {
   pack?: string;
   type?: string;
-  rarity?: string;
-  hp?: string;
   health?: string | number;
   ex?: "Yes" | "No";
   fullart?: "Yes" | "No";
@@ -199,30 +198,41 @@ function SetView() {
   };
 
   if (loading) {
-    return <PageLoader text="Loading expansion cards..." />;
+    return (
+      <FullBleedWrapper gradient="pokedex">
+        <div className="min-h-screen flex items-center justify-center">
+          <LoadingStateGlass 
+            type="spinner" 
+            message="Loading expansion cards..."
+            size="lg"
+          />
+        </div>
+      </FullBleedWrapper>
+    );
   }
 
   if (error) {
     return (
-      <FullBleedWrapper gradient="tcg">
+      <FullBleedWrapper gradient="pokedex">
         <div className="min-h-screen flex items-center justify-center">
-          <GlassContainer variant="colored" className="text-center max-w-md">
-            <h2 className="text-2xl font-bold text-red-600 mb-4">Error</h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">{error}</p>
-            <button 
-              onClick={() => router.push('/pocketmode/expansions')}
-              className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full font-semibold hover:from-purple-600 hover:to-pink-600 transition-all"
-            >
-              Back to Expansions
-            </button>
-          </GlassContainer>
+          <EmptyStateGlass 
+            type="error"
+            title="Failed to Load Expansion"
+            message={error}
+            actionButton={{
+              text: "Back to Expansions",
+              onClick: () => router.push('/pocketmode/expansions'),
+              variant: "primary"
+            }}
+            className="max-w-md"
+          />
         </div>
       </FullBleedWrapper>
     );
   }
 
   return (
-    <FullBleedWrapper gradient="tcg">
+    <FullBleedWrapper gradient="pokedex">
       <Head>
         <title>{setInfo?.name || 'Loading'} | Pokémon Pocket | DexTrends</title>
         <meta name="description" content={setInfo?.description || 'Browse Pokémon TCG Pocket cards'} />
@@ -245,75 +255,165 @@ function SetView() {
             />
           </div>
           
-          {/* Set Info Card with Compact Glass Morphism */}
+          {/* Enhanced Set Header with Glass Morphism */}
           {setInfo && (
             <motion.div 
-              className="backdrop-blur-xl bg-white/90 dark:bg-gray-800/90 rounded-3xl p-4 border border-white/50 dark:border-gray-700/50 shadow-2xl shadow-gray-400/30 dark:shadow-black/50"
+              className={`${createGlassStyle({
+                blur: 'xl',
+                opacity: 'medium',
+                gradient: true,
+                border: 'medium',
+                shadow: 'xl',
+                rounded: 'xl'
+              })} p-6 md:p-8 rounded-3xl`}
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <div className="text-center mb-3">
-                <div className="inline-flex items-center gap-2 mb-2">
-                  <span className="text-2xl">{setInfo.emoji}</span>
-                  <h1 className="text-xl md:text-2xl font-black bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
+              <div className="text-center mb-6">
+                <motion.div 
+                  className="inline-flex items-center gap-3 mb-3"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                >
+                  <span className="text-3xl">{setInfo.emoji}</span>
+                  <h1 className="text-2xl md:text-3xl font-black bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
                     {setInfo.name}
                   </h1>
-                </div>
-                <p className="text-xs text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                </motion.div>
+                <motion.p 
+                  className="text-sm text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                >
                   {setInfo.description}
-                </p>
+                </motion.p>
               </div>
               
-              {/* Stats Pills - Compact */}
-              <div className="flex justify-center gap-2 flex-wrap">
-                <div className="px-3 py-1 backdrop-blur-xl bg-gradient-to-r from-purple-100/80 to-pink-100/80 dark:from-purple-900/30 dark:to-pink-900/30 rounded-full border border-white/50">
-                  <span className="text-xs font-semibold text-purple-700 dark:text-purple-300">
+              {/* Enhanced Stats Pills */}
+              <motion.div 
+                className="flex justify-center gap-3 flex-wrap"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+              >
+                <div className={`${createGlassStyle({
+                  blur: 'md',
+                  opacity: 'subtle',
+                  gradient: true,
+                  border: 'subtle',
+                  shadow: 'md',
+                  rounded: 'full'
+                })} px-4 py-2`}>
+                  <span className="text-sm font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                     {setInfo.cardCount} Cards
                   </span>
                 </div>
                 
-                <div className="px-3 py-1 backdrop-blur-xl bg-gradient-to-r from-blue-100/80 to-purple-100/80 dark:from-blue-900/30 dark:to-purple-900/30 rounded-full border border-white/50">
-                  <span className="text-xs font-semibold text-blue-700 dark:text-blue-300">
+                <div className={`${createGlassStyle({
+                  blur: 'md',
+                  opacity: 'subtle',
+                  gradient: true,
+                  border: 'subtle',
+                  shadow: 'md',
+                  rounded: 'full'
+                })} px-4 py-2`}>
+                  <span className="text-sm font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                     {[...new Set(allCards.map(c => c.type).filter(Boolean))].length} Types
                   </span>
                 </div>
                 
-                <div className="px-3 py-1 backdrop-blur-xl bg-gradient-to-r from-pink-100/80 to-purple-100/80 dark:from-pink-900/30 dark:to-purple-900/30 rounded-full border border-white/50">
-                  <span className="text-xs font-semibold text-pink-700 dark:text-pink-300">
+                <div className={`${createGlassStyle({
+                  blur: 'md',
+                  opacity: 'subtle',
+                  gradient: true,
+                  border: 'subtle',
+                  shadow: 'md',
+                  rounded: 'full'
+                })} px-4 py-2`}>
+                  <span className="text-sm font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
                     {[...new Set(allCards.map(c => c.rarity).filter(Boolean))].length} Rarities
                   </span>
                 </div>
-              </div>
+              </motion.div>
             </motion.div>
           )}
         </motion.div>
         
-        {/* Cards Display using PocketCardList */}
+        {/* Enhanced Cards Display with Glass Morphism */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-          {/* Glass Container for Cards - Simplified */}
-          <div className="bg-gray-200/60 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl p-6 md:p-8 shadow-2xl">
-            <PocketCardList 
-              cards={allCards.filter(card => 
+          {/* Glass Container for Cards */}
+          <div className={`${createGlassStyle({
+            blur: 'xl',
+            opacity: 'medium',
+            gradient: true,
+            border: 'medium',
+            shadow: 'xl',
+            rounded: 'xl'
+          })} p-6 md:p-8 rounded-3xl`}>
+            {/* Search Bar with Glass Styling */}
+            <motion.div 
+              className="mb-6"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, delay: 0.5 }}
+            >
+              <UnifiedSearchBar
+                value={search}
+                onChange={setSearch}
+                placeholder={`Search ${setInfo?.name || 'expansion'} cards...`}
+                className="w-full"
+                showSearchButton
+              />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4, delay: 0.7 }}
+            >
+              {allCards.filter(card => 
                 card.name.toLowerCase().includes(search.toLowerCase())
+              ).length === 0 ? (
+                <EmptyStateGlass 
+                  type="search"
+                  title="No Cards Found"
+                  message={search 
+                    ? `No cards match "${search}" in ${setInfo?.name || 'this expansion'}.`
+                    : `No cards found in ${setInfo?.name || 'this expansion'}.`
+                  }
+                  actionButton={search ? {
+                    text: "Clear Search",
+                    onClick: () => setSearch(''),
+                    variant: "secondary"
+                  } : undefined}
+                />
+              ) : (
+                <PocketCardList 
+                  cards={allCards.filter(card => 
+                    card.name.toLowerCase().includes(search.toLowerCase())
+                  )}
+                  loading={false}
+                  error={undefined}
+                  emptyMessage={`No cards found in ${setInfo?.name || 'this expansion'}.`}
+                  showPack={false}
+                  showRarity={true}
+                  showHP={true}
+                  showSort={true}
+                  imageWidth={110}
+                  imageHeight={154}
+                  selectedRarityFilter="all"
+                  searchValue={search}
+                  onSearchChange={setSearch}
+                />
               )}
-              loading={false}
-              error={undefined}
-              emptyMessage={`No cards found in ${setInfo?.name || 'this expansion'}.`}
-              showPack={false}
-              showRarity={true}
-              showHP={true}
-              showSort={true}
-              imageWidth={110}
-              imageHeight={154}
-              selectedRarityFilter="all"
-              searchValue={search}
-              onSearchChange={setSearch}
-            />
+            </motion.div>
           </div>
         </motion.div>
       </div>

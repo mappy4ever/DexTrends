@@ -2,6 +2,7 @@ import type { NextPage } from 'next';
 import { motion } from 'framer-motion';
 import { GlassContainer } from '../components/ui/design-system/GlassContainer';
 import { CircularButton } from '../components/ui/design-system';
+import { FullBleedWrapper } from '../components/ui/FullBleedWrapper';
 import { FiRefreshCw } from 'react-icons/fi';
 import { AiOutlineHome } from 'react-icons/ai';
 import { FaBolt } from 'react-icons/fa';
@@ -9,14 +10,12 @@ import Head from 'next/head';
 
 const Custom500: NextPage = () => {
   return (
-    <>
+    <FullBleedWrapper gradient="pokedex">
       <Head>
         <title>500 - Server Error | DexTrends</title>
         <meta name="description" content="Something went wrong on our servers. Our team has been notified and is working to fix it." />
       </Head>
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      {/* Electric Background */}
-      <div className="absolute inset-0 gradient-bg-electric opacity-20" />
       
       {/* Lightning Bolts Animation */}
       {[...Array(5)].map((_, index) => (
@@ -165,7 +164,7 @@ const Custom500: NextPage = () => {
         </GlassContainer>
       </motion.div>
     </div>
-    </>
+    </FullBleedWrapper>
   );
 };
 

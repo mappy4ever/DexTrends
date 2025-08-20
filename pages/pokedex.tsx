@@ -10,10 +10,13 @@ import { getGeneration } from "../utils/pokemonutils";
 import PokeballLoader from "../components/ui/PokeballLoader";
 import FullBleedWrapper from "../components/ui/FullBleedWrapper";
 import type { Pokemon, PokemonType, PokemonSprites, PokemonSpecies } from "../types/pokemon";
-import CircularPokemonCard from "../components/ui/cards/CircularPokemonCard";
+import EnhancedPokemonCard from "../components/ui/cards/EnhancedPokemonCard";
+import { GlassContainer } from "../components/ui/design-system/GlassContainer";
 import { InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
-import { CircularButton } from "../components/ui/design-system";
-import { FiFilter, FiChevronDown } from "../components/ui/LazyIcon";
+import { CircularButton, GradientButton } from "../components/ui/design-system";
+import { FiFilter, FiChevronDown, BsSearch } from "../components/ui/LazyIcon";
+import { createGlassStyle } from '../components/ui/design-system/glass-constants';
+import { FiSearch, FiX } from 'react-icons/fi';
 import { NextPage } from "next";
 import dynamic from 'next/dynamic';
 import logger from "../utils/logger";
@@ -961,32 +964,45 @@ const PokedexIndex: NextPage = () => {
       <PullToRefresh onRefresh={handleRefresh}>
         <FullBleedWrapper gradient="pokedex">
         <div className="max-w-7xl mx-auto px-4 py-8">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-              Complete Pokédex
-            </h1>
-            <p className="text-gray-600 text-lg mb-2">
-              Browse all {TOTAL_POKEMON} Pokémon from every generation
-            </p>
-            <div className="flex justify-center gap-4 text-sm text-gray-500">
-              <span>{filteredPokemon.length} Pokémon found</span>
-              <span>•</span>
-              <span>{displayedPokemon.length} displayed</span>
-              {allPokemon.filter(p => p.sprite !== '/dextrendslogo.png').length < TOTAL_POKEMON && (
-                <>
-                  <span>•</span>
-                  <span className="text-blue-600">
-                    {allPokemon.filter(p => p.sprite !== '/dextrendslogo.png').length}/{TOTAL_POKEMON} loaded
+          {/* Enhanced Header with Glass Morphism */}
+          <GlassContainer variant="colored" blur="lg" rounded="3xl" className="mb-8 text-center relative overflow-hidden">
+            {/* Gradient Background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-100/40 via-purple-100/40 to-pink-100/40 dark:from-blue-900/20 dark:via-purple-900/20 dark:to-pink-900/20" />
+            
+            <div className="relative z-10">
+              <h1 className="text-5xl md:text-6xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600">
+                Complete Pokédex
+              </h1>
+              <p className="text-gray-600 dark:text-gray-300 text-lg mb-4">
+                Browse all {TOTAL_POKEMON} Pokémon from every generation
+              </p>
+              
+              {/* Stats Pills with Glass Effect */}
+              <div className="flex justify-center gap-3 flex-wrap">
+                <div className="backdrop-blur-md bg-white/60 dark:bg-gray-800/60 rounded-full px-4 py-2 border border-white/30 shadow-lg">
+                  <span className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                    {filteredPokemon.length} Found
                   </span>
-                </>
-              )}
+                </div>
+                <div className="backdrop-blur-md bg-white/60 dark:bg-gray-800/60 rounded-full px-4 py-2 border border-white/30 shadow-lg">
+                  <span className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                    {displayedPokemon.length} Displayed
+                  </span>
+                </div>
+                {allPokemon.filter(p => p.sprite !== '/dextrendslogo.png').length < TOTAL_POKEMON && (
+                  <div className="backdrop-blur-md bg-gradient-to-r from-blue-100/60 to-purple-100/60 dark:from-blue-900/40 dark:to-purple-900/40 rounded-full px-4 py-2 border border-blue-300/30 shadow-lg">
+                    <span className="text-sm font-bold text-blue-600 dark:text-blue-400">
+                      {allPokemon.filter(p => p.sprite !== '/dextrendslogo.png').length}/{TOTAL_POKEMON} Loaded
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          </GlassContainer>
 
-          {/* Search and Filter Bar */}
-          <div className="sticky top-16 z-20 bg-gradient-to-b from-surface to-surface/95 backdrop-blur-sm pb-4 -mx-4 px-4">
-            <div className="panel-base">
+          {/* Enhanced Search and Filter Bar with Glass Morphism */}
+          <div className="sticky top-16 z-20 pb-4">
+            <GlassContainer variant="medium" blur="lg" rounded="3xl" className="shadow-xl border-2 border-white/40 dark:border-gray-700/40">
               <div className="flex flex-col lg:flex-row gap-4">
                 {/* Search Input */}
                 <div className="flex-1">
@@ -996,7 +1012,7 @@ const PokedexIndex: NextPage = () => {
                     value={pendingSearchTerm}
                     onChange={(e) => setPendingSearchTerm(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                    className="w-full px-3 py-1.5 text-sm border border-border-color rounded-md bg-white text-dark-text focus:outline-none focus:border-pokemon-blue focus:ring-1 focus:ring-pokemon-blue/20 placeholder:text-text-grey"
+                    className="w-full px-4 py-2 text-sm backdrop-blur-md bg-white/70 dark:bg-gray-800/70 border border-white/30 dark:border-gray-700/30 rounded-2xl focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 placeholder:text-gray-500 shadow-inner transition-all duration-300"
                   />
                 </div>
 
@@ -1047,18 +1063,33 @@ const PokedexIndex: NextPage = () => {
                 {/* Type Filter */}
                 <div data-testid="type-filter">
                   <h3 className="font-semibold mb-3 text-gray-700">Type</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {['normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy'].map(type => (
-                      <button
-                        key={type}
-                        onClick={() => toggleType(type)}
-                        className={`transition-all transform hover:scale-105 ${
-                          pendingTypes.includes(type) ? 'ring-2 ring-blue-500' : ''
-                        }`}
-                      >
-                        <TypeBadge type={type} size="sm" />
-                      </button>
-                    ))}
+                  <div className="space-y-2">
+                    <div className="flex flex-wrap gap-2">
+                      {['normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison', 'ground'].map(type => (
+                        <button
+                          key={type}
+                          onClick={() => toggleType(type)}
+                          className={`transition-all duration-200 ${
+                            pendingTypes.includes(type) ? 'ring-2 ring-purple-500 ring-offset-2 shadow-lg transform scale-105' : 'hover:transform hover:scale-105'
+                          }`}
+                        >
+                          <TypeBadge type={type} size="md" />
+                        </button>
+                      ))}
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {['flying', 'psychic', 'bug', 'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy'].map(type => (
+                        <button
+                          key={type}
+                          onClick={() => toggleType(type)}
+                          className={`transition-all duration-200 ${
+                            pendingTypes.includes(type) ? 'ring-2 ring-purple-500 ring-offset-2 shadow-lg transform scale-105' : 'hover:transform hover:scale-105'
+                          }`}
+                        >
+                          <TypeBadge type={type} size="md" />
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
@@ -1100,11 +1131,11 @@ const PokedexIndex: NextPage = () => {
                       <button
                         key={category.value}
                         onClick={() => toggleCategory(category.value)}
-                        className={`btn ${
+                        className={`px-4 py-2 rounded-full font-medium text-sm transition-all duration-300 transform hover:scale-105 backdrop-blur-md ${
                           pendingCategories.includes(category.value)
-                            ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600'
-                            : 'btn-secondary'
-                        } !px-4 !py-2 !min-h-0`}
+                            ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg'
+                            : 'bg-white/80 dark:bg-gray-800/80 text-gray-700 dark:text-gray-300 border border-white/30 dark:border-gray-700/30 hover:bg-white/90 dark:hover:bg-gray-700/90'
+                        }`}
                       >
                         {category.label}
                       </button>
@@ -1114,7 +1145,9 @@ const PokedexIndex: NextPage = () => {
 
                 {/* Evolution Stage Filter */}
                 <div>
-                  <h3 className="font-semibold mb-3 text-gray-700">Evolution Stage</h3>
+                  <h3 className="font-semibold mb-3 text-gray-700 dark:text-gray-300">
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-amber-600">Evolution Stage</span>
+                  </h3>
                   <div className="flex flex-wrap gap-2">
                     {[
                       { value: 'basic' as EvolutionStage, label: 'Basic' },
@@ -1125,11 +1158,11 @@ const PokedexIndex: NextPage = () => {
                       <button
                         key={stage.value}
                         onClick={() => toggleStage(stage.value)}
-                        className={`btn ${
+                        className={`px-4 py-2 rounded-full font-medium text-sm transition-all duration-300 transform hover:scale-105 backdrop-blur-md ${
                           pendingStages.includes(stage.value)
-                            ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white hover:from-orange-600 hover:to-amber-600'
-                            : 'btn-secondary'
-                        } !px-4 !py-2 !min-h-0`}
+                            ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg'
+                            : 'bg-white/80 dark:bg-gray-800/80 text-gray-700 dark:text-gray-300 border border-white/30 dark:border-gray-700/30 hover:bg-white/90 dark:hover:bg-gray-700/90'
+                        }`}
                       >
                         {stage.label}
                       </button>
@@ -1141,8 +1174,10 @@ const PokedexIndex: NextPage = () => {
 
             {/* Sort Options */}
             {showSortOptions && (
-              <div className="mt-6 border-t pt-6">
-                <h3 className="font-semibold mb-3 text-gray-700">Sort By</h3>
+              <div className="mt-6 border-t border-white/20 dark:border-gray-700/20 pt-6 animate-fadeIn">
+                <h3 className="font-semibold mb-3 text-gray-700 dark:text-gray-300">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">Sort By</span>
+                </h3>
                 <div className="flex flex-wrap gap-2">
                   {[
                     { value: 'id' as SortOption, label: 'Number' },
@@ -1156,11 +1191,11 @@ const PokedexIndex: NextPage = () => {
                     <button
                       key={option.value}
                       onClick={() => handleSortChange(option.value)}
-                      className={`btn ${
+                      className={`px-4 py-2 rounded-full font-medium text-sm transition-all duration-300 transform hover:scale-105 backdrop-blur-md ${
                         pendingSortBy === option.value
-                          ? 'btn-primary'
-                          : 'btn-secondary'
-                      } !px-4 !py-2 !min-h-0`}
+                          ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg'
+                          : 'bg-white/80 dark:bg-gray-800/80 text-gray-700 dark:text-gray-300 border border-white/30 dark:border-gray-700/30 hover:bg-white/90 dark:hover:bg-gray-700/90'
+                      }`}
                     >
                       {option.label}
                     </button>
@@ -1168,30 +1203,40 @@ const PokedexIndex: NextPage = () => {
                 </div>
               </div>
             )}
-          </div>
+          </GlassContainer>
           </div>
 
-          {/* Pokémon Grid - Circular Design */}
+          {/* Enhanced Pokémon Grid with Glass Container */}
           <div className="mt-8">
           {displayedPokemon.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 mb-8">
-              {displayedPokemon.map((pokemon) => (
-                <CircularPokemonCard
-                  key={pokemon.id}
-                  pokemon={{
-                    id: pokemon.id,
-                    name: pokemon.name,
-                    sprite: pokemon.sprite || undefined,
-                    types: pokemon.types.map(type => ({ type: { name: type } }))
-                  }}
-                  size="md"
-                />
-              ))}
-            </div>
+            <GlassContainer 
+              variant="light" 
+              blur="sm" 
+              rounded="3xl" 
+              className="mb-8 bg-gradient-to-br from-white/40 via-white/30 to-white/40 dark:from-gray-800/40 dark:via-gray-800/30 dark:to-gray-800/40"
+            >
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
+                {displayedPokemon.map((pokemon) => (
+                  <EnhancedPokemonCard
+                    key={pokemon.id}
+                    pokemon={{
+                      id: pokemon.id,
+                      name: pokemon.name,
+                      sprite: pokemon.sprite || undefined,
+                      types: pokemon.types.map(type => ({ type: { name: type } })),
+                      isLegendary: pokemon.isLegendary,
+                      isMythical: pokemon.isMythical,
+                      isStarter: pokemon.isStarter
+                    }}
+                    size="md"
+                  />
+                ))}
+              </div>
+            </GlassContainer>
           ) : (
             <div className="text-center py-20">
-              <p className="text-2xl text-gray-500 mb-4">No Pokémon found</p>
-              <p className="text-gray-400">Try adjusting your filters or search term</p>
+              <p className="text-2xl text-gray-500 dark:text-gray-400 mb-4">No Pokémon found</p>
+              <p className="text-gray-400 dark:text-gray-500">Try adjusting your filters or search term</p>
               <button
                 onClick={clearAllFilters}
                 className="mt-4 btn btn-primary"
@@ -1209,23 +1254,45 @@ const PokedexIndex: NextPage = () => {
           {displayedPokemon.length < sortedPokemon.length && (
             <div className="text-center mt-8">
               {isLoadingMore ? (
-                <InlineLoader text="Loading more Pokémon..." />
+                <div className={`${createGlassStyle({
+                  blur: 'xl',
+                  opacity: 'medium',
+                  gradient: true,
+                  border: 'medium',
+                  shadow: 'lg',
+                  rounded: 'full'
+                })} inline-block px-8 py-4`}>
+                  <InlineLoader text="Loading more Pokémon..." />
+                </div>
               ) : (
-                <button
+                <GradientButton
                   onClick={loadMore}
-                  className="btn btn-primary px-8 py-4"
+                  variant="primary"
+                  className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-lg px-8 py-4"
                 >
                   Load More ({sortedPokemon.length - displayedPokemon.length} remaining)
-                </button>
+                </GradientButton>
               )}
             </div>
           )}
           
           {/* End of results message */}
           {displayedPokemon.length >= sortedPokemon.length && sortedPokemon.length > 0 && (
-            <div className="text-center py-8 text-gray-500">
-              <p className="text-lg">You've caught them all! 🎉</p>
-              <p className="text-sm mt-2">{sortedPokemon.length} Pokémon displayed</p>
+            <div className={`${createGlassStyle({
+              blur: 'xl',
+              opacity: 'medium',
+              gradient: true,
+              border: 'medium',
+              shadow: 'xl',
+              rounded: 'xl'
+            })} mx-auto max-w-md p-8 text-center rounded-3xl`}>
+              <p className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
+                You've caught them all! 
+              </p>
+              <p className="text-6xl mb-4">🎉</p>
+              <p className="text-gray-600 dark:text-gray-400 font-medium">
+                {sortedPokemon.length.toLocaleString()} Pokémon displayed
+              </p>
             </div>
           )}
         </div>

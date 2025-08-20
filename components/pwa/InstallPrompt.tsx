@@ -206,11 +206,11 @@ const InstallPrompt: React.FC = () => {
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end justify-center p-4">
-      <div className="bg-white rounded-t-3xl w-full max-w-md mx-auto shadow-2xl animate-slide-up">
+    <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex items-end justify-center p-4">
+      <div className="glass-medium rounded-t-3xl w-full max-w-md mx-auto shadow-2xl border border-white/20 backdrop-blur-md animate-slide-up">
         {/* Header */}
-        <div className="p-6 text-center border-b border-gray-100">
-          <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-pokemon-blue to-pokemon-red rounded-2xl flex items-center justify-center">
+        <div className="p-6 text-center border-b border-white/10">
+          <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
             <span className="text-2xl">📱</span>
           </div>
           <h2 className="text-xl font-bold text-gray-900 mb-2">
@@ -276,19 +276,19 @@ const InstallPrompt: React.FC = () => {
             // Android/Chrome install
             <div className="space-y-4">
               <div className="space-y-4">
-                <div className="bg-green-50 rounded-lg p-4">
+                <div className="glass-light rounded-lg p-4 border border-white/20">
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="font-semibold text-green-900">Benefits of installing:</h3>
+                    <h3 className="font-semibold text-gray-900">Benefits of installing:</h3>
                     <button
                       onClick={() => setShowFeatures(!showFeatures)}
-                      className="text-green-700 text-sm hover:text-green-800 transition-colors"
+                      className="text-blue-600 text-sm hover:text-blue-800 transition-colors"
                     >
                       {showFeatures ? 'Hide' : 'Show'} Features
                     </button>
                   </div>
                   
                   {!showFeatures && (
-                    <ul className="text-sm text-green-800 space-y-1">
+                    <ul className="text-sm text-gray-700 space-y-1">
                       <li>• 🚀 Faster loading times</li>
                       <li>• 📱 Native app experience</li>
                       <li>• 🔔 Push notifications (optional)</li>
@@ -303,7 +303,7 @@ const InstallPrompt: React.FC = () => {
               {isInstallable && installStep === 0 && (
                 <button
                   onClick={handleInstallClick}
-                  className="w-full bg-gradient-to-r from-pokemon-blue to-pokemon-red text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-lg"
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
                 >
                   Install DexTrends
                 </button>

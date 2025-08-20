@@ -6,7 +6,7 @@ import { RiGovernmentFill } from "react-icons/ri";
 import { AiOutlineBulb } from "react-icons/ai";
 import { BsSun, BsMoon, BsGlobeEuropeAfrica, BsHeart, BsSearch, BsCardList, BsGrid, BsBook, BsChevronDown } from "react-icons/bs";
 import { GiPokerHand, GiCardPickup, GiCrossedSwords } from "react-icons/gi";
-import { FiTrendingUp, FiShoppingBag } from "react-icons/fi";
+import { FiTrendingUp, FiShoppingBag, FiBarChart2 } from "react-icons/fi";
 import GlobalSearchModal from "./GlobalSearchModal";
 import logger from "../utils/logger";
 import { DynamicAdvancedSearchModal } from "./dynamic/DynamicComponents";
@@ -65,6 +65,7 @@ export default function Navbar() {
         { href: "/tcgsets", label: "Sets", icon: <BsCardList size={18} />, description: "Browse all TCG sets" },
         { href: "/cards", label: "Cards", icon: <BsCardList size={18} />, description: "Browse and search Pokemon cards" },
         { href: "/market", label: "Market Analytics", icon: <FiTrendingUp size={18} />, description: "Market trends and insights" },
+        { href: "/analytics", label: "Site Analytics", icon: <FiBarChart2 size={18} />, description: "DexTrends usage analytics" },
         { href: "/trending", label: "Price Tracker", icon: <FiTrendingUp size={18} />, description: "Track card prices" },
         { href: "/collections", label: "Collections", icon: <BsHeart size={18} />, description: "Manage your collection" },
         { href: "/trending", label: "Leaderboard", icon: <RiGovernmentFill size={18} />, description: "Top collectors and rankings" },

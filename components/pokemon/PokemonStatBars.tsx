@@ -146,48 +146,60 @@ const PokemonStatBars: React.FC<PokemonStatBarsProps> = ({
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: index * 0.05 }}
           >
-            {/* Stat Label */}
-            <div className={cn(
-              "col-span-3 px-2 sm:px-3 py-1.5 sm:py-2 text-white font-bold text-xs sm:text-sm rounded",
-              config.color,
-              config.darkColor
-            )}>
-              <div className="flex items-center justify-between">
-                <span className="flex items-center gap-1">
-                  {config.label}:
-                  <span className="text-[10px] text-gray-400">({stat.baseStat})</span>
-                </span>
-                <span className="flex items-center">
-                  {stat.natureModifier && stat.natureModifier !== 1 && (
-                    <span className="text-xs mr-1">
-                      {stat.natureModifier > 1 ? '↑' : '↓'}
-                    </span>
-                  )}
-                  {stat.actualStat || stat.baseStat}
-                </span>
+            {/* Stat Label with Glass Morphism */}
+            <div className="col-span-3 relative">
+              <div className={cn(
+                "px-2 sm:px-3 py-1.5 sm:py-2 font-bold text-xs sm:text-sm rounded-xl backdrop-blur-md border",
+                "bg-white/20 dark:bg-gray-900/20 border-white/30 dark:border-gray-700/30"
+              )}>
+                <div className="flex items-center justify-between">
+                  <span className="flex items-center gap-1 text-gray-700 dark:text-gray-300">
+                    {config.label}:
+                  </span>
+                  <span className="flex items-center text-gray-900 dark:text-white">
+                    {stat.natureModifier && stat.natureModifier !== 1 && (
+                      <span className={cn(
+                        "text-xs mr-1 font-bold",
+                        stat.natureModifier > 1 ? "text-green-500" : "text-red-500"
+                      )}>
+                        {stat.natureModifier > 1 ? '↑' : '↓'}
+                      </span>
+                    )}
+                    {stat.actualStat || stat.baseStat}
+                  </span>
+                </div>
               </div>
             </div>
 
-            {/* Stat Bar */}
+            {/* Stat Bar with Glass Effect */}
             <div className="col-span-6 relative">
-              <div className="w-full h-6 sm:h-8 bg-gray-200 dark:bg-gray-700 rounded overflow-hidden">
+              <div className="w-full h-6 sm:h-8 rounded-full bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 overflow-hidden">
                 <motion.div
-                  className="h-full relative"
-                  style={{
-                    backgroundColor: config.barColor,
-                    borderRadius: '0.25rem'
-                  }}
-                  initial={animate ? { width: 0 } : undefined}
+                  className={cn("h-full relative rounded-full", config.color, config.darkColor)}
+                  initial={animate ? { width: 0 } : { width: `${percentage}%` }}
                   animate={{ width: `${percentage}%` }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
-                />
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                >
+                  <div 
+                    className="absolute inset-0 rounded-full"
+                    style={{
+                      background: `linear-gradient(90deg, ${config.barColor}dd, ${config.barColor}ff)`,
+                      boxShadow: `inset 0 2px 4px rgba(255,255,255,0.3), 0 0 20px ${config.barColor}40`
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-full" />
+                </motion.div>
               </div>
             </div>
 
-            {/* Range */}
-            <div className="col-span-3 text-xs text-center text-gray-600 dark:text-gray-400 font-medium">
-              <span className="hidden sm:inline">{range.min} - {range.max}</span>
-              <span className="inline sm:hidden">{range.min}-{range.max}</span>
+            {/* Range with Glass Badge */}
+            <div className="col-span-3 flex justify-center">
+              <div className="px-3 py-1 rounded-full bg-white/20 dark:bg-gray-900/20 backdrop-blur-sm border border-white/30 dark:border-gray-700/30">
+                <span className="text-xs text-gray-600 dark:text-gray-400 font-medium">
+                  <span className="hidden sm:inline">{range.min} - {range.max}</span>
+                  <span className="inline sm:hidden">{range.min}-{range.max}</span>
+                </span>
+              </div>
             </div>
           </motion.div>
         );
@@ -222,16 +234,15 @@ const PokemonStatBars: React.FC<PokemonStatBarsProps> = ({
 
           {/* Total Bar */}
           <div className="col-span-6 relative">
-            <div className="w-full h-6 sm:h-8 bg-gray-200 dark:bg-gray-700 rounded overflow-hidden">
+            <div className="w-full h-6 sm:h-8 rounded-full bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 overflow-hidden">
               <motion.div
-                className="h-full relative bg-gray-600 dark:bg-gray-500"
-                style={{
-                  borderRadius: '0.25rem'
-                }}
-                initial={animate ? { width: 0 } : undefined}
+                className="h-full relative rounded-full bg-gradient-to-r from-gray-500 to-gray-600 dark:from-gray-600 dark:to-gray-500"
+                initial={animate ? { width: 0 } : { width: `${Math.min(((baseTotal || 0) / 720) * 100, 100)}%` }}
                 animate={{ width: `${Math.min(((baseTotal || 0) / 720) * 100, 100)}%` }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
-              />
+                transition={{ duration: 0.8, ease: "easeOut" }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-white/10 rounded-full" />
+              </motion.div>
             </div>
           </div>
 

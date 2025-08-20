@@ -44,9 +44,9 @@ export const FullBleedWrapper: React.FC<FullBleedWrapperProps> = ({
 
   return (
     <div className={`min-h-screen relative ${gradientClasses} ${className}`}>
-      {/* Background extender to ensure full coverage */}
-      <div className={`absolute inset-0 ${gradientClasses} -z-10`} aria-hidden="true" />
-      <div className="relative z-0 min-h-screen">
+      {/* Background extender to ensure full page coverage */}
+      <div className={`fixed inset-0 ${gradientClasses} -z-10`} aria-hidden="true" />
+      <div className="relative z-0 min-h-screen flex flex-col">
         {children}
       </div>
     </div>
@@ -75,8 +75,12 @@ export const PageBackground: React.FC<FullBleedWrapperProps> = ({
   };
 
   return (
-    <div className={`min-h-screen ${gradients[gradient]} ${className}`}>
-      {children}
+    <div className={`min-h-screen relative ${className}`}>
+      {/* Fixed background layer */}
+      <div className={`fixed inset-0 ${gradients[gradient]} -z-10`} aria-hidden="true" />
+      <div className="relative z-0 min-h-screen">
+        {children}
+      </div>
     </div>
   );
 };

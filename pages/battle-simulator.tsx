@@ -1239,8 +1239,7 @@ const BattleSimulator: NextPage = () => {
         <meta name="description" content="Battle Pokemon with real damage calculations and type effectiveness" />
       </Head>
       
-      {/* Battle-themed gradient background */}
-      <div className="min-h-screen bg-gradient-to-br from-red-100 via-orange-100 to-yellow-100 dark:from-red-900 dark:via-orange-900 dark:to-yellow-900">
+      <FullBleedWrapper gradient="pokedex">
         {/* Sticky Header */}
         <div className="sticky top-0 z-50 backdrop-blur-xl bg-white/70 dark:bg-gray-900/70 border-b border-white/20">
           <div className="container mx-auto px-4 py-4">
@@ -2390,7 +2389,7 @@ const BattleSimulator: NextPage = () => {
           </Modal>
 
         </div>
-      </div>
+      </FullBleedWrapper>
 
       {/* Battle Animation Styles */}
       <style jsx>{`

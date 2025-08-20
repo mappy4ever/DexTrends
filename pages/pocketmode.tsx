@@ -8,10 +8,8 @@ import { FaCrown } from "react-icons/fa";
 import { FadeIn, SlideUp } from "../components/ui/animations/animations";
 import { TypeBadge } from "../components/ui/TypeBadge";
 import { TypeFilter } from "../components/ui/forms/TypeFilter";
-import { GlassContainer } from "../components/ui/design-system/GlassContainer";
-import { GradientButton } from "../components/ui/design-system/GradientButton";
-import { createGlassStyle, GLASS_BLUR, GLASS_OPACITY, GLASS_BORDER, GLASS_SHADOW } from '../components/ui/design-system/glass-constants';
-import CircularButton from "../components/ui/CircularButton";
+import { createGlassStyle, GradientButton, CircularButton } from '../components/ui/design-system';
+import { UnifiedSearchBar, EmptyStateGlass, LoadingStateGlass } from '../components/ui/glass-components';
 import { motion } from "framer-motion";
 import PocketCardList from "../components/PocketCardList";
 import { fetchPocketData } from "../utils/pocketData";
@@ -32,7 +30,7 @@ interface ExtendedPocketCard extends PocketCard {
 }
 
 type SortBy = "name" | "rarity";
-type RarityFilter = "all" | "◊" | "◊◊" | "◊◊◊" | "◊◊◊◊" | "★" | "★★" | "fullart" | "immersive";
+type RarityFilter = "all" | "◊" | "◊◊" | "◊◊◊" | "◊◊◊◊" | "★" | "☆☆" | "★★" | "fullart" | "immersive";
 
 interface LoadingState {
   pokemon: boolean;
@@ -227,7 +225,7 @@ const PocketMode: NextPage = () => {
   const viewError = error.pokemon;
 
   return (
-    <FullBleedWrapper gradient="tcg">
+    <FullBleedWrapper gradient="pokedex">
       <div className="section-spacing-y-default max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 animate-fadeIn">
         <Head>
         <title>Pokémon TCG Pocket | DexTrends</title>
@@ -238,54 +236,118 @@ const PocketMode: NextPage = () => {
         <meta name="keywords" content="Pokemon TCG Pocket, Pokemon cards, TCG mobile, Pocket decks, Pokemon expansions" />
       </Head>
       <FadeIn>
-        {/* Ultra Compact Unified Section */}
+        {/* Enhanced Header Section with Glass Morphism */}
         <motion.div 
-          className="mb-6 bg-gray-200/60 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl p-4 shadow-2xl"
+          className={`${createGlassStyle({
+            blur: 'xl',
+            opacity: 'medium',
+            gradient: true,
+            border: 'medium',
+            shadow: 'xl',
+            rounded: 'xl'
+          })} mb-6 p-6 rounded-3xl`}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           {/* Header with Centered Title */}
-          <div className="text-center mb-3">
-            <h1 className="text-xl md:text-2xl font-black bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent inline-block">
+          <motion.div 
+            className="text-center mb-4"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            <h1 className="text-2xl md:text-3xl font-black bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent inline-block mb-3">
               Pokémon TCG Pocket Cards
             </h1>
-            <div className="flex justify-center mt-2">
-              <div className="px-2 py-1 rounded-full backdrop-blur-xl bg-gradient-to-r from-purple-100/60 to-purple-200/60 dark:from-purple-900/20 dark:to-purple-800/20 border border-purple-200/30">
-                <span className="text-xs font-bold text-purple-700 dark:text-purple-300">{pokemon.length} Total Cards</span>
+            <div className="flex justify-center">
+              <div className={`${createGlassStyle({
+                blur: 'md',
+                opacity: 'subtle',
+                gradient: true,
+                border: 'subtle',
+                shadow: 'md',
+                rounded: 'full'
+              })} px-4 py-2`}>
+                <span className="text-sm font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">{pokemon.length} Total Cards</span>
               </div>
             </div>
-          </div>
+          </motion.div>
           
-          {/* Tab Navigation */}
-          <div className="flex justify-center mb-3">
-            <div className="backdrop-blur-md bg-white/60 dark:bg-gray-800/60 rounded-2xl p-2 shadow-lg border border-white/30 inline-flex gap-2">
+          {/* Enhanced Tab Navigation */}
+          <motion.div 
+            className="flex justify-center mb-4"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+          >
+            <div className={`${createGlassStyle({
+              blur: 'lg',
+              opacity: 'medium',
+              gradient: true,
+              border: 'medium',
+              shadow: 'lg',
+              rounded: 'xl'
+            })} p-3 inline-flex gap-3`}>
               <button
                 onClick={() => router.push('/pocketmode')}
-                className="px-3 py-1.5 rounded-full backdrop-blur-xl bg-gradient-to-r from-purple-100/80 to-pink-100/80 dark:from-purple-900/30 dark:to-pink-900/30 border border-white/50 font-semibold text-xs text-purple-700 dark:text-purple-300 transition-all"
+                className={`${createGlassStyle({
+                  blur: 'md',
+                  opacity: 'strong',
+                  gradient: true,
+                  border: 'medium',
+                  shadow: 'md',
+                  rounded: 'full'
+                })} px-4 py-2 font-semibold text-sm bg-gradient-to-r from-purple-600 to-pink-600 text-white transition-all hover:scale-105`}
               >
                 Card List
               </button>
               <button
                 onClick={() => router.push('/pocketmode/deckbuilder')}
-                className="px-3 py-1.5 rounded-full backdrop-blur-xl bg-white/60 dark:bg-gray-800/60 border border-white/30 font-semibold text-xs text-gray-600 dark:text-gray-400 hover:bg-white/80 transition-all"
+                className={`${createGlassStyle({
+                  blur: 'md',
+                  opacity: 'subtle',
+                  gradient: false,
+                  border: 'subtle',
+                  shadow: 'sm',
+                  rounded: 'full'
+                })} px-4 py-2 font-semibold text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-all hover:scale-105`}
               >
                 Deck Builder
               </button>
               <button
                 onClick={() => router.push('/pocketmode/decks')}
-                className="px-3 py-1.5 rounded-full backdrop-blur-xl bg-white/60 dark:bg-gray-800/60 border border-white/30 font-semibold text-xs text-gray-600 dark:text-gray-400 hover:bg-white/80 transition-all"
+                className={`${createGlassStyle({
+                  blur: 'md',
+                  opacity: 'subtle',
+                  gradient: false,
+                  border: 'subtle',
+                  shadow: 'sm',
+                  rounded: 'full'
+                })} px-4 py-2 font-semibold text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-all hover:scale-105`}
               >
                 Pre-Built Decks
               </button>
             </div>
-          </div>
+          </motion.div>
           
-          {/* Filters without labels */}
-          <div className="space-y-2">
-            {/* Rarity Filter - Inline Label */}
-            <div className="flex items-center gap-2 bg-gray-100/90 dark:bg-gray-700/90 rounded-2xl p-2 shadow-lg border border-gray-300">
-              <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 ml-2">Rarity</span>
+          {/* Enhanced Filter Section */}
+          <motion.div 
+            className="space-y-3"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
+          >
+            {/* Enhanced Rarity Filter */}
+            <div className={`${createGlassStyle({
+              blur: 'md',
+              opacity: 'medium',
+              gradient: true,
+              border: 'medium',
+              shadow: 'md',
+              rounded: 'xl'
+            })} flex items-center gap-3 p-3`}>
+              <span className="text-sm font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent ml-1">Rarity</span>
               <div className="flex flex-wrap gap-1 flex-1">
                 <button
                   onClick={() => setRarityFilter('all')}
@@ -396,9 +458,16 @@ const PocketMode: NextPage = () => {
               </div>
             </div>
             
-            {/* Type Filter - Inline with better selection */}
-            <div className="flex items-center gap-2 bg-gray-100/90 dark:bg-gray-700/90 rounded-2xl p-2 shadow-lg border border-gray-300">
-              <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 ml-2">Type</span>
+            {/* Enhanced Type Filter */}
+            <div className={`${createGlassStyle({
+              blur: 'md',
+              opacity: 'medium',
+              gradient: true,
+              border: 'medium',
+              shadow: 'md',
+              rounded: 'xl'
+            })} flex items-center gap-3 p-3`}>
+              <span className="text-sm font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent ml-1">Type</span>
               <div className="flex flex-wrap gap-1 flex-1">
                 <button
                   onClick={() => setTypeFilter('all')}
@@ -448,7 +517,7 @@ const PocketMode: NextPage = () => {
                 })}
               </div>
             </div>
-          </div>
+          </motion.div>
         </motion.div>
         
         <SlideUp>
@@ -463,26 +532,17 @@ const PocketMode: NextPage = () => {
               className="animate-fadeIn"
             />
           ) : viewError ? (
-            <GlassContainer variant="colored" className="flex flex-col items-center justify-center min-h-[400px]">
-              <motion.div 
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                className="text-6xl mb-4"
-              >
-                <svg className="w-16 h-16 text-red-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
-              </motion.div>
-              <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">Oops! Something went wrong</h2>
-              <p className="text-gray-600 dark:text-gray-400 text-center mb-6">{viewError}</p>
-              <GradientButton 
-                onClick={fetchPokemonData}
-                variant="danger"
-                size="lg"
-              >
-                Try Again
-              </GradientButton>
-            </GlassContainer>
+            <EmptyStateGlass 
+              type="error"
+              title="Oops! Something went wrong"
+              message={viewError}
+              actionButton={{
+                text: "Try Again",
+                onClick: fetchPokemonData,
+                variant: "danger"
+              }}
+              className="min-h-[400px] flex items-center justify-center"
+            />
           ) : filteredPokemon.length === 0 ? (
             <PokemonEmptyState 
               customMessage={search || typeFilter !== 'all' || rarityFilter !== 'all' 
@@ -498,8 +558,31 @@ const PocketMode: NextPage = () => {
                   {(search || typeFilter !== 'all' || rarityFilter !== 'all') && ' (filtered)'}
                 </p>
               </div>
-              {/* Glass Container for Cards - Simplified */}
-              <div className="bg-gray-200/60 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl p-6 md:p-8 shadow-2xl">
+              {/* Enhanced Glass Container for Cards */}
+              <motion.div 
+                className={`${createGlassStyle({
+                  blur: 'xl',
+                  opacity: 'medium',
+                  gradient: true,
+                  border: 'medium',
+                  shadow: 'xl',
+                  rounded: 'xl'
+                })} p-6 md:p-8 rounded-3xl`}
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+              >
+                {/* Search Bar */}
+                <div className="mb-6">
+                  <UnifiedSearchBar
+                    value={search}
+                    onChange={setSearch}
+                    placeholder="Search Pocket cards... (Press / to focus)"
+                    className="w-full"
+                    showSearchButton
+                  />
+                </div>
+
                 <PocketCardList 
                   cards={filteredPokemon} 
                   loading={false}
@@ -507,26 +590,33 @@ const PocketMode: NextPage = () => {
                   searchValue={search}
                   onSearchChange={setSearch}
                 />
-              </div>
+              </motion.div>
             </>
           )}
         </SlideUp>
         
-        {/* Actions with Glass Morphism */}
-        <div className="flex flex-wrap justify-center gap-3 mt-6">
-          <button
+        {/* Enhanced Action Buttons */}
+        <motion.div 
+          className="flex flex-wrap justify-center gap-4 mt-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+        >
+          <GradientButton
             onClick={() => router.push('/pocketmode/expansions')}
-            className="px-5 py-2.5 rounded-full backdrop-blur-xl bg-gradient-to-r from-purple-100/80 to-pink-100/80 dark:from-purple-900/30 dark:to-pink-900/30 border border-white/50 shadow-lg font-semibold text-sm text-purple-700 dark:text-purple-300 hover:shadow-xl hover:scale-105 transition-all"
+            variant="primary"
+            className="hover:scale-105 transition-transform"
           >
             Explore Expansions
-          </button>
-          <button
+          </GradientButton>
+          <GradientButton
             onClick={() => router.push('/pocketmode/packs')}
-            className="px-5 py-2.5 rounded-full backdrop-blur-xl bg-gradient-to-r from-green-100/80 to-teal-100/80 dark:from-green-900/30 dark:to-teal-900/30 border border-white/50 shadow-lg font-semibold text-sm text-green-700 dark:text-green-300 hover:shadow-xl hover:scale-105 transition-all"
+            variant="secondary"
+            className="hover:scale-105 transition-transform"
           >
             Pack Opening
-          </button>
-        </div>
+          </GradientButton>
+        </motion.div>
         
         {/* Pocket Mode Rules Guide Link */}
         <div className="text-center mt-8 pb-20">

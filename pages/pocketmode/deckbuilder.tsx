@@ -8,6 +8,7 @@ import { TypeBadge } from '../../components/ui/TypeBadge';
 import { FadeIn, SlideUp } from '../../components/ui/animations';
 import BackToTop from '../../components/ui/SimpleBackToTop';
 import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
+import { FullBleedWrapper } from '../../components/ui/FullBleedWrapper';
 import { validateDeck, getDeckSuggestions, ValidationResult } from '../../utils/deckValidation';
 import { analyzeDeckMeta, getMetaSuggestions, MetaAnalysis } from '../../utils/metaAnalysis';
 import type { PocketCard } from '../../types/api/pocket-cards';
@@ -682,11 +683,12 @@ function DeckBuilder() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <FullBleedWrapper gradient="pocket">
       <Head>
         <title>Pokemon Pocket Deck Builder | DexTrends</title>
         <meta name="description" content="Build and customize your Pokemon Pocket decks with our advanced deck builder" />
       </Head>
+      <div className="min-h-screen">
 
       {/* Header */}
       <div className="sticky top-16 z-40 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
@@ -1709,7 +1711,8 @@ function DeckBuilder() {
       <div className="lg:hidden h-32"></div>
 
       <BackToTop />
-    </div>
+      </div>
+    </FullBleedWrapper>
   );
 }
 

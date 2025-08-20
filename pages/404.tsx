@@ -3,6 +3,7 @@ import type { NextPage } from 'next';
 import { motion } from 'framer-motion';
 import { GlassContainer } from '../components/ui/design-system/GlassContainer';
 import { CircularButton } from '../components/ui/design-system';
+import { FullBleedWrapper } from '../components/ui/FullBleedWrapper';
 import Image from 'next/image';
 import Head from 'next/head';
 
@@ -16,14 +17,12 @@ const Custom404: NextPage = () => {
   ];
 
   return (
-    <>
+    <FullBleedWrapper gradient="pokedex">
       <Head>
         <title>404 - Page Not Found | DexTrends</title>
         <meta name="description" content="The page you're looking for has escaped into the tall grass. Maybe it used Teleport?" />
       </Head>
       <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      {/* Gradient Background */}
-      <div className="absolute inset-0 gradient-bg-primary opacity-20" />
       
       {/* Floating Pokemon */}
       {pokemonSprites.map((_sprite, index) => (
@@ -133,7 +132,7 @@ const Custom404: NextPage = () => {
         </GlassContainer>
       </motion.div>
     </div>
-    </>
+    </FullBleedWrapper>
   );
 };
 

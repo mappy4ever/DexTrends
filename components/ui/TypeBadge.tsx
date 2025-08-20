@@ -6,29 +6,71 @@ interface TypeBadgeProps {
   type: string;
   size?: 'xs' | 'sm' | 'md' | 'lg';
   className?: string;
+  variant?: 'solid' | 'gradient';
 }
+
+// Gradient configurations for each type - subtle gradients
+const TYPE_GRADIENTS: Record<string, string> = {
+  normal: 'from-stone-400 to-stone-600',
+  fire: 'from-orange-400 to-orange-600',
+  water: 'from-blue-400 to-blue-600',
+  electric: 'from-yellow-300 to-yellow-500',
+  grass: 'from-green-500 to-green-700',
+  ice: 'from-cyan-300 to-blue-400',
+  fighting: 'from-red-500 to-red-700',
+  poison: 'from-fuchsia-500 to-fuchsia-700',
+  ground: 'from-yellow-700 to-amber-800',
+  flying: 'from-indigo-300 to-indigo-500',
+  psychic: 'from-pink-500 to-pink-700',
+  bug: 'from-lime-500 to-lime-700',
+  rock: 'from-yellow-600 to-amber-700',
+  ghost: 'from-purple-800 to-purple-950',  // Darker purple gradient
+  dragon: 'from-indigo-600 to-purple-700',  // Indigo to purple (opposite of ghost)
+  dark: 'from-gray-700 to-gray-900',
+  steel: 'from-gray-400 to-slate-500',
+  fairy: 'from-pink-300 to-pink-400'
+};
 
 export const TypeBadge: React.FC<TypeBadgeProps> = ({ 
   type, 
   size = 'md',
-  className 
+  className,
+  variant = 'gradient'
 }) => {
+  // Fixed width classes to match "FIGHTING" (longest type name) - tighter fit
   const sizeClasses = {
-    xs: 'px-1.5 py-0.5 text-[10px]',
-    sm: 'px-2 py-0.5 text-xs',
-    md: 'px-3 py-1 text-sm',
-    lg: 'px-4 py-1.5 text-base'
+    xs: 'px-1.5 py-0.5 text-[11px] min-w-[4rem]',
+    sm: 'px-2 py-0.5 text-[13px] min-w-[5rem]',
+    md: 'px-4 py-2 text-sm min-w-[6rem]',
+    lg: 'px-3 py-1 text-lg min-w-[6.5rem]'
   };
 
-  const bgColor = POKEMON_TYPE_COLORS[type.toLowerCase()] || POKEMON_TYPE_COLORS.normal;
+  const typeKey = type.toLowerCase();
+  const gradientClass = TYPE_GRADIENTS[typeKey] || TYPE_GRADIENTS.normal;
+  const solidColor = POKEMON_TYPE_COLORS[typeKey] || POKEMON_TYPE_COLORS.normal;
 
+  if (variant === 'gradient') {
+    return (
+      <span className={cn(
+        'rounded-full font-semibold text-white inline-flex items-center justify-center shadow-sm',
+        'bg-gradient-to-r',
+        gradientClass,
+        sizeClasses[size],
+        className
+      )}>
+        {type.toUpperCase()}
+      </span>
+    );
+  }
+
+  // Solid variant (fallback)
   return (
     <span className={cn(
-      'rounded-full font-medium text-white inline-flex items-center',
+      'rounded-full font-medium text-white inline-flex items-center justify-center',
       sizeClasses[size],
       className
     )} style={{ 
-      backgroundColor: bgColor,
+      backgroundColor: solidColor,
       transform: 'translate3d(0,0,0)',
       WebkitTransform: 'translate3d(0,0,0)',
       backfaceVisibility: 'visible',

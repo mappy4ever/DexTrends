@@ -7,8 +7,8 @@ import { fetchJSON } from "../utils/unifiedFetch";
 import { useTheme } from "../context/UnifiedAppContext";
 import { useViewSettings } from "../context/UnifiedAppContext";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
-import { StandardCard, CardHeader, CardTitle, CardContent, CircularButton } from "../components/ui/design-system";
-import { createGlassStyle, GLASS_BLUR, GLASS_OPACITY, GLASS_BORDER, GLASS_SHADOW } from '../components/ui/design-system/glass-constants';
+import { createGlassStyle, GradientButton, CircularButton } from '../components/ui/design-system';
+import { UnifiedSearchBar, EmptyStateGlass, LoadingStateGlass } from '../components/ui/glass-components';
 import { motion } from 'framer-motion';
 import { InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
@@ -196,7 +196,7 @@ const TcgSetsContent: React.FC = () => {
   );
 
   return (
-    <FullBleedWrapper gradient="tcg">
+    <FullBleedWrapper gradient="pokedex">
       <div className="section-spacing-y-default max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 animate-fadeIn pt-8">
           <FadeIn>
             {/* Hero Section with Glass Effect */}
@@ -253,25 +253,17 @@ const TcgSetsContent: React.FC = () => {
             >
               {/* Search and Filters */}
               <div className="flex flex-col gap-6">
-                {/* Search Bar */}
+                {/* Enhanced Search Bar */}
                 <div className="relative">
-                  <input
-                    id="searchInput"
-                    type="text"
-                    className="w-full pl-12 pr-4 py-4 backdrop-blur-xl bg-white/90 dark:bg-gray-800/90 rounded-full text-lg border border-white/50 dark:border-gray-700/50 shadow-lg focus:outline-none focus:ring-4 focus:ring-purple-500/30 focus:border-purple-500 transition-all"
+                  <UnifiedSearchBar
                     placeholder="Search for a set (e.g., Base, Evolving Skies)"
                     value={search}
-                    onChange={(e) => setSearch(e.target.value)}
+                    onChange={setSearch}
+                    size="lg"
+                    variant="default"
+                    showSearchButton={false}
+                    className="w-full"
                   />
-                  <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    className="h-6 w-6 text-gray-400 dark:text-gray-500 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" 
-                    fill="none" 
-                    viewBox="0 0 24 24" 
-                    stroke="currentColor"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
                 </div>
                 
                 {/* Filter Controls */}
@@ -340,8 +332,9 @@ const TcgSetsContent: React.FC = () => {
                     </div>
                   </div>
             
-                  <button 
-                    className="px-8 py-3 backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 hover:bg-white/90 dark:hover:bg-gray-800/90 text-gray-700 dark:text-gray-200 font-bold rounded-full transition-all duration-300 transform hover:scale-105 border border-white/40 dark:border-gray-700/40 shadow-lg"
+                  <GradientButton
+                    variant="secondary"
+                    size="md"
                     onClick={() => {
                       setSearch("");
                       setFilterSeries("");
@@ -350,9 +343,10 @@ const TcgSetsContent: React.FC = () => {
                     }}
                   >
                     Clear Filters
-                  </button>
-                  <button 
-                    className="ml-4 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold rounded-full transition-all duration-300 transform hover:scale-105 flex items-center gap-2 shadow-xl"
+                  </GradientButton>
+                  <GradientButton
+                    variant="primary"
+                    size="md"
                     onClick={async () => {
                       setLoading(true);
                       setError(null);
@@ -372,19 +366,21 @@ const TcgSetsContent: React.FC = () => {
                       await fetchSets(1, false);
                     }}
                     disabled={loading}
+                    icon={
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                      </svg>
+                    }
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                    </svg>
                     Refresh Sets
-                  </button>
+                  </GradientButton>
                 </div>
               </div>
             </motion.div>
           </FadeIn>
       
       {loading ? (
-        <PageLoader text={loadingMessage} />
+        <LoadingStateGlass message={loadingMessage} />
           ) : error ? (
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
@@ -392,36 +388,20 @@ const TcgSetsContent: React.FC = () => {
               transition={{ duration: 0.5 }}
               className="max-w-2xl mx-auto"
             >
-              <div className={createGlassStyle({ 
-                blur: 'xl', 
-                opacity: 'strong', 
-                gradient: false, 
-                rounded: 'xl',
-                shadow: 'xl'
-              })} style={{ 
-                padding: '3rem',
-                background: 'linear-gradient(135deg, rgba(254, 242, 242, 0.95), rgba(255, 245, 245, 0.95))'
-              }}>
-                <div className="text-center">
-                  <div className="w-20 h-20 bg-gradient-to-br from-red-100 to-red-200 dark:from-red-900/30 dark:to-red-800/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-10 h-10 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-2xl font-bold text-red-600 dark:text-red-400 mb-2">Error Loading Sets</h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-6">{error}</p>
-                  <button 
-                    className="px-8 py-3 bg-gradient-to-r from-red-500 to-rose-500 hover:from-red-600 hover:to-rose-600 text-white font-bold rounded-full transition-all duration-300 transform hover:scale-105 shadow-xl"
-                    onClick={() => {
-                      setLoading(true);
-                      setError(null);
-                      fetchSets();
-                    }}
-                  >
-                    Try Again
-                  </button>
-                </div>
-              </div>
+              <EmptyStateGlass
+                type="error"
+                title="Error Loading Sets"
+                message={error}
+                actionButton={{
+                  text: "Try Again",
+                  onClick: () => {
+                    setLoading(true);
+                    setError(null);
+                    fetchSets();
+                  },
+                  variant: "danger"
+                }}
+              />
             </motion.div>
           ) : (
             <StaggeredChildren className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
@@ -525,23 +505,23 @@ const TcgSetsContent: React.FC = () => {
           {/* Load More Button */}
           {!loading && hasMorePages && sets.length > 0 && (
             <div className="text-center mt-8">
-              <button
+              <GradientButton
+                variant="primary"
+                size="lg"
                 onClick={loadMoreSets}
                 disabled={loadingMore}
-                className="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:from-gray-400 disabled:to-gray-500 text-white font-semibold rounded-full transition-all duration-300 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed"
+                icon={loadingMore ? undefined : 
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                  </svg>
+                }
               >
                 {loadingMore ? (
-                  <span className="flex items-center gap-2">
-                    <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                    </svg>
-                    Loading...
-                  </span>
+                  'Loading...'
                 ) : (
                   `Load More Sets (${sets.length} of ${totalSetsCount || '?'} loaded)`
                 )}
-              </button>
+              </GradientButton>
             </div>
           )}
 
@@ -602,43 +582,21 @@ const TcgSetsContent: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <div className={createGlassStyle({ 
-                blur: 'xl', 
-                opacity: 'strong', 
-                gradient: true, 
-                rounded: 'xl',
-                shadow: 'xl'
-              })} style={{ 
-                maxWidth: '28rem',
-                margin: '0 auto',
-                padding: '3rem',
-                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(250, 250, 255, 0.95))'
-              }}>
-                <div className="w-24 h-24 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-                  <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    className="h-12 w-12 text-purple-600 dark:text-purple-400" 
-                    fill="none" 
-                    viewBox="0 0 24 24" 
-                    stroke="currentColor"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-3">No Sets Found</h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-8">Try adjusting your search criteria or clear all filters</p>
-                <button
-                  className="px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold rounded-full transition-all duration-300 transform hover:scale-105 shadow-xl"
-                  onClick={() => {
+              <EmptyStateGlass
+                title="No Sets Found"
+                message="Try adjusting your search criteria or clear all filters"
+                iconText="🃏"
+                actionButton={{
+                  text: "Clear All Filters",
+                  onClick: () => {
                     setSearch("");
                     setFilterSeries("");
                     setSortOption("releaseDate");
                     setSortDirection("desc");
-                  }}
-                >
-                  Clear All Filters
-                </button>
-              </div>
+                  },
+                  variant: "primary"
+                }}
+              />
             </motion.div>
           )}
           <script>
