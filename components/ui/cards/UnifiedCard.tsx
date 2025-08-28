@@ -524,7 +524,7 @@ const UnifiedCard = memo(({
     
     setShowActions(false);
     setSwipeX(0);
-  }, [card, favorites, addToFavorites, removeFromFavorites]);
+  }, [card, favorites, addToFavorites, removeFromFavorites, normalizedCard.image, normalizedCard.name, normalizedCard.set?.id, normalizedCard.set?.name]);
   
   const handleShare = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
@@ -618,14 +618,15 @@ const UnifiedCard = memo(({
       <div
         className={`
           ${className}
+          w-full
           bg-white dark:bg-gray-800 
           border border-gray-200 dark:border-gray-700 
           rounded-lg overflow-hidden 
           shadow-sm 
           ${cardType === "pocket" ? "pocket-card" : cardType === "tcg" ? "tcg-card" : "unified-card"}
-          cursor-pointer group relative
+          cursor-pointer group relative touch-manipulation
           ${visualEffects.glowClass}
-          ${cardType === "pocket" ? "mx-auto" : ""}
+          ${cardType === "pocket" ? "mx-auto max-w-[300px]" : ""}
         `}
         onClick={handleCardClick}
         style={{ cursor: 'pointer' }}

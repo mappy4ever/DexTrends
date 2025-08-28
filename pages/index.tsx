@@ -8,6 +8,7 @@ import { NextPage } from 'next';
 // Components
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import { GlobalSearch } from '../components/home/GlobalSearch';
+import { HeroLogo } from '../components/ui/DexTrendsLogo';
 
 // Icons
 import { Book, CardList, CrossedSwords, Bulb } from '../utils/icons';
@@ -24,23 +25,16 @@ const HomePage: NextPage = () => {
       <FullBleedWrapper gradient="pokedex">
         <div className="min-h-screen">
           {/* Hero Section */}
-          <section className="container mx-auto px-4 pt-12 pb-8">
+          <section className="container mx-auto px-4 sm:px-6 pt-8 sm:pt-12 pb-6 sm:pb-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               className="text-center"
             >
-              {/* Logo */}
-              <div className="mb-8">
-                <Image
-                  src="/images/dextrends-vertical-logo.png"
-                  alt="DexTrends"
-                  width={300}
-                  height={360}
-                  className="h-40 md:h-48 w-auto mx-auto filter brightness-90 contrast-110"
-                  priority
-                />
+              {/* Official DexTrends Logo - Hero Size */}
+              <div className="mb-12 flex justify-center">
+                <HeroLogo />
               </div>
 
               {/* Tagline */}

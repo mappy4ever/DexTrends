@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
@@ -39,35 +39,144 @@ const TypeEffectivenessPage = () => {
   const [teamTypes, setTeamTypes] = useState<string[][]>([]);
   const [typeDetails, setTypeDetails] = useState<Record<string, TypeDetails>>({});
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
+  const [isRetrying, setIsRetrying] = useState(false);
   const [viewMode, setViewMode] = useState<'calculator' | 'chart' | 'team'>('calculator');
 
   // Glass morphism styles
   const glassStyle = createGlassStyle({});
   const glassButtonStyle = createGlassStyle({ opacity: 'subtle', blur: 'md' });
 
-  useEffect(() => {
-    const init = async () => {
-      await loadTypeChart();
-      
-      // Load type details from PokeAPI
-      const details: Record<string, TypeDetails> = {};
-      for (const type of POKEMON_TYPES) {
-        try {
-          const data: any = await fetchJSON(`https://pokeapi.co/api/v2/type/${type}`);
-          if (data) {
-            details[type] = {
-              name: type,
-              damageRelations: data.damage_relations || {}
-            };
+  // Initialize type effectiveness data - moved outside useEffect for retry logic
+  const init = useCallback(async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        setIsRetrying(false);
+        
+        // Load type chart first
+        await loadTypeChart();
+        
+        // Load type details from PokeAPI
+        const details: Record<string, TypeDetails> = {};
+        let successCount = 0;
+        
+        const typePromises = POKEMON_TYPES.map(async (type) => {
+          try {
+            const data = await fetchJSON<any>(`https://pokeapi.co/api/v2/type/${type}`, {
+              useCache: true,
+              cacheTime: 30 * 60 * 1000, // Cache for 30 minutes - type data is very stable
+              timeout: 8000,
+              retries: 2
+            });
+            
+            if (data && data.damage_relations) {
+              details[type] = {
+                name: type,
+                damageRelations: data.damage_relations
+              };
+              successCount++;
+              return { type, success: true };
+            }
+            return { type, success: false, error: 'No damage relations data' };
+          } catch (error) {
+            logger.error(`Failed to load type ${type}`, { error, type });
+            return { type, success: false, error: error instanceof Error ? error.message : 'Unknown error' };
           }
-        } catch (error) {
-          logger.error(`Failed to load type ${type}`, { error });
+        });
+        
+        const results = await Promise.all(typePromises);
+        const failedTypes = results.filter(r => !r.success);
+        
+        // If too many types failed to load, show error
+        if (successCount < POKEMON_TYPES.length * 0.8) { // Less than 80% success rate
+          throw new Error(`Failed to load ${failedTypes.length} out of ${POKEMON_TYPES.length} Pokemon types`);
+        }
+        
+        if (failedTypes.length > 0) {
+          logger.warn('Some types failed to load but continuing', {
+            failedCount: failedTypes.length,
+            successCount,
+            failedTypes: failedTypes.map(f => f.type)
+          });
+        }
+        
+        setTypeDetails(details);
+        
+      } catch (err) {
+        let errorMessage = "Failed to load type effectiveness data.";
+        let shouldRetry = false;
+        
+        if (err instanceof TypeError && err.message.includes('fetch')) {
+          errorMessage = "Network connection failed. Please check your internet connection.";
+          shouldRetry = true;
+        } else if (err instanceof Error) {
+          if (err.message.includes('timeout') || err.message.includes('TIMEOUT')) {
+            errorMessage = "Request timed out. The Pokemon API is taking too long to respond.";
+            shouldRetry = true;
+          } else if (err.message.includes('500') || err.message.includes('502') || err.message.includes('503')) {
+            errorMessage = "Pokemon API server error. Please try again in a few minutes.";
+            shouldRetry = true;
+          } else if (err.message.includes('rate limit') || err.message.includes('429')) {
+            errorMessage = "Rate limit exceeded. Please wait before retrying.";
+            shouldRetry = true;
+          } else if (err.message.includes('Failed to load') && err.message.includes('types')) {
+            errorMessage = err.message + ". Some type data may be incomplete.";
+            shouldRetry = true;
+          }
+        }
+        
+        logger.error("Error initializing type effectiveness data", { 
+          error: err, 
+          errorMessage, 
+          shouldRetry, 
+          retryCount,
+          timestamp: new Date().toISOString()
+        });
+        
+        // Attempt retry for network-related errors
+        if (shouldRetry && retryCount < 3) {
+          setRetryCount(prev => prev + 1);
+          setTimeout(() => {
+            retryInit(3 - retryCount);
+          }, 2000 * (retryCount + 1));
+          return;
+        }
+        
+        setError(errorMessage);
+        setRetryCount(0);
+        
+      } finally {
+        setLoading(false);
+        setIsRetrying(false);
+      }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [retryCount]);
+
+  // Retry logic helper
+  const retryInit = async (retries = 3, delay = 1000) => {
+    for (let attempt = 0; attempt < retries; attempt++) {
+      try {
+        if (attempt > 0) {
+          setIsRetrying(true);
+          await new Promise(resolve => setTimeout(resolve, delay * Math.pow(2, attempt)));
+        }
+        await init();
+        return;
+      } catch (error) {
+        logger.warn(`Initialization attempt ${attempt + 1} failed`, { error, attempt });
+        if (attempt === retries - 1) {
+          throw error;
         }
       }
-      setTypeDetails(details);
-      setLoading(false);
-    };
+    }
+  };
+
+  // Initial load on mount
+  useEffect(() => {
     init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const calculateDamage = () => {
@@ -153,6 +262,59 @@ const TypeEffectivenessPage = () => {
       </motion.div>
 
       <div className="container mx-auto px-4 py-8 max-w-7xl">
+        {/* Loading and Error States */}
+        {loading ? (
+          <motion.div 
+            className="flex flex-col items-center justify-center min-h-[400px]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            <LoadingStateGlass />
+          </motion.div>
+        ) : error ? (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="text-center py-12"
+          >
+            <div className={`max-w-md mx-auto p-8 rounded-3xl border border-red-200 dark:border-red-800 ${glassStyle}`} 
+                 style={{ background: 'linear-gradient(135deg, rgba(239,68,68,0.1), rgba(239,68,68,0.05))' }}>
+              <div className="mb-6">
+                <svg className="w-16 h-16 mx-auto text-red-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+                <h3 className="text-xl font-bold text-red-600 dark:text-red-400 mb-3">Unable to Load Type Data</h3>
+                <p className="text-sm text-red-500 dark:text-red-400 mb-4">{error}</p>
+              </div>
+              {retryCount > 0 && (
+                <div className="text-xs text-gray-500 mb-4">
+                  Attempted {retryCount} time{retryCount !== 1 ? 's' : ''}
+                </div>
+              )}
+              <div className="flex gap-3 justify-center">
+                <GradientButton
+                  onClick={() => {
+                    if (typeof window !== 'undefined') {
+                      window.location.reload();
+                    }
+                  }}
+                  variant="primary"
+                  size="sm"
+                >
+                  Refresh Page
+                </GradientButton>
+                <CircularButton
+                  onClick={() => router.push('/pokemon')}
+                  variant="secondary"
+                  size="sm"
+                >
+                  Go Back
+                </CircularButton>
+              </div>
+            </div>
+          </motion.div>
+        ) : (
+          <>
         {/* Enhanced Glass View Mode Selector */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -495,7 +657,7 @@ const TypeEffectivenessPage = () => {
             animate={{ opacity: 1 }}
           >
             <motion.div 
-              className={`overflow-x-auto p-8 rounded-3xl border border-white/20 dark:border-gray-700/50 ${glassStyle}`}
+              className={`overflow-x-auto p-4 sm:p-8 rounded-2xl sm:rounded-3xl border border-white/20 dark:border-gray-700/50 ${glassStyle} type-table-container`}
               whileHover={{ scale: 1.005 }}
               transition={{ type: "spring", stiffness: 400, damping: 30 }}
             >
@@ -872,6 +1034,8 @@ const TypeEffectivenessPage = () => {
               </motion.div>
             )}
           </motion.div>
+        )}
+          </>
         )}
       </div>
     </FullBleedWrapper>

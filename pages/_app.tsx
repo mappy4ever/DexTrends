@@ -3,10 +3,8 @@ import type { AppProps } from 'next/app';
 import Head from "next/head";
 import { useRouter, NextRouter } from "next/router";
 import "../styles/globals.css";
-import "../styles/unified-mobile.css";
-import "../styles/ios-scrolling-fix.css";
+import "../styles/mobile.css"; // Consolidated mobile styles
 import "../styles/desktop-tabs.css";
-import "../styles/responsive-breakpoint-fixes.css";
 // import "../styles/pokemon-animations.css"; // Consolidated with animations.css
 import "../styles/design-system.css";
 import "../styles/animations.css";

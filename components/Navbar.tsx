@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef, ReactNode } from "react";
 import Link from "next/link";
-import Image from 'next/image';
 import { useRouter } from "next/router";
 import { RiGovernmentFill } from "react-icons/ri";
 import { AiOutlineBulb } from "react-icons/ai";
@@ -13,6 +12,7 @@ import { DynamicAdvancedSearchModal } from "./dynamic/DynamicComponents";
 import { useAppContext, useTheme, useFavorites } from "../context/UnifiedAppContext";
 import { toLowercaseUrl } from "../utils/formatters";
 import ClientOnly from "./ClientOnly";
+import { NavbarLogo } from "../components/ui/DexTrendsLogo";
 
 // Type definitions for navigation
 interface DropdownItem {
@@ -175,18 +175,8 @@ export default function Navbar() {
   return (
     <>
       {/* Redesigned Navbar with Gradient Glass Effect */}
-      <div className="fixed top-0 left-0 right-0 flex items-center justify-between px-4 md:px-6 h-20 z-40 bg-white dark:bg-gray-900 backdrop-blur-xl border-b border-gray-200 dark:border-gray-700 shadow-lg safe-area-padding-top navbar-ios">
-        <Link
-          href="/"
-          className="flex items-center gap-x-3 text-xl font-bold overflow-hidden group"
-        >
-          <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-pokemon-red to-pink-500 rounded-2xl flex items-center justify-center shadow-md group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-105">
-            <BsGrid size={24} className="text-white" />
-          </div>
-          <span className="truncate bg-gradient-to-r from-pokemon-red to-pink-600 bg-clip-text text-transparent font-extrabold text-2xl">
-            DexTrends
-          </span>
-        </Link>
+      <div className="fixed top-0 left-0 right-0 flex items-center justify-between px-3 md:px-6 h-16 md:h-20 z-40 bg-white dark:bg-gray-900 backdrop-blur-xl border-b border-gray-200 dark:border-gray-700 shadow-lg safe-area-padding-top navbar-ios">
+        <NavbarLogo />
         <nav className="hidden md:flex items-center gap-x-3">
           {navItems.map(item => {
             const isActive = router.pathname === item.href || 
@@ -377,13 +367,13 @@ export default function Navbar() {
             </ClientOnly>
           </button>
           
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Button - Larger for better touch */}
           <button
             id="mobile-menu-button"
-            className="md:hidden p-3 rounded-full bg-gradient-to-r from-pokemon-red to-pink-500 text-white hover:from-red-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-300 touch-manipulation transform active:scale-95"
+            className="md:hidden p-4 rounded-full bg-gradient-to-r from-pokemon-red to-pink-500 text-white hover:from-red-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-300 touch-manipulation transform active:scale-95"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle mobile menu"
-            style={{ minHeight: '48px', minWidth: '48px' }}
+            style={{ minHeight: '56px', minWidth: '56px' }}
           >
             <div className="w-5 h-5 flex flex-col justify-center space-y-1">
               <div className={`w-full h-0.5 bg-white transition-all duration-300${mounted && mobileOpen ? ' rotate-45 translate-y-1' : ''}`} />
@@ -398,7 +388,7 @@ export default function Navbar() {
         {mobileOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
           <div className="fixed inset-0 bg-black/75 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
-          <div ref={menuWrapperRef} className="fixed right-0 left-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 p-6 shadow-2xl safe-area-padding-x rounded-t-3xl" style={{ top: 'calc(80px + env(safe-area-inset-top))' }}>
+          <div ref={menuWrapperRef} className="fixed right-0 left-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 p-4 shadow-2xl safe-area-padding-x rounded-t-3xl" style={{ top: 'calc(64px + env(safe-area-inset-top))' }}>
             <nav className="flex flex-col space-y-2">
               {navItems.map(item => {
                 const isActive = router.pathname === item.href || 
@@ -409,11 +399,11 @@ export default function Navbar() {
                     <div key={`mobile-${item.href}`} className="space-y-1">
                       <Link
                         href={item.href}
-                        className={`flex items-center gap-x-3 px-5 py-4 rounded-2xl font-medium touch-manipulation transition-all duration-300
+                        className={`flex items-center gap-x-3 px-4 py-4 rounded-2xl font-medium touch-manipulation transition-all duration-300
                           ${isActive
                             ? 'bg-gradient-to-r from-pokemon-red to-pink-500 text-white shadow-lg'
                             : 'text-gray-700 bg-gray-100/80 hover:bg-gray-200/80'}`}
-                        style={{ minHeight: '52px' }}
+                        style={{ minHeight: '56px' }}
                         onClick={() => setMobileOpen(false)}
                       >
                         <span className={`flex-shrink-0 w-7 h-7 ${isActive ? 'text-white' : item.color || 'text-gray-600'}`}>
@@ -426,12 +416,12 @@ export default function Navbar() {
                         {item.dropdownItems!.map((dropdownItem, dropdownIndex) => (
                           <Link key={`mobile-dropdown-${item.href}-${dropdownIndex}-${dropdownItem.href}`}
                             href={dropdownItem.href}
-                            className={`flex items-center gap-x-3 px-5 py-3 rounded-xl font-medium transition-all duration-300 touch-manipulation
+                            className={`flex items-center gap-x-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 touch-manipulation
                               ${router.pathname === dropdownItem.href
                                 ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-700 border border-blue-300/50'
                                 : 'text-gray-600 hover:bg-gray-100/80'}`}
                             onClick={() => setMobileOpen(false)}
-                            style={{ minHeight: '44px' }}
+                            style={{ minHeight: '48px' }}
                           >
                             <span className={`flex-shrink-0 w-5 h-5 ${router.pathname === dropdownItem.href ? 'text-blue-600' : 'text-gray-500'}`}>
                               {dropdownItem.icon}
@@ -447,12 +437,12 @@ export default function Navbar() {
                 return (
                   <Link key={`mobile-${item.href}`}
                     href={item.href}
-                    className={`flex items-center gap-x-3 px-5 py-4 rounded-2xl font-medium transition-all duration-300 touch-manipulation
+                    className={`flex items-center gap-x-3 px-4 py-4 rounded-2xl font-medium transition-all duration-300 touch-manipulation
                       ${isActive
                         ? 'bg-gradient-to-r from-pokemon-red to-pink-500 text-white shadow-lg'
                         : 'text-gray-700 bg-gray-100/80 hover:bg-gray-200/80'}`}
                     onClick={() => setMobileOpen(false)}
-                    style={{ minHeight: '52px' }}
+                    style={{ minHeight: '56px' }}
                   >
                     <span className={`flex-shrink-0 w-7 h-7 ${isActive ? 'text-white' : item.color || 'text-gray-600'}`}>
                       {item.icon}
@@ -467,7 +457,7 @@ export default function Navbar() {
       )}
       </ClientOnly>
       {/* Spacer for fixed navbar with iOS Safe Area */}
-      <div className="h-20 navbar-spacer-ios" />
+      <div className="h-16 md:h-20 navbar-spacer-ios" />
       <GlobalSearchModal ref={searchModalRef} />
       
       {/* Advanced Search Modal */}
