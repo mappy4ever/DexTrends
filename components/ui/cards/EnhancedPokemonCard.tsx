@@ -104,8 +104,9 @@ const EnhancedPokemonCard = memo(({
       <motion.div 
         className={cn(
           'relative cursor-pointer',
-          'transform transition-all duration-500',
-          'hover:scale-110 hover:-translate-y-2'
+          'transform-gpu transition-gpu',
+          'hover:scale-110 hover:-translate-y-2',
+          'will-change-transform'
         )}
         onClick={handleClick}
         data-testid="pokemon-card"

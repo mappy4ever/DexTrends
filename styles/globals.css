@@ -11,6 +11,56 @@
 /* CRITICAL: Import mobile no-cutoff rules */
 @import './no-cutoff-mobile.css';
 
+/* GPU Acceleration for Animations */
+@layer utilities {
+  .transform-gpu {
+    transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    perspective: 1000px;
+    -webkit-perspective: 1000px;
+  }
+  
+  .will-change-transform {
+    will-change: transform;
+  }
+  
+  .will-change-opacity {
+    will-change: opacity;
+  }
+  
+  .will-change-scroll {
+    will-change: scroll-position;
+  }
+  
+  /* GPU-optimized transitions */
+  .transition-gpu {
+    transition-property: transform, opacity;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+    transform: translateZ(0);
+  }
+  
+  /* Optimize card animations */
+  .card-gpu {
+    transform: translateZ(0);
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+  }
+  
+  /* Optimize hover states */
+  .hover-gpu:hover {
+    transform: scale3d(1.05, 1.05, 1) translateZ(0);
+  }
+  
+  /* Smooth scrolling with GPU */
+  .scroll-gpu {
+    -webkit-overflow-scrolling: touch;
+    transform: translateZ(0);
+  }
+}
+
 /* Prevent horizontal overflow on mobile */
 html {
   overflow-x: hidden;
