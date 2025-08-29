@@ -1,0 +1,327 @@
+/**
+ * Mobile Performance Optimizations
+ * Ensures 60fps scrolling and animations on mobile devices
+ */
+
+/* ========================================
+   GPU Acceleration
+   ======================================== */
+
+/* Force GPU acceleration for animated elements */
+.gpu-accelerated,
+.animate-*,
+[class*="transition"],
+.transform {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000px;
+  perspective: 1000px;
+}
+
+/* Optimize will-change for known animations */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+.will-change-auto {
+  will-change: auto;
+}
+
+/* ========================================
+   Smooth Scrolling
+   ======================================== */
+
+/* iOS smooth scrolling */
+.smooth-scroll,
+.overflow-scroll,
+.overflow-y-scroll,
+.overflow-x-scroll {
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
+}
+
+/* Prevent scroll jank */
+.scroll-container {
+  contain: layout style paint;
+  transform: translateZ(0);
+}
+
+/* Hide scrollbars on mobile for cleaner look */
+@media (max-width: 768px) {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ========================================
+   Touch Optimizations
+   ======================================== */
+
+/* Disable touch delays */
+@media (max-width: 768px) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
+  
+  button,
+  a,
+  [role="button"],
+  .clickable {
+    touch-action: manipulation;
+    -ms-touch-action: manipulation;
+  }
+  
+  /* Prevent pull-to-refresh on specific elements */
+  .no-pull-refresh {
+    overscroll-behavior-y: contain;
+  }
+}
+
+/* ========================================
+   Animation Performance
+   ======================================== */
+
+/* Use CSS containment for better performance */
+.contain-layout {
+  contain: layout;
+}
+
+.contain-paint {
+  contain: paint;
+}
+
+.contain-strict {
+  contain: strict;
+}
+
+/* Optimize transform-origin for common animations */
+.transform-center {
+  transform-origin: center center;
+}
+
+.transform-top {
+  transform-origin: top center;
+}
+
+/* Reduce paint areas */
+.isolate {
+  isolation: isolate;
+}
+
+/* ========================================
+   Image Performance
+   ======================================== */
+
+@media (max-width: 768px) {
+  /* Lazy loading optimization */
+  img[loading="lazy"] {
+    content-visibility: auto;
+  }
+  
+  /* Prevent layout shift */
+  img {
+    aspect-ratio: attr(width) / attr(height);
+  }
+  
+  /* Optimize background images */
+  .bg-image-mobile {
+    background-attachment: scroll !important; /* fixed causes repaint issues */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* ========================================
+   Reduce Motion Support
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .animate-pulse {
+    animation: none !important;
+  }
+  
+  .animate-spin {
+    animation: none !important;
+  }
+  
+  .animate-bounce {
+    animation: none !important;
+  }
+}
+
+/* ========================================
+   Optimized Animations
+   ======================================== */
+
+/* Shimmer effect for loading states */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+}
+
+/* Optimized pulse */
+@keyframes pulse-optimized {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse-optimized {
+  animation: pulse-optimized 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Optimized slide animations */
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out;
+}
+
+.animate-slide-down {
+  animation: slide-down 0.3s ease-out;
+}
+
+/* ========================================
+   Performance Classes
+   ======================================== */
+
+/* Disable expensive effects on low-end devices */
+@media (max-width: 768px) and (hover: none) {
+  .shadow-xl,
+  .shadow-2xl {
+    box-shadow: var(--tw-shadow-md) !important;
+  }
+  
+  .backdrop-blur-xl,
+  .backdrop-blur-2xl {
+    backdrop-filter: blur(8px) !important;
+  }
+  
+  /* Reduce blur radius for better performance */
+  .blur-xl,
+  .blur-2xl,
+  .blur-3xl {
+    filter: blur(8px) !important;
+  }
+}
+
+/* ========================================
+   Virtual Scroll Helpers
+   ======================================== */
+
+.virtual-scroll-container {
+  contain: strict;
+  will-change: transform;
+}
+
+.virtual-scroll-item {
+  contain: layout style paint;
+}
+
+/* ========================================
+   Battery Saving Mode
+   ======================================== */
+
+@media (prefers-reduced-data: reduce) {
+  /* Disable auto-play animations */
+  .animate-* {
+    animation-play-state: paused !important;
+  }
+  
+  /* Reduce image quality */
+  img {
+    filter: contrast(0.95);
+  }
+  
+  /* Disable background videos */
+  video {
+    display: none !important;
+  }
+}
+
+/* ========================================
+   Debug Helpers (Remove in Production)
+   ======================================== */
+
+/* Uncomment to visualize repaints */
+/*
+* {
+  outline: 1px solid rgba(255, 0, 0, 0.1) !important;
+}
+
+*:hover {
+  outline: 2px solid rgba(255, 0, 0, 0.3) !important;
+}
+*/
+
+/* FPS counter positioning */
+.fps-monitor {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #0f0;
+  padding: 5px 10px;
+  font-family: monospace;
+  font-size: 12px;
+  z-index: 10000;
+  pointer-events: none;
+}

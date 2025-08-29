@@ -11,7 +11,7 @@ import logger from '../../utils/logger';
 import type { DetectedCard } from '../../types/common';
 
 // Import components
-import PullToRefresh from './PullToRefresh';
+import { PullToRefresh } from './PullToRefresh';
 import TouchGestures from './TouchGestures';
 import VoiceSearch from './VoiceSearch';
 import CardScanner from './CardScanner';
@@ -360,7 +360,6 @@ const MobileIntegration: React.FC<MobileIntegrationProps> = ({
         {enablePullToRefresh ? (
           <PullToRefresh
             onRefresh={handlePullToRefresh}
-            refreshThreshold={80}
             disabled={mobileFeatures.battery === 'aggressive'}
           >
             {children}

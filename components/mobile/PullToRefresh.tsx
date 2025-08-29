@@ -2,7 +2,7 @@ import React, { useCallback, ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePullToRefresh } from '@/hooks/usePullToRefresh';
 import { cn } from '@/utils/cn';
-import haptic from '@/utils/hapticFeedback';
+const hapticManager = typeof window !== 'undefined' ? require('@/utils/hapticFeedback').default : null;
 
 interface PullToRefreshProps {
   children: ReactNode;
@@ -24,9 +24,13 @@ export const PullToRefresh: React.FC<PullToRefreshProps> = ({
   releaseText = "Release to refresh"
 }) => {
   const handleRefresh = useCallback(async () => {
-    haptic.pullToRefresh('trigger');
+    if (hapticManager) {
+      hapticManager.pullToRefresh('trigger');
+    }
     await onRefresh();
-    haptic.notification('success');
+    if (hapticManager) {
+      hapticManager.notification('success');
+    }
   }, [onRefresh]);
 
   const { pullState, setContainer, progress } = usePullToRefresh({

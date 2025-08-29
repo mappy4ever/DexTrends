@@ -45,6 +45,12 @@
     font-size: 14px;
   }
   
+  /* Prevent vertical text on smallest screens */
+  * {
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+  }
+  
   /* Headings */
   h1, .text-4xl, .text-5xl {
     font-size: 1.75rem !important; /* 28px */
@@ -52,21 +58,29 @@
     letter-spacing: var(--tracking-tight) !important;
     word-break: break-word !important;
     hyphens: auto !important;
+    writing-mode: horizontal-tb !important;
+    transform: none !important;
   }
   
   h2, .text-3xl {
     font-size: 1.5rem !important; /* 24px */
     line-height: var(--line-tight) !important;
+    writing-mode: horizontal-tb !important;
+    transform: none !important;
   }
   
   h3, .text-2xl {
     font-size: 1.25rem !important; /* 20px */
     line-height: var(--line-snug) !important;
+    writing-mode: horizontal-tb !important;
+    transform: none !important;
   }
   
   h4, .text-xl {
     font-size: 1.125rem !important; /* 18px */
     line-height: var(--line-snug) !important;
+    writing-mode: horizontal-tb !important;
+    transform: none !important;
   }
   
   /* Body text */
@@ -147,11 +161,20 @@
   * {
     writing-mode: initial !important;
     text-orientation: initial !important;
-    /* Prevent unintended rotations */
-    transform: none !important;
   }
   
-  /* Allow specific transforms only */
+  /* Prevent unintended text rotations only for text elements */
+  h1, h2, h3, h4, h5, h6, p, span, div[class*="text"], 
+  [class*="title"], [class*="name"], [class*="label"] {
+    transform: none !important;
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+    direction: ltr !important;
+  }
+  
+  /* Allow transforms for non-text elements and animations */
+  img, svg, .motion-div, [class*="motion"], 
+  .framer-motion, .animate, .transition,
   .intentional-transform {
     transform: inherit !important;
   }
@@ -184,6 +207,17 @@
   .flex-col h1, .flex-col h2, .flex-col h3 {
     flex-shrink: 0 !important;
     width: 100% !important;
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+    transform: none !important;
+  }
+  
+  /* Fix grid container text issues */
+  .grid h1, .grid h2, .grid h3,
+  [class*="grid"] h1, [class*="grid"] h2, [class*="grid"] h3 {
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+    transform: none !important;
   }
 }
 
@@ -201,6 +235,8 @@
     width: 100% !important;
     display: block !important;
     white-space: normal !important;
+    writing-mode: horizontal-tb !important;
+    transform: none !important;
   }
   
   /* Region description */
@@ -217,6 +253,87 @@
   .icon-label {
     white-space: nowrap !important;
     display: inline-block !important;
+    writing-mode: horizontal-tb !important;
+    transform: none !important;
+  }
+  
+  /* Gym leader names and region titles */
+  .gym-leader-name,
+  .elite-four-name,
+  .champion-name,
+  .region-title,
+  .region-hero-title,
+  .region-hero-description,
+  [class*="leader"] h1,
+  [class*="leader"] h2,
+  [class*="leader"] h3,
+  [class*="gym"] h1,
+  [class*="gym"] h2,
+  [class*="gym"] h3,
+  [class*="elite"] h1,
+  [class*="elite"] h2,
+  [class*="elite"] h3,
+  [class*="champion"] h1,
+  [class*="champion"] h2,
+  [class*="champion"] h3 {
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+    transform: none !important;
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+    white-space: normal !important;
+  }
+  
+  /* Region hero specific fixes */
+  .region-hero-title {
+    font-size: 2.5rem !important;
+    line-height: 1.1 !important;
+    letter-spacing: -1px !important;
+  }
+  
+  .region-hero-description {
+    font-size: 1rem !important;
+    line-height: 1.4 !important;
+    max-width: 90% !important;
+    margin: 0 auto 2rem !important;
+  }
+  
+  /* Motion/Animation container text fixes */
+  .motion-div h1, .motion-div h2, .motion-div h3,
+  [data-framer-appear-id] h1, [data-framer-appear-id] h2, [data-framer-appear-id] h3,
+  div[style*="transform"] h1, div[style*="transform"] h2, div[style*="transform"] h3 {
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+  }
+  
+  /* Ensure text in all animated elements stays horizontal */
+  [class*="motion"] h1, [class*="motion"] h2, [class*="motion"] h3,
+  [class*="animate"] h1, [class*="animate"] h2, [class*="animate"] h3 {
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+    transform: none !important;
+  }
+  
+  /* Prevent vertical text in any rotated or transformed containers */
+  [style*="rotate"] h1, [style*="rotate"] h2, [style*="rotate"] h3,
+  [style*="rotateY"] h1, [style*="rotateY"] h2, [style*="rotateY"] h3,
+  [class*="rotate"] h1, [class*="rotate"] h2, [class*="rotate"] h3 {
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+    transform: none !important;
+  }
+  
+  /* Force all trainer/character names to display horizontally */
+  [class*="name"] {
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+    transform: none !important;
+    display: inline-block !important;
+    white-space: nowrap !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
   }
 }
 

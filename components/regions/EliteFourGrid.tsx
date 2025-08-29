@@ -687,7 +687,7 @@ const EliteFourGrid: React.FC<EliteFourGridProps> = ({ region, eliteFour, champi
                     {/* Elite Four Name at top - with gold gradient */}
                     <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-50 text-center">
                       <div className="bg-white/70 backdrop-blur-md rounded-full px-6 py-2 shadow-2xl border-2 border-white/50">
-                        <h2 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-600 to-amber-500 tracking-tight uppercase whitespace-nowrap">
+                        <h2 className="elite-four-name text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-600 to-amber-500 tracking-tight uppercase whitespace-nowrap">
                           {member.name}
                         </h2>
                       </div>
@@ -803,7 +803,7 @@ const EliteFourGrid: React.FC<EliteFourGridProps> = ({ region, eliteFour, champi
                     <div className="relative z-10 h-full flex flex-col">
                       {/* Header */}
                       <div className="text-center mb-3">
-                        <h3 className="text-2xl font-bold text-white">{member.name}</h3>
+                        <h3 className="elite-four-name text-2xl font-bold text-white">{member.name}</h3>
                         <p className="text-xs text-purple-200">Elite Four • {member.type.charAt(0).toUpperCase() + member.type.slice(1)} Master</p>
                       </div>
                       
@@ -950,7 +950,7 @@ const EliteFourGrid: React.FC<EliteFourGridProps> = ({ region, eliteFour, champi
                         {/* Champion Name and Title under portrait */}
                         <div className="mt-6 text-center">
                           <div className="bg-white/70 backdrop-blur-md rounded-full px-8 py-3 shadow-2xl border-2 border-white/50 inline-block">
-                            <h3 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-700 to-gray-600">
+                            <h3 className="champion-name text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-700 to-gray-600">
                               {champion.name}
                             </h3>
                           </div>

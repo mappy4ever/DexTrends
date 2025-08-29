@@ -29,6 +29,12 @@ import { HorizontalCardShowcase } from "../../components/tcg-set-detail/Horizont
 import { CompactStatsBar } from "../../components/tcg-set-detail/CompactStatsBar";
 import { RarityBadge } from "../../components/tcg-set-detail/RarityBadge";
 import { RarityIcon, RARITY_ORDER, getRarityRank } from "../../components/ui/RarityIcon";
+import { MobileLayout } from "../../components/mobile/MobileLayout";
+import BottomSheet from "../../components/mobile/BottomSheet";
+import { ProgressiveImage } from "../../components/ui/ProgressiveImage";
+import hapticFeedback from "../../utils/hapticFeedback";
+import MobileTCGSetDetail from "../../components/tcg-set-detail/MobileTCGSetDetail";
+import { useMobileDetection } from '@/hooks/useMobileDetection';
 
 // Interface for set statistics
 interface CardWithMarketPrice extends TCGCard {
@@ -81,8 +87,16 @@ const SetIdPage: NextPage = () => {
   // Modal state
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [modalCard, setModalCard] = useState<TCGCard | null>(null);
+  
+  // Mobile state
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [pressedCardId, setPressedCardId] = useState<string | null>(null);
+  const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(null);
 
   const setid = router.query.setid as string | undefined;
+  
+  // Mobile detection with SSR support
+  const { isMobile: isMobileView, isLoading: isMobileLoading } = useMobileDetection(460);
 
   // Helper function to determine the actual rarity based on card data
   const getActualRarity = (card: TCGCard): string => {
@@ -485,6 +499,41 @@ const SetIdPage: NextPage = () => {
     );
   }
 
+  // Mobile view - check first to ensure mobile renders when ready
+  if (isMobileView && setInfo && !isMobileLoading) {
+    return (
+      <TCGSetErrorBoundary>
+        <MobileLayout
+          hasBottomNav={false}
+          hasHeader={true}
+          headerTitle={setInfo.name}
+          backgroundColor="gradient"
+        >
+          <MobileTCGSetDetail
+            setInfo={setInfo}
+            cards={filteredCards}
+            loading={loading}
+            filterOptions={filterOptions}
+            filterRarity={filterRarity}
+            filterSupertype={filterSupertype}
+            searchQuery={searchQuery}
+            onFilterRarityChange={setFilterRarity}
+            onFilterSupertypeChange={setFilterSupertype}
+            onSearchChange={setSearchQuery}
+            onCardClick={handleCardClick}
+            getCardPrice={getCardPrice}
+            statistics={statistics}
+            totalValue={totalValue}
+            averagePrice={averagePrice}
+            uniqueRarities={uniqueRarities}
+            router={router}
+          />
+        </MobileLayout>
+      </TCGSetErrorBoundary>
+    );
+  }
+  
+  // Desktop view
   return (
     <FullBleedWrapper gradient="pokedex">
       <div className="w-full">

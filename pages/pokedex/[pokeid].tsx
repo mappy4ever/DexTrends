@@ -34,6 +34,13 @@ import { PageErrorBoundary } from "../../components/ui";
 import { CircularButton } from "../../components/ui/design-system";
 import { getPokemonTheme } from "../../utils/pokemonAnimations";
 import NavigationArrow from "../../components/pokemon/NavigationArrow";
+import { MobileLayout } from "../../components/mobile/MobileLayout";
+import { useMobileDetection } from '@/hooks/useMobileDetection';
+import BottomSheet from "../../components/mobile/BottomSheet";
+import EnhancedSwipeGestures from "../../components/mobile/EnhancedSwipeGestures";
+import { PullToRefresh } from "../../components/mobile/PullToRefresh";
+import { ProgressiveImage } from "../../components/ui/ProgressiveImage";
+import MobilePokemonDetail from "../../components/pokemon/MobilePokemonDetail";
 
 // Interface for abilities state
 interface AbilityData {
@@ -46,6 +53,9 @@ interface AbilityData {
 const PokemonDetail: NextPage = () => {
   const router = useRouter();
   const { pokeid, form } = router.query;
+  
+  // Mobile detection with SSR support
+  const { isMobile: isMobileView, isLoading: isMobileLoading } = useMobileDetection(460);
   
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
   const [species, setSpecies] = useState<PokemonSpecies | null>(null);
@@ -520,6 +530,56 @@ const PokemonDetail: NextPage = () => {
   // Get theme based on Pokemon types
   const theme = getPokemonTheme(pokemon.types);
 
+  // Mobile view - check first to ensure mobile renders when ready
+  if (isMobileView && pokemon && species && !isMobileLoading) {
+    return (
+      <PageErrorBoundary pageName="Pokemon Detail Mobile">
+        <Head>
+          <title>{pokemon.name ? pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1) : 'Pokemon'} - Pokédex | DexTrends</title>
+          <meta 
+            name="description" 
+            content={`View detailed information about ${pokemon.name || 'this Pokemon'}, including stats, abilities, evolution chain, and more.`} 
+          />
+          <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+        </Head>
+        
+        <MobileLayout
+          hasBottomNav={false}
+          hasHeader={true}
+          headerTitle={pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
+          backgroundColor="gradient"
+          fullHeight={true}
+        >
+          <MobilePokemonDetail
+            pokemon={pokemon}
+            species={species}
+            evolutionChain={evolutionChain}
+            abilities={abilities}
+            tcgCards={tcgCards}
+            pocketCards={pocketCards}
+            showShiny={showShiny}
+            onShinyToggle={() => setShowShiny(!showShiny)}
+            adjacentPokemon={adjacentPokemon}
+            router={router}
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+            selectedForm={selectedForm}
+            onFormChange={handleFormChange}
+            locationEncounters={locationAreaEncounters}
+            natureData={natureData}
+            allNatures={allNatures}
+            selectedNature={selectedNature}
+            onNatureChange={handleNatureChange}
+            selectedLevel={selectedLevel}
+            onLevelChange={setSelectedLevel}
+            competitiveTiers={competitiveTiers}
+          />
+        </MobileLayout>
+      </PageErrorBoundary>
+    );
+  }
+
+  // Desktop view
   return (
     <PageErrorBoundary pageName="Pokemon Detail">
       <Head>

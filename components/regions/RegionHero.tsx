@@ -122,7 +122,7 @@ const RegionHero: React.FC<RegionHeroProps> = ({ region, theme }) => {
         padding: '2rem'
       }}>
         {/* Region Name */}
-        <h1 style={{
+        <h1 className="region-hero-title" style={{
           fontSize: '6rem',
           fontWeight: '900',
           color: '#fff',
@@ -135,7 +135,7 @@ const RegionHero: React.FC<RegionHeroProps> = ({ region, theme }) => {
         </h1>
 
         {/* Tagline */}
-        <p style={{
+        <p className="region-hero-description" style={{
           fontSize: '1.5rem',
           color: '#e0e0e0',
           textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)',

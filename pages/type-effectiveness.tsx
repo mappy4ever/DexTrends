@@ -18,6 +18,7 @@ import {
 import logger from '../utils/logger';
 import { fetchJSON } from '../utils/unifiedFetch';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
+import { TypeEffectivenessCards } from '../components/mobile/TypeEffectivenessCards';
 
 interface TypeDetails {
   name: string;
@@ -43,6 +44,7 @@ const TypeEffectivenessPage = () => {
   const [retryCount, setRetryCount] = useState(0);
   const [isRetrying, setIsRetrying] = useState(false);
   const [viewMode, setViewMode] = useState<'calculator' | 'chart' | 'team'>('calculator');
+  const [isMobileView, setIsMobileView] = useState(false);
 
   // Glass morphism styles
   const glassStyle = createGlassStyle({});
@@ -172,6 +174,19 @@ const TypeEffectivenessPage = () => {
       }
     }
   };
+
+  // Check for mobile view
+  useEffect(() => {
+    const checkMobile = () => {
+      const width = window.innerWidth;
+      setIsMobileView(width < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Initial load on mount
   useEffect(() => {
@@ -656,15 +671,25 @@ const TypeEffectivenessPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
-            <motion.div 
-              className={`overflow-x-auto p-4 sm:p-8 rounded-2xl sm:rounded-3xl border border-white/20 dark:border-gray-700/50 ${glassStyle} type-table-container`}
-              whileHover={{ scale: 1.005 }}
-              transition={{ type: "spring", stiffness: 400, damping: 30 }}
-            >
-              <h3 className="text-xl font-bold mb-6 text-center text-gray-800 dark:text-gray-200">Complete Type Effectiveness Chart</h3>
-            
-              <div className="min-w-[800px]">
-                <table className="w-full">
+            {isMobileView ? (
+              // Mobile: Card-based interface
+              <motion.div 
+                className={`p-4 rounded-2xl border border-white/20 dark:border-gray-700/50 ${glassStyle}`}
+              >
+                <h3 className="text-xl font-bold mb-6 text-center text-gray-800 dark:text-gray-200">Type Effectiveness</h3>
+                <TypeEffectivenessCards />
+              </motion.div>
+            ) : (
+              // Desktop: Full table
+              <motion.div 
+                className={`overflow-x-auto p-4 sm:p-8 rounded-2xl sm:rounded-3xl border border-white/20 dark:border-gray-700/50 ${glassStyle} type-table-container`}
+                whileHover={{ scale: 1.005 }}
+                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              >
+                <h3 className="text-xl font-bold mb-6 text-center text-gray-800 dark:text-gray-200">Complete Type Effectiveness Chart</h3>
+              
+                <div className="min-w-[800px]">
+                  <table className="w-full">
                   <thead>
                     <tr>
                       <th className="p-1 text-xs font-bold sticky left-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
@@ -734,6 +759,7 @@ const TypeEffectivenessPage = () => {
                 </div>
               </div>
             </motion.div>
+            )}
           </motion.div>
         )}
 

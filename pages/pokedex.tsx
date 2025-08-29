@@ -23,10 +23,19 @@ import logger from "../utils/logger";
 import { motion } from 'framer-motion';
 import { staggerGrid, fadeInScale } from '../utils/staggerAnimations';
 import { SearchInput } from '../components/ui/StandardInput';
+import { VirtualPokemonGrid } from '../components/mobile/VirtualPokemonGrid';
+import { MobileLayout } from '../components/mobile/MobileLayout';
 
 // Dynamically import PullToRefresh for mobile
-const PullToRefresh = dynamic(() => import('../components/mobile/PullToRefresh'), {
-  ssr: false
+const PullToRefresh = dynamic<any>(() => import('../components/mobile/PullToRefresh').then(mod => ({ default: mod.PullToRefresh })), {
+  ssr: false,
+  loading: () => <div />
+});
+
+// Dynamically import BottomSheet for mobile filters
+const BottomSheet = dynamic<any>(() => import('../components/mobile/BottomSheet'), {
+  ssr: false,
+  loading: () => <div />
 });
 
 // Type definitions
@@ -103,6 +112,8 @@ const PokedexIndex: NextPage = () => {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const [showSortOptions, setShowSortOptions] = useState(false);
+  const [isMobileView, setIsMobileView] = useState(false);
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
   
   // New states for search-triggered filtering
   const [pendingSearchTerm, setPendingSearchTerm] = useState("");
@@ -118,6 +129,19 @@ const PokedexIndex: NextPage = () => {
   // Intersection observer ref for infinite scroll
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
+
+  // Check for mobile view
+  useEffect(() => {
+    const checkMobile = () => {
+      const width = window.innerWidth;
+      setIsMobileView(width < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Handle search with debounce
   useEffect(() => {
@@ -1014,8 +1038,219 @@ const PokedexIndex: NextPage = () => {
       </Head>
 
       <PullToRefresh onRefresh={handleRefresh}>
-        <FullBleedWrapper gradient="pokedex">
-        <div className="max-w-7xl mx-auto px-4 py-8">
+        {isMobileView ? (
+          // Mobile Layout
+          <MobileLayout>
+            <div className="mobile-pokedex">
+              {/* Mobile Header */}
+              <div className="mobile-header bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 p-4 sticky top-0 z-20">
+                <h1 className="text-2xl font-bold text-center mb-2">Pokédex</h1>
+                <p className="text-sm text-gray-600 dark:text-gray-400 text-center mb-3">
+                  {filteredPokemon.length} of {TOTAL_POKEMON} Pokémon
+                </p>
+                
+                {/* Mobile Search Bar */}
+                <div className="flex gap-2">
+                  <div className="flex-1">
+                    <SearchInput
+                      placeholder="Search..."
+                      value={pendingSearchTerm}
+                      onChange={(e) => setPendingSearchTerm(e.target.value)}
+                      onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                      icon={<FiSearch size={18} />}
+                      inputSize="sm"
+                    />
+                  </div>
+                  <button
+                    onClick={() => setShowMobileFilters(true)}
+                    className="px-4 py-2 bg-blue-500 text-white rounded-lg flex items-center gap-2"
+                  >
+                    <FiFilter size={16} />
+                    {(pendingTypes.length > 0 || pendingGeneration || pendingCategories.length > 0) && (
+                      <span className="bg-white text-blue-500 rounded-full w-5 h-5 text-xs flex items-center justify-center">
+                        {pendingTypes.length + (pendingGeneration ? 1 : 0) + pendingCategories.length}
+                      </span>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Mobile Content */}
+              <div className="mobile-content">
+                {displayedPokemon.length > 0 ? (
+                  <VirtualPokemonGrid
+                    pokemon={displayedPokemon.map(p => ({
+                      id: p.id,
+                      name: p.name,
+                      sprite: p.sprite || '/dextrendslogo.png',
+                      types: p.types.map(type => ({ type: { name: type } })),
+                    }))}
+                    onPokemonClick={(p) => router.push(`/pokedex/${p.id}`)}
+                    columns={{
+                      mobile: window.innerWidth >= 420 ? 3 : 2,
+                      tablet: 4,
+                      desktop: 6
+                    }}
+                  />
+                ) : (
+                  <div className="text-center py-20 px-4">
+                    <p className="text-xl text-gray-500 mb-2">No Pokémon found</p>
+                    <p className="text-sm text-gray-400">Try adjusting your filters</p>
+                    <button
+                      onClick={clearAllFilters}
+                      className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg"
+                    >
+                      Clear Filters
+                    </button>
+                  </div>
+                )}
+
+                {/* Mobile Load More */}
+                {displayedPokemon.length < sortedPokemon.length && (
+                  <div className="text-center py-8">
+                    <button
+                      onClick={loadMore}
+                      disabled={isLoadingMore}
+                      className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-full font-medium"
+                    >
+                      {isLoadingMore ? 'Loading...' : `Load More (${sortedPokemon.length - displayedPokemon.length} left)`}
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Mobile Filter Bottom Sheet */}
+              {showMobileFilters && (
+                <BottomSheet
+                  isOpen={showMobileFilters}
+                  onClose={() => setShowMobileFilters(false)}
+                  title="Filter Pokémon"
+                >
+                  <div className="p-4 space-y-6 max-h-[70vh] overflow-y-auto">
+                    {/* Type Filter */}
+                    <div>
+                      <h3 className="font-semibold mb-3">Type</h3>
+                      <div className="grid grid-cols-3 gap-2">
+                        {['normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy'].map(type => (
+                          <button
+                            key={type}
+                            onClick={() => toggleType(type)}
+                            className={`py-2 px-3 rounded-lg text-sm font-medium transition-all ${
+                              pendingTypes.includes(type)
+                                ? 'bg-blue-500 text-white'
+                                : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
+                            }`}
+                          >
+                            {type}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Generation Filter */}
+                    <div>
+                      <h3 className="font-semibold mb-3">Generation</h3>
+                      <div className="grid grid-cols-3 gap-2">
+                        {['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX'].map(gen => (
+                          <button
+                            key={gen}
+                            onClick={() => {
+                              setPendingGeneration(pendingGeneration === gen ? '' : gen);
+                            }}
+                            className={`py-2 px-3 rounded-lg text-sm font-medium transition-all ${
+                              pendingGeneration === gen
+                                ? 'bg-purple-500 text-white'
+                                : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
+                            }`}
+                          >
+                            Gen {gen}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Category Filter */}
+                    <div>
+                      <h3 className="font-semibold mb-3">Category</h3>
+                      <div className="grid grid-cols-2 gap-2">
+                        {[
+                          { value: 'starter' as PokemonCategory, label: 'Starter' },
+                          { value: 'legendary' as PokemonCategory, label: 'Legendary' },
+                          { value: 'mythical' as PokemonCategory, label: 'Mythical' },
+                          { value: 'ultra-beast' as PokemonCategory, label: 'Ultra Beast' },
+                          { value: 'baby' as PokemonCategory, label: 'Baby' },
+                          { value: 'fossil' as PokemonCategory, label: 'Fossil' }
+                        ].map(category => (
+                          <button
+                            key={category.value}
+                            onClick={() => toggleCategory(category.value)}
+                            className={`py-2 px-3 rounded-lg text-sm font-medium transition-all ${
+                              pendingCategories.includes(category.value)
+                                ? 'bg-green-500 text-white'
+                                : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
+                            }`}
+                          >
+                            {category.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Sort Options */}
+                    <div>
+                      <h3 className="font-semibold mb-3">Sort By</h3>
+                      <div className="grid grid-cols-2 gap-2">
+                        {[
+                          { value: 'id' as SortOption, label: 'Number' },
+                          { value: 'name' as SortOption, label: 'Name' },
+                          { value: 'type' as SortOption, label: 'Type' },
+                          { value: 'stats' as SortOption, label: 'Stats' },
+                        ].map(option => (
+                          <button
+                            key={option.value}
+                            onClick={() => handleSortChange(option.value)}
+                            className={`py-2 px-3 rounded-lg text-sm font-medium transition-all ${
+                              sortBy === option.value
+                                ? 'bg-indigo-500 text-white'
+                                : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
+                            }`}
+                          >
+                            {option.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex gap-3 pt-4 border-t">
+                      <button
+                        onClick={() => {
+                          clearAllFilters();
+                          setShowMobileFilters(false);
+                        }}
+                        className="flex-1 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium"
+                      >
+                        Clear All
+                      </button>
+                      <button
+                        onClick={() => {
+                          handleSearch();
+                          setShowMobileFilters(false);
+                        }}
+                        className="flex-1 py-3 bg-blue-500 text-white rounded-lg font-medium"
+                      >
+                        Apply Filters
+                      </button>
+                    </div>
+                  </div>
+                </BottomSheet>
+              )}
+            </div>
+          </MobileLayout>
+        ) : (
+          // Desktop Layout
+          <FullBleedWrapper gradient="pokedex">
+            <div className="max-w-7xl mx-auto px-4 py-8">
           {/* Enhanced Header with Glass Morphism */}
           <GlassContainer variant="colored" blur="lg" rounded="3xl" className="mb-8 text-center relative overflow-hidden">
             {/* Gradient Background */}
@@ -1258,43 +1493,63 @@ const PokedexIndex: NextPage = () => {
           </GlassContainer>
           </div>
 
-          {/* Enhanced Pokémon Grid with Glass Container */}
+          {/* Enhanced Pokémon Grid - Use VirtualPokemonGrid on mobile */}
           <div className="mt-8">
           {displayedPokemon.length > 0 ? (
-            <GlassContainer 
-              variant="light" 
-              blur="sm" 
-              rounded="3xl" 
-              className="mb-8 bg-gradient-to-br from-white/40 via-white/30 to-white/40 dark:from-gray-800/40 dark:via-gray-800/30 dark:to-gray-800/40"
-            >
-              <motion.div 
-                className="grid grid-cols-2 min-420:grid-cols-3 xs:grid-cols-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-3 min-420:gap-4 sm:gap-5"
-                variants={staggerGrid}
-                initial="hidden"
-                animate="show"
+            isMobileView ? (
+              // Mobile: Virtual scrolling optimized grid
+              <VirtualPokemonGrid
+                pokemon={displayedPokemon.map(p => ({
+                  id: p.id,
+                  name: p.name,
+                  sprite: p.sprite || '/dextrendslogo.png',
+                  types: p.types.map(type => ({ type: { name: type } })),
+                }))}
+                onPokemonClick={(p) => router.push(`/pokedex/${p.id}`)}
+                columns={{
+                  mobile: 2,
+                  tablet: 3,
+                  desktop: 6
+                }}
+                className="px-2"
+              />
+            ) : (
+              // Desktop: Original glass container grid
+              <GlassContainer 
+                variant="light" 
+                blur="sm" 
+                rounded="3xl" 
+                className="mb-8 bg-gradient-to-br from-white/40 via-white/30 to-white/40 dark:from-gray-800/40 dark:via-gray-800/30 dark:to-gray-800/40"
               >
-                {displayedPokemon.map((pokemon, index) => (
-                  <motion.div
-                    key={pokemon.id}
-                    variants={fadeInScale}
-                    className="pokemon-card"
-                  >
-                    <EnhancedPokemonCard
-                      pokemon={{
-                        id: pokemon.id,
-                        name: pokemon.name,
-                        sprite: pokemon.sprite || undefined,
-                        types: pokemon.types.map(type => ({ type: { name: type } })),
-                        isLegendary: pokemon.isLegendary,
-                        isMythical: pokemon.isMythical,
-                        isStarter: pokemon.isStarter
-                      }}
-                      size="md"
-                    />
-                  </motion.div>
-                ))}
-              </motion.div>
-            </GlassContainer>
+                <motion.div 
+                  className="grid grid-cols-2 min-420:grid-cols-3 xs:grid-cols-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-3 min-420:gap-4 sm:gap-5"
+                  variants={staggerGrid}
+                  initial="hidden"
+                  animate="show"
+                >
+                  {displayedPokemon.map((pokemon, index) => (
+                    <motion.div
+                      key={pokemon.id}
+                      variants={fadeInScale}
+                      className="pokemon-card"
+                    >
+                      <EnhancedPokemonCard
+                        pokemon={{
+                          id: pokemon.id,
+                          name: pokemon.name,
+                          sprite: pokemon.sprite || undefined,
+                          types: pokemon.types.map(type => ({ type: { name: type } })),
+                          isLegendary: pokemon.isLegendary,
+                          isMythical: pokemon.isMythical,
+                          isStarter: pokemon.isStarter
+                        }}
+                        size="md"
+                      />
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </GlassContainer>
+            )
           ) : (
             <div className="text-center py-20">
               <p className="text-2xl text-gray-500 dark:text-gray-400 mb-4">No Pokémon found</p>
@@ -1357,8 +1612,9 @@ const PokedexIndex: NextPage = () => {
               </p>
             </div>
           )}
-        </div>
-      </FullBleedWrapper>
+            </div>
+          </FullBleedWrapper>
+        )}
       </PullToRefresh>
 
       <style jsx>{`

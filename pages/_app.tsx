@@ -6,6 +6,7 @@ import "../styles/globals.css";
 import "../styles/mobile.css"; // Consolidated mobile styles
 import "../styles/mobile-tabs.css"; // Mobile-optimized tab navigation
 import "../styles/mobile-typography.css"; // Mobile typography fixes
+import "../styles/mobile-performance.css"; // Mobile performance optimizations
 import "../styles/desktop-tabs.css";
 // import "../styles/pokemon-animations.css"; // Consolidated with animations.css
 import "../styles/design-system.css";

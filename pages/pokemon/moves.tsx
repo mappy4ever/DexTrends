@@ -23,6 +23,12 @@ import { getPokemonIdFromName } from "../../utils/pokemonNameIdMap";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { useInView } from 'react-intersection-observer';
 import { CircularButton } from "../../components/ui/design-system";
+import { MobileLayout } from "../../components/mobile/MobileLayout";
+import { useWindowVirtualScroll } from "../../hooks/useVirtualScroll";
+import { cn } from "../../utils/cn";
+import hapticFeedback from "../../utils/hapticFeedback";
+import MobileMovesPage from "../../components/pokemon/MobileMovesPage";
+import { useMobileDetection } from '@/hooks/useMobileDetection';
 
 // Interfaces
 interface Move {
@@ -111,6 +117,9 @@ const getMoveCategories = (): Record<string, MoveCategory> => ({
 const MovesPage: NextPage = () => {
   const router = useRouter();
   const { theme } = useTheme();
+  // Mobile detection with SSR support
+  const { isMobile: isMobileView, isLoading: isMobileLoading } = useMobileDetection(460);
+  
   const [moves, setMoves] = useState<Move[]>([]);
   const [filteredMoves, setFilteredMoves] = useState<Move[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -126,6 +135,8 @@ const MovesPage: NextPage = () => {
   const [moveLearners, setMoveLearners] = useState<Record<number, PokemonLearnsetRecord[]>>({});
   const [learnersLoading, setLearnersLoading] = useState<Record<number, boolean>>({});
   const containerRef = useRef<HTMLDivElement>(null);
+  
+  // Mobile detection
 
   // Pokemon types
   const types = [
@@ -418,6 +429,41 @@ const MovesPage: NextPage = () => {
     }
   };
 
+  // Mobile view - check first to ensure mobile renders when ready  
+  if (isMobileView && !isMobileLoading) {
+    return (
+      <MobileLayout
+        hasBottomNav={false}
+        hasHeader={true}
+        headerTitle="Moves"
+        backgroundColor="gradient"
+      >
+        <MobileMovesPage
+          moves={visibleMoves}
+          loading={loading}
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+          selectedType={selectedType}
+          onTypeChange={setSelectedType}
+          selectedCategory={selectedCategory}
+          onCategoryChange={setSelectedCategory}
+          sortOption={sortOption}
+          onSortChange={(option: string) => setSortOption(option as SortOption)}
+          expandedMoveId={expandedMoveId}
+          onToggleExpand={toggleMoveExpansion}
+          moveLearners={moveLearners}
+          learnersLoading={learnersLoading}
+          getCategoryIcon={getCategoryIcon}
+          types={types}
+          visibleCount={visibleCount}
+          totalCount={filteredMoves.length}
+          onLoadMore={() => setVisibleCount(prev => Math.min(prev + 30, filteredMoves.length))}
+        />
+      </MobileLayout>
+    );
+  }
+  
+  // Desktop view
   return (
     <FullBleedWrapper gradient="pokedex">
       <Head>

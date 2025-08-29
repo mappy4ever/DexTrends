@@ -124,7 +124,7 @@ const GymLeaderGrid: React.FC<GymLeaderGridProps> = ({ region, gymLeaders, theme
                   {/* Gym Leader Name, City, and Title at very top */}
                   <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-50 text-center">
                     <div className="bg-white/70 backdrop-blur-md rounded-full px-6 py-2 shadow-2xl border-2 border-white/50">
-                      <h2 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-700 to-gray-600 tracking-tight uppercase whitespace-nowrap">
+                      <h2 className="gym-leader-name text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-700 to-gray-600 tracking-tight uppercase whitespace-nowrap">
                         {leader.name}
                       </h2>
                     </div>
@@ -302,7 +302,7 @@ const GymLeaderGrid: React.FC<GymLeaderGridProps> = ({ region, gymLeaders, theme
                           onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/images/gym-leader-placeholder.svg'; }}
                         />
                       </div>
-                      <h2 className="text-2xl font-black text-gray-700 mt-2">
+                      <h2 className="gym-leader-name text-2xl font-black text-gray-700 mt-2">
                         {leader.name}
                       </h2>
                     </div>
