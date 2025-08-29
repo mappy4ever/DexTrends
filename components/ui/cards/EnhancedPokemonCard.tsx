@@ -3,6 +3,8 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { TypeBadge } from '../TypeBadge';
 import { cn } from '@/utils/cn';
+import { motion } from 'framer-motion';
+import { cardHover } from '@/utils/staggerAnimations';
 
 interface EnhancedPokemonCardProps {
   pokemon: {
@@ -99,7 +101,7 @@ const EnhancedPokemonCard = memo(({
   return (
     <div className={cn('group relative', className)}>
       {/* Main Circular Card Container with Glass Morphism */}
-      <div 
+      <motion.div 
         className={cn(
           'relative cursor-pointer',
           'transform transition-all duration-500',
@@ -107,6 +109,10 @@ const EnhancedPokemonCard = memo(({
         )}
         onClick={handleClick}
         data-testid="pokemon-card"
+        variants={cardHover}
+        initial="rest"
+        whileHover="hover"
+        whileTap="tap"
       >
         {/* Outer Glass Circle */}
         <div className={cn(
@@ -207,7 +213,7 @@ const EnhancedPokemonCard = memo(({
             </span>
           </div>
         )}
-      </div>
+      </motion.div>
       
       {/* Pokemon Name - No Container */}
       <h3 className={cn(

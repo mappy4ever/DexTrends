@@ -20,6 +20,9 @@ import { FiSearch, FiX } from 'react-icons/fi';
 import { NextPage } from "next";
 import dynamic from 'next/dynamic';
 import logger from "../utils/logger";
+import { motion } from 'framer-motion';
+import { staggerGrid, fadeInScale } from '../utils/staggerAnimations';
+import { SearchInput } from '../components/ui/StandardInput';
 
 // Dynamically import PullToRefresh for mobile
 const PullToRefresh = dynamic(() => import('../components/mobile/PullToRefresh'), {
@@ -1055,13 +1058,13 @@ const PokedexIndex: NextPage = () => {
               <div className="flex flex-col xs:flex-row gap-3 xs:gap-4">
                 {/* Search Input */}
                 <div className="flex-1">
-                  <input
-                    type="text"
+                  <SearchInput
                     placeholder="Search by name or ID..."
                     value={pendingSearchTerm}
                     onChange={(e) => setPendingSearchTerm(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                    className="w-full px-3 xs:px-4 py-2 text-sm backdrop-blur-md bg-white/70 dark:bg-gray-800/70 border border-white/30 dark:border-gray-700/30 rounded-2xl focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 placeholder:text-gray-500 shadow-inner transition-all duration-300"
+                    icon={<FiSearch size={18} />}
+                    inputSize="md"
                   />
                 </div>
 
@@ -1264,23 +1267,33 @@ const PokedexIndex: NextPage = () => {
               rounded="3xl" 
               className="mb-8 bg-gradient-to-br from-white/40 via-white/30 to-white/40 dark:from-gray-800/40 dark:via-gray-800/30 dark:to-gray-800/40"
             >
-              <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 xs:gap-4 sm:gap-6">
-                {displayedPokemon.map((pokemon) => (
-                  <EnhancedPokemonCard
+              <motion.div 
+                className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 xs:gap-4 sm:gap-6"
+                variants={staggerGrid}
+                initial="hidden"
+                animate="show"
+              >
+                {displayedPokemon.map((pokemon, index) => (
+                  <motion.div
                     key={pokemon.id}
-                    pokemon={{
-                      id: pokemon.id,
-                      name: pokemon.name,
-                      sprite: pokemon.sprite || undefined,
-                      types: pokemon.types.map(type => ({ type: { name: type } })),
-                      isLegendary: pokemon.isLegendary,
-                      isMythical: pokemon.isMythical,
-                      isStarter: pokemon.isStarter
-                    }}
-                    size="md"
-                  />
+                    variants={fadeInScale}
+                    className="pokemon-card"
+                  >
+                    <EnhancedPokemonCard
+                      pokemon={{
+                        id: pokemon.id,
+                        name: pokemon.name,
+                        sprite: pokemon.sprite || undefined,
+                        types: pokemon.types.map(type => ({ type: { name: type } })),
+                        isLegendary: pokemon.isLegendary,
+                        isMythical: pokemon.isMythical,
+                        isStarter: pokemon.isStarter
+                      }}
+                      size="md"
+                    />
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
             </GlassContainer>
           ) : (
             <div className="text-center py-20">

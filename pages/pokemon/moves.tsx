@@ -13,6 +13,7 @@ import { TypeBadge } from "../../components/ui/TypeBadge";
 import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
 import { createGlassStyle } from "../../components/ui/design-system/glass-constants";
 import logger from "../../utils/logger";
+import { SearchInput } from '@/components/ui/StandardInput';
 import { SmartSkeleton } from "../../components/ui/SkeletonLoader";
 import { BsBook, BsSearch, BsLightning, BsShield, BsQuestionCircle, BsSortUp, BsSortDown } from "react-icons/bs";
 import { FaChevronUp } from "react-icons/fa";
@@ -492,21 +493,14 @@ const MovesPage: NextPage = () => {
             hover: 'subtle'
           })} mb-8 p-8 rounded-3xl`}>
             {/* Search Bar */}
-            <div className="relative mb-6">
-              <BsSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-400 text-lg z-10" />
-              <input
-                type="text"
+            <div className="mb-6">
+              <SearchInput
                 placeholder="Search moves..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className={`${createGlassStyle({
-                  blur: 'md',
-                  opacity: 'medium',
-                  gradient: false,
-                  border: 'medium',
-                  shadow: 'md',
-                  rounded: 'full'
-                })} w-full pl-12 pr-4 py-4 rounded-full text-gray-800 dark:text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-300 transition-all duration-300`}
+                icon={<BsSearch className="text-blue-400 text-lg" />}
+                inputSize="lg"
+                className="rounded-full"
               />
             </div>
 
