@@ -27,7 +27,7 @@ import { VirtualPokemonGrid } from '../components/mobile/VirtualPokemonGrid';
 import { MobileLayout } from '../components/mobile/MobileLayout';
 
 // Dynamically import PullToRefresh for mobile
-const PullToRefresh = dynamic<any>(() => import('../components/mobile/PullToRefresh').then(mod => ({ default: mod.PullToRefresh })), {
+const PullToRefresh = dynamic<any>(() => import('../components/mobile/PullToRefresh').then(mod => mod.PullToRefresh), {
   ssr: false,
   loading: () => <div />
 });

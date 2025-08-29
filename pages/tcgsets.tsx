@@ -123,6 +123,7 @@ const TcgSetsContent: React.FC = () => {
           setSets([]);
         }
       } finally {
+        // Always clear loading state
         setLoading(false);
         setLoadingMore(false);
       }
@@ -135,7 +136,9 @@ const TcgSetsContent: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchSets(1, false);
+    fetchSets(1, false).catch(err => {
+      console.error('Failed to fetch initial sets:', err);
+    });
   }, []);
 
 
@@ -436,7 +439,7 @@ const TcgSetsContent: React.FC = () => {
             </motion.div>
           </FadeIn>
       
-      {loading ? (
+      {loading && sets.length === 0 ? (
         <motion.div 
           className="flex flex-col items-center justify-center py-32"
           initial={{ opacity: 0 }}
@@ -447,15 +450,13 @@ const TcgSetsContent: React.FC = () => {
           <motion.div
             className="relative w-24 h-24 mb-8"
             animate={{ 
-              rotate: 360
+              rotate: [0, 360]
             }}
             transition={{
-              rotate: { 
-                duration: 1, 
-                repeat: Infinity, 
-                ease: "linear",
-                repeatType: "loop"
-              }
+              duration: 1, 
+              repeat: Infinity, 
+              ease: "linear",
+              repeatType: "loop"
             }}
           >
             {/* Pokeball SVG */}
@@ -553,7 +554,7 @@ const TcgSetsContent: React.FC = () => {
             </motion.div>
           ) : (
             <motion.div 
-              className="grid grid-cols-2 min-420:grid-cols-3 xs:grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 min-420:gap-4 sm:gap-5 md:gap-6"
+              className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 xs:gap-4 sm:gap-5 md:gap-6"
               initial="hidden"
               animate="show"
               variants={{
