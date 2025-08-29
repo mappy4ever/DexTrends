@@ -79,6 +79,18 @@ export default function CardDetailPage() {
     maxRotation: 20 // Larger rotation for detail view
   });
 
+  // Create shimmer position as a percentage string
+  const [shimmerPosition, setShimmerPosition] = useState('0%');
+  useEffect(() => {
+    if (shimmerX) {
+      const unsubscribe = shimmerX.on('change', (value) => {
+        setShimmerPosition(`${value}%`);
+      });
+      return unsubscribe;
+    }
+    return undefined;
+  }, [shimmerX]);
+
   // Check if card is favorite
   const isCardFavorite = (id: string): boolean => {
     return favorites.cards.some((card: FavoriteCard) => card.id === id);
@@ -433,7 +445,7 @@ export default function CardDetailPage() {
                             <motion.div
                               className="absolute inset-0 rounded-lg pointer-events-none"
                               initial={{ x: '-100%' }}
-                              animate={{ x: `${shimmerX.get()}%` }}
+                              animate={{ x: shimmerPosition }}
                               transition={{ duration: 0.8 }}
                             >
                               <div 

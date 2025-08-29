@@ -1,354 +1,201 @@
-import React, { useState, useRef, useCallback, useEffect, ReactNode } from 'react';
-import { useMobileUtils } from '../../utils/mobileUtils';
-import logger from '../../utils/logger';
+import React, { useCallback, ReactNode } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { usePullToRefresh } from '@/hooks/usePullToRefresh';
+import { cn } from '@/utils/cn';
+import haptic from '@/utils/hapticFeedback';
 
 interface PullToRefreshProps {
   children: ReactNode;
-  onRefresh?: () => void | Promise<void>;
-  refreshThreshold?: number;
-  className?: string;
+  onRefresh: () => Promise<void>;
   disabled?: boolean;
+  className?: string;
   refreshText?: string;
+  pullingText?: string;
   releaseText?: string;
-  refreshingText?: string;
-  showLoadingDots?: boolean;
 }
 
-interface PullState {
-  isPulling: boolean;
-  pullDistance: number;
-  isRefreshing: boolean;
-  canRefresh: boolean;
-}
-
-interface TouchState {
-  startY: number;
-  currentY: number;
-  scrollTop: number;
-  isActive: boolean;
-  hapticTriggered?: boolean;
-}
-
-const PullToRefresh: React.FC<PullToRefreshProps> = ({
+export const PullToRefresh: React.FC<PullToRefreshProps> = ({
   children,
   onRefresh,
-  refreshThreshold = 80,
-  className = '',
   disabled = false,
-  refreshText = 'Pull to refresh',
-  releaseText = 'Release to refresh',
-  refreshingText = 'Refreshing...',
-  showLoadingDots = true
+  className,
+  refreshText = "Refreshing...",
+  pullingText = "Pull to refresh",
+  releaseText = "Release to refresh"
 }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { isTouch, utils } = useMobileUtils();
-  const [pullState, setPullState] = useState<PullState>({
-    isPulling: false,
-    pullDistance: 0,
-    isRefreshing: false,
-    canRefresh: false
+  const handleRefresh = useCallback(async () => {
+    haptic.pullToRefresh('trigger');
+    await onRefresh();
+    haptic.notification('success');
+  }, [onRefresh]);
+
+  const { pullState, setContainer, progress } = usePullToRefresh({
+    onRefresh: handleRefresh,
+    disabled,
+    threshold: 80,
+    maxPull: 150
   });
+
+  // Pokeball rotation based on pull distance
+  const rotation = pullState.pullDistance * 3;
   
-  const touchState = useRef<TouchState>({
-    startY: 0,
-    currentY: 0,
-    scrollTop: 0,
-    isActive: false
-  });
-
-  const updatePullState = useCallback((distance: number, canRefresh: boolean = false) => {
-    const progress = Math.min((distance / refreshThreshold) * 100, 100);
-    
-    setPullState(prev => ({
-      ...prev,
-      pullDistance: distance,
-      canRefresh,
-      isPulling: distance > 0
-    }));
-    
-    // Provide haptic feedback at milestones
-    if (distance >= refreshThreshold && !touchState.current.hapticTriggered) {
-      utils.hapticFeedback('medium');
-      touchState.current.hapticTriggered = true;
-    } else if (distance < refreshThreshold) {
-      touchState.current.hapticTriggered = false;
-    }
-  }, [refreshThreshold, utils]);
-
-  const handleTouchStart = useCallback((e: TouchEvent) => {
-    if (disabled || !isTouch) return;
-    
-    const container = containerRef.current;
-    if (!container) return;
-    
-    const touch = e.touches[0];
-    const scrollTop = container.scrollTop;
-    
-    // Only allow pull-to-refresh when at the top
-    if (scrollTop === 0) {
-      touchState.current = {
-        startY: touch.clientY,
-        currentY: touch.clientY,
-        scrollTop,
-        isActive: true,
-        hapticTriggered: false
-      };
-    }
-  }, [disabled, isTouch]);
-
-  const handleTouchMove = useCallback((e: TouchEvent) => {
-    if (disabled || !isTouch || !touchState.current.isActive) return;
-    
-    const touch = e.touches[0];
-    const deltaY = touch.clientY - touchState.current.startY;
-    
-    // Only handle downward pulls when at the top
-    if (deltaY > 0 && containerRef.current?.scrollTop === 0) {
-      e.preventDefault();
-      
-      // Apply resistance curve for natural feel
-      const resistance = 0.5;
-      const adjustedDistance = deltaY * resistance;
-      const canRefresh = adjustedDistance >= refreshThreshold;
-      
-      updatePullState(adjustedDistance, canRefresh);
-      touchState.current.currentY = touch.clientY;
-    } else {
-      // Reset if scrolling up or not at top
-      if (pullState.isPulling) {
-        updatePullState(0, false);
-      }
-      touchState.current.isActive = false;
-    }
-  }, [disabled, isTouch, refreshThreshold, updatePullState, pullState.isPulling]);
-
-  const handleTouchEnd = useCallback(async () => {
-    if (disabled || !isTouch || !touchState.current.isActive) return;
-    
-    touchState.current.isActive = false;
-    
-    if (pullState.canRefresh && !pullState.isRefreshing) {
-      // Trigger refresh
-      setPullState(prev => ({
-        ...prev,
-        isRefreshing: true,
-        isPulling: false,
-        pullDistance: refreshThreshold
-      }));
-      
-      utils.hapticFeedback('heavy');
-      logger.debug('Pull-to-refresh triggered');
-      
-      try {
-        if (onRefresh) {
-          await onRefresh();
-        }
-      } catch (error) {
-        logger.error('Refresh failed:', error);
-      } finally {
-        // Animate back to normal state
-        setTimeout(() => {
-          setPullState({
-            isPulling: false,
-            pullDistance: 0,
-            isRefreshing: false,
-            canRefresh: false
-          });
-        }, 300);
-      }
-    } else {
-      // Animate back to normal state
-      updatePullState(0, false);
-    }
-  }, [disabled, isTouch, pullState.canRefresh, pullState.isRefreshing, onRefresh, refreshThreshold, utils, updatePullState]);
-
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container || !isTouch) return;
-
-    container.addEventListener('touchstart', handleTouchStart, { passive: true });
-    container.addEventListener('touchmove', handleTouchMove, { passive: false });
-    container.addEventListener('touchend', handleTouchEnd, { passive: true });
-
-    return () => {
-      container.removeEventListener('touchstart', handleTouchStart);
-      container.removeEventListener('touchmove', handleTouchMove);
-      container.removeEventListener('touchend', handleTouchEnd);
-    };
-  }, [handleTouchStart, handleTouchMove, handleTouchEnd, isTouch]);
-
-  const getIndicatorText = (): string => {
-    if (pullState.isRefreshing) return refreshingText;
-    if (pullState.canRefresh) return releaseText;
-    return refreshText;
-  };
-
-  const getIndicatorIcon = (): string => {
-    if (pullState.isRefreshing) return '🔄';
-    if (pullState.canRefresh) return '🚀';
-    return '⬇️';
-  };
+  // Scale animation for pokeball
+  const scale = 0.5 + (progress * 0.5);
+  
+  // Determine status text
+  const statusText = pullState.isRefreshing 
+    ? refreshText 
+    : pullState.shouldTrigger 
+      ? releaseText 
+      : pullingText;
 
   return (
-    <div
-      ref={containerRef}
-      className={`pull-to-refresh-container ${className}`}
-      style={{
-        position: 'relative',
-        height: '100%',
-        overflowY: 'auto',
-        transform: `translateY(${pullState.isPulling || pullState.isRefreshing ? pullState.pullDistance * 0.5 : 0}px)`,
-        transition: pullState.isPulling ? 'none' : 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
-      }}
+    <div 
+      ref={setContainer}
+      className={cn("relative", className)}
     >
-      {/* Pull-to-refresh indicator */}
-      <div 
-        className="pull-refresh-indicator"
-        style={{
-          position: 'absolute',
-          top: -80,
-          left: 0,
-          right: 0,
-          height: 80,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: 'linear-gradient(to bottom, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05))',
-          zIndex: 10,
-          opacity: pullState.isPulling || pullState.isRefreshing ? 1 : 0,
-          transform: `translateY(${pullState.pullDistance}px) scale(${0.8 + (pullState.pullDistance / refreshThreshold) * 0.2})`,
-          transition: pullState.isPulling ? 'none' : 'all 0.3s ease'
+      {/* Pull Indicator */}
+      <AnimatePresence>
+        {(pullState.isPulling || pullState.isRefreshing) && (
+          <motion.div
+            className="absolute top-0 left-0 right-0 flex flex-col items-center justify-end overflow-hidden pointer-events-none z-50"
+            initial={{ height: 0 }}
+            animate={{ height: pullState.pullDistance }}
+            exit={{ height: 0 }}
+            transition={{ type: "spring", stiffness: 400, damping: 30 }}
+            style={{ 
+              marginTop: -pullState.pullDistance,
+              height: pullState.pullDistance 
+            }}
+          >
+            {/* Background gradient */}
+            <div 
+              className="absolute inset-0 bg-gradient-to-b from-blue-50 to-transparent dark:from-gray-800"
+              style={{ opacity: progress * 0.3 }}
+            />
+            
+            {/* Pokeball Container */}
+            <div className="relative flex flex-col items-center justify-center pb-4">
+              {/* Pokeball SVG */}
+              <motion.svg
+                width="48"
+                height="48"
+                viewBox="0 0 100 100"
+                animate={{
+                  rotate: pullState.isRefreshing ? 360 : rotation,
+                  scale
+                }}
+                transition={
+                  pullState.isRefreshing 
+                    ? { rotate: { repeat: Infinity, duration: 1, ease: "linear" } }
+                    : { type: "spring", stiffness: 300 }
+                }
+                className={cn(
+                  "drop-shadow-lg",
+                  pullState.shouldTrigger && !pullState.isRefreshing && "drop-shadow-xl"
+                )}
+              >
+                {/* Top half (red) */}
+                <path
+                  d="M 50 10 A 40 40 0 0 1 90 50 L 10 50 A 40 40 0 0 1 50 10"
+                  fill="#ef4444"
+                  className={cn(
+                    "transition-all duration-200",
+                    pullState.shouldTrigger && "fill-red-600"
+                  )}
+                />
+                
+                {/* Bottom half (white) */}
+                <path
+                  d="M 50 90 A 40 40 0 0 1 10 50 L 90 50 A 40 40 0 0 1 50 90"
+                  fill="#ffffff"
+                  stroke="#d1d5db"
+                  strokeWidth="1"
+                />
+                
+                {/* Center line */}
+                <rect x="10" y="48" width="80" height="4" fill="#1f2937" />
+                
+                {/* Center button outer */}
+                <circle cx="50" cy="50" r="12" fill="#1f2937" />
+                
+                {/* Center button inner */}
+                <circle 
+                  cx="50" 
+                  cy="50" 
+                  r="8" 
+                  fill="#ffffff"
+                  className={cn(
+                    "transition-all duration-200",
+                    pullState.isRefreshing && "animate-pulse",
+                    pullState.shouldTrigger && !pullState.isRefreshing && "fill-blue-400"
+                  )}
+                />
+                
+                {/* Highlight effect */}
+                <ellipse
+                  cx="35"
+                  cy="25"
+                  rx="8"
+                  ry="12"
+                  fill="rgba(255,255,255,0.4)"
+                  transform="rotate(-20 35 25)"
+                />
+              </motion.svg>
+              
+              {/* Status Text */}
+              <motion.p
+                className={cn(
+                  "mt-2 text-xs font-medium",
+                  pullState.shouldTrigger 
+                    ? "text-blue-600 dark:text-blue-400" 
+                    : "text-gray-500 dark:text-gray-400"
+                )}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+              >
+                {statusText}
+              </motion.p>
+              
+              {/* Progress indicator dots */}
+              {pullState.isRefreshing && (
+                <div className="flex gap-1 mt-2">
+                  {[0, 1, 2].map((i) => (
+                    <motion.div
+                      key={i}
+                      className="w-1.5 h-1.5 bg-blue-500 rounded-full"
+                      animate={{
+                        scale: [1, 1.5, 1],
+                        opacity: [0.5, 1, 0.5]
+                      }}
+                      transition={{
+                        repeat: Infinity,
+                        duration: 1.2,
+                        delay: i * 0.2
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      
+      {/* Main content with transform */}
+      <motion.div
+        animate={{
+          y: pullState.pullDistance
+        }}
+        transition={{
+          type: "spring",
+          stiffness: 400,
+          damping: 30
         }}
       >
-        <div 
-          className={`indicator-icon ${pullState.isRefreshing ? 'spinning' : ''}`}
-          style={{
-            fontSize: '24px',
-            marginBottom: '8px',
-            transform: pullState.canRefresh && !pullState.isRefreshing ? 'rotate(180deg)' : 'rotate(0deg)',
-            transition: 'transform 0.2s ease'
-          }}
-        >
-          {getIndicatorIcon()}
-        </div>
-        
-        <div 
-          className="indicator-text"
-          style={{
-            fontSize: '14px',
-            fontWeight: '500',
-            color: '#3b82f6',
-            textAlign: 'center'
-          }}
-        >
-          {getIndicatorText()}
-        </div>
-        
-        {showLoadingDots && pullState.isRefreshing && (
-          <div className="loading-dots" style={{ marginTop: '8px' }}>
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        )}
-        
-        {/* Progress indicator */}
-        <div 
-          className="progress-bar"
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '60px',
-            height: '3px',
-            background: 'rgba(59, 130, 246, 0.2)',
-            borderRadius: '2px',
-            overflow: 'hidden'
-          }}
-        >
-          <div 
-            style={{
-              height: '100%',
-              background: '#3b82f6',
-              width: `${(pullState.pullDistance / refreshThreshold) * 100}%`,
-              transition: pullState.isPulling ? 'none' : 'width 0.3s ease',
-              borderRadius: '2px'
-            }}
-          />
-        </div>
-      </div>
-
-      {/* Content */}
-      <div style={{ minHeight: '100%' }}>
         {children}
-      </div>
-
-      <style jsx>{`
-        .pull-to-refresh-container {
-          -webkit-overflow-scrolling: touch;
-          overscroll-behavior: contain;
-        }
-        
-        .spinning {
-          animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        
-        .loading-dots {
-          display: flex;
-          gap: 4px;
-        }
-        
-        .loading-dots span {
-          width: 6px;
-          height: 6px;
-          background: #3b82f6;
-          border-radius: 50%;
-          animation: loading-dot 1.4s ease-in-out infinite both;
-        }
-        
-        .loading-dots span:nth-child(1) {
-          animation-delay: -0.32s;
-        }
-        
-        .loading-dots span:nth-child(2) {
-          animation-delay: -0.16s;
-        }
-        
-        @keyframes loading-dot {
-          0%, 80%, 100% {
-            transform: scale(0.8);
-            opacity: 0.5;
-          }
-          40% {
-            transform: scale(1);
-            opacity: 1;
-          }
-        }
-        
-        @media (prefers-reduced-motion: reduce) {
-          .spinning,
-          .loading-dots span {
-            animation: none !important;
-          }
-          
-          .pull-to-refresh-container {
-            transition: none !important;
-          }
-          
-          .pull-refresh-indicator {
-            transition: none !important;
-          }
-        }
-      `}</style>
+      </motion.div>
     </div>
   );
 };
-
-export default PullToRefresh;

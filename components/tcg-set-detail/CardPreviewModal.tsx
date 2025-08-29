@@ -60,6 +60,18 @@ export const CardPreviewModal: React.FC<CardPreviewModalProps> = ({
     maxRotation: 15
   });
   
+  // Create shimmer position as a percentage string
+  const [shimmerPosition, setShimmerPosition] = useState('0%');
+  useEffect(() => {
+    if (shimmerX) {
+      const unsubscribe = shimmerX.on('change', (value) => {
+        setShimmerPosition(`${value}%`);
+      });
+      return unsubscribe;
+    }
+    return undefined;
+  }, [shimmerX]);
+  
   // Reset state when card changes
   useEffect(() => {
     if (card) {
@@ -212,7 +224,7 @@ export const CardPreviewModal: React.FC<CardPreviewModalProps> = ({
                               <motion.div
                                 className="absolute inset-0 rounded-lg pointer-events-none"
                                 initial={{ x: '-100%' }}
-                                animate={{ x: `${shimmerX.get()}%` }}
+                                animate={{ x: shimmerPosition }}
                                 transition={{ duration: 0.6 }}
                               >
                                 <div 
