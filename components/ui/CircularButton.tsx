@@ -5,6 +5,7 @@ import {
   components,
   combineClasses 
 } from '../../styles/design-tokens';
+import { hapticFeedback } from '../../utils/mobileOptimizations';
 
 export interface CircularButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
@@ -38,10 +39,18 @@ const CircularButton = forwardRef<HTMLButtonElement, CircularButtonProps>(
       fullWidth = false,
       disabled,
       children,
+      onClick,
       ...props
     },
     ref
   ) => {
+    // Add haptic feedback on click
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+      if (!disabled && !isLoading) {
+        hapticFeedback.light();
+        onClick?.(e);
+      }
+    };
     // Size styles ensuring minimum 44px touch target
     const sizeStyles = {
       sm: 'px-4 py-2 text-sm min-h-[44px]',
@@ -141,6 +150,7 @@ const CircularButton = forwardRef<HTMLButtonElement, CircularButtonProps>(
         ref={ref}
         className={buttonStyles}
         disabled={disabled || isLoading}
+        onClick={handleClick}
         {...props}
       >
         {/* Content wrapper for proper spacing */}

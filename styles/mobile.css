@@ -1,7 +1,70 @@
 /**
  * Consolidated Mobile Styles for DexTrends
  * Mobile-first approach with improved touch targets and responsiveness
+ * Phase 4: Enhanced touch interactions and haptic feedback
  */
+
+/* ========================================
+   Touch Optimization & Haptic Feedback
+   ======================================== */
+
+/* Remove tap highlight on all touchable elements */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Fast tap response */
+button, a, input, select, textarea, [role="button"], .clickable {
+  touch-action: manipulation;
+}
+
+/* Minimum touch targets (44x44px) */
+@media (pointer: coarse) {
+  button, a, .touch-target {
+    min-width: 44px;
+    min-height: 44px;
+    position: relative;
+  }
+  
+  /* Expand touch area without affecting layout */
+  button::before, a::before, .touch-target::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    z-index: 0;
+  }
+  
+  /* Ensure content is above the expanded touch area */
+  button > *, a > *, .touch-target > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+/* Active states for touch feedback */
+@media (hover: none) {
+  button:active, a:active, .touch-target:active {
+    transform: scale(0.95);
+    opacity: 0.9;
+  }
+}
+
+/* Smooth momentum scrolling */
+.scroll-container, .overflow-y-auto, .overflow-y-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Disable text selection on interactive elements */
+button, a, .no-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
 
 /* ========================================
    Critical Mobile Fixes - NO CONTENT CUTOFF
