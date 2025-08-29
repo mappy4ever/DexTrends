@@ -147,7 +147,7 @@ const EnhancedPokemonCard = memo(({
                   src={pokemon.sprite} 
                   alt={pokemon.name}
                   fill
-                  className="object-contain p-1 drop-shadow-lg"
+                  className="object-contain p-1 drop-shadow-lg transition-transform duration-300 ease-out group-hover:scale-125 group-hover:drop-shadow-2xl"
                   sizes={`${imageSizes[size]}px`}
                 />
               ) : (
@@ -179,20 +179,18 @@ const EnhancedPokemonCard = memo(({
           )} />
         </div>
         
-        {/* Floating Glass Number Badge - Overlapping Top Right Corner */}
+        {/* Pokédex Number - Top center inside circle */}
         <div className={cn(
-          'absolute top-2 right-4 z-20',
-          'backdrop-blur-md bg-gradient-to-r from-white/95 to-white/85',
-          'dark:from-gray-800/95 dark:to-gray-700/85',
-          'rounded-full px-3 py-1.5',
-          'border border-white/60 dark:border-gray-600/60',
-          'shadow-lg hover:shadow-xl',
+          'absolute top-2 z-20',
+          'text-xs font-mono font-bold',
+          'text-gray-700/80 dark:text-gray-300/80',
+          'tracking-wider',
           'transform transition-all duration-300',
-          'group-hover:scale-110 group-hover:rotate-12'
-        )}>
-          <span className="text-sm font-mono font-bold bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-200 dark:to-white bg-clip-text text-transparent">
-            #{formatNumber(pokemon.id)}
-          </span>
+          'group-hover:text-gray-800 dark:group-hover:text-gray-200',
+          'group-hover:scale-110'
+        )}
+        style={{ left: '54%', transform: 'translateX(-50%)' }}>
+          #{formatNumber(pokemon.id)}
         </div>
         
         {/* Special Badge (Legendary/Mythical/Starter) */}
