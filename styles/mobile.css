@@ -70,45 +70,58 @@ button, a, .no-select {
    Critical Mobile Fixes - NO CONTENT CUTOFF
    ======================================== */
 
-/* GLOBAL RULE: Never cut off any content on mobile */
+/* Smart Mobile Container Management */
 @media (max-width: 768px) {
-  /* ULTRA AGGRESSIVE: All containers must show full content */
-  * {
-    overflow: visible !important;
-    overflow: initial !important;
-    min-height: auto !important;
-    clip: unset !important;
-    clip-path: none !important;
-  }
-  
-  /* Specific override for move containers */
-  [class*="rounded"][class*="bg-gray"],
-  [class*="rounded"][class*="dark:bg-gray"],
-  .rounded-lg.bg-gray-50,
-  .rounded-lg.dark\:bg-gray-800 {
-    overflow: visible !important;
-    min-height: auto !important;
-  }
-  
-  /* Only allow scroll on body and specific scroll containers */
+  /* Prevent horizontal overflow at root level */
   body, html {
     overflow-x: hidden !important;
     overflow-y: auto !important;
+    max-width: 100vw !important;
   }
   
-  /* Specific containers that need scroll */
+  /* Main content containers should respect boundaries */
+  main, .main-content, [role="main"] {
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+  }
+  
+  /* Cards and grid items should contain their content */
+  .grid > *, 
+  [class*="card"],
+  [class*="Card"] {
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+  
+  /* Allow specific scrollable areas */
   .overflow-auto,
   .overflow-y-auto,
   .overflow-x-auto,
-  [class*="scroll"] {
+  .scroll-container {
     overflow: auto !important;
+    -webkit-overflow-scrolling: touch;
   }
   
-  /* Modal overlays can have scroll */
+  /* Horizontal scroll for wide content */
+  .overflow-x-scroll,
+  .horizontal-scroll {
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Modal overlays */
   .modal-content,
   [role="dialog"] {
     overflow-y: auto !important;
     max-height: 90vh !important;
+    max-width: 95vw !important;
+  }
+  
+  /* Prevent text from breaking containers */
+  p, span, div {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
   }
 }
 
@@ -150,7 +163,9 @@ button, a, .no-select {
 :root {
   --mobile-header-height: 5rem; /* 80px - increased for better mobile UX */
   --mobile-nav-height: 4rem;
-  --mobile-touch-target: 3rem; /* 48px minimum touch target */
+  --mobile-touch-target: 48px; /* 48px minimum touch target */
+  --mobile-padding: 16px;
+  --mobile-gap: 12px;
 }
 
 /* Safe area utilities */
@@ -195,9 +210,15 @@ button, a, .no-select {
    Mobile Touch Optimization
    ======================================== */
 @media (max-width: 768px) {
-  /* Minimum touch targets */
-  button, a, .clickable {
-    min-height: var(--mobile-touch-target);
+  /* Enhanced 48px minimum touch targets */
+  button, a, .clickable, 
+  .touch-target,
+  [role="button"],
+  input[type="button"],
+  input[type="submit"] {
+    min-height: 48px !important;
+    min-width: 48px !important;
+    padding: 12px !important;
     min-width: var(--mobile-touch-target);
     touch-action: manipulation;
   }

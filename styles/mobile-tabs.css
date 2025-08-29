@@ -1,0 +1,267 @@
+/**
+ * Mobile-Optimized Tab Navigation Styles
+ * Fixes visibility, contrast, and touch target issues
+ */
+
+/* ========================================
+   Tab Navigation - Mobile First
+   ======================================== */
+
+/* Base tab container styles */
+@media (max-width: 768px) {
+  /* Tab header container */
+  .tab-header-mobile {
+    background: rgba(255, 255, 255, 0.98) !important;
+    backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+  }
+  
+  /* Dark mode tab header */
+  .dark .tab-header-mobile {
+    background: rgba(17, 24, 39, 0.98) !important;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Tab scroll container */
+  .tab-scroll-container {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    padding: 12px 16px;
+    gap: 8px;
+    
+    /* Hide scrollbar but keep functionality */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .tab-scroll-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Individual tab buttons */
+  .tab-button-mobile {
+    /* Minimum touch target */
+    min-height: 48px !important;
+    min-width: auto;
+    padding: 12px 20px !important;
+    
+    /* Visual styling */
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+    scroll-snap-align: center;
+    
+    /* Touch feedback */
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    user-select: none;
+    
+    /* Default state - high contrast */
+    background: rgba(255, 255, 255, 1);
+    color: #374151;
+    border: 2px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Dark mode inactive tab */
+  .dark .tab-button-mobile {
+    background: rgba(31, 41, 55, 1);
+    color: #d1d5db;
+    border: 2px solid #4b5563;
+  }
+  
+  /* Active tab state - maximum contrast */
+  .tab-button-mobile.active {
+    background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+    color: white !important;
+    border: 2px solid transparent !important;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4) !important;
+    transform: scale(1.05);
+  }
+  
+  /* Touch states */
+  .tab-button-mobile:active {
+    transform: scale(0.95);
+  }
+  
+  /* Icon + text layout */
+  .tab-button-mobile > span:first-child {
+    font-size: 18px;
+    margin-right: 8px;
+  }
+  
+  /* Scroll indicators */
+  .tab-scroll-indicator {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+    pointer-events: auto;
+  }
+  
+  .tab-scroll-indicator.left {
+    left: 8px;
+    background: linear-gradient(90deg, rgba(255,255,255,1) 70%, rgba(255,255,255,0));
+  }
+  
+  .tab-scroll-indicator.right {
+    right: 8px;
+    background: linear-gradient(-90deg, rgba(255,255,255,1) 70%, rgba(255,255,255,0));
+  }
+}
+
+/* ========================================
+   Enhanced Tab Styles for Specific Breakpoints
+   ======================================== */
+
+/* Small phones (320px - 374px) */
+@media (min-width: 320px) and (max-width: 374px) {
+  .tab-button-mobile {
+    padding: 10px 16px !important;
+    font-size: 13px;
+  }
+  
+  .tab-button-mobile > span:first-child {
+    font-size: 16px;
+  }
+}
+
+/* Medium phones (375px - 419px) */
+@media (min-width: 375px) and (max-width: 419px) {
+  .tab-button-mobile {
+    padding: 11px 18px !important;
+    font-size: 14px;
+  }
+}
+
+/* Large phones (420px - 767px) */
+@media (min-width: 420px) and (max-width: 767px) {
+  .tab-button-mobile {
+    padding: 12px 22px !important;
+    font-size: 15px;
+  }
+}
+
+/* ========================================
+   Tab Content Animations
+   ======================================== */
+
+.tab-content-mobile {
+  animation: tabFadeIn 0.3s ease-out;
+}
+
+@keyframes tabFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+   Accessibility Improvements
+   ======================================== */
+
+/* Focus visible styles */
+.tab-button-mobile:focus-visible {
+  outline: 3px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .tab-button-mobile {
+    border-width: 3px;
+  }
+  
+  .tab-button-mobile.active {
+    background: #1e40af !important;
+    outline: 3px solid white;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .tab-button-mobile,
+  .tab-content-mobile {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* ========================================
+   Tab Badge Enhancements
+   ======================================== */
+
+.tab-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  background: #ef4444;
+  color: white;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+}
+
+/* ========================================
+   Pokemon-Specific Tab Themes
+   ======================================== */
+
+.tab-type-fire .tab-button-mobile.active {
+  background: linear-gradient(135deg, #f97316, #dc2626) !important;
+}
+
+.tab-type-water .tab-button-mobile.active {
+  background: linear-gradient(135deg, #06b6d4, #0284c7) !important;
+}
+
+.tab-type-grass .tab-button-mobile.active {
+  background: linear-gradient(135deg, #22c55e, #16a34a) !important;
+}
+
+.tab-type-electric .tab-button-mobile.active {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b) !important;
+  color: #1f2937 !important;
+}
+
+.tab-type-psychic .tab-button-mobile.active {
+  background: linear-gradient(135deg, #ec4899, #db2777) !important;
+}
+
+.tab-type-dark .tab-button-mobile.active {
+  background: linear-gradient(135deg, #4b5563, #1f2937) !important;
+}
+
+.tab-type-dragon .tab-button-mobile.active {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed) !important;
+}

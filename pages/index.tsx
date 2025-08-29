@@ -33,15 +33,15 @@ const HomePage: NextPage = () => {
               className="text-center"
             >
               {/* Official DexTrends Logo - Hero Size */}
-              <div className="mb-12 flex justify-center">
+              <div className="mb-6 flex justify-center">
                 <HeroLogo />
               </div>
 
               {/* Tagline */}
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-4">
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-3">
                 Everything Pokémon in One Place
               </h1>
-              <p className="text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
+              <p className="text-lg text-gray-600 dark:text-gray-400 mb-6 max-w-2xl mx-auto">
                 Search across Pokédex, TCG cards, moves, items, and more with our unified search
               </p>
 

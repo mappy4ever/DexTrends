@@ -4,6 +4,8 @@ import Head from "next/head";
 import { useRouter, NextRouter } from "next/router";
 import "../styles/globals.css";
 import "../styles/mobile.css"; // Consolidated mobile styles
+import "../styles/mobile-tabs.css"; // Mobile-optimized tab navigation
+import "../styles/mobile-typography.css"; // Mobile typography fixes
 import "../styles/desktop-tabs.css";
 // import "../styles/pokemon-animations.css"; // Consolidated with animations.css
 import "../styles/design-system.css";

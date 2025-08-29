@@ -227,7 +227,7 @@ const LegendaryPokemonShowcase: React.FC<LegendaryPokemonShowcaseProps> = ({
             <h3 className="text-lg font-bold mb-4 text-center text-purple-700 dark:text-purple-300">
               Legendary Groups
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div className="grid grid-cols-1 min-420:grid-cols-2 md:grid-cols-2 gap-4 text-sm">
               <div className="flex items-center gap-3">
                 <BsStarFill className="text-yellow-500" />
                 <span className="text-gray-700 dark:text-gray-300">

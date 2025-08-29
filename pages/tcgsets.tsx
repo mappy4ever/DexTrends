@@ -553,7 +553,7 @@ const TcgSetsContent: React.FC = () => {
             </motion.div>
           ) : (
             <motion.div 
-              className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 xs:gap-4 sm:gap-6 md:gap-8 max-w-full overflow-hidden"
+              className="grid grid-cols-2 min-420:grid-cols-3 xs:grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 min-420:gap-4 sm:gap-5 md:gap-6"
               initial="hidden"
               animate="show"
               variants={{

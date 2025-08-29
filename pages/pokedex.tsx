@@ -948,7 +948,7 @@ const PokedexIndex: NextPage = () => {
           
           {/* Pokemon Grid Skeleton */}
           <div className="max-w-7xl mx-auto px-6">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+            <div className="grid grid-cols-2 min-420:grid-cols-3 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-3 min-420:gap-4">
               {Array.from({ length: INITIAL_LOAD }).map((_, index) => (
                 <PokemonCardSkeleton 
                   key={index} 
@@ -1268,7 +1268,7 @@ const PokedexIndex: NextPage = () => {
               className="mb-8 bg-gradient-to-br from-white/40 via-white/30 to-white/40 dark:from-gray-800/40 dark:via-gray-800/30 dark:to-gray-800/40"
             >
               <motion.div 
-                className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 xs:gap-4 sm:gap-6"
+                className="grid grid-cols-2 min-420:grid-cols-3 xs:grid-cols-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-3 min-420:gap-4 sm:gap-5"
                 variants={staggerGrid}
                 initial="hidden"
                 animate="show"

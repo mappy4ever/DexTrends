@@ -22,8 +22,10 @@ const config = {
   ],
   theme: {
     screens: {
-      'xs': '460px',  // Support up to 460px (440px common)
-      'sm': '640px',
+      'min-420': '420px',  // 3 columns starts here
+      'min-430': '430px',  // Alternative 3-4 column breakpoint
+      'xs': '460px',       // 3-4 columns stable
+      'sm': '640px',       // 4+ columns
       'md': '768px',
       'lg': '1024px',
       'xl': '1280px',

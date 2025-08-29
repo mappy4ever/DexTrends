@@ -5,22 +5,22 @@ import Image from "next/image";
 import Head from "next/head";
 import dynamic from "next/dynamic";
 import { FaCrown } from "react-icons/fa";
-import { FadeIn, SlideUp } from "../components/ui/animations/animations";
-import { TypeBadge } from "../components/ui/TypeBadge";
-import { TypeFilter } from "../components/ui/forms/TypeFilter";
-import { createGlassStyle, GradientButton, CircularButton } from '../components/ui/design-system';
-import { UnifiedSearchBar, EmptyStateGlass, LoadingStateGlass } from '../components/ui/glass-components';
+import { FadeIn, SlideUp } from "../../components/ui/animations/animations";
+import { TypeBadge } from "../../components/ui/TypeBadge";
+import { TypeFilter } from "../../components/ui/forms/TypeFilter";
+import { createGlassStyle, GradientButton, CircularButton } from '../../components/ui/design-system';
+import { UnifiedSearchBar, EmptyStateGlass, LoadingStateGlass } from '../../components/ui/glass-components';
 import { motion } from "framer-motion";
-import PocketCardList from "../components/PocketCardList";
-import { fetchPocketData } from "../utils/pocketData";
-import BackToTop from "../components/ui/SimpleBackToTop";
-import FullBleedWrapper from "../components/ui/FullBleedWrapper";
-import { PocketCard } from "../types/api/pocket-cards";
+import PocketCardList from "../../components/PocketCardList";
+import { fetchPocketData } from "../../utils/pocketData";
+import BackToTop from "../../components/ui/SimpleBackToTop";
+import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
+import { PocketCard } from "../../types/api/pocket-cards";
 import { NextPage } from "next";
 
 // Dynamic imports for components that might cause SSR issues
-import { CardGridSkeleton } from "../components/ui/SkeletonLoader";
-const PokemonEmptyState = dynamic(() => import("../components/ui/loading/PokemonEmptyState"), { ssr: false });
+import { CardGridSkeleton } from "../../components/ui/SkeletonLoader";
+const PokemonEmptyState = dynamic(() => import("../../components/ui/loading/PokemonEmptyState"), { ssr: false });
 
 // Extended PocketCard interface with additional properties from the actual data
 interface ExtendedPocketCard extends PocketCard {

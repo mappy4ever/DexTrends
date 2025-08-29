@@ -68,7 +68,7 @@ export const useTouchOptimized = (
     preventScroll?: boolean;
   }
 ) => {
-  const longPressTimer = useRef<NodeJS.Timeout>();
+  const longPressTimer = useRef<NodeJS.Timeout | undefined>(undefined);
   const touchStartPos = useRef({ x: 0, y: 0 });
   const isTouchMove = useRef(false);
   

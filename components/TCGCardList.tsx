@@ -558,7 +558,7 @@ function TCGCardListInner({
       </div>
     )}
     
-    <div className={gridClassName || "grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 xs:gap-3 sm:gap-4"}>
+    <div className={gridClassName || "grid grid-cols-2 min-420:grid-cols-3 xs:grid-cols-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2 min-420:gap-3 sm:gap-4"}>
       {displayedCards.map((card) => {
         return (
           <TCGCardItem

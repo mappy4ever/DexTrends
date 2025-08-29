@@ -110,7 +110,7 @@ const EnhancedPokemonCard = memo(({
         )}
         onClick={handleClick}
         data-testid="pokemon-card"
-        variants={cardHover}
+        variants={cardHover as any}
         initial="rest"
         whileHover="hover"
         whileTap="tap"

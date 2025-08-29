@@ -412,9 +412,9 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
               color-mix(in srgb, ${typeColors.animationAccent} 10%, #f9fafb)
             )`
       }}>
-      {/* Tab Header with Circular Design */}
-      <div className="backdrop-blur-xl bg-white/90 dark:bg-gray-900/90 border-b border-gray-200 dark:border-gray-700 relative z-50 shadow-md">
-        <div className="flex overflow-x-auto scrollbar-hide px-4 py-4 gap-3">
+      {/* Tab Header with Mobile-Optimized Design */}
+      <div className="tab-header-mobile backdrop-blur-xl bg-white/95 dark:bg-gray-900/95 border-b border-gray-200 dark:border-gray-700 relative z-50 shadow-md">
+        <div className="tab-scroll-container flex overflow-x-auto scrollbar-hide px-4 py-3 gap-2 md:gap-3">
           {POKEMON_TABS.map((tab) => (
             <button
               key={tab.id}
@@ -427,15 +427,17 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
               }}
               data-testid={tab.id === 'moves' ? 'moves-tab' : `tab-${tab.id}`}
               className={cn(
-                "px-5 py-2.5 font-medium text-sm transition-all duration-300 whitespace-nowrap flex items-center gap-2 rounded-full",
-                "transform hover:scale-[1.02] active:scale-[0.98]",
+                "tab-button-mobile",
+                "px-4 py-2.5 md:px-5 md:py-2.5 font-medium text-sm transition-all duration-300 whitespace-nowrap flex items-center gap-2 rounded-full",
+                "transform hover:scale-[1.02] active:scale-[0.98] min-h-[48px]",
                 activeTab === tab.id
-                  ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg"
-                  : "bg-white/10 text-gray-600 dark:text-gray-300 border border-gray-200/50 dark:border-gray-600/50 hover:bg-white/20"
+                  ? "active bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg border-transparent"
+                  : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
               )}
             >
               <span className="text-base">{tab.icon}</span>
-              <span>{tab.label}</span>
+              <span className="hidden min-[420px]:inline">{tab.label}</span>
+              <span className="min-[420px]:hidden">{tab.label.slice(0, 3)}</span>
             </button>
           ))}
         </div>

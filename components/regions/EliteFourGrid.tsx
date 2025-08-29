@@ -634,7 +634,7 @@ const EliteFourGrid: React.FC<EliteFourGridProps> = ({ region, eliteFour, champi
       `}</style>
       
       {/* Elite Four Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 min-420:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 min-420:gap-6 md:gap-8">
         {eliteFour.map((member, index) => {
           const memberData = eliteFourData[member.name];
           const weaknesses = (typeEffectiveness as any)[member.type]?.weakTo || [];

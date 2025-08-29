@@ -90,16 +90,22 @@ export const HeroLogo: React.FC<{ className?: string }> = ({ className }) => {
   );
 };
 
-// Navbar Logo - Much bigger for maximum visibility
+// Navbar Logo - Uses horizontal line version for better navbar fit
 export const NavbarLogo: React.FC<{ className?: string }> = ({ className }) => {
   return (
-    <DexTrendsLogo 
-      variant="horizontal" 
-      size="lg" 
-      withLink 
-      className={cn('h-12 md:h-16', className)}
-      priority
-    />
+    <Link href="/" className="inline-block">
+      <Image
+        src="/images/DT_Line.png"
+        alt="DexTrends - Your Ultimate Pokemon Companion"
+        width={320}
+        height={80}
+        className={cn(
+          'h-14 md:h-16 lg:h-20 w-auto transition-all duration-300 hover:scale-110',
+          className
+        )}
+        priority
+      />
+    </Link>
   );
 };
 

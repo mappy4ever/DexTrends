@@ -225,7 +225,7 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
         </div>
 
         {/* Starter Selection Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 mb-10">
+        <div className="grid grid-cols-1 min-420:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3 min-420:gap-4 md:gap-6 mb-10">
           {starters.map((starter, index) => {
             const chain = evolutionData[index];
             const isSelected = selectedStarter === index;
@@ -368,7 +368,7 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
             </div>
 
             {/* Evolution Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+            <div className="grid grid-cols-1 min-420:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3 min-420:gap-4">
               {/* Stage 1 */}
               <EvolutionCard
                 pokemon={currentChain.stage1}
