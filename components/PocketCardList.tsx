@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import Modal from "./ui/modals/Modal";
 import UnifiedCard from "./ui/cards/UnifiedCard";
+import type { PocketRarity } from "@/types/api/pocket-cards";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import { InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { SmartSkeleton } from "./ui/SkeletonLoader";
@@ -62,13 +63,13 @@ const PocketCard = memo<PocketCardProps>(({
   // Get rarity display
   const getRarityDisplay = (rarity?: string) => {
     if (!rarity) return null;
+    // Don't display symbol for Crown Rare as we'll use FaCrown icon
+    if (rarity === '👑' || rarity === '♕') return null;
     // Convert outline stars (☆) to filled stars (★) for better visual impact
     // Convert outline diamonds (◊) to filled diamonds (♦) with grey color
-    // and ensure we use consistent crown emoji
     let displayRarity = rarity
       .replace(/☆/g, '★')  // Replace white/outline stars with black/filled stars
-      .replace(/◊/g, '♦')  // Replace outline diamonds with filled diamonds
-      .replace(/♕/g, '👑'); // Replace chess queen with crown emoji for consistency
+      .replace(/◊/g, '♦');  // Replace outline diamonds with filled diamonds
     return displayRarity;
   };
   
@@ -95,10 +96,11 @@ const PocketCard = memo<PocketCardProps>(({
   // Check if rarity should have gold/shiny text
   const isGoldRarity = (rarity?: string) => {
     if (!rarity) return false;
-    // Always apply gold styling to star and crown rarities
+    // Crown Rare uses FaCrown icon, not gold text
+    if (rarity === '👑' || rarity === '♕') return false;
+    // Always apply gold styling to star rarities
     // Check for both black star (★) and white star (☆) and other star variations
     return rarity.includes('★') || rarity.includes('☆') || rarity.includes('⭐') || 
-           rarity === '👑' || rarity === '♕' || rarity === '⚜️' ||
            rarity === '☆☆' || rarity === '☆☆☆';
   };
   
@@ -131,14 +133,15 @@ const PocketCard = memo<PocketCardProps>(({
       <div
         className={`
           backdrop-blur-xl bg-white/90 dark:bg-gray-800/90
-          rounded-3xl p-3
+          rounded-3xl p-2 sm:p-3
           border-2 border-gray-300/50 dark:border-gray-600/50
           shadow-lg hover:shadow-2xl
           transform transition-all duration-300
           hover:scale-[1.03] hover:-translate-y-1
           cursor-pointer
           drop-shadow-md
-          relative overflow-hidden
+          relative overflow-visible
+          min-h-[240px]
           ${cardClassName}
         `}
         onClick={() => onCardClick?.(card)}
@@ -149,17 +152,19 @@ const PocketCard = memo<PocketCardProps>(({
         )}
         
         {/* Card content with relative positioning to be above gradient */}
-        <div className="relative z-10">
+        <div className="relative z-10 flex flex-col h-full">
         {/* Compact Image Container */}
-        <div className="relative rounded-2xl overflow-hidden mb-2 bg-gradient-to-br from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-800">
-          <img
-            src={card.image || '/back-card.png'}
-            alt={card.name}
-            width={imageWidth}
-            height={imageHeight}
-            className="w-full h-auto object-contain"
-            loading="lazy"
-          />
+        <div className="relative rounded-2xl overflow-hidden mb-2 bg-gradient-to-br from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-800 flex-shrink-0">
+          <div className="aspect-[110/154] relative">
+            <img
+              src={card.image || '/back-card.png'}
+              alt={card.name}
+              width={imageWidth}
+              height={imageHeight}
+              className="absolute inset-0 w-full h-full object-contain"
+              loading="lazy"
+            />
+          </div>
           
           
           {/* Magnify Button - Small and Subtle */}
@@ -186,49 +191,48 @@ const PocketCard = memo<PocketCardProps>(({
           )}
         </div>
         
-        {/* Simple Info Row */}
-        <div className="flex items-center justify-between px-1">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300 truncate flex-1">
-            {card.name}
-          </span>
-          <div className="flex gap-1 flex-shrink-0 items-center">
-            {/* Rarity Display - No pill for gold rarities */}
-            {showRarity && getRarityDisplay(card.rarity) && (
-              isGoldRarity(card.rarity) ? (
-                // Gold rarities - check if it's a crown or star
-                (card.rarity === 'Crown Rare') ? (
-                  // Crown - use React icon
-                  <FaCrown className="text-yellow-500" size={14} />
-                ) : (
-                  // Stars - just the symbol with gold gradient fill
-                  <span className="text-xs font-black bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500 bg-clip-text text-transparent">
-                    {getRarityDisplay(card.rarity)}
-                  </span>
-                )
-              ) : (
-                // Non-gold rarities - keep the pill style
-                <span className={`
-                  text-xs px-2 py-0.5 rounded-full
-                  backdrop-blur-sm
-                  font-bold
-                  border border-white/30
-                  bg-gradient-to-r ${getRarityPillColor(card.rarity)}
-                `}>
-                  <span className="text-gray-500">
-                    {getRarityDisplay(card.rarity)}
-                  </span>
-                </span>
-              )
-            )}
-            {/* Set Badge */}
+        {/* Card Info Section - Two Rows */}
+        <div className="space-y-1 flex-grow flex flex-col justify-end pb-1">
+          {/* First Row - Card Name (Centered) */}
+          <div className="px-1 text-center">
+            <span className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 line-clamp-2 break-words">
+              {card.name}
+            </span>
+          </div>
+          
+          {/* Second Row - Set Info and Rarity (Switched) */}
+          <div className="flex items-center justify-between px-1 gap-1 flex-shrink-0">
+            {/* Set Badge with Card Number (Now on Left) */}
             <span className="
-              text-xs px-2 py-0.5 rounded-full
+              text-[10px] sm:text-xs px-1 sm:px-2 py-0.5 rounded-full
               bg-gray-100/70 dark:bg-gray-700/70
               text-gray-600 dark:text-gray-400
               font-medium
+              truncate max-w-[60%]
             ">
-              {setId}
+              {setId} #{cardNumber}
             </span>
+            
+            {/* Rarity Display (Now on Right) */}
+            {showRarity && card.rarity && (
+              <div className="flex-shrink-0">
+                {/* Check for Crown Rare specifically */}
+                {(card.rarity === ('👑' as PocketRarity) || card.rarity === ('♕' as PocketRarity)) ? (
+                  // Crown - Smaller size, raised higher
+                  <FaCrown className="text-amber-500 -mt-1" size={16} />
+                ) : isGoldRarity(card.rarity) ? (
+                  // Other gold rarities (stars) - same color as crown
+                  <span className="font-bold text-amber-500 text-sm">
+                    {getRarityDisplay(card.rarity)}
+                  </span>
+                ) : (
+                  // Non-gold rarities (diamonds) - all use same purple-pink palette
+                  <span className="text-sm font-bold bg-gradient-to-r from-purple-300 via-pink-300 to-purple-300 bg-clip-text text-transparent">
+                    {getRarityDisplay(card.rarity)}
+                  </span>
+                )}
+              </div>
+            )}
           </div>
         </div>
         </div>
@@ -611,7 +615,7 @@ function PocketCardListInner({
       </div>
     )}
     
-    <div className={gridClassName || "grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"}>
+    <div className={gridClassName || "grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 xs:gap-3 sm:gap-4"}>
       {displayedCards.map((card, _index) => {
         return (
           <PocketCard

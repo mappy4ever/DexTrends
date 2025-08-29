@@ -37,10 +37,10 @@ export const TypeBadge: React.FC<TypeBadgeProps> = ({
   className,
   variant = 'gradient'
 }) => {
-  // Fixed width classes to match "FIGHTING" (longest type name) - tighter fit
+  // Fixed width classes to match "FIGHTING" (longest type name) - improved sizing
   const sizeClasses = {
-    xs: 'px-1.5 py-0.5 text-[11px] min-w-[4rem]',
-    sm: 'px-2 py-0.5 text-[13px] min-w-[5rem]',
+    xs: 'px-2 py-0.5 text-xs min-w-[4.5rem]',
+    sm: 'px-3 py-1 text-sm min-w-[5.5rem]',
     md: 'px-4 py-2 text-sm min-w-[6rem]',
     lg: 'px-3 py-1 text-lg min-w-[6.5rem]'
   };

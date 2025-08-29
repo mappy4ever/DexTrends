@@ -6,6 +6,7 @@ import { fetchJSON } from '@/utils/unifiedFetch';
 import logger from '@/utils/logger';
 import { cn } from '@/utils/cn';
 import { GlassContainer } from '@/components/ui/design-system/GlassContainer';
+import UnifiedCacheManager from '@/utils/UnifiedCacheManager';
 
 interface PokemonEvolution {
   id: number;
@@ -201,6 +202,7 @@ const EnhancedStarterSelector: React.FC<EnhancedStarterSelectorProps> = ({
   const router = useRouter();
   const [starters, setStarters] = useState<StarterPokemon[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingStates, setLoadingStates] = useState<Record<number, boolean>>({});
   const [selectedStarter, setSelectedStarter] = useState<number | null>(null);
   const [hoveredStarter, setHoveredStarter] = useState<number | null>(null);
   const [expandedStarter, setExpandedStarter] = useState<number | null>(null);
@@ -212,83 +214,151 @@ const EnhancedStarterSelector: React.FC<EnhancedStarterSelectorProps> = ({
     const fetchStarterData = async () => {
       try {
         setLoading(true);
-        const starterData: StarterPokemon[] = [];
-
-        for (let i = 0; i < starterIds.length; i++) {
-          const id = starterIds[i];
+        
+        // Check cache first for all starters
+        const cachedStarters: StarterPokemon[] = [];
+        const startersToFetch: number[] = [];
+        
+        // Check which starters are cached
+        for (const id of starterIds) {
+          const cacheKey = `starter_${region}_${id}`;
+          const cached = await UnifiedCacheManager.get(cacheKey);
           
-          // Fetch Pokemon data
-          const pokemonData: any = await fetchJSON(`https://pokeapi.co/api/v2/pokemon/${id}`);
-          const speciesData: any = await fetchJSON(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
-          
-          // Get evolution chain
-          const evolutionChainUrl = speciesData.evolution_chain.url;
-          const evolutionData: any = await fetchJSON(evolutionChainUrl);
-          
-          // Parse evolution chain
-          const evolutions: PokemonEvolution[] = [];
-          let currentEvolution = evolutionData.chain;
-          
-          while (currentEvolution) {
-            const evoData: any = await fetchJSON(`https://pokeapi.co/api/v2/pokemon/${currentEvolution.species.name}`);
-            evolutions.push({
-              id: evoData.id,
-              name: evoData.name,
-              level: currentEvolution.evolution_details[0]?.min_level,
-              sprite: evoData.sprites.front_default,
-              spriteShiny: evoData.sprites.front_shiny,
-              types: evoData.types.map((t: any) => t.type.name),
-              stats: {
-                hp: evoData.stats[0].base_stat,
-                attack: evoData.stats[1].base_stat,
-                defense: evoData.stats[2].base_stat,
-                spAttack: evoData.stats[3].base_stat,
-                spDefense: evoData.stats[4].base_stat,
-                speed: evoData.stats[5].base_stat,
-                total: evoData.stats.reduce((sum: number, stat: any) => sum + stat.base_stat, 0)
-              }
-            });
-            currentEvolution = currentEvolution.evolves_to[0];
+          if (cached) {
+            cachedStarters.push(cached as StarterPokemon);
+          } else {
+            startersToFetch.push(id);
           }
-
-          // Get English genus and description
-          const genus = speciesData.genera.find((g: any) => g.language.name === 'en')?.genus || '';
-          const description = speciesData.flavor_text_entries.find((f: any) => f.language.name === 'en')?.flavor_text
-            ?.replace(/\f/g, ' ')
-            ?.replace(/\n/g, ' ') || '';
-
-          const starter: StarterPokemon = {
-            id: pokemonData.id,
-            name: pokemonData.name,
-            types: pokemonData.types.map((t: any) => t.type.name),
-            sprite: pokemonData.sprites.front_default,
-            spriteShiny: pokemonData.sprites.front_shiny,
-            artwork: pokemonData.sprites.other['official-artwork'].front_default,
-            artworkShiny: pokemonData.sprites.other['official-artwork'].front_shiny,
-            stats: {
-              hp: pokemonData.stats[0].base_stat,
-              attack: pokemonData.stats[1].base_stat,
-              defense: pokemonData.stats[2].base_stat,
-              spAttack: pokemonData.stats[3].base_stat,
-              spDefense: pokemonData.stats[4].base_stat,
-              speed: pokemonData.stats[5].base_stat,
-              total: pokemonData.stats.reduce((sum: number, stat: any) => sum + stat.base_stat, 0)
-            },
-            abilities: pokemonData.abilities.map((a: any) => ({
-              name: a.ability.name.replace(/-/g, ' '),
-              isHidden: a.is_hidden
-            })),
-            evolutions,
-            height: pokemonData.height / 10, // Convert to meters
-            weight: pokemonData.weight / 10, // Convert to kg
-            genus,
-            description
-          };
-
-          starterData.push(starter);
         }
+        
+        // Immediately show cached starters
+        if (cachedStarters.length > 0) {
+          setStarters(cachedStarters);
+          setLoading(false);
+        }
+        
+        // If all starters are cached, we're done
+        if (startersToFetch.length === 0) {
+          return;
+        }
+        
+        // Fetch missing starters in parallel
+        const fetchPromises = startersToFetch.map(async (id) => {
+          setLoadingStates(prev => ({ ...prev, [id]: true }));
+          
+          try {
+            // Fetch Pokemon and species data in parallel
+            const [pokemonData, speciesData] = await Promise.all([
+              fetchJSON(`https://pokeapi.co/api/v2/pokemon/${id}`),
+              fetchJSON(`https://pokeapi.co/api/v2/pokemon-species/${id}`)
+            ]);
+            
+            // Get evolution chain URL
+            const evolutionChainUrl = (speciesData as any).evolution_chain.url;
+            const evolutionData: any = await fetchJSON(evolutionChainUrl);
+            
+            // Parse evolution chain with parallel fetching
+            const evolutions: PokemonEvolution[] = [];
+            const evolutionFetches: Promise<any>[] = [];
+            const evolutionDetails: any[] = [];
+            
+            // Collect all evolution species to fetch
+            let currentEvolution = evolutionData.chain;
+            while (currentEvolution) {
+              evolutionDetails.push({
+                name: currentEvolution.species.name,
+                level: currentEvolution.evolution_details[0]?.min_level
+              });
+              evolutionFetches.push(fetchJSON(`https://pokeapi.co/api/v2/pokemon/${currentEvolution.species.name}`));
+              currentEvolution = currentEvolution.evolves_to[0];
+            }
+            
+            // Fetch all evolutions in parallel
+            const evolutionDataArray = await Promise.all(evolutionFetches);
+            
+            // Build evolution array
+            evolutionDataArray.forEach((evoData: any, index) => {
+              evolutions.push({
+                id: evoData.id,
+                name: evoData.name,
+                level: evolutionDetails[index].level,
+                sprite: evoData.sprites.front_default,
+                spriteShiny: evoData.sprites.front_shiny,
+                types: evoData.types.map((t: any) => t.type.name),
+                stats: {
+                  hp: evoData.stats[0].base_stat,
+                  attack: evoData.stats[1].base_stat,
+                  defense: evoData.stats[2].base_stat,
+                  spAttack: evoData.stats[3].base_stat,
+                  spDefense: evoData.stats[4].base_stat,
+                  speed: evoData.stats[5].base_stat,
+                  total: evoData.stats.reduce((sum: number, stat: any) => sum + stat.base_stat, 0)
+                }
+              });
+            });
 
-        setStarters(starterData);
+            // Get English genus and description
+            const genus = (speciesData as any).genera.find((g: any) => g.language.name === 'en')?.genus || '';
+            const description = (speciesData as any).flavor_text_entries.find((f: any) => f.language.name === 'en')?.flavor_text
+              ?.replace(/\f/g, ' ')
+              ?.replace(/\n/g, ' ') || '';
+
+            const starter: StarterPokemon = {
+              id: (pokemonData as any).id,
+              name: (pokemonData as any).name,
+              types: (pokemonData as any).types.map((t: any) => t.type.name),
+              sprite: (pokemonData as any).sprites.front_default,
+              spriteShiny: (pokemonData as any).sprites.front_shiny,
+              artwork: (pokemonData as any).sprites.other['official-artwork'].front_default,
+              artworkShiny: (pokemonData as any).sprites.other['official-artwork'].front_shiny,
+              stats: {
+                hp: (pokemonData as any).stats[0].base_stat,
+                attack: (pokemonData as any).stats[1].base_stat,
+                defense: (pokemonData as any).stats[2].base_stat,
+                spAttack: (pokemonData as any).stats[3].base_stat,
+                spDefense: (pokemonData as any).stats[4].base_stat,
+                speed: (pokemonData as any).stats[5].base_stat,
+                total: (pokemonData as any).stats.reduce((sum: number, stat: any) => sum + stat.base_stat, 0)
+              },
+              abilities: (pokemonData as any).abilities.map((a: any) => ({
+                name: a.ability.name.replace(/-/g, ' '),
+                isHidden: a.is_hidden
+              })),
+              evolutions,
+              height: (pokemonData as any).height / 10, // Convert to meters
+              weight: (pokemonData as any).weight / 10, // Convert to kg
+              genus,
+              description
+            };
+            
+            // Cache the starter data
+            const cacheKey = `starter_${region}_${id}`;
+            await UnifiedCacheManager.set(cacheKey, starter, {
+              ttl: 6 * 60 * 60 * 1000, // 6 hours
+              priority: 2 // HIGH priority (memory + localStorage)
+            });
+            
+            return starter;
+          } catch (error) {
+            logger.error(`Failed to fetch starter ${id}`, { error });
+            return null;
+          } finally {
+            setLoadingStates(prev => ({ ...prev, [id]: false }));
+          }
+        });
+        
+        // Wait for all fetches to complete
+        const fetchedStarters = await Promise.all(fetchPromises);
+        const validStarters = fetchedStarters.filter(s => s !== null) as StarterPokemon[];
+        
+        // Combine cached and newly fetched starters, maintaining order
+        const allStarters = starterIds.map(id => {
+          const cached = cachedStarters.find(s => s.id === id);
+          if (cached) return cached;
+          return validStarters.find(s => s.id === id);
+        }).filter(s => s !== undefined) as StarterPokemon[];
+        
+        setStarters(allStarters);
         setLoading(false);
       } catch (error) {
         logger.error('Failed to fetch starter data', { error });
@@ -297,7 +367,7 @@ const EnhancedStarterSelector: React.FC<EnhancedStarterSelectorProps> = ({
     };
 
     fetchStarterData();
-  }, [starterIds]);
+  }, [starterIds, region]);
 
   const handleSelectStarter = (starter: StarterPokemon) => {
     setSelectedStarter(starter.id);
@@ -338,7 +408,7 @@ const EnhancedStarterSelector: React.FC<EnhancedStarterSelectorProps> = ({
     return 'from-red-500 to-red-600';                         // Poor
   };
 
-  if (loading) {
+  if (loading && starters.length === 0) {
     return (
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
@@ -376,7 +446,35 @@ const EnhancedStarterSelector: React.FC<EnhancedStarterSelectorProps> = ({
 
       {/* Starter Cards Grid - Fixed Layout */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {starters.map((starter) => {
+        {starterIds.map((starterId) => {
+          const starter = starters.find(s => s.id === starterId);
+          const isLoading = loadingStates[starterId];
+          
+          // Show skeleton while loading this specific starter
+          if (!starter || isLoading) {
+            return (
+              <div key={starterId} className="relative group">
+                <div className="rounded-3xl overflow-hidden animate-pulse"
+                     style={{
+                       background: 'rgba(255, 255, 255, 0.85)',
+                       backdropFilter: 'blur(20px)',
+                       border: '1px solid rgba(209, 213, 219, 0.3)',
+                       boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)'
+                     }}>
+                  <div className="p-6">
+                    <div className="h-6 bg-gray-200 rounded w-24 mb-4"></div>
+                    <div className="w-40 h-40 mx-auto mb-4 bg-gray-200 rounded-full"></div>
+                    <div className="space-y-2">
+                      <div className="h-3 bg-gray-200 rounded"></div>
+                      <div className="h-3 bg-gray-200 rounded"></div>
+                      <div className="h-3 bg-gray-200 rounded"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          }
+          
           const isSelected = selectedStarter === starter.id;
           const isHovered = hoveredStarter === starter.id;
           const isExpanded = expandedStarter === starter.id;

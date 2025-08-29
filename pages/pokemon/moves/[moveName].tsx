@@ -120,7 +120,7 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
   const englishFlavor = moveData.flavor_text_entries.find(f => f.language.name === 'en');
   const moveType = competitiveData?.type || moveData.type.name;
   const moveCategory = competitiveData?.category || moveData.damage_class.name;
-  const basePower = competitiveData?.base_power || moveData.power;
+  const basePower = competitiveData?.power || moveData.power;
   const accuracy = competitiveData?.accuracy || moveData.accuracy;
   const priority = competitiveData?.priority ?? moveData.priority;
   const typeColor = typeColors[moveType]?.bg || 'bg-gray-600';
@@ -280,11 +280,11 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
                   )}
 
                   {/* Secondary Effects */}
-                  {competitiveData.secondary_effects && (
+                  {competitiveData.secondary_effect && (
                     <div>
                       <h3 className="font-semibold mb-2">Secondary Effects</h3>
                       <p className="text-sm text-gray-600 dark:text-gray-400">
-                        {formatSecondaryEffects(competitiveData.secondary_effects)}
+                        {formatSecondaryEffects(competitiveData.secondary_effect)}
                       </p>
                     </div>
                   )}

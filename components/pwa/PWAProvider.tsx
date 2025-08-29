@@ -37,12 +37,14 @@ export const PWAProvider: React.FC<PWAProviderProps> = ({ children }) => {
   const router = useRouter();
 
   useEffect(() => {
-    // Check if app is installed/standalone
-    setIsStandalone(
-      window.matchMedia('(display-mode: standalone)').matches ||
-      (window.navigator as ExtendedNavigator).standalone ||
-      document.referrer.includes('android-app://')
-    );
+    // Check if app is installed/standalone (client-only)
+    if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+      setIsStandalone(
+        window.matchMedia('(display-mode: standalone)').matches ||
+        (window.navigator as ExtendedNavigator).standalone ||
+        document.referrer.includes('android-app://')
+      );
+    }
 
     // Listen for install prompt
     const handleBeforeInstallPrompt = (e: Event) => {
@@ -62,13 +64,15 @@ export const PWAProvider: React.FC<PWAProviderProps> = ({ children }) => {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
 
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    window.addEventListener('appinstalled', handleAppInstalled);
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.addEventListener('appinstalled', handleAppInstalled);
+      window.addEventListener('online', handleOnline);
+      window.addEventListener('offline', handleOffline);
+    }
 
     // Register service worker with cleanup of old workers
-    if ('serviceWorker' in navigator) {
+    if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
       // First clean up any old service workers that might cause conflicts
       cleanupOldServiceWorkers().then(() => {
         registerServiceWorker();
@@ -76,10 +80,12 @@ export const PWAProvider: React.FC<PWAProviderProps> = ({ children }) => {
     }
 
     return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-      window.removeEventListener('appinstalled', handleAppInstalled);
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+        window.removeEventListener('appinstalled', handleAppInstalled);
+        window.removeEventListener('online', handleOnline);
+        window.removeEventListener('offline', handleOffline);
+      }
     };
   }, []);
 

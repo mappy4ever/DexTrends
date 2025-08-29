@@ -275,32 +275,35 @@ const BattleSimulator: NextPage = () => {
   useEffect(() => {
     loadPokemonList();
     loadNatures();
-    // Load saved trainer names from localStorage
-    const savedPlayer1 = localStorage.getItem('battleSimulatorPlayer1Name');
-    const savedPlayer2 = localStorage.getItem('battleSimulatorPlayer2Name');
-    if (savedPlayer1) setPlayer1Name(savedPlayer1);
-    if (savedPlayer2) setPlayer2Name(savedPlayer2);
     
-    // Load battle history
-    const savedHistory = localStorage.getItem('battleHistory');
-    if (savedHistory) {
-      try {
-        setBattleHistory(JSON.parse(savedHistory));
-      } catch (e) {
-        logger.error('Failed to load battle history:', { error: e instanceof Error ? e.message : String(e) });
+    // Load saved trainer names from localStorage (client-only)
+    if (typeof window !== 'undefined') {
+      const savedPlayer1 = localStorage.getItem('battleSimulatorPlayer1Name');
+      const savedPlayer2 = localStorage.getItem('battleSimulatorPlayer2Name');
+      if (savedPlayer1) setPlayer1Name(savedPlayer1);
+      if (savedPlayer2) setPlayer2Name(savedPlayer2);
+      
+      // Load battle history
+      const savedHistory = localStorage.getItem('battleHistory');
+      if (savedHistory) {
+        try {
+          setBattleHistory(JSON.parse(savedHistory));
+        } catch (e) {
+          logger.error('Failed to load battle history:', { error: e instanceof Error ? e.message : String(e) });
+        }
       }
     }
   }, []);
 
   // Save trainer names to localStorage
   useEffect(() => {
-    if (player1Name !== 'Player 1') {
+    if (typeof window !== 'undefined' && player1Name !== 'Player 1') {
       localStorage.setItem('battleSimulatorPlayer1Name', player1Name);
     }
   }, [player1Name]);
 
   useEffect(() => {
-    if (player2Name !== 'Player 2') {
+    if (typeof window !== 'undefined' && player2Name !== 'Player 2') {
       localStorage.setItem('battleSimulatorPlayer2Name', player2Name);
     }
   }, [player2Name]);
@@ -928,7 +931,9 @@ const BattleSimulator: NextPage = () => {
     };
     
     setBattleHistory(prev => [...prev, battleRecord as BattleResult]);
-    localStorage.setItem('battleHistory', JSON.stringify([...battleHistory, battleRecord]));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('battleHistory', JSON.stringify([...battleHistory, battleRecord]));
+    }
   };
 
   // End battle

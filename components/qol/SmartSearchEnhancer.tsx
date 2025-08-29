@@ -37,11 +37,13 @@ export const SmartSearchEnhancer: React.FC<SmartSearchEnhancerProps> = ({
 
   const loadSearchData = useCallback(() => {
     try {
-      const history = JSON.parse(localStorage.getItem('searchHistory') || '[]');
-      const popular = JSON.parse(localStorage.getItem('popularSearches') || '[]');
-      
-      setSearchHistory(history.slice(0, 10)); // Keep only last 10 searches
-      setPopularSearches(popular.slice(0, 5)); // Keep top 5 popular searches
+      if (typeof window !== 'undefined') {
+        const history = JSON.parse(localStorage.getItem('searchHistory') || '[]');
+        const popular = JSON.parse(localStorage.getItem('popularSearches') || '[]');
+        
+        setSearchHistory(history.slice(0, 10)); // Keep only last 10 searches
+        setPopularSearches(popular.slice(0, 5)); // Keep top 5 popular searches
+      }
     } catch (error) {
       logger.error('Failed to load search data', { error });
     }
@@ -110,30 +112,35 @@ export const SmartSearchEnhancer: React.FC<SmartSearchEnhancerProps> = ({
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    if (typeof document !== 'undefined') {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+    return undefined;
   }, []);
 
   const saveSearchTerm = useCallback((term: string) => {
     try {
-      // Add to search history
-      const newHistory = [term, ...searchHistory.filter(h => h !== term)].slice(0, 10);
-      setSearchHistory(newHistory);
-      localStorage.setItem('searchHistory', JSON.stringify(newHistory));
+      if (typeof window !== 'undefined') {
+        // Add to search history
+        const newHistory = [term, ...searchHistory.filter(h => h !== term)].slice(0, 10);
+        setSearchHistory(newHistory);
+        localStorage.setItem('searchHistory', JSON.stringify(newHistory));
 
-      // Update popular searches (simplified frequency tracking)
-      const popular = JSON.parse(localStorage.getItem('popularSearches') || '[]') as PopularSearch[];
-      const existingIndex = popular.findIndex(p => p.term === term);
-      
-      if (existingIndex >= 0) {
-        popular[existingIndex].count++;
-      } else {
-        popular.push({ term, count: 1 });
+        // Update popular searches (simplified frequency tracking)
+        const popular = JSON.parse(localStorage.getItem('popularSearches') || '[]') as PopularSearch[];
+        const existingIndex = popular.findIndex(p => p.term === term);
+        
+        if (existingIndex >= 0) {
+          popular[existingIndex].count++;
+        } else {
+          popular.push({ term, count: 1 });
+        }
+        
+        const sortedPopular = popular.sort((a, b) => b.count - a.count).slice(0, 5);
+        setPopularSearches(sortedPopular);
+        localStorage.setItem('popularSearches', JSON.stringify(sortedPopular));
       }
-      
-      const sortedPopular = popular.sort((a, b) => b.count - a.count).slice(0, 5);
-      setPopularSearches(sortedPopular);
-      localStorage.setItem('popularSearches', JSON.stringify(sortedPopular));
     } catch (error) {
       logger.error('Failed to save search term', { error, term });
     }
@@ -204,7 +211,9 @@ export const SmartSearchEnhancer: React.FC<SmartSearchEnhancerProps> = ({
 
   const clearSearchHistory = useCallback(() => {
     setSearchHistory([]);
-    localStorage.removeItem('searchHistory');
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('searchHistory');
+    }
     notify.success('Search history cleared');
   }, [notify]);
 
@@ -447,8 +456,11 @@ export const GlobalSearchShortcuts: React.FC = () => {
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    if (typeof document !== 'undefined') {
+      document.addEventListener('keydown', handleKeyDown);
+      return () => document.removeEventListener('keydown', handleKeyDown);
+    }
+    return undefined;
   }, [router]);
 
   return (

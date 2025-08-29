@@ -363,9 +363,14 @@ const Analytics: NextPage = () => {
     }
   };
 
-  // Export functionality
+  // Export functionality (SSR safe)
   const handleExportAnalytics = async (data: any[], format: ExportFormat) => {
     if (!analyticsData) return;
+    
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      logger.warn('Export functionality is not available on server');
+      return;
+    }
     
     const exportData = {
       generatedAt: new Date().toISOString(),
@@ -452,7 +457,7 @@ const Analytics: NextPage = () => {
         <meta name="description" content="Comprehensive analytics and insights for DexTrends usage" />
       </Head>
       
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <FullBleedWrapper gradient="pokedex">
         <div className="container mx-auto px-4 py-8">
           {/* Header */}
           <motion.div

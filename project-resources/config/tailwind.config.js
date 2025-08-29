@@ -21,6 +21,14 @@ const config = {
     "text-white", "bg-gradient-to-br", "bg-gradient-to-r",
   ],
   theme: {
+    screens: {
+      'xs': '460px',  // Support up to 460px (440px common)
+      'sm': '640px',
+      'md': '768px',
+      'lg': '1024px',
+      'xl': '1280px',
+      '2xl': '1536px'
+    },
     extend: {
       colors: {
         // Clean base colors

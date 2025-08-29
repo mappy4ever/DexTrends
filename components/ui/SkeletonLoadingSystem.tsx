@@ -640,6 +640,247 @@ export const FormSkeleton: React.FC<FormSkeletonProps> = ({
   );
 };
 
+// Detail Page Skeleton Component
+interface DetailPageSkeletonProps {
+  showHeader?: boolean;
+  showImage?: boolean;
+  showStats?: boolean;
+  showTabs?: boolean;
+  showRelated?: boolean;
+  variant?: 'pokemon' | 'card' | 'tcgset';
+  className?: string;
+}
+
+export const DetailPageSkeleton: React.FC<DetailPageSkeletonProps> = ({
+  showHeader = true,
+  showImage = true,
+  showStats = true,
+  showTabs = true,
+  showRelated = true,
+  variant = 'pokemon',
+  className = '',
+  ...props
+}) => {
+  return (
+    <div className={`detail-page-skeleton min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 ${className}`} {...props}>
+      {/* Header Section */}
+      {showHeader && (
+        <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-center justify-between mb-4">
+              {/* Back button */}
+              <Skeleton
+                width="6rem"
+                height="2.5rem"
+                variant="rounded"
+              />
+              {/* Title and ID */}
+              <div className="flex-1 mx-4">
+                <Skeleton
+                  height="2rem"
+                  width="40%"
+                  variant="text"
+                  className="mb-2"
+                />
+                <Skeleton
+                  height="1rem"
+                  width="20%"
+                  variant="text"
+                />
+              </div>
+              {/* Action buttons */}
+              <div className="flex gap-2">
+                <Skeleton
+                  width="2.5rem"
+                  height="2.5rem"
+                  variant="circular"
+                />
+                <Skeleton
+                  width="2.5rem"
+                  height="2.5rem"
+                  variant="circular"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Left Column - Image/Gallery */}
+          {showImage && (
+            <div className="lg:col-span-1">
+              <div className="sticky top-6">
+                <Skeleton
+                  height="400px"
+                  variant="rounded"
+                  className="mb-4"
+                />
+                {/* Thumbnail gallery */}
+                <div className="grid grid-cols-4 gap-2">
+                  {Array.from({ length: 4 }).map((_, i) => (
+                    <Skeleton
+                      key={i}
+                      height="60px"
+                      variant="rounded"
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Right Column - Details */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Stats Section */}
+            {showStats && (
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
+                <Skeleton
+                  height="1.5rem"
+                  width="30%"
+                  variant="text"
+                  className="mb-4"
+                />
+                {variant === 'pokemon' ? (
+                  // Pokemon stats
+                  <div className="space-y-3">
+                    {Array.from({ length: 6 }).map((_, i) => (
+                      <div key={i} className="flex items-center justify-between">
+                        <Skeleton
+                          height="1rem"
+                          width="20%"
+                          variant="text"
+                        />
+                        <Skeleton
+                          height="0.5rem"
+                          width="60%"
+                          variant="rounded"
+                        />
+                        <Skeleton
+                          height="1rem"
+                          width="10%"
+                          variant="text"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                ) : variant === 'card' ? (
+                  // Card stats
+                  <div className="grid grid-cols-2 gap-4">
+                    {Array.from({ length: 8 }).map((_, i) => (
+                      <div key={i}>
+                        <Skeleton
+                          height="0.875rem"
+                          width="60%"
+                          variant="text"
+                          className="mb-1"
+                        />
+                        <Skeleton
+                          height="1.25rem"
+                          width="80%"
+                          variant="text"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  // TCG Set stats
+                  <div className="grid grid-cols-3 gap-4">
+                    {Array.from({ length: 6 }).map((_, i) => (
+                      <div key={i} className="text-center">
+                        <Skeleton
+                          height="2.5rem"
+                          width="2.5rem"
+                          variant="circular"
+                          className="mx-auto mb-2"
+                        />
+                        <Skeleton
+                          height="0.875rem"
+                          width="80%"
+                          variant="text"
+                          className="mx-auto"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Tabs Section */}
+            {showTabs && (
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+                {/* Tab headers */}
+                <div className="flex border-b border-gray-200 dark:border-gray-700">
+                  {Array.from({ length: 4 }).map((_, i) => (
+                    <Skeleton
+                      key={i}
+                      height="3rem"
+                      width="6rem"
+                      variant="rectangular"
+                      className="mr-2"
+                    />
+                  ))}
+                </div>
+                {/* Tab content */}
+                <div className="p-6">
+                  <Skeleton
+                    height="1.5rem"
+                    width="40%"
+                    variant="text"
+                    className="mb-4"
+                  />
+                  <div className="space-y-2">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Skeleton
+                        key={i}
+                        height="1rem"
+                        width={`${70 + Math.random() * 30}%`}
+                        variant="text"
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Related Items Section */}
+        {showRelated && (
+          <div className="mt-8">
+            <Skeleton
+              height="2rem"
+              width="20%"
+              variant="text"
+              className="mb-4"
+            />
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="bg-white dark:bg-gray-800 rounded-lg p-3">
+                  <Skeleton
+                    height="120px"
+                    variant="rounded"
+                    className="mb-2"
+                  />
+                  <Skeleton
+                    height="1rem"
+                    width="80%"
+                    variant="text"
+                    className="mx-auto"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 // Navigation Skeleton Component
 interface NavigationSkeletonProps {
   variant?: 'horizontal' | 'sidebar';
@@ -972,6 +1213,7 @@ export default {
   ChartSkeleton,
   FormSkeleton,
   NavigationSkeleton,
+  DetailPageSkeleton,
   SkeletonWrapper,
   useSkeletonState,
   useSkeleton,

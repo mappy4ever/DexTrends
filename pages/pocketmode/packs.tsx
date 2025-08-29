@@ -84,11 +84,13 @@ const Expansions: NextPage = () => {
         setAllCards(data || []);
         
         // Load pack history from localStorage
-        const savedHistory = localStorage.getItem('packOpeningHistory');
-        if (savedHistory) {
-          const history = JSON.parse(savedHistory);
-          setPackHistory(history);
-          setPackOpenCount(history.length);
+        if (typeof window !== 'undefined') {
+          const savedHistory = localStorage.getItem('packOpeningHistory');
+          if (savedHistory) {
+            const history = JSON.parse(savedHistory);
+            setPackHistory(history);
+            setPackOpenCount(history.length);
+          }
         }
       } catch (err) {
         setError('Failed to load expansions');
@@ -467,8 +469,10 @@ const Expansions: NextPage = () => {
       setPackHistory(updatedHistory);
       
       // Save to localStorage (keep last 100 packs)
-      const historyToSave = updatedHistory.slice(-100);
-      localStorage.setItem('packOpeningHistory', JSON.stringify(historyToSave));
+      if (typeof window !== 'undefined') {
+        const historyToSave = updatedHistory.slice(-100);
+        localStorage.setItem('packOpeningHistory', JSON.stringify(historyToSave));
+      }
     }
   };
 
@@ -609,7 +613,9 @@ const Expansions: NextPage = () => {
                     if (confirm('Clear pack opening history?')) {
                       setPackHistory([]);
                       setPackOpenCount(0);
-                      localStorage.removeItem('packOpeningHistory');
+                      if (typeof window !== 'undefined') {
+                        localStorage.removeItem('packOpeningHistory');
+                      }
                     }
                   }}
                   className="text-sm text-text-grey hover:text-pokemon-red transition-colors"

@@ -4,6 +4,84 @@
  */
 
 /* ========================================
+   Critical Mobile Fixes - NO CONTENT CUTOFF
+   ======================================== */
+
+/* GLOBAL RULE: Never cut off any content on mobile */
+@media (max-width: 768px) {
+  /* ULTRA AGGRESSIVE: All containers must show full content */
+  * {
+    overflow: visible !important;
+    overflow: initial !important;
+    min-height: auto !important;
+    clip: unset !important;
+    clip-path: none !important;
+  }
+  
+  /* Specific override for move containers */
+  [class*="rounded"][class*="bg-gray"],
+  [class*="rounded"][class*="dark:bg-gray"],
+  .rounded-lg.bg-gray-50,
+  .rounded-lg.dark\:bg-gray-800 {
+    overflow: visible !important;
+    min-height: auto !important;
+  }
+  
+  /* Only allow scroll on body and specific scroll containers */
+  body, html {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+  
+  /* Specific containers that need scroll */
+  .overflow-auto,
+  .overflow-y-auto,
+  .overflow-x-auto,
+  [class*="scroll"] {
+    overflow: auto !important;
+  }
+  
+  /* Modal overlays can have scroll */
+  .modal-content,
+  [role="dialog"] {
+    overflow-y: auto !important;
+    max-height: 90vh !important;
+  }
+}
+
+/* ========================================
+   Critical Mobile Fixes
+   ======================================== */
+/* Ensure pointer events work correctly */
+.pointer-events-none {
+  pointer-events: none !important;
+}
+
+.pointer-events-auto {
+  pointer-events: auto !important;
+}
+
+/* Prevent images from causing overflow */
+@media (max-width: 768px) {
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  
+  /* Next.js Image component wrapper */
+  span[style*="display:inline-block"],
+  span[style*="display: inline-block"] {
+    max-width: 100% !important;
+  }
+  
+  /* Prevent absolute positioned images from overflowing */
+  .absolute img,
+  .relative img {
+    max-width: 100% !important;
+  }
+}
+
+/* ========================================
    Mobile Viewport & Safe Areas
    ======================================== */
 :root {
@@ -48,16 +126,6 @@
     -webkit-overflow-scrolling: touch;
     overflow-scrolling: touch;
   }
-  
-  /* iOS navbar fixes */
-  .navbar-ios {
-    padding-top: env(safe-area-inset-top);
-    height: calc(var(--mobile-header-height) + env(safe-area-inset-top));
-  }
-  
-  .navbar-spacer-ios {
-    height: calc(var(--mobile-header-height) + env(safe-area-inset-top));
-  }
 }
 
 /* ========================================
@@ -101,17 +169,60 @@
     padding-left: 1rem;
     padding-right: 1rem;
     max-width: 100%;
+    width: 100%;
   }
   
-  /* Prevent horizontal overflow */
-  body {
-    overflow-x: hidden;
+  /* Prevent horizontal overflow and expansion */
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+    width: 100% !important;
+    position: relative !important;
   }
   
-  /* Card grids - single column on mobile */
+  /* Main app wrapper constraint */
+  #__next {
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+    position: relative !important;
+  }
+  
+  /* Constrain all direct children of body */
+  body > * {
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+  }
+  
+  /* Prevent any element from expanding viewport on load */
+  * {
+    max-width: 100vw !important;
+  }
+  
+  /* Specifically constrain problematic elements */
+  .mx-auto {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    max-width: calc(100vw - 2rem) !important;
+  }
+  
+  /* Fix absolute positioned elements */
+  .absolute {
+    max-width: 100vw !important;
+  }
+  
+  /* Constrain glass containers */
+  [class*="glass"], [class*="Glass"] {
+    max-width: calc(100vw - 2rem) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  
+  /* Card grids - responsive columns on mobile */
   .grid {
     grid-template-columns: 1fr !important;
     gap: 1rem;
+    max-width: 100% !important;
+    overflow: hidden !important;
   }
   
   .grid-cols-2,
@@ -122,10 +233,38 @@
     grid-template-columns: 1fr !important;
   }
   
-  /* Cards full width on mobile */
+  /* Cards full width on mobile - NO CUTOFF */
   .card, [class*="Card"] {
     width: 100%;
     max-width: 100%;
+    overflow: visible !important;
+    min-height: fit-content !important;
+  }
+  
+  /* Prevent content from pushing boundaries */
+  .card *, [class*="Card"] * {
+    max-width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  /* All move containers must show full content - ENHANCED */
+  [class*="move"],
+  [class*="Move"],
+  [data-testid*="move"],
+  .p-3.bg-gray-50,
+  .p-3.dark\:bg-gray-800 {
+    overflow: visible !important;
+    min-height: fit-content !important;
+    height: auto !important;
+  }
+  
+  /* Tab panels must not clip */
+  [role="tabpanel"],
+  .tab-content,
+  [class*="TabPanel"] {
+    overflow: visible !important;
+    min-height: fit-content !important;
   }
   
   /* Horizontal scrolling for showcases */
@@ -200,7 +339,145 @@
 }
 
 /* ========================================
-   Mobile Typography
+   Small Phones (320-379px) - iPhone SE, compact phones
+   ======================================== */
+@media (max-width: 379px) {
+  /* Very compact container padding */
+  .container {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  
+  /* Single column for legendary cards on very small screens */
+  [class*="Legendary"] .grid,
+  [class*="legendary"] .grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Force single column for TCG sets */
+  .tcg-sets-grid,
+  [class*="tcgsets"] .grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Smallest typography */
+  h1 {
+    font-size: 1.375rem;
+    line-height: 1.625rem;
+  }
+  
+  h2 {
+    font-size: 1.125rem;
+    line-height: 1.375rem;
+  }
+  
+  /* Compact cards */
+  .card, [class*="Card"] {
+    padding: 0.75rem;
+  }
+}
+
+/* ========================================
+   Standard Phones (380-439px) - Most iPhones/Androids
+   ======================================== */
+@media (min-width: 380px) and (max-width: 439px) {
+  /* Standard mobile padding */
+  .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  
+  /* 2 columns for legendary cards */
+  [class*="Legendary"] .grid,
+  [class*="legendary"] .grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.5rem !important;
+  }
+  
+  /* Single column for TCG sets */
+  .tcg-sets-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Standard mobile typography */
+  h1 {
+    font-size: 1.5rem;
+    line-height: 1.75rem;
+  }
+  
+  h2 {
+    font-size: 1.25rem;
+    line-height: 1.5rem;
+  }
+  
+  /* Standard card padding */
+  .card, [class*="Card"] {
+    padding: 0.875rem;
+  }
+}
+
+/* ========================================
+   Large Phones (440-459px) - Pro Max phones
+   ======================================== */
+@media (min-width: 440px) and (max-width: 459px) {
+  /* Comfortable padding */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Still single column for better readability */
+  .tcg-sets-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Slightly larger typography */
+  h1 {
+    font-size: 1.625rem;
+    line-height: 1.875rem;
+  }
+  
+  h2 {
+    font-size: 1.375rem;
+    line-height: 1.625rem;
+  }
+  
+  /* Comfortable card padding */
+  .card, [class*="Card"] {
+    padding: 1rem;
+  }
+}
+
+/* ========================================
+   Larger Phones & Small Tablets (460-639px)
+   ======================================== */
+@media (min-width: 460px) and (max-width: 639px) {
+  /* Slightly more padding */
+  .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  
+  /* Allow 3-column grids */
+  .grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 0.75rem !important;
+  }
+  
+  /* Medium typography */
+  h1 {
+    font-size: 1.625rem;
+    line-height: 1.875rem;
+  }
+  
+  h2 {
+    font-size: 1.375rem;
+    line-height: 1.625rem;
+  }
+}
+
+/* ========================================
+   Mobile Typography (up to tablet)
    ======================================== */
 @media (max-width: 768px) {
   /* Responsive font sizes */
@@ -252,12 +529,98 @@
     padding: 0.75rem;
   }
   
+  /* Pocket card grids - ensure no cutoff */
+  [class*="PocketCard"] {
+    min-height: auto !important;
+    overflow: visible !important;
+  }
+  
+  /* Card image containers */
+  .aspect-\[110\/154\] {
+    aspect-ratio: 110/154;
+    position: relative;
+    width: 100%;
+  }
+  
+  /* Ensure card content doesn't get cut off */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* Glass containers must not clip content */
+  [class*="glass"],
+  [class*="Glass"],
+  .backdrop-blur-xl,
+  .backdrop-blur-lg,
+  .backdrop-blur-md {
+    overflow: visible !important;
+    min-height: fit-content !important;
+  }
+  
+  /* Rounded containers must not clip */
+  .rounded-3xl,
+  .rounded-2xl,
+  .rounded-xl,
+  .rounded-lg {
+    overflow: visible !important;
+  }
+  
+  /* Grid items must show full content */
+  .grid > *,
+  [class*="grid-cols"] > * {
+    overflow: visible !important;
+    min-height: fit-content !important;
+  }
+  
+  /* Region page fixes */
+  .max-w-7xl {
+    max-width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  /* Evolution showcase cards */
+  [class*="Evolution"], [class*="evolution"] {
+    max-width: 100% !important;
+  }
+  
+  /* Legendary Pokemon cards grid */
+  [class*="Legendary"] .grid,
+  [class*="legendary"] .grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.75rem !important;
+    padding: 0 !important;
+  }
+  
+  /* Individual legendary cards */
+  [class*="Legendary"] .group,
+  [class*="legendary"] .group {
+    max-width: 100% !important;
+  }
+  
+  /* Starter showcase grid */
+  [class*="Starter"] .grid,
+  [class*="starter"] .grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+  
   /* TCG card grid */
   .tcg-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
     padding: 1rem;
+  }
+  
+  /* Ensure grid items don't overflow */
+  .grid > * {
+    min-width: 0;
+    overflow: hidden;
   }
   
   /* Battle simulator stacked layout */

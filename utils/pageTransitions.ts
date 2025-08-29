@@ -1,6 +1,6 @@
 import { Variants } from 'framer-motion';
 
-export type TransitionType = 'fade' | 'slideUp' | 'slideDown' | 'slideLeft' | 'slideRight' | 'scale' | 'rotate';
+export type TransitionType = 'fade' | 'slideUp' | 'slideDown' | 'slideLeft' | 'slideRight' | 'scale' | 'rotate' | 'zoom' | 'flip' | 'morph';
 
 export interface PageTransitionConfig {
   type: TransitionType;
@@ -107,6 +107,57 @@ export const pageVariants: Record<TransitionType, Variants> = {
       rotate: 10,
       scale: 1.1
     }
+  },
+  zoom: {
+    initial: {
+      opacity: 0,
+      scale: 0.8,
+      filter: 'blur(4px)'
+    },
+    in: {
+      opacity: 1,
+      scale: 1,
+      filter: 'blur(0px)'
+    },
+    out: {
+      opacity: 0,
+      scale: 1.2,
+      filter: 'blur(4px)'
+    }
+  },
+  flip: {
+    initial: {
+      opacity: 0,
+      rotateY: 90,
+      scale: 0.9
+    },
+    in: {
+      opacity: 1,
+      rotateY: 0,
+      scale: 1
+    },
+    out: {
+      opacity: 0,
+      rotateY: -90,
+      scale: 0.9
+    }
+  },
+  morph: {
+    initial: {
+      opacity: 0,
+      scale: [1, 1.1, 0.95],
+      rotate: [0, 1, -1, 0]
+    },
+    in: {
+      opacity: 1,
+      scale: 1,
+      rotate: 0
+    },
+    out: {
+      opacity: 0,
+      scale: [1, 0.95, 1.1],
+      rotate: [0, -1, 1, 0]
+    }
   }
 };
 
@@ -122,11 +173,30 @@ export const defaultTransition = {
 export const routeTransitions: Record<string, PageTransitionConfig> = {
   '/': { type: 'fade' },
   '/pokedex': { type: 'slideUp' },
-  '/pokedex/[pokeid]': { type: 'slideLeft' },
+  '/pokedex/[pokeid]': { type: 'zoom' },
   '/tcgsets': { type: 'scale' },
-  '/tcgsets/[setid]': { type: 'slideLeft' },
+  '/tcgsets/[setid]': { type: 'zoom' },
+  '/cards/[cardId]': { type: 'flip' },
   '/team-builder': { type: 'slideUp' },
-  '/battle-simulator': { type: 'rotate' }
+  '/team-builder/advanced': { type: 'morph' },
+  '/battle-simulator': { type: 'rotate' },
+  '/favorites': { type: 'scale' },
+  '/trending': { type: 'slideLeft' },
+  '/type-effectiveness': { type: 'morph' },
+  '/pocketmode': { type: 'zoom' },
+  '/pocketmode/expansions': { type: 'slideLeft' },
+  '/pocketmode/deckbuilder': { type: 'flip' },
+  '/pocketmode/packs': { type: 'scale' },
+  '/pokemon/regions': { type: 'slideUp' },
+  '/pokemon/regions/[region]': { type: 'slideLeft' },
+  '/pokemon/starters': { type: 'scale' },
+  '/pokemon/moves': { type: 'slideUp' },
+  '/pokemon/moves/[moveName]': { type: 'zoom' },
+  '/pokemon/abilities': { type: 'slideUp' },
+  '/pokemon/items': { type: 'slideUp' },
+  '/analytics': { type: 'morph' },
+  '/404': { type: 'rotate' },
+  '/500': { type: 'rotate' }
 };
 
 // Get transition for a specific route

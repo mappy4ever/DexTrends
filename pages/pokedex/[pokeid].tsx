@@ -28,7 +28,7 @@ import type { PocketCard } from "../../types/api/pocket-cards";
 import PokemonHeroSectionV3 from "../../components/pokemon/PokemonHeroSectionV3";
 import PokemonTabSystem from "../../components/pokemon/PokemonTabSystem";
 import FloatingActionBar from "../../components/pokemon/FloatingActionBar";
-import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
+import { DetailPageSkeleton } from '@/components/ui/SkeletonLoadingSystem';
 import { FullBleedWrapper } from "../../components/ui";
 import { PageErrorBoundary } from "../../components/ui";
 import { CircularButton } from "../../components/ui/design-system";
@@ -449,6 +449,13 @@ const PokemonDetail: NextPage = () => {
       });
       
       
+      logger.debug('[pokeid] Setting card data', {
+        tcgCardsCount: tcgCardsData?.length || 0,
+        pocketCardsCount: pocketCardsData?.length || 0,
+        tcgCardsIsArray: Array.isArray(tcgCardsData),
+        pocketCardsIsArray: Array.isArray(pocketCardsData),
+        firstTcgCard: tcgCardsData?.[0]
+      });
       setTcgCards(tcgCardsData || []);
       setPocketCards(pocketCardsData || []);
     } catch (err) {
@@ -463,7 +470,16 @@ const PokemonDetail: NextPage = () => {
   // Loading state
   if (loading) {
     return (
-      <PageLoader text="Loading Pokémon details..." />
+      <FullBleedWrapper>
+        <DetailPageSkeleton 
+          variant="pokemon"
+          showHeader={true}
+          showImage={true}
+          showStats={true}
+          showTabs={true}
+          showRelated={true}
+        />
+      </FullBleedWrapper>
     );
   }
 
@@ -546,7 +562,7 @@ const PokemonDetail: NextPage = () => {
           </motion.div>
 
           {/* Main Content */}
-          <div className="container mx-auto px-4 py-8 space-y-8">
+          <div className="container mx-auto px-2 xs:px-3 sm:px-4 py-4 xs:py-6 sm:py-8 space-y-4 xs:space-y-6 sm:space-y-8">
             {/* Hero Section */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}

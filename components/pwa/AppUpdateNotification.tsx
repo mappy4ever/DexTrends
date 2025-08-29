@@ -148,7 +148,9 @@ const AppUpdateNotification: React.FC = () => {
     utils.hapticFeedback('light');
     
     // Don't show again for 1 hour
-    localStorage.setItem('updateDismissed', Date.now().toString());
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('updateDismissed', Date.now().toString());
+    }
   };
 
   const handleDismissUpdateSuccess = () => {
@@ -158,6 +160,8 @@ const AppUpdateNotification: React.FC = () => {
 
   // Don't show if dismissed recently (within 1 hour)
   const isDismissedRecently = (): boolean => {
+    if (typeof window === 'undefined') return false;
+    
     const dismissed = localStorage.getItem('updateDismissed');
     if (dismissed) {
       const dismissedTime = parseInt(dismissed);

@@ -375,11 +375,15 @@ function DeckBuilder() {
     };
     
     try {
-      const savedDecks = JSON.parse(localStorage.getItem('pocketDecks') || '[]') as SavedDeck[];
-      savedDecks.push(deckData);
-      localStorage.setItem('pocketDecks', JSON.stringify(savedDecks));
-      alert('Deck saved successfully!');
-      setShowSaveModal(false);
+      if (typeof window !== 'undefined') {
+        const savedDecks = JSON.parse(localStorage.getItem('pocketDecks') || '[]') as SavedDeck[];
+        savedDecks.push(deckData);
+        localStorage.setItem('pocketDecks', JSON.stringify(savedDecks));
+        alert('Deck saved successfully!');
+        setShowSaveModal(false);
+      } else {
+        alert('Saving is not available on server-side');
+      }
     } catch (error) {
       alert('Failed to save deck');
     }
@@ -396,32 +400,46 @@ function DeckBuilder() {
     return `Deck Name: ${deckName}\nTotal Cards: ${deckStats.totalCards}\n\n${deckText}`;
   }, [deck, deckName, deckStats]);
 
-  // Copy deck to clipboard
+  // Copy deck to clipboard (SSR safe)
   const copyDeckToClipboard = useCallback(async () => {
+    if (typeof window === 'undefined') {
+      alert('Clipboard functionality is not available on server');
+      return;
+    }
+    
     const deckText = exportDeckToText();
     try {
       await navigator.clipboard.writeText(deckText);
       alert('Deck copied to clipboard!');
     } catch (error) {
-      // Fallback for older browsers
-      const textArea = document.createElement('textarea');
-      textArea.value = deckText;
-      textArea.style.position = 'fixed';
-      textArea.style.left = '-999999px';
-      document.body.appendChild(textArea);
-      textArea.select();
-      try {
-        document.execCommand('copy');
-        alert('Deck copied to clipboard!');
-      } catch (err) {
-        alert('Failed to copy deck to clipboard');
+      // Fallback for older browsers (SSR safe)
+      if (typeof document !== 'undefined') {
+        const textArea = document.createElement('textarea');
+        textArea.value = deckText;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+          document.execCommand('copy');
+          alert('Deck copied to clipboard!');
+        } catch (err) {
+          alert('Failed to copy deck to clipboard');
+        }
+        document.body.removeChild(textArea);
+      } else {
+        alert('Clipboard functionality is not available');
       }
-      document.body.removeChild(textArea);
     }
   }, [exportDeckToText]);
 
-  // Download deck as text file
+  // Download deck as text file (SSR safe)
   const downloadDeck = useCallback(() => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      alert('Download functionality is not available on server');
+      return;
+    }
+    
     const deckText = exportDeckToText();
     const blob = new Blob([deckText], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);

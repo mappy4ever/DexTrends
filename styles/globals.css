@@ -8,6 +8,124 @@
 /* Import theme-aware utilities */
 @import './theme-utilities.css';
 
+/* CRITICAL: Import mobile no-cutoff rules */
+@import './no-cutoff-mobile.css';
+
+/* Prevent horizontal overflow on mobile */
+html {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
+body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+  position: relative;
+}
+
+/* Critical: Prevent Next.js app wrapper from expanding */
+#__next {
+  overflow-x: hidden !important;
+  max-width: 100vw !important;
+  position: relative !important;
+}
+
+/* Ensure all containers respect viewport */
+.container,
+[class*="container"] {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Fix for expanding content */
+img, video, iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Prevent any element from expanding viewport */
+* {
+  max-width: 100vw;
+}
+
+/* Mobile-specific constraints - PREVENT ALL CONTENT CUTOFF */
+@media (max-width: 768px) {
+  /* Override large paddings that might cause overflow */
+  .px-8 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  .px-6 {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+  
+  /* Constrain max-width classes */
+  .max-w-7xl,
+  .max-w-6xl,
+  .max-w-5xl,
+  .max-w-4xl {
+    max-width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  /* Fix grid containers */
+  .grid {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  /* Ensure grid items don't get cut off */
+  .grid > * {
+    min-width: 0;
+    overflow: visible !important;
+  }
+  
+  /* Card containers should never clip content */
+  [class*="Card"],
+  [class*="card"],
+  [class*="Move"],
+  [class*="move"] {
+    overflow: visible !important;
+    min-height: fit-content !important;
+  }
+  
+  /* All containers with rounded corners must not clip */
+  .rounded-lg,
+  .rounded-xl,
+  .rounded-2xl,
+  .rounded-3xl,
+  .rounded-full {
+    overflow: visible !important;
+  }
+  
+  /* Exception: rounded-full for avatars/icons can clip */
+  .rounded-full:where(img, [class*="icon"], [class*="avatar"]) {
+    overflow: hidden !important;
+  }
+  
+  /* Glass effects must not clip content */
+  .backdrop-blur-sm,
+  .backdrop-blur,
+  .backdrop-blur-md,
+  .backdrop-blur-lg,
+  .backdrop-blur-xl,
+  .backdrop-blur-2xl,
+  .backdrop-blur-3xl {
+    overflow: visible !important;
+  }
+  
+  /* Prevent absolute elements from causing overflow */
+  .absolute,
+  .fixed {
+    max-width: 100vw !important;
+  }
+}
+
 /* Override browser default focus styles for search inputs */
 @layer base {
   input[type="text"]:focus,

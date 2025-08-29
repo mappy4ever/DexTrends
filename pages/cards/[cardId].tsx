@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import Modal from "../../components/ui/modals/Modal";
 import EnhancedCardModal from "../../components/ui/EnhancedCardModal";
 import { FadeIn, SlideUp } from "../../components/ui/animations";
@@ -8,7 +9,7 @@ import { PriceHistoryChart } from "../../components/ui/LazyComponents";
 import { TypeBadge } from "../../components/ui/TypeBadge";
 import Image from "next/image";
 import { getPrice as getCardPrice } from "../../utils/pokemonutils";
-import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
+import { DetailPageSkeleton } from '@/components/ui/SkeletonLoadingSystem';
 import UnifiedCard from "../../components/ui/cards/UnifiedCard";
 import StyledBackButton from "../../components/ui/StyledBackButton";
 import SimpleCardWrapper from "../../components/ui/SimpleCardWrapper";
@@ -16,6 +17,9 @@ import logger from "../../utils/logger";
 import { useAppContext } from "../../context/UnifiedAppContext";
 import { fetchJSON } from "../../utils/unifiedFetch";
 import performanceMonitor from "../../utils/performanceMonitor";
+import { use3DTiltCard, getHolographicGradient } from "../../hooks/use3DTiltCard";
+import { cn } from "../../utils/cn";
+import { safeSessionStorage } from "../../utils/safeStorage";
 import type { TCGCard, CardSet } from "../../types/api/cards";
 import type { FavoriteCard } from "../../context/modules/types";
 
@@ -51,6 +55,29 @@ export default function CardDetailPage() {
   const [magnifyImage, setMagnifyImage] = useState(false);
   const [relatedCards, setRelatedCards] = useState<TCGCard[]>([]);
   const [cardSet, setCardSet] = useState<CardSet | null>(null);
+  
+  // 3D Tilt and Holographic effects with increased rotation for detail view
+  const {
+    cardRef,
+    isHovered,
+    rotateX,
+    rotateY,
+    scale,
+    holoX,
+    holoY,
+    holoOpacity,
+    shimmerX,
+    handleMouseMove,
+    handleMouseEnter,
+    handleMouseLeave,
+    shouldShowHolo,
+    holoIntensity,
+    particleCount
+  } = use3DTiltCard({
+    rarity: card?.rarity,
+    enableHolo: true,
+    maxRotation: 20 // Larger rotation for detail view
+  });
 
   // Check if card is favorite
   const isCardFavorite = (id: string): boolean => {
@@ -69,32 +96,31 @@ export default function CardDetailPage() {
       performanceMonitor.startTimer('page-load', `card-detail-${cardId}`);
       
       try {
-        // Check sessionStorage first for instant loading
+        // Check sessionStorage first for instant loading using safe wrapper
         if (typeof window !== 'undefined') {
-          const cachedCardData = sessionStorage.getItem(`card-${cardId}`);
-          const cachedSetData = sessionStorage.getItem(`set-${cardId.split('-')[0]}`);
+          const cachedCardData = safeSessionStorage.getItem(`card-${cardId}`);
+          const cachedSetData = safeSessionStorage.getItem(`set-${cardId.split('-')[0]}`);
           
           if (cachedCardData) {
             try {
-              const cardData = JSON.parse(cachedCardData);
-              setCard(cardData);
+              setCard(cachedCardData);
               logger.info('[Card Detail] Loaded from sessionStorage', { cardId });
               
               // Load set data if available
-              if (cachedSetData && cardData.set?.id) {
-                const setData = JSON.parse(sessionStorage.getItem(`set-${cardData.set.id}`) || 'null');
+              if (cachedSetData && cachedCardData.set?.id) {
+                const setData = safeSessionStorage.getItem(`set-${cachedCardData.set.id}`);
                 if (setData) {
                   setCardSet(setData);
-                  logger.info('[Card Detail] Set loaded from sessionStorage', { setId: cardData.set.id });
+                  logger.info('[Card Detail] Set loaded from sessionStorage', { setId: cachedCardData.set.id });
                 }
               }
               
               // Clean up sessionStorage after use
-              sessionStorage.removeItem(`card-${cardId}`);
+              safeSessionStorage.removeItem(`card-${cardId}`);
               
               // Still fetch related cards in background
-              if (cardData.name) {
-                const pokemonName = cardData.name.split(" ")[0];
+              if (cachedCardData.name) {
+                const pokemonName = cachedCardData.name.split(" ")[0];
                 fetchJSON<{ data: TCGCard[] }>(
                   `/api/tcg-cards?name=${encodeURIComponent(pokemonName)}`,
                   {
@@ -292,7 +318,16 @@ export default function CardDetailPage() {
   // Loading state
   if (loading) {
     return (
-      <PageLoader text="Loading card details..." />
+      <FullBleedWrapper>
+        <DetailPageSkeleton 
+          variant="card"
+          showHeader={true}
+          showImage={true}
+          showStats={true}
+          showTabs={false}
+          showRelated={true}
+        />
+      </FullBleedWrapper>
     );
   }
 
@@ -342,29 +377,154 @@ export default function CardDetailPage() {
 
         {/* Main card content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Card image section */}
+          {/* Card image section with 3D tilt */}
           <div className="lg:col-span-1">
-            <div className="relative">
+            <div 
+              className="relative perspective-1000"
+              onMouseMove={handleMouseMove}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+            >
               {/* Apply gradient background here */}
               <div className="p-4 rounded-xl shadow-lg" style={{ background: bgGradient }}>
-                {/* Card image with holographic effects and zoom functionality */}
-                <SimpleCardWrapper 
-                  rarity={card.rarity}
-                  className="mb-4"
+                {/* Card image with 3D tilt, holographic effects and zoom functionality */}
+                <motion.div
+                  ref={cardRef}
+                  style={{
+                    rotateX,
+                    rotateY,
+                    scale,
+                    transformStyle: 'preserve-3d'
+                  }}
+                  className="mb-4 preserve-3d"
                 >
-                  <div className="relative cursor-zoom-in" onClick={() => setMagnifyImage(true)}>
+                  <div className="relative cursor-zoom-in rounded-lg overflow-hidden" onClick={() => setMagnifyImage(true)}>
                     <img 
                       src={card.images.large} 
                       alt={card.name}
-                      className="w-full h-auto rounded-md shadow-sm"
+                      className="w-full h-auto rounded-lg shadow-sm"
                     />
-                    <div className="absolute top-2 right-2 p-1.5 bg-white/80 dark:bg-gray-800/80 rounded-full shadow-sm">
+                    
+                    {/* Holographic overlay that moves with tilt */}
+                    {shouldShowHolo && (
+                      <>
+                        {/* Base holographic gradient */}
+                        <motion.div
+                          className={cn(
+                            "absolute inset-0 rounded-lg mix-blend-color-dodge pointer-events-none",
+                            "bg-gradient-to-br",
+                            getHolographicGradient(card.rarity || 'Common')
+                          )}
+                          style={{ opacity: holoOpacity }}
+                        />
+                        
+                        {/* Dynamic light reflection that follows tilt */}
+                        <motion.div
+                          className="absolute inset-0 rounded-lg pointer-events-none"
+                          style={{
+                            background: `radial-gradient(circle at ${holoX}% ${holoY}%, rgba(255,255,255,${holoIntensity * 0.5}) 0%, transparent 60%)`,
+                            mixBlendMode: 'overlay'
+                          }}
+                        />
+                        
+                        {/* Rainbow shimmer effect that moves with tilt */}
+                        <AnimatePresence>
+                          {isHovered && (
+                            <motion.div
+                              className="absolute inset-0 rounded-lg pointer-events-none"
+                              initial={{ x: '-100%' }}
+                              animate={{ x: `${shimmerX.get()}%` }}
+                              transition={{ duration: 0.8 }}
+                            >
+                              <div 
+                                className="h-full w-1/2"
+                                style={{
+                                  background: `linear-gradient(90deg, 
+                                    transparent 0%,
+                                    rgba(255, 0, 0, ${holoIntensity * 0.4}) 20%,
+                                    rgba(255, 255, 0, ${holoIntensity * 0.4}) 35%,
+                                    rgba(0, 255, 0, ${holoIntensity * 0.4}) 50%,
+                                    rgba(0, 255, 255, ${holoIntensity * 0.4}) 65%,
+                                    rgba(0, 0, 255, ${holoIntensity * 0.4}) 80%,
+                                    transparent 100%
+                                  )`,
+                                  filter: 'blur(25px)',
+                                  mixBlendMode: 'screen'
+                                }}
+                              />
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                        
+                        {/* Foil texture overlay */}
+                        <div 
+                          className="absolute inset-0 rounded-lg pointer-events-none"
+                          style={{
+                            opacity: isHovered ? holoIntensity * 0.4 : 0,
+                            backgroundImage: `
+                              repeating-linear-gradient(
+                                45deg,
+                                transparent,
+                                transparent 3px,
+                                rgba(255, 255, 255, 0.15) 3px,
+                                rgba(255, 255, 255, 0.15) 6px
+                              ),
+                              repeating-linear-gradient(
+                                -45deg,
+                                transparent,
+                                transparent 3px,
+                                rgba(255, 255, 255, 0.1) 3px,
+                                rgba(255, 255, 255, 0.1) 6px
+                              )
+                            `,
+                            transition: 'opacity 0.3s ease'
+                          }}
+                        />
+                        
+                        {/* Sparkle particles for ultra rare cards */}
+                        {particleCount > 0 && isHovered && (
+                          <div className="absolute inset-0 rounded-lg pointer-events-none">
+                            {Array.from({ length: particleCount }).map((_, i) => (
+                              <motion.div
+                                key={i}
+                                className="absolute rounded-full"
+                                style={{
+                                  width: Math.random() * 3 + 1 + 'px',
+                                  height: Math.random() * 3 + 1 + 'px',
+                                  background: 'radial-gradient(circle, white, transparent)',
+                                  filter: 'blur(0.5px)'
+                                }}
+                                initial={{ 
+                                  x: Math.random() * 100 + '%',
+                                  y: Math.random() * 100 + '%',
+                                  scale: 0,
+                                  opacity: 0
+                                }}
+                                animate={{
+                                  scale: [0, 2, 0],
+                                  opacity: [0, 1, 0],
+                                }}
+                                transition={{
+                                  duration: Math.random() * 2 + 1,
+                                  repeat: Infinity,
+                                  delay: i * 0.15,
+                                  ease: "easeInOut"
+                                }}
+                              />
+                            ))}
+                          </div>
+                        )}
+                      </>
+                    )}
+                    
+                    {/* Magnify icon overlay */}
+                    <div className="absolute top-2 right-2 p-1.5 bg-white/80 dark:bg-gray-800/80 rounded-full shadow-sm pointer-events-none">
                       <svg className="w-5 h-5 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
                       </svg>
                     </div>
                   </div>
-                </SimpleCardWrapper>
+                </motion.div>
 
                 {/* Favorite button */}
                 <button 

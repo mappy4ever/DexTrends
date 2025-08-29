@@ -118,18 +118,31 @@ export const fetchTCGCards = async (pokemonName: string): Promise<TCGCard[]> => 
       async () => {
         const response = await fetchJSON<{ data: TCGCard[], meta?: ResponseMetadata }>(`/api/tcg-cards?name=${encodeURIComponent(sanitizedName)}`, {
           useCache: false, // Let cacheManager handle caching
-          timeout: 12000, // Longer timeout for TCG API
-          retries: 2
+          timeout: 15000, // Longer timeout for TCG API
+          retries: 2,
+          throwOnError: false // Handle errors gracefully
         });
         
-        // Handle new API response structure
-        const data = response?.data || response || [];
-        logger.debug('TCG API response', { 
-          sanitizedName, 
-          cardCount: Array.isArray(data) ? data.length : 0,
-          timestamp: response?.meta?.timestamp 
+        // fetchJSON returns the full response object already
+        // The API returns { data: [...], meta: {...} }
+        // Handle null response (timeout/error case)
+        if (!response) {
+          logger.warn('TCG API returned null response', { sanitizedName });
+          return [];
+        }
+        
+        const cards = response?.data || [];
+        logger.debug('TCG API response structure', { 
+          sanitizedName,
+          hasResponse: !!response,
+          hasData: !!response?.data,
+          responseType: typeof response,
+          isArray: Array.isArray(cards),
+          cardCount: Array.isArray(cards) ? cards.length : 0,
+          timestamp: response?.meta?.timestamp,
+          firstCard: Array.isArray(cards) && cards.length > 0 ? cards[0] : null
         });
-        return Array.isArray(data) ? data : [];
+        return Array.isArray(cards) ? cards : [];
       },
       { priority: CONFIG.PRIORITY.CRITICAL, ttl: CONFIG.DB_TTL }
     );

@@ -287,7 +287,7 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
   };
   
   const TypeBadge = ({ matchup }: { matchup: TypeMatchup }) => (
-    <div className="relative group inline-flex flex-col items-center gap-1">
+    <div className="relative group inline-flex flex-col items-center gap-1 m-[5px]">
       <GradientTypeBadge type={matchup.type} size="sm" variant="gradient" />
       <div className={cn(
         "text-xs font-bold",
@@ -529,7 +529,7 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
               Weak to ({weaknesses.length} types)
             </h3>
           </div>
-          <div className="flex flex-wrap">
+          <div className="flex flex-wrap gap-[5px]">
             {weaknesses.map((matchup) => (
               <TypeBadge key={matchup.type} matchup={matchup} />
             ))}
@@ -548,7 +548,7 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
               Resistant to ({resistances.length} types)
             </h3>
           </div>
-          <div className="flex flex-wrap">
+          <div className="flex flex-wrap gap-[5px]">
             {resistances.map((matchup) => (
               <TypeBadge key={matchup.type} matchup={matchup} />
             ))}
@@ -566,7 +566,7 @@ export const CompactTypeEffectiveness: React.FC<CompactTypeEffectivenessProps> =
             Immune to ({immunities.length} types)
           </h3>
         </div>
-        <div className="flex flex-wrap min-h-[60px]">
+        <div className="flex flex-wrap gap-[5px] min-h-[60px]">
           {immunities.length > 0 ? (
             immunities.map((matchup) => (
               <TypeBadge key={matchup.type} matchup={matchup} />

@@ -4,10 +4,10 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
 import logger from '../../utils/logger';
-import type { Database, TypeEffectivenessRecord, CompetitiveTierRecord, PokemonLearnsetRecord, MoveCompetitiveDataRecord, AbilityRatingRecord } from '../../types/database';
+import type { Database, TypeEffectivenessRecord, CompetitiveTierRecord, PokemonLearnsetRecord, MoveCompetitiveDataRecord, AbilityRatingRecord, ItemShowdownRecord } from '../../types/database';
 
 // Load environment variables from root .env file
-const envPath = path.resolve(process.cwd(), '.env.local');
+const envPath = path.resolve(__dirname, '../../.env.local');
 const result = dotenv.config({ path: envPath });
 
 if (result.error) {
@@ -627,6 +627,146 @@ async function syncAbilities(): Promise<SyncResult> {
   }
 }
 
+// Sync items data from Showdown
+async function syncItems(): Promise<SyncResult> {
+  try {
+    const content = await fetchWithRetry(`${SHOWDOWN_BASE_URL}/items.js`);
+    
+    // Parse items data
+    let items: Record<string, unknown>;
+    try {
+      const sandbox = { exports: {} };
+      const func = new Function('exports', `${content}; return exports.BattleItems;`);
+      items = func(sandbox.exports);
+    } catch (error) {
+      logger.error('Error parsing items:', { error: error.message });
+      throw new Error('Failed to parse items data');
+    }
+    
+    const records: ItemShowdownRecord[] = [];
+    
+    // Map item categories based on common patterns
+    function getItemCategory(itemName: string, itemData: any): string {
+      const name = itemName.toLowerCase();
+      
+      // Berries
+      if (name.includes('berry')) return 'berries';
+      
+      // Medicine/healing items
+      if (name.includes('potion') || name.includes('heal') || name.includes('restore') || 
+          name.includes('revive') || name.includes('antidote') || name.includes('cure') ||
+          name.includes('elixir') || name.includes('ether')) return 'medicine';
+      
+      // Evolution items
+      if (name.includes('stone') || name.includes('scale') || name.includes('claw') ||
+          name.includes('fang') || name.includes('crown') || itemData.itemUser) return 'evolution';
+      
+      // Battle items
+      if (name.includes('x ') || name.includes('guard') || name.includes('dire hit')) return 'battle';
+      
+      // Held items
+      if (itemData.fling || itemData.onBasePowerPriority || itemData.boosts || 
+          name.includes('orb') || name.includes('band') || name.includes('specs') ||
+          name.includes('scarf') || name.includes('lens') || name.includes('focus')) return 'holdable';
+      
+      // Treasures
+      if (name.includes('nugget') || name.includes('pearl') || name.includes('shard') ||
+          name.includes('star') || name.includes('comet')) return 'treasures';
+      
+      // Pokeballs
+      if (name.includes('ball') && !name.includes('orb')) return 'pokeballs';
+      
+      // TMs
+      if (name.startsWith('tm') || name.startsWith('tr')) return 'machines';
+      
+      // Key items
+      if (itemData.isNonstandard || name.includes('key') || name.includes('card')) return 'key-items';
+      
+      return 'misc';
+    }
+    
+    // Sort items alphabetically for consistent ID generation
+    const sortedItems = Object.entries(items).sort(([a], [b]) => a.toLowerCase().localeCompare(b.toLowerCase()));
+    
+    sortedItems.forEach(([itemName, data]: [string, any]) => {
+      // Skip if not a proper item
+      if (!data.name || typeof data.num !== 'number') {
+        return;
+      }
+      
+      const record: ItemShowdownRecord = {
+        item_id: data.num,
+        name: itemName.toLowerCase().replace(/[^a-z0-9]/g, ''),
+        display_name: data.name,
+        spritenum: data.spritenum || null,
+        sprite_url: `https://play.pokemonshowdown.com/sprites/itemicons/${itemName.toLowerCase().replace(/[^a-z0-9]/g, '-')}.png`,
+        generation: data.gen || null,
+        description: data.desc || null,
+        short_description: data.shortDesc || null,
+        fling_power: data.fling?.basePower || null,
+        is_choice: data.isChoice || false,
+        is_nonstandard: data.isNonstandard || false,
+        category: getItemCategory(itemName, data),
+        competitive_data: {
+          boosts: data.boosts || null,
+          flags: data.flags || null,
+          condition: data.condition || null,
+          onTakeItem: data.onTakeItem || null,
+          onStart: data.onStart || null,
+          onEnd: data.onEnd || null,
+          megaStone: data.megaStone || null,
+          megaEvolves: data.megaEvolves || null,
+          itemUser: data.itemUser || null,
+          zMove: data.zMove || null,
+          zMoveType: data.zMoveType || null,
+          zMoveFrom: data.zMoveFrom || null
+        }
+      };
+      
+      records.push(record);
+    });
+    
+    logger.info(`Parsed ${records.length} items from Showdown`);
+    
+    // Clear existing data for full refresh
+    const { error: deleteError } = await supabase
+      .from('items_showdown')
+      .delete()
+      .neq('id', 0); // Delete all records
+    
+    if (deleteError) {
+      logger.error('Error clearing items_showdown table:', { error: deleteError });
+    }
+    
+    // Insert in batches
+    for (let i = 0; i < records.length; i += BATCH_SIZE) {
+      const batch = records.slice(i, i + BATCH_SIZE);
+      const { error } = await supabase
+        .from('items_showdown')
+        .insert(batch);
+      
+      if (error) {
+        throw new Error(`Database insert error: ${error.message}`);
+      }
+      
+      logger.info(`Inserted batch ${Math.floor(i / BATCH_SIZE) + 1}/${Math.ceil(records.length / BATCH_SIZE)}`);
+    }
+    
+    return {
+      success: true,
+      file: 'items.js',
+      recordsProcessed: records.length
+    };
+  } catch (error) {
+    return {
+      success: false,
+      file: 'items.js',
+      recordsProcessed: 0,
+      error: error.message
+    };
+  }
+}
+
 // Main execution
 async function main() {
   logger.info('=== Pokemon Showdown Data Sync ===');
@@ -641,6 +781,7 @@ async function main() {
   const learnsetsOnly = args.includes('--learnsets-only');
   const movesOnly = args.includes('--moves-only');
   const abilitiesOnly = args.includes('--abilities-only');
+  const itemsOnly = args.includes('--items-only');
   
   if (isDryRun) {
     logger.info('DRY RUN MODE - No data will be written to database');
@@ -669,6 +810,8 @@ async function main() {
     syncsToRun.push(syncMoveData());
   } else if (abilitiesOnly) {
     syncsToRun.push(syncAbilities());
+  } else if (itemsOnly) {
+    syncsToRun.push(syncItems());
   } else {
     // Run all syncs
     syncsToRun.push(
@@ -676,7 +819,8 @@ async function main() {
       syncPokemonTiers(),
       syncLearnsets(),
       syncMoveData(),
-      syncAbilities()
+      syncAbilities(),
+      syncItems()
     );
   }
   

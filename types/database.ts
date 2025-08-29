@@ -291,6 +291,25 @@ export interface AbilityRatingRecord {
   updated_at?: string;
 }
 
+export interface ItemShowdownRecord {
+  id?: number;
+  item_id: number;
+  name: string;
+  display_name: string;
+  spritenum: number | null;
+  sprite_url: string | null;
+  generation: number | null;
+  description: string | null;
+  short_description: string | null;
+  fling_power: number | null;
+  is_choice: boolean;
+  is_nonstandard: boolean;
+  category: string | null;
+  competitive_data: Record<string, unknown> | null;
+  created_at?: string;
+  updated_at?: string;
+}
+
 // ============== Function Return Types ==============
 
 export interface CardPriceTrendResult {
@@ -347,7 +366,8 @@ export type TableNames =
   | 'competitive_tiers'
   | 'pokemon_learnsets'
   | 'move_competitive_data'
-  | 'ability_ratings';
+  | 'ability_ratings'
+  | 'items_showdown';
 
 // ============== Generic Database Row Types ==============
 
@@ -498,6 +518,11 @@ export interface Database {
         Row: AbilityRatingRecord;
         Insert: Omit<AbilityRatingRecord, 'id' | 'created_at' | 'updated_at'>;
         Update: Partial<Omit<AbilityRatingRecord, 'id' | 'created_at'>>;
+      };
+      items_showdown: {
+        Row: ItemShowdownRecord;
+        Insert: Omit<ItemShowdownRecord, 'id' | 'created_at' | 'updated_at'>;
+        Update: Partial<Omit<ItemShowdownRecord, 'id' | 'created_at'>>;
       };
     };
     Views: Record<string, never>;

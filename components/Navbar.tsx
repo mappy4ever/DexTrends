@@ -54,11 +54,11 @@ export default function Navbar() {
 
   // DexTrends Pokémon-themed navigation with dropdown structure
   const navItems: NavItem[] = [
-    { href: "/", label: "Home", icon: <BsGrid size={22} />, color: "text-pokeball-red" },
+    { href: "/", label: "Home", icon: <BsGrid size={18} />, color: "text-pokeball-red" },
     { 
       href: "/tcgsets", 
       label: "Pokémon TCG", 
-      icon: <BsCardList size={22} />, 
+      icon: <BsCardList size={18} />, 
       color: "text-greatball-blue",
       hasDropdown: true,
       dropdownItems: [
@@ -71,11 +71,11 @@ export default function Navbar() {
         { href: "/trending", label: "Leaderboard", icon: <RiGovernmentFill size={18} />, description: "Top collectors and rankings" },
       ]
     },
-    { href: "/pokedex", label: "Pokédex", icon: <BsBook size={22} />, color: "text-poke-fairy" },
+    { href: "/pokedex", label: "Pokédex", icon: <BsBook size={18} />, color: "text-poke-fairy" },
     {
       href: "/pokemon",
       label: "Pokémon",
-      icon: <BsGlobeEuropeAfrica size={22} />,
+      icon: <BsGlobeEuropeAfrica size={18} />,
       color: "text-poke-grass",
       hasDropdown: true,
       dropdownItems: [
@@ -90,7 +90,7 @@ export default function Navbar() {
     {
       href: "/battle-simulator",
       label: "Battle",
-      icon: <GiCrossedSwords size={22} />,
+      icon: <GiCrossedSwords size={18} />,
       color: "text-poke-fighting",
       hasDropdown: true,
       dropdownItems: [
@@ -103,7 +103,7 @@ export default function Navbar() {
     { 
       href: "/pocketmode", 
       label: "Pocket", 
-      icon: <GiCardPickup size={22} />, 
+      icon: <GiCardPickup size={18} />, 
       color: "text-poke-electric",
       hasDropdown: true,
       dropdownItems: [
@@ -114,7 +114,7 @@ export default function Navbar() {
         { href: "/pocketmode/deckbuilder", label: "Deck Builder", icon: <GiPokerHand size={18} />, description: "Build custom decks" },
       ]
     },
-    { href: "/fun", label: "Fun", icon: <AiOutlineBulb size={22} />, color: "text-poke-psychic" },
+    { href: "/fun", label: "Fun", icon: <AiOutlineBulb size={18} />, color: "text-poke-psychic" },
   ];
 
   const pageTitles = navItems.reduce<Record<string, string>>((acc, item) => {
@@ -136,11 +136,47 @@ export default function Navbar() {
     });
   };
 
+  // Close mobile menu on route change - using pathname for reliability
+  useEffect(() => {
+    setMobileOpen(false);
+    setDropdownStates({});
+    // Clean up any stuck states
+    document.body.style.overflow = '';
+    document.body.classList.remove('mobile-menu-open');
+  }, [router.pathname]);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileOpen]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      setMobileOpen(false);
+      document.body.style.overflow = '';
+    };
+  }, []);
+
   // Click outside for mobile menu and dropdowns
   useEffect(() => {
     if (typeof document === 'undefined') return;
 
     const handleClickOutside = (event: MouseEvent) => {
+      // Don't close if clicking the mobile menu button
+      const mobileToggle = document.getElementById("mobile-menu-button");
+      if (mobileToggle && mobileToggle.contains(event.target as Node)) {
+        return;
+      }
+
       // Don't close if clicking inside any dropdown
       const clickedInsideDropdown = (event.target as HTMLElement).closest('.absolute.top-full');
       if (clickedInsideDropdown) {
@@ -154,10 +190,6 @@ export default function Navbar() {
       }
 
       if (mobileOpen && menuWrapperRef.current && !menuWrapperRef.current.contains(event.target as Node)) {
-        const mobileToggle = document.getElementById("mobile-menu-button");
-        if (mobileToggle && mobileToggle.contains(event.target as Node)) {
-            return;
-        }
         setMobileOpen(false);
       }
       
@@ -172,10 +204,11 @@ export default function Navbar() {
   }, [mobileOpen]);
 
 
+
   return (
     <>
-      {/* Redesigned Navbar with Gradient Glass Effect */}
-      <div className="fixed top-0 left-0 right-0 flex items-center justify-between px-3 md:px-6 h-16 md:h-20 z-40 bg-white dark:bg-gray-900 backdrop-blur-xl border-b border-gray-200 dark:border-gray-700 shadow-lg safe-area-padding-top navbar-ios">
+      {/* Redesigned Navbar with Gradient Glass Effect - Reasonable size with visible logo */}
+      <div className="fixed top-0 left-0 right-0 flex items-center justify-between px-3 md:px-6 h-14 md:h-16 z-30 bg-white dark:bg-gray-900 backdrop-blur-xl border-b border-gray-200 dark:border-gray-700 shadow-lg safe-area-padding-top">
         <NavbarLogo />
         <nav className="hidden md:flex items-center gap-x-3">
           {navItems.map(item => {
@@ -212,7 +245,7 @@ export default function Navbar() {
                       }
                     }}
                   >
-                    <span className={`flex-shrink-0 w-5 h-5 transition-colors duration-300 ${isActive ? 'text-white' : item.color || 'text-gray-600'}`}>
+                    <span className={`flex-shrink-0 flex items-center justify-center w-5 h-5 transition-colors duration-300 ${isActive ? 'text-white' : item.color || 'text-gray-600'}`}>
                       {item.icon}
                     </span>
                     <span className="truncate text-sm font-semibold">{item.label}</span>
@@ -289,7 +322,7 @@ export default function Navbar() {
                     : 'text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 dark:hover:from-red-900/50 dark:hover:to-pink-900/50 hover:border-pink-200 dark:hover:border-pink-700 hover:shadow-lg hover:scale-105 hover:text-red-700 dark:hover:text-red-300'}`}
                 style={{ pointerEvents: 'auto' }}
               >
-                <span className={`flex-shrink-0 w-5 h-5 transition-all duration-300 ${isActive ? 'text-white' : item.color || 'text-gray-600'} group-hover:scale-110`}>
+                <span className={`flex-shrink-0 flex items-center justify-center w-5 h-5 transition-all duration-300 ${isActive ? 'text-white' : item.color || 'text-gray-600'} group-hover:scale-110`}>
                   {item.icon}
                 </span>
                 <span className="truncate text-sm font-semibold">{item.label}</span>
@@ -356,13 +389,13 @@ export default function Navbar() {
           <button
             aria-label={mounted && theme === 'dark' ? "Activate light mode" : "Activate dark mode"}
             title={mounted && theme === 'dark' ? "Activate light mode" : "Activate dark mode"}
-            className="p-3 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-750 hover:border-gray-300 dark:hover:border-gray-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+            className="p-2 md:p-2.5 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-750 hover:border-gray-300 dark:hover:border-gray-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
             onClick={toggleTheme}
           >
             <ClientOnly>
               {theme === 'dark' ? 
-                <BsSun size={20} className="text-yellow-500" /> : 
-                <BsMoon size={20} className="text-blue-600" />
+                <BsSun size={16} className="text-yellow-500" /> : 
+                <BsMoon size={16} className="text-blue-600" />
               }
             </ClientOnly>
           </button>
@@ -370,10 +403,16 @@ export default function Navbar() {
           {/* Mobile Menu Button - Larger for better touch */}
           <button
             id="mobile-menu-button"
-            className="md:hidden p-4 rounded-full bg-gradient-to-r from-pokemon-red to-pink-500 text-white hover:from-red-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-300 touch-manipulation transform active:scale-95"
-            onClick={() => setMobileOpen(!mobileOpen)}
+            className="md:hidden p-2.5 rounded-full bg-gradient-to-r from-pokemon-red to-pink-500 text-white hover:from-red-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-300 touch-manipulation transform active:scale-95"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setMobileOpen(prev => !prev);
+              logger.debug('Mobile menu toggled', { newState: !mobileOpen });
+            }}
             aria-label="Toggle mobile menu"
-            style={{ minHeight: '56px', minWidth: '56px' }}
+            aria-expanded={mobileOpen}
+            style={{ minHeight: '40px', minWidth: '40px' }}
           >
             <div className="w-5 h-5 flex flex-col justify-center space-y-1">
               <div className={`w-full h-0.5 bg-white transition-all duration-300${mounted && mobileOpen ? ' rotate-45 translate-y-1' : ''}`} />
@@ -383,12 +422,26 @@ export default function Navbar() {
           </button>
         </div>
       </div>
-      {/* Mobile Menu Overlay */}
-      <ClientOnly>
-        {mobileOpen && (
-        <div className="fixed inset-0 z-50 md:hidden">
-          <div className="fixed inset-0 bg-black/75 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
-          <div ref={menuWrapperRef} className="fixed right-0 left-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 p-4 shadow-2xl safe-area-padding-x rounded-t-3xl" style={{ top: 'calc(64px + env(safe-area-inset-top))' }}>
+      {/* Mobile Menu Overlay - Proper z-index and rendering */}
+      {mobileOpen && (
+        <>
+          {/* Backdrop - single layer with proper z-index */}
+          <div 
+            className="fixed inset-0 bg-black/50 z-40 md:hidden"
+            style={{ 
+              backdropFilter: 'blur(4px)',
+              WebkitBackdropFilter: 'blur(4px)',
+              pointerEvents: 'auto'
+            }}
+            onClick={() => setMobileOpen(false)}
+          />
+          
+          {/* Menu panel - slide in from right, above backdrop */}
+          <div 
+            ref={menuWrapperRef}
+            className="fixed right-0 top-16 bottom-0 w-80 max-w-[85vw] bg-white dark:bg-gray-900 shadow-2xl z-50 md:hidden overflow-y-auto safe-area-padding-x"
+            onClick={(e) => e.stopPropagation()}
+          >
             <nav className="flex flex-col space-y-2">
               {navItems.map(item => {
                 const isActive = router.pathname === item.href || 
@@ -453,11 +506,10 @@ export default function Navbar() {
               })}
             </nav>
           </div>
-        </div>
+        </>
       )}
-      </ClientOnly>
-      {/* Spacer for fixed navbar with iOS Safe Area */}
-      <div className="h-16 md:h-20 navbar-spacer-ios" />
+      {/* Spacer for fixed navbar */}
+      <div className="h-16 md:h-20" />
       <GlobalSearchModal ref={searchModalRef} />
       
       {/* Advanced Search Modal */}

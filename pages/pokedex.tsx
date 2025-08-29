@@ -12,7 +12,7 @@ import FullBleedWrapper from "../components/ui/FullBleedWrapper";
 import type { Pokemon, PokemonType, PokemonSprites, PokemonSpecies } from "../types/pokemon";
 import EnhancedPokemonCard from "../components/ui/cards/EnhancedPokemonCard";
 import { GlassContainer } from "../components/ui/design-system/GlassContainer";
-import { InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
+import { InlineLoader, PokemonCardSkeleton } from '@/components/ui/SkeletonLoadingSystem';
 import { CircularButton, GradientButton } from "../components/ui/design-system";
 import { FiFilter, FiChevronDown, BsSearch } from "../components/ui/LazyIcon";
 import { createGlassStyle } from '../components/ui/design-system/glass-constants';
@@ -907,34 +907,79 @@ const PokedexIndex: NextPage = () => {
       setLoading(true);
       setError(null);
       
-      // Re-trigger the initial loading
-      window.location.reload();
+      // Re-trigger the initial loading (SSR safe)
+      if (typeof window !== 'undefined') {
+        window.location.reload();
+      }
     } catch (err) {
       logger.error('Refresh failed', { error: err });
       setError("Failed to refresh Pokédex data");
     }
   }, []);
 
-  // Loading state with pokeball loader
+  // Loading state with skeleton loading
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
-        <div className="text-center">
-          <PokeballLoader size="large" text={loadingProgress < 100 ? `Loading Pokémon... ${loadingProgress}% complete` : "Loading Pokémon..."} />
+      <FullBleedWrapper>
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
+          <Head>
+            <title>Loading Pokédex - DexTrends</title>
+          </Head>
           
-          {/* Progress bar */}
-          <div className="mt-6 max-w-md mx-auto px-8">
-            <div className="text-sm text-gray-600 mb-2">Loading Pokemon data from PokeAPI...</div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div 
-                className="bg-gradient-to-r from-blue-600 to-purple-600 h-2 rounded-full transition-all duration-300"
-                style={{ width: `${loadingProgress}%` }}
-              ></div>
+          {/* Header Skeleton */}
+          <div className="p-6 mb-8">
+            <div className="max-w-7xl mx-auto">
+              <div className="text-center mb-8">
+                <div className="h-12 w-64 bg-gray-200 dark:bg-gray-700 rounded-lg mx-auto mb-4 animate-pulse" />
+                <div className="h-6 w-96 bg-gray-200 dark:bg-gray-700 rounded mx-auto animate-pulse" />
+              </div>
+              
+              {/* Search and Filter Skeleton */}
+              <div className="flex flex-col md:flex-row gap-4 mb-6">
+                <div className="flex-1 h-12 bg-white/80 dark:bg-gray-800/80 rounded-full animate-pulse" />
+                <div className="w-32 h-12 bg-white/80 dark:bg-gray-800/80 rounded-full animate-pulse" />
+                <div className="w-32 h-12 bg-white/80 dark:bg-gray-800/80 rounded-full animate-pulse" />
+              </div>
             </div>
-            <div className="text-sm text-gray-500 mt-1">{loadingProgress}% complete</div>
           </div>
+          
+          {/* Pokemon Grid Skeleton */}
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+              {Array.from({ length: INITIAL_LOAD }).map((_, index) => (
+                <PokemonCardSkeleton 
+                  key={index} 
+                  variant="grid"
+                  showStats={false}
+                  className="h-full"
+                />
+              ))}
+            </div>
+          </div>
+          
+          {/* Loading Progress Overlay */}
+          {loadingProgress > 0 && (
+            <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50">
+              <div className="bg-white dark:bg-gray-800 rounded-full shadow-lg p-4">
+                <div className="flex items-center gap-3">
+                  <PokeballLoader size="small" text="" randomBall={false} />
+                  <div>
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Loading Pokémon... {loadingProgress}%
+                    </p>
+                    <div className="w-48 bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-1 overflow-hidden">
+                      <div 
+                        className="bg-gradient-to-r from-red-500 to-red-600 h-full transition-all duration-300"
+                        style={{ width: `${loadingProgress}%` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-      </div>
+      </FullBleedWrapper>
     );
   }
 
@@ -944,7 +989,11 @@ const PokedexIndex: NextPage = () => {
         <div className="flex flex-col items-center justify-center min-h-screen">
           <p className="text-red-500 text-xl mb-4">{error}</p>
           <CircularButton
-            onClick={() => window.location.reload()}
+            onClick={() => {
+              if (typeof window !== 'undefined') {
+                window.location.reload();
+              }
+            }}
             variant="primary"
           >
             Try Again
@@ -970,7 +1019,7 @@ const PokedexIndex: NextPage = () => {
             <div className="absolute inset-0 bg-gradient-to-br from-blue-100/40 via-purple-100/40 to-pink-100/40 dark:from-blue-900/20 dark:via-purple-900/20 dark:to-pink-900/20" />
             
             <div className="relative z-10">
-              <h1 className="text-5xl md:text-6xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600">
+              <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600">
                 Complete Pokédex
               </h1>
               <p className="text-gray-600 dark:text-gray-300 text-lg mb-4">
@@ -1003,7 +1052,7 @@ const PokedexIndex: NextPage = () => {
           {/* Enhanced Search and Filter Bar with Glass Morphism */}
           <div className="sticky top-16 z-20 pb-4">
             <GlassContainer variant="medium" blur="lg" rounded="3xl" className="shadow-xl border-2 border-white/40 dark:border-gray-700/40">
-              <div className="flex flex-col lg:flex-row gap-4">
+              <div className="flex flex-col xs:flex-row gap-3 xs:gap-4">
                 {/* Search Input */}
                 <div className="flex-1">
                   <input
@@ -1012,12 +1061,12 @@ const PokedexIndex: NextPage = () => {
                     value={pendingSearchTerm}
                     onChange={(e) => setPendingSearchTerm(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                    className="w-full px-4 py-2 text-sm backdrop-blur-md bg-white/70 dark:bg-gray-800/70 border border-white/30 dark:border-gray-700/30 rounded-2xl focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 placeholder:text-gray-500 shadow-inner transition-all duration-300"
+                    className="w-full px-3 xs:px-4 py-2 text-sm backdrop-blur-md bg-white/70 dark:bg-gray-800/70 border border-white/30 dark:border-gray-700/30 rounded-2xl focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 placeholder:text-gray-500 shadow-inner transition-all duration-300"
                   />
                 </div>
 
-              {/* Filter Buttons */}
-              <div className="flex gap-2">
+              {/* Filter Buttons - Stack on smallest screens */}
+              <div className="flex flex-wrap xs:flex-nowrap gap-2">
                 <CircularButton
                   onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
                   variant={showAdvancedFilters ? "primary" : "secondary"}
@@ -1215,7 +1264,7 @@ const PokedexIndex: NextPage = () => {
               rounded="3xl" 
               className="mb-8 bg-gradient-to-br from-white/40 via-white/30 to-white/40 dark:from-gray-800/40 dark:via-gray-800/30 dark:to-gray-800/40"
             >
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
+              <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 xs:gap-4 sm:gap-6">
                 {displayedPokemon.map((pokemon) => (
                   <EnhancedPokemonCard
                     key={pokemon.id}

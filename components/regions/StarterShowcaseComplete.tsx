@@ -212,7 +212,7 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
         gradient: true, 
         rounded: 'xl',
         shadow: 'xl'
-      })} style={{ padding: '2rem' }}>
+      })} style={{ padding: '1rem' }}>
         
         {/* Header */}
         <div className="text-center mb-8">
@@ -225,7 +225,7 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
         </div>
 
         {/* Starter Selection Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 mb-10">
           {starters.map((starter, index) => {
             const chain = evolutionData[index];
             const isSelected = selectedStarter === index;
@@ -273,7 +273,7 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
                 </div>
 
                 {/* Pokemon Image */}
-                <div className="relative w-32 h-32 mx-auto mb-4">
+                <div className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-4">
                   <div className={`absolute inset-0 bg-gradient-to-br ${gradient} rounded-full blur-2xl opacity-30`} />
                   <Image
                     src={chain.stage1.sprite}
@@ -284,7 +284,7 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
                 </div>
 
                 {/* Pokemon Info */}
-                <h3 className="text-xl font-bold capitalize text-gray-800 dark:text-white mb-2">
+                <h3 className="text-base sm:text-lg md:text-xl font-bold capitalize text-gray-800 dark:text-white mb-2">
                   {starter}
                 </h3>
                 
@@ -368,7 +368,7 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
             </div>
 
             {/* Evolution Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
               {/* Stage 1 */}
               <EvolutionCard
                 pokemon={currentChain.stage1}

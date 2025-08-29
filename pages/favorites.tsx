@@ -46,17 +46,32 @@ const FavoritesPage: NextPage = () => {
   const [pokemonData, setPokemonData] = useState<SimplePokemon[]>([]);
   const [cardsData, setCardsData] = useState<TCGCard[]>([]);
   const [loading, setLoading] = useState(true);
+  const [pokemonError, setPokemonError] = useState<string | null>(null);
+  const [cardsError, setCardsError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState({ pokemon: 0, cards: 0 });
+  const [isRetrying, setIsRetrying] = useState({ pokemon: false, cards: false });
+
+  // Enhanced retry logic
+  // Placeholder functions - will be replaced when properly scoped
+  const retryWithBackoff = async (type: 'pokemon' | 'cards', retries = 3) => {
+    // This will be handled inside the respective useEffect hooks
+    logger.debug('retryWithBackoff called', { type, retries });
+  };
 
   // Fetch favorite Pokémon data
   useEffect(() => {
     async function fetchPokemonData() {
       if (!favorites?.pokemon?.length) {
         setPokemonData([]);
+        setPokemonError(null);
         return;
       }
 
       try {
         setLoading(true);
+        setPokemonError(null);
+        setIsRetrying(prev => ({ ...prev, pokemon: false }));
+        
         const pokemonPromises = favorites.pokemon.map(async (id) => {
           try {
             const data = await fetchJSON<APIPokemon>(`https://pokeapi.co/api/v2/pokemon/${id}`, {
@@ -81,15 +96,61 @@ const FavoritesPage: NextPage = () => {
         });
 
         const results = await Promise.all(pokemonPromises);
-        setPokemonData(results.filter((pokemon): pokemon is SimplePokemon => pokemon !== null));
+        const validPokemon = results.filter((pokemon): pokemon is SimplePokemon => pokemon !== null);
+        setPokemonData(validPokemon);
+        
+        // If we got no valid results but had favorites, show an error
+        if (validPokemon.length === 0 && favorites.pokemon.length > 0) {
+          throw new Error('Failed to load any Pokemon data');
+        }
+        
       } catch (err) {
-        logger.error("Error fetching Pokémon data:", { error: err });
+        let errorMessage = "Failed to load Pokemon data.";
+        let shouldRetry = false;
+        
+        if (err instanceof TypeError && err.message.includes('fetch')) {
+          errorMessage = "Network connection failed. Please check your internet connection.";
+          shouldRetry = true;
+        } else if (err instanceof Error) {
+          if (err.message.includes('timeout') || err.message.includes('TIMEOUT')) {
+            errorMessage = "Request timed out. The Pokemon API is taking too long to respond.";
+            shouldRetry = true;
+          } else if (err.message.includes('500') || err.message.includes('502') || err.message.includes('503')) {
+            errorMessage = "Pokemon API server error. Please try again in a few minutes.";
+            shouldRetry = true;
+          } else if (err.message.includes('rate limit') || err.message.includes('429')) {
+            errorMessage = "Rate limit exceeded. Please wait before retrying.";
+            shouldRetry = true;
+          }
+        }
+        
+        logger.error("Error fetching Pokémon data", { 
+          error: err, 
+          errorMessage, 
+          shouldRetry, 
+          retryCount: retryCount.pokemon,
+          favoritesCount: favorites?.pokemon?.length || 0
+        });
+        
+        // Attempt retry for network-related errors
+        if (shouldRetry && retryCount.pokemon < 3) {
+          setRetryCount(prev => ({ ...prev, pokemon: prev.pokemon + 1 }));
+          setTimeout(() => {
+            fetchPokemonData();
+          }, 2000 * (retryCount.pokemon + 1));
+          return;
+        }
+        
+        setPokemonError(errorMessage);
+        setRetryCount(prev => ({ ...prev, pokemon: 0 }));
       } finally {
         setLoading(false);
+        setIsRetrying(prev => ({ ...prev, pokemon: false }));
       }
     }
 
     fetchPokemonData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [favorites?.pokemon]);
 
   // Fetch favorite cards data
@@ -97,11 +158,15 @@ const FavoritesPage: NextPage = () => {
     async function fetchCardsData() {
       if (!favorites?.cards?.length) {
         setCardsData([]);
+        setCardsError(null);
         return;
       }
 
       try {
         setLoading(true);
+        setCardsError(null);
+        setIsRetrying(prev => ({ ...prev, cards: false }));
+        
         const cardsPromises = favorites.cards.map(async (id) => {
           try {
             const response = await fetchJSON<TCGCardApiResponse>(`https://api.pokemontcg.io/v2/cards/${id}`, {
@@ -118,15 +183,63 @@ const FavoritesPage: NextPage = () => {
         });
 
         const results = await Promise.all(cardsPromises);
-        setCardsData(results.filter((card): card is TCGCard => card !== null));
+        const validCards = results.filter((card): card is TCGCard => card !== null);
+        setCardsData(validCards);
+        
+        // If we got no valid results but had favorites, show an error
+        if (validCards.length === 0 && favorites.cards.length > 0) {
+          throw new Error('Failed to load any card data');
+        }
+        
       } catch (err) {
-        logger.error("Error fetching cards data:", { error: err });
+        let errorMessage = "Failed to load TCG card data.";
+        let shouldRetry = false;
+        
+        if (err instanceof TypeError && err.message.includes('fetch')) {
+          errorMessage = "Network connection failed. Please check your internet connection.";
+          shouldRetry = true;
+        } else if (err instanceof Error) {
+          if (err.message.includes('timeout') || err.message.includes('TIMEOUT')) {
+            errorMessage = "Request timed out. The Pokemon TCG API is taking too long to respond.";
+            shouldRetry = true;
+          } else if (err.message.includes('500') || err.message.includes('502') || err.message.includes('503')) {
+            errorMessage = "Pokemon TCG API server error. Please try again in a few minutes.";
+            shouldRetry = true;
+          } else if (err.message.includes('403') || err.message.includes('401')) {
+            errorMessage = "Access denied to Pokemon TCG API. API key may be invalid.";
+          } else if (err.message.includes('rate limit') || err.message.includes('429')) {
+            errorMessage = "Rate limit exceeded. Please wait before retrying.";
+            shouldRetry = true;
+          }
+        }
+        
+        logger.error("Error fetching cards data", { 
+          error: err, 
+          errorMessage, 
+          shouldRetry, 
+          retryCount: retryCount.cards,
+          favoritesCount: favorites?.cards?.length || 0
+        });
+        
+        // Attempt retry for network-related errors
+        if (shouldRetry && retryCount.cards < 3) {
+          setRetryCount(prev => ({ ...prev, cards: prev.cards + 1 }));
+          setTimeout(() => {
+            fetchCardsData();
+          }, 2000 * (retryCount.cards + 1));
+          return;
+        }
+        
+        setCardsError(errorMessage);
+        setRetryCount(prev => ({ ...prev, cards: 0 }));
       } finally {
         setLoading(false);
+        setIsRetrying(prev => ({ ...prev, cards: false }));
       }
     }
 
     fetchCardsData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [favorites?.cards]);
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
@@ -176,7 +289,14 @@ const FavoritesPage: NextPage = () => {
       {/* Tab Content */}
       {loading ? (
         <div className="flex items-center justify-center min-h-[400px]">
-          <PokeballLoader size="large" text="Loading your favorites..." />
+          <PokeballLoader 
+            size="large" 
+            text={
+              isRetrying.pokemon && activeTab === 'pokemon' ? `Retrying Pokemon... (Attempt ${retryCount.pokemon + 1})` :
+              isRetrying.cards && activeTab === 'cards' ? `Retrying Cards... (Attempt ${retryCount.cards + 1})` :
+              "Loading your favorites..."
+            } 
+          />
         </div>
       ) : (
         <>
@@ -204,7 +324,28 @@ const FavoritesPage: NextPage = () => {
           {/* Pokémon Tab */}
           {activeTab === 'pokemon' && (
             <div className="animate-fadeIn">
-              {pokemonData.length > 0 ? (
+              {pokemonError ? (
+                <div className="bg-red-50 text-red-600 p-6 rounded-lg text-center mb-6">
+                  <div className="mb-4">
+                    <svg className="w-12 h-12 mx-auto text-red-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                    </svg>
+                    <h3 className="text-lg font-semibold mb-2">Unable to Load Pokemon</h3>
+                    <p className="text-sm">{pokemonError}</p>
+                  </div>
+                  {retryCount.pokemon > 0 && (
+                    <div className="text-xs text-gray-500 mb-4">
+                      Attempted {retryCount.pokemon} time{retryCount.pokemon !== 1 ? 's' : ''}
+                    </div>
+                  )}
+                  <button 
+                    onClick={() => window.location.reload()} 
+                    className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors text-sm"
+                  >
+                    Refresh Page
+                  </button>
+                </div>
+              ) : pokemonData.length > 0 ? (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 justify-items-center">
                   {pokemonData.map(pokemon => (
                     <div key={pokemon.id} className="relative">
@@ -252,7 +393,28 @@ const FavoritesPage: NextPage = () => {
           {/* Cards Tab */}
           {activeTab === 'cards' && (
             <div className="animate-fadeIn">
-              {cardsData.length > 0 ? (
+              {cardsError ? (
+                <div className="bg-red-50 text-red-600 p-6 rounded-lg text-center mb-6">
+                  <div className="mb-4">
+                    <svg className="w-12 h-12 mx-auto text-red-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                    </svg>
+                    <h3 className="text-lg font-semibold mb-2">Unable to Load Cards</h3>
+                    <p className="text-sm">{cardsError}</p>
+                  </div>
+                  {retryCount.cards > 0 && (
+                    <div className="text-xs text-gray-500 mb-4">
+                      Attempted {retryCount.cards} time{retryCount.cards !== 1 ? 's' : ''}
+                    </div>
+                  )}
+                  <button 
+                    onClick={() => window.location.reload()} 
+                    className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors text-sm"
+                  >
+                    Refresh Page
+                  </button>
+                </div>
+              ) : cardsData.length > 0 ? (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                   {cardsData.map(card => (
                     <div 

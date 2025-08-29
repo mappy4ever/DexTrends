@@ -27,7 +27,7 @@ interface ExtendedPocketCard extends PocketCard {
 const OverviewTab = lazy(() => import('./tabs/OverviewTabV3'));
 const StatsTab = lazy(() => import('./tabs/StatsTabV2'));
 const EvolutionTab = lazy(() => import('./tabs/EvolutionTabV3'));
-const MovesTab = lazy(() => import('./tabs/MovesTab'));
+const MovesTab = lazy(() => import('./tabs/MovesTabV2'));
 const BreedingTab = lazy(() => import('./tabs/BreedingTab'));
 const LocationsTab = lazy(() => import('./tabs/LocationsTab'));
 const CardsTab = lazy(() => import('./tabs/CardsTab'));
@@ -68,6 +68,8 @@ const POKEMON_TABS: { id: PokemonTab; label: string; icon: React.ReactNode }[] =
 // Cleanup function for old Pokemon tab preferences
 const cleanupOldTabPreferences = () => {
   try {
+    if (typeof window === 'undefined' || !localStorage) return;
+    
     const keysToRemove: string[] = [];
     const tabPreferences: { [key: string]: { tab: string; timestamp: number } } = {};
     
@@ -175,7 +177,8 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
   // Load saved tab preference only on Pokemon change
   useEffect(() => {
     try {
-      const savedData = localStorage.getItem(`pokemon-tab-${pokemon.id}`);
+      if (typeof window !== 'undefined') {
+        const savedData = localStorage.getItem(`pokemon-tab-${pokemon.id}`);
       if (savedData) {
         let savedTab: string;
         
@@ -198,9 +201,11 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
           }, 100);
         }
       }
+      }
     } catch (error) {
       logger.error('Error loading tab preference:', error);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pokemon.id, onTabChange]); // Only run when pokemon changes, not when activeTab changes
   
   // Save tab preference with debouncing to prevent rapid writes
@@ -214,9 +219,11 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
     const timeoutId = setTimeout(() => {
       try {
         // Save with timestamp for better cleanup
-        const tabData = JSON.stringify({ tab: activeTab, timestamp: Date.now() });
-        localStorage.setItem(`pokemon-tab-${pokemon.id}`, tabData);
-        lastSavedTab.current = activeTab;
+        if (typeof window !== 'undefined') {
+          const tabData = JSON.stringify({ tab: activeTab, timestamp: Date.now() });
+          localStorage.setItem(`pokemon-tab-${pokemon.id}`, tabData);
+          lastSavedTab.current = activeTab;
+        }
       } catch (error: unknown) {
         if (error instanceof Error && error.name === 'QuotaExceededError') {
           logger.warn('localStorage quota exceeded, attempting cleanup...');
@@ -224,9 +231,11 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
           cleanupOldTabPreferences();
           // Try again after cleanup
           try {
-            const tabData = JSON.stringify({ tab: activeTab, timestamp: Date.now() });
-            localStorage.setItem(`pokemon-tab-${pokemon.id}`, tabData);
-            lastSavedTab.current = activeTab;
+            if (typeof window !== 'undefined') {
+              const tabData = JSON.stringify({ tab: activeTab, timestamp: Date.now() });
+              localStorage.setItem(`pokemon-tab-${pokemon.id}`, tabData);
+              lastSavedTab.current = activeTab;
+            }
           } catch {
             logger.error('Failed to save tab preference after cleanup');
           }

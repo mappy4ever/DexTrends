@@ -582,7 +582,7 @@ export function PokemonLearnset({
                   </span>
                 </div>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-3 overflow-visible">
                 {methodMoves.map((move, index) => (
                   <MoveItem 
                     key={`${move.move_name}-${index}`} 
@@ -600,7 +600,7 @@ export function PokemonLearnset({
           <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
             Showing {filteredMoves.length} {learnMethodLabels[selectedMethod]?.toLowerCase() || selectedMethod} moves
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 overflow-visible">
             {filteredMoves.map((move, index) => (
               <MoveItem 
                 key={`${move.move_name}-${index}`} 
@@ -639,9 +639,9 @@ function MoveItem({ move, moveData }: MoveItemProps) {
   };
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 overflow-visible">
       <div 
-        className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer" 
+        className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer overflow-visible" 
         data-testid="move-item"
         onClick={() => setShowDetails(!showDetails)}
       >
@@ -659,7 +659,7 @@ function MoveItem({ move, moveData }: MoveItemProps) {
             {moveData && (
               <>
                 <span className="text-xs text-gray-600 dark:text-gray-400">
-                  {moveData.base_power ? `Power: ${moveData.base_power}` : 'Power: —'} / 
+                  {moveData.power ? `Power: ${moveData.power}` : 'Power: —'} / 
                   {moveData.accuracy ? `Acc: ${moveData.accuracy}%` : 'Acc: —'}
                 </span>
                 <CategoryIcon category={moveData.category} size={14} />

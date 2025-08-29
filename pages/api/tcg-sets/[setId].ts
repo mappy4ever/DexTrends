@@ -7,10 +7,10 @@ import type { UnknownError } from '../../../types/common';
 import type { CardSet, TCGCard } from '../../../types/api/cards';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { setId, page = '1', pageSize = '100' } = req.query; // Reduced to 100 for better reliability
+  const { setId, page = '1', pageSize = '250' } = req.query; // Increased default
   const id = Array.isArray(setId) ? setId[0] : setId;
   const pageNum = parseInt(Array.isArray(page) ? page[0] : page, 10);
-  const pageSizeNum = Math.min(parseInt(Array.isArray(pageSize) ? pageSize[0] : pageSize, 10), 100); // Max 100 per request for stability
+  const pageSizeNum = Math.min(parseInt(Array.isArray(pageSize) ? pageSize[0] : pageSize, 10), 250); // Max 250 per request
 
   if (!id) {
     return res.status(400).json({ error: 'Set ID is required' });
@@ -72,8 +72,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       headers['X-Api-Key'] = apiKey;
     }
 
-    // Try smaller page size first if request is large
-    const effectivePageSize = pageSizeNum > 50 ? 50 : pageSizeNum;
+    // Use full requested page size
+    const effectivePageSize = pageSizeNum;
     
     // Fetch set info and cards (with pagination) in parallel
     let setInfo, cardsData;

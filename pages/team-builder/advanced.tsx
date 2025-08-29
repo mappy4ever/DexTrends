@@ -12,6 +12,7 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { getPokemonSDK } from '../../utils/pokemonSDK';
 import { FadeIn, SlideUp } from '../../components/ui/animations/animations';
+import logger from '../../utils/logger';
 import { TypeBadge } from '../../components/ui/TypeBadge';
 import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import FullBleedWrapper from '../../components/ui/FullBleedWrapper';
@@ -19,7 +20,6 @@ import CircularButton from '../../components/ui/CircularButton';
 import { analyzeTeamTypeSynergy, getTypeMatchups } from '../../utils/typeEffectiveness';
 import type { TeamMember, Move, Nature, StatSpread } from '../../types/team-builder';
 import type { Pokemon } from "../../types/pokemon";
-import logger from '../../utils/logger';
 
 // Dynamic import for the graph component to avoid SSR issues
 const TeamSynergyGraph = dynamic(
@@ -151,8 +151,13 @@ const AdvancedTeamBuilder: NextPage = () => {
     setTeam(newTeam);
   };
 
-  // Export team
+  // Export team (SSR safe)
   const exportTeam = () => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      logger.warn('Export functionality is not available on server');
+      return;
+    }
+    
     const exportData = {
       team: team.map(member => ({
         pokemon: member.pokemon.name,
@@ -175,7 +180,9 @@ const AdvancedTeamBuilder: NextPage = () => {
     const a = document.createElement('a');
     a.href = url;
     a.download = `pokemon-team-${Date.now()}.json`;
+    document.body.appendChild(a);
     a.click();
+    document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
 

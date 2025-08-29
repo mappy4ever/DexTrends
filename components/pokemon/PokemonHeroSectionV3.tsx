@@ -244,7 +244,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
   
   return (
     <div className="w-full">
-      <GlassContainer variant="dark" className="relative overflow-hidden p-6 md:p-8 bg-gray-100/80 dark:bg-gray-900/40">
+      <GlassContainer variant="dark" className="relative overflow-hidden p-3 xs:p-4 sm:p-6 md:p-8 bg-gray-100/80 dark:bg-gray-900/40">
         {/* Subtle type gradient background */}
         <div 
           className="absolute inset-0 opacity-10"
@@ -253,12 +253,12 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
           }}
         />
         
-        {/* Content Grid */}
-        <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        {/* Content Grid - Stack on mobile */}
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8 items-center">
           {/* Left: Pokemon Image and Basic Info */}
           <div className="flex flex-col items-center space-y-4 relative">
             {/* Action Buttons - Stacked vertically on left */}
-            <div className="absolute -top-2 sm:-top-4 left-2 sm:left-4 flex flex-col gap-1 sm:gap-2 z-30">
+            <div className="absolute -top-2 sm:-top-4 left-1 xs:left-2 sm:left-4 flex flex-col gap-1 sm:gap-2 z-30">
               {/* Favorite Button */}
               <motion.button
                 onClick={(e) => {
@@ -430,7 +430,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
             <div className="flex items-center justify-center mt-6">
               {/* Unified Stats Container */}
               <motion.div 
-                className="relative rounded-2xl px-3 py-2 sm:px-6 sm:py-4 bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 flex flex-wrap items-stretch gap-2 sm:gap-4 transition-all duration-300"
+                className="relative rounded-2xl px-2 xs:px-3 py-2 sm:px-6 sm:py-4 bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 flex flex-wrap items-stretch gap-1 xs:gap-2 sm:gap-4 transition-all duration-300"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}

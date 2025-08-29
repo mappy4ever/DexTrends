@@ -85,7 +85,7 @@ const PocketMode: NextPage = () => {
 
   // Smooth scroll to top when filters change significantly
   useEffect(() => {
-    if (search || typeFilter !== 'all' || rarityFilter !== 'all') {
+    if (typeof window !== 'undefined' && (search || typeFilter !== 'all' || rarityFilter !== 'all')) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [search, typeFilter, rarityFilter]);
@@ -96,9 +96,11 @@ const PocketMode: NextPage = () => {
       // Focus search on Ctrl/Cmd + K or just '/' key
       if ((e.ctrlKey || e.metaKey) && e.key === 'k' || e.key === '/') {
         e.preventDefault();
-        const searchInput = document.querySelector<HTMLInputElement>('input[placeholder*="Search cards"]');
-        if (searchInput) {
-          searchInput.focus();
+        if (typeof document !== 'undefined') {
+          const searchInput = document.querySelector<HTMLInputElement>('input[placeholder*="Search cards"]');
+          if (searchInput) {
+            searchInput.focus();
+          }
         }
       }
       
@@ -106,16 +108,21 @@ const PocketMode: NextPage = () => {
       
       // Clear search with Escape
       if (e.key === 'Escape') {
-        const activeElement = document.activeElement as HTMLInputElement;
-        if (activeElement.tagName === 'INPUT' && activeElement.value) {
-          setSearch('');
-          activeElement.blur();
+        if (typeof document !== 'undefined') {
+          const activeElement = document.activeElement as HTMLInputElement;
+          if (activeElement && activeElement.tagName === 'INPUT' && activeElement.value) {
+            setSearch('');
+            activeElement.blur();
+          }
         }
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    if (typeof document !== 'undefined') {
+      document.addEventListener('keydown', handleKeyDown);
+      return () => document.removeEventListener('keydown', handleKeyDown);
+    }
+    return undefined;
   }, []);
 
 

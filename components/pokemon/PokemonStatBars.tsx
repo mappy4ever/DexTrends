@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '../../utils/cn';
+import logger from '@/utils/logger';
 
 interface PokemonStatBarsProps {
   stats: {
@@ -84,6 +85,31 @@ const PokemonStatBars: React.FC<PokemonStatBarsProps> = ({
   ranking,
   showNotes = true
 }) => {
+  // Stat name normalizer to handle API variations
+  const normalizeStatName = (name: string): string => {
+    // Log the raw stat name for debugging
+    logger.debug('Raw stat name:', { name });
+    
+    // Map common variations to our STAT_CONFIG keys
+    const nameMap: Record<string, string> = {
+      'hp': 'hp',
+      'attack': 'attack', 
+      'defense': 'defense',
+      'special-attack': 'special-attack',
+      'special-defense': 'special-defense',
+      'speed': 'speed',
+      // Add any other variations we might encounter
+      'sp-attack': 'special-attack',
+      'sp-defense': 'special-defense',
+      'spatk': 'special-attack',
+      'spdef': 'special-defense',
+      'spd': 'speed'
+    };
+    
+    const normalized = nameMap[name.toLowerCase()] || name;
+    logger.debug('Normalized stat name:', { from: name, to: normalized });
+    return normalized;
+  };
   // Calculate stat ranges
   const calculateStatRange = (baseStat: number, statName: string) => {
     const level = selectedLevel;
@@ -130,7 +156,30 @@ const PokemonStatBars: React.FC<PokemonStatBarsProps> = ({
 
       {/* Stats */}
       {stats.map((stat, index) => {
-        const config = STAT_CONFIG[stat.name as keyof typeof STAT_CONFIG];
+        const normalizedName = normalizeStatName(stat.name);
+        const config = STAT_CONFIG[normalizedName as keyof typeof STAT_CONFIG];
+        
+        // Fallback config if stat name doesn't match
+        const fallbackConfig = {
+          label: stat.name.charAt(0).toUpperCase() + stat.name.slice(1),
+          color: 'bg-gray-500',
+          darkColor: 'dark:bg-gray-600',
+          barColor: 'rgb(107, 114, 128)',  // gray-500
+          barColorDark: 'rgb(75, 85, 99)',
+          borderColor: 'rgb(107, 114, 128)'
+        };
+        
+        const finalConfig = config || fallbackConfig;
+        
+        // Log if we're using fallback
+        if (!config) {
+          logger.warn(`No config found for stat`, { 
+            originalName: stat.name, 
+            normalizedName, 
+            usingFallback: true 
+          });
+        }
+        
         const range = calculateStatRange(stat.baseStat, stat.name);
         // Calculate percentage based on actual stat value relative to the range at current level
         const actualStatValue = stat.actualStat || stat.baseStat;
@@ -154,7 +203,7 @@ const PokemonStatBars: React.FC<PokemonStatBarsProps> = ({
               )}>
                 <div className="flex items-center justify-between">
                   <span className="flex items-center gap-1 text-gray-700 dark:text-gray-300">
-                    {config.label}:
+                    {finalConfig.label}:
                   </span>
                   <span className="flex items-center text-gray-900 dark:text-white">
                     {stat.natureModifier && stat.natureModifier !== 1 && (
@@ -175,19 +224,16 @@ const PokemonStatBars: React.FC<PokemonStatBarsProps> = ({
             <div className="col-span-6 relative">
               <div className="w-full h-6 sm:h-8 rounded-full bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 overflow-hidden">
                 <motion.div
-                  className={cn("h-full relative rounded-full", config.color, config.darkColor)}
+                  className="h-full relative rounded-full"
+                  style={{ 
+                    background: `linear-gradient(90deg, ${finalConfig.barColor}, ${finalConfig.barColor}dd)`,
+                    boxShadow: `inset 0 2px 4px rgba(255,255,255,0.3), 0 0 20px ${finalConfig.barColor}40`
+                  }}
                   initial={animate ? { width: 0 } : { width: `${percentage}%` }}
                   animate={{ width: `${percentage}%` }}
                   transition={{ duration: 0.8, ease: "easeOut" }}
                 >
-                  <div 
-                    className="absolute inset-0 rounded-full"
-                    style={{
-                      background: `linear-gradient(90deg, ${config.barColor}dd, ${config.barColor}ff)`,
-                      boxShadow: `inset 0 2px 4px rgba(255,255,255,0.3), 0 0 20px ${config.barColor}40`
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-full" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent rounded-full" />
                 </motion.div>
               </div>
             </div>
@@ -214,21 +260,29 @@ const PokemonStatBars: React.FC<PokemonStatBarsProps> = ({
           transition={{ delay: 0.4 }}
         >
           {/* Total Label */}
-          <div className="col-span-3 px-2 sm:px-3 py-1.5 sm:py-2 text-white font-bold text-xs sm:text-sm rounded bg-gradient-to-r from-gray-500 to-gray-600 dark:from-gray-600 dark:to-gray-700">
-            <div className="flex items-center justify-between">
-              <span className="flex items-center gap-1">
-                TOTAL:
-                {baseTotal && <span className="text-[10px] text-gray-400">({baseTotal})</span>}
-              </span>
-              <span className="flex items-center gap-2">
-                <span className={cn(
-                  "text-[10px] px-2 py-0.5 rounded-full whitespace-nowrap",
-                  ranking.color
-                )}>
-                  {ranking.rank}
+          <div className="col-span-3 relative">
+            <div 
+              className="px-2 sm:px-3 py-1.5 sm:py-2 text-white font-bold text-xs sm:text-sm rounded-xl"
+              style={{
+                background: 'linear-gradient(90deg, rgb(107, 114, 128), rgb(75, 85, 99))',
+                boxShadow: 'inset 0 1px 2px rgba(255,255,255,0.2)'
+              }}
+            >
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-1">
+                  TOTAL:
+                  {baseTotal && <span className="text-[10px] text-gray-300">({baseTotal})</span>}
                 </span>
-                <span className="min-w-[3ch] text-right">{totalStats}</span>
-              </span>
+                <span className="flex items-center gap-2">
+                  <span className={cn(
+                    "text-[10px] px-2 py-0.5 rounded-full whitespace-nowrap",
+                    ranking.color
+                  )}>
+                    {ranking.rank}
+                  </span>
+                  <span className="min-w-[3ch] text-right">{totalStats}</span>
+                </span>
+              </div>
             </div>
           </div>
 
@@ -236,12 +290,19 @@ const PokemonStatBars: React.FC<PokemonStatBarsProps> = ({
           <div className="col-span-6 relative">
             <div className="w-full h-6 sm:h-8 rounded-full bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 overflow-hidden">
               <motion.div
-                className="h-full relative rounded-full bg-gradient-to-r from-gray-500 to-gray-600 dark:from-gray-600 dark:to-gray-500"
+                className="h-full relative rounded-full"
                 initial={animate ? { width: 0 } : { width: `${Math.min(((baseTotal || 0) / 720) * 100, 100)}%` }}
                 animate={{ width: `${Math.min(((baseTotal || 0) / 720) * 100, 100)}%` }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
               >
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-white/10 rounded-full" />
+                <div 
+                  className="absolute inset-0 rounded-full"
+                  style={{
+                    background: `linear-gradient(90deg, rgb(107, 114, 128), rgb(75, 85, 99))`,
+                    boxShadow: `inset 0 2px 4px rgba(255,255,255,0.3), 0 0 20px rgba(107, 114, 128, 0.4)`
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-full" />
               </motion.div>
             </div>
           </div>

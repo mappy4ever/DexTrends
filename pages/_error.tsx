@@ -80,7 +80,11 @@ function Error({ statusCode }: ErrorProps) {
             {/* Action buttons */}
             <div className="space-y-3">
               <button
-                onClick={() => window.location.reload()}
+                onClick={() => {
+                  if (typeof window !== 'undefined') {
+                    window.location.reload();
+                  }
+                }}
                 className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-medium shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
               >
                 Try Again
@@ -88,8 +92,10 @@ function Error({ statusCode }: ErrorProps) {
               
               <button
                 onClick={() => {
-                  // Use window.location for reliable navigation in error states
-                  window.location.href = '/';
+                  // Use window.location for reliable navigation in error states (SSR safe)
+                  if (typeof window !== 'undefined') {
+                    window.location.href = '/';
+                  }
                 }}
                 className="w-full px-6 py-3 bg-white/70 text-gray-700 rounded-xl hover:bg-white/90 transition-all duration-200 font-medium border border-gray-200/50 backdrop-blur-sm"
               >
@@ -98,7 +104,11 @@ function Error({ statusCode }: ErrorProps) {
 
               {statusCode !== 404 && (
                 <button
-                  onClick={() => window.history.back()}
+                  onClick={() => {
+                    if (typeof window !== 'undefined') {
+                      window.history.back();
+                    }
+                  }}
                   className="w-full px-6 py-3 bg-gray-100/70 text-gray-600 rounded-xl hover:bg-gray-200/70 transition-all duration-200 font-medium"
                 >
                   Go Back

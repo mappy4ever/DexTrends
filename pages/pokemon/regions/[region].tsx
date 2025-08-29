@@ -480,16 +480,21 @@ export default function RegionDetailPage() {
   const [activeSection, setActiveSection] = useState('overview');
   const [isNavSticky, setIsNavSticky] = useState(false);
   
-  // Handle scroll for sticky navigation
+  // Handle scroll for sticky navigation (SSR safe)
   useEffect(() => {
     const handleScroll = () => {
-      const heroHeight = window.innerHeight; // Height of hero section
-      const scrollPosition = window.scrollY;
-      setIsNavSticky(scrollPosition > heroHeight - 100);
+      if (typeof window !== 'undefined') {
+        const heroHeight = window.innerHeight; // Height of hero section
+        const scrollPosition = window.scrollY;
+        setIsNavSticky(scrollPosition > heroHeight - 100);
+      }
     };
     
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
+    }
+    return undefined;
   }, []);
   
   // Handle loading state
@@ -579,7 +584,9 @@ export default function RegionDetailPage() {
                       key={section.id}
                       onClick={() => {
                         setActiveSection(section.id);
-                        document.getElementById(section.id)?.scrollIntoView({ behavior: 'smooth' });
+                        if (typeof document !== 'undefined') {
+                          document.getElementById(section.id)?.scrollIntoView({ behavior: 'smooth' });
+                        }
                       }}
                       className={`px-3 py-1 rounded-full text-xs font-medium transition-all duration-300 ${
                         activeSection === section.id
@@ -626,17 +633,18 @@ export default function RegionDetailPage() {
         </div>
 
         {/* Main Content */}
-        <main className="relative bg-gradient-to-br from-gray-50 via-purple-50/30 to-gray-100 dark:from-gray-900 dark:via-purple-900/20 dark:to-gray-900 pt-16">
+        <main className="relative bg-gradient-to-br from-gray-50 via-purple-50/30 to-gray-100 dark:from-gray-900 dark:via-purple-900/20 dark:to-gray-900 pt-16 overflow-x-hidden">
           {/* Content Sections */}
-          <div className="container mx-auto px-4 py-8 space-y-16">
+          <div className="container mx-auto px-2 sm:px-4 py-8 space-y-16 max-w-full overflow-hidden">
             {/* Overview Section */}
             <motion.section 
               id="overview"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
+              className="overflow-hidden"
             >
-              <StandardGlassContainer>
+              <StandardGlassContainer className="max-w-full">
                 <RegionInfo region={{
                   ...region,
                   gymLeaders: region.gymLeaders?.map(leader => ({
@@ -658,8 +666,9 @@ export default function RegionDetailPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
+              className="overflow-hidden"
             >
-              <StandardGlassContainer>
+              <StandardGlassContainer className="max-w-full">
                 <ProfessorShowcase region={region} professor={region.professor} theme={theme} />
               </StandardGlassContainer>
             </motion.section>
@@ -670,6 +679,7 @@ export default function RegionDetailPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
+              className="overflow-hidden"
             >
               <StarterShowcaseComplete 
                 region={region.name} 
@@ -685,6 +695,7 @@ export default function RegionDetailPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.25 }}
+              className="overflow-hidden"
             >
               <LegendaryPokemonShowcase 
                 region={region} 

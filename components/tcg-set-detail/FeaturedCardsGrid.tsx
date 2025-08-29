@@ -59,7 +59,7 @@ export const FeaturedCardsGrid: React.FC<FeaturedCardsGridProps> = ({
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2">
                   <PriceDisplay
                     price={price}
-                    size="xs"
+                    size="sm"
                     variant={price >= 100 ? 'premium' : price >= 50 ? 'sale' : 'default'}
                   />
                 </div>

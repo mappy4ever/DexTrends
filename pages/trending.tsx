@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
 import CardList from '../components/CardList';
@@ -30,6 +30,8 @@ const TrendingPage: NextPage = () => {
   const [cards, setCards] = useState<TrendingCard[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
+  const [isRetrying, setIsRetrying] = useState(false);
   const [trendingData, setTrendingData] = useState<TrendingData>({ rising: [], falling: [] });
   
   // Helper to get price from a card
@@ -72,16 +74,18 @@ const TrendingPage: NextPage = () => {
     return rarityOrder[card.rarity || ''] || 0;
   }
   
-  // Fetch cards to analyze trends
-  useEffect(() => {
-    const fetchTrendingCards = async () => {
+  // Fetch cards to analyze trends - moved outside useEffect for retry logic
+  const fetchTrendingCards = useCallback(async () => {
       try {
         setLoading(true);
         setError(null);
+        setIsRetrying(false);
         
         // Check if API key is available
         if (!pokemonKey) {
-          setError("Pokemon TCG API key is not configured. Please check your environment variables.");
+          const errorMessage = "Pokemon TCG API key is not configured. Please check your environment variables.";
+          logger.error("Missing API key", { service: "Pokemon TCG API" });
+          setError(errorMessage);
           setLoading(false);
           return;
         }
@@ -159,14 +163,81 @@ const TrendingPage: NextPage = () => {
         setTrendingData({ rising, falling });
         setCards(processedCards);
         setLoading(false);
+        setIsRetrying(false);
       } catch (err) {
-        logger.error("Error fetching trending cards:", { error: err });
-        setError("Failed to load trending card data.");
         setLoading(false);
+        setIsRetrying(false);
+        
+        // Enhanced error handling with specific error types
+        let errorMessage = "Failed to load trending card data.";
+        let shouldRetry = false;
+        
+        if (err instanceof TypeError && err.message.includes('fetch')) {
+          errorMessage = "Network connection failed. Please check your internet connection.";
+          shouldRetry = true;
+        } else if (err instanceof Error) {
+          if (err.message.includes('timeout') || err.message.includes('TIMEOUT')) {
+            errorMessage = "Request timed out. The server is taking too long to respond.";
+            shouldRetry = true;
+          } else if (err.message.includes('404')) {
+            errorMessage = "The requested data could not be found.";
+          } else if (err.message.includes('500') || err.message.includes('502') || err.message.includes('503')) {
+            errorMessage = "Server error occurred. Please try again in a few minutes.";
+            shouldRetry = true;
+          } else if (err.message.includes('403') || err.message.includes('401')) {
+            errorMessage = "Access denied. API key may be invalid or expired.";
+          } else if (err.message.includes('rate limit') || err.message.includes('429')) {
+            errorMessage = "Rate limit exceeded. Please wait before making another request.";
+            shouldRetry = true;
+          }
+        }
+        
+        logger.error("Error fetching trending cards", { 
+          error: err, 
+          errorMessage, 
+          shouldRetry, 
+          retryCount,
+          timestamp: new Date().toISOString()
+        });
+        
+        // Attempt retry for network-related errors
+        if (shouldRetry && retryCount < 3) {
+          setRetryCount(prev => prev + 1);
+          setTimeout(() => {
+            retryFetch(3 - retryCount);
+          }, 2000 * (retryCount + 1));
+          return;
+        }
+        
+        setError(errorMessage);
+        setRetryCount(0);
       }
-    };
-    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pokemonKey, retryCount]);
+
+  // Retry logic helper
+  const retryFetch = async (retries = 3, delay = 1000) => {
+    for (let attempt = 0; attempt < retries; attempt++) {
+      try {
+        if (attempt > 0) {
+          setIsRetrying(true);
+          await new Promise(resolve => setTimeout(resolve, delay * Math.pow(2, attempt)));
+        }
+        await fetchTrendingCards();
+        return;
+      } catch (error) {
+        logger.warn(`Fetch attempt ${attempt + 1} failed`, { error, attempt });
+        if (attempt === retries - 1) {
+          throw error;
+        }
+      }
+    }
+  };
+
+  // Initial fetch on mount
+  useEffect(() => {
     fetchTrendingCards();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
   return (
@@ -187,10 +258,27 @@ const TrendingPage: NextPage = () => {
         <p className="text-gray-600 mt-2">Track cards with significant price changes in the market</p>
       </div>
       {loading ? (
-        <PageLoader text="Analyzing market trends..." />
+        <PageLoader text={isRetrying ? `Retrying... (Attempt ${retryCount + 1})` : "Analyzing market trends..."} />
       ) : error ? (
-        <div className="bg-red-50 text-red-600 p-4 rounded-lg text-center">
-          {error}
+        <div className="bg-red-50 text-red-600 p-6 rounded-lg text-center">
+          <div className="mb-4">
+            <svg className="w-12 h-12 mx-auto text-red-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+            </svg>
+            <h3 className="text-lg font-semibold mb-2">Unable to Load Trending Data</h3>
+            <p className="text-sm">{error}</p>
+          </div>
+          {retryCount > 0 && (
+            <div className="text-xs text-gray-500 mb-4">
+              Attempted {retryCount} time{retryCount !== 1 ? 's' : ''}
+            </div>
+          )}
+          <button 
+            onClick={() => window.location.reload()} 
+            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors text-sm"
+          >
+            Refresh Page
+          </button>
         </div>
       ) : (
         <>

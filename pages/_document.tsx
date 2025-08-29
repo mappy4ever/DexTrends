@@ -91,12 +91,14 @@ class MyDocument extends Document {
               __html: `
                 (function() {
                   try {
-                    const theme = localStorage.getItem('theme');
-                    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-                    const activeTheme = theme || systemTheme;
-                    
-                    if (activeTheme === 'dark') {
-                      document.documentElement.classList.add('dark');
+                    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+                      const theme = localStorage.getItem('theme');
+                      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                      const activeTheme = theme || systemTheme;
+                      
+                      if (activeTheme === 'dark') {
+                        document.documentElement.classList.add('dark');
+                      }
                     }
                   } catch (e) {}
                 })();

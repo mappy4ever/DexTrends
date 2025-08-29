@@ -72,7 +72,7 @@ export const EnhancedMoveDisplay: React.FC<EnhancedMoveDisplayProps> = ({ moveNa
       {/* Move Header */}
       <div className="flex items-center justify-between">
         <h4 className="font-semibold text-lg capitalize">
-          {moveData.move_name.replace(/-/g, ' ')}
+          {moveData.name.replace(/-/g, ' ')}
         </h4>
         <div className="flex items-center gap-2">
           <span className={cn("px-2 py-1 rounded text-xs font-medium text-white", typeColor)}>
@@ -86,7 +86,7 @@ export const EnhancedMoveDisplay: React.FC<EnhancedMoveDisplayProps> = ({ moveNa
       <div className="grid grid-cols-3 gap-2 text-sm">
         <div className="text-center">
           <div className="text-gray-400">Power</div>
-          <div className="font-medium">{moveData.base_power || '—'}</div>
+          <div className="font-medium">{moveData.power || '—'}</div>
         </div>
         <div className="text-center">
           <div className="text-gray-400">Accuracy</div>
@@ -114,10 +114,10 @@ export const EnhancedMoveDisplay: React.FC<EnhancedMoveDisplayProps> = ({ moveNa
       )}
 
       {/* Secondary Effects */}
-      {moveData.secondary_effects && (
+      {moveData.secondary_effect && (
         <div className="text-sm text-gray-300">
           <span className="text-gray-400">Effect: </span>
-          {formatSecondaryEffects(moveData.secondary_effects)}
+          {formatSecondaryEffects(moveData.secondary_effect)}
         </div>
       )}
 

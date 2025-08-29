@@ -12,6 +12,7 @@ import { GradientButton, CircularButton } from '../../components/ui/design-syste
 import { FiChevronLeft, FiMapPin, FiBook, FiLayers, FiSmartphone } from 'react-icons/fi';
 import { cn } from "../../utils/cn";
 import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
+import logger from "../../utils/logger";
 
 // Region data for starter selector
 const regions = [
@@ -127,7 +128,7 @@ const StartersPage: NextPage = () => {
   const handleStarterSelect = (pokemon: any) => {
     // This can be used for other actions like saving favorite starter
     // For now, the navigation happens from within the expanded card
-    console.log('Selected starter:', pokemon.name);
+    logger.debug('Selected starter:', { pokemonName: pokemon.name });
   };
 
   // Get current region data

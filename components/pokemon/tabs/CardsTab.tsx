@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Component, ErrorInfo, ReactNode, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Pokemon, PokemonSpecies } from "../../../types/pokemon";
 import type { TypeColors } from '../../../types/pokemon-tabs';
@@ -8,6 +8,7 @@ import { GlassContainer } from '../../ui/design-system';
 import CardList from '../../CardList';
 import PocketCardList from '../../PocketCardList';
 import { cn } from '../../../utils/cn';
+import logger from '@/utils/logger';
 import { 
   FaLayerGroup, FaMobileAlt, FaGamepad, FaImages,
   FaStar, FaTrophy, FaGem
@@ -31,7 +32,49 @@ interface CardsTabProps {
   typeColors?: TypeColors;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// Error Boundary for Cards
+class CardsErrorBoundary extends Component<
+  { children: ReactNode },
+  { hasError: boolean; error: Error | null }
+> {
+  constructor(props: { children: ReactNode }) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+
+  override componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    logger.error('CardsTab error:', { error: error.message, errorInfo });
+  }
+
+  override render() {
+    if (this.state.hasError) {
+      return (
+        <GlassContainer variant="dark" className="backdrop-blur-xl" animate={false}>
+          <div className="p-6 text-center">
+            <div className="text-6xl mb-4">⚠️</div>
+            <p className="text-red-500 font-semibold mb-2">Error loading cards</p>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
+              {this.state.error?.message || 'Something went wrong while loading the cards'}
+            </p>
+            <button
+              onClick={() => this.setState({ hasError: false, error: null })}
+              className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600"
+            >
+              Try Again
+            </button>
+          </div>
+        </GlassContainer>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
 const CardsTab: React.FC<CardsTabProps> = ({ 
   pokemon, 
   species, 
@@ -40,11 +83,52 @@ const CardsTab: React.FC<CardsTabProps> = ({
   typeColors 
 }) => {
   const [cardType, setCardType] = useState<'tcg' | 'pocket'>('tcg');
-  
+  const [cardsError, setCardsError] = useState<string | null>(null);
+
+  // Validate and sanitize card data
+  const validTcgCards = useMemo(() => {
+    try {
+      logger.debug('CardsTab: Processing TCG cards', { 
+        tcgCards, 
+        isArray: Array.isArray(tcgCards),
+        length: tcgCards?.length,
+        firstCard: tcgCards?.[0],
+        typeofFirst: typeof tcgCards?.[0]
+      });
+      if (!Array.isArray(tcgCards)) return [];
+      const filtered = tcgCards.filter(card => card && typeof card === 'object');
+      logger.debug('CardsTab: Valid TCG cards', { 
+        count: filtered.length,
+        firstFilteredCard: filtered[0]
+      });
+      return filtered;
+    } catch (error) {
+      logger.error('Error processing TCG cards:', { error });
+      return [];
+    }
+  }, [tcgCards]);
+
+  const validPocketCards = useMemo(() => {
+    try {
+      logger.debug('CardsTab: Processing Pocket cards', { 
+        pocketCards, 
+        isArray: Array.isArray(pocketCards),
+        length: pocketCards?.length 
+      });
+      if (!Array.isArray(pocketCards)) return [];
+      const filtered = pocketCards.filter(card => card && typeof card === 'object');
+      logger.debug('CardsTab: Valid Pocket cards', { count: filtered.length });
+      return filtered;
+    } catch (error) {
+      logger.error('Error processing Pocket cards:', { error });
+      return [];
+    }
+  }, [pocketCards]);
   
   return (
-    <div className="space-y-6">
-      {/* Header with Card Type Selector */}
+    <CardsErrorBoundary>
+      <div className="space-y-6">
+        {/* Header with Card Type Selector */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -78,7 +162,7 @@ const CardsTab: React.FC<CardsTabProps> = ({
             )}
           >
             <FaLayerGroup className="w-4 h-4" />
-            TCG ({tcgCards.length})
+            TCG ({validTcgCards.length})
           </button>
           <button
             onClick={() => setCardType('pocket')}
@@ -90,7 +174,7 @@ const CardsTab: React.FC<CardsTabProps> = ({
             )}
           >
             <FaMobileAlt className="w-4 h-4" />
-            Pocket ({pocketCards.length})
+            Pocket ({validPocketCards.length})
           </button>
               </div>
             </div>
@@ -112,7 +196,7 @@ const CardsTab: React.FC<CardsTabProps> = ({
           <div className="p-6 md:p-8">
             <AnimatePresence mode="wait">
               {cardType === 'tcg' ? (
-                tcgCards.length > 0 ? (
+                validTcgCards.length > 0 ? (
                   <motion.div
                     key="tcg"
                     initial={{ opacity: 0, scale: 0.95 }}
@@ -120,7 +204,7 @@ const CardsTab: React.FC<CardsTabProps> = ({
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <CardList cards={tcgCards} />
+                    <CardList cards={validTcgCards} />
                   </motion.div>
                 ) : (
                   <motion.div
@@ -140,7 +224,7 @@ const CardsTab: React.FC<CardsTabProps> = ({
                   </motion.div>
                 )
               ) : (
-                pocketCards.length > 0 ? (
+                validPocketCards.length > 0 ? (
                   <motion.div
                     key="pocket"
                     initial={{ opacity: 0, scale: 0.95 }}
@@ -149,7 +233,7 @@ const CardsTab: React.FC<CardsTabProps> = ({
                     transition={{ duration: 0.3 }}
                   >
                     <PocketCardList 
-                      cards={pocketCards}
+                      cards={validPocketCards}
                       loading={false}
                       error={undefined}
                       showPack={true}
@@ -201,7 +285,7 @@ const CardsTab: React.FC<CardsTabProps> = ({
               <h3 className="font-bold text-sm uppercase tracking-wider text-purple-400">Total Cards</h3>
             </div>
             <div className="text-3xl font-bold text-gray-800 dark:text-gray-100">
-              {tcgCards.length + pocketCards.length}
+              {validTcgCards.length + validPocketCards.length}
             </div>
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
               Combined collection
@@ -245,7 +329,7 @@ const CardsTab: React.FC<CardsTabProps> = ({
               <h3 className="font-bold text-sm uppercase tracking-wider text-green-400">Sets Featured</h3>
             </div>
             <div className="text-3xl font-bold text-gray-800 dark:text-gray-100">
-              {new Set(tcgCards?.map(card => card.set?.name).filter(Boolean)).size || 0}
+              {new Set(validTcgCards?.map(card => card.set?.name).filter(Boolean)).size || 0}
             </div>
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
               Different TCG sets
@@ -254,6 +338,7 @@ const CardsTab: React.FC<CardsTabProps> = ({
         </motion.div>
       </motion.div>
     </div>
+    </CardsErrorBoundary>
   );
 };
 

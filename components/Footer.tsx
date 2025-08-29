@@ -15,6 +15,7 @@ import {
 import { GiCardPickup, GiCrossedSwords } from 'react-icons/gi';
 import { FiTrendingUp } from 'react-icons/fi';
 import { borderRadiusClasses, glassEffect } from '../styles/design-tokens';
+import { FooterLogo } from '../components/ui/DexTrendsLogo';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -67,13 +68,8 @@ const Footer: React.FC = () => {
             
             {/* Brand Section */}
             <div className="text-center md:text-left">
-              <div className="flex items-center justify-center md:justify-start mb-4">
-                <div className={`w-12 h-12 bg-gradient-to-br from-pokemon-red to-pink-500 ${borderRadiusClasses.xl} flex items-center justify-center shadow-md`}>
-                  <span className="text-white font-bold text-xl">DT</span>
-                </div>
-                <h3 className="ml-3 text-2xl font-bold bg-gradient-to-r from-pokemon-red to-pink-600 bg-clip-text text-transparent">
-                  DexTrends
-                </h3>
+              <div className="flex justify-center md:justify-start mb-6">
+                <FooterLogo />
               </div>
               <p className="text-gray-600 dark:text-gray-400 max-w-xs mx-auto md:mx-0">
                 Your comprehensive Pokemon TCG and Pokedex companion. Track, trade, and battle with confidence.

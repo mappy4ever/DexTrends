@@ -119,7 +119,7 @@ const LegendaryPokemonShowcase: React.FC<LegendaryPokemonShowcaseProps> = ({
         </FadeIn>
 
         {/* Main Legendary Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 mb-8 px-2 sm:px-0">
           {legendaries.map((legendary, index) => {
             const pokemonId = legendaryIds[index];
             const isHovered = hoveredIndex === index;
@@ -160,9 +160,9 @@ const LegendaryPokemonShowcase: React.FC<LegendaryPokemonShowcaseProps> = ({
                       </div>
 
                       {/* Pokémon Image Container */}
-                      <div className="relative pt-20 pb-4 px-4">
+                      <div className="relative pt-16 sm:pt-20 pb-2 sm:pb-4 px-2 sm:px-4">
                         <motion.div 
-                          className="relative w-40 h-40 mx-auto"
+                          className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 mx-auto"
                           animate={isHovered ? { 
                             scale: 1.05
                           } : {}}
@@ -183,19 +183,19 @@ const LegendaryPokemonShowcase: React.FC<LegendaryPokemonShowcaseProps> = ({
                       </div>
 
                       {/* Info Panel */}
-                      <div className="relative p-4 bg-gradient-to-t from-white/80 to-transparent dark:from-gray-900/80">
-                        <h3 className="text-xl font-bold text-center text-gray-800 dark:text-white mb-2">
+                      <div className="relative p-2 sm:p-4 bg-gradient-to-t from-white/80 to-transparent dark:from-gray-900/80">
+                        <h3 className="text-sm sm:text-base md:text-xl font-bold text-center text-gray-800 dark:text-white mb-1 sm:mb-2 truncate">
                           {legendary}
                         </h3>
                         
-                        {/* Stats Preview */}
-                        <div className="flex items-center justify-center gap-4 mb-3">
+                        {/* Stats Preview - Hidden on small screens */}
+                        <div className="hidden sm:flex items-center justify-center gap-2 sm:gap-4 mb-2 sm:mb-3">
                           <div className="flex items-center gap-1">
-                            <BsLightningFill className="text-yellow-500 text-sm" />
+                            <BsLightningFill className="text-yellow-500 text-xs sm:text-sm" />
                             <span className="text-xs text-gray-600 dark:text-gray-400">Legendary</span>
                           </div>
                           <div className="flex items-center gap-1">
-                            <BsGem className="text-purple-500 text-sm" />
+                            <BsGem className="text-purple-500 text-xs sm:text-sm" />
                             <span className="text-xs text-gray-600 dark:text-gray-400">Rare</span>
                           </div>
                         </div>

@@ -6,6 +6,7 @@ import { CircularButton } from '../components/ui/design-system';
 import { FullBleedWrapper } from '../components/ui/FullBleedWrapper';
 import Image from 'next/image';
 import Head from 'next/head';
+import DexTrendsLogo from '../components/ui/DexTrendsLogo';
 
 const Custom404: NextPage = () => {
   const pokemonSprites = [
@@ -63,6 +64,11 @@ const Custom404: NextPage = () => {
         className="relative z-10"
       >
         <GlassContainer variant="colored" className="max-w-lg mx-auto text-center">
+          {/* DexTrends Logo */}
+          <div className="mb-6">
+            <DexTrendsLogo variant="horizontal" size="sm" className="mx-auto opacity-80" />
+          </div>
+          
           {/* Big 404 with Pokeball */}
           <motion.div
             className="relative mb-8"
@@ -104,7 +110,11 @@ const Custom404: NextPage = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <CircularButton
-              onClick={() => window.location.href = '/'}
+              onClick={() => {
+                if (typeof window !== 'undefined') {
+                  window.location.href = '/';
+                }
+              }}
               variant="primary"
               size="lg"
             >
@@ -112,7 +122,11 @@ const Custom404: NextPage = () => {
             </CircularButton>
             
             <CircularButton
-              onClick={() => window.history.back()}
+              onClick={() => {
+                if (typeof window !== 'undefined') {
+                  window.history.back();
+                }
+              }}
               variant="secondary"
               size="lg"
             >

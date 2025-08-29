@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { NextPage } from 'next';
@@ -8,19 +8,28 @@ import { GlassContainer } from '../../components/ui/design-system/GlassContainer
 import { createGlassStyle } from '../../components/ui/design-system/glass-constants';
 import FullBleedWrapper from '../../components/ui/FullBleedWrapper';
 import logger from '../../utils/logger';
-import { BsSearch, BsEye, BsEyeSlash } from 'react-icons/bs';
+import { BsSearch, BsEye, BsEyeSlash, BsSortUp, BsSortDown, BsChevronDown, BsChevronUp } from 'react-icons/bs';
+import { FaChevronUp } from 'react-icons/fa';
 import { fetchJSON } from '../../utils/unifiedFetch';
 import { requestCache } from '../../utils/UnifiedCacheManager';
+import { fetchShowdownAbilities, ShowdownAbility } from '../../utils/showdownData';
+import { CompetitiveTierBadge, TierLegend } from '../../components/ui/CompetitiveTierBadge';
+import { useInView } from 'react-intersection-observer';
 
 interface Ability {
   id: number;
   name: string;
+  displayName: string;
   effect: string;
   short_effect: string;
-  generation: number;
-  is_hidden: boolean;
-  pokemon: string[];
+  generation?: number;
+  rating?: number;
+  is_competitive?: boolean;
+  pokemon?: string[];
 }
+
+type SortOption = 'name' | 'tier' | 'generation';
+type SortDirection = 'asc' | 'desc';
 
 interface AbilityApiResponse {
   id: number;
@@ -34,7 +43,7 @@ interface AbilityApiResponse {
   }>;
   pokemon: Array<{
     is_hidden: boolean;
-    pokemon: { name: string };
+    pokemon: { name: string; url: string };
   }>;
 }
 
@@ -54,19 +63,22 @@ const AbilitiesPage: NextPage = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [selectedGeneration, setSelectedGeneration] = useState('all');
-  const [showHidden, setShowHidden] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [abilitiesPerPage] = useState(24);
-
-  const generations = ['all', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  const [selectedLetter, setSelectedLetter] = useState<string | null>(null);
+  const [sortOption, setSortOption] = useState<SortOption>('tier');
+  const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
+  const [expandedAbilityId, setExpandedAbilityId] = useState<number | null>(null);
+  const [abilityPokemon, setAbilityPokemon] = useState<Record<number, any[]>>({});
+  const [loadingPokemon, setLoadingPokemon] = useState<Record<number, boolean>>({});
+  const [visibleCount, setVisibleCount] = useState(24);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchAllAbilities = async () => {
       setLoading(true);
       
       try {
-        const cacheKey = 'all-abilities-data';
+        const cacheKey = 'showdown-abilities-data';
         const cached = await requestCache.get(cacheKey);
         
         if (cached) {
@@ -76,56 +88,46 @@ const AbilitiesPage: NextPage = () => {
           return;
         }
 
-        const response = await fetchJSON<{ results: Array<{ name: string; url: string }> }>(
-          'https://pokeapi.co/api/v2/ability?limit=400'
-        );
+        // Fetch from Showdown - much faster and includes ratings
+        const showdownAbilities = await fetchShowdownAbilities();
         
-        if (!response?.results) {
-          throw new Error('Failed to fetch abilities list');
+        if (!showdownAbilities || Object.keys(showdownAbilities).length === 0) {
+          throw new Error('Failed to fetch abilities from Showdown');
         }
 
-        const batchSize = 50;
         const allAbilities: Ability[] = [];
         
-        for (let i = 0; i < response.results.length; i += batchSize) {
-          const batch = response.results.slice(i, i + batchSize);
-          const batchPromises = batch.map(async (ability) => {
-            try {
-              const abilityData = await fetchJSON<AbilityApiResponse>(ability.url);
-              if (!abilityData) return null;
-              
-              const englishEntry = abilityData.effect_entries?.find(e => e.language.name === 'en');
-              const pokemonSet = new Set<string>();
-              let hasHidden = false;
-              
-              abilityData.pokemon?.forEach(p => {
-                pokemonSet.add(p.pokemon.name);
-                if (p.is_hidden) hasHidden = true;
-              });
-              
-              return {
-                id: abilityData.id,
-                name: abilityData.name.replace(/-/g, ' '),
-                effect: englishEntry?.effect || '',
-                short_effect: englishEntry?.short_effect || 'No description available',
-                generation: parseInt(abilityData.generation?.name?.replace('generation-', '') || '1'),
-                is_hidden: hasHidden,
-                pokemon: Array.from(pokemonSet).slice(0, 10)
-              } as Ability;
-            } catch (error) {
-              logger.error(`Failed to fetch ability ${ability.name}`, { error });
-              return null;
-            }
-          });
-          
-          const batchResults = await Promise.all(batchPromises);
-          allAbilities.push(...batchResults.filter((a): a is Ability => a !== null));
-          
-          if (i % 100 === 0) {
-            setAbilities([...allAbilities]);
-            setFilteredAbilities([...allAbilities]);
+        // Convert Showdown abilities to our format
+        Object.entries(showdownAbilities).forEach(([abilityKey, abilityData]) => {
+          // Skip if not a proper ability
+          if (!abilityData.name || typeof abilityData.num !== 'number') {
+            return;
           }
-        }
+          
+          const ability: Ability = {
+            id: abilityData.num,
+            name: abilityKey.toLowerCase().replace(/[^a-z0-9]/g, ''),
+            displayName: abilityData.name,
+            effect: abilityData.desc || '',
+            short_effect: abilityData.shortDesc || abilityData.desc || 'No description available',
+            rating: abilityData.rating,
+            is_competitive: abilityData.rating !== undefined && abilityData.rating >= 3,
+            generation: undefined, // Showdown doesn't provide generation info
+            pokemon: [] // Will be fetched on demand
+          };
+          
+          allAbilities.push(ability);
+        });
+        
+        // Sort abilities by rating (highest first) then alphabetically
+        allAbilities.sort((a, b) => {
+          if (a.rating !== undefined && b.rating !== undefined) {
+            if (a.rating !== b.rating) {
+              return b.rating - a.rating; // Higher rating first
+            }
+          }
+          return a.displayName.localeCompare(b.displayName);
+        });
         
         await requestCache.set(cacheKey, allAbilities);
         setAbilities(allAbilities);
@@ -142,13 +144,51 @@ const AbilitiesPage: NextPage = () => {
     fetchAllAbilities();
   }, []);
 
+  // Fetch Pokemon for selected ability
+  const fetchAbilityPokemon = useCallback(async (abilityId: number, abilityName: string) => {
+    if (abilityPokemon[abilityId]) {
+      return;
+    }
+
+    setLoadingPokemon(prev => ({ ...prev, [abilityId]: true }));
+    try {
+      const response = await fetchJSON(`https://pokeapi.co/api/v2/ability/${abilityName}`) as AbilityApiResponse;
+      if (response && response.pokemon) {
+        setAbilityPokemon(prev => ({ ...prev, [abilityId]: response.pokemon }));
+      }
+    } catch (error) {
+      logger.error('Failed to fetch Pokemon for ability', { error });
+      setAbilityPokemon(prev => ({ ...prev, [abilityId]: [] }));
+    } finally {
+      setLoadingPokemon(prev => ({ ...prev, [abilityId]: false }));
+    }
+  }, [abilityPokemon]);
+
+  // Toggle ability expansion
+  const toggleAbilityExpansion = useCallback((ability: Ability) => {
+    if (expandedAbilityId === ability.id) {
+      setExpandedAbilityId(null);
+    } else {
+      setExpandedAbilityId(ability.id);
+      fetchAbilityPokemon(ability.id, ability.name);
+    }
+  }, [expandedAbilityId, fetchAbilityPokemon]);
+
+  // Filter and sort abilities
   useEffect(() => {
     let filtered = [...abilities];
 
     if (searchTerm) {
       filtered = filtered.filter(ability =>
+        ability.displayName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         ability.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         ability.short_effect.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    if (selectedLetter) {
+      filtered = filtered.filter(ability => 
+        ability.displayName.toUpperCase().startsWith(selectedLetter)
       );
     }
 
@@ -174,26 +214,59 @@ const AbilitiesPage: NextPage = () => {
       });
     }
 
-    if (selectedGeneration !== 'all') {
-      filtered = filtered.filter(ability => ability.generation === parseInt(selectedGeneration));
-    }
-
-    if (!showHidden) {
-      filtered = filtered.filter(ability => !ability.is_hidden);
-    }
-
-    filtered.sort((a, b) => a.name.localeCompare(b.name));
+    // Apply sorting
+    filtered.sort((a, b) => {
+      let comparison = 0;
+      
+      switch (sortOption) {
+        case 'name':
+          comparison = a.displayName.localeCompare(b.displayName);
+          break;
+        case 'tier':
+          if (a.rating !== undefined && b.rating !== undefined) {
+            comparison = b.rating - a.rating;
+          } else if (a.rating !== undefined) {
+            comparison = -1;
+          } else if (b.rating !== undefined) {
+            comparison = 1;
+          } else {
+            comparison = a.displayName.localeCompare(b.displayName);
+          }
+          break;
+        case 'generation':
+          if (a.generation !== undefined && b.generation !== undefined) {
+            comparison = a.generation - b.generation;
+          } else {
+            comparison = a.displayName.localeCompare(b.displayName);
+          }
+          break;
+      }
+      
+      return sortDirection === 'asc' ? comparison : -comparison;
+    });
+    
     setFilteredAbilities(filtered);
-    setCurrentPage(1);
-  }, [searchTerm, selectedCategory, selectedGeneration, showHidden, abilities]);
+    setVisibleCount(24); // Reset visible count when filters change
+  }, [searchTerm, selectedCategory, selectedLetter, sortOption, sortDirection, abilities]);
 
-  const currentAbilities = useMemo(() => {
-    const indexOfLastAbility = currentPage * abilitiesPerPage;
-    const indexOfFirstAbility = indexOfLastAbility - abilitiesPerPage;
-    return filteredAbilities.slice(indexOfFirstAbility, indexOfLastAbility);
-  }, [filteredAbilities, currentPage, abilitiesPerPage]);
+  // Lazy loading with intersection observer
+  const { ref: inViewRef, inView } = useInView({
+    threshold: 0.1,
+    rootMargin: '100px',
+  });
 
-  const totalPages = Math.ceil(filteredAbilities.length / abilitiesPerPage);
+  useEffect(() => {
+    if (inView && visibleCount < filteredAbilities.length) {
+      setVisibleCount(prev => Math.min(prev + 24, filteredAbilities.length));
+    }
+  }, [inView, visibleCount, filteredAbilities.length]);
+
+  const visibleAbilities = useMemo(() => {
+    return filteredAbilities.slice(0, visibleCount);
+  }, [filteredAbilities, visibleCount]);
+
+  // Generate alphabet array
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
   return (
     <FullBleedWrapper gradient="pokedex">
@@ -288,6 +361,66 @@ const AbilitiesPage: NextPage = () => {
               />
             </div>
 
+            {/* Alphabet Filter */}
+            <div className="mb-4 p-3 bg-white/20 dark:bg-gray-800/20 rounded-xl">
+              <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">Quick Navigation:</p>
+              <div className="flex flex-wrap gap-1">
+                <button
+                  onClick={() => setSelectedLetter(null)}
+                  className={`px-2 py-1 text-xs font-semibold rounded transition-all ${
+                    selectedLetter === null
+                      ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white'
+                      : 'bg-white/30 dark:bg-gray-700/30 text-gray-600 dark:text-gray-400 hover:bg-white/50'
+                  }`}
+                >
+                  All
+                </button>
+                {alphabet.map(letter => (
+                  <button
+                    key={letter}
+                    onClick={() => setSelectedLetter(letter)}
+                    className={`px-2 py-1 text-xs font-semibold rounded transition-all ${
+                      selectedLetter === letter
+                        ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white'
+                        : 'bg-white/30 dark:bg-gray-700/30 text-gray-600 dark:text-gray-400 hover:bg-white/50'
+                    }`}
+                  >
+                    {letter}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Sorting Options */}
+            <div className="mb-4 p-3 bg-white/20 dark:bg-gray-800/20 rounded-xl">
+              <div className="flex items-center justify-between flex-wrap gap-2">
+                <p className="text-xs font-semibold text-gray-600 dark:text-gray-400">Sort By:</p>
+                <div className="flex items-center gap-2">
+                  <select
+                    value={sortOption}
+                    onChange={(e) => setSortOption(e.target.value as SortOption)}
+                    className="px-3 py-1 text-xs bg-white/30 dark:bg-gray-700/30 rounded-lg border border-white/20 dark:border-gray-600/20 text-gray-700 dark:text-gray-300"
+                  >
+                    <option value="tier">Tier</option>
+                    <option value="name">Name</option>
+                    <option value="generation">Generation</option>
+                  </select>
+                  <button
+                    onClick={() => setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc')}
+                    className="p-1 bg-white/30 dark:bg-gray-700/30 rounded-lg border border-white/20 dark:border-gray-600/20 text-gray-700 dark:text-gray-300 hover:bg-white/50 transition-all"
+                  >
+                    {sortDirection === 'asc' ? <BsSortUp className="text-sm" /> : <BsSortDown className="text-sm" />}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Tier Legend */}
+            <div className="mb-4 p-3 bg-white/20 dark:bg-gray-800/20 rounded-xl">
+              <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">Competitive Tier Ratings:</p>
+              <TierLegend className="text-xs" />
+            </div>
+
             {/* Enhanced Category Pills */}
             <div className="flex flex-wrap gap-3 mb-6">
               {ABILITY_CATEGORIES.map(category => (
@@ -313,57 +446,6 @@ const AbilitiesPage: NextPage = () => {
                   {category.name}
                 </motion.button>
               ))}
-            </div>
-
-            {/* Enhanced Generation Filter and Hidden Toggle */}
-            <div className="flex flex-wrap justify-between items-center gap-4">
-              <div className="flex gap-2">
-                {generations.map(gen => (
-                  <motion.button
-                    key={gen}
-                    onClick={() => setSelectedGeneration(gen)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                      selectedGeneration === gen
-                        ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg'
-                        : `${createGlassStyle({
-                            blur: 'sm',
-                            opacity: 'subtle',
-                            gradient: false,
-                            border: 'subtle',
-                            shadow: 'sm',
-                            rounded: 'full',
-                            hover: 'subtle'
-                          })} text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200`
-                    }`}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    {gen === 'all' ? 'All Gen' : `Gen ${gen}`}
-                  </motion.button>
-                ))}
-              </div>
-
-              <motion.button
-                onClick={() => setShowHidden(!showHidden)}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${
-                  showHidden
-                    ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
-                    : `${createGlassStyle({
-                        blur: 'sm',
-                        opacity: 'medium',
-                        gradient: false,
-                        border: 'medium',
-                        shadow: 'md',
-                        rounded: 'full',
-                        hover: 'lift'
-                      })} text-gray-700 dark:text-gray-300`
-                }`}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {showHidden ? <BsEye /> : <BsEyeSlash />}
-                Hidden Abilities
-              </motion.button>
             </div>
           </div>
         </motion.div>
@@ -421,151 +503,165 @@ const AbilitiesPage: NextPage = () => {
         ) : (
           <>
             <motion.div
+              ref={containerRef}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
               data-testid="abilities-grid"
             >
-              {currentAbilities.map((ability, index) => (
+              {visibleAbilities.map((ability, index) => (
                 <motion.div
                   key={ability.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.02 }}
+                  className="relative"
                 >
-                  <div className={`${createGlassStyle({
-                    blur: 'lg',
-                    opacity: 'medium',
-                    gradient: true,
-                    border: 'medium',
-                    shadow: 'lg',
-                    rounded: 'xl',
-                    hover: 'lift'
-                  })} h-full p-6 group cursor-pointer rounded-2xl`}>
+                  <div 
+                    className={`${createGlassStyle({
+                      blur: 'lg',
+                      opacity: 'medium',
+                      gradient: true,
+                      border: 'medium',
+                      shadow: 'lg',
+                      rounded: 'xl',
+                      hover: 'lift'
+                    })} p-6 group cursor-pointer rounded-2xl transition-all ${
+                      expandedAbilityId === ability.id ? 'ring-2 ring-indigo-400 scale-[1.02]' : ''
+                    }`}
+                    onClick={() => toggleAbilityExpansion(ability)}
+                  >
                     <div className="flex items-start justify-between mb-4">
-                      <h3 className="text-lg font-bold capitalize bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent group-hover:from-indigo-700 group-hover:to-purple-700 transition-all duration-300">
-                        {ability.name}
+                      <h3 className="text-lg font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent group-hover:from-indigo-700 group-hover:to-purple-700 transition-all duration-300">
+                        {ability.displayName}
                       </h3>
                       <div className="flex items-center gap-2">
-                        {ability.is_hidden && (
-                          <span className={`${createGlassStyle({
-                            blur: 'sm',
-                            opacity: 'subtle',
-                            gradient: false,
-                            border: 'subtle',
-                            shadow: 'sm',
-                            rounded: 'full'
-                          })} px-3 py-1 text-xs text-gray-700 dark:text-gray-300 rounded-full`}>
-                            Hidden
-                          </span>
+                        {ability.rating !== undefined && (
+                          <CompetitiveTierBadge 
+                            rating={ability.rating} 
+                            size="xs" 
+                            showValue={false}
+                          />
                         )}
-                        <span className="px-3 py-1 text-xs bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-full shadow-sm">
-                          Gen {ability.generation}
-                        </span>
+                        <div className="text-gray-500 dark:text-gray-400 group-hover:text-indigo-600 transition-colors">
+                          {expandedAbilityId === ability.id ? <BsChevronUp /> : <BsChevronDown />}
+                        </div>
                       </div>
                     </div>
 
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-3 leading-relaxed">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-3 leading-relaxed">
                       {ability.short_effect}
                     </p>
+                  </div>
 
-                    {ability.pokemon.length > 0 && (
-                      <div>
-                        <p className="text-xs font-medium text-gray-500 dark:text-gray-500 mb-2">Pokemon with this ability:</p>
-                        <div className="flex flex-wrap gap-1.5">
-                          {ability.pokemon.slice(0, 4).map(pokemon => (
-                            <span 
-                              key={pokemon} 
-                              className={`${createGlassStyle({
-                                blur: 'sm',
-                                opacity: 'subtle',
-                                gradient: false,
-                                border: 'subtle',
-                                shadow: 'sm',
-                                rounded: 'full'
-                              })} text-xs px-3 py-1 capitalize hover:scale-105 transition-transform duration-200`}
-                            >
-                              {pokemon.replace(/-/g, ' ')}
-                            </span>
-                          ))}
-                          {ability.pokemon.length > 4 && (
-                            <span className="text-xs px-2 py-1 text-indigo-500 font-medium">
-                              +{ability.pokemon.length - 4} more
-                            </span>
+                  {/* Expanded Pokemon List */}
+                  <AnimatePresence>
+                    {expandedAbilityId === ability.id && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="overflow-hidden"
+                      >
+                        <div className={`${createGlassStyle({
+                          blur: 'md',
+                          opacity: 'subtle',
+                          gradient: false,
+                          border: 'subtle',
+                          shadow: 'sm',
+                          rounded: 'lg'
+                        })} mt-2 p-4 rounded-lg`}>
+                          {loadingPokemon[ability.id] ? (
+                            <div className="flex items-center gap-2 text-sm text-gray-500">
+                              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-indigo-500"></div>
+                              Loading Pokemon...
+                            </div>
+                          ) : abilityPokemon[ability.id] && abilityPokemon[ability.id].length > 0 ? (
+                            <div>
+                              <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">
+                                Pokemon with this ability:
+                              </p>
+                              <div className="flex flex-wrap gap-1.5">
+                                {abilityPokemon[ability.id].slice(0, 15).map((entry: any, idx: number) => (
+                                  <button
+                                    key={idx}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      const pokemonId = entry.pokemon.url.split('/').filter(Boolean).pop();
+                                      router.push(`/pokedex/${pokemonId}`);
+                                    }}
+                                    className="px-2 py-1 bg-white/50 dark:bg-gray-700/50 rounded text-xs hover:bg-white/70 dark:hover:bg-gray-600/70 transition-all capitalize"
+                                  >
+                                    {entry.pokemon.name.replace('-', ' ')}
+                                  </button>
+                                ))}
+                                {abilityPokemon[ability.id].length > 15 && (
+                                  <span className="px-2 py-1 text-xs text-gray-500 dark:text-gray-400">
+                                    +{abilityPokemon[ability.id].length - 15} more
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          ) : (
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                              No Pokemon data available
+                            </p>
                           )}
                         </div>
-                      </div>
+                      </motion.div>
                     )}
-                  </div>
+                  </AnimatePresence>
                 </motion.div>
               ))}
             </motion.div>
 
-            {/* Enhanced Pagination with Glass Morphism */}
-            {totalPages > 1 && (
+            {/* Load More Trigger */}
+            {visibleCount < filteredAbilities.length && (
+              <div ref={inViewRef} className="flex justify-center mt-8">
+                <div className={`${createGlassStyle({
+                  blur: 'lg',
+                  opacity: 'medium',
+                  gradient: true,
+                  border: 'medium',
+                  shadow: 'md',
+                  rounded: 'full'
+                })} px-6 py-3 rounded-full`}>
+                  <div className="flex items-center gap-2">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-indigo-500"></div>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                      Loading more abilities... ({visibleCount}/{filteredAbilities.length})
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Scroll to Top Button */}
+            {visibleCount > 48 && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 className="mt-8 flex justify-center"
               >
-                <div className={`${createGlassStyle({
-                  blur: 'xl',
-                  opacity: 'medium',
-                  gradient: true,
-                  border: 'medium',
-                  shadow: 'lg',
-                  rounded: 'full'
-                })} inline-flex gap-3 p-3 rounded-full`}>
-                  <GradientButton
-                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                    disabled={currentPage === 1}
-                    variant="secondary"
-                    size="sm"
-                    className="rounded-full min-w-0"
-                  >
-                    ← Previous
-                  </GradientButton>
-                  
-                  <div className="flex gap-2 items-center">
-                    {[...Array(Math.min(5, totalPages))].map((_, i) => {
-                      const pageNum = currentPage <= 3 ? i + 1 : currentPage - 2 + i;
-                      if (pageNum > totalPages) return null;
-                      return (
-                        <motion.button
-                          key={pageNum}
-                          onClick={() => setCurrentPage(pageNum)}
-                          className={`w-10 h-10 rounded-full text-sm font-semibold transition-all duration-300 ${
-                            currentPage === pageNum
-                              ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg'
-                              : `${createGlassStyle({
-                                  blur: 'sm',
-                                  opacity: 'subtle',
-                                  gradient: false,
-                                  border: 'subtle',
-                                  shadow: 'sm',
-                                  rounded: 'full',
-                                  hover: 'lift'
-                                })} text-gray-700 dark:text-gray-300`
-                          }`}
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          {pageNum}
-                        </motion.button>
-                      );
-                    })}
-                  </div>
-                  
-                  <GradientButton
-                    onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-                    disabled={currentPage === totalPages}
-                    variant="secondary"
-                    size="sm"
-                    className="rounded-full min-w-0"
-                  >
-                    Next →
-                  </GradientButton>
-                </div>
+                <button
+                  onClick={() => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    setVisibleCount(24);
+                  }}
+                  className={`${createGlassStyle({
+                    blur: 'xl',
+                    opacity: 'medium',
+                    gradient: true,
+                    border: 'medium',
+                    shadow: 'lg',
+                    rounded: 'full',
+                    hover: 'lift'
+                  })} px-6 py-3 rounded-full flex items-center gap-2`}
+                >
+                  <FaChevronUp className="text-sm" />
+                  <span className="text-sm font-semibold">Back to Top</span>
+                </button>
               </motion.div>
             )}
           </>

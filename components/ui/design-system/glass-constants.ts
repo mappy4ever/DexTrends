@@ -63,6 +63,8 @@ export const GLASS_TRANSITION = {
 
 // Hover effects
 export const GLASS_HOVER = {
+  none: '',
+  shadowOnly: 'hover:shadow-2xl',
   subtle: 'hover:scale-[1.02] hover:shadow-xl',
   medium: 'hover:scale-[1.03] hover:shadow-2xl',
   lift: 'hover:scale-[1.02] hover:-translate-y-1 hover:shadow-2xl',

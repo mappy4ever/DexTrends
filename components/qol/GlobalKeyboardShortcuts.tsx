@@ -15,9 +15,11 @@ const GlobalKeyboardShortcuts: React.FC = () => {
     // Ctrl/Cmd + K for search
     if ((event.ctrlKey || event.metaKey) && event.key === 'k') {
       event.preventDefault();
-      const searchInput = document.querySelector<HTMLInputElement>('[data-search-input]');
-      if (searchInput) {
-        searchInput.focus();
+      if (typeof document !== 'undefined') {
+        const searchInput = document.querySelector<HTMLInputElement>('[data-search-input]');
+        if (searchInput) {
+          searchInput.focus();
+        }
       }
       return;
     }
@@ -52,8 +54,10 @@ const GlobalKeyboardShortcuts: React.FC = () => {
         break;
       case 'Escape':
         // Close any open modals
-        const closeButtons = document.querySelectorAll<HTMLButtonElement>('[data-close-modal]');
-        closeButtons.forEach(button => button.click());
+        if (typeof document !== 'undefined') {
+          const closeButtons = document.querySelectorAll<HTMLButtonElement>('[data-close-modal]');
+          closeButtons.forEach(button => button.click());
+        }
         break;
       default:
         break;
@@ -61,6 +65,8 @@ const GlobalKeyboardShortcuts: React.FC = () => {
   }, [router]);
 
   const showKeyboardHelp = (): void => {
+    if (typeof document === 'undefined') return;
+    
     const helpContent = `
       <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onclick="this.remove()">
         <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md mx-4" onclick="event.stopPropagation()">
@@ -118,8 +124,11 @@ const GlobalKeyboardShortcuts: React.FC = () => {
   };
 
   useEffect(() => {
-    document.addEventListener('keydown', handleKeyPress);
-    return () => document.removeEventListener('keydown', handleKeyPress);
+    if (typeof document !== 'undefined') {
+      document.addEventListener('keydown', handleKeyPress);
+      return () => document.removeEventListener('keydown', handleKeyPress);
+    }
+    return undefined;
   }, [handleKeyPress]);
 
   return null;

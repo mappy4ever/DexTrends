@@ -7,6 +7,7 @@ import { FiRefreshCw } from 'react-icons/fi';
 import { AiOutlineHome } from 'react-icons/ai';
 import { FaBolt } from 'react-icons/fa';
 import Head from 'next/head';
+import DexTrendsLogo from '../components/ui/DexTrendsLogo';
 
 const Custom500: NextPage = () => {
   return (
@@ -65,6 +66,11 @@ const Custom500: NextPage = () => {
         className="relative z-10"
       >
         <GlassContainer variant="colored" className="max-w-lg mx-auto text-center">
+          {/* DexTrends Logo */}
+          <div className="mb-6">
+            <DexTrendsLogo variant="horizontal" size="sm" className="mx-auto opacity-80" />
+          </div>
+          
           {/* Big 500 with Electric Effect */}
           <motion.div
             className="relative mb-8"
@@ -109,7 +115,11 @@ const Custom500: NextPage = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <CircularButton
-              onClick={() => window.location.reload()}
+              onClick={() => {
+                if (typeof window !== 'undefined') {
+                  window.location.reload();
+                }
+              }}
               variant="primary"
               size="lg"
               className="group"
@@ -128,8 +138,10 @@ const Custom500: NextPage = () => {
             
             <CircularButton
               onClick={() => {
-                // Use window.location for reliable navigation in error states
-                window.location.href = '/';
+                // Use window.location for reliable navigation in error states (SSR safe)
+                if (typeof window !== 'undefined') {
+                  window.location.href = '/';
+                }
               }}
               variant="secondary"
               size="lg"

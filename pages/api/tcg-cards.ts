@@ -38,10 +38,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       headers,
       useCache: true,
       cacheTime: 30 * 60 * 1000, // Cache for 30 minutes (cards don't change often)
-      timeout: 8000, // Reduced timeout for faster failure
-      retries: 1,
-      retryDelay: 300
+      timeout: 15000, // Increased timeout for slow API
+      retries: 2,
+      retryDelay: 500,
+      throwOnError: false // Don't throw, handle errors gracefully
     });
+    
+    // Handle null/undefined response gracefully
+    if (!data) {
+      logger.warn('TCG API returned null/undefined', { pokemonName, apiUrl });
+      res.status(200).json({
+        data: [],
+        meta: {
+          responseTime: Date.now() - startTime,
+          cardCount: 0,
+          pokemonName,
+          fields: requestedFields || 'all',
+          warning: 'API returned no data'
+        }
+      });
+      return;
+    }
     
     const cards = data?.data || [];
     logger.debug('TCG API response received', { pokemonName, cardCount: cards.length });

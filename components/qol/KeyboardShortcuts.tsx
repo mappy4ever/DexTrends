@@ -89,9 +89,11 @@ export const KeyboardShortcutsManager: React.FC = () => {
       icon: '🗑️',
       action: () => {
         if (confirm('Are you sure you want to clear all favorites?')) {
-          localStorage.removeItem('favorites');
-          notify.success('All favorites cleared');
-          location.reload();
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem('favorites');
+            notify.success('All favorites cleared');
+            location.reload();
+          }
         }
       },
       keywords: ['clear', 'delete', 'remove', 'favorites']
@@ -228,19 +230,28 @@ export const KeyboardShortcutsManager: React.FC = () => {
       if (!['INPUT', 'TEXTAREA'].includes(target.tagName)) {
         if (e.key === ' ') {
           e.preventDefault();
-          window.scrollBy(0, e.shiftKey ? -window.innerHeight * 0.8 : window.innerHeight * 0.8);
+          if (typeof window !== 'undefined') {
+            window.scrollBy(0, e.shiftKey ? -window.innerHeight * 0.8 : window.innerHeight * 0.8);
+          }
         } else if (e.key === 'Home') {
           e.preventDefault();
-          window.scrollTo(0, 0);
+          if (typeof window !== 'undefined') {
+            window.scrollTo(0, 0);
+          }
         } else if (e.key === 'End') {
           e.preventDefault();
-          window.scrollTo(0, document.body.scrollHeight);
+          if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+            window.scrollTo(0, document.body.scrollHeight);
+          }
         }
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    if (typeof document !== 'undefined') {
+      document.addEventListener('keydown', handleKeyDown);
+      return () => document.removeEventListener('keydown', handleKeyDown);
+    }
+    return undefined;
   }, [router, theme, toggleTheme, notify, commandPalette, showShortcuts]);
 
   return (

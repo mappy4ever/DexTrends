@@ -1,0 +1,281 @@
+/**
+ * CRITICAL: Prevent ALL content cutoff on mobile devices
+ * This file ensures that NO content is ever clipped or cut off on mobile screens
+ */
+
+/* ========================================
+   AGGRESSIVE OVERFLOW PREVENTION
+   ======================================== */
+@media (max-width: 768px) {
+  /* Force ALL elements to show their full content */
+  *:not(html):not(body) {
+    overflow: visible !important;
+    min-height: auto !important;
+    clip: auto !important;
+    clip-path: none !important;
+  }
+  
+  /* Only body and html can have scroll */
+  html {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+  
+  body {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    min-height: 100vh !important;
+  }
+  
+  /* Specific exceptions for scrollable areas */
+  .modal-body,
+  .modal-content,
+  .dropdown-menu,
+  [role="dialog"],
+  [role="listbox"],
+  .overflow-auto,
+  .overflow-y-auto,
+  .overflow-x-auto,
+  .overflow-scroll,
+  .overflow-y-scroll,
+  .overflow-x-scroll {
+    overflow: auto !important;
+  }
+  
+  /* Code blocks can scroll horizontally */
+  pre,
+  code {
+    overflow-x: auto !important;
+  }
+  
+  /* All containers must accommodate content */
+  div, section, article, aside, main, header, footer, nav {
+    min-height: fit-content !important;
+    overflow: visible !important;
+  }
+  
+  /* Cards specifically */
+  .card,
+  [class*="Card"],
+  [class*="card"],
+  .pokemon-card,
+  .tcg-card,
+  .pocket-card {
+    overflow: visible !important;
+    min-height: fit-content !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+  
+  /* Move displays - CRITICAL FIX */
+  [class*="move"],
+  [class*="Move"],
+  .move-display,
+  .move-container,
+  .moves-tab,
+  [data-testid="move-item"],
+  [data-testid="move-item"] > *,
+  .space-y-2 > * {
+    overflow: visible !important;
+    min-height: fit-content !important;
+    height: auto !important;
+    clip: unset !important;
+    clip-path: none !important;
+  }
+  
+  /* Specific fix for move item containers */
+  .bg-gray-50.rounded-lg,
+  .dark\:bg-gray-800.rounded-lg {
+    overflow: visible !important;
+    min-height: fit-content !important;
+  }
+  
+  /* Grid items must show full content */
+  .grid > *,
+  [class*="grid-cols"] > *,
+  .flex > *,
+  .flex-row > *,
+  .flex-col > * {
+    overflow: visible !important;
+    min-height: fit-content !important;
+  }
+  
+  /* Glass containers must not clip */
+  [class*="glass"],
+  [class*="Glass"],
+  .backdrop-blur-sm,
+  .backdrop-blur,
+  .backdrop-blur-md,
+  .backdrop-blur-lg,
+  .backdrop-blur-xl,
+  .backdrop-blur-2xl,
+  .backdrop-blur-3xl {
+    overflow: visible !important;
+    min-height: fit-content !important;
+  }
+  
+  /* Rounded corners must NEVER clip content on mobile */
+  .rounded,
+  .rounded-sm,
+  .rounded-md,
+  .rounded-lg,
+  .rounded-xl,
+  .rounded-2xl,
+  .rounded-3xl,
+  [class*="rounded"] {
+    overflow: visible !important;
+    clip: unset !important;
+    clip-path: none !important;
+  }
+  
+  /* Exception: Avatar images and icons can clip */
+  img.rounded-full,
+  .avatar,
+  .icon,
+  [class*="icon"],
+  [class*="Icon"],
+  button.rounded-full {
+    overflow: hidden !important;
+  }
+  
+  /* Tab panels */
+  [role="tabpanel"],
+  .tab-panel,
+  .tab-content,
+  [class*="TabPanel"],
+  [class*="tab-panel"] {
+    overflow: visible !important;
+    min-height: fit-content !important;
+    height: auto !important;
+  }
+  
+  /* Pokemon specific containers */
+  .pokemon-container,
+  .pokemon-info,
+  .pokemon-stats,
+  .pokemon-moves,
+  .pokemon-abilities,
+  .evolution-chain,
+  .starter-showcase,
+  .legendary-showcase {
+    overflow: visible !important;
+    min-height: fit-content !important;
+  }
+  
+  /* Remove any max-height restrictions */
+  [style*="max-height"],
+  .max-h-0,
+  .max-h-screen,
+  .max-h-full {
+    max-height: none !important;
+  }
+  
+  /* Ensure text doesn't cause overflow */
+  p, span, h1, h2, h3, h4, h5, h6, a, button, label {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+  }
+  
+  /* Lists must show all items */
+  ul, ol, dl {
+    overflow: visible !important;
+    max-height: none !important;
+  }
+  
+  /* Table containers */
+  .table-container,
+  [class*="table"] {
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+  }
+  
+  /* Ensure padding doesn't hide content */
+  .p-0 { padding: 0 !important; }
+  .p-1 { padding: 0.25rem !important; }
+  .p-2 { padding: 0.5rem !important; }
+  .p-3 { padding: 0.75rem !important; }
+  .p-4 { padding: 1rem !important; }
+  .p-5 { padding: 1.25rem !important; }
+  .p-6 { padding: 1.5rem !important; }
+  .p-8 { padding: 2rem !important; }
+  
+  /* Ensure margins don't push content off screen */
+  .m-0 { margin: 0 !important; }
+  .mx-auto {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+
+/* ========================================
+   SPECIFIC FIXES FOR KNOWN ISSUES
+   ======================================== */
+@media (max-width: 768px) {
+  /* Fix for evolution cards */
+  .evolution-card,
+  [class*="Evolution"] {
+    min-height: 280px !important;
+    overflow: visible !important;
+  }
+  
+  /* Fix for legendary cards */
+  .legendary-card,
+  [class*="Legendary"] {
+    min-height: 260px !important;
+    overflow: visible !important;
+  }
+  
+  /* Fix for starter cards */
+  .starter-card,
+  [class*="Starter"] {
+    min-height: 250px !important;
+    overflow: visible !important;
+  }
+  
+  /* Fix for move cards and their children */
+  .move-card,
+  [class*="MoveCard"],
+  [class*="move-item"],
+  .flex.items-center.justify-between.p-3 {
+    min-height: auto !important;
+    overflow: visible !important;
+    height: auto !important;
+  }
+  
+  /* Ensure move descriptions are fully visible */
+  .text-sm.text-gray-500,
+  .dark\:text-gray-400,
+  .text-xs.text-gray-600,
+  .dark\:text-gray-400 {
+    overflow: visible !important;
+    text-overflow: initial !important;
+    white-space: normal !important;
+  }
+  
+  /* Fix for pocket cards specifically */
+  .pocket-card-container {
+    min-height: 240px !important;
+    overflow: visible !important;
+  }
+  
+  /* Fix for TCG cards */
+  .tcg-card-container {
+    min-height: 260px !important;
+    overflow: visible !important;
+  }
+}
+
+/* ========================================
+   DEBUGGING - Remove in production
+   ======================================== */
+@media (max-width: 768px) and (prefers-color-scheme: light) {
+  /* Visual indicator for debugging overflow issues */
+  .debug-overflow [style*="overflow: hidden"] {
+    border: 2px solid red !important;
+  }
+  
+  .debug-overflow [style*="overflow: clip"] {
+    border: 2px solid orange !important;
+  }
+}

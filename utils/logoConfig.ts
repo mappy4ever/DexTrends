@@ -18,17 +18,17 @@ export type LogoContext = 'navbar' | 'header' | 'tight-space' | 'homepage' | 'he
 
 export const logoConfig: LogoConfig = {
   horizontal: {
-    src: '/images/dextrends-horizontal-logo.png',
-    width: 480,
-    height: 180,
-    alt: 'DexTrends - Horizontal Logo',
+    src: '/images/DTLogo_Line.png',
+    width: 640,
+    height: 160,  // Adjusted for better navbar fit
+    alt: 'DexTrends - Your Ultimate Pokemon Companion',
     usage: ['navbar', 'header', 'tight-spaces']
   },
   vertical: {
-    src: '/images/dextrends-vertical-logo.png',
-    width: 500,
-    height: 600,
-    alt: 'DexTrends - Vertical Logo',
+    src: '/images/DT_FullLogo.png',
+    width: 800,
+    height: 800,  // Square ratio for the new logo
+    alt: 'DexTrends - Your Ultimate Pokemon Companion',
     usage: ['homepage', 'hero-sections', 'main-branding']
   }
 };

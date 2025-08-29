@@ -703,16 +703,21 @@ const RegionDetailPage: NextPage = () => {
 
   const region = regionId && typeof regionId === 'string' ? regionsData[regionId] : null;
 
-  // Track scroll progress
+  // Track scroll progress (SSR safe)
   useEffect(() => {
     const handleScroll = () => {
-      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = (window.scrollY / totalHeight) * 100;
-      setScrollProgress(progress);
+      if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+        const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = (window.scrollY / totalHeight) * 100;
+        setScrollProgress(progress);
+      }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
+    }
+    return undefined;
   }, []);
 
   if (!region) {

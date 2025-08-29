@@ -1,13 +1,14 @@
 import React, { useState, useMemo, useCallback, memo } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import Modal from "./ui/modals/Modal";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import { InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { SmartSkeleton } from "./ui/SkeletonLoader";
-import { CleanRaritySymbol } from './ui/CleanRaritySymbol';
 import PriceDisplay from './ui/PriceDisplay';
 import { ErrorBoundaryWrapper } from "./ui/ErrorBoundary";
+import { RarityIcon } from './ui/RarityIcon';
 import type { TCGCard } from "../types/api/cards";
 import logger from "@/utils/logger";
 
@@ -34,6 +35,50 @@ interface TCGCardProps {
   getPrice?: (card: TCGCard) => number;
 }
 
+
+// Helper function to determine the actual rarity based on card data
+const getActualRarity = (card: TCGCard): string => {
+  // If the rarity is already "Black White Rare" (note: no & in API response), keep it
+  if (card.rarity === 'Black White Rare') {
+    return 'Black & White Rare'; // Add the & for display
+  }
+  
+  // Check if it's a secret rare (card number > set total)
+  const cardNumber = parseInt(card.number);
+  const setTotal = card.set.printedTotal;
+  const isSecretRare = cardNumber > setTotal;
+  
+  // Specific cards that should be Black & White Rare
+  // Victini from both White Flare and Black Bolt returns "Rare" but should be "Black & White Rare"
+  const isBlackWhiteStyleRare = 
+    (card.name === 'Victini' && card.number === '172' && card.set.id === 'rsv10pt5') || // White Flare
+    (card.name === 'Victini' && card.number === '171' && card.set.id === 'zsv10pt5');    // Black Bolt
+  
+  if (isBlackWhiteStyleRare) {
+    return 'Black & White Rare';
+  }
+  
+  // Black & White era sets (bw1-bw11, including Noble Victories)
+  const blackWhiteSets = [
+    'bw1', 'bw2', 'bw3', 'bw4', 'bw5', 'bw6', 'bw7', 'bw8', 'bw9', 'bw10', 'bw11',
+    'bwp', 'dv1', 'bct', 'lds'
+  ];
+  
+  const isBlackWhiteSet = blackWhiteSets.includes(card.set.id.toLowerCase());
+  
+  // If it's a regular Black & White era card with "Rare" rarity and has holofoil prices, it's "Rare Holo"
+  if (isBlackWhiteSet && card.rarity === 'Rare' && card.tcgplayer?.prices?.holofoil) {
+    return 'Rare Holo';
+  }
+  
+  // For other sets, if rarity is "Rare" and has holofoil but no normal prices, it's likely "Rare Holo"
+  if (card.rarity === 'Rare' && card.tcgplayer?.prices?.holofoil && !card.tcgplayer?.prices?.normal) {
+    return 'Rare Holo';
+  }
+  
+  return card.rarity || 'Common';
+};
+
 // TCG Card wrapper with glass design matching PocketCard
 const TCGCardItem = memo<TCGCardProps>(({ 
   card, 
@@ -47,26 +92,12 @@ const TCGCardItem = memo<TCGCardProps>(({
   onCardClick,
   getPrice
 }) => {
+  const router = useRouter();
   // Get card details
   const setId = card.set?.id || '';
   const setName = card.set?.name || '';
   const cardNumber = card.number || '???';
   const price = getPrice ? getPrice(card) : 0;
-  
-  // Get rarity display and colors
-  const getRarityPillColor = (rarity?: string) => {
-    if (!rarity) return 'from-gray-100/80 to-gray-200/80';
-    const lower = rarity.toLowerCase();
-    
-    if (lower.includes('secret')) return 'from-purple-300/90 to-pink-300/90';
-    if (lower.includes('ultra')) return 'from-purple-200/90 to-pink-200/90';
-    if (lower.includes('rare')) {
-      if (lower.includes('holo')) return 'from-blue-200/90 to-purple-200/90';
-      return 'from-blue-100/80 to-blue-200/80';
-    }
-    if (lower.includes('uncommon')) return 'from-green-100/80 to-green-200/80';
-    return 'from-gray-100/80 to-gray-200/80';
-  };
   
   // Get subtle type-based gradient for card background
   const getTypeGradient = (types?: string[]) => {
@@ -99,46 +130,84 @@ const TCGCardItem = memo<TCGCardProps>(({
       <div
         className={`
           backdrop-blur-xl bg-white/90 dark:bg-gray-800/90
-          rounded-3xl p-3
+          rounded-3xl p-2 sm:p-3
           border-2 border-gray-300/50 dark:border-gray-600/50
           shadow-lg hover:shadow-2xl
-          transform transition-all duration-300
-          hover:scale-[1.03] hover:-translate-y-1
+          transition-all duration-300
+          hover:scale-[1.05] hover:-translate-y-2
           cursor-pointer
           drop-shadow-md
-          relative overflow-hidden
+          relative overflow-visible
+          min-h-[260px]
           ${cardClassName}
         `}
-        onClick={() => onCardClick?.(card)}
+        onClick={(e) => {
+          // Don't trigger if clicking on the card name link
+          if ((e.target as HTMLElement).closest('.card-name-link')) {
+            return;
+          }
+          onCardClick?.(card);
+        }}
       >
         {/* Subtle type-based gradient overlay */}
         {card.types && (
           <div className={`absolute inset-0 bg-gradient-to-b ${getTypeGradient(card.types)} pointer-events-none rounded-3xl opacity-80`} />
         )}
         
+        {/* Rarity Badge - Top Right Corner in Circle */}
+        {showRarity && card.rarity && (
+          <div className="absolute top-3 right-3 z-20">
+            <div className="
+              w-8 h-8 rounded-full
+              backdrop-blur-md bg-white/80 dark:bg-gray-800/80
+              border-2 border-white/50 dark:border-gray-600/50
+              shadow-lg
+              flex items-center justify-center
+              ring-1 ring-gray-300/50 dark:ring-gray-500/50
+            ">
+              <RarityIcon
+                rarity={getActualRarity(card)}
+                size="xs"
+                showLabel={false}
+              />
+            </div>
+          </div>
+        )}
+        
         {/* Card content with relative positioning to be above gradient */}
-        <div className="relative z-10">
+        <div className="relative z-10 flex flex-col h-full">
+          {/* Card Name at Top - Clickable for direct navigation */}
+          <div className="px-1 mb-2 flex justify-center flex-shrink-0">
+            <button
+              className="card-name-link text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 block line-clamp-2 min-h-[2rem] sm:min-h-[2.5rem] text-center hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer px-1 sm:px-2 mr-6 sm:mr-8"
+              onClick={(e) => {
+                e.stopPropagation();
+                router.push(`/cards/${card.id}`);
+              }}
+            >
+              {/* Replace spaces and hyphens with non-breaking versions to keep names together */}
+              {card.name
+                .replace(/Team Rocket's/gi, "TR's") // Abbreviate Team Rocket's to TR's
+                .replace(/ ex$/i, '\u00A0ex') // Keep 'ex' with the name
+                .replace(/-/g, '\u2011') // Replace all hyphens with non-breaking hyphens
+              }
+            </button>
+          </div>
+          
           {/* Compact Image Container */}
-          <div className="relative rounded-2xl overflow-hidden mb-2 bg-gradient-to-br from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-800">
-            <img
-              src={card.images?.small || '/back-card.png'}
-              alt={card.name}
-              width={imageWidth}
-              height={imageHeight}
-              className="w-full h-auto object-contain"
-              loading="lazy"
-            />
+          <div className="relative rounded-2xl overflow-hidden mb-2 bg-gradient-to-br from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-800 flex-shrink-0">
+            <div className="aspect-[110/154] relative">
+              <img
+                src={card.images?.small || '/back-card.png'}
+                alt={card.name}
+                width={imageWidth}
+                height={imageHeight}
+                className="absolute inset-0 w-full h-full object-contain"
+                loading="lazy"
+              />
+            </div>
             
-            {/* Clean Rarity Symbol - Top Right */}
-            {showRarity && card.rarity && (
-              <div className="absolute top-2 right-2 z-20 bg-white/90 dark:bg-gray-800/90 rounded-lg p-1">
-                <CleanRaritySymbol
-                  rarity={card.rarity}
-                  size="sm"
-                  showLabel={false}
-                />
-              </div>
-            )}
+            {/* Rarity display removed from image - now shown in bottom row */}
             
             {/* Magnify Button - Small and Subtle */}
             {setZoomedCard && (
@@ -164,40 +233,30 @@ const TCGCardItem = memo<TCGCardProps>(({
             )}
           </div>
           
-          {/* Card Info Section */}
-          <div className="space-y-1.5">
-            {/* Name */}
-            <div className="px-1">
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300 truncate block">
-                {card.name}
-              </span>
-            </div>
+          {/* Bottom Info Row - Price and Set */}
+          <div className="flex items-center justify-between px-1 gap-1">
+            {/* Enhanced Price Display */}
+            {showPrice && price > 0 && (
+              <PriceDisplay
+                price={price}
+                size="sm"
+                variant={price >= 100 ? 'premium' : price >= 50 ? 'sale' : 'default'}
+                animated={true}
+              />
+            )}
             
-            {/* Price and Set Info Row */}
-            <div className="flex items-center justify-between px-1 gap-1">
-              {/* Enhanced Price Display */}
-              {showPrice && price > 0 && (
-                <PriceDisplay
-                  price={price}
-                  size="sm"
-                  variant={price >= 100 ? 'premium' : price >= 50 ? 'sale' : 'default'}
-                  animated={true}
-                />
-              )}
-              
-              {/* Set Badge */}
-              {showSet && (
-                <span className="
-                  text-xs px-2 py-0.5 rounded-full
-                  bg-gray-100/70 dark:bg-gray-700/70
-                  text-gray-600 dark:text-gray-400
-                  font-medium
-                  truncate
-                ">
-                  {setId} #{cardNumber}
-                </span>
-              )}
-            </div>
+            {/* Set Badge */}
+            {showSet && (
+              <span className="
+                text-xs px-2 py-0.5 rounded-full
+                bg-gray-100/70 dark:bg-gray-700/70
+                text-gray-600 dark:text-gray-400
+                font-medium
+                truncate
+              ">
+                {setId} #{cardNumber}
+              </span>
+            )}
           </div>
         </div>
       </div>
@@ -499,7 +558,7 @@ function TCGCardListInner({
       </div>
     )}
     
-    <div className={gridClassName || "grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"}>
+    <div className={gridClassName || "grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 xs:gap-3 sm:gap-4"}>
       {displayedCards.map((card) => {
         return (
           <TCGCardItem

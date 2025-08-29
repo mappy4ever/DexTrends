@@ -46,7 +46,7 @@ export const SmartTooltip: React.FC<SmartTooltipProps> = ({
   const tooltipRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (showOnce && helpKey) {
+    if (showOnce && helpKey && typeof window !== 'undefined') {
       const shown = localStorage.getItem(`tooltip-shown-${helpKey}`);
       setHasShown(shown === 'true');
     }
@@ -57,7 +57,7 @@ export const SmartTooltip: React.FC<SmartTooltipProps> = ({
     
     timeoutRef.current = setTimeout(() => {
       setIsVisible(true);
-      if (showOnce && helpKey) {
+      if (showOnce && helpKey && typeof window !== 'undefined') {
         localStorage.setItem(`tooltip-shown-${helpKey}`, 'true');
         setHasShown(true);
       }

@@ -134,10 +134,12 @@ export const PreferencesProvider: React.FC<{ children: ReactNode }> = ({ childre
 
   const loadPreferences = async () => {
     try {
-      const saved = localStorage.getItem('userPreferences');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        setPreferences({ ...defaultPreferences, ...parsed });
+      if (typeof window !== 'undefined') {
+        const saved = localStorage.getItem('userPreferences');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          setPreferences({ ...defaultPreferences, ...parsed });
+        }
       }
     } catch (error) {
       logger.error('Failed to load preferences', { error });
@@ -148,7 +150,9 @@ export const PreferencesProvider: React.FC<{ children: ReactNode }> = ({ childre
 
   const savePreferences = async (newPreferences: UserPreferences) => {
     try {
-      localStorage.setItem('userPreferences', JSON.stringify(newPreferences));
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('userPreferences', JSON.stringify(newPreferences));
+      }
       setPreferences(newPreferences);
       logger.debug('Preferences saved', { preferences: newPreferences });
     } catch (error) {
@@ -164,11 +168,15 @@ export const PreferencesProvider: React.FC<{ children: ReactNode }> = ({ childre
 
   const resetPreferences = () => {
     setPreferences(defaultPreferences);
-    localStorage.removeItem('userPreferences');
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('userPreferences');
+    }
     notify.success('Preferences reset to defaults');
   };
 
   const applyPreferences = (prefs: UserPreferences) => {
+    if (typeof document === 'undefined') return;
+    
     // Apply theme
     if (prefs.theme === 'auto') {
       // Let system handle auto theme
@@ -204,6 +212,8 @@ export const PreferencesProvider: React.FC<{ children: ReactNode }> = ({ childre
   };
 
   const exportPreferences = () => {
+    if (typeof document === 'undefined') return;
+    
     const dataStr = JSON.stringify(preferences, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
     

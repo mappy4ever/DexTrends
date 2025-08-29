@@ -155,8 +155,10 @@ const RegionTile: React.FC<RegionTileProps> = ({ region }) => {
   const router = useRouter();
 
   const handleClick = () => {
-    // Add zoom class to body for page transition
-    document.body.classList.add('region-zoom-transition');
+    // Add zoom class to body for page transition (SSR safe)
+    if (typeof document !== 'undefined') {
+      document.body.classList.add('region-zoom-transition');
+    }
     
     // Navigate immediately - let Next.js handle the transition
     router.push(`/pokemon/regions/${region.id}`);
@@ -262,9 +264,11 @@ const RegionsPage: NextPage = () => {
   // Use smooth parallax hook for jitter-free scrolling
   const parallaxOffset = useSmoothParallax(0.5); // Increased parallax factor for more noticeable effect
 
-  // Clean up transition class on component mount
+  // Clean up transition class on component mount (SSR safe)
   useEffect(() => {
-    document.body.classList.remove('region-zoom-transition');
+    if (typeof document !== 'undefined') {
+      document.body.classList.remove('region-zoom-transition');
+    }
   }, []);
 
   return (
@@ -364,7 +368,11 @@ const RegionsPage: NextPage = () => {
             
             <div className="flex justify-center gap-4 mt-6">
               <GradientButton
-                onClick={() => document.getElementById('regions-grid')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => {
+                  if (typeof document !== 'undefined') {
+                    document.getElementById('regions-grid')?.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
                 variant="primary"
                 className="px-6 py-3"
               >

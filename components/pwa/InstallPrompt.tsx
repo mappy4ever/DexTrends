@@ -75,14 +75,16 @@ const InstallPrompt: React.FC = () => {
 
   useEffect(() => {
     // Check if already installed or dismissed
-    const isDismissed = localStorage.getItem('pwa-install-dismissed') === 'true';
-    setDismissed(isDismissed);
+    if (typeof window !== 'undefined') {
+      const isDismissed = localStorage.getItem('pwa-install-dismissed') === 'true';
+      setDismissed(isDismissed);
+    }
     
     // Check if iOS
     setIsIOS(utils.isIOS);
     
     // Don't show if already standalone or dismissed
-    if (isStandalone || isDismissed) {
+    if (isStandalone || dismissed) {
       return;
     }
 
@@ -128,6 +130,7 @@ const InstallPrompt: React.FC = () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
       window.removeEventListener('appinstalled', handleAppInstalled);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isStandalone, utils.isIOS]);
 
   const handleInstallClick = async () => {
@@ -187,7 +190,9 @@ const InstallPrompt: React.FC = () => {
   const handleDismiss = () => {
     setShowPrompt(false);
     setDismissed(true);
-    localStorage.setItem('pwa-install-dismissed', 'true');
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('pwa-install-dismissed', 'true');
+    }
     utils.hapticFeedback();
   };
 
