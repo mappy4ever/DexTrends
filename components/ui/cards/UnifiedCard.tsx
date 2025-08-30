@@ -437,10 +437,7 @@ const UnifiedCard = memo(({
     // Monitor normalization performance
     const duration = Date.now() - startTime;
     if (duration > 5) {
-      performanceMonitor.recordMetric('card-normalization-slow', duration, {
-        cardType,
-        cardId: card.id
-      });
+      performanceMonitor.recordMetric({ name: 'card-normalization-slow', value: duration, unit: 'ms', timestamp: Date.now() });
     }
     
     return normalizedData;

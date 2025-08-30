@@ -209,7 +209,29 @@ export default function Navbar() {
     <>
       {/* Redesigned Navbar with Gradient Glass Effect - Reasonable size with visible logo */}
       <div className="fixed top-0 left-0 right-0 flex items-center justify-between px-3 md:px-6 h-14 md:h-16 z-30 bg-white dark:bg-gray-900 backdrop-blur-xl border-b border-gray-200 dark:border-gray-700 shadow-lg safe-area-padding-top">
-        <NavbarLogo />
+        <div className="flex items-center gap-x-2">
+          {/* Mobile Menu Button - Now on the left side */}
+          <button
+            id="mobile-menu-button"
+            className="md:hidden p-2.5 rounded-full bg-gradient-to-r from-pokemon-red to-pink-500 text-white hover:from-red-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-300 touch-manipulation transform active:scale-95"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setMobileOpen(prev => !prev);
+              logger.debug('Mobile menu toggled', { newState: !mobileOpen });
+            }}
+            aria-label="Toggle mobile menu"
+            aria-expanded={mobileOpen}
+            style={{ minHeight: '40px', minWidth: '40px' }}
+          >
+            <div className="w-5 h-5 flex flex-col justify-center space-y-1">
+              <div className={`w-full h-0.5 bg-white transition-all duration-300${mounted && mobileOpen ? ' rotate-45 translate-y-1' : ''}`} />
+              <div className={`w-full h-0.5 bg-white transition-all duration-300${mounted && mobileOpen ? ' opacity-0' : ''}`} />
+              <div className={`w-full h-0.5 bg-white transition-all duration-300${mounted && mobileOpen ? ' -rotate-45 -translate-y-1' : ''}`} />
+            </div>
+          </button>
+          <NavbarLogo />
+        </div>
         <nav className="hidden md:flex items-center gap-x-3">
           {navItems.map(item => {
             const isActive = router.pathname === item.href || 
@@ -398,27 +420,6 @@ export default function Navbar() {
                 <BsMoon size={16} className="text-blue-600" />
               }
             </ClientOnly>
-          </button>
-          
-          {/* Mobile Menu Button - Larger for better touch */}
-          <button
-            id="mobile-menu-button"
-            className="md:hidden p-2.5 rounded-full bg-gradient-to-r from-pokemon-red to-pink-500 text-white hover:from-red-600 hover:to-pink-600 shadow-lg hover:shadow-xl transition-all duration-300 touch-manipulation transform active:scale-95"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setMobileOpen(prev => !prev);
-              logger.debug('Mobile menu toggled', { newState: !mobileOpen });
-            }}
-            aria-label="Toggle mobile menu"
-            aria-expanded={mobileOpen}
-            style={{ minHeight: '40px', minWidth: '40px' }}
-          >
-            <div className="w-5 h-5 flex flex-col justify-center space-y-1">
-              <div className={`w-full h-0.5 bg-white transition-all duration-300${mounted && mobileOpen ? ' rotate-45 translate-y-1' : ''}`} />
-              <div className={`w-full h-0.5 bg-white transition-all duration-300${mounted && mobileOpen ? ' opacity-0' : ''}`} />
-              <div className={`w-full h-0.5 bg-white transition-all duration-300${mounted && mobileOpen ? ' -rotate-45 -translate-y-1' : ''}`} />
-            </div>
           </button>
         </div>
       </div>

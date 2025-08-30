@@ -76,13 +76,6 @@ const EnhancedPokemonCard = memo(({
     return typeGradients[primaryType] || typeGradients.normal;
   };
 
-  // Get special badge for legendary/mythical (excluding starter)
-  const getSpecialBadge = () => {
-    if (pokemon.isMythical) return { text: 'Mythical', gradient: 'from-purple-400 to-pink-400' };
-    if (pokemon.isLegendary) return { text: 'Legendary', gradient: 'from-yellow-400 to-amber-500' };
-    return null;
-  };
-
   const handleClick = () => {
     if (onClick) {
       onClick();
@@ -95,8 +88,6 @@ const EnhancedPokemonCard = memo(({
   const formatNumber = (num: number) => {
     return String(num).padStart(3, '0');
   };
-
-  const specialBadge = getSpecialBadge();
 
   return (
     <div className={cn('group relative', className)}>
@@ -157,15 +148,6 @@ const EnhancedPokemonCard = memo(({
                   </span>
                 </div>
               )}
-              
-              {/* Sparkle effect for special Pokemon */}
-              {(pokemon.isLegendary || pokemon.isMythical) && (
-                <>
-                  <div className="absolute top-2 right-2 w-2 h-2 bg-yellow-300 rounded-full animate-pulse" />
-                  <div className="absolute bottom-3 left-3 w-1.5 h-1.5 bg-yellow-200 rounded-full animate-pulse delay-150" />
-                  <div className="absolute top-4 left-2 w-1 h-1 bg-yellow-100 rounded-full animate-pulse delay-300" />
-                </>
-              )}
             </div>
           </div>
           
@@ -182,36 +164,16 @@ const EnhancedPokemonCard = memo(({
         {/* Pokédex Number - Top center inside circle */}
         <div className={cn(
           'absolute top-2 z-20',
-          'text-xs font-mono font-bold',
-          'text-gray-700/80 dark:text-gray-300/80',
+          'text-xs font-mono font-extrabold',
+          'text-gray-700 dark:text-gray-300',
           'tracking-wider',
           'transform transition-all duration-300',
-          'group-hover:text-gray-800 dark:group-hover:text-gray-200',
+          'group-hover:text-gray-900 dark:group-hover:text-gray-100',
           'group-hover:scale-110'
         )}
         style={{ left: '54%', transform: 'translateX(-50%)' }}>
           #{formatNumber(pokemon.id)}
         </div>
-        
-        {/* Special Badge (Legendary/Mythical/Starter) */}
-        {specialBadge && (
-          <div className={cn(
-            'absolute top-2 left-2 z-20',
-            'backdrop-blur-md',
-            'rounded-full px-2 py-0.5',
-            'border border-white/50',
-            'shadow-md',
-            'transform transition-all duration-300',
-            'group-hover:scale-110'
-          )}>
-            <span className={cn(
-              'text-xs font-bold bg-gradient-to-r bg-clip-text text-transparent',
-              specialBadge.gradient
-            )}>
-              {specialBadge.text}
-            </span>
-          </div>
-        )}
       </motion.div>
       
       {/* Pokemon Name - No Container */}

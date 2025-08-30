@@ -87,6 +87,8 @@
     "playwright.config.ts",
     "vitest.config.ts",
     "**/archive/**/*",
-    "components/pokemon/archive/**/*"
+    "**/_archive/**/*",
+    "components/pokemon/archive/**/*",
+    "components/_archive/**/*"
   ]
 }

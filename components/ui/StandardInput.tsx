@@ -12,9 +12,9 @@ interface StandardInputProps extends React.InputHTMLAttributes<HTMLInputElement>
 }
 
 const sizeClasses = {
-  sm: 'h-10 px-3 text-sm',
-  md: 'h-12 px-4 text-base',
-  lg: 'h-14 px-5 text-lg'
+  sm: 'h-10 px-2 text-sm',
+  md: 'h-12 px-3 text-base',
+  lg: 'h-14 px-3 text-lg'
 };
 
 const variantClasses = {
@@ -54,7 +54,7 @@ export const StandardInput = forwardRef<HTMLInputElement, StandardInputProps>(
         
         <div className="relative">
           {icon && (
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 pl-3 pointer-events-none">
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 pl-2 pointer-events-none">
               <div className="text-gray-500 dark:text-gray-400">
                 {icon}
               </div>
@@ -65,13 +65,14 @@ export const StandardInput = forwardRef<HTMLInputElement, StandardInputProps>(
             ref={ref}
             className={cn(
               'w-full rounded-xl transition-all duration-200',
-              'focus:outline-none focus:ring-2 focus:ring-blue-500/50',
+              'focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:rounded-xl',
               'placeholder:text-gray-400 dark:placeholder:text-gray-500',
               'text-gray-900 dark:text-white',
+              'text-left', // Ensure text alignment is left
               sizeClasses[inputSize],
               variantClasses[variant],
               glassClasses,
-              icon && 'pl-10',
+              icon && 'pl-8',
               rightIcon && 'pr-10',
               error && 'border-red-500 dark:border-red-400',
               'hover:border-gray-300 dark:hover:border-gray-600',
@@ -112,6 +113,7 @@ export const SearchInput = forwardRef<HTMLInputElement, Omit<StandardInputProps,
           'bg-white/80 dark:bg-gray-800/80',
           'backdrop-blur-xl',
           'border border-white/20 dark:border-gray-700/20',
+          'rounded-xl !rounded-xl',
           className
         )}
         {...props}

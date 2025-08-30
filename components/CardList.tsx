@@ -274,9 +274,11 @@ const CardList = memo<CardListProps>(({
         // Track FPS during scroll
         if (frameCount % 30 === 0) {
           const fps = 1000 / deltaTime;
-          performanceMonitor.recordMetric('scroll-fps', fps, {
-            cardCount: cards.length,
-            isScrolling: true
+          performanceMonitor.recordMetric({
+            name: 'scroll-fps',
+            value: fps,
+            unit: 'fps',
+            timestamp: Date.now()
           });
         }
         
@@ -312,9 +314,11 @@ const CardList = memo<CardListProps>(({
   // Track initial render performance
   useEffect(() => {
     const renderTime = performance.now() - mountTimeRef.current;
-    performanceMonitor.recordMetric('cardlist-initial-render', renderTime, {
-      cardCount: cards.length,
-      sortOption
+    performanceMonitor.recordMetric({
+      name: 'cardlist-initial-render',
+      value: renderTime,
+      unit: 'ms',
+      timestamp: Date.now()
     });
     
     if (renderTime > 100) {

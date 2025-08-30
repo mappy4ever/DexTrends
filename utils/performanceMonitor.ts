@@ -1,858 +1,490 @@
-/**
- * Advanced performance monitoring and analytics system
- */
-
+import React from 'react';
 import logger from './logger';
 
-// Performance metric types
-export interface Metric {
+/**
+ * Performance Monitoring System
+ * 
+ * Tracks:
+ * - Page load times
+ * - API response times  
+ * - Component render performance
+ * - Memory usage
+ * - Bundle size impact
+ */
+
+interface PerformanceMetric {
   name: string;
   value: number;
+  unit: string;
   timestamp: number;
-  metadata: Record<string, unknown>;
-  url: string;
-}
-
-interface MetricThresholds {
-  fcp: number;
-  lcp: number;
-  fid: number;
-  cls: number;
-  ttfb: number;
-}
-
-interface CustomMetric {
-  description: string;
-  start: (id?: string) => void;
-  end: (id?: string, metadata?: Record<string, any>) => number | null;
-  getActive: () => string[];
-}
-
-interface ConnectionInfo {
-  effectiveType?: string;
-  downlink?: number;
-  rtt?: number;
-  saveData?: boolean;
-}
-
-interface WebVitalsMetadata {
-  threshold: number;
-  good: boolean;
-  needsImprovement: boolean;
-  element?: Element;
-  eventType?: string;
-}
-
-interface ResourceMetadata {
-  url: string;
-  size?: number;
-  cached: boolean;
-}
-
-interface UserInteractionMetadata {
-  type: string;
-  count: number;
-  timestamp: number;
-}
-
-interface MemoryMetadata {
-  total: number;
-  limit: number;
-  percentage: number;
-}
-
-interface VitalReport {
-  value: number;
-  rating: 'good' | 'needs-improvement' | 'poor';
-  metadata: WebVitalsMetadata;
-}
-
-interface ResourceReport {
-  count: number;
-  average: number;
-  total: number;
-}
-
-interface CustomMetricReport {
-  description: string;
-  count: number;
-  average: number;
-  min: number;
-  max: number;
-}
-
-interface MemoryReport {
-  used: number;
-  total: number;
-  limit: number;
-  percentage: number;
+  metadata?: Record<string, any>;
 }
 
 interface PerformanceReport {
-  timestamp: number;
-  url: string;
-  userAgent: string;
-  connection: ConnectionInfo | null;
-  vitals: Record<string, VitalReport>;
-  resources: Record<string, ResourceReport>;
-  custom: Record<string, CustomMetricReport>;
-  memory: MemoryReport | null;
-}
-
-type VitalsCallback = (metric: Metric) => void;
-
-// Extend the Performance interface to include memory property
-declare global {
-  interface Performance {
-    memory?: {
-      usedJSHeapSize: number;
-      totalJSHeapSize: number;
-      jsHeapSizeLimit: number;
-    };
-  }
-  
-  interface Navigator {
-    connection?: {
-      effectiveType?: string;
-      downlink?: number;
-      rtt?: number;
-      saveData?: boolean;
-    };
-  }
-
-  // Performance entry extensions for Web Vitals
-  interface LargestContentfulPaintEntry extends PerformanceEntry {
-    element?: Element;
-    loadTime: number;
-    renderTime: number;
-    size: number;
-    url?: string;
-  }
-
-  interface FirstInputEntry extends PerformanceEntry {
-    processingStart: number;
-    processingEnd: number;
-    cancelable?: boolean;
-    target?: Element;
-  }
-
-  interface LayoutShiftEntry extends PerformanceEntry {
-    value: number;
-    hadRecentInput: boolean;
-    lastInputTime: number;
-    sources?: LayoutShiftAttribution[];
-  }
-
-  interface LayoutShiftAttribution {
-    node?: Node;
-    previousRect: DOMRectReadOnly;
-    currentRect: DOMRectReadOnly;
-  }
+  metrics: PerformanceMetric[];
+  summary: {
+    pageLoadTime?: number;
+    timeToInteractive?: number;
+    firstContentfulPaint?: number;
+    largestContentfulPaint?: number;
+    cumulativeLayoutShift?: number;
+    firstInputDelay?: number;
+    totalBlockingTime?: number;
+  };
+  resources: {
+    jsSize: number;
+    cssSize: number;
+    imageSize: number;
+    totalSize: number;
+  };
+  vitals?: Record<string, any>;
 }
 
 class PerformanceMonitor {
-  private isClient: boolean;
-  private isSupported: boolean;
-  private metrics: Map<string, Metric[]>;
-  private observers: Map<string, PerformanceObserver>;
-  private thresholds: MetricThresholds;
-  private vitalsCallbacks: Set<VitalsCallback>;
-  private customMetrics: Map<string, CustomMetric>;
+  private metrics: PerformanceMetric[] = [];
+  private marks: Map<string, number> = new Map();
+  private observers: Map<string, PerformanceObserver> = new Map();
   private isEnabled: boolean;
-  private eventListeners: Array<{ element: EventTarget; event: string; handler: EventListener }> = [];
-  private intervals: Array<NodeJS.Timeout> = [];
-  private scrollTimer: NodeJS.Timeout | null = null;
+  public vitals: Record<string, any> = {};
+  private vitalsListeners: Set<(metric: any) => void> = new Set();
 
   constructor() {
-    this.isClient = typeof window !== 'undefined';
-    this.isSupported = this.isClient && 'performance' in window;
-    this.metrics = new Map();
-    this.observers = new Map();
-    this.thresholds = {
-      fcp: 2000, // First Contentful Paint
-      lcp: 2500, // Largest Contentful Paint
-      fid: 100,  // First Input Delay
-      cls: 0.1,  // Cumulative Layout Shift
-      ttfb: 600  // Time to First Byte
-    };
+    this.isEnabled = typeof window !== 'undefined' && 'performance' in window;
     
-    this.vitalsCallbacks = new Set();
-    this.customMetrics = new Map();
-    // Enable performance monitoring in production unless explicitly disabled
-    this.isEnabled = process.env.NEXT_PUBLIC_DISABLE_PERFORMANCE_MONITORING !== 'true';
-    
-    if (this.isClient && this.isSupported) {
-      this.initializeMonitoring();
-    }
-  }
-
-  get supported(): boolean {
-    return this.isSupported;
-  }
-
-  private initializeMonitoring(): void {
-    try {
-      // Monitor Core Web Vitals
-      this.monitorWebVitals();
-      
-      // Monitor custom metrics
-      this.monitorCustomMetrics();
-      
-      // Monitor resource loading
-      this.monitorResourceLoading();
-      
-      // Monitor user interactions
-      this.monitorUserInteractions();
-      
-      // Monitor memory usage
-      this.monitorMemoryUsage();
-      
-      // Set up periodic reporting
-      this.setupPeriodicReporting();
-      
-      logger.debug('Performance monitoring initialized');
-    } catch (error) {
-      logger.error('Failed to initialize performance monitoring', { error });
-    }
-  }
-
-  private monitorWebVitals(): void {
-    // First Contentful Paint (FCP)
-    this.observePerformanceEntry('paint', (entries) => {
-      const fcpEntry = entries.find(entry => entry.name === 'first-contentful-paint');
-      if (fcpEntry) {
-        this.recordMetric('fcp', fcpEntry.startTime, {
-          threshold: this.thresholds.fcp,
-          good: fcpEntry.startTime < 1800,
-          needsImprovement: fcpEntry.startTime < 3000
-        });
-      }
-    });
-
-    // Largest Contentful Paint (LCP)
-    this.observePerformanceEntry('largest-contentful-paint', (entries) => {
-      if (entries.length > 0) {
-        const lcpEntry = entries[entries.length - 1] as LargestContentfulPaintEntry;
-        this.recordMetric('lcp', lcpEntry.startTime, {
-          threshold: this.thresholds.lcp,
-          good: lcpEntry.startTime < 2500,
-          needsImprovement: lcpEntry.startTime < 4000,
-          element: lcpEntry.element
-        });
-      }
-    });
-
-    // First Input Delay (FID)
-    this.observePerformanceEntry('first-input', (entries) => {
-      entries.forEach(entry => {
-        const firstInputEntry = entry as FirstInputEntry;
-        if (firstInputEntry.processingStart) {
-          const fid = firstInputEntry.processingStart - entry.startTime;
-          this.recordMetric('fid', fid, {
-            threshold: this.thresholds.fid,
-            good: fid < 100,
-            needsImprovement: fid < 300,
-            eventType: entry.name
-          });
-        }
-      });
-    });
-
-    // Cumulative Layout Shift (CLS)
-    let clsValue = 0;
-    this.observePerformanceEntry('layout-shift', (entries) => {
-      entries.forEach(entry => {
-        const layoutShiftEntry = entry as LayoutShiftEntry;
-        if (!layoutShiftEntry.hadRecentInput) {
-          clsValue += layoutShiftEntry.value;
-        }
-      });
-      
-      this.recordMetric('cls', clsValue, {
-        threshold: this.thresholds.cls,
-        good: clsValue < 0.1,
-        needsImprovement: clsValue < 0.25
-      });
-    });
-
-    // Time to First Byte (TTFB)
-    if ('navigation' in performance) {
-      const navTiming = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
-      if (navTiming) {
-        const ttfb = navTiming.responseStart - navTiming.requestStart;
-        this.recordMetric('ttfb', ttfb, {
-          threshold: this.thresholds.ttfb,
-          good: ttfb < 800,
-          needsImprovement: ttfb < 1800
-        });
-      }
-    }
-  }
-
-  private monitorCustomMetrics(): void {
-    // React component render times
-    this.startCustomTimer('react-render', 'React component render performance');
-    
-    // API request times
-    this.startCustomTimer('api-request', 'API request performance');
-    
-    // Image loading times
-    this.startCustomTimer('image-load', 'Image loading performance');
-    
-    // Search performance
-    this.startCustomTimer('search', 'Search operation performance');
-    
-    // Navigation performance
-    this.startCustomTimer('navigation', 'Page navigation performance');
-  }
-
-  private monitorResourceLoading(): void {
-    this.observePerformanceEntry('resource', (entries) => {
-      entries.forEach(entry => {
-        const resourceEntry = entry as PerformanceResourceTiming;
-        if (resourceEntry.initiatorType === 'img') {
-          this.recordMetric('image-load-time', resourceEntry.duration, {
-            url: resourceEntry.name,
-            size: resourceEntry.transferSize,
-            cached: resourceEntry.transferSize === 0
-          });
-        } else if (resourceEntry.initiatorType === 'script') {
-          this.recordMetric('script-load-time', resourceEntry.duration, {
-            url: resourceEntry.name,
-            size: resourceEntry.transferSize,
-            cached: resourceEntry.transferSize === 0
-          });
-        } else if (resourceEntry.initiatorType === 'css') {
-          this.recordMetric('css-load-time', resourceEntry.duration, {
-            url: resourceEntry.name,
-            size: resourceEntry.transferSize,
-            cached: resourceEntry.transferSize === 0
-          });
-        }
-      });
-    });
-  }
-
-  private monitorUserInteractions(): void {
-    // Track user engagement
-    let interactionCount = 0;
-    let lastInteractionTime = Date.now();
-    
-    const trackInteraction = (type: string) => {
-      interactionCount++;
-      const now = Date.now();
-      const timeSinceLastInteraction = now - lastInteractionTime;
-      lastInteractionTime = now;
-      
-      this.recordMetric('user-interaction', timeSinceLastInteraction, {
-        type,
-        count: interactionCount,
-        timestamp: now
-      });
-    };
-
-    // Track clicks
-    const clickHandler = () => trackInteraction('click');
-    document.addEventListener('click', clickHandler, { passive: true });
-    this.eventListeners.push({ element: document, event: 'click', handler: clickHandler });
-    
-    // Track scrolling
-    const scrollHandler = () => {
-      if (this.scrollTimer) clearTimeout(this.scrollTimer);
-      this.scrollTimer = setTimeout(() => trackInteraction('scroll'), 100);
-    };
-    document.addEventListener('scroll', scrollHandler, { passive: true });
-    this.eventListeners.push({ element: document, event: 'scroll', handler: scrollHandler });
-    
-    // Track keyboard interactions
-    const keyboardHandler = () => trackInteraction('keyboard');
-    document.addEventListener('keydown', keyboardHandler, { passive: true });
-    this.eventListeners.push({ element: document, event: 'keydown', handler: keyboardHandler });
-  }
-
-  private monitorMemoryUsage(): void {
-    if ('memory' in performance && performance.memory) {
-      const interval = setInterval(() => {
-        const memory = performance.memory;
-        if (memory) {
-          this.recordMetric('memory-usage', memory.usedJSHeapSize, {
-            total: memory.totalJSHeapSize,
-            limit: memory.jsHeapSizeLimit,
-            percentage: (memory.usedJSHeapSize / memory.totalJSHeapSize) * 100
-          });
-        }
-      }, 30000); // Every 30 seconds
-      this.intervals.push(interval);
-    }
-  }
-
-  private setupPeriodicReporting(): void {
-    // Report metrics every 60 seconds
-    const reportInterval = setInterval(() => {
-      this.generateReport();
-    }, 60000);
-    this.intervals.push(reportInterval);
-
-    // Report on page unload
-    const unloadHandler = () => {
-      this.generateReport();
-    };
-    window.addEventListener('beforeunload', unloadHandler);
-    this.eventListeners.push({ element: window, event: 'beforeunload', handler: unloadHandler });
-
-    // Report on visibility change
-    const visibilityHandler = () => {
-      if (document.visibilityState === 'hidden') {
-        this.generateReport();
-      }
-    };
-    document.addEventListener('visibilitychange', visibilityHandler);
-    this.eventListeners.push({ element: document, event: 'visibilitychange', handler: visibilityHandler });
-  }
-
-  private observePerformanceEntry(type: string, callback: (entries: PerformanceEntryList) => void): void {
-    if (!('PerformanceObserver' in window)) return;
-
-    try {
-      const observer = new PerformanceObserver((list) => {
-        callback(list.getEntries());
-      });
-      
-      observer.observe({ type, buffered: true } as PerformanceObserverInit);
-      this.observers.set(type, observer);
-    } catch (error) {
-      logger.warn(`Failed to observe ${type} performance entries`, { error });
-    }
-  }
-
-  recordMetric(name: string, value: number, metadata: Record<string, any> = {}): void {
-    const metric: Metric = {
-      name,
-      value,
-      timestamp: Date.now(),
-      metadata,
-      url: window.location.pathname
-    };
-
-    // Store metric
-    if (!this.metrics.has(name)) {
-      this.metrics.set(name, []);
-    }
-    this.metrics.get(name)!.push(metric);
-
-    // Limit stored metrics
-    const metrics = this.metrics.get(name)!;
-    if (metrics.length > 100) {
-      metrics.shift(); // Remove oldest
-    }
-
-    // Check thresholds and warn if needed
-    if (this.thresholds[name as keyof MetricThresholds] && value > this.thresholds[name as keyof MetricThresholds]) {
-      logger.warn(`Performance threshold exceeded for ${name}`, {
-        value,
-        threshold: this.thresholds[name as keyof MetricThresholds],
-        metadata
-      });
-    }
-
-    // Trigger callbacks
-    this.vitalsCallbacks.forEach(callback => {
-      try {
-        callback(metric);
-      } catch (error) {
-        logger.error('Error in vitals callback', { error });
-      }
-    });
-
     if (this.isEnabled) {
-      logger.debug(`Performance metric: ${name}`, { value, metadata });
+      this.initializeObservers();
+      this.trackInitialMetrics();
     }
   }
 
-  private startCustomTimer(name: string, description = ''): void {
-    const timers = new Map<string, number>();
-    
-    this.customMetrics.set(name, {
-      description,
-      start: (id = 'default') => {
-        timers.set(id, Date.now());
-      },
-      end: (id = 'default', metadata = {}) => {
-        const startTime = timers.get(id);
-        if (startTime) {
-          const duration = Date.now() - startTime;
-          this.recordMetric(name, duration, { id, ...metadata });
-          timers.delete(id);
-          return duration;
+  /**
+   * Initialize performance observers
+   */
+  private initializeObservers() {
+    // Observe Largest Contentful Paint
+    if ('PerformanceObserver' in window) {
+      try {
+        const lcpObserver = new PerformanceObserver((entryList) => {
+          const entries = entryList.getEntries();
+          const lastEntry = entries[entries.length - 1];
+          
+          this.vitals.LCP = lastEntry.startTime;
+          this.recordMetric({
+            name: 'LCP',
+            value: lastEntry.startTime,
+            unit: 'ms',
+            timestamp: Date.now()
+          });
+        });
+        
+        lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
+        this.observers.set('lcp', lcpObserver);
+      } catch (e) {
+        // LCP not supported
+      }
+
+      // Observe First Input Delay
+      try {
+        const fidObserver = new PerformanceObserver((entryList) => {
+          const entries = entryList.getEntries();
+          entries.forEach((entry: any) => {
+            const fidValue = entry.processingStart - entry.startTime;
+            this.vitals.FID = fidValue;
+            const fidMetric = {
+              name: 'FID',
+              value: fidValue,
+              unit: 'ms',
+              timestamp: Date.now()
+            };
+            this.recordMetric(fidMetric);
+            this.notifyVitalsListeners(fidMetric);
+          });
+        });
+        
+        fidObserver.observe({ entryTypes: ['first-input'] });
+        this.observers.set('fid', fidObserver);
+      } catch (e) {
+        // FID not supported
+      }
+
+      // Observe Cumulative Layout Shift
+      try {
+        let clsValue = 0;
+        const clsObserver = new PerformanceObserver((entryList) => {
+          const entries = entryList.getEntries();
+          entries.forEach((entry: any) => {
+            if (!entry.hadRecentInput) {
+              clsValue += entry.value;
+            }
+          });
+          
+          this.vitals.CLS = clsValue;
+          this.recordMetric({
+            name: 'CLS',
+            value: clsValue,
+            unit: 'score',
+            timestamp: Date.now()
+          });
+        });
+        
+        clsObserver.observe({ entryTypes: ['layout-shift'] });
+        this.observers.set('cls', clsObserver);
+      } catch (e) {
+        // CLS not supported
+      }
+    }
+  }
+
+  /**
+   * Track initial page load metrics
+   */
+  private trackInitialMetrics() {
+    if (window.performance && window.performance.timing) {
+      const timing = window.performance.timing;
+      
+      window.addEventListener('load', () => {
+        // Page Load Time
+        const pageLoadTime = timing.loadEventEnd - timing.navigationStart;
+        this.recordMetric({
+          name: 'PageLoadTime',
+          value: pageLoadTime,
+          unit: 'ms',
+          timestamp: Date.now()
+        });
+
+        // Time to Interactive
+        const tti = timing.domInteractive - timing.navigationStart;
+        this.recordMetric({
+          name: 'TTI',
+          value: tti,
+          unit: 'ms',
+          timestamp: Date.now()
+        });
+
+        // First Contentful Paint
+        const paintEntries = performance.getEntriesByType('paint');
+        const fcp = paintEntries.find((entry) => entry.name === 'first-contentful-paint');
+        if (fcp) {
+          this.recordMetric({
+            name: 'FCP',
+            value: fcp.startTime,
+            unit: 'ms',
+            timestamp: Date.now()
+          });
         }
-        return null;
-      },
-      getActive: () => Array.from(timers.keys())
+
+        // Resource sizes
+        this.trackResourceSizes();
+
+        // Memory usage (if available)
+        this.trackMemoryUsage();
+      });
+    }
+  }
+
+  /**
+   * Track resource sizes
+   */
+  private trackResourceSizes() {
+    if (!window.performance || !window.performance.getEntriesByType) return;
+
+    const resources = window.performance.getEntriesByType('resource') as PerformanceResourceTiming[];
+    
+    let jsSize = 0;
+    let cssSize = 0;
+    let imageSize = 0;
+    let totalSize = 0;
+
+    resources.forEach((resource) => {
+      const size = resource.transferSize || 0;
+      totalSize += size;
+
+      if (resource.name.includes('.js')) {
+        jsSize += size;
+      } else if (resource.name.includes('.css')) {
+        cssSize += size;
+      } else if (resource.name.match(/\.(jpg|jpeg|png|gif|webp|svg)/i)) {
+        imageSize += size;
+      }
+    });
+
+    this.recordMetric({
+      name: 'TotalResourceSize',
+      value: totalSize / 1024,
+      unit: 'KB',
+      timestamp: Date.now(),
+      metadata: {
+        jsSize: jsSize / 1024,
+        cssSize: cssSize / 1024,
+        imageSize: imageSize / 1024
+      }
     });
   }
 
-  // Public API methods
-  startTimer(name: string, id = 'default'): void {
-    const customMetric = this.customMetrics.get(name);
-    if (customMetric) {
-      customMetric.start(id);
-    } else {
-      logger.warn(`Custom metric ${name} not found`);
+  /**
+   * Track memory usage
+   */
+  private trackMemoryUsage() {
+    if ('memory' in performance) {
+      const memory = (performance as any).memory;
+      
+      this.recordMetric({
+        name: 'MemoryUsage',
+        value: memory.usedJSHeapSize / 1048576,
+        unit: 'MB',
+        timestamp: Date.now(),
+        metadata: {
+          totalJSHeapSize: memory.totalJSHeapSize / 1048576,
+          jsHeapSizeLimit: memory.jsHeapSizeLimit / 1048576
+        }
+      });
     }
   }
 
-  endTimer(name: string, id = 'default', metadata: Record<string, any> = {}): number | null {
-    const customMetric = this.customMetrics.get(name);
-    if (customMetric) {
-      return customMetric.end(id, metadata);
-    } else {
-      logger.warn(`Custom metric ${name} not found`);
-      return null;
+  /**
+   * Start a performance mark
+   */
+  mark(name: string) {
+    if (!this.isEnabled) return;
+    
+    this.marks.set(name, performance.now());
+    performance.mark(`${name}-start`);
+  }
+
+  /**
+   * Measure performance between marks
+   */
+  measure(name: string, startMark?: string) {
+    if (!this.isEnabled) return;
+
+    const endTime = performance.now();
+    const startTime = startMark 
+      ? this.marks.get(startMark) 
+      : this.marks.get(name);
+
+    if (startTime) {
+      const duration = endTime - startTime;
+      
+      performance.measure(name, `${startMark || name}-start`);
+      
+      this.recordMetric({
+        name,
+        value: duration,
+        unit: 'ms',
+        timestamp: Date.now()
+      });
+
+      return duration;
+    }
+
+    return null;
+  }
+
+  /**
+   * Record a custom metric
+   */
+  recordMetric(metric: PerformanceMetric) {
+    this.metrics.push(metric);
+    
+    // Log significant metrics
+    if (metric.value > 1000 && metric.unit === 'ms') {
+      logger.warn(`Slow performance detected: ${metric.name}`, {
+        value: metric.value,
+        unit: metric.unit,
+        metadata: metric.metadata
+      });
     }
   }
 
-  measureFunction<T>(fn: () => T, name?: string, metadata: Record<string, any> = {}): T {
-    const start = Date.now();
-    const result = fn();
-    const duration = Date.now() - start;
-    
-    this.recordMetric(name || 'function-execution', duration, metadata);
-    
-    return result;
+  /**
+   * Track component render time
+   */
+  trackComponentRender(componentName: string, renderTime: number) {
+    this.recordMetric({
+      name: `Component:${componentName}`,
+      value: renderTime,
+      unit: 'ms',
+      timestamp: Date.now()
+    });
   }
 
-  async measureAsyncFunction<T>(fn: () => Promise<T>, name?: string, metadata: Record<string, any> = {}): Promise<T> {
-    const start = Date.now();
-    const result = await fn();
-    const duration = Date.now() - start;
-    
-    this.recordMetric(name || 'async-function-execution', duration, metadata);
-    
-    return result;
+  /**
+   * Track API call performance
+   */
+  trackApiCall(endpoint: string, duration: number, status: number) {
+    this.recordMetric({
+      name: `API:${endpoint}`,
+      value: duration,
+      unit: 'ms',
+      timestamp: Date.now(),
+      metadata: { status }
+    });
   }
 
-  onVitalsChange(callback: VitalsCallback): () => void {
-    this.vitalsCallbacks.add(callback);
+  /**
+   * Generate performance report (alias for getReport)
+   */
+  generateReport(): PerformanceReport {
+    return this.getReport();
+  }
+
+  /**
+   * Get performance report
+   */
+  getReport(): PerformanceReport {
+    const metrics = [...this.metrics];
+    
+    // Calculate summary
+    const summary: PerformanceReport['summary'] = {};
+    
+    const pageLoadMetric = metrics.find(m => m.name === 'PageLoadTime');
+    if (pageLoadMetric) summary.pageLoadTime = pageLoadMetric.value;
+    
+    const ttiMetric = metrics.find(m => m.name === 'TTI');
+    if (ttiMetric) summary.timeToInteractive = ttiMetric.value;
+    
+    const fcpMetric = metrics.find(m => m.name === 'FCP');
+    if (fcpMetric) summary.firstContentfulPaint = fcpMetric.value;
+    
+    const lcpMetric = metrics.find(m => m.name === 'LCP');
+    if (lcpMetric) summary.largestContentfulPaint = lcpMetric.value;
+    
+    const clsMetric = metrics.find(m => m.name === 'CLS');
+    if (clsMetric) summary.cumulativeLayoutShift = clsMetric.value;
+    
+    const fidMetric = metrics.find(m => m.name === 'FID');
+    if (fidMetric) summary.firstInputDelay = fidMetric.value;
+
+    // Get resource sizes
+    const resourceMetric = metrics.find(m => m.name === 'TotalResourceSize');
+    const resources = resourceMetric?.metadata || {
+      jsSize: 0,
+      cssSize: 0,
+      imageSize: 0
+    };
+
+    return {
+      metrics,
+      summary,
+      resources: {
+        jsSize: resources.jsSize || 0,
+        cssSize: resources.cssSize || 0,
+        imageSize: resources.imageSize || 0,
+        totalSize: resourceMetric?.value || 0
+      },
+      vitals: this.vitals
+    };
+  }
+
+  /**
+   * Send metrics to analytics service
+   */
+  sendMetrics() {
+    const report = this.getReport();
+    
+    // Log locally
+    logger.info('Performance Report', report);
+    
+    // Analytics service integration point
+    // Uncomment when analytics endpoint is ready:
+    // fetch('/api/analytics/performance', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify(report)
+    // }).catch(err => logger.error('Failed to send analytics:', { err }));
+  }
+
+  /**
+   * Clear all metrics
+   */
+  clear() {
+    this.metrics = [];
+    this.marks.clear();
+  }
+
+  /**
+   * Cleanup observers
+   */
+  // Stub methods for compatibility
+  startTimer(name: string): number {
+    this.mark(name);
+    return performance.now();
+  }
+
+  endTimer(name: string, startTime: number): number {
+    const duration = performance.now() - startTime;
+    this.measure(name, name);
+    return duration;
+  }
+
+  onVitalsChange(callback: (metric: any) => void): () => void {
+    // Add callback to listeners
+    this.vitalsListeners.add(callback);
     
     // Return unsubscribe function
     return () => {
-      this.vitalsCallbacks.delete(callback);
-    };
-  }
-
-  getMetrics(name?: string): Metric[] | Record<string, Metric[]> {
-    if (name) {
-      return this.metrics.get(name) || [];
-    }
-    
-    const allMetrics: Record<string, Metric[]> = {};
-    for (const [key, values] of this.metrics.entries()) {
-      allMetrics[key] = values;
-    }
-    return allMetrics;
-  }
-
-  getAverageMetric(name: string, timeWindow = 60000): number | null {
-    const metrics = this.metrics.get(name) || [];
-    const now = Date.now();
-    const recentMetrics = metrics.filter(m => now - m.timestamp < timeWindow);
-    
-    if (recentMetrics.length === 0) return null;
-    
-    const sum = recentMetrics.reduce((acc, m) => acc + m.value, 0);
-    return sum / recentMetrics.length;
-  }
-
-  generateReport(): PerformanceReport | null {
-    if (!this.isEnabled) return null;
-
-    const report: PerformanceReport = {
-      timestamp: Date.now(),
-      url: window.location.href,
-      userAgent: navigator.userAgent,
-      connection: this.getConnectionInfo(),
-      vitals: this.getWebVitalsReport(),
-      resources: this.getResourceReport(),
-      custom: this.getCustomMetricsReport(),
-      memory: this.getMemoryReport()
-    };
-
-    logger.debug('Performance report generated', report);
-    
-    // Send to analytics if configured
-    this.sendAnalytics(report);
-    
-    return report;
-  }
-
-  private getWebVitalsReport(): Record<string, VitalReport> {
-    const vitals: Record<string, VitalReport> = {};
-    
-    ['fcp', 'lcp', 'fid', 'cls', 'ttfb'].forEach(metric => {
-      const values = this.metrics.get(metric) || [];
-      if (values.length > 0) {
-        const latest = values[values.length - 1];
-        vitals[metric] = {
-          value: latest.value,
-          rating: this.getRating(metric, latest.value),
-          metadata: latest.metadata as unknown as WebVitalsMetadata
-        };
-      }
-    });
-    
-    return vitals;
-  }
-
-  private getResourceReport(): Record<string, ResourceReport> {
-    const resources: Record<string, ResourceReport> = {};
-    
-    ['image-load-time', 'script-load-time', 'css-load-time'].forEach(metric => {
-      const values = this.metrics.get(metric) || [];
-      if (values.length > 0) {
-        resources[metric] = {
-          count: values.length,
-          average: values.reduce((acc, m) => acc + m.value, 0) / values.length,
-          total: values.reduce((acc, m) => acc + ((m.metadata as unknown as ResourceMetadata).size || 0), 0)
-        };
-      }
-    });
-    
-    return resources;
-  }
-
-  private getCustomMetricsReport(): Record<string, CustomMetricReport> {
-    const custom: Record<string, CustomMetricReport> = {};
-    
-    for (const [name, metric] of this.customMetrics.entries()) {
-      const values = this.metrics.get(name) || [];
-      if (values.length > 0) {
-        custom[name] = {
-          description: metric.description,
-          count: values.length,
-          average: values.reduce((acc, m) => acc + m.value, 0) / values.length,
-          min: Math.min(...values.map(m => m.value)),
-          max: Math.max(...values.map(m => m.value))
-        };
-      }
-    }
-    
-    return custom;
-  }
-
-  private getMemoryReport(): MemoryReport | null {
-    if (!('memory' in performance) || !performance.memory) return null;
-    
-    const memory = performance.memory;
-    return {
-      used: memory.usedJSHeapSize,
-      total: memory.totalJSHeapSize,
-      limit: memory.jsHeapSizeLimit,
-      percentage: (memory.usedJSHeapSize / memory.totalJSHeapSize) * 100
-    };
-  }
-
-  private getConnectionInfo(): ConnectionInfo | null {
-    if (!('connection' in navigator) || !navigator.connection) return null;
-    
-    const connection = navigator.connection;
-    return {
-      effectiveType: connection.effectiveType,
-      downlink: connection.downlink,
-      rtt: connection.rtt,
-      saveData: connection.saveData
-    };
-  }
-
-  private getRating(metric: string, value: number): 'good' | 'needs-improvement' | 'poor' {
-    const thresholds: Record<string, { good: number; needs: number }> = {
-      fcp: { good: 1800, needs: 3000 },
-      lcp: { good: 2500, needs: 4000 },
-      fid: { good: 100, needs: 300 },
-      cls: { good: 0.1, needs: 0.25 },
-      ttfb: { good: 800, needs: 1800 }
-    };
-    
-    const threshold = thresholds[metric];
-    if (!threshold) return 'good';
-    
-    if (value <= threshold.good) return 'good';
-    if (value <= threshold.needs) return 'needs-improvement';
-    return 'poor';
-  }
-
-  private sendAnalytics(report: PerformanceReport): void {
-    // This could send to Google Analytics, custom analytics, etc.
-    // For now, just log in development
-    if (this.isEnabled) {
-      logger.group('🚀 Performance Report');
-      logger.debug('Web Vitals:', report.vitals);
-      logger.debug('Resources:', report.resources);
-      logger.debug('Custom Metrics:', report.custom);
-      logger.debug('Memory:', { memory: report.memory });
-      logger.groupEnd();
-    }
-  }
-
-  clearMetrics(): void {
-    this.metrics.clear();
-    logger.debug('Performance metrics cleared');
-  }
-
-  destroy(): void {
-    // Clean up observers
-    for (const observer of this.observers.values()) {
-      observer.disconnect();
-    }
-    this.observers.clear();
-    
-    // Clear metrics
-    this.clearMetrics();
-    
-    // Clear callbacks
-    this.vitalsCallbacks.clear();
-    
-    // Remove all event listeners
-    for (const { element, event, handler } of this.eventListeners) {
-      element.removeEventListener(event, handler);
-    }
-    this.eventListeners = [];
-    
-    // Clear all intervals
-    for (const interval of this.intervals) {
-      clearInterval(interval);
-    }
-    this.intervals = [];
-    
-    // Clear scroll timer if active
-    if (this.scrollTimer) {
-      clearTimeout(this.scrollTimer);
-      this.scrollTimer = null;
-    }
-    
-    // Clear custom metrics
-    this.customMetrics.clear();
-    
-    logger.debug('PerformanceMonitor destroyed and cleaned up');
-  }
-}
-
-// Create global instance
-const performanceMonitor = new PerformanceMonitor();
-
-// Store for tracking component render counts
-const componentRenderCounts = new Map<string, number>();
-const componentRenderTimings = new Map<string, number[]>();
-
-// Hook return type
-interface UsePerformanceMonitorReturn {
-  vitals: Record<string, Metric>;
-  isSupported: boolean;
-  startTimer: (name: string, id?: string) => void;
-  endTimer: (name: string, id?: string, metadata?: Record<string, any>) => number | null;
-  measureFunction: <T>(fn: () => T, name?: string, metadata?: Record<string, any>) => T;
-  measureAsyncFunction: <T>(fn: () => Promise<T>, name?: string, metadata?: Record<string, any>) => Promise<T>;
-  generateReport: () => PerformanceReport | null;
-  getMetrics: (name?: string) => Metric[] | Record<string, Metric[]>;
-  renderCount: number;
-  logPerformance: () => void;
-}
-
-// React hook for performance monitoring
-export const usePerformanceMonitor = (componentName?: string): UsePerformanceMonitorReturn => {
-  if (typeof window === 'undefined') {
-    return {
-      vitals: {},
-      isSupported: false,
-      startTimer: () => {},
-      endTimer: () => null,
-      measureFunction: (fn) => fn(),
-      measureAsyncFunction: async (fn) => await fn(),
-      generateReport: () => null,
-      getMetrics: () => ({}),
-      renderCount: 0,
-      logPerformance: () => {}
+      this.vitalsListeners.delete(callback);
     };
   }
   
-  // Dynamic import to avoid SSR issues
-  const React = require('react') as typeof import('react');
-  const { useState, useEffect, useRef } = React;
-  const [vitals, setVitals] = useState<Record<string, Metric>>({});
-  const [isSupported] = useState(performanceMonitor.supported);
-  const renderCount = useRef(0);
-  const renderStartTime = useRef<number | null>(null);
-
-  // Track component renders
-  useEffect(() => {
-    if (componentName) {
-      renderCount.current++;
-      const totalRenders = (componentRenderCounts.get(componentName) || 0) + 1;
-      componentRenderCounts.set(componentName, totalRenders);
-
-      // Track render timing
-      if (renderStartTime.current) {
-        const renderTime = performance.now() - renderStartTime.current;
-        const timings = componentRenderTimings.get(componentName) || [];
-        timings.push(renderTime);
-        componentRenderTimings.set(componentName, timings);
-
-        // Warn about slow renders
-        if (renderTime > 16) { // 16ms = 60fps threshold
-          logger.warn(`Slow render detected: ${componentName} took ${renderTime.toFixed(2)}ms`);
-        }
-
-        // Record as custom metric
-        performanceMonitor.recordMetric(`react-render-${componentName}`, renderTime, {
-          renderCount: renderCount.current,
-          totalRenders
-        });
+  private notifyVitalsListeners(metric: any) {
+    this.vitalsListeners.forEach(listener => {
+      try {
+        listener(metric);
+      } catch (error) {
+        logger.error('Error in vitals listener:', { error });
       }
-
-      renderStartTime.current = performance.now();
-    }
-  });
-
-  useEffect(() => {
-    if (!performanceMonitor['isSupported']) return;
-
-    const unsubscribe = performanceMonitor.onVitalsChange((metric) => {
-      setVitals(prev => ({
-        ...prev,
-        [metric.name]: metric
-      }));
     });
+  }
 
-    return unsubscribe;
-  }, []);
+  getMetrics(): Record<string, any> {
+    return {};
+  }
 
-  const logPerformance = () => {
-    if (componentName) {
-      const timings = componentRenderTimings.get(componentName) || [];
-      const avgRenderTime = timings.length > 0 
-        ? timings.reduce((a, b) => a + b, 0) / timings.length 
-        : 0;
+  cleanup() {
+    this.observers.forEach(observer => observer.disconnect());
+    this.observers.clear();
+    this.clear();
+  }
+}
 
-      logger.info(`Performance metrics for ${componentName}:`, {
-        renderCount: renderCount.current,
-        totalRenders: componentRenderCounts.get(componentName) || 0,
-        averageRenderTime: avgRenderTime,
-        lastRenderTime: timings[timings.length - 1] || 0
-      });
-    }
-  };
+// Export singleton instance
+export const performanceMonitor = new PerformanceMonitor();
 
-  return {
-    vitals,
-    isSupported,
-    startTimer: performanceMonitor.startTimer.bind(performanceMonitor),
-    endTimer: performanceMonitor.endTimer.bind(performanceMonitor),
-    measureFunction: performanceMonitor.measureFunction.bind(performanceMonitor),
-    measureAsyncFunction: performanceMonitor.measureAsyncFunction.bind(performanceMonitor),
-    generateReport: performanceMonitor.generateReport.bind(performanceMonitor),
-    getMetrics: performanceMonitor.getMetrics.bind(performanceMonitor) as (name?: string) => Metric[] | Record<string, Metric[]>,
-    renderCount: renderCount.current,
-    logPerformance
-  };
-};
-
+// Default export for backward compatibility
 export default performanceMonitor;
+
+// Export types and hooks for compatibility
+export type Metric = PerformanceMetric;
+export const usePerformanceMonitor = () => performanceMonitor;
+
+/**
+ * React Hook for performance tracking
+ */
+export function usePerformanceTracking(componentName: string) {
+  React.useEffect(() => {
+    const startTime = performance.now();
+    
+    return () => {
+      const endTime = performance.now();
+      const renderTime = endTime - startTime;
+      
+      if (renderTime > 16) { // More than one frame (60fps)
+        performanceMonitor.trackComponentRender(componentName, renderTime);
+      }
+    };
+  }, [componentName]);
+}
+
+// Auto-send metrics periodically in production
+if (typeof window !== 'undefined' && process.env.NODE_ENV === 'production') {
+  // Send metrics every 5 minutes
+  setInterval(() => {
+    performanceMonitor.sendMetrics();
+  }, 5 * 60 * 1000);
+  
+  // Send metrics before page unload
+  window.addEventListener('beforeunload', () => {
+    performanceMonitor.sendMetrics();
+  });
+}

@@ -114,7 +114,7 @@ const VirtualCardGrid: React.FC<VirtualCardGridProps> = ({
   const handleScroll = useCallback(() => {
     if (!isScrolling) {
       setIsScrolling(true);
-      performanceMonitor.startTimer('virtual-scroll', 'tcg-cards');
+      performanceMonitor.startTimer('virtual-scroll');
     }
     
     if (scrollingTimeoutRef.current) {
@@ -123,7 +123,8 @@ const VirtualCardGrid: React.FC<VirtualCardGridProps> = ({
     
     scrollingTimeoutRef.current = setTimeout(() => {
       setIsScrolling(false);
-      performanceMonitor.endTimer('virtual-scroll', 'tcg-cards');
+      const startTime = performance.now();
+      performanceMonitor.endTimer('virtual-scroll', startTime);
     }, 150);
   }, [isScrolling]);
   

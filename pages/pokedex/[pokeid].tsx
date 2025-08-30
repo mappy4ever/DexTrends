@@ -55,7 +55,7 @@ const PokemonDetail: NextPage = () => {
   const { pokeid, form } = router.query;
   
   // Mobile detection with SSR support
-  const { isMobile: isMobileView, isLoading: isMobileLoading } = useMobileDetection(460);
+  const { isMobile: isMobileView, isLoading: isMobileLoading } = useMobileDetection();
   
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
   const [species, setSpecies] = useState<PokemonSpecies | null>(null);
@@ -531,7 +531,7 @@ const PokemonDetail: NextPage = () => {
   const theme = getPokemonTheme(pokemon.types);
 
   // Mobile view - check first to ensure mobile renders when ready
-  if (isMobileView && pokemon && species && !isMobileLoading) {
+  if (isMobileView && pokemon && species) {
     return (
       <PageErrorBoundary pageName="Pokemon Detail Mobile">
         <Head>

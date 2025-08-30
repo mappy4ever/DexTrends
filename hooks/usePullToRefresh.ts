@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import logger from '@/utils/logger';
 
 interface PullToRefreshConfig {
   threshold?: number;
@@ -108,7 +109,7 @@ export function usePullToRefresh({
       try {
         await onRefresh();
       } catch (error) {
-        console.error('Refresh failed:', error);
+        logger.error('Refresh failed:', { error });
       } finally {
         if (timeoutRef.current) {
           clearTimeout(timeoutRef.current);

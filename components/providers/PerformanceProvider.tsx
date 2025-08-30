@@ -146,15 +146,15 @@ export const PerformanceProvider: React.FC<PerformanceProviderProps> = ({ childr
       testResults: testResults,
       system: {
         userAgent: navigator.userAgent,
-        connection: navigator.connection ? {
-          effectiveType: navigator.connection.effectiveType,
-          downlink: navigator.connection.downlink,
-          rtt: navigator.connection.rtt
+        connection: (navigator as any).connection ? {
+          effectiveType: (navigator as any).connection.effectiveType,
+          downlink: (navigator as any).connection.downlink,
+          rtt: (navigator as any).connection.rtt
         } : null,
-        memory: performance.memory ? {
-          used: performance.memory.usedJSHeapSize,
-          total: performance.memory.totalJSHeapSize,
-          limit: performance.memory.jsHeapSizeLimit
+        memory: (performance as any).memory ? {
+          used: (performance as any).memory.usedJSHeapSize,
+          total: (performance as any).memory.totalJSHeapSize,
+          limit: (performance as any).memory.jsHeapSizeLimit
         } : null
       }
     };
@@ -376,9 +376,11 @@ export const useComponentPerformance = (componentName: string) => {
     
     const renderTime = performance.now() - mountTime.current;
     
-    performanceMonitor.recordMetric('component-render', renderTime, {
-      component: componentName,
-      renderCount: renderCount.current
+    performanceMonitor.recordMetric({
+      name: 'component-render',
+      value: renderTime,
+      unit: 'ms',
+      timestamp: Date.now()
     });
 
     if (renderTime > 50) {
@@ -471,4 +473,4 @@ const getMetricSuggestions = (metric: string): string[] => {
   };
 
   return suggestions[metric] || ['Review and optimize this metric'];
-};
+}

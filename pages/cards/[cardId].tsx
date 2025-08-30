@@ -99,13 +99,15 @@ export default function CardDetailPage() {
   // Fetch card data when cardId changes
   useEffect(() => {
     if (!cardId || typeof cardId !== 'string') return;
+    
+    let loadStartTime: number;
 
     const fetchCardData = async () => {
       setLoading(true);
       setError(null);
       
       // Start performance monitoring
-      performanceMonitor.startTimer('page-load', `card-detail-${cardId}`);
+      loadStartTime = performanceMonitor.startTimer('page-load');
       
       try {
         // Check sessionStorage first for instant loading using safe wrapper
@@ -153,10 +155,7 @@ export default function CardDetailPage() {
               }
               
               setLoading(false);
-              performanceMonitor.endTimer('page-load', `card-detail-${cardId}`, {
-                cardId,
-                source: 'sessionStorage'
-              });
+              performanceMonitor.endTimer('page-load', loadStartTime);
               return; // Exit early since we have the data
             } catch (err) {
               logger.error('[Card Detail] Error parsing sessionStorage data', { error: err });
@@ -252,10 +251,7 @@ export default function CardDetailPage() {
         setLoading(false);
         
         // End performance monitoring
-        const loadTime = performanceMonitor.endTimer('page-load', `card-detail-${cardId}`, {
-          cardId,
-          cached: cardResponse.cached
-        });
+        const loadTime = performanceMonitor.endTimer('page-load', loadStartTime);
         
         if (loadTime) {
           logger.info('[Card Detail] Page load complete', {
@@ -272,7 +268,9 @@ export default function CardDetailPage() {
         });
         setError("Failed to load card details. Please try again.");
         setLoading(false);
-        performanceMonitor.endTimer('page-load', `card-detail-${cardId}`);
+        if (loadStartTime) {
+          performanceMonitor.endTimer('page-load', loadStartTime);
+        }
       }
     };
 

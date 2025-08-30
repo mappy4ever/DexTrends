@@ -125,7 +125,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 export async function getRelatedCards(pokemonName: string, excludeId?: string): Promise<unknown[]> {
   try {
     // Start performance monitoring
-    performanceMonitor.startTimer('api-request', `related-cards-${pokemonName}`);
+    const timerStart = performanceMonitor.startTimer('api-request-related');
     
     const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
     const headers: Record<string, string> = {
@@ -151,7 +151,7 @@ export async function getRelatedCards(pokemonName: string, excludeId?: string): 
       }
     );
     
-    performanceMonitor.endTimer('api-request', `related-cards-${pokemonName}`);
+    performanceMonitor.endTimer('api-request-related', timerStart);
     
     if (!relatedData?.data) {
       return [];

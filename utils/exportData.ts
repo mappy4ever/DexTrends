@@ -12,7 +12,7 @@ interface ExportOptions {
 /**
  * Export data to various formats (CSV, JSON, TXT)
  */
-export const exportData = (data: any[], options: ExportOptions): void => {
+export const exportData = <T extends Record<string, unknown>>(data: T[], options: ExportOptions): void => {
   const {
     filename = `export-${Date.now()}`,
     format,
@@ -62,8 +62,8 @@ export const exportData = (data: any[], options: ExportOptions): void => {
 /**
  * Convert data array to CSV format
  */
-const convertToCSV = (
-  data: any[], 
+const convertToCSV = <T extends Record<string, unknown>>(
+  data: T[], 
   columns?: string[], 
   includeHeaders: boolean = true
 ): string => {
@@ -96,7 +96,7 @@ const convertToCSV = (
 /**
  * Convert data array to plain text format
  */
-const convertToText = (data: any[], columns?: string[]): string => {
+const convertToText = <T extends Record<string, unknown>>(data: T[], columns?: string[]): string => {
   if (!data || data.length === 0) {
     return '';
   }
@@ -119,7 +119,7 @@ const convertToText = (data: any[], columns?: string[]): string => {
 /**
  * Escape CSV value to handle commas, quotes, and newlines
  */
-const escapeCSVValue = (value: any): string => {
+const escapeCSVValue = (value: unknown): string => {
   if (value === null || value === undefined) {
     return '';
   }
@@ -139,12 +139,16 @@ const escapeCSVValue = (value: any): string => {
 /**
  * Get nested value from object using dot notation
  */
-const getNestedValue = (obj: any, path: string): any => {
+const getNestedValue = (obj: Record<string, unknown>, path: string): unknown => {
   const keys = path.split('.');
-  let value = obj;
+  let value: unknown = obj;
   
   for (const key of keys) {
-    value = value?.[key];
+    if (typeof value === 'object' && value !== null) {
+      value = (value as Record<string, unknown>)[key];
+    } else {
+      return '';
+    }
     if (value === undefined) {
       return '';
     }

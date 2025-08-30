@@ -2,24 +2,15 @@ import { useEffect, useState } from "react";
 import type { AppProps } from 'next/app';
 import Head from "next/head";
 import { useRouter, NextRouter } from "next/router";
+// New consolidated CSS architecture - 5 core files
+import "../styles/core.css";       // Reset, base styles, breakpoints
+import "../styles/tokens.css";     // Design tokens (colors, spacing, typography)
+import "../styles/components.css"; // All component styles
+import "../styles/utilities.css";  // Helper classes, animations
+import "../styles/overrides.css";  // Temporary fixes only
+
+// Legacy CSS - To be removed after full migration
 import "../styles/globals.css";
-import "../styles/mobile.css"; // Consolidated mobile styles
-import "../styles/mobile-tabs.css"; // Mobile-optimized tab navigation
-import "../styles/mobile-typography.css"; // Mobile typography fixes
-import "../styles/mobile-performance.css"; // Mobile performance optimizations
-import "../styles/desktop-tabs.css";
-// import "../styles/pokemon-animations.css"; // Consolidated with animations.css
-import "../styles/design-system.css";
-import "../styles/animations.css";
-import "../styles/card-types.css";
-import "../styles/unified-components.css";
-// import "../styles/battle-simulator.css"; // Only load on battle-simulator pages
-// import "../styles/tcg-set-detail.css"; // Only load on TCG pages
-// import "../styles/card-performance.css"; // Only load when needed
-// import "../styles/pokedex-redesign.css"; // Only load on pokedex pages
-// import "../styles/pokeid-premium.css"; // Only load on Pokemon detail pages
-// import "../styles/performance.css"; // Only when needed
-// import "../styles/holographic-cards.css"; // Only load when needed
 import "../components/typebadge.css";
 import Layout from "../components/layout/Layout";
 import logger from "../utils/logger";
@@ -57,7 +48,6 @@ const dynamicImports = {
   SimpleBackToTop: () => import('../components/ui/SimpleBackToTop').catch(() => ({ default: () => null })),
   AccessibilityProvider: () => import('../components/ui/AccessibilityProvider').catch(() => ({ default: ({ children }: { children: React.ReactNode }) => children })),
   KeyboardShortcutsManager: () => import('../components/qol/KeyboardShortcuts').catch(() => ({ default: () => null })),
-  PushNotifications: () => import('../components/mobile/PushNotifications').catch(() => ({ default: () => null })),
   GlobalSearchShortcuts: () => import('../components/qol/GlobalSearchShortcuts').catch(() => ({ default: () => null })),
   PreferencesManager: () => import('../components/qol/PreferencesManager').catch(() => ({ default: () => null })),
 };
@@ -80,11 +70,7 @@ const KeyboardShortcutsManager = dynamic(dynamicImports.KeyboardShortcutsManager
   loading: () => null
 });
 
-// Mobile push notifications
-const PushNotifications = dynamic(dynamicImports.PushNotifications, {
-  ssr: false,
-  loading: () => null
-});
+// Mobile push notifications - removed (component archived)
 
 // Global search shortcuts with command palette
 const GlobalSearchShortcuts = dynamic(dynamicImports.GlobalSearchShortcuts, {
@@ -160,7 +146,6 @@ const AppContent: React.FC<AppContentProps> = ({
                       <PreferencesManager />
                       
                       {/* Mobile features */}
-                      <PushNotifications />
                     </>
                   )}
                 </Layout>

@@ -1,5 +1,7 @@
 // Utility functions for fetching and parsing Pokemon Showdown data
 
+import logger from './logger';
+
 export interface ShowdownItem {
   num: number;
   name: string;
@@ -67,7 +69,7 @@ export async function fetchShowdownItems(): Promise<Record<string, ShowdownItem>
         try {
           items = eval('(' + match[1] + ')');
         } catch (evalError) {
-          console.warn('Failed to parse items data:', evalError);
+          logger.warn('Failed to parse items data:', { error: evalError });
           return {};
         }
       }
@@ -76,7 +78,7 @@ export async function fetchShowdownItems(): Promise<Record<string, ShowdownItem>
     itemsCache = items;
     return items;
   } catch (error) {
-    console.warn('Failed to fetch Showdown items:', error);
+    logger.warn('Failed to fetch Showdown items:', { error });
     return {};
   }
 }
@@ -105,7 +107,7 @@ export async function fetchShowdownAbilities(): Promise<Record<string, ShowdownA
         try {
           abilities = eval('(' + match[1] + ')');
         } catch (evalError) {
-          console.warn('Failed to parse abilities data:', evalError);
+          logger.warn('Failed to parse abilities data:', { error: evalError });
           return {};
         }
       }
@@ -114,7 +116,7 @@ export async function fetchShowdownAbilities(): Promise<Record<string, ShowdownA
     abilitiesCache = abilities;
     return abilities;
   } catch (error) {
-    console.warn('Failed to fetch Showdown abilities:', error);
+    logger.warn('Failed to fetch Showdown abilities:', { error });
     return {};
   }
 }

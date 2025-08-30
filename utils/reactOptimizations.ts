@@ -137,9 +137,11 @@ export function autoMemo<P extends object>(
       });
     }
 
-    performanceMonitor.recordMetric('prop-comparison-time', compareTime, {
-      component: displayName,
-      shouldUpdate
+    performanceMonitor.recordMetric({
+      name: 'prop-comparison-time',
+      value: compareTime,
+      unit: 'ms',
+      timestamp: Date.now()
     });
 
     return shouldUpdate;
@@ -168,10 +170,12 @@ export function autoMemo<P extends object>(
           });
         }
 
-        performanceMonitor.recordMetric('component-render-time', renderTime, {
-          component: displayName,
-          renderCount: renderCount.current
-        });
+    performanceMonitor.recordMetric({
+      name: 'component-render-time',
+      value: renderTime,
+      unit: 'ms',
+      timestamp: Date.now()
+    });
       });
 
       lastRenderTime.current = performance.now();
@@ -216,10 +220,12 @@ export function useSmartMemo<T>(
         });
       }
 
-      performanceMonitor.recordMetric('useMemo-computation-time', computationTime, {
-        callCount: callCountRef.current,
-        dependencyCount: deps.length
-      });
+    performanceMonitor.recordMetric({
+      name: 'useMemo-computation-time',
+      value: computationTime,
+      unit: 'ms',
+      timestamp: Date.now()
+    });
     }
 
     return result;
@@ -250,9 +256,11 @@ export function useSmartCallback<T extends (...args: unknown[]) => unknown>(
   
   if (enableProfiling && depsChanged) {
     callCountRef.current++;
-    performanceMonitor.recordMetric('useCallback-recreation', 1, {
-      callCount: callCountRef.current,
-      dependencyCount: deps.length
+    performanceMonitor.recordMetric({
+      name: 'useCallback-recreation',
+      value: 1,
+      unit: 'ms',
+      timestamp: Date.now()
     });
   }
 
@@ -301,9 +309,11 @@ export function usePerformanceProfiler(
       });
     }
 
-    performanceMonitor.recordMetric('component-render', renderTime, {
-      component: componentName,
-      renderCount: renderCount.current
+    performanceMonitor.recordMetric({
+      name: 'component-render',
+      value: renderTime,
+      unit: 'ms',
+      timestamp: Date.now()
     });
   });
 
@@ -312,27 +322,33 @@ export function usePerformanceProfiler(
     if (!trackUpdates) return;
     
     updateCount.current++;
-    performanceMonitor.recordMetric('component-update', 1, {
-      component: componentName,
-      updateCount: updateCount.current
+    performanceMonitor.recordMetric({
+      name: 'component-update',
+      value: 1,
+      unit: 'ms',
+      timestamp: Date.now()
     });
   });
 
   // Track mount time
   useEffect(() => {
     const mountDuration = performance.now() - mountTime.current;
-    performanceMonitor.recordMetric('component-mount-time', mountDuration, {
-      component: componentName
+    performanceMonitor.recordMetric({
+      name: 'component-mount-time',
+      value: mountDuration,
+      unit: 'ms',
+      timestamp: Date.now()
     });
 
     return () => {
       const unmountTime = performance.now();
       const lifespan = unmountTime - mountTime.current;
-      performanceMonitor.recordMetric('component-lifespan', lifespan, {
-        component: componentName,
-        renderCount: renderCount.current,
-        updateCount: updateCount.current
-      });
+    performanceMonitor.recordMetric({
+      name: 'component-lifespan',
+      value: lifespan,
+      unit: 'ms',
+      timestamp: Date.now()
+    });
     };
   }, [componentName]);
 
@@ -402,10 +418,12 @@ export function analyzeBundleSize<P extends object>(
   const componentString = Component.toString();
   const estimatedSize = new Blob([componentString]).size;
 
-  performanceMonitor.recordMetric('component-bundle-size', estimatedSize, {
-    component: componentName,
-    complexity: componentString.split('\n').length
-  });
+    performanceMonitor.recordMetric({
+      name: 'component-bundle-size',
+      value: estimatedSize,
+      unit: 'ms',
+      timestamp: Date.now()
+    });
 
   if (estimatedSize > 5000) { // 5KB threshold
     logger.warn('Large component detected', {
@@ -541,4 +559,4 @@ export default {
   analyzeBundleSize,
   useOptimizationSuggestions,
   withOptimizations
-};
+}

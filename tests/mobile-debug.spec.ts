@@ -1,33 +1,32 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Mobile Debug', () => {
-  test.use({
-    viewport: { width: 375, height: 667 }
-  });
-
-  test('Check what renders on mobile viewport', async ({ page }) => {
-    // Navigate to Pokemon detail page
-    await page.goto('http://localhost:3001/pokedex/25');
+  test('Check mobile at 430px breakpoint', async ({ page }) => {
+    // Set viewport to iPhone 16 Pro Max width
+    await page.setViewportSize({ width: 430, height: 932 });
+    
+    // Navigate to Pokedex page
+    await page.goto('http://localhost:3001/pokedex');
     
     // Wait for any content to load
     await page.waitForTimeout(2000);
     
-    // Debug: Print the page title
-    const title = await page.title();
-    console.log('Page title:', title);
+    // Debug: Check window.innerWidth
+    const innerWidth = await page.evaluate(() => window.innerWidth);
+    console.log('Window innerWidth:', innerWidth);
     
-    // Debug: Check for any visible text
-    const bodyText = await page.locator('body').innerText();
-    console.log('Body contains Pokemon name:', bodyText.includes('Pikachu'));
+    // Check if the condition for mobile is met
+    const shouldBeMobile = innerWidth < 430;
+    console.log('Should render mobile (< 430):', shouldBeMobile);
     
     // Debug: Check what major containers exist
-    const hasMobileDetail = await page.locator('.mobile-pokemon-detail').count();
-    const hasDesktopHero = await page.locator('.PokemonHeroSectionV3').count();
     const hasMobileLayout = await page.locator('.mobile-layout').count();
+    const hasMobilePokedex = await page.locator('.mobile-pokedex').count();
+    const hasDesktopLayout = await page.locator('.max-w-7xl').count();
     
-    console.log('Mobile detail count:', hasMobileDetail);
-    console.log('Desktop hero count:', hasDesktopHero);
-    console.log('Mobile layout count:', hasMobileLayout);
+    console.log('Has .mobile-layout:', hasMobileLayout);
+    console.log('Has .mobile-pokedex:', hasMobilePokedex);
+    console.log('Has desktop layout (.max-w-7xl):', hasDesktopLayout);
     
     // Debug: Get all class names on body
     const bodyClasses = await page.locator('body').getAttribute('class');
@@ -38,9 +37,9 @@ test.describe('Mobile Debug', () => {
     console.log('Viewport size:', viewportSize);
     
     // Take a screenshot for visual inspection
-    await page.screenshot({ path: 'mobile-debug-screenshot.png' });
+    await page.screenshot({ path: 'mobile-debug-pokedex-430px.png' });
     
     // The test should find the mobile layout
-    expect(hasMobileDetail).toBeGreaterThan(0);
+    expect(hasMobileLayout).toBeGreaterThan(0);
   });
 });

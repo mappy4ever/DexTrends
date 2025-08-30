@@ -103,12 +103,12 @@ export class CoreWebVitalsTest {
         throw new Error('Performance monitoring is not enabled');
       }
       
-      const vitals = report.vitals;
+      const vitals = report.vitals || {};
       let allPassed = true;
 
       // Test each vital against budget
       Object.entries(this.budgets).forEach(([vital, budget]) => {
-        if (vitals[vital]) {
+        if (vitals && vitals[vital]) {
           const value = vitals[vital].value;
           const passed = value <= budget;
           testResult.addMetric(vital, value, budget);

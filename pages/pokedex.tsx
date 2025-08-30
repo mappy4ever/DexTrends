@@ -1,1671 +1,523 @@
-import React, { useState, useEffect, useMemo, useCallback, useRef } from "react";
-import Head from "next/head";
-import Link from "next/link";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import { fetchJSON } from "../utils/unifiedFetch";
-import { useDebounce } from "../hooks/useDebounce";
-import { TypeBadge } from "../components/ui/TypeBadge";
-import { getGeneration } from "../utils/pokemonutils";
-import PokeballLoader from "../components/ui/PokeballLoader";
-import FullBleedWrapper from "../components/ui/FullBleedWrapper";
-import type { Pokemon, PokemonType, PokemonSprites, PokemonSpecies } from "../types/pokemon";
-import EnhancedPokemonCard from "../components/ui/cards/EnhancedPokemonCard";
-import { GlassContainer } from "../components/ui/design-system/GlassContainer";
-import { InlineLoader, PokemonCardSkeleton } from '@/components/ui/SkeletonLoadingSystem';
-import { CircularButton, GradientButton } from "../components/ui/design-system";
-import { FiFilter, FiChevronDown, BsSearch } from "../components/ui/LazyIcon";
-import { createGlassStyle } from '../components/ui/design-system/glass-constants';
-import { FiSearch, FiX } from 'react-icons/fi';
-import { NextPage } from "next";
-import dynamic from 'next/dynamic';
-import logger from "../utils/logger";
-import { motion } from 'framer-motion';
-import { staggerGrid, fadeInScale } from '../utils/staggerAnimations';
-import { SearchInput } from '../components/ui/StandardInput';
-import { VirtualPokemonGrid } from '../components/mobile/VirtualPokemonGrid';
-import { MobileLayout } from '../components/mobile/MobileLayout';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { NextPage } from 'next';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { fetchJSON } from '@/utils/unifiedFetch';
+import { UnifiedGrid } from '@/components/unified/UnifiedGrid';
+import { AdaptiveModal, useAdaptiveModal } from '@/components/unified/AdaptiveModal';
+import { PokemonCardRenderer, CompactPokemonCard } from '@/components/unified/PokemonCardRenderer';
+import { TypeBadge } from '@/components/ui/TypeBadge';
+import { getGeneration } from '@/utils/pokemonutils';
+import { useDebounce } from '@/hooks/useDebounce';
+import logger from '@/utils/logger';
+import { cn } from '@/utils/cn';
+import type { Pokemon as APIPokemon, PokemonType, PokemonStat } from '@/types/api/pokemon';
 
-// Dynamically import PullToRefresh for mobile
-const PullToRefresh = dynamic<any>(() => import('../components/mobile/PullToRefresh').then(mod => mod.PullToRefresh), {
-  ssr: false,
-  loading: () => <div />
-});
+/**
+ * Unified Pokédex - Production-ready responsive design
+ * 
+ * Features:
+ * - One codebase for all devices
+ * - Elegant circular card design with type gradients
+ * - Virtual scrolling for performance
+ * - Mobile-first responsive layout
+ * - Sophisticated filtering system
+ */
 
-// Dynamically import BottomSheet for mobile filters
-const BottomSheet = dynamic<any>(() => import('../components/mobile/BottomSheet'), {
-  ssr: false,
-  loading: () => <div />
-});
-
-// Type definitions
-// Using types from "../../types/pokemon
-
-interface EnhancedPokemon {
+interface Pokemon {
   id: number;
   name: string;
-  sprite: string | null;
+  sprite: string;
   types: string[];
-  height?: number;
-  weight?: number;
-  stats?: Array<{
-    base_stat: number;
-    stat: {
-      name: string;
-    };
-  }>;
-  species?: PokemonSpecies;
-  classification?: string;
+  generation?: string;
   isLegendary?: boolean;
   isMythical?: boolean;
-  generation?: string;
   isStarter?: boolean;
-  isFossil?: boolean;
-  isUltraBeast?: boolean;
-  isBaby?: boolean;
-  evolvesFrom?: string;
+  height?: number;
+  weight?: number;
+  stats?: Array<{ base_stat: number; stat: { name: string } }>;
   totalStats?: number;
 }
 
-interface ApiPokemonResponse {
+interface PokemonGridItem {
   id: number;
-  name: string;
-  sprites: PokemonSprites;
-  types: PokemonType[];
-  height: number;
-  weight: number;
-  stats: Array<{
-    base_stat: number;
-    stat: {
-      name: string;
-    };
-  }>;
-  species: {
-    name: string;
-    url: string;
-  };
+  image: string;
+  title: string;
+  subtitle: string;
+  types: string[];
+  raw: Pokemon;
 }
 
-type SortOption = 'id' | 'name' | 'type' | 'height' | 'weight' | 'stats' | 'generation';
-type PokemonCategory = 'all' | 'starter' | 'legendary' | 'mythical' | 'ultra-beast' | 'baby' | 'fossil';
-type EvolutionStage = 'all' | 'basic' | 'stage1' | 'stage2' | 'single';
+const TOTAL_POKEMON = 1025;
+const BATCH_SIZE = 50;
 
-// Constants
-const INITIAL_LOAD = 48;
-const LOAD_MORE_COUNT = 48;
-const TOTAL_POKEMON = 1025; // Updated to include Gen 9
-
-const PokedexIndex: NextPage = () => {
+const UnifiedPokedex: NextPage = () => {
   const router = useRouter();
-  const [pokemon, setPokemon] = useState<EnhancedPokemon[]>([]);
-  const [allPokemon, setAllPokemon] = useState<EnhancedPokemon[]>([]);
+  const [pokemon, setPokemon] = useState<Pokemon[]>([]);
   const [loading, setLoading] = useState(true);
-  const [loadingProgress, setLoadingProgress] = useState(0);
-  const [error, setError] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedType, setSelectedType] = useState("");
-  const [selectedGeneration, setSelectedGeneration] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<PokemonCategory>("all");
-  const [selectedStage, setSelectedStage] = useState<EvolutionStage>("all");
-  const [sortBy, setSortBy] = useState<SortOption>("id");
-  const [visibleCount, setVisibleCount] = useState(INITIAL_LOAD);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
-  const [showSortOptions, setShowSortOptions] = useState(false);
-  const [isMobileView, setIsMobileView] = useState(false);
-  const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+  const [selectedGeneration, setSelectedGeneration] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [sortBy, setSortBy] = useState<'id' | 'name' | 'stats'>('id');
   
-  // New states for search-triggered filtering
-  const [pendingSearchTerm, setPendingSearchTerm] = useState("");
-  const [pendingTypes, setPendingTypes] = useState<string[]>([]);
-  const [pendingGeneration, setPendingGeneration] = useState("");
-  const [pendingCategories, setPendingCategories] = useState<PokemonCategory[]>([]);
-  const [pendingStages, setPendingStages] = useState<EvolutionStage[]>([]);
-  const [pendingSortBy, setPendingSortBy] = useState<SortOption>("id");
+  const debouncedSearch = useDebounce(searchTerm, 300);
+  const filterModal = useAdaptiveModal();
   
-  // Use centralized debounce hook
-  const debouncedSearchTerm = useDebounce(pendingSearchTerm, 300);
+  // Viewport detection for column optimization
+  const [viewportWidth, setViewportWidth] = useState(
+    typeof window !== 'undefined' ? window.innerWidth : 375
+  );
   
-  // Intersection observer ref for infinite scroll
-  const loadMoreRef = useRef<HTMLDivElement>(null);
-  const observerRef = useRef<IntersectionObserver | null>(null);
-
-  // Check for mobile view
   useEffect(() => {
-    const checkMobile = () => {
-      const width = window.innerWidth;
-      setIsMobileView(width < 768);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    return () => window.removeEventListener('resize', checkMobile);
+    const handleResize = () => setViewportWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
-
-  // Handle search with debounce
-  useEffect(() => {
-    setSearchTerm(debouncedSearchTerm);
-    setVisibleCount(INITIAL_LOAD);
-  }, [debouncedSearchTerm]);
-
-  // Handle search trigger
-  const handleSearch = () => {
-    setSearchTerm(pendingSearchTerm);
-    setSelectedType(pendingTypes.length === 1 ? pendingTypes[0] : ""); // For backward compatibility
-    setSelectedGeneration(pendingGeneration);
-    setSelectedCategory(pendingCategories.length === 1 ? pendingCategories[0] : "all"); // For backward compatibility
-    setSelectedStage(pendingStages.length === 1 ? pendingStages[0] : "all"); // For backward compatibility
-    setSortBy(pendingSortBy);
-    setVisibleCount(INITIAL_LOAD); // Reset pagination
-  };
-
-  // Handle sort change with immediate effect
-  const handleSortChange = (newSort: SortOption) => {
-    setPendingSortBy(newSort);
-    setSortBy(newSort);
-    setVisibleCount(INITIAL_LOAD); // Reset pagination
-  };
-
-  // Clear all filters
-  const clearAllFilters = () => {
-    setPendingSearchTerm("");
-    setPendingTypes([]);
-    setPendingGeneration("");
-    setPendingCategories([]);
-    setPendingStages([]);
-    setPendingSortBy("id");
-    setSearchTerm("");
-    setSelectedType("");
-    setSelectedGeneration("");
-    setSelectedCategory("all");
-    setSelectedStage("all");
-    setSortBy("id");
-    setVisibleCount(INITIAL_LOAD);
-  };
-
-  // Helper functions for interactive selections
-  const toggleType = (type: string) => {
-    setPendingTypes(prev => {
-      let newTypes: string[];
-      
-      if (prev.includes(type)) {
-        // Remove the type if already selected
-        newTypes = prev.filter(t => t !== type);
-      } else {
-        // Add the type if under limit of 2
-        if (prev.length < 2) {
-          newTypes = [...prev, type];
-        } else {
-          // If already 2 types selected, don't add more
-          return prev;
-        }
-      }
-      
-      // Auto-apply type filter
-      setSelectedType(newTypes.length === 1 ? newTypes[0] : "");
-      setVisibleCount(INITIAL_LOAD);
-      
-      return newTypes;
-    });
-  };
-
-  const toggleCategory = (category: PokemonCategory) => {
-    setPendingCategories(prev => {
-      let newCategories: PokemonCategory[];
-      
-      if (prev.includes(category)) {
-        // Remove the category if already selected
-        newCategories = prev.filter(c => c !== category);
-      } else {
-        // Add the category if not selected
-        newCategories = [...prev, category];
-      }
-      
-      // Apply the change to active filters too (for immediate visual feedback)
-      if (newCategories.length === 1) {
-        setSelectedCategory(newCategories[0]);
-      } else {
-        setSelectedCategory("all");
-      }
-      
-      return newCategories;
-    });
-  };
-
-  const toggleStage = (stage: EvolutionStage) => {
-    setPendingStages(prev => {
-      let newStages: EvolutionStage[];
-      
-      if (prev.includes(stage)) {
-        // Remove the stage if already selected
-        newStages = prev.filter(s => s !== stage);
-      } else {
-        // Add the stage if not selected
-        newStages = [...prev, stage];
-      }
-      
-      // Apply the change to active filters too (for immediate visual feedback)
-      if (newStages.length === 1) {
-        setSelectedStage(newStages[0]);
-      } else {
-        setSelectedStage("all");
-      }
-      
-      return newStages;
-    });
-  };
-
-  // Helper functions for Pokémon categorization
+  
+  // Helper functions
   const checkIfStarter = (id: number): boolean => {
     const starterIds = [
-      1, 4, 7,       // Gen 1: Bulbasaur, Charmander, Squirtle
-      152, 155, 158, // Gen 2: Chikorita, Cyndaquil, Totodile
-      252, 255, 258, // Gen 3: Treecko, Torchic, Mudkip
-      387, 390, 393, // Gen 4: Turtwig, Chimchar, Piplup
-      495, 498, 501, // Gen 5: Snivy, Tepig, Oshawott
-      650, 653, 656, // Gen 6: Chespin, Fennekin, Froakie
-      722, 725, 728, // Gen 7: Rowlet, Litten, Popplio
-      810, 813, 816, // Gen 8: Grookey, Scorbunny, Sobble
-      906, 909, 912  // Gen 9: Sprigatito, Fuecoco, Quaxly
+      1, 4, 7, 152, 155, 158, 252, 255, 258, 387, 390, 393,
+      495, 498, 501, 650, 653, 656, 722, 725, 728, 810, 813, 816,
+      906, 909, 912
     ];
     return starterIds.includes(id);
   };
-
-  const isStarter = useCallback((pokemonName: string, pokemonId: number): boolean => {
-    return checkIfStarter(pokemonId);
-  }, []);
-
-  const isFossil = (pokemonName: string): boolean => {
-    const fossils = [
-      'omanyte', 'omastar', 'kabuto', 'kabutops', 'aerodactyl',
-      'lileep', 'cradily', 'anorith', 'armaldo',
-      'cranidos', 'rampardos', 'shieldon', 'bastiodon',
-      'tirtouga', 'carracosta', 'archen', 'archeops',
-      'tyrunt', 'tyrantrum', 'amaura', 'aurorus',
-      'dracozolt', 'arctozolt', 'dracovish', 'arctovish'
-    ];
-    return fossils.includes(pokemonName.toLowerCase());
-  };
-
-  const checkIfBaby = (id: number): boolean => {
-    const babyIds = [
-      172, 173, 174, 175, 236, 238, 239, 240, 298, 360, // Gen 2 babies
-      433, 438, 439, 440, 446, 447, 458, // Gen 4 babies
-      848 // Toxel (Gen 8)
-    ];
-    return babyIds.includes(id);
-  };
-
-  const checkIfMultiEvo = (id: number): boolean => {
-    const multiEvoIds = [
-      133, // Eevee
-      236, // Tyrogue
-      265, // Wurmple
-      280, 281, // Ralts, Kirlia
-      361, // Snorunt
-      412, // Burmy
-      415, // Combee (female only)
-      443, // Gible line (not really multi, but including for Garchomp)
-      521, // Unfezant (gender differences)
-      678, // Meowstic (gender forms)
-      856, // Hatenna line (female only evolution)
-      758  // Salazzle (female only)
-    ];
-    return multiEvoIds.includes(id);
-  };
-
-  const checkIfUltraBeast = (id: number, name: string): boolean => {
-    const ultraBeastIds = [
-      793, 794, 795, 796, 797, 798, 799, // Gen 7 UBs
-      803, 804, 805, 806 // Poipole, Naganadel, Stakataka, Blacephalon
-    ];
-    const lowerName = name.toLowerCase();
-    return ultraBeastIds.includes(id) || 
-           lowerName.includes('buzzwole') ||
-           lowerName.includes('pheromosa') ||
-           lowerName.includes('xurkitree') ||
-           lowerName.includes('celesteela') ||
-           lowerName.includes('kartana') ||
-           lowerName.includes('guzzlord') ||
-           lowerName.includes('nihilego') ||
-           lowerName.includes('poipole') ||
-           lowerName.includes('naganadel') ||
-           lowerName.includes('stakataka') ||
-           lowerName.includes('blacephalon');
-  };
-
-  const isUltraBeast = (pokemonName: string): boolean => {
-    return checkIfUltraBeast(0, pokemonName);
-  };
-
-  const checkIfRegionalVariant = (name: string, id?: number): boolean => {
-    // Check for various naming patterns used by the API
-    const lowerName = name.toLowerCase();
-    // The API uses hyphens in names
-    return lowerName.includes('-alola') || 
-           lowerName.includes('-galar') || 
-           lowerName.includes('-hisui') || 
-           lowerName.includes('-paldea') ||
-           lowerName.includes('alolan') ||
-           lowerName.includes('galarian') ||
-           lowerName.includes('hisuian') ||
-           lowerName.includes('paldean');
-  };
-
-  // Enhanced Pokemon data loading function
-  const enhancePokemonData = useCallback((details: ApiPokemonResponse, speciesData?: PokemonSpecies | null): EnhancedPokemon => {
-    const generation = getGeneration(details.id).toString();
-    const isLegendary = speciesData?.is_legendary || false;
-    const isMythical = speciesData?.is_mythical || false;
-    const isUltraBeastPokemon = speciesData?.genera?.some(g => g.genus.toLowerCase().includes('ultra beast')) || checkIfUltraBeast(details.id, details.name);
-    
-    // Determine evolution stage based on evolution chain position
-    let stage: number | string = 1; // Default to first stage
-    if (details.name.includes('-mega') || details.name.includes('-gmax')) {
-      stage = 'mega';
-    } else if (isLegendary || isMythical) {
-      stage = 'legendary';
-    }
-    
-    return {
-      id: details.id,
-      name: details.name,
-      types: details.types.map(t => t.type.name),
-      sprite: details.sprites?.other?.["official-artwork"]?.front_default || details.sprites?.front_default || null,
-      height: details.height,
-      weight: details.weight,
-      generation,
-      isLegendary,
-      isMythical,
-      isUltraBeast: isUltraBeastPokemon,
-      isStarter: checkIfStarter(details.id),
-      isBaby: speciesData?.is_baby || checkIfBaby(details.id),
-      isFossil: isFossil(details.name),
-      stats: details.stats,
-      species: speciesData || undefined,
-      classification: speciesData?.genera?.find(g => g.language.name === 'en')?.genus || 'Unknown Pokémon',
-      evolvesFrom: speciesData?.evolves_from_species?.name,
-      totalStats: details.stats.reduce((acc, stat) => acc + stat.base_stat, 0),
-    };
-  }, []);
-
-  // Fetch Pokémon batch
-  const fetchPokemonBatch = useCallback(async (start: number, count: number): Promise<EnhancedPokemon[]> => {
-    try {
-      const promises = [];
-      for (let i = start; i < start + count && i <= TOTAL_POKEMON; i++) {
-        promises.push(
-          fetchJSON<ApiPokemonResponse>(`https://pokeapi.co/api/v2/pokemon/${i}`)
-            .then(async (details) => {
-              if (!details) return null;
-              try {
-                const speciesData = await fetchJSON<PokemonSpecies>(details.species.url);
-                return enhancePokemonData(details, speciesData);
-              } catch {
-                return enhancePokemonData(details);
-              }
-            })
-            .catch((err: unknown) => {
-              // Return placeholder for failed loads
-              const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-              logger.error('Failed to load Pokemon', { pokemonId: i, error: errorMessage });
-              return {
-                id: i,
-                name: `pokemon-${i}`,
-                types: [],
-                sprite: "/dextrendslogo.png",
-                height: 0,
-                weight: 0,
-                generation: getGeneration(i).toString(),
-                isLegendary: false,
-                isMythical: false,
-                isUltraBeast: false,
-                isStarter: false,
-                isBaby: false,
-                isFossil: false,
-                totalStats: 0,
-              } as EnhancedPokemon;
-            })
-        );
-      }
-      const results = await Promise.all(promises);
-      return results.filter((pokemon): pokemon is EnhancedPokemon => pokemon !== null);
-    } catch (err) {
-      logger.error('Batch fetch error', { error: err });
-      return [];
-    }
-  }, [enhancePokemonData]);
-
-  // Fetch mega evolutions separately
-  const fetchMegaEvolutions = useCallback(async (): Promise<EnhancedPokemon[]> => {
-    const megaForms: EnhancedPokemon[] = [];
-    const megaPokemon = [
-      { id: 10033, name: 'venusaur-mega' },
-      { id: 10034, name: 'charizard-mega-x' },
-      { id: 10035, name: 'charizard-mega-y' },
-      { id: 10036, name: 'blastoise-mega' },
-      { id: 10037, name: 'alakazam-mega' },
-      { id: 10038, name: 'gengar-mega' },
-      { id: 10039, name: 'kangaskhan-mega' },
-      { id: 10040, name: 'pinsir-mega' },
-      { id: 10041, name: 'gyarados-mega' },
-      { id: 10042, name: 'aerodactyl-mega' },
-      { id: 10043, name: 'mewtwo-mega-x' },
-      { id: 10044, name: 'mewtwo-mega-y' },
-      { id: 10045, name: 'ampharos-mega' },
-      { id: 10046, name: 'scizor-mega' },
-      { id: 10047, name: 'heracross-mega' },
-      { id: 10048, name: 'houndoom-mega' },
-      { id: 10049, name: 'tyranitar-mega' },
-      { id: 10050, name: 'blaziken-mega' },
-      { id: 10051, name: 'gardevoir-mega' },
-      { id: 10052, name: 'mawile-mega' },
-      { id: 10053, name: 'aggron-mega' },
-      { id: 10054, name: 'medicham-mega' },
-      { id: 10055, name: 'manectric-mega' },
-      { id: 10056, name: 'banette-mega' },
-      { id: 10057, name: 'absol-mega' },
-      { id: 10058, name: 'garchomp-mega' },
-      { id: 10059, name: 'lucario-mega' },
-      { id: 10060, name: 'abomasnow-mega' },
-      { id: 10062, name: 'beedrill-mega' },
-      { id: 10063, name: 'pidgeot-mega' },
-      { id: 10064, name: 'slowbro-mega' },
-      { id: 10065, name: 'steelix-mega' },
-      { id: 10066, name: 'sceptile-mega' },
-      { id: 10067, name: 'swampert-mega' },
-      { id: 10068, name: 'sableye-mega' },
-      { id: 10069, name: 'sharpedo-mega' },
-      { id: 10070, name: 'camerupt-mega' },
-      { id: 10071, name: 'altaria-mega' },
-      { id: 10072, name: 'glalie-mega' },
-      { id: 10073, name: 'salamence-mega' },
-      { id: 10074, name: 'metagross-mega' },
-      { id: 10075, name: 'latias-mega' },
-      { id: 10076, name: 'latios-mega' },
-      { id: 10077, name: 'lopunny-mega' },
-      { id: 10078, name: 'gallade-mega' },
-      { id: 10079, name: 'audino-mega' },
-      { id: 10087, name: 'diancie-mega' },
-      { id: 10090, name: 'rayquaza-mega' }
-    ];
-
-    for (const mega of megaPokemon) {
-      try {
-        const details = await fetchJSON<ApiPokemonResponse>(`https://pokeapi.co/api/v2/pokemon/${mega.id}`);
-        if (!details) continue;
-        const speciesData = await fetchJSON<PokemonSpecies>(details.species.url);
-        const enhancedData = enhancePokemonData(details, speciesData);
-        megaForms.push(enhancedData);
-      } catch (err) {
-        logger.error('Failed to fetch mega evolution', { megaName: mega.name, error: err });
-      }
-    }
-
-    return megaForms;
-  }, [enhancePokemonData]);
-
-  // Fetch regional variants separately
-  const fetchRegionalVariants = useCallback(async (): Promise<EnhancedPokemon[]> => {
-    const regionalForms: EnhancedPokemon[] = [];
-    
-    // Alolan forms
-    for (let id = 10091; id <= 10115; id++) {
-      try {
-        const details = await fetchJSON<ApiPokemonResponse>(`https://pokeapi.co/api/v2/pokemon/${id}`);
-        if (!details) continue;
-        const speciesData = await fetchJSON<PokemonSpecies>(details.species.url);
-        const enhancedData = enhancePokemonData(details, speciesData);
-        regionalForms.push(enhancedData);
-      } catch (err) {
-        // Skip if not found
-      }
-    }
-    
-    // More Alolan forms
-    for (let id = 10123; id <= 10126; id++) {
-      try {
-        const details = await fetchJSON<ApiPokemonResponse>(`https://pokeapi.co/api/v2/pokemon/${id}`);
-        if (!details) continue;
-        const speciesData = await fetchJSON<PokemonSpecies>(details.species.url);
-        const enhancedData = enhancePokemonData(details, speciesData);
-        regionalForms.push(enhancedData);
-      } catch (err) {
-        // Skip if not found
-      }
-    }
-    
-    // Galarian forms
-    for (let id = 10158; id <= 10184; id++) {
-      try {
-        const details = await fetchJSON<ApiPokemonResponse>(`https://pokeapi.co/api/v2/pokemon/${id}`);
-        if (!details) continue;
-        const speciesData = await fetchJSON<PokemonSpecies>(details.species.url);
-        const enhancedData = enhancePokemonData(details, speciesData);
-        regionalForms.push(enhancedData);
-      } catch (err) {
-        // Skip if not found
-      }
-    }
-    
-    // Hisuian forms
-    for (let id = 10221; id <= 10249; id++) {
-      try {
-        const details = await fetchJSON<ApiPokemonResponse>(`https://pokeapi.co/api/v2/pokemon/${id}`);
-        if (!details) continue;
-        const speciesData = await fetchJSON<PokemonSpecies>(details.species.url);
-        const enhancedData = enhancePokemonData(details, speciesData);
-        regionalForms.push(enhancedData);
-      } catch (err) {
-        // Skip if not found
-      }
-    }
-    
-    return regionalForms;
-  }, [enhancePokemonData]);
-
-  // Background loading function for remaining Pokemon
-  const loadRemainingPokemon = useCallback(async (initialData: EnhancedPokemon[]) => {
-    try {
-      logger.debug('Starting background loading of remaining Pokemon...');
-      let allPokemonData = [...initialData];
-      
-      // Ensure we have placeholders for all Pokemon
-      while (allPokemonData.length < TOTAL_POKEMON) {
-        allPokemonData.push({
-          id: allPokemonData.length + 1,
-          name: `pokemon-${allPokemonData.length + 1}`,
-          types: [],
-          sprite: '/dextrendslogo.png',
-          height: 0,
-          weight: 0,
-          generation: getGeneration(allPokemonData.length + 1).toString(),
-          isLegendary: false,
-          isMythical: false,
-          isUltraBeast: false,
-          isStarter: false,
-          isBaby: false,
-          isFossil: false,
-          totalStats: 0,
-        } as EnhancedPokemon);
-      }
-      
-      // Load remaining Pokemon (251-1025) in medium batches
-      const BACKGROUND_BATCH_SIZE = 30;
-      let loadedCount = 0;
-      
-      for (let start = 251; start <= TOTAL_POKEMON; start += BACKGROUND_BATCH_SIZE) {
-        const count = Math.min(BACKGROUND_BATCH_SIZE, TOTAL_POKEMON - start + 1);
-        
-        try {
-          const batch = await fetchPokemonBatch(start, count);
-          loadedCount += batch.length;
-          
-          // Update the loaded data
-          batch.forEach(pokemon => {
-            if (pokemon.id > 0 && pokemon.id <= TOTAL_POKEMON) {
-              allPokemonData[pokemon.id - 1] = pokemon;
-            }
-          });
-          
-          // Update data periodically
-          if (loadedCount % 90 === 0 || start + BACKGROUND_BATCH_SIZE > TOTAL_POKEMON) { // Every 90 Pokemon or at the end
-            logger.debug(`Background loading progress: ${loadedCount} Pokemon loaded`);
-            setAllPokemon([...allPokemonData]);
-          }
-          
-          // Moderate delay for background loading - balance between API limits and speed
-          await new Promise(resolve => setTimeout(resolve, 300));
-        } catch (batchError) {
-          logger.error(`Failed to load batch starting at ${start}`, { error: batchError });
-          // Continue with next batch even if one fails
-        }
-      }
-      
-      // Load special forms in background
-      try {
-        const megaEvolutions = await fetchMegaEvolutions();
-        allPokemonData = [...allPokemonData, ...megaEvolutions];
-        
-        const regionalVariants = await fetchRegionalVariants();
-        allPokemonData = [...allPokemonData, ...regionalVariants];
-        
-        logger.debug(`Special forms loaded: ${megaEvolutions.length} mega evolutions, ${regionalVariants.length} regional variants`);
-      } catch (err) {
-        logger.debug('Special forms loading failed, continuing with basic Pokemon', { error: err });
-      }
-      
-      // Final update
-      logger.debug(`Background loading complete! Total Pokemon loaded: ${loadedCount + 250}`);
-      setAllPokemon(allPokemonData);
-    } catch (err) {
-      logger.error('Background loading failed', { error: err });
-    }
-  }, [fetchPokemonBatch, fetchMegaEvolutions, fetchRegionalVariants]);
-
-  // Load initial Pokémon data for faster page load
+  
+  // Load Pokémon data progressively
   useEffect(() => {
-    let mounted = true;
-
-    const loadInitialPokemon = async () => {
-      if (!mounted) return;
-      
-      setLoading(true);
-      setError(null);
-      
+    const loadPokemon = async () => {
       try {
-        // First, get the list of all Pokemon (lightweight)
-        const pokemonList = await fetchJSON<{ results: Array<{ name: string; url: string }> }>('https://pokeapi.co/api/v2/pokemon?limit=1025');
+        setLoading(true);
         
-        if (!pokemonList?.results) {
-          throw new Error('Failed to fetch Pokemon list');
-        }
-        
-        // Create placeholder data immediately with just names and IDs
-        const placeholderPokemon: EnhancedPokemon[] = pokemonList.results.map((p, index) => ({
-          id: index + 1,
-          name: p.name,
-          types: [],
+        // Create placeholders immediately
+        const placeholders: Pokemon[] = Array.from({ length: TOTAL_POKEMON }, (_, i) => ({
+          id: i + 1,
+          name: `pokemon-${i + 1}`,
           sprite: '/dextrendslogo.png',
-          height: 0,
-          weight: 0,
-          generation: getGeneration(index + 1).toString(),
-          isLegendary: false,
-          isMythical: false,
-          isUltraBeast: false,
-          isStarter: checkIfStarter(index + 1),
-          isBaby: false,
-          isFossil: isFossil(p.name),
-          totalStats: 0,
+          types: [],
+          generation: getGeneration(i + 1).toString(),
+          isStarter: checkIfStarter(i + 1)
         }));
         
-        if (!mounted) return;
-        
-        // Display placeholder data immediately
-        setAllPokemon(placeholderPokemon);
-        setPokemon(placeholderPokemon);
+        setPokemon(placeholders);
         setLoading(false);
         
-        // Load first 250 Pokemon initially for faster initial page load
-        const INITIAL_LOAD_COUNT = 250;
-        let loadedPokemonData: EnhancedPokemon[] = [...placeholderPokemon];
+        // Load real data in batches
+        const allPokemon = [...placeholders];
         
-        // Load detailed data in medium batches for better performance
-        const SMALL_BATCH_SIZE = 25;
-        for (let start = 1; start <= INITIAL_LOAD_COUNT; start += SMALL_BATCH_SIZE) {
-          if (!mounted) return;
+        for (let start = 1; start <= TOTAL_POKEMON; start += BATCH_SIZE) {
+          const promises = [];
+          for (let id = start; id < start + BATCH_SIZE && id <= TOTAL_POKEMON; id++) {
+            promises.push(
+              fetchJSON<APIPokemon>(`https://pokeapi.co/api/v2/pokemon/${id}`)
+                .then((data) => (data ? {
+                  id: typeof data.id === 'string' ? parseInt(data.id, 10) : data.id,
+                  name: data.name,
+                  sprite: data.sprites?.other?.['official-artwork']?.front_default || 
+                          data.sprites?.front_default || 
+                          '/dextrendslogo.png',
+                  types: data.types?.map((t: PokemonType) => t.type.name) || [],
+                  generation: getGeneration(typeof data.id === 'string' ? parseInt(data.id, 10) : data.id).toString(),
+                  isStarter: checkIfStarter(typeof data.id === 'string' ? parseInt(data.id, 10) : data.id),
+                  height: data.height,
+                  weight: data.weight,
+                  stats: data.stats,
+                  totalStats: data.stats?.reduce((acc: number, stat: PokemonStat) => acc + stat.base_stat, 0) || 0
+                } : null))
+                .catch(() => null)
+            );
+          }
           
-          const count = Math.min(SMALL_BATCH_SIZE, INITIAL_LOAD_COUNT - start + 1);
-          const batch = await fetchPokemonBatch(start, count);
-          
-          // Update the loaded data
-          batch.forEach(pokemon => {
-            if (pokemon.id <= loadedPokemonData.length) {
-              loadedPokemonData[pokemon.id - 1] = pokemon;
+          const batchResults = await Promise.all(promises);
+          batchResults.forEach(result => {
+            if (result) {
+              allPokemon[result.id - 1] = result;
             }
           });
           
-          if (!mounted) return;
-          
-          // Update progress
-          const progress = Math.round((start + count - 1) / TOTAL_POKEMON * 100);
-          setLoadingProgress(progress);
-          
-          // Update displayed Pokemon with loaded data
-          setAllPokemon([...loadedPokemonData]);
-          setPokemon([...loadedPokemonData]);
-          
-          // Small delay to prevent API overload
-          if (start + SMALL_BATCH_SIZE <= INITIAL_LOAD_COUNT) {
-            await new Promise(resolve => setTimeout(resolve, 200));
+          setPokemon([...allPokemon]);
+          await new Promise(resolve => setTimeout(resolve, 100));
+        }
+        
+        // Load species data for legendary/mythical status
+        for (let id = 1; id <= TOTAL_POKEMON; id++) {
+          try {
+            const species = await fetchJSON<any>(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
+            if (species) {
+              allPokemon[id - 1].isLegendary = species.is_legendary;
+              allPokemon[id - 1].isMythical = species.is_mythical;
+            }
+          } catch {
+            // Continue without species data
           }
         }
         
-        if (!mounted) return;
-        
-        // Continue loading remaining Pokemon in background
-        // Use requestIdleCallback for better performance if available
-        if ('requestIdleCallback' in window) {
-          requestIdleCallback(() => {
-            if (mounted) {
-              loadRemainingPokemon(loadedPokemonData);
-            }
-          }, { timeout: 2000 });
-        } else {
-          setTimeout(() => {
-            if (mounted) {
-              loadRemainingPokemon(loadedPokemonData);
-            }
-          }, 1000);
-        }
-        
-      } catch (err) {
-        if (!mounted) return;
-        setError("Failed to load Pokédex data");
-        logger.error('Error loading Pokémon', { error: err });
-        setLoading(false);
+        setPokemon([...allPokemon]);
+        logger.info('All Pokémon loaded successfully');
+      } catch (error) {
+        logger.error('Failed to load Pokémon', { error });
       }
     };
-
-    loadInitialPokemon();
-
-    return () => {
-      mounted = false;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
+    loadPokemon();
   }, []);
-
-  // Enhanced filtering logic
+  
+  // Filter and sort Pokémon
   const filteredPokemon = useMemo(() => {
-    return allPokemon.filter((p) => {
-      // Search filter
-      if (searchTerm && !p.name.toLowerCase().includes(searchTerm.toLowerCase()) && 
-          p.id.toString() !== searchTerm) {
-        return false;
+    let filtered = [...pokemon];
+    
+    // Search filter
+    if (debouncedSearch) {
+      const term = debouncedSearch.toLowerCase();
+      filtered = filtered.filter(p => 
+        p.name.toLowerCase().includes(term) || 
+        p.id.toString() === term
+      );
+    }
+    
+    // Type filter
+    if (selectedTypes.length > 0) {
+      filtered = filtered.filter(p => 
+        selectedTypes.some(type => p.types.includes(type))
+      );
+    }
+    
+    // Generation filter
+    if (selectedGeneration) {
+      filtered = filtered.filter(p => p.generation === selectedGeneration);
+    }
+    
+    // Category filter
+    if (selectedCategory) {
+      switch (selectedCategory) {
+        case 'starter':
+          filtered = filtered.filter(p => p.isStarter);
+          break;
+        case 'legendary':
+          filtered = filtered.filter(p => p.isLegendary);
+          break;
+        case 'mythical':
+          filtered = filtered.filter(p => p.isMythical);
+          break;
       }
-
-      // Type filter - AND logic for types: Pokemon must have ALL selected types
-      const activeTypes = pendingTypes.length > 0 ? pendingTypes : (selectedType ? [selectedType] : []);
-      if (activeTypes.length > 0 && !activeTypes.every(type => p.types.includes(type))) {
-        return false;
+    }
+    
+    // Sort
+    filtered.sort((a, b) => {
+      switch (sortBy) {
+        case 'name':
+          return a.name.localeCompare(b.name);
+        case 'stats':
+          return (b.totalStats || 0) - (a.totalStats || 0);
+        default:
+          return a.id - b.id;
       }
-
-      // Generation filter
-      if (selectedGeneration && p.generation !== selectedGeneration) {
-        return false;
-      }
-
-      // Category filter - now supports multiple categories (OR logic)
-      const categoryChecks = {
-        'starter': p.isStarter,
-        'legendary': p.isLegendary,
-        'mythical': p.isMythical,
-        'ultra-beast': p.isUltraBeast,
-        'baby': p.isBaby,
-        'fossil': p.isFossil
-      };
-
-      if (pendingCategories.length > 0) {
-        const matchesAnyCategory = pendingCategories.some(category => 
-          category === 'all' || categoryChecks[category]
-        );
-        if (!matchesAnyCategory) return false;
-      } else if (selectedCategory !== 'all' && !categoryChecks[selectedCategory]) {
-        return false;
-      }
-
-      // Evolution stage filter - now supports multiple stages (OR logic)
-      const stageChecks = {
-        'basic': !p.evolvesFrom,
-        'stage1': p.evolvesFrom && allPokemon.some(other => other.evolvesFrom === p.name),
-        'stage2': p.evolvesFrom && !allPokemon.some(other => other.evolvesFrom === p.name),
-        'single': !p.evolvesFrom && !allPokemon.some(other => other.evolvesFrom === p.name)
-      };
-
-      if (pendingStages.length > 0) {
-        const matchesAnyStage = pendingStages.some(stage => 
-          stage === 'all' || stageChecks[stage]
-        );
-        if (!matchesAnyStage) return false;
-      } else if (selectedStage !== 'all' && !stageChecks[selectedStage]) {
-        return false;
-      }
-
-      return true;
     });
-  }, [
-    allPokemon, 
-    searchTerm, 
-    selectedType, 
-    selectedGeneration, 
-    selectedCategory, 
-    selectedStage,
-    pendingTypes,
-    pendingCategories,
-    pendingStages
-  ]);
-
-  // Sorting logic
-  const sortedPokemon = useMemo(() => {
-    const sorted = [...filteredPokemon];
     
-    switch (sortBy) {
-      case 'name':
-        sorted.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-      case 'type':
-        sorted.sort((a, b) => a.types[0].localeCompare(b.types[0]));
-        break;
-      case 'height':
-        sorted.sort((a, b) => (b.height || 0) - (a.height || 0));
-        break;
-      case 'weight':
-        sorted.sort((a, b) => (b.weight || 0) - (a.weight || 0));
-        break;
-      case 'stats':
-        sorted.sort((a, b) => (b.totalStats || 0) - (a.totalStats || 0));
-        break;
-      case 'generation':
-        sorted.sort((a, b) => {
-          const genA = a.generation || '';
-          const genB = b.generation || '';
-          return genA.localeCompare(genB) || a.id - b.id;
-        });
-        break;
-      default: // 'id'
-        sorted.sort((a, b) => a.id - b.id);
-    }
+    return filtered;
+  }, [pokemon, debouncedSearch, selectedTypes, selectedGeneration, selectedCategory, sortBy]);
+  
+  // Transform to grid items
+  const gridItems: PokemonGridItem[] = useMemo(() => 
+    filteredPokemon.map(p => ({
+      id: p.id,
+      image: p.sprite,
+      title: p.name,
+      subtitle: `#${String(p.id).padStart(3, '0')}`,
+      types: p.types,
+      raw: p
+    })),
+    [filteredPokemon]
+  );
+  
+  // Handle Pokémon click
+  const handlePokemonClick = useCallback((item: PokemonGridItem) => {
+    router.push(`/pokedex/${item.id}`);
+  }, [router]);
+  
+  // Custom Pokémon card renderer
+  const renderPokemonCard = useCallback((item: PokemonGridItem, index: number, dimensions: { width: number; height: number }) => {
+    // Use compact card for mobile or when many columns
+    const useCompact = viewportWidth < 768 || dimensions.width < 120;
     
-    return sorted;
-  }, [filteredPokemon, sortBy]);
-
-  // Paginated results
-  const displayedPokemon = useMemo(() => {
-    return sortedPokemon.slice(0, visibleCount);
-  }, [sortedPokemon, visibleCount]);
-
-  // Load more functionality
-  const loadMore = useCallback(() => {
-    if (isLoadingMore || visibleCount >= sortedPokemon.length) return;
+    const CardComponent = useCompact ? CompactPokemonCard : PokemonCardRenderer;
     
-    setIsLoadingMore(true);
-    setTimeout(() => {
-      setVisibleCount(prev => Math.min(prev + LOAD_MORE_COUNT, sortedPokemon.length));
-      setIsLoadingMore(false);
-    }, 300);
-  }, [isLoadingMore, visibleCount, sortedPokemon.length]);
-
-  // Intersection Observer for infinite scroll
-  useEffect(() => {
-    // Cleanup previous observer
-    if (observerRef.current) {
-      observerRef.current.disconnect();
-    }
-    
-    // Create new observer with debouncing
-    let timeoutId: NodeJS.Timeout;
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        if (entry.isIntersecting && !isLoadingMore && visibleCount < sortedPokemon.length) {
-          // Debounce to prevent multiple rapid calls
-          clearTimeout(timeoutId);
-          timeoutId = setTimeout(() => {
-            loadMore();
-          }, 100);
-        }
-      },
-      {
-        root: null,
-        rootMargin: '400px', // Start loading 400px before reaching the element
-        threshold: 0.1
-      }
-    );
-    
-    // Observe the load more trigger element
-    if (loadMoreRef.current) {
-      observerRef.current.observe(loadMoreRef.current);
-    }
-    
-    // Cleanup on unmount
-    return () => {
-      clearTimeout(timeoutId);
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
-    };
-  }, [loadMore, isLoadingMore, visibleCount, sortedPokemon.length]);
-
-  // Get type colors for dynamic styling
-  const getTypeGradient = (types: string[]): string => {
-    if (types.length === 1) {
-      return `from-poke-${types[0]} to-poke-${types[0]}-dark`;
-    }
-    return `from-poke-${types[0]} to-poke-${types[1]}`;
-  };
-
-  // Pull to refresh handler
-  const handleRefresh = useCallback(async () => {
-    try {
-      // Clear existing data
-      setAllPokemon([]);
-      setPokemon([]);
-      setLoading(true);
-      setError(null);
-      
-      // Re-trigger the initial loading (SSR safe)
-      if (typeof window !== 'undefined') {
-        window.location.reload();
-      }
-    } catch (err) {
-      logger.error('Refresh failed', { error: err });
-      setError("Failed to refresh Pokédex data");
-    }
-  }, []);
-
-  // Loading state with skeleton loading
-  if (loading) {
     return (
-      <FullBleedWrapper>
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
-          <Head>
-            <title>Loading Pokédex - DexTrends</title>
-          </Head>
-          
-          {/* Header Skeleton */}
-          <div className="p-6 mb-8">
-            <div className="max-w-7xl mx-auto">
-              <div className="text-center mb-8">
-                <div className="h-12 w-64 bg-gray-200 dark:bg-gray-700 rounded-lg mx-auto mb-4 animate-pulse" />
-                <div className="h-6 w-96 bg-gray-200 dark:bg-gray-700 rounded mx-auto animate-pulse" />
-              </div>
-              
-              {/* Search and Filter Skeleton */}
-              <div className="flex flex-col md:flex-row gap-4 mb-6">
-                <div className="flex-1 h-12 bg-white/80 dark:bg-gray-800/80 rounded-full animate-pulse" />
-                <div className="w-32 h-12 bg-white/80 dark:bg-gray-800/80 rounded-full animate-pulse" />
-                <div className="w-32 h-12 bg-white/80 dark:bg-gray-800/80 rounded-full animate-pulse" />
-              </div>
-            </div>
-          </div>
-          
-          {/* Pokemon Grid Skeleton */}
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="grid grid-cols-2 min-420:grid-cols-3 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-3 min-420:gap-4">
-              {Array.from({ length: INITIAL_LOAD }).map((_, index) => (
-                <PokemonCardSkeleton 
-                  key={index} 
-                  variant="grid"
-                  showStats={false}
-                  className="h-full"
-                />
-              ))}
-            </div>
-          </div>
-          
-          {/* Loading Progress Overlay */}
-          {loadingProgress > 0 && (
-            <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50">
-              <div className="bg-white dark:bg-gray-800 rounded-full shadow-lg p-4">
-                <div className="flex items-center gap-3">
-                  <PokeballLoader size="small" text="" randomBall={false} />
-                  <div>
-                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Loading Pokémon... {loadingProgress}%
-                    </p>
-                    <div className="w-48 bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-1 overflow-hidden">
-                      <div 
-                        className="bg-gradient-to-r from-red-500 to-red-600 h-full transition-all duration-300"
-                        style={{ width: `${loadingProgress}%` }}
-                      />
-                    </div>
-                  </div>
+      <CardComponent
+        id={item.raw.id}
+        name={item.raw.name}
+        sprite={item.raw.sprite}
+        types={item.raw.types}
+        onClick={() => handlePokemonClick(item)}
+        width={dimensions.width}
+        height={dimensions.height}
+        isLegendary={item.raw.isLegendary}
+        isMythical={item.raw.isMythical}
+        isStarter={item.raw.isStarter}
+      />
+    );
+  }, [handlePokemonClick, viewportWidth]);
+  
+  // Render filters
+  const renderFilters = () => (
+    <div className="space-y-6 p-4">
+      {/* Type Filter */}
+      <div>
+        <h3 className="font-semibold mb-3 text-gray-700 dark:text-gray-300">Type</h3>
+        <div className="grid grid-cols-3 gap-2">
+          {['normal', 'fire', 'water', 'electric', 'grass', 'ice', 
+            'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug',
+            'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy'].map(type => (
+            <button
+              key={type}
+              onClick={() => {
+                setSelectedTypes(prev =>
+                  prev.includes(type)
+                    ? prev.filter(t => t !== type)
+                    : [...prev, type]
+                );
+              }}
+              className={cn(
+                'relative p-1 rounded-lg transition-all',
+                selectedTypes.includes(type)
+                  ? 'ring-2 ring-primary-500 bg-gray-100 dark:bg-gray-800'
+                  : 'hover:bg-gray-100 dark:hover:bg-gray-800'
+              )}
+            >
+              <TypeBadge type={type} size="sm" />
+              {selectedTypes.includes(type) && (
+                <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                  <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
                 </div>
-              </div>
-            </div>
-          )}
+              )}
+            </button>
+          ))}
         </div>
-      </FullBleedWrapper>
-    );
-  }
-
-  if (error) {
-    return (
-      <FullBleedWrapper>
-        <div className="flex flex-col items-center justify-center min-h-screen">
-          <p className="text-red-500 text-xl mb-4">{error}</p>
-          <CircularButton
-            onClick={() => {
-              if (typeof window !== 'undefined') {
-                window.location.reload();
-              }
-            }}
-            variant="primary"
-          >
-            Try Again
-          </CircularButton>
+      </div>
+      
+      {/* Generation Filter */}
+      <div>
+        <h3 className="font-semibold mb-3 text-gray-700 dark:text-gray-300">Generation</h3>
+        <div className="flex flex-wrap gap-2">
+          {['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX'].map(gen => (
+            <button
+              key={gen}
+              onClick={() => {
+                setSelectedGeneration(selectedGeneration === gen ? '' : gen);
+              }}
+              className={cn(
+                'px-4 py-2 rounded-full font-medium transition-all',
+                selectedGeneration === gen
+                  ? 'bg-primary-500 text-white'
+                  : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700'
+              )}
+            >
+              Gen {gen}
+            </button>
+          ))}
         </div>
-      </FullBleedWrapper>
-    );
-  }
-
+      </div>
+      
+      {/* Category Filter */}
+      <div>
+        <h3 className="font-semibold mb-3 text-gray-700 dark:text-gray-300">Category</h3>
+        <div className="grid grid-cols-2 gap-2">
+          {[
+            { value: 'starter', label: 'Starter' },
+            { value: 'legendary', label: 'Legendary' },
+            { value: 'mythical', label: 'Mythical' }
+          ].map(cat => (
+            <button
+              key={cat.value}
+              onClick={() => {
+                setSelectedCategory(selectedCategory === cat.value ? '' : cat.value);
+              }}
+              className={cn(
+                'py-2 px-4 rounded-lg font-medium transition-all',
+                selectedCategory === cat.value
+                  ? 'bg-green-500 text-white'
+                  : 'bg-gray-100 dark:bg-gray-800'
+              )}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
+      </div>
+      
+      {/* Sort Options */}
+      <div>
+        <h3 className="font-semibold mb-3 text-gray-700 dark:text-gray-300">Sort By</h3>
+        <div className="grid grid-cols-3 gap-2">
+          {[
+            { value: 'id' as const, label: 'Number' },
+            { value: 'name' as const, label: 'Name' },
+            { value: 'stats' as const, label: 'Stats' }
+          ].map(sort => (
+            <button
+              key={sort.value}
+              onClick={() => setSortBy(sort.value)}
+              className={cn(
+                'py-2 px-4 rounded-lg font-medium transition-all',
+                sortBy === sort.value
+                  ? 'bg-indigo-500 text-white'
+                  : 'bg-gray-100 dark:bg-gray-800'
+              )}
+            >
+              {sort.label}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+  
+  const clearFilters = () => {
+    setSearchTerm('');
+    setSelectedTypes([]);
+    setSelectedGeneration('');
+    setSelectedCategory('');
+    setSortBy('id');
+  };
+  
+  const hasActiveFilters = searchTerm || selectedTypes.length > 0 || selectedGeneration || selectedCategory || sortBy !== 'id';
+  
+  // Intelligent column configuration
+  const columnConfig = {
+    mobile: viewportWidth <= 390 ? 2 : 3,    // 2 cols on very small, 3 on mobile
+    tablet: 4,                                // 4 cols on tablet
+    laptop: 5,                                // 5 cols on laptop
+    desktop: 6,                               // 6 cols on desktop
+    wide: 8                                   // 8 cols on wide screens
+  };
+  
   return (
     <>
       <Head>
-        <title>Pokédex | DexTrends - Browse All Pokémon</title>
-        <meta name="description" content="Browse all 1025+ Pokémon with detailed stats, types, abilities, and more. Filter by generation, type, and category." />
+        <title>Pokédex - DexTrends</title>
+        <meta name="description" content="Browse all Pokémon with our elegant, responsive Pokédex" />
       </Head>
-
-      <PullToRefresh onRefresh={handleRefresh}>
-        {isMobileView ? (
-          // Mobile Layout
-          <MobileLayout>
-            <div className="mobile-pokedex">
-              {/* Mobile Header */}
-              <div className="mobile-header bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 p-4 sticky top-0 z-20">
-                <h1 className="text-2xl font-bold text-center mb-2">Pokédex</h1>
-                <p className="text-sm text-gray-600 dark:text-gray-400 text-center mb-3">
-                  {filteredPokemon.length} of {TOTAL_POKEMON} Pokémon
-                </p>
-                
-                {/* Mobile Search Bar */}
-                <div className="flex gap-2">
-                  <div className="flex-1">
-                    <SearchInput
-                      placeholder="Search..."
-                      value={pendingSearchTerm}
-                      onChange={(e) => setPendingSearchTerm(e.target.value)}
-                      onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                      icon={<FiSearch size={18} />}
-                      inputSize="sm"
-                    />
-                  </div>
-                  <button
-                    onClick={() => setShowMobileFilters(true)}
-                    className="px-4 py-2 bg-blue-500 text-white rounded-lg flex items-center gap-2"
-                  >
-                    <FiFilter size={16} />
-                    {(pendingTypes.length > 0 || pendingGeneration || pendingCategories.length > 0) && (
-                      <span className="bg-white text-blue-500 rounded-full w-5 h-5 text-xs flex items-center justify-center">
-                        {pendingTypes.length + (pendingGeneration ? 1 : 0) + pendingCategories.length}
-                      </span>
-                    )}
-                  </button>
+      
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        <div className="container mx-auto px-4 py-6">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-4xl sm:text-5xl font-bold mb-2 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Pokédex
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400">
+              {filteredPokemon.length} of {TOTAL_POKEMON} Pokémon
+            </p>
+            
+            {/* Stats Pills */}
+            <div className="flex justify-center gap-3 mt-4">
+              <div className="px-4 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur rounded-full shadow-md">
+                <span className="font-semibold text-gray-700 dark:text-gray-300">
+                  {filteredPokemon.length} Found
+                </span>
+              </div>
+              {loading && (
+                <div className="px-4 py-2 bg-blue-100/80 dark:bg-blue-900/80 backdrop-blur rounded-full">
+                  <span className="text-blue-600 dark:text-blue-400">Loading...</span>
                 </div>
-              </div>
-
-              {/* Mobile Content */}
-              <div className="mobile-content">
-                {displayedPokemon.length > 0 ? (
-                  <VirtualPokemonGrid
-                    pokemon={displayedPokemon.map(p => ({
-                      id: p.id,
-                      name: p.name,
-                      sprite: p.sprite || '/dextrendslogo.png',
-                      types: p.types.map(type => ({ type: { name: type } })),
-                    }))}
-                    onPokemonClick={(p) => router.push(`/pokedex/${p.id}`)}
-                    columns={{
-                      mobile: window.innerWidth >= 420 ? 3 : 2,
-                      tablet: 4,
-                      desktop: 6
-                    }}
-                  />
-                ) : (
-                  <div className="text-center py-20 px-4">
-                    <p className="text-xl text-gray-500 mb-2">No Pokémon found</p>
-                    <p className="text-sm text-gray-400">Try adjusting your filters</p>
-                    <button
-                      onClick={clearAllFilters}
-                      className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg"
-                    >
-                      Clear Filters
-                    </button>
-                  </div>
-                )}
-
-                {/* Mobile Load More */}
-                {displayedPokemon.length < sortedPokemon.length && (
-                  <div className="text-center py-8">
-                    <button
-                      onClick={loadMore}
-                      disabled={isLoadingMore}
-                      className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-full font-medium"
-                    >
-                      {isLoadingMore ? 'Loading...' : `Load More (${sortedPokemon.length - displayedPokemon.length} left)`}
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              {/* Mobile Filter Bottom Sheet */}
-              {showMobileFilters && (
-                <BottomSheet
-                  isOpen={showMobileFilters}
-                  onClose={() => setShowMobileFilters(false)}
-                  title="Filter Pokémon"
-                >
-                  <div className="p-4 space-y-6 max-h-[70vh] overflow-y-auto">
-                    {/* Type Filter */}
-                    <div>
-                      <h3 className="font-semibold mb-3">Type</h3>
-                      <div className="grid grid-cols-3 gap-2">
-                        {['normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy'].map(type => (
-                          <button
-                            key={type}
-                            onClick={() => toggleType(type)}
-                            className={`py-2 px-3 rounded-lg text-sm font-medium transition-all ${
-                              pendingTypes.includes(type)
-                                ? 'bg-blue-500 text-white'
-                                : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
-                            }`}
-                          >
-                            {type}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Generation Filter */}
-                    <div>
-                      <h3 className="font-semibold mb-3">Generation</h3>
-                      <div className="grid grid-cols-3 gap-2">
-                        {['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX'].map(gen => (
-                          <button
-                            key={gen}
-                            onClick={() => {
-                              setPendingGeneration(pendingGeneration === gen ? '' : gen);
-                            }}
-                            className={`py-2 px-3 rounded-lg text-sm font-medium transition-all ${
-                              pendingGeneration === gen
-                                ? 'bg-purple-500 text-white'
-                                : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
-                            }`}
-                          >
-                            Gen {gen}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Category Filter */}
-                    <div>
-                      <h3 className="font-semibold mb-3">Category</h3>
-                      <div className="grid grid-cols-2 gap-2">
-                        {[
-                          { value: 'starter' as PokemonCategory, label: 'Starter' },
-                          { value: 'legendary' as PokemonCategory, label: 'Legendary' },
-                          { value: 'mythical' as PokemonCategory, label: 'Mythical' },
-                          { value: 'ultra-beast' as PokemonCategory, label: 'Ultra Beast' },
-                          { value: 'baby' as PokemonCategory, label: 'Baby' },
-                          { value: 'fossil' as PokemonCategory, label: 'Fossil' }
-                        ].map(category => (
-                          <button
-                            key={category.value}
-                            onClick={() => toggleCategory(category.value)}
-                            className={`py-2 px-3 rounded-lg text-sm font-medium transition-all ${
-                              pendingCategories.includes(category.value)
-                                ? 'bg-green-500 text-white'
-                                : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
-                            }`}
-                          >
-                            {category.label}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Sort Options */}
-                    <div>
-                      <h3 className="font-semibold mb-3">Sort By</h3>
-                      <div className="grid grid-cols-2 gap-2">
-                        {[
-                          { value: 'id' as SortOption, label: 'Number' },
-                          { value: 'name' as SortOption, label: 'Name' },
-                          { value: 'type' as SortOption, label: 'Type' },
-                          { value: 'stats' as SortOption, label: 'Stats' },
-                        ].map(option => (
-                          <button
-                            key={option.value}
-                            onClick={() => handleSortChange(option.value)}
-                            className={`py-2 px-3 rounded-lg text-sm font-medium transition-all ${
-                              sortBy === option.value
-                                ? 'bg-indigo-500 text-white'
-                                : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
-                            }`}
-                          >
-                            {option.label}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Action Buttons */}
-                    <div className="flex gap-3 pt-4 border-t">
-                      <button
-                        onClick={() => {
-                          clearAllFilters();
-                          setShowMobileFilters(false);
-                        }}
-                        className="flex-1 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium"
-                      >
-                        Clear All
-                      </button>
-                      <button
-                        onClick={() => {
-                          handleSearch();
-                          setShowMobileFilters(false);
-                        }}
-                        className="flex-1 py-3 bg-blue-500 text-white rounded-lg font-medium"
-                      >
-                        Apply Filters
-                      </button>
-                    </div>
-                  </div>
-                </BottomSheet>
               )}
             </div>
-          </MobileLayout>
-        ) : (
-          // Desktop Layout
-          <FullBleedWrapper gradient="pokedex">
-            <div className="max-w-7xl mx-auto px-4 py-8">
-          {/* Enhanced Header with Glass Morphism */}
-          <GlassContainer variant="colored" blur="lg" rounded="3xl" className="mb-8 text-center relative overflow-hidden">
-            {/* Gradient Background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-100/40 via-purple-100/40 to-pink-100/40 dark:from-blue-900/20 dark:via-purple-900/20 dark:to-pink-900/20" />
-            
-            <div className="relative z-10">
-              <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600">
-                Complete Pokédex
-              </h1>
-              <p className="text-gray-600 dark:text-gray-300 text-lg mb-4">
-                Browse all {TOTAL_POKEMON} Pokémon from every generation
-              </p>
-              
-              {/* Stats Pills with Glass Effect */}
-              <div className="flex justify-center gap-3 flex-wrap">
-                <div className="backdrop-blur-md bg-white/60 dark:bg-gray-800/60 rounded-full px-4 py-2 border border-white/30 shadow-lg">
-                  <span className="text-sm font-bold text-gray-700 dark:text-gray-300">
-                    {filteredPokemon.length} Found
-                  </span>
-                </div>
-                <div className="backdrop-blur-md bg-white/60 dark:bg-gray-800/60 rounded-full px-4 py-2 border border-white/30 shadow-lg">
-                  <span className="text-sm font-bold text-gray-700 dark:text-gray-300">
-                    {displayedPokemon.length} Displayed
-                  </span>
-                </div>
-                {allPokemon.filter(p => p.sprite !== '/dextrendslogo.png').length < TOTAL_POKEMON && (
-                  <div className="backdrop-blur-md bg-gradient-to-r from-blue-100/60 to-purple-100/60 dark:from-blue-900/40 dark:to-purple-900/40 rounded-full px-4 py-2 border border-blue-300/30 shadow-lg">
-                    <span className="text-sm font-bold text-blue-600 dark:text-blue-400">
-                      {allPokemon.filter(p => p.sprite !== '/dextrendslogo.png').length}/{TOTAL_POKEMON} Loaded
-                    </span>
-                  </div>
-                )}
-              </div>
-            </div>
-          </GlassContainer>
-
-          {/* Enhanced Search and Filter Bar with Glass Morphism */}
-          <div className="sticky top-16 z-20 pb-4">
-            <GlassContainer variant="medium" blur="lg" rounded="3xl" className="shadow-xl border-2 border-white/40 dark:border-gray-700/40">
-              <div className="flex flex-col xs:flex-row gap-3 xs:gap-4">
-                {/* Search Input */}
-                <div className="flex-1">
-                  <SearchInput
-                    placeholder="Search by name or ID..."
-                    value={pendingSearchTerm}
-                    onChange={(e) => setPendingSearchTerm(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                    icon={<FiSearch size={18} />}
-                    inputSize="md"
-                  />
-                </div>
-
-              {/* Filter Buttons - Stack on smallest screens */}
-              <div className="flex flex-wrap xs:flex-nowrap gap-2">
-                <CircularButton
-                  onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-                  variant={showAdvancedFilters ? "primary" : "secondary"}
-                  leftIcon={<FiFilter className="w-4 h-4" />}
-                >
-                  Filters
-                  {(pendingTypes.length > 0 || pendingGeneration || pendingCategories.length > 0 || pendingStages.length > 0) && (
-                    <span className="ml-2 bg-white text-blue-500 px-2 py-1 rounded-full text-xs">
-                      {pendingTypes.length + (pendingGeneration ? 1 : 0) + pendingCategories.length + pendingStages.length}
-                    </span>
-                  )}
-                </CircularButton>
-
-                <CircularButton
-                  onClick={() => setShowSortOptions(!showSortOptions)}
-                  variant={showSortOptions ? "primary" : "secondary"}
-                  leftIcon={<FiChevronDown className="w-4 h-4" />}
-                >
-                  Sort
-                </CircularButton>
-
-                <CircularButton
-                  onClick={handleSearch}
-                  variant="primary"
-                >
-                  Search
-                </CircularButton>
-
-                {(searchTerm || selectedType || selectedGeneration || selectedCategory !== 'all' || selectedStage !== 'all') && (
-                  <button
-                    onClick={clearAllFilters}
-                    className="btn bg-gradient-to-r from-red-500 to-pink-500 text-white hover:from-red-600 hover:to-pink-600"
-                  >
-                    Clear
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {/* Advanced Filters */}
-            {showAdvancedFilters && (
-              <div className="mt-6 space-y-4 border-t pt-6">
-                {/* Type Filter */}
-                <div data-testid="type-filter">
-                  <h3 className="font-semibold mb-3 text-gray-700">Type</h3>
-                  <div className="space-y-2">
-                    <div className="flex flex-wrap gap-2">
-                      {['normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison', 'ground'].map(type => (
-                        <button
-                          key={type}
-                          onClick={() => toggleType(type)}
-                          className={`transition-all duration-200 ${
-                            pendingTypes.includes(type) ? 'ring-2 ring-purple-500 ring-offset-2 shadow-lg transform scale-105' : 'hover:transform hover:scale-105'
-                          }`}
-                        >
-                          <TypeBadge type={type} size="md" />
-                        </button>
-                      ))}
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {['flying', 'psychic', 'bug', 'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy'].map(type => (
-                        <button
-                          key={type}
-                          onClick={() => toggleType(type)}
-                          className={`transition-all duration-200 ${
-                            pendingTypes.includes(type) ? 'ring-2 ring-purple-500 ring-offset-2 shadow-lg transform scale-105' : 'hover:transform hover:scale-105'
-                          }`}
-                        >
-                          <TypeBadge type={type} size="md" />
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Generation Filter */}
-                <div data-testid="generation-filter">
-                  <h3 className="font-semibold mb-3 text-gray-700">Generation</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX'].map(gen => (
-                      <button
-                        key={gen}
-                        onClick={() => {
-                          setPendingGeneration(pendingGeneration === gen ? '' : gen);
-                          setSelectedGeneration(pendingGeneration === gen ? '' : gen);
-                        }}
-                        className={`px-4 py-2 rounded-full font-medium text-sm transition-all duration-200 ${
-                          pendingGeneration === gen
-                            ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg'
-                            : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700'
-                        }`}
-                      >
-                        Gen {gen}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Category Filter */}
-                <div>
-                  <h3 className="font-semibold mb-3 text-gray-700">Category</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {[
-                      { value: 'starter' as PokemonCategory, label: 'Starter' },
-                      { value: 'legendary' as PokemonCategory, label: 'Legendary' },
-                      { value: 'mythical' as PokemonCategory, label: 'Mythical' },
-                      { value: 'ultra-beast' as PokemonCategory, label: 'Ultra Beast' },
-                      { value: 'baby' as PokemonCategory, label: 'Baby' },
-                      { value: 'fossil' as PokemonCategory, label: 'Fossil' }
-                    ].map(category => (
-                      <button
-                        key={category.value}
-                        onClick={() => toggleCategory(category.value)}
-                        className={`px-4 py-2 rounded-full font-medium text-sm transition-all duration-300 transform hover:scale-105 backdrop-blur-md ${
-                          pendingCategories.includes(category.value)
-                            ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg'
-                            : 'bg-white/80 dark:bg-gray-800/80 text-gray-700 dark:text-gray-300 border border-white/30 dark:border-gray-700/30 hover:bg-white/90 dark:hover:bg-gray-700/90'
-                        }`}
-                      >
-                        {category.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Evolution Stage Filter */}
-                <div>
-                  <h3 className="font-semibold mb-3 text-gray-700 dark:text-gray-300">
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-amber-600">Evolution Stage</span>
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {[
-                      { value: 'basic' as EvolutionStage, label: 'Basic' },
-                      { value: 'stage1' as EvolutionStage, label: 'Stage 1' },
-                      { value: 'stage2' as EvolutionStage, label: 'Stage 2' },
-                      { value: 'single' as EvolutionStage, label: 'No Evolution' }
-                    ].map(stage => (
-                      <button
-                        key={stage.value}
-                        onClick={() => toggleStage(stage.value)}
-                        className={`px-4 py-2 rounded-full font-medium text-sm transition-all duration-300 transform hover:scale-105 backdrop-blur-md ${
-                          pendingStages.includes(stage.value)
-                            ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg'
-                            : 'bg-white/80 dark:bg-gray-800/80 text-gray-700 dark:text-gray-300 border border-white/30 dark:border-gray-700/30 hover:bg-white/90 dark:hover:bg-gray-700/90'
-                        }`}
-                      >
-                        {stage.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Sort Options */}
-            {showSortOptions && (
-              <div className="mt-6 border-t border-white/20 dark:border-gray-700/20 pt-6 animate-fadeIn">
-                <h3 className="font-semibold mb-3 text-gray-700 dark:text-gray-300">
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">Sort By</span>
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    { value: 'id' as SortOption, label: 'Number' },
-                    { value: 'name' as SortOption, label: 'Name' },
-                    { value: 'type' as SortOption, label: 'Type' },
-                    { value: 'height' as SortOption, label: 'Height' },
-                    { value: 'weight' as SortOption, label: 'Weight' },
-                    { value: 'stats' as SortOption, label: 'Total Stats' },
-                    { value: 'generation' as SortOption, label: 'Generation' }
-                  ].map(option => (
-                    <button
-                      key={option.value}
-                      onClick={() => handleSortChange(option.value)}
-                      className={`px-4 py-2 rounded-full font-medium text-sm transition-all duration-300 transform hover:scale-105 backdrop-blur-md ${
-                        pendingSortBy === option.value
-                          ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg'
-                          : 'bg-white/80 dark:bg-gray-800/80 text-gray-700 dark:text-gray-300 border border-white/30 dark:border-gray-700/30 hover:bg-white/90 dark:hover:bg-gray-700/90'
-                      }`}
-                    >
-                      {option.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-          </GlassContainer>
           </div>
-
-          {/* Enhanced Pokémon Grid - Use VirtualPokemonGrid on mobile */}
-          <div className="mt-8">
-          {displayedPokemon.length > 0 ? (
-            isMobileView ? (
-              // Mobile: Virtual scrolling optimized grid
-              <VirtualPokemonGrid
-                pokemon={displayedPokemon.map(p => ({
-                  id: p.id,
-                  name: p.name,
-                  sprite: p.sprite || '/dextrendslogo.png',
-                  types: p.types.map(type => ({ type: { name: type } })),
-                }))}
-                onPokemonClick={(p) => router.push(`/pokedex/${p.id}`)}
-                columns={{
-                  mobile: 2,
-                  tablet: 3,
-                  desktop: 6
-                }}
-                className="px-2"
-              />
-            ) : (
-              // Desktop: Original glass container grid
-              <GlassContainer 
-                variant="light" 
-                blur="sm" 
-                rounded="3xl" 
-                className="mb-8 bg-gradient-to-br from-white/40 via-white/30 to-white/40 dark:from-gray-800/40 dark:via-gray-800/30 dark:to-gray-800/40"
-              >
-                <motion.div 
-                  className="grid grid-cols-2 min-420:grid-cols-3 xs:grid-cols-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-3 min-420:gap-4 sm:gap-5"
-                  variants={staggerGrid}
-                  initial="hidden"
-                  animate="show"
-                >
-                  {displayedPokemon.map((pokemon, index) => (
-                    <motion.div
-                      key={pokemon.id}
-                      variants={fadeInScale}
-                      className="pokemon-card"
-                    >
-                      <EnhancedPokemonCard
-                        pokemon={{
-                          id: pokemon.id,
-                          name: pokemon.name,
-                          sprite: pokemon.sprite || undefined,
-                          types: pokemon.types.map(type => ({ type: { name: type } })),
-                          isLegendary: pokemon.isLegendary,
-                          isMythical: pokemon.isMythical,
-                          isStarter: pokemon.isStarter
-                        }}
-                        size="md"
-                      />
-                    </motion.div>
-                  ))}
-                </motion.div>
-              </GlassContainer>
-            )
-          ) : (
-            <div className="text-center py-20">
-              <p className="text-2xl text-gray-500 dark:text-gray-400 mb-4">No Pokémon found</p>
-              <p className="text-gray-400 dark:text-gray-500">Try adjusting your filters or search term</p>
+          
+          {/* Search and Filter Bar */}
+          <div className="sticky top-0 z-20 bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg rounded-2xl p-4 mb-6 shadow-lg">
+            <div className="flex flex-col sm:flex-row gap-3">
+              {/* Search Input */}
+              <div className="flex-1 relative">
+                <input
+                  type="text"
+                  placeholder="Search Pokémon..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full px-4 py-3 pl-12 bg-gray-100 dark:bg-gray-800 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all"
+                />
+                <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+              
+              {/* Filter Button */}
               <button
-                onClick={clearAllFilters}
-                className="mt-4 btn btn-primary"
+                onClick={filterModal.open}
+                className={cn(
+                  'px-6 py-3 rounded-full font-medium transition-all flex items-center gap-2',
+                  hasActiveFilters
+                    ? 'bg-primary-500 text-white'
+                    : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700'
+                )}
               >
-                Clear All Filters
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                </svg>
+                Filters
+                {hasActiveFilters && (
+                  <span className="px-2 py-0.5 bg-white/20 rounded-full text-xs">
+                    {selectedTypes.length + (selectedGeneration ? 1 : 0) + (selectedCategory ? 1 : 0)}
+                  </span>
+                )}
+              </button>
+              
+              {/* Clear Button */}
+              {hasActiveFilters && (
+                <button
+                  onClick={clearFilters}
+                  className="px-6 py-3 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-full font-medium transition-all hover:bg-red-200 dark:hover:bg-red-900/50"
+                >
+                  Clear
+                </button>
+              )}
+            </div>
+          </div>
+          
+          {/* Unified Grid - The Heart of the System */}
+          <UnifiedGrid
+            items={gridItems}
+            onItemClick={handlePokemonClick}
+            columns={columnConfig}
+            gap="responsive"
+            virtualize={true}
+            loading={loading && pokemon.length === 0}
+            renderItem={renderPokemonCard}
+            enableHaptics={true}
+            className="min-h-[600px]"
+          />
+          
+          {/* Filter Modal */}
+          <AdaptiveModal
+            isOpen={filterModal.isOpen}
+            onClose={filterModal.close}
+            title="Filter Pokémon"
+            size="md"
+          >
+            {renderFilters()}
+            <div className="flex gap-3 p-4 border-t dark:border-gray-700">
+              <button
+                onClick={clearFilters}
+                className="flex-1 py-3 bg-gray-100 dark:bg-gray-800 rounded-xl font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              >
+                Reset
+              </button>
+              <button
+                onClick={filterModal.close}
+                className="flex-1 py-3 bg-primary-500 text-white rounded-xl font-medium hover:bg-primary-600 transition-colors"
+              >
+                Apply
               </button>
             </div>
-          )}
-          </div>
-
-          {/* Infinite scroll trigger element */}
-          <div ref={loadMoreRef} className="h-20 -mt-10" aria-hidden="true" />
-          
-          {/* Load More / Loading Indicator */}
-          {displayedPokemon.length < sortedPokemon.length && (
-            <div className="text-center mt-8">
-              {isLoadingMore ? (
-                <div className={`${createGlassStyle({
-                  blur: 'xl',
-                  opacity: 'medium',
-                  gradient: true,
-                  border: 'medium',
-                  shadow: 'lg',
-                  rounded: 'full'
-                })} inline-block px-8 py-4`}>
-                  <InlineLoader text="Loading more Pokémon..." />
-                </div>
-              ) : (
-                <GradientButton
-                  onClick={loadMore}
-                  variant="primary"
-                  className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-lg px-8 py-4"
-                >
-                  Load More ({sortedPokemon.length - displayedPokemon.length} remaining)
-                </GradientButton>
-              )}
-            </div>
-          )}
-          
-          {/* End of results message */}
-          {displayedPokemon.length >= sortedPokemon.length && sortedPokemon.length > 0 && (
-            <div className={`${createGlassStyle({
-              blur: 'xl',
-              opacity: 'medium',
-              gradient: true,
-              border: 'medium',
-              shadow: 'xl',
-              rounded: 'xl'
-            })} mx-auto max-w-md p-8 text-center rounded-3xl`}>
-              <p className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
-                You've caught them all! 
-              </p>
-              <p className="text-6xl mb-4">🎉</p>
-              <p className="text-gray-600 dark:text-gray-400 font-medium">
-                {sortedPokemon.length.toLocaleString()} Pokémon displayed
-              </p>
-            </div>
-          )}
-            </div>
-          </FullBleedWrapper>
-        )}
-      </PullToRefresh>
-
-      <style jsx>{`
-        /* Type-specific gradient colors - Tailwind doesn't support dynamic classes */
-        .from-poke-normal { --tw-gradient-from: #A8A878; }
-        .from-poke-fire { --tw-gradient-from: #F08030; }
-        .from-poke-water { --tw-gradient-from: #6890F0; }
-        .from-poke-electric { --tw-gradient-from: #F8D030; }
-        .from-poke-grass { --tw-gradient-from: #78C850; }
-        .from-poke-ice { --tw-gradient-from: #98D8D8; }
-        .from-poke-fighting { --tw-gradient-from: #C03028; }
-        .from-poke-poison { --tw-gradient-from: #A040A0; }
-        .from-poke-ground { --tw-gradient-from: #E0C068; }
-        .from-poke-flying { --tw-gradient-from: #A890F0; }
-        .from-poke-psychic { --tw-gradient-from: #F85888; }
-        .from-poke-bug { --tw-gradient-from: #A8B820; }
-        .from-poke-rock { --tw-gradient-from: #B8A038; }
-        .from-poke-ghost { --tw-gradient-from: #705898; }
-        .from-poke-dragon { --tw-gradient-from: #7038F8; }
-        .from-poke-dark { --tw-gradient-from: #705848; }
-        .from-poke-steel { --tw-gradient-from: #B8B8D0; }
-        .from-poke-fairy { --tw-gradient-from: #EE99AC; }
-        
-        .to-poke-normal { --tw-gradient-to: #8B8B59; }
-        .to-poke-fire { --tw-gradient-to: #C54B1D; }
-        .to-poke-water { --tw-gradient-to: #4A6BC3; }
-        .to-poke-electric { --tw-gradient-to: #C5A724; }
-        .to-poke-grass { --tw-gradient-to: #5F9E3F; }
-        .to-poke-ice { --tw-gradient-to: #7AAEAD; }
-        .to-poke-fighting { --tw-gradient-to: #99251E; }
-        .to-poke-poison { --tw-gradient-to: #813380; }
-        .to-poke-ground { --tw-gradient-to: #B39953; }
-        .to-poke-flying { --tw-gradient-to: #8973C3; }
-        .to-poke-psychic { --tw-gradient-to: #C6466D; }
-        .to-poke-bug { --tw-gradient-to: #8B9519; }
-        .to-poke-rock { --tw-gradient-to: #93802C; }
-        .to-poke-ghost { --tw-gradient-to: #5A477A; }
-        .to-poke-dragon { --tw-gradient-to: #592CC6; }
-        .to-poke-dark { --tw-gradient-to: #5A473A; }
-        .to-poke-steel { --tw-gradient-to: #9595AA; }
-        .to-poke-fairy { --tw-gradient-to: #C47A8A; }
-      `}</style>
+          </AdaptiveModal>
+        </div>
+      </div>
     </>
   );
 };
 
-// Mark this page as fullBleed
-type PageComponent = NextPage & {
-  fullBleed?: boolean;
-};
-
-(PokedexIndex as PageComponent).fullBleed = true;
-
-export default PokedexIndex;
+export default UnifiedPokedex;

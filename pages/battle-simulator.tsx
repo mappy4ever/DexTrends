@@ -18,6 +18,9 @@ import { InlineLoader } from '../components/ui/SkeletonLoadingSystem';
 import PageErrorBoundary from '../components/ui/PageErrorBoundary';
 import { SmartTooltip } from '../components/qol/ContextualHelp';
 import logger from '../utils/logger';
+import { useMobileDetection } from '../hooks/useMobileDetection';
+import { MobileLayout } from '../components/mobile/MobileLayout';
+import MobileBattleSimulator from '../components/battle-simulator/MobileBattleSimulator';
 import type { Pokemon, PokemonMove, PokemonType, PokemonStat, PokemonSpecies, Nature, Move } from "../types/pokemon";
 import type { EnhancedBattleState, BattleResult, StatusEffect } from '../types/battle';
 import { createInitialBattleState } from '../utils/battle/core';
@@ -205,6 +208,7 @@ const PokemonSelectionItem: React.FC<PokemonSelectionItemProps> = ({ pokemon, po
 };
 
 const BattleSimulator: NextPage = () => {
+  const { isMobile: isMobileView } = useMobileDetection();
   const [selectedPokemon1, setSelectedPokemon1] = useState<Pokemon | null>(null);
   const [selectedPokemon2, setSelectedPokemon2] = useState<Pokemon | null>(null);
   const [showPokemonSelector, setShowPokemonSelector] = useState<number | null>(null); // 1 or 2
@@ -1237,6 +1241,33 @@ const BattleSimulator: NextPage = () => {
     setAvailableMoves2([]);
   };
 
+  // Mobile view
+  if (isMobileView) {
+    return (
+      <PageErrorBoundary pageName="Battle Simulator Mobile">
+        <Head>
+          <title>Pokemon Battle Simulator - DexTrends</title>
+          <meta name="description" content="Battle Pokemon with real damage calculations and type effectiveness" />
+          <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+        </Head>
+        
+        <MobileLayout
+          hasBottomNav={false}
+          hasHeader={true}
+          headerTitle="Battle Simulator"
+          backgroundColor="gradient"
+          fullHeight={true}
+        >
+          <MobileBattleSimulator
+            initialPokemon1={selectedPokemon1}
+            initialPokemon2={selectedPokemon2}
+          />
+        </MobileLayout>
+      </PageErrorBoundary>
+    );
+  }
+
+  // Desktop view
   return (
     <PageErrorBoundary pageName="Battle Simulator">
       <Head>

@@ -96,7 +96,7 @@ const SetIdPage: NextPage = () => {
   const setid = router.query.setid as string | undefined;
   
   // Mobile detection with SSR support
-  const { isMobile: isMobileView, isLoading: isMobileLoading } = useMobileDetection(460);
+  const { isMobile: isMobileView, isLoading: isMobileLoading } = useMobileDetection();
 
   // Helper function to determine the actual rarity based on card data
   const getActualRarity = (card: TCGCard): string => {
@@ -500,7 +500,7 @@ const SetIdPage: NextPage = () => {
   }
 
   // Mobile view - check first to ensure mobile renders when ready
-  if (isMobileView && setInfo && !isMobileLoading) {
+  if (isMobileView && setInfo) {
     return (
       <TCGSetErrorBoundary>
         <MobileLayout

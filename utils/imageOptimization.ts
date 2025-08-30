@@ -183,12 +183,11 @@ class ImageOptimizer {
     const duration = Date.now() - startTime;
     const successful = results.filter(r => r.status === 'fulfilled').length;
     
-    performanceMonitor.recordMetric('image-preload-batch', duration, {
-      total: imageUrls.length,
-      successful,
-      failed: imageUrls.length - successful,
-      quality,
-      priority
+    performanceMonitor.recordMetric({
+      name: 'image-preload-batch',
+      value: duration,
+      unit: 'ms',
+      timestamp: Date.now()
     });
 
     logger.debug('Image preload batch completed', {
@@ -342,21 +341,24 @@ class ImageOptimizer {
 
       img.onload = () => {
         const duration = Date.now() - startTime;
-        performanceMonitor.recordMetric('image-load-time', duration, {
-          src: optimizedSrc,
-          quality,
-          cached: false
-        });
+    performanceMonitor.recordMetric({
+      name: 'image-load-time',
+      value: duration,
+      unit: 'ms',
+      timestamp: Date.now()
+    });
         
         if (onLoad) onLoad(img);
       };
 
       img.onerror = (error) => {
         const duration = Date.now() - startTime;
-        performanceMonitor.recordMetric('image-load-error', duration, {
-          src: optimizedSrc,
-          quality
-        });
+    performanceMonitor.recordMetric({
+      name: 'image-load-error',
+      value: duration,
+      unit: 'ms',
+      timestamp: Date.now()
+    });
         
         logger.warn('Image load failed', { src: optimizedSrc, error });
         
@@ -538,5 +540,3 @@ export const useImageOptimization = () => {
     preloadCardImages: imageOptimizer.preloadCardImages.bind(imageOptimizer)
   };
 };
-
-export default imageOptimizer;

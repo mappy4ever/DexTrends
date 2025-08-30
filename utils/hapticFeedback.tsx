@@ -4,6 +4,7 @@
  */
 
 import React, { useCallback } from 'react';
+import logger from './logger';
 
 type HapticStyle = 'light' | 'medium' | 'heavy' | 'soft' | 'rigid';
 type NotificationFeedback = 'success' | 'warning' | 'error';
@@ -79,7 +80,7 @@ class HapticFeedbackManager {
     try {
       navigator.vibrate(pattern);
     } catch (error) {
-      console.warn('Haptic feedback failed:', error);
+      logger.warn('Haptic feedback failed:', { error });
     }
   }
 

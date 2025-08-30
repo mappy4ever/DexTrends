@@ -17,7 +17,7 @@ interface MobileLayoutProps {
 export const MobileLayout: React.FC<MobileLayoutProps> = ({
   children,
   className,
-  hasBottomNav = true,
+  hasBottomNav = false, // Default to no bottom nav for more space
   hasHeader = true,
   headerTitle,
   backgroundColor = 'white',
@@ -25,71 +25,48 @@ export const MobileLayout: React.FC<MobileLayoutProps> = ({
   safeAreaInsets = true,
 }) => {
   const router = useRouter();
-  const [isIOS, setIsIOS] = useState(false);
   const [hasNotch, setHasNotch] = useState(false);
 
   useEffect(() => {
-    // Detect iOS and notch
-    const checkDevice = () => {
-      const userAgent = navigator.userAgent;
-      const iOS = /iPhone|iPad|iPod/.test(userAgent);
-      setIsIOS(iOS);
-
-      // Check for notch (iPhone X and later)
-      const screenHeight = window.screen.height;
-      const screenWidth = window.screen.width;
-      const hasNotchDevice = iOS && (
-        (screenWidth === 375 && screenHeight === 812) || // iPhone X, XS, 11 Pro
-        (screenWidth === 414 && screenHeight === 896) || // iPhone XR, XS Max, 11, 11 Pro Max
-        (screenWidth === 390 && screenHeight === 844) || // iPhone 12, 12 Pro, 13, 13 Pro, 14, 14 Pro
-        (screenWidth === 428 && screenHeight === 926) || // iPhone 12 Pro Max, 13 Pro Max, 14 Plus
-        (screenWidth === 393 && screenHeight === 852) || // iPhone 14 Pro
-        (screenWidth === 430 && screenHeight === 932)    // iPhone 14 Pro Max
-      );
-      setHasNotch(hasNotchDevice);
+    // Simple notch detection based on CSS env() support
+    const checkNotch = () => {
+      const hasNotchSupport = CSS.supports('padding-top', 'env(safe-area-inset-top)');
+      if (hasNotchSupport) {
+        const safeTop = getComputedStyle(document.documentElement).getPropertyValue('--m-safe-top');
+        setHasNotch(safeTop !== '0px' && safeTop !== '');
+      }
     };
-
-    checkDevice();
-    window.addEventListener('resize', checkDevice);
-    return () => window.removeEventListener('resize', checkDevice);
+    
+    checkNotch();
   }, []);
 
   const backgroundClasses = {
-    white: 'bg-white dark:bg-gray-900',
+    white: 'bg-white dark:bg-black',
     gray: 'bg-gray-50 dark:bg-gray-950',
-    gradient: 'bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-950'
+    gradient: 'bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-black'
   };
 
   return (
     <div
       className={cn(
-        'mobile-layout relative min-h-screen',
-        fullHeight && 'h-screen',
+        'mobile-layout',
+        fullHeight && 'full-screen',
         backgroundClasses[backgroundColor],
         className
       )}
     >
-      {/* Safe area top for notch */}
-      {safeAreaInsets && hasNotch && (
-        <div className="safe-area-top h-11 bg-inherit" />
-      )}
-
-      {/* Optional Header */}
+      {/* Compact Header - 44px only */}
       {hasHeader && (
-        <motion.header
-          initial={{ y: -60 }}
-          animate={{ y: 0 }}
+        <header
           className={cn(
-            'mobile-header sticky top-0 z-40',
-            'h-14 px-4 flex items-center justify-between',
-            'bg-white/95 dark:bg-gray-900/95',
-            'backdrop-blur-md border-b border-gray-200 dark:border-gray-800',
-            hasNotch && 'top-11'
+            'mobile-header',
+            hasNotch && 'with-safe-area'
           )}
         >
           <button
             onClick={() => router.back()}
-            className="p-2 -ml-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+            className="touch-target active-scale"
+            style={{ width: '44px', padding: '0' }}
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -97,36 +74,25 @@ export const MobileLayout: React.FC<MobileLayoutProps> = ({
           </button>
           
           {headerTitle && (
-            <h1 className="text-base font-semibold text-gray-900 dark:text-white">
+            <h1 className="flex-1 text-center truncate" style={{ fontSize: 'var(--m-text-md)', fontWeight: '600' }}>
               {headerTitle}
             </h1>
           )}
           
-          <div className="w-9" /> {/* Spacer for centering */}
-        </motion.header>
+          <div style={{ width: '44px' }} /> {/* Spacer for centering */}
+        </header>
       )}
 
       {/* Main Content Area */}
       <main
         className={cn(
-          'mobile-content flex-1 overflow-y-auto overflow-x-hidden',
-          hasBottomNav && 'pb-16',
-          hasHeader && 'pt-0'
+          'mobile-content',
+          hasHeader && hasNotch && 'with-safe-header',
+          hasBottomNav && 'pb-14'
         )}
-        style={{
-          maxHeight: hasBottomNav ? 'calc(100vh - 64px)' : '100vh',
-          WebkitOverflowScrolling: 'touch'
-        }}
       >
-        <AnimatePresence mode="wait">
-          {children}
-        </AnimatePresence>
+        {children}
       </main>
-
-      {/* Safe area bottom for home indicator */}
-      {safeAreaInsets && hasBottomNav && (
-        <div className="safe-area-bottom h-8 bg-inherit" />
-      )}
     </div>
   );
 };

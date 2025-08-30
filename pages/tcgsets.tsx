@@ -137,7 +137,7 @@ const TcgSetsContent: React.FC = () => {
 
   useEffect(() => {
     fetchSets(1, false).catch(err => {
-      console.error('Failed to fetch initial sets:', err);
+      logger.error('Failed to fetch initial sets:', err);
     });
   }, []);
 

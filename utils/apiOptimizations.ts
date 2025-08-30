@@ -272,18 +272,21 @@ class RequestBatcher {
       
       const results = await Promise.all(promises);
       
-      performanceMonitor.recordMetric('api-batch-request', Date.now() - startTime, {
-        batchSize: batch.length,
-        success: true
+      performanceMonitor.recordMetric({ 
+        name: 'api-batch-request', 
+        value: Date.now() - startTime, 
+        unit: 'ms', 
+        timestamp: Date.now() 
       });
       
       return results;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
-      performanceMonitor.recordMetric('api-batch-request', Date.now() - startTime, {
-        batchSize: batch.length,
-        success: false,
-        error: errorMessage
+      performanceMonitor.recordMetric({ 
+        name: 'api-batch-request-error', 
+        value: Date.now() - startTime, 
+        unit: 'ms', 
+        timestamp: Date.now() 
       });
       throw error;
     }
@@ -356,9 +359,11 @@ async function optimizedFetch<T = any>(url: string, options: RequestInit = {}): 
   // Check cache first
   const cachedResponse = await requestCache.get<T>(cacheKey);
   if (cachedResponse) {
-    performanceMonitor.recordMetric('api-cache-hit', Date.now() - startTime, {
-      url,
-      cached: true
+    performanceMonitor.recordMetric({ 
+      name: 'api-cache-hit', 
+      value: Date.now() - startTime, 
+      unit: 'ms', 
+      timestamp: Date.now() 
     });
     return cachedResponse;
   }
@@ -391,23 +396,23 @@ async function optimizedFetch<T = any>(url: string, options: RequestInit = {}): 
           await requestCache.set(cacheKey, data);
         }
 
-        performanceMonitor.recordMetric('api-request-success', requestTime, {
-          url,
-          attempt: attempt + 1,
-          status: response.status,
-          cached: false
-        });
+    performanceMonitor.recordMetric({
+      name: 'api-request-success',
+      value: requestTime,
+      unit: 'ms',
+      timestamp: Date.now()
+    });
 
         return data as T;
 
       } catch (error) {
         lastError = error instanceof Error ? error : new Error(String(error));
         
-        performanceMonitor.recordMetric('api-request-error', Date.now() - startTime, {
-          url,
-          attempt: attempt + 1,
-          error: lastError.message,
-          type: lastError.name
+        performanceMonitor.recordMetric({ 
+          name: 'api-request-error', 
+          value: Date.now() - startTime, 
+          unit: 'ms', 
+          timestamp: Date.now() 
         });
 
         // Don't retry on certain errors
@@ -502,6 +507,7 @@ export const useAPIPerformance = (): APIMetrics => {
   });
 
   React.useEffect(() => {
+    // Subscribe to performance vitals updates
     const unsubscribe = performanceMonitor.onVitalsChange((metric) => {
       if (metric.name.startsWith('api-')) {
         // Update metrics based on the received data
@@ -514,7 +520,7 @@ export const useAPIPerformance = (): APIMetrics => {
           const totalRequests = successRequests.length + errorRequests.length;
           const successRate = totalRequests > 0 ? (successRequests.length / totalRequests) * 100 : 0;
           const averageResponseTime = successRequests.length > 0 
-            ? successRequests.reduce((acc: number, m) => acc + (typeof m === 'object' && m !== null && 'value' in m ? Number(m.value) : 0), 0) / successRequests.length 
+            ? successRequests.reduce((acc: number, m: any) => acc + (typeof m === 'object' && m !== null && 'value' in m ? Number(m.value) : 0), 0) / successRequests.length 
             : 0;
           
           requestCache.getStats().then(cacheStats => {
@@ -594,12 +600,12 @@ export const getAPIPerformanceReport = async (): Promise<PerformanceReport> => {
       failed: errorRequests.length,
       batched: batchRequests.length,
       averageResponseTime: successRequests.length > 0 
-        ? successRequests.reduce((acc: number, m) => acc + (typeof m === 'object' && m !== null && 'value' in m ? Number(m.value) : 0), 0) / successRequests.length 
+        ? successRequests.reduce((acc: number, m: any) => acc + (typeof m === 'object' && m !== null && 'value' in m ? Number(m.value) : 0), 0) / successRequests.length 
         : 0
     },
     performance: {
-      fastRequests: successRequests.filter((m) => typeof m === 'object' && m !== null && 'value' in m && Number(m.value) < 1000).length,
-      slowRequests: successRequests.filter((m) => typeof m === 'object' && m !== null && 'value' in m && Number(m.value) > 5000).length
+      fastRequests: successRequests.filter((m: any) => typeof m === 'object' && m !== null && 'value' in m && Number(m.value) < 1000).length,
+      slowRequests: successRequests.filter((m: any) => typeof m === 'object' && m !== null && 'value' in m && Number(m.value) > 5000).length
     }
   };
 };
@@ -618,4 +624,4 @@ export default {
   useAPIPerformance,
   getAPIPerformanceReport,
   cleanupAPIOptimizations
-};
+}

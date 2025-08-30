@@ -1,39 +1,67 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
 
 /**
  * Custom hook for mobile viewport detection with SSR support
  * Returns mobile state and loading state for proper hydration
  */
-export function useMobileDetection(breakpoint: number = 460) {
-  // Start with false for SSR (show desktop by default)
-  const [isMobile, setIsMobile] = useState<boolean>(false);
+export function useMobileDetection(breakpoint: number = 430) {
+  // Initialize with media query check if available (client-side)
+  const getInitialMobile = () => {
+    if (typeof window === 'undefined') return false;
+    
+    // Try media query first (most reliable)
+    if (window.matchMedia) {
+      return window.matchMedia(`(max-width: ${breakpoint}px)`).matches;
+    }
+    
+    // Fallback to innerWidth
+    return window.innerWidth <= breakpoint;
+  };
+  
+  const [isMobile, setIsMobile] = useState<boolean>(getInitialMobile);
   const [isClient, setIsClient] = useState<boolean>(false);
   
-  useEffect(() => {
+  // Use useLayoutEffect for synchronous updates before paint
+  const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+  
+  useIsomorphicLayoutEffect(() => {
     // Mark that we're on the client
     setIsClient(true);
     
     // Function to check if viewport is mobile
     const checkMobile = () => {
-      const mobile = window.innerWidth < breakpoint;
+      const mobile = window.innerWidth <= breakpoint;
       setIsMobile(mobile);
       return mobile;
     };
 
-    // Initial check - immediate for fast response
+    // Immediate check on mount
     checkMobile();
 
-    // Debounced resize handler for performance
+    // Use matchMedia for better performance if available
+    if (window.matchMedia) {
+      const mediaQuery = window.matchMedia(`(max-width: ${breakpoint}px)`);
+      
+      // Modern browsers
+      const handler = (e: MediaQueryListEvent) => {
+        setIsMobile(e.matches);
+      };
+      
+      if (mediaQuery.addEventListener) {
+        mediaQuery.addEventListener('change', handler);
+        return () => mediaQuery.removeEventListener('change', handler);
+      }
+    }
+    
+    // Fallback to resize listener
     let resizeTimeout: NodeJS.Timeout;
     const handleResize = () => {
       clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(checkMobile, 150);
     };
 
-    // Add resize listener
     window.addEventListener('resize', handleResize);
     
-    // Cleanup
     return () => {
       clearTimeout(resizeTimeout);
       window.removeEventListener('resize', handleResize);
@@ -42,9 +70,9 @@ export function useMobileDetection(breakpoint: number = 460) {
 
   return {
     isMobile,
-    isLoading: !isClient,
+    isLoading: false, // We now have immediate detection
     // Safe for immediate use
-    isMobileOrLoading: !isClient || isMobile
+    isMobileOrLoading: isMobile
   };
 }
 
@@ -52,12 +80,12 @@ export function useMobileDetection(breakpoint: number = 460) {
  * Hook for immediate mobile detection without state
  * Useful for one-time checks
  */
-export function useIsMobileViewport(breakpoint: number = 460): boolean {
+export function useIsMobileViewport(breakpoint: number = 430): boolean {
   if (typeof window === 'undefined') {
     // SSR: return false by default
     return false;
   }
-  return window.innerWidth < breakpoint;
+  return window.innerWidth <= breakpoint;
 }
 
 /**
@@ -97,6 +125,6 @@ export function useMediaQuery(query: string): boolean {
 }
 
 // Convenience hooks for common breakpoints
-export const useIsMobile = () => useMediaQuery('(max-width: 460px)');
-export const useIsTablet = () => useMediaQuery('(min-width: 461px) and (max-width: 768px)');
+export const useIsMobile = () => useMediaQuery('(max-width: 430px)');
+export const useIsTablet = () => useMediaQuery('(min-width: 431px) and (max-width: 768px)');
 export const useIsDesktop = () => useMediaQuery('(min-width: 769px)');

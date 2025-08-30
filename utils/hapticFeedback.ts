@@ -167,6 +167,17 @@ class HapticFeedbackManager {
     this.trigger({ type: 'selection' });
   }
 
+  // UI interaction patterns
+  cardTap(): void {
+    if (!this.isSupported) return;
+    this.trigger({ type: 'light' });
+  }
+
+  impact(): void {
+    if (!this.isSupported) return;
+    this.trigger({ type: 'medium' });
+  }
+
   /**
    * Check if haptic feedback is available
    */
