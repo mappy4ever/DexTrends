@@ -17,8 +17,6 @@ export { UnifiedModal, FilterModal, DetailModal, FormModal, useUnifiedModal } fr
 export type { UnifiedModalProps } from './UnifiedModal';
 
 // Legacy Components (for backward compatibility during migration)
-export { ResponsiveGrid, useResponsiveColumns } from './ResponsiveGrid';
-export { ResponsiveFilter, InlineFilterPanel, useResponsiveFilter } from './ResponsiveFilter';
 export { AdaptiveModal, QuickModal, useAdaptiveModal } from './AdaptiveModal';
 
 // Mobile components that still work well
@@ -28,28 +26,15 @@ export { PullToRefresh } from '../mobile/PullToRefresh';
 /**
  * Usage Examples:
  * 
- * 1. ResponsiveGrid - Preserves VirtualPokemonGrid on mobile
+ * 1. UnifiedGrid - Intelligent grid that adapts to viewport
  * ```tsx
- * <ResponsiveGrid 
- *   pokemon={pokemonList}
- *   onCardClick={handleClick}
+ * <UnifiedGrid 
+ *   items={items}
+ *   renderItem={renderItem}
  * />
  * ```
  * 
- * 2. ResponsiveFilter - BottomSheet on mobile, Sidebar on desktop
- * ```tsx
- * const { isOpen, open, close } = useResponsiveFilter();
- * 
- * <ResponsiveFilter
- *   isOpen={isOpen}
- *   onClose={close}
- *   onApply={handleApply}
- * >
- *   <FilterContent />
- * </ResponsiveFilter>
- * ```
- * 
- * 3. AdaptiveModal - BottomSheet on mobile, Modal on desktop
+ * 2. AdaptiveModal - BottomSheet on mobile, Modal on desktop
  * ```tsx
  * <AdaptiveModal
  *   isOpen={showDetails}

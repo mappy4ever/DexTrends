@@ -27,7 +27,7 @@ interface ExtendedPocketCard extends PocketCard {
 const OverviewTab = lazy(() => import('./tabs/OverviewTabV3'));
 const StatsTab = lazy(() => import('./tabs/StatsTabV2'));
 const EvolutionTab = lazy(() => import('./tabs/EvolutionTabV3'));
-const MovesTab = lazy(() => import('./tabs/MovesTabV2'));
+const MovesTab = lazy(() => import('./tabs/MovesTab'));
 const BreedingTab = lazy(() => import('./tabs/BreedingTab'));
 const LocationsTab = lazy(() => import('./tabs/LocationsTab'));
 const CardsTab = lazy(() => import('./tabs/CardsTab'));
