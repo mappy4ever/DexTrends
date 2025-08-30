@@ -9,13 +9,13 @@ const { chromium } = require('playwright');
   try {
     // Test 1: Load TCG sets list
     console.log('\n1. Testing TCG sets list page...');
-    await page.goto('http://localhost:3003/tcgsets', { waitUntil: 'networkidle' });
+    await page.goto('http://localhost:3003/tcgexpansions', { waitUntil: 'networkidle' });
     const setsTitle = await page.textContent('h1');
     console.log('✓ Sets page loaded, title:', setsTitle);
     
     // Test 2: Load specific set (sv5)
     console.log('\n2. Testing specific set page (sv5)...');
-    await page.goto('http://localhost:3003/tcgsets/sv5', { waitUntil: 'domcontentloaded' });
+    await page.goto('http://localhost:3003/tcgexpansions/sv5', { waitUntil: 'domcontentloaded' });
     await page.waitForTimeout(3000); // Wait for lazy loading
     
     // Check for key elements

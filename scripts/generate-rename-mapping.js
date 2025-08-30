@@ -177,12 +177,12 @@ pages.forEach(file => {
   }
   
   // Check for naming issues
-  if (basename === 'tcgsets') {
+  if (basename === 'tcgexpansions') {
     renameMap.pages.push({
       oldPath: file,
-      newPath: file.replace('tcgsets', 'tcg-sets'),
+      newPath: file.replace('tcgexpansions', 'tcgexpansions'),
       oldName: basename,
-      newName: 'tcg-sets',
+      newName: 'tcgexpansions',
       reason: 'Kebab-case convention'
     });
   }

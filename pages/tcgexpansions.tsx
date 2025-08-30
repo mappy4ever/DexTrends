@@ -55,7 +55,7 @@ const TcgSetsContent: React.FC = () => {
       
       try {
         const res = await fetchJSON<{ data: CardSet[], pagination: PaginationInfo }>(
-          `/api/tcg-sets?page=${page}&pageSize=25`,
+          `/api/tcgexpansions?page=${page}&pageSize=25`,
           {
             useCache: page > 1,
             forceRefresh: page === 1 && !append,
@@ -412,7 +412,7 @@ const TcgSetsContent: React.FC = () => {
                         if (typeof window !== 'undefined') {
                           // Clear localStorage cache for TCG sets
                           const cacheKeys = Object.keys(localStorage).filter(key => 
-                            key.includes('tcg-sets') || key.includes('tcgsets')
+                            key.includes('tcgexpansions') || key.includes('tcgexpansions')
                           );
                           cacheKeys.forEach(key => localStorage.removeItem(key));
                           logger.debug(`Cleared ${cacheKeys.length} cached TCG sets entries`);
@@ -590,7 +590,7 @@ const TcgSetsContent: React.FC = () => {
                   onClick={() => {
                     logger.debug('Navigating to set:', { setId: set.id, setName: set.name });
                     setSelectedSetId(set.id);
-                    router.push(`/tcgsets/${set.id}`);
+                    router.push(`/tcgexpansions/${set.id}`);
                   }}
                 >
                   <motion.div
@@ -780,7 +780,7 @@ const TcgSetsContent: React.FC = () => {
               // Prefetch the individual set pages for faster navigation
               if ('requestIdleCallback' in window) {
                 requestIdleCallback(() => {
-                  const links = document.querySelectorAll('a[href^="/tcgsets/"]');
+                  const links = document.querySelectorAll('a[href^="/tcgexpansions/"]');
                   links.forEach(link => {
                     const prefetchLink = document.createElement('link');
                     prefetchLink.rel = 'prefetch';

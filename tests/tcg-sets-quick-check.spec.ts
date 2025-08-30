@@ -5,10 +5,10 @@ test.describe('TCG Sets Quick Check', () => {
     console.log('Navigating to TCG sets page...');
     
     // Navigate to TCG sets page
-    await page.goto('http://localhost:3002/tcg-sets');
+    await page.goto('http://localhost:3002/tcgexpansions');
     
     // Take a screenshot of initial state
-    await page.screenshot({ path: 'tcg-sets-initial.png' });
+    await page.screenshot({ path: 'tcgexpansions-initial.png' });
     
     // Check what's actually on the page
     const pageContent = await page.content();
@@ -31,7 +31,7 @@ test.describe('TCG Sets Quick Check', () => {
     await page.waitForTimeout(5000);
     
     // Take another screenshot
-    await page.screenshot({ path: 'tcg-sets-after-wait.png' });
+    await page.screenshot({ path: 'tcgexpansions-after-wait.png' });
     
     // Count visible sets
     const visibleSets = await page.locator('.group.animate-fadeIn').count();
@@ -68,7 +68,7 @@ test.describe('TCG Sets Quick Check', () => {
       console.log('Current URL after click:', currentUrl);
       
       // Check if we're on a set detail page
-      if (currentUrl.includes('/tcgsets/')) {
+      if (currentUrl.includes('/tcgexpansions/')) {
         console.log('Successfully navigated to set detail page');
         await page.screenshot({ path: 'tcg-set-detail.png' });
         

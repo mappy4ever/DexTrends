@@ -356,7 +356,7 @@ const StartersPage: NextPage = () => {
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => router.push('/tcg-sets')}
+                onClick={() => router.push('/tcgexpansions')}
                 className={`${createGlassStyle({
                   blur: 'xl',
                   opacity: 'medium',

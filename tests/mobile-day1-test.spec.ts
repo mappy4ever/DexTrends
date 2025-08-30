@@ -47,7 +47,7 @@ test.describe('Day 1 Mobile Pages', () => {
       });
 
       test('TCG Set Details page renders mobile layout', async ({ page }) => {
-        await page.goto('/tcgsets/base1'); // Base Set
+        await page.goto('/tcgexpansions/base1'); // Base Set
         
         const mobileLayout = await page.locator('.mobile-layout').first();
         
@@ -126,7 +126,7 @@ test.describe('Day 1 Mobile Pages', () => {
         }
 
         // Test TCG Set filter button
-        await page.goto('/tcgsets/base1');
+        await page.goto('/tcgexpansions/base1');
         await page.waitForLoadState('networkidle');
         
         const filterButton = await page.locator('button:has-text("Filters")').first();

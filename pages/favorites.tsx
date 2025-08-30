@@ -464,7 +464,7 @@ const FavoritesPage: NextPage = () => {
                     Add cards to your favorites by clicking the heart icon on card details.
                   </p>
                   <Link 
-                    href="/tcg-sets"
+                    href="/tcgexpansions"
                     className="inline-block px-6 py-3 bg-primary text-white font-medium rounded-md hover:bg-primary-dark transition-colors"
                   >
                     Browse TCG Sets

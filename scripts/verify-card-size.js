@@ -11,7 +11,7 @@ async function verifyCardSize() {
     await page.setViewport({ width: 1920, height: 1080 });
     
     console.log('📊 Loading TCG set page...');
-    await page.goto('http://localhost:3002/tcgsets/sv8', { waitUntil: 'networkidle2' });
+    await page.goto('http://localhost:3002/tcgexpansions/sv8', { waitUntil: 'networkidle2' });
     
     // Wait for cards to load
     await page.waitForSelector('.grid > div', { timeout: 30000 });
@@ -74,7 +74,7 @@ try {
   // Fallback to simple verification
   const http = require('http');
   
-  fetch('http://localhost:3002/tcgsets/sv8')
+  fetch('http://localhost:3002/tcgexpansions/sv8')
     .then(res => res.text())
     .then(html => {
       // Check for grid classes

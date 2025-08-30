@@ -68,13 +68,13 @@ const SAFE_RENAMES = {
   // Page route standardization
   pages: [
     {
-      old: 'pages/tcgsets.tsx',
-      new: 'pages/tcg-sets.tsx',
+      old: 'pages/tcgexpansions.tsx',
+      new: 'pages/tcgexpansions.tsx',
       reason: 'Kebab-case route convention'
     },
     {
-      old: 'pages/tcgsets',
-      new: 'pages/tcg-sets',
+      old: 'pages/tcgexpansions',
+      new: 'pages/tcgexpansions',
       reason: 'Kebab-case route convention',
       isDirectory: true
     }

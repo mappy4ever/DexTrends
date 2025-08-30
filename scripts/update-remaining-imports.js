@@ -5,8 +5,8 @@ const path = require('path');
 const unifiedLoadingScreenFiles = [
   'pages/favorites.js',
   'pages/trending.js',
-  'pages/tcgsets.js',
-  'pages/tcgsets/[setid].js',
+  'pages/tcgexpansions.js',
+  'pages/tcgexpansions/[setid].js',
   'pages/pocketmode/expansions.js'
 ];
 

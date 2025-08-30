@@ -63,12 +63,12 @@ async function warmCache() {
     },
     {
       name: 'Popular Set sv8 Complete',
-      url: `${BASE_URL}/api/tcg-sets/sv8/complete`,
+      url: `${BASE_URL}/api/tcgexpansions/sv8/complete`,
       priority: 'HIGH'
     },
     {
       name: 'Popular Set sv7 Complete', 
-      url: `${BASE_URL}/api/tcg-sets/sv7/complete`,
+      url: `${BASE_URL}/api/tcgexpansions/sv7/complete`,
       priority: 'HIGH'
     },
     {

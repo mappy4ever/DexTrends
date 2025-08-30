@@ -21,7 +21,7 @@ async function verifyCardListImplementation() {
   try {
     // Check sv8 (large set)
     console.log('📊 Testing sv8 (large set with >50 cards)...');
-    const sv8Html = await fetchWithRetry('http://localhost:3002/tcgsets/sv8');
+    const sv8Html = await fetchWithRetry('http://localhost:3002/tcgexpansions/sv8');
     
     // Check if VirtualizedCardGrid reference is removed
     if (sv8Html.includes('VirtualizedCardGrid')) {
@@ -45,7 +45,7 @@ async function verifyCardListImplementation() {
     }
     
     console.log('\n📊 Testing sv10 (smaller set)...');
-    const sv10Html = await fetchWithRetry('http://localhost:3002/tcgsets/sv10');
+    const sv10Html = await fetchWithRetry('http://localhost:3002/tcgexpansions/sv10');
     
     if (!sv10Html.includes('VirtualizedCardGrid') && sv10Html.includes('Component: CardList')) {
       console.log('✅ sv10 correctly using CardList');

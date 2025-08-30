@@ -216,7 +216,7 @@ test.describe('Comprehensive Search Functionality', () => {
             
             // Should navigate to set page
             await page.waitForTimeout(2000);
-            await expect(page.url()).toMatch(/\/tcgsets\//);
+            await expect(page.url()).toMatch(/\/tcgexpansions\//);
           }
         }
       }
@@ -361,7 +361,7 @@ test.describe('Comprehensive Search Functionality', () => {
     });
 
     test('should filter TCG cards by rarity', async ({ page }) => {
-      await page.goto('/tcg-sets');
+      await page.goto('/tcgexpansions');
       await waitForNetworkIdle(page);
       
       // Navigate to a specific set

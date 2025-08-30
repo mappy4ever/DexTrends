@@ -10,7 +10,7 @@ test.describe('TCG Sets Comprehensive Tests', () => {
     console.log('Testing: TCG Sets page loads and displays sets');
     
     // Navigate to TCG sets page
-    await page.goto('http://localhost:3002/tcg-sets');
+    await page.goto('http://localhost:3002/tcgexpansions');
     
     // Wait for loading to complete
     await expect(page.locator('text="Loading TCG sets"')).toBeVisible();
@@ -49,7 +49,7 @@ test.describe('TCG Sets Comprehensive Tests', () => {
   test('Search and filtering works correctly', async ({ page }) => {
     console.log('Testing: Search and filtering functionality');
     
-    await page.goto('http://localhost:3002/tcg-sets');
+    await page.goto('http://localhost:3002/tcgexpansions');
     await page.waitForLoadState('networkidle');
     
     // Wait for sets to load
@@ -90,7 +90,7 @@ test.describe('TCG Sets Comprehensive Tests', () => {
     console.log('Testing: Individual set page functionality');
     
     // First navigate to sets page
-    await page.goto('http://localhost:3002/tcg-sets');
+    await page.goto('http://localhost:3002/tcgexpansions');
     await page.waitForLoadState('networkidle');
     
     // Wait for sets to load
@@ -108,7 +108,7 @@ test.describe('TCG Sets Comprehensive Tests', () => {
     await firstSet.click();
     
     // Should navigate to set detail page
-    await expect(page).toHaveURL(/\/tcgsets\/[a-z]+\d+/i, { timeout: 10000 });
+    await expect(page).toHaveURL(/\/tcgexpansions\/[a-z]+\d+/i, { timeout: 10000 });
     
     // Wait for set info to load
     await expect(page.locator('h1').first()).toBeVisible({ timeout: 15000 });
@@ -133,7 +133,7 @@ test.describe('TCG Sets Comprehensive Tests', () => {
     console.log('Testing: Error handling for invalid set IDs');
     
     // Try to navigate to an invalid set
-    await page.goto('http://localhost:3002/tcgsets/invalid123xyz');
+    await page.goto('http://localhost:3002/tcgexpansions/invalid123xyz');
     
     // Should show error message
     await expect(page.locator('text="Error"')).toBeVisible({ timeout: 15000 });
@@ -150,13 +150,13 @@ test.describe('TCG Sets Comprehensive Tests', () => {
     await backButton.click();
     
     // Should navigate back to sets page
-    await expect(page).toHaveURL(/\/tcgsets$/, { timeout: 10000 });
+    await expect(page).toHaveURL(/\/tcgexpansions$/, { timeout: 10000 });
   });
 
   test('Refresh button works correctly', async ({ page }) => {
     console.log('Testing: Refresh button functionality');
     
-    await page.goto('http://localhost:3002/tcg-sets');
+    await page.goto('http://localhost:3002/tcgexpansions');
     await page.waitForLoadState('networkidle');
     
     // Wait for initial load
@@ -184,7 +184,7 @@ test.describe('TCG Sets Comprehensive Tests', () => {
   test('Infinite scroll works for filtered results', async ({ page }) => {
     console.log('Testing: Infinite scroll with filtered results');
     
-    await page.goto('http://localhost:3002/tcg-sets');
+    await page.goto('http://localhost:3002/tcgexpansions');
     await page.waitForLoadState('networkidle');
     
     // Wait for sets to load
@@ -213,7 +213,7 @@ test.describe('TCG Sets Comprehensive Tests', () => {
     
     const startTime = Date.now();
     
-    await page.goto('http://localhost:3002/tcg-sets');
+    await page.goto('http://localhost:3002/tcgexpansions');
     
     // Wait for first contentful paint
     await expect(page.locator('h1:has-text("Pokémon TCG Sets")')).toBeVisible();

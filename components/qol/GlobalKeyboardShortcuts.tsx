@@ -37,7 +37,7 @@ const GlobalKeyboardShortcuts: React.FC = () => {
         router.push('/pokedex');
         break;
       case 't':
-        router.push('/tcg-sets');
+        router.push('/tcgexpansions');
         break;
       case 'k':
         router.push('/pocketmode');

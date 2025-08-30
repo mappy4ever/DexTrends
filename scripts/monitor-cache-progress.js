@@ -11,7 +11,7 @@ async function checkCacheProgress() {
   
   try {
     // Get all sets
-    const setsResponse = await fetch(`${baseUrl}/api/tcg-sets?pageSize=250`);
+    const setsResponse = await fetch(`${baseUrl}/api/tcgexpansions?pageSize=250`);
     const setsData = await setsResponse.json();
     
     if (!setsData.data) {
@@ -30,7 +30,7 @@ async function checkCacheProgress() {
     for (let i = 0; i < sampleSize; i++) {
       const set = allSets[i];
       try {
-        const response = await fetch(`${baseUrl}/api/tcg-sets/${set.id}/complete`, {
+        const response = await fetch(`${baseUrl}/api/tcgexpansions/${set.id}/complete`, {
           method: 'HEAD',
           timeout: 2000
         });

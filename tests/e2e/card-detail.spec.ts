@@ -135,10 +135,10 @@ test.describe('Card Detail Page', () => {
     await expect(setInfo).toBeVisible();
     
     // Set link should be clickable
-    const setLink = page.locator('a[href*="/tcgsets/"]').first();
+    const setLink = page.locator('a[href*="/tcgexpansions/"]').first();
     if (await setLink.isVisible()) {
       const href = await setLink.getAttribute('href');
-      expect(href).toContain('/tcgsets/');
+      expect(href).toContain('/tcgexpansions/');
     }
   });
 

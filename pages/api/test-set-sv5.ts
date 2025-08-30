@@ -15,7 +15,7 @@ export default async function handler(_req: NextApiRequest, res: NextApiResponse
     }
 
     // Test the exact endpoint that the frontend calls
-    const testUrl = `http://localhost:3002/api/tcg-sets/${setId}?page=1&pageSize=20`;
+    const testUrl = `http://localhost:3002/api/tcgexpansions/${setId}?page=1&pageSize=20`;
     logger.debug('Testing local API endpoint', { testUrl });
     
     const response = await fetch(testUrl);

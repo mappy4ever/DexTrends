@@ -49,7 +49,7 @@ export const BundleOptimizer = (): null => {
 
   useEffect(() => {
     // Prefetch critical routes when idle
-    const prefetchRoutes = ['/pokedex', '/tcg-sets', '/pocketmode'];
+    const prefetchRoutes = ['/pokedex', '/tcgexpansions', '/pocketmode'];
     
     if ('requestIdleCallback' in window) {
       requestIdleCallback(() => {

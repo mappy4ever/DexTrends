@@ -49,7 +49,7 @@ const UnifiedTcgSetsPage: NextPage = () => {
     try {
       // Fetch all sets at once for virtual scrolling
       const res = await fetchJSON<{ data: CardSet[], pagination: PaginationInfo }>(
-        `/api/tcg-sets?pageSize=500`, // Get all sets
+        `/api/tcgexpansions?pageSize=500`, // Get all sets
         {
           useCache: true,
           timeout: 60000,
@@ -139,7 +139,7 @@ const UnifiedTcgSetsPage: NextPage = () => {
       onClick={() => {
         logger.debug('Navigating to set:', { setId: set.id, setName: set.name });
         setSelectedSetId(set.id);
-        router.push(`/tcgsets/${set.id}`);
+        router.push(`/tcgexpansions/${set.id}`);
       }}
     >
       <div className={cn(

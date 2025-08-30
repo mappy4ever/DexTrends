@@ -6,7 +6,7 @@ test.describe('TCG Sets Mobile Tests', () => {
     await page.setViewportSize({ width: 320, height: 568 });
     
     // Go to TCG sets page
-    await page.goto('http://localhost:3001/tcg-sets');
+    await page.goto('http://localhost:3001/tcgexpansions');
     
     // Wait for sets to load
     await page.waitForTimeout(3000);
@@ -26,7 +26,7 @@ test.describe('TCG Sets Mobile Tests', () => {
     await page.setViewportSize({ width: 768, height: 1024 });
     
     // Go to TCG sets page
-    await page.goto('http://localhost:3001/tcg-sets');
+    await page.goto('http://localhost:3001/tcgexpansions');
     
     // Wait for sets to load
     await page.waitForTimeout(3000);

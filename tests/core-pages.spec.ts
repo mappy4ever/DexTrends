@@ -55,7 +55,7 @@ test.describe('Core Pages Functionality Test', () => {
   });
 
   test('TCG Sets page loads and displays set list', async ({ page }) => {
-    await page.goto('/tcg-sets');
+    await page.goto('/tcgexpansions');
     
     // Wait for page to fully load
     await page.waitForLoadState('networkidle');

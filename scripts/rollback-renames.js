@@ -39,14 +39,14 @@ const changes = [
   },
   {
     "category": "pages",
-    "old": "pages/tcgsets.tsx",
-    "new": "pages/tcg-sets.tsx",
+    "old": "pages/tcgexpansions.tsx",
+    "new": "pages/tcgexpansions.tsx",
     "timestamp": "2025-08-30T20:31:18.434Z"
   },
   {
     "category": "pages",
-    "old": "pages/tcgsets",
-    "new": "pages/tcg-sets",
+    "old": "pages/tcgexpansions",
+    "new": "pages/tcgexpansions",
     "timestamp": "2025-08-30T20:31:18.678Z"
   }
 ];

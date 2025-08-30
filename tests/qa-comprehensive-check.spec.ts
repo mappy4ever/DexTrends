@@ -108,10 +108,10 @@ test.describe('QA Comprehensive Route Testing', () => {
   });
 
   // TCG Sets Test
-  test('TCG Sets - /tcg-sets', async ({ page }) => {
+  test('TCG Sets - /tcgexpansions', async ({ page }) => {
     console.log('\n=== Testing TCG Sets ===');
     
-    await page.goto('http://localhost:3001/tcg-sets', { waitUntil: 'networkidle' });
+    await page.goto('http://localhost:3001/tcgexpansions', { waitUntil: 'networkidle' });
     
     // Wait for sets grid
     const setsGrid = page.locator('[data-testid="sets-grid"]');
@@ -135,7 +135,7 @@ test.describe('QA Comprehensive Route Testing', () => {
     if (setCount > 0) {
       await setCards.first().click();
       await page.waitForTimeout(2000);
-      if (page.url().includes('/tcgsets/')) {
+      if (page.url().includes('/tcgexpansions/')) {
         console.log('✓ Set detail navigation works');
         await page.goBack();
       }

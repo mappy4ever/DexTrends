@@ -36,7 +36,7 @@ async function checkCacheStatus() {
     const criticalSets = ['sv3pt5', 'sv8pt5', 'sv8', 'sv7', 'sv6pt5'];
     
     for (const setId of criticalSets) {
-      const setResponse = await fetch(`${BASE_URL}/api/tcg-sets/${setId}/complete`);
+      const setResponse = await fetch(`${BASE_URL}/api/tcgexpansions/${setId}/complete`);
       const cacheStatus = setResponse.headers.get('x-cache-status');
       const responseTime = setResponse.headers.get('x-response-time');
       

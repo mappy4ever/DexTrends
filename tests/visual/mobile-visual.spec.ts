@@ -28,7 +28,7 @@ test.describe('Mobile Visual Regression', () => {
   });
 
   test('mobile card layouts', async ({ page, visualRegression }) => {
-    await page.goto('/tcg-sets');
+    await page.goto('/tcgexpansions');
     await waitForNetworkIdle(page);
 
     await visualRegression.compareSnapshot('mobile-card-grid', {

@@ -186,20 +186,20 @@ export const PageRecommendations: React.FC = () => {
     // Generate recommendations based on current page
     const pageRecommendations: PageRecommendationMap = {
       '/pokedex': [
-        { title: 'Explore TCG Sets', path: '/tcg-sets', icon: '🃏', description: 'Check out Pokémon cards' },
+        { title: 'Explore TCG Sets', path: '/tcgexpansions', icon: '🃏', description: 'Check out Pokémon cards' },
         { title: 'Try Pocket Mode', path: '/pocketmode', icon: '📱', description: 'Mobile-optimized experience' }
       ],
-      '/tcg-sets': [
+      '/tcgexpansions': [
         { title: 'Browse Pokédex', path: '/pokedex', icon: '📚', description: 'Learn about Pokémon species' },
         { title: 'View Collections', path: '/collections', icon: '💎', description: 'Manage your card collection' }
       ],
       '/pocketmode': [
-        { title: 'Full TCG Experience', path: '/tcg-sets', icon: '🃏', description: 'Complete card database' },
+        { title: 'Full TCG Experience', path: '/tcgexpansions', icon: '🃏', description: 'Complete card database' },
         { title: 'Pokédex Reference', path: '/pokedex', icon: '📚', description: 'Detailed Pokémon info' }
       ],
       '/': [
         { title: 'Start with Pokédex', path: '/pokedex', icon: '📚', description: 'Explore all Pokémon' },
-        { title: 'Browse TCG Cards', path: '/tcg-sets', icon: '🃏', description: 'Trading card collection' }
+        { title: 'Browse TCG Cards', path: '/tcgexpansions', icon: '🃏', description: 'Trading card collection' }
       ]
     };
 

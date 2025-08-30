@@ -257,7 +257,7 @@ const PokemonEmptyState = ({
             )}
             
             {type === 'collection' && (
-              <Link href="/tcg-sets">
+              <Link href="/tcgexpansions">
                 <button className="bg-pokemon-yellow hover:bg-yellow-600 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:scale-105">
                   🃏 Browse Cards
                 </button>

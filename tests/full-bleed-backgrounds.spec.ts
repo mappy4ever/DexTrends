@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Full Bleed Background Tests', () => {
   test('TCG Sets page has full-height background without cutoff', async ({ page }) => {
-    await page.goto('/tcg-sets');
+    await page.goto('/tcgexpansions');
     
     // Wait for page to load
     await page.waitForSelector('h1');
@@ -56,7 +56,7 @@ test.describe('Full Bleed Background Tests', () => {
   });
 
   test('Layout component applies fullBleed mode correctly', async ({ page }) => {
-    await page.goto('/tcg-sets');
+    await page.goto('/tcgexpansions');
     
     // Check that main element doesn't have extra padding when fullBleed is true
     const main = await page.locator('main').first();
@@ -70,7 +70,7 @@ test.describe('Full Bleed Background Tests', () => {
   test('Mobile view maintains full background', async ({ page }) => {
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 812 });
-    await page.goto('/tcg-sets');
+    await page.goto('/tcgexpansions');
     
     // Wait for page load
     await page.waitForSelector('h1');

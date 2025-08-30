@@ -41,7 +41,7 @@ async function triggerCacheWarming() {
     console.log('   npm run verify-cache');
     console.log('');
     console.log('Or check specific sets:');
-    console.log('   curl -I http://localhost:3000/api/tcg-sets/base1/complete');
+    console.log('   curl -I http://localhost:3000/api/tcgexpansions/base1/complete');
     console.log('   (Look for X-Cache-Status: hit)');
     
   } catch (error) {

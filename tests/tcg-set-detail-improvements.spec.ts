@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('TCG Set Detail Page Improvements', () => {
   // Test with a popular set that has many cards
   const testSetId = 'swsh1'; // Sword & Shield Base Set
-  const setDetailUrl = `/tcgsets/${testSetId}`;
+  const setDetailUrl = `/tcgexpansions/${testSetId}`;
 
   test('should load set detail page quickly with smooth performance', async ({ page }) => {
     // Navigate to set detail
@@ -115,7 +115,7 @@ test.describe('TCG Set Detail Page Improvements', () => {
 
   test('should show proper loading skeleton', async ({ page }) => {
     // Slow down network to see skeleton
-    await page.route('**/api/tcg-sets/**', route => {
+    await page.route('**/api/tcgexpansions/**', route => {
       setTimeout(() => route.continue(), 1000);
     });
     
@@ -187,7 +187,7 @@ test.describe('TCG Set Detail Page Improvements', () => {
 
   test('should handle errors gracefully', async ({ page }) => {
     // Test with invalid set ID
-    await page.goto('/tcgsets/invalid-set-id');
+    await page.goto('/tcgexpansions/invalid-set-id');
     
     // Should show error state
     await expect(page.locator('text=/Error Loading Set/i')).toBeVisible({ timeout: 10000 });
@@ -228,7 +228,7 @@ test.describe('Performance Tests', () => {
     
     const startTime = Date.now();
     
-    await page.goto(`/tcgsets/${largeSetId}`);
+    await page.goto(`/tcgexpansions/${largeSetId}`);
     
     // Wait for cards to appear
     await page.waitForSelector('.virtual-scroll-container, .card-item, .unified-card', { timeout: 15000 });

@@ -11,7 +11,7 @@ test.describe('TCG Set Detail Page', () => {
 
   test('should load TCG set detail page', async ({ page, consoleLogger }) => {
     // Navigate to a specific set (using a common set ID)
-    await page.goto('/tcgsets/base1'); // Base Set
+    await page.goto('/tcgexpansions/base1'); // Base Set
     await waitForNetworkIdle(page);
 
     // Check page loads
@@ -175,7 +175,7 @@ test.describe('TCG Set Detail Page', () => {
     await waitForNetworkIdle(page);
 
     // Look for next/previous set navigation
-    const nextSetButton = page.locator('button:has-text("Next Set")').or(page.locator('[data-testid="next-set"]')).or(page.locator('a[href*="/tcgsets/"]')).first();
+    const nextSetButton = page.locator('button:has-text("Next Set")').or(page.locator('[data-testid="next-set"]')).or(page.locator('a[href*="/tcgexpansions/"]')).first();
     
     if (await nextSetButton.isVisible()) {
       const currentUrl = page.url();
@@ -185,7 +185,7 @@ test.describe('TCG Set Detail Page', () => {
       // URL should change
       expect(page.url()).not.toBe(currentUrl);
       // Should still be on a set page
-      expect(page.url()).toContain('/tcgsets/');
+      expect(page.url()).toContain('/tcgexpansions/');
     }
   });
 
@@ -245,12 +245,12 @@ test.describe('TCG Set Detail Page', () => {
   });
 
   test('should handle invalid set IDs', async ({ page }) => {
-    await page.goto('/tcgsets/invalid-set-id-12345');
+    await page.goto('/tcgexpansions/invalid-set-id-12345');
     await waitForNetworkIdle(page);
 
     // Should show error or redirect
     const errorMessage = page.locator('[data-testid="error-message"]').or(page.locator('.error')).or(page.locator('text=/not found/i'));
-    const redirected = page.url() === '/tcg-sets' || page.url().includes('/404');
+    const redirected = page.url() === '/tcgexpansions' || page.url().includes('/404');
     
     expect(await errorMessage.isVisible() || redirected).toBeTruthy();
   });

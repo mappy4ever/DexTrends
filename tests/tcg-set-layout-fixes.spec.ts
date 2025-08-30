@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('TCG Set Detail Page Layout Fixes', () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to TCG sets page first
-    await page.goto('/tcg-sets');
+    await page.goto('/tcgexpansions');
     await page.waitForLoadState('networkidle');
   });
 
@@ -13,7 +13,7 @@ test.describe('TCG Set Detail Page Layout Fixes', () => {
     await firstSet.click();
     
     // Wait for set detail page to load
-    await page.waitForURL(/\/tcgsets\/[^/]+$/);
+    await page.waitForURL(/\/tcgexpansions\/[^/]+$/);
     await page.waitForSelector('[data-testid="card-grid"], .grid');
     
     // Check that cards are displayed
@@ -32,7 +32,7 @@ test.describe('TCG Set Detail Page Layout Fixes', () => {
 
   test('should not automatically load cards in background', async ({ page }) => {
     // Navigate to a specific set
-    await page.goto('/tcgsets/sv5'); // Surging Sparks
+    await page.goto('/tcgexpansions/sv5'); // Surging Sparks
     
     // Wait for initial cards to load
     await page.waitForSelector('.grid img[alt*="card"]');
@@ -73,7 +73,7 @@ test.describe('TCG Set Detail Page Layout Fixes', () => {
 
   test('should have proper scrolling without height restrictions', async ({ page }) => {
     // Navigate to a large set
-    await page.goto('/tcgsets/sv5');
+    await page.goto('/tcgexpansions/sv5');
     await page.waitForSelector('.grid img[alt*="card"]');
     
     // Check if VirtualizedCardGrid is used (for large sets)
@@ -102,7 +102,7 @@ test.describe('TCG Set Detail Page Layout Fixes', () => {
   });
 
   test('should display proper loading indicator only when loading', async ({ page }) => {
-    await page.goto('/tcgsets/sv5');
+    await page.goto('/tcgexpansions/sv5');
     await page.waitForSelector('.grid img[alt*="card"]');
     
     // Initially, no loading indicator should be visible
@@ -128,7 +128,7 @@ test.describe('TCG Set Detail Page Layout Fixes', () => {
   });
 
   test('responsive grid layout at different viewports', async ({ page }) => {
-    await page.goto('/tcgsets/sv5');
+    await page.goto('/tcgexpansions/sv5');
     await page.waitForSelector('.grid img[alt*="card"]');
     
     const cardGrid = page.locator('.grid').filter({ has: page.locator('img[alt*="card"]') }).first();

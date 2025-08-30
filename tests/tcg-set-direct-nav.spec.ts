@@ -15,7 +15,7 @@ test('Direct navigation to set detail page', async ({ page }) => {
   });
   
   // Navigate directly to sv10
-  await page.goto('http://localhost:3001/tcgsets/sv10');
+  await page.goto('http://localhost:3001/tcgexpansions/sv10');
   
   // Wait a bit for all console logs
   await page.waitForTimeout(5000);
@@ -54,7 +54,7 @@ test('Direct navigation to set detail page', async ({ page }) => {
   // Check if API call was made
   const apiRequests: string[] = [];
   page.on('request', request => {
-    if (request.url().includes('/api/tcg-sets/')) {
+    if (request.url().includes('/api/tcgexpansions/')) {
       apiRequests.push(request.url());
     }
   });

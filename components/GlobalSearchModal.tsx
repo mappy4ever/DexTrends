@@ -58,7 +58,7 @@ const SearchResultCard = memo(({ card }: { card: TCGCard }) => (
 SearchResultCard.displayName = 'SearchResultCard';
 
 const SearchResultSet = memo(({ set }: { set: CardSet }) => (
-  <Link href={`/tcgsets/${set.id}`} className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+  <Link href={`/tcgexpansions/${set.id}`} className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
     {set.images?.logo && (
       <div className="relative w-8 h-8 mr-3 rounded overflow-hidden">
         <Image 

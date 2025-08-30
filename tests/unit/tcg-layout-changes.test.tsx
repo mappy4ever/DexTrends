@@ -59,7 +59,7 @@ describe('TCG Layout Changes Verification', () => {
   
   describe('[setid].tsx changes', () => {
     it('should have removed animations and automatic loading', () => {
-      const setIdPath = path.join(projectRoot, 'pages/tcgsets/[setid].tsx');
+      const setIdPath = path.join(projectRoot, 'pages/tcgexpansions/[setid].tsx');
       const content = fs.readFileSync(setIdPath, 'utf8');
       
       // Check animation imports removed
@@ -80,13 +80,13 @@ describe('TCG Layout Changes Verification', () => {
       // Check manual load button implementation
       expect(content).toContain('onClick={async () => {');
       expect(content).toContain('setLoadingMoreCards(true);');
-      expect(content).toContain('/api/tcg-sets/${setid}?page=${nextPage}&pageSize=25');
+      expect(content).toContain('/api/tcgexpansions/${setid}?page=${nextPage}&pageSize=25');
     });
   });
   
   describe('Loading behavior', () => {
     it('should only show loading indicator when actively loading', () => {
-      const setIdPath = path.join(projectRoot, 'pages/tcgsets/[setid].tsx');
+      const setIdPath = path.join(projectRoot, 'pages/tcgexpansions/[setid].tsx');
       const content = fs.readFileSync(setIdPath, 'utf8');
       
       // Check loading indicator conditions

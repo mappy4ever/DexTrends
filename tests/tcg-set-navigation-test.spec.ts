@@ -5,7 +5,7 @@ test.describe('TCG Set Navigation Test', () => {
     console.log('Starting navigation test...');
     
     // First go to TCG sets page
-    await page.goto('http://localhost:3001/tcg-sets');
+    await page.goto('http://localhost:3001/tcgexpansions');
     
     // Wait for sets to load
     await expect(page.locator('.grid').first()).toBeVisible({ timeout: 15000 });
@@ -31,7 +31,7 @@ test.describe('TCG Set Navigation Test', () => {
     await firstSet.click();
     
     // Wait for navigation
-    await page.waitForURL(/\/tcgsets\/[a-z0-9-]+/i, { timeout: 10000 });
+    await page.waitForURL(/\/tcgexpansions\/[a-z0-9-]+/i, { timeout: 10000 });
     
     const currentUrl = page.url();
     console.log('Navigated to:', currentUrl);

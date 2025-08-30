@@ -7,7 +7,7 @@ test.use({
 test.describe('TCG Set Detail Quick Test', () => {
   test('page loads and shows improvements', async ({ page }) => {
     // Go directly to a set detail page
-    await page.goto('/tcgsets/swsh1', { timeout: 30000 });
+    await page.goto('/tcgexpansions/swsh1', { timeout: 30000 });
     
     // 1. Check skeleton loading appears initially
     const skeletons = await page.locator('[class*="skeleton"]').count();
@@ -66,7 +66,7 @@ test.describe('TCG Set Detail Quick Test', () => {
   test('performance: loads quickly with many cards', async ({ page }) => {
     const startTime = Date.now();
     
-    await page.goto('/tcgsets/swsh12pt5', { timeout: 30000 }); // Crown Zenith - large set
+    await page.goto('/tcgexpansions/swsh12pt5', { timeout: 30000 }); // Crown Zenith - large set
     
     // Wait for cards to appear
     await page.waitForSelector('[class*="card"], img[alt*="card"]', { timeout: 15000 });

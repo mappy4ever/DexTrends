@@ -58,7 +58,7 @@ class TCGSetErrorBoundary extends Component<Props, State> {
             
             <div className="flex gap-4 justify-center">
               <GradientButton 
-                onClick={() => window.location.href = '/tcg-sets'}
+                onClick={() => window.location.href = '/tcgexpansions'}
                 variant="primary"
                 size="md"
               >

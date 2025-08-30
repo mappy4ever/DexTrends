@@ -1,5 +1,5 @@
 // Browser Console Test Script
-// Copy and paste this into your browser console on http://localhost:3002/tcgsets/sv5
+// Copy and paste this into your browser console on http://localhost:3002/tcgexpansions/sv5
 
 (function testTCGPage() {
     console.clear();

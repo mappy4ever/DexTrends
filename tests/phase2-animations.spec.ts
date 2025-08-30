@@ -64,7 +64,7 @@ test.describe('Phase 2: Staggered Animations', () => {
   });
 
   test('grid items load with animation', async ({ page }) => {
-    await page.goto('/tcg-sets');
+    await page.goto('/tcgexpansions');
     
     // Wait for grid to load
     await page.waitForSelector('[class*="grid"]', { timeout: 10000 });
@@ -213,7 +213,7 @@ test.describe('Phase 2: Performance', () => {
     
     await page.goto('/');
     await page.goto('/pokedex');
-    await page.goto('/tcg-sets');
+    await page.goto('/tcgexpansions');
     
     // Filter out expected warnings
     const criticalErrors = consoleErrors.filter(error => 
@@ -242,7 +242,7 @@ test.describe('Phase 2: TypeScript Compliance', () => {
     await page.goto('/');
     await page.goto('/pokedex');
     await page.goto('/pokedex/25');
-    await page.goto('/tcg-sets');
+    await page.goto('/tcgexpansions');
     await page.goto('/pokemon/moves');
     await page.goto('/pokemon/abilities');
     

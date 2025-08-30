@@ -14,9 +14,9 @@ const filesToUpdate = [
   
   // Pages directory - nested
   { file: 'pages/pokedex/[pokeid].js', oldImport: 'import { useFavorites } from "../../context/favoritescontext";', newImport: 'import { useFavorites } from "../../context/UnifiedAppContext";' },
-  { file: 'pages/tcgsets/[setid].js', oldImport: 'import { useTheme } from "../../context/themecontext";', newImport: 'import { useTheme } from "../../context/UnifiedAppContext";' },
-  { file: 'pages/tcgsets/[setid].js', oldImport: 'import { useFavorites } from "../../context/favoritescontext";', newImport: 'import { useFavorites } from "../../context/UnifiedAppContext";' },
-  { file: 'pages/tcgsets/[setid].js', oldImport: 'import { useViewSettings } from "../../context/viewsettingscontext";', newImport: 'import { useViewSettings } from "../../context/UnifiedAppContext";' },
+  { file: 'pages/tcgexpansions/[setid].js', oldImport: 'import { useTheme } from "../../context/themecontext";', newImport: 'import { useTheme } from "../../context/UnifiedAppContext";' },
+  { file: 'pages/tcgexpansions/[setid].js', oldImport: 'import { useFavorites } from "../../context/favoritescontext";', newImport: 'import { useFavorites } from "../../context/UnifiedAppContext";' },
+  { file: 'pages/tcgexpansions/[setid].js', oldImport: 'import { useViewSettings } from "../../context/viewsettingscontext";', newImport: 'import { useViewSettings } from "../../context/UnifiedAppContext";' },
   { file: 'pages/pocketmode/expansions.js', oldImport: 'import { useTheme } from "../../context/themecontext";', newImport: 'import { useTheme } from "../../context/UnifiedAppContext";' },
   { file: 'pages/cards/[cardId].js', oldImport: 'import { useTheme } from "../../context/themecontext";', newImport: 'import { useTheme } from "../../context/UnifiedAppContext";' },
   { file: 'pages/cards/[cardId].js', oldImport: 'import { useFavorites } from "../../context/favoritescontext";', newImport: 'import { useFavorites } from "../../context/UnifiedAppContext";' },

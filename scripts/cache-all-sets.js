@@ -17,7 +17,7 @@ async function cacheAllSets() {
   
   try {
     // First, let's check how many sets we have
-    const statusResponse = await fetch(`${baseUrl}/api/tcg-sets`);
+    const statusResponse = await fetch(`${baseUrl}/api/tcgexpansions`);
     const setsData = await statusResponse.json();
     
     if (setsData.error) {

@@ -5,12 +5,12 @@ test.describe('TCG Cards and Sets', () => {
     await page.goto('/');
     await page.getByRole('link', { name: /tcg sets/i }).click();
     
-    await expect(page).toHaveURL('/tcg-sets');
+    await expect(page).toHaveURL('/tcgexpansions');
     await expect(page.locator('h1:has-text("TCG Sets")').or(page.locator('[data-testid="page-title"]'))).toBeVisible();
   });
 
   test('should display TCG sets', async ({ page }) => {
-    await page.goto('/tcg-sets');
+    await page.goto('/tcgexpansions');
     
     // Wait for sets to load
     await expect(page.locator('[data-testid="tcg-set"]').or(page.locator('.set-card')).or(page.locator('article')).first()).toBeVisible({ timeout: 15000 });
@@ -22,20 +22,20 @@ test.describe('TCG Cards and Sets', () => {
   });
 
   test('should view cards in a specific set', async ({ page }) => {
-    await page.goto('/tcg-sets');
+    await page.goto('/tcgexpansions');
     
     // Click on first set
     await page.locator('[data-testid="tcg-set"]').or(page.locator('.set-card')).or(page.locator('article')).first().click();
     
     // Should navigate to set detail page
-    await expect(page).toHaveURL(/\/tcgsets\/[^\/]+/);
+    await expect(page).toHaveURL(/\/tcgexpansions\/[^\/]+/);
     
     // Should show cards from that set
     await expect(page.locator('[data-testid="card-item"]').or(page.locator('.card-item')).or(page.locator('article')).first()).toBeVisible({ timeout: 15000 });
   });
 
   test('should display card prices and market data', async ({ page }) => {
-    await page.goto('/tcg-sets');
+    await page.goto('/tcgexpansions');
     
     // Navigate to a set with cards
     await page.locator('[data-testid="tcg-set"]').or(page.locator('.set-card')).first().click();

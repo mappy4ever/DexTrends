@@ -152,7 +152,7 @@ test.describe('Trending Page', () => {
       await waitForNetworkIdle(page);
       
       // Should navigate to card detail page
-      expect(page.url()).toMatch(/\/cards\/|\/tcgsets\/|\/pokedex\//);
+      expect(page.url()).toMatch(/\/cards\/|\/tcgexpansions\/|\/pokedex\//);
     }
   });
 

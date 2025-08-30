@@ -129,8 +129,8 @@ class DeepLinking {
     }
     
     // Extract set information
-    if (url.pathname.includes('/tcgsets/')) {
-      const setId = url.pathname.split('/tcgsets/')[1];
+    if (url.pathname.includes('/tcgexpansions/')) {
+      const setId = url.pathname.split('/tcgexpansions/')[1];
       data.type = 'set';
       data.setId = setId;
     }
@@ -253,7 +253,7 @@ class DeepLinking {
           break;
         case 'set':
           if (data.setId) {
-            router.push(`/tcgsets/${data.setId}`);
+            router.push(`/tcgexpansions/${data.setId}`);
           }
           break;
         case 'search':
@@ -397,7 +397,7 @@ class DeepLinking {
   }
 
   generateSetLink(setId: string, options: LinkOptions = {}): string {
-    const url = new URL(`${window.location.origin}/tcgsets/${setId}`);
+    const url = new URL(`${window.location.origin}/tcgexpansions/${setId}`);
     
     if (options.utm) {
       Object.entries(options.utm).forEach(([key, value]) => {

@@ -147,7 +147,7 @@ export const useGlobalKeyboardShortcuts = () => {
     },
     {
       key: 't',
-      action: () => router.push('/tcg-sets'),
+      action: () => router.push('/tcgexpansions'),
       description: 'Open TCG Sets',
     },
     {

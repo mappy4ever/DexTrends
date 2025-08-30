@@ -5,7 +5,7 @@ test.describe('TCG Set Detail Page Check', () => {
     console.log('Testing set detail page for sv10...');
     
     // Navigate directly to a known set
-    await page.goto('http://localhost:3002/tcgsets/sv10');
+    await page.goto('http://localhost:3002/tcgexpansions/sv10');
     
     // Wait for page to load
     await page.waitForTimeout(5000);
@@ -61,7 +61,7 @@ test.describe('TCG Set Detail Page Check', () => {
     
     // Try a different set
     console.log('\n\nTesting base1 set...');
-    await page.goto('http://localhost:3002/tcgsets/base1');
+    await page.goto('http://localhost:3002/tcgexpansions/base1');
     await page.waitForTimeout(5000);
     
     const base1HasTitle = await page.locator('h1').count() > 0;
@@ -75,8 +75,8 @@ test.describe('TCG Set Detail Page Check', () => {
     
     // Check API endpoint directly
     console.log('\n\nChecking API endpoints...');
-    const apiResponse = await page.request.get('http://localhost:3002/api/tcg-sets/sv10');
-    console.log('API /api/tcg-sets/sv10 status:', apiResponse.status());
+    const apiResponse = await page.request.get('http://localhost:3002/api/tcgexpansions/sv10');
+    console.log('API /api/tcgexpansions/sv10 status:', apiResponse.status());
     if (apiResponse.ok()) {
       const data = await apiResponse.json();
       console.log('API response has set:', !!data.set);

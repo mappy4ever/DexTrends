@@ -75,8 +75,8 @@ export const TCGDEX = {
 // Application Internal API Endpoints
 export const APP_API = {
   // TCG endpoints
-  tcgSets: () => `${API_CONFIG.APP_API_URL}/api/tcg-sets`,
-  tcgSet: (setId: string) => `${API_CONFIG.APP_API_URL}/api/tcg-sets/${setId}`,
+  tcgSets: () => `${API_CONFIG.APP_API_URL}/api/tcgexpansions`,
+  tcgSet: (setId: string) => `${API_CONFIG.APP_API_URL}/api/tcgexpansions/${setId}`,
   tcgCards: () => `${API_CONFIG.APP_API_URL}/api/tcg-cards`,
   tcgCard: (cardId: string) => `${API_CONFIG.APP_API_URL}/api/tcg-cards/${cardId}`,
   
@@ -101,8 +101,8 @@ export const TEST_URLS = {
   home: () => `${API_CONFIG.TEST_URL}/`,
   pokedex: () => `${API_CONFIG.TEST_URL}/pokedex`,
   pokemon: (id: string | number) => `${API_CONFIG.TEST_URL}/pokedex/${id}`,
-  tcgSets: () => `${API_CONFIG.TEST_URL}/tcgsets`,
-  tcgSet: (setId: string) => `${API_CONFIG.TEST_URL}/tcgsets/${setId}`,
+  tcgSets: () => `${API_CONFIG.TEST_URL}/tcgexpansions`,
+  tcgSet: (setId: string) => `${API_CONFIG.TEST_URL}/tcgexpansions/${setId}`,
   pocketMode: () => `${API_CONFIG.TEST_URL}/pocketmode`,
   battleSimulator: () => `${API_CONFIG.TEST_URL}/battle-simulator`,
   typeEffectiveness: () => `${API_CONFIG.TEST_URL}/type-effectiveness`,

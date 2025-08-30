@@ -56,15 +56,15 @@ test.describe('Navigation Click Fix Verification', () => {
   });
 
   test('TCG card navigation should work', async ({ page }) => {
-    await page.goto('http://localhost:3001/tcg-sets');
+    await page.goto('http://localhost:3001/tcgexpansions');
     
     // Wait for set cards to load
-    await page.waitForSelector('a[href*="/tcgsets/"], [class*="set-card"]', { 
+    await page.waitForSelector('a[href*="/tcgexpansions/"], [class*="set-card"]', { 
       timeout: 10000 
     });
     
     // Get the first set card
-    const setCard = await page.locator('a[href*="/tcgsets/"], [class*="set-card"]').first();
+    const setCard = await page.locator('a[href*="/tcgexpansions/"], [class*="set-card"]').first();
     
     // Click the card
     await setCard.click();
@@ -74,7 +74,7 @@ test.describe('Navigation Click Fix Verification', () => {
     
     // Verify we navigated to a set detail page
     const newUrl = page.url();
-    expect(newUrl).toMatch(/\/tcgsets\/.+/);
+    expect(newUrl).toMatch(/\/tcgexpansions\/.+/);
   });
 
   test('Navigation should update URL and load new content', async ({ page }) => {

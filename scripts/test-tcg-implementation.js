@@ -36,7 +36,7 @@ if (fs.existsSync(rarityImagesDir)) {
 
 // Test 3: Check imports in main file
 console.log('\n3️⃣ Import Test:');
-const mainFile = fs.readFileSync(path.join(__dirname, '..', 'pages', 'tcgsets', '[setid].tsx'), 'utf8');
+const mainFile = fs.readFileSync(path.join(__dirname, '..', 'pages', 'tcgexpansions', '[setid].tsx'), 'utf8');
 const requiredImports = [
   'EnhancedAnimationSystem',
   'SkeletonLoadingSystem',
@@ -95,7 +95,7 @@ console.log(`   ✅ Components integrated: ${componentsUsed.filter(comp => mainF
 console.log(`   ✅ Old code cleaned up: ${cleanupScore}/${oldCodePatterns.length}`);
 
 console.log('\n📝 Next Steps:');
-console.log('1. Open http://localhost:3002/tcgsets/sv5 in your browser');
+console.log('1. Open http://localhost:3002/tcgexpansions/sv5 in your browser');
 console.log('2. Check that all sections load without errors');
 console.log('3. Verify rarity symbols appear on cards');
 console.log('4. Test search and filter functionality');

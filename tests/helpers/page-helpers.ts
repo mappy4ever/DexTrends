@@ -102,7 +102,7 @@ export class DexTrendsPageHelpers {
    * Navigate to a TCG set
    */
   async goToTCGSet(setId: string): Promise<void> {
-    await this.page.goto(`/tcgsets/${setId}`);
+    await this.page.goto(`/tcgexpansions/${setId}`);
     await this.page.waitForSelector('[data-testid="card-item"]', { timeout: 60000 });
   }
 

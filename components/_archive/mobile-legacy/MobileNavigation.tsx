@@ -60,7 +60,7 @@ const MobileNavigation: React.FC = () => {
     { href: '/pokedex', label: 'Pokédex', icon: <BsGrid className="w-6 h-6" />, shortLabel: 'Dex' },
     { href: '/trending', label: 'Trending', icon: <FiTrendingUp className="w-6 h-6" />, shortLabel: 'Trend' },
     { href: '/pocketmode', label: 'Pocket', icon: <GiCardPickup className="w-6 h-6" />, shortLabel: 'Pocket' },
-    { href: '/tcg-sets', label: 'Sets', icon: <BsBook className="w-6 h-6" />, shortLabel: 'Sets' }
+    { href: '/tcgexpansions', label: 'Sets', icon: <BsBook className="w-6 h-6" />, shortLabel: 'Sets' }
   ];
 
   const handleNavClick = (href: string): void => {

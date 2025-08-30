@@ -86,7 +86,7 @@ test.describe('Unified Architecture Migration Verification', () => {
   });
 
   test('TCG Sets page (kept original infinite scroll)', async ({ page }) => {
-    await page.goto('http://localhost:3001/tcg-sets');
+    await page.goto('http://localhost:3001/tcgexpansions');
     
     // Check sets load
     await page.waitForSelector('[class*="grid"]', { timeout: 10000 });

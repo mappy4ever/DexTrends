@@ -21,7 +21,7 @@ test.describe('Mobile Layout Quick Tests', () => {
   });
 
   test('TCG set detail page shows mobile layout', async ({ page }) => {
-    await page.goto('http://localhost:3001/tcgsets/base1');
+    await page.goto('http://localhost:3001/tcgexpansions/base1');
     
     // Wait for page load with short timeout
     await page.waitForLoadState('domcontentloaded', { timeout: 5000 });

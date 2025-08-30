@@ -203,7 +203,7 @@ const SetIdPage: NextPage = () => {
         
         abortController = new AbortController();
         
-        const data = await fetchJSON(`/api/tcg-sets/${setid}`, {
+        const data = await fetchJSON(`/api/tcgexpansions/${setid}`, {
           signal: abortController.signal
         }) as any;
         
@@ -427,7 +427,7 @@ const SetIdPage: NextPage = () => {
           message="No set ID was provided in the URL."
           actionButton={{
             text: "Back to Sets",
-            onClick: () => router.push('/tcg-sets'),
+            onClick: () => router.push('/tcgexpansions'),
             variant: "primary"
           }}
         />
@@ -459,7 +459,7 @@ const SetIdPage: NextPage = () => {
           message={error}
           actionButton={{
             text: "Back to Sets",
-            onClick: () => router.push('/tcg-sets'),
+            onClick: () => router.push('/tcgexpansions'),
             variant: "primary"
           }}
         />
@@ -475,7 +475,7 @@ const SetIdPage: NextPage = () => {
           message="The set you're looking for couldn't be found."
           actionButton={{
             text: "Back to Sets",
-            onClick: () => router.push('/tcg-sets'),
+            onClick: () => router.push('/tcgexpansions'),
             variant: "primary"
           }}
         />
@@ -540,7 +540,7 @@ const SetIdPage: NextPage = () => {
           {/* Back Button - Minimal */}
           <div className="mb-6">
             <button
-              onClick={() => router.push('/tcg-sets')}
+              onClick={() => router.push('/tcgexpansions')}
               className="group flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
             >
               <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">

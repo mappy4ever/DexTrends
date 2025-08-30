@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test('Debug TCG Sets page', async ({ page }) => {
   // Go to the page
-  await page.goto('http://localhost:3001/tcg-sets');
+  await page.goto('http://localhost:3001/tcgexpansions');
   
   // Wait a bit for initial load
   await page.waitForTimeout(2000);
@@ -48,7 +48,7 @@ test('Debug TCG Sets page', async ({ page }) => {
   
   // Check API calls
   const apiResponse = await page.evaluate(() => {
-    return fetch('/api/tcg-sets?page=1&pageSize=25')
+    return fetch('/api/tcgexpansions?page=1&pageSize=25')
       .then(res => res.json())
       .catch(err => ({ error: err.message }));
   });

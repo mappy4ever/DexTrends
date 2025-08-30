@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('TCG Set Detail Page', () => {
   test('should load set detail page without hooks errors', async ({ page }) => {
     // Navigate to a specific TCG set
-    await page.goto('/tcgsets/base1');
+    await page.goto('/tcgexpansions/base1');
     
     // Wait for page to load
     await page.waitForLoadState('networkidle');
@@ -32,7 +32,7 @@ test.describe('TCG Set Detail Page', () => {
     });
     
     // Try navigating to another set to ensure no hooks errors on navigation
-    await page.goto('/tcgsets/swsh1');
+    await page.goto('/tcgexpansions/swsh1');
     await page.waitForLoadState('networkidle');
     
     // Check again for hooks error
@@ -42,11 +42,11 @@ test.describe('TCG Set Detail Page', () => {
   
   test('should handle loading states properly', async ({ page }) => {
     // Go to TCG sets list first
-    await page.goto('/tcg-sets');
+    await page.goto('/tcgexpansions');
     await page.waitForLoadState('networkidle');
     
     // Click on first available set
-    const firstSet = await page.locator('[data-testid="tcg-set-card"], a[href^="/tcgsets/"]').first();
+    const firstSet = await page.locator('[data-testid="tcg-set-card"], a[href^="/tcgexpansions/"]').first();
     const setExists = await firstSet.isVisible().catch(() => false);
     
     if (setExists) {

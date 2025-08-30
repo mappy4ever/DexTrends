@@ -108,7 +108,7 @@ const HomePage: NextPage = () => {
               </Link>
 
               {/* TCG Database */}
-              <Link href="/tcg-sets" className="h-full">
+              <Link href="/tcgexpansions" className="h-full">
                 <motion.div
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
@@ -175,7 +175,7 @@ const HomePage: NextPage = () => {
               <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
                 <h3 className="font-bold text-gray-800 dark:text-white mb-2">Latest TCG Set</h3>
                 <p className="text-gray-600 dark:text-gray-400 mb-4">Paldea Evolved - 279 cards</p>
-                <Link href="/tcgsets/sv2" className="text-purple-600 hover:text-purple-700 font-medium">
+                <Link href="/tcgexpansions/sv2" className="text-purple-600 hover:text-purple-700 font-medium">
                   View Set →
                 </Link>
               </div>

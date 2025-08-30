@@ -180,7 +180,7 @@ async function searchTCGCards(query: string, limit: number): Promise<SearchResul
         name: card.name,
         description: `${card.set?.name || 'Unknown Set'} - ${card.rarity || 'Common'}`,
         image: card.images?.small,
-        url: `/tcgsets/${card.set?.id}#${card.id}`,
+        url: `/tcgexpansions/${card.set?.id}#${card.id}`,
         relevance: card.name.toLowerCase().startsWith(query) ? 0.9 : 0.6
       }));
   } catch (error) {
@@ -192,7 +192,7 @@ async function searchTCGCards(query: string, limit: number): Promise<SearchResul
 // Helper function to search TCG Sets
 async function searchTCGSets(query: string, limit: number): Promise<SearchResult[]> {
   try {
-    const response = await fetchJSON<TCGApiResponse<unknown[]>>('/api/tcg-sets?pageSize=100');
+    const response = await fetchJSON<TCGApiResponse<unknown[]>>('/api/tcgexpansions?pageSize=100');
     
     if (!response?.data) return [];
 
@@ -207,7 +207,7 @@ async function searchTCGSets(query: string, limit: number): Promise<SearchResult
           name: set.name,
           description: `${set.series || 'Unknown Series'} - ${set.total || 0} cards`,
           image: set.images?.logo,
-          url: `/tcgsets/${set.id}`,
+          url: `/tcgexpansions/${set.id}`,
           relevance: set.name.toLowerCase().startsWith(query) ? 0.8 : 0.5
         });
         if (results.length >= limit) break;

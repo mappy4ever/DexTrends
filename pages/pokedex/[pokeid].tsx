@@ -33,13 +33,8 @@ import { FullBleedWrapper, PageErrorBoundary } from '../../components/ui';
 import { CircularButton } from "../../components/ui/design-system";
 import { getPokemonTheme } from "../../utils/pokemonAnimations";
 import NavigationArrow from "../../components/pokemon/NavigationArrow";
-import { MobileLayout } from "../../components/mobile/MobileLayout";
-import { useMobileDetection } from '@/hooks/useMobileDetection';
-import BottomSheet from "../../components/mobile/BottomSheet";
-import EnhancedSwipeGestures from "../../components/mobile/EnhancedSwipeGestures";
-import { PullToRefresh } from "../../components/mobile/PullToRefresh";
 import { ProgressiveImage } from "../../components/ui/ProgressiveImage";
-import MobilePokemonDetail from "../../components/pokemon/MobilePokemonDetail";
+import { UnifiedPokemonDetail } from "../../components/pokemon/UnifiedPokemonDetail";
 
 // Interface for abilities state
 interface AbilityData {
@@ -53,8 +48,7 @@ const PokemonDetail: NextPage = () => {
   const router = useRouter();
   const { pokeid, form } = router.query;
   
-  // Mobile detection with SSR support
-  const { isMobile: isMobileView, isLoading: isMobileLoading } = useMobileDetection();
+  // Removed mobile detection - using pure CSS responsiveness
   
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
   const [species, setSpecies] = useState<PokemonSpecies | null>(null);
@@ -526,59 +520,7 @@ const PokemonDetail: NextPage = () => {
     );
   }
 
-  // Get theme based on Pokemon types
-  const theme = getPokemonTheme(pokemon.types);
-
-  // Mobile view - check first to ensure mobile renders when ready
-  if (isMobileView && pokemon && species) {
-    return (
-      <PageErrorBoundary pageName="Pokemon Detail Mobile">
-        <Head>
-          <title>{pokemon.name ? pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1) : 'Pokemon'} - Pokédex | DexTrends</title>
-          <meta 
-            name="description" 
-            content={`View detailed information about ${pokemon.name || 'this Pokemon'}, including stats, abilities, evolution chain, and more.`} 
-          />
-          <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-        </Head>
-        
-        <MobileLayout
-          hasBottomNav={false}
-          hasHeader={true}
-          headerTitle={pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
-          backgroundColor="gradient"
-          fullHeight={true}
-        >
-          <MobilePokemonDetail
-            pokemon={pokemon}
-            species={species}
-            evolutionChain={evolutionChain}
-            abilities={abilities}
-            tcgCards={tcgCards}
-            pocketCards={pocketCards}
-            showShiny={showShiny}
-            onShinyToggle={() => setShowShiny(!showShiny)}
-            adjacentPokemon={adjacentPokemon}
-            router={router}
-            activeTab={activeTab}
-            onTabChange={setActiveTab}
-            selectedForm={selectedForm}
-            onFormChange={handleFormChange}
-            locationEncounters={locationAreaEncounters}
-            natureData={natureData}
-            allNatures={allNatures}
-            selectedNature={selectedNature}
-            onNatureChange={handleNatureChange}
-            selectedLevel={selectedLevel}
-            onLevelChange={setSelectedLevel}
-            competitiveTiers={competitiveTiers}
-          />
-        </MobileLayout>
-      </PageErrorBoundary>
-    );
-  }
-
-  // Desktop view
+  // Unified view for all devices
   return (
     <PageErrorBoundary pageName="Pokemon Detail">
       <Head>
@@ -591,94 +533,31 @@ const PokemonDetail: NextPage = () => {
       
       <FullBleedWrapper 
         gradient="pokemon-type"
-        pokemonTypes={pokemon.types}
+        pokemonTypes={pokemon?.types}
       >
-        <div className="min-h-screen">
-          {/* Navigation Header */}
-          <motion.div 
-            className="sticky top-0 z-50 backdrop-blur-xl bg-white/5 dark:bg-gray-900/5"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="border-b border-white/20 dark:border-gray-700/20">
-              <div className="container mx-auto px-4 py-4">
-                <div className="flex items-center justify-between">
-                  <CircularButton
-                    onClick={() => router.push('/pokedex')}
-                    variant="secondary"
-                    leftIcon={
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                      </svg>
-                    }
-                  >
-                    Back to Pokédex
-                  </CircularButton>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Main Content */}
-          <div className="container mx-auto px-2 xs:px-3 sm:px-4 py-4 xs:py-6 sm:py-8 space-y-4 xs:space-y-6 sm:space-y-8">
-            {/* Hero Section */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-            >
-              <PokemonHeroSectionV3 
-                pokemon={pokemon}
-                species={species}
-                showShiny={showShiny}
-                onShinyToggle={() => setShowShiny(!showShiny)}
-                onFormChange={handleFormChange}
-              />
-            </motion.div>
-
-            {/* Tab System */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <PokemonTabSystem
-                pokemon={pokemon}
-                species={species}
-                activeTab={activeTab}
-                onTabChange={setActiveTab}
-                tcgCards={tcgCards}
-                pocketCards={pocketCards}
-                abilities={abilities}
-                evolutionChain={evolutionChain}
-                locationEncounters={locationAreaEncounters}
-                natureData={natureData}
-                allNatures={allNatures}
-                onNatureChange={handleNatureChange}
-                selectedNature={selectedNature}
-                selectedLevel={selectedLevel}
-                onLevelChange={setSelectedLevel}
-                competitiveTiers={competitiveTiers}
-              />
-            </motion.div>
-          </div>
-          
-          {/* Navigation Arrows */}
-          <NavigationArrow 
-            direction="prev" 
-            pokemon={adjacentPokemon.prev} 
-            onClick={() => adjacentPokemon.prev && handleNavigate(adjacentPokemon.prev.id)}
-          />
-          <NavigationArrow 
-            direction="next" 
-            pokemon={adjacentPokemon.next} 
-            onClick={() => adjacentPokemon.next && handleNavigate(adjacentPokemon.next.id)}
-          />
-          
-          {/* Floating Action Bar */}
-          <FloatingActionBar pokemon={pokemon} />
-        </div>
+        <UnifiedPokemonDetail
+          pokemon={pokemon}
+          species={species}
+          evolutionChain={evolutionChain}
+          abilities={abilities}
+          tcgCards={tcgCards}
+          pocketCards={pocketCards}
+          showShiny={showShiny}
+          onShinyToggle={() => setShowShiny(!showShiny)}
+          adjacentPokemon={adjacentPokemon}
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          selectedForm={selectedForm}
+          onFormChange={handleFormChange}
+          locationEncounters={locationAreaEncounters}
+          natureData={natureData}
+          allNatures={allNatures}
+          selectedNature={selectedNature}
+          onNatureChange={handleNatureChange}
+          selectedLevel={selectedLevel}
+          onLevelChange={setSelectedLevel}
+          competitiveTiers={competitiveTiers}
+        />
       </FullBleedWrapper>
     </PageErrorBoundary>
   );

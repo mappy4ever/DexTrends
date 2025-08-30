@@ -180,7 +180,7 @@ const nextConfig = {
       },
       {
         source: '/cards',
-        destination: '/tcgsets',
+        destination: '/tcgexpansions',
         permanent: true
       }
     ];

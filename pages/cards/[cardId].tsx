@@ -195,7 +195,7 @@ export default function CardDetailPage() {
         if (cardData.set?.id) {
           promises.push(
             fetchJSON<{ set: CardSet; cached: boolean }>(
-              `/api/tcg-sets/${cardData.set.id}`,
+              `/api/tcgexpansions/${cardData.set.id}`,
               {
                 useCache: true,
                 cacheTime: 60 * 60 * 1000,
@@ -572,7 +572,7 @@ export default function CardDetailPage() {
                 <h1 className="text-3xl font-bold mb-2">{card.name}</h1>
                 <div className="flex flex-wrap items-center gap-3">
                   <Link
-                    href={`/tcgsets/${card.set.id}`}
+                    href={`/tcgexpansions/${card.set.id}`}
                     className="flex items-center">
                     
                     {card.set.images?.symbol && (
