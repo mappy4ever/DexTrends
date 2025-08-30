@@ -1,60 +1,11 @@
 {
-  "timestamp": "2025-08-30T20:31:18.951Z",
-  "changes": [
-    {
-      "category": "components",
-      "old": "components/ui/cards/GymLeaderCard.tsx",
-      "new": "components/ui/cards/GymLeaderTile.tsx",
-      "timestamp": "2025-08-30T20:31:16.985Z"
-    },
-    {
-      "category": "components",
-      "old": "components/ui/cards/CircularGymLeaderCard.tsx",
-      "new": "components/ui/cards/GymLeaderAvatar.tsx",
-      "timestamp": "2025-08-30T20:31:17.298Z"
-    },
-    {
-      "category": "components",
-      "old": "components/ui/cards/CircularPokemonCard.tsx",
-      "new": "components/ui/cards/PokemonAvatar.tsx",
-      "timestamp": "2025-08-30T20:31:17.536Z"
-    },
-    {
-      "category": "components",
-      "old": "components/ui/cards/EliteFourCard.tsx",
-      "new": "components/ui/cards/EliteFourTile.tsx",
-      "timestamp": "2025-08-30T20:31:17.760Z"
-    },
-    {
-      "category": "components",
-      "old": "components/ui/cards/ChampionCard.tsx",
-      "new": "components/ui/cards/ChampionTile.tsx",
-      "timestamp": "2025-08-30T20:31:17.990Z"
-    },
-    {
-      "category": "components",
-      "old": "components/ui/cards/PokemonCardItem.tsx",
-      "new": "components/ui/cards/PokemonTile.tsx",
-      "timestamp": "2025-08-30T20:31:18.212Z"
-    },
-    {
-      "category": "pages",
-      "old": "pages/tcgsets.tsx",
-      "new": "pages/tcg-sets.tsx",
-      "timestamp": "2025-08-30T20:31:18.434Z"
-    },
-    {
-      "category": "pages",
-      "old": "pages/tcgsets",
-      "new": "pages/tcg-sets",
-      "timestamp": "2025-08-30T20:31:18.678Z"
-    }
-  ],
+  "timestamp": "2025-08-30T22:17:25.863Z",
+  "changes": [],
   "errors": [],
   "summary": {
-    "total": 8,
+    "total": 0,
     "utilities": 0,
-    "components": 6,
-    "pages": 2
+    "components": 0,
+    "pages": 0
   }
 }
