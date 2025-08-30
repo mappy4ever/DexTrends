@@ -4,8 +4,8 @@
  */
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { usePerformanceMonitor } from '../../utils/performanceMonitor';
 import type { Metric } from '../../utils/performanceMonitor';
+import { usePerformanceMonitor } from '../../utils/performanceMonitor';
 import { useAPIPerformance, getAPIPerformanceReport } from '../../utils/apiOptimizations';
 
 // Types and Interfaces

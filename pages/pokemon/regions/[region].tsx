@@ -7,8 +7,7 @@ import { motion } from "framer-motion";
 import { useTheme } from "../../../context/UnifiedAppContext";
 import { FullBleedWrapper } from "../../../components/ui";
 import RouteErrorBoundary from "../../../components/RouteErrorBoundary";
-import { StandardGlassContainer, SectionHeader } from "../../../components/ui/design-system";
-import { CircularButton } from "../../../components/ui/design-system";
+import { StandardGlassContainer, SectionHeader, CircularButton } from '../../../components/ui/design-system';
 
 // Import Region Components
 import RegionHero from "../../../components/regions/RegionHero";

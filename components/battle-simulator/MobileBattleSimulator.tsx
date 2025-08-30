@@ -1,15 +1,12 @@
-import React, { useState, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useCallback } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TypeBadge } from '../ui/TypeBadge';
 import { CircularButton } from '../ui/design-system';
 import hapticFeedback from '../../utils/hapticFeedback';
-import { calculateDamage } from '../../utils/battle/damage';
 import { simulateBattleToCompletion } from '../../utils/battle/simulation';
-import { createInitialBattleState } from '../../utils/battle/core';
-import type { Pokemon, PokemonMove, PokemonType } from '../../types/pokemon';
+import type { Pokemon, PokemonMove } from '../../types/pokemon';
 import type { BattleResult } from '../../types/battle';
-import EnhancedSwipeGestures from '../mobile/EnhancedSwipeGestures';
 import logger from '../../utils/logger';
 
 interface MobileBattleSimulatorProps {
@@ -31,8 +28,6 @@ const MobileBattleSimulator: React.FC<MobileBattleSimulatorProps> = ({
   const [selectedMoves2, setSelectedMoves2] = useState<PokemonMove[]>([]);
   const [battleResult, setBattleResult] = useState<BattleResult | null>(null);
   const [isSimulating, setIsSimulating] = useState(false);
-  const [showQuickPicker, setShowQuickPicker] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
 
   // Progress indicator
   const stepIndex = {
@@ -126,12 +121,6 @@ const MobileBattleSimulator: React.FC<MobileBattleSimulatorProps> = ({
         }
       };
       
-      const battleState = createInitialBattleState(
-        pokemon1,
-        pokemon2,
-        config1,
-        config2
-      );
 
       const result = await simulateBattleToCompletion(
         pokemon1,
@@ -140,7 +129,7 @@ const MobileBattleSimulator: React.FC<MobileBattleSimulatorProps> = ({
         config2,
         selectedMoves1,
         selectedMoves2,
-        async (moveName: string) => null // Simple move loader for now
+        async () => null // Simple move loader for now
       );
       setBattleResult(result);
       setCurrentStep('results');
@@ -276,7 +265,7 @@ const MobileBattleSimulator: React.FC<MobileBattleSimulatorProps> = ({
             >
               <PokemonSelectionCard
                 pokemon={currentStep === 'select-p1' ? pokemon1 : pokemon2}
-                onSelect={() => setShowQuickPicker(true)}
+                onSelect={() => {}}
                 label={currentStep === 'select-p1' ? 'Tap to select your Pokemon' : 'Tap to select opponent'}
               />
               

@@ -28,7 +28,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     // Base styles with consistent hover and active states
     const baseStyles = cn(
-      'inline-flex items-center justify-center font-medium rounded-lg',
+      'relative inline-flex items-center justify-center font-medium rounded-lg',
       'transition-all duration-200 ease-out',
       'transform hover:scale-105 active:scale-95',
       'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
@@ -75,12 +75,12 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       )
     };
 
-    // Size styles
+    // Size styles with minimum touch targets
     const sizeStyles = {
-      sm: 'px-3 py-1.5 text-sm gap-1.5',
-      md: 'px-4 py-2 text-base gap-2',
-      lg: 'px-6 py-3 text-lg gap-2.5',
-      xl: 'px-8 py-4 text-xl gap-3'
+      sm: 'px-3 py-2 text-sm gap-1.5 min-h-[40px]',
+      md: 'px-4 py-2.5 text-base gap-2 min-h-[48px]',
+      lg: 'px-6 py-3 text-lg gap-2.5 min-h-[56px]',
+      xl: 'px-8 py-4 text-xl gap-3 min-h-[64px]'
     };
 
     return (
@@ -95,8 +95,9 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={disabled || loading}
         {...props}
       >
-        {loading ? (
-          <>
+        {/* Content wrapper for consistent alignment */}
+        <span className="inline-flex items-center justify-center gap-2">
+          {loading ? (
             <span className="animate-spin">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24">
                 <circle
@@ -114,15 +115,12 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                 />
               </svg>
             </span>
-            <span>Loading...</span>
-          </>
-        ) : (
-          <>
-            {icon && iconPosition === 'left' && icon}
-            {children}
-            {icon && iconPosition === 'right' && icon}
-          </>
-        )}
+          ) : (
+            icon && iconPosition === 'left' && icon
+          )}
+          {children}
+          {!loading && icon && iconPosition === 'right' && icon}
+        </span>
       </button>
     );
   }

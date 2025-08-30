@@ -1,8 +1,6 @@
-import React, { useState, useMemo, useCallback, memo } from "react";
-import dynamic from "next/dynamic";
+import React, { useState, useMemo, memo } from "react";
 import Image from "next/image";
 import Modal from "./ui/modals/Modal";
-import UnifiedCard from "./ui/cards/UnifiedCard";
 import type { PocketRarity } from "@/types/api/pocket-cards";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import { InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
@@ -20,20 +18,14 @@ interface ExtendedPocketCard extends PocketCard {
   type?: string;
 }
 
-// Dynamic import for react-window to reduce bundle size
-const VirtualizedGrid = dynamic(
-  () => import('react-window').then((mod) => ({ default: mod.FixedSizeGrid })),
-  { 
-    ssr: false,
-    loading: () => <div className="animate-pulse bg-gray-200 h-96 rounded-lg" />
-  }
-);
+// Re-added type - used by pages
+type RarityFilter = "all" | "◊" | "◊◊" | "◊◊◊" | "◊◊◊◊" | "★" | "☆☆" | "★★" | "fullart" | "immersive";
+
 
 // Pocket Card wrapper props
 interface PocketCardProps {
   card: ExtendedPocketCard;
   cardClassName?: string;
-  showHP: boolean;
   showRarity: boolean;
   rarity?: string;
   cardFeatures?: unknown;
@@ -41,20 +33,17 @@ interface PocketCardProps {
   imageWidth: number;
   imageHeight: number;
   onCardClick?: (card: ExtendedPocketCard) => void;
-  selectedRarityFilter?: string;
 }
 
 // Pocket Card wrapper with new glass design
 const PocketCard = memo<PocketCardProps>(({ 
   card, 
   cardClassName, 
-  showHP, 
   showRarity, 
   setZoomedCard,
   imageWidth,
   imageHeight,
-  onCardClick,
-  selectedRarityFilter = 'all'
+  onCardClick
 }) => {
   // Parse card details
   const setId = card.id?.split('-')[0]?.toUpperCase() || 'A1';
@@ -73,25 +62,6 @@ const PocketCard = memo<PocketCardProps>(({
     return displayRarity;
   };
   
-  // Determine rarity color for glass pill
-  const getRarityPillColor = (rarity?: string) => {
-    if (!rarity) return 'from-gray-100/80 to-gray-200/80';
-    switch(rarity) {
-      case '◊': return 'from-gray-100/80 to-gray-200/80';
-      case '◊◊': return 'from-purple-100/80 to-purple-200/80';
-      case '◊◊◊': return 'from-pink-100/80 to-pink-200/80';
-      case '◊◊◊◊': return 'from-purple-200/80 to-pink-200/80';
-      case '★': return 'from-yellow-300 via-yellow-400 to-amber-400';
-      case '★★': return 'from-yellow-400 via-amber-400 to-yellow-500';
-      case '★★★': return 'from-yellow-400 via-amber-500 to-orange-400';
-      case '☆': return 'from-yellow-300 via-yellow-400 to-amber-400';
-      case '☆☆': return 'from-yellow-400 via-amber-400 to-yellow-500';
-      case '☆☆☆': return 'from-yellow-400 via-amber-500 to-orange-400';
-      case '👑': return 'from-yellow-400 via-amber-400 to-yellow-500';
-      case '♕': return 'from-yellow-400 via-amber-400 to-yellow-500';
-      default: return 'from-gray-100/80 to-gray-200/80';
-    }
-  };
   
   // Check if rarity should have gold/shiny text
   const isGoldRarity = (rarity?: string) => {
@@ -254,13 +224,13 @@ interface PocketCardListProps {
   gridClassName?: string;
   showPack?: boolean;
   showRarity?: boolean;
-  showHP?: boolean;
+  showHP?: boolean; // Re-added - used by pages
   showSort?: boolean;
   itemsPerPage?: number;
   imageWidth?: number;
   imageHeight?: number;
+  selectedRarityFilter?: string | RarityFilter; // Re-added - used by pages
   onCardClick?: (card: ExtendedPocketCard) => void;
-  selectedRarityFilter?: string;
   searchValue?: string;
   onSearchChange?: (value: string) => void;
 }
@@ -282,12 +252,10 @@ function PocketCardListInner({
   cardClassName = "", 
   gridClassName = "",
   showRarity = true,
-  showHP = true,
   showSort = true,
   imageWidth = 110, // 50% smaller than 220
   imageHeight = 154, // 50% smaller than 308
   onCardClick,
-  selectedRarityFilter = 'all',
   searchValue = '',
   onSearchChange
 }: PocketCardListProps) {
@@ -622,13 +590,11 @@ function PocketCardListInner({
             key={card.id}
             card={card}
             cardClassName={cardClassName}
-            showHP={showHP}
             showRarity={showRarity}
             setZoomedCard={setZoomedCard}
             imageWidth={imageWidth}
             imageHeight={imageHeight}
             onCardClick={onCardClick}
-            selectedRarityFilter={selectedRarityFilter}
           />
         );
       })}

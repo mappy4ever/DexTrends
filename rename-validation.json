@@ -1,0 +1,389 @@
+{
+  "safeRenames": [
+    {
+      "oldPath": "components/ui/loading/PokemonCardSkeleton.tsx",
+      "newPath": "components/ui/loading/PokemonTileSkeleton.tsx",
+      "oldName": "PokemonCardSkeleton",
+      "newName": "PokemonTileSkeleton",
+      "reason": "UI container component - safe to rename"
+    },
+    {
+      "oldPath": "components/ui/EnhancedCardInteractions.tsx",
+      "newPath": "components/ui/EnhancedDisplayInteractions.tsx",
+      "oldName": "EnhancedCardInteractions",
+      "newName": "EnhancedDisplayInteractions",
+      "reason": "UI container component - safe to rename"
+    },
+    {
+      "oldPath": "components/pokemon/PokemonGlassCard.tsx",
+      "newPath": "components/pokemon/PokemonGlassTile.tsx",
+      "oldName": "PokemonGlassCard",
+      "newName": "PokemonGlassTile",
+      "reason": "UI container component - safe to rename"
+    },
+    {
+      "oldPath": "components/unified/PokemonCardRenderer.tsx",
+      "newPath": "components/unified/PokemonTileRenderer.tsx",
+      "oldName": "PokemonCardRenderer",
+      "newName": "PokemonTileRenderer",
+      "reason": "UI container component - safe to rename"
+    },
+    {
+      "oldPath": "components/ui/EnhancedCardModal.tsx",
+      "newPath": "components/ui/SmartCardModal.tsx",
+      "oldName": "EnhancedCardModal",
+      "newName": "SmartCardModal",
+      "reason": "Prefix standardization"
+    },
+    {
+      "oldPath": "components/ui/modals/EnhancedCardModal.tsx",
+      "newPath": "components/ui/modals/SmartCardModal.tsx",
+      "oldName": "EnhancedCardModal",
+      "newName": "SmartCardModal",
+      "reason": "Prefix standardization"
+    },
+    {
+      "oldPath": "components/ui/EnhancedModal.tsx",
+      "newPath": "components/ui/SmartModal.tsx",
+      "oldName": "EnhancedModal",
+      "newName": "SmartModal",
+      "reason": "Prefix standardization"
+    },
+    {
+      "oldPath": "components/ui/AdvancedKeyboardShortcuts.tsx",
+      "newPath": "components/ui/SmartKeyboardShortcuts.tsx",
+      "oldName": "AdvancedKeyboardShortcuts",
+      "newName": "SmartKeyboardShortcuts",
+      "reason": "Prefix standardization"
+    },
+    {
+      "oldPath": "components/ui/AdvancedModalSystem.hooks.ts",
+      "newPath": "components/ui/SmartModalSystem.hooks.ts",
+      "oldName": "AdvancedModalSystem.hooks",
+      "newName": "SmartModalSystem.hooks",
+      "reason": "Prefix standardization"
+    },
+    {
+      "oldPath": "components/ui/AdvancedLoadingStates.hooks.ts",
+      "newPath": "components/ui/SmartLoadingStates.hooks.ts",
+      "oldName": "AdvancedLoadingStates.hooks",
+      "newName": "SmartLoadingStates.hooks",
+      "reason": "Prefix standardization"
+    },
+    {
+      "oldPath": "components/ui/AdvancedLoadingStates.tsx",
+      "newPath": "components/ui/SmartLoadingStates.tsx",
+      "oldName": "AdvancedLoadingStates",
+      "newName": "SmartLoadingStates",
+      "reason": "Prefix standardization"
+    },
+    {
+      "oldPath": "components/ui/AdvancedModalSystem.tsx",
+      "newPath": "components/ui/SmartModalSystem.tsx",
+      "oldName": "AdvancedModalSystem",
+      "newName": "SmartModalSystem",
+      "reason": "Prefix standardization"
+    },
+    {
+      "oldPath": "components/ui/AdvancedDeckBuilder.tsx",
+      "newPath": "components/ui/SmartDeckBuilder.tsx",
+      "oldName": "AdvancedDeckBuilder",
+      "newName": "SmartDeckBuilder",
+      "reason": "Prefix standardization"
+    },
+    {
+      "oldPath": "components/ui/UnifiedSearchBar.tsx",
+      "newPath": "components/ui/SearchBar.tsx",
+      "oldName": "UnifiedSearchBar",
+      "newName": "SearchBar",
+      "reason": "Prefix standardization"
+    },
+    {
+      "oldPath": "components/ui/cards/UnifiedCard.tsx",
+      "newPath": "components/ui/cards/Card.tsx",
+      "oldName": "UnifiedCard",
+      "newName": "Card",
+      "reason": "Prefix standardization"
+    },
+    {
+      "oldPath": "components/unified/UnifiedGrid.tsx",
+      "newPath": "components/unified/Grid.tsx",
+      "oldName": "UnifiedGrid",
+      "newName": "Grid",
+      "reason": "Prefix standardization"
+    },
+    {
+      "oldPath": "components/unified/UnifiedModal.tsx",
+      "newPath": "components/unified/Modal.tsx",
+      "oldName": "UnifiedModal",
+      "newName": "Modal",
+      "reason": "Prefix standardization"
+    },
+    {
+      "oldPath": "components/unified/UnifiedImage.tsx",
+      "newPath": "components/unified/Image.tsx",
+      "oldName": "UnifiedImage",
+      "newName": "Image",
+      "reason": "Prefix standardization"
+    },
+    {
+      "oldPath": "components/unified/UnifiedSearch.tsx",
+      "newPath": "components/unified/Search.tsx",
+      "oldName": "UnifiedSearch",
+      "newName": "Search",
+      "reason": "Prefix standardization"
+    },
+    {
+      "oldPath": "components/unified/UnifiedDataTable.tsx",
+      "newPath": "components/unified/DataTable.tsx",
+      "oldName": "UnifiedDataTable",
+      "newName": "DataTable",
+      "reason": "Prefix standardization"
+    },
+    {
+      "oldPath": "components/tcg-set-detail/UnifiedSetDashboard.tsx",
+      "newPath": "components/tcg-set-detail/SetDashboard.tsx",
+      "oldName": "UnifiedSetDashboard",
+      "newName": "SetDashboard",
+      "reason": "Prefix standardization"
+    },
+    {
+      "oldPath": "components/tcg-set-detail/UnifiedStatsGraph.tsx",
+      "newPath": "components/tcg-set-detail/StatsGraph.tsx",
+      "oldName": "UnifiedStatsGraph",
+      "newName": "StatsGraph",
+      "reason": "Prefix standardization"
+    }
+  ],
+  "safeMerges": [
+    {
+      "duplicate": "components/ui/modals/EnhancedCardModal.tsx",
+      "primary": "components/ui/EnhancedCardModal.tsx",
+      "name": "EnhancedCardModal",
+      "action": "consolidate",
+      "reason": "High similarity - likely safe to merge",
+      "similarity": 1
+    }
+  ],
+  "dangerousMerges": [
+    {
+      "files": [
+        "utils/animation.ts",
+        "utils/animations.ts",
+        "utils/animationVariants.ts",
+        "utils/animationOptimization.ts",
+        "utils/animationPerformance.ts"
+      ],
+      "exports": {
+        "utils/animation.ts": [
+          "animationVariants",
+          "preloadAnimations"
+        ],
+        "utils/animations.ts": [
+          "prefersReducedMotion",
+          "duration",
+          "spring",
+          "ease",
+          "fadeIn",
+          "fadeInUp",
+          "fadeInDown",
+          "scaleIn",
+          "scaleInBounce",
+          "slideInLeft",
+          "slideInRight",
+          "slideInBottom",
+          "rotateIn",
+          "staggerContainer",
+          "staggerItem",
+          "cardHover",
+          "buttonTap",
+          "buttonHover",
+          "pageTransition",
+          "overlayAnimation",
+          "modalAnimation",
+          "skeletonPulse",
+          "pokeBallBounce",
+          "pokemonCardFlip",
+          "notificationSlide",
+          "listAnimation",
+          "createSpring",
+          "createTween",
+          "swipeAnimation",
+          "spinnerRotate",
+          "progressAnimation",
+          "shakeAnimation",
+          "glowPulse",
+          "createMotionSafeVariants",
+          "useMotionSafe",
+          "parallaxAnimation",
+          "animations"
+        ],
+        "utils/animationVariants.ts": [
+          "fadeIn",
+          "slideUp",
+          "scaleIn"
+        ],
+        "utils/animationOptimization.ts": [
+          "GPU_ACCELERATED_PROPS",
+          "willChange",
+          "rafThrottle",
+          "optimizedScrollHandler",
+          "domBatch",
+          "createSpringAnimation",
+          "lazyAnimate",
+          "optimizeCSSAnimation",
+          "FPSMonitor",
+          "respectReducedMotion",
+          "animateNumber"
+        ],
+        "utils/animationPerformance.ts": [
+          "willChangeClasses",
+          "gpuTransforms",
+          "performantAnimations",
+          "optimizeWillChange",
+          "smoothAnimate",
+          "DOMBatcher",
+          "flipAnimate",
+          "reduceMotion",
+          "animationTimings",
+          "easings"
+        ]
+      },
+      "reason": "Duplicate exports found - need careful merge"
+    },
+    {
+      "oldPath": "components/ui/EnhancedCardModal.tsx",
+      "newPath": "components/ui/EnhancedDisplayModal.tsx",
+      "oldName": "EnhancedCardModal",
+      "newName": "EnhancedDisplayModal",
+      "reason": "Contains TCG-related code - might be actual card"
+    },
+    {
+      "oldPath": "components/ui/modals/EnhancedCardModal.tsx",
+      "newPath": "components/ui/modals/EnhancedDisplayModal.tsx",
+      "oldName": "EnhancedCardModal",
+      "newName": "EnhancedDisplayModal",
+      "reason": "Contains TCG-related code - might be actual card"
+    },
+    {
+      "oldPath": "components/ui/PokemonCardAnimations.tsx",
+      "newPath": "components/ui/PokemonTileAnimations.tsx",
+      "oldName": "PokemonCardAnimations",
+      "newName": "PokemonTileAnimations",
+      "reason": "Contains TCG-related code - might be actual card"
+    },
+    {
+      "oldPath": "components/tcg-set-detail/EnhancedCardGrid.tsx",
+      "newPath": "components/tcg-set-detail/EnhancedDisplayGrid.tsx",
+      "oldName": "EnhancedCardGrid",
+      "newName": "EnhancedDisplayGrid",
+      "reason": "Contains TCG-related code - might be actual card"
+    }
+  ],
+  "needsReview": [
+    {
+      "duplicate": "components/pokemon/PokemonFormSelector.tsx",
+      "primary": "components/ui/PokemonFormSelector.tsx",
+      "name": "PokemonFormSelector",
+      "action": "consolidate",
+      "reason": "Partial similarity - needs manual review",
+      "similarity": 1,
+      "exports": {
+        "duplicate": [
+          "default"
+        ],
+        "primary": [
+          "default"
+        ],
+        "common": [
+          "default"
+        ]
+      },
+      "usage": {
+        "duplicate": 1,
+        "primary": 1
+      },
+      "warning": "Both versions are actively used - need careful migration"
+    }
+  ],
+  "keepSeparate": [
+    {
+      "duplicate": "components/pokemon/MobilePokemonDetail.tsx",
+      "primary": "components/ui/MobilePokemonDetail.tsx",
+      "name": "MobilePokemonDetail",
+      "action": "consolidate",
+      "reason": "Different functionality - keep separate",
+      "similarity": 0.1111111111111111
+    },
+    {
+      "duplicate": "components/layout/PageTransition.tsx",
+      "primary": "components/ui/PageTransition.tsx",
+      "name": "PageTransition",
+      "action": "consolidate",
+      "reason": "Different functionality - keep separate",
+      "similarity": 0.1111111111111111
+    },
+    {
+      "duplicate": "components/tcg-set-detail/RarityBadge.tsx",
+      "primary": "components/ui/RarityBadge.tsx",
+      "name": "RarityBadge",
+      "action": "consolidate",
+      "reason": "Different functionality - keep separate",
+      "similarity": 0.3333333333333333
+    },
+    {
+      "duplicate": "components/ui/design-system/Button.tsx",
+      "primary": "components/ui/Button.tsx",
+      "name": "Button",
+      "action": "consolidate",
+      "reason": "Different functionality - keep separate",
+      "similarity": 0.3333333333333333
+    },
+    {
+      "duplicate": "components/unified/OptimizedImage.tsx",
+      "primary": "components/ui/OptimizedImage.tsx",
+      "name": "OptimizedImage",
+      "action": "consolidate",
+      "reason": "Different functionality - keep separate",
+      "similarity": 0
+    },
+    {
+      "duplicate": "components/layout/ErrorBoundary.tsx",
+      "primary": "components/ui/ErrorBoundary.tsx",
+      "name": "ErrorBoundary",
+      "action": "consolidate",
+      "reason": "Different functionality - keep separate",
+      "similarity": 0
+    },
+    {
+      "duplicate": "components/unified/ErrorBoundary.tsx",
+      "primary": "components/ui/ErrorBoundary.tsx",
+      "name": "ErrorBoundary",
+      "action": "consolidate",
+      "reason": "Different functionality - keep separate",
+      "similarity": 0.25
+    },
+    {
+      "duplicate": "components/ErrorBoundary.tsx",
+      "primary": "components/ui/ErrorBoundary.tsx",
+      "name": "ErrorBoundary",
+      "action": "consolidate",
+      "reason": "Different functionality - keep separate",
+      "similarity": 0.25
+    },
+    {
+      "duplicate": "components/qol/NotificationSystem.tsx",
+      "primary": "components/unified/NotificationSystem.tsx",
+      "name": "NotificationSystem",
+      "action": "consolidate",
+      "reason": "Different functionality - keep separate",
+      "similarity": 0.25
+    }
+  ],
+  "stats": {
+    "totalChecked": 19,
+    "safeCount": 23,
+    "dangerousCount": 13,
+    "reviewCount": 1
+  }
+}

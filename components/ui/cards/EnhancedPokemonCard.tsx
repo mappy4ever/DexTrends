@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import Image from 'next/image';
+import { ProgressiveImage } from '../ProgressiveImage';
 import { useRouter } from 'next/router';
 import { TypeBadge } from '../TypeBadge';
 import { cn } from '@/utils/cn';
@@ -161,17 +162,16 @@ const EnhancedPokemonCard = memo(({
           )} />
         </div>
         
-        {/* Pokédex Number - Top center inside circle */}
+        {/* Pokédex Number - Perfectly centered at top */}
         <div className={cn(
-          'absolute top-2 z-20',
+          'absolute top-2 left-1/2 -translate-x-1/2 z-20',
           'text-xs font-mono font-extrabold',
-          'text-gray-700 dark:text-gray-300',
+          'text-gray-800 dark:text-gray-200',
           'tracking-wider',
-          'transform transition-all duration-300',
+          'transition-all duration-200',
           'group-hover:text-gray-900 dark:group-hover:text-gray-100',
           'group-hover:scale-110'
-        )}
-        style={{ left: '54%', transform: 'translateX(-50%)' }}>
+        )}>
           #{formatNumber(pokemon.id)}
         </div>
       </motion.div>

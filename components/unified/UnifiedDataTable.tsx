@@ -427,7 +427,8 @@ export function UnifiedDataTable<T extends Record<string, any>>({
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder={searchPlaceholder}
-              className="w-full px-4 py-2 pl-10 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full px-4 py-2 pl-10 text-base bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 touch-manipulation"
+              style={{ fontSize: '16px' }}
             />
             <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -472,9 +473,9 @@ export function UnifiedDataTable<T extends Record<string, any>>({
         </div>
       ) : (
         /* Desktop: Table View */
-        <div className="overflow-x-auto rounded-lg shadow-md">
+        <div className="overflow-x-auto rounded-lg shadow-md max-h-[calc(100vh-200px)] overflow-y-auto">
           <table className="w-full bg-white dark:bg-gray-800">
-            <thead className="bg-gray-100 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
+            <thead className="bg-gray-100 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10">
               <tr>
                 {expandable && <th className="w-12" />}
                 {columns.map(col => (

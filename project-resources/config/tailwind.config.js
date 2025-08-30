@@ -33,6 +33,11 @@ const config = {
     },
     extend: {
       colors: {
+        // Extended gray colors for better dark mode
+        gray: {
+          750: '#2D3748',
+          850: '#1A202C',
+        },
         // Clean base colors
         'white': 'var(--white)',
         'off-white': 'var(--off-white)',

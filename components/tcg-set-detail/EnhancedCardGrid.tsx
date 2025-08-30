@@ -3,10 +3,9 @@ import { motion, AnimatePresence, useInView } from 'framer-motion';
 import Image from 'next/image';
 import { TCGCard } from '../../types/api/cards';
 import { CardFlipAnimation } from './CardFlipAnimation';
-import { InteractiveCard, easings } from '../ui/EnhancedAnimationSystem';
+import { InteractiveCard, easings, useEnhancedAnimation } from '../ui/EnhancedAnimationSystem';
 import { getRaritySymbol } from '../../utils/tcgRaritySymbols';
 import hapticFeedback from '../../utils/hapticFeedback';
-import { useEnhancedAnimation } from '../ui/EnhancedAnimationSystem';
 
 interface EnhancedCardGridProps {
   cards: TCGCard[];

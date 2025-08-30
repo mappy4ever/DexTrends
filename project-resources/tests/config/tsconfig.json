@@ -21,8 +21,8 @@
     "noImplicitThis": true,
     "useUnknownInCatchVariables": false,
     "alwaysStrict": true,
-    "noUnusedLocals": false, // TODO: Enable after cleaning unused imports
-    "noUnusedParameters": false, // TODO: Enable after cleaning unused params
+    "noUnusedLocals": false, // Temporarily disabled for verification
+    "noUnusedParameters": false, // Temporarily disabled for verification
     "exactOptionalPropertyTypes": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,

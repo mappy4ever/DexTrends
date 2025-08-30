@@ -164,7 +164,8 @@ export const GlobalSearch: React.FC = () => {
             onFocus={() => setShowResults(true)}
             onKeyDown={handleKeyDown}
             placeholder="Search Pokémon, cards, moves, items..."
-            className="w-full px-12 py-4 text-lg bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-full shadow-lg focus:outline-none focus:border-purple-500 focus:shadow-xl transition-all duration-200"
+            className="w-full px-12 py-4 text-lg bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-full shadow-lg focus:outline-none focus:border-purple-500 focus:shadow-xl transition-all duration-200 touch-manipulation [&::-webkit-inner-spin-button]:appearance-none"
+            style={{ fontSize: '18px' }} // Explicit size to prevent zoom
           />
           
           {/* Search Icon */}

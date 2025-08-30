@@ -65,8 +65,8 @@ export const fadeInUp: Variants = {
     y: 0,
     transition: {
       type: "spring",
-      stiffness: 100,
-      damping: 15
+      stiffness: 260,
+      damping: 20
     }
   }
 };
@@ -81,8 +81,8 @@ export const fadeInScale: Variants = {
     scale: 1,
     transition: {
       type: "spring",
-      stiffness: 100,
-      damping: 15
+      stiffness: 260,
+      damping: 20
     }
   }
 };
@@ -97,8 +97,8 @@ export const slideInLeft: Variants = {
     x: 0,
     transition: {
       type: "spring",
-      stiffness: 100,
-      damping: 15
+      stiffness: 260,
+      damping: 20
     }
   }
 };
@@ -113,8 +113,8 @@ export const slideInRight: Variants = {
     x: 0,
     transition: {
       type: "spring",
-      stiffness: 100,
-      damping: 15
+      stiffness: 260,
+      damping: 20
     }
   }
 };
@@ -131,7 +131,7 @@ export const popIn: Variants = {
     rotate: 0,
     transition: {
       type: "spring",
-      stiffness: 200,
+      stiffness: 260,
       damping: 20
     }
   }
@@ -149,8 +149,8 @@ export const flipIn: Variants = {
     scale: 1,
     transition: {
       type: "spring",
-      stiffness: 100,
-      damping: 15
+      stiffness: 260,
+      damping: 20
     }
   }
 };
@@ -163,7 +163,7 @@ export const cardHover = {
     transition: {
       duration: 0.2,
       type: "spring",
-      stiffness: 300,
+      stiffness: 260,
       damping: 20
     }
   },
@@ -173,7 +173,7 @@ export const cardHover = {
     transition: {
       duration: 0.2,
       type: "spring",
-      stiffness: 300,
+      stiffness: 260,
       damping: 20
     }
   },
@@ -183,7 +183,7 @@ export const cardHover = {
     transition: {
       duration: 0.1,
       type: "spring",
-      stiffness: 300,
+      stiffness: 260,
       damping: 20
     }
   }

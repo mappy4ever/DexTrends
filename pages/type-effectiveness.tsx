@@ -195,12 +195,12 @@ const UnifiedTypeEffectivenessPage = () => {
   };
 
   const getEffectivenessColor = (multiplier: number) => {
-    if (multiplier === 0) return 'bg-gray-400';
-    if (multiplier === 0.25) return 'bg-purple-500';
-    if (multiplier === 0.5) return 'bg-red-500';
-    if (multiplier === 2) return 'bg-green-500';
-    if (multiplier === 4) return 'bg-emerald-600';
-    return 'bg-blue-400';
+    if (multiplier === 0) return 'bg-gray-800 dark:bg-gray-600';
+    if (multiplier === 0.25) return 'bg-red-700 dark:bg-red-600';
+    if (multiplier === 0.5) return 'bg-orange-600 dark:bg-orange-500';
+    if (multiplier === 2) return 'bg-green-600 dark:bg-green-500';
+    if (multiplier === 4) return 'bg-blue-700 dark:bg-blue-500';
+    return 'bg-gray-500 dark:bg-gray-400';
   };
 
   const getEffectivenessText = (multiplier: number) => {

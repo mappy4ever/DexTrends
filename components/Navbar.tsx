@@ -9,10 +9,10 @@ import { FiTrendingUp, FiShoppingBag, FiBarChart2 } from "react-icons/fi";
 import GlobalSearchModal from "./GlobalSearchModal";
 import logger from "../utils/logger";
 import { DynamicAdvancedSearchModal } from "./dynamic/DynamicComponents";
-import { useAppContext, useTheme, useFavorites } from "../context/UnifiedAppContext";
-import { toLowercaseUrl } from "../utils/formatters";
+import { useAppContext, useFavorites } from "../context/UnifiedAppContext";
 import ClientOnly from "./ClientOnly";
 import { NavbarLogo } from "../components/ui/DexTrendsLogo";
+import { PokeballSVG } from "./ui/PokeballSVG";
 
 // Type definitions for navigation
 interface DropdownItem {
@@ -38,12 +38,10 @@ interface GlobalSearchModalHandle {
 export default function Navbar() {
   const { theme, toggleTheme, mounted } = useAppContext();
   const { favorites } = useFavorites();
-  const [hoverExpanded, setHoverExpanded] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dropdownStates, setDropdownStates] = useState<Record<string, boolean>>({});
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
   const menuWrapperRef = useRef<HTMLDivElement>(null);
-  const dropdownRefs = useRef<Record<string, HTMLDivElement>>({});
   const router = useRouter();
   const searchModalRef = useRef<GlobalSearchModalHandle>(null);
   
@@ -71,7 +69,7 @@ export default function Navbar() {
         { href: "/trending", label: "Leaderboard", icon: <RiGovernmentFill size={18} />, description: "Top collectors and rankings" },
       ]
     },
-    { href: "/pokedex", label: "Pokédex", icon: <BsBook size={18} />, color: "text-poke-fairy" },
+    { href: "/pokedex", label: "Pokédex", icon: <PokeballSVG size={18} />, color: "text-poke-fairy" },
     {
       href: "/pokemon",
       label: "Pokémon",
@@ -117,24 +115,8 @@ export default function Navbar() {
     { href: "/fun", label: "Fun", icon: <AiOutlineBulb size={18} />, color: "text-poke-psychic" },
   ];
 
-  const pageTitles = navItems.reduce<Record<string, string>>((acc, item) => {
-    acc[item.href] = item.label;
-    return acc;
-  }, { "/": "Dashboard" }); // Ensure root path has a title
 
-  const currentTitle = pageTitles[router.pathname] || "DexTrends"; // Updated title
 
-  // Simple dropdown toggle
-  const handleDropdownToggle = (itemHref: string) => {
-    setDropdownStates(prev => {
-      const newState: Record<string, boolean> = {};
-      // Close all other dropdowns
-      Object.keys(prev).forEach(key => {
-        newState[key] = key === itemHref ? !prev[key] : false;
-      });
-      return newState;
-    });
-  };
 
   // Close mobile menu on route change - using pathname for reliability
   useEffect(() => {
@@ -260,10 +242,7 @@ export default function Navbar() {
                         );
                       
                       if (!isMovingToDropdown) {
-                        // Small delay to allow moving to dropdown
-                        setTimeout(() => {
-                          setDropdownStates(prev => ({ ...prev, [item.href]: false }));
-                        }, 100);
+                        setDropdownStates(prev => ({ ...prev, [item.href]: false }));
                       }
                     }}
                   >
@@ -437,10 +416,10 @@ export default function Navbar() {
             onClick={() => setMobileOpen(false)}
           />
           
-          {/* Menu panel - slide in from right, above backdrop */}
+          {/* Menu panel - slide in from left, above backdrop */}
           <div 
             ref={menuWrapperRef}
-            className="fixed right-0 top-16 bottom-0 w-80 max-w-[85vw] bg-white dark:bg-gray-900 shadow-2xl z-50 md:hidden overflow-y-auto safe-area-padding-x"
+            className="fixed left-0 top-16 bottom-0 w-80 max-w-[85vw] bg-white dark:bg-gray-900 shadow-2xl z-50 md:hidden overflow-y-auto safe-area-padding-x"
             onClick={(e) => e.stopPropagation()}
           >
             <nav className="flex flex-col space-y-2">

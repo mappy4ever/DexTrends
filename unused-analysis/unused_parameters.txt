@@ -1,0 +1,2 @@
+utils/pokemonDetailUtils.ts:346 - Unused parameter: Trade
+utils/supabase.ts:149 - Unused parameter: learnMethod

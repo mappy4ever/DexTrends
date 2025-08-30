@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
+import type { FC } from 'react';
 import { useRouter } from "next/router";
 import { NextPage } from "next";
 import Head from "next/head";
@@ -8,7 +9,6 @@ import { RiGovernmentFill } from "react-icons/ri";
 import { GiPokerHand, GiCardPickup } from "react-icons/gi";
 import { FiShoppingBag } from "react-icons/fi";
 import { AiOutlineBulb } from "react-icons/ai";
-import type { FC } from "react";
 import logger from '../../utils/logger';
 
 // Types for dynamic imports

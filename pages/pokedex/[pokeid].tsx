@@ -29,8 +29,7 @@ import PokemonHeroSectionV3 from "../../components/pokemon/PokemonHeroSectionV3"
 import PokemonTabSystem from "../../components/pokemon/PokemonTabSystem";
 import FloatingActionBar from "../../components/pokemon/FloatingActionBar";
 import { DetailPageSkeleton } from '@/components/ui/SkeletonLoadingSystem';
-import { FullBleedWrapper } from "../../components/ui";
-import { PageErrorBoundary } from "../../components/ui";
+import { FullBleedWrapper, PageErrorBoundary } from '../../components/ui';
 import { CircularButton } from "../../components/ui/design-system";
 import { getPokemonTheme } from "../../utils/pokemonAnimations";
 import NavigationArrow from "../../components/pokemon/NavigationArrow";

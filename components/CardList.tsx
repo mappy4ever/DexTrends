@@ -2,13 +2,10 @@ import React, { useState, useMemo, useCallback, memo, useRef, useEffect } from "
 import Image from "next/image";
 import { motion } from "./ui/LazyMotion";
 import Modal from "./ui/modals/Modal";
-import UnifiedCard from "./ui/cards/UnifiedCard";
 import logger from "@/utils/logger";
 import { CardGridSkeleton } from "./ui/SkeletonLoader";
 import { TCGCard } from "../types/api/cards";
-import { getRaritySymbol, getRarityGlowClass } from "../utils/tcgRaritySymbols";
 import performanceMonitor from "../utils/performanceMonitor";
-import { tcgCardToSdkCard } from "../utils/cardTypeGuards";
 import { createGlassStyle } from './ui/design-system/glass-constants';
 
 type SortOption = "price" | "releaseDate" | "rarity";
@@ -221,7 +218,6 @@ const CardList = memo<CardListProps>(({
   error = null,
   initialSortOption = "price",
   onCardClick = () => {},
-  onRarityClick,
   getPrice = () => 0,
   getReleaseDate = () => "0000-00-00",
   getRarityRank = () => 0,

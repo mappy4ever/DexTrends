@@ -1,5 +1,4 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { useRouter } from 'next/router';
 import logger from '../utils/logger';
 
 interface Props {
@@ -17,21 +16,6 @@ interface State {
   errorId: string;
 }
 
-// Hook to reset error boundary on route change
-function useResetOnRouteChange(resetError: () => void) {
-  const router = useRouter();
-  
-  React.useEffect(() => {
-    const handleRouteChange = () => {
-      resetError();
-    };
-    
-    router.events.on('routeChangeComplete', handleRouteChange);
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
-    };
-  }, [router, resetError]);
-}
 
 // Functional wrapper to use hooks with class component
 function ErrorBoundaryWrapper(props: Props) {

@@ -4,8 +4,8 @@
  */
 
 import dynamic from 'next/dynamic';
-import React, { ReactNode, ComponentType } from 'react';
 import type { DynamicOptions } from 'next/dynamic';
+import React, { ReactNode, ComponentType } from 'react';
 
 // Type definitions
 interface DynamicLoaderProps {

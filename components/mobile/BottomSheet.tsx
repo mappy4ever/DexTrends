@@ -1,8 +1,6 @@
-import React, { useState, useRef, useCallback, useEffect, ReactNode, TouchEvent, MouseEvent } from 'react';
+import React, { useState, useRef, useCallback, useEffect, ReactNode, MouseEvent } from 'react';
 import { motion, AnimatePresence, PanInfo, useTransform, useMotionValue } from 'framer-motion';
-import { useBottomSheet } from './BottomSheet.hooks';
 import { useMobileUtils } from '../../utils/mobileUtils';
-import logger from '../../utils/logger';
 import hapticFeedback from '../../utils/hapticFeedback';
 
 // Re-export hook for backward compatibility
@@ -49,9 +47,6 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
   const contentRef = useRef<HTMLDivElement>(null);
   const [currentSnapPoint, setCurrentSnapPoint] = useState(initialSnapPoint);
   const [isDragging, setIsDragging] = useState(false);
-  const [dragOffset, setDragOffset] = useState(0);
-  const [startY, setStartY] = useState(0);
-  const [startHeight, setStartHeight] = useState(0);
   const [hasReachedThreshold, setHasReachedThreshold] = useState(false);
   const [lastSnapPoint, setLastSnapPoint] = useState(currentSnapPoint);
   
@@ -66,13 +61,6 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
     return screenSize.height * snapPoint;
   }, [screenSize.height]);
 
-  // Get current sheet transform
-  const getSheetTransform = useCallback(() => {
-    const targetHeight = getSheetHeight(currentSnapPoint);
-    const offset = isDragging ? dragOffset : 0;
-    const translateY = screenSize.height - targetHeight + offset;
-    return Math.max(0, translateY);
-  }, [currentSnapPoint, isDragging, dragOffset, getSheetHeight, screenSize.height]);
 
   // Find nearest snap point
   const findNearestSnapPoint = useCallback((currentHeight: number) => {
@@ -91,84 +79,8 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
     return nearestPoint;
   }, [snapPoints, screenSize.height]);
 
-  // Handle touch start
-  const handleTouchStart = useCallback((e: TouchEvent<HTMLDivElement>) => {
-    if (!allowDrag) return;
 
-    const touch = e.touches[0];
-    setStartY(touch.clientY);
-    setStartHeight(getSheetHeight(currentSnapPoint));
-    setIsDragging(true);
-    setHasReachedThreshold(false);
-    
-    // Haptic feedback on drag start
-    hapticFeedback.light();
-    
-    logger.debug('Bottom sheet drag started');
-  }, [allowDrag, currentSnapPoint, getSheetHeight]);
 
-  // Handle touch move
-  const handleTouchMove = useCallback((e: TouchEvent<HTMLDivElement>) => {
-    if (!isDragging || !allowDrag) return;
-
-    e.preventDefault();
-    const touch = e.touches[0];
-    const deltaY = touch.clientY - startY;
-    const newOffset = Math.max(-startHeight, deltaY);
-    
-    setDragOffset(newOffset);
-    
-    // Haptic feedback when crossing snap thresholds
-    const currentHeight = startHeight - newOffset;
-    const nearestPoint = findNearestSnapPoint(currentHeight);
-    
-    if (nearestPoint !== lastSnapPoint) {
-      hapticFeedback.selection();
-      setLastSnapPoint(nearestPoint);
-    }
-    
-    // Haptic feedback when reaching dismiss threshold
-    if (newOffset > screenSize.height * 0.3 && !hasReachedThreshold) {
-      hapticFeedback.warning();
-      setHasReachedThreshold(true);
-    }
-  }, [isDragging, allowDrag, startY, startHeight, findNearestSnapPoint, lastSnapPoint, screenSize.height, hasReachedThreshold]);
-
-  // Handle touch end
-  const handleTouchEnd = useCallback(() => {
-    if (!isDragging || !allowDrag) return;
-
-    const currentHeight = startHeight - dragOffset;
-    const velocity = Math.abs(dragOffset) / 100; // Simplified velocity calculation
-    
-    // Determine if user is closing or snapping
-    if (dragOffset > 100 && velocity > 0.5) {
-      // Fast swipe down - close
-      hapticFeedback.success();
-      onClose();
-    } else if (currentHeight < getSheetHeight(snapPoints[0]) * 0.5) {
-      // Dragged below minimum - close
-      hapticFeedback.success();
-      onClose();
-    } else {
-      // Snap to nearest point
-      const nearestPoint = findNearestSnapPoint(currentHeight);
-      if (nearestPoint !== currentSnapPoint) {
-        hapticFeedback.medium();
-      }
-      setCurrentSnapPoint(nearestPoint);
-      setLastSnapPoint(nearestPoint);
-      
-      if (onSnapPointChange) {
-        onSnapPointChange(nearestPoint);
-      }
-    }
-
-    setIsDragging(false);
-    setDragOffset(0);
-    
-    logger.debug('Bottom sheet drag ended', { currentSnapPoint });
-  }, [isDragging, allowDrag, dragOffset, startHeight, snapPoints, currentSnapPoint, onClose, findNearestSnapPoint, getSheetHeight, onSnapPointChange]);
 
   // Handle backdrop click
   const handleBackdropClick = useCallback((e: MouseEvent<HTMLDivElement>) => {
@@ -218,7 +130,6 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
     return undefined;
   }, [isOpen]);
 
-  const sheetTransform = getSheetTransform();
   
   // Calculate current height as a percentage for framer-motion
   const currentHeight = (1 - currentSnapPoint) * 100;
@@ -281,7 +192,6 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
               hapticFeedback.light();
             }}
             onDrag={(_event, info: PanInfo) => {
-              setDragOffset(info.offset.y);
               y.set(info.offset.y);
               
               // Haptic feedback when crossing snap thresholds
@@ -321,7 +231,6 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
                 snapTo(nearestPoint);
               }
               setIsDragging(false);
-              setDragOffset(0);
               setHasReachedThreshold(false);
               y.set(0);
             }}

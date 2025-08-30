@@ -1,9 +1,8 @@
 import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '../../utils/cn';
-import { CircularCard } from '../ui/design-system';
+import { CircularCard, GlassContainer } from '../ui/design-system';
 import { TypeBadge } from '../ui/TypeBadge';
-import { GlassContainer } from '../ui/design-system';
 import type { EvolutionChain, EvolutionLink, Pokemon, PokemonSpecies } from "../../types/pokemon";
 
 interface EvolutionFlowProps {

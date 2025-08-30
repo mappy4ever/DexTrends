@@ -14,8 +14,7 @@ import { UnifiedSearchBar, EmptyStateGlass, LoadingStateGlass } from '../../comp
 import TCGCardList from "../../components/TCGCardList";
 import VirtualCardGrid from "../../components/VirtualCardGrid";
 import SimpleCardWrapper from "../../components/ui/SimpleCardWrapper";
-import { useTheme } from "../../context/UnifiedAppContext";
-import { useFavorites } from "../../context/UnifiedAppContext";
+import { useTheme, useFavorites } from '../../context/UnifiedAppContext';
 import { useViewSettings } from "../../context/UnifiedAppContext";
 import { DetailPageSkeleton, InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
 import logger from "../../utils/logger";

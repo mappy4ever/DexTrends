@@ -426,6 +426,8 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
                 onTabChange(tab.id);
               }}
               data-testid={tab.id === 'moves' ? 'moves-tab' : `tab-${tab.id}`}
+              title={tab.label}
+              aria-label={tab.label}
               className={cn(
                 "tab-button-mobile",
                 "px-4 py-2.5 md:px-5 md:py-2.5 font-medium text-sm transition-all duration-300 whitespace-nowrap flex items-center gap-2 rounded-full",
@@ -435,9 +437,8 @@ const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
                   : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
               )}
             >
-              <span className="text-base">{tab.icon}</span>
-              <span className="hidden min-[420px]:inline">{tab.label}</span>
-              <span className="min-[420px]:hidden">{tab.label.slice(0, 3)}</span>
+              <span className="text-lg md:text-base">{tab.icon}</span>
+              <span className="hidden md:inline">{tab.label}</span>
             </button>
           ))}
         </div>
