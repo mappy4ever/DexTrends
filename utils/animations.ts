@@ -582,3 +582,234 @@ export const animations = {
   special: { shakeAnimation, glowPulse },
   utils: { createSpring, createTween, createMotionSafeVariants, parallaxAnimation }
 };
+
+/**
+ * ================================================================================
+ * CONSOLIDATED OPTIMIZATION UTILITIES
+ * Merged from animationOptimization.ts, gpuOptimizedAnimations.ts
+ * ================================================================================
+ */
+
+// GPU-accelerated properties
+export const GPU_ACCELERATED_PROPS = [
+  'transform',
+  'opacity',
+  'filter',
+  'backdrop-filter'
+] as const;
+
+// Will-change optimization manager
+class WillChangeManager {
+  private elements = new WeakMap<HTMLElement, string[]>();
+  private timeouts = new WeakMap<HTMLElement, NodeJS.Timeout>();
+
+  add(element: HTMLElement, properties: string[], duration = 1000) {
+    if (!element) return;
+    const existingTimeout = this.timeouts.get(element);
+    if (existingTimeout) clearTimeout(existingTimeout);
+    
+    element.style.willChange = properties.join(', ');
+    this.elements.set(element, properties);
+    
+    const timeout = setTimeout(() => this.remove(element), duration);
+    this.timeouts.set(element, timeout);
+  }
+
+  remove(element: HTMLElement) {
+    if (!element) return;
+    element.style.willChange = 'auto';
+    this.elements.delete(element);
+    
+    const timeout = this.timeouts.get(element);
+    if (timeout) {
+      clearTimeout(timeout);
+      this.timeouts.delete(element);
+    }
+  }
+
+  clear() {
+    this.elements = new WeakMap();
+    this.timeouts = new WeakMap();
+  }
+}
+
+export const willChange = new WillChangeManager();
+
+/**
+ * Request Animation Frame throttle
+ */
+export function rafThrottle<T extends (...args: any[]) => any>(
+  callback: T
+): (...args: Parameters<T>) => void {
+  let rafId: number | null = null;
+  let lastArgs: Parameters<T>;
+
+  return (...args: Parameters<T>) => {
+    lastArgs = args;
+    if (rafId === null) {
+      rafId = requestAnimationFrame(() => {
+        callback(...lastArgs);
+        rafId = null;
+      });
+    }
+  };
+}
+
+/**
+ * Optimized scroll handler with passive events
+ */
+export function optimizedScrollHandler(
+  element: HTMLElement | Window,
+  handler: (e: Event) => void,
+  options?: { throttle?: boolean; passive?: boolean }
+) {
+  const { throttle = true, passive = true } = options || {};
+  const optimizedHandler = throttle ? rafThrottle(handler) : handler;
+  
+  element.addEventListener('scroll', optimizedHandler, { passive });
+  
+  return () => {
+    element.removeEventListener('scroll', optimizedHandler);
+  };
+}
+
+/**
+ * Batch DOM operations for better performance
+ */
+class DOMBatcher {
+  private reads: (() => void)[] = [];
+  private writes: (() => void)[] = [];
+  private scheduled = false;
+
+  read(fn: () => void) {
+    this.reads.push(fn);
+    this.schedule();
+  }
+
+  write(fn: () => void) {
+    this.writes.push(fn);
+    this.schedule();
+  }
+
+  private schedule() {
+    if (!this.scheduled) {
+      this.scheduled = true;
+      requestAnimationFrame(() => this.flush());
+    }
+  }
+
+  private flush() {
+    const reads = [...this.reads];
+    const writes = [...this.writes];
+    
+    this.reads = [];
+    this.writes = [];
+    this.scheduled = false;
+    
+    reads.forEach(fn => fn());
+    writes.forEach(fn => fn());
+  }
+}
+
+export const domBatcher = new DOMBatcher();
+
+/**
+ * GPU-optimized transform utilities
+ */
+export const transform3d = {
+  translate: (x = 0, y = 0, z = 0) => `translate3d(${x}px, ${y}px, ${z}px)`,
+  scale: (scale = 1) => `scale3d(${scale}, ${scale}, 1)`,
+  rotate: (deg = 0) => `rotate3d(0, 0, 1, ${deg}deg)`,
+  matrix: (values: number[]) => `matrix3d(${values.join(',')})`
+};
+
+/**
+ * Preload animations utility
+ */
+export const preloadAnimations = () => {
+  if (typeof window !== 'undefined') {
+    import('framer-motion');
+  }
+};
+
+/**
+ * ================================================================================
+ * STANDARDIZED ANIMATIONS
+ * Merged from standardizedAnimations.ts - Used by PokemonTabSystem & TypeEffectivenessWheel
+ * ================================================================================
+ */
+
+// Animation configuration for Pokemon pages
+export const ANIMATION_CONFIG = {
+  durations: {
+    fast: 0.2,
+    normal: 0.3,
+    slow: 0.5,
+    hover: 0.15,
+  },
+  easings: {
+    smooth: [0.4, 0, 0.2, 1] as const,
+    bounce: [0.68, -0.55, 0.265, 1.55] as const,
+    sharp: [0.4, 0, 1, 1] as const,
+    gentle: [0.25, 0.46, 0.45, 0.94] as const,
+  },
+  springs: {
+    gentle: { damping: 28, stiffness: 400, mass: 0.8 },
+    bouncy: { damping: 18, stiffness: 600, mass: 0.6 },
+    stiff: { damping: 35, stiffness: 500, mass: 0.5 },
+  },
+} as const;
+
+// Create transition with reduced motion support
+export const createTransition = (
+  config: Partial<Transition> = {},
+  respectReducedMotion = true
+): Transition => {
+  if (respectReducedMotion && prefersReducedMotion()) {
+    return { duration: 0, ...config };
+  }
+  return {
+    type: 'spring',
+    ...ANIMATION_CONFIG.springs.gentle,
+    ...config,
+  };
+};
+
+// Get animation props helper
+export const getAnimationProps = (
+  animationType: string,
+  options: {
+    respectReducedMotion?: boolean;
+    delay?: number;
+    duration?: number;
+  } = {}
+) => {
+  const { respectReducedMotion = true, delay = 0, duration } = options;
+  
+  if (respectReducedMotion && prefersReducedMotion()) {
+    return {
+      initial: 'visible',
+      animate: 'visible',
+      exit: 'visible',
+      variants: { visible: { opacity: 1 } },
+    };
+  }
+  
+  const baseVariants = animations.fade.fadeIn;
+  return {
+    initial: 'hidden',
+    animate: 'visible',
+    exit: 'exit',
+    variants: baseVariants,
+    transition: { delay, duration },
+  };
+};
+
+// UI Animation sets for components
+export const UI_ANIMATION_SETS = {
+  container: staggerContainer,
+  item: staggerItem,
+  fade: fadeIn,
+  scale: scaleIn,
+  slide: slideInBottom,
+};

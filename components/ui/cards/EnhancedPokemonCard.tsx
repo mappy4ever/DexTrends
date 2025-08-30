@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { TypeBadge } from '../TypeBadge';
 import { cn } from '@/utils/cn';
 import { motion } from 'framer-motion';
-import { cardHover } from '@/utils/staggerAnimations';
+import { cardHover } from '@/utils/animations';
 
 interface EnhancedPokemonCardProps {
   pokemon: {

@@ -11,7 +11,7 @@ import { cn } from '../../utils/cn';
 import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { FaClipboardList, FaChartBar, FaExchangeAlt, FaMapMarkerAlt, FaTrophy, FaLayerGroup } from 'react-icons/fa';
 import { GiCrossedSwords, GiEggClutch } from 'react-icons/gi';
-import { getAnimationProps } from '../../utils/standardizedAnimations';
+import { getAnimationProps } from '../../utils/animations';
 import { useTheme } from '../../context/UnifiedAppContext';
 import logger from '../../utils/logger';
 

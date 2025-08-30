@@ -15,6 +15,6 @@ export function MotionProvider({ children }: { children: ReactNode }) {
   );
 }
 
-// Animation variants moved to animationVariants.ts to avoid Fast Refresh issues
+// Animation variants moved to animations.ts to avoid Fast Refresh issues
 // Re-export for convenience
-export { fadeIn, slideUp, scaleIn } from './animationVariants';
+export { fadeIn, slideInBottom as slideUp, scaleIn } from './animations';

@@ -7,7 +7,7 @@ import { useTypeEffectiveness } from '../../hooks/useTypeEffectiveness';
 import { POKEMON_TYPE_COLORS } from '../../utils/unifiedTypeColors';
 import { FaExclamationTriangle, FaBan, FaCircle } from 'react-icons/fa';
 import { GiShield } from 'react-icons/gi';
-import { getAnimationProps, UI_ANIMATION_SETS } from '../../utils/standardizedAnimations';
+import { getAnimationProps, UI_ANIMATION_SETS } from '../../utils/animations';
 
 interface TypeEffectivenessWheelProps {
   pokemonTypes: { slot: number; type: { name: string } }[];
@@ -152,7 +152,8 @@ const TypeEffectivenessWheel: React.FC<TypeEffectivenessWheelProps> = ({
                 ? `${category.bgColor} ${category.borderColor}`
                 : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
             )}
-            {...UI_ANIMATION_SETS.button}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             {/* Background gradient when selected */}
             {selectedCategory === category.id && (
