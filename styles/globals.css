@@ -14,6 +14,12 @@
 /* Import responsive system for unified design */
 @import './responsive-system.css';
 
+/* Import premium interactions and polish */
+@import './premium-interactions.css';
+
+/* Import Dynamic Island styles */
+@import './dynamic-island.css';
+
 /* GPU Acceleration for Animations */
 @layer utilities {
   .transform-gpu {

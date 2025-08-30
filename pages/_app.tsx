@@ -50,6 +50,7 @@ const dynamicImports = {
   KeyboardShortcutsManager: () => import('../components/qol/KeyboardShortcuts').catch(() => ({ default: () => null })),
   GlobalSearchShortcuts: () => import('../components/qol/GlobalSearchShortcuts').catch(() => ({ default: () => null })),
   PreferencesManager: () => import('../components/qol/PreferencesManager').catch(() => ({ default: () => null })),
+  DynamicIsland: () => import('../components/ui/DynamicIsland').then(mod => ({ default: mod.DynamicIsland })).catch(() => ({ default: () => null })),
 };
 
 // Safe components - only load confirmed existing ones
@@ -80,6 +81,12 @@ const GlobalSearchShortcuts = dynamic(dynamicImports.GlobalSearchShortcuts, {
 
 // Preferences manager
 const PreferencesManager = dynamic(dynamicImports.PreferencesManager, {
+  ssr: false,
+  loading: () => null
+});
+
+// Dynamic Island notifications
+const DynamicIsland = dynamic(dynamicImports.DynamicIsland, {
   ssr: false,
   loading: () => null
 });
@@ -144,6 +151,7 @@ const AppContent: React.FC<AppContentProps> = ({
                       <KeyboardShortcutsManager />
                       <GlobalSearchShortcuts />
                       <PreferencesManager />
+                      <DynamicIsland />
                       
                       {/* Mobile features */}
                     </>

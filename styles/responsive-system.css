@@ -220,12 +220,26 @@
   margin: 0 auto;
   max-height: 90vh;
   overflow-y: auto;
+  z-index: 50;
   
   /* Mobile: Bottom sheet */
   bottom: 0;
   border-radius: var(--radius-xl) var(--radius-xl) 0 0;
   width: 100%;
   animation: slideUp 0.3s ease-out;
+  
+  /* Touch handle for dragging */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0.75rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3rem;
+    height: 0.25rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 9999px;
+  }
 }
 
 /* Desktop: Centered modal */
@@ -237,7 +251,51 @@
     width: min(90%, 600px);
     border-radius: var(--radius-xl);
     animation: fadeIn 0.2s ease-out;
+    
+    &::before {
+      display: none;
+    }
   }
+}
+
+/* Bottom Sheet States */
+.bottom-sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 49;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.bottom-sheet-content {
+  background: white;
+  padding: var(--space-md);
+  padding-top: var(--space-lg);
+  min-height: 200px;
+  max-height: 85vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.dark .bottom-sheet-content {
+  background: rgb(17, 17, 17);
+}
+
+/* Swipeable handle */
+.bottom-sheet-handle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2rem;
+  cursor: grab;
+  user-select: none;
+  touch-action: pan-y;
+}
+
+.bottom-sheet-handle:active {
+  cursor: grabbing;
 }
 
 /* Animations */

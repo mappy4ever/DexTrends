@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
@@ -21,6 +21,10 @@ import PokemonTabSystem from './PokemonTabSystem';
 import FloatingActionBar from './FloatingActionBar';
 import NavigationArrow from './NavigationArrow';
 import { ProgressiveImage } from '../ui/ProgressiveImage';
+import { UnifiedPullToRefresh } from '../ui/UnifiedPullToRefresh';
+import { useSwipeGesture } from '@/hooks/useSwipeGesture';
+import hapticFeedback from '@/utils/hapticFeedback';
+import { dynamicIsland } from '../ui/DynamicIsland';
 
 interface UnifiedPokemonDetailProps {
   pokemon: Pokemon;
@@ -78,6 +82,62 @@ export const UnifiedPokemonDetail: React.FC<UnifiedPokemonDetailProps> = ({
 }) => {
   const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
+  const mainRef = useRef<HTMLDivElement>(null);
+  
+  // Handle refresh
+  const handleRefresh = useCallback(async () => {
+    hapticFeedback.success();
+    dynamicIsland.show({
+      type: 'loading',
+      title: 'Refreshing Pokemon data...',
+      duration: 0
+    });
+    
+    // Simulate refresh (in real app, refetch data)
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    dynamicIsland.show({
+      type: 'success',
+      title: 'Data refreshed',
+      message: `${pokemon.name} data updated`,
+      metadata: {
+        pokemon: {
+          id: typeof pokemon.id === 'string' ? parseInt(pokemon.id) : pokemon.id,
+          name: pokemon.name,
+          sprite: pokemon.sprites?.front_default || undefined
+        }
+      }
+    });
+    
+    // Reload the page or refetch data
+    window.location.reload();
+  }, [pokemon]);
+  
+  // Add swipe gestures for navigation
+  useSwipeGesture(mainRef, {
+    onSwipeLeft: () => {
+      if (adjacentPokemon.next) {
+        hapticFeedback.light();
+        dynamicIsland.show({
+          type: 'info',
+          title: `Navigating to ${adjacentPokemon.next.name}`,
+          duration: 1500
+        });
+        router.push(`/pokedex/${adjacentPokemon.next.id}`);
+      }
+    },
+    onSwipeRight: () => {
+      if (adjacentPokemon.prev) {
+        hapticFeedback.light();
+        dynamicIsland.show({
+          type: 'info',
+          title: `Navigating to ${adjacentPokemon.prev.name}`,
+          duration: 1500
+        });
+        router.push(`/pokedex/${adjacentPokemon.prev.id}`);
+      }
+    }
+  });
 
   // Handle scroll for sticky header
   useEffect(() => {
@@ -94,7 +154,8 @@ export const UnifiedPokemonDetail: React.FC<UnifiedPokemonDetailProps> = ({
   const typeColor = POKEMON_TYPE_COLORS[primaryType as keyof typeof POKEMON_TYPE_COLORS] || POKEMON_TYPE_COLORS.normal;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black">
+    <UnifiedPullToRefresh onRefresh={handleRefresh}>
+      <div ref={mainRef} className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black">
       {/* Sticky Navigation Header - Responsive */}
       <motion.header 
         className={cn(
@@ -111,7 +172,15 @@ export const UnifiedPokemonDetail: React.FC<UnifiedPokemonDetailProps> = ({
         <div className="h-full flex items-center justify-between max-w-7xl mx-auto">
           {/* Back Button */}
           <button
-            onClick={() => router.push('/pokedex')}
+            onClick={() => {
+              hapticFeedback.light();
+              dynamicIsland.show({
+                type: 'info',
+                title: 'Returning to Pokedex',
+                duration: 1000
+              });
+              router.push('/pokedex');
+            }}
             className={cn(
               "flex items-center gap-2 px-3 py-2 rounded-xl",
               "text-sm font-medium",
@@ -142,14 +211,20 @@ export const UnifiedPokemonDetail: React.FC<UnifiedPokemonDetailProps> = ({
               <NavigationArrow
                 direction="prev"
                 pokemon={adjacentPokemon.prev}
-                onClick={() => router.push(`/pokedex/${adjacentPokemon.prev?.id}`)}
+                onClick={() => {
+                  hapticFeedback.light();
+                  router.push(`/pokedex/${adjacentPokemon.prev?.id}`);
+                }}
               />
             )}
             {adjacentPokemon.next && (
               <NavigationArrow
                 direction="next"
                 pokemon={adjacentPokemon.next}
-                onClick={() => router.push(`/pokedex/${adjacentPokemon.next?.id}`)}
+                onClick={() => {
+                  hapticFeedback.light();
+                  router.push(`/pokedex/${adjacentPokemon.next?.id}`);
+                }}
               />
             )}
           </div>
@@ -211,5 +286,6 @@ export const UnifiedPokemonDetail: React.FC<UnifiedPokemonDetailProps> = ({
       {/* Bottom Navigation Spacer - Mobile only */}
       <div className="h-20 md:hidden" />
     </div>
+    </UnifiedPullToRefresh>
   );
 };

@@ -11,6 +11,8 @@ import { cn } from '../../utils/cn';
 import { FaStar, FaRuler, FaWeight, FaMars, FaVenus, FaHeart, FaTag } from 'react-icons/fa';
 import { useFavorites } from '../../hooks/useUnifiedApp';
 import PokemonFormSelector from './PokemonFormSelector';
+import { dynamicIsland } from '../ui/DynamicIsland';
+import hapticFeedback from '../../utils/hapticFeedback';
 
 interface PokemonHeroSectionV3Props {
   pokemon: Pokemon;
@@ -264,9 +266,23 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
+                  hapticFeedback.medium();
                   
                   if (isFavorited) {
                     removeFromFavorites('pokemon', pokemon.id);
+                    dynamicIsland.show({
+                      type: 'info',
+                      title: 'Removed from favorites',
+                      message: `${pokemon.name} removed`,
+                      metadata: {
+                        pokemon: {
+                          id: typeof pokemon.id === 'string' ? parseInt(pokemon.id) : pokemon.id,
+                          name: pokemon.name,
+                          sprite: pokemon.sprites?.front_default || undefined
+                        }
+                      },
+                      duration: 2000
+                    });
                   } else {
                     const favoritePokemon: FavoritePokemon = {
                       id: typeof pokemon.id === 'string' ? parseInt(pokemon.id) : pokemon.id,
@@ -276,6 +292,23 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
                       addedAt: Date.now()
                     };
                     addToFavorites('pokemon', favoritePokemon);
+                    dynamicIsland.show({
+                      type: 'success',
+                      title: 'Added to favorites',
+                      message: `${pokemon.name} saved`,
+                      metadata: {
+                        pokemon: {
+                          id: typeof pokemon.id === 'string' ? parseInt(pokemon.id) : pokemon.id,
+                          name: pokemon.name,
+                          sprite: pokemon.sprites?.front_default || undefined
+                        }
+                      },
+                      action: {
+                        label: 'View Favorites',
+                        onClick: () => window.location.href = '/favorites'
+                      },
+                      duration: 3000
+                    });
                   }
                 }}
                 className={cn(
@@ -294,7 +327,23 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
               
               {/* Shiny Toggle */}
               <motion.button
-                onClick={onShinyToggle}
+                onClick={() => {
+                  hapticFeedback.light();
+                  onShinyToggle();
+                  dynamicIsland.show({
+                    type: 'pokemon',
+                    title: showShiny ? 'Normal form' : 'Shiny form',
+                    message: `Viewing ${showShiny ? 'normal' : 'shiny'} ${pokemon.name}`,
+                    metadata: {
+                      pokemon: {
+                        id: typeof pokemon.id === 'string' ? parseInt(pokemon.id) : pokemon.id,
+                        name: pokemon.name,
+                        sprite: pokemon.sprites?.front_default || undefined
+                      }
+                    },
+                    duration: 2000
+                  });
+                }}
                 className={cn(
                   "p-2 sm:p-3 rounded-full backdrop-blur-md transition-all",
                   showShiny 
