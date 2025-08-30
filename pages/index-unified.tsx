@@ -40,7 +40,7 @@ const features: FeatureCard[] = [
     stats: '1,025 Pokémon'
   },
   {
-    href: '/tcgsets',
+    href: '/tcg-sets',
     title: 'TCG Database',
     description: 'Explore cards from all Pokémon TCG sets with images and details',
     icon: CardList,

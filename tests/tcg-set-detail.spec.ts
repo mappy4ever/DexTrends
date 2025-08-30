@@ -42,7 +42,7 @@ test.describe('TCG Set Detail Page', () => {
   
   test('should handle loading states properly', async ({ page }) => {
     // Go to TCG sets list first
-    await page.goto('/tcgsets');
+    await page.goto('/tcg-sets');
     await page.waitForLoadState('networkidle');
     
     // Click on first available set

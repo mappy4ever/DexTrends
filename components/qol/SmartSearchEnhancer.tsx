@@ -311,7 +311,7 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose }) => {
   // Available commands
   const commands = [
     { id: 'pokedex', label: 'Go to Pokedex', shortcut: 'Ctrl+Shift+P', action: () => router.push('/pokedex') },
-    { id: 'tcgsets', label: 'Go to TCG Sets', shortcut: 'Ctrl+Shift+C', action: () => router.push('/tcgsets') },
+    { id: 'tcgsets', label: 'Go to TCG Sets', shortcut: 'Ctrl+Shift+C', action: () => router.push('/tcg-sets') },
     { id: 'fun', label: 'Go to Fun Page', shortcut: 'Ctrl+Shift+F', action: () => router.push('/fun') },
     { id: 'home', label: 'Go to Home', shortcut: 'Ctrl+Shift+H', action: () => router.push('/') },
     { id: 'pocketmode', label: 'Go to Pocket Mode', shortcut: '', action: () => router.push('/pocketmode') },
@@ -442,7 +442,7 @@ export const GlobalSearchShortcuts: React.FC = () => {
             break;
           case 'C':
             e.preventDefault();
-            router.push('/tcgsets');
+            router.push('/tcg-sets');
             break;
           case 'F':
             e.preventDefault();

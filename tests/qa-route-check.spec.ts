@@ -5,7 +5,7 @@ test.describe('QA Route Check', () => {
     const routes = [
       { path: '/', name: 'Homepage' },
       { path: '/pokedex', name: 'Pokedex' },
-      { path: '/tcgsets', name: 'TCG Sets' },
+      { path: '/tcg-sets', name: 'TCG Sets' },
       { path: '/pocketmode', name: 'Pocket Mode' },
       { path: '/pocketmode/decks', name: 'Pocket Mode Decks' },
       { path: '/pocketmode/expansions', name: 'Pocket Mode Expansions' },

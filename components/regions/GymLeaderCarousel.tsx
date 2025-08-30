@@ -6,7 +6,7 @@ import { FadeIn } from '../ui/animations/animations';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { gymLeaderTeams } from '../../data/gymLeaderTeams';
 import { typeEffectiveness } from '../../utils/pokemonutils';
-import CircularGymLeaderCard from '../ui/cards/CircularGymLeaderCard';
+import GymLeaderAvatar from '../ui/cards/GymLeaderAvatar';
 
 // Type definitions
 interface GymLeader {
@@ -260,7 +260,7 @@ const GymLeaderCarousel: React.FC<GymLeaderCarouselProps> = ({ region, gymLeader
                   className="flex-shrink-0"
                   style={{ width: '384px' }} // Adjusted for circular card width
                 >
-                  <CircularGymLeaderCard
+                  <GymLeaderAvatar
                     name={leader.name}
                     region={region.id}
                     type={leader.type}

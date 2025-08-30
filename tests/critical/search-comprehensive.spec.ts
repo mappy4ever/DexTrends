@@ -361,7 +361,7 @@ test.describe('Comprehensive Search Functionality', () => {
     });
 
     test('should filter TCG cards by rarity', async ({ page }) => {
-      await page.goto('/tcgsets');
+      await page.goto('/tcg-sets');
       await waitForNetworkIdle(page);
       
       // Navigate to a specific set

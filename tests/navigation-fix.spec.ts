@@ -56,7 +56,7 @@ test.describe('Navigation Click Fix Verification', () => {
   });
 
   test('TCG card navigation should work', async ({ page }) => {
-    await page.goto('http://localhost:3001/tcgsets');
+    await page.goto('http://localhost:3001/tcg-sets');
     
     // Wait for set cards to load
     await page.waitForSelector('a[href*="/tcgsets/"], [class*="set-card"]', { 

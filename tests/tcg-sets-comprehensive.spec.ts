@@ -10,7 +10,7 @@ test.describe('TCG Sets Comprehensive Tests', () => {
     console.log('Testing: TCG Sets page loads and displays sets');
     
     // Navigate to TCG sets page
-    await page.goto('http://localhost:3002/tcgsets');
+    await page.goto('http://localhost:3002/tcg-sets');
     
     // Wait for loading to complete
     await expect(page.locator('text="Loading TCG sets"')).toBeVisible();
@@ -49,7 +49,7 @@ test.describe('TCG Sets Comprehensive Tests', () => {
   test('Search and filtering works correctly', async ({ page }) => {
     console.log('Testing: Search and filtering functionality');
     
-    await page.goto('http://localhost:3002/tcgsets');
+    await page.goto('http://localhost:3002/tcg-sets');
     await page.waitForLoadState('networkidle');
     
     // Wait for sets to load
@@ -90,7 +90,7 @@ test.describe('TCG Sets Comprehensive Tests', () => {
     console.log('Testing: Individual set page functionality');
     
     // First navigate to sets page
-    await page.goto('http://localhost:3002/tcgsets');
+    await page.goto('http://localhost:3002/tcg-sets');
     await page.waitForLoadState('networkidle');
     
     // Wait for sets to load
@@ -156,7 +156,7 @@ test.describe('TCG Sets Comprehensive Tests', () => {
   test('Refresh button works correctly', async ({ page }) => {
     console.log('Testing: Refresh button functionality');
     
-    await page.goto('http://localhost:3002/tcgsets');
+    await page.goto('http://localhost:3002/tcg-sets');
     await page.waitForLoadState('networkidle');
     
     // Wait for initial load
@@ -184,7 +184,7 @@ test.describe('TCG Sets Comprehensive Tests', () => {
   test('Infinite scroll works for filtered results', async ({ page }) => {
     console.log('Testing: Infinite scroll with filtered results');
     
-    await page.goto('http://localhost:3002/tcgsets');
+    await page.goto('http://localhost:3002/tcg-sets');
     await page.waitForLoadState('networkidle');
     
     // Wait for sets to load
@@ -213,7 +213,7 @@ test.describe('TCG Sets Comprehensive Tests', () => {
     
     const startTime = Date.now();
     
-    await page.goto('http://localhost:3002/tcgsets');
+    await page.goto('http://localhost:3002/tcg-sets');
     
     // Wait for first contentful paint
     await expect(page.locator('h1:has-text("Pokémon TCG Sets")')).toBeVisible();

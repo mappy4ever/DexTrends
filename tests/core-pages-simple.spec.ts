@@ -36,7 +36,7 @@ test.describe('Core Pages Basic Functionality Test', () => {
   });
 
   test('TCG Sets page loads without crashing', async ({ page }) => {
-    await page.goto('/tcgsets');
+    await page.goto('/tcg-sets');
     
     // Wait for initial load
     await page.waitForLoadState('domcontentloaded');
@@ -68,7 +68,7 @@ test.describe('Core Pages Basic Functionality Test', () => {
   });
 
   test('All pages have proper HTML structure', async ({ page }) => {
-    const pages = ['/', '/pokedex', '/tcgsets', '/pokedex/25'];
+    const pages = ['/', '/pokedex', '/tcg-sets', '/pokedex/25'];
     
     for (const pagePath of pages) {
       await page.goto(pagePath);

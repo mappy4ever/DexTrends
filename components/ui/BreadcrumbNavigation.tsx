@@ -49,7 +49,7 @@ const BreadcrumbNavigation: React.FC<BreadcrumbNavigationProps> = ({
     '/pocketmode/deckbuilder': { title: 'Deck Builder', icon: '🏗️' },
     '/pocketmode/decks': { title: 'My Decks', icon: '📦' },
     '/pocketmode/expansions': { title: 'Expansions', icon: '📈' },
-    '/tcgsets': { title: 'TCG Sets', icon: '🎯' },
+    '/tcg-sets': { title: 'TCG Sets', icon: '🎯' },
     '/tcgsets/[setid]': { title: 'Set Details', icon: '🔍' },
     '/trending': { title: 'Trending', icon: '📈' },
     '/favorites': { title: 'Favorites', icon: '⭐' },

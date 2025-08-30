@@ -5,7 +5,7 @@ test.describe('TCG Set Navigation Test', () => {
     console.log('Starting navigation test...');
     
     // First go to TCG sets page
-    await page.goto('http://localhost:3001/tcgsets');
+    await page.goto('http://localhost:3001/tcg-sets');
     
     // Wait for sets to load
     await expect(page.locator('.grid').first()).toBeVisible({ timeout: 15000 });

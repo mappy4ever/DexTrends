@@ -220,7 +220,7 @@ class ComponentPreloader {
       '/trending': [
         () => import('../components/ui/charts/PriceHistoryChart'),
       ],
-      '/tcgsets': [
+      '/tcg-sets': [
         () => import('../components/CardList'),
       ]
     };

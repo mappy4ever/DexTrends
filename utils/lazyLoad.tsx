@@ -305,13 +305,13 @@ export function prefetchNextComponents(currentRoute: string) {
       () => import('@/components/tcg-set-detail/CardPreviewModal'),
       () => import('@/components/ui/cards/Enhanced3DCard')
     ],
-    '/tcgsets': [
+    '/tcg-sets': [
       () => import('@/components/tcg-set-detail/CardPreviewModal'),
       () => import('@/components/ui/cards/CardComparisonTool')
     ],
     '/': [
       () => import('@/pages/pokedex'),
-      () => import('@/pages/tcgsets')
+      () => import('@/pages/tcg-sets')
     ]
   };
 

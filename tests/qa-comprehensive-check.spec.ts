@@ -108,10 +108,10 @@ test.describe('QA Comprehensive Route Testing', () => {
   });
 
   // TCG Sets Test
-  test('TCG Sets - /tcgsets', async ({ page }) => {
+  test('TCG Sets - /tcg-sets', async ({ page }) => {
     console.log('\n=== Testing TCG Sets ===');
     
-    await page.goto('http://localhost:3001/tcgsets', { waitUntil: 'networkidle' });
+    await page.goto('http://localhost:3001/tcg-sets', { waitUntil: 'networkidle' });
     
     // Wait for sets grid
     const setsGrid = page.locator('[data-testid="sets-grid"]');

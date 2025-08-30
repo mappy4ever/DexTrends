@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 const ROUTES = [
   { path: '/', name: 'Homepage' },
   { path: '/pokedex', name: 'Pokedex' },
-  { path: '/tcgsets', name: 'TCG Sets' },
+  { path: '/tcg-sets', name: 'TCG Sets' },
   { path: '/pokemon/moves', name: 'Pokemon Moves' },
   { path: '/pokemon/abilities', name: 'Pokemon Abilities' },
   { path: '/pokemon/items', name: 'Pokemon Items' },

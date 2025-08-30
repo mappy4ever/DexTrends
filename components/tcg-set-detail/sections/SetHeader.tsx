@@ -23,7 +23,7 @@ export default function SetHeader({ setInfo, onScrollToCards }: SetHeaderProps) 
     >
       <div className="flex items-center justify-between mb-6">
         <GradientButton
-          onClick={() => router.push('/tcgsets')}
+          onClick={() => router.push('/tcg-sets')}
           variant="secondary"
           size="sm"
           icon={

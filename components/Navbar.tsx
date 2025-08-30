@@ -54,13 +54,13 @@ export default function Navbar() {
   const navItems: NavItem[] = [
     { href: "/", label: "Home", icon: <BsGrid size={18} />, color: "text-pokeball-red" },
     { 
-      href: "/tcgsets", 
+      href: "/tcg-sets", 
       label: "Pokémon TCG", 
       icon: <BsCardList size={18} />, 
       color: "text-greatball-blue",
       hasDropdown: true,
       dropdownItems: [
-        { href: "/tcgsets", label: "Sets", icon: <BsCardList size={18} />, description: "Browse all TCG sets" },
+        { href: "/tcg-sets", label: "Sets", icon: <BsCardList size={18} />, description: "Browse all TCG sets" },
         { href: "/cards", label: "Cards", icon: <BsCardList size={18} />, description: "Browse and search Pokemon cards" },
         { href: "/market", label: "Market Analytics", icon: <FiTrendingUp size={18} />, description: "Market trends and insights" },
         { href: "/analytics", label: "Site Analytics", icon: <FiBarChart2 size={18} />, description: "DexTrends usage analytics" },

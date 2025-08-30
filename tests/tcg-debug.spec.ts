@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test('Debug TCG Sets page', async ({ page }) => {
   // Go to the page
-  await page.goto('http://localhost:3001/tcgsets');
+  await page.goto('http://localhost:3001/tcg-sets');
   
   // Wait a bit for initial load
   await page.waitForTimeout(2000);

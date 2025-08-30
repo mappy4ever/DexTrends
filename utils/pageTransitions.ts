@@ -174,7 +174,7 @@ export const routeTransitions: Record<string, PageTransitionConfig> = {
   '/': { type: 'fade' },
   '/pokedex': { type: 'slideUp' },
   '/pokedex/[pokeid]': { type: 'zoom' },
-  '/tcgsets': { type: 'scale' },
+  '/tcg-sets': { type: 'scale' },
   '/tcgsets/[setid]': { type: 'zoom' },
   '/cards/[cardId]': { type: 'flip' },
   '/team-builder': { type: 'slideUp' },

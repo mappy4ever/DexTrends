@@ -12,7 +12,7 @@ test('TCG Sets simple test', async ({ page }) => {
   });
   
   // Go to the page
-  await page.goto('http://localhost:3001/tcgsets');
+  await page.goto('http://localhost:3001/tcg-sets');
   
   // Wait longer for the page to load
   await page.waitForTimeout(5000);

@@ -15,7 +15,7 @@ interface Feature {
 const PokemonTCGLanding: React.FC = () => {
   const features: Feature[] = [
     {
-      href: '/tcgsets',
+      href: '/tcg-sets',
       title: 'Browse Sets',
       description: 'Explore all Pokémon TCG sets with detailed information, card lists, and artwork.',
       icon: <BsCardList className="w-8 h-8" />,
@@ -139,7 +139,7 @@ const PokemonTCGLanding: React.FC = () => {
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
             Join thousands of collectors and traders in the ultimate TCG experience.
           </p>
-          <Link href="/tcgsets">
+          <Link href="/tcg-sets">
             <button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
               Explore All Sets
             </button>

@@ -108,7 +108,7 @@ const HomePage: NextPage = () => {
               </Link>
 
               {/* TCG Database */}
-              <Link href="/tcgsets" className="h-full">
+              <Link href="/tcg-sets" className="h-full">
                 <motion.div
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}

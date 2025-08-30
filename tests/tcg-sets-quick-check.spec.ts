@@ -5,7 +5,7 @@ test.describe('TCG Sets Quick Check', () => {
     console.log('Navigating to TCG sets page...');
     
     // Navigate to TCG sets page
-    await page.goto('http://localhost:3002/tcgsets');
+    await page.goto('http://localhost:3002/tcg-sets');
     
     // Take a screenshot of initial state
     await page.screenshot({ path: 'tcg-sets-initial.png' });

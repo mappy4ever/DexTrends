@@ -5,12 +5,12 @@ test.describe('TCG Cards and Sets', () => {
     await page.goto('/');
     await page.getByRole('link', { name: /tcg sets/i }).click();
     
-    await expect(page).toHaveURL('/tcgsets');
+    await expect(page).toHaveURL('/tcg-sets');
     await expect(page.locator('h1:has-text("TCG Sets")').or(page.locator('[data-testid="page-title"]'))).toBeVisible();
   });
 
   test('should display TCG sets', async ({ page }) => {
-    await page.goto('/tcgsets');
+    await page.goto('/tcg-sets');
     
     // Wait for sets to load
     await expect(page.locator('[data-testid="tcg-set"]').or(page.locator('.set-card')).or(page.locator('article')).first()).toBeVisible({ timeout: 15000 });
@@ -22,7 +22,7 @@ test.describe('TCG Cards and Sets', () => {
   });
 
   test('should view cards in a specific set', async ({ page }) => {
-    await page.goto('/tcgsets');
+    await page.goto('/tcg-sets');
     
     // Click on first set
     await page.locator('[data-testid="tcg-set"]').or(page.locator('.set-card')).or(page.locator('article')).first().click();
@@ -35,7 +35,7 @@ test.describe('TCG Cards and Sets', () => {
   });
 
   test('should display card prices and market data', async ({ page }) => {
-    await page.goto('/tcgsets');
+    await page.goto('/tcg-sets');
     
     // Navigate to a set with cards
     await page.locator('[data-testid="tcg-set"]').or(page.locator('.set-card')).first().click();

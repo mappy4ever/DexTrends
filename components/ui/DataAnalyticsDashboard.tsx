@@ -105,7 +105,7 @@ const DataAnalyticsDashboard: React.FC = () => {
         traffic: {
           pageViews: [
             { page: '/pokedex', views: 18453, change: 12.3 },
-            { page: '/tcgsets', views: 14921, change: -5.7 },
+            { page: '/tcg-sets', views: 14921, change: -5.7 },
             { page: '/pocketmode', views: 11238, change: 23.1 },
             { page: '/cards', views: 9847, change: 8.9 },
             { page: '/favorites', views: 6234, change: 15.2 }

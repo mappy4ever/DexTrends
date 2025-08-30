@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('TCG Set Detail Page Layout Fixes', () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to TCG sets page first
-    await page.goto('/tcgsets');
+    await page.goto('/tcg-sets');
     await page.waitForLoadState('networkidle');
   });
 

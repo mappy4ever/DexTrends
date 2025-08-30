@@ -22,7 +22,7 @@ const Footer: React.FC = () => {
   
   const quickLinks = [
     { href: '/pokedex', label: 'Pokédex', icon: <BsGrid className="w-4 h-4" /> },
-    { href: '/tcgsets', label: 'TCG Sets', icon: <BsCardList className="w-4 h-4" /> },
+    { href: '/tcg-sets', label: 'TCG Sets', icon: <BsCardList className="w-4 h-4" /> },
     { href: '/pocketmode', label: 'Pocket Mode', icon: <GiCardPickup className="w-4 h-4" /> },
     { href: '/trending', label: 'Trending', icon: <FiTrendingUp className="w-4 h-4" /> },
     { href: '/battle-simulator', label: 'Battle', icon: <GiCrossedSwords className="w-4 h-4" /> },

@@ -33,7 +33,7 @@ export const RouteTransitionLoader = (): React.ReactElement | null => {
       message: 'Opening Pokédex...',
       icon: '📚'
     };
-    if (route.includes('/tcgsets')) return { 
+    if (route.includes('/tcg-sets')) return { 
       color: 'from-blue-500 to-blue-700', 
       ball: 'great' as const,
       message: 'Loading TCG Sets...',
@@ -105,7 +105,7 @@ export const PokemonBreadcrumbs = ({ items = [] }: PokemonBreadcrumbsProps) => {
     const icons: { [key: string]: string } = {
       '/': '🏠',
       '/pokedex': '📚',
-      '/tcgsets': '🃏',
+      '/tcg-sets': '🃏',
       '/pocketmode': '📱',
       '/collections': '💎',
       '/leaderboard': '🏆'

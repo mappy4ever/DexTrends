@@ -250,7 +250,7 @@ test.describe('TCG Set Detail Page', () => {
 
     // Should show error or redirect
     const errorMessage = page.locator('[data-testid="error-message"]').or(page.locator('.error')).or(page.locator('text=/not found/i'));
-    const redirected = page.url() === '/tcgsets' || page.url().includes('/404');
+    const redirected = page.url() === '/tcg-sets' || page.url().includes('/404');
     
     expect(await errorMessage.isVisible() || redirected).toBeTruthy();
   });

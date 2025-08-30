@@ -56,7 +56,7 @@ test.describe('Mobile Responsiveness Tests', () => {
 
     test(`TCG sets grid at ${viewport.width}px (${viewport.name})`, async ({ page }) => {
       await page.setViewportSize(viewport);
-      await page.goto('http://localhost:3002/tcgsets');
+      await page.goto('http://localhost:3002/tcg-sets');
       
       // Wait for content
       await page.waitForSelector('.grid', { timeout: 10000 });

@@ -14,7 +14,7 @@ import LazyWrapper from '../components/ui/LazyWrapper';
 
 // Lazy load CollectionDashboard
 const LazyCollectionDashboard = React.lazy(() => import("../components/ui/layout/CollectionDashboard"));
-import CircularPokemonCard from '../components/ui/cards/CircularPokemonCard';
+import PokemonAvatar from '../components/ui/cards/PokemonAvatar';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import { CircularButton } from '../components/ui/design-system';
 import { NextPage } from 'next';
@@ -349,7 +349,7 @@ const FavoritesPage: NextPage = () => {
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 justify-items-center">
                   {pokemonData.map(pokemon => (
                     <div key={pokemon.id} className="relative">
-                      <CircularPokemonCard
+                      <PokemonAvatar
                         pokemon={{
                           id: pokemon.id,
                           name: pokemon.name,
@@ -464,7 +464,7 @@ const FavoritesPage: NextPage = () => {
                     Add cards to your favorites by clicking the heart icon on card details.
                   </p>
                   <Link 
-                    href="/tcgsets"
+                    href="/tcg-sets"
                     className="inline-block px-6 py-3 bg-primary text-white font-medium rounded-md hover:bg-primary-dark transition-colors"
                   >
                     Browse TCG Sets
