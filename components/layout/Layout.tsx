@@ -5,6 +5,7 @@ import Navbar from "../Navbar";
 import Footer from "../Footer";
 import React, { ReactNode } from "react";
 import ComparisonFAB from '../ui/ComparisonFAB';
+import BottomNavigation from '../ui/BottomNavigation';
 
 interface LayoutProps {
   children: ReactNode;
@@ -36,6 +37,8 @@ export default function Layout({ children, fullBleed = false }: LayoutProps) {
       <Footer />
       {/* Floating comparison button */}
       <ComparisonFAB />
+      {/* Bottom navigation for mobile */}
+      <BottomNavigation />
     </div>
   );
 }

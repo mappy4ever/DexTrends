@@ -18,9 +18,7 @@ import { InlineLoader } from '../components/ui/SkeletonLoadingSystem';
 import PageErrorBoundary from '../components/ui/PageErrorBoundary';
 import { SmartTooltip } from '../components/qol/ContextualHelp';
 import logger from '../utils/logger';
-import { useMobileDetection } from '../hooks/useMobileDetection';
-import { MobileLayout } from '../components/mobile/MobileLayout';
-import MobileBattleSimulator from '../components/battle-simulator/MobileBattleSimulator';
+// Removed - using unified responsive approach
 import type { Pokemon, PokemonMove, PokemonType, PokemonStat, PokemonSpecies, Nature, Move } from "../types/pokemon";
 import type { EnhancedBattleState, BattleResult, StatusEffect } from '../types/battle';
 import { createInitialBattleState } from '../utils/battle/core';
@@ -208,7 +206,6 @@ const PokemonSelectionItem: React.FC<PokemonSelectionItemProps> = ({ pokemon, po
 };
 
 const BattleSimulator: NextPage = () => {
-  const { isMobile: isMobileView } = useMobileDetection();
   const [selectedPokemon1, setSelectedPokemon1] = useState<Pokemon | null>(null);
   const [selectedPokemon2, setSelectedPokemon2] = useState<Pokemon | null>(null);
   const [showPokemonSelector, setShowPokemonSelector] = useState<number | null>(null); // 1 or 2
@@ -1241,33 +1238,7 @@ const BattleSimulator: NextPage = () => {
     setAvailableMoves2([]);
   };
 
-  // Mobile view
-  if (isMobileView) {
-    return (
-      <PageErrorBoundary pageName="Battle Simulator Mobile">
-        <Head>
-          <title>Pokemon Battle Simulator - DexTrends</title>
-          <meta name="description" content="Battle Pokemon with real damage calculations and type effectiveness" />
-          <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-        </Head>
-        
-        <MobileLayout
-          hasBottomNav={false}
-          hasHeader={true}
-          headerTitle="Battle Simulator"
-          backgroundColor="gradient"
-          fullHeight={true}
-        >
-          <MobileBattleSimulator
-            initialPokemon1={selectedPokemon1}
-            initialPokemon2={selectedPokemon2}
-          />
-        </MobileLayout>
-      </PageErrorBoundary>
-    );
-  }
-
-  // Desktop view
+  // Unified responsive view
   return (
     <PageErrorBoundary pageName="Battle Simulator">
       <Head>
@@ -1278,24 +1249,24 @@ const BattleSimulator: NextPage = () => {
       <FullBleedWrapper gradient="pokedex">
         {/* Sticky Header */}
         <div className="sticky top-0 z-50 backdrop-blur-xl bg-white/70 dark:bg-gray-900/70 border-b border-white/20">
-          <div className="container mx-auto px-4 py-4">
-            <h1 className="text-3xl font-bold text-red-600 mb-6">
+          <div className="container mx-auto px-4 py-3 sm:py-4">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-red-600 mb-2 sm:mb-4 md:mb-6">
               Pokemon Battle Simulator
             </h1>
-            <p className="text-slate-700 dark:text-slate-300 text-sm">
+            <p className="text-slate-700 dark:text-slate-300 text-xs sm:text-sm hidden sm:block">
               Experience epic battles with real damage calculations and type effectiveness
             </p>
           </div>
         </div>
 
         {/* Main Content */}
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-4 sm:py-6 md:py-8">
           {/* Quick Links */}
-          <GlassContainer variant="colored" className="mb-8">
-            <div className="flex justify-center gap-4">
+          <GlassContainer variant="colored" className="mb-4 sm:mb-6 md:mb-8">
+            <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-4">
               <Link href="/team-builder/advanced">
                 <button
-                  className="px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 border-2 border-red-600"
+                  className="w-full sm:w-auto min-h-[44px] px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white text-sm sm:text-base font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 border-2 border-red-600 touch-target"
                 >
                   <div className="w-5 h-5 bg-white/20 rounded flex items-center justify-center">
                     <div className="w-2 h-2 bg-white rounded" />
@@ -1305,7 +1276,7 @@ const BattleSimulator: NextPage = () => {
               </Link>
               <Link href="/battle-simulator/damage-calc">
                 <button
-                  className="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
+                  className="w-full sm:w-auto min-h-[44px] px-4 sm:px-6 py-2 sm:py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 text-sm sm:text-base font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 touch-target"
                 >
                   Damage Calculator
                 </button>
@@ -1314,15 +1285,15 @@ const BattleSimulator: NextPage = () => {
           </GlassContainer>
           
           {/* Battle Format & Weather Selection */}
-          <GlassContainer variant="medium" className="mb-8">
-            <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-slate-700 dark:text-slate-300 text-center">Battle Configuration</h3>
+          <GlassContainer variant="medium" className="mb-4 sm:mb-6 md:mb-8">
+            <div className="space-y-4 sm:space-y-6">
+              <h3 className="text-base sm:text-lg font-semibold text-slate-700 dark:text-slate-300 text-center">Battle Configuration</h3>
               
               {/* Format Selection */}
               <div className="flex justify-center gap-2">
                 <motion.button
                   onClick={() => setBattleFormat('singles')}
-                  className={`px-6 py-3 rounded-lg text-sm font-medium transition-all duration-300 relative overflow-hidden ${
+                  className={`min-h-[44px] px-4 sm:px-6 py-2 sm:py-3 rounded-lg text-xs sm:text-sm font-medium transition-all duration-300 relative overflow-hidden touch-target ${
                     battleFormat === 'singles'
                       ? 'bg-red-100 text-slate-700 shadow-lg border-[4px] border-red-400'
                       : 'bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 border-[1.5px] border-gray-300'
@@ -1333,7 +1304,7 @@ const BattleSimulator: NextPage = () => {
                 </motion.button>
                 <motion.button
                   onClick={() => setBattleFormat('doubles')}
-                  className={`px-6 py-3 rounded-lg text-sm font-medium transition-all duration-300 relative overflow-hidden ${
+                  className={`min-h-[44px] px-4 sm:px-6 py-2 sm:py-3 rounded-lg text-xs sm:text-sm font-medium transition-all duration-300 relative overflow-hidden touch-target ${
                     battleFormat === 'doubles'
                       ? 'bg-red-100 text-slate-700 shadow-lg border-[4px] border-red-400'
                       : 'bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 border-[1.5px] border-gray-300'
@@ -1350,7 +1321,7 @@ const BattleSimulator: NextPage = () => {
                   <motion.button
                     key={weatherType}
                     onClick={() => setWeather(weatherType)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 relative overflow-hidden ${
+                    className={`min-h-[44px] px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-300 relative overflow-hidden touch-target ${
                       weather === weatherType
                         ? 'bg-orange-100 text-slate-700 shadow-lg border-[3px] border-orange-400'
                         : 'bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 border-[1px] border-gray-300'
@@ -1373,7 +1344,7 @@ const BattleSimulator: NextPage = () => {
                     selectRandomPokemon(1);
                     selectRandomPokemon(2);
                   }}
-                  className="px-8 py-3 bg-gradient-to-r from-red-400 to-orange-400 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border-4 border-orange-400"
+                  className="min-h-[44px] px-6 sm:px-8 py-2 sm:py-3 bg-gradient-to-r from-red-400 to-orange-400 text-white text-sm sm:text-base font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border-2 sm:border-4 border-orange-400 touch-target"
                                                     >
                   <span className="flex items-center gap-2">
                     <div className="w-4 h-4 bg-white/20 rounded animate-pulse" />
@@ -1385,8 +1356,8 @@ const BattleSimulator: NextPage = () => {
           </GlassContainer>
           
           {/* Battle Arena */}
-          <GlassContainer variant="dark" className="mb-8">
-            <div className="flex flex-col lg:flex-row gap-6 mb-8">
+          <GlassContainer variant="dark" className="mb-4 sm:mb-6 md:mb-8">
+            <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 mb-4 sm:mb-6 md:mb-8">
               {/* Pokemon 1 */}
               <GlassContainer variant="colored" className="text-center lg:flex-1 bg-gradient-to-br from-red-50/80 to-orange-50/80">
                 {/* Editable Trainer Name */}
@@ -1403,7 +1374,7 @@ const BattleSimulator: NextPage = () => {
                     />
                   ) : (
                     <h2 
-                      className="text-3xl font-semibold text-slate-700 dark:text-slate-300 cursor-pointer hover:text-red-600 dark:hover:text-red-400 transition-colors inline-flex items-center gap-2"
+                      className="text-xl sm:text-2xl md:text-3xl font-semibold text-slate-700 dark:text-slate-300 cursor-pointer hover:text-red-600 dark:hover:text-red-400 transition-colors inline-flex items-center gap-2 touch-target"
                       onClick={() => setEditingPlayer1(true)}
                     >
                       {player1Name}
@@ -1416,16 +1387,16 @@ const BattleSimulator: NextPage = () => {
                 {selectedPokemon1 ? (
                   <div>
                     {/* Config Buttons */}
-                    <div className="flex justify-center gap-2 mb-3">
+                    <div className="flex flex-col sm:flex-row justify-center gap-2 mb-3">
                       <button
                         onClick={() => setShowIVsEVs1(!showIVsEVs1)}
-                        className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg transition-all duration-200"
+                        className="min-h-[44px] px-3 sm:px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm sm:text-base font-medium rounded-lg transition-all duration-200 touch-target"
                       >
                         {showIVsEVs1 ? 'Hide' : 'Show'} IVs/EVs
                       </button>
                       <button
                         onClick={() => setShowMoveSelector(1)}
-                        className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg transition-all duration-200"
+                        className="min-h-[44px] px-3 sm:px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm sm:text-base font-medium rounded-lg transition-all duration-200 touch-target"
                                               >
                         Select Moves ({pokemon1Config.selectedMoves.length}/4)
                       </button>
@@ -1435,16 +1406,16 @@ const BattleSimulator: NextPage = () => {
                       <Image
                         src={selectedPokemon1.sprites?.front_default || '/pokemon-placeholder.png'}
                         alt={selectedPokemon1.name}
-                        width={200}
-                        height={200}
-                        className="mx-auto pokemon-sprite"
+                        width={150}
+                        height={150}
+                        className="w-[150px] h-[150px] sm:w-[175px] sm:h-[175px] md:w-[200px] md:h-[200px] mx-auto pokemon-sprite"
                       />
                       {/* Battle Effects Overlay */}
                       <div className="absolute inset-0 pointer-events-none">
                         <div className="battle-effects" />
                       </div>
                     </div>
-                    <h3 className="text-2xl font-semibold capitalize text-slate-700 dark:text-slate-300">{selectedPokemon1.name}</h3>
+                    <h3 className="text-lg sm:text-xl md:text-2xl font-semibold capitalize text-slate-700 dark:text-slate-300">{selectedPokemon1.name}</h3>
                     <div className="flex justify-center gap-2">
                       {selectedPokemon1.types?.map((t: PokemonType) => (
                         <TypeGradientBadge key={t.type.name} type={t.type.name} size="sm" />

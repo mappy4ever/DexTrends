@@ -280,7 +280,7 @@ const UnifiedPokedex: NextPage = () => {
                 );
               }}
               className={cn(
-                'relative p-1 rounded-lg transition-all',
+                'relative min-h-[36px] p-1 rounded-lg transition-all touch-target',
                 selectedTypes.includes(type)
                   ? 'ring-2 ring-primary-500 bg-gray-100 dark:bg-gray-800'
                   : 'hover:bg-gray-100 dark:hover:bg-gray-800'
@@ -310,7 +310,7 @@ const UnifiedPokedex: NextPage = () => {
                 setSelectedGeneration(selectedGeneration === gen ? '' : gen);
               }}
               className={cn(
-                'px-4 py-2 rounded-full font-medium transition-all',
+                'min-h-[44px] px-4 py-2 rounded-full font-medium transition-all touch-target',
                 selectedGeneration === gen
                   ? 'bg-primary-500 text-white'
                   : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700'
@@ -337,7 +337,7 @@ const UnifiedPokedex: NextPage = () => {
                 setSelectedCategory(selectedCategory === cat.value ? '' : cat.value);
               }}
               className={cn(
-                'py-2 px-4 rounded-lg font-medium transition-all',
+                'min-h-[44px] py-2 px-4 rounded-lg font-medium transition-all touch-target',
                 selectedCategory === cat.value
                   ? 'bg-green-500 text-white'
                   : 'bg-gray-100 dark:bg-gray-800'
@@ -362,7 +362,7 @@ const UnifiedPokedex: NextPage = () => {
               key={sort.value}
               onClick={() => setSortBy(sort.value)}
               className={cn(
-                'py-2 px-4 rounded-lg font-medium transition-all',
+                'min-h-[44px] py-2 px-4 rounded-lg font-medium transition-all touch-target',
                 sortBy === sort.value
                   ? 'bg-indigo-500 text-white'
                   : 'bg-gray-100 dark:bg-gray-800'
@@ -403,34 +403,34 @@ const UnifiedPokedex: NextPage = () => {
       </Head>
       
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-        <div className="container mx-auto px-4 py-6">
+        <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6">
           {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-4xl sm:text-5xl font-bold mb-2 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <div className="text-center mb-4 sm:mb-8">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-1 sm:mb-2 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               Pokédex
             </h1>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
               {filteredPokemon.length} of {TOTAL_POKEMON} Pokémon
             </p>
             
             {/* Stats Pills */}
-            <div className="flex justify-center gap-3 mt-4">
-              <div className="px-4 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur rounded-full shadow-md">
-                <span className="font-semibold text-gray-700 dark:text-gray-300">
+            <div className="flex justify-center gap-2 sm:gap-3 mt-3 sm:mt-4">
+              <div className="px-3 sm:px-4 py-1.5 sm:py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur rounded-full shadow-md">
+                <span className="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300">
                   {filteredPokemon.length} Found
                 </span>
               </div>
               {loading && (
-                <div className="px-4 py-2 bg-blue-100/80 dark:bg-blue-900/80 backdrop-blur rounded-full">
-                  <span className="text-blue-600 dark:text-blue-400">Loading...</span>
+                <div className="px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-100/80 dark:bg-blue-900/80 backdrop-blur rounded-full">
+                  <span className="text-xs sm:text-sm text-blue-600 dark:text-blue-400">Loading...</span>
                 </div>
               )}
             </div>
           </div>
           
           {/* Search and Filter Bar */}
-          <div className="sticky top-0 z-20 bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg rounded-2xl p-4 mb-6 shadow-lg">
-            <div className="flex flex-col sm:flex-row gap-3">
+          <div className="sticky top-0 z-20 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-xl sm:rounded-2xl p-3 sm:p-4 mb-4 sm:mb-6 shadow-lg">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
               {/* Search Input */}
               <div className="flex-1 relative">
                 <input
@@ -438,7 +438,7 @@ const UnifiedPokedex: NextPage = () => {
                   placeholder="Search Pokémon..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full px-4 py-3 pl-12 text-base bg-gray-100 dark:bg-gray-800 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all touch-manipulation"
+                  className="w-full min-h-[44px] px-4 py-2.5 sm:py-3 pl-11 sm:pl-12 text-base bg-gray-100 dark:bg-gray-800 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all touch-manipulation"
                   style={{ fontSize: '16px' }}
                 />
                 <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -450,7 +450,7 @@ const UnifiedPokedex: NextPage = () => {
               <button
                 onClick={filterModal.open}
                 className={cn(
-                  'px-6 py-3 rounded-full font-medium transition-all flex items-center gap-2',
+                  'min-h-[44px] px-4 sm:px-6 py-2.5 sm:py-3 rounded-full font-medium transition-all flex items-center justify-center gap-2 touch-target',
                   hasActiveFilters
                     ? 'bg-primary-500 text-white'
                     : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700'
@@ -471,7 +471,7 @@ const UnifiedPokedex: NextPage = () => {
               {hasActiveFilters && (
                 <button
                   onClick={clearFilters}
-                  className="px-6 py-3 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-full font-medium transition-all hover:bg-red-200 dark:hover:bg-red-900/50"
+                  className="min-h-[44px] px-4 sm:px-6 py-2.5 sm:py-3 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-full font-medium transition-all hover:bg-red-200 dark:hover:bg-red-900/50 touch-target"
                 >
                   Clear
                 </button>
@@ -503,13 +503,13 @@ const UnifiedPokedex: NextPage = () => {
             <div className="flex gap-3 p-4 border-t dark:border-gray-700">
               <button
                 onClick={clearFilters}
-                className="flex-1 py-3 bg-gray-100 dark:bg-gray-800 rounded-xl font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                className="flex-1 min-h-[44px] py-3 bg-gray-100 dark:bg-gray-800 rounded-xl font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors touch-target"
               >
                 Reset
               </button>
               <button
                 onClick={filterModal.close}
-                className="flex-1 py-3 bg-primary-500 text-white rounded-xl font-medium hover:bg-primary-600 transition-colors"
+                className="flex-1 min-h-[44px] py-3 bg-primary-500 text-white rounded-xl font-medium hover:bg-primary-600 transition-colors touch-target"
               >
                 Apply
               </button>

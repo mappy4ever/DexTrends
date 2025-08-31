@@ -28,12 +28,8 @@ import { HorizontalCardShowcase } from "../../components/tcg-set-detail/Horizont
 import { CompactStatsBar } from "../../components/tcg-set-detail/CompactStatsBar";
 import { RarityBadge } from "../../components/tcg-set-detail/RarityBadge";
 import { RarityIcon, RARITY_ORDER, getRarityRank } from "../../components/ui/RarityIcon";
-import { MobileLayout } from "../../components/mobile/MobileLayout";
-import BottomSheet from "../../components/mobile/BottomSheet";
+// Removed - using unified responsive approach
 import { ProgressiveImage } from "../../components/ui/ProgressiveImage";
-import hapticFeedback from "../../utils/hapticFeedback";
-import MobileTCGSetDetail from "../../components/tcg-set-detail/MobileTCGSetDetail";
-import { useMobileDetection } from '@/hooks/useMobileDetection';
 
 // Interface for set statistics
 interface CardWithMarketPrice extends TCGCard {
@@ -94,8 +90,7 @@ const SetIdPage: NextPage = () => {
 
   const setid = router.query.setid as string | undefined;
   
-  // Mobile detection with SSR support
-  const { isMobile: isMobileView, isLoading: isMobileLoading } = useMobileDetection();
+  // Removed - using unified responsive approach
 
   // Helper function to determine the actual rarity based on card data
   const getActualRarity = (card: TCGCard): string => {
@@ -498,50 +493,16 @@ const SetIdPage: NextPage = () => {
     );
   }
 
-  // Mobile view - check first to ensure mobile renders when ready
-  if (isMobileView && setInfo) {
-    return (
-      <TCGSetErrorBoundary>
-        <MobileLayout
-          hasBottomNav={false}
-          hasHeader={true}
-          headerTitle={setInfo.name}
-          backgroundColor="gradient"
-        >
-          <MobileTCGSetDetail
-            setInfo={setInfo}
-            cards={filteredCards}
-            loading={loading}
-            filterOptions={filterOptions}
-            filterRarity={filterRarity}
-            filterSupertype={filterSupertype}
-            searchQuery={searchQuery}
-            onFilterRarityChange={setFilterRarity}
-            onFilterSupertypeChange={setFilterSupertype}
-            onSearchChange={setSearchQuery}
-            onCardClick={handleCardClick}
-            getCardPrice={getCardPrice}
-            statistics={statistics}
-            totalValue={totalValue}
-            averagePrice={averagePrice}
-            uniqueRarities={uniqueRarities}
-            router={router}
-          />
-        </MobileLayout>
-      </TCGSetErrorBoundary>
-    );
-  }
-  
-  // Desktop view
+  // Unified responsive view
   return (
     <FullBleedWrapper gradient="pokedex">
       <div className="w-full">
-        <div className="container mx-auto px-6 py-6 lg:px-8 max-w-7xl">
+        <div className="container mx-auto px-4 py-4 sm:px-6 sm:py-6 lg:px-8 max-w-7xl">
           {/* Back Button - Minimal */}
-          <div className="mb-6">
+          <div className="mb-4 sm:mb-6">
             <button
               onClick={() => router.push('/tcgexpansions')}
-              className="group flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+              className="group flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors min-h-[44px] touch-target"
             >
               <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -551,7 +512,7 @@ const SetIdPage: NextPage = () => {
           </div>
           
           {/* Compact Stats Bar */}
-          <div className="mb-8">
+          <div className="mb-4 sm:mb-6 md:mb-8">
             <CompactStatsBar
               setInfo={setInfo}
               cardCount={cards.length}
@@ -563,7 +524,7 @@ const SetIdPage: NextPage = () => {
           
           {/* Horizontal Card Showcase */}
           {topValueCards.length > 0 && (
-            <div className="mb-8">
+            <div className="mb-4 sm:mb-6 md:mb-8">
               <HorizontalCardShowcase
                 cards={topValueCards}
                 onCardClick={handleCardClick}
@@ -587,10 +548,10 @@ const SetIdPage: NextPage = () => {
             
             <div className="relative z-10">
               {/* Integrated Header with Controls */}
-              <div className="p-8 lg:p-10 border-b border-white/10 dark:border-gray-700/10">
-                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+              <div className="p-4 sm:p-6 md:p-8 lg:p-10 border-b border-white/10 dark:border-gray-700/10">
+                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-3 sm:gap-4">
                   {/* Title Section */}
-                  <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-3">
+                  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2 sm:gap-3">
                     <svg className="w-8 h-8 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                     </svg>
@@ -627,14 +588,14 @@ const SetIdPage: NextPage = () => {
                 </div>
                 
                 {/* Integrated Filter Pills with Rarity Badges */}
-                <div className="mt-6 flex flex-wrap gap-3">
+                <div className="mt-4 sm:mt-6 flex flex-wrap gap-2 sm:gap-3">
                   {/* Rarity Filter Pills */}
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-xs font-semibold text-gray-600 dark:text-gray-400">Rarity:</span>
                     <button
                       onClick={() => setFilterRarity('')}
                       className={cn(
-                        'px-3 py-1 rounded-full text-xs font-medium transition-all',
+                        'min-h-[36px] px-3 py-1 rounded-full text-xs font-medium transition-all touch-target',
                         !filterRarity
                           ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
                           : 'bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm hover:bg-white/70'
@@ -647,7 +608,7 @@ const SetIdPage: NextPage = () => {
                         key={rarity}
                         onClick={() => setFilterRarity(filterRarity === rarity ? '' : rarity)}
                         className={cn(
-                          'px-3 py-1.5 rounded-full text-xs font-medium transition-all flex items-center gap-1',
+                          'min-h-[36px] px-3 py-1.5 rounded-full text-xs font-medium transition-all flex items-center gap-1 touch-target',
                           filterRarity === rarity
                             ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md'
                             : 'bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm hover:bg-white/70'
@@ -665,7 +626,7 @@ const SetIdPage: NextPage = () => {
                     <button
                       onClick={() => setFilterSupertype('')}
                       className={cn(
-                        'px-3 py-1 rounded-full text-xs font-medium transition-all',
+                        'min-h-[36px] px-3 py-1 rounded-full text-xs font-medium transition-all touch-target',
                         !filterSupertype
                           ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
                           : 'bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm hover:bg-white/70'
@@ -678,7 +639,7 @@ const SetIdPage: NextPage = () => {
                         key={type}
                         onClick={() => setFilterSupertype(filterSupertype === type ? '' : type)}
                         className={cn(
-                          'px-3 py-1 rounded-full text-xs font-medium transition-all',
+                          'min-h-[36px] px-3 py-1 rounded-full text-xs font-medium transition-all touch-target',
                           filterSupertype === type
                             ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
                             : 'bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm hover:bg-white/70'
@@ -692,7 +653,7 @@ const SetIdPage: NextPage = () => {
               </div>
               
               {/* Cards Display Area with proper spacing */}
-              <div className="p-8 lg:p-10">
+              <div className="p-4 sm:p-6 md:p-8 lg:p-10">
                 {cards.length === 0 && loading ? (
                   <LoadingStateGlass type="skeleton" rows={3} columns={4} />
                 ) : filteredCards.length > 0 ? (

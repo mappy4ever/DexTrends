@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -8,6 +8,7 @@ import { NextPage } from 'next';
 // Components
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import { GlobalSearch } from '../components/home/GlobalSearch';
+import { TouchTarget } from '../components/ui/TouchTarget';
 
 // Icons
 import { Book, CardList, CrossedSwords, Bulb } from '../utils/icons';
@@ -31,24 +32,24 @@ const HomePage: NextPage = () => {
               transition={{ duration: 0.6 }}
               className="text-center"
             >
-              {/* Logo */}
-              <div className="mb-8">
+              {/* Logo - Responsive sizing for mobile */}
+              <div className="mb-6 sm:mb-8">
                 <Image
                   src="/images/dextrends-vertical-logo.png"
                   alt="DexTrends"
                   width={300}
                   height={360}
-                  className="h-32 sm:h-40 md:h-48 w-auto mx-auto filter brightness-90 contrast-110"
+                  className="h-24 xs:h-28 sm:h-36 md:h-44 lg:h-48 w-auto mx-auto filter brightness-90 contrast-110"
                   priority
                 />
               </div>
 
-              {/* Tagline */}
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-4">
+              {/* Tagline - Better mobile sizing */}
+              <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-3 sm:mb-4 px-4">
                 Everything Pokémon in One Place
               </h1>
-              <p className="text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-                Search across Pokédex, TCG cards, moves, items, and more with our unified search
+              <p className="text-sm xs:text-base sm:text-lg text-gray-600 dark:text-gray-400 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
+                Search across Pokédex, TCG cards, moves, items, and more
               </p>
 
               {/* Global Search */}
@@ -56,108 +57,108 @@ const HomePage: NextPage = () => {
             </motion.div>
           </section>
 
-          {/* Quick Stats Bar */}
+          {/* Quick Stats Bar - Responsive grid */}
           <section className="border-y border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm">
-            <div className="max-w-7xl mx-auto px-4 md:px-6 py-4">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                <div className="flex flex-col items-center justify-center">
-                  <p className="text-2xl font-bold text-gray-800 dark:text-white leading-tight">1,025</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Pokémon</p>
+            <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 sm:py-4">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-center">
+                <div className="flex flex-col items-center justify-center py-2">
+                  <p className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white leading-tight">1,025</p>
+                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-0.5 sm:mt-1">Pokémon</p>
                 </div>
-                <div className="flex flex-col items-center justify-center">
-                  <p className="text-2xl font-bold text-gray-800 dark:text-white leading-tight">150+</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">TCG Sets</p>
+                <div className="flex flex-col items-center justify-center py-2">
+                  <p className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white leading-tight">150+</p>
+                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-0.5 sm:mt-1">TCG Sets</p>
                 </div>
-                <div className="flex flex-col items-center justify-center">
-                  <p className="text-2xl font-bold text-gray-800 dark:text-white leading-tight">15,000+</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Cards</p>
+                <div className="flex flex-col items-center justify-center py-2">
+                  <p className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white leading-tight">15,000+</p>
+                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-0.5 sm:mt-1">Cards</p>
                 </div>
-                <div className="flex flex-col items-center justify-center">
-                  <p className="text-2xl font-bold text-gray-800 dark:text-white leading-tight">919</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Moves</p>
+                <div className="flex flex-col items-center justify-center py-2">
+                  <p className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white leading-tight">919</p>
+                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-0.5 sm:mt-1">Moves</p>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* Main Features */}
-          <section className="max-w-7xl mx-auto px-4 md:px-6 py-12">
+          {/* Main Features - Mobile-optimized grid */}
+          <section className="max-w-7xl mx-auto px-4 md:px-6 py-8 sm:py-12">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+              className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6"
             >
               {/* Pokédex */}
-              <Link href="/pokedex" className="h-full">
+              <Link href="/pokedex" className="h-full touch-target">
                 <motion.div
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 p-6 cursor-pointer h-full flex flex-col"
+                  className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 p-4 sm:p-5 md:p-6 cursor-pointer h-full flex flex-col min-h-[140px]"
                 >
                   <div className="flex flex-col items-center text-center flex-1">
-                    <div className="w-16 h-16 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mb-4">
-                      <Book className="w-8 h-8 text-red-600 dark:text-red-400" />
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mb-3 sm:mb-4">
+                      <Book className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-red-600 dark:text-red-400" />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">Pokédex</h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm">
-                      Browse all 1,025 Pokémon with complete stats, abilities, and evolutions
+                    <h3 className="text-sm sm:text-base md:text-xl font-bold text-gray-800 dark:text-white mb-1 sm:mb-2">Pokédex</h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm hidden sm:block">
+                      Browse all 1,025 Pokémon with stats
                     </p>
                   </div>
                 </motion.div>
               </Link>
 
               {/* TCG Database */}
-              <Link href="/tcgexpansions" className="h-full">
+              <Link href="/tcgexpansions" className="h-full touch-target">
                 <motion.div
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 p-6 cursor-pointer h-full flex flex-col"
+                  className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 p-4 sm:p-5 md:p-6 cursor-pointer h-full flex flex-col min-h-[140px]"
                 >
                   <div className="flex flex-col items-center text-center flex-1">
-                    <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center mb-4">
-                      <CardList className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center mb-3 sm:mb-4">
+                      <CardList className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-blue-600 dark:text-blue-400" />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">TCG Database</h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm">
-                      Explore cards from all Pokémon TCG sets with images and details
+                    <h3 className="text-sm sm:text-base md:text-xl font-bold text-gray-800 dark:text-white mb-1 sm:mb-2">TCG Cards</h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm hidden sm:block">
+                      Explore all TCG sets and cards
                     </p>
                   </div>
                 </motion.div>
               </Link>
 
               {/* Battle Tools */}
-              <Link href="/type-effectiveness" className="h-full">
+              <Link href="/type-effectiveness" className="h-full touch-target">
                 <motion.div
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 p-6 cursor-pointer h-full flex flex-col"
+                  className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 p-4 sm:p-5 md:p-6 cursor-pointer h-full flex flex-col min-h-[140px]"
                 >
                   <div className="flex flex-col items-center text-center flex-1">
-                    <div className="w-16 h-16 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center mb-4">
-                      <CrossedSwords className="w-8 h-8 text-orange-600 dark:text-orange-400" />
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center mb-3 sm:mb-4">
+                      <CrossedSwords className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-orange-600 dark:text-orange-400" />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">Battle Tools</h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm">
-                      Type calculator, damage calculator, and team building tools
+                    <h3 className="text-sm sm:text-base md:text-xl font-bold text-gray-800 dark:text-white mb-1 sm:mb-2">Battle</h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm hidden sm:block">
+                      Type calculator & team tools
                     </p>
                   </div>
                 </motion.div>
               </Link>
 
               {/* Resources */}
-              <Link href="/pokemon/moves" className="h-full">
+              <Link href="/pokemon/moves" className="h-full touch-target">
                 <motion.div
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 p-6 cursor-pointer h-full flex flex-col"
+                  className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 p-4 sm:p-5 md:p-6 cursor-pointer h-full flex flex-col min-h-[140px]"
                 >
                   <div className="flex flex-col items-center text-center flex-1">
-                    <div className="w-16 h-16 bg-purple-100 dark:bg-purple-900/20 rounded-full flex items-center justify-center mb-4">
-                      <Bulb className="w-8 h-8 text-purple-600 dark:text-purple-400" />
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-purple-100 dark:bg-purple-900/20 rounded-full flex items-center justify-center mb-3 sm:mb-4">
+                      <Bulb className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-purple-600 dark:text-purple-400" />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">Resources</h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm">
+                    <h3 className="text-sm sm:text-base md:text-xl font-bold text-gray-800 dark:text-white mb-1 sm:mb-2">Resources</h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm hidden sm:block">
                       Complete database of moves, abilities, items, and more
                     </p>
                   </div>

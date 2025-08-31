@@ -4,10 +4,12 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { fetchJSON } from '@/utils/unifiedFetch';
 import { UnifiedGrid, UnifiedModal, FilterModal, useUnifiedModal } from '@/components/unified';
+import { PokemonCardRenderer, CompactPokemonCard } from '@/components/unified/PokemonCardRenderer';
 import { TypeBadge } from '@/components/ui/TypeBadge';
 import { getGeneration } from '@/utils/pokemonutils';
+import { useDebounce } from '@/hooks/useDebounce';
 import logger from '@/utils/logger';
-import type { Pokemon as APIPokemon, PokemonType } from '@/types/api/pokemon';
+import type { Pokemon as APIPokemon, PokemonType, PokemonStat } from '@/types/api/pokemon';
 
 /**
  * Unified Pokédex - Demonstration of new architecture
@@ -31,6 +33,10 @@ interface Pokemon {
   isLegendary?: boolean;
   isMythical?: boolean;
   isStarter?: boolean;
+  height?: number;
+  weight?: number;
+  stats?: Array<{ base_stat: number; stat: { name: string } }>;
+  totalStats?: number;
 }
 
 interface PokemonGridItem {
@@ -51,11 +57,36 @@ const UnifiedPokedex: NextPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [selectedGeneration, setSelectedGeneration] = useState<string>('');
-  const [sortBy, setSortBy] = useState<'id' | 'name'>('id');
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [sortBy, setSortBy] = useState<'id' | 'name' | 'stats'>('id');
+  
+  // Use debounced search for better performance
+  const debouncedSearch = useDebounce(searchTerm, 300);
   
   // Modal management
   const filterModal = useUnifiedModal();
   const detailModal = useUnifiedModal();
+  
+  // Viewport detection for adaptive card rendering
+  const [viewportWidth, setViewportWidth] = useState(
+    typeof window !== 'undefined' ? window.innerWidth : 375
+  );
+  
+  useEffect(() => {
+    const handleResize = () => setViewportWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
+  // Helper function to check if a Pokémon is a starter
+  const checkIfStarter = (id: number): boolean => {
+    const starterIds = [
+      1, 4, 7, 152, 155, 158, 252, 255, 258, 387, 390, 393,
+      495, 498, 501, 650, 653, 656, 722, 725, 728, 810, 813, 816,
+      906, 909, 912
+    ];
+    return starterIds.includes(id);
+  };
   
   // Load Pokémon data
   useEffect(() => {
@@ -84,15 +115,29 @@ const UnifiedPokedex: NextPage = () => {
           for (let id = start; id < start + batchSize && id <= TOTAL_POKEMON; id++) {
             promises.push(
               fetchJSON<APIPokemon>(`https://pokeapi.co/api/v2/pokemon/${id}`)
-                .then((data) => (data ? {
-                  id: typeof data.id === 'string' ? parseInt(data.id, 10) : data.id,
-                  name: data.name,
-                  sprite: data.sprites?.other?.['official-artwork']?.front_default || 
-                          data.sprites?.front_default || 
-                          '/dextrendslogo.png',
-                  types: data.types?.map((t: PokemonType) => t.type.name) || [],
-                  generation: getGeneration(typeof data.id === 'string' ? parseInt(data.id, 10) : data.id).toString()
-                } : null))
+                .then((data) => {
+                  if (!data) return null;
+                  const pokemonId = typeof data.id === 'string' ? parseInt(data.id, 10) : data.id;
+                  const stats = data.stats as PokemonStat[] | undefined;
+                  const totalStats = stats?.reduce((sum, stat) => sum + stat.base_stat, 0) || 0;
+                  
+                  return {
+                    id: pokemonId,
+                    name: data.name,
+                    sprite: data.sprites?.other?.['official-artwork']?.front_default || 
+                            data.sprites?.front_default || 
+                            '/dextrendslogo.png',
+                    types: data.types?.map((t: PokemonType) => t.type.name) || [],
+                    generation: getGeneration(pokemonId).toString(),
+                    isStarter: checkIfStarter(pokemonId),
+                    isLegendary: false, // Will be updated from species endpoint
+                    isMythical: false,  // Will be updated from species endpoint
+                    height: data.height,
+                    weight: data.weight,
+                    stats: stats,
+                    totalStats: totalStats
+                  };
+                })
                 .catch(() => null)
             );
           }
@@ -124,9 +169,9 @@ const UnifiedPokedex: NextPage = () => {
   const filteredPokemon = useMemo(() => {
     let filtered = [...pokemon];
     
-    // Search filter
-    if (searchTerm) {
-      const term = searchTerm.toLowerCase();
+    // Search filter (using debounced value)
+    if (debouncedSearch) {
+      const term = debouncedSearch.toLowerCase();
       filtered = filtered.filter(p => 
         p.name.toLowerCase().includes(term) || 
         p.id.toString() === term
@@ -145,16 +190,35 @@ const UnifiedPokedex: NextPage = () => {
       filtered = filtered.filter(p => p.generation === selectedGeneration);
     }
     
+    // Category filter (starter/legendary/mythical)
+    if (selectedCategory) {
+      switch (selectedCategory) {
+        case 'starter':
+          filtered = filtered.filter(p => p.isStarter);
+          break;
+        case 'legendary':
+          filtered = filtered.filter(p => p.isLegendary);
+          break;
+        case 'mythical':
+          filtered = filtered.filter(p => p.isMythical);
+          break;
+      }
+    }
+    
     // Sort
     filtered.sort((a, b) => {
-      if (sortBy === 'name') {
-        return a.name.localeCompare(b.name);
+      switch (sortBy) {
+        case 'name':
+          return a.name.localeCompare(b.name);
+        case 'stats':
+          return (b.totalStats || 0) - (a.totalStats || 0);
+        default:
+          return a.id - b.id;
       }
-      return a.id - b.id;
     });
     
     return filtered;
-  }, [pokemon, searchTerm, selectedTypes, selectedGeneration, sortBy]);
+  }, [pokemon, debouncedSearch, selectedTypes, selectedGeneration, selectedCategory, sortBy]);
   
   // Transform to grid items
   const gridItems: PokemonGridItem[] = useMemo(() => 
@@ -174,34 +238,28 @@ const UnifiedPokedex: NextPage = () => {
     router.push(`/pokedex/${item.id}`);
   }, [router]);
   
-  // Custom Pokémon card renderer
-  const renderPokemonCard = useCallback((item: PokemonGridItem) => (
-    <button
-      onClick={() => handlePokemonClick(item)}
-      className="pokemon-card group"
-      data-testid={`pokemon-${item.id}`}
-    >
-      <div className="pokemon-card-image-wrapper">
-        <img
-          src={item.image}
-          alt={item.title}
-          className="pokemon-card-image"
-          loading="lazy"
-        />
-      </div>
-      
-      <div className="p-3">
-        <p className="pokemon-card-number">{item.subtitle}</p>
-        <h3 className="pokemon-card-name">{item.title}</h3>
-        
-        <div className="flex gap-1 mt-2">
-          {item.types.map(type => (
-            <TypeBadge key={type} type={type} size="sm" />
-          ))}
-        </div>
-      </div>
-    </button>
-  ), [handlePokemonClick]);
+  // Custom Pokémon card renderer - adaptive based on viewport
+  const renderPokemonCard = useCallback((item: PokemonGridItem, index: number, dimensions: { width: number; height: number }) => {
+    // Use compact card for mobile or when columns are small
+    const useCompact = viewportWidth < 768 || dimensions.width < 120;
+    
+    const CardComponent = useCompact ? CompactPokemonCard : PokemonCardRenderer;
+    
+    return (
+      <CardComponent
+        id={item.raw.id}
+        name={item.raw.name}
+        sprite={item.raw.sprite}
+        types={item.raw.types}
+        onClick={() => handlePokemonClick(item)}
+        width={dimensions.width}
+        height={dimensions.height}
+        isLegendary={item.raw.isLegendary}
+        isMythical={item.raw.isMythical}
+        isStarter={item.raw.isStarter}
+      />
+    );
+  }, [handlePokemonClick, viewportWidth]);
   
   // Render filter content
   const renderFilters = () => (
@@ -265,10 +323,37 @@ const UnifiedPokedex: NextPage = () => {
         </div>
       </div>
       
+      {/* Category Filter */}
+      <div>
+        <h3 className="font-semibold mb-3">Category</h3>
+        <div className="grid grid-cols-2 gap-2">
+          {[
+            { value: 'starter', label: 'Starter' },
+            { value: 'legendary', label: 'Legendary' },
+            { value: 'mythical', label: 'Mythical' }
+          ].map(cat => (
+            <button
+              key={cat.value}
+              onClick={() => {
+                setSelectedCategory(selectedCategory === cat.value ? '' : cat.value);
+              }}
+              className={cn(
+                'py-2 px-4 rounded-lg font-medium transition-all',
+                selectedCategory === cat.value
+                  ? 'bg-green-500 text-white'
+                  : 'bg-gray-100 dark:bg-gray-800'
+              )}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
+      </div>
+      
       {/* Sort Options */}
       <div>
         <h3 className="font-semibold mb-3">Sort By</h3>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-3 gap-2">
           <button
             onClick={() => setSortBy('id')}
             className={cn(
@@ -291,6 +376,17 @@ const UnifiedPokedex: NextPage = () => {
           >
             Name
           </button>
+          <button
+            onClick={() => setSortBy('stats')}
+            className={cn(
+              'py-2 px-4 rounded-lg font-medium transition-all',
+              sortBy === 'stats'
+                ? 'bg-primary-500 text-white'
+                : 'bg-gray-100 dark:bg-gray-800'
+            )}
+          >
+            Stats
+          </button>
         </div>
       </div>
     </div>
@@ -300,10 +396,11 @@ const UnifiedPokedex: NextPage = () => {
     setSearchTerm('');
     setSelectedTypes([]);
     setSelectedGeneration('');
+    setSelectedCategory('');
     setSortBy('id');
   };
   
-  const hasActiveFilters = searchTerm || selectedTypes.length > 0 || selectedGeneration;
+  const hasActiveFilters = searchTerm || selectedTypes.length > 0 || selectedGeneration || selectedCategory || sortBy !== 'id';
   
   return (
     <>
