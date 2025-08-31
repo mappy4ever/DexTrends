@@ -73,7 +73,7 @@ export { FullBleedWrapper, PageBackground } from './FullBleedWrapper';
 
 // Frequently used components
 export { default as Button } from './Button';
-export { default as Card } from './Card';
+export { default as UIPanel } from './UIPanel';
 export { default as PokeballLoader } from './PokeballLoader';
 export { default as SkeletonLoader } from './SkeletonLoader';
 export { default as StyledBackButton } from './StyledBackButton';

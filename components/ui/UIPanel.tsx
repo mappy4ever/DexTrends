@@ -1,7 +1,7 @@
 import React, { forwardRef, HTMLAttributes } from 'react';
 import { cn } from '../../utils/cn';
 
-export interface CardProps extends HTMLAttributes<HTMLDivElement> {
+export interface UIPanelProps extends HTMLAttributes<HTMLDivElement> {
   variant?: 'default' | 'hover' | 'interactive' | 'flat';
   padding?: 'none' | 'sm' | 'md' | 'lg';
   rounded?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
@@ -10,7 +10,7 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
   flipOnClick?: boolean;
 }
 
-const Card = forwardRef<HTMLDivElement, CardProps>(
+const UIPanel = forwardRef<HTMLDivElement, UIPanelProps>(
   (
     {
       className,
@@ -123,7 +123,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
   }
 );
 
-Card.displayName = 'Card';
+UIPanel.displayName = 'UIPanel';
 
 // Card subcomponents for better composition
 export const CardHeader = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
@@ -170,4 +170,4 @@ export const CardFooter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivEleme
 );
 CardFooter.displayName = 'CardFooter';
 
-export default Card;
+export default UIPanel;

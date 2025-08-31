@@ -6,7 +6,7 @@ import type { PocketCard } from '../../types/api/pocket-cards';
 import type { CompetitiveTierRecord } from '../../utils/supabase';
 import type { TypeColors } from '../../types/pokemon-tabs';
 import { getTypeUIColors, getTypeAnimationAccent } from '../../utils/pokemonTypeGradients';
-import PokemonGlassCard from './PokemonGlassCard';
+import PokemonGlassPanel from './PokemonGlassPanel';
 import { cn } from '../../utils/cn';
 import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { FaClipboardList, FaChartBar, FaExchangeAlt, FaMapMarkerAlt, FaTrophy, FaLayerGroup } from 'react-icons/fa';

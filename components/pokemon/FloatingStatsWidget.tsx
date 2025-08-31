@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Pokemon } from "../../types/api/pokemon";
 import type { FavoritePokemon } from "../../context/modules/types";
-import PokemonGlassCard from './PokemonGlassCard';
+import PokemonGlassPanel from './PokemonGlassPanel';
 import { TypeBadge } from '../ui/TypeBadge';
 import { useScrollVisibility } from '../../hooks/useScrollVisibility';
 import { cn } from '../../utils/cn';
@@ -63,7 +63,7 @@ const FloatingStatsWidget: React.FC<FloatingStatsWidgetProps> = ({
             damping: 20
           }}
         >
-          <PokemonGlassCard 
+          <PokemonGlassPanel 
             variant="compact" 
             pokemonTypes={pokemon.types}
             className="shadow-2xl backdrop-blur-xl"
@@ -241,7 +241,7 @@ const FloatingStatsWidget: React.FC<FloatingStatsWidgetProps> = ({
                 </motion.div>
               )}
             </div>
-          </PokemonGlassCard>
+          </PokemonGlassPanel>
         </motion.div>
       )}
     </AnimatePresence>

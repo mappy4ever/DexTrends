@@ -3,7 +3,7 @@ import { cn } from '../../utils/cn';
 // Removed design-tokens as we're using simple, classic styling
 import type { PokemonType } from "../../types/pokemon";
 
-export interface PokemonGlassCardProps extends HTMLAttributes<HTMLDivElement> {
+export interface PokemonGlassPanelProps extends HTMLAttributes<HTMLDivElement> {
   variant?: 'default' | 'hero' | 'stat' | 'compact';
   pokemonTypes?: PokemonType[];
   hover?: boolean;
@@ -12,18 +12,18 @@ export interface PokemonGlassCardProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 /**
- * PokemonGlassCard Component
+ * PokemonGlassPanel Component
  * 
  * A glass morphism card component with Pokemon type-based theming.
  * Provides consistent styling for all Pokemon detail page cards.
  * 
  * @example
- * <PokemonGlassCard variant="stat" pokemonTypes={pokemon.types}>
+ * <PokemonGlassPanel variant="stat" pokemonTypes={pokemon.types}>
  *   <h3>Base Stats</h3>
  *   <StatsDisplay stats={pokemon.stats} />
- * </PokemonGlassCard>
+ * </PokemonGlassPanel>
  */
-const PokemonGlassCard = forwardRef<HTMLDivElement, PokemonGlassCardProps>(
+const PokemonGlassPanel = forwardRef<HTMLDivElement, PokemonGlassPanelProps>(
   (
     {
       className,
@@ -139,6 +139,6 @@ const PokemonGlassCard = forwardRef<HTMLDivElement, PokemonGlassCardProps>(
   }
 );
 
-PokemonGlassCard.displayName = 'PokemonGlassCard';
+PokemonGlassPanel.displayName = 'PokemonGlassPanel';
 
-export default PokemonGlassCard;
+export default PokemonGlassPanel;

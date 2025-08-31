@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import type { Pokemon, PokemonSpecies } from "../../types/api/pokemon";
 import type { FavoritePokemon } from "../../context/modules/types";
 import { TypeBadge } from '../ui/TypeBadge';
-import PokemonGlassCard from './PokemonGlassCard';
+import PokemonGlassPanel from './PokemonGlassPanel';
 import { getTypeUIColors, getTypeRingGradient } from '../../utils/pokemonTypeGradients';
 import { calculateCatchRate, calculateGenderRatio } from '../../utils/pokemonDetailUtils';
 import { CircularButton } from '../ui/design-system';
