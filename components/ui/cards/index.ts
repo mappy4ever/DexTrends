@@ -1,5 +1,5 @@
 // Card-related components
-export { default as Enhanced3DCard } from './Enhanced3DCard';
+export { default as Advanced3DCard } from './Advanced3DCard';
 export { default as UnifiedCard } from './UnifiedCard';
 export { default as PokemonCardItem } from './PokemonTile';
 export { default as EvolutionStageCard } from './EvolutionStageCard';

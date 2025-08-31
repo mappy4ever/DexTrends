@@ -7,7 +7,7 @@ import {
   combineClasses 
 } from '../../styles/design-tokens';
 
-export interface StandardCardProps extends HTMLAttributes<HTMLDivElement> {
+export interface DefaultCardProps extends HTMLAttributes<HTMLDivElement> {
   variant?: 'standard' | 'featured' | 'compact';
   hover?: boolean;
   gradient?: boolean;
@@ -17,18 +17,18 @@ export interface StandardCardProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 /**
- * StandardCard Component
+ * DefaultCard Component
  * 
  * A consistent card implementation following the design system.
  * Uses rounded-2xl for standard cards and rounded-3xl for featured cards.
  * 
  * @example
- * <StandardCard variant="standard">
+ * <DefaultCard variant="standard">
  *   <h3>Card Title</h3>
  *   <p>Card content</p>
- * </StandardCard>
+ * </DefaultCard>
  */
-const StandardCard = forwardRef<HTMLDivElement, StandardCardProps>(
+const DefaultCard = forwardRef<HTMLDivElement, DefaultCardProps>(
   (
     {
       className,
@@ -117,7 +117,7 @@ const StandardCard = forwardRef<HTMLDivElement, StandardCardProps>(
   }
 );
 
-StandardCard.displayName = 'StandardCard';
+DefaultCard.displayName = 'DefaultCard';
 
 // Subcomponents for better composition
 export const CardHeader = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
@@ -175,4 +175,4 @@ export const CardFooter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivEleme
 );
 CardFooter.displayName = 'CardFooter';
 
-export default StandardCard;
+export default DefaultCard;

@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { fetchPocketData } from '../../utils/pocketData';
 import { TypeBadge } from '../../components/ui/TypeBadge';
 import { FadeIn, SlideUp } from '../../components/ui/animations';
-import BackToTop from '../../components/ui/SimpleBackToTop';
+import BackToTop from '../../components/ui/BaseBackToTop';
 import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { FullBleedWrapper } from '../../components/ui/FullBleedWrapper';
 import { validateDeck, getDeckSuggestions, ValidationResult } from '../../utils/deckValidation';

@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-interface Enhanced3DCardProps {
+interface Advanced3DCardProps {
   card: {
     id?: string;
     name?: string;
@@ -27,13 +27,13 @@ interface Enhanced3DCardProps {
     [key: string]: unknown;
   };
   cardFeatures?: string[];
-  setZoomedCard?: (card: Enhanced3DCardProps['card']) => void;
+  setZoomedCard?: (card: Advanced3DCardProps['card']) => void;
   children?: React.ReactNode;
 }
 
-const Enhanced3DCard = ({ 
+const Advanced3DCard = ({ 
   card, cardClassName = '', isPocketCard = false, showHP = true, showRarity = true, rarity = {}, cardFeatures = [], setZoomedCard, children 
-}: Enhanced3DCardProps) => {
+}: Advanced3DCardProps) => {
   const router = useRouter();
   const [isHovered, setIsHovered] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
@@ -366,4 +366,4 @@ const Enhanced3DCard = ({
   );
 };
 
-export default Enhanced3DCard;
+export default Advanced3DCard;

@@ -13,7 +13,7 @@ import { InlineLoader, PageLoader } from '@/components/ui/SkeletonLoadingSystem'
 import StyledBackButton from "../../components/ui/StyledBackButton";
 import logger from '../../utils/logger';
 import PocketCardList from "../../components/PocketCardList";
-import BackToTop from "../../components/ui/SimpleBackToTop";
+import BackToTop from "../../components/ui/BaseBackToTop";
 import { fetchPocketData } from "../../utils/pocketData";
 import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
 import PageErrorBoundary from "../../components/ui/PageErrorBoundary";

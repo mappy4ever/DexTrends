@@ -13,7 +13,7 @@ import { UnifiedSearchBar, EmptyStateGlass, LoadingStateGlass } from '../../comp
 import { motion } from "framer-motion";
 import PocketCardList from "../../components/PocketCardList";
 import { fetchPocketData } from "../../utils/pocketData";
-import BackToTop from "../../components/ui/SimpleBackToTop";
+import BackToTop from "../../components/ui/BaseBackToTop";
 import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
 import { PocketCard } from "../../types/api/pocket-cards";
 import { NextPage } from "next";

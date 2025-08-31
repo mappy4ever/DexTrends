@@ -4,7 +4,7 @@ import { useTheme } from '../context/UnifiedAppContext';
 import { DynamicMarketAnalytics } from '../components/dynamic/DynamicComponents';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import PageErrorBoundary from '../components/ui/PageErrorBoundary';
-import BackToTop from '../components/ui/SimpleBackToTop';
+import BackToTop from '../components/ui/BaseBackToTop';
 import { FadeIn, SlideUp } from '../components/ui/animations/animations';
 import { GlassContainer } from '../components/ui/design-system/GlassContainer';
 import { GradientButton } from '../components/ui/design-system/GradientButton';

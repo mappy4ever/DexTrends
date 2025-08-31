@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Modal from '../modals/Modal';
 import { TypeBadge } from '../TypeBadge';
-import Enhanced3DCard from './Enhanced3DCard';
+import Advanced3DCard from './Advanced3DCard';
 import logger from '@/utils/logger';
 
 interface Card {

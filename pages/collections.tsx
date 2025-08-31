@@ -7,7 +7,7 @@ import PageErrorBoundary from '../components/ui/PageErrorBoundary';
 import { GlassContainer } from '../components/ui/design-system/GlassContainer';
 import { GradientButton } from '../components/ui/design-system/GradientButton';
 import { CircularCard } from '../components/ui/design-system/CircularCard';
-import { CircularButton, StandardCard, CardHeader, CardTitle, CardContent } from '../components/ui/design-system';
+import { CircularButton, DefaultCard, CardHeader, CardTitle, CardContent } from '../components/ui/design-system';
 import { motion } from 'framer-motion';
 import type { NextPage } from 'next';
 
@@ -263,7 +263,7 @@ const PortfolioOverview: React.FC = () => {
           </GlassContainer>
 
         {/* Recent Activity */}
-        <StandardCard 
+        <DefaultCard 
           variant="featured"
           className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm"
           padding="none"
@@ -292,11 +292,11 @@ const PortfolioOverview: React.FC = () => {
               ))}
             </div>
           </CardContent>
-        </StandardCard>
+        </DefaultCard>
       </div>
 
       {/* Portfolio Distribution */}
-      <StandardCard 
+      <DefaultCard 
         variant="featured"
         className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm"
       >
@@ -387,10 +387,10 @@ const PortfolioOverview: React.FC = () => {
             </div>
           </div>
         </div>
-      </StandardCard>
+      </DefaultCard>
 
       {/* Performance Chart Placeholder */}
-      <StandardCard 
+      <DefaultCard 
         variant="featured"
         className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm"
       >
@@ -420,7 +420,7 @@ const PortfolioOverview: React.FC = () => {
             </div>
           </div>
         </div>
-      </StandardCard>
+      </DefaultCard>
     </div>
   );
 };

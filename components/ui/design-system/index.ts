@@ -7,7 +7,8 @@ export { Button, ContextualButton } from './Button';
 export type { ButtonProps } from './Button';
 
 // New standardized components
-export { default as StandardCard } from '../StandardCard';
+export { default as DefaultCard } from '../DefaultCard';
+export { default as StandardCard } from '../DefaultCard'; // Temporary alias for backward compatibility
 export { default as CircularButton } from '../CircularButton';
 export { default as ConsistentModal } from '../ConsistentModal';
 
@@ -16,7 +17,7 @@ export {
   CardHeader, 
   CardTitle, 
   CardContent 
-} from '../StandardCard';
+} from '../DefaultCard';
 
 // New standardized glass container components
 export { StandardGlassContainer, SectionHeader, HoverCard } from './GlassContainerStandard';

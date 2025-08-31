@@ -304,7 +304,7 @@ export const CodeSplitBoundaries = {
   Charts: () => lazyLoad(() => import('@/components/ui/charts/PriceHistoryChart')),
   Modal: () => lazyLoad(() => import('@/components/ui/modals/EnhancedCardModal')),
   CardComparison: () => lazyLoad(() => import('@/components/ui/cards/CardComparisonTool')),
-  ThreeDCard: () => lazyLoad(() => import('@/components/ui/cards/Enhanced3DCard')),
+  ThreeDCard: () => lazyLoad(() => import('@/components/ui/cards/Advanced3DCard')),
   DataTable: () => lazyLoad(() => import('@/components/unified/UnifiedDataTable')),
   EvolutionTree: () => lazyLoad(() => import('@/components/ui/EvolutionTreeRenderer')),
   

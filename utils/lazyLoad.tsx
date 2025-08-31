@@ -197,9 +197,9 @@ export const LazyComponents = {
   ),
   
   // 3D Card View
-  Enhanced3DCard: lazyWithRetry(
-    () => import('@/components/ui/cards/Enhanced3DCard'),
-    'Enhanced3DCard'
+  Advanced3DCard: lazyWithRetry(
+    () => import('@/components/ui/cards/Advanced3DCard'),
+    'Advanced3DCard'
   ),
   
   // Pack Opening
@@ -303,7 +303,7 @@ export function prefetchNextComponents(currentRoute: string) {
   const prefetchMap: Record<string, (() => Promise<any>)[]> = {
     '/pokedex': [
       () => import('@/components/tcg-set-detail/CardPreviewModal'),
-      () => import('@/components/ui/cards/Enhanced3DCard')
+      () => import('@/components/ui/cards/Advanced3DCard')
     ],
     '/tcgexpansions': [
       () => import('@/components/tcg-set-detail/CardPreviewModal'),

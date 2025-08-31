@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 import { InlineLoader, PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import StyledBackButton from "../../components/ui/StyledBackButton";
 import { fetchJSON } from "../../utils/unifiedFetch";
-import BackToTop from "../../components/ui/SimpleBackToTop";
+import BackToTop from "../../components/ui/BaseBackToTop";
 import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
 import PageErrorBoundary from "../../components/ui/PageErrorBoundary";
 import type { NextPage } from "next";

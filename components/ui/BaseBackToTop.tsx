@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const SimpleBackToTop: React.FC = () => {
+const BaseBackToTop: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -51,4 +51,4 @@ const SimpleBackToTop: React.FC = () => {
   );
 };
 
-export default SimpleBackToTop;
+export default BaseBackToTop;

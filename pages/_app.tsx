@@ -45,7 +45,7 @@ import dynamic from 'next/dynamic';
 
 // Create stable references for dynamic imports to improve Fast Refresh
 const dynamicImports = {
-  SimpleBackToTop: () => import('../components/ui/SimpleBackToTop').catch(() => ({ default: () => null })),
+  BaseBackToTop: () => import('../components/ui/BaseBackToTop').catch(() => ({ default: () => null })),
   AccessibilityProvider: () => import('../components/ui/AccessibilityProvider').catch(() => ({ default: ({ children }: { children: React.ReactNode }) => children })),
   KeyboardShortcutsManager: () => import('../components/qol/KeyboardShortcuts').catch(() => ({ default: () => null })),
   GlobalSearchShortcuts: () => import('../components/qol/GlobalSearchShortcuts').catch(() => ({ default: () => null })),
@@ -54,7 +54,7 @@ const dynamicImports = {
 };
 
 // Safe components - only load confirmed existing ones
-const SimpleBackToTop = dynamic(dynamicImports.SimpleBackToTop, {
+const BaseBackToTop = dynamic(dynamicImports.BaseBackToTop, {
   ssr: false,
   loading: () => <div className="fixed bottom-4 right-4 w-12 h-12" />
 });
