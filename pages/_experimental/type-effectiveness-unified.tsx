@@ -2,10 +2,10 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
-import { createGlassStyle } from '../components/ui/design-system/glass-constants';
-import { UnifiedSearchBar, EmptyStateGlass, LoadingStateGlass } from '../components/ui/glass-components';
-import { GradientButton, CircularButton } from '../components/ui/design-system';
-import { TypeBadge } from '../components/ui/TypeBadge';
+import { createGlassStyle } from '../../components/ui/design-system/glass-constants';
+import { UnifiedSearchBar, EmptyStateGlass, LoadingStateGlass } from '../../components/ui/glass-components';
+import { GradientButton, CircularButton } from '../../components/ui/design-system';
+import { TypeBadge } from '../../components/ui/TypeBadge';
 import { 
   calculateTypeEffectiveness, 
   getTypeMatchups, 
@@ -14,10 +14,10 @@ import {
   getTypeColor,
   getEffectivenessLabel,
   loadTypeChart
-} from '../utils/typeEffectiveness';
-import logger from '../utils/logger';
-import { fetchJSON } from '../utils/unifiedFetch';
-import FullBleedWrapper from '../components/ui/FullBleedWrapper';
+} from '../../utils/typeEffectiveness';
+import logger from '../../utils/logger';
+import { fetchJSON } from '../../utils/unifiedFetch';
+import FullBleedWrapper from '../../components/ui/FullBleedWrapper';
 import { cn } from '@/utils/cn';
 
 interface TypeDetails {
