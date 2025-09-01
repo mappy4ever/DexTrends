@@ -390,7 +390,8 @@ export default function CardDetailPage() {
           {/* Card image section with 3D tilt */}
           <div className="lg:col-span-1">
             <div 
-              className="relative perspective-1000"
+              className="relative"
+              style={{ perspective: '1000px' }}
               onMouseMove={handleMouseMove}
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
@@ -406,7 +407,8 @@ export default function CardDetailPage() {
                     scale,
                     transformStyle: 'preserve-3d'
                   }}
-                  className="mb-4 preserve-3d"
+                  className="mb-4"
+                  whileHover={{ z: 50 }}
                 >
                   <div className="relative cursor-zoom-in rounded-lg overflow-hidden" onClick={() => setMagnifyImage(true)}>
                     <img 
