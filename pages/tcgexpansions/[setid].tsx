@@ -663,7 +663,7 @@ const SetIdPage: NextPage = () => {
                       onCardClick={handleCardClick}
                       getPrice={getCardPrice}
                       getReleaseDate={(card) => card.set?.releaseDate || ""}
-                      getRarityRank={(card: any) => getRarityRank(card.rarity)}
+                      getRarityRank={(card) => getRarityRank(card.rarity || '')}
                       showPrice={true}
                       showRarity={true}
                       showSet={true}

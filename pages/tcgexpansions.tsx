@@ -10,6 +10,9 @@ import { createGlassStyle, GradientButton, CircularButton } from '../components/
 import { UnifiedSearchBar, EmptyStateGlass, LoadingStateGlass } from '../components/ui/glass-components';
 import { motion } from 'framer-motion';
 import { InlineLoader, PageLoader } from '@/components/ui/SkeletonLoadingSystem';
+import { SkeletonCard } from '@/components/ui/Skeleton';
+import { PullToRefresh } from '@/components/mobile/PullToRefresh';
+import { ProgressiveImage } from '@/components/ui/ProgressiveImage';
 import FullBleedWrapper from "../components/ui/FullBleedWrapper";
 import TCGSetsErrorBoundary from "../components/TCGSetsErrorBoundary";
 import { CardSet } from "../types/api/cards";
@@ -249,7 +252,15 @@ const TcgSetsContent: React.FC = () => {
     10  // Load 10 more at a time
   );
 
-  return (
+  const handleRefresh = async () => {
+    setLoading(true);
+    setError(null);
+    await fetchSets(1, false);
+  };
+
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 640;
+
+  const mainContent = (
     <FullBleedWrapper gradient="pokedex">
       <div className="section-spacing-y-default max-w-7xl mx-auto px-2 xs:px-3 sm:px-6 lg:px-8 animate-fadeIn pt-4 xs:pt-6 sm:pt-8 overflow-x-hidden">
           <FadeIn>
@@ -439,94 +450,21 @@ const TcgSetsContent: React.FC = () => {
       
       {loading && sets.length === 0 ? (
         <motion.div 
-          className="flex flex-col items-center justify-center py-32"
+          className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 xs:gap-4 sm:gap-5 md:gap-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
-          {/* Pokeball Loader */}
-          <motion.div
-            className="relative w-24 h-24 mb-8"
-            animate={{ 
-              rotate: [0, 360]
-            }}
-            transition={{
-              duration: 1, 
-              repeat: Infinity, 
-              ease: "linear",
-              repeatType: "loop"
-            }}
-          >
-            {/* Pokeball SVG */}
-            <svg viewBox="0 0 100 100" className="w-full h-full">
-              {/* Top half - red */}
-              <path
-                d="M 50 5 A 45 45 0 0 1 95 50 H 5 A 45 45 0 0 1 50 5"
-                fill="#ff1744"
-              />
-              {/* Bottom half - white */}
-              <path
-                d="M 50 95 A 45 45 0 0 1 5 50 H 95 A 45 45 0 0 1 50 95"
-                fill="#ffffff"
-                stroke="#e0e0e0"
-                strokeWidth="1"
-              />
-              {/* Center line */}
-              <rect x="5" y="48" width="90" height="4" fill="#333333" />
-              {/* Center button outer ring */}
-              <circle
-                cx="50"
-                cy="50"
-                r="12"
-                fill="#ffffff"
-                stroke="#333333"
-                strokeWidth="4"
-              />
-              {/* Inner button with pulse */}
-              <motion.circle
-                cx="50"
-                cy="50"
-                r="5"
-                fill="#333333"
-                animate={{
-                  r: [5, 6, 5]
-                }}
-                transition={{ 
-                  duration: 1.5, 
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              />
-            </svg>
-          </motion.div>
-          
-          {/* Loading Text with Animation */}
-          <motion.div
-            className="text-center"
-            animate={{ opacity: [0.5, 1, 0.5] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-2">
-              {loadingMessage}
-            </h3>
-            <div className="flex items-center justify-center gap-1">
-              {[0, 1, 2].map((i) => (
-                <motion.div
-                  key={i}
-                  className="w-2 h-2 bg-purple-500 rounded-full"
-                  animate={{
-                    y: [0, -10, 0],
-                    opacity: [0.3, 1, 0.3]
-                  }}
-                  transition={{
-                    duration: 1,
-                    repeat: Infinity,
-                    delay: i * 0.2
-                  }}
-                />
-              ))}
-            </div>
-          </motion.div>
+          {/* Skeleton Cards for Loading */}
+          {Array.from({ length: 12 }).map((_, index) => (
+            <SkeletonCard 
+              key={index}
+              showImage={true}
+              showTitle={true}
+              showDescription={true}
+              showActions={false}
+            />
+          ))}
         </motion.div>
           ) : error ? (
             <motion.div
@@ -611,12 +549,12 @@ const TcgSetsContent: React.FC = () => {
                         {/* Glass overlay */}
                         <div className="absolute inset-0 backdrop-blur-sm bg-white/10" />
                         
-                        <img
+                        <ProgressiveImage
                           src={set.images.logo}
                           alt={set.name}
-                          className="max-h-20 xs:max-h-24 sm:max-h-28 max-w-[80%] xs:max-w-[85%] object-contain z-10 drop-shadow-xl sm:drop-shadow-2xl group-hover:scale-110 transition-transform duration-500"
-                          draggable="false"
-                          loading="lazy"
+                          className="max-h-20 xs:max-h-24 sm:max-h-28 max-w-[80%] xs:max-w-[85%] z-10"
+                          imgClassName="object-contain drop-shadow-xl sm:drop-shadow-2xl group-hover:scale-110 transition-transform duration-500"
+                          aspectRatio="16/9"
                         />
                         
                         {/* Shimmer effect */}
@@ -793,6 +731,14 @@ const TcgSetsContent: React.FC = () => {
           }} />
         </div>
       </FullBleedWrapper>
+    );
+
+    return isMobile ? (
+      <PullToRefresh onRefresh={handleRefresh}>
+        {mainContent}
+      </PullToRefresh>
+    ) : (
+      mainContent
     );
   };
   

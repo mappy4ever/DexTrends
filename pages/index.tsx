@@ -9,6 +9,7 @@ import { NextPage } from 'next';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import { GlobalSearch } from '../components/home/GlobalSearch';
 import { TouchTarget } from '../components/ui/TouchTarget';
+import { ProgressiveImage } from '../components/ui/ProgressiveImage';
 
 // Icons
 import { Book, CardList, CrossedSwords, Bulb } from '../utils/icons';
@@ -33,14 +34,14 @@ const HomePage: NextPage = () => {
               className="text-center"
             >
               {/* Logo - Responsive sizing for mobile */}
-              <div className="mb-6 sm:mb-8">
-                <Image
+              <div className="mb-6 sm:mb-8 h-24 xs:h-28 sm:h-36 md:h-44 lg:h-48 flex items-center justify-center">
+                <ProgressiveImage
                   src="/images/dextrends-vertical-logo.png"
                   alt="DexTrends"
-                  width={300}
-                  height={360}
-                  className="h-24 xs:h-28 sm:h-36 md:h-44 lg:h-48 w-auto mx-auto filter brightness-90 contrast-110"
-                  priority
+                  className="h-full w-auto mx-auto"
+                  imgClassName="filter brightness-90 contrast-110 object-contain"
+                  priority={true}
+                  aspectRatio="5/6"
                 />
               </div>
 

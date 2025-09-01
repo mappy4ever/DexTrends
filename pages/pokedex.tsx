@@ -11,6 +11,8 @@ import { getGeneration } from '@/utils/pokemonutils';
 import { useDebounce } from '@/hooks/useDebounce';
 import logger from '@/utils/logger';
 import { cn } from '@/utils/cn';
+import { SkeletonPokemonCard } from '@/components/ui/Skeleton';
+import { PullToRefresh } from '@/components/mobile/PullToRefresh';
 import type { Pokemon as APIPokemon, PokemonType, PokemonStat } from '@/types/api/pokemon';
 
 /**
@@ -384,6 +386,13 @@ const UnifiedPokedex: NextPage = () => {
     setSortBy('id');
   };
   
+  const handleRefresh = async () => {
+    // Reload Pokemon data
+    setLoading(true);
+    await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate refresh
+    window.location.reload(); // Simple refresh for now
+  };
+  
   const hasActiveFilters = searchTerm || selectedTypes.length > 0 || selectedGeneration || selectedCategory || sortBy !== 'id';
   
   // Intelligent column configuration
@@ -395,7 +404,9 @@ const UnifiedPokedex: NextPage = () => {
     wide: 8                                   // 8 cols on wide screens
   };
   
-  return (
+  const isMobile = viewportWidth <= 640;
+  
+  const mainContent = (
     <>
       <Head>
         <title>Pokédex - DexTrends</title>
@@ -480,17 +491,33 @@ const UnifiedPokedex: NextPage = () => {
           </div>
           
           {/* Unified Grid - The Heart of the System */}
-          <UnifiedGrid
-            items={gridItems}
-            onItemClick={handlePokemonClick}
-            columns={columnConfig}
-            gap="responsive"
-            virtualize={true}
-            loading={loading && pokemon.length === 0}
-            renderItem={renderPokemonCard}
-            enableHaptics={true}
-            className="min-h-[600px]"
-          />
+          {loading && pokemon.length === 0 ? (
+            <div className={cn(
+              'grid gap-3 sm:gap-4 md:gap-5',
+              viewportWidth <= 390 ? 'grid-cols-2' : 
+              viewportWidth <= 640 ? 'grid-cols-3' :
+              viewportWidth <= 768 ? 'grid-cols-4' :
+              viewportWidth <= 1024 ? 'grid-cols-5' :
+              viewportWidth <= 1440 ? 'grid-cols-6' :
+              'grid-cols-8'
+            )}>
+              {Array.from({ length: 24 }).map((_, index) => (
+                <SkeletonPokemonCard key={index} />
+              ))}
+            </div>
+          ) : (
+            <UnifiedGrid
+              items={gridItems}
+              onItemClick={handlePokemonClick}
+              columns={columnConfig}
+              gap="responsive"
+              virtualize={true}
+              loading={false}
+              renderItem={renderPokemonCard}
+              enableHaptics={true}
+              className="min-h-[600px]"
+            />
+          )}
           
           {/* Filter Modal */}
           <AdaptiveModal
@@ -518,6 +545,14 @@ const UnifiedPokedex: NextPage = () => {
         </div>
       </div>
     </>
+  );
+  
+  return isMobile ? (
+    <PullToRefresh onRefresh={handleRefresh}>
+      {mainContent}
+    </PullToRefresh>
+  ) : (
+    mainContent
   );
 };
 

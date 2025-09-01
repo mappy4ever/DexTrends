@@ -219,12 +219,12 @@ const UnifiedTypeEffectivenessPage = () => {
     onSelect: (type: string) => void,
     allowNone?: boolean
   ) => (
-    <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-6 gap-1.5 sm:gap-2">
+    <div className="grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-6 lg:grid-cols-6 gap-1.5 sm:gap-2">
       {allowNone && (
         <motion.button
           onClick={() => onSelect('')}
           className={cn(
-            'relative p-2 sm:p-3 rounded-lg sm:rounded-2xl transition-all',
+            'relative min-h-[44px] p-1.5 sm:p-2 md:p-3 rounded-lg sm:rounded-2xl transition-all touch-target',
             !selected
               ? 'ring-2 ring-offset-1 sm:ring-offset-2 ring-offset-white dark:ring-offset-gray-900 ring-gray-400 shadow-lg'
               : 'hover:scale-105 hover:shadow-md bg-gray-100 dark:bg-gray-800'
@@ -240,7 +240,7 @@ const UnifiedTypeEffectivenessPage = () => {
           key={type}
           onClick={() => onSelect(type)}
           className={cn(
-            'relative p-2 sm:p-3 rounded-lg sm:rounded-2xl transition-all',
+            'relative min-h-[44px] p-1.5 sm:p-2 md:p-3 rounded-lg sm:rounded-2xl transition-all touch-target',
             selected === type
               ? 'ring-2 ring-offset-1 sm:ring-offset-2 ring-offset-white dark:ring-offset-gray-900 shadow-lg scale-105'
               : 'hover:scale-105 hover:shadow-md'
@@ -276,7 +276,7 @@ const UnifiedTypeEffectivenessPage = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        <div className="container mx-auto px-4 py-4 sm:py-6">
+        <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4 md:py-6">
           <div className="flex items-center justify-between">
             <CircularButton
               onClick={() => router.push('/pokemon')}
@@ -287,7 +287,7 @@ const UnifiedTypeEffectivenessPage = () => {
               Back
             </CircularButton>
             
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-400 via-blue-500 to-indigo-600 bg-clip-text text-transparent">
+            <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-purple-400 via-blue-500 to-indigo-600 bg-clip-text text-transparent">
               Type Effectiveness
             </h1>
             
@@ -302,7 +302,7 @@ const UnifiedTypeEffectivenessPage = () => {
         </div>
       </motion.div>
 
-      <div className="container mx-auto px-4 py-6 sm:py-8 max-w-7xl">
+      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 md:py-8 max-w-7xl">
         {/* Loading and Error States */}
         {loading ? (
           <LoadingStateGlass />
@@ -362,7 +362,7 @@ const UnifiedTypeEffectivenessPage = () => {
                     key={key}
                     onClick={() => setViewMode(key as any)}
                     className={cn(
-                      'px-3 sm:px-6 py-2 sm:py-3 rounded-full font-semibold text-xs sm:text-sm',
+                      'min-h-[44px] px-3 sm:px-6 py-2 sm:py-3 rounded-full font-semibold text-xs sm:text-sm touch-target',
                       'transition-all duration-300',
                       viewMode === key
                         ? 'bg-gradient-to-r from-purple-500 via-blue-500 to-indigo-600 text-white shadow-xl'
@@ -389,7 +389,7 @@ const UnifiedTypeEffectivenessPage = () => {
                   {/* Attacking Type */}
                   <motion.div
                     className={cn(
-                      'rounded-2xl sm:rounded-3xl p-6 sm:p-8',
+                      'rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8',
                       'border border-white/20 dark:border-gray-700/50',
                       glassStyle
                     )}
@@ -411,7 +411,7 @@ const UnifiedTypeEffectivenessPage = () => {
                   {/* Defending Type(s) */}
                   <motion.div
                     className={cn(
-                      'rounded-2xl sm:rounded-3xl p-6 sm:p-8',
+                      'rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8',
                       'border border-white/20 dark:border-gray-700/50',
                       glassStyle
                     )}
@@ -456,7 +456,7 @@ const UnifiedTypeEffectivenessPage = () => {
                     initial={{ opacity: 0, scale: 0.8, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     className={cn(
-                      'text-center py-8 sm:py-10 px-6 sm:px-8',
+                      'text-center py-6 sm:py-8 md:py-10 px-4 sm:px-6 md:px-8',
                       'rounded-2xl sm:rounded-3xl',
                       'border border-white/20 dark:border-gray-700/50',
                       glassStyle
@@ -489,7 +489,7 @@ const UnifiedTypeEffectivenessPage = () => {
                       return (
                         <motion.div 
                           className={cn(
-                            'inline-block px-8 sm:px-10 py-4 sm:py-5 rounded-full',
+                            'inline-block px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 rounded-full',
                             getEffectivenessColor(damage),
                             'text-white shadow-lg'
                           )}
