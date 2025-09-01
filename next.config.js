@@ -33,9 +33,6 @@ const nextConfig = {
     } : false,
   },
   
-  // Enable SWC minification
-  swcMinify: true,
-  
   // Optimize for production
   productionBrowserSourceMaps: false,
   
@@ -70,7 +67,13 @@ const nextConfig = {
                 if (!module.libIdent) {
                   throw new Error('libIdent is undefined');
                 }
-                hash.update(module.libIdent({ context: __dirname }));
+                const libIdent = module.libIdent({ context: __dirname });
+                if (libIdent) {
+                  hash.update(libIdent);
+                } else {
+                  // Fallback to module identifier if libIdent returns null
+                  hash.update(module.identifier());
+                }
               }
               return hash.digest('hex').substring(0, 8);
             },
@@ -109,7 +112,6 @@ const nextConfig = {
   
   // Experimental features for performance
   experimental: {
-    optimizeCss: true,
     scrollRestoration: true,
   },
 };
