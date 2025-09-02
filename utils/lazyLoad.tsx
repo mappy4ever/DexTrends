@@ -226,17 +226,17 @@ export const LazyComponents = {
     'CollectionDashboard'
   ),
   
-  // Comparison Tool
-  CardComparisonTool: lazyWithRetry(
-    () => import('@/components/ui/cards/CardComparisonTool'),
-    'CardComparisonTool'
-  ),
+  // CardComparisonTool removed - unused component
+  // CardComparisonTool: lazyWithRetry(
+  //   () => import('@/components/ui/cards/CardComparisonTool'),
+  //   'CardComparisonTool'
+  // ),
   
-  // Price Intelligence
-  PriceIntelligenceSystem: lazyWithRetry(
-    () => import('@/components/ui/PriceIntelligenceSystem'),
-    'PriceIntelligenceSystem'
-  ),
+  // PriceIntelligenceSystem removed - unused component
+  // PriceIntelligenceSystem: lazyWithRetry(
+  //   () => import('@/components/ui/PriceIntelligenceSystem'),
+  //   'PriceIntelligenceSystem'
+  // ),
   
   // Recommendation Engine
   // SmartRecommendationEngine removed - unused component
@@ -308,7 +308,7 @@ export function prefetchNextComponents(currentRoute: string) {
     ],
     '/tcgexpansions': [
       () => import('@/components/ui/Modal'), // CardPreviewModal removed
-      () => import('@/components/ui/cards/CardComparisonTool')
+      // () => import('@/components/ui/cards/CardComparisonTool') // removed
     ],
     '/': [
       () => import('@/pages/pokedex'),

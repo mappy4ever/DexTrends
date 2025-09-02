@@ -1,5 +1,6 @@
 import React from 'react';
-import EvolutionStageCard from './cards/EvolutionStageCard';
+// EvolutionStageCard removed - use TCGCard or PokemonDisplay instead
+import { TCGCard } from './cards/TCGCard';
 import type { EvolutionDetail } from "../../types/pokemon";
 import logger from '@/utils/logger';
 

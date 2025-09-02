@@ -64,19 +64,10 @@ export const PerformanceDashboard = dynamic(
   }
 );
 
-export const PortfolioManager = dynamic(
-  () => import('./PortfolioManager'),
-  {
-    loading: () => <DashboardSkeleton />,
-    ssr: false
-  }
-);
+// PortfolioManager removed - unused component
 
-export const PriceIntelligenceSystem = dynamic(
-  () => import('./PriceIntelligenceSystem'),
-  {
-    loading: () => <DashboardSkeleton />,
-    ssr: false
+// PriceIntelligenceSystem removed - unused component
+// Use individual price components instead
   }
 );
 

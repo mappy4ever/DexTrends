@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import Image from 'next/image';
 import { TCGCard } from '../../types/api/cards';
-import { FlippableTCGCard as CardFlipAnimation } from '../ui/cards/FlippableTCGCard';
+// FlippableTCGCard removed - use TCGCard component instead
 import { InteractiveCard, easings, useEnhancedAnimation } from '../ui/EnhancedAnimationSystem';
 import { getRaritySymbol } from '../../utils/tcgRaritySymbols';
 import hapticFeedback from '../../utils/hapticFeedback';
