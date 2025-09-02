@@ -6,6 +6,7 @@ import { cn } from '@/utils/cn';
 // @ts-ignore - TypeScript issue with haptic exports
 import hapticFeedback from '@/utils/hapticFeedback';
 import logger from '@/utils/logger';
+import { useViewport } from '@/hooks/useViewport';
 
 /**
  * UnifiedGrid - World-class grid component for all viewports
@@ -102,19 +103,7 @@ export function UnifiedGrid<T extends GridItem>({
 }: UnifiedGridProps<T>) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { cardTap } = hapticFeedback;
-  const [viewportWidth, setViewportWidth] = useState(
-    typeof window !== 'undefined' ? window.innerWidth : 375
-  );
-  
-  // Update viewport width on resize
-  useEffect(() => {
-    const handleResize = () => {
-      setViewportWidth(window.innerWidth);
-    };
-    
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  const viewport = useViewport();
   
   // Calculate column count based on viewport
   const columnCount = useMemo(() => {
@@ -122,36 +111,36 @@ export function UnifiedGrid<T extends GridItem>({
     
     const config = columns === 'auto' ? AUTO_COLUMNS : columns;
     
-    if (viewportWidth <= 430) return config.mobile || AUTO_COLUMNS.mobile;
-    if (viewportWidth <= 768) return config.tablet || AUTO_COLUMNS.tablet;
-    if (viewportWidth <= 1024) return config.laptop || AUTO_COLUMNS.laptop;
-    if (viewportWidth <= 1440) return config.desktop || AUTO_COLUMNS.desktop;
+    if (viewport.width <= 430) return config.mobile || AUTO_COLUMNS.mobile;
+    if (viewport.width <= 768) return config.tablet || AUTO_COLUMNS.tablet;
+    if (viewport.width <= 1024) return config.laptop || AUTO_COLUMNS.laptop;
+    if (viewport.width <= 1440) return config.desktop || AUTO_COLUMNS.desktop;
     return config.wide || AUTO_COLUMNS.wide;
-  }, [columns, viewportWidth]);
+  }, [columns, viewport.width]);
   
   // Calculate gap based on viewport
   const gapSize = useMemo(() => {
     if (typeof gap === 'number') return gap;
     
-    if (viewportWidth <= 430) return RESPONSIVE_GAP.mobile;
-    if (viewportWidth <= 768) return RESPONSIVE_GAP.tablet;
-    if (viewportWidth <= 1024) return RESPONSIVE_GAP.laptop;
+    if (viewport.width <= 430) return RESPONSIVE_GAP.mobile;
+    if (viewport.width <= 768) return RESPONSIVE_GAP.tablet;
+    if (viewport.width <= 1024) return RESPONSIVE_GAP.laptop;
     return RESPONSIVE_GAP.desktop;
-  }, [gap, viewportWidth]);
+  }, [gap, viewport.width]);
   
   // Calculate item dimensions
   const itemDimensions = useMemo(() => {
     if (typeof window === 'undefined') return { width: 150, height: 150 };
     
-    const containerWidth = containerRef.current?.clientWidth || viewportWidth;
-    const padding = viewportWidth <= 430 ? 16 : 32; // Account for container padding
+    const containerWidth = containerRef.current?.clientWidth || viewport.width;
+    const padding = viewport.width <= 430 ? 16 : 32; // Account for container padding
     const totalGap = gapSize * (columnCount - 1);
     const availableWidth = containerWidth - totalGap - padding;
     const itemWidth = Math.floor(availableWidth / columnCount);
     const itemHeight = Math.floor(itemWidth * 1.4); // Taller aspect ratio for Pokémon cards
     
     return { width: itemWidth, height: itemHeight };
-  }, [viewportWidth, columnCount, gapSize]);
+  }, [viewport.width, columnCount, gapSize]);
   
   // Group items into rows for virtual scrolling
   const rows = useMemo(() => {

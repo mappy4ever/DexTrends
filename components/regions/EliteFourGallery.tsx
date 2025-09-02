@@ -6,6 +6,7 @@ import { FadeIn, SlideUp, CardHover, StaggeredChildren } from '../ui/animations/
 import { BsTrophy, BsShieldFill, BsStar, BsLightning, BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { typeEffectiveness } from '../../utils/pokemonutils';
 import { PokemonDisplay } from '../ui/PokemonDisplay';
+import { useViewport } from '../../hooks/useViewport';
 const EliteFourTile = PokemonDisplay;
 const ChampionTile = PokemonDisplay;
 
@@ -56,6 +57,7 @@ const EliteFourGallery: React.FC<EliteFourGalleryProps> = ({ region, eliteFour, 
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
+  const viewport = useViewport();
 
   // Elite Four team data with full Pokemon teams
   const eliteFourData: Record<string, MemberData> = {
@@ -412,8 +414,8 @@ const EliteFourGallery: React.FC<EliteFourGalleryProps> = ({ region, eliteFour, 
   // Handle carousel navigation
   const scrollToMember = (index: number) => {
     if (carouselRef.current) {
-      const isMobile = window.innerWidth <= 850;
-      const cardWidth = isMobile ? (window.innerWidth - 64) : 900; // Match actual card width
+      const isMobile = viewport.isMobile || viewport.isTablet;
+      const cardWidth = isMobile ? (viewport.width - 64) : 900; // Match actual card width
       const gap = isMobile ? 24 : 48; // Gap between cards (gap-12 = 48px)
       const cushionPadding = isMobile ? 32 : 200; // Cushion padding for first/last cards
       

@@ -2,6 +2,7 @@ import React, { forwardRef, SelectHTMLAttributes, useState, useRef, useEffect } 
 import { IoChevronDown, IoCheckmark, IoClose } from 'react-icons/io5';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../../utils/cn';
+import { useViewport } from '../../hooks/useViewport';
 const hapticManager = typeof window !== 'undefined' ? require('../../utils/hapticFeedback').default : null;
 
 export interface SelectOption {
@@ -64,14 +65,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
       multiple ? (Array.isArray(value) ? value : value ? [value] : []) : []
     );
     const containerRef = useRef<HTMLDivElement>(null);
-    const [isMobile, setIsMobile] = useState(false);
-
-    useEffect(() => {
-      const checkMobile = () => setIsMobile(window.innerWidth < 640);
-      checkMobile();
-      window.addEventListener('resize', checkMobile);
-      return () => window.removeEventListener('resize', checkMobile);
-    }, []);
+    const viewport = useViewport();
 
     useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
@@ -172,7 +166,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
       : selectedOption?.label || placeholder;
 
     // Use native select on mobile if enabled
-    if (isMobile && mobileNative && !searchable && !multiple) {
+    if (viewport.isMobile && mobileNative && !searchable && !multiple) {
       return (
         <div className={cn('relative', fullWidth && 'w-full', className)}>
           {label && (

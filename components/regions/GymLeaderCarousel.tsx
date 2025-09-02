@@ -7,6 +7,7 @@ import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { gymLeaderTeams } from '../../data/gymLeaderTeams';
 import { typeEffectiveness } from '../../utils/pokemonutils';
 import { PokemonDisplay as GymLeaderAvatar } from '../ui/PokemonDisplay';
+import { useViewport } from '../../hooks/useViewport';
 
 // Type definitions
 interface GymLeader {
@@ -56,6 +57,7 @@ const GymLeaderCarousel: React.FC<GymLeaderCarouselProps> = ({ region, gymLeader
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
+  const viewport = useViewport();
 
   // Initialize carousel to center first card on mount
   useEffect(() => {
@@ -111,8 +113,8 @@ const GymLeaderCarousel: React.FC<GymLeaderCarouselProps> = ({ region, gymLeader
   // Handle carousel navigation
   const scrollToLeader = (index: number) => {
     if (carouselRef.current) {
-      const isMobile = window.innerWidth <= 850;
-      const cardWidth = isMobile ? (window.innerWidth - 64) : 900; // Match actual card width
+      const isMobile = viewport.isMobile || viewport.isTablet;
+      const cardWidth = isMobile ? (viewport.width - 64) : 900; // Match actual card width
       const gap = isMobile ? 24 : 48; // Gap between cards (gap-12 = 48px)
       const cushionPadding = isMobile ? 32 : 200; // Cushion padding for first/last cards
       

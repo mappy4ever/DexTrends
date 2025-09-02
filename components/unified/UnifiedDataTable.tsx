@@ -4,6 +4,7 @@ import { cn } from '@/utils/cn';
 import { useWindowVirtualScroll } from '@/hooks/useVirtualScroll';
 import hapticFeedback from '@/utils/hapticFeedback';
 import logger from '@/utils/logger';
+import { useViewport } from '@/hooks/useViewport';
 
 /**
  * UnifiedDataTable - Production-ready responsive data table
@@ -95,22 +96,13 @@ export function UnifiedDataTable<T extends Record<string, any>>({
   const [sortKey, setSortKey] = useState<keyof T | string | null>(defaultSort || null);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>(defaultSortDirection);
   const [expandedRows, setExpandedRows] = useState<Set<string | number>>(new Set());
-  const [viewportWidth, setViewportWidth] = useState(
-    typeof window !== 'undefined' ? window.innerWidth : 375
-  );
   
   const containerRef = useRef<HTMLDivElement>(null);
   const { cardTap } = hapticFeedback;
+  const viewport = useViewport();
   
-  // Update viewport width on resize
-  useEffect(() => {
-    const handleResize = () => setViewportWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-  
-  const isMobile = viewportWidth < MOBILE_BREAKPOINT;
-  const isTablet = viewportWidth < TABLET_BREAKPOINT;
+  const isMobile = viewport.isMobile;
+  const isTablet = viewport.isTablet;
   
   // Filter data based on search
   const filteredData = useMemo(() => {

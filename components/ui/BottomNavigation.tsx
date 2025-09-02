@@ -5,6 +5,7 @@ import { cn } from '@/utils/cn';
 import { Book, CardList, CrossedSwords, Search } from '@/utils/icons';
 import { BsGrid } from 'react-icons/bs';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useViewport } from '@/hooks/useViewport';
 
 interface NavItem {
   href: string;
@@ -27,7 +28,7 @@ interface NavItem {
  */
 export const BottomNavigation: React.FC = () => {
   const router = useRouter();
-  const [isVisible, setIsVisible] = useState(false);
+  const viewport = useViewport();
   const [activeRoute, setActiveRoute] = useState('');
 
   // Navigation items
@@ -64,25 +65,13 @@ export const BottomNavigation: React.FC = () => {
     }
   ];
 
-  // Only show on mobile viewports
-  useEffect(() => {
-    const checkViewport = () => {
-      setIsVisible(window.innerWidth < 460);
-    };
-    
-    checkViewport();
-    window.addEventListener('resize', checkViewport);
-    
-    return () => window.removeEventListener('resize', checkViewport);
-  }, []);
-
   // Track active route
   useEffect(() => {
     setActiveRoute(router.pathname);
   }, [router.pathname]);
 
   // Don't render on desktop
-  if (!isVisible) return null;
+  if (!viewport.isMobile) return null;
 
   // Check if current route matches nav item (handle nested routes)
   const isActive = (href: string) => {
@@ -184,20 +173,9 @@ export const BottomNavigation: React.FC = () => {
  * Useful for adjusting page layouts
  */
 export const useBottomNavigation = () => {
-  const [hasBottomNav, setHasBottomNav] = useState(false);
+  const viewport = useViewport();
   
-  useEffect(() => {
-    const checkViewport = () => {
-      setHasBottomNav(window.innerWidth < 460);
-    };
-    
-    checkViewport();
-    window.addEventListener('resize', checkViewport);
-    
-    return () => window.removeEventListener('resize', checkViewport);
-  }, []);
-  
-  return { hasBottomNav };
+  return { hasBottomNav: viewport.isMobile };
 };
 
 export default BottomNavigation;
