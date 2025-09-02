@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../../utils/cn';
 import { IoClose } from 'react-icons/io5';
 import logger from '../../utils/logger';
+import { useViewport } from '../../hooks/useViewport';
 
 export type ModalSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | 'full';
 export type ModalPosition = 'center' | 'top' | 'bottom' | 'left' | 'right';
@@ -71,17 +72,7 @@ export const Modal: React.FC<ModalProps> = ({
   const modalRef = useRef<HTMLDivElement>(null);
   const previousActiveElement = useRef<HTMLElement | null>(null);
   const [isMounted, setIsMounted] = useState(false);
-  const [isMobileView, setIsMobileView] = useState(false);
-
-  // Check if we're on mobile
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobileView(window.innerWidth < 640); // Use Tailwind's sm breakpoint
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  const viewport = useViewport();
 
   // Handle mounting for portal
   useEffect(() => {
@@ -248,7 +239,7 @@ export const Modal: React.FC<ModalProps> = ({
   };
 
   // Determine if should render as sheet on mobile
-  const shouldRenderAsSheet = mobileAsSheet && isMobileView && position === 'center';
+  const shouldRenderAsSheet = mobileAsSheet && viewport.isMobile && position === 'center';
   const effectivePosition = shouldRenderAsSheet ? 'bottom' : position;
   const effectiveAnimation = shouldRenderAsSheet ? 'slide-up' : animation;
 

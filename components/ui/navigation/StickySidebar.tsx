@@ -1,6 +1,7 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import { TypeBadge } from '../TypeBadge';
 import { BsFilter, BsX, BsChevronDown, BsChevronUp, BsFunnel } from 'react-icons/bs';
+import { useViewport } from '../../../hooks/useViewport';
 
 interface FilterOption {
   value: string | number;
@@ -33,18 +34,8 @@ interface StickySidebarProps {
 export default function StickySidebar({ 
   filters = [], onFilterChange, isOpen = true, onToggle, className = "", children
 }: StickySidebarProps) {
-  const [isMobile, setIsMobile] = useState(false);
+  const viewport = useViewport();
   const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({});
-
-  useEffect(() => {
-    const checkMobile = (): void => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   const toggleSection = (sectionId: string) => {
     setCollapsedSections(prev => ({
@@ -213,7 +204,7 @@ export default function StickySidebar({
   return (
     <>
       {/* Mobile Toggle Button */}
-      {isMobile && (
+      {viewport.isMobile && (
         <button
           onClick={onToggle}
           className="fixed bottom-6 right-6 z-50 p-4 bg-pokemon-red rounded-full shadow-lg text-white hover:scale-110 transition-all duration-300 touch-manipulation"
@@ -226,8 +217,8 @@ export default function StickySidebar({
       {/* Sidebar */}
       <div
         className={`
-          ${isMobile ? 'fixed inset-y-0 left-0 z-40' : 'sticky top-20 h-[calc(100vh-5rem)]'}
-          ${isMobile && !isOpen ? '-translate-x-full' : 'translate-x-0'}
+          ${viewport.isMobile ? 'fixed inset-y-0 left-0 z-40' : 'sticky top-20 h-[calc(100vh-5rem)]'}
+          ${viewport.isMobile && !isOpen ? '-translate-x-full' : 'translate-x-0'}
           w-80 bg-white/95 backdrop-blur-sm border-r border-border-color shadow-lg transition-all duration-300 overflow-hidden
           ${className}
         `}
@@ -240,7 +231,7 @@ export default function StickySidebar({
             </div>
             <h2 className="font-semibold text-lg text-dark-text">Filters</h2>
           </div>
-          {isMobile && (
+          {viewport.isMobile && (
             <button
               onClick={onToggle}
               className="p-2 rounded-lg bg-light-grey hover:bg-mid-grey transition-all duration-300 touch-manipulation"

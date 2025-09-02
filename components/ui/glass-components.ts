@@ -19,7 +19,7 @@ export { exportData, exportPokemonData, exportCardData, exportMovesData, exportI
 
 // Export hooks
 export { useBulkSelection } from '../../hooks/useBulkSelection';
-export { useMobileOptimization, useTouchHandlers } from '../../hooks/useMobileOptimization';
+export { useViewport } from '../../hooks/useViewport';
 export { useKeyboardShortcuts, useGlobalKeyboardShortcuts, usePageKeyboardShortcuts } from '../../hooks/useKeyboardShortcuts';
 
 // Export contexts

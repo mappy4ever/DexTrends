@@ -8,6 +8,7 @@ import { PocketCard } from '../../types/api/pocket-cards';
 import { Pokemon } from "../../types/pokemon";
 import { getRaritySymbol, getRarityGlowClass } from '../../utils/tcgRaritySymbols';
 import OptimizedImage from './OptimizedImage';
+import { useViewport } from '../../hooks/useViewport';
 
 type CardUnion = TCGCard | PocketCard | Pokemon;
 
@@ -47,26 +48,17 @@ const VirtualizedCardGrid: React.FC<VirtualizedCardGridProps> = ({
   itemsPerPage = 48
 }) => {
   const [containerRef, setContainerRef] = useState<HTMLDivElement | null>(null);
-  const [viewportWidth, setViewportWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1400);
+  const viewport = useViewport();
   // Use useRef for persistent column locking that survives card array updates
   const initialColumnCountRef = useRef<number | null>(null);
   const prevCardsLengthRef = useRef<number>(cards.length);
   
-  // Track viewport width changes
-  useEffect(() => {
-    const handleResize = () => {
-      setViewportWidth(window.innerWidth);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-  
   // Debug container width changes
   useEffect(() => {
     if (containerRef) {
-      logger.debug('Container ref set', { width: containerRef.clientWidth, viewport: window.innerWidth });
+      logger.debug('Container ref set', { width: containerRef.clientWidth, viewport: viewport.width });
     }
-  }, [containerRef]);
+  }, [containerRef, viewport.width]);
   
   // Calculate grid dimensions
   const CARD_WIDTH = 200;
@@ -118,7 +110,7 @@ const VirtualizedCardGrid: React.FC<VirtualizedCardGridProps> = ({
   useEffect(() => {
     logger.debug('VirtualizedCardGrid State:', {
       containerWidth,
-      viewportWidth,
+      viewportWidth: viewport.width,
       actualColumns: actualColumnCount,
       finalColumns: finalColumnCount,
       initialLocked: initialColumnCountRef.current,
@@ -126,7 +118,7 @@ const VirtualizedCardGrid: React.FC<VirtualizedCardGridProps> = ({
       cardWidth: CARD_WIDTH,
       cardsCount: cards.length
     });
-  }, [containerWidth, viewportWidth, actualColumnCount, finalColumnCount, containerRef, cards.length]);
+  }, [containerWidth, viewport.width, actualColumnCount, finalColumnCount, containerRef, cards.length]);
   
   // Calculate actual card width to fill container
   const actualCardWidth = (containerWidth - PADDING * 2 - (GAP * (finalColumnCount - 1))) / finalColumnCount;
