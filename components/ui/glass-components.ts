@@ -7,7 +7,7 @@ export { default as EmptyStateGlass } from './EmptyStateGlass';
 export { Skeleton as LoadingStateGlass, SkeletonGrid as CardGridSkeleton } from './Skeleton';
 export { default as ExportButton } from './ExportButton';
 export { default as BulkSelectionBar } from './BulkSelectionBar';
-export { default as ComparisonModal } from './ComparisonModal';
+// ComparisonModal removed - use Modal component directly for comparisons
 
 // Re-export from design system
 export { GlassContainer } from './design-system/GlassContainer';
