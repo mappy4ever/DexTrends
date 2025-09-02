@@ -1,4 +1,3 @@
-// Enhanced filter components with smooth animations and transitions
-export { AnimatedFilterPanel } from './AnimatedFilterPanel';
-export { FilterChips } from './FilterChips';
-export { MultiSelectFilter } from './MultiSelectFilter';
+// Filter components
+// Note: Unused filter components were removed in Stage 4 consolidation
+// Remaining filters are integrated into specific features

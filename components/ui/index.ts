@@ -13,7 +13,7 @@ export * from './modals';
 export * from './forms';
 export { default as EnhancedSearchBox } from './forms/EnhancedSearchBox';
 export { default as TypeFilter } from './forms/TypeFilter';
-export { default as VisualSearchFilters } from './forms/VisualSearchFilters';
+// VisualSearchFilters removed - unused component
 
 // Progress Indicators
 export * from './progress';
@@ -22,7 +22,7 @@ export * from './progress';
 export * from './design-system';
 
 // Layout Components
-export { default as ListContainer } from './layout/ListContainer';
+// ListContainer removed - unused component
 export { default as CollectionDashboard } from './layout/CollectionDashboard';
 
 // Loading Components
@@ -66,15 +66,15 @@ export { default as chartcontainer } from './charts/chartcontainer';
 export { TypeBadge, default as TypeBadgeDefault } from './TypeBadge';
 export { default as Tooltip } from './Tooltip';
 export { default as ErrorMessage } from './ErrorMessage';
-export { default as KpiCard } from './KpiCard';
-export { default as LevelTag } from './LevelTag';
+// KpiCard removed - unused component
+// LevelTag removed - unused component
 export { default as PriceIndicator } from './PriceIndicator';
 export { default as PokeballSVG } from './PokeballSVG';
 export { FullBleedWrapper, PageBackground } from './FullBleedWrapper';
 
 // Frequently used components
 export { default as Button } from './Button';
-export { default as UIPanel } from './UIPanel';
+// UIPanel removed - unused component
 export { default as PokeballLoader } from './PokeballLoader';
 export { default as SkeletonLoader } from './SkeletonLoader';
 export { default as StyledBackButton } from './StyledBackButton';
@@ -94,8 +94,8 @@ export { ContextMenu, useContextMenu } from './ContextMenu';
 export { default as AchievementSystem } from './AchievementSystem';
 export { default as PackOpening } from './PackOpening';
 export { default as PocketDeckBuilder } from './PocketDeckBuilder';
-export * from './RegionalEvolutionHandler';
-export { default as PokemonEasterEggs } from './PokemonEasterEggs';
+// RegionalEvolutionHandler removed - unused component
+// PokemonEasterEggs removed - unused component
 export { default as PokemonSoundEffects } from './PokemonSoundEffects';
 
 // Enhancement Components

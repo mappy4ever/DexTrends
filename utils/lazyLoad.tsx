@@ -239,10 +239,11 @@ export const LazyComponents = {
   ),
   
   // Recommendation Engine
-  SmartRecommendationEngine: lazyWithRetry(
-    () => import('@/components/ui/SmartRecommendationEngine'),
-    'SmartRecommendationEngine'
-  )
+  // SmartRecommendationEngine removed - unused component
+  // SmartRecommendationEngine: lazyWithRetry(
+  //   () => import('@/components/ui/SmartRecommendationEngine'),
+  //   'SmartRecommendationEngine'
+  // )
 };
 
 /**

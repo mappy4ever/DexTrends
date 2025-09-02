@@ -1,5 +1,7 @@
-// Enhanced form components with interactive focus states and animations
-export { EnhancedInput } from './EnhancedInput';
-export { EnhancedSelect } from './EnhancedSelect';
-export { EnhancedTextarea } from './EnhancedTextarea';
-export { EnhancedSwitch } from './EnhancedSwitch';
+// Form components
+// Note: Enhanced components were removed in Stage 1 consolidation
+// Use core components from ui/ instead:
+// - Input: StandardInput.tsx
+// - Select: Select.tsx  
+// - Checkbox: Checkbox.tsx
+// - Radio: Radio.tsx
