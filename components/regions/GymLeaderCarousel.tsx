@@ -6,7 +6,7 @@ import { FadeIn } from '../ui/animations/animations';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { gymLeaderTeams } from '../../data/gymLeaderTeams';
 import { typeEffectiveness } from '../../utils/pokemonutils';
-import GymLeaderAvatar from '../ui/cards/GymLeaderAvatar';
+import { PokemonDisplay as GymLeaderAvatar } from '../ui/PokemonDisplay';
 
 // Type definitions
 interface GymLeader {

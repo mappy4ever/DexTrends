@@ -1,13 +1,16 @@
-// Card-related components
-export { default as Advanced3DCard } from './Advanced3DCard';
-export { default as UnifiedCard } from './UnifiedCard';
-export { default as PokemonCardItem } from './PokemonTile';
+// Primary card components
+export { TCGCard, TCGCard as UnifiedCard } from './TCGCard';
 export { default as EvolutionStageCard } from './EvolutionStageCard';
 export { default as CardComparisonTool } from './CardComparisonTool';
-export { default as FlippableCard } from './FlippableCard';
 export { default as FlippableTCGCard } from './FlippableTCGCard';
 
-// Trainer card components
-export { default as GymLeaderCard } from './GymLeaderTile';
-export { default as EliteFourCard } from './EliteFourTile';
-export { default as ChampionCard } from './ChampionTile';
+// Re-export from PokemonDisplay for backward compatibility
+export { 
+  PokemonDisplay as PokemonCard,
+  PokemonTile,
+  PokemonAvatar,
+  EnhancedPokemonCard 
+} from '../PokemonDisplay';
+
+// Re-export Container as Card
+export { Container as Card } from '../Container';

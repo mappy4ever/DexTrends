@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { cn } from '../../utils/cn';
 
 export interface SkeletonProps {
@@ -6,12 +6,20 @@ export interface SkeletonProps {
   variant?: 'text' | 'circular' | 'rectangular' | 'rounded';
   width?: string | number;
   height?: string | number;
-  animation?: 'pulse' | 'wave' | 'none';
+  animation?: 'pulse' | 'wave' | 'shimmer' | 'none';
   children?: React.ReactNode;
+  loading?: boolean;
+  delay?: number;
 }
 
 /**
- * Skeleton - Loading placeholder component
+ * Unified Skeleton Component
+ * Consolidates all skeleton variants from:
+ * - Skeleton.tsx (this file)
+ * - LoadingSkeletons.tsx
+ * - SkeletonLoadingSystem.tsx
+ * - DexTrendsLoading.tsx
+ * - AdvancedLoadingStates.tsx
  */
 export const Skeleton: React.FC<SkeletonProps> = ({
   className,
@@ -19,8 +27,28 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   width,
   height,
   animation = 'pulse',
-  children
+  children,
+  loading = true,
+  delay = 0
 }) => {
+  const [showSkeleton, setShowSkeleton] = useState(delay === 0 ? loading : false);
+  
+  useEffect(() => {
+    let timer: NodeJS.Timeout | undefined;
+    
+    if (delay > 0 && loading) {
+      timer = setTimeout(() => {
+        setShowSkeleton(true);
+      }, delay);
+    } else {
+      setShowSkeleton(loading);
+    }
+    
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [loading, delay]);
+
   const variantStyles = {
     text: 'rounded',
     circular: 'rounded-full',
@@ -31,6 +59,7 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   const animationStyles = {
     pulse: 'animate-pulse',
     wave: 'animate-shimmer',
+    shimmer: 'animate-shimmer',
     none: ''
   };
 
@@ -306,5 +335,57 @@ export const SkeletonPokemonCard: React.FC<{
     </div>
   );
 };
+
+/**
+ * CardGridSkeleton - Grid skeleton for card layouts
+ * Used by pages that import from SkeletonLoader
+ */
+export const CardGridSkeleton: React.FC<{
+  count?: number;
+  cols?: {
+    default?: number;
+    sm?: number;
+    md?: number;
+    lg?: number;
+  };
+  className?: string;
+  cardProps?: {
+    showPrice?: boolean;
+    showSet?: boolean;
+    showTypes?: boolean;
+  };
+}> = ({ 
+  count = 8, 
+  cols = { default: 1, sm: 2, md: 3, lg: 4 },
+  className,
+  cardProps
+}) => {
+  const gridCols = cn(
+    'grid gap-4',
+    `grid-cols-${cols.default || 1}`,
+    cols.sm && `sm:grid-cols-${cols.sm}`,
+    cols.md && `md:grid-cols-${cols.md}`,
+    cols.lg && `lg:grid-cols-${cols.lg}`,
+    className
+  );
+
+  return (
+    <div className={gridCols}>
+      {Array.from({ length: count }).map((_, i) => (
+        <SkeletonCard 
+          key={i}
+          showImage={true}
+          showTitle={true}
+          showDescription={cardProps?.showSet}
+          showActions={cardProps?.showPrice}
+          className="h-full"
+        />
+      ))}
+    </div>
+  );
+};
+
+// Alias for compatibility with SkeletonLoader imports
+export { CardGridSkeleton as SkeletonLoader };
 
 export default Skeleton;

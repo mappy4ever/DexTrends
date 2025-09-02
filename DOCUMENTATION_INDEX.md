@@ -1,57 +1,106 @@
-# DexTrends Documentation Index
+# DOCUMENTATION_INDEX.md - Master Documentation Map
 
-## Essential Documentation
+## 🔄 Documentation Flow Diagram
+```
+Session Start → CLAUDE.md → CURRENT_WORK.md → Begin Work
+                    ↓              ↓
+            QUICK_START.md  COMPONENT_INVENTORY.md
+                    ↓              ↓
+              CLEANUP_PLAN.md → Active Development
+                                      ↓
+                              Update Documentation
+                                      ↓
+                           SESSION_HANDOFF_CHECKLIST.md
+                                      ↓
+                              Commit & End Session
+```
 
-### Project Setup & Configuration
-- [`README.md`](./README.md) - Project overview and setup instructions
-- [`CLAUDE.md`](./CLAUDE.md) - AI assistant configuration and rules
-- [`ARCHITECTURE.md`](./ARCHITECTURE.md) - System architecture overview
+## Active Documentation (Use These)
 
-### Current State
-- [`CURRENT_STATUS.md`](./CURRENT_STATUS.md) - Current project status
-- [`PRODUCTION_ROUTES.md`](./PRODUCTION_ROUTES.md) - Production route documentation
-- [`BACKLOG.md`](./BACKLOG.md) - Feature backlog and roadmap
+### 📚 Core References (Read in Order)
+1. **`.claude/instructions.md`** - Auto-loaded by Claude AI (context bootstrap)
+2. **`CLAUDE.md`** - Master context and rules (single source of truth)
+3. **`CURRENT_WORK.md`** - Active tasks and session tracking
+4. **`QUICK_START.md`** - New session startup guide
+5. **`CLEANUP_PLAN.md`** - Component consolidation strategy
+6. **`COMPONENT_INVENTORY.md`** - Truth about component purposes
+7. **`SESSION_HANDOFF_CHECKLIST.md`** - Session continuity protocol
 
-### Development Guidelines
-- [`MOBILE_FEATURES_PROTECTED.md`](./MOBILE_FEATURES_PROTECTED.md) - Protected mobile features
-- [`PRODUCTION_DEPLOYMENT.md`](./PRODUCTION_DEPLOYMENT.md) - Deployment guidelines
-- [`UNUSED_CODE_AUDIT.md`](./UNUSED_CODE_AUDIT.md) - Code audit results
+### 📖 Project Documentation
+- **`README.md`** - Project overview and setup instructions
+- **`DOCUMENTATION_INDEX.md`** - This file, master map
 
-### Technical Documentation
-- [`docs/README.md`](./docs/README.md) - Technical documentation hub
-- [`docs/development/`](./docs/development/) - Development guides
-- [`docs/features/`](./docs/features/) - Feature documentation
-- [`docs/testing/`](./docs/testing/) - Testing guidelines
+## Documentation Responsibilities
+
+### What Each Document Does
+
+| Document | Purpose | When to Read | When to Update |
+|----------|---------|--------------|----------------|
+| `.claude/instructions.md` | Auto-loads context | Every session start | When patterns change |
+| `CLAUDE.md` | Master rules & context | First in every session | Major violations found |
+| `CURRENT_WORK.md` | Active work tracking | Start & end of session | Every task completion |
+| `QUICK_START.md` | Onboarding & workflow | New to project | New pitfalls discovered |
+| `CLEANUP_PLAN.md` | Consolidation roadmap | Before component work | After consolidation |
+| `COMPONENT_INVENTORY.md` | Component truth table | Before using components | Duplicates found |
+| `SESSION_HANDOFF_CHECKLIST.md` | Continuity protocol | End of session | Process improvements |
+
+## Update Triggers
+
+### Automatic Updates Required
+These MUST be updated when conditions are met:
+
+| Condition | Update File | Section |
+|-----------|------------|---------|
+| Task completed | CURRENT_WORK.md | "Last Completed Work" |
+| Component deleted | CURRENT_WORK.md | "Metrics Update" |
+| Duplicate found | COMPONENT_INVENTORY.md | Add to relevant table |
+| Pitfall discovered | QUICK_START.md | "Common Pitfalls" |
+| Pattern violation | CLAUDE.md | "Critical Violations" |
+| Session ending | CURRENT_WORK.md | Full update per checklist |
+
+## Quick Reference Commands
+
+### Check Documentation State
+```bash
+# See what's changed
+git status | grep "\.md"
+
+# Check last updates
+ls -lt *.md | head -5
+
+# Find TODOs in docs
+grep -r "TODO" *.md
+```
+
+### Documentation Validation
+```bash
+# Ensure all files exist
+for file in CLAUDE.md CURRENT_WORK.md QUICK_START.md CLEANUP_PLAN.md COMPONENT_INVENTORY.md SESSION_HANDOFF_CHECKLIST.md; do
+  [ -f "$file" ] && echo "✓ $file" || echo "✗ $file MISSING"
+done
+```
 
 ## Archived Documentation
 
-### Historical Archives
-- [`docs/archive/cleanup-project-august-2025/`](./docs/archive/cleanup-project-august-2025/) - August 2025 cleanup project
-- [`docs/archive/old-project-resources/`](./docs/archive/old-project-resources/) - Legacy project resources
-- [`docs/archive/development-history/`](./docs/archive/development-history/) - Development history
+All legacy documentation has been moved to `/docs/archive/2024-09-01-legacy/`.
 
-### Why Archived?
-These documents were archived to maintain a clean documentation structure while preserving historical context. They contain:
-- Completed project documentation
-- Old migration guides
-- Historical development decisions
-- Superseded technical documentation
+**DO NOT USE ARCHIVED DOCS** - They contain outdated patterns and confusing information.
 
-## Documentation Standards
+## Documentation Rules
 
-### File Naming
-- Use UPPERCASE for root-level status/config docs
-- Use lowercase with hyphens for technical docs
-- Add dates to time-sensitive documents
+### What Goes Where
+- **Root directory**: Only active, essential documentation
+- **`/docs/current/`**: Current detailed documentation
+- **`/docs/archive/`**: Legacy documentation (reference only)
 
-### Content Guidelines
-- Keep documentation current and actionable
-- Archive completed projects and obsolete guides
-- Update the index when adding new documentation
-- Remove duplication and consolidate related docs
+### When to Update
+- **CLAUDE.md**: When core rules or patterns change
+- **CURRENT_WORK.md**: After each work session
+- **QUICK_START.md**: When new pitfalls discovered
+- **CLEANUP_PLAN.md**: As consolidation progresses
+- **COMPONENT_INVENTORY.md**: When components added/removed
 
 ---
 
-*Last Updated: August 31, 2025*
-*Total Active Docs: 9 root + technical guides*
-*Total Archived: 100+ historical documents*
+*Created: 2025-09-01*
+*Purpose: Single source of truth for documentation structure*

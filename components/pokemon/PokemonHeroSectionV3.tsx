@@ -10,7 +10,7 @@ import { calculateCatchRate, calculateGenderRatio, getStatColor } from '../../ut
 import { cn } from '../../utils/cn';
 import { FaStar, FaRuler, FaWeight, FaMars, FaVenus, FaHeart, FaTag } from 'react-icons/fa';
 import { useFavorites } from '../../hooks/useUnifiedApp';
-import PokemonFormSelector from './PokemonFormSelector';
+import PokemonFormSelector from '../ui/PokemonFormSelector';
 import { dynamicIsland } from '../ui/DynamicIsland';
 import hapticFeedback from '../../utils/hapticFeedback';
 

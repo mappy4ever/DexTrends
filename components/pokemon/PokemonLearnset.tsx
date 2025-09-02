@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { showdownQueries, PokemonLearnsetRecord, MoveCompetitiveDataRecord } from '@/utils/supabase';
 import { cn } from '@/utils/cn';
-import Skeleton from '@/components/ui/SkeletonLoader';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { EnhancedMoveDisplay } from './EnhancedMoveDisplay';
 import { TypeBadge } from '@/components/ui/TypeBadge';
 import { CategoryIcon } from '@/components/ui/CategoryIcon';

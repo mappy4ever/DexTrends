@@ -12,7 +12,18 @@ import { getPrice as getCardPrice } from "../../utils/pokemonutils";
 import { DetailPageSkeleton } from '@/components/ui/SkeletonLoadingSystem';
 import UnifiedCard from "../../components/ui/cards/UnifiedCard";
 import StyledBackButton from "../../components/ui/StyledBackButton";
-import SimpleCardWrapper from "../../components/ui/SimpleCardWrapper";
+// SimpleCardWrapper removed during consolidation - using div instead
+const SimpleCardWrapper = ({ children, className, rarity }: any) => {
+  const getBorderClass = () => {
+    if (!rarity) return 'border-gray-300';
+    const rarityLower = rarity.toLowerCase();
+    if (rarityLower.includes('secret') || rarityLower.includes('rainbow')) return 'border-yellow-400';
+    if (rarityLower.includes('ultra') || rarityLower.includes('hyper')) return 'border-purple-400';
+    if (rarityLower.includes('rare')) return 'border-blue-400';
+    return 'border-gray-300';
+  };
+  return <div className={`relative rounded-lg overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg ${getBorderClass()} border-2 ${className}`}>{children}</div>;
+};
 import logger from "../../utils/logger";
 import { useAppContext } from "../../context/UnifiedAppContext";
 import { fetchJSON } from "../../utils/unifiedFetch";

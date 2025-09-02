@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { NextPage } from 'next';
 import { HeroLogo } from '@/components/ui/DexTrendsLogo';
 import { GlobalSearch } from '@/components/home/GlobalSearch';
-import { AdaptiveModal, useAdaptiveModal } from '@/components/unified/AdaptiveModal';
+import { AdaptiveModal, useAdaptiveModal } from '@/components/unified';
 import { Book, CardList, CrossedSwords, Bulb } from '@/utils/icons';
 import { cn } from '@/utils/cn';
 import hapticFeedback from '@/utils/hapticFeedback';

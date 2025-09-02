@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { TypeBadge } from '../TypeBadge';
-import Modal from '../modals/Modal';
+import Modal from '@/components/ui/Modal';
 
 interface FilterState {
   types: string[];

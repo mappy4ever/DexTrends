@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 import { cn } from '@/utils/cn';
 import { createGlassStyle } from '../ui/design-system/glass-constants';
-import { RarityBadge } from './RarityBadge';
+import { RarityBadge } from '../ui/RarityBadge';
 import type { TCGCard } from '@/types/api/cards';
 
 interface CardShowcaseStripProps {

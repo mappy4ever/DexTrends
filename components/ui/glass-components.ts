@@ -3,7 +3,8 @@
 
 export { default as UnifiedSearchBar } from './UnifiedSearchBar';
 export { default as EmptyStateGlass } from './EmptyStateGlass';
-export { default as LoadingStateGlass, CardGridSkeleton } from './LoadingStateGlass';
+// Loading states moved to Skeleton.tsx
+export { Skeleton as LoadingStateGlass, SkeletonGrid as CardGridSkeleton } from './Skeleton';
 export { default as ExportButton } from './ExportButton';
 export { default as BulkSelectionBar } from './BulkSelectionBar';
 export { default as ComparisonModal } from './ComparisonModal';

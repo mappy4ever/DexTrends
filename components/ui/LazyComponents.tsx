@@ -89,13 +89,14 @@ export const CollectionTracker = dynamic(
 );
 
 // Modal and Overlay Components
-export const AdvancedModalSystem = dynamic(
-  () => import('./AdvancedModalSystem').then(mod => ({ default: mod.default.ModalProvider })),
-  {
-    loading: () => <ModalSkeleton />,
-    ssr: false
-  }
-);
+// AdvancedModalSystem removed - using unified Modal
+// export const AdvancedModalSystem = dynamic(
+//   () => import('./AdvancedModalSystem').then(mod => ({ default: mod.default.ModalProvider })),
+//   {
+//     loading: () => <ModalSkeleton />,
+//     ssr: false
+//   }
+// );
 
 export const EnhancedCardModal = dynamic(
   () => import('./EnhancedCardModal'),

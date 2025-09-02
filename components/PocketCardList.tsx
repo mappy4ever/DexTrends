@@ -1,10 +1,10 @@
 import React, { useState, useMemo, memo } from "react";
 import Image from "next/image";
-import Modal from "./ui/modals/Modal";
+import Modal from '@/components/ui/Modal';
 import type { PocketRarity } from "@/types/api/pocket-cards";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import { InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
-import { SmartSkeleton } from "./ui/SkeletonLoader";
+import { CardGridSkeleton } from "./ui/Skeleton";
 import { FaCrown } from "react-icons/fa";
 import { ErrorBoundaryWrapper } from "./ui/ErrorBoundary";
 import type { PocketCard } from "../types/api/pocket-cards";
@@ -370,12 +370,13 @@ function PocketCardListInner({
 
   if (loading) {
     return (
-      <SmartSkeleton 
-        type="card-grid"
+      <CardGridSkeleton 
         count={20}
-        showPrice={false}
-        showTypes={true}
-        showHP={true}
+        cols={{ default: 2, sm: 3, md: 4, lg: 5 }}
+        cardProps={{
+          showPrice: false,
+          showTypes: true
+        }}
         className="animate-fadeIn"
       />
     );

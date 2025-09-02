@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { GlassContainer } from '../../ui/design-system/GlassContainer';
-import { GradientButton } from '../../ui/design-system/GradientButton';
+import Button, { default as GradientButton } from '@/components/ui/Button';
 import { motion } from 'framer-motion';
 import type { CardSet } from '../../../types/api/cards';
 

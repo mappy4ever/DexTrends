@@ -218,4 +218,5 @@ const VirtualizedCardGrid: React.FC<VirtualizedCardGridProps> = ({
   );
 };
 
+export { VirtualizedCardGrid };
 export default VirtualizedCardGrid;

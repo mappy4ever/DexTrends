@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PositionedModal } from './PositionedModal';
+import { Modal } from './Modal';
 import PokeballLoader from './PokeballLoader';
 
 // Types
@@ -109,12 +109,12 @@ export const EnhancedPokemonSelector: React.FC<EnhancedPokemonSelectorProps> = (
     : title;
 
   return (
-    <PositionedModal
+    <Modal
       isOpen={isOpen}
       onClose={onClose}
       title={modalTitle}
-      maxWidth="max-w-5xl"
-      maxHeight="max-h-[90vh]"
+      size="5xl"
+      className="max-h-[90vh]"
     >
       <div className="p-6">
         {/* Search and Controls */}
@@ -209,7 +209,7 @@ export const EnhancedPokemonSelector: React.FC<EnhancedPokemonSelectorProps> = (
           </div>
         )}
       </div>
-    </PositionedModal>
+    </Modal>
   );
 };
 

@@ -13,7 +13,7 @@ import {
 } from 'react-icons/fa';
 // BsSparkles import removed - not available in react-icons/bs
 import { DoughnutChart, BarChart, ChartData, ChartOptions } from './LazyChart';
-import Modal from './modals/Modal';
+import Modal from '@/components/ui/Modal';
 import { useNotifications } from '../../hooks/useNotifications';
 import { TCGCard } from '../../types/api/cards';
 import { PocketCard } from '../../types/api/pocket-cards';

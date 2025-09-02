@@ -14,7 +14,7 @@ import LazyWrapper from '../components/ui/LazyWrapper';
 
 // Lazy load CollectionDashboard
 const LazyCollectionDashboard = React.lazy(() => import("../components/ui/layout/CollectionDashboard"));
-import PokemonAvatar from '../components/ui/cards/PokemonAvatar';
+import { PokemonAvatar } from '../components/ui/PokemonDisplay';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import { CircularButton } from '../components/ui/design-system';
 import { NextPage } from 'next';
@@ -350,12 +350,10 @@ const FavoritesPage: NextPage = () => {
                   {pokemonData.map(pokemon => (
                     <div key={pokemon.id} className="relative">
                       <PokemonAvatar
-                        pokemon={{
-                          id: pokemon.id,
-                          name: pokemon.name,
-                          sprite: pokemon.sprite,
-                          types: pokemon.types.map(type => ({ type: { name: type } }))
-                        }}
+                        id={pokemon.id}
+                        name={pokemon.name}
+                        sprite={pokemon.sprite}
+                        types={pokemon.types.map(type => ({ type: { name: type } }))}
                         size="md"
                       />
                       <button

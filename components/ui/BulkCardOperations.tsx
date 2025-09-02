@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { CheckIcon, XMarkIcon, ArrowDownTrayIcon, ShareIcon, TagIcon, StarIcon, TrashIcon } from '@heroicons/react/24/outline';
-import Modal from './modals/Modal';
+import Modal from '@/components/ui/Modal';
 import { useNotifications } from '../../hooks/useNotifications';
 
 // Types and Interfaces

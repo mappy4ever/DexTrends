@@ -14,7 +14,7 @@ import {
   InformationCircleIcon
 } from '@heroicons/react/24/outline';
 import { LineChart, DoughnutChart, BarChart, ChartData, ChartOptions } from './LazyChart';
-import Modal from './modals/Modal';
+import Modal from '@/components/ui/Modal';
 import { useNotifications } from '../../hooks/useNotifications';
 
 

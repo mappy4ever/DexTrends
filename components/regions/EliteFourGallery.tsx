@@ -5,8 +5,9 @@ import { TypeBadge } from '../ui/TypeBadge';
 import { FadeIn, SlideUp, CardHover, StaggeredChildren } from '../ui/animations/animations';
 import { BsTrophy, BsShieldFill, BsStar, BsLightning, BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { typeEffectiveness } from '../../utils/pokemonutils';
-import EliteFourTile from '../ui/cards/EliteFourTile';
-import ChampionTile from '../ui/cards/ChampionTile';
+import { PokemonDisplay } from '../ui/PokemonDisplay';
+const EliteFourTile = PokemonDisplay;
+const ChampionTile = PokemonDisplay;
 
 // Type definitions
 interface Pokemon {

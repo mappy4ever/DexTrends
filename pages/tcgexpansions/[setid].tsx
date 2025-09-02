@@ -12,8 +12,19 @@ import { createGlassStyle, GradientButton, CircularButton } from '../../componen
 import { cn } from '../../utils/cn';
 import { UnifiedSearchBar, EmptyStateGlass, LoadingStateGlass } from '../../components/ui/glass-components';
 import TCGCardList from "../../components/TCGCardList";
-import VirtualCardGrid from "../../components/VirtualCardGrid";
-import SimpleCardWrapper from "../../components/ui/SimpleCardWrapper";
+import VirtualCardGrid from "../../components/ui/VirtualizedCardGrid";
+// SimpleCardWrapper removed - using div instead
+const SimpleCardWrapper = ({ children, className, rarity }: any) => {
+  const getBorderClass = () => {
+    if (!rarity) return 'border-gray-300';
+    const rarityLower = rarity.toLowerCase();
+    if (rarityLower.includes('secret') || rarityLower.includes('rainbow')) return 'border-yellow-400';
+    if (rarityLower.includes('ultra') || rarityLower.includes('hyper')) return 'border-purple-400';
+    if (rarityLower.includes('rare')) return 'border-blue-400';
+    return 'border-gray-300';
+  };
+  return <div className={`relative rounded-lg overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg ${getBorderClass()} border-2 ${className}`}>{children}</div>;
+};
 import { useTheme, useFavorites } from '../../context/UnifiedAppContext';
 import { useViewSettings } from "../../context/UnifiedAppContext";
 import { DetailPageSkeleton, InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
@@ -26,7 +37,7 @@ import type { FavoriteCard } from "../../context/modules/types";
 import TCGSetErrorBoundary from "../../components/TCGSetErrorBoundary";
 import { HorizontalCardShowcase } from "../../components/tcg-set-detail/HorizontalCardShowcase";
 import { CompactStatsBar } from "../../components/tcg-set-detail/CompactStatsBar";
-import { RarityBadge } from "../../components/tcg-set-detail/RarityBadge";
+import { RarityBadge } from "../../components/ui/RarityBadge";
 import { RarityIcon, RARITY_ORDER, getRarityRank } from "../../components/ui/RarityIcon";
 // Removed - using unified responsive approach
 import { ProgressiveImage } from "../../components/ui/ProgressiveImage";

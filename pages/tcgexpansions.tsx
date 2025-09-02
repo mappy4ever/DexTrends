@@ -11,7 +11,7 @@ import { UnifiedSearchBar, EmptyStateGlass, LoadingStateGlass } from '../compone
 import { motion } from 'framer-motion';
 import { InlineLoader, PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { SkeletonCard } from '@/components/ui/Skeleton';
-import { PullToRefresh } from '@/components/mobile/PullToRefresh';
+import { PullToRefresh } from '@/components/ui/gestures/PullToRefresh';
 import { ProgressiveImage } from '@/components/ui/ProgressiveImage';
 import FullBleedWrapper from "../components/ui/FullBleedWrapper";
 import TCGSetsErrorBoundary from "../components/TCGSetsErrorBoundary";

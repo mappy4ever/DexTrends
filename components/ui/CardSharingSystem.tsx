@@ -8,7 +8,7 @@ import {
   FaClipboard,
   FaCheck
 } from 'react-icons/fa';
-import Modal from './modals/Modal';
+import Modal from '@/components/ui/Modal';
 import { useNotifications } from '../../hooks/useNotifications';
 // Type definitions for dynamic imports
 interface Html2CanvasStatic {

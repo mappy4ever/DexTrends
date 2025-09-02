@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
-import TouchGestures from '../mobile/TouchGestures';
+// TouchGestures removed - using framer-motion gestures directly
 import OptimizedImage from './OptimizedImage';
 import { FaTimes, FaExpand, FaCompress } from 'react-icons/fa';
 
@@ -85,9 +85,8 @@ export const ZoomableImage: React.FC<ZoomableImageProps> = ({
   return (
     <>
       {/* Regular image with double tap to zoom */}
-      <TouchGestures
-        onDoubleTap={handleDoubleTap}
-        enableDoubleTap={enableZoom}
+      <div
+        onDoubleClick={handleDoubleTap}
         className={className}
       >
         <div className="relative group">
@@ -109,7 +108,7 @@ export const ZoomableImage: React.FC<ZoomableImageProps> = ({
             </div>
           )}
         </div>
-      </TouchGestures>
+      </div>
 
       {/* Zoom Modal */}
       {isZoomed && createPortal(
@@ -156,9 +155,7 @@ export const ZoomableImage: React.FC<ZoomableImageProps> = ({
             </div>
 
             {/* Zoomed image with touch gestures */}
-            <TouchGestures
-              onPinch={handlePinch}
-              enablePinch
+            <div
               className="w-full h-full flex items-center justify-center"
             >
               <motion.div
@@ -208,7 +205,7 @@ export const ZoomableImage: React.FC<ZoomableImageProps> = ({
                   )}
                 </AnimatePresence>
               </motion.div>
-            </TouchGestures>
+            </div>
 
             {/* Instructions */}
             <motion.div

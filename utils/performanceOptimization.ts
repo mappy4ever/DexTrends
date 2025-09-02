@@ -302,9 +302,9 @@ export function prefetchOnInteraction(url: string) {
 export const CodeSplitBoundaries = {
   // Heavy components to lazy load
   Charts: () => lazyLoad(() => import('@/components/ui/charts/PriceHistoryChart')),
-  Modal: () => lazyLoad(() => import('@/components/ui/modals/EnhancedCardModal')),
+  Modal: () => lazyLoad(() => import('@/components/ui/EnhancedCardModal')),
   CardComparison: () => lazyLoad(() => import('@/components/ui/cards/CardComparisonTool')),
-  ThreeDCard: () => lazyLoad(() => import('@/components/ui/cards/Advanced3DCard')),
+  ThreeDCard: () => lazyLoad(() => import('@/components/ui/cards/TCGCard').then(m => ({ default: m.TCGCard }))),
   DataTable: () => lazyLoad(() => import('@/components/unified/UnifiedDataTable')),
   EvolutionTree: () => lazyLoad(() => import('@/components/ui/EvolutionTreeRenderer')),
   

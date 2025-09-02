@@ -4,15 +4,16 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { fetchJSON } from '@/utils/unifiedFetch';
 import { UnifiedGrid } from '@/components/unified/UnifiedGrid';
-import { AdaptiveModal, useAdaptiveModal } from '@/components/unified/AdaptiveModal';
-import { PokemonCardRenderer, CompactPokemonCard } from '@/components/unified/PokemonCardRenderer';
+import { AdaptiveModal, useAdaptiveModal } from '@/components/unified';
+import { PokemonDisplay as PokemonCardRenderer } from '@/components/ui/PokemonDisplay';
+const CompactPokemonCard = (props: any) => <PokemonCardRenderer {...props} variant="compact" />;
 import { TypeBadge } from '@/components/ui/TypeBadge';
 import { getGeneration } from '@/utils/pokemonutils';
 import { useDebounce } from '@/hooks/useDebounce';
 import logger from '@/utils/logger';
 import { cn } from '@/utils/cn';
 import { SkeletonPokemonCard } from '@/components/ui/Skeleton';
-import { PullToRefresh } from '@/components/mobile/PullToRefresh';
+import { PullToRefresh } from '@/components/ui/gestures/PullToRefresh';
 import type { Pokemon as APIPokemon, PokemonType, PokemonStat } from '@/types/api/pokemon';
 
 /**

@@ -192,13 +192,13 @@ export const LazyComponents = {
   
   // Card Preview Modal
   CardPreviewModal: lazyWithRetry(
-    () => import('@/components/tcg-set-detail/CardPreviewModal'),
+    () => import('@/components/ui/Modal'),
     'CardPreviewModal'
   ),
   
   // 3D Card View
   Advanced3DCard: lazyWithRetry(
-    () => import('@/components/ui/cards/Advanced3DCard'),
+    () => import('@/components/ui/cards/TCGCard').then(m => ({ default: m.TCGCard })),
     'Advanced3DCard'
   ),
   

@@ -27,6 +27,7 @@ export { default as CollectionDashboard } from './layout/CollectionDashboard';
 
 // Loading Components
 export * from './loading';
+export { CardGridSkeleton as SkeletonLoader } from './Skeleton';
 
 // Animation Components
 // Export all except HoverCard to avoid conflict with design-system
@@ -54,8 +55,8 @@ export { default as AnimationSystem, HoverCard as AnimatedHoverCard } from './an
 export { default as EnhancedAnimationSystem } from './EnhancedAnimationSystem';
 export { useEnhancedAnimation } from './EnhancedAnimationSystem.hooks';
 
-// Mobile Components
-export * from '../mobile';
+// Mobile components merged into unified responsive components
+export { PullToRefresh } from './gestures/PullToRefresh';
 
 // Chart Components
 export { default as PriceHistoryChart } from './charts/PriceHistoryChart';

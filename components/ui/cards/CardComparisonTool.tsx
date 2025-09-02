@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import Modal from '../modals/Modal';
+import Modal from '@/components/ui/Modal';
 import { TypeBadge } from '../TypeBadge';
-import Advanced3DCard from './Advanced3DCard';
+import { TCGCard as Advanced3DCard } from './TCGCard';
 import logger from '@/utils/logger';
 
 interface Card {

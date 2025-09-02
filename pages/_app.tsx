@@ -37,8 +37,8 @@ import { PreferencesProvider } from '../components/qol/UserPreferences';
 
 // Toast system imports
 import { ToastProvider } from '../components/providers/ToastProvider';
-// Modal system imports
-import { ModalProvider } from '../components/ui/AdvancedModalSystem';
+// Modal system imports - removed (using unified Modal now)
+// import { ModalProvider } from '../components/ui/AdvancedModalSystem';
 
 // Enhanced dynamic imports with comprehensive loading
 import dynamic from 'next/dynamic';
@@ -136,7 +136,7 @@ const AppContent: React.FC<AppContentProps> = ({
         
         <UnifiedAppProvider>
           <ToastProvider>
-            <ModalProvider>
+            {/* ModalProvider removed - using unified Modal */}
               <NotificationProvider>
                 <ContextualHelpProvider>
                   <PreferencesProvider>
@@ -160,7 +160,7 @@ const AppContent: React.FC<AppContentProps> = ({
                   </PreferencesProvider>
                 </ContextualHelpProvider>
               </NotificationProvider>
-            </ModalProvider>
+            {/* End ModalProvider removal */}
           </ToastProvider>
         </UnifiedAppProvider>
       </PWAProvider>

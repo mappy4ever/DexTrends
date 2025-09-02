@@ -12,16 +12,17 @@
 export { UnifiedGrid } from './UnifiedGrid';
 export type { UnifiedGridProps } from './UnifiedGrid';
 
-// Core Modal Component - Intelligent context-aware modals
-export { UnifiedModal, FilterModal, DetailModal, FormModal, useUnifiedModal } from './UnifiedModal';
-export type { UnifiedModalProps } from './UnifiedModal';
+// Core Modal Component - Using unified Modal
+export { Modal as UnifiedModal, useModalState as useUnifiedModal } from '../ui/Modal';
+export { Modal as AdaptiveModal, useModalState as useAdaptiveModal } from '../ui/Modal';
+export { Modal as FilterModal } from '../ui/Modal';
+export { Modal as DetailModal } from '../ui/Modal';
+export { Modal as FormModal } from '../ui/Modal';
+export { Modal as QuickModal } from '../ui/Modal';
+export type { ModalProps as UnifiedModalProps } from '../ui/Modal';
 
-// Legacy Components (for backward compatibility during migration)
-export { AdaptiveModal, QuickModal, useAdaptiveModal } from './AdaptiveModal';
-
-// Mobile components that still work well
-export { MobileLayout } from '../mobile/MobileLayout';
-export { PullToRefresh } from '../mobile/PullToRefresh';
+// Gesture components
+export { PullToRefresh } from '../ui/gestures/PullToRefresh';
 
 /**
  * Usage Examples:

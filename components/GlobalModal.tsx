@@ -1,5 +1,5 @@
 import React from 'react';
-import Modal from './ui/modals/Modal';
+import Modal from '@/components/ui/Modal';
 import { useModal } from '../context/UnifiedAppContext';
 
 const GlobalModal: React.FC = () => {

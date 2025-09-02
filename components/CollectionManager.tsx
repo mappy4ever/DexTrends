@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo, memo } from 'react';
 import { supabase } from '../lib/supabase';
 import { CompactPriceIndicator } from './ui/PriceIndicator';
-import Modal from './ui/modals/Modal';
+import Modal from '@/components/ui/Modal';
 import Link from 'next/link';
 import type { TCGCard } from '../types/api/cards';
 import logger from '@/utils/logger';

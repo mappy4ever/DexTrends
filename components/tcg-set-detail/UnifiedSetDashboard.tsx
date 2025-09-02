@@ -3,7 +3,7 @@ import { motion, AnimatePresence, useInView } from 'framer-motion';
 import Image from 'next/image';
 import { cn } from '@/utils/cn';
 import { createGlassStyle } from '../ui/design-system/glass-constants';
-import { RarityBadge, RarityFilterBar } from './RarityBadge';
+import { RarityBadge } from '../ui/RarityBadge';
 import type { TCGCard, CardSet } from '@/types/api/cards';
 
 interface UnifiedSetDashboardProps {

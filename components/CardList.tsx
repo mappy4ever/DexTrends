@@ -1,9 +1,9 @@
 import React, { useState, useMemo, useCallback, memo, useRef, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "./ui/LazyMotion";
-import Modal from "./ui/modals/Modal";
+import Modal from '@/components/ui/Modal';
 import logger from "@/utils/logger";
-import { CardGridSkeleton } from "./ui/SkeletonLoader";
+import { SkeletonGrid as CardGridSkeleton } from "./ui/Skeleton";
 import { TCGCard } from "../types/api/cards";
 import performanceMonitor from "../utils/performanceMonitor";
 import { createGlassStyle } from './ui/design-system/glass-constants';
@@ -387,10 +387,12 @@ const CardList = memo<CardListProps>(({
       {loading ? (
         <CardGridSkeleton 
           count={24}
-          columns={8}
-          showPrice={true}
-          showSet={true}
-          showTypes={true}
+          cols={{ default: 2, sm: 3, md: 5, lg: 8 }}
+          cardProps={{
+            showPrice: true,
+            showSet: true,
+            showTypes: true
+          }}
           className=""
         />
       ) : (

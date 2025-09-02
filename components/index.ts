@@ -11,8 +11,7 @@ export { useKeyboardNavigation } from '../hooks/useKeyboardNavigation';
 export { useNotifications } from '../hooks/useNotifications';
 export { usePWA } from '../hooks/usePWA';
 
-// Re-export mobile components
-export * from './mobile';
+// Mobile components have been merged into unified responsive components
 
 // Re-export providers
 export * from './providers';

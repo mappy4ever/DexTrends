@@ -13,13 +13,13 @@ import {
   StaggerList,
   useEnhancedAnimation
 } from './EnhancedAnimationSystem';
-import {
-  FlippableCard,
-  PackOpeningAnimation,
-  CardStack,
-  EvolutionAnimation,
-  AnimatedTypeBadge
-} from './PokemonCardAnimations';
+// Animation components removed during consolidation
+// These will be reimplemented as needed
+const FlippableCard = null as any;
+const PackOpeningAnimation = null as any;
+const CardStack = null as any;
+const EvolutionAnimation = null as any;
+const AnimatedTypeBadge = null as any;
 
 // Types
 interface SampleCard {

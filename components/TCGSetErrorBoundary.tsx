@@ -1,6 +1,6 @@
 import React, { Component, ReactNode } from 'react';
 import { GlassContainer } from './ui/design-system/GlassContainer';
-import { GradientButton } from './ui/design-system/GradientButton';
+import Button from '@/components/ui/Button';
 import logger from '../utils/logger';
 
 interface Props {

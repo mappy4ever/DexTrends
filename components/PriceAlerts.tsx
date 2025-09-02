@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { PriceHistoryManager } from '../lib/supabase';
 import { CompactPriceIndicator } from './ui/PriceIndicator';
-import Modal from './ui/modals/Modal';
+import Modal from '@/components/ui/Modal';
 import Link from 'next/link';
 
 // Type definitions

@@ -1,23 +1,25 @@
 // Existing components
 export { CircularCard } from './CircularCard';
 export { GlassContainer } from './GlassContainer';
-export { GradientButton } from './GradientButton';
 export { TypeGradientBadge } from './TypeGradientBadge';
-export { Button, ContextualButton } from './Button';
-export type { ButtonProps } from './Button';
+export { default as Button } from '../Button';
+export type { ButtonProps } from '../Button';
 
-// New standardized components
-export { default as DefaultCard } from '../DefaultCard';
-export { default as StandardCard } from '../DefaultCard'; // Temporary alias for backward compatibility
-export { default as CircularButton } from '../CircularButton';
-export { default as ConsistentModal } from '../ConsistentModal';
+// Import from Container (formerly Card)
+export { Container as DefaultCard } from '../Container';
+export { Container as StandardCard } from '../Container'; // Temporary alias for backward compatibility
+export { IconButton as CircularButton } from '../Button';
+export { default as ConsistentModal } from '../Modal'; // Using unified Modal
 
-// Re-export specific subcomponents that are being used
+// Gradient button alias - it's just Button with gradient prop
+export { default as GradientButton } from '../Button';
+
+// Re-export specific subcomponents from Container
 export { 
-  CardHeader, 
-  CardTitle, 
-  CardContent 
-} from '../DefaultCard';
+  ContainerHeader as CardHeader, 
+  ContainerTitle as CardTitle, 
+  ContainerContent as CardContent 
+} from '../Container';
 
 // New standardized glass container components
 export { StandardGlassContainer, SectionHeader, HoverCard } from './GlassContainerStandard';

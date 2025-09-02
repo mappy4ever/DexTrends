@@ -150,7 +150,7 @@ export const DynamicMotion = {
     }
   ) as ComponentType<any>,
   button: dynamic(
-    () => import('./MotionButton'),
+    () => import('../ui/Button'),
     {
       loading: () => <button />,
       ssr: false
@@ -177,7 +177,7 @@ export const DynamicSpeedInsights = dynamic(
 
 // Error boundary with dynamic loading
 export const DynamicErrorBoundary = dynamic(
-  () => import('../layout/ErrorBoundary'),
+  () => import('../ui/ErrorBoundary'),
   {
     loading: () => <div>Loading error handler...</div>
   }
