@@ -12,7 +12,7 @@ import { GlassContainer } from '../components/ui/design-system/GlassContainer';
 import { TypeGradientBadge } from '../components/ui/design-system/TypeGradientBadge';
 import { motion } from 'framer-motion';
 import { EnhancedPokemonSelector, type Pokemon as SelectorPokemon } from '../components/ui/EnhancedPokemonSelector';
-import Modal from '../components/ui/modals/Modal';
+import Modal from '../components/ui/Modal';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import { InlineLoader } from '../components/ui/SkeletonLoadingSystem';
 import PageErrorBoundary from '../components/ui/PageErrorBoundary';

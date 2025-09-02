@@ -239,7 +239,7 @@ class ComponentPreloader {
   preloadCriticalComponents(): void {
     const criticalComponents: CriticalComponent[] = [
       {
-        import: () => import('../components/ui/modals/Modal'),
+        import: () => import('../components/ui/Modal'),
         name: 'Modal',
         priority: 'critical'
       },

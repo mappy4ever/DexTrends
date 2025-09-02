@@ -302,11 +302,11 @@ export function useLazyLoad(
 export function prefetchNextComponents(currentRoute: string) {
   const prefetchMap: Record<string, (() => Promise<any>)[]> = {
     '/pokedex': [
-      () => import('@/components/tcg-set-detail/CardPreviewModal'),
+      () => import('@/components/ui/Modal'), // CardPreviewModal removed
       () => import('@/components/ui/cards/Advanced3DCard')
     ],
     '/tcgexpansions': [
-      () => import('@/components/tcg-set-detail/CardPreviewModal'),
+      () => import('@/components/ui/Modal'), // CardPreviewModal removed
       () => import('@/components/ui/cards/CardComparisonTool')
     ],
     '/': [

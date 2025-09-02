@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import Modal from "../../components/ui/modals/Modal";
+import Modal from "../../components/ui/Modal";
 import EnhancedCardModal from "../../components/ui/EnhancedCardModal";
 import { FadeIn, SlideUp } from "../../components/ui/animations";
 import { PriceHistoryChart } from "../../components/ui/LazyComponents";
