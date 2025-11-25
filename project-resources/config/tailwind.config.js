@@ -22,14 +22,14 @@ const config = {
   ],
   theme: {
     screens: {
-      'min-420': '420px',  // 3 columns starts here
-      'min-430': '430px',  // Alternative 3-4 column breakpoint
-      'xs': '460px',       // 3-4 columns stable
-      'sm': '640px',       // 4+ columns
-      'md': '768px',
-      'lg': '1024px',
-      'xl': '1280px',
-      '2xl': '1536px'
+      // Standardized breakpoints (aligned with useViewport hook)
+      // Removed: min-420, min-430 (use xs instead)
+      'xs': '480px',       // Large phones - single custom breakpoint
+      'sm': '640px',       // Small tablets (Tailwind default)
+      'md': '768px',       // Tablets (Tailwind default)
+      'lg': '1024px',      // Desktop (Tailwind default)
+      'xl': '1280px',      // Large desktop (Tailwind default)
+      '2xl': '1536px',     // Extra large (Tailwind default)
     },
     extend: {
       colors: {

@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import type { AppProps } from 'next/app';
 import Head from "next/head";
 import { useRouter, NextRouter } from "next/router";
-// New consolidated CSS architecture - 5 core files
+// New unified design system (single source of truth)
+import "../styles/design-tokens.css"; // All CSS variables: colors, spacing, typography, shadows
+
+// Consolidated CSS architecture - 5 core files
 import "../styles/core.css";       // Reset, base styles, breakpoints
-import "../styles/tokens.css";     // Design tokens (colors, spacing, typography)
+import "../styles/tokens.css";     // Legacy tokens (to be migrated to design-tokens.css)
 import "../styles/components.css"; // All component styles
 import "../styles/utilities.css";  // Helper classes, animations
 import "../styles/overrides.css";  // Temporary fixes only
