@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import Image from 'next/image';
 import { TypeBadge } from './TypeBadge';
 import { getHolographicEffect } from '../../utils/cardEffects';
+import { useToast } from '../providers/ToastProvider';
 import type { PocketCard } from '../../types/api/pocket-cards';
 
 // Enhanced interfaces for the deck builder
@@ -63,11 +64,12 @@ interface PocketDeckBuilderProps {
   initialDeck?: PocketDeck | null;
 }
 
-export default function PocketDeckBuilder({  
-  availableCards = [], 
+export default function PocketDeckBuilder({
+  availableCards = [],
   onDeckChange = () => {},
-  initialDeck = null 
+  initialDeck = null
 }: PocketDeckBuilderProps) {
+  const toast = useToast();
   const [deck, setDeck] = useState<PocketDeck>(initialDeck || {
     name: 'New Deck',
     cards: [],
@@ -131,13 +133,13 @@ export default function PocketDeckBuilder({
     const existingCard = deck.cards.find((c: PocketDeckCard) => c.id === card.id);
     
     if (deckStats.totalCards >= MAX_DECK_SIZE) {
-      alert('Deck is full! Remove cards to add more.');
+      toast.warning('Deck is full! Remove cards to add more.');
       return;
     }
 
     if (existingCard) {
       if (existingCard.count >= MAX_COPIES_PER_CARD) {
-        alert(`Maximum ${MAX_COPIES_PER_CARD} copies of ${card.name} allowed.`);
+        toast.warning(`Maximum ${MAX_COPIES_PER_CARD} copies of ${card.name} allowed.`);
         return;
       }
       // Increase count

@@ -214,10 +214,10 @@ export const InteractiveButton: React.FC<InteractiveButtonProps> = ({
   
   const variantClasses: Record<ButtonVariant, string> = {
     primary: 'bg-pokemon-red text-white hover:bg-red-600 focus:ring-pokemon-red',
-    secondary: 'bg-white text-gray-900 border border-gray-300 hover:bg-gray-50 focus:ring-gray-500',
+    secondary: 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 focus:ring-gray-500',
     success: 'bg-green-500 text-white hover:bg-green-600 focus:ring-green-500',
     danger: 'bg-red-500 text-white hover:bg-red-600 focus:ring-red-500',
-    ghost: 'text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:ring-gray-500'
+    ghost: 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 focus:ring-gray-500'
   };
   
   const sizeClasses: Record<ButtonSize, string> = {

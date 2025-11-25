@@ -11,6 +11,7 @@ import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { FullBleedWrapper } from '../../components/ui/FullBleedWrapper';
 import { validateDeck, getDeckSuggestions, ValidationResult } from '../../utils/deckValidation';
 import { analyzeDeckMeta, getMetaSuggestions, MetaAnalysis } from '../../utils/metaAnalysis';
+import { useToast } from '../../components/providers/ToastProvider';
 import logger from '../../utils/logger';
 import type { PocketCard } from '../../types/api/pocket-cards';
 
@@ -66,7 +67,8 @@ const ALL_PACKS = [
 
 function DeckBuilder() {
   const router = useRouter();
-  
+  const toast = useToast();
+
   // Card data state
   const [allCards, setAllCards] = useState<ExtendedPocketCard[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -363,10 +365,10 @@ function DeckBuilder() {
   // Save deck
   const saveDeck = useCallback(() => {
     if (deckStats.totalCards === 0) {
-      alert('Cannot save an empty deck');
+      toast.warning('Cannot save an empty deck');
       return;
     }
-    
+
     const deckData: SavedDeck = {
       id: `deck_${Date.now()}`,
       name: deckName.trim() || 'Unnamed Deck',
@@ -374,7 +376,7 @@ function DeckBuilder() {
       stats: deckStats,
       createdAt: new Date().toISOString()
     };
-    
+
     try {
       if (typeof window !== 'undefined') {
         let savedDecks: SavedDeck[] = [];
@@ -389,16 +391,16 @@ function DeckBuilder() {
         }
         savedDecks.push(deckData);
         localStorage.setItem('pocketDecks', JSON.stringify(savedDecks));
-        alert('Deck saved successfully!');
+        toast.success(`"${deckData.name}" saved successfully!`);
         setShowSaveModal(false);
       } else {
-        alert('Saving is not available on server-side');
+        toast.error('Saving is not available on server-side');
       }
     } catch (error) {
       logger.error('Failed to save deck:', { error });
-      alert('Failed to save deck');
+      toast.error('Failed to save deck');
     }
-  }, [deck, deckName, deckStats]);
+  }, [deck, deckName, deckStats, toast]);
 
   // Export deck to text format
   const exportDeckToText = useCallback((): string => {
@@ -414,14 +416,14 @@ function DeckBuilder() {
   // Copy deck to clipboard (SSR safe)
   const copyDeckToClipboard = useCallback(async () => {
     if (typeof window === 'undefined') {
-      alert('Clipboard functionality is not available on server');
+      toast.error('Clipboard functionality is not available');
       return;
     }
-    
+
     const deckText = exportDeckToText();
     try {
       await navigator.clipboard.writeText(deckText);
-      alert('Deck copied to clipboard!');
+      toast.success('Deck copied to clipboard!');
     } catch (error) {
       // Fallback for older browsers (SSR safe)
       if (typeof document !== 'undefined') {
@@ -433,21 +435,21 @@ function DeckBuilder() {
         textArea.select();
         try {
           document.execCommand('copy');
-          alert('Deck copied to clipboard!');
+          toast.success('Deck copied to clipboard!');
         } catch (err) {
-          alert('Failed to copy deck to clipboard');
+          toast.error('Failed to copy deck to clipboard');
         }
         document.body.removeChild(textArea);
       } else {
-        alert('Clipboard functionality is not available');
+        toast.error('Clipboard functionality is not available');
       }
     }
-  }, [exportDeckToText]);
+  }, [exportDeckToText, toast]);
 
   // Download deck as text file (SSR safe)
   const downloadDeck = useCallback(() => {
     if (typeof window === 'undefined' || typeof document === 'undefined') {
-      alert('Download functionality is not available on server');
+      toast.error('Download functionality is not available');
       return;
     }
     
@@ -604,9 +606,9 @@ function DeckBuilder() {
     
     // Show any errors as a summary
     if (errors.length > 0) {
-      alert(`Deck imported with warnings:\n\n${errors.join('\n')}`);
+      toast.warning(`Deck imported with ${errors.length} warning${errors.length > 1 ? 's' : ''}`);
     } else {
-      alert('Deck imported successfully!');
+      toast.success('Deck imported successfully!');
     }
     
     setShowImportModal(false);

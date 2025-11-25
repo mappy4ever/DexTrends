@@ -17,6 +17,7 @@ import { TypeBadge } from '../../components/ui/TypeBadge';
 import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import FullBleedWrapper from '../../components/ui/FullBleedWrapper';
 import Button from '../../components/ui/Button';
+import { useToast } from '../../components/providers/ToastProvider';
 import { analyzeTeamTypeSynergy, getTypeMatchups } from '../../utils/typeEffectiveness';
 import type { TeamMember, Move, Nature, StatSpread } from '../../types/team-builder';
 import type { Pokemon } from "../../types/pokemon";
@@ -56,6 +57,7 @@ const NATURES: Nature[] = [
 
 const AdvancedTeamBuilder: NextPage = () => {
   const router = useRouter();
+  const toast = useToast();
   const [team, setTeam] = useState<TeamMember[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<Pokemon[]>([]);
@@ -108,7 +110,7 @@ const AdvancedTeamBuilder: NextPage = () => {
   // Add Pokemon to team
   const addToTeam = (pokemon: Pokemon) => {
     if (team.length >= 6) {
-      alert('Team is full! Remove a Pokemon first.');
+      toast.warning('Team is full! Remove a Pokemon first.');
       return;
     }
 

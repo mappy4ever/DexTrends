@@ -257,7 +257,7 @@ export const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({
       warning: 'bg-yellow-500 hover:bg-yellow-600 text-white shadow-yellow-500/25',
       danger: 'bg-red-500 hover:bg-red-600 text-white shadow-red-500/25',
       info: 'bg-blue-500 hover:bg-blue-600 text-white shadow-blue-500/25',
-      white: 'bg-white hover:bg-gray-50 text-gray-700 shadow-gray-500/25 border border-gray-200'
+      white: 'bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 shadow-gray-500/25 border border-gray-200 dark:border-gray-600'
     };
     return colors[color] || colors.primary;
   };
@@ -329,9 +329,9 @@ export const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({
                 justify-center
                 w-12
                 h-12
-                bg-white
-                hover:bg-gray-50
-                text-gray-700
+                bg-white dark:bg-gray-800
+                hover:bg-gray-50 dark:hover:bg-gray-700
+                text-gray-700 dark:text-gray-200
                 rounded-full
                 shadow-lg
                 hover:shadow-xl

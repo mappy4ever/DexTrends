@@ -168,10 +168,13 @@ export default function EnhancedSearchBox({
           placeholder={placeholder}
           disabled={disabled}
           className={`
-            w-full pl-10 pr-10 py-3 
-            border border-gray-300 rounded-lg 
-            focus:ring-2 focus:ring-pokemon-blue/20 focus:border-pokemon-blue 
-            disabled:bg-gray-100 disabled:cursor-not-allowed
+            w-full pl-10 pr-10 py-3
+            bg-white dark:bg-gray-800
+            border border-gray-300 dark:border-gray-600 rounded-lg
+            text-gray-900 dark:text-white
+            placeholder-gray-400 dark:placeholder-gray-500
+            focus:ring-2 focus:ring-pokemon-blue/20 focus:border-pokemon-blue
+            disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed
             transition-all duration-200
             ${isSearching ? 'border-pokemon-blue/50' : ''}
           `}

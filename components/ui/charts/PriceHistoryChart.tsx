@@ -4,6 +4,7 @@ import { useTheme } from '../../../context/UnifiedAppContext';
 import { PriceHistoryManager } from '../../../lib/supabase';
 import { postJSON } from '../../../utils/unifiedFetch';
 import logger from '@/utils/logger';
+import { useToast } from '../../providers/ToastProvider';
 import { 
   generateSamplePriceHistory, 
   getSamplePriceData, 
@@ -49,6 +50,7 @@ interface ChartColors {
 export default function PriceHistoryChart({ cardId, variantType = 'market', initialPrice = 0 }: PriceHistoryChartProps) {
   const router = useRouter();
   const { theme } = useTheme();
+  const toast = useToast();
   const [priceData, setPriceData] = useState<PriceDataPoint[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -295,11 +297,11 @@ export default function PriceHistoryChart({ cardId, variantType = 'market', init
         retries: 1,
         useCache: false // Don't cache POST requests
       });
-      
-      alert('Price collection started. This may take a few minutes.');
+
+      toast.info('Price collection started. This may take a few minutes.');
     } catch (error) {
       logger.error('Error triggering price collection:', error);
-      alert('Failed to start price collection.');
+      toast.error('Failed to start price collection.');
     }
   };
 

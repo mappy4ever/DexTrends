@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { getHolographicEffect, getRarityGlowClass } from '../../utils/cardEffects';
 import logger from '@/utils/logger';
+import { useToast } from '../providers/ToastProvider';
 import type { PocketCard } from '@/types/api/pocket-cards';
 
 interface CardsByRarity {
@@ -58,11 +59,12 @@ interface PackOpeningProps {
   isOpen?: boolean;
 }
 
-export default function PackOpening({  
+export default function PackOpening({
   expansion, availableCards = [], onPackOpened = () => {},
   onClose = () => {},
-  isOpen = false 
+  isOpen = false
 }: PackOpeningProps) {
+  const toast = useToast();
   const [packState, setPackState] = useState('closed'); // closed, shaking, opening, revealing, complete
   const [revealedCards, setRevealedCards] = useState<PackCard[]>([]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
@@ -211,7 +213,7 @@ export default function PackOpening({
     // Check if we got valid cards
     if (!cards || cards.length === 0) {
       logger.error('Failed to generate pack cards');
-      alert('Failed to generate pack. Please try again.');
+      toast.error('Failed to generate pack. Please try again.');
       return;
     }
     

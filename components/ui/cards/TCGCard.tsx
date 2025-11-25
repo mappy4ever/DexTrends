@@ -12,6 +12,7 @@ import performanceMonitor from "../../../utils/performanceMonitor";
 import { getPrice } from "../../../utils/pokemonutils";
 import OptimizedImage from "../OptimizedImage";
 import { useFavorites } from "../../../context/UnifiedAppContext";
+import { useToast } from "../../providers/ToastProvider";
 import type { Card as SdkCard } from "pokemontcgsdk";
 import { ensureSdkCompatibleCard } from "../../../utils/cardTypeGuards";
 import type { FavoriteCard } from "../../../context/modules/types";
@@ -347,6 +348,7 @@ const TCGCard = memo(({
 }: UnifiedCardProps) => {
   const router = useRouter();
   const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
+  const toast = useToast();
   
   // Swipe gesture state
   const [swipeX, setSwipeX] = useState(0);
@@ -497,11 +499,12 @@ const TCGCard = memo(({
   // Swipe action handlers
   const handleFavorite = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
-    
+
     // Toggle favorite status
     const isFavorited = favorites.cards.some((c: FavoriteCard) => c.id === card.id);
     if (isFavorited) {
       removeFromFavorites('cards', card.id);
+      toast.success(`${normalizedCard.name} removed from favorites`);
     } else {
       const favoriteCard: FavoriteCard = {
         id: card.id,
@@ -517,47 +520,59 @@ const TCGCard = memo(({
         addedAt: Date.now()
       };
       addToFavorites('cards', favoriteCard);
+      toast.success(`${normalizedCard.name} added to favorites`);
     }
-    
+
     setShowActions(false);
     setSwipeX(0);
-  }, [card, favorites, addToFavorites, removeFromFavorites, normalizedCard.image, normalizedCard.name, normalizedCard.set?.id, normalizedCard.set?.name]);
+  }, [card, favorites, addToFavorites, removeFromFavorites, normalizedCard.image, normalizedCard.name, normalizedCard.set?.id, normalizedCard.set?.name, toast]);
   
   const handleShare = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
-    
+
     if (navigator.share) {
       navigator.share({
         title: normalizedCard.name,
         text: `Check out this ${normalizedCard.name} card!`,
         url: window.location.href
+      }).then(() => {
+        toast.success('Shared successfully!');
+      }).catch(() => {
+        // User cancelled or share failed - no toast needed
+      });
+    } else {
+      // Fallback: copy link to clipboard
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        toast.success('Link copied to clipboard!');
       });
     }
     setShowActions(false);
     setSwipeX(0);
-  }, [normalizedCard.name]);
+  }, [normalizedCard.name, toast]);
   
   const handleDelete = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
-    
+
     // Call the delete handler if provided
     if (onDelete) {
       onDelete(card);
+      toast.success(`${normalizedCard.name} removed`);
       logger.debug('Delete card', { cardName: normalizedCard.name });
     } else {
       // If no delete handler, try to remove from favorites
       const isCardFavorited = favorites.cards.some((c: FavoriteCard) => c.id === card.id);
       if (isCardFavorited) {
         removeFromFavorites('cards', card.id);
+        toast.success(`${normalizedCard.name} removed from favorites`);
         logger.debug('Removed from favorites', { cardName: normalizedCard.name });
       } else {
         logger.warn('No delete handler provided for card', { cardName: normalizedCard.name });
       }
     }
-    
+
     setShowActions(false);
     setSwipeX(0);
-  }, [normalizedCard.name, onDelete, card, favorites.cards, removeFromFavorites]);
+  }, [normalizedCard.name, onDelete, card, favorites.cards, removeFromFavorites, toast]);
 
   const handleMagnifyClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();

@@ -537,17 +537,17 @@ const HelpOverlay: React.FC<HelpOverlayProps> = ({
           top: tooltipPosition.y
         }}
       >
-        <div className="bg-white rounded-lg shadow-xl max-w-sm p-4 border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-sm p-4 border border-gray-200 dark:border-gray-700">
           {/* Progress */}
           {showProgress && (
-            <div className="flex items-center justify-between mb-3 text-sm text-gray-500">
+            <div className="flex items-center justify-between mb-3 text-sm text-gray-500 dark:text-gray-400">
               <span>Step {currentStep + 1} of {totalSteps}</span>
               <div className="flex gap-1">
                 {Array.from({ length: totalSteps }).map((_, index) => (
                   <div
                     key={index}
                     className={`w-2 h-2 rounded-full ${
-                      index <= currentStep ? 'bg-blue-500' : 'bg-gray-300'
+                      index <= currentStep ? 'bg-blue-500' : 'bg-gray-300 dark:bg-gray-600'
                     }`}
                   />
                 ))}
@@ -558,26 +558,26 @@ const HelpOverlay: React.FC<HelpOverlayProps> = ({
           {/* Content */}
           <div className="mb-4">
             {step?.title && (
-              <h3 className="font-semibold text-gray-900 mb-2">{step.title}</h3>
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{step.title}</h3>
             )}
             {step?.content && (
-              <p className="text-gray-700 text-sm leading-relaxed">{step.content}</p>
+              <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">{step.content}</p>
             )}
           </div>
-          
+
           {/* Actions */}
           <div className="flex items-center justify-between">
             <button
-              className="text-gray-500 hover:text-gray-700 text-sm"
+              className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 text-sm"
               onClick={onSkip}
             >
               Skip Tour
             </button>
-            
+
             <div className="flex gap-2">
               {currentStep > 0 && (
                 <button
-                  className="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 rounded hover:bg-gray-50"
+                  className="px-3 py-1.5 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-50 dark:hover:bg-gray-700"
                   onClick={onPrevious}
                 >
                   Previous
@@ -674,11 +674,11 @@ export const QuickHelpButton: React.FC<QuickHelpButtonProps> = ({
             className="absolute inset-0 bg-black bg-opacity-50"
             onClick={() => setIsOpen(false)}
           />
-          <div className="relative bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+          <div className="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h3>
               <button
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
                 onClick={() => setIsOpen(false)}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -686,7 +686,7 @@ export const QuickHelpButton: React.FC<QuickHelpButtonProps> = ({
                 </svg>
               </button>
             </div>
-            <div className="text-gray-700 leading-relaxed">
+            <div className="text-gray-700 dark:text-gray-300 leading-relaxed">
               {content}
             </div>
           </div>
