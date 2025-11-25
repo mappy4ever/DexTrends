@@ -1,7 +1,7 @@
-import React, { 
-  useState, 
-  useRef, 
-  useCallback, 
+import React, {
+  useState,
+  useRef,
+  useCallback,
   useEffect,
   createContext,
   useContext,
@@ -12,7 +12,22 @@ import React, {
   MouseEvent,
   TouchEvent
 } from 'react';
-import { HapticFeedback, VisualFeedback } from './MicroInteractionSystem';
+
+// Inline stubs for HapticFeedback and VisualFeedback (MicroInteractionSystem removed)
+const HapticFeedback = {
+  light: () => { if ('vibrate' in navigator) navigator.vibrate(10); },
+  medium: () => { if ('vibrate' in navigator) navigator.vibrate(25); },
+  strong: () => { if ('vibrate' in navigator) navigator.vibrate([50, 25, 50]); },
+  success: () => { if ('vibrate' in navigator) navigator.vibrate([25, 50, 25]); },
+  error: () => { if ('vibrate' in navigator) navigator.vibrate([100, 50, 100, 50, 100]); },
+  select: () => { if ('vibrate' in navigator) navigator.vibrate(15); }
+};
+
+const VisualFeedback = {
+  createRipple: () => {},
+  pulse: () => {},
+  highlight: () => {}
+};
 import { TCGCard } from '../../types/api/cards';
 import { PocketCard } from '../../types/api/pocket-cards';
 import { Pokemon } from "../../types/pokemon";

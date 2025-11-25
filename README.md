@@ -1,179 +1,117 @@
 # DexTrends
 
-A comprehensive Pokemon TCG and Pokedex application built with Next.js, featuring real-time card prices, collection management, battle simulator, and extensive Pokemon data.
+A comprehensive Pokemon TCG and Pokedex application featuring card prices, collection management, battle simulation, and Pokemon data.
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
-# Install dependencies
 npm install
-
-# Run development server
 npm run dev
-
-# Build for production
-npm run build
-
-# Start production server
-npm start
+# Open http://localhost:3001
 ```
 
-Visit [http://localhost:3001](http://localhost:3001) to see the app.
+## Tech Stack
 
-## 📋 Prerequisites
+| Technology | Purpose |
+|------------|---------|
+| Next.js 15 | React framework |
+| TypeScript | Type safety |
+| Tailwind CSS | Styling |
+| Supabase | Database & Auth |
+| Redis | Caching |
+| Playwright | E2E testing |
 
-- Node.js 18.x or higher
-- npm 9.x or higher
-- Supabase account (for database features)
-- Pokemon TCG API key (optional, for enhanced features)
+## Features
 
-## 🛠️ Tech Stack
+### Pokedex
+- Complete Pokemon database with advanced filtering
+- Detailed Pokemon pages (stats, moves, abilities, evolutions)
+- Type effectiveness calculator
+- Regional variants support
 
-- **Framework**: Next.js 15.3.5
-- **Language**: TypeScript (100% coverage)
-- **Styling**: Tailwind CSS
-- **State Management**: React Context (UnifiedAppContext)
-- **Database**: Supabase
-- **Caching**: 3-tier system (Memory → LocalStorage → Supabase)
-- **Testing**: Playwright E2E tests
-- **Images**: Next.js Image with custom loader
+### TCG Cards
+- Card database with real-time prices
+- Set browser with all expansions
+- Collection manager
+- Deck builder
 
-## 📁 Project Structure
+### Pokemon TCG Pocket
+- Pocket expansion browser
+- Pocket card database
+- Deck builder for Pocket format
+
+### Battle Tools
+- Battle simulator
+- Team builder
+- EV optimizer
+
+## Project Structure
 
 ```
-DexTrends/
-├── components/        # React components
-├── pages/            # Next.js pages & API routes
-├── utils/            # Utility functions
-├── types/            # TypeScript type definitions
-├── tests/            # Playwright E2E tests
-├── public/           # Static assets
-├── styles/           # Global styles
-└── context/          # React Context providers
+/components
+  /ui           # Reusable UI components (Button, Modal, Container, etc.)
+  /pokemon      # Pokemon-specific components
+  /tcg          # Trading card components
+/pages          # Next.js pages and API routes
+/utils          # Utility functions
+/hooks          # Custom React hooks
+/types          # TypeScript type definitions
+/styles         # Global CSS and design system
+/tests          # Playwright E2E tests
+/docs           # Documentation
+/lib            # Server-side utilities (cache, database)
 ```
 
-## 🌟 Key Features
+## Commands
 
-### Pokemon Features
-- **Pokedex**: Browse all Pokemon with advanced filtering
-- **Pokemon Details**: Stats, moves, abilities, evolution chains
-- **Battle Simulator**: Simulate battles between Pokemon
-- **Type Effectiveness**: Interactive type matchup calculator
-- **Regional Variants**: Support for all regional forms
+```bash
+npm run dev          # Start development server (port 3001)
+npm run build        # Production build
+npm run lint         # ESLint check
+npx tsc --noEmit     # TypeScript check (must pass)
+npm test             # Run Playwright tests
+```
 
-### TCG Features
-- **Card Database**: Browse Pokemon TCG cards
-- **Price Tracking**: Real-time card prices and history
-- **Collection Manager**: Track your card collection
-- **Deck Builder**: Build and manage TCG decks
-- **Pack Opening**: Simulate opening booster packs
+## Environment Variables
 
-### Pocket Mode
-- **Pokemon TCG Pocket**: Dedicated mode for mobile TCG
-- **Expansion Browser**: View all Pocket expansions
-- **Deck Builder**: Build decks for Pocket format
-
-## ⚙️ Configuration
-
-### Environment Variables
-
-Create a `.env.local` file:
+Create `.env.local`:
 
 ```env
-# Supabase
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-
-# Pokemon TCG API (optional)
-NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY=your_api_key
-
-# CDN for images (optional)
-NEXT_PUBLIC_CDN_URL=your_cdn_url
+NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY=your_tcg_api_key  # Optional, for higher rate limits
+REDIS_URL=your_redis_url  # Optional, for caching
 ```
 
-### Important Configuration Notes
+## Key APIs
 
-- **React Strict Mode**: Enabled for better error detection
-- **Image Optimization**: Uses custom loader to avoid Vercel quotas
-- **Large Images**: Scraped images (635MB) should be moved to CDN (see `IMAGE_MIGRATION_PLAN.md`)
+| Endpoint | Description |
+|----------|-------------|
+| `/api/tcgexpansions` | TCG card sets list |
+| `/api/tcgexpansions/[setId]` | Set details and cards |
+| `/api/pocket-expansions` | Pokemon Pocket expansions |
+| `/api/pocket-cards` | Pocket card database |
+| `/api/tcg-sets` | Alternative TCG sets endpoint |
 
-## 🧪 Testing
+## Documentation
 
-```bash
-# Run all tests
-npm test
+- **CLAUDE.md** - Developer context and coding guidelines
+- **docs/** - Additional documentation and archives
 
-# Run tests with UI
-npm run test:ui
+## Design System
 
-# Run tests in headed mode
-npm run test:headed
+The app uses a consistent design system:
+- 12px border radius for buttons, cards, inputs
+- 16px border radius for modals
+- Blue-based accent colors
+- Glass morphism effects with backdrop blur
 
-# Debug tests
-npm run test:debug
-```
+Core UI components in `/components/ui/`:
+- `Button` - All button variants
+- `Modal` - Dialog system
+- `Container` - Content cards
+- `Skeleton` - Loading states
 
-## 📱 Mobile Support
+## License
 
-- Fully responsive design
-- Touch gestures support
-- PWA capabilities
-- Optimized for iPhone/iOS
-
-## 🚧 Known Issues
-
-- Large image directory (635MB) - migration to CDN recommended
-- React Hook dependency warnings - fixes in progress
-- Some TODO items in code - see individual files
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-### Commit Convention
-
-- `feat:` - New features
-- `fix:` - Bug fixes
-- `docs:` - Documentation changes
-- `style:` - Code style changes
-- `refactor:` - Code refactoring
-- `test:` - Test additions/changes
-- `chore:` - Build process/auxiliary tool changes
-
-## 📝 Documentation
-
-- Main documentation: `/project-resources/docs/`
-- API documentation: `/pages/api/README.md`
-- Component documentation: See individual component files
-- Testing guide: `/tests/README.md`
-
-## 🔒 Security
-
-- All API routes are protected
-- Environment variables for sensitive data
-- Input validation on all forms
-- XSS protection enabled
-- CORS properly configured
-
-## 📈 Performance
-
-- Lighthouse score: Target > 90
-- Bundle size: < 700KB
-- 3-tier caching system
-- Image optimization
-- Code splitting
-
-## 📄 License
-
-This project is private and proprietary.
-
-## 🙏 Acknowledgments
-
-- Pokemon TCG API for card data
-- PokeAPI for Pokemon data
-- Bulbapedia for additional Pokemon information
-- Next.js team for the amazing framework
+Private and proprietary.

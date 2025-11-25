@@ -60,8 +60,8 @@ const TcgSetsContent: React.FC = () => {
         const res = await fetchJSON<{ data: CardSet[], pagination: PaginationInfo }>(
           `/api/tcgexpansions?page=${page}&pageSize=25`,
           {
-            useCache: page > 1,
-            forceRefresh: page === 1 && !append,
+            useCache: false, // Disable cache to ensure fresh data
+            forceRefresh: true,
             timeout: 60000,
             retries: 2,
             retryDelay: 2000

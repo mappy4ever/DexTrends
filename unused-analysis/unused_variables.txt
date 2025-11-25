@@ -1,3 +1,0 @@
-utils/bulbapediaApi.ts:125 - Unused variable: getImageUrl
-utils/competitiveAnalysis.ts:27 - Unused variable: NATURE_EFFECTS
-components/ui/RarityIcon.tsx:144 - Unused variable: sizeClasses

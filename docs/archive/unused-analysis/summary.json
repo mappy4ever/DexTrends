@@ -1,0 +1,15 @@
+{
+  "timestamp": "2025-08-30T19:52:13.667Z",
+  "totalFiles": 873,
+  "categories": {
+    "todoComments": 1,
+    "commentedCode": 87,
+    "debugCode": 461,
+    "duplicateImports": 17
+  },
+  "recommendations": [
+    "Remove debug code (console.log, debugger statements)",
+    "Clean up commented code - either remove or document why it's kept",
+    "Remove duplicate import statements"
+  ]
+}

@@ -7,6 +7,116 @@ import { InteractiveCard, easings, useEnhancedAnimation } from '../ui/EnhancedAn
 import { getRaritySymbol } from '../../utils/tcgRaritySymbols';
 import hapticFeedback from '../../utils/hapticFeedback';
 
+// CardFlipAnimation component - inline implementation
+interface CardFlipAnimationProps {
+  card: TCGCard;
+  isFlipped: boolean;
+  onFlip: () => void;
+  onCardClick: (card: TCGCard) => void;
+  isFavorite: boolean;
+  onFavoriteToggle?: (card: TCGCard) => void;
+}
+
+const CardFlipAnimation: React.FC<CardFlipAnimationProps> = ({
+  card,
+  isFlipped,
+  onFlip,
+  onCardClick,
+  isFavorite,
+  onFavoriteToggle
+}) => {
+  return (
+    <motion.div
+      className="relative w-full h-full cursor-pointer"
+      style={{ perspective: 1000 }}
+      onClick={() => onCardClick(card)}
+    >
+      <motion.div
+        className="relative w-full h-full"
+        style={{ transformStyle: 'preserve-3d' }}
+        animate={{ rotateY: isFlipped ? 180 : 0 }}
+        transition={{ duration: 0.6, ease: 'easeInOut' }}
+      >
+        {/* Front of card */}
+        <div
+          className="absolute inset-0 rounded-xl overflow-hidden shadow-lg"
+          style={{ backfaceVisibility: 'hidden' }}
+        >
+          <Image
+            src={card.images?.small || card.images?.large || ''}
+            alt={card.name}
+            fill
+            className="object-cover"
+            loading="lazy"
+          />
+          {/* Favorite button */}
+          {onFavoriteToggle && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onFavoriteToggle(card);
+              }}
+              className={`absolute top-2 right-2 p-1.5 rounded-full transition-colors ${
+                isFavorite
+                  ? 'bg-red-500 text-white'
+                  : 'bg-white/80 text-gray-600 hover:bg-red-100'
+              }`}
+            >
+              <svg className="w-4 h-4" fill={isFavorite ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+            </button>
+          )}
+          {/* Flip button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onFlip();
+            }}
+            className="absolute bottom-2 right-2 p-1.5 rounded-full bg-white/80 text-gray-600 hover:bg-gray-200 transition-colors"
+            title="Flip card"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+          </button>
+        </div>
+        {/* Back of card - Info */}
+        <div
+          className="absolute inset-0 rounded-xl overflow-hidden shadow-lg bg-gradient-to-br from-gray-800 to-gray-900 p-3 flex flex-col justify-between"
+          style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+        >
+          <div>
+            <h4 className="text-white font-bold text-sm truncate">{card.name}</h4>
+            <p className="text-gray-400 text-xs mt-1">#{card.number}</p>
+            {card.rarity && (
+              <p className="text-purple-400 text-xs mt-1">{getRaritySymbol(card.rarity)} {card.rarity}</p>
+            )}
+          </div>
+          {card.tcgplayer?.prices && (
+            <div className="text-green-400 font-bold text-lg">
+              ${card.tcgplayer.prices.holofoil?.market || card.tcgplayer.prices.normal?.market || 'N/A'}
+            </div>
+          )}
+          {/* Flip back button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onFlip();
+            }}
+            className="absolute bottom-2 right-2 p-1.5 rounded-full bg-white/20 text-white hover:bg-white/30 transition-colors"
+            title="Flip card"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
 interface TCGCardGridProps {
   cards: TCGCard[];
   onCardClick: (card: TCGCard) => void;

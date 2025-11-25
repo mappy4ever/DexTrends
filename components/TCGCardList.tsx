@@ -6,7 +6,8 @@ import Modal from '@/components/ui/Modal';
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import { InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { Skeleton as SmartSkeleton } from "./ui/Skeleton";
-import PriceDisplay from './ui/PriceDisplay';
+import PriceIndicator from './ui/PriceIndicator';
+const PriceDisplay = PriceIndicator; // Alias for backward compatibility
 import { ErrorBoundaryWrapper } from "./ui/ErrorBoundary";
 import { RarityIcon } from './ui/RarityIcon';
 import type { TCGCard } from "../types/api/cards";

@@ -1,5 +1,18 @@
 import React, { useState, useCallback, ReactNode } from 'react';
-import StickySidebar from '../ui/navigation/StickySidebar';
+
+interface StickySidebarProps {
+  children: React.ReactNode;
+  className?: string;
+  filters?: Array<{ id: string; label: string; type: string; options?: Array<{ value: string; label: string }>; value?: string | string[] | number }>;
+  onFilterChange?: (filterId: string, value: string | string[] | number) => void;
+  isOpen?: boolean;
+  onToggle?: () => void;
+}
+
+// StickySidebar removed in consolidation - using simple div with sticky positioning
+const StickySidebar = ({ children, className, isOpen = true }: StickySidebarProps) => (
+  <div className={`sticky top-4 ${isOpen ? 'block' : 'hidden md:block'} ${className || ''}`}>{children}</div>
+);
 
 interface SidebarFilter {
   id: string;

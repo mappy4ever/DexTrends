@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, ComponentType } from 'react';
-import { Skeleton } from '@/components/unified/LoadingSkeletons';
+import { Skeleton } from '@/components/ui/Skeleton';
 import logger from '@/utils/logger';
 
 /**
@@ -184,9 +184,9 @@ export function usePreload(
  * Lazy load heavy components
  */
 export const LazyComponents = {
-  // Battle Simulator
+  // Battle Simulator - component moved to pages/battle-simulator
   BattleSimulator: lazyWithRetry(
-    () => import('@/components/battle-simulator/MobileBattleSimulator'),
+    () => import('@/components/ui/Modal').then(() => ({ default: () => null })),
     'BattleSimulator'
   ),
   
@@ -208,9 +208,9 @@ export const LazyComponents = {
     'PackOpening'
   ),
   
-  // Data Analytics
+  // Data Analytics - removed component
   DataAnalyticsDashboard: lazyWithRetry(
-    () => import('@/components/ui/DataAnalyticsDashboard'),
+    () => import('@/components/ui/Modal').then(() => ({ default: () => null })),
     'DataAnalyticsDashboard'
   ),
   
@@ -303,12 +303,12 @@ export function useLazyLoad(
 export function prefetchNextComponents(currentRoute: string) {
   const prefetchMap: Record<string, (() => Promise<any>)[]> = {
     '/pokedex': [
-      () => import('@/components/ui/Modal'), // CardPreviewModal removed
-      () => import('@/components/ui/cards/Advanced3DCard')
+      () => import('@/components/ui/Modal')
+      // Advanced3DCard removed in consolidation
     ],
     '/tcgexpansions': [
-      () => import('@/components/ui/Modal'), // CardPreviewModal removed
-      // () => import('@/components/ui/cards/CardComparisonTool') // removed
+      () => import('@/components/ui/Modal')
+      // CardComparisonTool removed in consolidation
     ],
     '/': [
       () => import('@/pages/pokedex'),

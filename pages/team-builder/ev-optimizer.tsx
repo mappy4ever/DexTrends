@@ -14,7 +14,7 @@ import { FadeIn, SlideUp } from '../../components/ui/animations/animations';
 import { TypeBadge } from '../../components/ui/TypeBadge';
 import { GlassContainer } from '../../components/ui/design-system/GlassContainer';
 import { CircularCard } from '../../components/ui/design-system/CircularCard';
-import { GradientButton } from '../../components/ui/design-system/GradientButton';
+import { GradientButton } from '../../components/ui/design-system';
 import { TypeGradientBadge } from '../../components/ui/design-system/TypeGradientBadge';
 import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import FullBleedWrapper from '../../components/ui/FullBleedWrapper';

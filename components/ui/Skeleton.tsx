@@ -10,6 +10,16 @@ export interface SkeletonProps {
   children?: React.ReactNode;
   loading?: boolean;
   delay?: number;
+  // Backward compatibility props for LoadingStateGlass
+  type?: 'spinner' | 'skeleton' | 'card' | 'grid' | 'card-grid';
+  message?: string;
+  size?: 'sm' | 'md' | 'lg';
+  rows?: number;
+  columns?: number;
+  count?: number;
+  showPrice?: boolean;
+  showTypes?: boolean;
+  showHP?: boolean;
 }
 
 /**
@@ -136,13 +146,24 @@ export const SkeletonCard: React.FC<{
   showTitle?: boolean;
   showDescription?: boolean;
   showActions?: boolean;
+  // Backward compatibility props (aliases for common patterns)
+  showPrice?: boolean;
+  showSet?: boolean;
+  showTypes?: boolean;
 }> = ({
   className,
   showImage = true,
   showTitle = true,
   showDescription = true,
-  showActions = false
+  showActions = false,
+  // Allow aliases
+  showPrice,
+  showSet,
+  showTypes
 }) => {
+  // Map aliases to the standard props
+  const effectiveShowDescription = showDescription || showSet;
+  const effectiveShowActions = showActions || showPrice;
   return (
     <div
       className={cn(
@@ -162,10 +183,10 @@ export const SkeletonCard: React.FC<{
       {showTitle && (
         <Skeleton variant="text" className="h-6 sm:h-7 w-3/4" />
       )}
-      {showDescription && (
+      {effectiveShowDescription && (
         <SkeletonText lines={2} />
       )}
-      {showActions && (
+      {effectiveShowActions && (
         <div className="flex gap-2 sm:gap-3 pt-2">
           <Skeleton variant="rounded" className="h-9 sm:h-10 w-20" />
           <Skeleton variant="rounded" className="h-9 sm:h-10 w-20" />
@@ -354,30 +375,45 @@ export const CardGridSkeleton: React.FC<{
     showSet?: boolean;
     showTypes?: boolean;
   };
-}> = ({ 
-  count = 8, 
+  // Direct props for backward compatibility
+  columns?: number;
+  showPrice?: boolean;
+  showSet?: boolean;
+  showTypes?: boolean;
+  showHP?: boolean;
+}> = ({
+  count = 8,
   cols = { default: 1, sm: 2, md: 3, lg: 4 },
   className,
-  cardProps
+  cardProps,
+  // Direct props
+  columns,
+  showPrice,
+  showSet,
+  showTypes,
+  showHP
 }) => {
+  // Allow columns prop to override cols.default
+  const effectiveCols = columns ? { ...cols, default: columns } : cols;
+
   const gridCols = cn(
     'grid gap-4',
-    `grid-cols-${cols.default || 1}`,
-    cols.sm && `sm:grid-cols-${cols.sm}`,
-    cols.md && `md:grid-cols-${cols.md}`,
-    cols.lg && `lg:grid-cols-${cols.lg}`,
+    `grid-cols-${effectiveCols.default || 1}`,
+    effectiveCols.sm && `sm:grid-cols-${effectiveCols.sm}`,
+    effectiveCols.md && `md:grid-cols-${effectiveCols.md}`,
+    effectiveCols.lg && `lg:grid-cols-${effectiveCols.lg}`,
     className
   );
 
   return (
     <div className={gridCols}>
       {Array.from({ length: count }).map((_, i) => (
-        <SkeletonCard 
+        <SkeletonCard
           key={i}
           showImage={true}
           showTitle={true}
-          showDescription={cardProps?.showSet}
-          showActions={cardProps?.showPrice}
+          showDescription={cardProps?.showSet ?? showSet}
+          showActions={cardProps?.showPrice ?? showPrice}
           className="h-full"
         />
       ))}

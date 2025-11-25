@@ -16,7 +16,7 @@ import logger from '../../utils/logger';
 import { TypeBadge } from '../../components/ui/TypeBadge';
 import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import FullBleedWrapper from '../../components/ui/FullBleedWrapper';
-import CircularButton from '../../components/ui/CircularButton';
+import { CircularButton } from '../../components/ui/design-system';
 import { analyzeTeamTypeSynergy, getTypeMatchups } from '../../utils/typeEffectiveness';
 import type { TeamMember, Move, Nature, StatSpread } from '../../types/team-builder';
 import type { Pokemon } from "../../types/pokemon";

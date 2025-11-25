@@ -7,8 +7,7 @@ import PageErrorBoundary from '../components/ui/PageErrorBoundary';
 import BackToTop from '../components/ui/BaseBackToTop';
 import { FadeIn, SlideUp } from '../components/ui/animations/animations';
 import { GlassContainer } from '../components/ui/design-system/GlassContainer';
-import { GradientButton } from '../components/ui/design-system/GradientButton';
-import CircularButton from '../components/ui/CircularButton';
+import { GradientButton, CircularButton } from '../components/ui/design-system';
 import { motion } from 'framer-motion';
 import type { NextPage } from 'next';
 

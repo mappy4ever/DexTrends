@@ -4,7 +4,7 @@ import Head from 'next/head';
 import logger from '../utils/logger';
 import { fetchJSON } from '../utils/unifiedFetch';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
-import CircularButton from '../components/ui/CircularButton';
+import { CircularButton } from '../components/ui/design-system';
 import type { NextPage } from 'next';
 
 interface PokemonFact {

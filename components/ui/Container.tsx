@@ -1,10 +1,9 @@
 import React, { forwardRef, HTMLAttributes } from 'react';
-import { motion } from 'framer-motion';
 import { cn } from '../../utils/cn';
-const hapticManager = typeof window !== 'undefined' ? require('../../utils/hapticFeedback').default : null;
+import { RADIUS, GLASS_BG, GLASS_BORDER, SHADOW, TRANSITION, HOVER } from './design-system/glass-constants';
 
 export interface CardProps extends HTMLAttributes<HTMLDivElement> {
-  variant?: 'default' | 'elevated' | 'outline' | 'ghost' | 'gradient' | 'featured';
+  variant?: 'default' | 'elevated' | 'outline' | 'ghost' | 'gradient' | 'featured' | 'glass';
   padding?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
   rounded?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
   hover?: boolean;
@@ -32,22 +31,22 @@ const Container = forwardRef<HTMLDivElement, CardProps>(
     },
     ref
   ) => {
-    // Rounded styles
+    // Rounded styles - using unified design system
     const roundedStyles = {
-      none: '',
-      sm: 'rounded',
-      md: 'rounded-lg',
-      lg: 'rounded-xl',
-      xl: 'rounded-2xl',
-      full: 'rounded-full'
+      none: RADIUS.none,
+      sm: RADIUS.sm,
+      md: RADIUS.md,
+      lg: RADIUS.lg,     // 12px - primary choice
+      xl: RADIUS.xl,     // 16px
+      full: RADIUS.full
     };
 
     // Padding styles - responsive
     const paddingStyles = {
       none: '',
       sm: 'p-2 sm:p-3',
-      md: 'p-3 sm:p-4 md:p-5',
-      lg: 'p-4 sm:p-6 md:p-8',
+      md: 'p-4 sm:p-5',
+      lg: 'p-5 sm:p-6 md:p-8',
       xl: 'p-6 sm:p-8 md:p-10'
     };
 
@@ -56,64 +55,68 @@ const Container = forwardRef<HTMLDivElement, CardProps>(
       'relative',
       roundedStyles[rounded],
       paddingStyles[padding],
-      'transition-all duration-200 ease-out'
+      TRANSITION.default
     );
 
-    // Gradient backgrounds
+    // Gradient backgrounds - clean, elegant
     const gradientStyles = {
-      blue: 'bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20',
-      purple: 'bg-gradient-to-br from-purple-50 to-pink-100 dark:from-purple-900/20 dark:to-pink-900/20',
-      green: 'bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-900/20 dark:to-emerald-900/20',
-      red: 'bg-gradient-to-br from-red-50 to-orange-100 dark:from-red-900/20 dark:to-orange-900/20',
-      yellow: 'bg-gradient-to-br from-yellow-50 to-amber-100 dark:from-yellow-900/20 dark:to-amber-900/20',
+      blue: 'bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30',
+      purple: 'bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30',
+      green: 'bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30',
+      red: 'bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950/30 dark:to-orange-950/30',
+      yellow: 'bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-950/30 dark:to-amber-950/30',
       custom: customGradient || ''
     };
 
-    // Variant styles
+    // Variant styles - unified and consistent
     const variantStyles = {
       default: cn(
         'bg-white dark:bg-gray-800',
-        'border border-gray-200 dark:border-gray-700',
-        'shadow-sm'
+        GLASS_BORDER.medium,
+        SHADOW.sm
       ),
       elevated: cn(
         'bg-white dark:bg-gray-800',
-        'shadow-lg hover:shadow-xl',
-        'border border-gray-100 dark:border-gray-700'
+        GLASS_BORDER.subtle,
+        SHADOW.lg
       ),
       outline: cn(
         'bg-transparent',
-        'border-2 border-gray-300 dark:border-gray-600'
+        'border-2 border-gray-200 dark:border-gray-700'
       ),
       ghost: cn(
-        'bg-transparent',
-        'border border-transparent'
+        'bg-transparent'
       ),
       gradient: cn(
         gradient ? gradientStyles[gradient] : gradientStyles.blue,
-        'border border-gray-200/50 dark:border-gray-700/50',
-        'shadow-sm'
+        GLASS_BORDER.subtle,
+        SHADOW.sm
       ),
       featured: cn(
-        'bg-gradient-to-br from-purple-600 to-blue-600',
+        'bg-gradient-to-br from-blue-600 to-indigo-600',
         'text-white',
-        'shadow-xl hover:shadow-2xl',
+        SHADOW.xl,
         'border-0'
+      ),
+      glass: cn(
+        GLASS_BG.frosted.medium,
+        GLASS_BORDER.subtle,
+        SHADOW.md,
+        'backdrop-blur-md'
       )
     };
 
     // Interactive styles
     const interactiveStyles = interactive || onClick ? cn(
       'cursor-pointer',
-      'active:scale-[0.98]',
+      'active:scale-[0.99]',
       'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2'
     ) : '';
 
-    // Hover effects
+    // Hover effects - subtle and elegant
     const hoverStyles = (hover || interactive || onClick) ? cn(
-      'hover:shadow-lg',
-      'hover:scale-[1.02]',
-      variant === 'outline' && 'hover:border-gray-400 dark:hover:border-gray-500',
+      HOVER.lift,
+      variant === 'outline' && 'hover:border-gray-300 dark:hover:border-gray-600',
       variant === 'ghost' && 'hover:bg-gray-50 dark:hover:bg-gray-800/50'
     ) : '';
 

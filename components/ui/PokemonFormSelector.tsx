@@ -26,9 +26,13 @@ interface Form {
 }
 
 interface PokemonFormSelectorProps {
-  pokemon: Pokemon;
-  species: Species;
-  onFormChange?: (formData: Pokemon) => Promise<void>;
+  pokemon?: Pokemon;
+  species?: Species;
+  onFormChange?: ((formData: Pokemon) => Promise<void>) | ((formId: string) => void);
+  // Backward compatibility props for simplified usage
+  forms?: Array<{ name: string; displayName?: string; url?: string; isDefault?: boolean }>;
+  selectedForm?: string;
+  typeColors?: Record<string, unknown>;
 }
 
 // List of valid regional and battle-relevant forms
@@ -68,17 +72,41 @@ const EXCLUDED_FORM_PATTERNS = [
   'kalos-cap', 'alola-cap', 'partner-cap', 'world-cap'
 ];
 
-export default function PokemonFormSelector({ 
-  pokemon, 
-  species, 
-  onFormChange 
+export default function PokemonFormSelector({
+  pokemon,
+  species,
+  onFormChange,
+  // Simplified props for backward compatibility
+  forms: propForms,
+  selectedForm: propSelectedForm,
+  typeColors
 }: PokemonFormSelectorProps) {
   const [forms, setForms] = useState<Form[]>([]);
   const [selectedForm, setSelectedForm] = useState<Form | null>(null);
   const [loading, setLoading] = useState(true);
   const [isChangingForm, setIsChangingForm] = useState(false);
 
+  // Handle simplified form data passed directly
   useEffect(() => {
+    if (propForms && propForms.length > 0) {
+      const convertedForms: Form[] = propForms.map(f => ({
+        name: f.name,
+        displayName: f.displayName || f.name,
+        url: f.url || '',
+        isDefault: f.isDefault || false
+      }));
+      setForms(convertedForms);
+      const selected = convertedForms.find(f => f.name === propSelectedForm) || convertedForms[0];
+      setSelectedForm(selected);
+      setLoading(false);
+      return;
+    }
+  }, [propForms, propSelectedForm]);
+
+  useEffect(() => {
+    // Skip if we're using simplified props
+    if (propForms && propForms.length > 0) return;
+
     const loadForms = async () => {
       if (!species?.varieties) {
         setLoading(false);
@@ -118,7 +146,7 @@ export default function PokemonFormSelector({
         setForms(validForms);
         
         // Set the current form as selected
-        const currentForm = validForms.find(f => f.name === pokemon.name) || validForms[0];
+        const currentForm = validForms.find(f => f.name === pokemon?.name) || validForms[0];
         setSelectedForm(currentForm);
         
       } catch (error) {
@@ -195,21 +223,32 @@ export default function PokemonFormSelector({
 
   const handleFormChange = async (form: Form): Promise<void> => {
     if (form.name === selectedForm?.name || isChangingForm) return;
-    
+
     logger.debug('Switching to form', { to: form.name, from: selectedForm?.name });
     setIsChangingForm(true);
-    
+
     try {
+      // If using simplified props (no URL), just call callback with form name
+      if (propForms && propForms.length > 0 && !form.url) {
+        setSelectedForm(form);
+        if (onFormChange) {
+          // Call as simple string callback
+          (onFormChange as (formId: string) => void)(form.name);
+        }
+        setIsChangingForm(false);
+        return;
+      }
+
       // Load the form's data
       const formData = await fetchJSON<Pokemon>(form.url);
       if (!formData) throw new Error('No form data received');
       logger.debug('Form data loaded', { name: formData.name });
-      
+
       // Validate the form data has required fields
       if (!formData || !formData.name) {
         throw new Error('Invalid form data received');
       }
-      
+
       // Ensure formData has an id field (required by Pokemon type)
       if (!formData.id && formData.name) {
         // Extract ID from the URL if not present
@@ -217,13 +256,13 @@ export default function PokemonFormSelector({
         const possibleId = urlParts[urlParts.length - 1] || urlParts[urlParts.length - 2];
         formData.id = parseInt(possibleId) || formData.name;
       }
-      
+
       // Update the selected form only after successful data load
       setSelectedForm(form);
-      
+
       // Call the parent callback with the form data
       if (onFormChange) {
-        await onFormChange(formData);
+        await (onFormChange as (formData: Pokemon) => Promise<void>)(formData);
       }
     } catch (error) {
       logger.error('Error loading form data:', error);

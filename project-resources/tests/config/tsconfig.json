@@ -89,6 +89,7 @@
     "**/archive/**/*",
     "**/_archive/**/*",
     "components/pokemon/archive/**/*",
-    "components/_archive/**/*"
+    "components/_archive/**/*",
+    "archived-components/**/*"
   ]
 }

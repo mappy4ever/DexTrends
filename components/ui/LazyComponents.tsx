@@ -39,37 +39,19 @@ const FormSkeleton = () => (
   </div>
 );
 
-// Dashboard Components
-export const MarketInsightsDashboard = dynamic(
-  () => import('./MarketInsightsDashboard'),
-  {
-    loading: () => <DashboardSkeleton />,
-    ssr: false
-  }
-);
-
-export const DataAnalyticsDashboard = dynamic(
-  () => import('./DataAnalyticsDashboard'),
-  {
-    loading: () => <DashboardSkeleton />,
-    ssr: false
-  }
-);
-
-export const PerformanceDashboard = dynamic(
-  () => import('./PerformanceDashboard'),
-  {
-    loading: () => <DashboardSkeleton />,
-    ssr: false
-  }
-);
+// Dashboard Components - removed unused dashboards
+// MarketInsightsDashboard removed
+// DataAnalyticsDashboard removed
+// PerformanceDashboard removed
+// Stub exports for backward compatibility
+export const MarketInsightsDashboard = () => null;
+export const DataAnalyticsDashboard = () => null;
+export const PerformanceDashboard = () => null;
 
 // PortfolioManager removed - unused component
 
 // PriceIntelligenceSystem removed - unused component
 // Use individual price components instead
-  }
-);
 
 export const CollectionTracker = dynamic(
   () => import('./CollectionTracker'),
@@ -173,8 +155,9 @@ export const TypeEffectivenessWheel = dynamic(
   }
 );
 
+// PokemonStatRadar removed - using PokemonRadarChart from pocket instead
 export const PokemonStatRadar = dynamic(
-  () => import('../pokemon/PokemonStatRadar'),
+  () => import('../pocket/PokemonRadarChart'),
   {
     loading: () => <Skeleton variant="circular" width={250} height={250} animation="wave" />,
     ssr: false

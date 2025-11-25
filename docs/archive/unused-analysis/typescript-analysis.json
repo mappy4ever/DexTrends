@@ -1,0 +1,6940 @@
+{
+  "timestamp": "2025-08-30T19:52:13.301Z",
+  "unusedImports": [
+    {
+      "file": "utils/dataTools.ts",
+      "line": "340",
+      "col": "11",
+      "name": "importQueue"
+    }
+  ],
+  "unusedVariables": [
+    {
+      "file": "components/_archive/mobile-legacy/GestureCardSorting.tsx",
+      "line": "68",
+      "col": "3",
+      "name": "enableGestureFiltering"
+    },
+    {
+      "file": "components/_archive/mobile-legacy/GestureCardSorting.tsx",
+      "line": "76",
+      "col": "9",
+      "name": "gestureTimeoutRef"
+    },
+    {
+      "file": "components/_archive/mobile-legacy/GestureCardSorting.tsx",
+      "line": "111",
+      "col": "9",
+      "name": "handleGesturePattern"
+    },
+    {
+      "file": "components/_archive/mobile-legacy/MobileCardGrid.tsx",
+      "line": "1",
+      "col": "27",
+      "name": "useEffect"
+    },
+    {
+      "file": "components/_archive/mobile-legacy/MobileCardGrid.tsx",
+      "line": "86",
+      "col": "5",
+      "name": "loadMore"
+    },
+    {
+      "file": "components/_archive/mobile-legacy/MobileFilterSheet.tsx",
+      "line": "45",
+      "col": "10",
+      "name": "sheetHeight"
+    },
+    {
+      "file": "components/_archive/mobile-legacy/MobileFilterSheet.tsx",
+      "line": "58",
+      "col": "23",
+      "name": "event"
+    },
+    {
+      "file": "components/_archive/mobile-legacy/MobileFilterSheet.tsx",
+      "line": "62",
+      "col": "26",
+      "name": "event"
+    },
+    {
+      "file": "components/_archive/mobile-legacy/MobileIntegration.tsx",
+      "line": "19",
+      "col": "8",
+      "name": "FloatingActionButton"
+    },
+    {
+      "file": "components/_archive/mobile-legacy/MobileIntegration.tsx",
+      "line": "102",
+      "col": "3",
+      "name": "onShare"
+    },
+    {
+      "file": "components/_archive/mobile-legacy/MobileIntegration.tsx",
+      "line": "114",
+      "col": "10",
+      "name": "showScanner"
+    },
+    {
+      "file": "components/_archive/mobile-legacy/MobileIntegration.tsx",
+      "line": "114",
+      "col": "23",
+      "name": "setShowScanner"
+    },
+    {
+      "file": "components/_archive/mobile-legacy/MobileIntegration.tsx",
+      "line": "115",
+      "col": "10",
+      "name": "showVoiceSearch"
+    },
+    {
+      "file": "components/_archive/mobile-legacy/MobileIntegration.tsx",
+      "line": "115",
+      "col": "27",
+      "name": "setShowVoiceSearch"
+    },
+    {
+      "file": "components/_archive/mobile-legacy/MobileIntegration.tsx",
+      "line": "194",
+      "col": "13",
+      "name": "detail"
+    },
+    {
+      "file": "components/_archive/mobile-legacy/MobileSearchExperience.tsx",
+      "line": "3",
+      "col": "32",
+      "name": "FiFilter"
+    },
+    {
+      "file": "components/_archive/mobile-legacy/MobileSearchExperience.tsx",
+      "line": "48",
+      "col": "9",
+      "name": "debouncedQuery"
+    },
+    {
+      "file": "components/_archive/mobile-legacy/VoiceSearch.tsx",
+      "line": "179",
+      "col": "9",
+      "name": "startAudioVisualization"
+    },
+    {
+      "file": "components/_archive/mobile-legacy/VoiceSearch.tsx",
+      "line": "219",
+      "col": "9",
+      "name": "stopAudioVisualization"
+    },
+    {
+      "file": "components/_archive/mobile-legacy/VoiceSearch.tsx",
+      "line": "230",
+      "col": "9",
+      "name": "processVoiceCommand"
+    },
+    {
+      "file": "components/FastRefreshTests/scenarios/ConditionalHooks.tsx",
+      "line": "134",
+      "col": "10",
+      "name": "itemStates"
+    },
+    {
+      "file": "components/FastRefreshTests/scenarios/StatePreservation.tsx",
+      "line": "21",
+      "col": "9",
+      "name": "callbackFunction"
+    },
+    {
+      "file": "components/mobile/MobileLayout.tsx",
+      "line": "25",
+      "col": "3",
+      "name": "safeAreaInsets"
+    },
+    {
+      "file": "components/mobile/TouchGestures.tsx",
+      "line": "83",
+      "col": "20",
+      "name": "utils"
+    },
+    {
+      "file": "components/PocketDeckViewer.tsx",
+      "line": "5",
+      "col": "10",
+      "name": "FadeIn"
+    },
+    {
+      "file": "components/PocketExpansionViewer.tsx",
+      "line": "3",
+      "col": "1",
+      "name": "Link"
+    },
+    {
+      "file": "components/PocketModeLanding.tsx",
+      "line": "3",
+      "col": "1",
+      "name": "Image"
+    },
+    {
+      "file": "components/PocketModeLanding.tsx",
+      "line": "5",
+      "col": "32",
+      "name": "FiTrendingUp"
+    },
+    {
+      "file": "components/pokemon/archive/PokemonAbilitiesTab.tsx",
+      "line": "29",
+      "col": "46",
+      "name": "index"
+    },
+    {
+      "file": "components/pokemon/archive/PokemonAbilitiesTab.tsx",
+      "line": "54",
+      "col": "55",
+      "name": "index"
+    },
+    {
+      "file": "components/pokemon/archive/PokemonMovesTab.tsx",
+      "line": "8",
+      "col": "49",
+      "name": "formatLearnMethod"
+    },
+    {
+      "file": "components/pokemon/archive/PokemonMovesTab.tsx",
+      "line": "239",
+      "col": "50",
+      "name": "index"
+    },
+    {
+      "file": "components/pokemon/CompactTypeEffectiveness.tsx",
+      "line": "60",
+      "col": "9",
+      "name": "typeColor"
+    },
+    {
+      "file": "components/pokemon/CompactTypeEffectiveness.tsx",
+      "line": "245",
+      "col": "9",
+      "name": "getScoreColor"
+    },
+    {
+      "file": "components/pokemon/CompactTypeEffectiveness.tsx",
+      "line": "270",
+      "col": "9",
+      "name": "getEffectivenessColor"
+    },
+    {
+      "file": "components/pokemon/EvolutionFlow.tsx",
+      "line": "5",
+      "col": "1",
+      "name": "TypeBadge"
+    },
+    {
+      "file": "components/pokemon/EvolutionFlow.tsx",
+      "line": "47",
+      "col": "3",
+      "name": "species"
+    },
+    {
+      "file": "components/pokemon/MobileAbilitiesPage.tsx",
+      "line": "1",
+      "col": "38",
+      "name": "useMemo"
+    },
+    {
+      "file": "components/pokemon/MobileAbilitiesPage.tsx",
+      "line": "5",
+      "col": "1",
+      "name": "BottomSheet"
+    },
+    {
+      "file": "components/pokemon/MobileAbilitiesPage.tsx",
+      "line": "12",
+      "col": "1",
+      "name": "POKEAPI"
+    },
+    {
+      "file": "components/pokemon/MobileAbilitiesPage.tsx",
+      "line": "51",
+      "col": "10",
+      "name": "selectedAbility"
+    },
+    {
+      "file": "components/pokemon/MobileAbilitiesPage.tsx",
+      "line": "51",
+      "col": "27",
+      "name": "setSelectedAbility"
+    },
+    {
+      "file": "components/pokemon/MobileItemsPage.tsx",
+      "line": "1",
+      "col": "38",
+      "name": "useMemo"
+    },
+    {
+      "file": "components/pokemon/MobileItemsPage.tsx",
+      "line": "3",
+      "col": "18",
+      "name": "AnimatePresence"
+    },
+    {
+      "file": "components/pokemon/MobileItemsPage.tsx",
+      "line": "43",
+      "col": "10",
+      "name": "showFilters"
+    },
+    {
+      "file": "components/pokemon/MobileItemsPage.tsx",
+      "line": "43",
+      "col": "23",
+      "name": "setShowFilters"
+    },
+    {
+      "file": "components/pokemon/MobileMovesPage.tsx",
+      "line": "1",
+      "col": "35",
+      "name": "useCallback"
+    },
+    {
+      "file": "components/pokemon/MobileMovesPage.tsx",
+      "line": "1",
+      "col": "59",
+      "name": "useMemo"
+    },
+    {
+      "file": "components/pokemon/MobileMovesPage.tsx",
+      "line": "7",
+      "col": "1",
+      "name": "logger"
+    },
+    {
+      "file": "components/pokemon/MobileMovesPage.tsx",
+      "line": "229",
+      "col": "3",
+      "name": "getCategoryIcon"
+    },
+    {
+      "file": "components/pokemon/MobileMovesPage.tsx",
+      "line": "411",
+      "col": "46",
+      "name": "index"
+    },
+    {
+      "file": "components/pokemon/MobilePokemonDetail.tsx",
+      "line": "1",
+      "col": "35",
+      "name": "useCallback"
+    },
+    {
+      "file": "components/pokemon/MobilePokemonDetail.tsx",
+      "line": "2",
+      "col": "1",
+      "name": "useRouter"
+    },
+    {
+      "file": "components/pokemon/MobilePokemonDetail.tsx",
+      "line": "7",
+      "col": "1",
+      "name": "logger"
+    },
+    {
+      "file": "components/pokemon/MobilePokemonDetail.tsx",
+      "line": "72",
+      "col": "3",
+      "name": "locationEncounters"
+    },
+    {
+      "file": "components/pokemon/MobilePokemonDetail.tsx",
+      "line": "73",
+      "col": "3",
+      "name": "natureData"
+    },
+    {
+      "file": "components/pokemon/MobilePokemonDetail.tsx",
+      "line": "74",
+      "col": "3",
+      "name": "allNatures"
+    },
+    {
+      "file": "components/pokemon/MobilePokemonDetail.tsx",
+      "line": "75",
+      "col": "3",
+      "name": "selectedNature"
+    },
+    {
+      "file": "components/pokemon/MobilePokemonDetail.tsx",
+      "line": "76",
+      "col": "3",
+      "name": "onNatureChange"
+    },
+    {
+      "file": "components/pokemon/MobilePokemonDetail.tsx",
+      "line": "77",
+      "col": "3",
+      "name": "selectedLevel"
+    },
+    {
+      "file": "components/pokemon/MobilePokemonDetail.tsx",
+      "line": "78",
+      "col": "3",
+      "name": "onLevelChange"
+    },
+    {
+      "file": "components/pokemon/MobilePokemonDetail.tsx",
+      "line": "81",
+      "col": "10",
+      "name": "imageIndex"
+    },
+    {
+      "file": "components/pokemon/MobilePokemonDetail.tsx",
+      "line": "81",
+      "col": "22",
+      "name": "setImageIndex"
+    },
+    {
+      "file": "components/pokemon/MobilePokemonDetail.tsx",
+      "line": "395",
+      "col": "45",
+      "name": "pokemon"
+    },
+    {
+      "file": "components/pokemon/NavigationArrow.tsx",
+      "line": "17",
+      "col": "9",
+      "name": "typeColors"
+    },
+    {
+      "file": "components/pokemon/PokemonFormSelector.tsx",
+      "line": "2",
+      "col": "18",
+      "name": "AnimatePresence"
+    },
+    {
+      "file": "components/pokemon/PokemonHero.tsx",
+      "line": "33",
+      "col": "3",
+      "name": "theme"
+    },
+    {
+      "file": "components/pokemon/PokemonHeroSection.tsx",
+      "line": "1",
+      "col": "27",
+      "name": "useMemo"
+    },
+    {
+      "file": "components/pokemon/PokemonHeroSection.tsx",
+      "line": "6",
+      "col": "1",
+      "name": "PokemonGlassCard"
+    },
+    {
+      "file": "components/pokemon/PokemonHeroSection.tsx",
+      "line": "30",
+      "col": "3",
+      "name": "onFormChange"
+    },
+    {
+      "file": "components/pokemon/PokemonHeroSection.tsx",
+      "line": "36",
+      "col": "9",
+      "name": "typeColors"
+    },
+    {
+      "file": "components/pokemon/PokemonHeroSectionV2.tsx",
+      "line": "31",
+      "col": "9",
+      "name": "ringGradient"
+    },
+    {
+      "file": "components/pokemon/PokemonHeroSectionV3.tsx",
+      "line": "2",
+      "col": "18",
+      "name": "AnimatePresence"
+    },
+    {
+      "file": "components/pokemon/PokemonHeroSectionV3.tsx",
+      "line": "11",
+      "col": "63",
+      "name": "FaTag"
+    },
+    {
+      "file": "components/pokemon/PokemonHeroSectionV3.tsx",
+      "line": "206",
+      "col": "11",
+      "name": "baseId"
+    },
+    {
+      "file": "components/pokemon/PokemonStatRing.tsx",
+      "line": "41",
+      "col": "3",
+      "name": "typeColors"
+    },
+    {
+      "file": "components/pokemon/PokemonStatRing.tsx",
+      "line": "49",
+      "col": "9",
+      "name": "strokeDashoffset"
+    },
+    {
+      "file": "components/pokemon/PokemonStatRing.tsx",
+      "line": "75",
+      "col": "9",
+      "name": "statColor"
+    },
+    {
+      "file": "components/pokemon/PokemonTabSystem.tsx",
+      "line": "9",
+      "col": "1",
+      "name": "PokemonGlassCard"
+    },
+    {
+      "file": "components/pokemon/PokemonTabSystem.tsx",
+      "line": "167",
+      "col": "10",
+      "name": "swipeDirection"
+    },
+    {
+      "file": "components/pokemon/tabs/archive/EvolutionTabV2.tsx",
+      "line": "16",
+      "col": "3",
+      "name": "typeColors"
+    },
+    {
+      "file": "components/pokemon/tabs/BreedingTab.tsx",
+      "line": "32",
+      "col": "3",
+      "name": "canBreedTogether"
+    },
+    {
+      "file": "components/pokemon/tabs/BreedingTab.tsx",
+      "line": "59",
+      "col": "70",
+      "name": "typeColors"
+    },
+    {
+      "file": "components/pokemon/tabs/CardsTab.tsx",
+      "line": "1",
+      "col": "27",
+      "name": "useEffect"
+    },
+    {
+      "file": "components/pokemon/tabs/CardsTab.tsx",
+      "line": "13",
+      "col": "30",
+      "name": "FaGamepad"
+    },
+    {
+      "file": "components/pokemon/tabs/CardsTab.tsx",
+      "line": "14",
+      "col": "11",
+      "name": "FaTrophy"
+    },
+    {
+      "file": "components/pokemon/tabs/CardsTab.tsx",
+      "line": "14",
+      "col": "21",
+      "name": "FaGem"
+    },
+    {
+      "file": "components/pokemon/tabs/CardsTab.tsx",
+      "line": "17",
+      "col": "1",
+      "name": "HiSparkles"
+    },
+    {
+      "file": "components/pokemon/tabs/CardsTab.tsx",
+      "line": "79",
+      "col": "3",
+      "name": "pokemon"
+    },
+    {
+      "file": "components/pokemon/tabs/CardsTab.tsx",
+      "line": "80",
+      "col": "3",
+      "name": "species"
+    },
+    {
+      "file": "components/pokemon/tabs/CardsTab.tsx",
+      "line": "86",
+      "col": "10",
+      "name": "cardsError"
+    },
+    {
+      "file": "components/pokemon/tabs/CardsTab.tsx",
+      "line": "86",
+      "col": "22",
+      "name": "setCardsError"
+    },
+    {
+      "file": "components/pokemon/tabs/CompetitiveTab.tsx",
+      "line": "33",
+      "col": "76",
+      "name": "typeColors"
+    },
+    {
+      "file": "components/pokemon/tabs/EvolutionTabV3.tsx",
+      "line": "2",
+      "col": "18",
+      "name": "AnimatePresence"
+    },
+    {
+      "file": "components/pokemon/tabs/EvolutionTabV3.tsx",
+      "line": "8",
+      "col": "1",
+      "name": "TypeBadge"
+    },
+    {
+      "file": "components/pokemon/tabs/EvolutionTabV3.tsx",
+      "line": "14",
+      "col": "10",
+      "name": "GiTwoCoins"
+    },
+    {
+      "file": "components/pokemon/tabs/EvolutionTabV3.tsx",
+      "line": "322",
+      "col": "3",
+      "name": "typeColors"
+    },
+    {
+      "file": "components/pokemon/tabs/EvolutionTabV3.tsx",
+      "line": "403",
+      "col": "11",
+      "name": "currentFormPrefix"
+    },
+    {
+      "file": "components/pokemon/tabs/EvolutionTabV3.tsx",
+      "line": "872",
+      "col": "29",
+      "name": "megaId"
+    },
+    {
+      "file": "components/pokemon/tabs/LocationsTab.tsx",
+      "line": "7",
+      "col": "14",
+      "name": "FaMapMarkerAlt"
+    },
+    {
+      "file": "components/pokemon/tabs/LocationsTab.tsx",
+      "line": "7",
+      "col": "30",
+      "name": "FaGlobeAmericas"
+    },
+    {
+      "file": "components/pokemon/tabs/LocationsTab.tsx",
+      "line": "103",
+      "col": "97",
+      "name": "typeColors"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTab.tsx",
+      "line": "1",
+      "col": "60",
+      "name": "useMemo"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTab.tsx",
+      "line": "2",
+      "col": "18",
+      "name": "AnimatePresence"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTab.tsx",
+      "line": "10",
+      "col": "13",
+      "name": "FaFilter"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTab.tsx",
+      "line": "13",
+      "col": "35",
+      "name": "FaMagic"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTab.tsx",
+      "line": "14",
+      "col": "3",
+      "name": "FaShieldAlt"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTab.tsx",
+      "line": "16",
+      "col": "10",
+      "name": "GiSwordWound"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTab.tsx",
+      "line": "73",
+      "col": "55",
+      "name": "species"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTab.tsx",
+      "line": "73",
+      "col": "64",
+      "name": "typeColors"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTab.tsx",
+      "line": "96",
+      "col": "9",
+      "name": "getTypeIcon"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTabV2.tsx",
+      "line": "7",
+      "col": "1",
+      "name": "PokemonLearnset"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTabV2.tsx",
+      "line": "13",
+      "col": "13",
+      "name": "FaFilter"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTabV2.tsx",
+      "line": "13",
+      "col": "35",
+      "name": "FaStar"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTabV2.tsx",
+      "line": "13",
+      "col": "43",
+      "name": "FaChartBar"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTabV2.tsx",
+      "line": "14",
+      "col": "3",
+      "name": "FaBolt"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTabV2.tsx",
+      "line": "14",
+      "col": "11",
+      "name": "FaFire"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTabV2.tsx",
+      "line": "14",
+      "col": "19",
+      "name": "FaWater"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTabV2.tsx",
+      "line": "14",
+      "col": "28",
+      "name": "FaLeaf"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTabV2.tsx",
+      "line": "14",
+      "col": "36",
+      "name": "FaSnowflake"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTabV2.tsx",
+      "line": "15",
+      "col": "3",
+      "name": "FaDragon"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTabV2.tsx",
+      "line": "15",
+      "col": "13",
+      "name": "FaGhost"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTabV2.tsx",
+      "line": "15",
+      "col": "36",
+      "name": "FaBug"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTabV2.tsx",
+      "line": "16",
+      "col": "3",
+      "name": "FaMountain"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTabV2.tsx",
+      "line": "16",
+      "col": "15",
+      "name": "FaFeather"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTabV2.tsx",
+      "line": "16",
+      "col": "26",
+      "name": "FaBrain"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTabV2.tsx",
+      "line": "16",
+      "col": "35",
+      "name": "FaShieldAlt"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTabV2.tsx",
+      "line": "19",
+      "col": "1",
+      "name": "HiSparkles"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTabV2.tsx",
+      "line": "47",
+      "col": "59",
+      "name": "species"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTabV2.tsx",
+      "line": "47",
+      "col": "68",
+      "name": "typeColors"
+    },
+    {
+      "file": "components/pokemon/tabs/MovesTabV2.tsx",
+      "line": "214",
+      "col": "9",
+      "name": "formatMoveName"
+    },
+    {
+      "file": "components/pokemon/tabs/OverviewTabV3.tsx",
+      "line": "10",
+      "col": "3",
+      "name": "FaFlask"
+    },
+    {
+      "file": "components/pokemon/tabs/OverviewTabV3.tsx",
+      "line": "10",
+      "col": "12",
+      "name": "FaTag"
+    },
+    {
+      "file": "components/pokemon/tabs/OverviewTabV3.tsx",
+      "line": "10",
+      "col": "19",
+      "name": "FaHome"
+    },
+    {
+      "file": "components/pokemon/tabs/OverviewTabV3.tsx",
+      "line": "11",
+      "col": "34",
+      "name": "FaRuler"
+    },
+    {
+      "file": "components/pokemon/tabs/OverviewTabV3.tsx",
+      "line": "12",
+      "col": "3",
+      "name": "FaRunning"
+    },
+    {
+      "file": "components/pokemon/tabs/OverviewTabV3.tsx",
+      "line": "12",
+      "col": "14",
+      "name": "FaMedal"
+    },
+    {
+      "file": "components/pokemon/tabs/OverviewTabV3.tsx",
+      "line": "12",
+      "col": "23",
+      "name": "FaTrophy"
+    },
+    {
+      "file": "components/pokemon/tabs/OverviewTabV3.tsx",
+      "line": "16",
+      "col": "1",
+      "name": "HiSparkles"
+    },
+    {
+      "file": "components/pokemon/tabs/OverviewTabV3.tsx",
+      "line": "44",
+      "col": "3",
+      "name": "typeColors"
+    },
+    {
+      "file": "components/pokemon/tabs/OverviewTabV3.tsx",
+      "line": "57",
+      "col": "9",
+      "name": "InfoCard"
+    },
+    {
+      "file": "components/pokemon/tabs/OverviewTabV3.tsx",
+      "line": "75",
+      "col": "9",
+      "name": "StatRow"
+    },
+    {
+      "file": "components/pokemon/tabs/StatsTabV2.tsx",
+      "line": "35",
+      "col": "3",
+      "name": "species"
+    },
+    {
+      "file": "components/pokemon/TypeEffectivenessChart.tsx",
+      "line": "17",
+      "col": "3",
+      "name": "showOffensive"
+    },
+    {
+      "file": "components/pokemon/TypeEffectivenessWheel.tsx",
+      "line": "7",
+      "col": "1",
+      "name": "POKEMON_TYPE_COLORS"
+    },
+    {
+      "file": "components/PokemonTCGLanding.tsx",
+      "line": "3",
+      "col": "31",
+      "name": "BsBarChart"
+    },
+    {
+      "file": "components/PokemonTCGLanding.tsx",
+      "line": "4",
+      "col": "24",
+      "name": "FiShoppingBag"
+    },
+    {
+      "file": "components/PriceHistory.tsx",
+      "line": "259",
+      "col": "24",
+      "name": "e"
+    },
+    {
+      "file": "components/providers/AnimationProvider.tsx",
+      "line": "6",
+      "col": "32",
+      "name": "useContext"
+    },
+    {
+      "file": "components/providers/PerformanceProvider.tsx",
+      "line": "11",
+      "col": "1",
+      "name": "PerformanceMetric"
+    },
+    {
+      "file": "components/pwa/AppUpdateNotification.tsx",
+      "line": "29",
+      "col": "10",
+      "name": "updateInfo"
+    },
+    {
+      "file": "components/pwa/InstallPrompt.tsx",
+      "line": "1",
+      "col": "38",
+      "name": "ReactNode"
+    },
+    {
+      "file": "components/pwa/InstallPrompt.tsx",
+      "line": "61",
+      "col": "11",
+      "name": "isMobile"
+    },
+    {
+      "file": "components/pwa/InstallPrompt.tsx",
+      "line": "69",
+      "col": "10",
+      "name": "installationAnalytics"
+    },
+    {
+      "file": "components/pwa/InstallPrompt.tsx",
+      "line": "364",
+      "col": "26",
+      "name": "utils"
+    },
+    {
+      "file": "components/pwa/PWAProvider.tsx",
+      "line": "1",
+      "col": "32",
+      "name": "useContext"
+    },
+    {
+      "file": "components/pwa/PWAProvider.tsx",
+      "line": "37",
+      "col": "9",
+      "name": "router"
+    },
+    {
+      "file": "components/qol/ContextualHelp.tsx",
+      "line": "4",
+      "col": "1",
+      "name": "logger"
+    },
+    {
+      "file": "components/qol/NotificationSystem.tsx",
+      "line": "1",
+      "col": "75",
+      "name": "useContext"
+    },
+    {
+      "file": "components/qol/NotificationSystem.tsx",
+      "line": "8",
+      "col": "3",
+      "name": "NotificationConfig"
+    },
+    {
+      "file": "components/qol/SmartSearchEnhancer.tsx",
+      "line": "35",
+      "col": "9",
+      "name": "router"
+    },
+    {
+      "file": "components/qol/UserPreferences.hooks.tsx",
+      "line": "1",
+      "col": "10",
+      "name": "useState"
+    },
+    {
+      "file": "components/qol/UserPreferences.hooks.tsx",
+      "line": "1",
+      "col": "20",
+      "name": "useEffect"
+    },
+    {
+      "file": "components/qol/UserPreferences.hooks.tsx",
+      "line": "1",
+      "col": "31",
+      "name": "useCallback"
+    },
+    {
+      "file": "components/qol/UserPreferences.hooks.tsx",
+      "line": "1",
+      "col": "56",
+      "name": "useRef"
+    },
+    {
+      "file": "components/qol/UserPreferences.hooks.tsx",
+      "line": "1",
+      "col": "64",
+      "name": "useMemo"
+    },
+    {
+      "file": "components/qol/UserPreferences.hooks.tsx",
+      "line": "2",
+      "col": "1",
+      "name": "useNotifications"
+    },
+    {
+      "file": "components/qol/UserPreferences.hooks.tsx",
+      "line": "4",
+      "col": "1",
+      "name": "logger"
+    },
+    {
+      "file": "components/qol/UserPreferences.tsx",
+      "line": "1",
+      "col": "53",
+      "name": "useContext"
+    },
+    {
+      "file": "components/RecoveryMode.tsx",
+      "line": "2",
+      "col": "1",
+      "name": "performFullRecovery"
+    },
+    {
+      "file": "components/regions/EliteFourGallery.tsx",
+      "line": "2",
+      "col": "1",
+      "name": "Image"
+    },
+    {
+      "file": "components/regions/EliteFourGallery.tsx",
+      "line": "4",
+      "col": "1",
+      "name": "TypeBadge"
+    },
+    {
+      "file": "components/regions/EliteFourGallery.tsx",
+      "line": "5",
+      "col": "27",
+      "name": "CardHover"
+    },
+    {
+      "file": "components/regions/EliteFourGallery.tsx",
+      "line": "5",
+      "col": "38",
+      "name": "StaggeredChildren"
+    },
+    {
+      "file": "components/regions/EliteFourGallery.tsx",
+      "line": "6",
+      "col": "20",
+      "name": "BsShieldFill"
+    },
+    {
+      "file": "components/regions/EliteFourGallery.tsx",
+      "line": "6",
+      "col": "42",
+      "name": "BsLightning"
+    },
+    {
+      "file": "components/regions/EliteFourGallery.tsx",
+      "line": "51",
+      "col": "91",
+      "name": "theme"
+    },
+    {
+      "file": "components/regions/EliteFourGrid.tsx",
+      "line": "2",
+      "col": "1",
+      "name": "Image"
+    },
+    {
+      "file": "components/regions/EliteFourGrid.tsx",
+      "line": "8",
+      "col": "10",
+      "name": "BsTrophy"
+    },
+    {
+      "file": "components/regions/EliteFourGrid.tsx",
+      "line": "8",
+      "col": "34",
+      "name": "BsStar"
+    },
+    {
+      "file": "components/regions/EliteFourGrid.tsx",
+      "line": "43",
+      "col": "56",
+      "name": "region"
+    },
+    {
+      "file": "components/regions/EliteFourGrid.tsx",
+      "line": "43",
+      "col": "85",
+      "name": "theme"
+    },
+    {
+      "file": "components/regions/EliteFourGrid.tsx",
+      "line": "44",
+      "col": "10",
+      "name": "revealChampion"
+    },
+    {
+      "file": "components/regions/EliteFourGrid.tsx",
+      "line": "44",
+      "col": "26",
+      "name": "setRevealChampion"
+    },
+    {
+      "file": "components/regions/EvilTeamShowcase.tsx",
+      "line": "4",
+      "col": "27",
+      "name": "CardHover"
+    },
+    {
+      "file": "components/regions/EvilTeamShowcase.tsx",
+      "line": "8",
+      "col": "3",
+      "name": "BsGeoAlt"
+    },
+    {
+      "file": "components/regions/EvilTeamShowcase.tsx",
+      "line": "12",
+      "col": "3",
+      "name": "BsCurrencyDollar"
+    },
+    {
+      "file": "components/regions/EvilTeamShowcase.tsx",
+      "line": "17",
+      "col": "10",
+      "name": "GiEvilMinion"
+    },
+    {
+      "file": "components/regions/GameShowcase.tsx",
+      "line": "4",
+      "col": "27",
+      "name": "getGameLogo"
+    },
+    {
+      "file": "components/regions/GameShowcase.tsx",
+      "line": "6",
+      "col": "36",
+      "name": "BsGeoAlt"
+    },
+    {
+      "file": "components/regions/GymLeaderCarousel.tsx",
+      "line": "2",
+      "col": "1",
+      "name": "Image"
+    },
+    {
+      "file": "components/regions/GymLeaderCarousel.tsx",
+      "line": "4",
+      "col": "1",
+      "name": "TypeBadge"
+    },
+    {
+      "file": "components/regions/GymLeaderCarousel.tsx",
+      "line": "53",
+      "col": "84",
+      "name": "theme"
+    },
+    {
+      "file": "components/regions/GymLeaderCarousel.tsx",
+      "line": "220",
+      "col": "38",
+      "name": "index"
+    },
+    {
+      "file": "components/regions/GymLeaderGrid.tsx",
+      "line": "44",
+      "col": "56",
+      "name": "region"
+    },
+    {
+      "file": "components/regions/GymLeaderGrid.tsx",
+      "line": "44",
+      "col": "76",
+      "name": "theme"
+    },
+    {
+      "file": "components/regions/GymLeaderGrid.tsx",
+      "line": "83",
+      "col": "15",
+      "name": "weaknesses"
+    },
+    {
+      "file": "components/regions/GymLeaderGrid.tsx",
+      "line": "84",
+      "col": "15",
+      "name": "resistances"
+    },
+    {
+      "file": "components/regions/IslandKahunasGrid.tsx",
+      "line": "5",
+      "col": "3",
+      "name": "BsStar"
+    },
+    {
+      "file": "components/regions/IslandKahunasGrid.tsx",
+      "line": "39",
+      "col": "62",
+      "name": "theme"
+    },
+    {
+      "file": "components/regions/LegendaryPokemonShowcase.tsx",
+      "line": "4",
+      "col": "18",
+      "name": "AnimatePresence"
+    },
+    {
+      "file": "components/regions/LegendaryPokemonShowcase.tsx",
+      "line": "15",
+      "col": "40",
+      "name": "GiBirdClaw"
+    },
+    {
+      "file": "components/regions/LegendaryPokemonShowcase.tsx",
+      "line": "32",
+      "col": "3",
+      "name": "theme"
+    },
+    {
+      "file": "components/regions/LegendaryPokemonShowcase.tsx",
+      "line": "34",
+      "col": "10",
+      "name": "selectedLegendary"
+    },
+    {
+      "file": "components/regions/LegendaryPokemonShowcase.tsx",
+      "line": "34",
+      "col": "29",
+      "name": "setSelectedLegendary"
+    },
+    {
+      "file": "components/regions/ProfessorShowcase.tsx",
+      "line": "12",
+      "col": "3",
+      "name": "BsGeoAlt"
+    },
+    {
+      "file": "components/regions/ProfessorShowcase.tsx",
+      "line": "14",
+      "col": "3",
+      "name": "BsLightbulb"
+    },
+    {
+      "file": "components/regions/ProfessorShowcase.tsx",
+      "line": "16",
+      "col": "3",
+      "name": "BsCalendarEvent"
+    },
+    {
+      "file": "components/regions/ProfessorShowcase.tsx",
+      "line": "18",
+      "col": "3",
+      "name": "BsHeart"
+    },
+    {
+      "file": "components/regions/RegionalFormsGallery.tsx",
+      "line": "10",
+      "col": "3",
+      "name": "BsGeoAltFill"
+    },
+    {
+      "file": "components/regions/RegionalFormsGallery.tsx",
+      "line": "12",
+      "col": "3",
+      "name": "BsSnow"
+    },
+    {
+      "file": "components/regions/RegionalFormsGallery.tsx",
+      "line": "13",
+      "col": "3",
+      "name": "BsFire"
+    },
+    {
+      "file": "components/regions/RegionalFormsGallery.tsx",
+      "line": "14",
+      "col": "3",
+      "name": "BsLightning"
+    },
+    {
+      "file": "components/regions/RegionalFormsGallery.tsx",
+      "line": "16",
+      "col": "35",
+      "name": "GiCrystalShine"
+    },
+    {
+      "file": "components/regions/RegionalFormsGallery.tsx",
+      "line": "36",
+      "col": "78",
+      "name": "theme"
+    },
+    {
+      "file": "components/regions/RegionalFormsGallery.tsx",
+      "line": "37",
+      "col": "10",
+      "name": "selectedForm"
+    },
+    {
+      "file": "components/regions/RegionalFormsGallery.tsx",
+      "line": "37",
+      "col": "24",
+      "name": "setSelectedForm"
+    },
+    {
+      "file": "components/regions/RegionalVariants.tsx",
+      "line": "1",
+      "col": "17",
+      "name": "useState"
+    },
+    {
+      "file": "components/regions/RegionalVariants.tsx",
+      "line": "9",
+      "col": "3",
+      "name": "BsGeoAlt"
+    },
+    {
+      "file": "components/regions/RegionalVariants.tsx",
+      "line": "10",
+      "col": "3",
+      "name": "BsSnow"
+    },
+    {
+      "file": "components/regions/RegionalVariants.tsx",
+      "line": "13",
+      "col": "3",
+      "name": "BsLightning"
+    },
+    {
+      "file": "components/regions/RegionalVariants.tsx",
+      "line": "14",
+      "col": "3",
+      "name": "BsExclamation"
+    },
+    {
+      "file": "components/regions/RegionalVariants.tsx",
+      "line": "16",
+      "col": "3",
+      "name": "BsInfoCircle"
+    },
+    {
+      "file": "components/regions/RegionalVariants.tsx",
+      "line": "18",
+      "col": "10",
+      "name": "GiMushroom"
+    },
+    {
+      "file": "components/regions/RegionHero.tsx",
+      "line": "1",
+      "col": "17",
+      "name": "useEffect"
+    },
+    {
+      "file": "components/regions/RegionHero.tsx",
+      "line": "2",
+      "col": "1",
+      "name": "Image"
+    },
+    {
+      "file": "components/regions/RegionHero.tsx",
+      "line": "25",
+      "col": "58",
+      "name": "theme"
+    },
+    {
+      "file": "components/regions/RegionHero.tsx",
+      "line": "26",
+      "col": "10",
+      "name": "mapError"
+    },
+    {
+      "file": "components/regions/RegionHero.tsx",
+      "line": "34",
+      "col": "9",
+      "name": "fallbackMapPath"
+    },
+    {
+      "file": "components/regions/RegionHero.tsx",
+      "line": "37",
+      "col": "9",
+      "name": "getGameLogos"
+    },
+    {
+      "file": "components/regions/RegionInfo.tsx",
+      "line": "114",
+      "col": "58",
+      "name": "theme"
+    },
+    {
+      "file": "components/regions/StarterEvolutionJourney.tsx",
+      "line": "10",
+      "col": "3",
+      "name": "BsLightningFill"
+    },
+    {
+      "file": "components/regions/StarterEvolutionJourney.tsx",
+      "line": "11",
+      "col": "3",
+      "name": "BsShieldFill"
+    },
+    {
+      "file": "components/regions/StarterEvolutionJourney.tsx",
+      "line": "12",
+      "col": "3",
+      "name": "BsSpeedometer2"
+    },
+    {
+      "file": "components/regions/StarterEvolutionJourney.tsx",
+      "line": "13",
+      "col": "3",
+      "name": "BsHeart"
+    },
+    {
+      "file": "components/regions/StarterEvolutionJourney.tsx",
+      "line": "14",
+      "col": "3",
+      "name": "BsStar"
+    },
+    {
+      "file": "components/regions/StarterEvolutionJourney.tsx",
+      "line": "54",
+      "col": "3",
+      "name": "region"
+    },
+    {
+      "file": "components/regions/StarterEvolutionJourney.tsx",
+      "line": "160",
+      "col": "9",
+      "name": "getTypeIcon"
+    },
+    {
+      "file": "components/regions/StarterEvolutionJourney.tsx",
+      "line": "169",
+      "col": "9",
+      "name": "getTypeGradient"
+    },
+    {
+      "file": "components/regions/StarterEvolutionJourney.tsx",
+      "line": "482",
+      "col": "54",
+      "name": "theme"
+    },
+    {
+      "file": "components/regions/StarterPokemonShowcase.tsx",
+      "line": "10",
+      "col": "3",
+      "name": "BsLightning"
+    },
+    {
+      "file": "components/regions/StarterPokemonShowcase.tsx",
+      "line": "15",
+      "col": "3",
+      "name": "BsRulers"
+    },
+    {
+      "file": "components/regions/StarterPokemonShowcase.tsx",
+      "line": "16",
+      "col": "3",
+      "name": "BsSpeedometer"
+    },
+    {
+      "file": "components/regions/StarterPokemonShowcase.tsx",
+      "line": "22",
+      "col": "10",
+      "name": "GiWeight"
+    },
+    {
+      "file": "components/regions/StarterPokemonShowcase.tsx",
+      "line": "87",
+      "col": "74",
+      "name": "region"
+    },
+    {
+      "file": "components/regions/StarterPokemonShowcase.tsx",
+      "line": "89",
+      "col": "10",
+      "name": "showEvolutions"
+    },
+    {
+      "file": "components/regions/StarterPokemonShowcase.tsx",
+      "line": "89",
+      "col": "26",
+      "name": "setShowEvolutions"
+    },
+    {
+      "file": "components/regions/StarterPokemonShowcaseGlass.tsx",
+      "line": "5",
+      "col": "1",
+      "name": "TypeBadge"
+    },
+    {
+      "file": "components/regions/StarterPokemonShowcaseGlass.tsx",
+      "line": "7",
+      "col": "3",
+      "name": "BsArrowRight"
+    },
+    {
+      "file": "components/regions/StarterPokemonShowcaseGlass.tsx",
+      "line": "9",
+      "col": "3",
+      "name": "BsGenderMale"
+    },
+    {
+      "file": "components/regions/StarterPokemonShowcaseGlass.tsx",
+      "line": "10",
+      "col": "3",
+      "name": "BsGenderFemale"
+    },
+    {
+      "file": "components/regions/StarterPokemonShowcaseGlass.tsx",
+      "line": "11",
+      "col": "3",
+      "name": "BsRulers"
+    },
+    {
+      "file": "components/regions/StarterPokemonShowcaseGlass.tsx",
+      "line": "12",
+      "col": "3",
+      "name": "BsSpeedometer"
+    },
+    {
+      "file": "components/regions/StarterPokemonShowcaseGlass.tsx",
+      "line": "13",
+      "col": "3",
+      "name": "BsTrophy"
+    },
+    {
+      "file": "components/regions/StarterPokemonShowcaseGlass.tsx",
+      "line": "114",
+      "col": "97",
+      "name": "theme"
+    },
+    {
+      "file": "components/regions/StarterPokemonShowcaseGlass.tsx",
+      "line": "116",
+      "col": "10",
+      "name": "showEvolution"
+    },
+    {
+      "file": "components/regions/StarterPokemonShowcaseGlass.tsx",
+      "line": "116",
+      "col": "25",
+      "name": "setShowEvolution"
+    },
+    {
+      "file": "components/regions/StarterShowcaseComplete.tsx",
+      "line": "9",
+      "col": "3",
+      "name": "BsLightningFill"
+    },
+    {
+      "file": "components/regions/StarterShowcaseComplete.tsx",
+      "line": "10",
+      "col": "3",
+      "name": "BsShieldFill"
+    },
+    {
+      "file": "components/regions/StarterShowcaseComplete.tsx",
+      "line": "11",
+      "col": "3",
+      "name": "BsHeart"
+    },
+    {
+      "file": "components/regions/StarterShowcaseComplete.tsx",
+      "line": "12",
+      "col": "3",
+      "name": "BsStar"
+    },
+    {
+      "file": "components/regions/StarterShowcaseComplete.tsx",
+      "line": "27",
+      "col": "3",
+      "name": "GLASS_BLUR"
+    },
+    {
+      "file": "components/regions/StarterShowcaseComplete.tsx",
+      "line": "28",
+      "col": "3",
+      "name": "GLASS_OPACITY"
+    },
+    {
+      "file": "components/regions/StarterShowcaseComplete.tsx",
+      "line": "29",
+      "col": "3",
+      "name": "GLASS_BORDER"
+    },
+    {
+      "file": "components/regions/StarterShowcaseComplete.tsx",
+      "line": "30",
+      "col": "3",
+      "name": "GLASS_SHADOW"
+    },
+    {
+      "file": "components/regions/StarterShowcaseComplete.tsx",
+      "line": "31",
+      "col": "3",
+      "name": "GLASS_ROUNDED"
+    },
+    {
+      "file": "components/regions/StarterShowcaseComplete.tsx",
+      "line": "69",
+      "col": "3",
+      "name": "region"
+    },
+    {
+      "file": "components/regions/StarterShowcaseComplete.tsx",
+      "line": "72",
+      "col": "3",
+      "name": "theme"
+    },
+    {
+      "file": "components/regions/StarterShowcaseEnhanced.tsx",
+      "line": "5",
+      "col": "27",
+      "name": "CardHover"
+    },
+    {
+      "file": "components/regions/StarterShowcaseEnhanced.tsx",
+      "line": "6",
+      "col": "50",
+      "name": "BsInfoCircle"
+    },
+    {
+      "file": "components/regions/StarterShowcaseEnhanced.tsx",
+      "line": "153",
+      "col": "9",
+      "name": "getTypeGradient"
+    },
+    {
+      "file": "components/regions/StarterShowcaseEnhanced.tsx",
+      "line": "259",
+      "col": "23",
+      "name": "xOffset"
+    },
+    {
+      "file": "components/RouteErrorBoundary.tsx",
+      "line": "2",
+      "col": "1",
+      "name": "useRouter"
+    },
+    {
+      "file": "components/tcg-set-detail/CardShowcase.tsx",
+      "line": "4",
+      "col": "1",
+      "name": "createGlassStyle"
+    },
+    {
+      "file": "components/tcg-set-detail/CardShowcase.tsx",
+      "line": "23",
+      "col": "9",
+      "name": "containerRef"
+    },
+    {
+      "file": "components/tcg-set-detail/CardShowcaseStrip.tsx",
+      "line": "109",
+      "col": "9",
+      "name": "price"
+    },
+    {
+      "file": "components/tcg-set-detail/EnhancedCardGrid.tsx",
+      "line": "1",
+      "col": "27",
+      "name": "useEffect"
+    },
+    {
+      "file": "components/tcg-set-detail/HorizontalCardShowcase.tsx",
+      "line": "2",
+      "col": "34",
+      "name": "useTransform"
+    },
+    {
+      "file": "components/tcg-set-detail/HorizontalCardShowcase.tsx",
+      "line": "2",
+      "col": "48",
+      "name": "animate"
+    },
+    {
+      "file": "components/tcg-set-detail/HorizontalCardShowcase.tsx",
+      "line": "3",
+      "col": "1",
+      "name": "Image"
+    },
+    {
+      "file": "components/tcg-set-detail/HorizontalCardShowcase.tsx",
+      "line": "22",
+      "col": "9",
+      "name": "x"
+    },
+    {
+      "file": "components/tcg-set-detail/MarketPulse.tsx",
+      "line": "28",
+      "col": "10",
+      "name": "selectedMetric"
+    },
+    {
+      "file": "components/tcg-set-detail/MobileTCGSetDetail.tsx",
+      "line": "6",
+      "col": "1",
+      "name": "VirtualCardGrid"
+    },
+    {
+      "file": "components/tcg-set-detail/MobileTCGSetDetail.tsx",
+      "line": "8",
+      "col": "1",
+      "name": "logger"
+    },
+    {
+      "file": "components/tcg-set-detail/MobileTCGSetDetail.tsx",
+      "line": "49",
+      "col": "3",
+      "name": "statistics"
+    },
+    {
+      "file": "components/tcg-set-detail/MobileTCGSetDetail.tsx",
+      "line": "53",
+      "col": "3",
+      "name": "router"
+    },
+    {
+      "file": "components/tcg-set-detail/sections/RarityShowcase.tsx",
+      "line": "10",
+      "col": "10",
+      "name": "getPrice"
+    },
+    {
+      "file": "components/tcg-set-detail/sections/SetStats.tsx",
+      "line": "4",
+      "col": "1",
+      "name": "MarketAnalytics"
+    },
+    {
+      "file": "components/tcg-set-detail/sections/SetStats.tsx",
+      "line": "18",
+      "col": "55",
+      "name": "setId"
+    },
+    {
+      "file": "components/tcg-set-detail/SetCompletionTracker.tsx",
+      "line": "21",
+      "col": "3",
+      "name": "onToggleWishlist"
+    },
+    {
+      "file": "components/tcg-set-detail/SetCompletionTracker.tsx",
+      "line": "90",
+      "col": "9",
+      "name": "filteredCards"
+    },
+    {
+      "file": "components/tcg-set-detail/UnifiedSetDashboard.tsx",
+      "line": "1",
+      "col": "44",
+      "name": "useEffect"
+    },
+    {
+      "file": "components/tcg-set-detail/UnifiedSetDashboard.tsx",
+      "line": "165",
+      "col": "3",
+      "name": "statistics"
+    },
+    {
+      "file": "components/tcg-set-detail/UnifiedSetDashboard.tsx",
+      "line": "170",
+      "col": "3",
+      "name": "onToggleWishlist"
+    },
+    {
+      "file": "components/tcg-set-detail/UnifiedSetDashboard.tsx",
+      "line": "358",
+      "col": "36",
+      "name": "index"
+    },
+    {
+      "file": "components/tcg-set-detail/UnifiedStatsGraph.tsx",
+      "line": "3",
+      "col": "1",
+      "name": "cn"
+    },
+    {
+      "file": "components/tcg-set-detail/ValueHeatmap.tsx",
+      "line": "2",
+      "col": "18",
+      "name": "AnimatePresence"
+    },
+    {
+      "file": "components/tcg-set-detail/ValueHeatmap.tsx",
+      "line": "87",
+      "col": "38",
+      "name": "index"
+    },
+    {
+      "file": "components/TCGCardList.tsx",
+      "line": "1",
+      "col": "36",
+      "name": "useCallback"
+    },
+    {
+      "file": "components/TCGCardList.tsx",
+      "line": "13",
+      "col": "1",
+      "name": "logger"
+    },
+    {
+      "file": "components/TCGCardList.tsx",
+      "line": "16",
+      "col": "7",
+      "name": "VirtualizedGrid"
+    },
+    {
+      "file": "components/TCGCardList.tsx",
+      "line": "49",
+      "col": "9",
+      "name": "isSecretRare"
+    },
+    {
+      "file": "components/TCGCardList.tsx",
+      "line": "98",
+      "col": "9",
+      "name": "setName"
+    },
+    {
+      "file": "components/team-builder/EVHeatMap.tsx",
+      "line": "229",
+      "col": "48",
+      "name": "stat"
+    },
+    {
+      "file": "components/team-builder/EVHeatMap.tsx",
+      "line": "275",
+      "col": "15",
+      "name": "event"
+    },
+    {
+      "file": "components/team-builder/TeamSynergyGraph.tsx",
+      "line": "6",
+      "col": "25",
+      "name": "useEffect"
+    },
+    {
+      "file": "components/team-builder/TeamSynergyGraph.tsx",
+      "line": "14",
+      "col": "65",
+      "name": "calculateOffensiveCoverage"
+    },
+    {
+      "file": "components/team-builder/TeamSynergyGraph.tsx",
+      "line": "16",
+      "col": "1",
+      "name": "Pokemon"
+    },
+    {
+      "file": "components/team-builder/TeamSynergyGraph.tsx",
+      "line": "31",
+      "col": "3",
+      "name": "showRoles"
+    },
+    {
+      "file": "components/team-builder/TeamSynergyGraph.tsx",
+      "line": "33",
+      "col": "9",
+      "name": "canvasRef"
+    },
+    {
+      "file": "components/team-builder/TeamSynergyGraph.tsx",
+      "line": "34",
+      "col": "10",
+      "name": "hoveredNode"
+    },
+    {
+      "file": "components/team-builder/TeamSynergyGraph.tsx",
+      "line": "35",
+      "col": "10",
+      "name": "selectedNode"
+    },
+    {
+      "file": "components/team-builder/TeamSynergyGraph.tsx",
+      "line": "275",
+      "col": "15",
+      "name": "event"
+    },
+    {
+      "file": "components/team-builder/TeamSynergyGraph.tsx",
+      "line": "291",
+      "col": "15",
+      "name": "event"
+    },
+    {
+      "file": "components/TrendingCards.tsx",
+      "line": "1",
+      "col": "17",
+      "name": "useState"
+    },
+    {
+      "file": "components/TrendingCards.tsx",
+      "line": "1",
+      "col": "27",
+      "name": "useEffect"
+    },
+    {
+      "file": "components/TrendingCards.tsx",
+      "line": "3",
+      "col": "1",
+      "name": "Image"
+    },
+    {
+      "file": "components/ui/AccessibilityProvider.tsx",
+      "line": "1",
+      "col": "32",
+      "name": "useContext"
+    },
+    {
+      "file": "components/ui/AccessibilityProvider.tsx",
+      "line": "85",
+      "col": "11",
+      "name": "body"
+    },
+    {
+      "file": "components/ui/AccessibilityProvider.tsx",
+      "line": "138",
+      "col": "9",
+      "name": "resetPreferences"
+    },
+    {
+      "file": "components/ui/AccessibilityProvider.tsx",
+      "line": "159",
+      "col": "9",
+      "name": "announce"
+    },
+    {
+      "file": "components/ui/AdvancedDeckBuilder.tsx",
+      "line": "1",
+      "col": "38",
+      "name": "useMemo"
+    },
+    {
+      "file": "components/ui/AdvancedDeckBuilder.tsx",
+      "line": "2",
+      "col": "95",
+      "name": "FaShare"
+    },
+    {
+      "file": "components/ui/AdvancedDeckBuilder.tsx",
+      "line": "3",
+      "col": "54",
+      "name": "BsSnow"
+    },
+    {
+      "file": "components/ui/AdvancedDeckBuilder.tsx",
+      "line": "74",
+      "col": "3",
+      "name": "userId"
+    },
+    {
+      "file": "components/ui/AdvancedDeckBuilder.tsx",
+      "line": "86",
+      "col": "10",
+      "name": "selectedCard"
+    },
+    {
+      "file": "components/ui/AdvancedDeckBuilder.tsx",
+      "line": "86",
+      "col": "24",
+      "name": "setSelectedCard"
+    },
+    {
+      "file": "components/ui/AdvancedKeyboardShortcuts.tsx",
+      "line": "16",
+      "col": "3",
+      "name": "ExclamationTriangleIcon"
+    },
+    {
+      "file": "components/ui/AdvancedKeyboardShortcuts.tsx",
+      "line": "79",
+      "col": "3",
+      "name": "onShare"
+    },
+    {
+      "file": "components/ui/AdvancedKeyboardShortcuts.tsx",
+      "line": "90",
+      "col": "10",
+      "name": "macroName"
+    },
+    {
+      "file": "components/ui/AdvancedKeyboardShortcuts.tsx",
+      "line": "90",
+      "col": "21",
+      "name": "setMacroName"
+    },
+    {
+      "file": "components/ui/AdvancedKeyboardShortcuts.tsx",
+      "line": "91",
+      "col": "10",
+      "name": "shortcuts"
+    },
+    {
+      "file": "components/ui/AdvancedKeyboardShortcuts.tsx",
+      "line": "91",
+      "col": "21",
+      "name": "setShortcuts"
+    },
+    {
+      "file": "components/ui/AdvancedKeyboardShortcuts.tsx",
+      "line": "345",
+      "col": "17",
+      "name": "key"
+    },
+    {
+      "file": "components/ui/AdvancedKeyboardShortcuts.tsx",
+      "line": "608",
+      "col": "55",
+      "name": "index"
+    },
+    {
+      "file": "components/ui/AdvancedModalSystem.hooks.ts",
+      "line": "1",
+      "col": "35",
+      "name": "ComponentType"
+    },
+    {
+      "file": "components/ui/AdvancedModalSystem.hooks.ts",
+      "line": "26",
+      "col": "13",
+      "name": "modalId"
+    },
+    {
+      "file": "components/ui/AdvancedModalSystem.tsx",
+      "line": "7",
+      "col": "3",
+      "name": "useContext"
+    },
+    {
+      "file": "components/ui/AdvancedModalSystem.tsx",
+      "line": "13",
+      "col": "26",
+      "name": "VisualFeedback"
+    },
+    {
+      "file": "components/ui/AdvancedModalSystem.tsx",
+      "line": "172",
+      "col": "9",
+      "name": "focusableElements"
+    },
+    {
+      "file": "components/ui/AdvancedModalSystem.tsx",
+      "line": "249",
+      "col": "10",
+      "name": "isAnimating"
+    },
+    {
+      "file": "components/ui/AdvancedModalSystem.tsx",
+      "line": "605",
+      "col": "3",
+      "name": "onClose"
+    },
+    {
+      "file": "components/ui/AdvancedModalSystem.tsx",
+      "line": "630",
+      "col": "3",
+      "name": "onClose"
+    },
+    {
+      "file": "components/ui/AdvancedSearchInterface.tsx",
+      "line": "159",
+      "col": "40",
+      "name": "e"
+    },
+    {
+      "file": "components/ui/AdvancedSearchSystem.tsx",
+      "line": "108",
+      "col": "10",
+      "name": "suggestions"
+    },
+    {
+      "file": "components/ui/AdvancedSearchSystem.tsx",
+      "line": "108",
+      "col": "23",
+      "name": "setSuggestions"
+    },
+    {
+      "file": "components/ui/AdvancedSearchSystem.tsx",
+      "line": "124",
+      "col": "92",
+      "name": "query"
+    },
+    {
+      "file": "components/ui/animations/AnimationSystem.tsx",
+      "line": "1",
+      "col": "32",
+      "name": "useContext"
+    },
+    {
+      "file": "components/ui/animations/AnimationSystem.tsx",
+      "line": "1",
+      "col": "44",
+      "name": "useEffect"
+    },
+    {
+      "file": "components/ui/AnimationShowcase.tsx",
+      "line": "19",
+      "col": "3",
+      "name": "CardStack"
+    },
+    {
+      "file": "components/ui/AriaLiveAnnouncer.hooks.tsx",
+      "line": "1",
+      "col": "8",
+      "name": "React"
+    },
+    {
+      "file": "components/ui/AriaLiveAnnouncer.hooks.tsx",
+      "line": "1",
+      "col": "27",
+      "name": "useEffect"
+    },
+    {
+      "file": "components/ui/AriaLiveAnnouncer.hooks.tsx",
+      "line": "1",
+      "col": "51",
+      "name": "useContext"
+    },
+    {
+      "file": "components/ui/AriaLiveAnnouncer.hooks.tsx",
+      "line": "1",
+      "col": "63",
+      "name": "useRef"
+    },
+    {
+      "file": "components/ui/AriaLiveAnnouncer.hooks.tsx",
+      "line": "1",
+      "col": "71",
+      "name": "useMemo"
+    },
+    {
+      "file": "components/ui/AriaLiveAnnouncer.tsx",
+      "line": "3",
+      "col": "1",
+      "name": "useAnnouncer"
+    },
+    {
+      "file": "components/ui/BreadcrumbNavigation.tsx",
+      "line": "4",
+      "col": "26",
+      "name": "FaHome"
+    },
+    {
+      "file": "components/ui/BreadcrumbNavigation.tsx",
+      "line": "327",
+      "col": "3",
+      "name": "currentPage"
+    },
+    {
+      "file": "components/ui/BulkCardOperations.tsx",
+      "line": "2",
+      "col": "51",
+      "name": "ShareIcon"
+    },
+    {
+      "file": "components/ui/BulkCardOperations.tsx",
+      "line": "2",
+      "col": "81",
+      "name": "TrashIcon"
+    },
+    {
+      "file": "components/ui/BulkSelectionBar.tsx",
+      "line": "3",
+      "col": "46",
+      "name": "FiCopy"
+    },
+    {
+      "file": "components/ui/BulkSelectionBar.tsx",
+      "line": "3",
+      "col": "54",
+      "name": "FiEdit"
+    },
+    {
+      "file": "components/ui/BulkSelectionBar.tsx",
+      "line": "5",
+      "col": "1",
+      "name": "GradientButton"
+    },
+    {
+      "file": "components/ui/cards/CardComparisonTool.tsx",
+      "line": "5",
+      "col": "1",
+      "name": "Enhanced3DCard"
+    },
+    {
+      "file": "components/ui/cards/CircularGymLeaderCard.tsx",
+      "line": "7",
+      "col": "1",
+      "name": "GradientButton"
+    },
+    {
+      "file": "components/ui/cards/CircularGymLeaderCard.tsx",
+      "line": "34",
+      "col": "3",
+      "name": "region"
+    },
+    {
+      "file": "components/ui/cards/CircularGymLeaderCard.tsx",
+      "line": "39",
+      "col": "3",
+      "name": "team"
+    },
+    {
+      "file": "components/ui/cards/CircularPokemonCard.tsx",
+      "line": "4",
+      "col": "1",
+      "name": "Pokemon"
+    },
+    {
+      "file": "components/ui/cards/CircularPokemonCard.tsx",
+      "line": "20",
+      "col": "7",
+      "name": "sizeClasses"
+    },
+    {
+      "file": "components/ui/cards/EliteFourCard.tsx",
+      "line": "30",
+      "col": "3",
+      "name": "region"
+    },
+    {
+      "file": "components/ui/cards/EliteFourCard.tsx",
+      "line": "35",
+      "col": "3",
+      "name": "signature"
+    },
+    {
+      "file": "components/ui/cards/EliteFourCard.tsx",
+      "line": "36",
+      "col": "3",
+      "name": "strengths"
+    },
+    {
+      "file": "components/ui/cards/EliteFourCard.tsx",
+      "line": "131",
+      "col": "71",
+      "name": "i"
+    },
+    {
+      "file": "components/ui/cards/Enhanced3DCard.tsx",
+      "line": "35",
+      "col": "51",
+      "name": "showHP"
+    },
+    {
+      "file": "components/ui/cards/Enhanced3DCard.tsx",
+      "line": "35",
+      "col": "66",
+      "name": "showRarity"
+    },
+    {
+      "file": "components/ui/cards/Enhanced3DCard.tsx",
+      "line": "35",
+      "col": "85",
+      "name": "rarity"
+    },
+    {
+      "file": "components/ui/cards/Enhanced3DCard.tsx",
+      "line": "35",
+      "col": "98",
+      "name": "cardFeatures"
+    },
+    {
+      "file": "components/ui/cards/EnhancedPokemonCard.tsx",
+      "line": "3",
+      "col": "1",
+      "name": "ProgressiveImage"
+    },
+    {
+      "file": "components/ui/cards/EvolutionStageCard.tsx",
+      "line": "17",
+      "col": "98",
+      "name": "onClick"
+    },
+    {
+      "file": "components/ui/cards/GymLeaderCard.tsx",
+      "line": "37",
+      "col": "3",
+      "name": "strengths"
+    },
+    {
+      "file": "components/ui/cards/PokemonCardItem.tsx",
+      "line": "41",
+      "col": "9",
+      "name": "handleToggleFavorite"
+    },
+    {
+      "file": "components/ui/cards/PokemonCardItem.tsx",
+      "line": "47",
+      "col": "9",
+      "name": "spriteUrl"
+    },
+    {
+      "file": "components/ui/cards/UnifiedCard.tsx",
+      "line": "2",
+      "col": "1",
+      "name": "Image"
+    },
+    {
+      "file": "components/ui/cards/UnifiedCard.tsx",
+      "line": "3",
+      "col": "1",
+      "name": "Link"
+    },
+    {
+      "file": "components/ui/cards/UnifiedCard.tsx",
+      "line": "8",
+      "col": "1",
+      "name": "TypeBadge"
+    },
+    {
+      "file": "components/ui/cards/UnifiedCard.tsx",
+      "line": "13",
+      "col": "1",
+      "name": "OptimizedImage"
+    },
+    {
+      "file": "components/ui/cards/UnifiedCard.tsx",
+      "line": "16",
+      "col": "1",
+      "name": "ensureSdkCompatibleCard"
+    },
+    {
+      "file": "components/ui/cards/UnifiedCard.tsx",
+      "line": "20",
+      "col": "7",
+      "name": "getHolographicRarities"
+    },
+    {
+      "file": "components/ui/cards/UnifiedCard.tsx",
+      "line": "338",
+      "col": "3",
+      "name": "showPack"
+    },
+    {
+      "file": "components/ui/cards/UnifiedCard.tsx",
+      "line": "339",
+      "col": "3",
+      "name": "showArtist"
+    },
+    {
+      "file": "components/ui/cards/UnifiedCard.tsx",
+      "line": "468",
+      "col": "10",
+      "name": "imageError"
+    },
+    {
+      "file": "components/ui/cards/UnifiedCard.tsx",
+      "line": "590",
+      "col": "16",
+      "name": "event"
+    },
+    {
+      "file": "components/ui/cards/UnifiedCard.tsx",
+      "line": "594",
+      "col": "19",
+      "name": "event"
+    },
+    {
+      "file": "components/ui/CardSharingSystem.tsx",
+      "line": "1",
+      "col": "35",
+      "name": "useEffect"
+    },
+    {
+      "file": "components/ui/CardSharingSystem.tsx",
+      "line": "342",
+      "col": "36",
+      "name": "index"
+    },
+    {
+      "file": "components/ui/CircularButton.tsx",
+      "line": "5",
+      "col": "3",
+      "name": "components"
+    },
+    {
+      "file": "components/ui/CleanRaritySymbol.tsx",
+      "line": "195",
+      "col": "7",
+      "name": "sizeClasses"
+    },
+    {
+      "file": "components/ui/CollectionTracker.tsx",
+      "line": "1",
+      "col": "60",
+      "name": "ReactNode"
+    },
+    {
+      "file": "components/ui/CollectionTracker.tsx",
+      "line": "8",
+      "col": "3",
+      "name": "FaFire"
+    },
+    {
+      "file": "components/ui/CollectionTracker.tsx",
+      "line": "9",
+      "col": "3",
+      "name": "FaGift"
+    },
+    {
+      "file": "components/ui/CollectionTracker.tsx",
+      "line": "10",
+      "col": "3",
+      "name": "FaEye"
+    },
+    {
+      "file": "components/ui/CollectionTracker.tsx",
+      "line": "12",
+      "col": "3",
+      "name": "FaSlidersH"
+    },
+    {
+      "file": "components/ui/ComparisonModal.tsx",
+      "line": "3",
+      "col": "23",
+      "name": "FiMinus"
+    },
+    {
+      "file": "components/ui/ComparisonModal.tsx",
+      "line": "5",
+      "col": "1",
+      "name": "GradientButton"
+    },
+    {
+      "file": "components/ui/DataAnalyticsDashboard.tsx",
+      "line": "2",
+      "col": "35",
+      "name": "FaChartPie"
+    },
+    {
+      "file": "components/ui/DataAnalyticsDashboard.tsx",
+      "line": "4",
+      "col": "34",
+      "name": "BsClock"
+    },
+    {
+      "file": "components/ui/DataAnalyticsDashboard.tsx",
+      "line": "4",
+      "col": "43",
+      "name": "BsCalendar"
+    },
+    {
+      "file": "components/ui/design-system/CircularCard.tsx",
+      "line": "108",
+      "col": "36",
+      "name": "e"
+    },
+    {
+      "file": "components/ui/design-system/CircularCard.tsx",
+      "line": "118",
+      "col": "11",
+      "name": "createHandler"
+    },
+    {
+      "file": "components/ui/design-system/CircularCard.tsx",
+      "line": "120",
+      "col": "15",
+      "name": "handlers"
+    },
+    {
+      "file": "components/ui/design-system/CircularCard.tsx",
+      "line": "146",
+      "col": "16",
+      "name": "event"
+    },
+    {
+      "file": "components/ui/design-system/CircularCard.tsx",
+      "line": "152",
+      "col": "19",
+      "name": "event"
+    },
+    {
+      "file": "components/ui/DragDropSystem.tsx",
+      "line": "7",
+      "col": "3",
+      "name": "useContext"
+    },
+    {
+      "file": "components/ui/DragDropSystem.tsx",
+      "line": "8",
+      "col": "3",
+      "name": "Children"
+    },
+    {
+      "file": "components/ui/DragDropSystem.tsx",
+      "line": "9",
+      "col": "3",
+      "name": "cloneElement"
+    },
+    {
+      "file": "components/ui/DragDropSystem.tsx",
+      "line": "15",
+      "col": "26",
+      "name": "VisualFeedback"
+    },
+    {
+      "file": "components/ui/DragDropSystem.tsx",
+      "line": "20",
+      "col": "1",
+      "name": "useDragDropLogic"
+    },
+    {
+      "file": "components/ui/DragDropSystem.tsx",
+      "line": "77",
+      "col": "3",
+      "name": "onDragOver"
+    },
+    {
+      "file": "components/ui/DragDropSystem.tsx",
+      "line": "545",
+      "col": "61",
+      "name": "fromContainer"
+    },
+    {
+      "file": "components/ui/DragDropSystem.tsx",
+      "line": "545",
+      "col": "119",
+      "name": "position"
+    },
+    {
+      "file": "components/ui/DragDropSystem.tsx",
+      "line": "726",
+      "col": "3",
+      "name": "onCreateCollection"
+    },
+    {
+      "file": "components/ui/DragDropSystem.tsx",
+      "line": "727",
+      "col": "3",
+      "name": "onDeleteCollection"
+    },
+    {
+      "file": "components/ui/DragDropSystem.tsx",
+      "line": "736",
+      "col": "119",
+      "name": "position"
+    },
+    {
+      "file": "components/ui/EnhancedAnimationSystem.hooks.tsx",
+      "line": "1",
+      "col": "8",
+      "name": "React"
+    },
+    {
+      "file": "components/ui/EnhancedAnimationSystem.hooks.tsx",
+      "line": "1",
+      "col": "17",
+      "name": "useState"
+    },
+    {
+      "file": "components/ui/EnhancedAnimationSystem.hooks.tsx",
+      "line": "1",
+      "col": "27",
+      "name": "useEffect"
+    },
+    {
+      "file": "components/ui/EnhancedAnimationSystem.hooks.tsx",
+      "line": "1",
+      "col": "38",
+      "name": "useCallback"
+    },
+    {
+      "file": "components/ui/EnhancedAnimationSystem.hooks.tsx",
+      "line": "1",
+      "col": "63",
+      "name": "useRef"
+    },
+    {
+      "file": "components/ui/EnhancedAnimationSystem.hooks.tsx",
+      "line": "1",
+      "col": "71",
+      "name": "useMemo"
+    },
+    {
+      "file": "components/ui/EnhancedAnimationSystem.tsx",
+      "line": "1",
+      "col": "32",
+      "name": "useContext"
+    },
+    {
+      "file": "components/ui/EnhancedAnimationSystem.tsx",
+      "line": "1",
+      "col": "76",
+      "name": "CSSProperties"
+    },
+    {
+      "file": "components/ui/EnhancedAnimationSystem.tsx",
+      "line": "11",
+      "col": "3",
+      "name": "useAnimation"
+    },
+    {
+      "file": "components/ui/EnhancedAnimationSystem.tsx",
+      "line": "16",
+      "col": "3",
+      "name": "Transition"
+    },
+    {
+      "file": "components/ui/EnhancedAnimationSystem.tsx",
+      "line": "18",
+      "col": "3",
+      "name": "MotionValue"
+    },
+    {
+      "file": "components/ui/EnhancedCardInteractions.tsx",
+      "line": "1",
+      "col": "119",
+      "name": "FocusEvent"
+    },
+    {
+      "file": "components/ui/EnhancedCardInteractions.tsx",
+      "line": "176",
+      "col": "41",
+      "name": "e"
+    },
+    {
+      "file": "components/ui/EnhancedCardModal.tsx",
+      "line": "25",
+      "col": "3",
+      "name": "enablePinchZoom"
+    },
+    {
+      "file": "components/ui/EnhancedEvolutionDisplay.tsx",
+      "line": "5",
+      "col": "1",
+      "name": "sanitizePokemonName"
+    },
+    {
+      "file": "components/ui/EnhancedEvolutionDisplay.tsx",
+      "line": "9",
+      "col": "1",
+      "name": "Pokemon"
+    },
+    {
+      "file": "components/ui/EnhancedEvolutionDisplay.tsx",
+      "line": "533",
+      "col": "66",
+      "name": "parentPosition"
+    },
+    {
+      "file": "components/ui/EnhancedEvolutionDisplay.tsx",
+      "line": "568",
+      "col": "50",
+      "name": "index"
+    },
+    {
+      "file": "components/ui/EnhancedFilterTabs.tsx",
+      "line": "3",
+      "col": "22",
+      "name": "RarityFilterBar"
+    },
+    {
+      "file": "components/ui/EnhancedMovesDisplay.tsx",
+      "line": "79",
+      "col": "77",
+      "name": "pokemonName"
+    },
+    {
+      "file": "components/ui/EnhancedMovesDisplay.tsx",
+      "line": "237",
+      "col": "9",
+      "name": "formatType"
+    },
+    {
+      "file": "components/ui/EnhancedPokemonSelector.tsx",
+      "line": "30",
+      "col": "79",
+      "name": "index"
+    },
+    {
+      "file": "components/ui/EnhancedSetHeader.tsx",
+      "line": "5",
+      "col": "1",
+      "name": "RarityIcon"
+    },
+    {
+      "file": "components/ui/EnhancedSetHeader.tsx",
+      "line": "20",
+      "col": "7",
+      "name": "CircularProgress"
+    },
+    {
+      "file": "components/ui/EnhancedSetHeader.tsx",
+      "line": "27",
+      "col": "33",
+      "name": "icon"
+    },
+    {
+      "file": "components/ui/EnhancedSetHeader.tsx",
+      "line": "89",
+      "col": "3",
+      "name": "onScrollToCards"
+    },
+    {
+      "file": "components/ui/EnhancedSetHeader.tsx",
+      "line": "98",
+      "col": "9",
+      "name": "topRarities"
+    },
+    {
+      "file": "components/ui/EnhancedSetHeader.tsx",
+      "line": "186",
+      "col": "7",
+      "name": "StatPill"
+    },
+    {
+      "file": "components/ui/EnhancedStarterSelector.tsx",
+      "line": "3",
+      "col": "1",
+      "name": "Link"
+    },
+    {
+      "file": "components/ui/EnhancedStarterSelector.tsx",
+      "line": "8",
+      "col": "1",
+      "name": "GlassContainer"
+    },
+    {
+      "file": "components/ui/EnhancedStarterSelector.tsx",
+      "line": "195",
+      "col": "3",
+      "name": "regionName"
+    },
+    {
+      "file": "components/ui/EnhancedStarterSelector.tsx",
+      "line": "197",
+      "col": "3",
+      "name": "starterNames"
+    },
+    {
+      "file": "components/ui/EnhancedStarterSelector.tsx",
+      "line": "198",
+      "col": "3",
+      "name": "color"
+    },
+    {
+      "file": "components/ui/EnhancedStarterSelector.tsx",
+      "line": "209",
+      "col": "10",
+      "name": "showDetails"
+    },
+    {
+      "file": "components/ui/EnhancedStarterSelector.tsx",
+      "line": "209",
+      "col": "23",
+      "name": "setShowDetails"
+    },
+    {
+      "file": "components/ui/EnhancedStarterSelector.tsx",
+      "line": "372",
+      "col": "9",
+      "name": "handleSelectStarter"
+    },
+    {
+      "file": "components/ui/EnhancedStarterSelector.tsx",
+      "line": "391",
+      "col": "9",
+      "name": "handleViewDetails"
+    },
+    {
+      "file": "components/ui/EnhancedUXProvider.hooks.tsx",
+      "line": "1",
+      "col": "10",
+      "name": "useState"
+    },
+    {
+      "file": "components/ui/EnhancedUXProvider.hooks.tsx",
+      "line": "1",
+      "col": "20",
+      "name": "useEffect"
+    },
+    {
+      "file": "components/ui/EnhancedUXProvider.hooks.tsx",
+      "line": "1",
+      "col": "31",
+      "name": "useCallback"
+    },
+    {
+      "file": "components/ui/EnhancedUXProvider.hooks.tsx",
+      "line": "1",
+      "col": "56",
+      "name": "useRef"
+    },
+    {
+      "file": "components/ui/EnhancedUXProvider.hooks.tsx",
+      "line": "1",
+      "col": "64",
+      "name": "useMemo"
+    },
+    {
+      "file": "components/ui/EnhancedUXProvider.hooks.tsx",
+      "line": "2",
+      "col": "1",
+      "name": "useRouter"
+    },
+    {
+      "file": "components/ui/EnhancedUXProvider.tsx",
+      "line": "1",
+      "col": "32",
+      "name": "useContext"
+    },
+    {
+      "file": "components/ui/EnhancedUXProvider.tsx",
+      "line": "2",
+      "col": "1",
+      "name": "useUX"
+    },
+    {
+      "file": "components/ui/ErrorBoundary.tsx",
+      "line": "2",
+      "col": "1",
+      "name": "useRouter"
+    },
+    {
+      "file": "components/ui/ExportButton.tsx",
+      "line": "23",
+      "col": "3",
+      "name": "filename"
+    },
+    {
+      "file": "components/ui/FloatingActionSystem.hooks.tsx",
+      "line": "1",
+      "col": "56",
+      "name": "useRef"
+    },
+    {
+      "file": "components/ui/FloatingActionSystem.hooks.tsx",
+      "line": "1",
+      "col": "64",
+      "name": "useMemo"
+    },
+    {
+      "file": "components/ui/FloatingActionSystem.hooks.tsx",
+      "line": "3",
+      "col": "26",
+      "name": "VisualFeedback"
+    },
+    {
+      "file": "components/ui/FloatingActionSystem.tsx",
+      "line": "7",
+      "col": "3",
+      "name": "useContext"
+    },
+    {
+      "file": "components/ui/FloatingActionSystem.tsx",
+      "line": "13",
+      "col": "1",
+      "name": "useRouter"
+    },
+    {
+      "file": "components/ui/FloatingActionSystem.tsx",
+      "line": "14",
+      "col": "26",
+      "name": "VisualFeedback"
+    },
+    {
+      "file": "components/ui/FloatingActionSystem.tsx",
+      "line": "458",
+      "col": "9",
+      "name": "getActionPosition"
+    },
+    {
+      "file": "components/ui/forms/EnhancedSearchBox.tsx",
+      "line": "3",
+      "col": "1",
+      "name": "useSearchHistory"
+    },
+    {
+      "file": "components/ui/forms/EnhancedSearchBox.tsx",
+      "line": "25",
+      "col": "3",
+      "name": "showHistory"
+    },
+    {
+      "file": "components/ui/forms/EnhancedSearchBox.tsx",
+      "line": "113",
+      "col": "56",
+      "name": "suggestion"
+    },
+    {
+      "file": "components/ui/forms/EnhancedSelect.tsx",
+      "line": "40",
+      "col": "4",
+      "name": "ref"
+    },
+    {
+      "file": "components/ui/forms/TypeFilter.tsx",
+      "line": "21",
+      "col": "87",
+      "name": "isPocketCard"
+    },
+    {
+      "file": "components/ui/forms/VisualSearchFilters.tsx",
+      "line": "2",
+      "col": "1",
+      "name": "TypeBadge"
+    },
+    {
+      "file": "components/ui/FullBleedWrapper.tsx",
+      "line": "30",
+      "col": "3",
+      "name": "pokemonTypes"
+    },
+    {
+      "file": "components/ui/FullBleedWrapper.tsx",
+      "line": "31",
+      "col": "3",
+      "name": "disablePadding"
+    },
+    {
+      "file": "components/ui/FullBleedWrapper.tsx",
+      "line": "65",
+      "col": "3",
+      "name": "pokemonTypes"
+    },
+    {
+      "file": "components/ui/GameficationSystem.tsx",
+      "line": "2",
+      "col": "71",
+      "name": "FaCoins"
+    },
+    {
+      "file": "components/ui/GameficationSystem.tsx",
+      "line": "2",
+      "col": "80",
+      "name": "FaGem"
+    },
+    {
+      "file": "components/ui/GameficationSystem.tsx",
+      "line": "83",
+      "col": "90",
+      "name": "onLevelUp"
+    },
+    {
+      "file": "components/ui/GameficationSystem.tsx",
+      "line": "90",
+      "col": "10",
+      "name": "unlockedRewards"
+    },
+    {
+      "file": "components/ui/GameficationSystem.tsx",
+      "line": "90",
+      "col": "27",
+      "name": "setUnlockedRewards"
+    },
+    {
+      "file": "components/ui/GameTimeline.tsx",
+      "line": "4",
+      "col": "1",
+      "name": "FaGamepad"
+    },
+    {
+      "file": "components/ui/GymLeaderShowcase.tsx",
+      "line": "4",
+      "col": "17",
+      "name": "useState"
+    },
+    {
+      "file": "components/ui/GymLeaderShowcase.tsx",
+      "line": "4",
+      "col": "35",
+      "name": "useEffect"
+    },
+    {
+      "file": "components/ui/GymLeaderShowcase.tsx",
+      "line": "6",
+      "col": "56",
+      "name": "MotionValue"
+    },
+    {
+      "file": "components/ui/GymLeaderShowcase.tsx",
+      "line": "19",
+      "col": "3",
+      "name": "GiShield"
+    },
+    {
+      "file": "components/ui/GymLeaderShowcase.tsx",
+      "line": "20",
+      "col": "3",
+      "name": "GiSpeedometer"
+    },
+    {
+      "file": "components/ui/GymLeaderShowcase.tsx",
+      "line": "21",
+      "col": "3",
+      "name": "GiHealing"
+    },
+    {
+      "file": "components/ui/GymLeaderShowcase.tsx",
+      "line": "55",
+      "col": "79",
+      "name": "isExpanded"
+    },
+    {
+      "file": "components/ui/GymLeaderShowcase.tsx",
+      "line": "55",
+      "col": "91",
+      "name": "onToggle"
+    },
+    {
+      "file": "components/ui/IntelligentRecommendations.tsx",
+      "line": "7",
+      "col": "3",
+      "name": "ClockIcon"
+    },
+    {
+      "file": "components/ui/IntelligentRecommendations.tsx",
+      "line": "66",
+      "col": "3",
+      "name": "searchHistory"
+    },
+    {
+      "file": "components/ui/IntelligentRecommendations.tsx",
+      "line": "67",
+      "col": "3",
+      "name": "currentCard"
+    },
+    {
+      "file": "components/ui/IntelligentRecommendations.tsx",
+      "line": "370",
+      "col": "11",
+      "name": "userCardIds"
+    },
+    {
+      "file": "components/ui/iPhoneQATests.tsx",
+      "line": "1",
+      "col": "27",
+      "name": "useEffect"
+    },
+    {
+      "file": "components/ui/KeyboardNavigation.hooks.tsx",
+      "line": "1",
+      "col": "10",
+      "name": "useState"
+    },
+    {
+      "file": "components/ui/KeyboardNavigation.hooks.tsx",
+      "line": "1",
+      "col": "31",
+      "name": "useCallback"
+    },
+    {
+      "file": "components/ui/KeyboardNavigation.hooks.tsx",
+      "line": "1",
+      "col": "44",
+      "name": "useContext"
+    },
+    {
+      "file": "components/ui/KeyboardNavigation.hooks.tsx",
+      "line": "1",
+      "col": "64",
+      "name": "useMemo"
+    },
+    {
+      "file": "components/ui/layout/CollectionDashboard.tsx",
+      "line": "1",
+      "col": "38",
+      "name": "useMemo"
+    },
+    {
+      "file": "components/ui/layout/CollectionDashboard.tsx",
+      "line": "98",
+      "col": "9",
+      "name": "calculateCollectionStats"
+    },
+    {
+      "file": "components/ui/layout/CollectionDashboard.tsx",
+      "line": "146",
+      "col": "22",
+      "name": "poke"
+    },
+    {
+      "file": "components/ui/layout/CollectionDashboard.tsx",
+      "line": "160",
+      "col": "9",
+      "name": "getMockCardPrice"
+    },
+    {
+      "file": "components/ui/LazyIcon.tsx",
+      "line": "1",
+      "col": "17",
+      "name": "Suspense"
+    },
+    {
+      "file": "components/ui/LazyMotion.tsx",
+      "line": "1",
+      "col": "17",
+      "name": "lazy"
+    },
+    {
+      "file": "components/ui/LazyMotion.tsx",
+      "line": "1",
+      "col": "23",
+      "name": "Suspense"
+    },
+    {
+      "file": "components/ui/LazyMotion.tsx",
+      "line": "24",
+      "col": "30",
+      "name": "input"
+    },
+    {
+      "file": "components/ui/LazyMotion.tsx",
+      "line": "43",
+      "col": "33",
+      "name": "T"
+    },
+    {
+      "file": "components/ui/MarketInsightsDashboard.tsx",
+      "line": "9",
+      "col": "3",
+      "name": "CalendarIcon"
+    },
+    {
+      "file": "components/ui/MarketInsightsDashboard.tsx",
+      "line": "15",
+      "col": "46",
+      "name": "ScatterChart"
+    },
+    {
+      "file": "components/ui/MarketInsightsDashboard.tsx",
+      "line": "82",
+      "col": "88",
+      "name": "userPortfolio"
+    },
+    {
+      "file": "components/ui/MarketInsightsDashboard.tsx",
+      "line": "84",
+      "col": "10",
+      "name": "selectedMetric"
+    },
+    {
+      "file": "components/ui/MarketInsightsDashboard.tsx",
+      "line": "84",
+      "col": "26",
+      "name": "setSelectedMetric"
+    },
+    {
+      "file": "components/ui/MarketInsightsDashboard.tsx",
+      "line": "85",
+      "col": "10",
+      "name": "marketData"
+    },
+    {
+      "file": "components/ui/MarketInsightsDashboard.tsx",
+      "line": "85",
+      "col": "22",
+      "name": "setMarketData"
+    },
+    {
+      "file": "components/ui/MarketInsightsDashboard.tsx",
+      "line": "101",
+      "col": "11",
+      "name": "cutoffDate"
+    },
+    {
+      "file": "components/ui/MarketInsightsDashboard.tsx",
+      "line": "597",
+      "col": "27",
+      "name": "index"
+    },
+    {
+      "file": "components/ui/MarketInsightsDashboard.tsx",
+      "line": "627",
+      "col": "27",
+      "name": "index"
+    },
+    {
+      "file": "components/ui/MicroInteractionSystem.tsx",
+      "line": "1",
+      "col": "38",
+      "name": "useEffect"
+    },
+    {
+      "file": "components/ui/OptimizationEnhancer.tsx",
+      "line": "1",
+      "col": "8",
+      "name": "React"
+    },
+    {
+      "file": "components/ui/OptimizationEnhancer.tsx",
+      "line": "87",
+      "col": "15",
+      "name": "total"
+    },
+    {
+      "file": "components/ui/OptimizationEnhancer.tsx",
+      "line": "139",
+      "col": "15",
+      "name": "lastEntry"
+    },
+    {
+      "file": "components/ui/OptimizationEnhancer.tsx",
+      "line": "164",
+      "col": "15",
+      "name": "duration"
+    },
+    {
+      "file": "components/ui/OptimizedImageMobile.tsx",
+      "line": "1",
+      "col": "120",
+      "name": "RefAttributes"
+    },
+    {
+      "file": "components/ui/PageErrorBoundary.hooks.tsx",
+      "line": "1",
+      "col": "17",
+      "name": "useState"
+    },
+    {
+      "file": "components/ui/PageErrorBoundary.hooks.tsx",
+      "line": "1",
+      "col": "27",
+      "name": "useEffect"
+    },
+    {
+      "file": "components/ui/PageErrorBoundary.hooks.tsx",
+      "line": "1",
+      "col": "38",
+      "name": "useCallback"
+    },
+    {
+      "file": "components/ui/PageErrorBoundary.hooks.tsx",
+      "line": "1",
+      "col": "51",
+      "name": "useContext"
+    },
+    {
+      "file": "components/ui/PageErrorBoundary.hooks.tsx",
+      "line": "1",
+      "col": "63",
+      "name": "useRef"
+    },
+    {
+      "file": "components/ui/PageErrorBoundary.hooks.tsx",
+      "line": "1",
+      "col": "71",
+      "name": "useMemo"
+    },
+    {
+      "file": "components/ui/PageErrorBoundary.hooks.tsx",
+      "line": "2",
+      "col": "1",
+      "name": "useRouter"
+    },
+    {
+      "file": "components/ui/PageErrorBoundary.tsx",
+      "line": "2",
+      "col": "1",
+      "name": "useErrorHandler"
+    },
+    {
+      "file": "components/ui/PerformanceDashboard.tsx",
+      "line": "6",
+      "col": "38",
+      "name": "useMemo"
+    },
+    {
+      "file": "components/ui/PerformanceDashboard.tsx",
+      "line": "9",
+      "col": "29",
+      "name": "getAPIPerformanceReport"
+    },
+    {
+      "file": "components/ui/PerformanceDashboard.tsx",
+      "line": "274",
+      "col": "50",
+      "name": "performanceData"
+    },
+    {
+      "file": "components/ui/PerformanceDashboard.tsx",
+      "line": "445",
+      "col": "86",
+      "name": "onClose"
+    },
+    {
+      "file": "components/ui/PerformanceMonitor.hooks.tsx",
+      "line": "1",
+      "col": "31",
+      "name": "useCallback"
+    },
+    {
+      "file": "components/ui/PerformanceMonitor.hooks.tsx",
+      "line": "1",
+      "col": "44",
+      "name": "useContext"
+    },
+    {
+      "file": "components/ui/PerformanceMonitor.hooks.tsx",
+      "line": "1",
+      "col": "56",
+      "name": "useRef"
+    },
+    {
+      "file": "components/ui/PerformanceMonitor.hooks.tsx",
+      "line": "1",
+      "col": "64",
+      "name": "useMemo"
+    },
+    {
+      "file": "components/ui/PillBadgeGroup.tsx",
+      "line": "43",
+      "col": "3",
+      "name": "sortable"
+    },
+    {
+      "file": "components/ui/PillBadgeGroup.tsx",
+      "line": "47",
+      "col": "3",
+      "name": "onSort"
+    },
+    {
+      "file": "components/ui/PocketDeckBuilder.tsx",
+      "line": "5",
+      "col": "1",
+      "name": "PocketCard"
+    },
+    {
+      "file": "components/ui/PocketDeckBuilder.tsx",
+      "line": "76",
+      "col": "10",
+      "name": "selectedCard"
+    },
+    {
+      "file": "components/ui/PocketDeckBuilder.tsx",
+      "line": "76",
+      "col": "24",
+      "name": "setSelectedCard"
+    },
+    {
+      "file": "components/ui/PokemonBattleConfigurator.tsx",
+      "line": "2",
+      "col": "1",
+      "name": "TypeBadge"
+    },
+    {
+      "file": "components/ui/PokemonBattleConfigurator.tsx",
+      "line": "82",
+      "col": "3",
+      "name": "setShowPokemonSelector"
+    },
+    {
+      "file": "components/ui/PokemonCardAnimations.tsx",
+      "line": "2",
+      "col": "35",
+      "name": "useAnimation"
+    },
+    {
+      "file": "components/ui/PokemonCardAnimations.tsx",
+      "line": "74",
+      "col": "3",
+      "name": "rarity"
+    },
+    {
+      "file": "components/ui/PokemonCardAnimations.tsx",
+      "line": "75",
+      "col": "3",
+      "name": "isActive"
+    },
+    {
+      "file": "components/ui/PokemonEasterEggs.tsx",
+      "line": "3",
+      "col": "1",
+      "name": "ClickHandler"
+    },
+    {
+      "file": "components/ui/PortfolioManager.tsx",
+      "line": "9",
+      "col": "3",
+      "name": "PencilIcon"
+    },
+    {
+      "file": "components/ui/PortfolioManager.tsx",
+      "line": "14",
+      "col": "3",
+      "name": "InformationCircleIcon"
+    },
+    {
+      "file": "components/ui/PortfolioManager.tsx",
+      "line": "16",
+      "col": "36",
+      "name": "BarChart"
+    },
+    {
+      "file": "components/ui/PortfolioManager.tsx",
+      "line": "16",
+      "col": "46",
+      "name": "ChartData"
+    },
+    {
+      "file": "components/ui/PortfolioManager.tsx",
+      "line": "16",
+      "col": "57",
+      "name": "ChartOptions"
+    },
+    {
+      "file": "components/ui/PortfolioManager.tsx",
+      "line": "116",
+      "col": "78",
+      "name": "onUpdateCard"
+    },
+    {
+      "file": "components/ui/PortfolioManager.tsx",
+      "line": "122",
+      "col": "10",
+      "name": "timeframe"
+    },
+    {
+      "file": "components/ui/PortfolioManager.tsx",
+      "line": "122",
+      "col": "21",
+      "name": "setTimeframe"
+    },
+    {
+      "file": "components/ui/PriceDisplay.tsx",
+      "line": "73",
+      "col": "9",
+      "name": "config"
+    },
+    {
+      "file": "components/ui/PriceDisplay.tsx",
+      "line": "85",
+      "col": "9",
+      "name": "isHighValue"
+    },
+    {
+      "file": "components/ui/PriceDisplay.tsx",
+      "line": "86",
+      "col": "9",
+      "name": "isPremium"
+    },
+    {
+      "file": "components/ui/PriceIntelligenceSystem.tsx",
+      "line": "3",
+      "col": "38",
+      "name": "BsGraphDown"
+    },
+    {
+      "file": "components/ui/PriceIntelligenceSystem.tsx",
+      "line": "5",
+      "col": "21",
+      "name": "BarChart"
+    },
+    {
+      "file": "components/ui/PriceIntelligenceSystem.tsx",
+      "line": "5",
+      "col": "31",
+      "name": "ScatterChart"
+    },
+    {
+      "file": "components/ui/PriceIntelligenceSystem.tsx",
+      "line": "586",
+      "col": "36",
+      "name": "index"
+    },
+    {
+      "file": "components/ui/PrintableCardLists.tsx",
+      "line": "1",
+      "col": "35",
+      "name": "useEffect"
+    },
+    {
+      "file": "components/ui/PrintableCardLists.tsx",
+      "line": "1",
+      "col": "46",
+      "name": "CSSProperties"
+    },
+    {
+      "file": "components/ui/PrintableCardLists.tsx",
+      "line": "5",
+      "col": "3",
+      "name": "CogIcon"
+    },
+    {
+      "file": "components/ui/PrintableCardLists.tsx",
+      "line": "11",
+      "col": "3",
+      "name": "CheckIcon"
+    },
+    {
+      "file": "components/ui/ProgressiveDisclosure.tsx",
+      "line": "10",
+      "col": "3",
+      "name": "CSSProperties"
+    },
+    {
+      "file": "components/ui/ProgressiveDisclosure.tsx",
+      "line": "12",
+      "col": "26",
+      "name": "VisualFeedback"
+    },
+    {
+      "file": "components/ui/ProgressiveDisclosure.tsx",
+      "line": "311",
+      "col": "3",
+      "name": "variant"
+    },
+    {
+      "file": "components/ui/ProgressiveDisclosure.tsx",
+      "line": "454",
+      "col": "3",
+      "name": "variant"
+    },
+    {
+      "file": "components/ui/QATestingSuite.tsx",
+      "line": "1",
+      "col": "27",
+      "name": "useEffect"
+    },
+    {
+      "file": "components/ui/QATestingSuite.tsx",
+      "line": "1",
+      "col": "38",
+      "name": "useRef"
+    },
+    {
+      "file": "components/ui/QATestingTool.tsx",
+      "line": "1",
+      "col": "27",
+      "name": "useEffect"
+    },
+    {
+      "file": "components/ui/RarityBadge.tsx",
+      "line": "84",
+      "col": "15",
+      "name": "rarityInfo"
+    },
+    {
+      "file": "components/ui/RarityIcon.tsx",
+      "line": "144",
+      "col": "7",
+      "name": "sizeClasses"
+    },
+    {
+      "file": "components/ui/RegionalEvolutionHandler.tsx",
+      "line": "170",
+      "col": "7",
+      "name": "pre"
+    },
+    {
+      "file": "components/ui/RegionHeader.tsx",
+      "line": "26",
+      "col": "3",
+      "name": "isActive"
+    },
+    {
+      "file": "components/ui/RegionHeader.tsx",
+      "line": "29",
+      "col": "9",
+      "name": "theme"
+    },
+    {
+      "file": "components/ui/RegionNavigation.tsx",
+      "line": "67",
+      "col": "40",
+      "name": "index"
+    },
+    {
+      "file": "components/ui/RegionSelector.tsx",
+      "line": "110",
+      "col": "33",
+      "name": "index"
+    },
+    {
+      "file": "components/ui/search/EnhancedSearch.tsx",
+      "line": "1",
+      "col": "46",
+      "name": "useCallback"
+    },
+    {
+      "file": "components/ui/search/EnhancedSearch.tsx",
+      "line": "31",
+      "col": "3",
+      "name": "suggestions"
+    },
+    {
+      "file": "components/ui/search/LiveSearchBar.tsx",
+      "line": "2",
+      "col": "51",
+      "name": "useTransform"
+    },
+    {
+      "file": "components/ui/SecurityProvider.hooks.tsx",
+      "line": "1",
+      "col": "10",
+      "name": "useState"
+    },
+    {
+      "file": "components/ui/SecurityProvider.hooks.tsx",
+      "line": "1",
+      "col": "20",
+      "name": "useEffect"
+    },
+    {
+      "file": "components/ui/SecurityProvider.hooks.tsx",
+      "line": "1",
+      "col": "31",
+      "name": "useCallback"
+    },
+    {
+      "file": "components/ui/SecurityProvider.hooks.tsx",
+      "line": "1",
+      "col": "56",
+      "name": "useRef"
+    },
+    {
+      "file": "components/ui/SecurityProvider.hooks.tsx",
+      "line": "1",
+      "col": "64",
+      "name": "useMemo"
+    },
+    {
+      "file": "components/ui/SecurityProvider.hooks.tsx",
+      "line": "2",
+      "col": "1",
+      "name": "logger"
+    },
+    {
+      "file": "components/ui/SecurityProvider.tsx",
+      "line": "1",
+      "col": "32",
+      "name": "useContext"
+    },
+    {
+      "file": "components/ui/SecurityProvider.tsx",
+      "line": "2",
+      "col": "1",
+      "name": "useSecurity"
+    },
+    {
+      "file": "components/ui/SecurityProvider.tsx",
+      "line": "215",
+      "col": "14",
+      "name": "name"
+    },
+    {
+      "file": "components/ui/ShareMenu.tsx",
+      "line": "59",
+      "col": "39",
+      "name": "index"
+    },
+    {
+      "file": "components/ui/SimpleEvolutionDisplay.tsx",
+      "line": "5",
+      "col": "1",
+      "name": "sanitizePokemonName"
+    },
+    {
+      "file": "components/ui/SimplifiedMovesDisplay.tsx",
+      "line": "51",
+      "col": "81",
+      "name": "pokemonName"
+    },
+    {
+      "file": "components/ui/SimplifiedMovesDisplay.tsx",
+      "line": "99",
+      "col": "33",
+      "name": "moveName"
+    },
+    {
+      "file": "components/ui/SimplifiedMovesDisplay.tsx",
+      "line": "99",
+      "col": "51",
+      "name": "versionDetail"
+    },
+    {
+      "file": "components/ui/SkeletonLoadingSystem.hooks.tsx",
+      "line": "1",
+      "col": "20",
+      "name": "useEffect"
+    },
+    {
+      "file": "components/ui/SkeletonLoadingSystem.hooks.tsx",
+      "line": "1",
+      "col": "56",
+      "name": "useRef"
+    },
+    {
+      "file": "components/ui/SkeletonLoadingSystem.hooks.tsx",
+      "line": "1",
+      "col": "64",
+      "name": "useMemo"
+    },
+    {
+      "file": "components/ui/SkeletonLoadingSystem.tsx",
+      "line": "1",
+      "col": "66",
+      "name": "useContext"
+    },
+    {
+      "file": "components/ui/SmartRecommendationEngine.tsx",
+      "line": "1",
+      "col": "51",
+      "name": "ReactNode"
+    },
+    {
+      "file": "components/ui/SmartRecommendationEngine.tsx",
+      "line": "4",
+      "col": "33",
+      "name": "isString"
+    },
+    {
+      "file": "components/ui/SmartRecommendationEngine.tsx",
+      "line": "526",
+      "col": "32",
+      "name": "card"
+    },
+    {
+      "file": "components/ui/SmartRecommendationEngine.tsx",
+      "line": "531",
+      "col": "27",
+      "name": "card"
+    },
+    {
+      "file": "components/ui/SocialCommunityHub.tsx",
+      "line": "3",
+      "col": "41",
+      "name": "FaHeart"
+    },
+    {
+      "file": "components/ui/SocialPlatform.tsx",
+      "line": "2",
+      "col": "1",
+      "name": "Link"
+    },
+    {
+      "file": "components/ui/SocialPlatform.tsx",
+      "line": "3",
+      "col": "1",
+      "name": "Image"
+    },
+    {
+      "file": "components/ui/SocialPlatform.tsx",
+      "line": "4",
+      "col": "10",
+      "name": "FaUser"
+    },
+    {
+      "file": "components/ui/SocialPlatform.tsx",
+      "line": "4",
+      "col": "73",
+      "name": "FaPlus"
+    },
+    {
+      "file": "components/ui/SocialPlatform.tsx",
+      "line": "5",
+      "col": "36",
+      "name": "BsChat"
+    },
+    {
+      "file": "components/ui/SocialPlatform.tsx",
+      "line": "6",
+      "col": "1",
+      "name": "supabase"
+    },
+    {
+      "file": "components/ui/StandardCard.tsx",
+      "line": "6",
+      "col": "3",
+      "name": "components"
+    },
+    {
+      "file": "components/ui/Toast.tsx",
+      "line": "73",
+      "col": "26",
+      "name": "event"
+    },
+    {
+      "file": "components/ui/Toast.tsx",
+      "line": "140",
+      "col": "16",
+      "name": "event"
+    },
+    {
+      "file": "components/ui/TooltipHelpSystem.hooks.tsx",
+      "line": "1",
+      "col": "27",
+      "name": "useEffect"
+    },
+    {
+      "file": "components/ui/TooltipHelpSystem.hooks.tsx",
+      "line": "1",
+      "col": "63",
+      "name": "useRef"
+    },
+    {
+      "file": "components/ui/TooltipHelpSystem.hooks.tsx",
+      "line": "1",
+      "col": "71",
+      "name": "useMemo"
+    },
+    {
+      "file": "components/ui/TooltipHelpSystem.hooks.tsx",
+      "line": "2",
+      "col": "1",
+      "name": "createPortal"
+    },
+    {
+      "file": "components/ui/TooltipHelpSystem.hooks.tsx",
+      "line": "3",
+      "col": "1",
+      "name": "HapticFeedback"
+    },
+    {
+      "file": "components/ui/TooltipHelpSystem.tsx",
+      "line": "7",
+      "col": "3",
+      "name": "useContext"
+    },
+    {
+      "file": "components/ui/TouchGestureSystem.tsx",
+      "line": "5",
+      "col": "3",
+      "name": "useEffect"
+    },
+    {
+      "file": "components/ui/TouchGestureSystem.tsx",
+      "line": "12",
+      "col": "26",
+      "name": "VisualFeedback"
+    },
+    {
+      "file": "components/ui/TouchGestureSystem.tsx",
+      "line": "815",
+      "col": "19",
+      "name": "distance"
+    },
+    {
+      "file": "components/ui/TouchGestureSystem.tsx",
+      "line": "815",
+      "col": "29",
+      "name": "velocity"
+    },
+    {
+      "file": "components/ui/TouchGestureSystem.tsx",
+      "line": "832",
+      "col": "20",
+      "name": "distance"
+    },
+    {
+      "file": "components/ui/TouchGestureSystem.tsx",
+      "line": "832",
+      "col": "30",
+      "name": "velocity"
+    },
+    {
+      "file": "components/ui/TournamentSystem.tsx",
+      "line": "2",
+      "col": "38",
+      "name": "FaCalendarAlt"
+    },
+    {
+      "file": "components/ui/TournamentSystem.tsx",
+      "line": "2",
+      "col": "98",
+      "name": "FaBolt"
+    },
+    {
+      "file": "components/ui/TournamentSystem.tsx",
+      "line": "3",
+      "col": "23",
+      "name": "BsGrid3X3Gap"
+    },
+    {
+      "file": "components/ui/TournamentSystem.tsx",
+      "line": "3",
+      "col": "48",
+      "name": "BsStopwatch"
+    },
+    {
+      "file": "components/ui/TournamentSystem.tsx",
+      "line": "3",
+      "col": "61",
+      "name": "BsStar"
+    },
+    {
+      "file": "components/ui/TournamentSystem.tsx",
+      "line": "4",
+      "col": "34",
+      "name": "GiSwordman"
+    },
+    {
+      "file": "components/ui/TournamentSystem.tsx",
+      "line": "102",
+      "col": "62",
+      "name": "userId"
+    },
+    {
+      "file": "components/ui/TradingMarketplace.tsx",
+      "line": "2",
+      "col": "81",
+      "name": "FaSort"
+    },
+    {
+      "file": "components/ui/TradingMarketplace.tsx",
+      "line": "2",
+      "col": "102",
+      "name": "FaClock"
+    },
+    {
+      "file": "components/ui/TradingMarketplace.tsx",
+      "line": "97",
+      "col": "66",
+      "name": "userId"
+    },
+    {
+      "file": "components/ui/UnifiedSearchBar.tsx",
+      "line": "46",
+      "col": "3",
+      "name": "recentSearches"
+    },
+    {
+      "file": "components/ui/UnifiedSearchBar.tsx",
+      "line": "68",
+      "col": "9",
+      "name": "debouncedValue"
+    },
+    {
+      "file": "components/ui/UserExperienceEnhancer.tsx",
+      "line": "4",
+      "col": "1",
+      "name": "ClickHandler"
+    },
+    {
+      "file": "components/ui/UserExperienceEnhancer.tsx",
+      "line": "261",
+      "col": "10",
+      "name": "highContrast"
+    },
+    {
+      "file": "components/ui/UserExperienceEnhancer.tsx",
+      "line": "262",
+      "col": "10",
+      "name": "fontSize"
+    },
+    {
+      "file": "components/ui/UserExperienceEnhancer.tsx",
+      "line": "263",
+      "col": "10",
+      "name": "reducedMotion"
+    },
+    {
+      "file": "components/ui/UserExperienceEnhancer.tsx",
+      "line": "284",
+      "col": "9",
+      "name": "updatePreference"
+    },
+    {
+      "file": "components/ui/VirtualizedCardGrid.tsx",
+      "line": "2",
+      "col": "33",
+      "name": "GridOnScrollProps"
+    },
+    {
+      "file": "components/ui/VirtualizedCardGrid.tsx",
+      "line": "4",
+      "col": "1",
+      "name": "InlineLoader"
+    },
+    {
+      "file": "components/ui/VirtualizedCardGrid.tsx",
+      "line": "10",
+      "col": "1",
+      "name": "OptimizedImage"
+    },
+    {
+      "file": "components/ui/VirtualizedCardGrid.tsx",
+      "line": "47",
+      "col": "3",
+      "name": "itemsPerPage"
+    },
+    {
+      "file": "components/ui/VirtualizedCardGrid.tsx",
+      "line": "136",
+      "col": "9",
+      "name": "scrollLoading"
+    },
+    {
+      "file": "components/ui/VisualCardSearch.tsx",
+      "line": "152",
+      "col": "32",
+      "name": "imageFile"
+    },
+    {
+      "file": "components/ui/VoiceSearchInterface.tsx",
+      "line": "4",
+      "col": "1",
+      "name": "TCGCard"
+    },
+    {
+      "file": "components/ui/VoiceSearchInterface.tsx",
+      "line": "10",
+      "col": "3",
+      "name": "SpeechRecognitionConstructor"
+    },
+    {
+      "file": "components/ui/ZoomableImage.tsx",
+      "line": "38",
+      "col": "10",
+      "name": "isDragging"
+    },
+    {
+      "file": "components/ui/ZoomableImage.tsx",
+      "line": "38",
+      "col": "22",
+      "name": "setIsDragging"
+    },
+    {
+      "file": "components/ui/ZoomableImage.tsx",
+      "line": "39",
+      "col": "9",
+      "name": "imageRef"
+    },
+    {
+      "file": "components/ui/ZoomableImage.tsx",
+      "line": "76",
+      "col": "9",
+      "name": "handlePan"
+    },
+    {
+      "file": "components/ui/ZoomableImage.tsx",
+      "line": "175",
+      "col": "26",
+      "name": "e"
+    },
+    {
+      "file": "components/unified/ResponsiveGrid.tsx",
+      "line": "2",
+      "col": "1",
+      "name": "dynamic"
+    },
+    {
+      "file": "components/unified/UnifiedDataTable.tsx",
+      "line": "6",
+      "col": "1",
+      "name": "logger"
+    },
+    {
+      "file": "components/unified/UnifiedDataTable.tsx",
+      "line": "113",
+      "col": "9",
+      "name": "isTablet"
+    },
+    {
+      "file": "components/unified/UnifiedGrid.tsx",
+      "line": "193",
+      "col": "51",
+      "name": "index"
+    },
+    {
+      "file": "components/unified/UnifiedModal.tsx",
+      "line": "113",
+      "col": "3",
+      "name": "snapPoints"
+    },
+    {
+      "file": "components/unified/UnifiedModal.tsx",
+      "line": "114",
+      "col": "3",
+      "name": "initialSnapPoint"
+    },
+    {
+      "file": "components/unified/UnifiedModal.tsx",
+      "line": "125",
+      "col": "9",
+      "name": "impact"
+    },
+    {
+      "file": "components/unified/UnifiedModal.tsx",
+      "line": "171",
+      "col": "38",
+      "name": "event"
+    },
+    {
+      "file": "components/unified/UnifiedSearch.tsx",
+      "line": "1",
+      "col": "59",
+      "name": "useMemo"
+    },
+    {
+      "file": "components/unified/UnifiedSearch.tsx",
+      "line": "42",
+      "col": "7",
+      "name": "searchIndex"
+    },
+    {
+      "file": "components/unified/UnifiedSearch.tsx",
+      "line": "416",
+      "col": "30",
+      "name": "query"
+    },
+    {
+      "file": "components/unified/UnifiedSearch.tsx",
+      "line": "421",
+      "col": "28",
+      "name": "query"
+    },
+    {
+      "file": "components/unified/UnifiedSearch.tsx",
+      "line": "425",
+      "col": "28",
+      "name": "query"
+    },
+    {
+      "file": "components/unified/UnifiedSearch.tsx",
+      "line": "429",
+      "col": "28",
+      "name": "query"
+    },
+    {
+      "file": "components/unified/UnifiedSearch.tsx",
+      "line": "433",
+      "col": "32",
+      "name": "query"
+    },
+    {
+      "file": "components/unified/UnifiedSearch.tsx",
+      "line": "437",
+      "col": "30",
+      "name": "query"
+    },
+    {
+      "file": "components/VirtualCardGrid.tsx",
+      "line": "60",
+      "col": "10",
+      "name": "imageError"
+    },
+    {
+      "file": "context/modules/storageUtils.ts",
+      "line": "18",
+      "col": "36",
+      "name": "persistState"
+    },
+    {
+      "file": "context/UnifiedAppContext.tsx",
+      "line": "7",
+      "col": "3",
+      "name": "ThemeMode"
+    },
+    {
+      "file": "hooks/useDragDrop.ts",
+      "line": "3",
+      "col": "1",
+      "name": "DragDropContextValue"
+    },
+    {
+      "file": "hooks/useMobileDetection.ts",
+      "line": "22",
+      "col": "10",
+      "name": "isClient"
+    },
+    {
+      "file": "hooks/useMobileOptimization.ts",
+      "line": "3",
+      "col": "1",
+      "name": "logger"
+    },
+    {
+      "file": "hooks/useMobileOptimization.ts",
+      "line": "37",
+      "col": "5",
+      "name": "enableTouchGestures"
+    },
+    {
+      "file": "hooks/useMoveData.ts",
+      "line": "1",
+      "col": "20",
+      "name": "useEffect"
+    },
+    {
+      "file": "hooks/useProgressiveImage.ts",
+      "line": "21",
+      "col": "3",
+      "name": "blur"
+    },
+    {
+      "file": "hooks/useSwipeGesture.ts",
+      "line": "70",
+      "col": "11",
+      "name": "velocity"
+    },
+    {
+      "file": "hooks/useTypeEffectiveness.ts",
+      "line": "1",
+      "col": "44",
+      "name": "useMemo"
+    },
+    {
+      "file": "lib/redis.ts",
+      "line": "61",
+      "col": "5",
+      "name": "isConnecting"
+    },
+    {
+      "file": "lib/supabase.ts",
+      "line": "395",
+      "col": "13",
+      "name": "sessionId"
+    },
+    {
+      "file": "lib/tcg-cache.ts",
+      "line": "378",
+      "col": "13",
+      "name": "patterns"
+    },
+    {
+      "file": "pages/404.tsx",
+      "line": "1",
+      "col": "1",
+      "name": "Link"
+    },
+    {
+      "file": "pages/404.tsx",
+      "line": "7",
+      "col": "1",
+      "name": "Image"
+    },
+    {
+      "file": "pages/_app.tsx",
+      "line": "56",
+      "col": "7",
+      "name": "SimpleBackToTop"
+    },
+    {
+      "file": "pages/_app.tsx",
+      "line": "62",
+      "col": "7",
+      "name": "AccessibilityProvider"
+    },
+    {
+      "file": "pages/_app.tsx",
+      "line": "107",
+      "col": "3",
+      "name": "_router"
+    },
+    {
+      "file": "pages/_app.tsx",
+      "line": "166",
+      "col": "10",
+      "name": "isScrolling"
+    },
+    {
+      "file": "pages/_error.tsx",
+      "line": "4",
+      "col": "1",
+      "name": "logger"
+    },
+    {
+      "file": "pages/analytics.tsx",
+      "line": "4",
+      "col": "18",
+      "name": "AnimatePresence"
+    },
+    {
+      "file": "pages/analytics.tsx",
+      "line": "11",
+      "col": "3",
+      "name": "FiDownload"
+    },
+    {
+      "file": "pages/analytics.tsx",
+      "line": "12",
+      "col": "3",
+      "name": "FiFilter"
+    },
+    {
+      "file": "pages/analytics.tsx",
+      "line": "13",
+      "col": "3",
+      "name": "FiCalendar"
+    },
+    {
+      "file": "pages/analytics.tsx",
+      "line": "15",
+      "col": "3",
+      "name": "FiPieChart"
+    },
+    {
+      "file": "pages/analytics.tsx",
+      "line": "19",
+      "col": "3",
+      "name": "FiSmartphone"
+    },
+    {
+      "file": "pages/analytics.tsx",
+      "line": "20",
+      "col": "3",
+      "name": "FiMonitor"
+    },
+    {
+      "file": "pages/analytics.tsx",
+      "line": "21",
+      "col": "3",
+      "name": "FiTablet"
+    },
+    {
+      "file": "pages/analytics.tsx",
+      "line": "27",
+      "col": "69",
+      "name": "ChartDataPoint"
+    },
+    {
+      "file": "pages/analytics.tsx",
+      "line": "28",
+      "col": "10",
+      "name": "exportData"
+    },
+    {
+      "file": "pages/analytics.tsx",
+      "line": "30",
+      "col": "1",
+      "name": "cn"
+    },
+    {
+      "file": "pages/analytics.tsx",
+      "line": "36",
+      "col": "9",
+      "name": "thirtyDaysAgo"
+    },
+    {
+      "file": "pages/analytics.tsx",
+      "line": "221",
+      "col": "19",
+      "name": "setFilters"
+    },
+    {
+      "file": "pages/analytics.tsx",
+      "line": "367",
+      "col": "40",
+      "name": "data"
+    },
+    {
+      "file": "pages/api/admin/cache-stats.ts",
+      "line": "3",
+      "col": "26",
+      "name": "redisHelpers"
+    },
+    {
+      "file": "pages/api/admin/warm-sets-list.ts",
+      "line": "5",
+      "col": "1",
+      "name": "UnknownError"
+    },
+    {
+      "file": "pages/api/advanced-search.ts",
+      "line": "60",
+      "col": "19",
+      "name": "query"
+    },
+    {
+      "file": "pages/api/advanced-search.ts",
+      "line": "60",
+      "col": "26",
+      "name": "body"
+    },
+    {
+      "file": "pages/api/advanced-search.ts",
+      "line": "358",
+      "col": "3",
+      "name": "req"
+    },
+    {
+      "file": "pages/api/analytics.ts",
+      "line": "44",
+      "col": "19",
+      "name": "query"
+    },
+    {
+      "file": "pages/api/analytics.ts",
+      "line": "44",
+      "col": "26",
+      "name": "body"
+    },
+    {
+      "file": "pages/api/background-sync.ts",
+      "line": "55",
+      "col": "19",
+      "name": "query"
+    },
+    {
+      "file": "pages/api/background-sync.ts",
+      "line": "55",
+      "col": "26",
+      "name": "body"
+    },
+    {
+      "file": "pages/api/cards/[cardId]/price.ts",
+      "line": "104",
+      "col": "17",
+      "name": "variant"
+    },
+    {
+      "file": "pages/api/debug-items.ts",
+      "line": "5",
+      "col": "3",
+      "name": "req"
+    },
+    {
+      "file": "pages/api/filters.ts",
+      "line": "5",
+      "col": "1",
+      "name": "AnyObject"
+    },
+    {
+      "file": "pages/api/health.ts",
+      "line": "76",
+      "col": "13",
+      "name": "data"
+    },
+    {
+      "file": "pages/api/metrics.ts",
+      "line": "10",
+      "col": "1",
+      "name": "getRateLimiterStats"
+    },
+    {
+      "file": "pages/api/metrics.ts",
+      "line": "139",
+      "col": "33",
+      "name": "req"
+    },
+    {
+      "file": "pages/api/metrics.ts",
+      "line": "227",
+      "col": "32",
+      "name": "req"
+    },
+    {
+      "file": "pages/api/metrics.ts",
+      "line": "276",
+      "col": "27",
+      "name": "req"
+    },
+    {
+      "file": "pages/api/search/global.ts",
+      "line": "5",
+      "col": "31",
+      "name": "isObject"
+    },
+    {
+      "file": "pages/api/search/global.ts",
+      "line": "5",
+      "col": "41",
+      "name": "isString"
+    },
+    {
+      "file": "pages/api/search/global.ts",
+      "line": "5",
+      "col": "51",
+      "name": "hasProperty"
+    },
+    {
+      "file": "pages/api/tcg-cards/[cardId].ts",
+      "line": "7",
+      "col": "1",
+      "name": "UnknownError"
+    },
+    {
+      "file": "pages/api/tcg-sets.ts",
+      "line": "7",
+      "col": "20",
+      "name": "isString"
+    },
+    {
+      "file": "pages/api/tcg-sets.ts",
+      "line": "7",
+      "col": "30",
+      "name": "hasProperty"
+    },
+    {
+      "file": "pages/api/tcg-sets/[setId].ts",
+      "line": "6",
+      "col": "1",
+      "name": "UnknownError"
+    },
+    {
+      "file": "pages/api/test-price-collection.ts",
+      "line": "101",
+      "col": "13",
+      "name": "data"
+    },
+    {
+      "file": "pages/api/test-showdown.ts",
+      "line": "5",
+      "col": "3",
+      "name": "req"
+    },
+    {
+      "file": "pages/battle-simulator.tsx",
+      "line": "19",
+      "col": "1",
+      "name": "SmartTooltip"
+    },
+    {
+      "file": "pages/battle-simulator.tsx",
+      "line": "28",
+      "col": "1",
+      "name": "calculateDamage"
+    },
+    {
+      "file": "pages/battle-simulator.tsx",
+      "line": "30",
+      "col": "1",
+      "name": "executeMove"
+    },
+    {
+      "file": "pages/battle-simulator.tsx",
+      "line": "96",
+      "col": "7",
+      "name": "PokemonSelectionItem"
+    },
+    {
+      "file": "pages/battle-simulator.tsx",
+      "line": "215",
+      "col": "10",
+      "name": "searchTerm"
+    },
+    {
+      "file": "pages/battle-simulator.tsx",
+      "line": "215",
+      "col": "22",
+      "name": "setSearchTerm"
+    },
+    {
+      "file": "pages/battle-simulator.tsx",
+      "line": "235",
+      "col": "10",
+      "name": "selectedMove1"
+    },
+    {
+      "file": "pages/battle-simulator.tsx",
+      "line": "235",
+      "col": "25",
+      "name": "setSelectedMove1"
+    },
+    {
+      "file": "pages/battle-simulator.tsx",
+      "line": "236",
+      "col": "10",
+      "name": "selectedMove2"
+    },
+    {
+      "file": "pages/battle-simulator.tsx",
+      "line": "236",
+      "col": "25",
+      "name": "setSelectedMove2"
+    },
+    {
+      "file": "pages/battle-simulator.tsx",
+      "line": "240",
+      "col": "10",
+      "name": "battleStats"
+    },
+    {
+      "file": "pages/battle-simulator.tsx",
+      "line": "240",
+      "col": "23",
+      "name": "setBattleStats"
+    },
+    {
+      "file": "pages/battle-simulator.tsx",
+      "line": "243",
+      "col": "10",
+      "name": "battleRules"
+    },
+    {
+      "file": "pages/battle-simulator.tsx",
+      "line": "243",
+      "col": "23",
+      "name": "setBattleRules"
+    },
+    {
+      "file": "pages/battle-simulator.tsx",
+      "line": "246",
+      "col": "10",
+      "name": "autoBattle"
+    },
+    {
+      "file": "pages/battle-simulator.tsx",
+      "line": "250",
+      "col": "10",
+      "name": "fastForward"
+    },
+    {
+      "file": "pages/battle-simulator.tsx",
+      "line": "468",
+      "col": "13",
+      "name": "speciesData"
+    },
+    {
+      "file": "pages/battle-simulator.tsx",
+      "line": "516",
+      "col": "9",
+      "name": "getBaseStats"
+    },
+    {
+      "file": "pages/battle-simulator.tsx",
+      "line": "829",
+      "col": "11",
+      "name": "defenderName"
+    },
+    {
+      "file": "pages/cards/[cardId].tsx",
+      "line": "5",
+      "col": "1",
+      "name": "Modal"
+    },
+    {
+      "file": "pages/cards/[cardId].tsx",
+      "line": "10",
+      "col": "1",
+      "name": "Image"
+    },
+    {
+      "file": "pages/cards/[cardId].tsx",
+      "line": "15",
+      "col": "1",
+      "name": "SimpleCardWrapper"
+    },
+    {
+      "file": "pages/cards/[cardId].tsx",
+      "line": "57",
+      "col": "10",
+      "name": "cardSet"
+    },
+    {
+      "file": "pages/collections.tsx",
+      "line": "8",
+      "col": "1",
+      "name": "GradientButton"
+    },
+    {
+      "file": "pages/collections.tsx",
+      "line": "9",
+      "col": "1",
+      "name": "CircularCard"
+    },
+    {
+      "file": "pages/collections.tsx",
+      "line": "48",
+      "col": "9",
+      "name": "theme"
+    },
+    {
+      "file": "pages/collections.tsx",
+      "line": "136",
+      "col": "25",
+      "name": "setPortfolioData"
+    },
+    {
+      "file": "pages/favorites.tsx",
+      "line": "7",
+      "col": "1",
+      "name": "TypeBadge"
+    },
+    {
+      "file": "pages/favorites.tsx",
+      "line": "8",
+      "col": "1",
+      "name": "getGeneration"
+    },
+    {
+      "file": "pages/favorites.tsx",
+      "line": "44",
+      "col": "22",
+      "name": "addToFavorites"
+    },
+    {
+      "file": "pages/favorites.tsx",
+      "line": "56",
+      "col": "9",
+      "name": "retryWithBackoff"
+    },
+    {
+      "file": "pages/fun.tsx",
+      "line": "44",
+      "col": "9",
+      "name": "theme"
+    },
+    {
+      "file": "pages/index-unified.tsx",
+      "line": "83",
+      "col": "10",
+      "name": "showSearch"
+    },
+    {
+      "file": "pages/index-unified.tsx",
+      "line": "83",
+      "col": "22",
+      "name": "setShowSearch"
+    },
+    {
+      "file": "pages/market.tsx",
+      "line": "10",
+      "col": "1",
+      "name": "GradientButton"
+    },
+    {
+      "file": "pages/market.tsx",
+      "line": "23",
+      "col": "9",
+      "name": "theme"
+    },
+    {
+      "file": "pages/pocketmode/[pokemonid].tsx",
+      "line": "6",
+      "col": "10",
+      "name": "FadeIn"
+    },
+    {
+      "file": "pages/pocketmode/[pokemonid].tsx",
+      "line": "6",
+      "col": "27",
+      "name": "Scale"
+    },
+    {
+      "file": "pages/pocketmode/[pokemonid].tsx",
+      "line": "7",
+      "col": "1",
+      "name": "TypeBadge"
+    },
+    {
+      "file": "pages/pocketmode/[pokemonid].tsx",
+      "line": "22",
+      "col": "1",
+      "name": "pokemonTypeColors"
+    },
+    {
+      "file": "pages/pocketmode/[pokemonid].tsx",
+      "line": "324",
+      "col": "9",
+      "name": "backgroundOpacity"
+    },
+    {
+      "file": "pages/pocketmode/deckbuilder.tsx",
+      "line": "12",
+      "col": "24",
+      "name": "getDeckSuggestions"
+    },
+    {
+      "file": "pages/pocketmode/deckbuilder.tsx",
+      "line": "67",
+      "col": "9",
+      "name": "router"
+    },
+    {
+      "file": "pages/pocketmode/deckbuilder.tsx",
+      "line": "87",
+      "col": "10",
+      "name": "viewMode"
+    },
+    {
+      "file": "pages/pocketmode/deckbuilder.tsx",
+      "line": "87",
+      "col": "20",
+      "name": "setViewMode"
+    },
+    {
+      "file": "pages/pocketmode/deckbuilder.tsx",
+      "line": "88",
+      "col": "10",
+      "name": "deckViewMode"
+    },
+    {
+      "file": "pages/pocketmode/deckbuilder.tsx",
+      "line": "88",
+      "col": "24",
+      "name": "setDeckViewMode"
+    },
+    {
+      "file": "pages/pocketmode/deckbuilder.tsx",
+      "line": "825",
+      "col": "23",
+      "name": "cardIndex"
+    },
+    {
+      "file": "pages/pocketmode/decks.tsx",
+      "line": "5",
+      "col": "18",
+      "name": "SlideUp"
+    },
+    {
+      "file": "pages/pocketmode/decks.tsx",
+      "line": "10",
+      "col": "1",
+      "name": "TypeGradientBadge"
+    },
+    {
+      "file": "pages/pocketmode/decks.tsx",
+      "line": "53",
+      "col": "9",
+      "name": "theme"
+    },
+    {
+      "file": "pages/pocketmode/expansions.tsx",
+      "line": "3",
+      "col": "1",
+      "name": "Image"
+    },
+    {
+      "file": "pages/pocketmode/expansions.tsx",
+      "line": "5",
+      "col": "1",
+      "name": "Link"
+    },
+    {
+      "file": "pages/pocketmode/expansions.tsx",
+      "line": "6",
+      "col": "18",
+      "name": "SlideUp"
+    },
+    {
+      "file": "pages/pocketmode/expansions.tsx",
+      "line": "9",
+      "col": "44",
+      "name": "CircularButton"
+    },
+    {
+      "file": "pages/pocketmode/expansions.tsx",
+      "line": "10",
+      "col": "1",
+      "name": "CircularCard"
+    },
+    {
+      "file": "pages/pocketmode/expansions.tsx",
+      "line": "21",
+      "col": "1",
+      "name": "FaCrown"
+    },
+    {
+      "file": "pages/pocketmode/expansions.tsx",
+      "line": "63",
+      "col": "10",
+      "name": "allCards"
+    },
+    {
+      "file": "pages/pocketmode/expansions.tsx",
+      "line": "70",
+      "col": "9",
+      "name": "theme"
+    },
+    {
+      "file": "pages/pocketmode/index.tsx",
+      "line": "4",
+      "col": "1",
+      "name": "Image"
+    },
+    {
+      "file": "pages/pocketmode/index.tsx",
+      "line": "9",
+      "col": "1",
+      "name": "TypeBadge"
+    },
+    {
+      "file": "pages/pocketmode/index.tsx",
+      "line": "10",
+      "col": "1",
+      "name": "TypeFilter"
+    },
+    {
+      "file": "pages/pocketmode/index.tsx",
+      "line": "11",
+      "col": "44",
+      "name": "CircularButton"
+    },
+    {
+      "file": "pages/pocketmode/index.tsx",
+      "line": "12",
+      "col": "45",
+      "name": "LoadingStateGlass"
+    },
+    {
+      "file": "pages/pocketmode/index.tsx",
+      "line": "56",
+      "col": "18",
+      "name": "setSortBy"
+    },
+    {
+      "file": "pages/pocketmode/index.tsx",
+      "line": "228",
+      "col": "9",
+      "name": "uniqueRarities"
+    },
+    {
+      "file": "pages/pocketmode/packs.tsx",
+      "line": "71",
+      "col": "10",
+      "name": "lastOpenedCards"
+    },
+    {
+      "file": "pages/pocketmode/packs.tsx",
+      "line": "486",
+      "col": "9",
+      "name": "getRarityInfo"
+    },
+    {
+      "file": "pages/pocketmode/set/[setId].tsx",
+      "line": "1",
+      "col": "38",
+      "name": "useMemo"
+    },
+    {
+      "file": "pages/pocketmode/set/[setId].tsx",
+      "line": "3",
+      "col": "1",
+      "name": "Link"
+    },
+    {
+      "file": "pages/pocketmode/set/[setId].tsx",
+      "line": "8",
+      "col": "28",
+      "name": "GradientButton"
+    },
+    {
+      "file": "pages/pocketmode/set/[setId].tsx",
+      "line": "8",
+      "col": "44",
+      "name": "CircularButton"
+    },
+    {
+      "file": "pages/pocketmode/set/[setId].tsx",
+      "line": "10",
+      "col": "1",
+      "name": "FaCrown"
+    },
+    {
+      "file": "pages/pocketmode/set/[setId].tsx",
+      "line": "12",
+      "col": "1",
+      "name": "PageLoader"
+    },
+    {
+      "file": "pages/pokedex-new.tsx",
+      "line": "241",
+      "col": "65",
+      "name": "index"
+    },
+    {
+      "file": "pages/pokedex-unified.tsx",
+      "line": "6",
+      "col": "23",
+      "name": "UnifiedModal"
+    },
+    {
+      "file": "pages/pokedex-unified.tsx",
+      "line": "58",
+      "col": "9",
+      "name": "detailModal"
+    },
+    {
+      "file": "pages/pokedex.tsx",
+      "line": "241",
+      "col": "65",
+      "name": "index"
+    },
+    {
+      "file": "pages/pokedex/[pokeid].tsx",
+      "line": "7",
+      "col": "1",
+      "name": "RouteErrorBoundary"
+    },
+    {
+      "file": "pages/pokedex/[pokeid].tsx",
+      "line": "39",
+      "col": "1",
+      "name": "BottomSheet"
+    },
+    {
+      "file": "pages/pokedex/[pokeid].tsx",
+      "line": "40",
+      "col": "1",
+      "name": "EnhancedSwipeGestures"
+    },
+    {
+      "file": "pages/pokedex/[pokeid].tsx",
+      "line": "41",
+      "col": "1",
+      "name": "PullToRefresh"
+    },
+    {
+      "file": "pages/pokedex/[pokeid].tsx",
+      "line": "42",
+      "col": "1",
+      "name": "ProgressiveImage"
+    },
+    {
+      "file": "pages/pokedex/[pokeid].tsx",
+      "line": "58",
+      "col": "46",
+      "name": "isMobileLoading"
+    },
+    {
+      "file": "pages/pokedex/[pokeid].tsx",
+      "line": "67",
+      "col": "10",
+      "name": "cardsLoading"
+    },
+    {
+      "file": "pages/pokedex/[pokeid].tsx",
+      "line": "531",
+      "col": "9",
+      "name": "theme"
+    },
+    {
+      "file": "pages/pokemon/abilities-unified.tsx",
+      "line": "276",
+      "col": "21",
+      "name": "pokemon"
+    },
+    {
+      "file": "pages/pokemon/abilities.tsx",
+      "line": "276",
+      "col": "21",
+      "name": "pokemon"
+    },
+    {
+      "file": "pages/pokemon/games.tsx",
+      "line": "5",
+      "col": "1",
+      "name": "Link"
+    },
+    {
+      "file": "pages/pokemon/games.tsx",
+      "line": "11",
+      "col": "27",
+      "name": "LoadingStateGlass"
+    },
+    {
+      "file": "pages/pokemon/games.tsx",
+      "line": "14",
+      "col": "25",
+      "name": "FiFilter"
+    },
+    {
+      "file": "pages/pokemon/games/[game].tsx",
+      "line": "10",
+      "col": "1",
+      "name": "gameCovers"
+    },
+    {
+      "file": "pages/pokemon/games/[game].tsx",
+      "line": "11",
+      "col": "10",
+      "name": "GiCardPickup"
+    },
+    {
+      "file": "pages/pokemon/games/[game].tsx",
+      "line": "11",
+      "col": "34",
+      "name": "GiGamepad"
+    },
+    {
+      "file": "pages/pokemon/games/[game].tsx",
+      "line": "12",
+      "col": "65",
+      "name": "BsPeople"
+    },
+    {
+      "file": "pages/pokemon/index.client.tsx",
+      "line": "48",
+      "col": "3",
+      "name": "pokemonTheme"
+    },
+    {
+      "file": "pages/pokemon/index.client.tsx",
+      "line": "50",
+      "col": "9",
+      "name": "router"
+    },
+    {
+      "file": "pages/pokemon/index.client.tsx",
+      "line": "51",
+      "col": "9",
+      "name": "theme"
+    },
+    {
+      "file": "pages/pokemon/items-unified.tsx",
+      "line": "10",
+      "col": "65",
+      "name": "ShowdownItem"
+    },
+    {
+      "file": "pages/pokemon/items.tsx",
+      "line": "10",
+      "col": "65",
+      "name": "ShowdownItem"
+    },
+    {
+      "file": "pages/pokemon/moves-unified.tsx",
+      "line": "179",
+      "col": "9",
+      "name": "handleToggleExpand"
+    },
+    {
+      "file": "pages/pokemon/moves.tsx",
+      "line": "179",
+      "col": "9",
+      "name": "handleToggleExpand"
+    },
+    {
+      "file": "pages/pokemon/moves/[moveName].tsx",
+      "line": "16",
+      "col": "10",
+      "name": "FaChevronLeft"
+    },
+    {
+      "file": "pages/pokemon/moves/[moveName].tsx",
+      "line": "17",
+      "col": "23",
+      "name": "BsShield"
+    },
+    {
+      "file": "pages/pokemon/moves/[moveName].tsx",
+      "line": "17",
+      "col": "33",
+      "name": "BsSpeedometer"
+    },
+    {
+      "file": "pages/pokemon/moves/[moveName].tsx",
+      "line": "18",
+      "col": "1",
+      "name": "GiOnTarget"
+    },
+    {
+      "file": "pages/pokemon/regions.tsx",
+      "line": "7",
+      "col": "18",
+      "name": "AnimatePresence"
+    },
+    {
+      "file": "pages/pokemon/regions.tsx",
+      "line": "12",
+      "col": "10",
+      "name": "FiMapPin"
+    },
+    {
+      "file": "pages/pokemon/regions.tsx",
+      "line": "12",
+      "col": "35",
+      "name": "FiGlobe"
+    },
+    {
+      "file": "pages/pokemon/regions.tsx",
+      "line": "137",
+      "col": "7",
+      "name": "getGenerationColor"
+    },
+    {
+      "file": "pages/pokemon/regions.tsx",
+      "line": "261",
+      "col": "9",
+      "name": "theme"
+    },
+    {
+      "file": "pages/pokemon/regions/[region].tsx",
+      "line": "4",
+      "col": "1",
+      "name": "Link"
+    },
+    {
+      "file": "pages/pokemon/regions/[region].tsx",
+      "line": "5",
+      "col": "1",
+      "name": "Image"
+    },
+    {
+      "file": "pages/pokemon/regions/[region].tsx",
+      "line": "18",
+      "col": "1",
+      "name": "SpecialPokemonShowcase"
+    },
+    {
+      "file": "pages/pokemon/starters.tsx",
+      "line": "1",
+      "col": "27",
+      "name": "useEffect"
+    },
+    {
+      "file": "pages/pokemon/starters.tsx",
+      "line": "12",
+      "col": "10",
+      "name": "FiChevronLeft"
+    },
+    {
+      "file": "pages/pokemon/starters.tsx",
+      "line": "122",
+      "col": "9",
+      "name": "theme"
+    },
+    {
+      "file": "pages/pokemon/starters.tsx",
+      "line": "124",
+      "col": "10",
+      "name": "isLoading"
+    },
+    {
+      "file": "pages/pokemon/starters.tsx",
+      "line": "124",
+      "col": "21",
+      "name": "setIsLoading"
+    },
+    {
+      "file": "pages/pokemon/starters.tsx",
+      "line": "288",
+      "col": "72",
+      "name": "idx"
+    },
+    {
+      "file": "pages/pokemon/starters/[region].tsx",
+      "line": "6",
+      "col": "38",
+      "name": "StaggeredChildren"
+    },
+    {
+      "file": "pages/pokemon/starters/[region].tsx",
+      "line": "12",
+      "col": "34",
+      "name": "BsStarFill"
+    },
+    {
+      "file": "pages/pokemon/starters/[region].tsx",
+      "line": "12",
+      "col": "46",
+      "name": "BsLightning"
+    },
+    {
+      "file": "pages/pokemon/starters/[region].tsx",
+      "line": "12",
+      "col": "59",
+      "name": "BsDroplet"
+    },
+    {
+      "file": "pages/pokemon/starters/[region].tsx",
+      "line": "12",
+      "col": "70",
+      "name": "BsEmojiHeartEyes"
+    },
+    {
+      "file": "pages/tcgsets-unified.tsx",
+      "line": "37",
+      "col": "9",
+      "name": "theme"
+    },
+    {
+      "file": "pages/tcgsets.tsx",
+      "line": "3",
+      "col": "1",
+      "name": "Image"
+    },
+    {
+      "file": "pages/tcgsets.tsx",
+      "line": "5",
+      "col": "18",
+      "name": "SlideUp"
+    },
+    {
+      "file": "pages/tcgsets.tsx",
+      "line": "5",
+      "col": "27",
+      "name": "CardHover"
+    },
+    {
+      "file": "pages/tcgsets.tsx",
+      "line": "5",
+      "col": "38",
+      "name": "StaggeredChildren"
+    },
+    {
+      "file": "pages/tcgsets.tsx",
+      "line": "10",
+      "col": "44",
+      "name": "CircularButton"
+    },
+    {
+      "file": "pages/tcgsets.tsx",
+      "line": "11",
+      "col": "45",
+      "name": "LoadingStateGlass"
+    },
+    {
+      "file": "pages/tcgsets.tsx",
+      "line": "14",
+      "col": "1",
+      "name": "PageLoader"
+    },
+    {
+      "file": "pages/tcgsets.tsx",
+      "line": "38",
+      "col": "9",
+      "name": "theme"
+    },
+    {
+      "file": "pages/tcgsets.tsx",
+      "line": "39",
+      "col": "9",
+      "name": "viewSettings"
+    },
+    {
+      "file": "pages/tcgsets.tsx",
+      "line": "571",
+      "col": "47",
+      "name": "index"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "1",
+      "col": "47",
+      "name": "useRef"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "3",
+      "col": "1",
+      "name": "Image"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "4",
+      "col": "1",
+      "name": "Link"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "8",
+      "col": "1",
+      "name": "safeRequestIdleCallback"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "10",
+      "col": "18",
+      "name": "AnimatePresence"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "11",
+      "col": "28",
+      "name": "GradientButton"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "11",
+      "col": "44",
+      "name": "CircularButton"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "13",
+      "col": "10",
+      "name": "UnifiedSearchBar"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "15",
+      "col": "1",
+      "name": "VirtualCardGrid"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "16",
+      "col": "1",
+      "name": "SimpleCardWrapper"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "20",
+      "col": "30",
+      "name": "InlineLoader"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "23",
+      "col": "1",
+      "name": "performanceMonitor"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "24",
+      "col": "1",
+      "name": "CardGridSkeleton"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "30",
+      "col": "1",
+      "name": "RarityBadge"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "31",
+      "col": "22",
+      "name": "RARITY_ORDER"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "33",
+      "col": "1",
+      "name": "BottomSheet"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "34",
+      "col": "1",
+      "name": "ProgressiveImage"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "35",
+      "col": "1",
+      "name": "hapticFeedback"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "52",
+      "col": "9",
+      "name": "theme"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "54",
+      "col": "9",
+      "name": "viewSettings"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "61",
+      "col": "10",
+      "name": "loadingMessage"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "62",
+      "col": "10",
+      "name": "dataWarning"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "67",
+      "col": "25",
+      "name": "setFilterSubtype"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "80",
+      "col": "10",
+      "name": "ownedCards"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "81",
+      "col": "10",
+      "name": "wishlistCards"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "84",
+      "col": "10",
+      "name": "selectedCardForPreview"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "92",
+      "col": "10",
+      "name": "showMobileFilters"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "92",
+      "col": "29",
+      "name": "setShowMobileFilters"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "93",
+      "col": "10",
+      "name": "pressedCardId"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "93",
+      "col": "25",
+      "name": "setPressedCardId"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "94",
+      "col": "10",
+      "name": "longPressTimer"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "94",
+      "col": "26",
+      "name": "setLongPressTimer"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "99",
+      "col": "46",
+      "name": "isMobileLoading"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "111",
+      "col": "11",
+      "name": "isSecretRare"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "340",
+      "col": "9",
+      "name": "handleNextCard"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "346",
+      "col": "9",
+      "name": "handlePreviousCard"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "352",
+      "col": "9",
+      "name": "handleCardClickForPreview"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "359",
+      "col": "9",
+      "name": "handleToggleOwned"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "371",
+      "col": "9",
+      "name": "handleToggleWishlist"
+    },
+    {
+      "file": "pages/tcgsets/[setid].tsx",
+      "line": "839",
+      "col": "41",
+      "name": "type"
+    },
+    {
+      "file": "pages/team-builder/advanced.tsx",
+      "line": "14",
+      "col": "18",
+      "name": "SlideUp"
+    },
+    {
+      "file": "pages/team-builder/advanced.tsx",
+      "line": "17",
+      "col": "1",
+      "name": "PageLoader"
+    },
+    {
+      "file": "pages/team-builder/advanced.tsx",
+      "line": "20",
+      "col": "34",
+      "name": "getTypeMatchups"
+    },
+    {
+      "file": "pages/team-builder/advanced.tsx",
+      "line": "58",
+      "col": "9",
+      "name": "router"
+    },
+    {
+      "file": "pages/team-builder/advanced.tsx",
+      "line": "62",
+      "col": "10",
+      "name": "selectedPokemon"
+    },
+    {
+      "file": "pages/team-builder/advanced.tsx",
+      "line": "389",
+      "col": "17",
+      "name": "index"
+    },
+    {
+      "file": "pages/team-builder/advanced.tsx",
+      "line": "389",
+      "col": "42",
+      "name": "onUpdate"
+    },
+    {
+      "file": "pages/team-builder/ev-optimizer.tsx",
+      "line": "13",
+      "col": "18",
+      "name": "SlideUp"
+    },
+    {
+      "file": "pages/team-builder/ev-optimizer.tsx",
+      "line": "14",
+      "col": "1",
+      "name": "TypeBadge"
+    },
+    {
+      "file": "pages/team-builder/ev-optimizer.tsx",
+      "line": "17",
+      "col": "1",
+      "name": "GradientButton"
+    },
+    {
+      "file": "pages/team-builder/ev-optimizer.tsx",
+      "line": "19",
+      "col": "1",
+      "name": "PageLoader"
+    },
+    {
+      "file": "pages/team-builder/ev-optimizer.tsx",
+      "line": "67",
+      "col": "15",
+      "name": "setIvs"
+    },
+    {
+      "file": "pages/trending.tsx",
+      "line": "4",
+      "col": "1",
+      "name": "CardList"
+    },
+    {
+      "file": "pages/trending.tsx",
+      "line": "9",
+      "col": "1",
+      "name": "fetchJSON"
+    },
+    {
+      "file": "pages/trending.tsx",
+      "line": "30",
+      "col": "10",
+      "name": "cards"
+    },
+    {
+      "file": "pages/trending.tsx",
+      "line": "54",
+      "col": "12",
+      "name": "getRarityRank"
+    },
+    {
+      "file": "pages/type-effectiveness-unified.tsx",
+      "line": "6",
+      "col": "10",
+      "name": "UnifiedSearchBar"
+    },
+    {
+      "file": "pages/type-effectiveness-unified.tsx",
+      "line": "6",
+      "col": "28",
+      "name": "EmptyStateGlass"
+    },
+    {
+      "file": "pages/type-effectiveness-unified.tsx",
+      "line": "11",
+      "col": "3",
+      "name": "getTypeMatchups"
+    },
+    {
+      "file": "pages/type-effectiveness-unified.tsx",
+      "line": "51",
+      "col": "10",
+      "name": "typeDetails"
+    },
+    {
+      "file": "pages/type-effectiveness-unified.tsx",
+      "line": "55",
+      "col": "10",
+      "name": "isRetrying"
+    },
+    {
+      "file": "pages/type-effectiveness.tsx",
+      "line": "6",
+      "col": "10",
+      "name": "UnifiedSearchBar"
+    },
+    {
+      "file": "pages/type-effectiveness.tsx",
+      "line": "6",
+      "col": "28",
+      "name": "EmptyStateGlass"
+    },
+    {
+      "file": "pages/type-effectiveness.tsx",
+      "line": "11",
+      "col": "3",
+      "name": "getTypeMatchups"
+    },
+    {
+      "file": "pages/type-effectiveness.tsx",
+      "line": "51",
+      "col": "10",
+      "name": "typeDetails"
+    },
+    {
+      "file": "pages/type-effectiveness.tsx",
+      "line": "55",
+      "col": "10",
+      "name": "isRetrying"
+    },
+    {
+      "file": "pages/uitest.tsx",
+      "line": "1",
+      "col": "35",
+      "name": "useEffect"
+    },
+    {
+      "file": "pages/uitest.tsx",
+      "line": "6",
+      "col": "3",
+      "name": "GLASS_BLUR"
+    },
+    {
+      "file": "pages/uitest.tsx",
+      "line": "7",
+      "col": "3",
+      "name": "GLASS_OPACITY"
+    },
+    {
+      "file": "pages/uitest.tsx",
+      "line": "8",
+      "col": "3",
+      "name": "GLASS_BORDER"
+    },
+    {
+      "file": "pages/uitest.tsx",
+      "line": "9",
+      "col": "3",
+      "name": "GLASS_SHADOW"
+    },
+    {
+      "file": "pages/uitest.tsx",
+      "line": "10",
+      "col": "3",
+      "name": "GLASS_ROUNDED"
+    },
+    {
+      "file": "pages/uitest.tsx",
+      "line": "14",
+      "col": "1",
+      "name": "logger"
+    },
+    {
+      "file": "utils/accessibility.tsx",
+      "line": "290",
+      "col": "3",
+      "name": "onClose"
+    },
+    {
+      "file": "utils/accessibility.tsx",
+      "line": "360",
+      "col": "9",
+      "name": "descId"
+    },
+    {
+      "file": "utils/accessibility.tsx",
+      "line": "399",
+      "col": "11",
+      "name": "focusedIndex"
+    },
+    {
+      "file": "utils/accessibilityChecker.ts",
+      "line": "28",
+      "col": "11",
+      "name": "checks"
+    },
+    {
+      "file": "utils/accessibilityChecker.ts",
+      "line": "432",
+      "col": "11",
+      "name": "calculateContrastRatio"
+    },
+    {
+      "file": "utils/accessibilityChecker.ts",
+      "line": "432",
+      "col": "34",
+      "name": "color1"
+    },
+    {
+      "file": "utils/accessibilityChecker.ts",
+      "line": "432",
+      "col": "50",
+      "name": "color2"
+    },
+    {
+      "file": "utils/advancedSearchEngine.ts",
+      "line": "165",
+      "col": "7",
+      "name": "enableFuzzy"
+    },
+    {
+      "file": "utils/advancedSearchEngine.ts",
+      "line": "328",
+      "col": "13",
+      "name": "searchTerm"
+    },
+    {
+      "file": "utils/advancedSearchEngine.ts",
+      "line": "376",
+      "col": "88",
+      "name": "options"
+    },
+    {
+      "file": "utils/advancedSearchEngine.ts",
+      "line": "424",
+      "col": "60",
+      "name": "filters"
+    },
+    {
+      "file": "utils/advancedSearchEngine.ts",
+      "line": "424",
+      "col": "81",
+      "name": "options"
+    },
+    {
+      "file": "utils/advancedSearchEngine.ts",
+      "line": "769",
+      "col": "92",
+      "name": "phrases"
+    },
+    {
+      "file": "utils/advancedSearchEngine.ts",
+      "line": "795",
+      "col": "52",
+      "name": "processedQuery"
+    },
+    {
+      "file": "utils/apiOptimizations.ts",
+      "line": "284",
+      "col": "13",
+      "name": "errorMessage"
+    },
+    {
+      "file": "utils/apiOptimizations.ts",
+      "line": "453",
+      "col": "5",
+      "name": "revalidateOnFocus"
+    },
+    {
+      "file": "utils/apiOptimizations.ts",
+      "line": "454",
+      "col": "5",
+      "name": "revalidateOnReconnect"
+    },
+    {
+      "file": "utils/apiOptimizations.ts",
+      "line": "455",
+      "col": "5",
+      "name": "refreshInterval"
+    },
+    {
+      "file": "utils/apiOptimizations.ts",
+      "line": "456",
+      "col": "5",
+      "name": "dedupingInterval"
+    },
+    {
+      "file": "utils/apiOptimizations.ts",
+      "line": "457",
+      "col": "5",
+      "name": "errorRetryCount"
+    },
+    {
+      "file": "utils/apiOptimizations.ts",
+      "line": "458",
+      "col": "5",
+      "name": "errorRetryInterval"
+    },
+    {
+      "file": "utils/apiOptimizations.ts",
+      "line": "460",
+      "col": "5",
+      "name": "suspense"
+    },
+    {
+      "file": "utils/apiOptimizations.ts",
+      "line": "518",
+      "col": "17",
+      "name": "cacheHits"
+    },
+    {
+      "file": "utils/apiutils.ts",
+      "line": "4",
+      "col": "21",
+      "name": "postJSON"
+    },
+    {
+      "file": "utils/apiutils.ts",
+      "line": "74",
+      "col": "9",
+      "name": "key"
+    },
+    {
+      "file": "utils/apiutils.ts",
+      "line": "91",
+      "col": "9",
+      "name": "key"
+    },
+    {
+      "file": "utils/apiutils.ts",
+      "line": "115",
+      "col": "11",
+      "name": "key"
+    },
+    {
+      "file": "utils/apiutils.ts",
+      "line": "164",
+      "col": "11",
+      "name": "key"
+    },
+    {
+      "file": "utils/battle/core.ts",
+      "line": "1",
+      "col": "77",
+      "name": "StatusEffect"
+    },
+    {
+      "file": "utils/battle/core.ts",
+      "line": "2",
+      "col": "19",
+      "name": "Move"
+    },
+    {
+      "file": "utils/battle/damage.ts",
+      "line": "127",
+      "col": "70",
+      "name": "defender"
+    },
+    {
+      "file": "utils/battle/damage.ts",
+      "line": "144",
+      "col": "71",
+      "name": "attacker"
+    },
+    {
+      "file": "utils/battle/effects.ts",
+      "line": "8",
+      "col": "3",
+      "name": "sourceMove"
+    },
+    {
+      "file": "utils/battle/moves.ts",
+      "line": "1",
+      "col": "31",
+      "name": "BattleAction"
+    },
+    {
+      "file": "utils/battle/moves.ts",
+      "line": "5",
+      "col": "46",
+      "name": "applyStatusEffect"
+    },
+    {
+      "file": "utils/battle/simulation.ts",
+      "line": "60",
+      "col": "11",
+      "name": "endTurn1"
+    },
+    {
+      "file": "utils/battle/simulation.ts",
+      "line": "61",
+      "col": "11",
+      "name": "endTurn2"
+    },
+    {
+      "file": "utils/battle/simulation.ts",
+      "line": "94",
+      "col": "3",
+      "name": "opponent"
+    },
+    {
+      "file": "utils/bulbapediaApi.ts",
+      "line": "125",
+      "col": "7",
+      "name": "getImageUrl"
+    },
+    {
+      "file": "utils/bulbapediaApi.ts",
+      "line": "158",
+      "col": "43",
+      "name": "options"
+    },
+    {
+      "file": "utils/cache.ts",
+      "line": "8",
+      "col": "1",
+      "name": "logger"
+    },
+    {
+      "file": "utils/cache.ts",
+      "line": "11",
+      "col": "1",
+      "name": "CacheSetOptions"
+    },
+    {
+      "file": "utils/cache.ts",
+      "line": "12",
+      "col": "1",
+      "name": "AnyObject"
+    },
+    {
+      "file": "utils/cachedPokemonUtils.ts",
+      "line": "9",
+      "col": "9",
+      "name": "cacheKey"
+    },
+    {
+      "file": "utils/cachedPokemonUtils.ts",
+      "line": "37",
+      "col": "9",
+      "name": "cacheKey"
+    },
+    {
+      "file": "utils/cachedPokemonUtils.ts",
+      "line": "97",
+      "col": "9",
+      "name": "cacheKey"
+    },
+    {
+      "file": "utils/cardEffects.ts",
+      "line": "10",
+      "col": "38",
+      "name": "rarity"
+    },
+    {
+      "file": "utils/circuitBreaker.ts",
+      "line": "38",
+      "col": "11",
+      "name": "resetTimer"
+    },
+    {
+      "file": "utils/competitiveAnalysis.ts",
+      "line": "2",
+      "col": "1",
+      "name": "showdownQueries"
+    },
+    {
+      "file": "utils/competitiveAnalysis.ts",
+      "line": "27",
+      "col": "7",
+      "name": "NATURE_EFFECTS"
+    },
+    {
+      "file": "utils/competitiveAnalysis.ts",
+      "line": "225",
+      "col": "3",
+      "name": "species"
+    },
+    {
+      "file": "utils/competitiveAnalysis.ts",
+      "line": "366",
+      "col": "3",
+      "name": "preferPhysical"
+    },
+    {
+      "file": "utils/competitiveAnalysis.ts",
+      "line": "407",
+      "col": "3",
+      "name": "preferPhysical"
+    },
+    {
+      "file": "utils/competitiveAnalysis.ts",
+      "line": "436",
+      "col": "54",
+      "name": "preferPhysical"
+    },
+    {
+      "file": "utils/competitiveAnalysis.ts",
+      "line": "448",
+      "col": "3",
+      "name": "species"
+    },
+    {
+      "file": "utils/competitiveAnalysis.ts",
+      "line": "534",
+      "col": "3",
+      "name": "species"
+    },
+    {
+      "file": "utils/databaseOptimizer.ts",
+      "line": "702",
+      "col": "11",
+      "name": "getFromCache"
+    },
+    {
+      "file": "utils/databaseOptimizer.ts",
+      "line": "714",
+      "col": "11",
+      "name": "setCache"
+    },
+    {
+      "file": "utils/databaseOptimizer.ts",
+      "line": "738",
+      "col": "48",
+      "name": "queryBuilder"
+    },
+    {
+      "file": "utils/dataTools.ts",
+      "line": "343",
+      "col": "11",
+      "name": "isProcessing"
+    },
+    {
+      "file": "utils/deckValidation.ts",
+      "line": "279",
+      "col": "9",
+      "name": "archetype"
+    },
+    {
+      "file": "utils/deepLinking.ts",
+      "line": "69",
+      "col": "11",
+      "name": "routes"
+    },
+    {
+      "file": "utils/deepLinking.ts",
+      "line": "273",
+      "col": "28",
+      "name": "event"
+    },
+    {
+      "file": "utils/deepLinking.ts",
+      "line": "311",
+      "col": "13",
+      "name": "title"
+    },
+    {
+      "file": "utils/enhancedPriceCollector.ts",
+      "line": "8",
+      "col": "1",
+      "name": "cacheManager"
+    },
+    {
+      "file": "utils/enhancedPriceCollector.ts",
+      "line": "322",
+      "col": "11",
+      "name": "directLow"
+    },
+    {
+      "file": "utils/enhancedPriceCollector.ts",
+      "line": "387",
+      "col": "32",
+      "name": "mid"
+    },
+    {
+      "file": "utils/enhancedPriceCollector.ts",
+      "line": "414",
+      "col": "19",
+      "name": "data"
+    },
+    {
+      "file": "utils/evolutionUtils.ts",
+      "line": "6",
+      "col": "1",
+      "name": "sanitizePokemonName"
+    },
+    {
+      "file": "utils/evolutionUtils.ts",
+      "line": "75",
+      "col": "9",
+      "name": "formName"
+    },
+    {
+      "file": "utils/fetchGymLeaderData.ts",
+      "line": "188",
+      "col": "13",
+      "name": "pageContent"
+    },
+    {
+      "file": "utils/fetchGymLeaderData.ts",
+      "line": "229",
+      "col": "13",
+      "name": "pageContent"
+    },
+    {
+      "file": "utils/fetchGymLeaderData.ts",
+      "line": "230",
+      "col": "13",
+      "name": "raritySection"
+    },
+    {
+      "file": "utils/graphqlResolvers.ts",
+      "line": "1107",
+      "col": "29",
+      "name": "cardData"
+    },
+    {
+      "file": "utils/graphqlResolvers.ts",
+      "line": "1117",
+      "col": "71",
+      "name": "pagination"
+    },
+    {
+      "file": "utils/imageLoader.ts",
+      "line": "10",
+      "col": "44",
+      "name": "width"
+    },
+    {
+      "file": "utils/imageLoader.ts",
+      "line": "10",
+      "col": "51",
+      "name": "quality"
+    },
+    {
+      "file": "utils/imageOptimization.ts",
+      "line": "162",
+      "col": "7",
+      "name": "priority"
+    },
+    {
+      "file": "utils/localStorageRecovery.ts",
+      "line": "160",
+      "col": "9",
+      "name": "validationResult"
+    },
+    {
+      "file": "utils/metaAnalysis.ts",
+      "line": "299",
+      "col": "3",
+      "name": "stats"
+    },
+    {
+      "file": "utils/mobileOptimizations.ts",
+      "line": "111",
+      "col": "39",
+      "name": "e"
+    },
+    {
+      "file": "utils/mobileUtils.ts",
+      "line": "80",
+      "col": "11",
+      "name": "isScrolling"
+    },
+    {
+      "file": "utils/monitoring.ts",
+      "line": "286",
+      "col": "17",
+      "name": "name"
+    },
+    {
+      "file": "utils/monitoring.ts",
+      "line": "603",
+      "col": "11",
+      "name": "oneHourAgo"
+    },
+    {
+      "file": "utils/motion.tsx",
+      "line": "2",
+      "col": "36",
+      "name": "m"
+    },
+    {
+      "file": "utils/moveUtils.ts",
+      "line": "9",
+      "col": "1",
+      "name": "POKEMON_TYPE_COLORS"
+    },
+    {
+      "file": "utils/performanceTests.ts",
+      "line": "162",
+      "col": "11",
+      "name": "component"
+    },
+    {
+      "file": "utils/performanceTests.ts",
+      "line": "650",
+      "col": "37",
+      "name": "metric"
+    },
+    {
+      "file": "utils/pokemonAnimations.ts",
+      "line": "390",
+      "col": "11",
+      "name": "secondaryType"
+    },
+    {
+      "file": "utils/pokemonDetailUtils.ts",
+      "line": "131",
+      "col": "48",
+      "name": "pokemonTypes"
+    },
+    {
+      "file": "utils/pokemonutils.ts",
+      "line": "2",
+      "col": "1",
+      "name": "SupabaseCache"
+    },
+    {
+      "file": "utils/priceDataHelper.ts",
+      "line": "26",
+      "col": "3",
+      "name": "cardId"
+    },
+    {
+      "file": "utils/priceDataHelper.ts",
+      "line": "187",
+      "col": "9",
+      "name": "isDevelopment"
+    },
+    {
+      "file": "utils/reactOptimizations.ts",
+      "line": "15",
+      "col": "3",
+      "name": "RefObject"
+    },
+    {
+      "file": "utils/reactOptimizations.ts",
+      "line": "16",
+      "col": "3",
+      "name": "MemoExoticComponent"
+    },
+    {
+      "file": "utils/reactOptimizations.ts",
+      "line": "17",
+      "col": "3",
+      "name": "ForwardRefExoticComponent"
+    },
+    {
+      "file": "utils/reactOptimizations.ts",
+      "line": "18",
+      "col": "3",
+      "name": "RefAttributes"
+    },
+    {
+      "file": "utils/reactOptimizations.ts",
+      "line": "116",
+      "col": "5",
+      "name": "autoOptimize"
+    },
+    {
+      "file": "utils/reactOptimizations.ts",
+      "line": "367",
+      "col": "3",
+      "name": "renderItem"
+    },
+    {
+      "file": "utils/reactOptimizations.ts",
+      "line": "378",
+      "col": "10",
+      "name": "startIndex"
+    },
+    {
+      "file": "utils/reactOptimizations.ts",
+      "line": "378",
+      "col": "22",
+      "name": "setStartIndex"
+    },
+    {
+      "file": "utils/responsiveUtils.ts",
+      "line": "105",
+      "col": "9",
+      "name": "originalSize"
+    },
+    {
+      "file": "utils/scrapedImageMapping.ts",
+      "line": "691",
+      "col": "50",
+      "name": "region"
+    },
+    {
+      "file": "utils/scrapedImageMapping.ts",
+      "line": "698",
+      "col": "50",
+      "name": "variant"
+    },
+    {
+      "file": "utils/scrapers/archivesCategoryScraper.ts",
+      "line": "7",
+      "col": "3",
+      "name": "fetchMediaWikiApi"
+    },
+    {
+      "file": "utils/scrapers/badgeScraper.ts",
+      "line": "12",
+      "col": "3",
+      "name": "getImageFileName"
+    },
+    {
+      "file": "utils/scrapers/badgeScraper.ts",
+      "line": "14",
+      "col": "3",
+      "name": "loadDataFromFile"
+    },
+    {
+      "file": "utils/scrapers/badgeScraper.ts",
+      "line": "222",
+      "col": "15",
+      "name": "badgeName"
+    },
+    {
+      "file": "utils/scrapers/eliteFourScraper.ts",
+      "line": "12",
+      "col": "3",
+      "name": "getImageFileName"
+    },
+    {
+      "file": "utils/scrapers/eliteFourScraper.ts",
+      "line": "14",
+      "col": "3",
+      "name": "loadDataFromFile"
+    },
+    {
+      "file": "utils/scrapers/energyScraper.ts",
+      "line": "7",
+      "col": "3",
+      "name": "fetchMediaWikiApi"
+    },
+    {
+      "file": "utils/scrapers/gymLeaderDirectScraper.ts",
+      "line": "5",
+      "col": "1",
+      "name": "scraperConfig"
+    },
+    {
+      "file": "utils/scrapers/gymLeaderDirectScraper.ts",
+      "line": "10",
+      "col": "3",
+      "name": "getCachedData"
+    },
+    {
+      "file": "utils/scrapers/gymLeaderDirectScraper.ts",
+      "line": "11",
+      "col": "3",
+      "name": "cacheData"
+    },
+    {
+      "file": "utils/scrapers/gymLeaderDirectScraper.ts",
+      "line": "66",
+      "col": "11",
+      "name": "scrapedData"
+    },
+    {
+      "file": "utils/scrapers/gymLeaderDirectScraper.ts",
+      "line": "236",
+      "col": "11",
+      "name": "isGameArt"
+    },
+    {
+      "file": "utils/scrapers/gymLeaderDirectScraper.ts",
+      "line": "237",
+      "col": "11",
+      "name": "isAnime"
+    },
+    {
+      "file": "utils/scrapers/gymLeaderScraper.ts",
+      "line": "12",
+      "col": "3",
+      "name": "getImageFileName"
+    },
+    {
+      "file": "utils/scrapers/gymLeaderScraper.ts",
+      "line": "261",
+      "col": "29",
+      "name": "infobox"
+    },
+    {
+      "file": "utils/scrapers/gymLeaderScraper.ts",
+      "line": "261",
+      "col": "47",
+      "name": "wikitext"
+    },
+    {
+      "file": "utils/scrapers/regionMapScraper.ts",
+      "line": "7",
+      "col": "3",
+      "name": "fetchMediaWikiApi"
+    },
+    {
+      "file": "utils/supabase.ts",
+      "line": "359",
+      "col": "13",
+      "name": "data"
+    },
+    {
+      "file": "utils/testSupabase.ts",
+      "line": "13",
+      "col": "13",
+      "name": "data"
+    },
+    {
+      "file": "utils/typeEffectiveness.ts",
+      "line": "361",
+      "col": "23",
+      "name": "mult"
+    },
+    {
+      "file": "utils/typeEffectiveness.ts",
+      "line": "365",
+      "col": "23",
+      "name": "mult"
+    },
+    {
+      "file": "utils/UnifiedCacheManager.ts",
+      "line": "607",
+      "col": "12",
+      "name": "memoryStats"
+    },
+    {
+      "file": "utils/UnifiedCacheManager.ts",
+      "line": "607",
+      "col": "25",
+      "name": "localStats"
+    },
+    {
+      "file": "utils/UnifiedCacheManager.ts",
+      "line": "607",
+      "col": "37",
+      "name": "dbStats"
+    },
+    {
+      "file": "utils/UnifiedCacheManager.ts",
+      "line": "705",
+      "col": "11",
+      "name": "key"
+    },
+    {
+      "file": "utils/UnifiedCacheManager.ts",
+      "line": "718",
+      "col": "11",
+      "name": "key"
+    },
+    {
+      "file": "utils/UnifiedCacheManager.ts",
+      "line": "733",
+      "col": "11",
+      "name": "key"
+    },
+    {
+      "file": "utils/visualRegressionTests.ts",
+      "line": "640",
+      "col": "34",
+      "name": "e"
+    },
+    {
+      "file": "utils/visualRegressionTests.ts",
+      "line": "913",
+      "col": "11",
+      "name": "headings"
+    }
+  ],
+  "unusedParameters": [
+    {
+      "file": "components/pokemon/tabs/CompetitiveTab.tsx",
+      "line": "21",
+      "col": "55",
+      "name": "UsageStats"
+    },
+    {
+      "file": "components/pokemon/tabs/EvolutionTabV3.tsx",
+      "line": "358",
+      "col": "13",
+      "name": "EvolutionDetail"
+    },
+    {
+      "file": "components/regions/RegionHero.tsx",
+      "line": "19",
+      "col": "6",
+      "name": "RegionId"
+    },
+    {
+      "file": "components/team-builder/TeamSynergyGraph.tsx",
+      "line": "10",
+      "col": "6",
+      "name": "ScatterDataPoint"
+    },
+    {
+      "file": "components/ui/animations/AnimationSystem.tsx",
+      "line": "17",
+      "col": "11",
+      "name": "ModalAnimationProps"
+    },
+    {
+      "file": "components/ui/CircularTypeMatrix.tsx",
+      "line": "6",
+      "col": "11",
+      "name": "TypeMatchup"
+    },
+    {
+      "file": "components/ui/PackOpening.tsx",
+      "line": "38",
+      "col": "6",
+      "name": "PackState"
+    },
+    {
+      "file": "components/ui/PerformanceDashboard.tsx",
+      "line": "12",
+      "col": "11",
+      "name": "SimpleMetric"
+    },
+    {
+      "file": "components/ui/PerformanceMonitor.tsx",
+      "line": "14",
+      "col": "11",
+      "name": "NavigationTiming"
+    },
+    {
+      "file": "components/ui/PokemonCardAnimations.tsx",
+      "line": "8",
+      "col": "6",
+      "name": "TypeName"
+    },
+    {
+      "file": "components/ui/PokemonCardAnimations.tsx",
+      "line": "57",
+      "col": "11",
+      "name": "RarityConfig"
+    },
+    {
+      "file": "components/ui/PokemonEasterEggs.tsx",
+      "line": "17",
+      "col": "6",
+      "name": "PackState"
+    },
+    {
+      "file": "components/ui/SkeletonLoadingSystem.tsx",
+      "line": "1002",
+      "col": "11",
+      "name": "UseSkeletonStateReturn"
+    },
+    {
+      "file": "components/ui/UserExperienceEnhancer.tsx",
+      "line": "5",
+      "col": "26",
+      "name": "StringRecord"
+    },
+    {
+      "file": "hooks/usePWA.ts",
+      "line": "4",
+      "col": "11",
+      "name": "BeforeInstallPromptEvent"
+    },
+    {
+      "file": "lib/tcg-cache.ts",
+      "line": "4",
+      "col": "33",
+      "name": "SetListResponse"
+    },
+    {
+      "file": "lib/tcg-cache.ts",
+      "line": "4",
+      "col": "50",
+      "name": "CardListResponse"
+    },
+    {
+      "file": "pages/api/admin/warm-sets-list-simple.ts",
+      "line": "5",
+      "col": "15",
+      "name": "TCGApiResponse"
+    },
+    {
+      "file": "pages/api/analytics.ts",
+      "line": "10",
+      "col": "15",
+      "name": "UnknownError"
+    },
+    {
+      "file": "pages/api/cards/[cardId]/price.ts",
+      "line": "5",
+      "col": "31",
+      "name": "UnknownError"
+    },
+    {
+      "file": "pages/api/enhanced-price-collection.ts",
+      "line": "10",
+      "col": "26",
+      "name": "UnknownError"
+    },
+    {
+      "file": "pages/api/filters.ts",
+      "line": "7",
+      "col": "11",
+      "name": "CardRow"
+    },
+    {
+      "file": "pages/battle-simulator.tsx",
+      "line": "24",
+      "col": "50",
+      "name": "PokemonStat"
+    },
+    {
+      "file": "pages/battle-simulator.tsx",
+      "line": "25",
+      "col": "50",
+      "name": "StatusEffect"
+    },
+    {
+      "file": "pages/pokedex/[pokeid].tsx",
+      "line": "21",
+      "col": "3",
+      "name": "PokemonStat"
+    },
+    {
+      "file": "pages/team-builder/advanced.tsx",
+      "line": "21",
+      "col": "27",
+      "name": "Move"
+    },
+    {
+      "file": "pages/team-builder/advanced.tsx",
+      "line": "21",
+      "col": "41",
+      "name": "StatSpread"
+    },
+    {
+      "file": "pages/team-builder/ev-optimizer.tsx",
+      "line": "29",
+      "col": "15",
+      "name": "TeamMember"
+    },
+    {
+      "file": "pages/team-builder/ev-optimizer.tsx",
+      "line": "29",
+      "col": "39",
+      "name": "Nature"
+    },
+    {
+      "file": "utils/accessibilityChecker.ts",
+      "line": "15",
+      "col": "11",
+      "name": "ColorContrastResult"
+    },
+    {
+      "file": "utils/accessibilityChecker.ts",
+      "line": "23",
+      "col": "6",
+      "name": "AccessibilityCheckFunction"
+    },
+    {
+      "file": "utils/apiOptimizations.ts",
+      "line": "106",
+      "col": "7",
+      "name": "RequestCache"
+    },
+    {
+      "file": "utils/apiutils.ts",
+      "line": "10",
+      "col": "27",
+      "name": "ApiErrorType"
+    },
+    {
+      "file": "utils/apiutils.ts",
+      "line": "10",
+      "col": "41",
+      "name": "CachedResponse"
+    },
+    {
+      "file": "utils/dataTools.ts",
+      "line": "157",
+      "col": "11",
+      "name": "BatchInsertResult"
+    },
+    {
+      "file": "utils/dataTools.ts",
+      "line": "189",
+      "col": "11",
+      "name": "CacheStats"
+    },
+    {
+      "file": "utils/dataTools.ts",
+      "line": "206",
+      "col": "11",
+      "name": "UserAnalytics"
+    },
+    {
+      "file": "utils/dataTools.ts",
+      "line": "218",
+      "col": "11",
+      "name": "SearchAnalytics"
+    },
+    {
+      "file": "utils/dataTools.ts",
+      "line": "235",
+      "col": "11",
+      "name": "PriceAnalytics"
+    },
+    {
+      "file": "utils/graphqlResolvers.ts",
+      "line": "421",
+      "col": "6",
+      "name": "QueryResolver"
+    },
+    {
+      "file": "utils/graphqlResolvers.ts",
+      "line": "428",
+      "col": "6",
+      "name": "MutationResolver"
+    },
+    {
+      "file": "utils/graphqlResolvers.ts",
+      "line": "435",
+      "col": "6",
+      "name": "SubscriptionResolver"
+    },
+    {
+      "file": "utils/lazyLoad.tsx",
+      "line": "16",
+      "col": "11",
+      "name": "LazyComponentOptions"
+    },
+    {
+      "file": "utils/mobileAnalytics.ts",
+      "line": "106",
+      "col": "11",
+      "name": "NetworkEventDetail"
+    },
+    {
+      "file": "utils/pokemonDetailUtils.ts",
+      "line": "2",
+      "col": "3",
+      "name": "Pokemon"
+    },
+    {
+      "file": "utils/pokemonDetailUtils.ts",
+      "line": "6",
+      "col": "3",
+      "name": "BreedingData"
+    },
+    {
+      "file": "utils/pokemonTheme.ts",
+      "line": "5",
+      "col": "11",
+      "name": "ColorPalette"
+    },
+    {
+      "file": "utils/pokemonTheme.ts",
+      "line": "41",
+      "col": "11",
+      "name": "ComponentStyles"
+    },
+    {
+      "file": "utils/pokemonTypeGradients.ts",
+      "line": "9",
+      "col": "11",
+      "name": "GradientPalette"
+    },
+    {
+      "file": "utils/pokemonutils.ts",
+      "line": "6",
+      "col": "11",
+      "name": "TypeColorConfig"
+    },
+    {
+      "file": "utils/statCalculations.ts",
+      "line": "6",
+      "col": "15",
+      "name": "Nature"
+    },
+    {
+      "file": "utils/supabase-type-guards.ts",
+      "line": "9",
+      "col": "3",
+      "name": "UserCollection"
+    },
+    {
+      "file": "utils/supabase-type-guards.ts",
+      "line": "10",
+      "col": "3",
+      "name": "SessionCollection"
+    },
+    {
+      "file": "utils/supabase-type-guards.ts",
+      "line": "11",
+      "col": "3",
+      "name": "UserWatchlist"
+    },
+    {
+      "file": "utils/supabase-type-guards.ts",
+      "line": "12",
+      "col": "3",
+      "name": "PortfolioSnapshot"
+    },
+    {
+      "file": "utils/supabase-type-guards.ts",
+      "line": "13",
+      "col": "3",
+      "name": "CardTransaction"
+    },
+    {
+      "file": "utils/UnifiedCacheManager.ts",
+      "line": "7",
+      "col": "3",
+      "name": "CacheEntry"
+    },
+    {
+      "file": "utils/UnifiedCacheManager.ts",
+      "line": "8",
+      "col": "3",
+      "name": "CacheOptions"
+    },
+    {
+      "file": "utils/UnifiedCacheManager.ts",
+      "line": "10",
+      "col": "3",
+      "name": "CacheSetOptions"
+    },
+    {
+      "file": "utils/UnifiedCacheManager.ts",
+      "line": "11",
+      "col": "3",
+      "name": "CacheGetOptions"
+    },
+    {
+      "file": "utils/UnifiedCacheManager.ts",
+      "line": "12",
+      "col": "3",
+      "name": "CacheManager"
+    },
+    {
+      "file": "utils/UnifiedCacheManager.ts",
+      "line": "13",
+      "col": "3",
+      "name": "CacheStrategy"
+    },
+    {
+      "file": "utils/UnifiedCacheManager.ts",
+      "line": "14",
+      "col": "3",
+      "name": "CachePersistence"
+    },
+    {
+      "file": "utils/UnifiedCacheManager.ts",
+      "line": "15",
+      "col": "3",
+      "name": "CacheInvalidationOptions"
+    }
+  ],
+  "totalWarnings": 1155
+}

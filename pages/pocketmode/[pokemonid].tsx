@@ -12,7 +12,7 @@ import logger from "../../utils/logger";
 import { getEvolutionChain } from "../../utils/evolutionUtils";
 import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { GlassContainer } from "../../components/ui/design-system/GlassContainer";
-import { GradientButton } from "../../components/ui/design-system/GradientButton";
+import { GradientButton } from "../../components/ui/design-system";
 import { TypeGradientBadge } from "../../components/ui/design-system/TypeGradientBadge";
 import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
 import { motion, useScroll, useTransform } from "framer-motion";

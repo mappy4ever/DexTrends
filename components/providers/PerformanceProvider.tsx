@@ -306,9 +306,16 @@ export const PerformanceProvider: React.FC<PerformanceProviderProps> = ({ childr
       // This could automatically optimize images
     }
 
-    // Memory cleanup
-    if (performance.memory) {
-      const memoryUsage = (performance.memory.usedJSHeapSize / performance.memory.totalJSHeapSize) * 100;
+    // Memory cleanup (Chrome-specific API)
+    const perfWithMemory = performance as Performance & {
+      memory?: {
+        usedJSHeapSize: number;
+        totalJSHeapSize: number;
+        jsHeapSizeLimit: number;
+      };
+    };
+    if (perfWithMemory.memory) {
+      const memoryUsage = (perfWithMemory.memory.usedJSHeapSize / perfWithMemory.memory.totalJSHeapSize) * 100;
       if (memoryUsage > 85) {
         logger.warn('High memory usage detected, running cleanup');
         cleanupAPIOptimizations();

@@ -2,7 +2,8 @@ import React from 'react';
 import Image from 'next/image';
 import { cn } from '@/utils/cn';
 import { createGlassStyle } from '../ui/design-system/glass-constants';
-import PriceDisplay from '../ui/PriceDisplay';
+import PriceIndicator from '../ui/PriceIndicator';
+const PriceDisplay = PriceIndicator; // Alias
 import type { TCGCard } from '@/types/api/cards';
 
 interface FeaturedCardsGridProps {

@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/utils/cn';
 import { createGlassStyle } from '../ui/design-system/glass-constants';
 import { CleanRaritySymbol } from '../ui/CleanRaritySymbol';
-import PriceDisplay from '../ui/PriceDisplay';
+import PriceIndicator from '../ui/PriceIndicator';
+const PriceDisplay = PriceIndicator; // Alias
 import type { TCGCard } from '@/types/api/cards';
 
 interface CardShowcaseProps {

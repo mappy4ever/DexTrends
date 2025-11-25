@@ -1,8 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, ReactNode, CSSProperties } from 'react';
-import { useEnhancedAnimation } from './EnhancedAnimationSystem.hooks';
-
-// Re-export hook for backward compatibility
-export { useEnhancedAnimation } from './EnhancedAnimationSystem.hooks';
+import React, { createContext, useContext, useEffect, useState, ReactNode, CSSProperties, useCallback } from 'react';
 
 import { 
   motion, 
@@ -54,6 +50,46 @@ export const AnimationContext = createContext<AnimationContextValue>({
   setEnableMicroInteractions: () => {},
   setEnableScrollAnimations: () => {},
 });
+
+// Hook interface for enhanced animation
+interface UseEnhancedAnimationReturn {
+  isAnimating: boolean;
+  triggerAnimation: () => void;
+  prefersReducedMotion: boolean;
+  animationSpeed: number;
+  enablePageTransitions: boolean;
+  enableMicroInteractions: boolean;
+  enableScrollAnimations: boolean;
+  setAnimationSpeed: (speed: number) => void;
+  setEnablePageTransitions: (enabled: boolean) => void;
+  setEnableMicroInteractions: (enabled: boolean) => void;
+  setEnableScrollAnimations: (enabled: boolean) => void;
+}
+
+// Hook for enhanced animation - returns animation context values
+export const useEnhancedAnimation = (): UseEnhancedAnimationReturn => {
+  const context = useContext(AnimationContext);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  const triggerAnimation = useCallback(() => {
+    setIsAnimating(true);
+    setTimeout(() => setIsAnimating(false), 300);
+  }, []);
+
+  return {
+    isAnimating,
+    triggerAnimation,
+    prefersReducedMotion: context.prefersReducedMotion ?? false,
+    animationSpeed: context.animationSpeed,
+    enablePageTransitions: context.enablePageTransitions,
+    enableMicroInteractions: context.enableMicroInteractions,
+    enableScrollAnimations: context.enableScrollAnimations,
+    setAnimationSpeed: context.setAnimationSpeed,
+    setEnablePageTransitions: context.setEnablePageTransitions,
+    setEnableMicroInteractions: context.setEnableMicroInteractions,
+    setEnableScrollAnimations: context.setEnableScrollAnimations
+  };
+};
 
 // Animation Provider with user preferences
 export const EnhancedAnimationProvider: React.FC<EnhancedAnimationProviderProps> = ({ children }) => {

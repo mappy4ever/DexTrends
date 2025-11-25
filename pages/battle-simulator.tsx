@@ -18,6 +18,18 @@ import { InlineLoader } from '../components/ui/SkeletonLoadingSystem';
 import PageErrorBoundary from '../components/ui/PageErrorBoundary';
 import { SmartTooltip } from '../components/qol/ContextualHelp';
 import logger from '../utils/logger';
+// Battle effects for modern visual enhancements
+import {
+  DamageNumber,
+  HitFlash,
+  AnimatedHPBar,
+  BattleAnnouncement,
+  VSBadge,
+  TurnIndicator,
+  PokemonEntry,
+  StatusBadge,
+  VictoryCelebration
+} from '../components/ui/BattleEffects';
 // Removed - using unified responsive approach
 import type { Pokemon, PokemonMove, PokemonType, PokemonStat, PokemonSpecies, Nature, Move } from "../types/pokemon";
 import type { EnhancedBattleState, BattleResult, StatusEffect } from '../types/battle';
@@ -248,6 +260,19 @@ const BattleSimulator: NextPage = () => {
   const [showBattleResults, setShowBattleResults] = useState(false);
   const [battleResults, setBattleResults] = useState<BattleResult | null>(null);
   const [isSimulating, setIsSimulating] = useState(false);
+
+  // Visual effects state
+  const [damageEffect, setDamageEffect] = useState<{
+    damage: number;
+    position: 'left' | 'right';
+    isCritical: boolean;
+    effectiveness: number;
+  } | null>(null);
+  const [announcement, setAnnouncement] = useState<{
+    message: string;
+    type: 'attack' | 'status' | 'victory' | 'info';
+  } | null>(null);
+  const [hitTarget, setHitTarget] = useState<1 | 2 | null>(null);
   
   // Pokemon stats configuration
   const [pokemon1Config, setPokemon1Config] = useState<BattleConfig>({
@@ -851,15 +876,27 @@ const BattleSimulator: NextPage = () => {
       getTypeEffectiveness(moveData.type.name, defender.pokemon.types) : 1;
     const isCritical = damage > 0 && Math.random() < 0.0625;
     
-    // Apply damage
+    // Apply damage with visual effects
     if (player === 1) {
       const newHP = Math.max(0, currentHP2 - damage);
       setCurrentHP2(newHP);
-      
-      // Animate
-      setIsAnimating(true);
-      setTimeout(() => setIsAnimating(false), 500);
-      
+
+      // Trigger visual effects
+      setHitTarget(2);
+      setDamageEffect({
+        damage,
+        position: 'right',
+        isCritical,
+        effectiveness
+      });
+      setAnnouncement({
+        message: `${attacker.pokemon.name} used ${move.move.name.replace(/-/g, ' ')}!`,
+        type: 'attack'
+      });
+
+      // Clear hit effect after animation
+      setTimeout(() => setHitTarget(null), 400);
+
       // Check for victory
       if (newHP === 0) {
         handleVictory(1);
@@ -868,11 +905,23 @@ const BattleSimulator: NextPage = () => {
     } else {
       const newHP = Math.max(0, currentHP1 - damage);
       setCurrentHP1(newHP);
-      
-      // Animate
-      setIsAnimating(true);
-      setTimeout(() => setIsAnimating(false), 500);
-      
+
+      // Trigger visual effects
+      setHitTarget(1);
+      setDamageEffect({
+        damage,
+        position: 'left',
+        isCritical,
+        effectiveness
+      });
+      setAnnouncement({
+        message: `${attacker.pokemon.name} used ${move.move.name.replace(/-/g, ' ')}!`,
+        type: 'attack'
+      });
+
+      // Clear hit effect after animation
+      setTimeout(() => setHitTarget(null), 400);
+
       // Check for victory
       if (newHP === 0) {
         handleVictory(2);
@@ -1247,6 +1296,26 @@ const BattleSimulator: NextPage = () => {
       </Head>
       
       <FullBleedWrapper gradient="pokedex">
+        {/* Battle Announcement Overlay */}
+        {announcement && (
+          <div className="fixed top-1/4 left-1/2 transform -translate-x-1/2 z-50">
+            <BattleAnnouncement
+              message={announcement.message}
+              type={announcement.type}
+              onComplete={() => setAnnouncement(null)}
+            />
+          </div>
+        )}
+
+        {/* Victory Celebration Overlay */}
+        {showVictoryScreen && winner && (
+          <VictoryCelebration
+            winner={winner === 1 ? player1Name : player2Name}
+            pokemonName={winner === 1 ? selectedPokemon1?.name || '' : selectedPokemon2?.name || ''}
+            onClose={() => setShowVictoryScreen(false)}
+          />
+        )}
+
         {/* Sticky Header */}
         <div className="sticky top-0 z-50 backdrop-blur-xl bg-white/70 dark:bg-gray-900/70 border-b border-white/20">
           <div className="container mx-auto px-4 py-3 sm:py-4">
@@ -1402,57 +1471,48 @@ const BattleSimulator: NextPage = () => {
                       </button>
                     </div>
                   <div className="space-y-4" data-testid="selected-pokemon">
-                    <div className={`relative inline-block ${isAnimating && 'animate-shake'}`}>
-                      <Image
-                        src={selectedPokemon1.sprites?.front_default || '/pokemon-placeholder.png'}
-                        alt={selectedPokemon1.name}
-                        width={150}
-                        height={150}
-                        className="w-[150px] h-[150px] sm:w-[175px] sm:h-[175px] md:w-[200px] md:h-[200px] mx-auto pokemon-sprite"
-                      />
-                      {/* Battle Effects Overlay */}
-                      <div className="absolute inset-0 pointer-events-none">
-                        <div className="battle-effects" />
-                      </div>
-                    </div>
+                    <PokemonEntry side="left">
+                      <HitFlash isActive={hitTarget === 1}>
+                        <div className="relative inline-block">
+                          <Image
+                            src={selectedPokemon1.sprites?.front_default || '/pokemon-placeholder.png'}
+                            alt={selectedPokemon1.name}
+                            width={150}
+                            height={150}
+                            className="w-[150px] h-[150px] sm:w-[175px] sm:h-[175px] md:w-[200px] md:h-[200px] mx-auto pokemon-sprite"
+                          />
+                          {/* Damage Number Effect */}
+                          {damageEffect && damageEffect.position === 'left' && (
+                            <DamageNumber
+                              damage={damageEffect.damage}
+                              isCritical={damageEffect.isCritical}
+                              effectiveness={damageEffect.effectiveness}
+                              position="left"
+                              onComplete={() => setDamageEffect(null)}
+                            />
+                          )}
+                        </div>
+                      </HitFlash>
+                    </PokemonEntry>
                     <h3 className="text-lg sm:text-xl md:text-2xl font-semibold capitalize text-slate-700 dark:text-slate-300">{selectedPokemon1.name}</h3>
                     <div className="flex justify-center gap-2">
                       {selectedPokemon1.types?.map((t: PokemonType) => (
                         <TypeGradientBadge key={t.type.name} type={t.type.name} size="sm" />
                       ))}
                     </div>
-                    {/* HP Bar */}
+                    {/* Animated HP Bar */}
                     <div className="w-full max-w-xs mx-auto">
-                      <div className="flex justify-between text-sm text-gray-600 mb-1">
-                        <span>HP</span>
-                        <span>{currentHP1 || pokemon1Config.stats.hp}/{pokemon1Config.stats.hp}</span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-lg h-3 overflow-hidden hp-bar-container">
-                        <div 
-                          className={`h-full hp-bar ${
-                            ((currentHP1 || pokemon1Config.stats.hp) / pokemon1Config.stats.hp) > 0.5 ? 'bg-green-500' :
-                            ((currentHP1 || pokemon1Config.stats.hp) / pokemon1Config.stats.hp) > 0.2 ? 'bg-yellow-500' :
-                            'bg-red-500'
-                          } ${isAnimating && currentTurn === 2 ? 'damage-flash' : ''}`}
-                          style={{ width: `${((currentHP1 || pokemon1Config.stats.hp) / pokemon1Config.stats.hp) * 100}%` }}
-                        />
-                      </div>
+                      <AnimatedHPBar
+                        current={currentHP1 || pokemon1Config.stats.hp}
+                        max={pokemon1Config.stats.hp}
+                        size="md"
+                      />
                     </div>
-                    
-                    {/* Status Effect Indicator */}
+
+                    {/* Status Effect Badge */}
                     {battleState?.pokemon1.status && battleState.pokemon1.status !== 'none' && (
                       <div className="mt-2">
-                        <span className={`inline-block px-3 py-1 rounded-lg text-xs font-medium status-badge ${
-                          battleState.pokemon1.status === 'burn' ? 'bg-orange-100 text-orange-800 status-burn' :
-                          battleState.pokemon1.status === 'poison' ? 'bg-purple-100 text-purple-800 status-poison' :
-                          battleState.pokemon1.status === 'badpoison' ? 'bg-purple-200 text-purple-900 status-poison' :
-                          battleState.pokemon1.status === 'paralysis' ? 'bg-yellow-100 text-yellow-800 status-paralysis' :
-                          battleState.pokemon1.status === 'sleep' ? 'bg-indigo-100 text-indigo-800 status-sleep' :
-                          battleState.pokemon1.status === 'freeze' ? 'bg-blue-100 text-blue-800' :
-                          'bg-gray-100 text-gray-800'
-                        }`}>
-                          {battleState.pokemon1.status.toUpperCase()}
-                        </span>
+                        <StatusBadge status={battleState.pokemon1.status} />
                       </div>
                     )}
                     
@@ -1570,24 +1630,21 @@ const BattleSimulator: NextPage = () => {
                 )}
               </GlassContainer>
 
-              {/* VS Divider */}
+              {/* VS Divider with Modern Badge */}
               <div className="lg:flex items-center justify-center lg:flex-col lg:justify-center lg:px-4">
-                <div
-                  className={`h-24 w-full max-w-[200px] mx-auto bg-gradient-to-r from-red-400 to-orange-400 rounded-lg shadow-lg backdrop-blur-sm border-4 border-orange-400 ${battleActive ? 'animate-pulse shadow-xl' : ''}`}
-                >
-                  <div className="w-full h-full flex items-center justify-center">
-                    <div className="flex items-center justify-center">
-                      <div className="w-3 h-3 bg-white rounded" />
-                      <div className="mx-2 w-8 h-1 bg-white rounded" />
-                      <div className="w-3 h-3 bg-white rounded" />
-                    </div>
-                  </div>
-                </div>
+                <VSBadge animated={battleActive} />
                 <div className="mt-4 text-center">
                   <div className="text-sm text-slate-700 dark:text-slate-300 font-medium">Battle Arena</div>
-                  {battleActive && (
+                  {battleActive && currentTurn && (
+                    <TurnIndicator
+                      currentTurn={currentTurn}
+                      player1Name={player1Name}
+                      player2Name={player2Name}
+                    />
+                  )}
+                  {!battleActive && (
                     <div className="mt-2 text-xs text-gray-600 dark:text-gray-400">
-                      Turn {battleLog.filter(log => typeof log === 'object' && 'damage' in log && log.damage).length + 1}
+                      Select Pokemon and moves to begin
                     </div>
                   )}
                 </div>
@@ -1637,57 +1694,48 @@ const BattleSimulator: NextPage = () => {
                       </button>
                     </div>
                   <div className="space-y-4" data-testid="selected-pokemon">
-                    <div className={`relative inline-block ${isAnimating && 'animate-shake'}`}>
-                      <Image
-                        src={selectedPokemon2.sprites?.front_default || '/pokemon-placeholder.png'}
-                        alt={selectedPokemon2.name}
-                        width={200}
-                        height={200}
-                        className="mx-auto pokemon-sprite"
-                      />
-                      {/* Battle Effects Overlay */}
-                      <div className="absolute inset-0 pointer-events-none">
-                        <div className="battle-effects" />
-                      </div>
-                    </div>
+                    <PokemonEntry side="right" delay={0.1}>
+                      <HitFlash isActive={hitTarget === 2}>
+                        <div className="relative inline-block">
+                          <Image
+                            src={selectedPokemon2.sprites?.front_default || '/pokemon-placeholder.png'}
+                            alt={selectedPokemon2.name}
+                            width={200}
+                            height={200}
+                            className="mx-auto pokemon-sprite"
+                          />
+                          {/* Damage Number Effect */}
+                          {damageEffect && damageEffect.position === 'right' && (
+                            <DamageNumber
+                              damage={damageEffect.damage}
+                              isCritical={damageEffect.isCritical}
+                              effectiveness={damageEffect.effectiveness}
+                              position="right"
+                              onComplete={() => setDamageEffect(null)}
+                            />
+                          )}
+                        </div>
+                      </HitFlash>
+                    </PokemonEntry>
                     <h3 className="text-2xl font-semibold capitalize text-slate-700 dark:text-slate-300">{selectedPokemon2.name}</h3>
                     <div className="flex justify-center gap-2">
                       {selectedPokemon2.types?.map((t: PokemonType) => (
                         <TypeGradientBadge key={t.type.name} type={t.type.name} size="sm" />
                       ))}
                     </div>
-                    {/* HP Bar */}
+                    {/* Animated HP Bar */}
                     <div className="w-full max-w-xs mx-auto">
-                      <div className="flex justify-between text-sm text-gray-600 mb-1">
-                        <span>HP</span>
-                        <span>{currentHP2 || pokemon2Config.stats.hp}/{pokemon2Config.stats.hp}</span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-lg h-3 overflow-hidden hp-bar-container">
-                        <div 
-                          className={`h-full hp-bar ${
-                            ((currentHP2 || pokemon2Config.stats.hp) / pokemon2Config.stats.hp) > 0.5 ? 'bg-green-500' :
-                            ((currentHP2 || pokemon2Config.stats.hp) / pokemon2Config.stats.hp) > 0.2 ? 'bg-yellow-500' :
-                            'bg-red-500'
-                          } ${isAnimating && currentTurn === 1 ? 'damage-flash' : ''}`}
-                          style={{ width: `${((currentHP2 || pokemon2Config.stats.hp) / pokemon2Config.stats.hp) * 100}%` }}
-                        />
-                      </div>
+                      <AnimatedHPBar
+                        current={currentHP2 || pokemon2Config.stats.hp}
+                        max={pokemon2Config.stats.hp}
+                        size="md"
+                      />
                     </div>
-                    
-                    {/* Status Effect Indicator */}
+
+                    {/* Status Effect Badge */}
                     {battleState?.pokemon2.status && battleState.pokemon2.status !== 'none' && (
                       <div className="mt-2">
-                        <span className={`inline-block px-3 py-1 rounded-lg text-xs font-medium status-badge ${
-                          battleState.pokemon2.status === 'burn' ? 'bg-orange-100 text-orange-800 status-burn' :
-                          battleState.pokemon2.status === 'poison' ? 'bg-purple-100 text-purple-800 status-poison' :
-                          battleState.pokemon2.status === 'badpoison' ? 'bg-purple-200 text-purple-900 status-poison' :
-                          battleState.pokemon2.status === 'paralysis' ? 'bg-yellow-100 text-yellow-800 status-paralysis' :
-                          battleState.pokemon2.status === 'sleep' ? 'bg-indigo-100 text-indigo-800 status-sleep' :
-                          battleState.pokemon2.status === 'freeze' ? 'bg-blue-100 text-blue-800' :
-                          'bg-gray-100 text-gray-800'
-                        }`}>
-                          {battleState.pokemon2.status.toUpperCase()}
-                        </span>
+                        <StatusBadge status={battleState.pokemon2.status} />
                       </div>
                     )}
                     

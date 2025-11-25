@@ -6,7 +6,7 @@ import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../../components/
 import { useTheme } from "../../context/UnifiedAppContext";
 import { useInfiniteScroll } from "../../hooks/useInfiniteScroll";
 import { GlassContainer } from "../../components/ui/design-system/GlassContainer";
-import { GradientButton } from "../../components/ui/design-system/GradientButton";
+import { GradientButton } from "../../components/ui/design-system";
 import { TypeGradientBadge } from "../../components/ui/design-system/TypeGradientBadge";
 import { motion } from "framer-motion";
 import { InlineLoader, PageLoader } from '@/components/ui/SkeletonLoadingSystem';

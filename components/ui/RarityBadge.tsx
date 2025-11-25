@@ -2,33 +2,39 @@ import React from 'react';
 import Image from 'next/image';
 import { getRarityDisplay } from '../../data/tcgRarity';
 
-type Size = 'sm' | 'md' | 'lg' | 'xl';
+export type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
-interface RarityBadgeProps {
+export interface RarityBadgeProps {
   rarity: string;
   isPocket?: boolean;
   showName?: boolean;
+  showLabel?: boolean; // Alias for showName for backward compatibility
   size?: Size;
   showImage?: boolean;
 }
 
-export const RarityBadge: React.FC<RarityBadgeProps> = ({ 
-  rarity, 
-  isPocket = false, 
-  showName = false, 
+export const RarityBadge: React.FC<RarityBadgeProps> = ({
+  rarity,
+  isPocket = false,
+  showName = false,
+  showLabel = false, // Backward compatibility alias
   size = 'md',
-  showImage = true 
+  showImage = true
 }) => {
   const rarityInfo = getRarityDisplay(rarity, isPocket);
-  
+  // Support both showName and showLabel for backward compatibility
+  const displayName = showName || showLabel;
+
   const sizeClasses: Record<Size, string> = {
+    xs: 'text-[10px]',
     sm: 'text-xs',
     md: 'text-sm',
     lg: 'text-base',
     xl: 'text-lg'
   };
-  
+
   const imageSizes: Record<Size, number> = {
+    xs: 12,
     sm: 16,
     md: 20,
     lg: 24,
@@ -51,7 +57,7 @@ export const RarityBadge: React.FC<RarityBadgeProps> = ({
           {rarityInfo.symbol}
         </span>
       )}
-      {showName && (
+      {displayName && (
         <span className={`font-medium ${rarityInfo.color}`}>
           {rarityInfo.name}
         </span>

@@ -54,7 +54,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Try API with aggressive timeout - if it's slow, fall back immediately
     let data;
     try {
-      data = await fetchJSON<TCGApiResponse<unknown[]> & { page?: number; pageSize?: number; count?: number; totalCount?: number }>(apiUrl, { 
+      data = await fetchJSON<TCGApiResponse<unknown[]> & { page?: number; pageSize?: number; count?: number; totalCount?: number }>(apiUrl, {
         headers,
         useCache: true,
         cacheTime: 30 * 60 * 1000, // Cache for 30 minutes
@@ -62,21 +62,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         timeout: 15000, // Reduced to 15 seconds - if it's slower than this, use fallback
         retries: 1, // Only 1 retry to avoid long waits
         retryDelay: 1000,
-        throwOnError: false
+        throwOnError: true // Throw errors so we can catch and use fallback
       });
     } catch (apiError) {
-      logger.warn('Pokemon TCG API slow/unavailable, using fallback', { 
+      logger.warn('Pokemon TCG API slow/unavailable, using fallback', {
         error: apiError instanceof Error ? apiError.message : String(apiError),
         duration: Date.now() - startTime
       });
-      
+
       // Return static fallback immediately
       const fallback = createFallbackResponse(pageNum, pageSizeNum);
-      
+
       res.setHeader('X-Cache-Status', 'fallback');
       res.setHeader('X-Response-Time', `${Date.now() - startTime}ms`);
       res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400'); // Shorter cache for fallback
-      
+
       return res.status(200).json(fallback);
     }
     

@@ -1,17 +1,18 @@
 import React, { forwardRef, ButtonHTMLAttributes } from 'react';
-import { motion } from 'framer-motion';
 import { cn } from '../../utils/cn';
+import { RADIUS, SHADOW, TRANSITION } from './design-system/glass-constants';
 const hapticManager = typeof window !== 'undefined' ? require('../../utils/hapticFeedback').default : null;
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'success' | 'clean';
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'success' | 'clean' | 'glass';
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'icon';
   fullWidth?: boolean;
   loading?: boolean;
   icon?: React.ReactNode;
   iconPosition?: 'left' | 'right';
   gradient?: boolean;
   rounded?: 'sm' | 'md' | 'lg' | 'full';
+  leftIcon?: React.ReactNode; // Backward compatibility alias for icon with iconPosition="left"
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -24,6 +25,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       loading = false,
       disabled = false,
       icon,
+      leftIcon, // Backward compatibility
       iconPosition = 'left',
       gradient = false,
       rounded = 'lg',
@@ -32,20 +34,25 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    // Rounded styles
+    // Handle leftIcon backward compatibility
+    const resolvedIcon = icon || leftIcon;
+    const resolvedIconPosition = leftIcon ? 'left' : iconPosition;
+
+    // Rounded styles - using unified design system
+    // Default is 'lg' (rounded-xl = 12px) - NOT pill-shaped
     const roundedStyles = {
-      sm: 'rounded',
-      md: 'rounded-lg',
-      lg: 'rounded-xl',
-      full: 'rounded-full'
+      sm: RADIUS.sm,     // 4px
+      md: RADIUS.md,     // 8px
+      lg: RADIUS.lg,     // 12px - primary choice
+      full: RADIUS.full  // pill shape (use sparingly)
     };
-    
+
     // Base styles with consistent hover and active states
     const baseStyles = cn(
       'relative inline-flex items-center justify-center font-medium',
       roundedStyles[rounded],
-      'transition-all duration-200 ease-out',
-      'transform hover:scale-[1.02] active:scale-[0.98]',
+      TRANSITION.default,
+      'transform hover:scale-[1.01] active:scale-[0.99]', // More subtle scale
       'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
       'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:active:scale-100',
       'tap-highlight-transparent touch-manipulation',
@@ -56,17 +63,19 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const variantStyles = {
       primary: cn(
         gradient
-          ? 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'
+          ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700'
           : 'bg-blue-600 hover:bg-blue-700',
         'text-white',
-        'shadow-sm hover:shadow-md active:shadow-sm',
+        SHADOW.sm,
+        'hover:shadow-md active:shadow-sm',
         'focus-visible:ring-blue-500'
       ),
       secondary: cn(
         'bg-white dark:bg-gray-800 text-gray-900 dark:text-white',
-        'border border-gray-300 dark:border-gray-600',
+        'border border-gray-200 dark:border-gray-700',
         'hover:bg-gray-50 dark:hover:bg-gray-700',
-        'shadow-sm hover:shadow-md active:shadow-sm',
+        SHADOW.sm,
+        'hover:shadow-md active:shadow-sm',
         'focus-visible:ring-gray-500'
       ),
       ghost: cn(
@@ -76,10 +85,11 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       ),
       danger: cn(
         gradient
-          ? 'bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700'
+          ? 'bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700'
           : 'bg-red-600 hover:bg-red-700',
         'text-white',
-        'shadow-sm hover:shadow-md active:shadow-sm',
+        SHADOW.sm,
+        'hover:shadow-md active:shadow-sm',
         'focus-visible:ring-red-500'
       ),
       success: cn(
@@ -87,13 +97,23 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           ? 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700'
           : 'bg-green-600 hover:bg-green-700',
         'text-white',
-        'shadow-sm hover:shadow-md active:shadow-sm',
+        SHADOW.sm,
+        'hover:shadow-md active:shadow-sm',
         'focus-visible:ring-green-500'
       ),
       clean: cn(
         'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300',
         'hover:bg-gray-200 dark:hover:bg-gray-700',
         'focus-visible:ring-gray-500'
+      ),
+      glass: cn(
+        'bg-white/75 dark:bg-gray-800/75',
+        'backdrop-blur-sm',
+        'border border-gray-200/50 dark:border-gray-700/50',
+        'text-gray-900 dark:text-white',
+        SHADOW.sm,
+        'hover:shadow-md',
+        'focus-visible:ring-blue-500'
       )
     };
 
@@ -122,6 +142,12 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         'px-6 sm:px-8 py-3 sm:py-4',
         'text-lg sm:text-xl',
         'gap-3'
+      ),
+      icon: cn(
+        'min-h-[44px] min-w-[44px]', // Square icon button
+        'p-2',
+        'text-base',
+        'gap-0'
       )
     };
 
@@ -166,10 +192,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
               </svg>
             </span>
           ) : (
-            icon && iconPosition === 'left' && icon
+            resolvedIcon && resolvedIconPosition === 'left' && resolvedIcon
           )}
           {children}
-          {!loading && icon && iconPosition === 'right' && icon}
+          {!loading && resolvedIcon && resolvedIconPosition === 'right' && resolvedIcon}
         </span>
       </button>
     );
@@ -184,11 +210,12 @@ Button.displayName = 'Button';
  */
 export const IconButton = forwardRef<HTMLButtonElement, Omit<ButtonProps, 'icon' | 'iconPosition' | 'fullWidth'>>(
   ({ className, size = 'md', rounded = 'full', children, ...props }, ref) => {
-    const iconSizeStyles = {
+    const iconSizeStyles: Record<string, string> = {
       sm: 'w-9 h-9 sm:w-10 sm:h-10',
       md: 'w-11 h-11', // 44px minimum
       lg: 'w-12 h-12 sm:w-14 sm:h-14',
-      xl: 'w-14 h-14 sm:w-16 sm:h-16'
+      xl: 'w-14 h-14 sm:w-16 sm:h-16',
+      icon: 'w-11 h-11' // Same as md for icon variant
     };
     
     return (

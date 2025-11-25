@@ -5,6 +5,7 @@ import { cn } from '../../utils/cn';
 import { IoClose } from 'react-icons/io5';
 import logger from '../../utils/logger';
 import { useViewport } from '../../hooks/useViewport';
+import { RADIUS, GLASS_BG, GLASS_BORDER, SHADOW, TRANSITION } from './design-system/glass-constants';
 
 export type ModalSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | 'full';
 export type ModalPosition = 'center' | 'top' | 'bottom' | 'left' | 'right';
@@ -249,12 +250,12 @@ export const Modal: React.FC<ModalProps> = ({
     <AnimatePresence mode="wait">
       {isOpen && (
         <>
-          {/* Overlay */}
+          {/* Overlay - elegant backdrop */}
           {backdrop && (
             <motion.div
               className={cn(
                 'fixed inset-0',
-                backdrop === 'blur' ? 'bg-black/50 backdrop-blur-sm' : 'bg-black/50',
+                backdrop === 'blur' ? 'bg-black/40 backdrop-blur-md' : 'bg-black/40',
                 overlayClassName
               )}
               style={{ zIndex }}
@@ -279,11 +280,16 @@ export const Modal: React.FC<ModalProps> = ({
             <motion.div
               ref={modalRef}
               className={cn(
-                'relative bg-white dark:bg-gray-800 rounded-lg shadow-xl',
+                // Clean, elegant modal styling using design system
+                'relative',
+                GLASS_BG.frosted.strong,
+                GLASS_BORDER.medium,
+                SHADOW.xl,
+                RADIUS.xl, // 16px rounded corners
                 'pointer-events-auto',
                 'w-full',
                 sizeStyles[size],
-                shouldRenderAsSheet && 'rounded-b-none rounded-t-2xl max-w-full',
+                shouldRenderAsSheet && 'rounded-b-none rounded-t-3xl max-w-full',
                 className
               )}
               variants={animationVariants[effectiveAnimation]}
@@ -319,11 +325,12 @@ export const Modal: React.FC<ModalProps> = ({
                     <button
                       onClick={onClose}
                       className={cn(
-                        'ml-4 p-2 rounded-lg',
+                        'ml-4 p-2',
+                        RADIUS.lg, // 12px rounded
                         'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200',
                         'hover:bg-gray-100 dark:hover:bg-gray-700',
-                        'transition-colors duration-200',
-                        'focus:outline-none focus:ring-2 focus:ring-blue-500'
+                        TRANSITION.fast,
+                        'focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500'
                       )}
                       aria-label="Close modal"
                     >

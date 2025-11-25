@@ -1,134 +1,290 @@
 /**
- * Unified Glass Morphism Design System Constants
- * Ensures consistency across all glass components
+ * DexTrends Unified Design System
+ *
+ * Design Philosophy:
+ * - Clean, elegant, modern aesthetic
+ * - Consistent border radius (xl = 12px for most elements)
+ * - Subtle glass morphism without tacky purple tints
+ * - Smooth transitions and micro-interactions
+ * - Works beautifully on both mobile and desktop
  */
 
-// Glass blur levels
+// ===========================================
+// BORDER RADIUS - Unified System
+// ===========================================
+// Use these values consistently across ALL components:
+// - Buttons: rounded-xl (12px) - NOT pill-shaped
+// - Cards/Containers: rounded-xl (12px)
+// - Modals: rounded-2xl (16px)
+// - Badges/Tags: rounded-lg (8px)
+// - Avatars/Icons: rounded-full
+
+export const RADIUS = {
+  none: 'rounded-none',      // 0px
+  sm: 'rounded',             // 4px - tiny elements
+  md: 'rounded-lg',          // 8px - badges, tags
+  lg: 'rounded-xl',          // 12px - buttons, cards, inputs
+  xl: 'rounded-2xl',         // 16px - modals, larger panels
+  '2xl': 'rounded-3xl',      // 24px - hero sections
+  full: 'rounded-full',      // circles, avatars
+} as const;
+
+// ===========================================
+// GLASS MORPHISM - Clean Implementation
+// ===========================================
+
+// Glass blur levels - use sparingly
 export const GLASS_BLUR = {
-  sm: 'backdrop-blur-sm',     // 4px
-  md: 'backdrop-blur-md',     // 8px  
-  lg: 'backdrop-blur-lg',     // 16px
-  xl: 'backdrop-blur-xl',     // 24px
-  '2xl': 'backdrop-blur-2xl', // 40px
-  '3xl': 'backdrop-blur-3xl', // 64px
+  none: '',
+  sm: 'backdrop-blur-sm',     // 4px - subtle
+  md: 'backdrop-blur-md',     // 8px - default for most glass
+  lg: 'backdrop-blur-lg',     // 16px - prominent glass panels
+  xl: 'backdrop-blur-xl',     // 24px - modal overlays
+  '2xl': 'backdrop-blur-2xl', // 40px - legacy
+  '3xl': 'backdrop-blur-3xl', // 64px - legacy
 } as const;
 
-// Glass background opacity
-export const GLASS_OPACITY = {
+// Clean glass backgrounds - NO purple tints
+export const GLASS_BG = {
+  // Light glass (for light backgrounds)
   light: {
-    subtle: 'bg-white/70 dark:bg-gray-800/70',
-    medium: 'bg-white/80 dark:bg-gray-800/80',
-    strong: 'bg-white/90 dark:bg-gray-800/90',
+    subtle: 'bg-white/60 dark:bg-gray-900/60',
+    medium: 'bg-white/75 dark:bg-gray-900/75',
+    strong: 'bg-white/90 dark:bg-gray-900/90',
   },
-  gradient: {
-    subtle: 'bg-gradient-to-br from-white/70 via-purple-50/50 to-white/70 dark:from-gray-800/70 dark:via-purple-900/30 dark:to-gray-900/70',
-    medium: 'bg-gradient-to-br from-white/80 via-purple-50/60 to-white/80 dark:from-gray-800/80 dark:via-purple-900/30 dark:to-gray-900/80',
-    strong: 'bg-gradient-to-br from-white/90 via-purple-50/70 to-white/90 dark:from-gray-800/90 dark:via-purple-900/30 dark:to-gray-900/90',
-  }
+  // Frosted glass (more opacity)
+  frosted: {
+    subtle: 'bg-gray-50/70 dark:bg-gray-800/70',
+    medium: 'bg-gray-50/85 dark:bg-gray-800/85',
+    strong: 'bg-white/95 dark:bg-gray-800/95',
+  },
 } as const;
 
-// Glass borders
+// Legacy alias for backward compatibility
+export const GLASS_OPACITY = {
+  light: GLASS_BG.light,
+  gradient: GLASS_BG.light, // Remove purple gradients - use plain glass
+} as const;
+
+// Glass borders - subtle, elegant
 export const GLASS_BORDER = {
-  subtle: 'border border-white/20 dark:border-gray-700/20',
-  medium: 'border border-white/30 dark:border-gray-700/30',
-  strong: 'border border-white/50 dark:border-gray-700/50',
+  none: '',
+  subtle: 'border border-gray-200/50 dark:border-gray-700/50',
+  medium: 'border border-gray-200 dark:border-gray-700',
+  strong: 'border border-gray-300 dark:border-gray-600',
 } as const;
 
-// Glass shadows
+// ===========================================
+// SHADOWS - Consistent System
+// ===========================================
+
+export const SHADOW = {
+  none: '',
+  sm: 'shadow-sm',                                    // Subtle lift
+  md: 'shadow-md',                                    // Default cards
+  lg: 'shadow-lg',                                    // Elevated cards
+  xl: 'shadow-xl',                                    // Modals, dropdowns
+  '2xl': 'shadow-2xl',                                // Hero elements
+  // Colored shadows for special emphasis
+  primary: 'shadow-lg shadow-blue-500/20',
+  success: 'shadow-lg shadow-green-500/20',
+  warning: 'shadow-lg shadow-amber-500/20',
+  danger: 'shadow-lg shadow-red-500/20',
+} as const;
+
+// Legacy alias
 export const GLASS_SHADOW = {
   sm: 'shadow-sm',
-  md: 'shadow-lg',
-  lg: 'shadow-xl',
-  xl: 'shadow-2xl',
-  glow: 'shadow-[0_8px_32px_rgba(139,92,246,0.15)]',
-  glowHover: 'hover:shadow-[0_16px_48px_rgba(139,92,246,0.25)]',
+  md: 'shadow-md',
+  lg: 'shadow-lg',
+  xl: 'shadow-xl',
+  glow: 'shadow-lg shadow-blue-500/15', // Changed from purple to blue
+  glowHover: 'hover:shadow-xl hover:shadow-blue-500/20',
 } as const;
 
-// Glass rounded corners
-export const GLASS_ROUNDED = {
-  sm: 'rounded-lg',
-  md: 'rounded-xl',
-  lg: 'rounded-2xl',
-  xl: 'rounded-3xl',
-  full: 'rounded-full',
-} as const;
+// Legacy alias for border radius
+export const GLASS_ROUNDED = RADIUS;
 
-// Animation transitions
-export const GLASS_TRANSITION = {
-  fast: 'transition-all duration-200 ease-out',
+// ===========================================
+// TRANSITIONS - Smooth & Professional
+// ===========================================
+
+export const TRANSITION = {
+  none: '',
+  fast: 'transition-all duration-150 ease-out',
+  default: 'transition-all duration-200 ease-out',
   medium: 'transition-all duration-300 ease-out',
   slow: 'transition-all duration-500 ease-out',
   smooth: 'transition-all duration-700 ease-in-out',
 } as const;
 
-// Hover effects
-export const GLASS_HOVER = {
+// Legacy alias
+export const GLASS_TRANSITION = TRANSITION;
+
+// ===========================================
+// HOVER EFFECTS - Subtle & Elegant
+// ===========================================
+
+export const HOVER = {
   none: '',
-  shadowOnly: 'hover:shadow-2xl',
-  subtle: 'hover:scale-[1.02] hover:shadow-xl',
-  medium: 'hover:scale-[1.03] hover:shadow-2xl',
-  lift: 'hover:scale-[1.02] hover:-translate-y-1 hover:shadow-2xl',
-  glow: 'hover:shadow-[0_16px_48px_rgba(139,92,246,0.25)]',
+  lift: 'hover:-translate-y-0.5 hover:shadow-lg',
+  scale: 'hover:scale-[1.02]',
+  glow: 'hover:shadow-lg hover:shadow-blue-500/10',
+  brighten: 'hover:brightness-105',
+  // Legacy values (less aggressive)
+  shadowOnly: 'hover:shadow-lg',
+  subtle: 'hover:scale-[1.01] hover:shadow-lg',
+  medium: 'hover:scale-[1.02] hover:shadow-xl',
 } as const;
 
-// Standard glass component classes
+// Legacy alias
+export const GLASS_HOVER = HOVER;
+
+// ===========================================
+// COMPONENT PRESETS - Ready-to-use combinations
+// ===========================================
+
 export const GLASS_STYLES = {
-  // Basic glass card
-  card: `
-    ${GLASS_BLUR.xl}
-    ${GLASS_OPACITY.gradient.medium}
-    ${GLASS_BORDER.medium}
-    ${GLASS_SHADOW.xl}
-    ${GLASS_ROUNDED.xl}
-    ${GLASS_TRANSITION.medium}
-    ${GLASS_HOVER.subtle}
-  `,
-  
-  // Glass container
-  container: `
-    ${GLASS_BLUR.xl}
-    ${GLASS_OPACITY.light.medium}
-    ${GLASS_BORDER.subtle}
-    ${GLASS_SHADOW.lg}
-    ${GLASS_ROUNDED.lg}
-  `,
-  
-  // Glass orb
-  orb: `
-    ${GLASS_BLUR.xl}
-    ${GLASS_OPACITY.light.strong}
-    ${GLASS_BORDER.strong}
-    ${GLASS_SHADOW.xl}
-    ${GLASS_ROUNDED.full}
-  `,
-  
-  // Glass button
-  button: `
-    ${GLASS_BLUR.md}
-    ${GLASS_OPACITY.light.medium}
-    ${GLASS_BORDER.medium}
-    ${GLASS_SHADOW.md}
-    ${GLASS_ROUNDED.lg}
-    ${GLASS_TRANSITION.fast}
-    ${GLASS_HOVER.lift}
-  `,
-  
-  // Glass badge
-  badge: `
-    ${GLASS_BLUR.sm}
-    ${GLASS_OPACITY.light.subtle}
-    ${GLASS_BORDER.subtle}
-    ${GLASS_SHADOW.sm}
-    ${GLASS_ROUNDED.full}
-  `,
+  // Standard card - clean and elegant
+  card: [
+    GLASS_BLUR.md,
+    GLASS_BG.frosted.medium,
+    GLASS_BORDER.subtle,
+    SHADOW.md,
+    RADIUS.lg,
+    TRANSITION.default,
+  ].filter(Boolean).join(' '),
+
+  // Elevated card - more prominence
+  cardElevated: [
+    GLASS_BLUR.lg,
+    GLASS_BG.frosted.strong,
+    GLASS_BORDER.medium,
+    SHADOW.lg,
+    RADIUS.lg,
+    TRANSITION.default,
+    HOVER.lift,
+  ].filter(Boolean).join(' '),
+
+  // Panel/Container - subtle background
+  container: [
+    GLASS_BG.light.subtle,
+    GLASS_BORDER.subtle,
+    SHADOW.sm,
+    RADIUS.lg,
+  ].filter(Boolean).join(' '),
+
+  // Modal - prominent with blur backdrop
+  modal: [
+    GLASS_BG.frosted.strong,
+    GLASS_BORDER.medium,
+    SHADOW.xl,
+    RADIUS.xl,
+  ].filter(Boolean).join(' '),
+
+  // Button glass variant
+  button: [
+    GLASS_BLUR.sm,
+    GLASS_BG.light.medium,
+    GLASS_BORDER.subtle,
+    SHADOW.sm,
+    RADIUS.lg,
+    TRANSITION.fast,
+  ].filter(Boolean).join(' '),
+
+  // Badge/Tag
+  badge: [
+    GLASS_BG.light.subtle,
+    GLASS_BORDER.subtle,
+    RADIUS.md,
+  ].filter(Boolean).join(' '),
+
+  // Input field
+  input: [
+    GLASS_BG.light.medium,
+    GLASS_BORDER.medium,
+    RADIUS.lg,
+    TRANSITION.fast,
+  ].filter(Boolean).join(' '),
+
+  // Navbar
+  navbar: [
+    GLASS_BLUR.lg,
+    GLASS_BG.frosted.medium,
+    GLASS_BORDER.subtle,
+    SHADOW.sm,
+  ].filter(Boolean).join(' '),
+
+  // Dropdown menu
+  dropdown: [
+    GLASS_BLUR.md,
+    GLASS_BG.frosted.strong,
+    GLASS_BORDER.medium,
+    SHADOW.lg,
+    RADIUS.lg,
+  ].filter(Boolean).join(' '),
+
+  // Legacy orb style
+  orb: [
+    GLASS_BLUR.xl,
+    GLASS_BG.light.strong,
+    GLASS_BORDER.medium,
+    SHADOW.xl,
+    RADIUS.full,
+  ].filter(Boolean).join(' '),
 } as const;
 
-// Helper function to combine glass classes
-export function glassClasses(...classes: string[]): string {
+// ===========================================
+// POKEMON TYPE GRADIENTS - Clean & Vibrant
+// ===========================================
+
+export const TYPE_GRADIENTS = {
+  fire: 'from-orange-400 to-red-500',
+  water: 'from-blue-400 to-cyan-500',
+  grass: 'from-green-400 to-emerald-500',
+  electric: 'from-yellow-300 to-amber-400',
+  psychic: 'from-pink-400 to-purple-500',
+  ice: 'from-cyan-300 to-blue-400',
+  dragon: 'from-indigo-500 to-purple-600',
+  dark: 'from-gray-600 to-gray-800',
+  fairy: 'from-pink-300 to-pink-500',
+  normal: 'from-gray-300 to-gray-500',
+  fighting: 'from-red-500 to-red-700',
+  flying: 'from-blue-300 to-indigo-400',
+  poison: 'from-purple-400 to-purple-600',
+  ground: 'from-amber-400 to-orange-500',
+  rock: 'from-amber-600 to-amber-800',
+  bug: 'from-lime-400 to-green-500',
+  ghost: 'from-purple-500 to-indigo-700',
+  steel: 'from-gray-400 to-gray-600',
+} as const;
+
+// ===========================================
+// REGION ACCENT COLORS
+// ===========================================
+
+export const REGION_ACCENTS = {
+  kanto: 'from-red-500 to-blue-500',
+  johto: 'from-amber-400 to-gray-500',
+  hoenn: 'from-emerald-500 to-blue-500',
+  sinnoh: 'from-indigo-500 to-purple-500',
+  unova: 'from-gray-500 to-gray-800',
+  kalos: 'from-pink-500 to-purple-500',
+  alola: 'from-orange-400 to-teal-500',
+  galar: 'from-purple-500 to-red-500',
+  paldea: 'from-red-500 to-purple-500',
+} as const;
+
+// ===========================================
+// HELPER FUNCTIONS
+// ===========================================
+
+// Combine glass classes cleanly
+export function glassClasses(...classes: (string | undefined | false)[]): string {
   return classes.filter(Boolean).join(' ').replace(/\s+/g, ' ').trim();
 }
 
-// Glass morphism component builder
+// Build custom glass style
 export function createGlassStyle(options: {
   blur?: keyof typeof GLASS_BLUR;
   opacity?: 'subtle' | 'medium' | 'strong';
@@ -140,19 +296,19 @@ export function createGlassStyle(options: {
   transition?: keyof typeof GLASS_TRANSITION;
 }): string {
   const {
-    blur = 'xl',
+    blur = 'md',
     opacity = 'medium',
-    gradient = true,
-    border = 'medium',
-    shadow = 'xl',
-    rounded = 'xl',
-    hover = 'subtle',
-    transition = 'medium',
+    gradient = false, // Changed default to false - no more purple gradients
+    border = 'subtle',
+    shadow = 'md',
+    rounded = 'lg',
+    hover = 'none',
+    transition = 'default',
   } = options;
 
   return glassClasses(
     GLASS_BLUR[blur],
-    gradient ? GLASS_OPACITY.gradient[opacity] : GLASS_OPACITY.light[opacity],
+    GLASS_BG.frosted[opacity], // Always use clean frosted glass
     GLASS_BORDER[border],
     GLASS_SHADOW[shadow],
     GLASS_ROUNDED[rounded],
@@ -161,42 +317,18 @@ export function createGlassStyle(options: {
   );
 }
 
-// Color gradients for different types
-export const TYPE_GRADIENTS = {
-  fire: 'from-orange-400 to-red-600',
-  water: 'from-blue-400 to-cyan-600',
-  grass: 'from-green-400 to-emerald-600',
-  electric: 'from-yellow-300 to-yellow-500',
-  psychic: 'from-pink-400 to-purple-500',
-  ice: 'from-cyan-300 to-blue-400',
-  dragon: 'from-indigo-600 to-purple-800',
-  dark: 'from-gray-700 to-gray-900',
-  fairy: 'from-pink-300 to-pink-500',
-  normal: 'from-gray-400 to-gray-600',
-  fighting: 'from-red-600 to-red-800',
-  flying: 'from-blue-300 to-indigo-400',
-  poison: 'from-purple-500 to-purple-700',
-  ground: 'from-yellow-600 to-orange-700',
-  rock: 'from-yellow-700 to-yellow-900',
-  bug: 'from-green-500 to-green-700',
-  ghost: 'from-purple-600 to-purple-900',
-  steel: 'from-gray-500 to-gray-700',
-} as const;
-
-// Accent colors for regions
-export const REGION_ACCENTS = {
-  kanto: 'from-red-500 to-blue-500',
-  johto: 'from-yellow-500 to-gray-500',
-  hoenn: 'from-emerald-500 to-blue-600',
-  sinnoh: 'from-indigo-500 to-purple-600',
-  unova: 'from-gray-600 to-black',
-  kalos: 'from-pink-500 to-purple-500',
-  alola: 'from-orange-500 to-teal-500',
-  galar: 'from-purple-600 to-red-600',
-  paldea: 'from-red-500 to-purple-600',
-} as const;
+// ===========================================
+// DEFAULT EXPORT
+// ===========================================
 
 export default {
+  // New design tokens
+  RADIUS,
+  SHADOW,
+  TRANSITION,
+  HOVER,
+  GLASS_BG,
+  // Legacy exports for backward compatibility
   GLASS_BLUR,
   GLASS_OPACITY,
   GLASS_BORDER,
@@ -204,9 +336,11 @@ export default {
   GLASS_ROUNDED,
   GLASS_TRANSITION,
   GLASS_HOVER,
+  // Presets
   GLASS_STYLES,
   TYPE_GRADIENTS,
   REGION_ACCENTS,
+  // Functions
   glassClasses,
   createGlassStyle,
 };

@@ -10,7 +10,7 @@ import { TypeBadge } from "../../components/ui/TypeBadge";
 import Image from "next/image";
 import { getPrice as getCardPrice } from "../../utils/pokemonutils";
 import { DetailPageSkeleton } from '@/components/ui/SkeletonLoadingSystem';
-import UnifiedCard from "../../components/ui/cards/UnifiedCard";
+import { UnifiedCard } from "../../components/ui/cards";
 import StyledBackButton from "../../components/ui/StyledBackButton";
 // SimpleCardWrapper removed during consolidation - using div instead
 const SimpleCardWrapper = ({ children, className, rarity }: any) => {

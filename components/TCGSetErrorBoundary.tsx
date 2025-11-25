@@ -3,6 +3,11 @@ import { GlassContainer } from './ui/design-system/GlassContainer';
 import Button from '@/components/ui/Button';
 import logger from '../utils/logger';
 
+// GradientButton is just Button with gradient prop
+const GradientButton = (props: React.ComponentProps<typeof Button>) => (
+  <Button {...props} gradient />
+);
+
 interface Props {
   children: ReactNode;
 }

@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { PriceHistoryManager } from '../../lib/supabase';
 
-interface PriceIndicatorProps {
-  cardId: string;
+export interface PriceIndicatorProps {
+  cardId?: string;
   showTrend?: boolean;
   currentPrice?: string;
   variantType?: string;
   size?: 'sm' | 'md' | 'lg';
   className?: string;
+  // Alternative API for simple price display
+  price?: number;
+  variant?: string;
+  animated?: boolean;
 }
 
 // Price indicator component that shows current price with trend indicators
-export default function PriceIndicator({ cardId, showTrend = true, currentPrice = 'N/A', variantType = 'market', size = 'md', className = '' }: PriceIndicatorProps) {
+export default function PriceIndicator({ cardId, showTrend = true, currentPrice, variantType = 'market', size = 'md', className = '', price, variant, animated }: PriceIndicatorProps) {
+  // Support alternative API - if price is provided, use it directly
+  const displayPrice = currentPrice || (price !== undefined ? `$${price.toFixed(2)}` : 'N/A');
   const [priceChange, setPriceChange] = useState<{ amount: number; percentage: number; trend: "UP" | "DOWN" | "STABLE" } | null>(null);
   const [trend, setTrend] = useState<'UP' | 'DOWN' | 'STABLE'>('STABLE');
   const [loading, setLoading] = useState(false);
@@ -25,7 +31,7 @@ export default function PriceIndicator({ cardId, showTrend = true, currentPrice 
         // Get 7-day price statistics to determine trend
         const stats = await PriceHistoryManager.getCardPriceStats(cardId, variantType, 7);
         
-        if (stats) {
+        if (stats && currentPrice) {
           // Calculate percentage change if we have historical data
           const currentValue = parseFloat(currentPrice.replace('$', ''));
           const avgPrice = parseFloat(String(stats.avg_price || '0'));

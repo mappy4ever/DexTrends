@@ -3,20 +3,17 @@
 // Card Components
 export * from './cards';
 
-// Navigation Components  
-export * from './navigation';
+// Navigation Components (empty - navigation removed in consolidation)
+// export * from './navigation';
 
 // Modal Components
 export * from './modals';
 
-// Form Components - Enhanced with animations
-export * from './forms';
-export { default as EnhancedSearchBox } from './forms/EnhancedSearchBox';
-export { default as TypeFilter } from './forms/TypeFilter';
-// VisualSearchFilters removed - unused component
-
-// Progress Indicators
-export * from './progress';
+// Form Components
+export { default as Select } from './Select';
+export { default as Checkbox } from './Checkbox';
+export { StandardInput, SearchInput, FormInput } from './StandardInput';
+// EnhancedSearchBox and TypeFilter moved/removed in consolidation
 
 // Design System Components
 export * from './design-system';
@@ -53,14 +50,14 @@ export {
 } from './animations';
 export { default as AnimationSystem, HoverCard as AnimatedHoverCard } from './animations/AnimationSystem';
 export { default as EnhancedAnimationSystem } from './EnhancedAnimationSystem';
-export { useEnhancedAnimation } from './EnhancedAnimationSystem.hooks';
+// useEnhancedAnimation hook removed - using EnhancedAnimationSystem directly
 
 // Mobile components merged into unified responsive components
 export { PullToRefresh } from './gestures/PullToRefresh';
 
 // Chart Components
 export { default as PriceHistoryChart } from './charts/PriceHistoryChart';
-export { default as chartcontainer } from './charts/chartcontainer';
+// chartcontainer removed - unused component
 
 // Common Components (remaining in root)
 export { TypeBadge, default as TypeBadgeDefault } from './TypeBadge';
@@ -76,7 +73,7 @@ export { FullBleedWrapper, PageBackground } from './FullBleedWrapper';
 export { default as Button } from './Button';
 // UIPanel removed - unused component
 export { default as PokeballLoader } from './PokeballLoader';
-export { default as SkeletonLoader } from './SkeletonLoader';
+// SkeletonLoader export is from ./Skeleton (line 27)
 export { default as StyledBackButton } from './StyledBackButton';
 export { default as VirtualizedCardGrid } from './VirtualizedCardGrid';
 export { default as PageErrorBoundary } from './PageErrorBoundary';
@@ -90,6 +87,26 @@ export { default as PremiumComponents } from './PremiumComponents';
 export { Toast, ToastContainer } from './Toast';
 export { ContextMenu, useContextMenu } from './ContextMenu';
 
+// Empty State Components
+export { EmptyState, NoSearchResults, EmptyCollection, ErrorState } from './EmptyState';
+
+// Battle Effects
+export {
+  DamageNumber,
+  HitFlash,
+  AnimatedHPBar,
+  BattleAnnouncement,
+  VSBadge,
+  TurnIndicator,
+  PokemonEntry,
+  StatusBadge,
+  MoveButton,
+  VictoryCelebration
+} from './BattleEffects';
+
+// Modern Card Component
+export { ModernCard, StatCard, FeatureCard, EmptyStateCard, GradientBorderCard } from './ModernCard';
+
 // Feature Components
 export { default as AchievementSystem } from './AchievementSystem';
 export { default as PackOpening } from './PackOpening';
@@ -101,4 +118,4 @@ export { default as PokemonSoundEffects } from './PokemonSoundEffects';
 // Enhancement Components
 export { default as OptimizationEnhancer } from './OptimizationEnhancer';
 export { default as UserExperienceEnhancer } from './UserExperienceEnhancer';
-export { default as ComparisonFAB } from './ComparisonFAB';
+// ComparisonFAB removed - unused component

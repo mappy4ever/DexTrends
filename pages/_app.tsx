@@ -14,8 +14,8 @@ import "../styles/globals.css";
 import "../components/typebadge.css";
 import Layout from "../components/layout/Layout";
 import logger from "../utils/logger";
-import ErrorBoundary from "../components/layout/ErrorBoundary";
-import { PageTransition } from "../components/layout/PageTransition";
+import ErrorBoundary from "../components/ui/ErrorBoundary";
+import { PageTransition } from "../components/ui/PageTransition";
 import { UnifiedAppProvider } from '../context/UnifiedAppContext';
 import GlobalErrorHandler from '../components/GlobalErrorHandler';
 import { PWAProvider } from '../components/pwa/PWAProvider';
@@ -34,6 +34,8 @@ if (typeof window === 'undefined') {
 import { NotificationProvider } from '../components/qol/NotificationSystem';
 import { ContextualHelpProvider } from '../components/qol/ContextualHelp';
 import { PreferencesProvider } from '../components/qol/UserPreferences';
+// AuthProvider temporarily disabled for debugging
+// import { AuthProvider } from '../context/AuthContext';
 
 // Toast system imports
 import { ToastProvider } from '../components/providers/ToastProvider';
@@ -135,16 +137,16 @@ const AppContent: React.FC<AppContentProps> = ({
         </Head>
         
         <UnifiedAppProvider>
-          <ToastProvider>
-            {/* ModalProvider removed - using unified Modal */}
-              <NotificationProvider>
-                <ContextualHelpProvider>
-                  <PreferencesProvider>
+            <ToastProvider>
+              {/* ModalProvider removed - using unified Modal */}
+                <NotificationProvider>
+                  <ContextualHelpProvider>
+                    <PreferencesProvider>
                   <Layout fullBleed={fullBleed}>
                     <PageTransition>
                       <Component {...pageProps} />
                     </PageTransition>
-                  
+
                   {/* QOL System Components */}
                   {isClient && (
                     <>
@@ -152,17 +154,17 @@ const AppContent: React.FC<AppContentProps> = ({
                       <GlobalSearchShortcuts />
                       <PreferencesManager />
                       <DynamicIsland />
-                      
+
                       {/* Mobile features */}
                     </>
                   )}
                 </Layout>
                   </PreferencesProvider>
-                </ContextualHelpProvider>
-              </NotificationProvider>
-            {/* End ModalProvider removal */}
-          </ToastProvider>
-        </UnifiedAppProvider>
+                  </ContextualHelpProvider>
+                </NotificationProvider>
+              {/* End ModalProvider removal */}
+            </ToastProvider>
+          </UnifiedAppProvider>
       </PWAProvider>
     </>
   );

@@ -19,7 +19,7 @@ import { PocketCard } from "../../types/api/pocket-cards";
 import { NextPage } from "next";
 
 // Dynamic imports for components that might cause SSR issues
-import { CardGridSkeleton } from "../../components/ui/SkeletonLoader";
+import { CardGridSkeleton } from "../../components/ui/Skeleton";
 const PokemonEmptyState = dynamic(() => import("../../components/ui/loading/PokemonEmptyState"), { ssr: false });
 
 // Extended PocketCard interface with additional properties from the actual data

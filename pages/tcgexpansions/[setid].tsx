@@ -31,7 +31,7 @@ import { DetailPageSkeleton, InlineLoader } from '@/components/ui/SkeletonLoadin
 import logger from "../../utils/logger";
 import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
 import performanceMonitor from "../../utils/performanceMonitor";
-import { CardGridSkeleton } from "../../components/ui/SkeletonLoader";
+import { CardGridSkeleton } from "../../components/ui/Skeleton";
 import type { TCGCard, CardSet } from "../../types/api/cards";
 import type { FavoriteCard } from "../../context/modules/types";
 import TCGSetErrorBoundary from "../../components/TCGSetErrorBoundary";

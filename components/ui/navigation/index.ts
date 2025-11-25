@@ -1,3 +1,3 @@
 // Navigation components
-export { default as NavigationEnhancements } from './NavigationEnhancements';
-export { default as StickySidebar } from './StickySidebar';
+// NavigationEnhancements and StickySidebar removed in consolidation
+// Use BottomNavigation from ui/ for mobile navigation

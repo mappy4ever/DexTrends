@@ -5,7 +5,7 @@ import { DynamicCollectionManager, DynamicPriceAlerts } from '../components/dyna
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import PageErrorBoundary from '../components/ui/PageErrorBoundary';
 import { GlassContainer } from '../components/ui/design-system/GlassContainer';
-import { GradientButton } from '../components/ui/design-system/GradientButton';
+import { GradientButton } from '../components/ui/design-system';
 import { CircularCard } from '../components/ui/design-system/CircularCard';
 import { CircularButton, DefaultCard, CardHeader, CardTitle, CardContent } from '../components/ui/design-system';
 import { motion } from 'framer-motion';

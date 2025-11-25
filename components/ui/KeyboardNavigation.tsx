@@ -1,6 +1,7 @@
 import React, { useEffect, useCallback, useRef } from 'react';
 
-import { useFocusTrap, useKeyboardShortcuts } from './KeyboardNavigation.hooks';
+// useFocusTrap and useKeyboardShortcuts hooks removed in consolidation
+
 interface KeyboardNavigationProps {
   children: React.ReactNode;
   onEscape?: () => void;

@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useMemo, CSSProperties, useEffect, useRef } from 'react';
 import { FixedSizeGrid as Grid, GridOnScrollProps } from 'react-window';
-import UnifiedCard from './cards/UnifiedCard';
+import { UnifiedCard } from './cards';
 import { InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { TCGCard } from '../../types/api/cards';
 import logger from '@/utils/logger';

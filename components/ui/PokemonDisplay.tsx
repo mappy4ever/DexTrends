@@ -54,41 +54,62 @@ interface PokemonType {
 
 export interface PokemonDisplayProps {
   // Core data
-  id: number;
+  id?: number;
   name: string;
   sprite?: string;
   types?: PokemonType[] | string[];
-  
+
   // Display options
   variant?: 'card' | 'tile' | 'avatar' | 'compact' | 'circular';
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-  
+
   // Special status
   isLegendary?: boolean;
   isMythical?: boolean;
   isStarter?: boolean;
-  
+
   // Stats (optional)
   hp?: number;
   attack?: number;
   defense?: number;
   speed?: number;
-  
+
   // Additional info
   generation?: number;
   evolutionStage?: number;
-  
+
   // Behavior
   onClick?: () => void;
   showTypes?: boolean;
   showStats?: boolean;
   showBadges?: boolean;
   animated?: boolean;
-  
+
   // Style
   className?: string;
   width?: number;
   height?: number;
+
+  // Backward compatibility props for EliteFourTile, GymLeaderAvatar, ChampionTile aliases
+  region?: string;
+  type?: string;
+  rank?: number;
+  image?: string;
+  team?: unknown[];
+  signature?: string;
+  strengths?: string[];
+  weaknesses?: string[];
+  quote?: string;
+  strategy?: string;
+  difficulty?: number;
+  badge?: string;
+  badgeImage?: string;
+  funFact?: string;
+  gymTown?: string;
+  recommendedLevel?: number;
+  acePokemon?: { name: string; id: number; sprite: string };
+  title?: string;
+  achievements?: string[];
 }
 
 // Size mappings
