@@ -8,7 +8,17 @@ const GLASS_OPACITY = { subtle: 'bg-white/60', medium: 'bg-white/80', strong: 'b
 const GLASS_BORDER = { light: 'border-white/20', medium: 'border-white/40' };
 const GLASS_SHADOW = { sm: 'shadow-sm', md: 'shadow-md', lg: 'shadow-lg' };
 const GLASS_ROUNDED = { sm: 'rounded-sm', md: 'rounded-md', lg: 'rounded-lg' };
-const TYPE_GRADIENTS = { fire: 'bg-gradient-to-r from-red-500 to-orange-500', water: 'bg-gradient-to-r from-blue-500 to-cyan-500' };
+const TYPE_GRADIENTS = {
+  fire: 'bg-gradient-to-r from-red-500 to-orange-500',
+  water: 'bg-gradient-to-r from-blue-500 to-cyan-500',
+  grass: 'bg-gradient-to-r from-green-500 to-emerald-500',
+  electric: 'bg-gradient-to-r from-yellow-400 to-amber-500',
+  psychic: 'bg-gradient-to-r from-pink-500 to-purple-500',
+  ice: 'bg-gradient-to-r from-cyan-300 to-blue-400',
+  dragon: 'bg-gradient-to-r from-indigo-600 to-purple-600',
+  dark: 'bg-gradient-to-r from-gray-700 to-gray-900',
+  fairy: 'bg-gradient-to-r from-pink-300 to-rose-400',
+};
 const createGlassStyle = () => "bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20";
 import logger from '@/utils/logger';
 
