@@ -88,6 +88,11 @@
   --page-padding-x: clamp(1rem, 4vw, 1.5rem);
   --page-padding-y: clamp(1.5rem, 4vw, 2rem);
 
+  /* Grid & Flex Gap (fluid) */
+  --gap-fluid: clamp(0.75rem, 2vw, 1.5rem);    /* 12-24px - general purpose */
+  --gap-cards: clamp(0.75rem, 2vw, 1.25rem);   /* 12-20px - card grids */
+  --gap-sections: clamp(1.5rem, 4vw, 3rem);    /* 24-48px - between sections */
+
   /* ========================================
      TYPOGRAPHY (Fluid scaling)
      ======================================== */

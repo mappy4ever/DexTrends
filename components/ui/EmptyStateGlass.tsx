@@ -106,11 +106,11 @@ const EmptyStateGlass: React.FC<EmptyStateGlassProps> = ({
       initial={animate ? "hidden" : undefined}
       animate={animate ? "visible" : undefined}
       className={`
-        backdrop-blur-xl bg-gradient-to-br from-white/80 via-purple-50/80 to-pink-50/80 
-        dark:from-gray-800/80 dark:via-gray-700/80 dark:to-gray-800/80
-        border border-white/40 dark:border-gray-700/40
-        shadow-xl
-        p-8 md:p-12 text-center rounded-3xl
+        bg-[var(--glass-bg-medium)] backdrop-blur-[var(--glass-blur-medium)]
+        border border-white/30 dark:border-white/15
+        shadow-[var(--shadow-lg)]
+        p-[var(--container-padding)] md:p-12 text-center rounded-2xl
+        transition-all duration-[var(--duration-normal)] ease-[var(--ease-out)]
         ${className}
       `}
     >
@@ -122,7 +122,7 @@ const EmptyStateGlass: React.FC<EmptyStateGlassProps> = ({
         {(displayIcon || displayIconText) && (
           <div className="mb-4">
             {displayIcon ? (
-              <div className="backdrop-blur-md bg-gradient-to-br from-white/30 via-white/20 to-white/30 dark:from-gray-800/30 dark:via-gray-800/20 dark:to-gray-800/30 border border-white/20 dark:border-gray-700/20 shadow-md rounded-full w-24 h-24 flex items-center justify-center">
+              <div className="bg-[var(--glass-bg-light)] backdrop-blur-[var(--glass-blur-light)] border border-white/20 dark:border-white/10 shadow-[var(--shadow-md)] rounded-full w-24 h-24 flex items-center justify-center">
                 {displayIcon}
               </div>
             ) : (
@@ -135,7 +135,7 @@ const EmptyStateGlass: React.FC<EmptyStateGlassProps> = ({
         {displayTitle && (
           <motion.h3
             variants={animate ? itemVariants : undefined}
-            className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"
+            className="text-[var(--text-2xl)] font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"
           >
             {displayTitle}
           </motion.h3>
@@ -145,7 +145,7 @@ const EmptyStateGlass: React.FC<EmptyStateGlassProps> = ({
         {displayMessage && (
           <motion.p
             variants={animate ? itemVariants : undefined}
-            className="text-gray-600 dark:text-gray-400 max-w-md mx-auto"
+            className="text-[var(--text-base)] text-gray-600 dark:text-gray-400 max-w-md mx-auto"
           >
             {displayMessage}
           </motion.p>
@@ -179,10 +179,10 @@ const EmptyStateGlass: React.FC<EmptyStateGlassProps> = ({
                 onClick={secondaryButton.onClick}
                 className={`
                   px-6 py-3 rounded-full font-medium
-                  backdrop-blur-md bg-white/70 dark:bg-gray-800/70
-                  border border-white/30 dark:border-gray-700/30
-                  hover:bg-white/90 dark:hover:bg-gray-800/90
-                  transition-all duration-300
+                  bg-[var(--glass-bg-light)] backdrop-blur-[var(--glass-blur-light)]
+                  border border-white/20 dark:border-white/10
+                  hover:bg-[var(--glass-bg-medium)] hover:shadow-[var(--shadow-sm)]
+                  transition-all duration-[var(--duration-fast)] ease-[var(--ease-out)]
                 `}
               >
                 {secondaryButton.text}

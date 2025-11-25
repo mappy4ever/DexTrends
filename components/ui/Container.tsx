@@ -1,11 +1,9 @@
 import React, { forwardRef, HTMLAttributes } from 'react';
-import { motion } from 'framer-motion';
 import { cn } from '../../utils/cn';
-const hapticManager = typeof window !== 'undefined' ? require('../../utils/hapticFeedback').default : null;
 
 export interface CardProps extends HTMLAttributes<HTMLDivElement> {
-  variant?: 'default' | 'elevated' | 'outline' | 'ghost' | 'gradient' | 'featured';
-  padding?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
+  variant?: 'default' | 'elevated' | 'outline' | 'ghost' | 'gradient' | 'featured' | 'glass-light' | 'glass-medium' | 'glass-heavy';
+  padding?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'fluid';
   rounded?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
   hover?: boolean;
   loading?: boolean;
@@ -42,21 +40,23 @@ const Container = forwardRef<HTMLDivElement, CardProps>(
       full: 'rounded-full'
     };
 
-    // Padding styles - responsive
+    // Padding styles - responsive with fluid option using design tokens
     const paddingStyles = {
       none: '',
       sm: 'p-2 sm:p-3',
       md: 'p-3 sm:p-4 md:p-5',
       lg: 'p-4 sm:p-6 md:p-8',
-      xl: 'p-6 sm:p-8 md:p-10'
+      xl: 'p-6 sm:p-8 md:p-10',
+      // Fluid padding uses CSS clamp() from design-tokens.css
+      fluid: 'p-[var(--container-padding)]'
     };
 
-    // Base styles
+    // Base styles - using design token animation timing
     const baseStyles = cn(
       'relative',
       roundedStyles[rounded],
       paddingStyles[padding],
-      'transition-all duration-200 ease-out'
+      'transition-all duration-[var(--duration-fast)] ease-[var(--ease-out)]'
     );
 
     // Gradient backgrounds
@@ -69,7 +69,7 @@ const Container = forwardRef<HTMLDivElement, CardProps>(
       custom: customGradient || ''
     };
 
-    // Variant styles
+    // Variant styles - including 3 standardized glass morphism levels
     const variantStyles = {
       default: cn(
         'bg-white dark:bg-gray-800',
@@ -99,6 +99,25 @@ const Container = forwardRef<HTMLDivElement, CardProps>(
         'text-white',
         'shadow-xl hover:shadow-2xl',
         'border-0'
+      ),
+      // Glass morphism variants using design tokens
+      'glass-light': cn(
+        'bg-[var(--glass-bg-light)]',
+        'backdrop-blur-[var(--glass-blur-light)]',
+        'border border-white/20 dark:border-white/10',
+        'shadow-[var(--shadow-sm)]'
+      ),
+      'glass-medium': cn(
+        'bg-[var(--glass-bg-medium)]',
+        'backdrop-blur-[var(--glass-blur-medium)]',
+        'border border-white/30 dark:border-white/15',
+        'shadow-[var(--shadow-md)]'
+      ),
+      'glass-heavy': cn(
+        'bg-[var(--glass-bg-heavy)]',
+        'backdrop-blur-[var(--glass-blur-heavy)]',
+        'border border-white/40 dark:border-white/20',
+        'shadow-[var(--shadow-lg)]'
       )
     };
 
@@ -255,18 +274,20 @@ export const ContainerGrid: React.FC<{
     lg?: number;
     xl?: number;
   };
-  gap?: 'sm' | 'md' | 'lg';
+  gap?: 'sm' | 'md' | 'lg' | 'fluid';
   className?: string;
-}> = ({ 
-  children, 
+}> = ({
+  children,
   cols = { default: 1, sm: 2, md: 3, lg: 4 },
   gap = 'md',
-  className 
+  className
 }) => {
   const gapStyles = {
     sm: 'gap-2 sm:gap-3',
     md: 'gap-3 sm:gap-4 md:gap-5',
-    lg: 'gap-4 sm:gap-6 md:gap-8'
+    lg: 'gap-4 sm:gap-6 md:gap-8',
+    // Fluid gap uses CSS clamp() from design-tokens.css
+    fluid: 'gap-[var(--gap-fluid)]'
   };
 
   const colStyles = cn(
