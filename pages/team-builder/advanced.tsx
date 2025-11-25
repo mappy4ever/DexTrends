@@ -16,7 +16,7 @@ import logger from '../../utils/logger';
 import { TypeBadge } from '../../components/ui/TypeBadge';
 import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import FullBleedWrapper from '../../components/ui/FullBleedWrapper';
-import CircularButton from '../../components/ui/CircularButton';
+import Button from '../../components/ui/Button';
 import { analyzeTeamTypeSynergy, getTypeMatchups } from '../../utils/typeEffectiveness';
 import type { TeamMember, Move, Nature, StatSpread } from '../../types/team-builder';
 import type { Pokemon } from "../../types/pokemon";
@@ -207,30 +207,30 @@ const AdvancedTeamBuilder: NextPage = () => {
 
           {/* Tabs */}
           <div className="flex flex-wrap gap-2 mb-4 sm:mb-6">
-            <CircularButton
+            <Button
               onClick={() => setActiveTab('builder')}
               variant={activeTab === 'builder' ? 'primary' : 'secondary'}
               size="md"
               className={activeTab === 'builder' ? 'bg-blue-600' : ''}
             >
               Team Builder
-            </CircularButton>
-            <CircularButton
+            </Button>
+            <Button
               onClick={() => setActiveTab('analysis')}
               variant={activeTab === 'analysis' ? 'primary' : 'secondary'}
               size="md"
               className={activeTab === 'analysis' ? 'bg-blue-600' : ''}
             >
               Synergy Analysis
-            </CircularButton>
-            <CircularButton
+            </Button>
+            <Button
               onClick={() => setActiveTab('export')}
               variant={activeTab === 'export' ? 'primary' : 'secondary'}
               size="md"
               className={activeTab === 'export' ? 'bg-blue-600' : ''}
             >
               Export/Import
-            </CircularButton>
+            </Button>
             <Link
               href="/team-builder/ev-optimizer"
               className="min-h-[44px] px-3 sm:px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-sm sm:text-base rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-200 flex items-center gap-2 touch-target"
@@ -267,7 +267,7 @@ const AdvancedTeamBuilder: NextPage = () => {
                   {searchResults.length > 0 && (
                     <div className="mt-4 space-y-2">
                       {searchResults.map((pokemon) => (
-                        <CircularButton
+                        <Button
                           key={pokemon.id}
                           onClick={() => addToTeam(pokemon)}
                           variant="secondary"
@@ -288,7 +288,7 @@ const AdvancedTeamBuilder: NextPage = () => {
                               )) || null}
                             </div>
                           </div>
-                        </CircularButton>
+                        </Button>
                       ))}
                     </div>
                   )}
@@ -352,7 +352,7 @@ const AdvancedTeamBuilder: NextPage = () => {
               <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">Export/Import Team</h2>
               
               <div className="space-y-4">
-                <CircularButton
+                <Button
                   onClick={exportTeam}
                   disabled={team.length === 0}
                   variant="primary"
@@ -360,7 +360,7 @@ const AdvancedTeamBuilder: NextPage = () => {
                   className="min-h-[44px] px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 touch-target"
                 >
                   Export Team as JSON
-                </CircularButton>
+                </Button>
 
                 <div className="border-t pt-4">
                   <h3 className="font-medium mb-2">Showdown Format</h3>
@@ -411,22 +411,22 @@ const TeamMemberCard: React.FC<{
         </div>
         
         <div className="flex gap-1 sm:gap-2">
-          <CircularButton
+          <Button
             onClick={onEdit}
             variant="ghost"
             size="sm"
             className="text-blue-600 hover:text-blue-700 text-xs sm:text-sm min-h-[36px] touch-target"
           >
             Edit
-          </CircularButton>
-          <CircularButton
+          </Button>
+          <Button
             onClick={onRemove}
             variant="ghost"
             size="sm"
             className="text-red-600 hover:text-red-700 text-xs sm:text-sm min-h-[36px] touch-target"
           >
             Remove
-          </CircularButton>
+          </Button>
         </div>
       </div>
 

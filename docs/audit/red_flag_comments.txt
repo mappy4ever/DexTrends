@@ -1,0 +1,922 @@
+CLAUDE.md:13:# 1. Remove temporary files
+CLAUDE.md:30:3. **No Temporary Files**: Delete all .sh scripts, test reports after use
+CLAUDE.md:202:5. **Deprecated wrappers** - ConsistentModal, EnhancedModal still used
+CLAUDE.md:215:3. Remove all temporary files
+scripts/test-complete-data.js:122:      if (html.includes('placeholder="Search')) {
+scripts/verify-cardlist.js:9:      console.log(`Attempt ${i + 1} failed:`, error.message);
+scripts/analyze-unused.js:29:  // Create a temporary tsconfig for analysis
+scripts/analyze-unused.js:114:  // Clean up temporary tsconfig
+scripts/analyze-unused.js:126:  // Create temporary .eslintrc for analysis
+scripts/analyze-unused.js:191:  // Clean up temporary eslintrc
+scripts/analyze-unused.js:206:  todoComments: [],
+scripts/analyze-unused.js:237:    // Find TODO comments
+scripts/analyze-unused.js:238:    if (line.includes('TODO:') || line.includes('FIXME:') || line.includes('XXX:')) {
+scripts/analyze-unused.js:239:      customPatterns.todoComments.push({
+scripts/analyze-unused.js:294:console.log(`  - TODO comments: ${customPatterns.todoComments.length}`);
+scripts/analyze-unused.js:308:    todoComments: customPatterns.todoComments.length,
+scripts/analyze-unused.js:325:if (customPatterns.todoComments.length > 20) {
+scripts/analyze-unused.js:326:  summary.recommendations.push('Review and prioritize TODO comments');
+scripts/analyze-unused.js:346:- TODO comments: ${customPatterns.todoComments.length}
+scripts/analyze-unused.js:357:3. Document unimplemented features found in TODO comments
+scripts/analyze-unused.js:387:console.log('4. Document unimplemented features from TODO comments');
+pages/trending.tsx:203:        // Attempt retry for network-related errors
+pages/trending.tsx:220:    for (let attempt = 0; attempt < retries; attempt++) {
+pages/trending.tsx:222:        if (attempt > 0) {
+pages/trending.tsx:224:          await new Promise(resolve => setTimeout(resolve, delay * Math.pow(2, attempt)));
+pages/trending.tsx:229:        logger.warn(`Fetch attempt ${attempt + 1} failed`, { error, attempt });
+pages/trending.tsx:230:        if (attempt === retries - 1) {
+pages/trending.tsx:261:        <PageLoader text={isRetrying ? `Retrying... (Attempt ${retryCount + 1})` : "Analyzing market trends..."} />
+pages/trending.tsx:273:              Attempted {retryCount} time{retryCount !== 1 ? 's' : ''}
+pages/_app.tsx:10:import "../styles/overrides.css";  // Temporary fixes only
+pages/favorites.tsx:55:  // Placeholder functions - will be replaced when properly scoped
+pages/favorites.tsx:135:        // Attempt retry for network-related errors
+pages/favorites.tsx:224:        // Attempt retry for network-related errors
+pages/favorites.tsx:295:              isRetrying.pokemon && activeTab === 'pokemon' ? `Retrying Pokemon... (Attempt ${retryCount.pokemon + 1})` :
+pages/favorites.tsx:296:              isRetrying.cards && activeTab === 'cards' ? `Retrying Cards... (Attempt ${retryCount.cards + 1})` :
+pages/favorites.tsx:338:                      Attempted {retryCount.pokemon} time{retryCount.pokemon !== 1 ? 's' : ''}
+pages/favorites.tsx:405:                      Attempted {retryCount.cards} time{retryCount.cards !== 1 ? 's' : ''}
+pages/market.tsx:188:                      Analytics dashboard coming soon...
+pages/type-effectiveness.tsx:143:      // Attempt retry for network-related errors
+pages/type-effectiveness.tsx:164:    for (let attempt = 0; attempt < retries; attempt++) {
+pages/type-effectiveness.tsx:166:        if (attempt > 0) {
+pages/type-effectiveness.tsx:168:          await new Promise(resolve => setTimeout(resolve, delay * Math.pow(2, attempt)));
+pages/type-effectiveness.tsx:173:        logger.warn(`Initialization attempt ${attempt + 1} failed`, { error, attempt });
+pages/type-effectiveness.tsx:174:        if (attempt === retries - 1) {
+pages/analytics.tsx:69:    { id: 'swsh12', name: 'Silver Tempest', count: 5940, percentage: 12.1 },
+scripts/showdown-sync/package-lock.json:588:        "ts-script": "dist/bin-script-deprecated.js"
+pages/battle-simulator.tsx:82:interface PokemonSelectionItemProps {
+pages/battle-simulator.tsx:93:const PokemonSelectionItem: React.FC<PokemonSelectionItemProps> = ({ pokemon, pokemonId, onSelect, allPokemonData = null }) => {
+pages/battle-simulator.tsx:1406:                        src={selectedPokemon1.sprites?.front_default || '/pokemon-placeholder.png'}
+pages/battle-simulator.tsx:1641:                        src={selectedPokemon2.sprites?.front_default || '/pokemon-placeholder.png'}
+pages/battle-simulator.tsx:2110:                  placeholder="Search moves..."
+pages/battle-simulator.tsx:2379:                    const temp1 = selectedPokemon1;
+pages/battle-simulator.tsx:2380:                    const temp2 = selectedPokemon2;
+pages/battle-simulator.tsx:2381:                    const tempConfig1 = pokemon1Config;
+pages/battle-simulator.tsx:2382:                    const tempConfig2 = pokemon2Config;
+pages/battle-simulator.tsx:2383:                    setSelectedPokemon1(temp2);
+pages/battle-simulator.tsx:2384:                    setSelectedPokemon2(temp1);
+pages/battle-simulator.tsx:2385:                    setPokemon1Config(tempConfig2);
+pages/battle-simulator.tsx:2386:                    setPokemon2Config(tempConfig1);
+pages/pokedex.tsx:97:        // Create placeholders immediately
+pages/pokedex.tsx:98:        const placeholders: Pokemon[] = Array.from({ length: TOTAL_POKEMON }, (_, i) => ({
+pages/pokedex.tsx:107:        setPokemon(placeholders);
+pages/pokedex.tsx:111:        const allPokemon = [...placeholders];
+pages/pokedex.tsx:450:                  placeholder="Search Pokémon..."
+pages/battle-simulator/team-builder.tsx:27:            placeholder="Enter Pokémon name"
+scripts/showdown-sync/sync-showdown-data.ts:20:const RETRY_ATTEMPTS = 3;
+scripts/showdown-sync/sync-showdown-data.ts:103:async function fetchWithRetry(url: string, retries = RETRY_ATTEMPTS): Promise<string> {
+scripts/showdown-sync/sync-showdown-data.ts:106:      logger.info(`Fetching ${url} (attempt ${i + 1}/${retries})`);
+scripts/showdown-sync/sync-showdown-data.ts:116:      logger.error(`Attempt ${i + 1} failed:`, { error: error.message });
+scripts/showdown-sync/sync-showdown-data.ts:124:  throw new Error(`Failed to fetch ${url} after ${retries} attempts`);
+pages/collections.tsx:394:      {/* Performance Chart Placeholder */}
+pages/api/tcg-sets/[setId].ts:134:          error: 'Service temporarily unavailable',
+pages/api/tcg-sets/[setId].ts:144:          error: 'Service temporarily unavailable',
+pages/api/pocket-types.ts:17:    { id: "pock-card-001", name: "Pocket Pikachu", image: "/placeholder-card.png", types: ["Electric"], rarity: "Rare Holo V" },
+pages/api/pocket-types.ts:19:    { id: "pock-card-003", name: "Pocket Squirtle", image: "/placeholder-card.png", types: ["Water"], rarity: "Uncommon" },
+pages/api/pocket-types.ts:21:    { id: "pock-card-005", name: "Pocket Eevee", image: "/placeholder-card.png", types: ["Normal"], rarity: "Rare" }
+pages/api/admin/warm-cache.ts:113:  'sv5',           // Temporal Forces (Mar 2024)
+pages/api/admin/warm-cache.ts:144:    logger.warn('[Cache Warm] Unauthorized access attempt', { 
+pages/api/admin/redis-reset.ts:20:    logger.warn('[Redis Reset] Unauthorized access attempt');
+pages/api/admin/warm-sets-list.ts:25:    logger.warn('[Warm Sets List] Unauthorized access attempt', { 
+pages/api/admin/startup-warming.ts:20:    logger.warn('[Startup Warming] Unauthorized access attempt');
+scripts/browser-test.js:49:        document.querySelector('input[placeholder*="Search"], input[placeholder*="search"]'),
+pages/tcgexpansions.tsx:32:          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', 
+pages/pokemon/items-unified.tsx:350:          searchPlaceholder="Search items by name or effect..."
+pages/pokemon/moves-unified.tsx:83:        // Create placeholders first for fast initial load
+pages/pokemon/moves-unified.tsx:84:        const placeholderMoves: Move[] = movesList.results.map((m, index) => ({
+pages/pokemon/moves-unified.tsx:99:        setMoves(placeholderMoves);
+pages/pokemon/moves-unified.tsx:104:        const allMoves = [...placeholderMoves];
+pages/pokemon/moves-unified.tsx:456:            searchPlaceholder="Search moves..."
+pages/pokemon/abilities.tsx:402:          searchPlaceholder="Search abilities by name or effect..."
+pages/cards/[cardId].tsx:794:                      src={relatedCard.images?.small || '/placeholder.png'} 
+pages/pokemon/games.tsx:391:              placeholder="Search games, platforms, or features..."
+pages/pocketmode/decks.tsx:228:                  placeholder="Search decks (e.g., Pikachu, Mewtwo, Lightning)"
+pages/pocketmode/expansions.tsx:500:                  placeholder="Search expansions... (Press / to focus)"
+pages/_experimental/pokedex-unified.tsx:98:        // Create placeholder data immediately for fast perceived load
+pages/_experimental/pokedex-unified.tsx:99:        const placeholders: Pokemon[] = Array.from({ length: TOTAL_POKEMON }, (_, i) => ({
+pages/_experimental/pokedex-unified.tsx:107:        setPokemon(placeholders);
+pages/_experimental/pokedex-unified.tsx:112:        const allPokemon = [...placeholders];
+pages/_experimental/pokedex-unified.tsx:443:                placeholder="Search Pokémon..."
+pages/_experimental/index-unified.tsx:304:                Temporal Forces now available with 200+ new cards
+pages/_experimental/tcgsets-unified.tsx:290:                placeholder="Search sets by name or series..."
+pages/_experimental/pokedex-new.tsx:95:        // Create placeholders immediately
+pages/_experimental/pokedex-new.tsx:96:        const placeholders: Pokemon[] = Array.from({ length: TOTAL_POKEMON }, (_, i) => ({
+pages/_experimental/pokedex-new.tsx:105:        setPokemon(placeholders);
+pages/_experimental/pokedex-new.tsx:109:        const allPokemon = [...placeholders];
+pages/_experimental/pokedex-new.tsx:439:                  placeholder="Search Pokémon..."
+pages/_experimental/type-effectiveness-unified.tsx:143:      // Attempt retry for network-related errors
+pages/_experimental/type-effectiveness-unified.tsx:164:    for (let attempt = 0; attempt < retries; attempt++) {
+pages/_experimental/type-effectiveness-unified.tsx:166:        if (attempt > 0) {
+pages/_experimental/type-effectiveness-unified.tsx:168:          await new Promise(resolve => setTimeout(resolve, delay * Math.pow(2, attempt)));
+pages/_experimental/type-effectiveness-unified.tsx:173:        logger.warn(`Initialization attempt ${attempt + 1} failed`, { error, attempt });
+pages/_experimental/type-effectiveness-unified.tsx:174:        if (attempt === retries - 1) {
+pages/pocketmode/[pokemonid].tsx:604:                    placeholder="blur"
+pages/pocketmode/[pokemonid].tsx:954:              placeholder="blur"
+pages/pocketmode/deckbuilder.tsx:179:      const itemPatterns = [
+pages/pocketmode/deckbuilder.tsx:188:      if (itemPatterns.some(pattern => pattern.test(name))) return 'Item';
+pages/pocketmode/deckbuilder.tsx:942:                    placeholder="Search cards..."
+pages/pocketmode/deckbuilder.tsx:945:                    className="w-full pl-12 pr-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-pokemon-red focus:border-transparent transition-all text-gray-900 dark:text-white placeholder-gray-400"
+pages/pocketmode/deckbuilder.tsx:1345:              placeholder="Enter deck name..."
+pages/pocketmode/deckbuilder.tsx:1382:              placeholder="Paste deck list here..."
+pages/pokemon/items.tsx:350:          searchPlaceholder="Search items by name or effect..."
+pages/pocketmode/index.tsx:101:          const searchInput = document.querySelector<HTMLInputElement>('input[placeholder*="Search cards"]');
+pages/pocketmode/index.tsx:163:      const itemPatterns = [
+pages/pocketmode/index.tsx:172:      if (itemPatterns.some(pattern => pattern.test(name))) return 'Item';
+pages/pocketmode/index.tsx:520:                    placeholder="Search Pocket cards... (Press / to focus)"
+pages/pocketmode/packs.tsx:187:      // Filter out shared and placeholder packs
+pages/pocketmode/packs.tsx:189:          name.includes('PLACEHOLDER') ||
+pages/pocketmode/packs.tsx:340:      'Space Time Dialga': 'Master time itself with the temporal powers of the legendary Dialga.',
+pages/pocketmode/packs.tsx:665:                    // Clean placeholder with rainbow indicator
+pages/pocketmode/packs.tsx:674:                        <p className="font-semibold text-sm">PLACEHOLDER</p>
+pages/pocketmode/packs.tsx:675:                        <p className="text-xs opacity-80">Rainbow = Temp</p>
+pages/pocketmode/set/[setId].tsx:334:                placeholder={`Search ${setInfo?.name || 'expansion'} cards...`}
+pages/pokemon/abilities-unified.tsx:402:          searchPlaceholder="Search abilities by name or effect..."
+pages/pokemon/moves.tsx:83:        // Create placeholders first for fast initial load
+pages/pokemon/moves.tsx:84:        const placeholderMoves: Move[] = movesList.results.map((m, index) => ({
+pages/pokemon/moves.tsx:99:        setMoves(placeholderMoves);
+pages/pokemon/moves.tsx:104:        const allMoves = [...placeholderMoves];
+pages/pokemon/moves.tsx:456:            searchPlaceholder="Search moves..."
+scripts/migrations/apply-items-migration.ts:34:      console.log('Attempting direct table creation...');
+pages/team-builder/ev-optimizer.tsx:195:                  placeholder="Search Pokemon..."
+pages/team-builder/ev-optimizer.tsx:342:                          placeholder="Enter target"
+pages/team-builder/advanced.tsx:255:                    placeholder="Search Pokemon..."
+lib/tcg-cache.ts:49:  'sv5',             // Temporal Forces
+lib/tcg-cache-wrapper.ts:4: * DEPRECATED: Use cache.tcg directly from @/utils/cache
+lib/tcg-cache-wrapper.ts:8:// Creating stub for compatibility
+lib/static-sets-fallback.ts:110:      name: "Temporal Forces",
+lib/static-sets-fallback.ts:199:      name: "Silver Tempest",
+pages/tcgexpansions/[setid].tsx:71:  const [fetchAttempted, setFetchAttempted] = useState<boolean>(false);
+pages/tcgexpansions/[setid].tsx:210:        setFetchAttempted(true);
+pages/tcgexpansions/[setid].tsx:447:  if (error && fetchAttempted) {
+pages/tcgexpansions/[setid].tsx:464:  if (!setInfo && fetchAttempted && !loading) {
+pages/tcgexpansions/[setid].tsx:506:          {/* Compact Stats Bar - Temporarily disabled after Phase 8 
+pages/tcgexpansions/[setid].tsx:517:          {/* Horizontal Card Showcase - Temporarily disabled after Phase 8 
+pages/tcgexpansions/[setid].tsx:555:                        placeholder="Search cards..."
+public/data/faq-content.json:24:    "answer": "Destination data is often entered as free text in the source files, which can lead to spelling variations, different formatting, or incomplete information. While we attempt to parse these into standardized locations for mapping, not all entries can be geocoded with perfect accuracy. In cases of ambiguity or unparseable entries, they may not appear on the map or might be grouped under a broader region or country. The original destination text is retained in the source data for transparency."
+package-lock.json:173:    "node_modules/@babel/template": {
+package-lock.json:175:      "resolved": "https://registry.npmjs.org/@babel/template/-/template-7.27.2.tgz",
+package-lock.json:197:        "@babel/template": "^7.27.2",
+lib/redis.ts:12:      logger.info(`[Redis] Retrying connection attempt ${times}`);
+lib/supabase.ts:29:    supabaseUrl || 'https://placeholder.supabase.co',
+lib/supabase.ts:30:    supabaseAnonKey || 'placeholder-key',
+lib/background-cache-warmer.ts:26:    { setId: 'sv5', priority: 'critical' },    // Temporal Forces
+public/data/scraped/champions/champions-direct.json:31:      "original": "File:LanceSilverTempest159.jpg",
+public/data/scraped/champions/champions-direct.json:39:      "original": "File:LanceSilverTempest192.jpg",
+public/data/scraped/champions/champions-direct.json:47:      "original": "File:LanceSilverTempest206.jpg",
+public/data/scraped/champions/champions-direct.json:183:      "original": "File:WallaceSilverTempest166.jpg",
+public/data/scraped/champions/champions-direct.json:191:      "original": "File:WallaceSilverTempest194.jpg",
+public/data/scraped/champions/champions-direct.json:199:      "original": "File:WallaceSilverTempest208.jpg",
+hooks/useKeyboardShortcuts.ts:168:        const searchInput = document.querySelector('input[type="search"], input[placeholder*="Search"]') as HTMLInputElement;
+hooks/useKeyboardShortcuts.ts:180:        const searchInput = document.querySelector('input[type="search"], input[placeholder*="Search"]') as HTMLInputElement;
+public/data/scraped/elite-four/elite-four-direct.json:271:      "original": "File:LanceSilverTempest159.jpg",
+public/data/scraped/elite-four/elite-four-direct.json:279:      "original": "File:LanceSilverTempest192.jpg",
+public/data/scraped/elite-four/elite-four-direct.json:287:      "original": "File:LanceSilverTempest206.jpg",
+public/data/scraped/elite-four/elite-four-direct.json:783:      "original": "File:Sticker Template Bertha Background.png",
+public/images/placeholder-gym-leader.png:1:# Placeholder image
+public/images/placeholder-gym-leader.png:2:This is a placeholder file. Replace with actual placeholder image.
+public/data/scraped/gym-leaders/gym-leaders-direct.json:1735:      "original": "File:WallaceSilverTempest166.jpg",
+public/data/scraped/gym-leaders/gym-leaders-direct.json:1743:      "original": "File:WallaceSilverTempest194.jpg",
+public/data/scraped/gym-leaders/gym-leaders-direct.json:1751:      "original": "File:WallaceSilverTempest208.jpg",
+public/data/scraped/gym-leaders/gym-leaders-direct.json:2335:      "original": "File:CandiceSilverTempest152.jpg",
+public/data/scraped/gym-leaders/gym-leaders-direct.json:2343:      "original": "File:CandiceSilverTempest189.jpg",
+public/data/scraped/gym-leaders/gym-leaders-direct.json:2351:      "original": "File:CandiceSilverTempest204.jpg",
+public/data/scraped/gym-leaders/gym-leaders-direct.json:5263:      "original": "File:GordieSilverTempestTG24.jpg",
+public/data/scraped/gym-leaders/gym-leaders-direct.json:5511:      "original": "File:RaihanSilverTempestTG27.jpg",
+public/data/leaderboard.json:79412:    "name": "Snowpoint Temple",
+public/data/leaderboard.json:104017:    "name": "Temple of Sinnoh",
+public/data/leaderboard.json:104430:    "name": "Temple of Sinnoh",
+hooks/useProgressiveImage.ts:5:  placeholder?: string;
+hooks/useProgressiveImage.ts:20:  placeholder,
+hooks/useProgressiveImage.ts:26:    currentSrc: placeholder || '',
+hooks/useProgressiveImage.ts:35:  // Generate blur placeholder from image URL if not provided
+hooks/useProgressiveImage.ts:36:  const getPlaceholder = (imageSrc: string) => {
+hooks/useProgressiveImage.ts:37:    if (placeholder) return placeholder;
+hooks/useProgressiveImage.ts:110:  // Set initial placeholder
+hooks/useProgressiveImage.ts:112:    const placeholderSrc = getPlaceholder(src);
+hooks/useProgressiveImage.ts:115:      currentSrc: placeholderSrc
+hooks/useProgressiveImage.ts:117:  }, [src, placeholder]);
+public/data/scraped/archives/archives-energyCards.json:1646:      "original": "File:MistEnergyTemporalForces161.jpg",
+public/data/scraped/archives/archives-energyCards.json:1647:      "local": "mistenergytemporalforces161.jpg",
+public/data/scraped/archives/archives-energyCards.json:1648:      "path": "/images/scraped/energy/mistenergytemporalforces161.jpg",
+public/data/scraped/archives/archives-energyCards.json:1674:      "original": "File:NeoUpperEnergyTemporalForces162.jpg",
+public/data/scraped/archives/archives-energyCards.json:1675:      "local": "neoupperenergytemporalforces162.jpg",
+public/data/scraped/archives/archives-energyCards.json:1676:      "path": "/images/scraped/energy/neoupperenergytemporalforces162.jpg",
+public/data/scraped/archives/archives-energyCards.json:1947:      "original": "File:RegenerativeEnergySilverTempest168.jpg",
+public/data/scraped/archives/archives-energyCards.json:1948:      "local": "regenerativeenergysilvertempest168.jpg",
+public/data/scraped/archives/archives-energyCards.json:1949:      "path": "/images/scraped/energy/regenerativeenergysilvertempest168.jpg",
+components/PocketCardList.tsx:427:                placeholder="Search cards..."
+components/PocketCardList.tsx:652:            placeholder="blur"
+test-tcg-page.js:22:    const hasSetHeader = await page.isVisible('text="Temporal Forces"');
+README.md:127:- Some TODO items in code - see individual files
+styles/globals.css:1212:  .input::placeholder {
+styles/responsive-breakpoint-fixes.css:39:    grid-template-columns: repeat(3, 1fr) !important;
+styles/responsive-breakpoint-fixes.css:89:    grid-template-columns: repeat(4, 1fr) !important;
+styles/design-system.css:435:.input::placeholder,
+styles/design-system.css:436:.textarea::placeholder {
+styles/design-system.css:470:  grid-template-columns: repeat(auto-fill, minmax(144px, 1fr));
+styles/design-system.css:476:    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+styles/pokeid-mobile-fix.css:65:    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+styles/pokeid-mobile-fix.css:71:    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+styles/pokeid-mobile-fix.css:77:    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+styles/pokeid-mobile-fix.css:142:    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+styles/pokeid-mobile-fix.css:152:    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+styles/pokeid-mobile-fix.css:164:    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+styles/pokeid-mobile-fix.css:203:    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+components/qol/NotificationSystem.tsx:23:interface NotificationItemProps {
+components/qol/NotificationSystem.tsx:43:const NotificationItem: React.FC<NotificationItemProps> = ({ notification, onDismiss }) => {
+components/pwa/InstallPrompt.tsx:23:  installAttempted: boolean;
+components/pwa/InstallPrompt.tsx:72:    installAttempted: false,
+components/pwa/InstallPrompt.tsx:137:    setInstallationAnalytics(prev => ({ ...prev, userInteracted: true, installAttempted: true }));
+components/qol/KeyboardShortcuts.tsx:274:                  placeholder="Type a command or search..."
+components/qol/SmartSearchEnhancer.tsx:20:  placeholder?: string;
+components/qol/SmartSearchEnhancer.tsx:26:  placeholder = "Search..." 
+components/qol/SmartSearchEnhancer.tsx:229:          placeholder={placeholder}
+components/qol/SmartSearchEnhancer.tsx:375:            placeholder="Type a command or search..."
+docs/testing/TESTING_PROTOCOL.md:25:✓ All data must be REAL (no placeholders)
+docs/testing/TESTING_PROTOCOL.md:45:- [ ] Verify Evolution shows actual chain (not placeholder)
+docs/testing/TESTING_PROTOCOL.md:104:4. **Placeholder text visible** - BROKEN
+docs/testing/TESTING_PROTOCOL.md:136:- Testing notes: This template
+docs/showdown-integration/FEATURE_ROADMAP.md:185:- Quick team templates
+docs/archive/QUICK_START.md:31:# 4. Check for active TODOs
+docs/archive/QUICK_START.md:32:grep -r "TODO" --include="*.tsx" --include="*.ts" | head -10
+docs/development/cache-warming.md:57:- sv5 (Temporal Forces)
+docs/current/PHASE_5_ADVANCED_FEATURES_SUMMARY.md:15:- Blur-up placeholders for smooth loading
+docs/current/PHASE_5_ADVANCED_FEATURES_SUMMARY.md:96:- **After**: Progressive loading with blur placeholders
+docs/archive/ZERO_TYPESCRIPT_ERRORS.md:13:- Resolved TODO comments
+docs/archive/SESSION_HANDOFF_CHECKLIST.md:36:- [ ] Scan for TODOs: `grep -r "TODO" --include="*.tsx" | head -10`
+docs/archive/SESSION_HANDOFF_CHECKLIST.md:124:### 5. Commit Message Template
+docs/archive/TECHNICAL_IMPROVEMENTS.md:41:- Added blur placeholders and proper loading strategies
+docs/archive/TECHNICAL_IMPROVEMENTS.md:103:  placeholder="blur"
+docs/archive/TECHNICAL_IMPROVEMENTS.md:104:  blurDataURL={BLUR_PLACEHOLDER}
+docs/archive/old-project-resources/SKELETON_LOADER_ASSESSMENT.md:104:- **Charts** - Shows chart area placeholder
+docs/archive/old-project-resources/SKELETON_LOADER_ASSESSMENT.md:132:3. Chart placeholders (shows expected size)
+docs/archive/cleanup-project-august-2025/CLEANUP_PROGRESS.md:12:  - TODO comments: 1
+docs/archive/cleanup-project-august-2025/CLEANUP_PROGRESS.md:70:   - Unimplemented features (add TODO)
+docs/archive/cleanup-project-august-2025/PHASE_2_COMPLETION.md:28:#### Utilities (1 attempted)
+docs/archive/cleanup-project-august-2025/SESSION_SUMMARY.md:128:- 30% unimplemented features (keep with TODOs)
+docs/archive/cleanup-project-august-2025/NEXT_SESSION_PROMPT.md:53:### Current TODO List (7 Phases)
+docs/archive/cleanup-project-august-2025/PROJECT_EXECUTION_PLAN.md:176:- ~30% unimplemented features (keep with TODOs)
+docs/archive/cleanup-project-august-2025/PROJECT_EXECUTION_PLAN.md:181:- [ ] Add TODOs for unimplemented features
+docs/archive/cleanup-project-august-2025/PROJECT_EXECUTION_PLAN.md:271:### Daily Standup Template
+docs/archive/typescript-migration/SESSION_30_COMPLETE_SUMMARY.md:55:   - Shows placeholders immediately
+docs/archive/typescript-migration/SESSION_30_COMPLETE_SUMMARY.md:113:- Show placeholders immediately
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_NOTES.md:162:5. Continue tracking with TodoWrite tool
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_NOTES.md:61:   - Removed template spreading from scraperConfig
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_20_STATUS.md:71:2. `_document.js` - Document template
+docs/archive/typescript-migration/SESSION_31_FINAL_STATUS.md:33:### 4. 🔄 Attempted TCG API Mocking Fix
+docs/archive/typescript-migration/SESSION_31_FINAL_STATUS.md:35:- **Attempted Fix**: Added comprehensive TCG mock data for sets and cards
+docs/archive/typescript-migration/SESSION_29_CONTINUATION_NOTES.md:103:- Use blur placeholders
+docs/archive/typescript-migration/SESSION_32_HANDOFF_NOTES.md:49:### 5. 🔄 TCG API Mocking (Attempted)
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:10:- ⚫ **Disabled** - Feature was working but temporarily disabled
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:20:**TODO**: 
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:32:**TODO**:
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:42:- `/components/ui/SocialPlatform.tsx` (placeholder)
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:44:**TODO**:
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:55:**TODO**:
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:67:**TODO**:
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:78:- `/utils/priceTracking.ts` (placeholder)
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:80:**TODO**:
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:92:**TODO**:
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:103:**TODO**:
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:113:**TODO**:
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:123:**TODO**:
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:136:**TODO**:
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:147:**TODO**:
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:161:**TODO**:
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:172:**TODO**:
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:182:**TODO**:
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:196:**TODO**:
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:208:**TODO**:
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:236:- Add TODO comments in code when working on these features
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:247:4. **Component shells** with TODO comments
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:248:5. **API integration stubs**
+docs/archive/cleanup-project-august-2025/EMERGENCY_FIX_LOG.md:127:### TODO
+docs/archive/cleanup-project-august-2025/NAMING_PROJECT_SUMMARY.md:81:4. **Phase 4**: Add TODOs for unimplemented features
+docs/archive/cleanup-project-august-2025/PROJECT_CLEAN_MASTER_PLAN.md:123:- 30% unimplemented features (add TODOs)
+docs/archive/cleanup-project-august-2025/PROJECT_CLEAN_MASTER_PLAN.md:148:- **~30% (345)**: Unimplemented features - keep with TODOs
+docs/archive/cleanup-project-august-2025/PROJECT_CLEAN_MASTER_PLAN.md:237:- ✅ All unimplemented features preserved with TODOs
+docs/archive/cleanup-project-august-2025/MASTER_INVENTORY_PHASE_0.md:172:   - Check TODO comments
+docs/archive/cleanup-project-august-2025/CLEANUP_PLAN.md:10:  - ~30% (300 items): Unimplemented features - keep with TODO comments
+docs/archive/cleanup-project-august-2025/CLEANUP_PLAN.md:42:- Add TODO comments in code for each unimplemented feature
+docs/archive/cleanup-project-august-2025/CLEANUP_PLAN.md:94:- Document new TODO items
+docs/archive/cleanup-project-august-2025/CLEANUP_PLAN.md:113:- [ ] Add TODO comments
+docs/archive/cleanup-project-august-2025/CLEANUP_PLAN.md:139:- [ ] TODOs documented
+docs/archive/old-project-resources/WEBPACK_ERROR_FIX.md:40:### 4. Temporary Workaround
+docs/archive/old-project-resources/ROOT_CLEANUP_SUMMARY.md:15:- TODO_LIST.md
+docs/archive/old-project-resources/QA_AGENT_2_DEEP_DIVE_TEST_REPORT.md:23:- Navigation attempts to use `window.location.href` (line 428)
+docs/archive/old-project-resources/SIMILAR_CARDS_CONTEXT.md:243:// Add temporarily for debugging specific Pokemon
+docs/archive/old-project-resources/TODO_LIST.md:1:# TODO Items in Codebase
+docs/archive/old-project-resources/TODO_LIST.md:3:This document tracks all TODO comments found in the codebase with implementation suggestions.
+docs/archive/old-project-resources/TODO_LIST.md:10:// TODO: Send to error tracking service like Sentry
+docs/archive/old-project-resources/TODO_LIST.md:21:performanceData: any; // TODO: Replace with proper type from performanceMonitor
+docs/archive/old-project-resources/TODO_LIST.md:41:// TODO: Implement favorites filter
+docs/archive/old-project-resources/TODO_LIST.md:51:// TODO: Implement region-specific scraping
+docs/archive/old-project-resources/TODO_LIST.md:82:- All TODOs are non-critical for basic functionality
+docs/archive/old-project-resources/POKEDEX_TYPESCRIPT_PLAN.md:42:  placeholder?: string;
+docs/archive/old-project-resources/TYPESCRIPT_MIGRATION_PROGRESS.md:236:3. **CollectionManager.js** - Fixed temporal dead zone issue
+docs/archive/old-project-resources/TEST_FIX_PROGRESS.md:274:- Pokedex now loads placeholder data immediately
+docs/archive/old-project-resources/iOS_MOBILE_DEVELOPMENT_GUIDE.md:82:  placeholder="blur"
+docs/archive/old-project-resources/CODE_QA_STATUS.md:46:- [x] **14 Placeholder Animations**: All return console warnings, no implementation
+docs/archive/old-project-resources/CODE_QA_STATUS.md:51:- [x] **API Placeholders**: Hardcoded mock data in pocket-types.ts
+docs/archive/old-project-resources/CODE_QA_STATUS.md:52:- [x] **TODO Comments**: Missing userPreferences, disabled special forms
+docs/archive/old-project-resources/CODE_QA_STATUS.md:115:1. Implement or remove 14 placeholder animations
+docs/archive/old-project-resources/CODE_QA_STATUS.md:134:- Fix TODO items in code
+docs/archive/old-project-resources/CODE_QA_STATUS.md:177:- [x] **Animation Cleanup**: Removed 14 placeholder animations and placeholders.tsx file
+docs/archive/old-project-resources/QOL_Components_README.md:54:- **Animated placeholders** to improve perceived performance
+docs/archive/old-project-resources/QOL_Components_README.md:137:  placeholder="Search Pokemon or cards..."
+docs/archive/old-project-resources/QOL_Components_README.md:194:  placeholder="Search..."
+docs/archive/old-project-resources/COMPREHENSIVE_FEATURE_COMPARISON.md:113:- Charts show placeholder data
+docs/archive/old-project-resources/FEATURE_RESTORATION_PROGRESS.md:333:## 🔄 Daily Standup Template
+docs/archive/old-project-resources/FEATURE_RESTORATION_PROGRESS.md:424:3. Review todo list
+docs/archive/old-project-resources/IMAGE_MIGRATION_PLAN.md:22:- Logo files and placeholders - ~3MB
+docs/archive/old-project-resources/CURRENT_STATUS_JULY_13_2025.md:88:- Added proper loading placeholders for dynamic imports
+docs/archive/old-project-resources/CURRENT_STATUS_JULY_13_2025.md:97:- CollectionManager temporal dead zone
+docs/archive/old-project-resources/CLAUDE_DETAILED_ARCHIVE.md:282:- CollectionManager.js temporal dead zone
+docs/archive/old-project-resources/CLAUDE_DETAILED_ARCHIVE.md:492:   - Dynamic imports now show placeholder divs instead of null
+docs/archive/old-project-resources/TESTING_PROTOCOL.md:25:✓ All data must be REAL (no placeholders)
+docs/archive/old-project-resources/TESTING_PROTOCOL.md:45:- [ ] Verify Evolution shows actual chain (not placeholder)
+docs/archive/old-project-resources/TESTING_PROTOCOL.md:104:4. **Placeholder text visible** - BROKEN
+docs/archive/old-project-resources/TESTING_PROTOCOL.md:136:- Testing notes: This template
+docs/archive/old-project-resources/BULBAPEDIA_SCRAPER_README.md:45:│   └── cache/            # Temporary cache files
+docs/archive/old-project-resources/BULBAPEDIA_SCRAPER_README.md:242:  retryAttempts: 3,        // Retry failed requests
+docs/archive/old-project-resources/BULBAPEDIA_SCRAPER_README.md:358:- Some Bulbapedia pages might be temporarily unavailable
+docs/archive/old-project-resources/PROJECT_EFFICIENCY_TRACKER.md:82:- Retry logic with configurable attempts
+docs/archive/old-project-resources/PROJECT_EFFICIENCY_TRACKER.md:123:- Attempted consolidation with UnifiedCardGrid
+docs/archive/old-project-resources/PROJECT_EFFICIENCY_TRACKER.md:252:- ❌ Phase 1.3: Attempted card consolidation - decided to keep separate
+docs/archive/old-project-resources/PRODUCTION_FIXES_SUMMARY.md:45:### 8. **TODO Items Documented** ✅
+docs/archive/old-project-resources/PRODUCTION_FIXES_SUMMARY.md:46:- Created TODO_LIST.md listing all TODOs with:
+docs/archive/old-project-resources/PRODUCTION_FIXES_SUMMARY.md:86:2. **TODO Comments** (6 items)
+docs/archive/old-project-resources/PRODUCTION_FIXES_SUMMARY.md:88:   - See TODO_LIST.md for details
+docs/archive/old-project-resources/MOUSE_EVENT_ERROR_FIX.md:48:## Temporary Workaround
+docs/archive/TECHNICAL_DEBT_PLAN.md:28:- **TODO Comments**: 0 remaining (100% elimination) ✅✅
+docs/archive/TECHNICAL_DEBT_PLAN.md:30:- **Deprecated Dependencies**: Updated (100%) ✅
+docs/archive/TECHNICAL_DEBT_PLAN.md:238:### 17. TODO Comments
+docs/archive/TECHNICAL_DEBT_PLAN.md:240:- **Count**: 10 TODO/FIXME comments (reduced from 20+)
+docs/archive/TECHNICAL_DEBT_PLAN.md:241:- **Completed TODOs**:
+docs/archive/TECHNICAL_DEBT_PLAN.md:245:- **Remaining TODOs**:
+docs/archive/TECHNICAL_DEBT_PLAN.md:248:  - [ ] Other minor TODOs (7 remaining)
+docs/archive/TECHNICAL_DEBT_PLAN.md:254:### 18. Deprecated Dependencies
+docs/archive/TECHNICAL_DEBT_PLAN.md:406:- TODO comment resolution (20+)
+docs/archive/TECHNICAL_DEBT_PLAN.md:411:- Resolve TODO comments (20+ instances)
+docs/archive/TECHNICAL_DEBT_PLAN.md:438:#### Session 10 (2025-08-08) - Hook Dependencies & TODOs
+docs/archive/TECHNICAL_DEBT_PLAN.md:449:   - Replaced TODO comment with proper implementation
+docs/archive/TECHNICAL_DEBT_PLAN.md:454:- TODO comments reduced: 20 → 15 (25% reduction)
+docs/archive/TECHNICAL_DEBT_PLAN.md:461:- Resolve remaining TODO comments (10)
+docs/archive/TECHNICAL_DEBT_PLAN.md:464:#### Session 11 (2025-08-08 Continued) - Hook Fixes & TODO Implementation
+docs/archive/TECHNICAL_DEBT_PLAN.md:480:- TODO comments reduced: 15 → 10 (33% reduction)
+docs/archive/TECHNICAL_DEBT_PLAN.md:506:- TODO comments: 10 remaining (unchanged)
+docs/archive/TECHNICAL_DEBT_PLAN.md:577:- React Hook warnings: 40 → 44 (temporary increase due to new proper dependencies)
+docs/archive/TECHNICAL_DEBT_PLAN.md:647:3. Resolve remaining TODO comments (10)
+docs/archive/TECHNICAL_DEBT_PLAN.md:648:4. Update deprecated dependencies
+docs/archive/TECHNICAL_DEBT_PLAN.md:672:4. ✅ **TODO Comments Resolution**
+docs/archive/TECHNICAL_DEBT_PLAN.md:673:   - Fixed all 3 remaining TODO comments:
+docs/archive/TECHNICAL_DEBT_PLAN.md:680:- **TODO comments**: 0 remaining (100% elimination)
+docs/archive/TECHNICAL_DEBT_PLAN.md:687:- Zero TODO comments
+docs/archive/TECHNICAL_DEBT_PLAN.md:883:3. ✅ **Deprecated Dependencies Updated**
+docs/archive/TECHNICAL_DEBT_PLAN.md:927:# Check TODO comments
+docs/archive/TECHNICAL_DEBT_PLAN.md:928:grep -r "TODO\|FIXME" --include="*.ts" --include="*.tsx" | grep -v node_modules
+docs/archive/DOCUMENTATION_INDEX.md:71:# Find TODOs in docs
+docs/archive/DOCUMENTATION_INDEX.md:72:grep -r "TODO" *.md
+docs/archive/COMPONENT_NAMING_FIXES.md:189:2. **Create compatibility export** (temporary):
+docs/archive/COMPONENT_NAMING_FIXES.md:193:   export { NewNameComponent as OldName }; // Temporary
+docs/archive/COMPONENT_INVENTORY.md:20:| `UnifiedCard.tsx` | Unified version | Attempted merge, incomplete | ❌ Delete |
+docs/archive/COMPONENT_INVENTORY.md:64:| `Unified*` | Combined version | Usually broken attempt at merging |
+docs/archive/COMPONENT_INVENTORY.md:198:4. **"Unification" Attempt**: Created Unified* versions
+docs/archive/COMPONENT_INVENTORY.md:240:- `Unified*` - Failed unification attempt
+docs/archive/PROJECT_STATUS_ANALYSIS.md:92:- 12 TODO comments in codebase
+docs/archive/TCG_100_CARD_LIMIT_FIX.md:21:- First attempts to load 1000 cards in one request
+docs/archive/SAFE_TO_DELETE_COMPONENTS.md:77:components/legacy/*  # Check for @deprecated tags
+docs/archive/CLEANUP_PLAN.md:188:### Migration Script Template
+docs/current/PHASE_4_INTEGRATION_POLISH_SUMMARY.md:111:- **Before**: Blank screen or placeholder logos
+docs/current/PHASE_4_INTEGRATION_POLISH_SUMMARY.md:211:- Placeholder images during load
+docs/current/PHASE_3_COMPONENT_LIBRARY_SUMMARY.md:43:- **SkeletonAvatar**: Circular avatar placeholder (4 sizes)
+docs/current/PHASE_3_COMPONENT_LIBRARY_SUMMARY.md:44:- **SkeletonButton**: Button placeholder (3 sizes)
+docs/current/PHASE_3_COMPONENT_LIBRARY_SUMMARY.md:52:- None - Static placeholder
+docs/archive/2024-09-01-legacy/UNUSED_CODE_AUDIT.md:93:4. Consider adding TODO comments for unimplemented features instead of removing them
+docs/archive/2024-09-01-legacy/COMPREHENSIVE_CLEANUP_ANALYSIS.md:103:- All marked with TODOs where appropriate
+docs/archive/2024-09-01-legacy/PROJECT_CLEANUP_FINAL_SUMMARY.md:68:- Added TODOs where appropriate
+docs/archive/2024-09-01-legacy/BACKLOG.md:12:- [ ] Add image lazy loading with blur-up placeholders
+docs/archive/2024-09-01-legacy/BACKLOG.md:60:- [ ] Remove deprecated dependencies
+docs/archive/development-history/IMPLEMENTATION_SUMMARY.md:36:- ✅ `/pages/pokemon/moves.tsx` - Attempted enhancement
+docs/archive/development-history/FIX_MOVES_DATABASE.md:63:Once the database is fixed, remove the temporary workaround from `pages/pokemon/moves.tsx`:
+docs/archive/development-history/PERFORMANCE_OPTIMIZATION_COMPLETE.md:10:- Blur-up placeholders for smooth transitions
+docs/archive/development-history/PERFORMANCE_OPTIMIZATION_COMPLETE.md:11:- Low-quality image placeholders (LQIP) for TCG cards
+docs/archive/development-history/PERFORMANCE_OPTIMIZATION_COMPLETE.md:69:  placeholder={lowQualityUrl}
+docs/current/PHASE_6_PERFORMANCE_COMPLETE.md:45:- **Images**: Persistent cache with fallback to placeholder
+styles/responsive-system.css:62:  grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+styles/responsive-system.css:67:    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+styles/responsive-system.css:73:    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+docs/guides/UI_COMPONENTS_GUIDE.md:39:  placeholder="Enter your email"
+docs/guides/UI_COMPONENTS_GUIDE.md:64:| placeholder | string | - | Placeholder text |
+docs/guides/UI_COMPONENTS_GUIDE.md:73:  placeholder="Choose a type"
+docs/guides/UI_COMPONENTS_GUIDE.md:126:  placeholder="Describe your Pokemon team..."
+docs/guides/iOS_MOBILE_DEVELOPMENT_GUIDE.md:82:  placeholder="blur"
+styles/fast-refresh-test.module.css:94:  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+styles/fast-refresh-test.module.css:201:  grid-template-columns: 100px 120px 1fr;
+styles/fast-refresh-test.module.css:227:.testPlaceholder {
+styles/fast-refresh-test.module.css:235:.testPlaceholder h2 {
+styles/fast-refresh-test.module.css:240:.testPlaceholder p {
+styles/fast-refresh-test.module.css:299:    grid-template-columns: 1fr;
+styles/fast-refresh-test.module.css:303:    grid-template-columns: 1fr;
+styles/virtual-card-grid.module.css:1:/* Virtual Card Grid Styles - No grey placeholders, smooth scrolling */
+styles/components.css:447:  grid-template-columns: repeat(2, minmax(0, 1fr));
+styles/components.css:453:    grid-template-columns: repeat(3, minmax(0, 1fr));
+styles/components.css:459:    grid-template-columns: repeat(4, minmax(0, 1fr));
+styles/components.css:466:    grid-template-columns: repeat(6, minmax(0, 1fr));
+styles/components.css:472:    grid-template-columns: repeat(8, minmax(0, 1fr));
+styles/RegionsIndex.module.css:110:  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+styles/RegionsIndex.module.css:257:  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+styles/RegionsIndex.module.css:301:    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+styles/RegionsIndex.module.css:315:    grid-template-columns: 1fr;
+styles/RegionsIndex.module.css:342:    grid-template-columns: repeat(2, 1fr);
+styles/RegionsIndex.module.css:382:    grid-template-columns: 1fr;
+styles/core.css:164:.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+styles/core.css:165:.grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+styles/core.css:166:.grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+styles/core.css:167:.grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+styles/core.css:171:  .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+styles/core.css:172:  .sm\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+styles/core.css:173:  .sm\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+styles/core.css:174:  .sm\:grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+styles/core.css:175:  .sm\:grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+styles/core.css:180:  .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+styles/core.css:181:  .md\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+styles/core.css:182:  .md\:grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+styles/core.css:183:  .md\:grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+styles/core.css:184:  .md\:grid-cols-8 { grid-template-columns: repeat(8, minmax(0, 1fr)); }
+styles/core.css:189:  .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+styles/core.css:190:  .lg\:grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+styles/core.css:191:  .lg\:grid-cols-8 { grid-template-columns: repeat(8, minmax(0, 1fr)); }
+styles/core.css:192:  .lg\:grid-cols-10 { grid-template-columns: repeat(10, minmax(0, 1fr)); }
+styles/core.css:193:  .lg\:grid-cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+styles/RegionPage.module.css:258:  grid-template-columns: 400px 1fr;
+styles/RegionPage.module.css:360:  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+styles/RegionPage.module.css:420:  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+styles/RegionPage.module.css:495:  grid-template-columns: repeat(3, 1fr);
+styles/RegionPage.module.css:615:  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+styles/RegionPage.module.css:684:  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+styles/RegionPage.module.css:787:  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+styles/RegionPage.module.css:895:    grid-template-columns: 1fr;
+styles/RegionPage.module.css:915:    grid-template-columns: 1fr;
+styles/RegionPage.module.css:920:    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+styles/RegionPage.module.css:932:    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+styles/unified-mobile.css:583:    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+styles/unified-mobile.css:590:    grid-template-columns: 1fr !important;
+styles/unified-mobile.css:712:    grid-template-columns: 1fr !important;
+styles/unified-mobile.css:752:    grid-template-columns: 1fr !important;
+styles/unified-mobile.css:1003:    grid-template-columns: 1fr !important;
+styles/card-types.css:11:  grid-template-columns: repeat(2, minmax(0, 1fr));
+styles/card-types.css:18:    grid-template-columns: repeat(3, minmax(0, 1fr));
+styles/card-types.css:26:    grid-template-columns: repeat(4, minmax(0, 1fr));
+styles/card-types.css:34:    grid-template-columns: repeat(5, minmax(0, 1fr));
+styles/card-types.css:42:    grid-template-columns: repeat(6, minmax(0, 1fr));
+styles/card-types.css:49:    grid-template-columns: repeat(7, minmax(0, 1fr));
+styles/card-types.css:54:    grid-template-columns: repeat(6, minmax(0, 1fr));
+styles/overrides.css:2: * Overrides CSS - Temporary fixes and specific overrides only
+styles/overrides.css:7:   Temporary Fixes
+styles/overrides.css:150:TODO: These fixes should be migrated:
+styles/card-performance.css:122:/* Loading placeholder */
+styles/card-performance.css:123:.card-loading-placeholder {
+styles/card-performance.css:168:.virtual-scroll-placeholder {
+styles/premium-interactions.css:155:  grid-template-rows: 0fr;
+styles/premium-interactions.css:156:  transition: grid-template-rows 0.3s ease-out;
+styles/premium-interactions.css:160:  grid-template-rows: 1fr;
+styles/pokeid-mobile-premium.css:198:    grid-template-columns: repeat(2, 1fr);
+styles/pokeid-mobile-premium.css:401:    grid-template-columns: 1fr;
+styles/pokeid-mobile-premium.css:505:    grid-template-columns: 1fr;
+components/Footer.tsx:130:                    placeholder="Enter email"
+components/GlobalSearchModal.tsx:47:          placeholder="blur"
+components/GlobalSearchModal.tsx:71:          placeholder="blur"
+components/GlobalSearchModal.tsx:96:          placeholder="blur"
+components/GlobalSearchModal.tsx:212:            className="w-full max-w-md px-5 py-3 rounded-xl border-2 border-primary focus:ring-4 focus:ring-primary/30 text-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-lg mb-2 outline-none transition-all duration-200 placeholder-gray-400 caret-primary"
+components/GlobalSearchModal.tsx:219:            placeholder="Search cards, Pokémon, sets..."
+components/CardList.tsx:32:interface CardItemProps {
+components/CardList.tsx:39:const CardItem = memo<CardItemProps>(({ card, onMagnifyClick, onCardClick, isScrolling = false }) => {
+components/CardList.tsx:179:const areCardItemPropsEqual = (prev: CardItemProps, next: CardItemProps) => {
+components/CardList.tsx:187:const MemoizedCardItem = memo(CardItem, areCardItemPropsEqual);
+components/CardList.tsx:480:              placeholder="blur"
+components/TCGCardList.tsx:419:                placeholder="Search cards..."
+components/TCGCardList.tsx:623:            placeholder="blur"
+components/providers/AnimationProvider.tsx:34:// Static placeholders for when framer-motion is not loaded
+components/providers/AnimationProvider.tsx:53:// Placeholder hooks that return sensible defaults
+components/providers/AnimationProvider.tsx:54:const placeholderHook = () => null;
+components/providers/AnimationProvider.tsx:55:const useReducedMotionPlaceholder = () => false;
+components/providers/AnimationProvider.tsx:56:const useInViewPlaceholder = () => true;
+components/providers/AnimationProvider.tsx:67:    useAnimation: placeholderHook,
+components/providers/AnimationProvider.tsx:68:    useInView: useInViewPlaceholder,
+components/providers/AnimationProvider.tsx:69:    useMotionValue: placeholderHook,
+components/providers/AnimationProvider.tsx:70:    useSpring: placeholderHook,
+components/providers/AnimationProvider.tsx:71:    useTransform: placeholderHook,
+components/providers/AnimationProvider.tsx:72:    useReducedMotion: useReducedMotionPlaceholder,
+components/pokemon/PokemonLearnset.tsx:447:              placeholder="Search moves..."
+components/pokemon/PokemonLearnset.tsx:450:              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+components/pokemon/PokemonLearnset.tsx:619:interface MoveItemProps {
+components/pokemon/PokemonLearnset.tsx:624:function MoveItem({ move, moveData }: MoveItemProps) {
+components/pokemon/PokemonTabSystem.tsx:36:interface PokemonTabSystemProps {
+components/pokemon/PokemonTabSystem.tsx:138:const PokemonTabSystem: React.FC<PokemonTabSystemProps> = ({
+components/pokemon/PokemonTabSystem.tsx:229:          logger.warn('localStorage quota exceeded, attempting cleanup...');
+components/unified/UnifiedDataTable.tsx:42:  searchPlaceholder?: string;
+components/unified/UnifiedDataTable.tsx:80:  searchPlaceholder = 'Search...',
+components/unified/UnifiedDataTable.tsx:421:              placeholder={searchPlaceholder}
+components/unified/UnifiedSearch.tsx:33:  placeholder?: string;
+components/unified/UnifiedSearch.tsx:45:  placeholder = 'Search Pokemon, cards, moves...',
+components/unified/UnifiedSearch.tsx:212:          placeholder={placeholder}
+components/unified/UnifiedSearch.tsx:220:            'placeholder-gray-500 dark:placeholder-gray-400',
+components/unified/UnifiedGrid.tsx:17: * - Progressive image loading with blur placeholders
+components/unified/UnifiedGrid.tsx:303:          gridTemplateColumns: `repeat(${columnCount}, 1fr)`,
+components/CollectionManager.tsx:81:      // If localStorage is not available, return a temporary session ID
+components/CollectionManager.tsx:82:      return 'session_temp_' + Date.now();
+components/CollectionManager.tsx:286:            small: '/api/placeholder/150/200',
+components/CollectionManager.tsx:287:            large: '/api/placeholder/300/400'
+components/CollectionManager.tsx:309:            small: '/api/placeholder/150/200',
+components/CollectionManager.tsx:310:            large: '/api/placeholder/300/400'
+components/CollectionManager.tsx:850:            placeholder="My Pokemon Collection"
+components/CollectionManager.tsx:862:            placeholder="Describe your collection..."
+components/CollectionManager.tsx:941:            placeholder="Charizard, Pikachu..."
+components/CollectionManager.tsx:1036:              placeholder="First edition, signed, etc..."
+components/pokemon/tabs/CardsTab.tsx:296:        {/* Card Rarity (placeholder) */}
+components/home/GlobalSearch.tsx:166:            placeholder="Search Pokémon, cards, moves, items..."
+components/team-builder/TeamSynergyGraph.tsx:309:  // TODO: Restore custom drawing functionality if needed
+components/ui/Card.tsx:7: * @deprecated Use Container.tsx directly
+components/ui/VoiceSearchInterface.tsx:236:        images: { small: '/api/placeholder/150/200' },
+components/ui/VoiceSearchInterface.tsx:244:        images: { small: '/api/placeholder/150/200' },
+components/ui/VoiceSearchInterface.tsx:252:        images: { small: '/api/placeholder/150/200' },
+components/ui/OptimizedImage.tsx:12:  placeholder?: string;
+components/ui/OptimizedImage.tsx:26:  placeholder = "blur",
+components/ui/OptimizedImage.tsx:65:  // Generate blur data URL for placeholder
+components/ui/OptimizedImage.tsx:99:          placeholder={placeholder === "blur" ? "blur" : "empty"}
+components/ui/OptimizedImage.tsx:100:          blurDataURL={placeholder === "blur" ? blurDataURL : undefined}
+components/ui/AccessibilityProvider.tsx:61:      const systemPreferences = {
+components/ui/AccessibilityProvider.tsx:70:        ...systemPreferences
+components/ui/PokeballSVG.tsx:200:      {/* Type symbol placeholder */}
+components/ui/Skeleton.tsx:70:  // If children provided, use as template for sizing
+components/ui/LazyMotion.tsx:21:// Create placeholder hook functions that return safe defaults
+components/ui/TournamentSystem.tsx:96:interface TournamentSystemProps {
+components/ui/TournamentSystem.tsx:102:const TournamentSystem: React.FC<TournamentSystemProps> = ({ userId, onTournamentJoin, onCreateTournament }) => {
+components/ui/animations/AnimationSystem.tsx:131:interface StaggerItemProps {
+components/ui/animations/AnimationSystem.tsx:138:export const StaggerItem = ({ children, className = '', direction = 'up', ...props }: StaggerItemProps) => {
+components/ui/Select.tsx:20:  placeholder?: string;
+components/ui/Select.tsx:42:      placeholder = 'Select an option',
+components/ui/Select.tsx:165:        : placeholder
+components/ui/Select.tsx:166:      : selectedOption?.label || placeholder;
+components/ui/Select.tsx:200:              <option value="">{placeholder}</option>
+components/ui/Select.tsx:317:                    placeholder="Search..."
+components/ui/StandardInput.tsx:63:              'placeholder:text-gray-400 dark:placeholder:text-gray-500',
+components/ui/StandardInput.tsx:105:        placeholder="Search..."
+components/ui/AchievementSystem.tsx:46:interface AchievementSystemProps {
+components/ui/AchievementSystem.tsx:50:const AchievementSystem = ({ onAchievementUnlocked = () => {} }: AchievementSystemProps) => {
+components/ui/LazyIcon.tsx:4:// Create a generic icon placeholder
+components/ui/LazyIcon.tsx:5:const IconPlaceholder = ({ className }: { className?: string }) => (
+components/ui/LazyIcon.tsx:12:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:17:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:22:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:27:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:32:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:37:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:42:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:47:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:52:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:57:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:62:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:67:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:72:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:77:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:82:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:87:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:92:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:98:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:103:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:108:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:113:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:118:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:123:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:128:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:133:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:138:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:143:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:148:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:153:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:158:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:163:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/LazyIcon.tsx:168:  { ssr: false, loading: () => <IconPlaceholder /> }
+components/ui/SocialPlatform.tsx:84:      avatar: '/api/placeholder/80/80',
+components/ui/SocialPlatform.tsx:132:          avatar: '/api/placeholder/40/40',
+components/ui/SocialPlatform.tsx:137:        images: ['/api/placeholder/300/400'],
+components/ui/SocialPlatform.tsx:156:          avatar: '/api/placeholder/40/40',
+components/ui/SocialPlatform.tsx:161:        images: ['/api/placeholder/400/300'],
+components/ui/SocialPlatform.tsx:174:          avatar: '/api/placeholder/40/40',
+components/ui/SocialPlatform.tsx:180:        videoUrl: '/api/placeholder/video',
+components/ui/SocialPlatform.tsx:200:        avatar: '/api/placeholder/80/80',
+components/ui/SocialPlatform.tsx:215:        avatar: '/api/placeholder/80/80',
+components/ui/SocialPlatform.tsx:230:        avatar: '/api/placeholder/80/80',
+components/ui/SocialPlatform.tsx:524:                  src={userProfile?.avatar || '/api/placeholder/40/40'} 
+components/ui/SocialPlatform.tsx:529:                    placeholder="Share your latest card pull, collection update, or deck tech..."
+components/ui/PackOpening.tsx:287:                  // Placeholder pack with rainbow indicator
+components/ui/PackOpening.tsx:296:                      <p className="text-white font-semibold text-sm">PLACEHOLDER</p>
+components/ui/PackOpening.tsx:297:                      <p className="text-white/80 text-xs">Rainbow = Temp</p>
+components/ui/PokemonFormSelector.tsx:65:  'totem', 'cosplay', 'cap', 'starter', 'own-tempo',
+components/ui/ProgressiveImage.tsx:9:  placeholder?: string;
+components/ui/ProgressiveImage.tsx:23:  placeholder,
+components/ui/ProgressiveImage.tsx:35:    placeholder,
+components/ui/ProgressiveImage.tsx:61:      {/* Blur placeholder */}
+components/ui/ProgressiveImage.tsx:62:      {blur && isLoading && placeholder && (
+components/ui/ProgressiveImage.tsx:66:            backgroundImage: `url(${placeholder})`,
+components/ui/ProgressiveImage.tsx:134:  // Generate LQIP (Low Quality Image Placeholder) URL
+components/ui/ProgressiveImage.tsx:156:        placeholder={getLQIP(src)}
+components/ui/GameficationSystem.tsx:77:interface GameficationSystemProps {
+components/ui/GameficationSystem.tsx:83:const GameficationSystem: React.FC<GameficationSystemProps> = ({ userId, onRewardEarned, onLevelUp }) => {
+components/ui/GameficationSystem.tsx:255:      { rank: 1, username: 'PokeMaster92', points: 28750, level: 18, avatar: '/api/placeholder/40/40' },
+components/ui/GameficationSystem.tsx:256:      { rank: 2, username: 'CardCollector', points: 24580, level: 16, avatar: '/api/placeholder/40/40' },
+components/ui/GameficationSystem.tsx:257:      { rank: 3, username: 'MetaGamer', points: 22340, level: 15, avatar: '/api/placeholder/40/40' },
+components/ui/GameficationSystem.tsx:258:      { rank: 4, username: 'TradingPro', points: 19876, level: 14, avatar: '/api/placeholder/40/40' },
+components/ui/GameficationSystem.tsx:259:      { rank: 5, username: 'YourUsername', points: 15420, level: 12, avatar: '/api/placeholder/40/40' },
+components/ui/GameficationSystem.tsx:260:      { rank: 6, username: 'DeckBuilder', points: 14250, level: 11, avatar: '/api/placeholder/40/40' }
+components/ui/ProfessionalFilterSection.tsx:96:                placeholder="Search by name, ability, or attack..."
+components/ui/ProfessionalFilterSection.tsx:102:                  'placeholder-gray-500 dark:placeholder-gray-400',
+components/ui/IntelligentRecommendations.tsx:273:          small: '/api/placeholder/200/280',
+components/ui/IntelligentRecommendations.tsx:274:          large: '/api/placeholder/400/560'
+components/ui/IntelligentRecommendations.tsx:309:          small: '/api/placeholder/200/280',
+components/ui/IntelligentRecommendations.tsx:310:          large: '/api/placeholder/400/560'
+components/ui/IntelligentRecommendations.tsx:345:          small: '/api/placeholder/200/280',
+components/ui/IntelligentRecommendations.tsx:346:          large: '/api/placeholder/400/560'
+components/ui/IntelligentRecommendations.tsx:392:          small: '/api/placeholder/200/280',
+components/ui/IntelligentRecommendations.tsx:393:          large: '/api/placeholder/400/560'
+components/ui/IntelligentRecommendations.tsx:427:          small: '/api/placeholder/200/280',
+components/ui/IntelligentRecommendations.tsx:428:          large: '/api/placeholder/400/560'
+components/ui/IntelligentRecommendations.tsx:468:          small: '/api/placeholder/200/280',
+components/ui/IntelligentRecommendations.tsx:469:          large: '/api/placeholder/400/560'
+components/ui/IntelligentRecommendations.tsx:504:          small: '/api/placeholder/200/280',
+components/ui/IntelligentRecommendations.tsx:505:          large: '/api/placeholder/400/560'
+components/ui/IntelligentRecommendations.tsx:535:          name: 'Temporal Forces',
+components/ui/IntelligentRecommendations.tsx:550:          small: '/api/placeholder/200/280',
+components/ui/IntelligentRecommendations.tsx:551:          large: '/api/placeholder/400/560'
+components/ui/IntelligentRecommendations.tsx:585:          small: '/api/placeholder/200/280',
+components/ui/IntelligentRecommendations.tsx:586:          large: '/api/placeholder/400/560'
+components/ui/MapImage.tsx:61:    placeholder: 'empty';
+components/ui/MapImage.tsx:78:    // Handle placeholder while loading
+components/ui/MapImage.tsx:79:    placeholder: 'empty' as const,
+components/ui/PocketDeckBuilder.tsx:384:                placeholder="Search cards..."
+components/ui/PocketDeckBuilder.tsx:508:            className="w-full bg-white/10 border border-white/20 rounded px-3 py-2 text-white placeholder-white/70 focus:outline-none focus:bg-white/20"
+components/ui/PocketDeckBuilder.tsx:509:            placeholder="Enter deck name..."
+components/ui/PremiumComponents.tsx:348:            placeholder-gray-500 dark:placeholder-gray-400
+components/ui/search/LiveSearchBar.tsx:7:  placeholder?: string;
+components/ui/search/LiveSearchBar.tsx:18:  placeholder = 'Type to search...',
+components/ui/search/LiveSearchBar.tsx:36:  // Animated placeholder effect
+components/ui/search/LiveSearchBar.tsx:40:        setCharIndex(prev => (prev + 1) % placeholder.length);
+components/ui/search/LiveSearchBar.tsx:46:  }, [query, isFocused, placeholder]);
+components/ui/search/LiveSearchBar.tsx:144:            placeholder=""
+components/ui/search/LiveSearchBar.tsx:147:          {/* Animated Placeholder */}
+components/ui/search/LiveSearchBar.tsx:149:            <div className="placeholder-container">
+components/ui/search/LiveSearchBar.tsx:150:              {placeholder.split('').map((char, index) => (
+components/ui/search/LiveSearchBar.tsx:153:                  className="placeholder-char"
+components/ui/search/LiveSearchBar.tsx:375:        .placeholder-container {
+components/ui/search/LiveSearchBar.tsx:384:        .placeholder-char {
+components/ui/search/EnhancedSearch.tsx:17:  placeholder?: string;
+components/ui/search/EnhancedSearch.tsx:30:  placeholder = 'Search...',
+components/ui/search/EnhancedSearch.tsx:169:          placeholder={placeholder}
+components/ui/search/EnhancedSearch.tsx:411:        .search-input::placeholder {
+components/ui/EnhancedPokemonSelector.tsx:21:interface PokemonSelectionItemProps {
+components/ui/EnhancedPokemonSelector.tsx:30:const PokemonSelectionItem: React.FC<PokemonSelectionItemProps> = ({ pokemon, index, onSelect }) => {
+components/ui/EnhancedPokemonSelector.tsx:41:          {/* Type Color Circle - placeholder until Pokemon data is loaded */}
+components/ui/EnhancedPokemonSelector.tsx:126:              placeholder="Search Pokémon by name..."
+components/ui/navigation/StickySidebar.tsx:17:  placeholder?: string;
+components/ui/navigation/StickySidebar.tsx:60:                placeholder={filter.placeholder}
+components/ui/navigation/StickySidebar.tsx:61:                className="w-full px-4 py-3 rounded-lg bg-white border border-border-color focus:border-pokemon-blue focus:ring-2 focus:ring-pokemon-blue/20 focus:outline-none placeholder-text-grey transition-all duration-300 text-sm"
+components/ui/navigation/StickySidebar.tsx:83:              <option value="">{filter.placeholder || `All ${filter.label}`}</option>
+components/ui/cards/TCGCard.tsx:179:    const itemPatterns = [
+components/ui/cards/TCGCard.tsx:195:    if (itemPatterns.some(pattern => pattern.test(name))) {
+components/ui/cards/TCGCard.tsx:844:// Temporarily disable optimizations to fix import issues
+components/ui/cards/ChampionCard.module.css:338:  grid-template-columns: repeat(3, 1fr);
+components/ui/cards/ChampionCard.module.css:687:    grid-template-columns: repeat(2, 1fr);
+components/ui/cards/ChampionCard.module.css:719:    grid-template-columns: 1fr;
+components/ui/TooltipHelpSystem.tsx:87:interface HelpSystemProps {
+components/ui/TooltipHelpSystem.tsx:373:export const HelpSystem: React.FC<HelpSystemProps> = ({
+components/ui/UnifiedSearchBar.tsx:16:  placeholder?: string;
+components/ui/UnifiedSearchBar.tsx:39:  placeholder = 'Search...',
+components/ui/UnifiedSearchBar.tsx:219:          placeholder={placeholder}
+components/ui/UnifiedSearchBar.tsx:224:            placeholder:text-gray-500 text-gray-800 dark:text-gray-200
+components/ui/forms/EnhancedSearchBox.tsx:12:  placeholder?: string;
+components/ui/forms/EnhancedSearchBox.tsx:23:  placeholder = 'Search...',
+components/ui/forms/EnhancedSearchBox.tsx:168:          placeholder={placeholder}
+components/ui/LazyComponents.tsx:42:// Dashboard Components - Removed in Stage 5, replaced with simple div placeholders
+components/ui/LazyComponents.tsx:46:    <p className="text-gray-600 dark:text-gray-400">Market data display coming soon</p>
+components/ui/LazyComponents.tsx:53:    <p className="text-gray-600 dark:text-gray-400">Analytics display coming soon</p>
+components/ui/LazyComponents.tsx:60:    <p className="text-gray-600 dark:text-gray-400">Performance metrics coming soon</p>
+components/regions/SpecialPokemonShowcase.tsx:171:        { name: 'Dialga', id: 483, types: ['steel', 'dragon'], title: 'Temporal Pokémon', location: 'Spear Pillar' },
+components/regions/SpecialPokemonShowcase.tsx:174:        { name: 'Regigigas', id: 486, types: ['normal'], title: 'Colossal Pokémon', location: 'Snowpoint Temple' },
+components/regions/IslandKahunasGrid.tsx:31:  totemPokemon: string;
+components/regions/IslandKahunasGrid.tsx:32:  totemPokemonId: number;
+components/regions/IslandKahunasGrid.tsx:53:      totemPokemon: "Gumshoos/Raticate",
+components/regions/IslandKahunasGrid.tsx:54:      totemPokemonId: 735,
+components/regions/IslandKahunasGrid.tsx:64:      totemPokemon: "Salazzle/Marowak",
+components/regions/IslandKahunasGrid.tsx:65:      totemPokemonId: 758,
+components/regions/IslandKahunasGrid.tsx:75:      totemPokemon: "Mimikyu",
+components/regions/IslandKahunasGrid.tsx:76:      totemPokemonId: 778,
+components/regions/IslandKahunasGrid.tsx:86:      totemPokemon: "Kommo-o",
+components/regions/IslandKahunasGrid.tsx:87:      totemPokemonId: 784,
+components/regions/IslandKahunasGrid.tsx:224:                          <div className="text-sm font-bold text-gray-800 dark:text-white">{kahuna.totemPokemon.split('/')[0]}</div>
+components/regions/IslandKahunasGrid.tsx:228:                            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${kahuna.totemPokemonId}.png`}
+components/regions/IslandKahunasGrid.tsx:229:                            alt={kahuna.totemPokemon}
+components/regions/EliteFourGrid.tsx:740:                              onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/images/placeholder-trainer.png'; }}
+components/regions/EliteFourGrid.tsx:945:                              onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/images/placeholder-trainer.png'; }}
+components/regions/EvilTeamShowcase.tsx:101:        'Silph Co. hostile takeover attempt',
+components/regions/RegionalVariants.tsx:233:          ability: 'Gluttony / Own Tempo',
+components/regions/RegionalVariants.tsx:410:          description: 'Three breeds exist in Paldea with different types and temperaments.',
+components/regions/GymLeaderGrid.tsx:188:                            onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/images/gym-leader-placeholder.svg'; }}
+components/regions/GymLeaderGrid.tsx:302:                          onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/images/gym-leader-placeholder.svg'; }}
+components/regions/ProfessorShowcase.tsx:279:      biography: `Professor Augustine Sycamore is perhaps the most charismatic of all regional professors. His research into Mega Evolution has revolutionized Pokémon battling and understanding of temporary evolution forms.
+components/regions/ProfessorShowcase.tsx:283:Sycamore's discovery of Mega Evolution came from studying ancient texts and artifacts in Kalos. His research showed that certain Pokémon could temporarily evolve beyond their final forms using Mega Stones and a strong bond with their trainers.`,
+components/regions/ProfessorShowcase.tsx:456:Like his counterpart Sada, Turo worked in the depths of Area Zero, developing technology to breach temporal barriers. His research station became a gateway to the future, bringing mechanical and evolved forms of Pokémon into the present day.
+components/regions/ProfessorShowcase.tsx:464:        'Temporal manipulation',
+components/pokemon/tabs/BreedingTab.tsx:477:                    placeholder="Search moves..."
+components/pokemon/tabs/MovesTab.tsx:277:                placeholder="Search moves..."
+components/pokemon/tabs/EvolutionTabV3.tsx:93:            src={node.sprite || '/placeholder-pokemon.png'}
+components/pokemon/tabs/EvolutionTabV3.tsx:931:                <p>Mega Evolution is a temporary transformation that requires a Mega Stone and a strong bond with the trainer.</p>
+CLEANUP_SUMMARY.md:6:### 1. Removed Temporary Files (50+ files)
+CLEANUP_SUMMARY.md:35:- No temporary scripts or reports
+CLEANUP_SUMMARY.md:42:- **Git-Friendly**: No temporary files to ignore
+unused-analysis/custom-patterns.json:214:      "content": "// Temporarily disable optimizations to fix import issues"
+unused-analysis/custom-patterns.json:527:  "todoComments": [
+unused-analysis/custom-patterns.json:531:      "content": "// TODO: Restore custom drawing functionality if needed"
+unused-analysis/custom-patterns.json:578:      "content": "console.log('Attempting direct table creation...');"
+tests/tcg-set-detail-quick-test.spec.ts:46:    const searchInput = page.locator('input[placeholder*="Search"]');
+tests/unified-moves.spec.ts:39:    await page.fill('input[placeholder*="Search"]', 'thunder');
+tests/e2e/pokemon-abilities.spec.ts:63:    const searchInput = page.locator('input[placeholder*="search"]').or(page.locator('[data-testid="ability-search"]')).first();
+tests/e2e/homepage.spec.ts:52:    const searchInput = page.locator('input[placeholder*="Search Pokémon, cards, moves, items, regions" i]');
+tests/e2e/tcg-set-detail.spec.ts:197:    const searchInput = page.locator('input[placeholder*="search"]').or(page.locator('[data-testid="set-search"]')).first();
+tests/e2e/pokemon-items.spec.ts:86:    const searchInput = page.locator('input[placeholder*="search"]').or(page.locator('[data-testid="item-search"]')).first();
+tests/e2e/pokedex.spec.ts:59:    const searchInput = page.locator('input[placeholder*="search" i]').or(page.locator('input[type="search"]')).first();
+tests/e2e/pocketmode-set-detail.spec.ts:246:    const searchInput = page.locator('input[placeholder*="search"]').or(page.locator('[data-testid="set-search"]')).first();
+tests/e2e/type-effectiveness.spec.ts:238:    const filterInput = page.locator('input[placeholder*="filter"]').or(page.locator('input[placeholder*="search type"]')).or(page.locator('[data-testid="type-filter"]')).first();
+tests/e2e/collections.spec.ts:54:        const nameInput = page.locator('input[name="name"]').or(page.locator('input[placeholder*="name"]')).or(page.locator('[data-testid="collection-name"]')).first();
+tests/e2e/collections.spec.ts:191:    const filterInput = page.locator('input[placeholder*="search"]').or(page.locator('input[placeholder*="filter"]')).or(page.locator('[data-testid="collection-filter"]')).first();
+tests/e2e/pokemon-moves.spec.ts:117:    const searchInput = page.locator('input[placeholder*="search"]').or(page.locator('[data-testid="move-search"]')).first();
+tests/helpers/page-helpers.ts:113:    const searchInput = this.page.locator('input[placeholder*="search" i]').or(this.page.locator('input[type="search"]')).first();
+tests/team-synergy.spec.ts:24:    const searchInput = page.locator('input[placeholder="Search Pokemon..."]');
+tests/team-synergy.spec.ts:37:    const searchInput = page.locator('input[placeholder="Search Pokemon..."]');
+tests/team-synergy.spec.ts:52:    const searchInput = page.locator('input[placeholder="Search Pokemon..."]');
+tests/team-synergy.spec.ts:69:    const searchInput = page.locator('input[placeholder="Search Pokemon..."]');
+tests/team-synergy.spec.ts:95:    const searchInput = page.locator('input[placeholder="Search Pokemon..."]');
+tests/unified-migration-verification.spec.ts:33:    const search = page.locator('input[placeholder*="Search"]');
+tests/unified-migration-verification.spec.ts:57:    const search = page.locator('input[placeholder*="Search items"]');
+tests/unified-migration-verification.spec.ts:109:    expect(gridStyle).toContain('grid-template-columns');
+tests/competitive-tab-ui.spec.ts:175:    // Check that no "???" placeholders appear (indicating missing mappings)
+tests/tcg-set-detail-improvements.spec.ts:136:    const searchInput = page.locator('input[placeholder*="Search"]');
+tests/tcg-set-detail-improvements.spec.ts:213:    const searchInput = page.locator('input[placeholder*="Search"]');
+tests/critical-flows.spec.ts:47:    const searchInput = page.locator('input[placeholder*="Search"]').first();
+tests/critical-flows.spec.ts:191:      const searchModal = page.locator('input[placeholder*="Search"]').first();
+tests/fast-refresh-diagnostic.spec.ts:169:    // Track navigation attempts
+tests/visual/mobile-visual.spec.ts:83:    const searchInput = page.locator('input[type="search"]').or(page.locator('input[placeholder*="search"]')).first();
+tests/README.md:125:### Basic Test Template
+tests/visual/pokedex-visual.spec.ts:88:    // Capture loading placeholders
+tests/mobile-pokedex.spec.ts:18:    const searchInput = page.locator('input[placeholder*="Search"]');
+tests/mobile-pokedex.spec.ts:76:      // Check grid template columns in style
+tests/mobile-pokedex.spec.ts:77:      if (gridStyle && gridStyle.includes('grid-template-columns')) {
+tests/mobile-pokedex-protection.spec.ts:159:      const searchInput = await page.locator('input[type="search"], input[placeholder*="Search"]').first();
+tests/mobile-pokedex-protection.spec.ts:170:      const searchInput = await page.locator('input[type="search"], input[placeholder*="Search"]').first();
+tests/mobile-pokedex-protection.spec.ts:188:      const searchInput = await page.locator('input[type="search"], input[placeholder*="Search"]').first();
+tests/feature-pages.spec.ts:18:    await page.fill('input[placeholder*="Search items"]', 'potion');
+tests/feature-pages.spec.ts:26:    await page.fill('input[placeholder*="Search items"]', '');
+tests/feature-pages.spec.ts:61:    await page.fill('input[placeholder*="Search abilities"]', 'intimidate');
+tests/feature-pages.spec.ts:69:    await page.fill('input[placeholder*="Search abilities"]', '');
+tests/feature-pages.spec.ts:105:    await page.fill('input[placeholder*="Search moves"]', 'thunder');
+tests/feature-pages.spec.ts:113:    await page.fill('input[placeholder*="Search moves"]', '');
+tests/critical/search-comprehensive.spec.ts:31:      const searchInput = searchModal.locator('input[type="search"], input[placeholder*="search" i]');
+tests/critical/search-comprehensive.spec.ts:130:        const searchInput = page.locator('input[placeholder*="search" i]');
+tests/critical/search-comprehensive.spec.ts:165:        const searchInput = page.locator('input[placeholder*="search" i]');
+tests/critical/search-comprehensive.spec.ts:200:        const searchInput = page.locator('input[placeholder*="search" i]');
+tests/critical/search-comprehensive.spec.ts:235:        const searchInput = page.locator('input[placeholder*="search" i]');
+tests/critical/search-comprehensive.spec.ts:263:        const searchInput = page.locator('input[placeholder*="search" i]');
+tests/critical/search-comprehensive.spec.ts:295:        const searchInput = page.locator('input[placeholder*="search" i]');
+tests/critical/search-comprehensive.spec.ts:411:      const searchInput = page.locator('input[placeholder*="search" i], [data-testid="search-input"]').first();
+tests/critical/search-comprehensive.spec.ts:439:      const searchInput = page.locator('input[placeholder*="search" i]').first();
+tests/critical/search-comprehensive.spec.ts:469:        const searchInput = page.locator('input[placeholder*="search" i]');
+tests/critical/search-comprehensive.spec.ts:504:        const searchInput = page.locator('input[placeholder*="search" i]');
+tests/critical/search-comprehensive.spec.ts:536:        const searchInput = page.locator('input[placeholder*="search" i]');
+tests/critical/search-comprehensive.spec.ts:566:        const searchInput = page.locator('input[placeholder*="search" i]');
+tests/critical/search-comprehensive.spec.ts:607:        const searchInput = page.locator('input[placeholder*="search" i]');
+tests/critical/search-comprehensive.spec.ts:637:        const searchInput = page.locator('input[placeholder*="search" i]');
+tests/critical/search-comprehensive.spec.ts:667:        const searchInput = page.locator('input[placeholder*="search" i]');
+tests/critical/search-comprehensive.spec.ts:697:        const searchInput = page.locator('input[placeholder*="search" i]');
+tests/critical/search-comprehensive.spec.ts:730:        const searchInput = page.locator('input[placeholder*="search" i]');
+tests/critical/search-comprehensive.spec.ts:750:              const newSearchInput = page.locator('input[placeholder*="search" i]');
+tests/critical/pokemon-tabs-comprehensive.spec.ts:286:        const noCompData = page.locator('text=/not available/i, text=/coming soon/i');
+utils/advancedSearchEngine.ts:1130:    return 0.75; // Placeholder
+tests/critical/favorites-comprehensive.spec.ts:390:      const searchInput = page.locator('input[placeholder*="search" i], [data-testid="search-input"]').first();
+tests/critical/favorites-comprehensive.spec.ts:430:            gridColumns: style.gridTemplateColumns,
+tests/ev-optimizer.spec.ts:17:    await expect(page.locator('input[placeholder="Search Pokemon..."]')).toBeVisible();
+tests/ev-optimizer.spec.ts:22:    const searchInput = page.locator('input[placeholder="Search Pokemon..."]');
+tests/ev-optimizer.spec.ts:42:    const searchInput = page.locator('input[placeholder="Search Pokemon..."]');
+tests/ev-optimizer.spec.ts:57:    const searchInput = page.locator('input[placeholder="Search Pokemon..."]');
+tests/ev-optimizer.spec.ts:77:    const searchInput = page.locator('input[placeholder="Search Pokemon..."]');
+tests/ev-optimizer.spec.ts:95:    const searchInput = page.locator('input[placeholder="Search Pokemon..."]');
+tests/ev-optimizer.spec.ts:115:    const searchInput = page.locator('input[placeholder="Search Pokemon..."]');
+tests/tcg-sets-comprehensive.spec.ts:59:    const searchInput = page.locator('input[placeholder*="Search for a set"]');
+utils/lazyLoad.tsx:52:        logger.warn(`Failed to load ${componentName}, attempt ${i + 1}/${retries}`, { error });
+utils/lazyLoad.tsx:61:    logger.error(`Failed to load ${componentName} after ${retries} attempts`, { error: lastError });
+tests/qa-comprehensive-check.spec.ts:79:    const searchInput = page.locator('input[placeholder*="Search"]');
+tests/qa-comprehensive-check.spec.ts:128:    const searchBar = page.locator('input[placeholder*="Search"]');
+utils/safeStorage.ts:116:          logger.warn('Storage quota exceeded, attempting cleanup', {
+utils/safeStorage.ts:134:            // Final attempt
+utils/safeStorage.ts:231:          key.startsWith('temp-')) {
+tests/unified-pokedex.spec.ts:78:    await page.fill('input[placeholder*="Search"]', 'pikachu');
+utils/unifiedFetch.ts:129:    let attempt = 0;
+utils/unifiedFetch.ts:131:    while (attempt <= (opts.retries || 0)) {
+utils/unifiedFetch.ts:214:      attempt++;
+utils/unifiedFetch.ts:222:      // Log retry attempt
+utils/unifiedFetch.ts:223:      if (attempt <= (opts.retries || 0)) {
+utils/unifiedFetch.ts:226:          attempt, 
+utils/unifiedFetch.ts:238:      attempts: attempt,
+utils/monitoring.ts:86:    failedAuthAttempts: MonitoringThreshold;
+utils/monitoring.ts:161:    failedAuthAttempts: {
+utils/monitoring.ts:453:      if (authFailures > MONITORING_CONFIG.security.failedAuthAttempts.critical) {
+utils/monitoring.ts:456:      } else if (authFailures > MONITORING_CONFIG.security.failedAuthAttempts.warning) {
+utils/scrapers/scraperConfig.ts:118:  retryAttempts: number;
+utils/scrapers/scraperConfig.ts:126:interface GymLeaderTemplate {
+utils/scrapers/scraperConfig.ts:146:interface GameTemplate {
+utils/scrapers/scraperConfig.ts:158:interface PokemonTemplate {
+utils/scrapers/scraperConfig.ts:169:interface BadgeTemplate {
+utils/scrapers/scraperConfig.ts:179:interface DataTemplates {
+utils/scrapers/scraperConfig.ts:180:  gymLeader: GymLeaderTemplate;
+utils/scrapers/scraperConfig.ts:181:  game: GameTemplate;
+utils/scrapers/scraperConfig.ts:182:  pokemon: PokemonTemplate;
+utils/scrapers/scraperConfig.ts:183:  badge: BadgeTemplate;
+utils/scrapers/scraperConfig.ts:191:  templates: DataTemplates;
+utils/scrapers/scraperConfig.ts:397:    retryAttempts: 3,
+utils/scrapers/scraperConfig.ts:409:  // Data structure templates
+utils/scrapers/scraperConfig.ts:410:  templates: {
+utils/scrapers/eliteFourScraper.ts:305:      const pokemonData = this.parsePokemonTemplate(match[1]);
+utils/scrapers/eliteFourScraper.ts:314:  // Parse Pokemon template
+utils/scrapers/eliteFourScraper.ts:315:  private parsePokemonTemplate(templateContent: string): TeamMember | null {
+utils/scrapers/eliteFourScraper.ts:317:    const lines = templateContent.split('|');
+utils/scrapers/scraperUtils.ts:308:    // Remove templates (basic)
+utils/scrapers/gymLeaderScraper.ts:309:    // Look for Pokemon tables or templates
+utils/scrapers/gymLeaderScraper.ts:314:      const pokemonData = this.parsePokemonTemplate(match[1]);
+utils/scrapers/gymLeaderScraper.ts:323:  // Parse Pokemon template data
+utils/scrapers/gymLeaderScraper.ts:324:  private parsePokemonTemplate(templateContent: string): TeamPokemon | null {
+utils/scrapers/gymLeaderScraper.ts:326:    const lines = templateContent.split('|');
+utils/localDataLoader.ts:271:        image: '/images/gym-leader-placeholder.svg',
+utils/localDataLoader.ts:284:        image: '/images/gym-leader-placeholder.svg',
+utils/localDataLoader.ts:301:        cover: '/images/game-placeholder.svg',
+utils/localDataLoader.ts:302:        logo: '/images/game-placeholder.svg',
+utils/userPreferences.ts:64:    this.detectSystemPreferences();
+utils/userPreferences.ts:98:  private detectSystemPreferences(): void {
+utils/UnifiedCacheManager.ts:266:            // Final attempt
+utils/apiOptimizations.ts:375:    for (let attempt = 0; attempt <= CONFIG.MAX_RETRIES; attempt++) {
+utils/apiOptimizations.ts:424:        if (attempt < CONFIG.MAX_RETRIES && CONFIG.RETRY_DELAYS[attempt]) {
+utils/apiOptimizations.ts:425:          await new Promise(resolve => setTimeout(resolve, CONFIG.RETRY_DELAYS[attempt]));
+utils/apiOptimizations.ts:434:      attempts: CONFIG.MAX_RETRIES + 1
+utils/scrapedImageMapping.ts:183:  // Note: If a leader isn't listed here, getGymLeaderImage will fall back to placeholder
+utils/scrapedImageMapping.ts:256:    '/images/gym-leader-placeholder.svg'
+utils/scrapedImageMapping.ts:667:    return `/images/gym-leader-placeholder.svg`;
+utils/scrapedImageMapping.ts:676:    return `/images/elite-four-placeholder.svg`;
+utils/scrapedImageMapping.ts:685:    return `/images/champion-placeholder.svg`;
+utils/scrapedImageMapping.ts:692:  return badgeImages[badgeName] || `/images/badge-placeholder.svg`;
+utils/scrapedImageMapping.ts:721:    return ['/images/game-cover-placeholder.svg'];
+utils/scrapedImageMapping.ts:739:    return '/images/professor-placeholder.svg';
+utils/imageOptimization.ts:53:  placeholder?: string;
+utils/imageOptimization.ts:82:  placeholder: 'blur' | 'empty';
+utils/imageOptimization.ts:306:      placeholder = '/back-card.png',
+utils/imageOptimization.ts:312:    // Set placeholder immediately
+utils/imageOptimization.ts:313:    img.src = placeholder;
+utils/imageOptimization.ts:365:        // Fallback to placeholder
+utils/imageOptimization.ts:430:      placeholder: 'blur',
+utils/imageOptimization.ts:442:   * Generate a blur placeholder data URL
+utils/imageOptimization.ts:500:        placeholder: 'blur' as const,
+utils/adaptiveLoading.ts:58:  placeholder: 'blur' | 'none';
+utils/adaptiveLoading.ts:469:          placeholder: 'blur',
+utils/adaptiveLoading.ts:479:          placeholder: 'blur',
+utils/adaptiveLoading.ts:490:          placeholder: 'none',
+utils/shareUtils.ts:44:    // Temporary visual feedback
+utils/enhancedPriceCollector.ts:188:      logger.error(`Failed to fetch card ${cardId} after ${retryCount + 1} attempts:`, error);
+utils/performanceMonitor.ts:408:  // Stub methods for compatibility
+utils/inputStyles.ts:24:    'placeholder:text-gray-400 dark:placeholder:text-gray-500',
+utils/inputStyles.ts:29:    '[&:not(:placeholder-shown)]:text-gray-900 dark:[&:not(:placeholder-shown)]:text-white'
+utils/inputStyles.ts:39:    'placeholder:text-gray-400 dark:placeholder:text-gray-500',
+utils/inputStyles.ts:51:    'placeholder:text-gray-400 dark:placeholder:text-gray-500',
+utils/inputStyles.ts:62:    'placeholder:text-gray-500 dark:placeholder:text-gray-400',
+unused-analysis/REPORT.md:7:- TODO comments: 1
+unused-analysis/REPORT.md:20:3. Document unimplemented features found in TODO comments
+unused-analysis/unused_props.txt:251:components/ui/forms/EnhancedSearchBox.tsx - Unused prop: placeholder
+unused-analysis/summary.json:5:    "todoComments": 1,
+components/pokemon/tabs/competitive/FormatStats.tsx:18:      <p className="text-gray-500 dark:text-gray-400">Format stats coming soon...</p>
+components/pokemon/tabs/competitive/PokemonListItem.tsx:7:interface PokemonListItemProps {
+components/pokemon/tabs/competitive/PokemonListItem.tsx:15:export const PokemonListItem: React.FC<PokemonListItemProps> = ({ 
+context/modules/stateInitializer.ts:89:  // Only attempt to load from localStorage on client side
+project-resources/utilities/fix-scripts/fix-jsx-final-comprehensive.py:3:Comprehensive JSX syntax fixer - Final attempt
+project-resources/utilities/fix-scripts/fix-jsx-ultimate.py:32:        r'(<(?:div|span|button|input|select|textarea)[^>]*className="[^"]*")>\s*\n\s*((?:on[A-Z][a-zA-Z]*|aria-[a-zA-Z-]+|style|max|min|step|rows|cols|placeholder)=(?:"[^"]*"|\{[^}]*\}))\s*\n\s*(>)',
+types/components/common.d.ts:87:  placeholder?: string;
+types/components/common.d.ts:123:  placeholder?: string;
+types/components/common.d.ts:164:  placeholder?: 'blur' | 'empty';
+types/utils/cache.d.ts:192:  pattern: (template: string) => RegExp;
+types/components/navigation.d.ts:112:    placeholder?: string;
+types/components/navigation.d.ts:277:  placeholder?: string;
+project-resources/tests/scripts/testSecurity.js:393:          : `${vulnerabilities.length} path traversal attempts not blocked`,
+project-resources/tests/scripts/test-critical-workflows.js:120:        await page.type('input[type="search"], input[placeholder*="search" i]', 'Pikachu');
+project-resources/tests/scripts/test-critical-workflows.js:143:    const pokedexSearch = await page.$('input[type="search"], input[placeholder*="search" i]');
+project-resources/docs/archive/phase-progress/PHASE_6_TYPESCRIPT_MIGRATION_PROGRESS.md:107:2. **Use `any` sparingly** - add TODO comments for later refinement
+project-resources/docs/archive/phase-progress/PHASE_7_COMPONENT_MIGRATION_PLAN.md:134:3. Set up component template for consistency
+project-resources/tests/pokemon-evolution-test.html:12:        .test-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
+project-resources/tests/config/lighthouserc.json:28:      "target": "temporary-public-storage"
+project-resources/tests/config/tsconfig.json:24:    "noUnusedLocals": false, // Temporarily disabled for verification
+project-resources/tests/config/tsconfig.json:25:    "noUnusedParameters": false, // Temporarily disabled for verification

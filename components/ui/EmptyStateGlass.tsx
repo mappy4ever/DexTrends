@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { createGlassStyle } from './design-system/glass-constants';
-import { GradientButton } from './design-system';
+// Glass styles replaced with Tailwind classes - createGlassStyle removed
+import Button from './Button';
 import { FiSearch, FiAlertCircle, FiPackage, FiRefreshCw } from 'react-icons/fi';
 
 type EmptyStateType = 'search' | 'no-data' | 'error' | 'loading' | 'custom';
@@ -106,14 +106,10 @@ const EmptyStateGlass: React.FC<EmptyStateGlassProps> = ({
       initial={animate ? "hidden" : undefined}
       animate={animate ? "visible" : undefined}
       className={`
-        ${createGlassStyle({
-          blur: 'xl',
-          opacity: 'medium',
-          gradient: true,
-          border: 'medium',
-          shadow: 'xl',
-          rounded: 'xl',
-        })}
+        backdrop-blur-xl bg-gradient-to-br from-white/80 via-purple-50/80 to-pink-50/80 
+        dark:from-gray-800/80 dark:via-gray-700/80 dark:to-gray-800/80
+        border border-white/40 dark:border-gray-700/40
+        shadow-xl
         p-8 md:p-12 text-center rounded-3xl
         ${className}
       `}
@@ -126,17 +122,7 @@ const EmptyStateGlass: React.FC<EmptyStateGlassProps> = ({
         {(displayIcon || displayIconText) && (
           <div className="mb-4">
             {displayIcon ? (
-              <div className={`
-                ${createGlassStyle({
-                  blur: 'md',
-                  opacity: 'subtle',
-                  gradient: true,
-                  border: 'subtle',
-                  shadow: 'md',
-                  rounded: 'full',
-                })}
-                w-24 h-24 rounded-full flex items-center justify-center
-              `}>
+              <div className="backdrop-blur-md bg-gradient-to-br from-white/30 via-white/20 to-white/30 dark:from-gray-800/30 dark:via-gray-800/20 dark:to-gray-800/30 border border-white/20 dark:border-gray-700/20 shadow-md rounded-full w-24 h-24 flex items-center justify-center">
                 {displayIcon}
               </div>
             ) : (
@@ -179,13 +165,14 @@ const EmptyStateGlass: React.FC<EmptyStateGlassProps> = ({
             className="flex flex-col sm:flex-row gap-3 mt-6"
           >
             {actionButton && (
-              <GradientButton
+              <Button
                 onClick={actionButton.onClick}
                 variant={actionButton.variant || 'primary'}
+                gradient={true}
                 className="min-w-[120px]"
               >
                 {actionButton.text}
-              </GradientButton>
+              </Button>
             )}
             {secondaryButton && (
               <button

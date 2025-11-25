@@ -4,7 +4,7 @@ import type { Pokemon, PokemonSpecies } from "../../../types/pokemon";
 import type { TypeColors } from '../../../types/pokemon-tabs';
 import type { PocketCard } from '../../../types/api/pocket-cards';
 import type { TCGCard } from '../../../types/api/cards';
-import { GlassContainer } from '../../ui/design-system';
+import { GlassContainer } from '../../ui/glass-components';
 import CardList from '../../CardList';
 import PocketCardList from '../../PocketCardList';
 import { cn } from '../../../utils/cn';

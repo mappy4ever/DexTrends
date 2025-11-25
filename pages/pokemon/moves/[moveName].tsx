@@ -6,7 +6,7 @@ import { GetServerSideProps } from 'next';
 import { motion } from 'framer-motion';
 import { TypeBadge } from '@/components/ui/TypeBadge';
 import { CategoryIcon } from '@/components/ui/CategoryIcon';
-import { GlassContainer } from '@/components/ui/design-system';
+import { GlassContainer } from '../../../components/ui/GlassContainer';
 import { FullBleedWrapper } from '@/components/ui/FullBleedWrapper';
 import StyledBackButton from '@/components/ui/StyledBackButton';
 import { fetchJSON } from '@/utils/unifiedFetch';
@@ -123,7 +123,8 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
   const basePower = competitiveData?.power || moveData.power;
   const accuracy = competitiveData?.accuracy || moveData.accuracy;
   const priority = competitiveData?.priority ?? moveData.priority;
-  const typeColor = typeColors[moveType]?.bg || 'bg-gray-600';
+  const typeHex = typeColors[moveType];
+  const typeColorClass = 'bg-gray-600'; // Fallback color
   
   // Get generation number
   const generation = moveData.generation.name.replace('generation-', '').toUpperCase();
@@ -354,10 +355,10 @@ const MoveDetailPage: React.FC<MoveDetailPageProps> = ({ moveName }) => {
               <Link
                 href={`/pokemon/moves?type=${moveType}`}
                 className={cn(
-                  "flex items-center gap-2 px-4 py-2 rounded-lg text-white transition-colors",
-                  typeColor,
-                  "hover:opacity-90"
+                  "flex items-center gap-2 px-4 py-2 rounded-lg text-white transition-colors hover:opacity-90",
+                  !typeHex && typeColorClass
                 )}
+                style={typeHex ? { backgroundColor: typeHex } : undefined}
               >
                 View {moveType.charAt(0).toUpperCase() + moveType.slice(1)} Moves
               </Link>

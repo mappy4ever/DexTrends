@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { FiSearch, FiX } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
-import { createGlassStyle } from './design-system/glass-constants';
+// Glass styles replaced with Tailwind classes - createGlassStyle removed
 import { useDebounce } from '@/hooks/useDebounce';
 import logger from '@/utils/logger';
 
@@ -179,14 +179,7 @@ const UnifiedSearchBar: React.FC<UnifiedSearchBarProps> = ({
 
   // Variant configurations
   const variantClasses = {
-    default: createGlassStyle({
-      blur: 'xl',
-      opacity: 'medium',
-      gradient: true,
-      border: 'medium',
-      shadow: 'md',
-      rounded: 'full',
-    }),
+    default: 'bg-gradient-to-br from-white/60 to-white/70 dark:from-gray-800/60 dark:to-gray-800/70 backdrop-blur-xl border border-white/30 dark:border-gray-600/30 shadow-md rounded-full',
     minimal: 'bg-white/60 dark:bg-gray-800/60 backdrop-blur-md border border-white/20 dark:border-gray-700/20',
     bordered: 'bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border-2 border-purple-400/30',
   };
@@ -272,18 +265,7 @@ const UnifiedSearchBar: React.FC<UnifiedSearchBarProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className={`
-              absolute top-full mt-2 w-full z-50
-              ${createGlassStyle({
-                blur: 'xl',
-                opacity: 'strong',
-                gradient: true,
-                border: 'medium',
-                shadow: 'xl',
-                rounded: 'xl',
-              })}
-              rounded-2xl overflow-hidden
-            `}
+            className="absolute top-full mt-2 w-full z-50 bg-gradient-to-br from-white/80 to-white/90 dark:from-gray-800/80 dark:to-gray-800/90 backdrop-blur-xl border border-white/30 dark:border-gray-600/30 shadow-xl rounded-2xl overflow-hidden"
           >
             <div className="py-2">
               {displaySuggestions.map((suggestion) => (

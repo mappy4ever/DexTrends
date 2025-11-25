@@ -3,8 +3,8 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { NextPage } from 'next';
 import { motion } from 'framer-motion';
-import { CircularButton } from '../../components/ui/design-system';
-import { createGlassStyle } from '../../components/ui/design-system/glass-constants';
+import Button from '../../components/ui/Button';
+// Glass styles replaced with Tailwind classes
 import FullBleedWrapper from '../../components/ui/FullBleedWrapper';
 import logger from '../../utils/logger';
 import { fetchShowdownAbilities } from '../../utils/showdownData';
@@ -62,14 +62,7 @@ const UnifiedAbilitiesPage: NextPage = () => {
   const [abilityPokemon, setAbilityPokemon] = useState<Record<number, any[]>>({});
   const [loadingPokemon, setLoadingPokemon] = useState<Record<number, boolean>>({});
   
-  const glassStyle = createGlassStyle({
-    blur: '2xl',
-    opacity: 'medium',
-    gradient: true,
-    border: 'subtle',
-    shadow: 'lg',
-    rounded: 'sm'
-  });
+  const glassStyle = "bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20";
 
   useEffect(() => {
     const fetchAllAbilities = async () => {
@@ -321,14 +314,14 @@ const UnifiedAbilitiesPage: NextPage = () => {
       >
         <div className="container mx-auto px-4 py-4 sm:py-6">
           <div className="flex items-center justify-between">
-            <CircularButton
+            <Button rounded="full"
               onClick={() => router.push('/pokemon')}
               variant="secondary"
               size="sm"
               className="scale-90 sm:scale-100"
             >
               ← Back
-            </CircularButton>
+            </Button>
             
             <div className="text-center">
               <h1 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 bg-clip-text text-transparent">
@@ -340,7 +333,7 @@ const UnifiedAbilitiesPage: NextPage = () => {
             </div>
             
             <div className={cn(
-              createGlassStyle({ blur: 'sm', opacity: 'subtle' }),
+              "bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20",
               'px-2 sm:px-3 py-1 sm:py-2 rounded-lg text-center'
             )}>
               <div className="text-sm sm:text-lg font-bold text-purple-600 dark:text-purple-400">

@@ -7,11 +7,10 @@ import { fetchJSON } from '../utils/unifiedFetch';
 import { POKEMON_TYPE_COLORS } from '../utils/unifiedTypeColors';
 import { POKEAPI } from '../config/api';
 import { TypeBadge } from '../components/ui/TypeBadge';
-import { GlassContainer } from '../components/ui/design-system/GlassContainer';
-// Removed div and button imports - using standard rectangular designs
-import { TypeGradientBadge } from '../components/ui/design-system/TypeGradientBadge';
+import { GlassContainer } from '../components/ui/glass-components';
 import { motion } from 'framer-motion';
 import { EnhancedPokemonSelector, type Pokemon as SelectorPokemon } from '../components/ui/EnhancedPokemonSelector';
+import { TypeGradientBadge } from '../components/ui/design-system/TypeGradientBadge';
 import Modal from '../components/ui/Modal';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import { InlineLoader } from '../components/ui/SkeletonLoadingSystem';

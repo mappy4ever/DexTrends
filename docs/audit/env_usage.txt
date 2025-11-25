@@ -1,0 +1,174 @@
+scripts/cache-all-sets.js:13:  const token = process.env.CACHE_WARM_TOKEN || 'your-secure-token-here';
+scripts/verify-cache-warming.js:10:const BASE_URL = process.env.VERCEL_URL 
+scripts/verify-cache-warming.js:11:  ? `https://${process.env.VERCEL_URL}`
+scripts/runIPhoneTests.js:24:  baseUrl: process.env.TEST_URL || 'http://localhost:3000',
+scripts/detect-dev-port.js:59:  if (process.env.PORT) {
+scripts/detect-dev-port.js:60:    portsToCheck.unshift(parseInt(process.env.PORT));
+scripts/utils/logger.mjs:6:const isDevelopment = process.env.NODE_ENV === 'development';
+scripts/utils/logger.mjs:18:  const envLevel = process.env.LOG_LEVEL?.toUpperCase();
+scripts/collect-prices.js:9:const BASE_URL = process.env.NEXT_PUBLIC_VERCEL_URL 
+scripts/collect-prices.js:10:  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` 
+scripts/collect-prices.js:13:const API_KEY = process.env.PRICE_COLLECTION_API_KEY;
+scripts/utils/logger.js:6:const isDevelopment = process.env.NODE_ENV === 'development';
+scripts/utils/logger.js:18:  const envLevel = process.env.LOG_LEVEL?.toUpperCase();
+scripts/warm-critical-cache.js:11:const BASE_URL = process.env.VERCEL_URL 
+scripts/warm-critical-cache.js:12:  ? `https://${process.env.VERCEL_URL}` 
+scripts/warm-critical-cache.js:15:const CACHE_TOKEN = process.env.CACHE_WARM_TOKEN || 'your-secure-token-here';
+components/pwa/PWAProvider.tsx:170:      if (process.env.NODE_ENV === 'development') {
+components/common/StandardErrorBoundary.tsx:29:        {process.env.NODE_ENV === 'development' && (
+scripts/showdown-sync/test-connection.ts:10:const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+scripts/showdown-sync/test-connection.ts:11:const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+scripts/showdown-sync/apply-migration.ts:11:const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+scripts/showdown-sync/apply-migration.ts:12:const supabaseKey = process.env.SUPABASE_JWT_SECRET || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+scripts/showdown-sync/apply-migration.ts:49:    logger.info(`supabase db push --db-url ${process.env.POSTGRES_URL}`);
+components/pokemon/PokemonLearnset.tsx:91:        if (process.env.NODE_ENV === 'development') {
+components/pokemon/PokemonLearnset.tsx:218:    if (process.env.NODE_ENV === 'development' && result.length === 0 && validMoves.length > 0) {
+components/RouteErrorBoundary.tsx:97:            {process.env.NODE_ENV === 'development' && this.state.error && (
+scripts/showdown-sync/sync-showdown-data.ts:24:const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+scripts/showdown-sync/sync-showdown-data.ts:25:const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_JWT_SECRET || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+pages/trending.tsx:26:const pokemonKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+scripts/migrations/apply-items-migration.ts:10:const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+scripts/migrations/apply-items-migration.ts:11:const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_JWT_SECRET;
+pages/api/dashboard.ts:8:const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+pages/api/dashboard.ts:9:const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+pages/api/test-price-collection.ts:33:  const supabaseConfigured = !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+pages/api/test-price-collection.ts:39:      url: process.env.NEXT_PUBLIC_SUPABASE_URL ? 'Present' : 'Missing',
+pages/api/test-price-collection.ts:40:      key: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'Present' : 'Missing'
+pages/api/test-price-collection.ts:68:    const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+pages/api/metrics.ts:112:      message: process.env.NODE_ENV === 'development' ? error.message : 'Failed to retrieve metrics'
+pages/api/metrics.ts:240:        environment: process.env.NODE_ENV as string | undefined,
+pages/api/metrics.ts:309:        environment: process.env.NODE_ENV as string | undefined
+pages/api/tcg-cards/[cardId].ts:46:    const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+pages/api/tcg-cards/[cardId].ts:130:    const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+pages/api/debug-tcg-sets.ts:7:    const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+pages/api/debug-tcg-sets.ts:81:      stack: process.env.NODE_ENV === 'development' && error instanceof Error ? error.stack : undefined
+pages/api/test-tcg.ts:11:    const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+pages/api/test-tcg.ts:49:      stack: process.env.NODE_ENV === 'development' && error instanceof Error ? error.stack : undefined
+pages/api/test-tcg-direct.ts:6:    const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+pages/api/test-tcg-direct.ts:43:      rawResponse: process.env.NODE_ENV === 'development' ? responseText.substring(0, 500) : undefined
+pages/api/test-tcg-direct.ts:52:      stack: process.env.NODE_ENV === 'development' ? errorStack : undefined
+pages/api/test-set-id.ts:9:    const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+pages/api/collect-prices.ts:51:    const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+pages/api/test-set-sv5.ts:8:    const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+pages/api/health.ts:194:    environment: process.env.NODE_ENV as string | undefined
+pages/api/health.ts:230:    environment: process.env.NODE_ENV,
+pages/api/health.ts:378:      message: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error',
+pages/api/enhanced-price-collection.ts:57:  const apiKey = process.env.PRICE_COLLECTION_API_KEY;
+pages/api/test-set/[setId].ts:13:    const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+pages/api/test-set/[setId].ts:70:      stack: process.env.NODE_ENV === 'development' ? errorStack : undefined
+pages/api/map.ts:8:const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+pages/api/map.ts:9:const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+pages/api/people.ts:8:const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+pages/api/people.ts:9:const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+pages/api/tcg-test-simple.ts:7:  const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+pages/api/tcg-sets/[setId].ts:66:    const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+pages/api/tcg-sets/[setId].ts:167:      rawSetInfo: process.env.NODE_ENV === 'development' ? setInfo : undefined,
+pages/api/tcg-sets/[setId].ts:182:        debugInfo: process.env.NODE_ENV === 'development' ? {
+pages/api/tcg-sets/[setId].ts:271:      ...(process.env.NODE_ENV === 'development' && { 
+pages/api/tcg-cards.ts:17:    const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+pages/api/trends.ts:9:const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+pages/api/trends.ts:10:const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+pages/api/tcg-sets.ts:15:  const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+pages/api/admin/redis-reset.ts:15:  const expectedToken = process.env.CACHE_WARM_TOKEN;
+pages/api/tcg-sets/[setId]/complete.ts:83:    const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+pages/api/tcg-sets/[setId]/complete.ts:294:    const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+pages/api/filters.ts:24:const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+pages/api/filters.ts:25:const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+pages/api/admin/warm-sets-list-simple.ts:43:  const expectedToken = process.env.CACHE_WARM_TOKEN;
+pages/api/admin/warm-sets-list-simple.ts:76:    const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+pages/api/admin/warm-cache.ts:10:    const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+pages/api/admin/warm-cache.ts:72:    const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+pages/api/admin/warm-cache.ts:139:  const expectedToken = process.env.CACHE_WARM_TOKEN;
+pages/api/admin/warm-cache.ts:198:    const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+pages/api/admin/warm-cache.ts:383:  const token = process.env.CACHE_WARM_TOKEN;
+pages/api/admin/warm-cache.ts:384:  const baseUrl = process.env.VERCEL_URL 
+pages/api/admin/warm-cache.ts:385:    ? `https://${process.env.VERCEL_URL}` 
+pages/api/admin/warm-sets-list.ts:20:  const expectedToken = process.env.CACHE_WARM_TOKEN;
+pages/api/admin/warm-sets-list.ts:61:          const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+pages/api/admin/startup-warming.ts:15:  const expectedToken = process.env.CACHE_WARM_TOKEN;
+pages/api/cards/[cardId]/price.ts:58:    const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+components/ui/ErrorBoundary.tsx:213:              {process.env.NODE_ENV === 'development' && this.props.showDetails !== false && this.state.errorInfo && (
+components/ui/PerformanceMonitor.tsx:40:    setIsDev(process.env.NODE_ENV === 'development');
+components/ui/PageErrorBoundary.tsx:72:        {process.env.NODE_ENV === 'development' && (
+components/ui/PageErrorBoundary.tsx:99:    if (process.env.NODE_ENV === 'development') {
+components/ui/PageErrorBoundary.tsx:104:    if (process.env.NODE_ENV === 'production') {
+components/ui/SecurityProvider.tsx:411:    if (process.env.NODE_ENV === 'production') {
+next.config.production.js:17:  disable: process.env.NODE_ENV === 'development',
+next.config.production.js:266:    if (!dev && process.env.ANALYZE === 'true') {
+next.config.production.js:284:    NEXT_PUBLIC_NODE_ENV: process.env.NODE_ENV
+next.config.production.js:330:  assetPrefix: process.env.CDN_URL || '',
+next.config.production.js:340:module.exports = process.env.NODE_ENV === 'production' 
+lib/supabase.ts:5:const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+lib/supabase.ts:6:const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+lib/supabase.ts:113:    return !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+playwright.config.ts:7:  forbidOnly: !!process.env.CI,
+playwright.config.ts:8:  retries: process.env.CI ? 2 : 0,
+playwright.config.ts:9:  workers: process.env.CI ? 1 : undefined,
+playwright.config.ts:10:  reporter: process.env.CI ? [['list'], ['json', { outputFile: 'test-results.json' }], ['html']] : 'html',
+playwright.config.ts:12:    baseURL: process.env.BASE_URL || `http://localhost:${process.env.PORT || 3000}`,
+playwright.config.ts:52:    command: process.env.NODE_ENV === 'test-prod' ? 'npm run start' : 'npm run dev',
+playwright.config.ts:53:    port: parseInt(process.env.PORT || '3000', 10),
+playwright.config.ts:54:    reuseExistingServer: !process.env.CI,
+playwright.config.ts:57:      PORT: process.env.PORT || '3000'
+lib/background-cache-warmer.ts:155:      const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+lib/background-cache-warmer.ts:277:if (process.env.NODE_ENV === 'production') {
+lib/initialize-cache-warming.ts:15:  if (process.env.NODE_ENV === 'development' && process.env.ENABLE_DEV_CACHE_WARMING !== 'true') {
+lib/tcg-cache.ts:790:        const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+lib/redis.ts:76:  const redisUrl = process.env.REDIS_URL;
+next.config.mjs:7:  enabled: process.env.ANALYZE === 'true',
+next.config.mjs:190:    removeConsole: process.env.NODE_ENV === 'production' ? {
+next.config.mjs:208:    // NEXT_PUBLIC_KV_REST_API_URL: process.env.NEXT_PUBLIC_KV_REST_API_URL,
+next.config.mjs:209:    // NEXT_PUBLIC_KV_REST_API_TOKEN: process.env.NEXT_PUBLIC_KV_REST_API_TOKEN,
+next.config.mjs:210:    // NEXT_PUBLIC_KV_URL: process.env.NEXT_PUBLIC_KV_URL,
+next.config.mjs:211:    // NEXT_PUBLIC_KV_REST_API_READ_ONLY_TOKEN: process.env.NEXT_PUBLIC_KV_REST_API_READ_ONLY_TOKEN,
+next.config.mjs:213:    NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY: process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY,
+next.config.js:31:    removeConsole: process.env.NODE_ENV === 'production' ? {
+config/api.ts:9:  POKEAPI_BASE_URL: process.env.NEXT_PUBLIC_POKEAPI_URL || 'https://pokeapi.co/api/v2',
+config/api.ts:12:  POKEMON_TCG_API_URL: process.env.NEXT_PUBLIC_POKEMON_TCG_API_URL || 'https://api.pokemontcg.io/v2',
+config/api.ts:15:  TCGDEX_API_URL: process.env.NEXT_PUBLIC_TCGDEX_API_URL || 'https://api.tcgdex.net/v2',
+config/api.ts:18:  APP_API_URL: process.env.NEXT_PUBLIC_API_URL || (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000'),
+config/api.ts:21:  TEST_URL: process.env.TEST_URL || 'http://localhost:3001',
+config/api.ts:24:  PORT: process.env.PORT || '3000',
+tests/e2e/console-logging-demo.spec.ts:86:    if (process.env.DEBUG) {
+tests/e2e/console-logging-demo.spec.ts:96:    if (process.env.SAVE_CONSOLE_LOGS) {
+tests/e2e/console-logging-demo.spec.ts:103:    process.env.ASSERT_NO_CONSOLE_ERRORS = 'false';
+tests/e2e/console-logging-demo.spec.ts:121:    delete process.env.ASSERT_NO_CONSOLE_ERRORS;
+tests/fixtures/test-base.ts:49:    if (process.env.ASSERT_NO_CONSOLE_ERRORS !== 'false') {
+tests/README.md:257:process.env.ASSERT_NO_CONSOLE_ERRORS = 'false';
+utils/errorTracking.ts:30:    if (process.env.NODE_ENV === 'production' && typeof window !== 'undefined') {
+utils/errorTracking.ts:62:    if (process.env.NODE_ENV === 'production' && !this.isInitialized) {
+utils/pokemonSDK.ts:16:  const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+project-resources/examples/PerformanceIntegrationExample.js:174:    <PerformanceProvider enabledByDefault={true} testingMode={process.env.NODE_ENV === 'development'}>
+utils/supabase.ts:5:const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+utils/supabase.ts:6:const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+utils/fastRefresh.ts:15:  if (process.env.NODE_ENV === 'development') {
+utils/fastRefresh.ts:38:  if (process.env.NODE_ENV === 'development') {
+utils/fastRefresh.ts:54:  if (process.env.NODE_ENV === 'development') {
+utils/fastRefresh.ts:69:  if (process.env.NODE_ENV === 'development') {
+project-resources/tests/scripts/testSecurity.js:435:      if (!process.env.CSRF_SECRET) {
+project-resources/tests/scripts/testSecurity.js:462:          productionMode: process.env.NODE_ENV === 'production',
+utils/accessibilityChecker.ts:32:    this.isEnabled = process.env.NODE_ENV === 'development';
+utils/UnifiedCacheManager.ts:382:                     !!process.env.NEXT_PUBLIC_SUPABASE_URL && 
+utils/UnifiedCacheManager.ts:383:                     !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+utils/UnifiedCacheManager.ts:742:        const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+utils/logger.ts:6:const isDevelopment = process.env.NODE_ENV === 'development';
+utils/logger.ts:37:  if (process.env.LOG_LEVEL) {
+utils/logger.ts:38:    return LOG_LEVELS[process.env.LOG_LEVEL.toUpperCase()] || LogLevel.INFO;
+utils/reactOptimizations.ts:114:    enableProfiling = process.env.NODE_ENV === 'development',
+utils/reactOptimizations.ts:199:    enableProfiling = process.env.NODE_ENV === 'development',
+utils/reactOptimizations.ts:244:    enableProfiling = process.env.NODE_ENV === 'development',
+utils/reactOptimizations.ts:415:  if (process.env.NODE_ENV !== 'development') return Component;
+utils/reactOptimizations.ts:512:    enableProfiling = process.env.NODE_ENV === 'development',
+utils/priceDataHelper.ts:187:  const isDevelopment = process.env.NODE_ENV === 'development';
+utils/securityHeaders.ts:114:  const isDevelopment = process.env.NODE_ENV === 'development';
+utils/securityHeaders.ts:130:  const origin = process.env.ALLOWED_ORIGINS?.split(',') || allowedOrigins;
+utils/enhancedPriceCollector.ts:150:      const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+utils/enhancedPriceCollector.ts:198:      const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
+utils/performanceMonitor.ts:480:if (typeof window !== 'undefined' && process.env.NODE_ENV === 'production') {
+docs/audit/localhost_hits.txt:103:config/api.ts:21:  TEST_URL: process.env.TEST_URL || 'http://localhost:3001',
+docs/showdown-integration/IMPLEMENTATION_GUIDE.md:36:  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+docs/showdown-integration/IMPLEMENTATION_GUIDE.md:37:  process.env.SUPABASE_SERVICE_KEY!
+test-supabase-integration.js:10:  console.log('NEXT_PUBLIC_SUPABASE_URL:', process.env.NEXT_PUBLIC_SUPABASE_URL ? '✓ Set' : '✗ Missing');
+test-supabase-integration.js:11:  console.log('NEXT_PUBLIC_SUPABASE_ANON_KEY:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? '✓ Set' : '✗ Missing');
+docs/archive/old-project-resources/IMAGE_MIGRATION_PLAN.md:58:  const CDN_BASE = process.env.NEXT_PUBLIC_CDN_URL || '';
+docs/archive/development-history/PERFORMANCE_OPTIMIZATION_COMPLETE.md:198:if (process.env.NODE_ENV === 'development') {

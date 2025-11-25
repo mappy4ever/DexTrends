@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
-import { GlassContainer } from '../../../ui/design-system';
+import { GlassContainer } from '../../../ui/glass-components';
 import { MdCatchingPokemon } from 'react-icons/md';
 import { PokemonListItem } from './PokemonListItem';
 import type { TeammateData, CounterData } from './types';

@@ -1,0 +1,1892 @@
+[
+  {
+    "file": "components/CardList.tsx",
+    "name": "getRarityPillColor",
+    "props": "CardListProps",
+    "lines": 499
+  },
+  {
+    "file": "components/ClientOnly.tsx",
+    "name": "ClientOnly",
+    "props": "ClientOnlyProps",
+    "lines": 24
+  },
+  {
+    "file": "components/CollectionManager.tsx",
+    "name": "normalizedHash",
+    "props": "CollectionManagerProps",
+    "lines": 1062
+  },
+  {
+    "file": "components/ErrorBoundary.hooks.tsx",
+    "name": "useErrorBoundary",
+    "props": "",
+    "lines": 25
+  },
+  {
+    "file": "components/Footer.tsx",
+    "name": "Footer",
+    "props": "",
+    "lines": 185
+  },
+  {
+    "file": "components/GlobalErrorHandler.tsx",
+    "name": "GlobalErrorHandler",
+    "props": "",
+    "lines": 79
+  },
+  {
+    "file": "components/GlobalSearchModal.tsx",
+    "name": "GlobalSearchModal",
+    "props": "",
+    "lines": 276
+  },
+  {
+    "file": "components/Navbar.tsx",
+    "name": "Navbar",
+    "props": "",
+    "lines": 507
+  },
+  {
+    "file": "components/PocketCardList.tsx",
+    "name": "getRarityDisplay",
+    "props": "PocketCardProps",
+    "lines": 691
+  },
+  {
+    "file": "components/RecoveryMode.tsx",
+    "name": "handleManualReload",
+    "props": "RecoveryModeProps",
+    "lines": 135
+  },
+  {
+    "file": "components/RouteErrorBoundary.tsx",
+    "name": "withErrorBoundary",
+    "props": "Props",
+    "lines": 150
+  },
+  {
+    "file": "components/TCGCardList.tsx",
+    "name": "getActualRarity",
+    "props": "TCGCardProps",
+    "lines": 662
+  },
+  {
+    "file": "components/common/StandardErrorBoundary.tsx",
+    "name": "ErrorFallback",
+    "props": "ErrorFallbackProps",
+    "lines": 81
+  },
+  {
+    "file": "components/common/index.ts",
+    "name": "index",
+    "props": "",
+    "lines": 2
+  },
+  {
+    "file": "components/dynamic/Analytics.tsx",
+    "name": "Analytics",
+    "props": "",
+    "lines": 2
+  },
+  {
+    "file": "components/dynamic/DynamicComponents.tsx",
+    "name": "preloadComponent",
+    "props": "DynamicLoaderProps",
+    "lines": 235
+  },
+  {
+    "file": "components/dynamic/FontAwesomeIcon.tsx",
+    "name": "FontAwesomeIcon",
+    "props": "",
+    "lines": 2
+  },
+  {
+    "file": "components/dynamic/SpeedInsights.tsx",
+    "name": "SpeedInsights",
+    "props": "",
+    "lines": 2
+  },
+  {
+    "file": "components/home/GlobalSearch.tsx",
+    "name": "handleClickOutside",
+    "props": "",
+    "lines": 290
+  },
+  {
+    "file": "components/icons/customsitelogo.tsx",
+    "name": "customsitelogo",
+    "props": "CustomSiteLogoProps",
+    "lines": 48
+  },
+  {
+    "file": "components/index.ts",
+    "name": "index",
+    "props": "",
+    "lines": 20
+  },
+  {
+    "file": "components/layout/Layout.tsx",
+    "name": "Layout",
+    "props": "LayoutProps",
+    "lines": 44
+  },
+  {
+    "file": "components/layout/SidebarLayout.tsx",
+    "name": "SidebarLayout",
+    "props": "SidebarLayoutProps",
+    "lines": 53
+  },
+  {
+    "file": "components/layout/ThemeProvider.tsx",
+    "name": "ThemeProvider",
+    "props": "ThemeProviderProps",
+    "lines": 26
+  },
+  {
+    "file": "components/pocket/PokemonEvolutionFlow.tsx",
+    "name": "PokemonEvolutionFlow",
+    "props": "PokemonEvolutionFlowProps",
+    "lines": 222
+  },
+  {
+    "file": "components/pocket/PokemonRadarChart.tsx",
+    "name": "calculatePoints",
+    "props": "PokemonRadarChartProps",
+    "lines": 347
+  },
+  {
+    "file": "components/pocket/PokemonTypeWheel.tsx",
+    "name": "getDefensiveEffectiveness",
+    "props": "PokemonTypeWheelProps",
+    "lines": 298
+  },
+  {
+    "file": "components/pokemon/CompactTypeEffectiveness.tsx",
+    "name": "calculateDefensiveMatchups",
+    "props": "CompactTypeEffectivenessProps",
+    "lines": 604
+  },
+  {
+    "file": "components/pokemon/EnhancedMoveDisplay.tsx",
+    "name": "getFlagDescription",
+    "props": "EnhancedMoveDisplayProps",
+    "lines": 186
+  },
+  {
+    "file": "components/pokemon/EvolutionFlow.tsx",
+    "name": "parseNode",
+    "props": "EvolutionFlowProps",
+    "lines": 217
+  },
+  {
+    "file": "components/pokemon/FloatingActionBar.tsx",
+    "name": "handleScroll",
+    "props": "FloatingActionBarProps",
+    "lines": 131
+  },
+  {
+    "file": "components/pokemon/NavigationArrow.tsx",
+    "name": "NavigationArrow",
+    "props": "NavigationArrowProps",
+    "lines": 98
+  },
+  {
+    "file": "components/pokemon/PokemonGlassPanel.tsx",
+    "name": "PokemonGlassPanel",
+    "props": "",
+    "lines": 144
+  },
+  {
+    "file": "components/pokemon/PokemonHeroSection.tsx",
+    "name": "getSpriteUrl",
+    "props": "PokemonHeroSectionProps",
+    "lines": 337
+  },
+  {
+    "file": "components/pokemon/PokemonLearnset.tsx",
+    "name": "PokemonLearnset",
+    "props": "PokemonLearnsetProps",
+    "lines": 709
+  },
+  {
+    "file": "components/pokemon/PokemonStatBars.tsx",
+    "name": "normalizeStatName",
+    "props": "PokemonStatBarsProps",
+    "lines": 342
+  },
+  {
+    "file": "components/pokemon/PokemonTabSystem.tsx",
+    "name": "cleanupOldTabPreferences",
+    "props": "PokemonTabSystemProps",
+    "lines": 485
+  },
+  {
+    "file": "components/pokemon/TypeEffectivenessWheel.tsx",
+    "name": "TypeEffectivenessWheel",
+    "props": "TypeEffectivenessWheelProps",
+    "lines": 293
+  },
+  {
+    "file": "components/pokemon/tabs/BreedingTab.tsx",
+    "name": "eggMovesPromises",
+    "props": "BreedingTabProps",
+    "lines": 701
+  },
+  {
+    "file": "components/pokemon/tabs/CardsTab.tsx",
+    "name": "CardsTab",
+    "props": "CardsTabProps",
+    "lines": 345
+  },
+  {
+    "file": "components/pokemon/tabs/CompetitiveTab.tsx",
+    "name": "loadCompetitiveData",
+    "props": "CompetitiveTabProps",
+    "lines": 125
+  },
+  {
+    "file": "components/pokemon/tabs/EvolutionTabV3.tsx",
+    "name": "EvolutionCard",
+    "props": "EvolutionTabV3Props",
+    "lines": 1058
+  },
+  {
+    "file": "components/pokemon/tabs/LocationsTab.tsx",
+    "name": "getAnimationProps",
+    "props": "LocationsTabProps",
+    "lines": 496
+  },
+  {
+    "file": "components/pokemon/tabs/MovesTab.tsx",
+    "name": "fetchMoves",
+    "props": "MovesTabV2Props",
+    "lines": 632
+  },
+  {
+    "file": "components/pokemon/tabs/OverviewTabV3.tsx",
+    "name": "getFlavorText",
+    "props": "OverviewTabV3Props",
+    "lines": 363
+  },
+  {
+    "file": "components/pokemon/tabs/StatsTabV2.tsx",
+    "name": "getEVsForStat",
+    "props": "StatsTabV2Props",
+    "lines": 318
+  },
+  {
+    "file": "components/pokemon/tabs/competitive/FormatStats.tsx",
+    "name": "FormatStats",
+    "props": "FormatStatsProps",
+    "lines": 23
+  },
+  {
+    "file": "components/pokemon/tabs/competitive/MovesetsSection.tsx",
+    "name": "MovesetsSection",
+    "props": "MovesetsSectionProps",
+    "lines": 171
+  },
+  {
+    "file": "components/pokemon/tabs/competitive/PokemonListItem.tsx",
+    "name": "getValueColor",
+    "props": "PokemonListItemProps",
+    "lines": 77
+  },
+  {
+    "file": "components/pokemon/tabs/competitive/SpeedTiersSection.tsx",
+    "name": "SpeedTiersSection",
+    "props": "SpeedTiersSectionProps",
+    "lines": 97
+  },
+  {
+    "file": "components/pokemon/tabs/competitive/TeammatesCountersSection.tsx",
+    "name": "TeammatesCountersSection",
+    "props": "TeammatesCountersSectionProps",
+    "lines": 111
+  },
+  {
+    "file": "components/pokemon/tabs/competitive/TierLegend.tsx",
+    "name": "TierLegend",
+    "props": "",
+    "lines": 131
+  },
+  {
+    "file": "components/pokemon/tabs/competitive/constants.ts",
+    "name": "constants",
+    "props": "",
+    "lines": 252
+  },
+  {
+    "file": "components/pokemon/tabs/competitive/types.ts",
+    "name": "types",
+    "props": "",
+    "lines": 53
+  },
+  {
+    "file": "components/pokemon/tabs/competitive/utils.ts",
+    "name": "checkFormatEligibility",
+    "props": "",
+    "lines": 18
+  },
+  {
+    "file": "components/providers/AnimationProvider.tsx",
+    "name": "placeholderHook",
+    "props": "AnimationProviderProps",
+    "lines": 106
+  },
+  {
+    "file": "components/providers/ToastProvider.tsx",
+    "name": "convertToastOptions",
+    "props": "",
+    "lines": 162
+  },
+  {
+    "file": "components/providers/index.ts",
+    "name": "index",
+    "props": "",
+    "lines": 2
+  },
+  {
+    "file": "components/pwa/InstallPrompt.tsx",
+    "name": "handleBeforeInstallPrompt",
+    "props": "PWAFeaturesProps",
+    "lines": 414
+  },
+  {
+    "file": "components/pwa/OfflineIndicator.tsx",
+    "name": "handleToggleMinimize",
+    "props": "OfflineIndicatorProps",
+    "lines": 225
+  },
+  {
+    "file": "components/pwa/PWAProvider.tsx",
+    "name": "handleBeforeInstallPrompt",
+    "props": "PWAProviderProps",
+    "lines": 235
+  },
+  {
+    "file": "components/qol/ContextualHelp.tsx",
+    "name": "showTooltip",
+    "props": "SmartTooltipProps",
+    "lines": 343
+  },
+  {
+    "file": "components/qol/GlobalKeyboardShortcuts.tsx",
+    "name": "showKeyboardHelp",
+    "props": "",
+    "lines": 137
+  },
+  {
+    "file": "components/qol/GlobalSearchShortcuts.tsx",
+    "name": "GlobalSearchShortcuts",
+    "props": "",
+    "lines": 2
+  },
+  {
+    "file": "components/qol/KeyboardShortcuts.tsx",
+    "name": "handleKeyDown",
+    "props": "",
+    "lines": 405
+  },
+  {
+    "file": "components/qol/NotificationSystem.tsx",
+    "name": "decrement",
+    "props": "NotificationItemProps",
+    "lines": 423
+  },
+  {
+    "file": "components/qol/PreferencesManager.tsx",
+    "name": "handleTogglePreferences",
+    "props": "",
+    "lines": 32
+  },
+  {
+    "file": "components/qol/SmartErrorBoundary.tsx",
+    "name": "SmartErrorBoundary",
+    "props": "SmartErrorBoundaryProps",
+    "lines": 85
+  },
+  {
+    "file": "components/qol/SmartSearchEnhancer.tsx",
+    "name": "handleClickOutside",
+    "props": "SmartSearchEnhancerProps",
+    "lines": 474
+  },
+  {
+    "file": "components/qol/UserPreferences.hooks.tsx",
+    "name": "usePreferences",
+    "props": "",
+    "lines": 13
+  },
+  {
+    "file": "components/qol/UserPreferences.tsx",
+    "name": "updatePreference",
+    "props": "PreferencesSectionProps",
+    "lines": 619
+  },
+  {
+    "file": "components/regions/BadgeCollection.tsx",
+    "name": "BadgeCollection",
+    "props": "BadgeCollectionProps",
+    "lines": 127
+  },
+  {
+    "file": "components/regions/EliteFourGallery.tsx",
+    "name": "scrollToMember",
+    "props": "EliteFourGalleryProps",
+    "lines": 650
+  },
+  {
+    "file": "components/regions/EliteFourGrid.tsx",
+    "name": "handleCardFlip",
+    "props": "EliteFourGridProps",
+    "lines": 1029
+  },
+  {
+    "file": "components/regions/EvilTeamShowcase.tsx",
+    "name": "getTeamData",
+    "props": "EvilTeamShowcaseProps",
+    "lines": 696
+  },
+  {
+    "file": "components/regions/GameShowcase.tsx",
+    "name": "getGameCover",
+    "props": "GameShowcaseProps",
+    "lines": 259
+  },
+  {
+    "file": "components/regions/GymLeaderCarousel.tsx",
+    "name": "scrollToLeader",
+    "props": "GymLeaderCarouselProps",
+    "lines": 309
+  },
+  {
+    "file": "components/regions/GymLeaderGrid.tsx",
+    "name": "handleCardFlip",
+    "props": "GymLeaderGridProps",
+    "lines": 404
+  },
+  {
+    "file": "components/regions/IslandKahunasGrid.tsx",
+    "name": "getIslandIcon",
+    "props": "IslandKahunasGridProps",
+    "lines": 311
+  },
+  {
+    "file": "components/regions/LegendaryPokemonShowcase.tsx",
+    "name": "getLegendaryGradient",
+    "props": "LegendaryPokemonShowcaseProps",
+    "lines": 269
+  },
+  {
+    "file": "components/regions/ProfessorShowcase.tsx",
+    "name": "ProfessorShowcase",
+    "props": "ProfessorShowcaseProps",
+    "lines": 751
+  },
+  {
+    "file": "components/regions/RegionHero.tsx",
+    "name": "getGameLogos",
+    "props": "RegionHeroProps",
+    "lines": 154
+  },
+  {
+    "file": "components/regions/RegionInfo.tsx",
+    "name": "RegionInfo",
+    "props": "RegionInfoProps",
+    "lines": 352
+  },
+  {
+    "file": "components/regions/RegionalFormsGallery.tsx",
+    "name": "getTypeGradient",
+    "props": "RegionalFormsGalleryProps",
+    "lines": 493
+  },
+  {
+    "file": "components/regions/RegionalVariants.tsx",
+    "name": "getRegionalVariants",
+    "props": "RegionalVariantsProps",
+    "lines": 772
+  },
+  {
+    "file": "components/regions/SpecialPokemonShowcase.tsx",
+    "name": "handlePokemonClick",
+    "props": "SpecialPokemonShowcaseProps",
+    "lines": 448
+  },
+  {
+    "file": "components/regions/StarterEvolutionJourney.tsx",
+    "name": "getTypeIcon",
+    "props": "StarterEvolutionJourneyProps",
+    "lines": 622
+  },
+  {
+    "file": "components/regions/StarterShowcase.tsx",
+    "name": "getTypeGradient",
+    "props": "StarterShowcaseProps",
+    "lines": 261
+  },
+  {
+    "file": "components/regions/StarterShowcaseComplete.tsx",
+    "name": "getTypeIcon",
+    "props": "StarterShowcaseCompleteProps",
+    "lines": 684
+  },
+  {
+    "file": "components/tcg-set-detail/HeroSection.tsx",
+    "name": "radius",
+    "props": "HeroSectionProps",
+    "lines": 413
+  },
+  {
+    "file": "components/tcg-set-detail/types.ts",
+    "name": "types",
+    "props": "",
+    "lines": 13
+  },
+  {
+    "file": "components/team-builder/EVHeatMap.tsx",
+    "name": "handleDragStart",
+    "props": "EVHeatMapProps",
+    "lines": 421
+  },
+  {
+    "file": "components/team-builder/TeamSynergyGraph.tsx",
+    "name": "calculatePokemonSynergy",
+    "props": "TeamSynergyGraphProps",
+    "lines": 413
+  },
+  {
+    "file": "components/ui/AccessibilityProvider.tsx",
+    "name": "AccessibilityProvider",
+    "props": "AccessibilityProviderProps",
+    "lines": 209
+  },
+  {
+    "file": "components/ui/AchievementSystem.tsx",
+    "name": "AchievementSystem",
+    "props": "AchievementSystemProps",
+    "lines": 521
+  },
+  {
+    "file": "components/ui/BaseBackToTop.tsx",
+    "name": "toggleVisibility",
+    "props": "",
+    "lines": 54
+  },
+  {
+    "file": "components/ui/BottomNavigation.tsx",
+    "name": "isActive",
+    "props": "",
+    "lines": 181
+  },
+  {
+    "file": "components/ui/BulkSelectionBar.tsx",
+    "name": "BulkSelectionBar",
+    "props": "BulkSelectionBarProps",
+    "lines": 161
+  },
+  {
+    "file": "components/ui/Button.tsx",
+    "name": "handleClick",
+    "props": "",
+    "lines": 245
+  },
+  {
+    "file": "components/ui/Card.tsx",
+    "name": "Card",
+    "props": "",
+    "lines": 21
+  },
+  {
+    "file": "components/ui/CategoryIcon.tsx",
+    "name": "CategoryIcon",
+    "props": "CategoryIconProps",
+    "lines": 41
+  },
+  {
+    "file": "components/ui/CleanRaritySymbol.tsx",
+    "name": "CircleSymbol",
+    "props": "RaritySymbolProps",
+    "lines": 377
+  },
+  {
+    "file": "components/ui/CompetitiveTierBadge.tsx",
+    "name": "getTier",
+    "props": "CompetitiveTierBadgeProps",
+    "lines": 142
+  },
+  {
+    "file": "components/ui/Container.tsx",
+    "name": "hoverStyles",
+    "props": "",
+    "lines": 302
+  },
+  {
+    "file": "components/ui/ContextMenu.tsx",
+    "name": "handleClickOutside",
+    "props": "ContextMenuProps",
+    "lines": 284
+  },
+  {
+    "file": "components/ui/DetailPageSkeleton.tsx",
+    "name": "DetailPageSkeleton",
+    "props": "DetailPageSkeletonProps",
+    "lines": 118
+  },
+  {
+    "file": "components/ui/DexTrendsLogo.tsx",
+    "name": "logoImage",
+    "props": "DexTrendsLogoProps",
+    "lines": 123
+  },
+  {
+    "file": "components/ui/DynamicIsland.tsx",
+    "name": "handleInteraction",
+    "props": "DynamicIslandProps",
+    "lines": 372
+  },
+  {
+    "file": "components/ui/EmptyStateGlass.tsx",
+    "name": "EmptyStateGlass",
+    "props": "EmptyStateGlassProps",
+    "lines": 198
+  },
+  {
+    "file": "components/ui/EnhancedCardModal.tsx",
+    "name": "handleKeyDown",
+    "props": "EnhancedCardModalProps",
+    "lines": 378
+  },
+  {
+    "file": "components/ui/EnhancedPokemonSelector.tsx",
+    "name": "selectRandomPokemon",
+    "props": "EnhancedPokemonSelectorProps",
+    "lines": 216
+  },
+  {
+    "file": "components/ui/EnhancedUXProvider.hooks.tsx",
+    "name": "useUX",
+    "props": "",
+    "lines": 12
+  },
+  {
+    "file": "components/ui/EnhancedUXProvider.tsx",
+    "name": "handleScroll",
+    "props": "EnhancedUXProviderProps",
+    "lines": 516
+  },
+  {
+    "file": "components/ui/ErrorBoundary.tsx",
+    "name": "withErrorBoundary",
+    "props": "ErrorBoundaryProps",
+    "lines": 280
+  },
+  {
+    "file": "components/ui/ErrorMessage.tsx",
+    "name": "ErrorMessage",
+    "props": "ErrorMessageProps",
+    "lines": 14
+  },
+  {
+    "file": "components/ui/EvolutionTreeRenderer.tsx",
+    "name": "EvolutionTreeRenderer",
+    "props": "EvolutionTreeRendererProps",
+    "lines": 97
+  },
+  {
+    "file": "components/ui/ExportButton.tsx",
+    "name": "ExportButton",
+    "props": "ExportButtonProps",
+    "lines": 208
+  },
+  {
+    "file": "components/ui/FloatingActionSystem.hooks.tsx",
+    "name": "useFAB",
+    "props": "",
+    "lines": 132
+  },
+  {
+    "file": "components/ui/FloatingActionSystem.tsx",
+    "name": "handleClickOutside",
+    "props": "FABProviderProps",
+    "lines": 549
+  },
+  {
+    "file": "components/ui/FullBleedWrapper.tsx",
+    "name": "getGradientClasses",
+    "props": "FullBleedWrapperProps",
+    "lines": 159
+  },
+  {
+    "file": "components/ui/GameTimeline.tsx",
+    "name": "getYearColor",
+    "props": "GameTimelineProps",
+    "lines": 302
+  },
+  {
+    "file": "components/ui/GameficationSystem.tsx",
+    "name": "loadGameficationData",
+    "props": "GameficationSystemProps",
+    "lines": 643
+  },
+  {
+    "file": "components/ui/GlassContainer.tsx",
+    "name": "content",
+    "props": "GlassContainerProps",
+    "lines": 107
+  },
+  {
+    "file": "components/ui/IntelligentRecommendations.tsx",
+    "name": "monthsOld",
+    "props": "IntelligentRecommendationsProps",
+    "lines": 847
+  },
+  {
+    "file": "components/ui/KeyboardNavigation.hooks.tsx",
+    "name": "useFocusTrap",
+    "props": "",
+    "lines": 83
+  },
+  {
+    "file": "components/ui/KeyboardNavigation.tsx",
+    "name": "handleClick",
+    "props": "KeyboardNavigationProps",
+    "lines": 114
+  },
+  {
+    "file": "components/ui/LazyChart.tsx",
+    "name": "ChartSkeleton",
+    "props": "",
+    "lines": 116
+  },
+  {
+    "file": "components/ui/LazyComponents.tsx",
+    "name": "DashboardSkeleton",
+    "props": "",
+    "lines": 243
+  },
+  {
+    "file": "components/ui/LazyIcon.tsx",
+    "name": "IconPlaceholder",
+    "props": "",
+    "lines": 169
+  },
+  {
+    "file": "components/ui/LazyMotion.tsx",
+    "name": "useScroll",
+    "props": "",
+    "lines": 118
+  },
+  {
+    "file": "components/ui/LazyWrapper.tsx",
+    "name": "getDefaultFallback",
+    "props": "LazyWrapperProps",
+    "lines": 80
+  },
+  {
+    "file": "components/ui/LoadingStateGlass.tsx",
+    "name": "LoadingStateGlass",
+    "props": "LoadingStateGlassProps",
+    "lines": 84
+  },
+  {
+    "file": "components/ui/MapImage.tsx",
+    "name": "MapImage",
+    "props": "MapImageProps",
+    "lines": 114
+  },
+  {
+    "file": "components/ui/MicroInteractionSystem.tsx",
+    "name": "MicroInteractionSystem",
+    "props": "InteractiveLoaderProps",
+    "lines": 692
+  },
+  {
+    "file": "components/ui/Modal.tsx",
+    "name": "handleEscape",
+    "props": "ModalProps",
+    "lines": 390
+  },
+  {
+    "file": "components/ui/OptimizationEnhancer.tsx",
+    "name": "ImageOptimizer",
+    "props": "",
+    "lines": 281
+  },
+  {
+    "file": "components/ui/OptimizedImage.tsx",
+    "name": "OptimizedImage",
+    "props": "OptimizedImageProps",
+    "lines": 111
+  },
+  {
+    "file": "components/ui/PackOpening.tsx",
+    "name": "PackOpening",
+    "props": "PackOpeningProps",
+    "lines": 441
+  },
+  {
+    "file": "components/ui/PageErrorBoundary.hooks.tsx",
+    "name": "useErrorHandler",
+    "props": "",
+    "lines": 17
+  },
+  {
+    "file": "components/ui/PageErrorBoundary.tsx",
+    "name": "RouterAwareErrorFallback",
+    "props": "Props",
+    "lines": 143
+  },
+  {
+    "file": "components/ui/PageTransition.tsx",
+    "name": "PageTransition",
+    "props": "PageTransitionProps",
+    "lines": 308
+  },
+  {
+    "file": "components/ui/PerformanceMonitor.hooks.tsx",
+    "name": "useIntersectionObserver",
+    "props": "",
+    "lines": 21
+  },
+  {
+    "file": "components/ui/PerformanceMonitor.tsx",
+    "name": "PerformanceMonitor",
+    "props": "PerformanceMonitorProps",
+    "lines": 227
+  },
+  {
+    "file": "components/ui/PillBadge.tsx",
+    "name": "pillContent",
+    "props": "PillBadgeProps",
+    "lines": 160
+  },
+  {
+    "file": "components/ui/PillBadgeGroup.tsx",
+    "name": "PillBadgeGroup",
+    "props": "PillBadgeGroupProps",
+    "lines": 185
+  },
+  {
+    "file": "components/ui/PocketDeckBuilder.tsx",
+    "name": "PocketDeckBuilder",
+    "props": "PocketDeckBuilderProps",
+    "lines": 587
+  },
+  {
+    "file": "components/ui/PokeballLoader.tsx",
+    "name": "PokeballLoader",
+    "props": "PokeballLoaderProps",
+    "lines": 116
+  },
+  {
+    "file": "components/ui/PokeballSVG.tsx",
+    "name": "PokeballSVG",
+    "props": "PokeballSVGProps",
+    "lines": 276
+  },
+  {
+    "file": "components/ui/PokemonDisplay.tsx",
+    "name": "handleClick",
+    "props": "PokemonDisplayProps",
+    "lines": 468
+  },
+  {
+    "file": "components/ui/PokemonFormSelector.tsx",
+    "name": "PokemonFormSelector",
+    "props": "PokemonFormSelectorProps",
+    "lines": 269
+  },
+  {
+    "file": "components/ui/PremiumComponents.tsx",
+    "name": "FloatingActionButton",
+    "props": "GlassCardProps",
+    "lines": 429
+  },
+  {
+    "file": "components/ui/PriceIndicator.tsx",
+    "name": "PriceIndicator",
+    "props": "PriceIndicatorProps",
+    "lines": 174
+  },
+  {
+    "file": "components/ui/ProfessionalFilterSection.tsx",
+    "name": "ProfessionalFilterSection",
+    "props": "ProfessionalFilterSectionProps",
+    "lines": 341
+  },
+  {
+    "file": "components/ui/ProgressiveDisclosure.tsx",
+    "name": "getVariantClasses",
+    "props": "CollapsibleSectionProps",
+    "lines": 728
+  },
+  {
+    "file": "components/ui/ProgressiveImage.tsx",
+    "name": "getLQIP",
+    "props": "ProgressiveImageProps",
+    "lines": 175
+  },
+  {
+    "file": "components/ui/RarityBadge.tsx",
+    "name": "RarityBadge",
+    "props": "RarityBadgeProps",
+    "lines": 108
+  },
+  {
+    "file": "components/ui/RarityIcon.tsx",
+    "name": "StarIcon",
+    "props": "RarityIconProps",
+    "lines": 304
+  },
+  {
+    "file": "components/ui/RegionHeader.tsx",
+    "name": "RegionHeader",
+    "props": "RegionHeaderProps",
+    "lines": 181
+  },
+  {
+    "file": "components/ui/SecurityProvider.hooks.tsx",
+    "name": "useSecurity",
+    "props": "",
+    "lines": 12
+  },
+  {
+    "file": "components/ui/SecurityProvider.tsx",
+    "name": "generateCSRFToken",
+    "props": "SecurityProviderProps",
+    "lines": 437
+  },
+  {
+    "file": "components/ui/Select.tsx",
+    "name": "handleClickOutside",
+    "props": "",
+    "lines": 405
+  },
+  {
+    "file": "components/ui/ShareMenu.tsx",
+    "name": "handleClickOutside",
+    "props": "ShareMenuProps",
+    "lines": 95
+  },
+  {
+    "file": "components/ui/Sheet.tsx",
+    "name": "getAnimation",
+    "props": "",
+    "lines": 93
+  },
+  {
+    "file": "components/ui/Skeleton.tsx",
+    "name": "Skeleton",
+    "props": "SkeletonProps",
+    "lines": 391
+  },
+  {
+    "file": "components/ui/SkeletonLoader.tsx",
+    "name": "SkeletonLoader",
+    "props": "",
+    "lines": 3
+  },
+  {
+    "file": "components/ui/SkeletonLoadingSystem.hooks.tsx",
+    "name": "useSkeleton",
+    "props": "",
+    "lines": 40
+  },
+  {
+    "file": "components/ui/SkeletonLoadingSystem.tsx",
+    "name": "getVariantClasses",
+    "props": "SkeletonProviderProps",
+    "lines": 1227
+  },
+  {
+    "file": "components/ui/SocialPlatform.tsx",
+    "name": "formatTimeAgo",
+    "props": "SocialPlatformProps",
+    "lines": 658
+  },
+  {
+    "file": "components/ui/StandardInput.tsx",
+    "name": "StandardInput",
+    "props": "",
+    "lines": 138
+  },
+  {
+    "file": "components/ui/StyledBackButton.tsx",
+    "name": "handleClick",
+    "props": "StyledBackButtonProps",
+    "lines": 120
+  },
+  {
+    "file": "components/ui/TierBadge.tsx",
+    "name": "TierBadge",
+    "props": "TierBadgeProps",
+    "lines": 197
+  },
+  {
+    "file": "components/ui/Toast.tsx",
+    "name": "decrement",
+    "props": "ToastProps",
+    "lines": 230
+  },
+  {
+    "file": "components/ui/Tooltip.tsx",
+    "name": "Tooltip",
+    "props": "TooltipProps",
+    "lines": 67
+  },
+  {
+    "file": "components/ui/TooltipHelpSystem.hooks.tsx",
+    "name": "useTooltip",
+    "props": "",
+    "lines": 40
+  },
+  {
+    "file": "components/ui/TooltipHelpSystem.tsx",
+    "name": "calculatePosition",
+    "props": "TooltipProviderProps",
+    "lines": 764
+  },
+  {
+    "file": "components/ui/TouchTarget.tsx",
+    "name": "ensureTouchTarget",
+    "props": "TouchTargetGroupProps",
+    "lines": 169
+  },
+  {
+    "file": "components/ui/TournamentSystem.tsx",
+    "name": "loadTournamentData",
+    "props": "TournamentSystemProps",
+    "lines": 792
+  },
+  {
+    "file": "components/ui/TypeAnalysis.tsx",
+    "name": "TypeAnalysis",
+    "props": "TypeAnalysisCardProps",
+    "lines": 305
+  },
+  {
+    "file": "components/ui/TypeBadge.tsx",
+    "name": "TypeBadge",
+    "props": "TypeBadgeProps",
+    "lines": 85
+  },
+  {
+    "file": "components/ui/TypeEffectivenessBadge.tsx",
+    "name": "TypeEffectivenessBadge",
+    "props": "TypeEffectivenessBadgeProps",
+    "lines": 86
+  },
+  {
+    "file": "components/ui/UnifiedPullToRefresh.tsx",
+    "name": "handleTouchStart",
+    "props": "UnifiedPullToRefreshProps",
+    "lines": 232
+  },
+  {
+    "file": "components/ui/UnifiedSearchBar.tsx",
+    "name": "handleChange",
+    "props": "UnifiedSearchBarProps",
+    "lines": 292
+  },
+  {
+    "file": "components/ui/UserExperienceEnhancer.tsx",
+    "name": "handleOnline",
+    "props": "SmartSearchSuggestionsProps",
+    "lines": 317
+  },
+  {
+    "file": "components/ui/VirtualizedCardGrid.tsx",
+    "name": "actualCardWidth",
+    "props": "VirtualizedCardGridProps",
+    "lines": 214
+  },
+  {
+    "file": "components/ui/VoiceSearchInterface.tsx",
+    "name": "VoiceSearchInterface",
+    "props": "VoiceSearchInterfaceProps",
+    "lines": 417
+  },
+  {
+    "file": "components/ui/animations/AnimationSystem.hooks.tsx",
+    "name": "useAnimation",
+    "props": "",
+    "lines": 4
+  },
+  {
+    "file": "components/ui/animations/AnimationSystem.tsx",
+    "name": "AnimationProvider",
+    "props": "AnimationProps",
+    "lines": 488
+  },
+  {
+    "file": "components/ui/animations/animations.tsx",
+    "name": "FadeIn",
+    "props": "FadeInProps",
+    "lines": 233
+  },
+  {
+    "file": "components/ui/animations/index.tsx",
+    "name": "index",
+    "props": "",
+    "lines": 53
+  },
+  {
+    "file": "components/ui/cards/TCGCard.tsx",
+    "name": "getHolographicRarities",
+    "props": "UnifiedCardProps",
+    "lines": 847
+  },
+  {
+    "file": "components/ui/cards/index.ts",
+    "name": "index",
+    "props": "",
+    "lines": 17
+  },
+  {
+    "file": "components/ui/charts/PriceHistoryChart.tsx",
+    "name": "PriceHistoryChart",
+    "props": "PriceHistoryChartProps",
+    "lines": 531
+  },
+  {
+    "file": "components/ui/design-system/TypeGradientBadge.tsx",
+    "name": "TypeGradientBadge",
+    "props": "TypeGradientBadgeProps",
+    "lines": 16
+  },
+  {
+    "file": "components/ui/design-system/index.ts",
+    "name": "index",
+    "props": "",
+    "lines": 5
+  },
+  {
+    "file": "components/ui/filters/index.ts",
+    "name": "index",
+    "props": "",
+    "lines": 3
+  },
+  {
+    "file": "components/ui/forms/EnhancedSearchBox.tsx",
+    "name": "EnhancedSearchBox",
+    "props": "EnhancedSearchBoxProps",
+    "lines": 257
+  },
+  {
+    "file": "components/ui/forms/TypeFilter.tsx",
+    "name": "TypeFilter",
+    "props": "TypeFilterProps",
+    "lines": 60
+  },
+  {
+    "file": "components/ui/forms/index.ts",
+    "name": "index",
+    "props": "",
+    "lines": 10
+  },
+  {
+    "file": "components/ui/gestures/PullToRefresh.tsx",
+    "name": "PullToRefresh",
+    "props": "PullToRefreshProps",
+    "lines": 205
+  },
+  {
+    "file": "components/ui/glass-components.ts",
+    "name": "glass-components",
+    "props": "",
+    "lines": 27
+  },
+  {
+    "file": "components/ui/index.ts",
+    "name": "index",
+    "props": "",
+    "lines": 106
+  },
+  {
+    "file": "components/ui/layout/CollectionDashboard.tsx",
+    "name": "CollectionDashboard",
+    "props": "",
+    "lines": 458
+  },
+  {
+    "file": "components/ui/loading/PokemonEmptyState.tsx",
+    "name": "PokemonEmptyState",
+    "props": "PokemonEmptyStateProps",
+    "lines": 290
+  },
+  {
+    "file": "components/ui/loading/index.ts",
+    "name": "index",
+    "props": "",
+    "lines": 6
+  },
+  {
+    "file": "components/ui/modals/index.ts",
+    "name": "index",
+    "props": "",
+    "lines": 3
+  },
+  {
+    "file": "components/ui/navigation/NavigationEnhancements.tsx",
+    "name": "RouteTransitionLoader",
+    "props": "PokemonBreadcrumbsProps",
+    "lines": 363
+  },
+  {
+    "file": "components/ui/navigation/StickySidebar.tsx",
+    "name": "StickySidebar",
+    "props": "StickySidebarProps",
+    "lines": 277
+  },
+  {
+    "file": "components/ui/navigation/index.ts",
+    "name": "index",
+    "props": "",
+    "lines": 3
+  },
+  {
+    "file": "components/ui/progress/index.ts",
+    "name": "index",
+    "props": "",
+    "lines": 6
+  },
+  {
+    "file": "components/ui/search/EnhancedSearch.tsx",
+    "name": "handleClickOutside",
+    "props": "EnhancedSearchProps",
+    "lines": 605
+  },
+  {
+    "file": "components/ui/search/LiveSearchBar.tsx",
+    "name": "handleChange",
+    "props": "LiveSearchBarProps",
+    "lines": 532
+  },
+  {
+    "file": "components/ui/search/index.ts",
+    "name": "index",
+    "props": "",
+    "lines": 3
+  },
+  {
+    "file": "components/unified/UnifiedDataTable.tsx",
+    "name": "UnifiedDataTable",
+    "props": "",
+    "lines": 523
+  },
+  {
+    "file": "components/unified/UnifiedGrid.tsx",
+    "name": "UnifiedGrid",
+    "props": "",
+    "lines": 378
+  },
+  {
+    "file": "components/unified/UnifiedSearch.tsx",
+    "name": "UnifiedSearch",
+    "props": "UnifiedSearchProps",
+    "lines": 511
+  },
+  {
+    "file": "components/unified/index.ts",
+    "name": "index",
+    "props": "",
+    "lines": 48
+  },
+  {
+    "file": "pages/404.tsx",
+    "name": "404",
+    "props": "",
+    "lines": 153
+  },
+  {
+    "file": "pages/500.tsx",
+    "name": "500",
+    "props": "",
+    "lines": 183
+  },
+  {
+    "file": "pages/_app.tsx",
+    "name": "MyApp",
+    "props": "AppContentProps",
+    "lines": 250
+  },
+  {
+    "file": "pages/_document.tsx",
+    "name": "_document",
+    "props": "",
+    "lines": 119
+  },
+  {
+    "file": "pages/_error.tsx",
+    "name": "Error",
+    "props": "ErrorProps",
+    "lines": 144
+  },
+  {
+    "file": "pages/_experimental/index-unified.tsx",
+    "name": "getColorClasses",
+    "props": "",
+    "lines": 365
+  },
+  {
+    "file": "pages/_experimental/pokedex-new.tsx",
+    "name": "CompactPokemonCard",
+    "props": "",
+    "lines": 524
+  },
+  {
+    "file": "pages/_experimental/pokedex-unified.tsx",
+    "name": "CompactPokemonCard",
+    "props": "",
+    "lines": 533
+  },
+  {
+    "file": "pages/_experimental/tcgsets-unified.tsx",
+    "name": "renderSetCard",
+    "props": "",
+    "lines": 377
+  },
+  {
+    "file": "pages/_experimental/type-effectiveness-unified.tsx",
+    "name": "UnifiedTypeEffectivenessPage",
+    "props": "",
+    "lines": 785
+  },
+  {
+    "file": "pages/analytics.tsx",
+    "name": "generateMockAnalyticsData",
+    "props": "",
+    "lines": 658
+  },
+  {
+    "file": "pages/api/admin/cache-stats.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 120
+  },
+  {
+    "file": "pages/api/admin/cache-status.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 75
+  },
+  {
+    "file": "pages/api/admin/redis-reset.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 63
+  },
+  {
+    "file": "pages/api/admin/startup-warming.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 62
+  },
+  {
+    "file": "pages/api/admin/warm-cache.ts",
+    "name": "fetchAllTCGSets",
+    "props": "",
+    "lines": 404
+  },
+  {
+    "file": "pages/api/admin/warm-sets-list-simple.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 156
+  },
+  {
+    "file": "pages/api/admin/warm-sets-list.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 139
+  },
+  {
+    "file": "pages/api/advanced-search.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 385
+  },
+  {
+    "file": "pages/api/analytics.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 265
+  },
+  {
+    "file": "pages/api/background-sync.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 333
+  },
+  {
+    "file": "pages/api/cards/[cardId]/price.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 189
+  },
+  {
+    "file": "pages/api/collect-prices.ts",
+    "name": "delay",
+    "props": "",
+    "lines": 270
+  },
+  {
+    "file": "pages/api/dashboard.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 204
+  },
+  {
+    "file": "pages/api/debug-items.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 40
+  },
+  {
+    "file": "pages/api/debug-tcg-sets.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 84
+  },
+  {
+    "file": "pages/api/enhanced-price-collection.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 158
+  },
+  {
+    "file": "pages/api/filters.ts",
+    "name": "getFiltersFromSupabase",
+    "props": "",
+    "lines": 249
+  },
+  {
+    "file": "pages/api/health.ts",
+    "name": "checkDatabase",
+    "props": "",
+    "lines": 392
+  },
+  {
+    "file": "pages/api/images/optimize.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 76
+  },
+  {
+    "file": "pages/api/images/preload.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 127
+  },
+  {
+    "file": "pages/api/map.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 120
+  },
+  {
+    "file": "pages/api/market/trends.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 139
+  },
+  {
+    "file": "pages/api/metrics.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 331
+  },
+  {
+    "file": "pages/api/people.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 129
+  },
+  {
+    "file": "pages/api/pocket-cards.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 141
+  },
+  {
+    "file": "pages/api/pocket-decks.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 147
+  },
+  {
+    "file": "pages/api/pocket-expansions.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 91
+  },
+  {
+    "file": "pages/api/pocket-types.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 24
+  },
+  {
+    "file": "pages/api/search/global.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 222
+  },
+  {
+    "file": "pages/api/tcg-cards/[cardId].ts",
+    "name": "handler",
+    "props": "",
+    "lines": 173
+  },
+  {
+    "file": "pages/api/tcg-cards.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 104
+  },
+  {
+    "file": "pages/api/tcg-sets/[setId]/complete.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 465
+  },
+  {
+    "file": "pages/api/tcg-sets/[setId].ts",
+    "name": "handler",
+    "props": "",
+    "lines": 279
+  },
+  {
+    "file": "pages/api/tcg-sets.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 245
+  },
+  {
+    "file": "pages/api/tcg-test-simple.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 76
+  },
+  {
+    "file": "pages/api/test-price-collection.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 168
+  },
+  {
+    "file": "pages/api/test-set/[setId].ts",
+    "name": "handler",
+    "props": "",
+    "lines": 73
+  },
+  {
+    "file": "pages/api/test-set-id.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 54
+  },
+  {
+    "file": "pages/api/test-set-sv5.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 54
+  },
+  {
+    "file": "pages/api/test-showdown.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 24
+  },
+  {
+    "file": "pages/api/test-supabase.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 35
+  },
+  {
+    "file": "pages/api/test-tcg-direct.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 55
+  },
+  {
+    "file": "pages/api/test-tcg.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 52
+  },
+  {
+    "file": "pages/api/trends.ts",
+    "name": "handler",
+    "props": "",
+    "lines": 173
+  },
+  {
+    "file": "pages/battle-simulator/damage-calc.tsx",
+    "name": "calculate",
+    "props": "",
+    "lines": 77
+  },
+  {
+    "file": "pages/battle-simulator/team-builder.tsx",
+    "name": "addPokemon",
+    "props": "",
+    "lines": 58
+  },
+  {
+    "file": "pages/battle-simulator.tsx",
+    "name": "getTypeColors",
+    "props": "PokemonSelectionItemProps",
+    "lines": 2478
+  },
+  {
+    "file": "pages/cards/[cardId].tsx",
+    "name": "SimpleCardWrapper",
+    "props": "",
+    "lines": 818
+  },
+  {
+    "file": "pages/cards/index.tsx",
+    "name": "CardsPage",
+    "props": "",
+    "lines": 17
+  },
+  {
+    "file": "pages/cards/rarity/[rarity].tsx",
+    "name": "CardsByRarityPage",
+    "props": "",
+    "lines": 93
+  },
+  {
+    "file": "pages/collections.tsx",
+    "name": "formatCurrency",
+    "props": "",
+    "lines": 447
+  },
+  {
+    "file": "pages/favorites.tsx",
+    "name": "fetchPokemonData",
+    "props": "",
+    "lines": 485
+  },
+  {
+    "file": "pages/fun.tsx",
+    "name": "getRandomFact",
+    "props": "",
+    "lines": 360
+  },
+  {
+    "file": "pages/index.tsx",
+    "name": "index",
+    "props": "",
+    "lines": 239
+  },
+  {
+    "file": "pages/market.tsx",
+    "name": "market",
+    "props": "",
+    "lines": 426
+  },
+  {
+    "file": "pages/pocketmode/[pokemonid].tsx",
+    "name": "mapPocketCardNameToPokeId",
+    "props": "",
+    "lines": 971
+  },
+  {
+    "file": "pages/pocketmode/deckbuilder.tsx",
+    "name": "DeckBuilder",
+    "props": "",
+    "lines": 1740
+  },
+  {
+    "file": "pages/pocketmode/decks.tsx",
+    "name": "fetchDecks",
+    "props": "",
+    "lines": 509
+  },
+  {
+    "file": "pages/pocketmode/expansions.tsx",
+    "name": "fetchExpansions",
+    "props": "",
+    "lines": 734
+  },
+  {
+    "file": "pages/pocketmode/index.tsx",
+    "name": "handleKeyDown",
+    "props": "",
+    "lines": 580
+  },
+  {
+    "file": "pages/pocketmode/packs.tsx",
+    "name": "packName",
+    "props": "",
+    "lines": 832
+  },
+  {
+    "file": "pages/pocketmode/set/[setId].tsx",
+    "name": "SetView",
+    "props": "",
+    "lines": 391
+  },
+  {
+    "file": "pages/pokedex/[pokeid].tsx",
+    "name": "handleKeyDown",
+    "props": "",
+    "lines": 569
+  },
+  {
+    "file": "pages/pokedex.tsx",
+    "name": "CompactPokemonCard",
+    "props": "",
+    "lines": 560
+  },
+  {
+    "file": "pages/pokemon/abilities-unified.tsx",
+    "name": "renderMobileCard",
+    "props": "",
+    "lines": 415
+  },
+  {
+    "file": "pages/pokemon/abilities.tsx",
+    "name": "renderMobileCard",
+    "props": "",
+    "lines": 415
+  },
+  {
+    "file": "pages/pokemon/games/[game].tsx",
+    "name": "GameDetailPage",
+    "props": "",
+    "lines": 1368
+  },
+  {
+    "file": "pages/pokemon/games.tsx",
+    "name": "games",
+    "props": "",
+    "lines": 721
+  },
+  {
+    "file": "pages/pokemon/index.client.tsx",
+    "name": "index.client",
+    "props": "",
+    "lines": 275
+  },
+  {
+    "file": "pages/pokemon/index.tsx",
+    "name": "index",
+    "props": "",
+    "lines": 24
+  },
+  {
+    "file": "pages/pokemon/items-unified.tsx",
+    "name": "renderMobileCard",
+    "props": "",
+    "lines": 359
+  },
+  {
+    "file": "pages/pokemon/items.tsx",
+    "name": "renderMobileCard",
+    "props": "",
+    "lines": 359
+  },
+  {
+    "file": "pages/pokemon/moves/[moveName].tsx",
+    "name": "formatSecondaryEffects",
+    "props": "MoveDetailPageProps",
+    "lines": 411
+  },
+  {
+    "file": "pages/pokemon/moves-unified.tsx",
+    "name": "getCategoryIcon",
+    "props": "",
+    "lines": 471
+  },
+  {
+    "file": "pages/pokemon/moves.tsx",
+    "name": "getCategoryIcon",
+    "props": "",
+    "lines": 471
+  },
+  {
+    "file": "pages/pokemon/regions/[region]-components.tsx",
+    "name": "handleScroll",
+    "props": "",
+    "lines": 1009
+  },
+  {
+    "file": "pages/pokemon/regions/[region].tsx",
+    "name": "RegionDetailPage",
+    "props": "",
+    "lines": 1131
+  },
+  {
+    "file": "pages/pokemon/regions.tsx",
+    "name": "getGenerationColor",
+    "props": "RegionTileProps",
+    "lines": 512
+  },
+  {
+    "file": "pages/pokemon/starters/[region].tsx",
+    "name": "getStatColor",
+    "props": "",
+    "lines": 1136
+  },
+  {
+    "file": "pages/pokemon/starters.tsx",
+    "name": "handleStarterSelect",
+    "props": "",
+    "lines": 402
+  },
+  {
+    "file": "pages/search.tsx",
+    "name": "handleClose",
+    "props": "",
+    "lines": 85
+  },
+  {
+    "file": "pages/tcgexpansions/[setid].tsx",
+    "name": "SimpleCardWrapper",
+    "props": "",
+    "lines": 848
+  },
+  {
+    "file": "pages/tcgexpansions.tsx",
+    "name": "TCGExpansionsWorking",
+    "props": "Props",
+    "lines": 90
+  },
+  {
+    "file": "pages/team-builder/advanced.tsx",
+    "name": "addToTeam",
+    "props": "",
+    "lines": 588
+  },
+  {
+    "file": "pages/team-builder/ev-optimizer.tsx",
+    "name": "ev-optimizer",
+    "props": "",
+    "lines": 425
+  },
+  {
+    "file": "pages/trending.tsx",
+    "name": "getPrice",
+    "props": "",
+    "lines": 381
+  },
+  {
+    "file": "pages/type-effectiveness.tsx",
+    "name": "UnifiedTypeEffectivenessPage",
+    "props": "",
+    "lines": 785
+  },
+  {
+    "file": "pages/uitest.tsx",
+    "name": "createGlassStyle",
+    "props": "",
+    "lines": 740
+  }
+]

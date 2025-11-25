@@ -192,7 +192,7 @@ async function searchTCGCards(query: string, limit: number): Promise<SearchResul
 // Helper function to search TCG Sets
 async function searchTCGSets(query: string, limit: number): Promise<SearchResult[]> {
   try {
-    const response = await fetchJSON<TCGApiResponse<unknown[]>>('/api/tcgexpansions?pageSize=100');
+    const response = await fetchJSON<TCGApiResponse<unknown[]>>('/api/tcg-sets?pageSize=100');
     
     if (!response?.data) return [];
 

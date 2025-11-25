@@ -1,0 +1,685 @@
+CLAUDE.md:1:# DexTrends AI Assistant Context - MASTER DOCUMENT
+CLAUDE.md:4:This is the SINGLE SOURCE OF TRUTH for the DexTrends project.
+CLAUDE.md:34:DexTrends is a Pokemon TCG and Pokedex application.
+CLAUDE.md:119:| Loading | `Skeleton.tsx` | SkeletonSystem, LoadingStates, DexTrendsLoading |
+CLAUDE.md:220:*Purpose: Single source of truth for DexTrends development*
+README.md:1:# DexTrends
+README.md:44:DexTrends/
+README.md:68:- **Deck Builder**: Build and manage TCG decks
+README.md:72:- **Pokemon TCG Pocket**: Dedicated mode for mobile TCG
+README.md:74:- **Deck Builder**: Build decks for Pocket format
+docs/_archive/MOBILE_REBUILD_TRACKING.md:1:# DexTrends Mobile-First Rebuild Tracking Document
+docs/_archive/MOBILE_REBUILD_TRACKING.md:13:- [x] PullToRefresh - Pull to refresh with Pokeball animation
+docs/_archive/MOBILE_REBUILD_TRACKING.md:35:- [x] Pull-to-refresh integration
+docs/_archive/MOBILE_REBUILD_TRACKING.md:55:- [ ] Vertical layouts for showcases
+docs/features/ADVANCED_FEATURES.md:1:# 🚀 DexTrends Advanced Features Guide
+docs/features/ADVANCED_FEATURES.md:5:DexTrends has been enhanced with sophisticated features that transform it from a simple Pokemon card browser into a comprehensive collection management and market analysis platform. This guide covers all the advanced features implemented.
+docs/features/ADVANCED_FEATURES.md:11:### 1. Real-Time Price History System
+docs/features/ADVANCED_FEATURES.md:25:### 2. Advanced Search System
+docs/features/ADVANCED_FEATURES.md:28:- **Multi-Parameter Filtering**: Name, set, type, rarity, price range, HP, artist, year
+docs/features/ADVANCED_FEATURES.md:39:- ✅ Rarity filtering with comprehensive rarity list
+docs/features/ADVANCED_FEATURES.md:46:### 3. Market Analytics Dashboard
+docs/features/ADVANCED_FEATURES.md:66:- **Multiple Collections**: Create and manage separate collections
+docs/features/ADVANCED_FEATURES.md:74:- 📚 Unlimited collections per user
+docs/features/ADVANCED_FEATURES.md:81:### 5. Intelligent Price Alerts
+docs/features/ADVANCED_FEATURES.md:82:**Location**: `components/PriceAlerts.js`
+docs/features/ADVANCED_FEATURES.md:86:- **User Management**: Both authenticated and session-based alerts
+docs/features/ADVANCED_FEATURES.md:94:- 🔄 **Trend Reversal**: Detect when price trends change direction
+docs/features/ADVANCED_FEATURES.md:96:### 6. Professional Collections Page
+docs/features/ADVANCED_FEATURES.md:97:**Location**: `pages/collections.js`
+docs/features/ADVANCED_FEATURES.md:99:- **Tabbed Interface**: Collections, Alerts, Portfolio sections
+docs/features/ADVANCED_FEATURES.md:101:- **Performance Tracking**: Historical value changes and trends
+docs/features/ADVANCED_FEATURES.md:102:- **Distribution Analysis**: Value breakdown by set, rarity, and condition
+docs/features/ADVANCED_FEATURES.md:107:- 📊 Distribution by TCG set, rarity, and condition
+docs/features/ADVANCED_FEATURES.md:117:**Files**: `supabase-price-history-schema.sql`, `supabase-collections-schema.sql`
+docs/features/ADVANCED_FEATURES.md:119:- **Price History Tables**: Store daily price snapshots with variant tracking
+docs/features/ADVANCED_FEATURES.md:144:- **Collections Link**: New navigation item for collection management
+docs/features/ADVANCED_FEATURES.md:169:\i supabase-collections-schema.sql
+docs/features/ADVANCED_FEATURES.md:189:0 6 * * * cd /path/to/DexTrends && node scripts/collect-prices.js --type daily
+docs/features/ADVANCED_FEATURES.md:194:- **Collections Page**: `/collections` - Full collection management
+docs/features/ADVANCED_FEATURES.md:195:- **Card Details**: Enhanced with real price history
+docs/features/ADVANCED_FEATURES.md:196:- **Navigation**: Updated with Collections link
+docs/features/ADVANCED_FEATURES.md:233:├── PriceAlerts.js            # Alert management system
+docs/features/ADVANCED_FEATURES.md:253:- **Real-Time Notifications**: WebSocket-based price alerts
+docs/features/ADVANCED_FEATURES.md:271:// Navigate to /collections
+docs/features/ADVANCED_FEATURES.md:278:### Setting Price Alerts
+docs/features/ADVANCED_FEATURES.md:280:// Go to Collections → Price Alerts tab
+docs/features/ADVANCED_FEATURES.md:287:### Advanced Search
+docs/features/ADVANCED_FEATURES.md:292:// Sort by price, date, or rarity
+docs/features/ADVANCED_FEATURES.md:321:*This advanced feature set transforms DexTrends into a professional-grade Pokemon card collection management platform with market analysis capabilities that rival commercial solutions.*
+docs/_archive/PROJECT_MOBILE_STATUS.md:1:# DexTrends Mobile Rebuild - Project Status
+docs/_archive/PROJECT_MOBILE_STATUS.md:31:- ✅ Pull-to-refresh with Pokeball animation
+docs/_archive/PROJECT_MOBILE_STATUS.md:35:**Components Used**: VirtualPokemonGrid, BottomSheet, PullToRefresh, MobileLayout
+docs/_archive/PROJECT_MOBILE_STATUS.md:53:- ✅ Infinite scroll
+docs/_archive/PROJECT_MOBILE_STATUS.md:149:#### Collections/Favorites - 10% Complete
+docs/_archive/PROJECT_MOBILE_STATUS.md:167:- **PullToRefresh** - Pull to refresh with animation (USED IN POKÉDEX)
+docs/_archive/PROJECT_MOBILE_STATUS.md:168:- **MobileSearchExperience** - Advanced search (USED IN HOMEPAGE)
+docs/_archive/PROJECT_MOBILE_STATUS.md:208:3. Always add PullToRefresh on list pages
+docs/_archive/PROJECT_MOBILE_STATUS.md:273:2. Collections/Favorites management
+docs/_archive/PROJECT_MOBILE_STATUS.md:275:4. Implement remaining PullToRefresh
+docs/guides/IPHONE_OPTIMIZATION_GUIDE.md:1:# iPhone Optimization Guide for DexTrends
+docs/guides/IPHONE_OPTIMIZATION_GUIDE.md:4:This guide documents all iPhone-specific optimizations implemented in DexTrends to ensure perfect compatibility across all iPhone models from SE to 15 Pro Max.
+docs/guides/DEVELOPER_GUIDE.md:1:# DexTrends Developer Guide
+docs/guides/iOS_MOBILE_DEVELOPMENT_GUIDE.md:4:This guide consolidates all iOS and mobile development standards, best practices, and implementation details for the DexTrends project.
+docs/guides/UI_COMPONENTS_GUIDE.md:1:# DexTrends UI Components Guide
+docs/guides/UI_COMPONENTS_GUIDE.md:5:Modern UI components following the DexTrends design language with glass morphism effects, spring animations, and mobile-first approach. All components are built with React, TypeScript, and Framer Motion for smooth, performant animations.
+docs/guides/UI_COMPONENTS_GUIDE.md:9:All UI components are already integrated into the DexTrends project. To use them:
+docs/guides/UI_COMPONENTS_GUIDE.md:421:Pull-to-refresh functionality for mobile.
+docs/guides/DESIGN_SYSTEM.md:1:# DexTrends Design System
+docs/guides/DESIGN_SYSTEM.md:361:4. **Collections** - Glass containers, circular progress indicators
+docs/audit/deleted_files.txt:35:components/tcg-set-detail/RarityBadge.tsx
+docs/audit/deleted_files.txt:43:components/ui/DexTrendsLoading.tsx
+docs/audit/routes_inventory.md:36:pages/api/market/trends.ts
+docs/audit/routes_inventory.md:58:pages/api/trends.ts
+docs/audit/routes_inventory.md:64:pages/cards/rarity/[rarity].tsx
+docs/audit/routes_inventory.md:65:pages/collections.tsx
+docs/current/UI_UX_IMPROVEMENTS_SUMMARY.md:1:# DexTrends UI/UX Improvements Summary
+docs/current/UI_UX_IMPROVEMENTS_SUMMARY.md:174:   - Pull-to-refresh
+docs/current/PHASE_2_MOBILE_MIGRATION_SUMMARY.md:170:3. **Pull-to-refresh**:
+docs/current/PHASE_6_PERFORMANCE_COMPLETE.md:58:const CACHE_NAME = 'dextrends-v1';     // Static assets
+docs/audit/red_flag_comments.txt:28:pages/trending.tsx:261:        <PageLoader text={isRetrying ? `Retrying... (Attempt ${retryCount + 1})` : "Analyzing market trends..."} />
+docs/audit/red_flag_comments.txt:71:pages/collections.tsx:394:      {/* Performance Chart Placeholder */}
+docs/audit/red_flag_comments.txt:74:pages/api/pocket-types.ts:17:    { id: "pock-card-001", name: "Pocket Pikachu", image: "/placeholder-card.png", types: ["Electric"], rarity: "Rare Holo V" },
+docs/audit/red_flag_comments.txt:75:pages/api/pocket-types.ts:19:    { id: "pock-card-003", name: "Pocket Squirtle", image: "/placeholder-card.png", types: ["Water"], rarity: "Uncommon" },
+docs/audit/red_flag_comments.txt:76:pages/api/pocket-types.ts:21:    { id: "pock-card-005", name: "Pocket Eevee", image: "/placeholder-card.png", types: ["Normal"], rarity: "Rare" }
+docs/audit/red_flag_comments.txt:153:pages/tcgexpansions/[setid].tsx:517:          {/* Horizontal Card Showcase - Temporarily disabled after Phase 8 
+docs/audit/red_flag_comments.txt:537:components/pokemon/tabs/CardsTab.tsx:296:        {/* Card Rarity (placeholder) */}
+docs/audit/red_flag_comments.txt:705:components/regions/SpecialPokemonShowcase.tsx:171:        { name: 'Dialga', id: 483, types: ['steel', 'dragon'], title: 'Temporal Pokémon', location: 'Spear Pillar' },
+docs/audit/red_flag_comments.txt:706:components/regions/SpecialPokemonShowcase.tsx:174:        { name: 'Regigigas', id: 486, types: ['normal'], title: 'Colossal Pokémon', location: 'Snowpoint Temple' },
+docs/audit/red_flag_comments.txt:722:components/regions/EvilTeamShowcase.tsx:101:        'Silph Co. hostile takeover attempt',
+docs/audit/red_flag_comments.txt:727:components/regions/ProfessorShowcase.tsx:279:      biography: `Professor Augustine Sycamore is perhaps the most charismatic of all regional professors. His research into Mega Evolution has revolutionized Pokémon battling and understanding of temporary evolution forms.
+docs/audit/red_flag_comments.txt:728:components/regions/ProfessorShowcase.tsx:283:Sycamore's discovery of Mega Evolution came from studying ancient texts and artifacts in Kalos. His research showed that certain Pokémon could temporarily evolve beyond their final forms using Mega Stones and a strong bond with their trainers.`,
+docs/audit/red_flag_comments.txt:729:components/regions/ProfessorShowcase.tsx:456:Like his counterpart Sada, Turo worked in the depths of Area Zero, developing technology to breach temporal barriers. His research station became a gateway to the future, bringing mechanical and evolved forms of Pokémon into the present day.
+docs/audit/red_flag_comments.txt:730:components/regions/ProfessorShowcase.tsx:464:        'Temporal manipulation',
+docs/audit/red_flag_comments.txt:751:tests/e2e/collections.spec.ts:54:        const nameInput = page.locator('input[name="name"]').or(page.locator('input[placeholder*="name"]')).or(page.locator('[data-testid="collection-name"]')).first();
+docs/audit/red_flag_comments.txt:752:tests/e2e/collections.spec.ts:191:    const filterInput = page.locator('input[placeholder*="search"]').or(page.locator('input[placeholder*="filter"]')).or(page.locator('[data-testid="collection-filter"]')).first();
+docs/current/PHASE_3_COMPONENT_LIBRARY_SUMMARY.md:75:- **AlertModal**: Simple alerts with success/error/warning/info states
+docs/current/PHASE_3_COMPONENT_LIBRARY_SUMMARY.md:225:   - Migrate alerts to AlertModal
+docs/testing/TESTING_PROTOCOL.md:1:# DexTrends Mandatory Testing Protocol
+docs/testing/TESTING_PROTOCOL.md:61:- [ ] Deck builder creates/saves decks
+docs/audit/name_status_main_to_head.txt:41:R100	components/ui/EnhancedRarityBadge.tsx	archived-components/stage-4/EnhancedRarityBadge.tsx
+docs/audit/name_status_main_to_head.txt:43:R100	components/ui/GymLeaderShowcase.tsx	archived-components/stage-4/GymLeaderShowcase.tsx
+docs/audit/name_status_main_to_head.txt:72:R100	components/tcg-set-detail/CircularRarityChart.tsx	archived-components/stage-5/CircularRarityChart.tsx
+docs/audit/name_status_main_to_head.txt:120:M	components/PriceAlerts.tsx
+docs/audit/name_status_main_to_head.txt:162:M	components/tcg-set-detail/CardShowcaseStrip.tsx
+docs/audit/name_status_main_to_head.txt:163:D	components/tcg-set-detail/RarityBadge.tsx
+docs/audit/name_status_main_to_head.txt:170:M	components/ui/AnimationShowcase.tsx
+docs/audit/name_status_main_to_head.txt:180:D	components/ui/DexTrendsLoading.tsx
+docs/audit/name_status_main_to_head.txt:219:R100	components/mobile/PullToRefresh.tsx	components/ui/gestures/PullToRefresh.tsx
+docs/audit/renamed_files.txt:28: rename {components/ui => archived-components/stage-4}/EnhancedRarityBadge.tsx (100%)
+docs/audit/renamed_files.txt:30: rename {components/ui => archived-components/stage-4}/GymLeaderShowcase.tsx (100%)
+docs/audit/renamed_files.txt:59: rename {components/tcg-set-detail => archived-components/stage-5}/CircularRarityChart.tsx (100%)
+docs/audit/renamed_files.txt:101: rename components/{mobile => ui/gestures}/PullToRefresh.tsx (100%)
+docs/showdown-integration/DATA_SYNC_STRATEGY.md:3:This document outlines the strategy for collecting, refreshing, and maintaining Pokemon Showdown data in DexTrends.
+docs/showdown-integration/DATA_SYNC_STRATEGY.md:359:## Monitoring & Alerts
+docs/showdown-integration/DATA_SYNC_STRATEGY.md:475:  'type-chart': 'https://cdn.dextrends.com/showdown/type-chart.json',
+docs/showdown-integration/DATA_SYNC_STRATEGY.md:476:  'abilities': 'https://cdn.dextrends.com/showdown/abilities.json'
+docs/current/PHASE_4_INTEGRATION_POLISH_SUMMARY.md:9:- **PullToRefresh.tsx** - Complete with Pokeball animation & haptics
+docs/current/PHASE_4_INTEGRATION_POLISH_SUMMARY.md:36:### 2. Pull-to-Refresh Integration ✅
+docs/current/PHASE_4_INTEGRATION_POLISH_SUMMARY.md:53:  <PullToRefresh onRefresh={handleRefresh}>
+docs/current/PHASE_4_INTEGRATION_POLISH_SUMMARY.md:55:  </PullToRefresh>
+docs/current/PHASE_4_INTEGRATION_POLISH_SUMMARY.md:116:- **Pull-to-Refresh**: Natural gesture for data refresh
+docs/current/PHASE_4_INTEGRATION_POLISH_SUMMARY.md:134:- ✅ PullToRefresh correctly integrated
+docs/current/PHASE_4_INTEGRATION_POLISH_SUMMARY.md:140:- Pokedex: +2 features (skeleton, pull-to-refresh)
+docs/current/PHASE_4_INTEGRATION_POLISH_SUMMARY.md:141:- TCG Expansions: +2 features (skeleton, pull-to-refresh)
+docs/current/PHASE_4_INTEGRATION_POLISH_SUMMARY.md:152:- PullToRefresh (existing)
+docs/current/PHASE_4_INTEGRATION_POLISH_SUMMARY.md:204:3. **Mobile Patterns Work**: Pull-to-refresh and skeletons significantly improve UX
+docs/current/PHASE_4_INTEGRATION_POLISH_SUMMARY.md:223:- **Natural Gestures**: Pull-to-refresh feels native
+docs/current/PHASE_4_INTEGRATION_POLISH_SUMMARY.md:235:- **Efficient Updates**: Pull-to-refresh only reloads data
+docs/current/PHASE_4_INTEGRATION_POLISH_SUMMARY.md:245:3. **Deploying** pull-to-refresh for mobile users
+docs/showdown-integration/FEATURE_ROADMAP.md:3:This document outlines new features and enhancements enabled by integrating Pokemon Showdown data into DexTrends.
+docs/showdown-integration/FEATURE_ROADMAP.md:144:### 🟢 Metagame Trends Dashboard
+docs/showdown-integration/FEATURE_ROADMAP.md:152:- Set trends
+docs/development/SUPABASE_SETUP.md:1:# Supabase Setup Guide for DexTrends
+docs/development/SUPABASE_SETUP.md:4:DexTrends uses Supabase for:
+docs/development/SUPABASE_SETUP.md:7:- Price history tracking
+docs/development/SUPABASE_SETUP.md:33:   - `user_collections`
+docs/development/SUPABASE_SETUP.md:34:   - `session_collections`
+docs/development/SUPABASE_SETUP.md:45:### Collections Sync
+docs/development/SUPABASE_SETUP.md:46:- Collections automatically sync between devices
+docs/development/SUPABASE_SETUP.md:48:- Anonymous collections expire after 30 days
+docs/development/SUPABASE_SETUP.md:55:### Price History
+docs/development/SUPABASE_SETUP.md:58:- Price alerts for specific cards
+docs/development/SUPABASE_SETUP.md:75:    "user_collections": true,
+docs/development/SUPABASE_SETUP.md:76:    "session_collections": true,
+docs/development/SUPABASE_SETUP.md:83:### 2. Test Collections
+docs/development/SUPABASE_SETUP.md:84:1. Go to `/collections`
+docs/development/SUPABASE_SETUP.md:102:### Collections not syncing
+docs/development/SUPABASE_SETUP.md:131:- Set up alerts for quota limits
+docs/development/SUPABASE_SETUP.md:137:3. **Webhooks**: Set up webhooks for price alerts
+docs/audit/archive_mentions.txt:6:data/tcgRarity.ts:39:    image: "https://archives.bulbagarden.net/media/upload/e/e0/SetSymbolCommon.png"
+docs/audit/archive_mentions.txt:7:data/tcgRarity.ts:45:    image: "https://archives.bulbagarden.net/media/upload/0/05/SetSymbolUncommon.png"
+docs/audit/archive_mentions.txt:8:data/tcgRarity.ts:51:    image: "https://archives.bulbagarden.net/media/upload/7/7f/SetSymbolRare.png"
+docs/audit/archive_mentions.txt:9:data/tcgRarity.ts:59:    image: "https://archives.bulbagarden.net/media/upload/7/7f/SetSymbolRare.png"
+docs/audit/archive_mentions.txt:10:data/tcgRarity.ts:67:    image: "https://archives.bulbagarden.net/media/upload/2/24/SetSymbolUltra.png"
+docs/audit/archive_mentions.txt:11:data/tcgRarity.ts:73:    image: "https://archives.bulbagarden.net/media/upload/c/c5/SetSymbolSecret.png"
+docs/audit/archive_mentions.txt:12:data/tcgRarity.ts:81:    image: "https://archives.bulbagarden.net/media/upload/e/e7/SetSymbolPromo.png"
+docs/audit/archive_mentions.txt:13:data/tcgRarity.ts:87:    image: "https://archives.bulbagarden.net/media/upload/b/b0/SetSymbolAmazing.png"
+docs/audit/archive_mentions.txt:14:data/tcgRarity.ts:95:    image: "https://archives.bulbagarden.net/media/upload/c/c5/SetSymbolSecret.png"
+docs/audit/archive_mentions.txt:15:data/tcgRarity.ts:101:    image: "https://archives.bulbagarden.net/media/upload/0/09/SetSymbolIllustration.png"
+docs/audit/archive_mentions.txt:16:data/tcgRarity.ts:107:    image: "https://archives.bulbagarden.net/media/upload/0/0a/SetSymbolSpecial.png"
+docs/audit/archive_mentions.txt:17:data/tcgRarity.ts:113:    image: "https://archives.bulbagarden.net/media/upload/c/c5/SetSymbolSecret.png"
+docs/audit/archive_mentions.txt:18:data/tcgRarity.ts:121:    image: "https://archives.bulbagarden.net/media/upload/7/7c/SetSymbolShining.png"
+docs/audit/archive_mentions.txt:19:data/tcgRarity.ts:127:    image: "https://archives.bulbagarden.net/media/upload/2/2e/SetSymbolACE.png"
+docs/audit/archive_mentions.txt:20:data/tcgRarity.ts:138:    image: "https://archives.bulbagarden.net/media/upload/8/88/TCG_Pocket_Common.png"
+docs/audit/archive_mentions.txt:21:data/tcgRarity.ts:145:    image: "https://archives.bulbagarden.net/media/upload/4/4a/TCG_Pocket_Uncommon.png"
+docs/audit/archive_mentions.txt:22:data/tcgRarity.ts:152:    image: "https://archives.bulbagarden.net/media/upload/9/95/TCG_Pocket_Rare.png"
+docs/audit/archive_mentions.txt:23:data/tcgRarity.ts:159:    image: "https://archives.bulbagarden.net/media/upload/f/fe/TCG_Pocket_Double_rare.png"
+docs/audit/archive_mentions.txt:24:data/tcgRarity.ts:166:    image: "https://archives.bulbagarden.net/media/upload/4/43/TCG_Pocket_Art_rare.png"
+docs/audit/archive_mentions.txt:25:data/tcgRarity.ts:173:    image: "https://archives.bulbagarden.net/media/upload/c/cb/TCG_Pocket_Super_rare.png"
+docs/audit/archive_mentions.txt:26:data/tcgRarity.ts:180:    image: "https://archives.bulbagarden.net/media/upload/1/17/TCG_Pocket_Immersive_rare.png"
+docs/audit/archive_mentions.txt:27:data/tcgRarity.ts:187:    image: "https://archives.bulbagarden.net/media/upload/3/3e/TCG_Pocket_Crown_rare.png"
+docs/audit/archive_mentions.txt:28:scripts/scrapeTCGRaritySimple.js:13:// Known TCG rarity icons from Bulbagarden archives
+docs/audit/archive_mentions.txt:29:scripts/scrapeTCGRaritySimple.js:17:  { name: 'common.png', url: 'https://archives.bulbagarden.net/media/upload/e/e7/Rarity_Common.png' },
+docs/audit/archive_mentions.txt:30:scripts/scrapeTCGRaritySimple.js:18:  { name: 'uncommon.png', url: 'https://archives.bulbagarden.net/media/upload/e/e1/Rarity_Uncommon.png' },
+docs/audit/archive_mentions.txt:31:scripts/scrapeTCGRaritySimple.js:19:  { name: 'rare.png', url: 'https://archives.bulbagarden.net/media/upload/8/88/Rarity_Rare.png' },
+docs/audit/archive_mentions.txt:32:scripts/scrapeTCGRaritySimple.js:22:  { name: 'rare-holo.png', url: 'https://archives.bulbagarden.net/media/upload/d/d4/Rarity_Rare_Holo.png' },
+docs/audit/archive_mentions.txt:33:scripts/scrapeTCGRaritySimple.js:23:  { name: 'rare-holo-ex.png', url: 'https://archives.bulbagarden.net/media/upload/b/b0/Rarity_Rare_Holo_ex.png' },
+docs/audit/archive_mentions.txt:34:scripts/scrapeTCGRaritySimple.js:24:  { name: 'rare-holo-gx.png', url: 'https://archives.bulbagarden.net/media/upload/1/1e/Rarity_Rare_Holo_GX.png' },
+docs/audit/archive_mentions.txt:35:scripts/scrapeTCGRaritySimple.js:25:  { name: 'rare-holo-v.png', url: 'https://archives.bulbagarden.net/media/upload/a/ad/Rarity_Rare_Holo_V.png' },
+docs/audit/archive_mentions.txt:36:scripts/scrapeTCGRaritySimple.js:26:  { name: 'rare-holo-vmax.png', url: 'https://archives.bulbagarden.net/media/upload/f/fa/Rarity_Rare_Holo_VMAX.png' },
+docs/audit/archive_mentions.txt:37:scripts/scrapeTCGRaritySimple.js:27:  { name: 'rare-holo-vstar.png', url: 'https://archives.bulbagarden.net/media/upload/3/30/Rarity_Rare_Holo_VSTAR.png' },
+docs/audit/archive_mentions.txt:38:scripts/scrapeTCGRaritySimple.js:30:  { name: 'rare-ultra.png', url: 'https://archives.bulbagarden.net/media/upload/5/5a/Rarity_Rare_Ultra.png' },
+docs/audit/archive_mentions.txt:39:scripts/scrapeTCGRaritySimple.js:31:  { name: 'rare-secret.png', url: 'https://archives.bulbagarden.net/media/upload/e/e8/Rarity_Rare_Secret.png' },
+docs/audit/archive_mentions.txt:40:scripts/scrapeTCGRaritySimple.js:32:  { name: 'rare-rainbow.png', url: 'https://archives.bulbagarden.net/media/upload/8/8b/Rarity_Rare_Rainbow.png' },
+docs/audit/archive_mentions.txt:41:scripts/scrapeTCGRaritySimple.js:33:  { name: 'rare-shining.png', url: 'https://archives.bulbagarden.net/media/upload/a/ac/Rarity_Rare_Shining.png' },
+docs/audit/archive_mentions.txt:42:scripts/scrapeTCGRaritySimple.js:34:  { name: 'rare-shiny.png', url: 'https://archives.bulbagarden.net/media/upload/9/99/Rarity_Rare_Shiny.png' },
+docs/audit/archive_mentions.txt:43:scripts/scrapeTCGRaritySimple.js:37:  { name: 'rare-ace.png', url: 'https://archives.bulbagarden.net/media/upload/8/84/Rarity_Rare_ACE.png' },
+docs/audit/archive_mentions.txt:44:scripts/scrapeTCGRaritySimple.js:38:  { name: 'rare-break.png', url: 'https://archives.bulbagarden.net/media/upload/f/fd/Rarity_Rare_BREAK.png' },
+docs/audit/archive_mentions.txt:45:scripts/scrapeTCGRaritySimple.js:39:  { name: 'rare-prime.png', url: 'https://archives.bulbagarden.net/media/upload/6/67/Rarity_Rare_Prime.png' },
+docs/audit/archive_mentions.txt:46:scripts/scrapeTCGRaritySimple.js:40:  { name: 'rare-prism-star.png', url: 'https://archives.bulbagarden.net/media/upload/a/a9/Rarity_Rare_Prism_Star.png' },
+docs/audit/archive_mentions.txt:47:scripts/scrapeTCGRaritySimple.js:41:  { name: 'amazing-rare.png', url: 'https://archives.bulbagarden.net/media/upload/f/f1/Rarity_Amazing_Rare.png' },
+docs/audit/archive_mentions.txt:48:scripts/scrapeTCGRaritySimple.js:44:  { name: 'trainer-gallery.png', url: 'https://archives.bulbagarden.net/media/upload/5/5d/Rarity_TG.png' },
+docs/audit/archive_mentions.txt:49:scripts/scrapeTCGRaritySimple.js:45:  { name: 'classic-collection.png', url: 'https://archives.bulbagarden.net/media/upload/7/72/Rarity_Classic_Collection.png' },
+docs/audit/archive_mentions.txt:50:scripts/scrapeTCGRaritySimple.js:48:  { name: 'double-rare.png', url: 'https://archives.bulbagarden.net/media/upload/4/44/Rarity_Double_Rare.png' },
+docs/audit/archive_mentions.txt:51:scripts/scrapeTCGRaritySimple.js:49:  { name: 'illustration-rare.png', url: 'https://archives.bulbagarden.net/media/upload/e/ef/Rarity_Illustration_Rare.png' },
+docs/audit/archive_mentions.txt:52:scripts/scrapeTCGRaritySimple.js:50:  { name: 'ultra-rare.png', url: 'https://archives.bulbagarden.net/media/upload/b/b1/Rarity_Ultra_Rare.png' },
+docs/audit/archive_mentions.txt:53:scripts/scrapeTCGRaritySimple.js:51:  { name: 'special-illustration-rare.png', url: 'https://archives.bulbagarden.net/media/upload/c/c9/Rarity_Special_Illustration_Rare.png' },
+docs/audit/archive_mentions.txt:54:scripts/scrapeTCGRaritySimple.js:52:  { name: 'hyper-rare.png', url: 'https://archives.bulbagarden.net/media/upload/5/58/Rarity_Hyper_Rare.png' },
+docs/audit/archive_mentions.txt:55:scripts/scrapeTCGRaritySimple.js:55:  { name: 'promo.png', url: 'https://archives.bulbagarden.net/media/upload/d/d0/Rarity_Promo.png' }
+docs/audit/archive_mentions.txt:335:scripts/scrapeTCGRarityActual.js:13:// Actual TCG rarity icons from Bulbagarden archives (verified URLs)
+docs/audit/archive_mentions.txt:336:scripts/scrapeTCGRarityActual.js:16:  { name: 'rarity-a.png', url: 'https://archives.bulbagarden.net/media/upload/2/2d/Rarity_A.png' },
+docs/audit/archive_mentions.txt:337:scripts/scrapeTCGRarityActual.js:17:  { name: 'rarity-c.png', url: 'https://archives.bulbagarden.net/media/upload/f/f9/Rarity_C.png' },
+docs/audit/archive_mentions.txt:338:scripts/scrapeTCGRarityActual.js:18:  { name: 'rarity-cc.png', url: 'https://archives.bulbagarden.net/media/upload/7/72/Rarity_CC.png' },
+docs/audit/archive_mentions.txt:339:scripts/scrapeTCGRarityActual.js:19:  { name: 'rarity-common.png', url: 'https://archives.bulbagarden.net/media/upload/2/20/Rarity_Common_SV.png' },
+docs/audit/archive_mentions.txt:340:scripts/scrapeTCGRarityActual.js:20:  { name: 'rarity-uncommon.png', url: 'https://archives.bulbagarden.net/media/upload/d/d0/Rarity_Uncommon_SV.png' },
+docs/audit/archive_mentions.txt:341:scripts/scrapeTCGRarityActual.js:21:  { name: 'rarity-rare.png', url: 'https://archives.bulbagarden.net/media/upload/d/d5/Rarity_Rare_SV.png' },
+docs/audit/archive_mentions.txt:342:scripts/scrapeTCGRarityActual.js:24:  { name: 'rarity-h.png', url: 'https://archives.bulbagarden.net/media/upload/3/32/Rarity_H.png' },
+docs/audit/archive_mentions.txt:343:scripts/scrapeTCGRarityActual.js:25:  { name: 'rarity-hr.png', url: 'https://archives.bulbagarden.net/media/upload/d/d2/Rarity_HR.png' },
+docs/audit/archive_mentions.txt:344:scripts/scrapeTCGRarityActual.js:26:  { name: 'rarity-rare-holo.png', url: 'https://archives.bulbagarden.net/media/upload/0/08/Rarity_Rare_Holo_SV.png' },
+docs/audit/archive_mentions.txt:345:scripts/scrapeTCGRarityActual.js:29:  { name: 'rarity-rrr.png', url: 'https://archives.bulbagarden.net/media/upload/6/60/Rarity_RRR.png' },
+docs/audit/archive_mentions.txt:346:scripts/scrapeTCGRarityActual.js:30:  { name: 'rarity-rr.png', url: 'https://archives.bulbagarden.net/media/upload/f/fc/Rarity_RR.png' },
+docs/audit/archive_mentions.txt:347:scripts/scrapeTCGRarityActual.js:31:  { name: 'rarity-sr.png', url: 'https://archives.bulbagarden.net/media/upload/e/ed/Rarity_SR.png' },
+docs/audit/archive_mentions.txt:348:scripts/scrapeTCGRarityActual.js:32:  { name: 'rarity-ssr.png', url: 'https://archives.bulbagarden.net/media/upload/2/28/Rarity_SSR.png' },
+docs/audit/archive_mentions.txt:349:scripts/scrapeTCGRarityActual.js:33:  { name: 'rarity-sar.png', url: 'https://archives.bulbagarden.net/media/upload/9/9c/Rarity_SAR.png' },
+docs/audit/archive_mentions.txt:350:scripts/scrapeTCGRarityActual.js:34:  { name: 'rarity-ur.png', url: 'https://archives.bulbagarden.net/media/upload/c/c1/Rarity_UR.png' },
+docs/audit/archive_mentions.txt:351:scripts/scrapeTCGRarityActual.js:37:  { name: 'rarity-ace.png', url: 'https://archives.bulbagarden.net/media/upload/4/44/Rarity_ACE.png' },
+docs/audit/archive_mentions.txt:352:scripts/scrapeTCGRarityActual.js:38:  { name: 'rarity-ace-spec-rare.png', url: 'https://archives.bulbagarden.net/media/upload/f/f6/Rarity_ACE_SPEC_Rare.png' },
+docs/audit/archive_mentions.txt:353:scripts/scrapeTCGRarityActual.js:41:  { name: 'rarity-ar.png', url: 'https://archives.bulbagarden.net/media/upload/4/42/Rarity_AR.png' },
+docs/audit/archive_mentions.txt:354:scripts/scrapeTCGRarityActual.js:44:  { name: 'rarity-k.png', url: 'https://archives.bulbagarden.net/media/upload/d/d4/Rarity_K.png' },
+docs/audit/archive_mentions.txt:355:scripts/scrapeTCGRarityActual.js:47:  { name: 'rarity-pr.png', url: 'https://archives.bulbagarden.net/media/upload/3/30/Rarity_PR.png' },
+docs/audit/archive_mentions.txt:356:scripts/scrapeTCGRarityActual.js:50:  { name: 'rarity-r.png', url: 'https://archives.bulbagarden.net/media/upload/0/0f/Rarity_R.png' },
+docs/audit/archive_mentions.txt:357:scripts/scrapeTCGRarityActual.js:53:  { name: 'rarity-sh.png', url: 'https://archives.bulbagarden.net/media/upload/e/e3/Rarity_SH.png' },
+docs/audit/archive_mentions.txt:358:scripts/scrapeTCGRarityActual.js:54:  { name: 'rarity-shiny-common.png', url: 'https://archives.bulbagarden.net/media/upload/3/38/Rarity_Shiny_C.png' },
+docs/audit/archive_mentions.txt:359:scripts/scrapeTCGRarityActual.js:55:  { name: 'rarity-shiny-r.png', url: 'https://archives.bulbagarden.net/media/upload/d/d3/Rarity_Shiny_R.png' },
+docs/audit/archive_mentions.txt:360:scripts/scrapeTCGRarityActual.js:56:  { name: 'rarity-shiny-rr.png', url: 'https://archives.bulbagarden.net/media/upload/3/3f/Rarity_Shiny_RR.png' },
+docs/audit/archive_mentions.txt:361:scripts/scrapeTCGRarityActual.js:57:  { name: 'rarity-shiny-uc.png', url: 'https://archives.bulbagarden.net/media/upload/e/ee/Rarity_Shiny_UC.png' },
+docs/audit/archive_mentions.txt:362:scripts/scrapeTCGRarityActual.js:60:  { name: 'rarity-tr.png', url: 'https://archives.bulbagarden.net/media/upload/7/74/Rarity_TR.png' },
+docs/audit/archive_mentions.txt:363:scripts/scrapeTCGRarityActual.js:63:  { name: 'rarity-u.png', url: 'https://archives.bulbagarden.net/media/upload/8/84/Rarity_U.png' },
+docs/audit/archive_mentions.txt:364:scripts/scrapeTCGRarityActual.js:64:  { name: 'rarity-uc.png', url: 'https://archives.bulbagarden.net/media/upload/1/1f/Rarity_UC.png' },
+docs/audit/archive_mentions.txt:365:scripts/scrapeTCGRarityActual.js:67:  { name: 'rarity-black-white-rare.png', url: 'https://archives.bulbagarden.net/media/upload/f/fb/Rarity_Black_White_Rare.png' },
+docs/audit/archive_mentions.txt:366:scripts/scrapeTCGRarityActual.js:70:  { name: 'rarity-tg.png', url: 'https://archives.bulbagarden.net/media/upload/5/54/Rarity_TG.png' },
+docs/audit/archive_mentions.txt:367:scripts/scrapeTCGRarityActual.js:73:  { name: 'rarity-double-rare.png', url: 'https://archives.bulbagarden.net/media/upload/2/2e/Rarity_Double_Rare_SV.png' },
+docs/audit/archive_mentions.txt:368:scripts/scrapeTCGRarityActual.js:74:  { name: 'rarity-illustration-rare.png', url: 'https://archives.bulbagarden.net/media/upload/f/fa/Rarity_Illustration_Rare_SV.png' },
+docs/audit/archive_mentions.txt:369:scripts/scrapeTCGRarityActual.js:75:  { name: 'rarity-ultra-rare.png', url: 'https://archives.bulbagarden.net/media/upload/b/b9/Rarity_Ultra_Rare_SV.png' },
+docs/audit/archive_mentions.txt:370:scripts/scrapeTCGRarityActual.js:76:  { name: 'rarity-special-illustration-rare.png', url: 'https://archives.bulbagarden.net/media/upload/1/19/Rarity_Special_Illustration_Rare_SV.png' },
+docs/audit/archive_mentions.txt:371:scripts/scrapeTCGRarityActual.js:77:  { name: 'rarity-hyper-rare.png', url: 'https://archives.bulbagarden.net/media/upload/e/e2/Rarity_Hyper_Rare_SV.png' }
+docs/audit/archive_mentions.txt:377:scripts/scrapeTCGRarity.js:7:const baseUrl = 'https://archives.bulbagarden.net';
+docs/audit/archive_mentions.txt:396:scripts/fetchTCGRarityPage.js:20:    const html = await fetchPage('https://archives.bulbagarden.net/wiki/Category:TCG_rarity_icons');
+docs/audit/archive_mentions.txt:397:scripts/fetchTCGRarityPage.js:27:    const imageRegex = /src="(\/\/archives\.bulbagarden\.net\/media\/upload\/[^"]+\.png)"/g;
+docs/audit/archive_mentions.txt:398:scripts/fetchTCGRarityPage.js:40:        filePages.push('https://archives.bulbagarden.net' + match[1]);
+docs/audit/archive_mentions.txt:477:docs/archive/old-project-resources/badges-analysis-report.md:108:The badge collection is exceptionally comprehensive with 98.8% coverage of all official gym badges. Only one anime-exclusive badge is missing. The collection also includes extensive additional content from TCG, anime character collections, and special variants, making it a thorough archive of Pokémon badge imagery.
+docs/audit/archive_mentions.txt:547:docs/audit/name_status_main_to_head.txt:41:R100	components/ui/EnhancedRarityBadge.tsx	archived-components/stage-4/EnhancedRarityBadge.tsx
+docs/audit/archive_mentions.txt:549:docs/audit/name_status_main_to_head.txt:43:R100	components/ui/GymLeaderShowcase.tsx	archived-components/stage-4/GymLeaderShowcase.tsx
+docs/audit/archive_mentions.txt:578:docs/audit/name_status_main_to_head.txt:72:R100	components/tcg-set-detail/CircularRarityChart.tsx	archived-components/stage-5/CircularRarityChart.tsx
+docs/audit/archive_mentions.txt:882:docs/audit/renamed_files.txt:28: rename {components/ui => archived-components/stage-4}/EnhancedRarityBadge.tsx (100%)
+docs/audit/archive_mentions.txt:884:docs/audit/renamed_files.txt:30: rename {components/ui => archived-components/stage-4}/GymLeaderShowcase.tsx (100%)
+docs/audit/archive_mentions.txt:913:docs/audit/renamed_files.txt:59: rename {components/tcg-set-detail => archived-components/stage-5}/CircularRarityChart.tsx (100%)
+docs/audit/archive_mentions.txt:995:public/data/monthly_org_trends.csv:2484:2019-06,Library And Archives Canada,4,2910.8,353.03999999999996,1918.1,1150.17,102.0
+docs/audit/archive_mentions.txt:996:public/data/monthly_org_trends.csv:2566:2019-07,Library And Archives Canada,1,705.43,32.4,0.0,50.65,0.0
+docs/audit/archive_mentions.txt:997:public/data/monthly_org_trends.csv:2641:2019-08,Library And Archives Canada,3,6286.83,558.58,3875.03,2557.1400000000003,0.0
+docs/audit/archive_mentions.txt:998:public/data/monthly_org_trends.csv:2723:2019-09,Library And Archives Canada,3,1731.08,277.91999999999996,302.5,285.05,229.9
+docs/audit/archive_mentions.txt:999:public/data/monthly_org_trends.csv:2809:2019-10,Library And Archives Canada,5,2607.94,850.36,1524.31,1333.2399999999998,116.0
+docs/audit/archive_mentions.txt:1000:public/data/monthly_org_trends.csv:2898:2019-11,Library And Archives Canada,3,986.81,144.78,438.68,190.01999999999998,24.0
+docs/audit/archive_mentions.txt:1001:public/data/monthly_org_trends.csv:2984:2019-12,Library And Archives Canada,2,600.51,123.0,349.2,184.35,48.0
+docs/audit/archive_mentions.txt:1002:public/data/monthly_org_trends.csv:3067:2020-01,Library And Archives Canada,5,1744.6599999999999,441.79,1583.6,850.9,108.0
+docs/audit/archive_mentions.txt:1003:public/data/monthly_org_trends.csv:3151:2020-02,Library And Archives Canada,1,0.0,0.0,0.0,0.0,120.0
+docs/audit/archive_mentions.txt:1004:public/data/monthly_org_trends.csv:3233:2020-03,Library And Archives Canada,3,1397.04,124.69,184.45,105.5,78.66
+docs/audit/archive_mentions.txt:1005:public/data/monthly_org_trends.csv:3279:2020-04,Library And Archives Canada,1,944.91,0.0,0.0,0.0,39.76
+docs/audit/archive_mentions.txt:1006:public/data/monthly_org_trends.csv:3663:2021-08,Library And Archives Canada,1,0.0,190.12,633.04,518.3,120.99
+docs/audit/archive_mentions.txt:1007:public/data/monthly_org_trends.csv:3751:2021-10,Library And Archives Canada,1,0.0,76.05,290.38,200.6,91.33
+docs/audit/archive_mentions.txt:1008:public/data/monthly_org_trends.csv:3812:2021-11,Library And Archives Canada,1,0.0,114.07,295.11,254.1,147.18
+docs/audit/archive_mentions.txt:1009:public/data/monthly_org_trends.csv:3993:2022-03,Library And Archives Canada,1,541.64,217.32,239.74,183.55,0.0
+docs/audit/archive_mentions.txt:1010:public/data/monthly_org_trends.csv:4064:2022-04,Library And Archives Canada,1,180.41,224.42,1123.48,304.1,0.0
+docs/audit/archive_mentions.txt:1011:public/data/monthly_org_trends.csv:4153:2022-05,Library And Archives Canada,6,4126.46,1429.73,2999.73,1744.75,0.0
+docs/audit/archive_mentions.txt:1012:public/data/monthly_org_trends.csv:4244:2022-06,Library And Archives Canada,3,2331.66,523.62,1653.2,1393.6,0.0
+docs/audit/archive_mentions.txt:1013:public/data/monthly_org_trends.csv:4328:2022-07,Library And Archives Canada,1,2268.81,183.39,2199.62,1721.3,0.0
+docs/audit/archive_mentions.txt:1014:public/data/monthly_org_trends.csv:4482:2022-09,Library And Archives Canada,5,6315.06,665.04,2026.3899999999999,1265.35,0.0
+docs/audit/archive_mentions.txt:1015:public/data/monthly_org_trends.csv:4572:2022-10,Library And Archives Canada,6,1747.41,1224.36,1056.07,1409.81,0.0
+docs/audit/archive_mentions.txt:1016:public/data/monthly_org_trends.csv:4668:2022-11,Library And Archives Canada,6,11344.28,1012.56,1910.51,1714.7,0.0
+docs/audit/archive_mentions.txt:1017:public/data/monthly_org_trends.csv:4835:2023-01,Library And Archives Canada,4,2378.45,1016.03,2389.7799999999997,981.9000000000001,0.0
+docs/audit/archive_mentions.txt:1018:public/data/monthly_org_trends.csv:4916:2023-02,Library And Archives Canada,2,0.0,401.33,1018.89,450.70000000000005,0.0
+docs/audit/archive_mentions.txt:1019:public/data/monthly_org_trends.csv:5000:2023-03,Library And Archives Canada,2,0.0,669.1500000000001,446.26,307.65,0.0
+docs/audit/archive_mentions.txt:1020:public/data/monthly_org_trends.csv:5086:2023-04,Library And Archives Canada,7,8763.62,1159.8500000000001,8545.41,3416.16,0.0
+docs/audit/archive_mentions.txt:1021:public/data/monthly_org_trends.csv:5175:2023-05,Library And Archives Canada,4,1490.34,1191.46,1746.38,701.4,0.0
+docs/audit/archive_mentions.txt:1022:public/data/monthly_org_trends.csv:5280:2023-06,Library And Archives Canada,4,10154.009999999998,643.51,3242.77,3325.87,0.0
+docs/audit/archive_mentions.txt:1023:public/data/monthly_org_trends.csv:5464:2023-08,Library And Archives Canada,2,4918.02,479.5,3848.68,3388.9700000000003,0.0
+docs/audit/archive_mentions.txt:1024:public/data/monthly_org_trends.csv:5549:2023-09,Library And Archives Canada,2,0.0,551.11,397.22,649.5,0.0
+docs/audit/archive_mentions.txt:1025:public/data/monthly_org_trends.csv:5654:2023-10,Library And Archives Canada,4,19006.77,704.81,6489.74,5596.93,0.0
+docs/audit/archive_mentions.txt:1026:public/data/monthly_org_trends.csv:5753:2023-11,Library And Archives Canada,3,0.0,674.31,1621.92,435.05,0.0
+docs/audit/archive_mentions.txt:1027:public/data/monthly_org_trends.csv:5852:2023-12,Library And Archives Canada,3,1144.39,517.3199999999999,966.08,1162.3600000000001,0.0
+docs/audit/archive_mentions.txt:1028:public/data/monthly_org_trends.csv:5939:2024-01,Library And Archives Canada,3,1286.55,631.49,4010.2799999999997,1438.8,0.0
+docs/audit/archive_mentions.txt:1029:public/data/monthly_org_trends.csv:6036:2024-02,Library And Archives Canada,1,663.37,146.51,597.99,422.2,0.0
+docs/audit/archive_mentions.txt:1030:public/data/monthly_org_trends.csv:6135:2024-03,Library And Archives Canada,1,1273.85,75.0,889.64,238.99,0.0
+docs/audit/archive_mentions.txt:1031:public/data/monthly_org_trends.csv:6233:2024-04,Library And Archives Canada,2,2491.19,481.22,713.91,1108.03,0.0
+docs/audit/archive_mentions.txt:1032:public/data/monthly_org_trends.csv:6342:2024-05,Library And Archives Canada,6,2361.72,891.1,3195.54,2513.46,0.0
+docs/audit/archive_mentions.txt:1033:public/data/monthly_org_trends.csv:6452:2024-06,Library And Archives Canada,2,2453.4700000000003,340.2,2066.67,1177.92,0.0
+docs/audit/archive_mentions.txt:1034:public/data/monthly_org_trends.csv:6640:2024-08,Library And Archives Canada,1,1565.53,54.65,577.96,690.75,0.0
+docs/audit/archive_mentions.txt:1035:public/data/monthly_org_trends.csv:6735:2024-09,Library And Archives Canada,2,8350.55,492.28,5773.5599999999995,3446.55,0.0
+docs/audit/archive_mentions.txt:1036:public/data/monthly_org_trends.csv:6839:2024-10,Library And Archives Canada,3,6041.59,871.0899999999999,3222.4799999999996,1755.87,0.0
+docs/audit/archive_mentions.txt:1037:public/data/monthly_org_trends.csv:6949:2024-11,Library And Archives Canada,4,1038.51,787.3299999999999,2374.55,1050.3500000000001,0.0
+docs/audit/archive_mentions.txt:1038:public/data/monthly_org_trends.csv:7050:2024-12,Library And Archives Canada,1,4115.69,139.54,0.0,1080.36,0.0
+docs/showdown-integration/IMPLEMENTATION_GUIDE.md:3:This guide provides step-by-step instructions and code examples for integrating Pokemon Showdown data into DexTrends.
+docs/showdown-integration/IMPLEMENTATION_GUIDE.md:53:      'User-Agent': 'DexTrends/1.0 (https://github.com/yourusername/dextrends)'
+docs/showdown-integration/IMPLEMENTATION_GUIDE.md:375:## Step 3: Integrate with DexTrends
+docs/showdown-integration/SHOWDOWN_DATA_SCHEMA.md:3:This document details the structure of each Pokemon Showdown data file and how it maps to DexTrends requirements.
+docs/showdown-integration/SHOWDOWN_DATA_SCHEMA.md:61:### DexTrends Mapping
+docs/showdown-integration/SHOWDOWN_DATA_SCHEMA.md:119:### DexTrends Mapping
+docs/showdown-integration/SHOWDOWN_DATA_SCHEMA.md:162:### DexTrends Mapping
+docs/showdown-integration/SHOWDOWN_DATA_SCHEMA.md:227:### DexTrends Mapping
+docs/showdown-integration/SHOWDOWN_DATA_SCHEMA.md:269:### DexTrends Mapping
+docs/showdown-integration/SHOWDOWN_DATA_SCHEMA.md:319:### DexTrends Mapping
+docs/showdown-integration/SHOWDOWN_DATA_SCHEMA.md:358:- Background collections by generation
+docs/README.md:1:# DexTrends Documentation
+docs/README.md:3:This directory contains organized documentation for the DexTrends project.
+docs/showdown-integration/README.md:3:Welcome to the comprehensive documentation for integrating Pokemon Showdown data into DexTrends. This integration brings competitive Pokemon battling data to enhance our application with accurate battle mechanics, complete movepool information, and competitive tier placements.
+docs/showdown-integration/README.md:20:- Field mapping between Showdown and DexTrends
+docs/showdown-integration/README.md:43:- Monitoring and alerts
+docs/showdown-integration/README.md:117:Compatible with DexTrends: v2.0+
+docs/development/cache-warming.md:5:The DexTrends application implements automatic background cache warming to ensure first-time visitors experience fast load times (< 10ms) instead of waiting 30-60 seconds for data to load from the Pokemon TCG API.
+docs/archive/old-project-resources/TESTING_PROTOCOL.md:1:# DexTrends Mandatory Testing Protocol
+docs/archive/old-project-resources/TESTING_PROTOCOL.md:61:- [ ] Deck builder creates/saves decks
+docs/archive/ZERO_TYPESCRIPT_ERRORS.md:5:After an epic journey spanning multiple sessions, we have achieved **ZERO TypeScript errors** in the DexTrends codebase!
+docs/archive/ZERO_TYPESCRIPT_ERRORS.md:152:**The DexTrends codebase now has PERFECT TypeScript compliance!**
+docs/archive/QUICK_START.md:93:- **DexTrends**: Pokemon TCG and Pokedex application
+docs/showdown-integration/POKEMON_SHOWDOWN_INTEGRATION.md:5:This document outlines the integration of Pokemon Showdown data into the DexTrends application. Pokemon Showdown provides competitive battle data under the MIT license, complementing our existing PokeAPI integration with unique competitive insights.
+docs/showdown-integration/POKEMON_SHOWDOWN_INTEGRATION.md:40:│   PokeAPI       │     │ Pokemon Showdown │     │   DexTrends     │
+docs/archive/cleanup-project-august-2025/CLEANUP_STATUS_TRUTH.md:136:DexTrends/
+docs/archive/old-project-resources/POKEMON_SECTION_FIXES.md:26:- Enhanced GameShowcase component with "View All Games" button
+docs/archive/old-project-resources/POKEMON_SECTION_FIXES.md:52:  - `GameShowcase.js`
+docs/archive/old-project-resources/POKEMON_SECTION_FIXES.md:64:   Games ←────── Games Link ←──── GameShowcase ──────┘
+docs/archive/old-project-resources/POKEMON_SECTION_FIXES.md:78:3. **GameShowcase** - Links to main games page
+docs/archive/old-project-resources/POKEMON_SECTION_FIXES.md:105:3. **Individual Regions** → Games showcase with "View All Games" button
+docs/archive/old-project-resources/CURRENT_PROJECT_STATE.md:4:DexTrends is a Pokemon TCG and Pokedex application with advanced features. We're currently in Phase 7 of a major optimization and TypeScript migration project.
+docs/archive/old-project-resources/CURRENT_PROJECT_STATE.md:48:  - pages/collections.js
+docs/archive/old-project-resources/CURRENT_PROJECT_STATE.md:73:DexTrends/
+docs/archive/old-project-resources/CURRENT_PROJECT_STATE.md:102:2. PriceAlerts.js
+docs/archive/old-project-resources/CURRENT_PROJECT_STATE.md:138:- /api/trends ✅
+docs/archive/old-project-resources/COMPREHENSIVE_OPTIMIZATION_REPORT.md:1:# DexTrends Comprehensive Optimization Report
+docs/archive/old-project-resources/COMPREHENSIVE_OPTIMIZATION_REPORT.md:5:After conducting an extensive analysis of the DexTrends codebase, I've identified significant optimization opportunities that could improve performance by 40-60% and reduce bundle size by 50-60%. The project shows signs of rapid development with substantial duplication and inefficiencies across components, utilities, state management, CSS, and build configuration.
+docs/archive/old-project-resources/COMPREHENSIVE_OPTIMIZATION_REPORT.md:172:- Add performance monitoring and alerts
+docs/archive/old-project-resources/COMPREHENSIVE_OPTIMIZATION_REPORT.md:283:The investment in this optimization work will pay dividends in improved performance, reduced maintenance overhead, and better user experience for the DexTrends application.
+docs/archive/old-project-resources/SUPABASE_SETUP.md:1:# Supabase Setup Guide for DexTrends
+docs/archive/old-project-resources/SUPABASE_SETUP.md:4:DexTrends uses Supabase for:
+docs/archive/old-project-resources/SUPABASE_SETUP.md:7:- Price history tracking
+docs/archive/old-project-resources/SUPABASE_SETUP.md:33:   - `user_collections`
+docs/archive/old-project-resources/SUPABASE_SETUP.md:34:   - `session_collections`
+docs/archive/old-project-resources/SUPABASE_SETUP.md:45:### Collections Sync
+docs/archive/old-project-resources/SUPABASE_SETUP.md:46:- Collections automatically sync between devices
+docs/archive/old-project-resources/SUPABASE_SETUP.md:48:- Anonymous collections expire after 30 days
+docs/archive/old-project-resources/SUPABASE_SETUP.md:55:### Price History
+docs/archive/old-project-resources/SUPABASE_SETUP.md:58:- Price alerts for specific cards
+docs/archive/old-project-resources/SUPABASE_SETUP.md:75:    "user_collections": true,
+docs/archive/old-project-resources/SUPABASE_SETUP.md:76:    "session_collections": true,
+docs/archive/old-project-resources/SUPABASE_SETUP.md:83:### 2. Test Collections
+docs/archive/old-project-resources/SUPABASE_SETUP.md:84:1. Go to `/collections`
+docs/archive/old-project-resources/SUPABASE_SETUP.md:102:### Collections not syncing
+docs/archive/old-project-resources/SUPABASE_SETUP.md:131:- Set up alerts for quota limits
+docs/archive/old-project-resources/SUPABASE_SETUP.md:137:3. **Webhooks**: Set up webhooks for price alerts
+docs/archive/old-project-resources/PROJECT_EFFICIENCY_TRACKER.md:4:This document tracks the comprehensive code cleanup and optimization initiative for the DexTrends codebase. The goal is to eliminate redundancy, improve type safety, enhance performance, and establish consistent patterns across the project.
+docs/archive/old-project-resources/PROJECT_EFFICIENCY_TRACKER.md:363:The DexTrends codebase is now **production-ready** with modern performance optimizations! 🎯
+docs/archive/old-project-resources/ROOT_CLEANUP_SUMMARY.md:68:DexTrends/
+docs/archive/old-project-resources/IPHONE_OPTIMIZATION_GUIDE.md:1:# iPhone Optimization Guide for DexTrends
+docs/archive/old-project-resources/IPHONE_OPTIMIZATION_GUIDE.md:4:This guide documents all iPhone-specific optimizations implemented in DexTrends to ensure perfect compatibility across all iPhone models from SE to 15 Pro Max.
+docs/archive/old-project-resources/POKEDEX_ADVANCED_FEATURES_REFERENCE.md:87:              sprite: "/dextrendslogo.png",
+docs/archive/old-project-resources/POKEDEX_ADVANCED_FEATURES_REFERENCE.md:229:### 6. Infinite Scroll Implementation
+docs/archive/old-project-resources/POKEDEX_ADVANCED_FEATURES_REFERENCE.md:231:// Infinite scroll functionality
+docs/archive/old-project-resources/POKEDEX_ADVANCED_FEATURES_REFERENCE.md:236:// Infinite scroll effect
+docs/archive/old-project-resources/OPTIMIZATION_SETUP.md:1:# 🚀 DexTrends Optimization Implementation Guide
+docs/archive/old-project-resources/OPTIMIZATION_SETUP.md:114:### Alerts Setup
+docs/archive/old-project-resources/OPTIMIZATION_SETUP.md:115:1. **Vercel**: Set up usage alerts at 50%, 75%, 90%
+docs/archive/old-project-resources/TEST_FIX_PROGRESS.md:1:# Test Fix Progress Tracker - DexTrends
+docs/archive/old-project-resources/TEST_FIX_PROGRESS.md:118:   - Collections sync issues
+docs/archive/old-project-resources/TEST_FIX_PROGRESS.md:124:   - Advanced search filters
+docs/archive/old-project-resources/TEST_FIX_PROGRESS.md:199:- Need to verify Supabase configuration for collections
+docs/archive/old-project-resources/TEST_FIX_PROGRESS.md:225:   - Implement advanced search filters
+docs/archive/old-project-resources/PRICE_HISTORY_SETUP.md:1:# 📈 DexTrends Price History Setup Guide
+docs/archive/old-project-resources/PRICE_HISTORY_SETUP.md:3:This guide will help you set up automated Pokemon card price history collection for your DexTrends app.
+docs/archive/old-project-resources/PRICE_HISTORY_SETUP.md:7:### Add Price History Tables
+docs/archive/old-project-resources/PRICE_HISTORY_SETUP.md:18:- `price_alerts` - User price notifications
+docs/archive/old-project-resources/PRICE_HISTORY_SETUP.md:103:0 6 * * * cd /path/to/DexTrends && node scripts/collect-prices.js --type daily
+docs/archive/old-project-resources/PRICE_HISTORY_SETUP.md:106:## 📊 Step 5: Display Price History
+docs/archive/old-project-resources/PRICE_HISTORY_SETUP.md:123:// Show price history for Charizard Base Set
+docs/archive/old-project-resources/PRICE_HISTORY_SETUP.md:148:-- Clean up old price history (keeps 1 year)
+docs/archive/old-project-resources/PRICE_HISTORY_SETUP.md:199:### Add Price Alerts
+docs/archive/old-project-resources/PRICE_HISTORY_SETUP.md:201:// Add user price alerts
+docs/archive/old-project-resources/PRICE_HISTORY_SETUP.md:243:🎉 **You're all set!** Your DexTrends app will now start building its own historical Pokemon card price database.
+docs/archive/old-project-resources/PRICE_HISTORY_SETUP.md:247:- Track price trends over time  
+docs/archive/old-project-resources/SIMILAR_CARDS_CONTEXT.md:4:This document provides comprehensive context for the Similar Cards evolution detection system implemented in the Pokemon TCG Pocket detail pages.
+docs/archive/old-project-resources/SIMILAR_CARDS_CONTEXT.md:279:The system successfully shows ALL available evolution cards while limiting other sections appropriately, creating an engaging discovery experience for users exploring the Pokemon TCG Pocket card collection.
+docs/archive/old-project-resources/SKELETON_LOADER_ASSESSMENT.md:4:This report analyzes all skeleton loader usage in the DexTrends codebase and provides recommendations for unifying with the PokeballLoader component.
+docs/archive/old-project-resources/QA_AGENT_2_DEEP_DIVE_TEST_REPORT.md:143:- Pull to refresh
+docs/archive/old-project-resources/CODE_QA_STATUS.md:1:# CODE QA STATUS - DexTrends Project
+docs/archive/old-project-resources/CODE_QA_STATUS.md:159:- [x] **Page Titles**: Added proper SEO titles to 7 pages (404, 500, index, favorites, tcgsets, trending, collections)
+docs/archive/old-project-resources/CODE_QA_STATUS.md:319:The three-phase QA initiative has successfully transformed DexTrends from a critically broken application to a fully functional, production-ready system. All Phase 1 critical issues have been resolved, with significant improvements in code quality, performance, and maintainability.
+docs/archive/old-project-resources/DEVELOPER_GUIDE.md:1:# DexTrends Developer Guide
+docs/archive/old-project-resources/iOS_MOBILE_DEVELOPMENT_GUIDE.md:4:This guide consolidates all iOS and mobile development standards, best practices, and implementation details for the DexTrends project.
+docs/archive/old-project-resources/test-failure-analysis.md:61:4. **Filtering**: 10 failures in "filter cards by rarity"
+docs/archive/old-project-resources/TYPESCRIPT_MIGRATION_PROGRESS.md:68:     - CollectionStats for portfolio tracking
+docs/archive/old-project-resources/TYPESCRIPT_MIGRATION_PROGRESS.md:91:8. **PriceAlerts.js → PriceAlerts.tsx** (477 lines) ✅
+docs/archive/old-project-resources/TYPESCRIPT_MIGRATION_PROGRESS.md:111:    - Pokemon TCG Pocket card list component
+docs/archive/old-project-resources/TYPESCRIPT_MIGRATION_PROGRESS.md:113:    - Type-safe infinite scroll implementation
+docs/archive/old-project-resources/TYPESCRIPT_MIGRATION_PROGRESS.md:117:    - Expansion viewer for TCG Pocket sets
+docs/archive/old-project-resources/TYPESCRIPT_MIGRATION_PROGRESS.md:149:8. **PriceAlerts.js → PriceAlerts.tsx** (477 lines) ✅
+docs/archive/old-project-resources/TYPESCRIPT_MIGRATION_PROGRESS.md:178:   - Static component explaining TCG Pocket rules
+docs/archive/old-project-resources/TYPESCRIPT_MIGRATION_PROGRESS.md:206:2. **PriceAlerts.js** → PriceAlerts.tsx
+docs/archive/old-project-resources/TYPESCRIPT_MIGRATION_PROGRESS.md:237:   - Solution: Moved `getSessionId` function before `loadCollections`
+docs/archive/old-project-resources/TYPESCRIPT_MIGRATION_PROGRESS.md:292:   - Health checks, alerts, performance monitoring
+docs/archive/old-project-resources/TYPESCRIPT_MIGRATION_PROGRESS.md:410:   - Card visual effects based on rarity
+docs/archive/old-project-resources/TYPESCRIPT_MIGRATION_PROGRESS.md:436:   - Large data file with Pokemon TCG Pocket data
+docs/archive/old-project-resources/TYPESCRIPT_MIGRATION_PROGRESS.md:518:cd /Users/moazzam/Documents/GitHub/Mappy/DexTrends
+docs/archive/old-project-resources/TYPESCRIPT_MIGRATION_PROGRESS.md:620:cd /Users/moazzam/Documents/GitHub/Mappy/DexTrends
+docs/archive/old-project-resources/POKEDEX_TYPESCRIPT_PLAN.md:6:- **Complexity**: High - involves API fetching, filtering, sorting, and infinite scroll
+docs/archive/old-project-resources/POKEDEX_TYPESCRIPT_PLAN.md:142:5. **Infinite Scroll**: Window event listeners need proper typing
+docs/archive/old-project-resources/POKEDEX_TYPESCRIPT_PLAN.md:155:2. Test infinite scroll functionality
+docs/archive/old-project-resources/IPHONE_QA_REPORT.md:138:3. **Pull-to-Refresh Conflict**
+docs/archive/old-project-resources/IPHONE_QA_REPORT.md:139:   - Default iOS pull-to-refresh can interfere on some pages
+docs/archive/old-project-resources/IPHONE_QA_REPORT.md:228:   - Implement live activity support for price alerts
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:1:# 🚀 DexTrends Advanced Features Guide
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:5:DexTrends has been enhanced with sophisticated features that transform it from a simple Pokemon card browser into a comprehensive collection management and market analysis platform. This guide covers all the advanced features implemented.
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:11:### 1. Real-Time Price History System
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:25:### 2. Advanced Search System
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:28:- **Multi-Parameter Filtering**: Name, set, type, rarity, price range, HP, artist, year
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:39:- ✅ Rarity filtering with comprehensive rarity list
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:46:### 3. Market Analytics Dashboard
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:66:- **Multiple Collections**: Create and manage separate collections
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:74:- 📚 Unlimited collections per user
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:81:### 5. Intelligent Price Alerts
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:82:**Location**: `components/PriceAlerts.js`
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:86:- **User Management**: Both authenticated and session-based alerts
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:94:- 🔄 **Trend Reversal**: Detect when price trends change direction
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:96:### 6. Professional Collections Page
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:97:**Location**: `pages/collections.js`
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:99:- **Tabbed Interface**: Collections, Alerts, Portfolio sections
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:101:- **Performance Tracking**: Historical value changes and trends
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:102:- **Distribution Analysis**: Value breakdown by set, rarity, and condition
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:107:- 📊 Distribution by TCG set, rarity, and condition
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:117:**Files**: `supabase-price-history-schema.sql`, `supabase-collections-schema.sql`
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:119:- **Price History Tables**: Store daily price snapshots with variant tracking
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:144:- **Collections Link**: New navigation item for collection management
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:169:\i supabase-collections-schema.sql
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:189:0 6 * * * cd /path/to/DexTrends && node scripts/collect-prices.js --type daily
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:194:- **Collections Page**: `/collections` - Full collection management
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:195:- **Card Details**: Enhanced with real price history
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:196:- **Navigation**: Updated with Collections link
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:233:├── PriceAlerts.js            # Alert management system
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:253:- **Real-Time Notifications**: WebSocket-based price alerts
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:271:// Navigate to /collections
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:278:### Setting Price Alerts
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:280:// Go to Collections → Price Alerts tab
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:287:### Advanced Search
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:292:// Sort by price, date, or rarity
+docs/archive/old-project-resources/ADVANCED_FEATURES.md:321:*This advanced feature set transforms DexTrends into a professional-grade Pokemon card collection management platform with market analysis capabilities that rival commercial solutions.*
+docs/archive/old-project-resources/QOL_Components_README.md:3:This directory contains comprehensive Quality of Life improvements for DexTrends, designed to enhance user experience, accessibility, and overall usability.
+docs/archive/old-project-resources/QOL_Components_README.md:9:- **Contextual notifications** for specific actions (card added, Pokemon found, price alerts)
+docs/archive/old-project-resources/QOL_Components_README.md:68:- **Command palette** (Ctrl+K) for quick actions
+docs/archive/old-project-resources/QOL_Components_README.md:75:- `Ctrl+K` - Open command palette
+docs/archive/old-project-resources/QOL_Components_README.md:158:- **Improved navigation** with keyboard shortcuts and command palette
+docs/archive/old-project-resources/QOL_Components_README.md:280:These QOL enhancements are part of the DexTrends project and follow the same licensing terms.
+docs/archive/old-project-resources/DESIGN_SYSTEM.md:1:# DexTrends Design System
+docs/archive/old-project-resources/DESIGN_SYSTEM.md:361:4. **Collections** - Glass containers, circular progress indicators
+docs/archive/old-project-resources/ANIMATION_MIGRATION_GUIDE.md:9:3. components/regions/SpecialPokemonShowcase.js
+docs/archive/old-project-resources/ANIMATION_MIGRATION_GUIDE.md:11:5. components/regions/EvilTeamShowcase.js
+docs/archive/old-project-resources/ANIMATION_MIGRATION_GUIDE.md:12:6. components/regions/StarterShowcaseEnhanced.js
+docs/archive/old-project-resources/ANIMATION_MIGRATION_GUIDE.md:13:7. components/regions/LegendaryShowcase.js
+docs/archive/old-project-resources/ANIMATION_MIGRATION_GUIDE.md:14:8. components/regions/ProfessorShowcase.js
+docs/archive/old-project-resources/ANIMATION_MIGRATION_GUIDE.md:15:9. components/regions/StarterPokemonShowcase.js
+docs/archive/old-project-resources/ANIMATION_MIGRATION_GUIDE.md:19:13. components/ui/GymLeaderShowcase.js
+docs/archive/old-project-resources/FEATURE_RESTORATION_PROGRESS.md:1:# DexTrends Feature Restoration Progress Tracker
+docs/archive/old-project-resources/FEATURE_RESTORATION_PROGRESS.md:7:Restore 100% functionality to DexTrends application following TypeScript migration, with comprehensive testing and validation at each phase.
+docs/archive/old-project-resources/FEATURE_RESTORATION_PROGRESS.md:231:- Fixed `StarterPokemonShowcase.tsx` - 2 instances replaced
+docs/archive/old-project-resources/FEATURE_RESTORATION_PROGRESS.md:454:- `/components/regions/StarterPokemonShowcase.tsx` - Fixed navigation
+docs/archive/old-project-resources/FEATURE_RESTORATION_PROGRESS.md:498:- Collections Sync
+docs/archive/old-project-resources/FEATURE_RESTORATION_PROGRESS.md:534:   - Collections sync with Supabase
+docs/archive/old-project-resources/FEATURE_RESTORATION_PROGRESS.md:536:   - Advanced search already comprehensive
+docs/archive/old-project-resources/FEATURE_RESTORATION_PROGRESS.md:579:- ✅ Task 5: Supabase Collections Sync
+docs/archive/old-project-resources/FEATURE_RESTORATION_PROGRESS.md:580:  - Collections already using Supabase tables (user_collections, session_collections)
+docs/archive/old-project-resources/FEATURE_RESTORATION_PROGRESS.md:589:  - Import handles both new collections and merging with existing
+docs/archive/old-project-resources/FEATURE_RESTORATION_PROGRESS.md:596:- ✅ Task 8: Advanced search filters
+docs/archive/old-project-resources/FEATURE_RESTORATION_PROGRESS.md:598:  - Includes 11+ filter options (name, set, type, rarity, price, HP, artist, year, etc.)
+docs/archive/old-project-resources/FEATURE_RESTORATION_PROGRESS.md:606:  - Stores price history in Supabase card_price_history table
+docs/archive/old-project-resources/FEATURE_RESTORATION_PROGRESS.md:621:- Advanced search system already comprehensive
+docs/archive/cleanup-project-august-2025/NAMING_CONVENTIONS.md:1:# DexTrends Naming Conventions
+docs/archive/cleanup-project-august-2025/NAMING_CONVENTIONS.md:4:This document establishes naming conventions for the DexTrends codebase to ensure consistency, clarity, and maintainability.
+docs/archive/cleanup-project-august-2025/NAMING_CONVENTIONS.md:137:enum Rarity {
+docs/archive/cleanup-project-august-2025/NAMING_CONVENTIONS.md:222:- Use plural for collections: `/pokemon`, `/cards`
+docs/archive/old-project-resources/IMAGE_MIGRATION_PLAN.md:17:- `/public/images/scraped/tcg-pocket` - 4.4MB (TCG pocket assets)
+docs/archive/old-project-resources/IMAGE_MIGRATION_PLAN.md:29:const championImage = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/dextrends/scraped/champions/${championName}.png`
+docs/archive/old-project-resources/IMAGE_MIGRATION_PLAN.md:35:const championImage = `https://cdn.dextrends.com/scraped/champions/${championName}.png`
+docs/archive/cleanup-project-august-2025/NEXT_SESSION_PROMPT.md:7:I'm continuing a naming standardization and code cleanup project in DexTrends. We completed Phase 1 in the last session. Please read these key files to understand the current state:
+docs/archive/old-project-resources/CLAUDE_DETAILED_ARCHIVE.md:1:# CLAUDE.md - DexTrends Project Context
+docs/archive/old-project-resources/CLAUDE_DETAILED_ARCHIVE.md:4:DexTrends is a Pokemon TCG and Pokedex application with advanced features for tracking cards, prices, and Pokemon data. Always add any changes they are key to Claude knowing for development as we make systematic changes here to ensure workflow is seamless.
+docs/archive/old-project-resources/CLAUDE_DETAILED_ARCHIVE.md:51:- Added comprehensive type definitions for deck builder functionality
+docs/archive/old-project-resources/CLAUDE_DETAILED_ARCHIVE.md:52:- Created ExtendedPocketCard interface for deck builder specific fields
+docs/archive/old-project-resources/CLAUDE_DETAILED_ARCHIVE.md:147:3. **Collections/Favorites CRUD** ✅
+docs/archive/old-project-resources/CLAUDE_DETAILED_ARCHIVE.md:163:   - Updated collections.tsx to use DynamicCollectionManager
+docs/archive/old-project-resources/CLAUDE_DETAILED_ARCHIVE.md:164:   - Updated to use DynamicPriceAlerts
+docs/archive/old-project-resources/CLAUDE_DETAILED_ARCHIVE.md:176:- `/pages/collections.tsx` - Implemented dynamic imports
+docs/archive/old-project-resources/CLAUDE_DETAILED_ARCHIVE.md:245:1. `pocketData.js → pocketData.ts` - Large Pokemon TCG Pocket data utility (137 lines)
+docs/archive/old-project-resources/CLAUDE_DETAILED_ARCHIVE.md:331:   - Added comprehensive type definitions for collections
+docs/archive/old-project-resources/CLAUDE_DETAILED_ARCHIVE.md:353:7. **PriceAlerts.js → PriceAlerts.tsx** ✅ (July 13)
+docs/archive/old-project-resources/CLAUDE_DETAILED_ARCHIVE.md:375:- ✅ PriceAlerts.js → .tsx (477 lines) - Alert management with proper interfaces
+docs/archive/old-project-resources/CLAUDE_DETAILED_ARCHIVE.md:376:- ✅ AdvancedSearchModal.js → .tsx (447 lines) - Advanced search with TCG card filters
+docs/archive/old-project-resources/CLAUDE_DETAILED_ARCHIVE.md:395:- ✅ PriceHistory.js → .tsx (321 lines) - Price history charts with typed interfaces
+docs/archive/old-project-resources/CLAUDE_DETAILED_ARCHIVE.md:412:  - PullToRefresh.js → .tsx (215 lines) - Pull refresh with touch handling
+docs/archive/old-project-resources/CLAUDE_DETAILED_ARCHIVE.md:413:  - MobileCardGrid.js → .tsx (201 lines) - Mobile card grid with infinite scroll
+docs/archive/old-project-resources/CLAUDE_DETAILED_ARCHIVE.md:415:  - RarityBadge.js → .tsx (108 lines) - Rarity display component
+docs/archive/old-project-resources/COMPREHENSIVE_FEATURE_COMPARISON.md:2:## DexTrends TypeScript Migration Analysis
+docs/archive/old-project-resources/COMPREHENSIVE_FEATURE_COMPARISON.md:9:This document provides an exhaustive comparison between the pre-migration (JavaScript) and post-migration (TypeScript) versions of DexTrends. Critical functionality gaps have been identified, with several core features completely broken or missing.
+docs/archive/old-project-resources/COMPREHENSIVE_FEATURE_COMPARISON.md:41:- Rarity distributions
+docs/archive/old-project-resources/COMPREHENSIVE_FEATURE_COMPARISON.md:53:- Rarity filtering
+docs/archive/old-project-resources/COMPREHENSIVE_FEATURE_COMPARISON.md:92:### 2.2 Card Navigation in Collections
+docs/archive/old-project-resources/COMPREHENSIVE_FEATURE_COMPARISON.md:108:- Market trends
+docs/archive/old-project-resources/COMPREHENSIVE_FEATURE_COMPARISON.md:109:- Price alerts
+docs/archive/old-project-resources/COMPREHENSIVE_FEATURE_COMPARISON.md:135:1. **Price History Charts** - Shows only mock data
+docs/archive/old-project-resources/COMPREHENSIVE_FEATURE_COMPARISON.md:136:2. **Market Trends Analysis** - Algorithm removed
+docs/archive/old-project-resources/COMPREHENSIVE_FEATURE_COMPARISON.md:139:5. **Price Alerts** - Backend disconnected
+docs/archive/old-project-resources/COMPREHENSIVE_FEATURE_COMPARISON.md:266:- Sample collections
+docs/archive/old-project-resources/COMPREHENSIVE_FEATURE_COMPARISON.md:279:- Advanced search syntax
+docs/archive/old-project-resources/COMPREHENSIVE_FEATURE_COMPARISON.md:292:- Pull-to-refresh
+docs/archive/old-project-resources/COMPREHENSIVE_FEATURE_COMPARISON.md:298:- No pull-to-refresh
+docs/archive/old-project-resources/COMPREHENSIVE_FEATURE_COMPARISON.md:320:2. Check price history ❌ (no real data)
+docs/archive/cleanup-project-august-2025/SESSION_SUMMARY.md:58:DexTrends/
+docs/archive/cleanup-project-august-2025/PHASE_1_INVESTIGATION_COMPLETE.md:35:2. Advanced Deck Builder (backend ready)
+docs/archive/cleanup-project-august-2025/PHASE_1_INVESTIGATION_COMPLETE.md:36:3. Advanced Search Filters (partially implemented)
+docs/archive/old-project-resources/CURRENT_STATUS_JULY_13_2025.md:23:8. ✅ PriceAlerts.js → .tsx (477 lines)
+docs/archive/old-project-resources/badges-analysis-report.md:56:### Anime Character Collections
+docs/archive/old-project-resources/badges-analysis-report.md:71:### Special Collections
+docs/archive/old-project-resources/badges-analysis-report.md:74:- Various trainer badge collections
+docs/archive/old-project-resources/badges-analysis-report.md:91:- Character collections: `{character}-badges.png`
+docs/archive/old-project-resources/badges-analysis-report.md:104:   - Separate official gym badges from TCG cards and character collections
+docs/archive/old-project-resources/badges-analysis-report.md:108:The badge collection is exceptionally comprehensive with 98.8% coverage of all official gym badges. Only one anime-exclusive badge is missing. The collection also includes extensive additional content from TCG, anime character collections, and special variants, making it a thorough archive of Pokémon badge imagery.
+docs/archive/old-project-resources/POST_MIGRATION_FIXES.md:1:# Post Migration Fixes - DexTrends TypeScript Migration
+docs/archive/old-project-resources/POST_MIGRATION_FIXES.md:93:### 2.5 Collections Supabase Integration
+docs/archive/old-project-resources/POST_MIGRATION_FIXES.md:95:**File**: `/pages/collections.tsx`
+docs/archive/old-project-resources/POST_MIGRATION_FIXES.md:107:- Pull-to-refresh triggers accidentally
+docs/archive/old-project-resources/POST_MIGRATION_FIXES.md:128:- [ ] Infinite scroll jumpy on mobile
+docs/archive/old-project-resources/POST_MIGRATION_FIXES.md:152:- [ ] Deck builder partially functional
+docs/archive/old-project-resources/POST_MIGRATION_FIXES.md:154:### 3.5 Collections (/collections)
+docs/archive/old-project-resources/POST_MIGRATION_FIXES.md:248:3. **Advanced Search** - Some filters don't apply
+docs/archive/old-project-resources/POST_MIGRATION_FIXES.md:250:5. **Price History Charts** - Data doesn't load
+docs/archive/old-project-resources/AGENT_2_POCKET_MODE_TEST_REPORT.md:33:   - Infinite scroll loading
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:3:This document tracks features that are partially implemented or planned but not yet complete in DexTrends. These features should NOT be deleted during cleanup as they represent future functionality.
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:36:- [ ] Add rarity reveal mechanics
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:43:**Description**: Social features for trading, friends, and collections
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:61:### 5. Advanced Deck Builder 🟢
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:79:**Description**: Real-time price tracking and market analytics
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:83:- [ ] Implement price alerts
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:155:### 13. Advanced Search Filters 🟡
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:181:**Description**: Import collections from other Pokemon apps
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:218:2. Advanced Deck Builder
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:219:3. Advanced Search Filters
+docs/archive/old-project-resources/COMPREHENSIVE_BUG_LIST_JULY_19_2025.md:2:## DexTrends Application - July 19, 2025
+docs/archive/old-project-resources/COMPREHENSIVE_BUG_LIST_JULY_19_2025.md:92:### 8. Collections Import/Export ⚠️
+docs/archive/old-project-resources/COMPREHENSIVE_BUG_LIST_JULY_19_2025.md:97:- Large collections timeout
+docs/archive/old-project-resources/COMPREHENSIVE_BUG_LIST_JULY_19_2025.md:108:- Pull-to-refresh triggers accidentally
+docs/archive/old-project-resources/COMPREHENSIVE_BUG_LIST_JULY_19_2025.md:144:5. **Advanced Search Modal** - 11+ filters working correctly
+docs/archive/old-project-resources/COMPREHENSIVE_BUG_LIST_JULY_19_2025.md:152:2. **Pokedex Grid** - Infinite scroll jumpy on mobile
+docs/archive/old-project-resources/COMPREHENSIVE_BUG_LIST_JULY_19_2025.md:258:8. **Verify collections import/export** (P1)
+docs/archive/old-project-resources/UI_IMPROVEMENT_PLAN.md:1:# UI/UX Improvement Plan for DexTrends
+docs/archive/old-project-resources/UI_IMPROVEMENT_PLAN.md:5:This document outlines a comprehensive plan to standardize and improve the UI/UX of DexTrends. The goal is to create a cohesive design system that ensures consistency across all components while maintaining the application's strong visual identity.
+docs/archive/old-project-resources/UI_IMPROVEMENT_PLAN.md:165:- [x] Update Collections/Favorites ✅
+docs/archive/old-project-resources/UI_IMPROVEMENT_PLAN.md:220:  - Updated collections.tsx - tab buttons
+docs/archive/old-project-resources/UI_IMPROVEMENT_PLAN.md:225:  - Collections & Favorites partially updated
+docs/archive/cleanup-project-august-2025/MASTER_INVENTORY_PHASE_0.md:7:This document catalogs the ACTUAL state of the DexTrends codebase after deep investigation, revealing significant naming confusion, architectural contradictions, and duplicate implementations.
+docs/archive/cleanup-project-august-2025/MASTER_INVENTORY_PHASE_0.md:100:3. PullToRefresh - Signature interaction
+docs/archive/cleanup-project-august-2025/MASTER_INVENTORY_PHASE_0.md:131:   - Card rarity filtering (unimplemented?)
+docs/archive/cleanup-project-august-2025/CLEANUP_PLAN.md:1:# DexTrends Cleanup Plan - Comprehensive Code Audit
+docs/archive/cleanup-project-august-2025/CLEANUP_PLAN.md:49:- Deck builder enhancements
+docs/archive/cleanup-project-august-2025/CLEANUP_PLAN.md:50:- Advanced search filters
+docs/archive/TCG_DENSE_GRID_FIX.md:62:- Better Pokemon TCG Pocket-style appearance
+docs/archive/old-project-resources/BULBAPEDIA_SCRAPER_README.md:1:# 🔧 DexTrends Bulbapedia Scraper
+docs/archive/TECHNICAL_DEBT_PLAN.md:1:# DexTrends Technical Debt Remediation Plan
+docs/archive/TECHNICAL_DEBT_PLAN.md:11:This document tracks all technical debt, code duplication, and quality issues in the DexTrends codebase. Use this as the single source of truth for debt remediation across multiple sessions.
+docs/archive/TECHNICAL_DEBT_PLAN.md:56:  - `pages/ui-showcase.tsx`: Multiple setInterval (lines 123, 245, 367)
+docs/archive/TECHNICAL_DEBT_PLAN.md:60:  - Fixed ui-showcase.tsx component timers (3 instances)
+docs/archive/TECHNICAL_DEBT_PLAN.md:336:   - Fixed ui-showcase and ux-interaction-lab components
+docs/archive/TECHNICAL_DEBT_PLAN.md:390:   - Fixed size="xxs" to size="xs" in StarterPokemonShowcase
+docs/archive/TECHNICAL_DEBT_PLAN.md:488:   - Added missing loadCollections and calculatePortfolioValue functions
+docs/archive/TECHNICAL_DEBT_PLAN.md:512:   - Fixed trends.ts, localDataLoader.ts, performanceMonitor.ts
+docs/archive/TECHNICAL_DEBT_PLAN.md:787:   - CollectionDashboard.tsx: Fixed CollectionStats interface mismatches
+docs/archive/BACKGROUND_FIXES_SUMMARY.md:34:- `/pages/market.tsx` - Market analytics page
+docs/archive/BACKGROUND_FIXES_SUMMARY.md:35:- `/pages/collections.tsx` - Collections management page
+docs/archive/BACKGROUND_FIXES_SUMMARY.md:45:- `/pages/pocketmode/deckbuilder.tsx` - Deck builder page
+docs/archive/TCG_LOAD_ALL_CARDS_SUMMARY.md:6:- **Removed**: `useInfiniteScroll` hook and all infinite scroll logic
+docs/archive/TCG_LOAD_ALL_CARDS_SUMMARY.md:49:The page should now load all cards at once without any infinite scroll limitations or timeout issues.
+docs/archive/old-project-resources/REACT_HOOK_FIXES.md:54:   - Line 65: Add `loadCollections`
+docs/archive/UI_IMPROVEMENT_VERIFICATION_REPORT.md:5:**Project:** DexTrends UI Standardization
+docs/archive/UI_IMPROVEMENT_VERIFICATION_REPORT.md:21:- ✅ **Major Pages Updated**: Home, Pokedex, TCG Sets, Collections, Favorites, Battle Simulator
+docs/archive/UI_IMPROVEMENT_VERIFICATION_REPORT.md:58:   - Lines 304-383: Rarity filter buttons using plain `<button>` elements
+docs/archive/COMPONENT_NAMING_FIXES.md:112:CardRarity → TCGCardRarity
+docs/archive/CACHE_WARMING_UPDATE.md:40:4. Updates market trends cache
+docs/archive/STABILIZATION_SUMMARY.md:1:# DexTrends Stabilization Summary
+docs/archive/STABILIZATION_SUMMARY.md:16:  - Added `as const` to ease strings in GymLeaderShowcase and RegionHeader
+docs/archive/STABILIZATION_SUMMARY.md:62:   - `/components/ui/GymLeaderShowcase.tsx`
+docs/archive/SUPABASE_RLS_POLICIES.md:1:# Supabase Row Level Security (RLS) Policies for DexTrends
+docs/archive/SUPABASE_RLS_POLICIES.md:3:This document outlines the required Row Level Security policies for the DexTrends application. These policies should be implemented in the Supabase dashboard.
+docs/archive/SUPABASE_RLS_POLICIES.md:132:-- Allow public read access to price history
+docs/archive/SUPABASE_RLS_POLICIES.md:133:CREATE POLICY "Allow public read access to price history" ON card_price_history
+docs/archive/SUPABASE_RLS_POLICIES.md:180:### 7. price_alerts
+docs/archive/SUPABASE_RLS_POLICIES.md:181:**Purpose**: User-specific price alerts
+docs/archive/SUPABASE_RLS_POLICIES.md:185:ALTER TABLE price_alerts ENABLE ROW LEVEL SECURITY;
+docs/archive/SUPABASE_RLS_POLICIES.md:187:-- Users can only see their own alerts
+docs/archive/SUPABASE_RLS_POLICIES.md:188:CREATE POLICY "Users can view own price alerts" ON price_alerts
+docs/archive/SUPABASE_RLS_POLICIES.md:193:-- Users can only create their own alerts
+docs/archive/SUPABASE_RLS_POLICIES.md:194:CREATE POLICY "Users can create own price alerts" ON price_alerts
+docs/archive/SUPABASE_RLS_POLICIES.md:199:-- Users can only update their own alerts
+docs/archive/SUPABASE_RLS_POLICIES.md:200:CREATE POLICY "Users can update own price alerts" ON price_alerts
+docs/archive/SUPABASE_RLS_POLICIES.md:206:-- Users can only delete their own alerts
+docs/archive/SUPABASE_RLS_POLICIES.md:207:CREATE POLICY "Users can delete own price alerts" ON price_alerts
+docs/archive/PROJECT_STATUS_ANALYSIS.md:1:# DexTrends Project Status Analysis
+docs/archive/TECHNICAL_IMPROVEMENTS.md:1:# DexTrends Technical Improvements Documentation
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_NOTES.md:8:- **Project**: DexTrends - Pokemon TCG and Pokedex application
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_NOTES.md:52:1. `pocketData.js` → pocketData.ts (LARGE file with TCG Pocket data)
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_NOTES.md:67:- `raritySymbolScraper.js`
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_NOTES.md:124:cd /Users/moazzam/Documents/GitHub/Mappy/DexTrends
+docs/archive/development-history/MIGRATION_GUIDE.md:59:- [ ] Pull-to-refresh works
+docs/archive/development-history/MIGRATION_GUIDE.md:127:3. PullToRefresh - Signature interaction
+docs/archive/development-history/UI_IMPROVEMENT_PROGRESS.md:159:- Pull-to-refresh styles
+docs/archive/development-history/UI_IMPROVEMENT_PROGRESS.md:239:- Pull-to-refresh not working everywhere
+docs/archive/development-history/UI_IMPROVEMENT_PROGRESS.md:245:- Add pull-to-refresh to key pages
+docs/archive/development-history/IMPLEMENTATION_SUMMARY.md:1:# DexTrends UI Enhancement - Implementation Summary
+docs/archive/development-history/IMPLEMENTATION_SUMMARY.md:4:Comprehensive UI enhancement and feature implementation completed for the DexTrends Pokemon application. All work has been completed with zero TypeScript errors and full functionality preserved.
+docs/archive/development-history/IMPLEMENTATION_SUMMARY.md:12:   - Advanced search with debouncing
+docs/archive/development-history/IMPLEMENTATION_SUMMARY.md:125:- Pull to refresh
+docs/archive/development-history/IMPLEMENTATION_SUMMARY.md:159:  - Collections
+docs/archive/development-history/IMPLEMENTATION_SUMMARY.md:273:- 📊 Data export capabilities for all collections
+docs/archive/development-history/IMPLEMENTATION_SUMMARY.md:304:All planned phases have been successfully completed with high-quality, production-ready code. The DexTrends application now features:
+docs/archive/CURRENT_WORK.md:230:1. **Moved PullToRefresh to ui/gestures/**
+docs/archive/CURRENT_WORK.md:263:   - Fixed RarityBadge, PokemonFormSelector paths
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_STATUS_JULY_13.md:28:1. `pocketData.js → pocketData.ts` - Pokemon TCG Pocket data caching
+docs/archive/SAFE_TO_DELETE_COMPONENTS.md:46:components/ui/DexTrendsLoading.tsx  # Deleted
+docs/archive/TCG_CARDLIST_IMPLEMENTATION_SUMMARY.md:31:    showRarity={true}
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_8_SUMMARY.md:67:- Event handler types: `e.target.value as 'set' | 'count' | 'rarity'`
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_8_SUMMARY.md:94:7. `components/ui/CollectionShowcase.js`
+docs/archive/development-history/PERFORMANCE_OPTIMIZATION_COMPLETE.md:217:The DexTrends application now has:
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_NOTES.md:95:cd /Users/moazzam/Documents/GitHub/Mappy/DexTrends
+docs/archive/typescript-migration/SESSION_23_CRITICAL_FIX.md:6:### 1. Regions Page ProfessorShowcase Error
+docs/archive/typescript-migration/SESSION_23_CRITICAL_FIX.md:9:- **Solution**: Fixed import paths in ProfessorShowcase.tsx
+docs/archive/development-history/UI_IMPROVEMENTS_SUMMARY.md:1:# UI Improvements Summary - DexTrends
+docs/archive/development-history/UI_IMPROVEMENTS_SUMMARY.md:112:- Implement pull-to-refresh globally
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_FIX_PLAN.md:4:This comprehensive plan addresses all critical issues found after the TypeScript migration and incorporates the circular-focused design language throughout the DexTrends application. This document serves as the source of truth for all fix implementations across sessions.
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_20_STATUS.md:64:2. `pocketmode/deckbuilder.js` - Deck builder tool
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_20_STATUS.md:73:4. `collections.js` - Collections management
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_24_STATUS.md:32:   - Added comprehensive interfaces: Expansion, ExpansionTheme, RarityInfo
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_24_STATUS.md:45:   - Maintained infinite scroll functionality
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_24_STATUS.md:92:1. `cards/rarity/[rarity].js`
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_24_STATUS.md:101:1. `collections.js`
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_24_STATUS.md:126:   - `collections.js` - Collections management
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_24_STATUS.md:131:   - Start with simpler ones like `cards/rarity/[rarity].js`
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_24_STATUS.md:150:find pages -name "*.js" -type f | grep -E "(collections|trending|fun)" 
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_24_STATUS.md:169:3. **Maintained features**: Pack opening, deck management, infinite scroll
+docs/archive/TCG_LAYOUT_FINAL_FIXES.md:26:- **After**: 10-12 columns (similar to Pokemon TCG Pocket)
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_22_STATUS.md:51:4. `collections.js` - Collections page
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_22_STATUS.md:111:2. **Main Hub Pages** (collections, trending, pokemon/index)
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_22_STATUS.md:128:find pages -name "*.js" -type f | grep -E "(404|500|_error|collections|trending)" | head -10
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_10_SUMMARY.md:26:| MobileDesignSystem | 360 | Medium | Design tokens, component showcase |
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_10_SUMMARY.md:27:| GymLeaderShowcase | 389 | High | Framer-motion animations, complex layouts |
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_10_SUMMARY.md:145:5. `CollectionShowcase.js` - Collection display system
+docs/archive/typescript-migration/SESSION_NOTES_TYPESCRIPT_JULY_13.md:18:8. ✅ PriceAlerts.js → .tsx
+docs/archive/typescript-migration/SESSION_NOTES_TYPESCRIPT_JULY_13.md:51:   - Advanced search features
+docs/archive/typescript-migration/SESSION_NOTES_TYPESCRIPT_JULY_13.md:112:cd /Users/moazzam/Documents/GitHub/Mappy/DexTrends
+docs/archive/PHASE_2_VERIFICATION_REPORT.md:23:- **Homepage:** "DexTrends - Pokemon TCG Card Prices & Trends"
+docs/archive/PHASE_2_VERIFICATION_REPORT.md:24:- **TCG Sets:** "TCG Sets - Pokemon Card Sets | DexTrends"
+docs/archive/PHASE_2_VERIFICATION_REPORT.md:25:- **Pokedex:** "Pokédex | DexTrends - Browse All Pokémon"
+docs/archive/PHASE_2_VERIFICATION_REPORT.md:26:- **Battle Simulator:** "Pokemon Battle Simulator - DexTrends"
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_STATUS_NOTE.md:7:We are in **Phase 6** of the DexTrends optimization project - the TypeScript Migration phase. This is the final major phase after completing:
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_23_STATUS.md:37:   - Comprehensive starter Pokemon showcase
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_23_STATUS.md:67:1. `cards/rarity/[rarity].js`
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_27_COMPLETE.md:147:After 27 sessions spanning several months, the DexTrends project has achieved 100% TypeScript coverage! This migration improves:
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_27_COMPLETE.md:166:This marks the end of the migration phase and the beginning of a fully type-safe codebase for DexTrends.
+docs/archive/typescript-migration/SESSION_29_CONTINUATION_NOTES.md:20:4. **Collections CRUD** - Need to verify add/remove operations
+docs/archive/typescript-migration/SESSION_29_CONTINUATION_NOTES.md:57:#### 3. Verify Collections/Favorites
+docs/archive/typescript-migration/SESSION_29_CONTINUATION_NOTES.md:201:   - Collections/favorites persist
+docs/archive/2024-09-01-legacy/ARCHITECTURE.md:1:# DexTrends Architecture Overview
+docs/archive/2024-09-01-legacy/ARCHITECTURE.md:5:DexTrends uses a **unified responsive architecture** where components adapt to all viewports using CSS and Tailwind utilities, rather than maintaining separate mobile and desktop components.
+docs/archive/2024-09-01-legacy/ARCHITECTURE.md:43:│   ├── PullToRefresh.tsx # Touch gestures
+docs/archive/2024-09-01-legacy/BACKLOG.md:1:# DexTrends Development Backlog
+docs/archive/2024-09-01-legacy/BACKLOG.md:4:This file tracks future work items, feature requests, and improvements that need to be implemented in the DexTrends project.
+docs/archive/2024-09-01-legacy/BACKLOG.md:18:- [ ] Implement pull-to-refresh on mobile devices
+docs/archive/2024-09-01-legacy/BACKLOG.md:30:- [ ] Create deck builder with validation rules
+docs/archive/2024-09-01-legacy/BACKLOG.md:78:- [ ] Resolve memory leak in infinite scroll implementation
+docs/archive/2024-09-01-legacy/BACKLOG.md:88:- ✅ Added holographic effects tied to card rarity
+docs/archive/2024-09-01-legacy/UNUSED_CODE_AUDIT.md:1:# Unused Code Audit - DexTrends
+docs/archive/2024-09-01-legacy/UNUSED_CODE_AUDIT.md:40:   - `onRarityClick` in CardList - Click handler for rarity filtering
+docs/archive/2024-09-01-legacy/UNUSED_CODE_AUDIT.md:41:   - Could be a planned feature for filtering by rarity
+docs/archive/2024-09-01-legacy/UNUSED_CODE_AUDIT.md:86:   - Rarity click handler might be a planned feature
+docs/archive/2024-09-01-legacy/DOCUMENTATION_INDEX.md:1:# DexTrends Documentation Index
+docs/archive/2024-09-01-legacy/MOBILE_FEATURES_PROTECTED.md:27:### 3. PullToRefresh ✅
+docs/archive/2024-09-01-legacy/MOBILE_FEATURES_PROTECTED.md:28:**File**: `/components/mobile/PullToRefresh.tsx`
+docs/archive/2024-09-01-legacy/MOBILE_FEATURES_PROTECTED.md:72:- Pull to refresh (PullToRefresh)
+docs/archive/2024-09-01-legacy/MOBILE_FEATURES_PROTECTED.md:95:3. **Load more button** - Better than infinite scroll for control
+docs/archive/2024-09-01-legacy/MOBILE_FEATURES_PROTECTED.md:112:- [ ] Pull to refresh triggers properly?
+docs/archive/2024-09-01-legacy/MOBILE_FEATURES_PROTECTED.md:170:- PullToRefresh (mobile only)
+docs/archive/2024-09-01-legacy/COMPREHENSIVE_CLEANUP_ANALYSIS.md:98:- Advanced deck builder
+docs/archive/2024-09-01-legacy/COMPREHENSIVE_CLEANUP_ANALYSIS.md:158:- `ResponsiveGrid` deleted ≠ `ResponsiveGridShowcase` (kept)

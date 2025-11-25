@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GlassContainer } from '../../../ui/design-system';
+import { GlassContainer } from '../../../ui/glass-components';
 import { cn } from '../../../../utils/cn';
 import { FaChessBishop, FaFistRaised } from 'react-icons/fa';
 import { HiSparkles } from 'react-icons/hi';

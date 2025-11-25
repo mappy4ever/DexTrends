@@ -25,16 +25,16 @@ import type {
 } from "../../types/pokemon";
 import type { TCGCard } from "../../types/api/cards";
 import type { PocketCard } from "../../types/api/pocket-cards";
-import PokemonHeroSectionV3 from "../../components/pokemon/PokemonHeroSectionV3";
+import PokemonHeroSection from "../../components/pokemon/PokemonHeroSection";
 import PokemonTabSystem from "../../components/pokemon/PokemonTabSystem";
 import FloatingActionBar from "../../components/pokemon/FloatingActionBar";
-import { DetailPageSkeleton } from '@/components/ui/SkeletonLoadingSystem';
-import { FullBleedWrapper, PageErrorBoundary } from '../../components/ui';
-import { CircularButton } from "../../components/ui/design-system";
+import { SkeletonCard } from '@/components/ui/Skeleton';
+import FullBleedWrapper from '../../components/ui/FullBleedWrapper';
+import ErrorBoundary from '../../components/ui/ErrorBoundary';
+import Button from "../../components/ui/Button";
 import { getPokemonTheme } from "../../utils/pokemonAnimations";
 import NavigationArrow from "../../components/pokemon/NavigationArrow";
 import { ProgressiveImage } from "../../components/ui/ProgressiveImage";
-import { UnifiedPokemonDetail } from "../../components/pokemon/UnifiedPokemonDetail";
 
 // Interface for abilities state
 interface AbilityData {
@@ -474,13 +474,11 @@ const PokemonDetail: NextPage = () => {
   if (loading) {
     return (
       <FullBleedWrapper>
-        <DetailPageSkeleton 
-          variant="pokemon"
-          showHeader={true}
+        <SkeletonCard 
           showImage={true}
-          showStats={true}
-          showTabs={true}
-          showRelated={true}
+          showTitle={true}
+          showDescription={true}
+          showActions={true}
         />
       </FullBleedWrapper>
     );
@@ -492,12 +490,12 @@ const PokemonDetail: NextPage = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-500 mb-4">{error}</p>
-          <CircularButton
+          <Button
             onClick={() => router.push('/pokedex')}
             variant="primary"
           >
             Back to Pokédex
-          </CircularButton>
+          </Button>
         </div>
       </div>
     );
@@ -509,12 +507,12 @@ const PokemonDetail: NextPage = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <p className="text-gray-500 dark:text-gray-400 mb-4">Pokémon not found</p>
-          <CircularButton
+          <Button
             onClick={() => router.push('/pokedex')}
             variant="primary"
           >
             Back to Pokédex
-          </CircularButton>
+          </Button>
         </div>
       </div>
     );
@@ -522,7 +520,7 @@ const PokemonDetail: NextPage = () => {
 
   // Unified view for all devices
   return (
-    <PageErrorBoundary pageName="Pokemon Detail">
+    <ErrorBoundary context="Pokemon Detail">
       <Head>
         <title>{pokemon?.name ? pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1) : 'Pokemon'} - Pokédex | DexTrends</title>
         <meta 
@@ -535,20 +533,22 @@ const PokemonDetail: NextPage = () => {
         gradient="pokemon-type"
         pokemonTypes={pokemon?.types}
       >
-        <UnifiedPokemonDetail
+        <PokemonHeroSection
+          pokemon={pokemon}
+          species={species}
+          showShiny={showShiny}
+          onShinyToggle={() => setShowShiny(!showShiny)}
+          onFormChange={handleFormChange}
+        />
+        <PokemonTabSystem
           pokemon={pokemon}
           species={species}
           evolutionChain={evolutionChain}
           abilities={abilities}
           tcgCards={tcgCards}
           pocketCards={pocketCards}
-          showShiny={showShiny}
-          onShinyToggle={() => setShowShiny(!showShiny)}
-          adjacentPokemon={adjacentPokemon}
           activeTab={activeTab}
           onTabChange={setActiveTab}
-          selectedForm={selectedForm}
-          onFormChange={handleFormChange}
           locationEncounters={locationAreaEncounters}
           natureData={natureData}
           allNatures={allNatures}
@@ -559,7 +559,7 @@ const PokemonDetail: NextPage = () => {
           competitiveTiers={competitiveTiers}
         />
       </FullBleedWrapper>
-    </PageErrorBoundary>
+    </ErrorBoundary>
   );
 };
 

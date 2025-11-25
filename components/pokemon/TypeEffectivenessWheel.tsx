@@ -2,7 +2,7 @@ import React, { useState, useMemo, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../../utils/cn';
 import { TypeBadge } from '../ui/TypeBadge';
-import { GlassContainer } from '../ui/design-system';
+import { GlassContainer } from '../ui/glass-components';
 import { useTypeEffectiveness } from '../../hooks/useTypeEffectiveness';
 import { POKEMON_TYPE_COLORS } from '../../utils/unifiedTypeColors';
 import { FaExclamationTriangle, FaBan, FaCircle } from 'react-icons/fa';

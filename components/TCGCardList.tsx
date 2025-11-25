@@ -5,8 +5,8 @@ import { useRouter } from "next/router";
 import Modal from '@/components/ui/Modal';
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import { InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
-import { Skeleton as SmartSkeleton } from "./ui/Skeleton";
-import PriceDisplay from './ui/PriceDisplay';
+import { SkeletonGrid } from "./ui/Skeleton";
+// PriceDisplay removed - using inline display
 import { ErrorBoundaryWrapper } from "./ui/ErrorBoundary";
 import { RarityIcon } from './ui/RarityIcon';
 import type { TCGCard } from "../types/api/cards";
@@ -237,12 +237,9 @@ const TCGCardItem = memo<TCGCardProps>(({
           <div className="flex items-center justify-between px-1 gap-1">
             {/* Enhanced Price Display */}
             {showPrice && price > 0 && (
-              <PriceDisplay
-                price={price}
-                size="sm"
-                variant={price >= 100 ? 'premium' : price >= 50 ? 'sale' : 'default'}
-                animated={true}
-              />
+              <div className="px-2 py-1 bg-gradient-to-r from-green-500 to-green-600 text-white text-sm font-semibold rounded-md shadow-sm">
+                ${price.toFixed(2)}
+              </div>
             )}
             
             {/* Set Badge */}
@@ -369,12 +366,9 @@ function TCGCardListInner({
 
   if (loading) {
     return (
-      <SmartSkeleton 
-        type="card-grid"
+      <SkeletonGrid 
         count={20}
-        showPrice={true}
-        showTypes={true}
-        showHP={false}
+        cols={{ default: 2, sm: 3, md: 4, lg: 5 }}
         className="animate-fadeIn"
       />
     );

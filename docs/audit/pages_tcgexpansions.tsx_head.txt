@@ -1,0 +1,90 @@
+     1	import React, { useState } from "react";
+     2	import { useRouter } from "next/router";
+     3	import Head from "next/head";
+     4	import { GetServerSideProps } from 'next';
+     5	import { CardSet } from "../types/api/cards";
+     6	
+     7	interface Props {
+     8	  initialSets: CardSet[];
+     9	  error?: string;
+    10	}
+    11	
+    12	export default function TCGExpansionsWorking({ initialSets, error }: Props) {
+    13	  const [sets] = useState<CardSet[]>(initialSets);
+    14	  const router = useRouter();
+    15	
+    16	  return (
+    17	    <>
+    18	      <Head>
+    19	        <title>TCG Sets - Pokemon Card Sets | DexTrends</title>
+    20	        <meta name="description" content="Browse all Pokemon TCG sets" />
+    21	      </Head>
+    22	      
+    23	      <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
+    24	        <h1>Pokemon TCG Sets</h1>
+    25	        
+    26	        {error && <p style={{ color: 'red' }}>Error: {error}</p>}
+    27	        
+    28	        <p>{sets.length} Sets Available</p>
+    29	        
+    30	        <div style={{ 
+    31	          display: 'grid', 
+    32	          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', 
+    33	          gap: '20px',
+    34	          marginTop: '20px'
+    35	        }}>
+    36	          {sets.map(set => (
+    37	            <div 
+    38	              key={set.id} 
+    39	              onClick={() => router.push(`/tcgexpansions/${set.id}`)}
+    40	              style={{ 
+    41	                border: '1px solid #ddd', 
+    42	                borderRadius: '12px', 
+    43	                padding: '15px',
+    44	                cursor: 'pointer',
+    45	                transition: 'transform 0.2s',
+    46	                backgroundColor: 'white'
+    47	              }}
+    48	              onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+    49	              onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+    50	            >
+    51	              {set.images?.logo && (
+    52	                <img 
+    53	                  src={set.images.logo} 
+    54	                  alt={set.name}
+    55	                  style={{ width: '100%', height: '100px', objectFit: 'contain' }}
+    56	                />
+    57	              )}
+    58	              <h3>{set.name}</h3>
+    59	              <p style={{ color: '#666' }}>{set.series}</p>
+    60	              <p style={{ fontSize: '14px' }}>
+    61	                {set.total} cards • Released {set.releaseDate}
+    62	              </p>
+    63	            </div>
+    64	          ))}
+    65	        </div>
+    66	      </div>
+    67	    </>
+    68	  );
+    69	}
+    70	
+    71	export const getServerSideProps: GetServerSideProps = async () => {
+    72	  try {
+    73	    const res = await fetch('http://localhost:3001/api/tcg-sets?page=1&pageSize=25');
+    74	    const data = await res.json();
+    75	    
+    76	    return {
+    77	      props: {
+    78	        initialSets: data.data || [],
+    79	        error: null
+    80	      }
+    81	    };
+    82	  } catch (error) {
+    83	    return {
+    84	      props: {
+    85	        initialSets: [],
+    86	        error: 'Failed to load TCG sets'
+    87	      }
+    88	    };
+    89	  }
+    90	};

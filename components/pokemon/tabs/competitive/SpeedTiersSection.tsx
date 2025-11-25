@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { GlassContainer } from '../../../ui/design-system';
+import { GlassContainer } from '../../../ui/glass-components';
 import { MdCatchingPokemon } from 'react-icons/md';
 import { FaRunning, FaStar, FaExchangeAlt } from 'react-icons/fa';
 import type { Pokemon } from '../../../../types/pokemon';

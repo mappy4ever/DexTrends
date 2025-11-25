@@ -1,0 +1,220 @@
+     1	/**
+     2	 * Dynamic imports for code splitting
+     3	 * This file centralizes all dynamic imports to reduce initial bundle size
+     4	 */
+     5	
+     6	import dynamic from 'next/dynamic';
+     7	import type { DynamicOptions } from 'next/dynamic';
+     8	import React, { ReactNode, ComponentType } from 'react';
+     9	
+    10	// Type definitions
+    11	interface DynamicLoaderProps {
+    12	  children?: ReactNode;
+    13	  className?: string;
+    14	  style?: React.CSSProperties;
+    15	  [key: string]: unknown;
+    16	}
+    17	
+    18	// Loading component for dynamic imports
+    19	const DynamicLoader: React.FC<DynamicLoaderProps> = ({ children, ...props }) => (
+    20	  <div className="flex items-center justify-center p-4" {...props}>
+    21	    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+    22	    {children && <span className="ml-2 text-sm text-gray-600">{children}</span>}
+    23	  </div>
+    24	);
+    25	
+    26	// Chart components
+    27	export const DynamicPriceHistoryChart = dynamic(
+    28	  () => import('../ui/charts/PriceHistoryChart'),
+    29	  {
+    30	    loading: () => <DynamicLoader>Loading price chart...</DynamicLoader>,
+    31	    ssr: false
+    32	  }
+    33	);
+    34	
+    35	
+    36	// Advanced modals and forms
+    37	// AdvancedSearchModal removed in Stage 10 - use SearchModal or UnifiedSearchBar instead
+    38	// export const DynamicAdvancedSearchModal = dynamic(
+    39	//   () => import('../AdvancedSearchModal'),
+    40	//   {
+    41	//     loading: () => <DynamicLoader>Loading search...</DynamicLoader>
+    42	//   }
+    43	// );
+    44	
+    45	// MarketAnalytics removed in Stage 7 - use individual analytics components
+    46	// export const DynamicMarketAnalytics = dynamic...
+    47	
+    48	
+    49	// Collection manager (heavy component)
+    50	export const DynamicCollectionManager = dynamic(
+    51	  () => import('../CollectionManager'),
+    52	  {
+    53	    loading: () => <DynamicLoader>Loading collection...</DynamicLoader>
+    54	  }
+    55	);
+    56	
+    57	// Advanced features (currently unused but available for future)
+    58	// AdvancedDeckBuilder removed in Stage 10 - use DeckBuilder instead
+    59	// export const DynamicAdvancedDeckBuilder = dynamic(
+    60	//   () => import('../ui/AdvancedDeckBuilder'),
+    61	//   {
+    62	//     loading: () => <DynamicLoader>Loading deck builder...</DynamicLoader>,
+    63	//     ssr: false
+    64	//   }
+    65	// );
+    66	
+    67	// TradingMarketplace removed in Stage 7 - functionality merged to collection components
+    68	// export const DynamicTradingMarketplace = dynamic...
+    69	
+    70	export const DynamicTournamentSystem = dynamic(
+    71	  () => import('../ui/TournamentSystem'),
+    72	  {
+    73	    loading: () => <DynamicLoader>Loading tournament system...</DynamicLoader>,
+    74	    ssr: false
+    75	  }
+    76	);
+    77	
+    78	// Price alerts component
+    79	// PriceAlerts removed in Stage 7 - use price tracking in collection components
+    80	// PriceAlerts removed - use DynamicCollectionManager instead
+    81	export const DynamicPriceAlerts = DynamicCollectionManager;
+    82	
+    83	// Icons and heavy UI components
+    84	export const DynamicFontAwesome = dynamic(
+    85	  () => import('./FontAwesomeIcon'),
+    86	  {
+    87	    loading: () => <span className="inline-block w-4 h-4 bg-gray-200 rounded animate-pulse"></span>,
+    88	    ssr: false
+    89	  }
+    90	) as ComponentType<any>; // FontAwesome icon component
+    91	
+    92	// Date picker (heavy component)
+    93	export const DynamicDatePicker = dynamic(
+    94	  () => import('react-datepicker').then(mod => ({ default: mod.default })),
+    95	  {
+    96	    loading: () => <DynamicLoader>Loading date picker...</DynamicLoader>,
+    97	    ssr: false
+    98	  }
+    99	) as ComponentType<any>;
+   100	
+   101	// React Select (heavy component)
+   102	export const DynamicReactSelect = dynamic(
+   103	  () => import('react-select').then(mod => ({ default: mod.default })),
+   104	  {
+   105	    loading: () => <DynamicLoader>Loading selector...</DynamicLoader>,
+   106	    ssr: false
+   107	  }
+   108	) as ComponentType<any>; // react-select component
+   109	
+   110	// File processing components - These are not React components but utilities
+   111	// Commenting out dynamic imports for non-component libraries
+   112	// Use regular imports in components that need these utilities
+   113	export const DynamicHtml2Canvas = null; // Use regular import instead
+   114	export const DynamicFileSaver = null; // Use regular import instead
+   115	
+   116	// Particles effect (decorative, can be loaded later)
+   117	export const DynamicParticles = dynamic(
+   118	  () => import('@tsparticles/react').then(mod => ({ default: mod.default })),
+   119	  {
+   120	    loading: () => null,
+   121	    ssr: false
+   122	  }
+   123	);
+   124	
+   125	// Framer Motion components removed in Stage 8 - use LazyMotion directly
+   126	// MotionDiv and MotionSpan were just re-exports of motion.div and motion.span
+   127	// Use import { motion } from '../ui/LazyMotion' instead
+   128	export const DynamicMotion = {
+   129	  div: dynamic(
+   130	    () => import('../ui/LazyMotion').then(mod => ({ default: mod.motion.div })),
+   131	    {
+   132	      loading: () => <div />,
+   133	      ssr: false
+   134	    }
+   135	  ) as ComponentType<any>,
+   136	  span: dynamic(
+   137	    () => import('../ui/LazyMotion').then(mod => ({ default: mod.motion.span })),
+   138	    {
+   139	      loading: () => <span />,
+   140	      ssr: false
+   141	    }
+   142	  ) as ComponentType<any>,
+   143	  button: dynamic(
+   144	    () => import('../ui/Button'),
+   145	    {
+   146	      loading: () => <button />,
+   147	      ssr: false
+   148	    }
+   149	  ) as ComponentType<any>
+   150	};
+   151	
+   152	// Analytics components (non-critical)
+   153	export const DynamicAnalytics = dynamic(
+   154	  () => import('./Analytics'),
+   155	  {
+   156	    loading: () => null,
+   157	    ssr: false
+   158	  }
+   159	);
+   160	
+   161	export const DynamicSpeedInsights = dynamic(
+   162	  () => import('./SpeedInsights'),
+   163	  {
+   164	    loading: () => null,
+   165	    ssr: false
+   166	  }
+   167	);
+   168	
+   169	// Error boundary with dynamic loading
+   170	export const DynamicErrorBoundary = dynamic(
+   171	  () => import('../ui/ErrorBoundary'),
+   172	  {
+   173	    loading: () => <div>Loading error handler...</div>
+   174	  }
+   175	);
+   176	
+   177	// Utility function to preload components
+   178	export const preloadComponent = (componentImport: () => Promise<unknown>) => {
+   179	  if (typeof window !== 'undefined') {
+   180	    componentImport();
+   181	  }
+   182	};
+   183	
+   184	// Preload critical components on user interaction
+   185	export const preloadCriticalComponents = () => {
+   186	  // Preload search modal when user starts typing
+   187	  // preloadComponent(() => import('../AdvancedSearchModal')); // Removed in Stage 10
+   188	  
+   189	  // Preload charts when user visits pages with data
+   190	  preloadComponent(() => import('../ui/charts/PriceHistoryChart'));
+   191	  
+   192	  // Preload analytics when user interacts with data
+   193	  // MarketAnalytics removed in Stage 7
+   194	};
+   195	
+   196	// Component factory for creating dynamically imported components
+   197	interface CreateDynamicComponentOptions extends Partial<DynamicOptions<ComponentType<any>>> {
+   198	  loadingText?: string;
+   199	}
+   200	
+   201	export const createDynamicComponent = (
+   202	  importFunc: () => Promise<{ default: ComponentType<any> }>, 
+   203	  options: CreateDynamicComponentOptions = {}
+   204	) => {
+   205	  const defaultOptions: DynamicOptions<ComponentType<any>> = {
+   206	    loading: () => <DynamicLoader>{options.loadingText || 'Loading...'}</DynamicLoader>,
+   207	    ssr: options.ssr !== false // SSR enabled by default unless explicitly disabled
+   208	  };
+   209	
+   210	  return dynamic(importFunc, { ...defaultOptions, ...options });
+   211	};
+   212	
+   213	export default {
+   214	  DynamicPriceHistoryChart,
+   215	  // DynamicAdvancedSearchModal, // Removed in Stage 10
+   216	  // DynamicMarketAnalytics removed in Stage 7
+   217	  DynamicCollectionManager,
+   218	  // DynamicAdvancedDeckBuilder, // Removed in Stage 10
+   219	  // DynamicTradingMarketplace removed in Stage 7
+   220	  DynamicTournamentSystem,

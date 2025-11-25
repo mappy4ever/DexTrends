@@ -15,10 +15,12 @@ import {
   GiPalmTree,
   GiWaveStrike
 } from 'react-icons/gi';
-import { 
-  createGlassStyle,
-  TYPE_GRADIENTS
-} from '../ui/design-system/glass-constants';
+// Glass constants replaced with direct Tailwind classes
+const TYPE_GRADIENTS = { fire: 'bg-gradient-to-r from-red-500 to-orange-500', water: 'bg-gradient-to-r from-blue-500 to-cyan-500', ground: 'bg-gradient-to-r from-amber-500 to-yellow-500', rock: 'bg-gradient-to-r from-stone-500 to-gray-600' };
+const GLASS_BLUR = { sm: 'backdrop-blur-sm', md: 'backdrop-blur-md', lg: 'backdrop-blur-lg' };
+const GLASS_OPACITY = { subtle: 'bg-white/60', medium: 'bg-white/80', strong: 'bg-white/95' };
+const GLASS_BORDER = { light: 'border-white/20', medium: 'border-white/40' };
+const GLASS_ROUNDED = { sm: 'rounded-sm', md: 'rounded-md', lg: 'rounded-lg' };
 
 interface IslandKahuna {
   name: string;
@@ -108,13 +110,7 @@ const IslandKahunasGrid: React.FC<IslandKahunasGridProps> = ({ theme }) => {
         <div className="absolute inset-0 bg-gradient-to-br from-yellow-500 via-pink-500 to-purple-500" />
       </div>
 
-      <div className={createGlassStyle({ 
-        blur: 'xl', 
-        opacity: 'strong', 
-        gradient: true, 
-        rounded: 'xl',
-        shadow: 'xl'
-      })} style={{ padding: '2rem' }}>
+      <div className={"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} style={{ padding: '2rem' }}>
         
         {/* Header */}
         <div className="text-center mb-10">

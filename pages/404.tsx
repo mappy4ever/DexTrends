@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import type { NextPage } from 'next';
 import { motion } from 'framer-motion';
-import { GlassContainer } from '../components/ui/design-system/GlassContainer';
-import { CircularButton } from '../components/ui/design-system';
+import Container from '../components/ui/Container';
+import Button from '../components/ui/Button';
 import { FullBleedWrapper } from '../components/ui/FullBleedWrapper';
 import Image from 'next/image';
 import Head from 'next/head';
@@ -63,7 +63,7 @@ const Custom404: NextPage = () => {
         transition={{ duration: 0.5 }}
         className="relative z-10"
       >
-        <GlassContainer variant="colored" className="max-w-lg mx-auto text-center">
+        <Container className="max-w-lg mx-auto text-center bg-white/90 dark:bg-gray-800/90 backdrop-blur-lg p-8 rounded-2xl">
           {/* DexTrends Logo */}
           <div className="mb-6">
             <DexTrendsLogo variant="horizontal" size="sm" className="mx-auto opacity-80" />
@@ -109,7 +109,7 @@ const Custom404: NextPage = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <CircularButton
+            <Button
               onClick={() => {
                 if (typeof window !== 'undefined') {
                   window.location.href = '/';
@@ -119,9 +119,9 @@ const Custom404: NextPage = () => {
               size="lg"
             >
               Return to Pallet Town
-            </CircularButton>
+            </Button>
             
-            <CircularButton
+            <Button
               onClick={() => {
                 if (typeof window !== 'undefined') {
                   window.history.back();
@@ -131,7 +131,7 @@ const Custom404: NextPage = () => {
               size="lg"
             >
               Go Back
-            </CircularButton>
+            </Button>
           </div>
 
           {/* Fun Pokemon quote */}
@@ -143,7 +143,7 @@ const Custom404: NextPage = () => {
           >
             "We hope to see you again!" - Pokemon Center Nurse
           </motion.p>
-        </GlassContainer>
+        </Container>
       </motion.div>
     </div>
     </FullBleedWrapper>

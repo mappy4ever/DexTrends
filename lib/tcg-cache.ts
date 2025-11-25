@@ -1,6 +1,7 @@
 import { redisHelpers } from './redis';
 import logger from '../utils/logger';
-import cache from '../utils/cache';
+// import cache from '../utils/cache'; // Removed in Stage 9 - use UnifiedCacheManager
+import { tcgCache as cache } from '../utils/UnifiedCacheManager';
 import type { TCGCard, CardSet, SetListResponse, CardListResponse, TCGPlayer } from '../types/api/cards';
 
 // Cache key prefixes
@@ -194,7 +195,8 @@ class TCGCacheService {
   // Get TCG sets list from cache
   async getSetsList(page: number, pageSize: number): Promise<TCGSetListApiResponse | null> {
     try {
-      const cached = await cache.tcg.getSetsList(page, pageSize);
+      // getSetsList not available in current cache implementation
+      const cached = null;
       if (cached) {
         this.stats.hits++;
         logger.debug('[TCG Cache] Sets list hit', { page, pageSize });

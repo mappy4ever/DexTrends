@@ -6,8 +6,8 @@ import Link from "next/link";
 import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../../components/ui/animations/animations";
 import { useTheme } from "../../context/UnifiedAppContext";
 import { useInfiniteScroll } from "../../hooks/useInfiniteScroll";
-import { createGlassStyle, GradientButton, CircularButton } from '../../components/ui/design-system';
-import { CircularCard } from "../../components/ui/design-system/CircularCard";
+import Button from '../../components/ui/Button';
+import { Container } from '../../components/ui/Container';
 import { motion } from "framer-motion";
 import { InlineLoader, PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import StyledBackButton from "../../components/ui/StyledBackButton";
@@ -496,14 +496,7 @@ const PocketExpansions: NextPage = () => {
                 </div>
                 <input
                   type="text"
-                  className={`${createGlassStyle({
-                    blur: 'md',
-                    opacity: 'medium',
-                    gradient: false,
-                    border: 'medium',
-                    shadow: 'sm',
-                    rounded: 'full'
-                  })} w-full pl-9 pr-9 py-3 text-sm transition-all`}
+                  className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} w-full pl-9 pr-9 py-3 text-sm transition-all`}
                   placeholder="Search expansions... (Press / to focus)"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
@@ -587,7 +580,7 @@ const PocketExpansions: NextPage = () => {
                   </div>
                 </div>
             
-                <GradientButton 
+                <Button gradient={true} 
                   variant="secondary"
                   size="md"
                   onClick={() => {
@@ -598,7 +591,7 @@ const PocketExpansions: NextPage = () => {
                   }}
                 >
                   Clear Filters
-                </GradientButton>
+                </Button>
               </div>
           </motion.div>
         </FadeIn>
@@ -606,14 +599,7 @@ const PocketExpansions: NextPage = () => {
       {loading ? (
         <PageLoader text="Loading Pocket expansions..." />
         ) : error ? (
-          <div className={`${createGlassStyle({
-            blur: 'xl',
-            opacity: 'medium',
-            gradient: true,
-            border: 'medium',
-            shadow: 'xl',
-            rounded: 'xl'
-          })} text-center p-8 rounded-3xl`}>
+          <div className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} text-center p-8 rounded-3xl`}>
             <h2 className="text-2xl font-bold bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent mb-4">Failed to Load Expansions</h2>
             <p className="text-gray-600 dark:text-gray-400">{error}</p>
           </div>
@@ -719,26 +705,19 @@ const PocketExpansions: NextPage = () => {
         )}
       
         {!loading && !error && sortedExpansions.length === 0 && (
-          <div className={`${createGlassStyle({
-            blur: 'xl',
-            opacity: 'medium',
-            gradient: true,
-            border: 'medium',
-            shadow: 'xl',
-            rounded: 'xl'
-          })} text-center py-20 p-8 rounded-3xl`}>
+          <div className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} text-center py-20 p-8 rounded-3xl`}>
             <div className="text-6xl mb-4">🔍</div>
             <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">No Expansions Found</h2>
             <p className="text-gray-600 dark:text-gray-400 max-w-md mx-auto mb-6">
               {search ? `No expansions match "${search}". Try a different search term.` : "No Pocket expansions available at the moment."}
             </p>
             {search && (
-              <GradientButton
+              <Button gradient={true}
                 onClick={() => setSearch('')}
                 variant="secondary"
               >
                 Clear Search
-              </GradientButton>
+              </Button>
             )}
           </div>
         )}

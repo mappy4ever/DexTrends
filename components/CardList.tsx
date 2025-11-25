@@ -6,7 +6,7 @@ import logger from "@/utils/logger";
 import { SkeletonGrid as CardGridSkeleton } from "./ui/Skeleton";
 import { TCGCard } from "../types/api/cards";
 import performanceMonitor from "../utils/performanceMonitor";
-import { createGlassStyle } from './ui/design-system/glass-constants';
+// Glass styles replaced with Tailwind classes
 
 type SortOption = "price" | "releaseDate" | "rarity";
 
@@ -356,13 +356,7 @@ const CardList = memo<CardListProps>(({
 
       {!loading && (
         <div className="flex justify-center mb-8">
-          <div className={createGlassStyle({ 
-            blur: 'md', 
-            opacity: 'medium', 
-            gradient: false, 
-            rounded: 'full',
-            shadow: 'lg'
-          })} style={{ 
+          <div className={"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} style={{ 
             padding: '0.75rem 1.5rem',
             display: 'inline-flex',
             alignItems: 'center',
@@ -388,11 +382,6 @@ const CardList = memo<CardListProps>(({
         <CardGridSkeleton 
           count={24}
           cols={{ default: 2, sm: 3, md: 5, lg: 8 }}
-          cardProps={{
-            showPrice: true,
-            showSet: true,
-            showTypes: true
-          }}
           className=""
         />
       ) : (
@@ -443,13 +432,7 @@ const CardList = memo<CardListProps>(({
           transition={{ duration: 0.5 }}
           className="text-center mt-12"
         >
-          <div className={createGlassStyle({ 
-            blur: 'xl', 
-            opacity: 'strong', 
-            gradient: false, 
-            rounded: 'xl',
-            shadow: 'xl'
-          })} style={{ 
+          <div className={"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} style={{ 
             maxWidth: '24rem',
             margin: '0 auto',
             padding: '2rem'

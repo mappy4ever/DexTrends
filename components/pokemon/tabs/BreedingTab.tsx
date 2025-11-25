@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import type { Pokemon, PokemonSpecies } from "../../../types/pokemon";
 import type { TypeColors } from '../../../types/pokemon-tabs';
-import { GlassContainer } from '../../ui/design-system';
+import { GlassContainer } from '../../ui/glass-components';
 import { TypeBadge } from '../../ui/TypeBadge';
 import { fetchJSON } from '../../../utils/unifiedFetch';
 import logger from '../../../utils/logger';

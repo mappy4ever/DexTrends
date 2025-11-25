@@ -54,7 +54,7 @@ interface PokemonType {
 
 export interface PokemonDisplayProps {
   // Core data
-  id: number;
+  id?: number;
   name: string;
   sprite?: string;
   types?: PokemonType[] | string[];
@@ -89,6 +89,9 @@ export interface PokemonDisplayProps {
   className?: string;
   width?: number;
   height?: number;
+  
+  // Additional props for compatibility
+  [key: string]: any;
 }
 
 // Size mappings

@@ -3,16 +3,17 @@
 
 export { default as UnifiedSearchBar } from './UnifiedSearchBar';
 export { default as EmptyStateGlass } from './EmptyStateGlass';
-// Loading states moved to Skeleton.tsx
-export { Skeleton as LoadingStateGlass, SkeletonGrid as CardGridSkeleton } from './Skeleton';
+// Loading states - compatibility exports after Phase 8
+export { default as LoadingStateGlass } from './LoadingStateGlass';
+export { default as DetailPageSkeleton } from './DetailPageSkeleton';
+// CardGridSkeleton exported from index.ts as SkeletonLoader
 export { default as ExportButton } from './ExportButton';
 export { default as BulkSelectionBar } from './BulkSelectionBar';
 // ComparisonModal removed - use Modal component directly for comparisons
 
-// Re-export from design system
-export { GlassContainer } from './design-system/GlassContainer';
-export { GradientButton, CircularButton } from './design-system';
-export { createGlassStyle, GLASS_BLUR, GLASS_OPACITY, GLASS_BORDER, GLASS_SHADOW, GLASS_ROUNDED } from './design-system/glass-constants';
+// Re-export glass components
+export { GlassContainer } from './GlassContainer';
+// Button component now handles all button variants (gradient, circular, etc.)
 
 // Export utilities
 export { exportData, exportPokemonData, exportCardData, exportMovesData, exportItemsData, exportAbilitiesData } from '../../utils/exportData';

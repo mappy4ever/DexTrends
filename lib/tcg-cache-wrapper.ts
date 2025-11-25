@@ -4,7 +4,24 @@
  * DEPRECATED: Use cache.tcg directly from @/utils/cache
  */
 
-import cache from '../utils/cache';
+// Cache removed in Phase 8 - using direct API calls instead
+// Creating stub for compatibility
+const cache = {
+  tcg: {
+    getSetsList: async (...args: any[]) => null,
+    setSetsList: async (...args: any[]) => {},
+    getSet: async (...args: any[]) => null,
+    setSet: async (...args: any[]) => {},
+    getCard: async (...args: any[]) => null,
+    setCard: async (...args: any[]) => {},
+    getCards: async (...args: any[]) => null,
+    setCards: async (...args: any[]) => {},
+    clear: async () => {}
+  },
+  get: async (...args: any[]) => null,
+  set: async (...args: any[]) => {},
+  clear: async () => {}
+};
 import logger from '../utils/logger';
 import type { TCGCard, CardSet } from '../types/api/cards';
 import type { TCGSetListApiResponse, TCGCardListApiResponse } from '../types/api/enhanced-responses';
@@ -27,7 +44,7 @@ class TCGCacheServiceWrapper {
   // Get TCG sets list from cache
   async getSetsList(page: number, pageSize: number): Promise<TCGSetListApiResponse | null> {
     try {
-      const cached = await cache.tcg.getSetsList(page, pageSize);
+      const cached = null; // Cache disabled
       if (cached) {
         this.stats.hits++;
         logger.debug('[TCG Cache] Sets list hit', { page, pageSize });

@@ -12,10 +12,9 @@ import Image from 'next/image';
 import { getPokemonSDK } from '../../utils/pokemonSDK';
 import { FadeIn, SlideUp } from '../../components/ui/animations/animations';
 import { TypeBadge } from '../../components/ui/TypeBadge';
-import { GlassContainer } from '../../components/ui/design-system/GlassContainer';
-import { CircularCard } from '../../components/ui/design-system/CircularCard';
-import { GradientButton } from '../../components/ui/design-system/GradientButton';
-import { TypeGradientBadge } from '../../components/ui/design-system/TypeGradientBadge';
+import { GlassContainer } from '../../components/ui/glass-components';
+import { Container } from '../../components/ui/Container';
+import Button from '../../components/ui/Button';
 import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import FullBleedWrapper from '../../components/ui/FullBleedWrapper';
 import StyledBackButton from '../../components/ui/StyledBackButton';
@@ -227,7 +226,7 @@ const EVOptimizer: NextPage = () => {
                           <div className="font-medium capitalize">{pokemon.name}</div>
                           <div className="flex gap-1">
                             {pokemon.types?.map((t) => (
-                              <TypeGradientBadge key={t.type.name} type={t.type.name} size="xs" />
+                              <TypeBadge key={t.type.name} type={t.type.name} size="xs" variant="gradient" />
                             )) || null}
                           </div>
                         </div>
@@ -240,19 +239,18 @@ const EVOptimizer: NextPage = () => {
                   <div className="mt-6">
                     <GlassContainer variant="light" rounded="2xl" padding="md">
                       <div className="flex items-center justify-center mb-4">
-                        <CircularCard
-                          size="md"
-                          image={selectedPokemon.sprites?.front_default || '/dextrendslogo.png'}
-                          alt={selectedPokemon.name}
-                          title={selectedPokemon.name}
-                          gradientFrom={selectedPokemon.types?.[0]?.type.name || 'normal'}
-                          gradientTo={selectedPokemon.types?.[1]?.type.name || selectedPokemon.types?.[0]?.type.name || 'normal'}
-                        />
+                        <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-white/20">
+                          <img 
+                            src={selectedPokemon.sprites?.front_default || '/dextrendslogo.png'}
+                            alt={selectedPokemon.name}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
                       </div>
                       <div className="text-center mb-4">
                         <div className="flex justify-center gap-1">
                           {selectedPokemon.types?.map((t) => (
-                            <TypeGradientBadge key={t.type.name} type={t.type.name} size="sm" gradient={true} />
+                            <TypeBadge key={t.type.name} type={t.type.name} size="sm" variant="gradient" />
                           )) || null}
                         </div>
                       </div>

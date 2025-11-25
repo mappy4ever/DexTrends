@@ -23,15 +23,13 @@ import {
   GiTreeBranch
 } from 'react-icons/gi';
 import { FaFire, FaLeaf, FaTint } from 'react-icons/fa';
-import { 
-  GLASS_BLUR,
-  GLASS_OPACITY,
-  GLASS_BORDER,
-  GLASS_SHADOW,
-  GLASS_ROUNDED,
-  TYPE_GRADIENTS,
-  createGlassStyle
-} from '../ui/design-system/glass-constants';
+// Glass constants replaced with direct Tailwind classes
+const GLASS_BLUR = { sm: 'backdrop-blur-sm', md: 'backdrop-blur-md', lg: 'backdrop-blur-lg' };
+const GLASS_OPACITY = { subtle: 'bg-white/60', medium: 'bg-white/80', strong: 'bg-white/95' };
+const GLASS_BORDER = { light: 'border-white/20', medium: 'border-white/40' };
+const GLASS_SHADOW = { sm: 'shadow-sm', md: 'shadow-md', lg: 'shadow-lg' };
+const GLASS_ROUNDED = { sm: 'rounded-sm', md: 'rounded-md', lg: 'rounded-lg' };
+const TYPE_GRADIENTS = { fire: 'bg-gradient-to-r from-red-500 to-orange-500', water: 'bg-gradient-to-r from-blue-500 to-cyan-500', grass: 'bg-gradient-to-r from-green-500 to-emerald-500' };
 
 interface StarterShowcaseCompleteProps {
   region: string;
@@ -206,13 +204,7 @@ const StarterShowcaseComplete: React.FC<StarterShowcaseCompleteProps> = ({
         <div className="absolute inset-0 bg-gradient-to-br from-purple-500 via-pink-500 to-blue-500 animate-pulse" />
       </div>
 
-      <div className={createGlassStyle({ 
-        blur: 'xl', 
-        opacity: 'strong', 
-        gradient: true, 
-        rounded: 'xl',
-        shadow: 'xl'
-      })} style={{ padding: '1rem' }}>
+      <div className="backdrop-blur-xl bg-gradient-to-br from-white/90 via-purple-50/90 to-pink-50/90 dark:from-gray-800/90 dark:via-gray-700/90 dark:to-gray-800/90 border border-white/50 dark:border-gray-700/50 rounded-xl shadow-xl" style={{ padding: '1rem' }}>
         
         {/* Header */}
         <div className="text-center mb-8">
@@ -491,13 +483,7 @@ const EvolutionCard: React.FC<{
         whileHover={{ scale: 1.03 }}
         transition={{ type: "spring", stiffness: 300 }}
       >
-        <div className={createGlassStyle({ 
-          blur: 'xl', 
-          opacity: 'medium', 
-          gradient: true, 
-          rounded: 'xl',
-          shadow: 'lg'
-        })} style={{ height: '100%' }}>
+        <div className="backdrop-blur-xl bg-gradient-to-br from-white/80 via-purple-50/80 to-pink-50/80 dark:from-gray-800/80 dark:via-gray-700/80 dark:to-gray-800/80 border border-white/40 dark:border-gray-700/40 rounded-xl shadow-lg" style={{ height: '100%' }}>
           {/* Stage Badge */}
           <div className="absolute top-3 left-3 z-10">
             <div className={`px-2 py-1 rounded-full text-xs font-bold text-white ${
@@ -590,13 +576,7 @@ const StatsProgression: React.FC<{ chain: EvolutionChain }> = ({ chain }) => {
   const getPercentage = (value: number) => (value / maxStat) * 100;
 
   return (
-    <div className={createGlassStyle({ 
-      blur: 'md', 
-      opacity: 'subtle', 
-      gradient: false, 
-      rounded: 'xl',
-      shadow: 'md'
-    })} style={{ padding: '1.5rem' }}>
+    <div className="backdrop-blur-md bg-white/60 dark:bg-gray-800/60 border border-white/30 dark:border-gray-700/30 rounded-xl shadow-md" style={{ padding: '1.5rem' }}>
       <h4 className="text-lg font-bold text-gray-800 dark:text-white mb-4 text-center">
         Stats Progression Chart
       </h4>

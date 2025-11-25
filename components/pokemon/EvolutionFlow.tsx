@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '../../utils/cn';
-import { CircularCard, GlassContainer } from '../ui/design-system';
+import { GlassContainer } from '../ui/glass-components';
 import { TypeBadge } from '../ui/TypeBadge';
 import type { EvolutionChain, EvolutionLink, Pokemon, PokemonSpecies } from "../../types/pokemon";
 
@@ -130,32 +130,32 @@ const EvolutionFlow: React.FC<EvolutionFlowProps> = ({
         
         {/* Pokemon node */}
         <div className="relative">
-          <CircularCard
-            size="xl"
+          <GlassContainer
+            variant="medium"
+            rounded="full"
+            padding="sm"
             onClick={() => onPokemonClick?.(node.id)}
             className={cn(
-              "cursor-pointer transition-all duration-300",
+              "cursor-pointer transition-all duration-300 w-24 h-24 relative flex items-center justify-center",
               isCurrentPokemon && "ring-4 ring-purple-500 ring-offset-4"
             )}
           >
-            <div className="relative w-full h-full p-4">
-              <img
-                src={node.sprite}
-                alt={node.name}
-                className="w-full h-full object-contain"
-              />
-              {isCurrentPokemon && (
-                <motion.div
-                  className="absolute -top-2 -right-2 bg-purple-500 text-white text-xs px-2 py-1 rounded-full"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: "spring", delay: 0.5 }}
-                >
-                  Current
-                </motion.div>
-              )}
-            </div>
-          </CircularCard>
+            <img
+              src={node.sprite}
+              alt={node.name}
+              className="w-20 h-20 object-contain"
+            />
+            {isCurrentPokemon && (
+              <motion.div
+                className="absolute -top-2 -right-2 bg-purple-500 text-white text-xs px-2 py-1 rounded-full"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ type: "spring", delay: 0.5 }}
+              >
+                Current
+              </motion.div>
+            )}
+          </GlassContainer>
           <div className="mt-3 text-center">
             <h4 className="font-bold capitalize">{node.name.replace(/-/g, ' ')}</h4>
             <div className="text-sm text-gray-600 dark:text-gray-400">#{node.id.toString().padStart(3, '0')}</div>

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiDownload, FiX, FiFileText, FiFile, FiCode } from 'react-icons/fi';
-import { createGlassStyle } from './design-system/glass-constants';
-import { GradientButton } from './design-system';
+// Glass styles replaced with Tailwind classes - createGlassStyle removed
+import Button from './Button';
 import { ExportFormat } from '../../utils/exportData';
 import logger from '../../utils/logger';
 
@@ -72,15 +72,16 @@ const ExportButton: React.FC<ExportButtonProps> = ({
 
   return (
     <>
-      <GradientButton
+      <Button
         onClick={() => setShowModal(true)}
         disabled={disabled || !data || data.length === 0}
         variant="secondary"
+        gradient={true}
         className={`${className} flex items-center gap-2`}
       >
         <FiDownload className="w-4 h-4" />
         {buttonText}
-      </GradientButton>
+      </Button>
 
       <AnimatePresence>
         {showModal && (
@@ -104,14 +105,7 @@ const ExportButton: React.FC<ExportButtonProps> = ({
               onClick={() => setShowModal(false)}
             >
               <div
-                className={`${createGlassStyle({
-                  blur: '3xl',
-                  opacity: 'strong',
-                  gradient: true,
-                  border: 'strong',
-                  shadow: 'glow',
-                  rounded: 'xl',
-                })} p-6 rounded-3xl max-w-md w-full`}
+                className="bg-gradient-to-br from-white/80 to-white/90 dark:from-gray-800/80 dark:to-gray-800/90 backdrop-blur-2xl border border-white/30 dark:border-gray-600/30 shadow-2xl rounded-3xl p-6 max-w-md w-full"
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Header */}
@@ -121,14 +115,7 @@ const ExportButton: React.FC<ExportButtonProps> = ({
                   </h2>
                   <button
                     onClick={() => setShowModal(false)}
-                    className={`${createGlassStyle({
-                      blur: 'sm',
-                      opacity: 'subtle',
-                      gradient: false,
-                      border: 'subtle',
-                      shadow: 'sm',
-                      rounded: 'full',
-                    })} p-2 rounded-full hover:scale-110 transition-transform`}
+                    className="bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 shadow-sm p-2 rounded-full hover:scale-110 transition-transform"
                   >
                     <FiX className="w-5 h-5 text-gray-600 dark:text-gray-400" />
                   </button>
@@ -151,14 +138,7 @@ const ExportButton: React.FC<ExportButtonProps> = ({
                         className={`w-full p-4 rounded-xl flex items-center gap-4 transition-all ${
                           selectedFormat === format
                             ? `bg-gradient-to-r ${info.color} text-white shadow-lg`
-                            : createGlassStyle({
-                                blur: 'md',
-                                opacity: 'subtle',
-                                gradient: false,
-                                border: 'subtle',
-                                shadow: 'sm',
-                                rounded: 'xl',
-                              })
+                            : 'bg-white/30 dark:bg-gray-800/30 backdrop-blur-md border border-white/20 dark:border-gray-700/20 shadow-sm rounded-xl'
                         }`}
                       >
                         <div className={selectedFormat === format ? 'text-white' : 'text-gray-600 dark:text-gray-400'}>
@@ -192,21 +172,15 @@ const ExportButton: React.FC<ExportButtonProps> = ({
                 <div className="flex gap-3">
                   <button
                     onClick={() => setShowModal(false)}
-                    className={`${createGlassStyle({
-                      blur: 'md',
-                      opacity: 'medium',
-                      gradient: false,
-                      border: 'medium',
-                      shadow: 'md',
-                      rounded: 'full',
-                    })} flex-1 px-4 py-3 rounded-full font-medium hover:scale-105 transition-transform`}
+                    className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-md border border-white/30 dark:border-gray-600/30 shadow-md rounded-full flex-1 px-4 py-3 font-medium hover:scale-105 transition-transform"
                   >
                     Cancel
                   </button>
-                  <GradientButton
+                  <Button
                     onClick={handleExport}
                     disabled={isExporting}
                     variant="primary"
+                    gradient={true}
                     className="flex-1"
                   >
                     {isExporting ? (
@@ -220,7 +194,7 @@ const ExportButton: React.FC<ExportButtonProps> = ({
                         Export
                       </>
                     )}
-                  </GradientButton>
+                  </Button>
                 </div>
               </div>
             </motion.div>

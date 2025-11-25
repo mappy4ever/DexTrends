@@ -20,7 +20,7 @@ import {
   FiMonitor,
   FiTablet
 } from 'react-icons/fi';
-import { GlassContainer } from '../components/ui/design-system/GlassContainer';
+import { GlassContainer } from '../components/ui/glass-components';
 import { LineChart, BarChart, DoughnutChart } from '../components/ui/LazyChart';
 import ExportButton from '../components/ui/ExportButton';
 import PageErrorBoundary from '../components/ui/PageErrorBoundary';

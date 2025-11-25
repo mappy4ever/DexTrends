@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { getEliteFourImage, getChampionImage } from '../../utils/scrapedImageMapping';
-import { TypeGradientBadge } from '../ui/design-system/TypeGradientBadge';
+import { TypeBadge } from '../ui/TypeBadge';
 import { typeEffectiveness } from '../../utils/pokemonutils';
 import { BsTrophy, BsShieldFill, BsStar } from 'react-icons/bs';
 
@@ -749,7 +749,7 @@ const EliteFourGrid: React.FC<EliteFourGridProps> = ({ region, eliteFour, champi
                       <div className="flex flex-col items-center gap-2">
                         {/* Type Badge on top */}
                         <div>
-                          <TypeGradientBadge type={member.type} size="xs" gradient={true} />
+                          <TypeBadge type={member.type} size="xs" variant="gradient" />
                         </div>
                         {/* Elite Rank Badge below */}
                         <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg px-3 py-2 shadow-lg border border-gray-700">
@@ -889,7 +889,7 @@ const EliteFourGrid: React.FC<EliteFourGridProps> = ({ region, eliteFour, champi
                         </p>
                         <div className="flex justify-center flex-wrap gap-1">
                           {weaknesses.slice(0, 3).map((type: string) => (
-                            <TypeGradientBadge key={type} type={type} size="xs" gradient={true} />
+                            <TypeBadge key={type} type={type} size="xs" variant="gradient" />
                           ))}
                         </div>
                       </div>

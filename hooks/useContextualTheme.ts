@@ -37,10 +37,18 @@ export const useContextualTheme = (
     switch (context) {
       case 'pokemon': {
         const type = options?.pokemonType?.toLowerCase() || 'normal';
-        const typeColor = typeColors[type] || typeColors.normal;
+        const typeHex = typeColors[type] || typeColors.normal;
         
-        // Extract color name from Tailwind class (e.g., "bg-red-500" -> "red")
-        const colorName = typeColor.bg.match(/bg-(\w+)-/)?.[1] || 'gray';
+        // Map type to color name for Tailwind classes
+        const colorName = type === 'fire' ? 'red' : 
+                         type === 'water' ? 'blue' :
+                         type === 'grass' ? 'green' :
+                         type === 'electric' ? 'yellow' :
+                         type === 'psychic' ? 'pink' :
+                         type === 'ice' ? 'cyan' :
+                         type === 'dragon' ? 'purple' :
+                         type === 'dark' ? 'gray' :
+                         type === 'fairy' ? 'pink' : 'gray';
         
         return {
           tabs: {
@@ -55,7 +63,7 @@ export const useContextualTheme = (
             tertiaryClass: `text-${colorName}-600 hover:text-${colorName}-700`
           },
           background: `bg-gradient-to-br from-${colorName}-50 to-white`,
-          accent: typeColor.bg
+          accent: typeHex
         };
       }
       

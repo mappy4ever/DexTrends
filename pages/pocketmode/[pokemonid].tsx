@@ -5,15 +5,15 @@ import Link from "next/link";
 import Head from "next/head";
 import { FadeIn, SlideUp, Scale } from "../../components/ui/animations";
 import { TypeBadge } from "../../components/ui/TypeBadge";
+import { TypeGradientBadge } from "../../components/ui/design-system/TypeGradientBadge";
 import { fetchPocketData } from "../../utils/pocketData";
 import PocketCardList from "../../components/PocketCardList";
 import Modal from "../../components/ui/Modal";
 import logger from "../../utils/logger";
 import { getEvolutionChain } from "../../utils/evolutionUtils";
 import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
-import { GlassContainer } from "../../components/ui/design-system/GlassContainer";
-import { GradientButton } from "../../components/ui/design-system/GradientButton";
-import { TypeGradientBadge } from "../../components/ui/design-system/TypeGradientBadge";
+import { GlassContainer } from '../../components/ui/glass-components';
+import Button from '../../components/ui/Button';
 import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { PokemonRadarChart } from "../../components/ui/LazyComponents";
@@ -498,7 +498,7 @@ export default function PocketPokemonDetail() {
         transition={{ duration: 0.5 }}
         className="mb-6"
       >
-        <GradientButton
+        <Button gradient={true}
           onClick={() => router.push('/pocketmode')}
           variant="secondary"
           size="sm"
@@ -508,7 +508,7 @@ export default function PocketPokemonDetail() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
           Back to Pocket Mode
-        </GradientButton>
+        </Button>
       </motion.div>
 
         {/* Main Content Grid with Stagger Animation */}

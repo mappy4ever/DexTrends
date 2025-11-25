@@ -4,10 +4,10 @@ import { useTheme } from '../context/UnifiedAppContext';
 import { DynamicCollectionManager, DynamicPriceAlerts } from '../components/dynamic/DynamicComponents';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import PageErrorBoundary from '../components/ui/PageErrorBoundary';
-import { GlassContainer } from '../components/ui/design-system/GlassContainer';
-import { GradientButton } from '../components/ui/design-system/GradientButton';
-import { CircularCard } from '../components/ui/design-system/CircularCard';
-import { CircularButton, DefaultCard, CardHeader, CardTitle, CardContent } from '../components/ui/design-system';
+import { GlassContainer } from '../components/ui/glass-components';
+import Button from '../components/ui/Button';
+import { Container } from '../components/ui/Container';
+import { Card as DefaultCard, CardHeader, CardTitle, CardContent } from '../components/ui/Card';
 import { motion } from 'framer-motion';
 import type { NextPage } from 'next';
 
@@ -92,14 +92,16 @@ const CollectionsPage: NextPage = () => {
           <GlassContainer variant="medium" rounded="full" padding="none" className="inline-flex">
             <div className="flex space-x-1 p-1">
               {tabs.map(tab => (
-                <CircularButton
+                <Button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   variant={activeTab === tab.id ? 'primary' : 'ghost'}
-                  leftIcon={<span className="text-lg">{tab.icon}</span>}
+                  icon={<span className="text-lg">{tab.icon}</span>}
+                  iconPosition="left"
+                  rounded="full"
                 >
                   {tab.label}
-                </CircularButton>
+                </Button>
               ))}
             </div>
           </GlassContainer>

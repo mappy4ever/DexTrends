@@ -2,15 +2,14 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, useMotionValue, useTransform, useSpring, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { cn } from '@/utils/cn';
-import { 
-  GLASS_BLUR, 
-  GLASS_OPACITY, 
-  GLASS_BORDER,
-  GLASS_SHADOW,
-  GLASS_ROUNDED,
-  TYPE_GRADIENTS,
-  createGlassStyle 
-} from '@/components/ui/design-system/glass-constants';
+// Glass constants replaced with direct Tailwind classes
+const GLASS_BLUR = { sm: 'backdrop-blur-sm', md: 'backdrop-blur-md', lg: 'backdrop-blur-lg' };
+const GLASS_OPACITY = { subtle: 'bg-white/60', medium: 'bg-white/80', strong: 'bg-white/95' };
+const GLASS_BORDER = { light: 'border-white/20', medium: 'border-white/40' };
+const GLASS_SHADOW = { sm: 'shadow-sm', md: 'shadow-md', lg: 'shadow-lg' };
+const GLASS_ROUNDED = { sm: 'rounded-sm', md: 'rounded-md', lg: 'rounded-lg' };
+const TYPE_GRADIENTS = { fire: 'bg-gradient-to-r from-red-500 to-orange-500', water: 'bg-gradient-to-r from-blue-500 to-cyan-500' };
+const createGlassStyle = () => "bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20";
 import logger from '@/utils/logger';
 
 // Mock card data for demonstrations
@@ -500,16 +499,7 @@ const GlassVariations: React.FC = () => {
       {variations.map((variant) => (
         <motion.div
           key={variant.name}
-          className={createGlassStyle({
-            blur: variant.blur,
-            opacity: variant.opacity,
-            gradient: true,
-            border: 'medium',
-            shadow: 'xl',
-            rounded: 'xl',
-            hover: 'lift',
-            transition: 'medium',
-          })}
+          className={"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >

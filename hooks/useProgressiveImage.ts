@@ -41,9 +41,9 @@ export function useProgressiveImage({
       return imageSrc.replace('/high.', '/low.');
     }
     
-    // For PokeAPI sprites, use thumbnails
+    // For PokeAPI sprites, return original (no thumbnails available)
     if (imageSrc.includes('raw.githubusercontent.com/PokeAPI')) {
-      return imageSrc.replace('/sprites/', '/sprites/thumbnails/');
+      return imageSrc;
     }
     
     // Default: create a 1x1 transparent pixel

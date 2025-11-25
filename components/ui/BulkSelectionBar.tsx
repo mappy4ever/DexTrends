@@ -1,8 +1,8 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiCheck, FiX, FiDownload, FiTrash2, FiCopy, FiEdit } from 'react-icons/fi';
-import { createGlassStyle } from './design-system/glass-constants';
-import { GradientButton } from './design-system';
+// Glass styles replaced with Tailwind classes - createGlassStyle removed
+import Button from './Button';
 
 interface BulkAction {
   id: string;
@@ -74,27 +74,13 @@ const BulkSelectionBar: React.FC<BulkSelectionBarProps> = ({
           `}
         >
           <div
-            className={`${createGlassStyle({
-              blur: '3xl',
-              opacity: 'strong',
-              gradient: true,
-              border: 'strong',
-              shadow: 'glow',
-              rounded: 'full',
-            })} px-6 py-4 rounded-full flex items-center gap-4`}
+            className="backdrop-blur-3xl bg-gradient-to-r from-white/90 via-white/80 to-white/90 dark:from-gray-900/90 dark:via-gray-800/80 dark:to-gray-900/90 border border-white/40 dark:border-gray-700/40 shadow-2xl shadow-purple-500/20 px-6 py-4 rounded-full flex items-center gap-4"
           >
             {/* Checkbox */}
             <div className="flex items-center gap-3">
               <button
                 onClick={isAllSelected ? onDeselectAll : onSelectAll}
-                className={`${createGlassStyle({
-                  blur: 'sm',
-                  opacity: 'subtle',
-                  gradient: false,
-                  border: 'subtle',
-                  shadow: 'sm',
-                  rounded: 'md',
-                })} w-6 h-6 rounded-md flex items-center justify-center transition-all hover:scale-110`}
+                className="backdrop-blur-sm bg-white/30 dark:bg-gray-800/30 border border-white/20 dark:border-gray-700/20 shadow-sm w-6 h-6 rounded-md flex items-center justify-center transition-all hover:scale-110"
               >
                 {isAllSelected && (
                   <FiCheck className="w-4 h-4 text-purple-600" />
@@ -147,14 +133,7 @@ const BulkSelectionBar: React.FC<BulkSelectionBarProps> = ({
                         ? `bg-gradient-to-r ${variantStyles.danger} text-white`
                         : action.variant === 'primary'
                         ? `bg-gradient-to-r ${variantStyles.primary} text-white`
-                        : createGlassStyle({
-                            blur: 'md',
-                            opacity: 'medium',
-                            gradient: false,
-                            border: 'medium',
-                            shadow: 'sm',
-                            rounded: 'full',
-                          })
+                        : "backdrop-blur-md bg-white/60 dark:bg-gray-800/60 border border-white/30 dark:border-gray-700/30 shadow-sm rounded-full"
                       }
                     `}
                   >
@@ -168,14 +147,7 @@ const BulkSelectionBar: React.FC<BulkSelectionBarProps> = ({
             {/* Close Button */}
             <button
               onClick={onDeselectAll}
-              className={`${createGlassStyle({
-                blur: 'sm',
-                opacity: 'subtle',
-                gradient: false,
-                border: 'subtle',
-                shadow: 'sm',
-                rounded: 'full',
-              })} p-2 rounded-full hover:scale-110 transition-transform ml-2`}
+              className="backdrop-blur-sm bg-white/30 dark:bg-gray-800/30 border border-white/20 dark:border-gray-700/20 shadow-sm p-2 rounded-full hover:scale-110 transition-transform ml-2"
             >
               <FiX className="w-4 h-4 text-gray-600 dark:text-gray-400" />
             </button>

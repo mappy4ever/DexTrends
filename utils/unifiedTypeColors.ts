@@ -1,27 +1,113 @@
 // Unified Pokemon Type Color System
 // This provides a consistent color system that adapts to Pokemon types across all components
+// Consolidated from pokemonTypeColors.ts (removed in Stage 9)
 
-import { 
-  POKEMON_TYPE_COLORS as POKEMON_TYPE_COLORS_IMPORT,
-  POKEMON_TCG_POCKET_COLORS,
-  POKEMON_TYPE_TEXT_COLORS,
-  POKEMON_TYPE_BORDER_COLOR,
-  getTypeStyle,
-  getTypeStyleString,
-  typeColors,
-  tcgTypeColors
-} from './pokemonTypeColors';
+import { CSSProperties } from 'react';
 
-// Re-export all constants and functions for unified access
-export { 
-  POKEMON_TCG_POCKET_COLORS,
-  POKEMON_TYPE_TEXT_COLORS,
-  POKEMON_TYPE_BORDER_COLOR,
-  getTypeStyle,
-  getTypeStyleString,
-  typeColors,
-  tcgTypeColors
+// Type color mapping
+type TypeColorMap = Record<string, string>;
+
+// Pokemon type colors - moved from pokemonTypeColors.ts
+export const POKEMON_TYPE_COLORS_IMPORT: TypeColorMap = {
+  normal: '#A8A77A',
+  fire: '#EE8130',
+  water: '#6390F0',
+  electric: '#F7D02C',
+  grass: '#7AC74C',
+  ice: '#96D9D6',
+  fighting: '#C22E28',
+  poison: '#A33EA1',
+  ground: '#E2BF65',
+  flying: '#A98FF3',
+  psychic: '#F95587',
+  bug: '#A6B91A',
+  rock: '#B6A136',
+  ghost: '#735797',
+  dragon: '#6F35FC',
+  dark: '#4A4A4A',
+  steel: '#B7B7CE',
+  fairy: '#D685AD'
 };
+
+// Pokemon TCG Pocket specific colors
+export const POKEMON_TCG_POCKET_COLORS: TypeColorMap = {
+  normal: '#A8A77A',
+  fire: '#EE8130',
+  water: '#6390F0',
+  electric: '#F7D02C',
+  lightning: '#F7D02C',
+  grass: '#7AC74C',
+  ice: '#96D9D6',
+  fighting: '#C22E28',
+  poison: '#A33EA1',
+  ground: '#E2BF65',
+  flying: '#A98FF3',
+  psychic: '#F95587',
+  bug: '#A6B91A',
+  rock: '#B6A136',
+  ghost: '#735797',
+  dragon: '#6F35FC',
+  dark: '#4A4A4A',
+  darkness: '#4A4A4A',
+  steel: '#B7B7CE',
+  metal: '#B7B7CE',
+  fairy: '#D685AD',
+  colorless: '#A8A77A',
+  trainer: '#10B981',
+  supporter: '#F97316',
+  item: '#3B82F6'
+};
+
+// Text colors for each type
+export const POKEMON_TYPE_TEXT_COLORS: TypeColorMap = {
+  normal: '#FFFFFF',
+  fire: '#FFFFFF',
+  water: '#FFFFFF',
+  electric: '#FFFFFF',
+  grass: '#FFFFFF',
+  ice: '#FFFFFF',
+  fighting: '#FFFFFF',
+  poison: '#FFFFFF',
+  ground: '#FFFFFF',
+  flying: '#FFFFFF',
+  psychic: '#FFFFFF',
+  bug: '#FFFFFF',
+  rock: '#FFFFFF',
+  ghost: '#FFFFFF',
+  dragon: '#FFFFFF',
+  dark: '#FFFFFF',
+  steel: '#FFFFFF',
+  fairy: '#FFFFFF'
+};
+
+// Border color for all type badges
+export const POKEMON_TYPE_BORDER_COLOR = '#6B7280';
+
+// Helper function to get type style
+export const getTypeStyle = (type: string | null | undefined, isPocketCard: boolean = false): CSSProperties => {
+  const lowerType = type ? type.toLowerCase() : '';
+  const colorSet = isPocketCard ? POKEMON_TCG_POCKET_COLORS : POKEMON_TYPE_COLORS_IMPORT;
+  const backgroundColor = colorSet[lowerType] || colorSet.normal || POKEMON_TYPE_COLORS_IMPORT.normal;
+  const textColor = POKEMON_TYPE_TEXT_COLORS[lowerType] || POKEMON_TYPE_TEXT_COLORS.normal;
+  
+  return {
+    backgroundColor,
+    color: textColor,
+    borderColor: POKEMON_TYPE_BORDER_COLOR
+  };
+};
+
+// Helper function to get type style as string
+export const getTypeStyleString = (type: string | null | undefined, isPocketCard: boolean = false): string => {
+  const style = getTypeStyle(type, isPocketCard);
+  return `background-color: ${style.backgroundColor}; color: ${style.color}; border-color: ${style.borderColor};`;
+};
+
+// Aliases for common imports
+export const typeColors = POKEMON_TYPE_COLORS_IMPORT;
+export const tcgTypeColors = POKEMON_TCG_POCKET_COLORS;
+
+// Already exported above after consolidation
 
 // Export POKEMON_TYPE_COLORS as the primary export
 export const POKEMON_TYPE_COLORS = POKEMON_TYPE_COLORS_IMPORT;

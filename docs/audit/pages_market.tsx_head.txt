@@ -1,0 +1,220 @@
+     1	import React, { useState } from 'react';
+     2	import Head from 'next/head';
+     3	import { useTheme } from '../context/UnifiedAppContext';
+     4	// DynamicMarketAnalytics was removed in Stage 7 - need to use individual analytics components instead
+     5	// import { DynamicMarketAnalytics } from '../components/dynamic/DynamicComponents';
+     6	import FullBleedWrapper from '../components/ui/FullBleedWrapper';
+     7	import PageErrorBoundary from '../components/ui/PageErrorBoundary';
+     8	import BackToTop from '../components/ui/BaseBackToTop';
+     9	import { FadeIn, SlideUp } from '../components/ui/animations/animations';
+    10	import { GlassContainer } from '../components/ui/glass-components';
+    11	import Button from '../components/ui/Button';
+    12	import { motion } from 'framer-motion';
+    13	import type { NextPage } from 'next';
+    14	
+    15	interface Tab {
+    16	  id: string;
+    17	  label: string;
+    18	  icon: string;
+    19	  description: string;
+    20	}
+    21	
+    22	const MarketPage: NextPage = () => {
+    23	  const { theme } = useTheme();
+    24	  const [activeTab, setActiveTab] = useState('overview');
+    25	
+    26	  const tabs: Tab[] = [
+    27	    { 
+    28	      id: 'overview', 
+    29	      label: 'Market Overview', 
+    30	      icon: '📊',
+    31	      description: 'Market trends and top movers'
+    32	    },
+    33	    { 
+    34	      id: 'trending', 
+    35	      label: 'Trending Cards', 
+    36	      icon: '📈',
+    37	      description: 'Most popular cards right now'
+    38	    },
+    39	    { 
+    40	      id: 'movers', 
+    41	      label: 'Price Movers', 
+    42	      icon: '💹',
+    43	      description: 'Biggest price changes'
+    44	    },
+    45	    { 
+    46	      id: 'insights', 
+    47	      label: 'Market Insights', 
+    48	      icon: '🔍',
+    49	      description: 'Analysis and predictions'
+    50	    }
+    51	  ];
+    52	
+    53	  return (
+    54	    <PageErrorBoundary pageName="Market Analytics">
+    55	      <Head>
+    56	        <title>Market Analytics | Pokemon TCG Market Insights | DexTrends</title>
+    57	        <meta name="description" content="Track Pokemon TCG market trends, price movements, and trading insights. Discover trending cards and market analytics." />
+    58	        <meta name="keywords" content="pokemon tcg market, card prices, market trends, trading analytics, price tracker" />
+    59	      </Head>
+    60	      
+    61	      <FullBleedWrapper gradient="pokedex">
+    62	        <div className="container mx-auto px-4 py-8 max-w-7xl">
+    63	          
+    64	          <FadeIn>
+    65	            {/* Hero Section with Enhanced Gradient */}
+    66	            <div className="text-center mb-12">
+    67	              <motion.div 
+    68	                initial={{ scale: 0.8, opacity: 0 }}
+    69	                animate={{ scale: 1, opacity: 1 }}
+    70	                transition={{ duration: 0.5 }}
+    71	                className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-green-400 to-blue-600 rounded-full mb-6 shadow-2xl"
+    72	              >
+    73	                <span className="text-4xl">📊</span>
+    74	              </motion.div>
+    75	              
+    76	              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
+    77	                Market Analytics
+    78	              </h1>
+    79	              
+    80	              <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-8">
+    81	                Comprehensive Pokemon TCG market insights, trending cards, and price movement analysis to help you make informed trading decisions.
+    82	              </p>
+    83	              
+    84	              {/* Quick Stats with Glass Morphism */}
+    85	              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+    86	                <motion.div
+    87	                  initial={{ opacity: 0, y: 20 }}
+    88	                  animate={{ opacity: 1, y: 0 }}
+    89	                  transition={{ delay: 0.1 }}
+    90	                >
+    91	                  <GlassContainer variant="medium" hover className="text-center">
+    92	                    <div className="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">2.4K+</div>
+    93	                    <div className="text-sm text-gray-600 dark:text-gray-400">Cards Tracked</div>
+    94	                  </GlassContainer>
+    95	                </motion.div>
+    96	                <motion.div
+    97	                  initial={{ opacity: 0, y: 20 }}
+    98	                  animate={{ opacity: 1, y: 0 }}
+    99	                  transition={{ delay: 0.2 }}
+   100	                >
+   101	                  <GlassContainer variant="medium" hover className="text-center">
+   102	                    <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">$45K</div>
+   103	                    <div className="text-sm text-gray-600 dark:text-gray-400">Daily Volume</div>
+   104	                  </GlassContainer>
+   105	                </motion.div>
+   106	                <motion.div
+   107	                  initial={{ opacity: 0, y: 20 }}
+   108	                  animate={{ opacity: 1, y: 0 }}
+   109	                  transition={{ delay: 0.3 }}
+   110	                >
+   111	                  <GlassContainer variant="medium" hover className="text-center">
+   112	                    <div className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">+12.5%</div>
+   113	                    <div className="text-sm text-gray-600 dark:text-gray-400">Weekly Growth</div>
+   114	                  </GlassContainer>
+   115	                </motion.div>
+   116	                <motion.div
+   117	                  initial={{ opacity: 0, y: 20 }}
+   118	                  animate={{ opacity: 1, y: 0 }}
+   119	                  transition={{ delay: 0.4 }}
+   120	                >
+   121	                  <GlassContainer variant="medium" hover className="text-center">
+   122	                    <div className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">156</div>
+   123	                    <div className="text-sm text-gray-600 dark:text-gray-400">Active Traders</div>
+   124	                  </GlassContainer>
+   125	                </motion.div>
+   126	              </div>
+   127	            </div>
+   128	          </FadeIn>
+   129	
+   130	          <SlideUp>
+   131	            {/* Tab Navigation with Glass Morphism */}
+   132	            <div className="flex justify-center mb-8">
+   133	              <GlassContainer variant="medium" rounded="2xl" padding="sm" className="max-w-4xl w-full">
+   134	                <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+   135	                  {tabs.map(tab => (
+   136	                    <Button
+   137	                      key={tab.id}
+   138	                      onClick={() => setActiveTab(tab.id)}
+   139	                      variant={activeTab === tab.id ? 'primary' : 'secondary'}
+   140	                      size="lg"
+   141	                      rounded="lg"
+   142	                      gradient={activeTab === tab.id}
+   143	                      className={`relative p-4 text-left w-full ${
+   144	                        activeTab === tab.id
+   145	                          ? 'text-white shadow-lg scale-105'
+   146	                          : 'bg-transparent text-gray-600 dark:text-gray-400'
+   147	                      }`}
+   148	                    >
+   149	                      <div className="flex items-center gap-3 mb-2">
+   150	                        <span className={`text-xl ${activeTab === tab.id ? 'scale-110' : ''} transition-transform`}>
+   151	                          {tab.icon}
+   152	                        </span>
+   153	                        <span className="font-semibold text-sm">{tab.label}</span>
+   154	                      </div>
+   155	                      <p className={`text-xs opacity-80 ${activeTab === tab.id ? 'text-blue-100' : ''}`}>
+   156	                        {tab.description}
+   157	                      </p>
+   158	                      
+   159	                      {activeTab === tab.id && (
+   160	                        <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-white rounded-full" />
+   161	                      )}
+   162	                    </Button>
+   163	                  ))}
+   164	                </div>
+   165	              </GlassContainer>
+   166	            </div>
+   167	          </SlideUp>
+   168	
+   169	          {/* Tab Content */}
+   170	          <div className="max-w-7xl mx-auto">
+   171	            {activeTab === 'overview' && (
+   172	              <FadeIn>
+   173	                <div className="space-y-8">
+   174	                  {/* Main Market Analytics Component */}
+   175	                  <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-3xl shadow-xl p-8">
+   176	                    <div className="flex items-center gap-3 mb-6">
+   177	                      <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center">
+   178	                        <span className="text-white font-bold">📊</span>
+   179	                      </div>
+   180	                      <div>
+   181	                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Market Overview</h2>
+   182	                        <p className="text-gray-600 dark:text-gray-400">Real-time market analysis and trends</p>
+   183	                      </div>
+   184	                    </div>
+   185	                    
+   186	                    {/* MarketAnalytics component was removed in Phase 8 - needs replacement */}
+   187	                    <div className="text-center py-8 text-gray-500">
+   188	                      Analytics dashboard coming soon...
+   189	                    </div>
+   190	                  </div>
+   191	                </div>
+   192	              </FadeIn>
+   193	            )}
+   194	
+   195	            {activeTab === 'trending' && (
+   196	              <FadeIn>
+   197	                <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-3xl shadow-xl p-8">
+   198	                  <div className="flex items-center gap-3 mb-6">
+   199	                    <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center">
+   200	                      <span className="text-white font-bold">📈</span>
+   201	                    </div>
+   202	                    <div>
+   203	                      <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Trending Cards</h2>
+   204	                      <p className="text-gray-600 dark:text-gray-400">Most popular and searched cards</p>
+   205	                    </div>
+   206	                  </div>
+   207	                  
+   208	                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+   209	                    {[1, 2, 3, 4, 5, 6].map((index) => (
+   210	                      <div key={index} className="bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 rounded-xl p-6 border border-orange-200/50 dark:border-orange-700/50">
+   211	                        <div className="flex items-center justify-between mb-4">
+   212	                          <div className="text-sm font-semibold text-orange-700 dark:text-orange-300">#{index}</div>
+   213	                          <div className="text-xs bg-orange-200 dark:bg-orange-800 text-orange-800 dark:text-orange-200 px-2 py-1 rounded-full">
+   214	                            +{(Math.random() * 50 + 10).toFixed(1)}%
+   215	                          </div>
+   216	                        </div>
+   217	                        <h3 className="font-bold text-gray-900 dark:text-white mb-2">Card Name {index}</h3>
+   218	                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">Base Set • Rare</p>
+   219	                        <div className="text-lg font-bold text-green-600 dark:text-green-400">
+   220	                          ${(Math.random() * 200 + 50).toFixed(2)}

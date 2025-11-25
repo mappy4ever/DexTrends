@@ -5,3 +5,6 @@
 // - Select: Select.tsx  
 // - Checkbox: Checkbox.tsx
 // - Radio: Radio.tsx
+
+// Export empty object to make this a module
+export {};

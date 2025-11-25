@@ -8,8 +8,9 @@ import { FaCrown } from "react-icons/fa";
 import { FadeIn, SlideUp } from "../../components/ui/animations/animations";
 import { TypeBadge } from "../../components/ui/TypeBadge";
 import { TypeFilter } from "../../components/ui/forms/TypeFilter";
-import { createGlassStyle, GradientButton, CircularButton } from '../../components/ui/design-system';
-import { UnifiedSearchBar, EmptyStateGlass, LoadingStateGlass } from '../../components/ui/glass-components';
+import Button from '../../components/ui/Button';
+import UnifiedSearchBar from '../../components/ui/UnifiedSearchBar';
+import EmptyStateGlass from '../../components/ui/EmptyStateGlass';
 import { motion } from "framer-motion";
 import PocketCardList from "../../components/PocketCardList";
 import { fetchPocketData } from "../../utils/pocketData";
@@ -19,7 +20,7 @@ import { PocketCard } from "../../types/api/pocket-cards";
 import { NextPage } from "next";
 
 // Dynamic imports for components that might cause SSR issues
-import { CardGridSkeleton } from "../../components/ui/SkeletonLoader";
+import { CardGridSkeleton } from "../../components/ui/Skeleton";
 const PokemonEmptyState = dynamic(() => import("../../components/ui/loading/PokemonEmptyState"), { ssr: false });
 
 // Extended PocketCard interface with additional properties from the actual data
@@ -245,14 +246,7 @@ const PocketMode: NextPage = () => {
       <FadeIn>
         {/* Enhanced Header Section with Glass Morphism */}
         <motion.div 
-          className={`${createGlassStyle({
-            blur: 'xl',
-            opacity: 'medium',
-            gradient: true,
-            border: 'medium',
-            shadow: 'xl',
-            rounded: 'xl'
-          })} mb-6 p-6 rounded-3xl`}
+          className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} mb-6 p-6 rounded-3xl`}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -268,14 +262,7 @@ const PocketMode: NextPage = () => {
               Pokémon TCG Pocket Cards
             </h1>
             <div className="flex justify-center">
-              <div className={`${createGlassStyle({
-                blur: 'md',
-                opacity: 'subtle',
-                gradient: true,
-                border: 'subtle',
-                shadow: 'md',
-                rounded: 'full'
-              })} px-4 py-2`}>
+              <div className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} px-4 py-2`}>
                 <span className="text-sm font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">{pokemon.length} Total Cards</span>
               </div>
             </div>
@@ -288,50 +275,22 @@ const PocketMode: NextPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
           >
-            <div className={`${createGlassStyle({
-              blur: 'lg',
-              opacity: 'medium',
-              gradient: true,
-              border: 'medium',
-              shadow: 'lg',
-              rounded: 'xl'
-            })} p-3 inline-flex gap-3`}>
+            <div className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} p-3 inline-flex gap-3`}>
               <button
                 onClick={() => router.push('/pocketmode')}
-                className={`${createGlassStyle({
-                  blur: 'md',
-                  opacity: 'strong',
-                  gradient: true,
-                  border: 'medium',
-                  shadow: 'md',
-                  rounded: 'full'
-                })} px-4 py-2 font-semibold text-sm bg-gradient-to-r from-purple-600 to-pink-600 text-white transition-all hover:scale-105`}
+                className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} px-4 py-2 font-semibold text-sm bg-gradient-to-r from-purple-600 to-pink-600 text-white transition-all hover:scale-105`}
               >
                 Card List
               </button>
               <button
                 onClick={() => router.push('/pocketmode/deckbuilder')}
-                className={`${createGlassStyle({
-                  blur: 'md',
-                  opacity: 'subtle',
-                  gradient: false,
-                  border: 'subtle',
-                  shadow: 'sm',
-                  rounded: 'full'
-                })} px-4 py-2 font-semibold text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-all hover:scale-105`}
+                className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} px-4 py-2 font-semibold text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-all hover:scale-105`}
               >
                 Deck Builder
               </button>
               <button
                 onClick={() => router.push('/pocketmode/decks')}
-                className={`${createGlassStyle({
-                  blur: 'md',
-                  opacity: 'subtle',
-                  gradient: false,
-                  border: 'subtle',
-                  shadow: 'sm',
-                  rounded: 'full'
-                })} px-4 py-2 font-semibold text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-all hover:scale-105`}
+                className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} px-4 py-2 font-semibold text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-all hover:scale-105`}
               >
                 Pre-Built Decks
               </button>
@@ -346,14 +305,7 @@ const PocketMode: NextPage = () => {
             transition={{ duration: 0.6, delay: 0.8 }}
           >
             {/* Enhanced Rarity Filter */}
-            <div className={`${createGlassStyle({
-              blur: 'md',
-              opacity: 'medium',
-              gradient: true,
-              border: 'medium',
-              shadow: 'md',
-              rounded: 'xl'
-            })} flex items-center gap-3 p-3`}>
+            <div className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} flex items-center gap-3 p-3`}>
               <span className="text-sm font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent ml-1">Rarity</span>
               <div className="flex flex-wrap gap-1 flex-1">
                 <button
@@ -466,14 +418,7 @@ const PocketMode: NextPage = () => {
             </div>
             
             {/* Enhanced Type Filter */}
-            <div className={`${createGlassStyle({
-              blur: 'md',
-              opacity: 'medium',
-              gradient: true,
-              border: 'medium',
-              shadow: 'md',
-              rounded: 'xl'
-            })} flex items-center gap-3 p-3`}>
+            <div className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} flex items-center gap-3 p-3`}>
               <span className="text-sm font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent ml-1">Type</span>
               <div className="flex flex-wrap gap-1 flex-1">
                 <button
@@ -531,11 +476,6 @@ const PocketMode: NextPage = () => {
           {isViewLoading ? (
             <CardGridSkeleton 
               count={20}
-              columns={5}
-              showPrice={false}
-              showSet={false}
-              showTypes={true}
-              showHP={true}
               className="animate-fadeIn"
             />
           ) : viewError ? (
@@ -567,14 +507,7 @@ const PocketMode: NextPage = () => {
               </div>
               {/* Enhanced Glass Container for Cards */}
               <motion.div 
-                className={`${createGlassStyle({
-                  blur: 'xl',
-                  opacity: 'medium',
-                  gradient: true,
-                  border: 'medium',
-                  shadow: 'xl',
-                  rounded: 'xl'
-                })} p-6 md:p-8 rounded-3xl`}
+                className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} p-6 md:p-8 rounded-3xl`}
                 initial={{ opacity: 0, scale: 0.98 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
@@ -609,20 +542,20 @@ const PocketMode: NextPage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
         >
-          <GradientButton
+          <Button gradient={true}
             onClick={() => router.push('/pocketmode/expansions')}
             variant="primary"
             className="hover:scale-105 transition-transform"
           >
             Explore Expansions
-          </GradientButton>
-          <GradientButton
+          </Button>
+          <Button gradient={true}
             onClick={() => router.push('/pocketmode/packs')}
             variant="secondary"
             className="hover:scale-105 transition-transform"
           >
             Pack Opening
-          </GradientButton>
+          </Button>
         </motion.div>
         
         {/* Pocket Mode Rules Guide Link */}

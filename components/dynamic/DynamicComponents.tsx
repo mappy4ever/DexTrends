@@ -34,20 +34,16 @@ export const DynamicPriceHistoryChart = dynamic(
 
 
 // Advanced modals and forms
-export const DynamicAdvancedSearchModal = dynamic(
-  () => import('../AdvancedSearchModal'),
-  {
-    loading: () => <DynamicLoader>Loading search...</DynamicLoader>
-  }
-);
+// AdvancedSearchModal removed in Stage 10 - use SearchModal or UnifiedSearchBar instead
+// export const DynamicAdvancedSearchModal = dynamic(
+//   () => import('../AdvancedSearchModal'),
+//   {
+//     loading: () => <DynamicLoader>Loading search...</DynamicLoader>
+//   }
+// );
 
-export const DynamicMarketAnalytics = dynamic(
-  () => import('../MarketAnalytics'),
-  {
-    loading: () => <DynamicLoader>Loading analytics...</DynamicLoader>,
-    ssr: false
-  }
-);
+// MarketAnalytics removed in Stage 7 - use individual analytics components
+// export const DynamicMarketAnalytics = dynamic...
 
 
 // Collection manager (heavy component)
@@ -59,21 +55,17 @@ export const DynamicCollectionManager = dynamic(
 );
 
 // Advanced features (currently unused but available for future)
-export const DynamicAdvancedDeckBuilder = dynamic(
-  () => import('../ui/AdvancedDeckBuilder'),
-  {
-    loading: () => <DynamicLoader>Loading deck builder...</DynamicLoader>,
-    ssr: false
-  }
-);
+// AdvancedDeckBuilder removed in Stage 10 - use DeckBuilder instead
+// export const DynamicAdvancedDeckBuilder = dynamic(
+//   () => import('../ui/AdvancedDeckBuilder'),
+//   {
+//     loading: () => <DynamicLoader>Loading deck builder...</DynamicLoader>,
+//     ssr: false
+//   }
+// );
 
-export const DynamicTradingMarketplace = dynamic(
-  () => import('../ui/TradingMarketplace'),
-  {
-    loading: () => <DynamicLoader>Loading marketplace...</DynamicLoader>,
-    ssr: false
-  }
-);
+// TradingMarketplace removed in Stage 7 - functionality merged to collection components
+// export const DynamicTradingMarketplace = dynamic...
 
 export const DynamicTournamentSystem = dynamic(
   () => import('../ui/TournamentSystem'),
@@ -84,12 +76,9 @@ export const DynamicTournamentSystem = dynamic(
 );
 
 // Price alerts component
-export const DynamicPriceAlerts = dynamic(
-  () => import('../PriceAlerts'),
-  {
-    loading: () => <DynamicLoader>Loading alerts...</DynamicLoader>
-  }
-);
+// PriceAlerts removed in Stage 7 - use price tracking in collection components
+// PriceAlerts removed - use DynamicCollectionManager instead
+export const DynamicPriceAlerts = DynamicCollectionManager;
 
 // Icons and heavy UI components
 export const DynamicFontAwesome = dynamic(
@@ -133,17 +122,19 @@ export const DynamicParticles = dynamic(
   }
 );
 
-// Framer Motion components (can be loaded on demand)
+// Framer Motion components removed in Stage 8 - use LazyMotion directly
+// MotionDiv and MotionSpan were just re-exports of motion.div and motion.span
+// Use import { motion } from '../ui/LazyMotion' instead
 export const DynamicMotion = {
   div: dynamic(
-    () => import('./MotionDiv'),
+    () => import('../ui/LazyMotion').then(mod => ({ default: mod.motion.div })),
     {
       loading: () => <div />,
       ssr: false
     }
   ) as ComponentType<any>,
   span: dynamic(
-    () => import('./MotionSpan'),
+    () => import('../ui/LazyMotion').then(mod => ({ default: mod.motion.span })),
     {
       loading: () => <span />,
       ssr: false
@@ -193,13 +184,13 @@ export const preloadComponent = (componentImport: () => Promise<unknown>) => {
 // Preload critical components on user interaction
 export const preloadCriticalComponents = () => {
   // Preload search modal when user starts typing
-  preloadComponent(() => import('../AdvancedSearchModal'));
+  // preloadComponent(() => import('../AdvancedSearchModal')); // Removed in Stage 10
   
   // Preload charts when user visits pages with data
   preloadComponent(() => import('../ui/charts/PriceHistoryChart'));
   
   // Preload analytics when user interacts with data
-  preloadComponent(() => import('../MarketAnalytics'));
+  // MarketAnalytics removed in Stage 7
 };
 
 // Component factory for creating dynamically imported components
@@ -221,13 +212,13 @@ export const createDynamicComponent = (
 
 export default {
   DynamicPriceHistoryChart,
-  DynamicAdvancedSearchModal,
-  DynamicMarketAnalytics,
+  // DynamicAdvancedSearchModal, // Removed in Stage 10
+  // DynamicMarketAnalytics removed in Stage 7
   DynamicCollectionManager,
-  DynamicAdvancedDeckBuilder,
-  DynamicTradingMarketplace,
+  // DynamicAdvancedDeckBuilder, // Removed in Stage 10
+  // DynamicTradingMarketplace removed in Stage 7
   DynamicTournamentSystem,
-  DynamicPriceAlerts,
+  // DynamicPriceAlerts removed in Stage 7
   DynamicFontAwesome,
   DynamicDatePicker,
   DynamicReactSelect,

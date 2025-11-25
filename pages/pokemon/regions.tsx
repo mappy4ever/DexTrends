@@ -6,8 +6,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from "../../context/UnifiedAppContext";
-import { createGlassStyle } from '../../components/ui/design-system/glass-constants';
-import { GradientButton, CircularButton } from '../../components/ui/design-system';
+// Glass styles replaced with Tailwind classes
+import Button from '../../components/ui/Button';
 import { EmptyStateGlass, LoadingStateGlass, UnifiedSearchBar } from '../../components/ui/glass-components';
 import { FiMapPin, FiChevronLeft, FiGlobe, FiMap } from 'react-icons/fi';
 import { useSmoothParallax } from "../../hooks/useSmoothParallax";
@@ -173,14 +173,7 @@ const RegionTile: React.FC<RegionTileProps> = ({ region }) => {
     >
       <Link href={`/pokemon/regions/${region.id}`}>
         <div
-          className={`relative h-40 md:h-48 overflow-hidden cursor-pointer transform transition-all duration-700 hover:z-10 ${createGlassStyle({
-            blur: 'md',
-            opacity: 'subtle',
-            gradient: false,
-            border: 'subtle',
-            shadow: 'lg',
-            rounded: 'md',
-          })}`}
+          className={`relative h-40 md:h-48 overflow-hidden cursor-pointer transform transition-all duration-700 hover:z-10 ${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"}`}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
           onClick={handleClick}
@@ -214,14 +207,7 @@ const RegionTile: React.FC<RegionTileProps> = ({ region }) => {
         {/* Enhanced Region Content with Glass Overlay */}
         <div className="relative z-10 h-full flex items-center justify-center">
           <motion.div
-            className={`${createGlassStyle({
-              blur: 'xl',
-              opacity: 'medium',
-              gradient: true,
-              border: 'medium',
-              shadow: 'glow',
-              rounded: 'xl',
-            })} px-8 py-4 rounded-2xl`}
+            className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} px-8 py-4 rounded-2xl`}
             initial={{ opacity: 0 }}
             animate={{ opacity: isHovered ? 1 : 0.8 }}
             transition={{ duration: 0.3 }}
@@ -345,14 +331,7 @@ const RegionsPage: NextPage = () => {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className={`${createGlassStyle({
-              blur: '3xl',
-              opacity: 'strong',
-              gradient: true,
-              border: 'strong',
-              shadow: 'glow',
-              rounded: 'xl',
-            })} p-8 md:p-12 rounded-3xl`}
+            className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} p-8 md:p-12 rounded-3xl`}
           >
             <h1 className="text-6xl md:text-8xl font-black text-white uppercase tracking-wider text-center mb-4"
                 style={{ textShadow: '3px 3px 6px rgba(0, 0, 0, 0.8)' }}>
@@ -367,7 +346,7 @@ const RegionsPage: NextPage = () => {
             </p>
             
             <div className="flex justify-center gap-4 mt-6">
-              <GradientButton
+              <Button gradient={true}
                 onClick={() => {
                   if (typeof document !== 'undefined') {
                     document.getElementById('regions-grid')?.scrollIntoView({ behavior: 'smooth' });
@@ -378,7 +357,7 @@ const RegionsPage: NextPage = () => {
               >
                 <FiMap className="w-5 h-5 mr-2" />
                 Explore All Regions
-              </GradientButton>
+              </Button>
             </div>
           </motion.div>
         </div>
@@ -387,7 +366,7 @@ const RegionsPage: NextPage = () => {
       <div className="relative" style={{ marginTop: '0', zIndex: 1 }}>
         {/* Back Button */}
         <div className="container mx-auto px-4 py-6">
-          <CircularButton
+          <Button
             onClick={() => router.push('/pokemon')}
             variant="secondary"
             size="md"
@@ -395,7 +374,7 @@ const RegionsPage: NextPage = () => {
           >
             <FiChevronLeft className="w-5 h-5" />
             Back to Pokemon Hub
-          </CircularButton>
+          </Button>
         </div>
 
         {/* Regions Grid - Full Width */}
@@ -412,14 +391,7 @@ const RegionsPage: NextPage = () => {
                   initial={{ opacity: 0, x: -100 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className={`relative w-full h-12 flex items-center px-8 ${createGlassStyle({
-                    blur: 'xl',
-                    opacity: 'strong',
-                    gradient: false,
-                    border: 'medium',
-                    shadow: 'md',
-                    rounded: 'md',
-                  })}`}
+                  className={`relative w-full h-12 flex items-center px-8 ${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"}`}
                 >
                   <div className="flex items-center gap-3">
                     <span className="text-2xl">{region.icon}</span>
@@ -449,14 +421,7 @@ const RegionsPage: NextPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className={`${createGlassStyle({
-              blur: '3xl',
-              opacity: 'strong',
-              gradient: true,
-              border: 'strong',
-              shadow: 'glow',
-              rounded: 'xl',
-            })} p-8 rounded-3xl`}
+            className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} p-8 rounded-3xl`}
           >
             <h2 className="text-3xl font-bold text-center mb-8">
               <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
@@ -466,14 +431,7 @@ const RegionsPage: NextPage = () => {
             <div className="grid md:grid-cols-3 gap-6">
               <motion.div
                 whileHover={{ scale: 1.05 }}
-                className={`${createGlassStyle({
-                  blur: 'md',
-                  opacity: 'medium',
-                  gradient: false,
-                  border: 'subtle',
-                  shadow: 'md',
-                  rounded: 'xl',
-                })} p-6 rounded-2xl text-center`}
+                className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} p-6 rounded-2xl text-center`}
               >
                 <div className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent mb-2">
                   9
@@ -483,14 +441,7 @@ const RegionsPage: NextPage = () => {
               
               <motion.div
                 whileHover={{ scale: 1.05 }}
-                className={`${createGlassStyle({
-                  blur: 'md',
-                  opacity: 'medium',
-                  gradient: false,
-                  border: 'subtle',
-                  shadow: 'md',
-                  rounded: 'xl',
-                })} p-6 rounded-2xl text-center`}
+                className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} p-6 rounded-2xl text-center`}
               >
                 <div className="text-4xl font-bold bg-gradient-to-r from-pink-600 to-pink-400 bg-clip-text text-transparent mb-2">
                   1000+
@@ -500,14 +451,7 @@ const RegionsPage: NextPage = () => {
               
               <motion.div
                 whileHover={{ scale: 1.05 }}
-                className={`${createGlassStyle({
-                  blur: 'md',
-                  opacity: 'medium',
-                  gradient: false,
-                  border: 'subtle',
-                  shadow: 'md',
-                  rounded: 'xl',
-                })} p-6 rounded-2xl text-center`}
+                className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} p-6 rounded-2xl text-center`}
               >
                 <div className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent mb-2">
                   27

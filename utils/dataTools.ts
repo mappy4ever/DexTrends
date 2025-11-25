@@ -6,7 +6,7 @@
 import { supabase } from '../lib/supabase';
 import logger from './logger';
 import analyticsEngine from './analyticsEngine';
-import databaseOptimizer from './databaseOptimizer';
+// databaseOptimizer removed in Phase 8 consolidation
 import EnhancedPriceCollector from './enhancedPriceCollector';
 
 // Types
@@ -1173,11 +1173,11 @@ class DataTools {
    */
   async getSystemMetrics(): Promise<SystemMetrics> {
     try {
-      const [cardCount, pokemonCount, performanceMetrics] = await Promise.all([
+      const [cardCount, pokemonCount] = await Promise.all([
         this.getTableCount('card_cache'),
-        this.getTableCount('pokemon_cache'),
-        databaseOptimizer.getPerformanceMetrics()
+        this.getTableCount('pokemon_cache')
       ]);
+      const performanceMetrics = null; // databaseOptimizer removed
 
       return {
         cardCount: cardCount || 0,

@@ -39,45 +39,34 @@ const FormSkeleton = () => (
   </div>
 );
 
-// Dashboard Components
-export const MarketInsightsDashboard = dynamic(
-  () => import('./MarketInsightsDashboard'),
-  {
-    loading: () => <DashboardSkeleton />,
-    ssr: false
-  }
+// Dashboard Components - Removed in Stage 5, replaced with simple div placeholders
+export const MarketInsightsDashboard = () => (
+  <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
+    <h3 className="text-lg font-semibold mb-2">Market Insights</h3>
+    <p className="text-gray-600 dark:text-gray-400">Market data display coming soon</p>
+  </div>
 );
 
-export const DataAnalyticsDashboard = dynamic(
-  () => import('./DataAnalyticsDashboard'),
-  {
-    loading: () => <DashboardSkeleton />,
-    ssr: false
-  }
+export const DataAnalyticsDashboard = () => (
+  <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
+    <h3 className="text-lg font-semibold mb-2">Data Analytics</h3>
+    <p className="text-gray-600 dark:text-gray-400">Analytics display coming soon</p>
+  </div>
 );
 
-export const PerformanceDashboard = dynamic(
-  () => import('./PerformanceDashboard'),
-  {
-    loading: () => <DashboardSkeleton />,
-    ssr: false
-  }
+export const PerformanceDashboard = () => (
+  <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
+    <h3 className="text-lg font-semibold mb-2">Performance Metrics</h3>
+    <p className="text-gray-600 dark:text-gray-400">Performance metrics coming soon</p>
+  </div>
 );
 
 // PortfolioManager removed - unused component
 
 // PriceIntelligenceSystem removed - unused component
 // Use individual price components instead
-  }
-);
 
-export const CollectionTracker = dynamic(
-  () => import('./CollectionTracker'),
-  {
-    loading: () => <DashboardSkeleton />,
-    ssr: false
-  }
-);
+// CollectionTracker removed in Stage 7 - use CollectionManager instead
 
 // Modal and Overlay Components
 // AdvancedModalSystem removed - using unified Modal
@@ -97,22 +86,17 @@ export const EnhancedCardModal = dynamic(
   }
 );
 
-export const CardSharingSystem = dynamic(
-  () => import('./CardSharingSystem'),
-  {
-    loading: () => <ModalSkeleton />,
-    ssr: false
-  }
-);
+// CardSharingSystem removed in Stage 7 - use share functionality in card components
 
 // Complex Form Components
-export const AdvancedDeckBuilder = dynamic(
-  () => import('./AdvancedDeckBuilder'),
-  {
-    loading: () => <FormSkeleton />,
-    ssr: false
-  }
-);
+// AdvancedDeckBuilder removed in Stage 10 - use DeckBuilder or PocketDeckBuilder instead
+// export const AdvancedDeckBuilder = dynamic(
+//   () => import('./AdvancedDeckBuilder'),
+//   {
+//     loading: () => <FormSkeleton />,
+//     ssr: false
+//   }
+// );
 
 export const PocketDeckBuilder = dynamic(
   () => import('./PocketDeckBuilder'),
@@ -122,13 +106,14 @@ export const PocketDeckBuilder = dynamic(
   }
 );
 
-export const AdvancedSearchSystem = dynamic(
-  () => import('./AdvancedSearchSystem'),
-  {
-    loading: () => <FormSkeleton />,
-    ssr: false
-  }
-);
+// AdvancedSearchSystem removed in Stage 10 - use UnifiedSearchBar or EnhancedSearch instead
+// export const AdvancedSearchSystem = dynamic(
+//   () => import('./AdvancedSearchSystem'),
+//   {
+//     loading: () => <FormSkeleton />,
+//     ssr: false
+//   }
+// );
 
 // Animation and Interactive Components
 export const PackOpening = dynamic(
@@ -173,12 +158,19 @@ export const TypeEffectivenessWheel = dynamic(
   }
 );
 
-export const PokemonStatRadar = dynamic(
-  () => import('../pokemon/PokemonStatRadar'),
-  {
-    loading: () => <Skeleton variant="circular" width={250} height={250} animation="wave" />,
-    ssr: false
-  }
+// PokemonStatRadar removed - replaced with simple stat display
+export const PokemonStatRadar = ({ stats }: { stats: any }) => (
+  <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
+    <h3 className="text-lg font-semibold mb-2">Pokemon Stats</h3>
+    <div className="space-y-2">
+      {stats && Object.entries(stats).map(([key, value]: [string, any]) => (
+        <div key={key} className="flex justify-between">
+          <span className="capitalize">{key}:</span>
+          <span className="font-bold">{value}</span>
+        </div>
+      ))}
+    </div>
+  </div>
 );
 
 // Chart Components
@@ -218,13 +210,7 @@ export const PokemonEvolutionFlow = dynamic(
 // Battle Simulator Components - Removed (component doesn't exist)
 
 // Large Feature Components  
-export const EnhancedPokemonSelector = dynamic(
-  () => import('./EnhancedPokemonSelector'),
-  {
-    loading: () => <FormSkeleton />,
-    ssr: false
-  }
-);
+// EnhancedPokemonSelector removed in Stage 6 consolidation - use PokemonFormSelector instead
 
 // Third-party heavy components wrapper
 export const LazyVirtualizedGrid = dynamic(

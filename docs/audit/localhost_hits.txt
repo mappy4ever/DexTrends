@@ -1,0 +1,103 @@
+pages/tcgexpansions.tsx:73:    const res = await fetch('http://localhost:3001/api/tcg-sets?page=1&pageSize=25');
+README.md:21:Visit [http://localhost:3001](http://localhost:3001) to see the app.
+tests/mobile-breakpoint-test.spec.ts:7:    await page.goto('http://localhost:3001/pokedex');
+tests/mobile-breakpoint-test.spec.ts:25:    await page.goto('http://localhost:3001/pokedex');
+tests/mobile-breakpoint-test.spec.ts:38:    await page.goto('http://localhost:3001/pokedex');
+tests/mobile-breakpoint-test.spec.ts:48:    await page.goto('http://localhost:3001/pokedex/25'); // Pikachu
+tests/mobile-breakpoint-test.spec.ts:71:    await page.goto('http://localhost:3001/pokedex');
+tests/mobile-breakpoint-test.spec.ts:81:    await page.goto('http://localhost:3001/');
+docs/development/SUPABASE_SETUP.md:68:Visit: `http://localhost:3001/api/test-supabase`
+tests/tcg-set-navigation-test.spec.ts:8:    await page.goto('http://localhost:3001/tcgexpansions');
+tests/mobile-implementation.spec.ts:21:      await page.goto('http://localhost:3001');
+tests/mobile-implementation.spec.ts:73:    await page.goto('http://localhost:3001');
+tests/mobile-implementation.spec.ts:90:    await page.goto('http://localhost:3001');
+tests/mobile-implementation.spec.ts:101:    await page.goto('http://localhost:3001');
+tests/mobile-implementation.spec.ts:115:    await page.goto('http://localhost:3001');
+tests/mobile-implementation.spec.ts:135:    await page.goto('http://localhost:3001/pokemon/regions/kanto');
+tests/tcg-set-direct-nav.spec.ts:18:  await page.goto('http://localhost:3001/tcgexpansions/sv10');
+tests/unified-migration-verification.spec.ts:7:    await page.goto('http://localhost:3001/');
+tests/unified-migration-verification.spec.ts:22:    await page.goto('http://localhost:3001/pokedex');
+tests/unified-migration-verification.spec.ts:39:    await page.goto('http://localhost:3001/type-effectiveness');
+tests/unified-migration-verification.spec.ts:51:    await page.goto('http://localhost:3001/pokemon/items');
+tests/unified-migration-verification.spec.ts:65:    await page.goto('http://localhost:3001/pokemon/abilities');
+tests/unified-migration-verification.spec.ts:75:    await page.goto('http://localhost:3001/pokemon/moves');
+tests/unified-migration-verification.spec.ts:89:    await page.goto('http://localhost:3001/tcgexpansions');
+tests/unified-migration-verification.spec.ts:103:    await page.goto('http://localhost:3001/pokedex');
+tests/unified-migration-verification.spec.ts:112:    await page.goto('http://localhost:3001/pokemon/items');
+tests/unified-migration-verification.spec.ts:124:    await page.goto('http://localhost:3001/pokedex');
+tests/unified-migration-verification.spec.ts:135:    await page.goto('http://localhost:3001/pokedex');
+tests/unified-migration-verification.spec.ts:143:    await page.goto('http://localhost:3001/pokemon/items');
+tests/tcg-mobile-test.spec.ts:9:    await page.goto('http://localhost:3001/tcgexpansions');
+tests/tcg-mobile-test.spec.ts:29:    await page.goto('http://localhost:3001/tcgexpansions');
+tests/showdown-integration.spec.ts:6:    await page.goto('http://localhost:3001');
+tests/pokedex-error-test.spec.ts:16:  await page.goto('http://localhost:3001/pokedex');
+tests/tcg-set-performance.spec.ts:9:    await page.goto('http://localhost:3001/tcgexpansions/sv8');
+tests/tcg-set-performance.spec.ts:64:    await page.goto('http://localhost:3001/tcgexpansions/sv8');
+tests/tcg-simple.spec.ts:15:  await page.goto('http://localhost:3001/tcgexpansions');
+tests/navigation-fix.spec.ts:5:    await page.goto('http://localhost:3001');
+tests/navigation-fix.spec.ts:10:    await page.goto('http://localhost:3001/pokedex');
+tests/navigation-fix.spec.ts:31:    expect(newUrl).not.toBe('http://localhost:3001/pokedex');
+tests/navigation-fix.spec.ts:38:    await page.goto('http://localhost:3001/pokedex');
+tests/navigation-fix.spec.ts:59:    await page.goto('http://localhost:3001/tcgexpansions');
+tests/navigation-fix.spec.ts:82:    await page.goto('http://localhost:3001');
+tests/navigation-fix.spec.ts:89:    expect(page.url()).toBe('http://localhost:3001/pokedex');
+tests/navigation-fix.spec.ts:98:    await page.goto('http://localhost:3001/pokedex');
+tests/navigation-fix.spec.ts:124:    await page.goto('http://localhost:3001/favorites');
+tests/navigation-fix.spec.ts:138:      expect(page.url()).toBe('http://localhost:3001/favorites');
+tests/mobile-pokedex.spec.ts:9:    await page.goto('http://localhost:3001/pokedex');
+tests/mobile-pokedex.spec.ts:62:      await page.goto('http://localhost:3001/pokedex');
+tests/mobile-pokedex.spec.ts:90:    await page.goto('http://localhost:3001/pokedex');
+tests/feature-pages.spec.ts:7:    await page.goto('http://localhost:3001/pokemon/items');
+tests/feature-pages.spec.ts:50:    await page.goto('http://localhost:3001/pokemon/abilities');
+tests/feature-pages.spec.ts:90:    await page.goto('http://localhost:3001/pokemon/moves');
+tests/feature-pages.spec.ts:136:    await page.goto('http://localhost:3001/type-effectiveness');
+tests/feature-pages.spec.ts:177:    await page.goto('http://localhost:3001/team-builder');
+tests/core-pages.spec.ts:4:  const baseURL = 'http://localhost:3001';
+tests/core-pages-simple.spec.ts:4:  const baseURL = 'http://localhost:3001';
+tests/mobile-pokedex-protection.spec.ts:9:    await page.goto('http://localhost:3001/pokedex');
+tests/mobile-pokedex-protection.spec.ts:243:      await page.goto('http://localhost:3001/pokedex');
+tests/mobile-pokedex-protection.spec.ts:278:        await page.goto('http://localhost:3001/pokedex');
+tests/mobile-quick-test.spec.ts:13:    await page.goto('http://localhost:3001/pokedex/25');
+tests/mobile-quick-test.spec.ts:24:    await page.goto('http://localhost:3001/tcgexpansions/base1');
+tests/mobile-quick-test.spec.ts:35:    await page.goto('http://localhost:3001/pokemon/moves');
+tests/mobile-debug.spec.ts:9:    await page.goto('http://localhost:3001/pokedex');
+tests/qa-route-check.spec.ts:47:        await page.goto(`http://localhost:3001${route.path}`, { 
+tests/tcg-debug.spec.ts:5:  await page.goto('http://localhost:3001/tcgexpansions');
+tests/qa-comprehensive-check.spec.ts:32:    await page.goto('http://localhost:3001/', { waitUntil: 'networkidle' });
+tests/qa-comprehensive-check.spec.ts:70:    await page.goto('http://localhost:3001/pokedex', { waitUntil: 'networkidle' });
+tests/qa-comprehensive-check.spec.ts:114:    await page.goto('http://localhost:3001/tcgexpansions', { waitUntil: 'networkidle' });
+tests/qa-comprehensive-check.spec.ts:152:    await page.goto('http://localhost:3001/pocketmode', { waitUntil: 'networkidle' });
+tests/qa-comprehensive-check.spec.ts:177:    await page.goto('http://localhost:3001/battle-simulator', { waitUntil: 'networkidle' });
+tests/qa-comprehensive-check.spec.ts:204:    await page.goto('http://localhost:3001/type-effectiveness', { waitUntil: 'networkidle' });
+tests/qa-comprehensive-check.spec.ts:225:    await page.goto('http://localhost:3001/pokemon/starters', { waitUntil: 'networkidle' });
+tests/qa-comprehensive-check.spec.ts:245:    await page.goto('http://localhost:3001/team-builder', { waitUntil: 'networkidle' });
+tests/qa-comprehensive-check.spec.ts:264:    await page.goto('http://localhost:3001/non-existent-route', { waitUntil: 'networkidle' });
+tests/qa-comprehensive-check.spec.ts:289:    await page.goto('http://localhost:3001/', { waitUntil: 'networkidle' });
+tests/qa-comprehensive-check.spec.ts:314:    await page.goto('http://localhost:3001/', { waitUntil: 'networkidle' });
+docs/_archive/PROJECT_MOBILE_STATUS.md:306:# Navigate to http://localhost:3001 and resize to 320-460px
+docs/guides/DEVELOPER_GUIDE.md:120:http://localhost:3001/pokedex           # Main Pokedex
+docs/guides/DEVELOPER_GUIDE.md:121:http://localhost:3001/pokedex/25        # Pokemon detail
+docs/guides/DEVELOPER_GUIDE.md:122:http://localhost:3001/battle-simulator  # Battle simulator
+docs/guides/DEVELOPER_GUIDE.md:123:http://localhost:3001/pocketmode        # Pocket TCG
+docs/archive/old-project-resources/IMMEDIATE_FIXES_REQUIRED.md:155:# Visit: http://localhost:3001/pocketmode
+docs/archive/old-project-resources/IMMEDIATE_FIXES_REQUIRED.md:156:# Visit: http://localhost:3001/pokedex/83 (Farfetch'd)
+docs/archive/old-project-resources/IMMEDIATE_FIXES_REQUIRED.md:157:# Visit: http://localhost:3001/battle-simulator
+docs/archive/old-project-resources/SUPABASE_SETUP.md:68:Visit: `http://localhost:3001/api/test-supabase`
+docs/archive/old-project-resources/DEVELOPER_GUIDE.md:120:http://localhost:3001/pokedex           # Main Pokedex
+docs/archive/old-project-resources/DEVELOPER_GUIDE.md:121:http://localhost:3001/pokedex/25        # Pokemon detail
+docs/archive/old-project-resources/DEVELOPER_GUIDE.md:122:http://localhost:3001/battle-simulator  # Battle simulator
+docs/archive/old-project-resources/DEVELOPER_GUIDE.md:123:http://localhost:3001/pocketmode        # Pocket TCG
+docs/archive/old-project-resources/FEATURE_RESTORATION_PROGRESS.md:403:http://localhost:3001/pokedex/83        # Farfetch'd
+docs/archive/old-project-resources/FEATURE_RESTORATION_PROGRESS.md:404:http://localhost:3001/pokedex/122       # Mr. Mime  
+docs/archive/old-project-resources/FEATURE_RESTORATION_PROGRESS.md:405:http://localhost:3001/pokedex/32        # Nidoran♀
+docs/archive/old-project-resources/FEATURE_RESTORATION_PROGRESS.md:406:http://localhost:3001/pokedex/29        # Nidoran♂
+docs/archive/old-project-resources/FEATURE_RESTORATION_PROGRESS.md:407:http://localhost:3001/pokedex/386       # Deoxys (forms)
+docs/archive/development-history/UI_IMPROVEMENT_PROGRESS.md:361:- http://localhost:3001/ (Homepage)
+docs/archive/development-history/UI_IMPROVEMENT_PROGRESS.md:362:- http://localhost:3001/pokedex (Pokedex grid)
+docs/archive/development-history/UI_IMPROVEMENT_PROGRESS.md:363:- http://localhost:3001/pokedex/25 (Pokemon detail)
+docs/archive/development-history/UI_IMPROVEMENT_PROGRESS.md:364:- http://localhost:3001/tcgsets (TCG sets)
+docs/archive/development-history/UI_IMPROVEMENT_PROGRESS.md:365:- http://localhost:3001/type-effectiveness (Type chart)
+docs/archive/typescript-migration/SESSION_29_CONTINUATION_NOTES.md:241:# http://localhost:3001/pokedex/83  # Farfetch'd
+docs/archive/typescript-migration/SESSION_29_CONTINUATION_NOTES.md:242:# http://localhost:3001/battle-simulator
+docs/archive/typescript-migration/SESSION_29_CONTINUATION_NOTES.md:243:# http://localhost:3001/pocketmode
+config/api.ts:21:  TEST_URL: process.env.TEST_URL || 'http://localhost:3001',

@@ -4,7 +4,7 @@
 export * from './cards';
 
 // Navigation Components  
-export * from './navigation';
+// navigation removed - directory doesn't exist
 
 // Modal Components
 export * from './modals';
@@ -18,8 +18,8 @@ export { default as TypeFilter } from './forms/TypeFilter';
 // Progress Indicators
 export * from './progress';
 
-// Design System Components
-export * from './design-system';
+// Design System Components - replaced with direct imports
+export * from './glass-components';
 
 // Layout Components
 // ListContainer removed - unused component
@@ -27,10 +27,12 @@ export { default as CollectionDashboard } from './layout/CollectionDashboard';
 
 // Loading Components
 export * from './loading';
-export { CardGridSkeleton as SkeletonLoader } from './Skeleton';
+// Alias for backward compatibility
+export { SkeletonGrid as SkeletonLoader } from './Skeleton';
+export { SkeletonGrid as CardGridSkeleton } from './Skeleton';
 
 // Animation Components
-// Export all except HoverCard to avoid conflict with design-system
+// Export all animation components
 export { 
   FadeIn, 
   SlideUp, 
@@ -52,15 +54,15 @@ export {
   useAnimation
 } from './animations';
 export { default as AnimationSystem, HoverCard as AnimatedHoverCard } from './animations/AnimationSystem';
-export { default as EnhancedAnimationSystem } from './EnhancedAnimationSystem';
-export { useEnhancedAnimation } from './EnhancedAnimationSystem.hooks';
+// EnhancedAnimationSystem removed in Stage 8 - use AnimationSystem instead
+// useEnhancedAnimation removed in Stage 8 - use useAnimation from animations/AnimationSystem.hooks
 
 // Mobile components merged into unified responsive components
 export { PullToRefresh } from './gestures/PullToRefresh';
 
 // Chart Components
 export { default as PriceHistoryChart } from './charts/PriceHistoryChart';
-export { default as chartcontainer } from './charts/chartcontainer';
+// chartcontainer removed - component doesn't exist
 
 // Common Components (remaining in root)
 export { TypeBadge, default as TypeBadgeDefault } from './TypeBadge';
@@ -76,7 +78,7 @@ export { FullBleedWrapper, PageBackground } from './FullBleedWrapper';
 export { default as Button } from './Button';
 // UIPanel removed - unused component
 export { default as PokeballLoader } from './PokeballLoader';
-export { default as SkeletonLoader } from './SkeletonLoader';
+// SkeletonLoader removed - use CardGridSkeleton from './Skeleton' instead
 export { default as StyledBackButton } from './StyledBackButton';
 export { default as VirtualizedCardGrid } from './VirtualizedCardGrid';
 export { default as PageErrorBoundary } from './PageErrorBoundary';
@@ -96,9 +98,9 @@ export { default as PackOpening } from './PackOpening';
 export { default as PocketDeckBuilder } from './PocketDeckBuilder';
 // RegionalEvolutionHandler removed - unused component
 // PokemonEasterEggs removed - unused component
-export { default as PokemonSoundEffects } from './PokemonSoundEffects';
+// PokemonSoundEffects removed in Stage 6 - unused component
 
 // Enhancement Components
 export { default as OptimizationEnhancer } from './OptimizationEnhancer';
 export { default as UserExperienceEnhancer } from './UserExperienceEnhancer';
-export { default as ComparisonFAB } from './ComparisonFAB';
+// ComparisonFAB removed - component doesn't exist

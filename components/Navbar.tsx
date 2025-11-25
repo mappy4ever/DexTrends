@@ -8,7 +8,7 @@ import { GiPokerHand, GiCardPickup, GiCrossedSwords } from "react-icons/gi";
 import { FiTrendingUp, FiShoppingBag, FiBarChart2 } from "react-icons/fi";
 import GlobalSearchModal from "./GlobalSearchModal";
 import logger from "../utils/logger";
-import { DynamicAdvancedSearchModal } from "./dynamic/DynamicComponents";
+// import { DynamicAdvancedSearchModal } from "./dynamic/DynamicComponents"; // Removed in Stage 10
 import { useAppContext, useFavorites } from "../context/UnifiedAppContext";
 import ClientOnly from "./ClientOnly";
 import { NavbarLogo } from "../components/ui/DexTrendsLogo";
@@ -492,8 +492,8 @@ export default function Navbar() {
       <div className="h-16 md:h-20" />
       <GlobalSearchModal ref={searchModalRef} />
       
-      {/* Advanced Search Modal */}
-      <DynamicAdvancedSearchModal
+      {/* Advanced Search Modal - Removed in Stage 10, use GlobalSearchModal */}
+      {/* <DynamicAdvancedSearchModal
         isOpen={showAdvancedSearch}
         onClose={() => setShowAdvancedSearch(false)}
         onSearchResults={(_results) => {
@@ -501,7 +501,7 @@ export default function Navbar() {
           // Navigate to a search results page or handle results
           router.push('/cards');
         }}
-      />
+      /> */}
     </>
   );
 }

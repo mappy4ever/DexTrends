@@ -1,0 +1,220 @@
+import React, { useState, useEffect } from 'react';
+import Modal from './ui/modals/Modal';
+import { CompactPriceIndicator } from './ui/PriceIndicator';
+import { getPokemonSDK } from '../utils/pokemonSDK';
+import type { TCGCard, CardSet } from '../types/api/cards';
+import type { CardSet as SdkCardSet } from 'pokemontcgsdk';
+
+interface SearchParams {
+  name: string;
+  set: string;
+  type: string;
+  rarity: string;
+  priceMin: string;
+  priceMax: string;
+  hp: string;
+  attackDamage: string;
+  artist: string;
+  year: string;
+  hasPrice: boolean;
+  sortBy: 'name' | 'price' | 'releaseDate' | 'rarity';
+  sortOrder: 'asc' | 'desc';
+}
+
+interface AdvancedSearchModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSearchResults: (results: TCGCard[]) => void;
+}
+
+export default function AdvancedSearchModal({ isOpen, onClose, onSearchResults }: AdvancedSearchModalProps) {
+  const [searchParams, setSearchParams] = useState<SearchParams>({
+    name: '',
+    set: '',
+    type: '',
+    rarity: '',
+    priceMin: '',
+    priceMax: '',
+    hp: '',
+    attackDamage: '',
+    artist: '',
+    year: '',
+    hasPrice: false,
+    sortBy: 'name',
+    sortOrder: 'asc'
+  });
+  
+  const [sets, setSets] = useState<CardSet[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [results, setResults] = useState<TCGCard[]>([]);
+
+  // Load sets for dropdown
+  useEffect(() => {
+    const loadSets = async () => {
+      try {
+        const pokemon = getPokemonSDK();
+        const setsData = await pokemon.set.all();
+        setSets(setsData.data.sort((a: SdkCardSet, b: SdkCardSet) => a.name.localeCompare(b.name)) as CardSet[]);
+      } catch (error) {
+        // Error loading sets
+      }
+    };
+    loadSets();
+  }, []);
+
+  const handleInputChange = <K extends keyof SearchParams>(field: K, value: SearchParams[K]) => {
+    setSearchParams(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const buildSearchQuery = (): string => {
+    const queryParts: string[] = [];
+    
+    if (searchParams.name) queryParts.push(`name:"${searchParams.name}*"`);
+    if (searchParams.set) queryParts.push(`set.id:${searchParams.set}`);
+    if (searchParams.type) queryParts.push(`types:${searchParams.type}`);
+    if (searchParams.rarity) queryParts.push(`rarity:"${searchParams.rarity}"`);
+    if (searchParams.hp) queryParts.push(`hp:[${searchParams.hp} TO *]`);
+    if (searchParams.artist) queryParts.push(`artist:"${searchParams.artist}*"`);
+    if (searchParams.year) {
+      const yearStart = `${searchParams.year}-01-01`;
+      const yearEnd = `${searchParams.year}-12-31`;
+      queryParts.push(`set.releaseDate:[${yearStart} TO ${yearEnd}]`);
+    }
+
+    return queryParts.join(' ');
+  };
+
+  const handleSearch = async () => {
+    setIsLoading(true);
+    try {
+      const pokemon = getPokemonSDK();
+      const query = buildSearchQuery();
+      let searchResults: TCGCard[] = [];
+
+      if (query) {
+        const response = await pokemon.card.where({
+          q: query,
+          pageSize: 100
+        });
+        searchResults = (response as any) || [];
+      } else {
+        // If no specific query, get recent cards
+        const response = await pokemon.card.all();
+        searchResults = ((response as any) || []).slice(0, 50);
+      }
+
+      // Apply price filtering
+      if (searchParams.priceMin || searchParams.priceMax || searchParams.hasPrice) {
+        searchResults = searchResults.filter(card => {
+          if (!card.tcgplayer?.prices) {
+            return !searchParams.hasPrice;
+          }
+
+          const prices = card.tcgplayer.prices;
+          const marketPrice = prices.holofoil?.market || 
+                             prices.normal?.market || 
+                             prices.reverseHolofoil?.market || 0;
+
+          if (searchParams.hasPrice && marketPrice === 0) return false;
+          if (searchParams.priceMin && marketPrice < parseFloat(searchParams.priceMin)) return false;
+          if (searchParams.priceMax && marketPrice > parseFloat(searchParams.priceMax)) return false;
+
+          return true;
+        });
+      }
+
+      // Apply sorting
+      searchResults.sort((a, b) => {
+        let aValue: string | number | Date;
+        let bValue: string | number | Date;
+        
+        switch (searchParams.sortBy) {
+          case 'price':
+            aValue = getCardPrice(a);
+            bValue = getCardPrice(b);
+            break;
+          case 'releaseDate':
+            aValue = new Date(a.set?.releaseDate || 0);
+            bValue = new Date(b.set?.releaseDate || 0);
+            break;
+          case 'rarity':
+            aValue = getRarityValue(a.rarity);
+            bValue = getRarityValue(b.rarity);
+            break;
+          default:
+            aValue = a.name || '';
+            bValue = b.name || '';
+        }
+
+        if (searchParams.sortOrder === 'desc') {
+          return aValue < bValue ? 1 : -1;
+        }
+        return aValue > bValue ? 1 : -1;
+      });
+
+      setResults(searchResults);
+      onSearchResults(searchResults);
+    } catch (error) {
+      // Search error
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const getCardPrice = (card: TCGCard): number => {
+    if (!card.tcgplayer?.prices) return 0;
+    const prices = card.tcgplayer.prices;
+    return prices.holofoil?.market || 
+           prices.normal?.market || 
+           prices.reverseHolofoil?.market || 0;
+  };
+
+  const getRarityValue = (rarity?: string): number => {
+    const rarityRanks: Record<string, number> = {
+      'Common': 1,
+      'Uncommon': 2,
+      'Rare': 3,
+      'Rare Holo': 4,
+      'Rare Ultra': 5,
+      'Rare Secret': 6,
+      'Rare Rainbow': 7
+    };
+    return rarityRanks[rarity || ''] || 0;
+  };
+
+  const formatPrice = (price: number): string => {
+    return price > 0 ? `$${price.toFixed(2)}` : 'N/A';
+  };
+
+  const pokemonTypes = [
+    'Colorless', 'Fire', 'Water', 'Lightning', 'Grass', 'Fighting',
+    'Psychic', 'Darkness', 'Metal', 'Fairy', 'Dragon'
+  ];
+
+  const rarities = [
+    'Common', 'Uncommon', 'Rare', 'Rare Holo', 'Rare Holo EX',
+    'Rare Holo GX', 'Rare Holo V', 'Rare Holo VMAX', 'Rare Ultra',
+    'Rare Secret', 'Rare Rainbow', 'Illustration Rare'
+  ];
+
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} size="4xl">
+      <div className="max-w-4xl mx-auto p-6">
+        <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
+          Advanced Card Search
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+          {/* Basic Filters */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Card Name
+            </label>
+            <input
+              type="text"
+              value={searchParams.name}
+              onChange={(e) => handleInputChange('name', e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"

@@ -10,7 +10,6 @@ import { TypeBadge } from "../../components/ui/TypeBadge";
 import Image from "next/image";
 import { getPrice as getCardPrice } from "../../utils/pokemonutils";
 import { DetailPageSkeleton } from '@/components/ui/SkeletonLoadingSystem';
-import UnifiedCard from "../../components/ui/cards/UnifiedCard";
 import StyledBackButton from "../../components/ui/StyledBackButton";
 // SimpleCardWrapper removed during consolidation - using div instead
 const SimpleCardWrapper = ({ children, className, rarity }: any) => {
@@ -206,7 +205,7 @@ export default function CardDetailPage() {
         if (cardData.set?.id) {
           promises.push(
             fetchJSON<{ set: CardSet; cached: boolean }>(
-              `/api/tcgexpansions/${cardData.set.id}`,
+              `/api/tcg-sets/${cardData.set.id}`,
               {
                 useCache: true,
                 cacheTime: 60 * 60 * 1000,
@@ -787,18 +786,16 @@ export default function CardDetailPage() {
               <h2 className="text-xl font-semibold mb-4">Related Cards</h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
                 {relatedCards.map(relatedCard => (
-                  <UnifiedCard
+                  <div
                     key={relatedCard.id}
-                    card={relatedCard}
-                    cardType="tcg"
-                    showSet={true}
-                    showTypes={false}
-                    showRarity={false}
-                    showPrice={false}
-                    imageWidth={160}
-                    imageHeight={224}
-                    className="transform transition-transform hover:scale-105"
-                  />
+                    className="bg-white dark:bg-gray-800 rounded-lg p-2 transform transition-transform hover:scale-105"
+                  >
+                    <img 
+                      src={relatedCard.images?.small || '/placeholder.png'} 
+                      alt={relatedCard.name}
+                      className="w-full h-auto"
+                    />
+                  </div>
                 ))}
               </div>
             </div>

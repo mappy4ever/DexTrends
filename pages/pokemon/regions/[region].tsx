@@ -7,7 +7,8 @@ import { motion } from "framer-motion";
 import { useTheme } from "../../../context/UnifiedAppContext";
 import { FullBleedWrapper } from "../../../components/ui";
 import RouteErrorBoundary from "../../../components/RouteErrorBoundary";
-import { StandardGlassContainer, SectionHeader, CircularButton } from '../../../components/ui/design-system';
+import Button from '../../../components/ui/Button';
+import { GlassContainer } from '../../../components/ui/GlassContainer';
 
 // Import Region Components
 import RegionHero from "../../../components/regions/RegionHero";
@@ -518,12 +519,13 @@ export default function RegionDetailPage() {
           <p className="text-gray-600 dark:text-gray-400 mb-8">
             The region "{regionId}" does not exist.
           </p>
-          <CircularButton
+          <Button
+            rounded="full"
             onClick={() => router.push('/pokemon/regions')}
             variant="primary"
           >
             Back to Regions
-          </CircularButton>
+          </Button>
         </div>
       </div>
     );
@@ -567,14 +569,16 @@ export default function RegionDetailPage() {
             <div className="container mx-auto px-4">
               <div className="flex items-center justify-between py-2">
                 {/* Back Button */}
-                <CircularButton
+                <Button
+                  rounded="full"
                   onClick={() => router.push('/pokemon/regions')}
                   variant="secondary"
                   size="sm"
-                  leftIcon={<BsChevronLeft className="w-4 h-4" />}
+                  icon={<BsChevronLeft className="w-4 h-4" />}
+                  iconPosition="left"
                 >
                   Back to Regions
-                </CircularButton>
+                </Button>
 
                 {/* Section Navigation */}
                 <nav className="hidden md:flex items-center space-x-1">
@@ -601,14 +605,15 @@ export default function RegionDetailPage() {
                 {/* Region Navigation */}
                 <div className="flex items-center gap-2">
                   {regionOrder[currentRegionIndex - 1] && (
-                    <CircularButton
+                    <Button
+                      rounded="full"
                       onClick={() => router.push(`/pokemon/regions/${regionOrder[currentRegionIndex - 1]}`)}
                       variant="secondary"
                       size="sm"
                       aria-label="Previous region"
                     >
                       <BsChevronLeft className="w-4 h-4" />
-                    </CircularButton>
+                    </Button>
                   )}
                   
                   <span className="hidden sm:inline text-sm text-gray-600 dark:text-gray-400 font-medium px-3">
@@ -616,14 +621,15 @@ export default function RegionDetailPage() {
                   </span>
                   
                   {regionOrder[currentRegionIndex + 1] && (
-                    <CircularButton
+                    <Button
+                      rounded="full"
                       onClick={() => router.push(`/pokemon/regions/${regionOrder[currentRegionIndex + 1]}`)}
                       variant="secondary"
                       size="sm"
                       aria-label="Next region"
                     >
                       <BsChevronRight className="w-4 h-4" />
-                    </CircularButton>
+                    </Button>
                   )}
                 </div>
               </div>
@@ -643,7 +649,7 @@ export default function RegionDetailPage() {
               transition={{ duration: 0.5 }}
               className="overflow-hidden"
             >
-              <StandardGlassContainer className="max-w-full">
+              <GlassContainer className="max-w-full">
                 <RegionInfo region={{
                   ...region,
                   gymLeaders: region.gymLeaders?.map(leader => ({
@@ -656,7 +662,7 @@ export default function RegionDetailPage() {
                     name: region.legendaries[index] || `Legendary ${id}`
                   })) || []
                 }} theme={theme} />
-              </StandardGlassContainer>
+              </GlassContainer>
             </motion.section>
 
             {/* Professor Section */}
@@ -667,9 +673,9 @@ export default function RegionDetailPage() {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="overflow-hidden"
             >
-              <StandardGlassContainer className="max-w-full">
+              <GlassContainer className="max-w-full">
                 <ProfessorShowcase region={region} professor={region.professor} theme={theme} />
-              </StandardGlassContainer>
+              </GlassContainer>
             </motion.section>
 
             {/* Unified Starters Section */}
@@ -796,12 +802,14 @@ export default function RegionDetailPage() {
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 animate-pulse" />
                 </div>
                 
-                <StandardGlassContainer>
-                  <SectionHeader 
-                    icon={<BsGeoAlt className="text-2xl text-purple-500" />}
-                    title="Explore the Region"
-                    subtitle={`Journey through the diverse landscapes of ${region.name}`}
-                  />
+                <GlassContainer>
+                  <div className="flex items-start gap-3 mb-6">
+                    <BsGeoAlt className="text-2xl text-purple-500" />
+                    <div>
+                      <h2 className="text-2xl font-bold">Explore the Region</h2>
+                      <p className="text-gray-600 dark:text-gray-400">Journey through the diverse landscapes of {region.name}</p>
+                    </div>
+                  </div>
                   
                   <div className="grid lg:grid-cols-2 gap-8">
                     {/* Cities & Towns Glass Gallery */}
@@ -979,7 +987,7 @@ export default function RegionDetailPage() {
                       </div>
                     </motion.div>
                   )}
-                </StandardGlassContainer>
+                </GlassContainer>
               </div>
             </motion.section>
 
@@ -990,9 +998,9 @@ export default function RegionDetailPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.5 }}
             >
-              <StandardGlassContainer>
+              <GlassContainer>
                 <GameShowcase region={region} theme={theme} />
-              </StandardGlassContainer>
+              </GlassContainer>
             </motion.section>
 
             {/* Evil Teams Section */}
@@ -1002,9 +1010,9 @@ export default function RegionDetailPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.6 }}
             >
-              <StandardGlassContainer>
+              <GlassContainer>
                 <EvilTeamShowcase region={region} theme={theme} />
-              </StandardGlassContainer>
+              </GlassContainer>
             </motion.section>
 
             {/* Enhanced Trivia Section - Glass Knowledge Cards */}
@@ -1021,7 +1029,7 @@ export default function RegionDetailPage() {
                     <div className="absolute inset-0 bg-gradient-to-br from-yellow-400 via-purple-500 to-pink-500 animate-pulse" />
                   </div>
                   
-                  <StandardGlassContainer>
+                  <GlassContainer>
                     <div className="text-center mb-10">
                       <div className="flex items-center justify-center gap-3 mb-4">
                         <BsStar className="text-3xl text-yellow-500 animate-pulse" />
@@ -1108,7 +1116,7 @@ export default function RegionDetailPage() {
                         Share these facts with fellow trainers to become a {region.name} expert!
                       </p>
                     </motion.div>
-                  </StandardGlassContainer>
+                  </GlassContainer>
                 </div>
               </motion.section>
             )}

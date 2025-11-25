@@ -6,8 +6,8 @@ import Link from "next/link";
 import { NextPage } from "next";
 import { motion } from 'framer-motion';
 import { useTheme } from "../../context/UnifiedAppContext";
-import { createGlassStyle } from '../../components/ui/design-system/glass-constants';
-import { GradientButton, CircularButton } from '../../components/ui/design-system';
+// Glass styles replaced with Tailwind classes
+import Button from '../../components/ui/Button';
 import { EmptyStateGlass, LoadingStateGlass, UnifiedSearchBar } from '../../components/ui/glass-components';
 import { BsCalendar, BsGlobe, BsController, BsArrowRight, BsPlayFill } from "react-icons/bs";
 import { GiCardPickup } from "react-icons/gi";
@@ -341,13 +341,14 @@ const GamesPage: NextPage = () => {
 
         {/* Back Button */}
         <div className="absolute top-8 left-8 z-20">
-          <CircularButton
+          <Button rounded="full"
             onClick={() => router.push('/pokemon')}
             variant="ghost"
             size="lg"
             className="bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20"
             aria-label="Back to Pokémon Hub"
-            leftIcon={<FiChevronLeft />}
+            icon={<FiChevronLeft />}
+            iconPosition="left"
           />
         </div>
 
@@ -369,11 +370,7 @@ const GamesPage: NextPage = () => {
         <motion.div
           className={cn(
             "p-8 rounded-3xl mb-12",
-            createGlassStyle({
-              opacity: theme === 'dark' ? 'subtle' : 'strong',
-              blur: 'xl',
-              border: theme === 'dark' ? 'subtle' : 'medium'
-            })
+            "bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"
           )}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -405,11 +402,7 @@ const GamesPage: NextPage = () => {
                 onChange={(e) => setSelectedPlatform(e.target.value)}
                 className={cn(
                   "px-4 py-2 rounded-full appearance-none cursor-pointer",
-                  createGlassStyle({
-                    opacity: theme === 'dark' ? 'subtle' : 'strong',
-                    blur: 'sm',
-                    border: theme === 'dark' ? 'subtle' : 'medium'
-                  })
+                  "bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"
                 )}
               >
                 <option value="">All Platforms</option>
@@ -427,11 +420,7 @@ const GamesPage: NextPage = () => {
                 onChange={(e) => setSelectedEra(e.target.value)}
                 className={cn(
                   "px-4 py-2 rounded-full appearance-none cursor-pointer",
-                  createGlassStyle({
-                    opacity: theme === 'dark' ? 'subtle' : 'strong',
-                    blur: 'sm',
-                    border: theme === 'dark' ? 'subtle' : 'medium'
-                  })
+                  "bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"
                 )}
               >
                 <option value="">All Eras</option>
@@ -450,11 +439,7 @@ const GamesPage: NextPage = () => {
                   "px-4 py-2 rounded-full font-medium transition-all duration-200",
                   selectedGeneration === null
                     ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg"
-                    : createGlassStyle({
-                        opacity: theme === 'dark' ? 'subtle' : 'strong',
-                        blur: 'sm',
-                        border: theme === 'dark' ? 'subtle' : 'medium'
-                      })
+                    : "bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"
                 )}
               >
                 All Gens
@@ -467,11 +452,7 @@ const GamesPage: NextPage = () => {
                     "px-3 py-2 rounded-full font-medium transition-all duration-200",
                     selectedGeneration === gen
                       ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg"
-                      : createGlassStyle({
-                          opacity: theme === 'dark' ? 'subtle' : 'strong',
-                          blur: 'sm',
-                          border: theme === 'dark' ? 'subtle' : 'medium'
-                        })
+                      : "bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"
                   )}
                 >
                   Gen {gen}
@@ -526,11 +507,7 @@ const GamesPage: NextPage = () => {
                 variants={itemVariants}
                 className={cn(
                   "relative rounded-3xl overflow-hidden shadow-2xl",
-                  createGlassStyle({
-                    opacity: theme === 'dark' ? 'subtle' : 'strong',
-                    blur: 'xl',
-                    border: theme === 'dark' ? 'subtle' : 'medium'
-                  })
+                  "bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"
                 )}
               >
                 {/* Generation Header */}
@@ -558,7 +535,7 @@ const GamesPage: NextPage = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: genIndex * 0.1 + 0.4 }}
                       >
-                        <GradientButton
+                        <Button gradient={true}
                           onClick={() => router.push(`/pokemon/regions/${generation.region.toLowerCase()}`)}
                           variant="secondary"
                           size="md"
@@ -566,7 +543,7 @@ const GamesPage: NextPage = () => {
                         >
                           <BsGlobe className="mr-2" />
                           Explore {generation.region}
-                        </GradientButton>
+                        </Button>
                       </motion.div>
                     </div>
                     <div className="text-right">
@@ -609,11 +586,7 @@ const GamesPage: NextPage = () => {
                         }}
                         className={cn(
                           "relative rounded-2xl overflow-hidden group cursor-pointer",
-                          createGlassStyle({
-                            opacity: theme === 'dark' ? 'subtle' : 'medium',
-                            blur: 'lg',
-                            border: theme === 'dark' ? 'subtle' : 'medium'
-                          })
+                          "bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"
                         )}
                       >
                         {/* Game Cover */}
@@ -652,11 +625,7 @@ const GamesPage: NextPage = () => {
                           <motion.div 
                             className={cn(
                               "absolute top-4 right-4 rounded-full px-3 py-1",
-                              createGlassStyle({
-                                opacity: 'strong',
-                                blur: 'sm',
-                                border: 'medium'
-                              })
+                              "bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"
                             )}
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}

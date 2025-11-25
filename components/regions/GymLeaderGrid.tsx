@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { getGymLeaderImage, getBadgeImage } from '../../utils/scrapedImageMapping';
-import { TypeGradientBadge } from '../ui/design-system/TypeGradientBadge';
+import { TypeBadge } from '../ui/TypeBadge';
 import { gymLeaderTeams } from '../../data/gymLeaderTeams';
 import { typeEffectiveness } from '../../utils/pokemonutils';
 
@@ -212,7 +212,7 @@ const GymLeaderGrid: React.FC<GymLeaderGridProps> = ({ region, gymLeaders, theme
                       </div>
                       {/* Type Badge below */}
                       <div>
-                        <TypeGradientBadge type={leader.type} size="xs" gradient={true} />
+                        <TypeBadge type={leader.type} size="xs" variant="gradient" />
                       </div>
                     </div>
                   </div>

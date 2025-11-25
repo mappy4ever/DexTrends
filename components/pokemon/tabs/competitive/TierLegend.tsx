@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GlassContainer } from '../../../ui/design-system';
+import { GlassContainer } from '../../../ui/glass-components';
 import { TierBadge } from '../../../ui/TierBadge';
 import { cn } from '../../../../utils/cn';
 import { MdCatchingPokemon } from 'react-icons/md';

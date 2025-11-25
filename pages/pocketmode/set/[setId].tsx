@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 import { fetchPocketData } from '../../../utils/pocketData';
 import StyledBackButton from '../../../components/ui/StyledBackButton';
-import { createGlassStyle, GradientButton, CircularButton } from '../../../components/ui/design-system';
+import Button from '../../../components/ui/Button';
 import { UnifiedSearchBar, EmptyStateGlass, LoadingStateGlass } from '../../../components/ui/glass-components';
 import { FaCrown } from 'react-icons/fa';
 import FullBleedWrapper from '../../../components/ui/FullBleedWrapper';
@@ -204,7 +204,6 @@ function SetView() {
           <LoadingStateGlass 
             type="spinner" 
             message="Loading expansion cards..."
-            size="lg"
           />
         </div>
       </FullBleedWrapper>
@@ -258,14 +257,7 @@ function SetView() {
           {/* Enhanced Set Header with Glass Morphism */}
           {setInfo && (
             <motion.div 
-              className={`${createGlassStyle({
-                blur: 'xl',
-                opacity: 'medium',
-                gradient: true,
-                border: 'medium',
-                shadow: 'xl',
-                rounded: 'xl'
-              })} p-6 md:p-8 rounded-3xl`}
+              className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} p-6 md:p-8 rounded-3xl`}
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
@@ -299,40 +291,19 @@ function SetView() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.6 }}
               >
-                <div className={`${createGlassStyle({
-                  blur: 'md',
-                  opacity: 'subtle',
-                  gradient: true,
-                  border: 'subtle',
-                  shadow: 'md',
-                  rounded: 'full'
-                })} px-4 py-2`}>
+                <div className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} px-4 py-2`}>
                   <span className="text-sm font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                     {setInfo.cardCount} Cards
                   </span>
                 </div>
                 
-                <div className={`${createGlassStyle({
-                  blur: 'md',
-                  opacity: 'subtle',
-                  gradient: true,
-                  border: 'subtle',
-                  shadow: 'md',
-                  rounded: 'full'
-                })} px-4 py-2`}>
+                <div className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} px-4 py-2`}>
                   <span className="text-sm font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                     {[...new Set(allCards.map(c => c.type).filter(Boolean))].length} Types
                   </span>
                 </div>
                 
-                <div className={`${createGlassStyle({
-                  blur: 'md',
-                  opacity: 'subtle',
-                  gradient: true,
-                  border: 'subtle',
-                  shadow: 'md',
-                  rounded: 'full'
-                })} px-4 py-2`}>
+                <div className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} px-4 py-2`}>
                   <span className="text-sm font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
                     {[...new Set(allCards.map(c => c.rarity).filter(Boolean))].length} Rarities
                   </span>
@@ -349,14 +320,7 @@ function SetView() {
           transition={{ duration: 0.5, delay: 0.3 }}
         >
           {/* Glass Container for Cards */}
-          <div className={`${createGlassStyle({
-            blur: 'xl',
-            opacity: 'medium',
-            gradient: true,
-            border: 'medium',
-            shadow: 'xl',
-            rounded: 'xl'
-          })} p-6 md:p-8 rounded-3xl`}>
+          <div className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} p-6 md:p-8 rounded-3xl`}>
             {/* Search Bar with Glass Styling */}
             <motion.div 
               className="mb-6"

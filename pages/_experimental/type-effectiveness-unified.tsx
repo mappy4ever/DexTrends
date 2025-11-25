@@ -2,9 +2,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
-import { createGlassStyle } from '../../components/ui/design-system/glass-constants';
+// Glass styles replaced with Tailwind classes
 import { UnifiedSearchBar, EmptyStateGlass, LoadingStateGlass } from '../../components/ui/glass-components';
-import { GradientButton, CircularButton } from '../../components/ui/design-system';
+import Button from '../../components/ui/Button';
 import { TypeBadge } from '../../components/ui/TypeBadge';
 import { 
   calculateTypeEffectiveness, 
@@ -56,8 +56,8 @@ const UnifiedTypeEffectivenessPage = () => {
   const [viewMode, setViewMode] = useState<'calculator' | 'chart' | 'team'>('calculator');
 
   // Glass morphism styles
-  const glassStyle = createGlassStyle({});
-  const glassButtonStyle = createGlassStyle({ opacity: 'subtle', blur: 'md' });
+  const glassStyle = "bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20";
+  const glassButtonStyle = "bg-white/60 dark:bg-gray-800/60 backdrop-blur-md border border-white/10 dark:border-gray-700/10";
 
   // Initialize type effectiveness data
   const init = useCallback(async () => {
@@ -278,14 +278,14 @@ const UnifiedTypeEffectivenessPage = () => {
       >
         <div className="container mx-auto px-4 py-4 sm:py-6">
           <div className="flex items-center justify-between">
-            <CircularButton
+            <Button rounded="full"
               onClick={() => router.push('/pokemon')}
               variant="secondary"
               size="sm"
               className="scale-90 sm:scale-100"
             >
               Back
-            </CircularButton>
+            </Button>
             
             <h1 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-400 via-blue-500 to-indigo-600 bg-clip-text text-transparent">
               Type Effectiveness
@@ -323,20 +323,20 @@ const UnifiedTypeEffectivenessPage = () => {
               </h3>
               <p className="text-sm text-red-500 dark:text-red-400 mb-4">{error}</p>
               <div className="flex gap-3 justify-center">
-                <GradientButton
+                <Button gradient={true}
                   onClick={() => window.location.reload()}
                   variant="primary"
                   size="sm"
                 >
                   Refresh Page
-                </GradientButton>
-                <CircularButton
+                </Button>
+                <Button rounded="full"
                   onClick={() => router.push('/pokemon')}
                   variant="secondary"
                   size="sm"
                 >
                   Go Back
-                </CircularButton>
+                </Button>
               </div>
             </div>
           </motion.div>

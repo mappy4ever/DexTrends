@@ -5,10 +5,10 @@ import Head from "next/head";
 import { motion } from 'framer-motion';
 import { useTheme } from "../../context/UnifiedAppContext";
 import { useSmoothParallax } from "../../hooks/useSmoothParallax";
-import EnhancedStarterSelector from "../../components/ui/EnhancedStarterSelector";
-import { GlassContainer } from "../../components/ui/design-system/GlassContainer";
-import { createGlassStyle } from '../../components/ui/design-system/glass-constants';
-import { GradientButton, CircularButton } from '../../components/ui/design-system';
+import StarterShowcaseComplete from "../../components/regions/StarterShowcaseComplete";
+import { GlassContainer } from '../../components/ui/glass-components';
+// Glass styles replaced with Tailwind classes
+import Button from '../../components/ui/Button';
 import { FiChevronLeft, FiMapPin, FiBook, FiLayers, FiSmartphone } from 'react-icons/fi';
 import { cn } from "../../utils/cn";
 import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
@@ -226,14 +226,7 @@ const StartersPage: NextPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className={`${createGlassStyle({
-                blur: '2xl',
-                opacity: 'strong',
-                gradient: true,
-                border: 'strong',
-                shadow: 'glow',
-                rounded: 'xl',
-              })} p-8 rounded-3xl`}
+              className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} p-8 rounded-3xl`}
             >
               {/* Header with Region Selection moved here */}
               <div className="text-center mb-8">
@@ -297,14 +290,11 @@ const StartersPage: NextPage = () => {
                 </div>
               </div>
               
-              <EnhancedStarterSelector
+              <StarterShowcaseComplete
                 region={currentRegion.id}
-                regionName={currentRegion.name}
+                starters={currentRegion.starters.split(' • ')}
                 starterIds={currentRegion.starterIds}
-                starterNames={currentRegion.starters.split(' • ')}
-                color={currentRegion.color}
-                showComparison={false}
-                onSelectStarter={handleStarterSelect}
+                theme="light"
               />
             </motion.div>
 
@@ -319,15 +309,7 @@ const StartersPage: NextPage = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => router.push('/pokedex')}
-                className={`${createGlassStyle({
-                  blur: 'xl',
-                  opacity: 'medium',
-                  gradient: true,
-                  border: 'medium',
-                  shadow: 'lg',
-                  rounded: 'xl',
-                  hover: 'lift',
-                })} p-6 rounded-2xl cursor-pointer group`}
+                className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} p-6 rounded-2xl cursor-pointer group`}
               >
                 <FiBook className="w-8 h-8 mb-3 text-purple-500 group-hover:text-purple-600 transition-colors" />
                 <h4 className="font-bold text-gray-800 dark:text-white mb-1">Pokedex</h4>
@@ -338,15 +320,7 @@ const StartersPage: NextPage = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => router.push('/pokemon/regions')}
-                className={`${createGlassStyle({
-                  blur: 'xl',
-                  opacity: 'medium',
-                  gradient: true,
-                  border: 'medium',
-                  shadow: 'lg',
-                  rounded: 'xl',
-                  hover: 'lift',
-                })} p-6 rounded-2xl cursor-pointer group`}
+                className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} p-6 rounded-2xl cursor-pointer group`}
               >
                 <FiMapPin className="w-8 h-8 mb-3 text-blue-500 group-hover:text-blue-600 transition-colors" />
                 <h4 className="font-bold text-gray-800 dark:text-white mb-1">Regions</h4>
@@ -357,15 +331,7 @@ const StartersPage: NextPage = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => router.push('/tcgexpansions')}
-                className={`${createGlassStyle({
-                  blur: 'xl',
-                  opacity: 'medium',
-                  gradient: true,
-                  border: 'medium',
-                  shadow: 'lg',
-                  rounded: 'xl',
-                  hover: 'lift',
-                })} p-6 rounded-2xl cursor-pointer group`}
+                className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} p-6 rounded-2xl cursor-pointer group`}
               >
                 <FiLayers className="w-8 h-8 mb-3 text-pink-500 group-hover:text-pink-600 transition-colors" />
                 <h4 className="font-bold text-gray-800 dark:text-white mb-1">TCG Sets</h4>
@@ -376,15 +342,7 @@ const StartersPage: NextPage = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => router.push('/pocketmode')}
-                className={`${createGlassStyle({
-                  blur: 'xl',
-                  opacity: 'medium',
-                  gradient: true,
-                  border: 'medium',
-                  shadow: 'lg',
-                  rounded: 'xl',
-                  hover: 'lift',
-                })} p-6 rounded-2xl cursor-pointer group`}
+                className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} p-6 rounded-2xl cursor-pointer group`}
               >
                 <FiSmartphone className="w-8 h-8 mb-3 text-green-500 group-hover:text-green-600 transition-colors" />
                 <h4 className="font-bold text-gray-800 dark:text-white mb-1">TCG Pocket</h4>

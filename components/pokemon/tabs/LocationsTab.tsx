@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Pokemon, PokemonSpecies, LocationAreaEncounterDetail } from "../../../types/pokemon";
-import { GlassContainer } from '../../ui/design-system';
+import { GlassContainer } from '../../ui/glass-components';
 import { cn } from '../../../utils/cn';
 import { 
   FaGamepad, FaMapMarkerAlt, FaGlobeAmericas, FaFilter,

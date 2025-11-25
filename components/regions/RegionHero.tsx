@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { getRegionMap } from '../../utils/scrapedImageMapping';
-import { useSmoothParallax } from '../../hooks/useSmoothParallax';
+// import { useSmoothParallax } from '../../hooks/useSmoothParallax'; // Removed in Stage 8
 import logger from '@/utils/logger';
 
 // Types
@@ -27,7 +27,8 @@ const RegionHero: React.FC<RegionHeroProps> = ({ region, theme }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   
   // Use smooth parallax hook for jitter-free scrolling
-  const parallaxOffset = useSmoothParallax(0.5); // Increased parallax factor for more noticeable effect
+  // const parallaxOffset = useSmoothParallax(0.5); // Removed in Stage 8
+  const parallaxOffset = 0; // Fallback to no parallax effect
 
   // Get map path with fallback
   const mapPath = getRegionMap(region.id);

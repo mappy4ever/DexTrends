@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import logger from "@/utils/logger";
 import type { Pokemon, PokemonSpecies } from "../../../types/pokemon";
 import type { TypeColors } from '../../../types/pokemon-tabs';
-import { GlassContainer } from '../../ui/design-system';
+import { GlassContainer } from '../../ui/glass-components';
 import { PokemonLearnset } from '../PokemonLearnset';
 import { cn } from '../../../utils/cn';
 import { TypeBadge } from '../../ui/TypeBadge';

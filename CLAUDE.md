@@ -1,39 +1,34 @@
 # DexTrends AI Assistant Context - MASTER DOCUMENT
 
 ## ⚠️ CRITICAL: Read This First
-This is the SINGLE SOURCE OF TRUTH. Ignore ALL other documentation unless specifically referenced here.
-- **Last Updated**: 2024-09-01
-- **Architecture Version**: 2.0 (Post-Cleanup)
-- **Component Count**: ~300 (target: 80-100)
+This is the SINGLE SOURCE OF TRUTH for the DexTrends project.
+- **Last Updated**: 2025-09-08
+- **Architecture Version**: 3.0 (Simplified & Cleaned)
+- **Component Status**: Phase 8 cleanup completed
 
-## 📚 DOCUMENTATION SYSTEM - WHERE TO FIND WHAT
+## 🧹 MANDATORY SESSION CLEANUP
 
-### Session Start Checklist
+### At End of EVERY Session
 ```bash
-1. Read CLAUDE.md (this file) - Core rules & context
-2. Check CURRENT_WORK.md - Active tasks & progress
-3. Review QUICK_START.md - If new to project
-4. Scan CLEANUP_PLAN.md - Before ANY component work
-5. Verify COMPONENT_INVENTORY.md - Before using components
+# 1. Remove temporary files
+rm -f *.sh *.json test-results.* 
+
+# 2. Remove report files  
+rm -f *_REPORT.md *_report.* stage-*.md phase-*.md
+
+# 3. Clean up any backup directories
+rm -rf backups/ archived-components/ scripts/migration/
+
+# 4. Keep only essential docs in root
+# Essential: CLAUDE.md, README.md, package.json, tsconfig.json
+# Move others to docs/archive/ if needed
 ```
 
-### During Work References
-| Need | Check File | Section |
-|------|------------|---------|
-| Creating component? | COMPONENT_INVENTORY.md | "Component Selection Decision Tree" |
-| Fixing TypeScript? | QUICK_START.md | "Critical Rules" |
-| Merging duplicates? | CLEANUP_PLAN.md | "Implementation Strategy" |
-| Session progress? | CURRENT_WORK.md | "Active Tasks" |
-| Component purpose? | COMPONENT_INVENTORY.md | "What It Actually Does" columns |
-
-### Session End Requirements
-1. **Update CURRENT_WORK.md**:
-   - Mark completed tasks
-   - Add new discoveries
-   - Update metrics
-2. **If found new issues**: Add to COMPONENT_INVENTORY.md
-3. **If discovered pitfalls**: Add to QUICK_START.md
-4. **Commit with message**: Reference which phase/stage
+### File Organization Rules
+1. **Root Directory**: Keep minimal - only essential config files
+2. **Documentation**: Use `docs/` directory for non-essential docs
+3. **No Temporary Files**: Delete all .sh scripts, test reports after use
+4. **No Redundant Backups**: Use git for version control, not backup folders
 
 ## Project Overview
 DexTrends is a Pokemon TCG and Pokedex application.
@@ -188,11 +183,9 @@ find components -name "*Card*" | wc -l   # Currently 49, should be ~10
 4. **YES** single component for all viewports
 
 ## Quick Reference Paths
-- **Start Here**: `QUICK_START.md` - New session setup
-- **Current Work**: `CURRENT_WORK.md` - Active tasks & progress
-- **Component Truth**: `/docs/current/COMPONENT_INVENTORY.md` - What components REALLY do
-- **Cleanup Plan**: `/docs/current/CLEANUP_PLAN.md` - Consolidation strategy
-- **Our Work**: `/docs/current/PHASE_*.md` - Completed phases
+- **Main Documentation**: `CLAUDE.md` (this file) - Core rules & context
+- **Project README**: `README.md` - Public project documentation
+- **Archived Docs**: `/docs/archive/` - Historical documentation (reference only)
 
 ## Working Components (DO NOT TOUCH)
 These were properly implemented and tested:
@@ -208,44 +201,21 @@ These were properly implemented and tested:
 4. **Viewport inconsistency** - Some use 460px, others 640px
 5. **Deprecated wrappers** - ConsistentModal, EnhancedModal still used
 
-## Session Handoff
-When starting a new session:
-1. Read `QUICK_START.md` first (5 min)
-2. Check `CURRENT_WORK.md` for progress (3 min)
-3. Refer to `COMPONENT_INVENTORY.md` for truth
-4. Continue from last checkpoint
-5. Update progress in `CURRENT_WORK.md`
+## Session Management
 
-## 🔗 Documentation Cross-References
+### Starting a Session
+1. Read this CLAUDE.md file for context
+2. Check git status for current work state
+3. Run dev server: `npm run dev`
+4. Check TypeScript: `npx tsc --noEmit`
 
-### Master Documentation System
-| Document | Purpose | Primary Use Case |
-|----------|---------|------------------|
-| `DOCUMENTATION_INDEX.md` | Master map | Find any documentation |
-| `SESSION_HANDOFF_CHECKLIST.md` | Continuity protocol | Start/end sessions |
-| `.claude/instructions.md` | Auto-context | Claude AI bootstrap |
-| `CURRENT_WORK.md` | Active tracking | Session progress |
-| `COMPONENT_INVENTORY.md` | Component truth | Before using ANY component |
-| `CLEANUP_PLAN.md` | Consolidation roadmap | Phase 7 implementation |
-| `QUICK_START.md` | Onboarding | New sessions, pitfalls |
-
-### Quick Commands
-```bash
-# Session start
-cat CURRENT_WORK.md | grep -A10 "Active Tasks"
-
-# Before creating component
-cat COMPONENT_INVENTORY.md | grep -B2 -A2 "[ComponentType]"
-
-# Check consolidation progress
-cat CLEANUP_PLAN.md | grep -A5 "Week [Current]"
-
-# Validate documentation
-ls -lt *.md | head -10
-```
+### Ending a Session
+1. Run cleanup commands (see MANDATORY SESSION CLEANUP above)
+2. Commit changes with descriptive message
+3. Remove all temporary files
+4. Keep root directory clean
 
 ---
-*Created: 2024-09-01 | Last Updated: 2025-09-01*
+*Last Updated: 2025-09-08*
 *Purpose: Single source of truth for DexTrends development*
-*Status: Component explosion crisis - 300 components, 66% duplicates*
-*If confused about components, ALWAYS check COMPONENT_INVENTORY.md for the truth about what they actually do.*
+*Remember: Clean up at the end of EVERY session!*

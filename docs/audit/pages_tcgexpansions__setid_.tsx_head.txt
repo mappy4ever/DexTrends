@@ -1,0 +1,220 @@
+     1	import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
+     2	import { useRouter } from "next/router";
+     3	import Image from "next/image";
+     4	import Link from "next/link";
+     5	import { NextPage } from "next";
+     6	import { fetchJSON } from "../../utils/unifiedFetch";
+     7	import { useDebounce } from "../../hooks/useDebounce";
+     8	import { safeRequestIdleCallback } from "../../utils/requestIdleCallback";
+     9	import { safeSessionStorage } from "../../utils/safeStorage";
+    10	import { motion, AnimatePresence } from 'framer-motion';
+    11	import Button from '../../components/ui/Button';
+    12	import { cn } from '../../utils/cn';
+    13	import UnifiedSearchBar from '../../components/ui/UnifiedSearchBar';
+    14	import EmptyStateGlass from '../../components/ui/EmptyStateGlass';
+    15	import { DetailPageSkeleton, LoadingStateGlass } from '../../components/ui/glass-components';
+    16	import TCGCardList from "../../components/TCGCardList";
+    17	import VirtualCardGrid from "../../components/ui/VirtualizedCardGrid";
+    18	// SimpleCardWrapper removed - using div instead
+    19	const SimpleCardWrapper = ({ children, className, rarity }: any) => {
+    20	  const getBorderClass = () => {
+    21	    if (!rarity) return 'border-gray-300';
+    22	    const rarityLower = rarity.toLowerCase();
+    23	    if (rarityLower.includes('secret') || rarityLower.includes('rainbow')) return 'border-yellow-400';
+    24	    if (rarityLower.includes('ultra') || rarityLower.includes('hyper')) return 'border-purple-400';
+    25	    if (rarityLower.includes('rare')) return 'border-blue-400';
+    26	    return 'border-gray-300';
+    27	  };
+    28	  return <div className={`relative rounded-lg overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg ${getBorderClass()} border-2 ${className}`}>{children}</div>;
+    29	};
+    30	import { useTheme, useFavorites } from '../../context/UnifiedAppContext';
+    31	import { useViewSettings } from "../../context/UnifiedAppContext";
+    32	import { SkeletonCard, Skeleton } from '@/components/ui/Skeleton';
+    33	import logger from "../../utils/logger";
+    34	import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
+    35	import performanceMonitor from "../../utils/performanceMonitor";
+    36	import { CardGridSkeleton } from "../../components/ui/SkeletonLoader";
+    37	import type { TCGCard, CardSet } from "../../types/api/cards";
+    38	import type { FavoriteCard } from "../../context/modules/types";
+    39	import PageErrorBoundary from "../../components/ui/PageErrorBoundary";
+    40	// HorizontalCardShowcase removed - using inline card display
+    41	// CompactStatsBar removed - using inline stats display
+    42	import { RarityBadge } from "../../components/ui/RarityBadge";
+    43	import { RarityIcon, RARITY_ORDER, getRarityRank } from "../../components/ui/RarityIcon";
+    44	// Removed - using unified responsive approach
+    45	import { ProgressiveImage } from "../../components/ui/ProgressiveImage";
+    46	
+    47	// Interface for set statistics
+    48	interface CardWithMarketPrice extends TCGCard {
+    49	  marketPrice: number;
+    50	}
+    51	
+    52	interface SetStatistics {
+    53	  rarityDistribution: Record<string, number>;
+    54	  valueByRarity: Record<string, { total: number; average: number; count: number }>;
+    55	  highestValueCards: CardWithMarketPrice[];
+    56	}
+    57	
+    58	const SetIdPage: NextPage = () => {
+    59	  const router = useRouter();
+    60	  const { theme } = useTheme();
+    61	  const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
+    62	  const { viewSettings } = useViewSettings();
+    63	  
+    64	  // State variables
+    65	  const [setInfo, setSetInfo] = useState<CardSet | null>(null);
+    66	  const [cards, setCards] = useState<TCGCard[]>([]);
+    67	  const [loading, setLoading] = useState<boolean>(true);
+    68	  const [error, setError] = useState<string | null>(null);
+    69	  const [loadingMessage, setLoadingMessage] = useState<string>("Initializing...");
+    70	  const [dataWarning, setDataWarning] = useState<string | null>(null);
+    71	  const [fetchAttempted, setFetchAttempted] = useState<boolean>(false);
+    72	  
+    73	  // Filter states
+    74	  const [filterRarity, setFilterRarity] = useState<string>("");
+    75	  const [filterSubtype, setFilterSubtype] = useState<string>("");
+    76	  const [filterSupertype, setFilterSupertype] = useState<string>("");
+    77	  const [searchQuery, setSearchQuery] = useState<string>("");
+    78	  const debouncedSearchQuery = useDebounce(searchQuery, 300);
+    79	  
+    80	  // Set statistics
+    81	  const [statistics, setStatistics] = useState<SetStatistics>({
+    82	    rarityDistribution: {},
+    83	    valueByRarity: {},
+    84	    highestValueCards: []
+    85	  });
+    86	  
+    87	  // Collection tracking
+    88	  const [ownedCards, setOwnedCards] = useState<Set<string>>(new Set());
+    89	  const [wishlistCards, setWishlistCards] = useState<Set<string>>(new Set());
+    90	  
+    91	  // Card preview modal state
+    92	  const [selectedCardForPreview, setSelectedCardForPreview] = useState<TCGCard | null>(null);
+    93	  const [currentCardIndex, setCurrentCardIndex] = useState(0);
+    94	  
+    95	  // Modal state
+    96	  const [modalOpen, setModalOpen] = useState<boolean>(false);
+    97	  const [modalCard, setModalCard] = useState<TCGCard | null>(null);
+    98	  
+    99	  // Mobile state
+   100	  const [showMobileFilters, setShowMobileFilters] = useState(false);
+   101	  const [pressedCardId, setPressedCardId] = useState<string | null>(null);
+   102	  const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(null);
+   103	
+   104	  const setid = router.query.setid as string | undefined;
+   105	  
+   106	  // Removed - using unified responsive approach
+   107	
+   108	  // Helper function to determine the actual rarity based on card data
+   109	  const getActualRarity = (card: TCGCard): string => {
+   110	    // If the rarity is already "Black White Rare" (note: no & in API response), keep it
+   111	    if (card.rarity === 'Black White Rare') {
+   112	      return 'Black & White Rare'; // Add the & for display
+   113	    }
+   114	    
+   115	    // Check if it's a secret rare (card number > set total)
+   116	    const cardNumber = parseInt(card.number);
+   117	    const setTotal = card.set.printedTotal;
+   118	    const isSecretRare = cardNumber > setTotal;
+   119	    
+   120	    // Specific cards that should be Black & White Rare
+   121	    // Victini from both White Flare and Black Bolt returns "Rare" but should be "Black & White Rare"
+   122	    const isBlackWhiteStyleRare = 
+   123	      (card.name === 'Victini' && card.number === '172' && card.set.id === 'rsv10pt5') || // White Flare
+   124	      (card.name === 'Victini' && card.number === '171' && card.set.id === 'zsv10pt5');    // Black Bolt
+   125	    
+   126	    if (isBlackWhiteStyleRare) {
+   127	      return 'Black & White Rare';
+   128	    }
+   129	    
+   130	    // Black & White era sets (bw1-bw11, including Noble Victories)
+   131	    const blackWhiteSets = [
+   132	      'bw1', 'bw2', 'bw3', 'bw4', 'bw5', 'bw6', 'bw7', 'bw8', 'bw9', 'bw10', 'bw11',
+   133	      'bwp', 'dv1', 'bct', 'lds'
+   134	    ];
+   135	    
+   136	    const isBlackWhiteSet = blackWhiteSets.includes(card.set.id.toLowerCase());
+   137	    
+   138	    // If it's a regular Black & White era card with "Rare" rarity and has holofoil prices, it's "Rare Holo"
+   139	    if (isBlackWhiteSet && card.rarity === 'Rare' && card.tcgplayer?.prices?.holofoil) {
+   140	      return 'Rare Holo';
+   141	    }
+   142	    
+   143	    // For other sets, if rarity is "Rare" and has holofoil but no normal prices, it's likely "Rare Holo"
+   144	    if (card.rarity === 'Rare' && card.tcgplayer?.prices?.holofoil && !card.tcgplayer?.prices?.normal) {
+   145	      return 'Rare Holo';
+   146	    }
+   147	    
+   148	    return card.rarity || 'Common';
+   149	  };
+   150	
+   151	  // Calculate set statistics when cards are loaded
+   152	  const calculateSetStatistics = useCallback((cards: TCGCard[]) => {
+   153	    const rarityDist: Record<string, number> = {};
+   154	    const valueByRarity: Record<string, { total: number; average: number; count: number }> = {};
+   155	    const cardsWithPrices: CardWithMarketPrice[] = [];
+   156	    
+   157	    cards.forEach(card => {
+   158	      // Rarity distribution
+   159	      if (card.rarity) {
+   160	        rarityDist[card.rarity] = (rarityDist[card.rarity] || 0) + 1;
+   161	      }
+   162	      
+   163	      // Value by rarity
+   164	      if (card.tcgplayer?.prices) {
+   165	        const prices = Object.values(card.tcgplayer.prices);
+   166	        const marketPrice = prices[0]?.market || 0;
+   167	        
+   168	        if (marketPrice > 0) {
+   169	          cardsWithPrices.push({ ...card, marketPrice });
+   170	          
+   171	          if (card.rarity) {
+   172	            if (!valueByRarity[card.rarity]) {
+   173	              valueByRarity[card.rarity] = { total: 0, average: 0, count: 0 };
+   174	            }
+   175	            valueByRarity[card.rarity].total += marketPrice;
+   176	            valueByRarity[card.rarity].count++;
+   177	          }
+   178	        }
+   179	      }
+   180	    });
+   181	    
+   182	    // Calculate averages
+   183	    Object.keys(valueByRarity).forEach(rarity => {
+   184	      const data = valueByRarity[rarity];
+   185	      data.average = data.count > 0 ? data.total / data.count : 0;
+   186	    });
+   187	    
+   188	    // Get highest value cards
+   189	    const highestValueCards = cardsWithPrices
+   190	      .sort((a, b) => b.marketPrice - a.marketPrice)
+   191	      .slice(0, 10);
+   192	    
+   193	    setStatistics({
+   194	      rarityDistribution: rarityDist,
+   195	      valueByRarity,
+   196	      highestValueCards
+   197	    });
+   198	  }, []);
+   199	
+   200	  // Fetch set data
+   201	  useEffect(() => {
+   202	    if (!router.isReady || !setid || !loading) return;
+   203	    
+   204	    let mounted = true;
+   205	    let abortController: AbortController | null = null;
+   206	    
+   207	    const fetchSetData = async () => {
+   208	      try {
+   209	        setLoadingMessage("Loading set information...");
+   210	        setFetchAttempted(true);
+   211	        
+   212	        abortController = new AbortController();
+   213	        
+   214	        const data = await fetchJSON(`/api/tcg-sets/${setid}`, {
+   215	          signal: abortController.signal
+   216	        }) as any;
+   217	        
+   218	        if (!mounted) return;
+   219	        
+   220	        if (!data || !data.set) {

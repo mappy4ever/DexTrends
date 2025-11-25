@@ -2,8 +2,8 @@ import React from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { cn } from '@/utils/cn';
-import { GlassContainer } from '../ui/design-system/GlassContainer';
-import { createGlassStyle } from '../ui/design-system/glass-constants';
+import { GlassContainer } from '../ui/glass-components';
+// Glass styles replaced with Tailwind classes
 import type { CardSet, TCGCard } from '@/types/api/cards';
 
 interface HeroSectionProps {
@@ -134,13 +134,7 @@ const FloatingCard: React.FC<{
     >
       <div className={cn(
         "relative",
-        createGlassStyle({
-          blur: 'xl',
-          opacity: 'strong',
-          border: 'strong',
-          rounded: 'lg',
-          shadow: 'xl'
-        })
+        "bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"
       )}>
         <Image
           src={card.images.small}

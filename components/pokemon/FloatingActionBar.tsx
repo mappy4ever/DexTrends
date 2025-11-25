@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../../utils/cn';
 import { FaHeart, FaRegHeart, FaShare, FaArrowUp } from 'react-icons/fa';
-import { CircularButton } from '../ui/design-system';
+import Button from '../ui/Button';
 import { useFavorites } from '../../context/UnifiedAppContext';
 import ShareMenu from '../ui/ShareMenu';
 import { sharePokemon } from '../../utils/shareUtils';
@@ -65,15 +65,16 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.2 }}
           >
-            <CircularButton
-              size="icon"
+            <Button
+              size="md"
               variant="secondary"
+              rounded="full"
               onClick={scrollToTop}
-              className="shadow-lg backdrop-blur-sm bg-white/90 dark:bg-gray-800/90"
+              className="shadow-lg backdrop-blur-sm bg-white/90 dark:bg-gray-800/90 !p-3"
               title="Scroll to top"
             >
               <FaArrowUp />
-            </CircularButton>
+            </Button>
           </motion.div>
         )}
       </AnimatePresence>
@@ -82,20 +83,22 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
       <ShareMenu
         onShare={(method) => sharePokemon(pokemon, method)}
         trigger={
-          <CircularButton
-            size="icon"
+          <Button
+            size="md"
             variant="secondary"
-            className="shadow-lg backdrop-blur-sm bg-white/90 dark:bg-gray-800/90"
+            rounded="full"
+            className="shadow-lg backdrop-blur-sm bg-white/90 dark:bg-gray-800/90 !p-3"
             title="Share Pokemon"
           >
             <FaShare />
-          </CircularButton>
+          </Button>
         }
       />
       
       {/* Favorite button */}
-      <CircularButton
-        size="icon"
+      <Button
+        size="md"
+        rounded="full"
         variant={isFavorite ? 'primary' : 'secondary'}
         onClick={() => {
           if (isFavorite) {
@@ -112,7 +115,7 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
           }
         }}
         className={cn(
-          "shadow-lg backdrop-blur-sm",
+          "shadow-lg backdrop-blur-sm !p-3",
           isFavorite 
             ? "bg-red-500 hover:bg-red-600" 
             : "bg-white/90 dark:bg-gray-800/90"
@@ -120,7 +123,7 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
         title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
       >
         {isFavorite ? <FaHeart className="text-white" /> : <FaRegHeart />}
-      </CircularButton>
+      </Button>
     </motion.div>
   );
 };

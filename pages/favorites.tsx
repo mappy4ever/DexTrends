@@ -16,7 +16,7 @@ import LazyWrapper from '../components/ui/LazyWrapper';
 const LazyCollectionDashboard = React.lazy(() => import("../components/ui/layout/CollectionDashboard"));
 import { PokemonAvatar } from '../components/ui/PokemonDisplay';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
-import { CircularButton } from '../components/ui/design-system';
+import Button from '../components/ui/Button';
 import { NextPage } from 'next';
 import { TCGCard } from '../types/api/cards';
 import Head from 'next/head';
@@ -259,30 +259,30 @@ const FavoritesPage: NextPage = () => {
         {/* Tabs */}
         <div className="flex justify-center mb-8">
           <div className="flex bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-lg p-1">
-            <CircularButton
+            <Button
               variant={activeTab === 'dashboard' ? 'primary' : 'ghost'}
               onClick={() => setActiveTab('dashboard')}
             >
               📊 Dashboard
-            </CircularButton>
-            <CircularButton
+            </Button>
+            <Button
               variant={activeTab === 'achievements' ? 'primary' : 'ghost'}
               onClick={() => setActiveTab('achievements')}
             >
               🏆 Achievements
-            </CircularButton>
-            <CircularButton
+            </Button>
+            <Button
               variant={activeTab === 'pokemon' ? 'primary' : 'ghost'}
               onClick={() => setActiveTab('pokemon')}
             >
               Pokémon ({favorites?.pokemon?.length || 0})
-            </CircularButton>
-            <CircularButton
+            </Button>
+            <Button
               variant={activeTab === 'cards' ? 'primary' : 'ghost'}
               onClick={() => setActiveTab('cards')}
             >
               Cards ({favorites?.cards?.length || 0})
-            </CircularButton>
+            </Button>
           </div>
         </div>
       

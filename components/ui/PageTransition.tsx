@@ -2,8 +2,9 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
 import { cn } from '@/utils/cn';
-import { pageTransitions } from '@/utils/microInteractionSystem';
-import { performantAnimations } from '@/utils/animationPerformance';
+import { fadeIn, slideInLeft, scaleIn } from '@/utils/animations';
+// microInteractionSystem and animationPerformance removed in Stage 8
+// Using built-in framer-motion animations instead
 
 interface PageTransitionProps {
   children: React.ReactNode;
@@ -18,11 +19,32 @@ export const PageTransition: React.FC<PageTransitionProps> = ({
 }) => {
   const router = useRouter();
   
+  // Use simple animation objects instead of complex Variants
   const transitions = {
-    fade: pageTransitions.fadeIn,
-    slide: pageTransitions.slideLeft,
-    scale: pageTransitions.scaleIn,
-    slideUp: pageTransitions.slideUp,
+    fade: {
+      initial: { opacity: 0 },
+      animate: { opacity: 1 },
+      exit: { opacity: 0 },
+      transition: { duration: 0.3 }
+    },
+    slide: {
+      initial: { opacity: 0, x: -20 },
+      animate: { opacity: 1, x: 0 },
+      exit: { opacity: 0, x: 20 },
+      transition: { duration: 0.3 }
+    },
+    scale: {
+      initial: { opacity: 0, scale: 0.95 },
+      animate: { opacity: 1, scale: 1 },
+      exit: { opacity: 0, scale: 0.95 },
+      transition: { duration: 0.3 }
+    },
+    slideUp: {
+      initial: { opacity: 0, y: 20 },
+      animate: { opacity: 1, y: 0 },
+      exit: { opacity: 0, y: -20 },
+      transition: { duration: 0.3 }
+    }
   };
 
   return (
@@ -33,7 +55,7 @@ export const PageTransition: React.FC<PageTransitionProps> = ({
         animate={transitions[mode].animate}
         exit={transitions[mode].exit}
         transition={transitions[mode].transition}
-        className={cn(performantAnimations.fadeIn, className)}
+        className={cn(className)}
       >
         {children}
       </motion.div>
@@ -65,7 +87,10 @@ export const StaggerChildren: React.FC<{
       {React.Children.map(children, (child, index) => (
         <motion.div
           key={index}
-          variants={pageTransitions.staggerItem}
+          variants={{
+            hidden: { opacity: 0, y: 20 },
+            visible: { opacity: 1, y: 0 }
+          }}
         >
           {child}
         </motion.div>

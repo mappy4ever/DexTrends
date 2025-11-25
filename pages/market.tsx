@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
 import { useTheme } from '../context/UnifiedAppContext';
-import { DynamicMarketAnalytics } from '../components/dynamic/DynamicComponents';
+// DynamicMarketAnalytics was removed in Stage 7 - need to use individual analytics components instead
+// import { DynamicMarketAnalytics } from '../components/dynamic/DynamicComponents';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import PageErrorBoundary from '../components/ui/PageErrorBoundary';
 import BackToTop from '../components/ui/BaseBackToTop';
 import { FadeIn, SlideUp } from '../components/ui/animations/animations';
-import { GlassContainer } from '../components/ui/design-system/GlassContainer';
-import { GradientButton } from '../components/ui/design-system/GradientButton';
-import CircularButton from '../components/ui/CircularButton';
+import { GlassContainer } from '../components/ui/glass-components';
+import Button from '../components/ui/Button';
 import { motion } from 'framer-motion';
 import type { NextPage } from 'next';
 
@@ -133,14 +133,16 @@ const MarketPage: NextPage = () => {
               <GlassContainer variant="medium" rounded="2xl" padding="sm" className="max-w-4xl w-full">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                   {tabs.map(tab => (
-                    <CircularButton
+                    <Button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
                       variant={activeTab === tab.id ? 'primary' : 'secondary'}
                       size="lg"
-                      className={`relative p-4 !rounded-xl text-left w-full ${
+                      rounded="lg"
+                      gradient={activeTab === tab.id}
+                      className={`relative p-4 text-left w-full ${
                         activeTab === tab.id
-                          ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg scale-105'
+                          ? 'text-white shadow-lg scale-105'
                           : 'bg-transparent text-gray-600 dark:text-gray-400'
                       }`}
                     >
@@ -157,7 +159,7 @@ const MarketPage: NextPage = () => {
                       {activeTab === tab.id && (
                         <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-white rounded-full" />
                       )}
-                    </CircularButton>
+                    </Button>
                   ))}
                 </div>
               </GlassContainer>
@@ -181,7 +183,10 @@ const MarketPage: NextPage = () => {
                       </div>
                     </div>
                     
-                    <DynamicMarketAnalytics />
+                    {/* MarketAnalytics component was removed in Phase 8 - needs replacement */}
+                    <div className="text-center py-8 text-gray-500">
+                      Analytics dashboard coming soon...
+                    </div>
                   </div>
                 </div>
               </FadeIn>

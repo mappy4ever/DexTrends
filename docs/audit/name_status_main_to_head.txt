@@ -1,0 +1,278 @@
+A	.claude/instructions.md
+M	CLAUDE.md
+A	CLEANUP_PLAN.md
+A	COMPONENT_INVENTORY.md
+A	COMPONENT_NAMING_FIXES.md
+A	CURRENT_WORK.md
+M	DOCUMENTATION_INDEX.md
+A	PHASE_8_DEEP_CONSOLIDATION_PLAN.md
+A	PHASE_8_QUICK_REFERENCE.md
+A	QUICK_START.md
+A	SAFE_TO_DELETE_COMPONENTS.md
+A	SESSION_HANDOFF_CHECKLIST.md
+C098	components/tcg-set-detail/EnhancedCardGrid.tsx	archived-components/renames/EnhancedCardGrid.tsx
+R100	components/ui/AdvancedKeyboardShortcuts.tsx	archived-components/stage-1/AdvancedKeyboardShortcuts.tsx
+R100	components/ui/AdvancedSearchInterface.tsx	archived-components/stage-1/AdvancedSearchInterface.tsx
+R100	components/ui/forms/EnhancedInput.tsx	archived-components/stage-1/EnhancedInput.tsx
+R100	components/ui/forms/EnhancedSelect.tsx	archived-components/stage-1/EnhancedSelect.tsx
+R100	components/ui/forms/EnhancedSwitch.tsx	archived-components/stage-1/EnhancedSwitch.tsx
+R100	components/ui/forms/EnhancedTextarea.tsx	archived-components/stage-1/EnhancedTextarea.tsx
+R100	components/FastRefreshQuickTest.tsx	archived-components/stage-1/FastRefreshQuickTest.tsx
+R099	components/pokemon/MobileAbilitiesPage.tsx	archived-components/stage-1/MobileAbilitiesPage.tsx
+R100	components/battle-simulator/MobileBattleSimulator.tsx	archived-components/stage-1/MobileBattleSimulator.tsx
+R100	components/ui/MobileDesignSystem.tsx	archived-components/stage-1/MobileDesignSystem.tsx
+R099	components/pokemon/MobileItemsPage.tsx	archived-components/stage-1/MobileItemsPage.tsx
+R100	components/pokemon/MobileMovesPage.tsx	archived-components/stage-1/MobileMovesPage.tsx
+R100	components/ui/MobileOptimizedPokeID.tsx	archived-components/stage-1/MobileOptimizedPokeID.tsx
+R098	components/tcg-set-detail/MobileTCGSetDetail.tsx	archived-components/stage-1/MobileTCGSetDetail.tsx
+R100	components/ui/QATestingSuite.tsx	archived-components/stage-1/QATestingSuite.tsx
+R100	components/ui/QATestingTool.tsx	archived-components/stage-1/QATestingTool.tsx
+C100	components/ui/cards/UnifiedCard.tsx	archived-components/stage-1/UnifiedCard.tsx
+R100	components/ui/iPhoneQATests.tsx	archived-components/stage-1/iPhoneQATests.tsx
+R100	components/ui/OptimizedImageMobile.tsx	archived-components/stage-2/OptimizedImageMobile.tsx
+R100	hooks/useMobileOptimization.ts	archived-components/stage-2/useMobileOptimization.ts
+R100	components/ui/ComparisonModal.tsx	archived-components/stage-3/ComparisonModal.tsx
+R083	components/GlobalModal.tsx	archived-components/stage-3/GlobalModal.tsx
+A	archived-components/stage-3/ModalWrapper.tsx
+R100	components/ui/filters/AnimatedFilterPanel.tsx	archived-components/stage-4/AnimatedFilterPanel.tsx
+R100	components/ui/progress/CircularProgress.tsx	archived-components/stage-4/CircularProgress.tsx
+R100	components/ui/DeckStackDisplay.tsx	archived-components/stage-4/DeckStackDisplay.tsx
+R100	components/ui/EnhancedEvolutionDisplay.tsx	archived-components/stage-4/EnhancedEvolutionDisplay.tsx
+R100	components/ui/EnhancedRarityBadge.tsx	archived-components/stage-4/EnhancedRarityBadge.tsx
+R100	components/ui/filters/FilterChips.tsx	archived-components/stage-4/FilterChips.tsx
+R100	components/ui/GymLeaderShowcase.tsx	archived-components/stage-4/GymLeaderShowcase.tsx
+R100	components/ui/KpiCard.tsx	archived-components/stage-4/KpiCard.tsx
+R100	components/ui/LevelTag.tsx	archived-components/stage-4/LevelTag.tsx
+R100	components/ui/progress/LinearProgress.tsx	archived-components/stage-4/LinearProgress.tsx
+R100	components/ui/layout/ListContainer.tsx	archived-components/stage-4/ListContainer.tsx
+R100	components/ui/filters/MultiSelectFilter.tsx	archived-components/stage-4/MultiSelectFilter.tsx
+R100	components/ui/PokemonEasterEggs.tsx	archived-components/stage-4/PokemonEasterEggs.tsx
+R100	components/ui/ProfessionalSetHeader.tsx	archived-components/stage-4/ProfessionalSetHeader.tsx
+R100	components/ui/Radio.tsx	archived-components/stage-4/Radio.tsx
+R100	components/ui/RegionNavigation.tsx	archived-components/stage-4/RegionNavigation.tsx
+R100	components/ui/RegionSelector.tsx	archived-components/stage-4/RegionSelector.tsx
+R100	components/ui/RegionalEvolutionHandler.tsx	archived-components/stage-4/RegionalEvolutionHandler.tsx
+R100	components/ui/SimpleEvolutionDisplay.tsx	archived-components/stage-4/SimpleEvolutionDisplay.tsx
+R100	components/ui/SimplifiedMovesDisplay.tsx	archived-components/stage-4/SimplifiedMovesDisplay.tsx
+R100	components/ui/SmartRecommendationEngine.tsx	archived-components/stage-4/SmartRecommendationEngine.tsx
+R100	components/ui/SocialCommunityHub.tsx	archived-components/stage-4/SocialCommunityHub.tsx
+R100	components/ui/progress/StepProgress.tsx	archived-components/stage-4/StepProgress.tsx
+R100	components/ui/TouchGestureSystem.tsx	archived-components/stage-4/TouchGestureSystem.tsx
+R100	components/ui/UIPanel.tsx	archived-components/stage-4/UIPanel.tsx
+R100	components/ui/VirtualizedList.tsx	archived-components/stage-4/VirtualizedList.tsx
+R100	components/ui/VisualCardSearch.tsx	archived-components/stage-4/VisualCardSearch.tsx
+R099	components/ui/forms/VisualSearchFilters.tsx	archived-components/stage-4/VisualSearchFilters.tsx
+R095	components/ui/ZoomableImage.tsx	archived-components/stage-4/ZoomableImage.tsx
+R100	components/ui/AriaLiveAnnouncer.hooks.tsx	archived-components/stage-5/AriaLiveAnnouncer.hooks.tsx
+R100	components/ui/AriaLiveAnnouncer.tsx	archived-components/stage-5/AriaLiveAnnouncer.tsx
+R100	components/pokemon/BaseStatsRanking.tsx	archived-components/stage-5/BaseStatsRanking.tsx
+R100	components/BulbapediaDataExample.tsx	archived-components/stage-5/BulbapediaDataExample.tsx
+R100	components/ui/CacheStatus.tsx	archived-components/stage-5/CacheStatus.tsx
+R099	components/ui/cards/CardComparisonTool.tsx	archived-components/stage-5/CardComparisonTool.tsx
+R100	components/tcg-set-detail/CircularRarityChart.tsx	archived-components/stage-5/CircularRarityChart.tsx
+R100	components/tcg-set-detail/CompactStatsContainer.tsx	archived-components/stage-5/CompactStatsContainer.tsx
+R100	components/ui/ComparisonFAB.tsx	archived-components/stage-5/ComparisonFAB.tsx
+R100	components/ui/DataAnalyticsDashboard.tsx	archived-components/stage-5/DataAnalyticsDashboard.tsx
+R100	components/ui/EnhancedAnimationSystem.hooks.tsx	archived-components/stage-5/EnhancedAnimationSystem.hooks.tsx
+R100	components/pokemon/EnhancedMoveDisplay.tsx	archived-components/stage-5/EnhancedMoveDisplay.tsx
+R100	components/ui/EnhancedMovesDisplay.tsx	archived-components/stage-5/EnhancedMovesDisplay.tsx
+R100	components/ui/EnhancedSetStatistics.tsx	archived-components/stage-5/EnhancedSetStatistics.tsx
+R100	components/ui/cards/EvolutionStageCard.tsx	archived-components/stage-5/EvolutionStageCard.tsx
+R100	components/ui/FeedbackStates.tsx	archived-components/stage-5/FeedbackStates.tsx
+A	archived-components/stage-5/FlippableTCGCard.tsx
+R100	components/ui/FloatingActionSystem.tsx	archived-components/stage-5/FloatingActionSystem.tsx
+R100	components/pokemon/FloatingStatsWidget.tsx	archived-components/stage-5/FloatingStatsWidget.tsx
+R100	components/pokemon/tabs/competitive/FormatStats.tsx	archived-components/stage-5/FormatStats.tsx
+R100	components/ui/KeyboardNavigation.hooks.tsx	archived-components/stage-5/KeyboardNavigation.hooks.tsx
+R100	components/ui/MarketInsightsDashboard.tsx	archived-components/stage-5/MarketInsightsDashboard.tsx
+R100	components/ui/MicroInteractionSystem.tsx	archived-components/stage-5/MicroInteractionSystem.tsx
+R100	components/ui/navigation/NavigationEnhancements.tsx	archived-components/stage-5/NavigationEnhancements.tsx
+R100	components/pokemon/tabs/OverviewTabV3.tsx	archived-components/stage-5/OverviewTabV3.tsx
+R100	components/ui/PerformanceDashboard.tsx	archived-components/stage-5/PerformanceDashboard.tsx
+R100	components/ui/PillBadge.tsx	archived-components/stage-5/PillBadge.tsx
+R100	components/PocketDeckViewer.tsx	archived-components/stage-5/PocketDeckViewer.tsx
+R100	components/PocketExpansionViewer.tsx	archived-components/stage-5/PocketExpansionViewer.tsx
+R100	components/PokedexDisplay.tsx	archived-components/stage-5/PokedexDisplay.tsx
+R100	components/pokemon/PokemonGlassPanel.tsx	archived-components/stage-5/PokemonGlassPanel.tsx
+R100	components/pokemon/PokemonStatBars.tsx	archived-components/stage-5/PokemonStatBars.tsx
+R100	components/pokemon/PokemonStatRadar.tsx	archived-components/stage-5/PokemonStatRadar.tsx
+R100	components/pokemon/PokemonStatRing.tsx	archived-components/stage-5/PokemonStatRing.tsx
+R100	components/pokemon/archive/PokemonStatsTab.tsx	archived-components/stage-5/PokemonStatsTab.tsx
+R099	components/ui/PortfolioManager.tsx	archived-components/stage-5/PortfolioManager.tsx
+R100	components/ui/PriceDisplay.tsx	archived-components/stage-5/PriceDisplay.tsx
+R100	components/ui/PriceIntelligenceSystem.tsx	archived-components/stage-5/PriceIntelligenceSystem.tsx
+R099	components/ui/PrintableCardLists.tsx	archived-components/stage-5/PrintableCardLists.tsx
+R100	components/ui/SecurityProvider.tsx	archived-components/stage-5/SecurityProvider.tsx
+R100	components/tcg-set-detail/sections/SetStats.tsx	archived-components/stage-5/SetStats.tsx
+R100	components/FastRefreshTests/scenarios/StatePreservation.tsx	archived-components/stage-5/StatePreservation.tsx
+R100	components/pokemon/tabs/StatsTabV2.tsx	archived-components/stage-5/StatsTabV2.tsx
+R095	components/ui/navigation/StickySidebar.tsx	archived-components/stage-5/StickySidebar.tsx
+R100	components/ui/TooltipHelpSystem.tsx	archived-components/stage-5/TooltipHelpSystem.tsx
+R100	components/pokemon/TypeEffectivenessChart.tsx	archived-components/stage-5/TypeEffectivenessChart.tsx
+R099	components/tcg-set-detail/UnifiedSetDashboard.tsx	archived-components/stage-5/UnifiedSetDashboard.tsx
+R100	components/tcg-set-detail/UnifiedStatsGraph.tsx	archived-components/stage-5/UnifiedStatsGraph.tsx
+R100	components/ui/charts/chartcontainer.tsx	archived-components/stage-5/chartcontainer.tsx
+M	components/AdvancedSearchModal.tsx
+M	components/CardList.tsx
+M	components/CollectionManager.tsx
+D	components/ErrorBoundary.tsx
+M	components/PocketCardList.tsx
+M	components/PriceAlerts.tsx
+M	components/TCGCardList.tsx
+M	components/TCGSetErrorBoundary.tsx
+D	components/VirtualCardGrid.tsx
+D	components/_archive/mobile-legacy/CardScanner.tsx
+D	components/_archive/mobile-legacy/EnhancedTouchInteractions.tsx
+D	components/_archive/mobile-legacy/FloatingActionButton.tsx
+D	components/_archive/mobile-legacy/GestureCardSorting.tsx
+D	components/_archive/mobile-legacy/LongPressMenu.tsx
+D	components/_archive/mobile-legacy/MobileCardGrid.tsx
+D	components/_archive/mobile-legacy/MobileFilterSheet.tsx
+D	components/_archive/mobile-legacy/MobileIntegration.tsx
+D	components/_archive/mobile-legacy/MobileNavigation.tsx
+D	components/_archive/mobile-legacy/MobileSearchExperience.tsx
+D	components/_archive/mobile-legacy/MobileShare.tsx
+D	components/_archive/mobile-legacy/MobileTypeFilter.tsx
+D	components/_archive/mobile-legacy/PinchToZoom.tsx
+D	components/_archive/mobile-legacy/PushNotifications.tsx
+D	components/_archive/mobile-legacy/SwipeToRefresh.tsx
+D	components/_archive/mobile-legacy/TypeEffectivenessCards.tsx
+D	components/_archive/mobile-legacy/VoiceSearch.tsx
+M	components/dynamic/DynamicComponents.tsx
+D	components/dynamic/MotionButton.tsx
+M	components/index.ts
+D	components/layout/ErrorBoundary.tsx
+D	components/layout/PageTransition.tsx
+D	components/mobile/BottomSheet.hooks.tsx
+D	components/mobile/BottomSheet.tsx
+D	components/mobile/EnhancedSwipeGestures.tsx
+D	components/mobile/MobileLayout.tsx
+D	components/mobile/README.md
+D	components/mobile/TouchGestures.tsx
+D	components/mobile/VirtualPokemonGrid.tsx
+D	components/mobile/index.ts
+D	components/pokemon/MobilePokemonDetail.tsx
+D	components/pokemon/PokemonFormSelector.tsx
+M	components/pokemon/PokemonHeroSectionV3.tsx
+M	components/pokemon/PokemonLearnset.tsx
+M	components/regions/EliteFourGallery.tsx
+M	components/regions/GymLeaderCarousel.tsx
+D	components/tcg-set-detail/CardFlipAnimation.tsx
+D	components/tcg-set-detail/CardPreviewModal.tsx
+M	components/tcg-set-detail/CardShowcaseStrip.tsx
+D	components/tcg-set-detail/RarityBadge.tsx
+R098	components/tcg-set-detail/EnhancedCardGrid.tsx	components/tcg-set-detail/TCGCardGrid.tsx
+M	components/tcg-set-detail/sections/SetHeader.tsx
+D	components/ui/AdvancedLoadingStates.hooks.ts
+D	components/ui/AdvancedLoadingStates.tsx
+D	components/ui/AdvancedModalSystem.hooks.ts
+D	components/ui/AdvancedModalSystem.tsx
+M	components/ui/AnimationShowcase.tsx
+M	components/ui/BottomNavigation.tsx
+M	components/ui/BulkCardOperations.tsx
+M	components/ui/Card.tsx
+M	components/ui/CardSharingSystem.tsx
+D	components/ui/CircularButton.tsx
+M	components/ui/CollectionTracker.tsx
+D	components/ui/ConsistentModal.tsx
+C085	components/ui/Card.tsx	components/ui/Container.tsx
+D	components/ui/DefaultCard.tsx
+D	components/ui/DexTrendsLoading.tsx
+A	components/ui/Dialog.tsx
+D	components/ui/EnhancedCardInteractions.tsx
+D	components/ui/EnhancedModal.tsx
+M	components/ui/EnhancedPokemonSelector.tsx
+M	components/ui/EvolutionTreeRenderer.tsx
+M	components/ui/LazyComponents.tsx
+D	components/ui/LoadingStateGlass.tsx
+D	components/ui/MobileCard.tsx
+D	components/ui/MobilePokemonDetail.tsx
+M	components/ui/Modal.tsx
+D	components/ui/ModalWrapper.tsx
+D	components/ui/MoveCardDemo.tsx
+D	components/ui/PokemonCardAnimations.tsx
+A	components/ui/PokemonDisplay.tsx
+D	components/ui/PositionedModal.tsx
+M	components/ui/Select.tsx
+A	components/ui/Sheet.tsx
+D	components/ui/SimpleCardWrapper.tsx
+M	components/ui/Skeleton.tsx
+D	components/ui/SkeletonLoader.tsx
+M	components/ui/VirtualizedCardGrid.tsx
+D	components/ui/cards/Advanced3DCard.tsx
+D	components/ui/cards/ChampionTile.tsx
+D	components/ui/cards/EliteFourTile.tsx
+D	components/ui/cards/EnhancedPokemonCard.tsx
+D	components/ui/cards/FlippableCard.tsx
+D	components/ui/cards/FlippableTCGCard.tsx
+D	components/ui/cards/GymLeaderAvatar.tsx
+D	components/ui/cards/GymLeaderTile.tsx
+D	components/ui/cards/PokemonAvatar.tsx
+D	components/ui/cards/PokemonTile.tsx
+R098	components/ui/cards/UnifiedCard.tsx	components/ui/cards/TCGCard.tsx
+M	components/ui/cards/index.ts
+D	components/ui/design-system/Button.tsx
+D	components/ui/design-system/GradientButton.tsx
+M	components/ui/design-system/index.ts
+M	components/ui/filters/index.ts
+M	components/ui/forms/index.ts
+R100	components/mobile/PullToRefresh.tsx	components/ui/gestures/PullToRefresh.tsx
+M	components/ui/glass-components.ts
+M	components/ui/index.ts
+D	components/ui/loading/PokemonCardSkeleton.tsx
+M	components/ui/loading/index.ts
+D	components/ui/modals/EnhancedCardModal.tsx
+D	components/ui/modals/Modal.tsx
+M	components/ui/modals/index.ts
+M	components/ui/progress/index.ts
+D	components/unified/AdaptiveModal.tsx
+D	components/unified/ErrorBoundary.tsx
+D	components/unified/LoadingSkeletons.tsx
+D	components/unified/NotificationSystem.tsx
+D	components/unified/OptimizedImage.tsx
+D	components/unified/PokemonCardRenderer.tsx
+M	components/unified/UnifiedDataTable.tsx
+M	components/unified/UnifiedGrid.tsx
+D	components/unified/UnifiedModal.tsx
+M	components/unified/index.ts
+R100	ARCHITECTURE.md	docs/archive/2024-09-01-legacy/ARCHITECTURE.md
+R100	BACKLOG.md	docs/archive/2024-09-01-legacy/BACKLOG.md
+R100	COMPREHENSIVE_CLEANUP_ANALYSIS.md	docs/archive/2024-09-01-legacy/COMPREHENSIVE_CLEANUP_ANALYSIS.md
+R100	CURRENT_STATUS.md	docs/archive/2024-09-01-legacy/CURRENT_STATUS.md
+C100	DOCUMENTATION_INDEX.md	docs/archive/2024-09-01-legacy/DOCUMENTATION_INDEX.md
+R100	MOBILE_FEATURES_PROTECTED.md	docs/archive/2024-09-01-legacy/MOBILE_FEATURES_PROTECTED.md
+R100	PRODUCTION_DEPLOYMENT.md	docs/archive/2024-09-01-legacy/PRODUCTION_DEPLOYMENT.md
+R100	PRODUCTION_ROUTES.md	docs/archive/2024-09-01-legacy/PRODUCTION_ROUTES.md
+R100	PROJECT_CLEANUP_FINAL_SUMMARY.md	docs/archive/2024-09-01-legacy/PROJECT_CLEANUP_FINAL_SUMMARY.md
+R100	UNUSED_CODE_AUDIT.md	docs/archive/2024-09-01-legacy/UNUSED_CODE_AUDIT.md
+R100	PHASE_2_MOBILE_MIGRATION_SUMMARY.md	docs/current/PHASE_2_MOBILE_MIGRATION_SUMMARY.md
+R100	PHASE_3_COMPONENT_LIBRARY_SUMMARY.md	docs/current/PHASE_3_COMPONENT_LIBRARY_SUMMARY.md
+R100	PHASE_4_INTEGRATION_POLISH_SUMMARY.md	docs/current/PHASE_4_INTEGRATION_POLISH_SUMMARY.md
+R100	PHASE_5_ADVANCED_FEATURES_SUMMARY.md	docs/current/PHASE_5_ADVANCED_FEATURES_SUMMARY.md
+R100	PHASE_6_COMPLETE.md	docs/current/PHASE_6_COMPLETE.md
+R100	PHASE_6_FORM_COMPONENTS_COMPLETE.md	docs/current/PHASE_6_FORM_COMPONENTS_COMPLETE.md
+R100	PHASE_6_PERFORMANCE_COMPLETE.md	docs/current/PHASE_6_PERFORMANCE_COMPLETE.md
+R100	UI_UX_IMPROVEMENTS_SUMMARY.md	docs/current/UI_UX_IMPROVEMENTS_SUMMARY.md
+A	hooks/useViewport.ts
+M	pages/_app.tsx
+M	pages/_experimental/index-unified.tsx
+M	pages/_experimental/pokedex-new.tsx
+M	pages/_experimental/pokedex-unified.tsx
+M	pages/battle-simulator.tsx
+M	pages/cards/[cardId].tsx
+M	pages/favorites.tsx
+M	pages/pocketmode/[pokemonid].tsx
+M	pages/pokedex.tsx
+M	pages/tcgexpansions.tsx
+M	pages/tcgexpansions/[setid].tsx
+A	rename-component.sh
+A	stage-3-final-report.md
+A	stage-4-final-report.md
+A	stage-5-final-report.md
+M	utils/componentPreloader.ts
+M	utils/lazyLoad.tsx
+M	utils/performanceOptimization.ts
+A	verify-component-usage.sh
+A	verify-stage-3.sh
+A	verify-stage-4.sh
+A	verify-stage-5.sh

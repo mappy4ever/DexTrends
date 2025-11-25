@@ -1,0 +1,1050 @@
+CLAUDE.md:20:rm -rf backups/ archived-components/ scripts/migration/
+CLAUDE.md:24:# Move others to docs/archive/ if needed
+CLAUDE.md:188:- **Archived Docs**: `/docs/archive/` - Historical documentation (reference only)
+pages/_app.tsx:74:// Mobile push notifications - removed (component archived)
+next.config.production.js:67:      'archives.bulbagarden.net',
+data/tcgRarity.ts:39:    image: "https://archives.bulbagarden.net/media/upload/e/e0/SetSymbolCommon.png"
+data/tcgRarity.ts:45:    image: "https://archives.bulbagarden.net/media/upload/0/05/SetSymbolUncommon.png"
+data/tcgRarity.ts:51:    image: "https://archives.bulbagarden.net/media/upload/7/7f/SetSymbolRare.png"
+data/tcgRarity.ts:59:    image: "https://archives.bulbagarden.net/media/upload/7/7f/SetSymbolRare.png"
+data/tcgRarity.ts:67:    image: "https://archives.bulbagarden.net/media/upload/2/24/SetSymbolUltra.png"
+data/tcgRarity.ts:73:    image: "https://archives.bulbagarden.net/media/upload/c/c5/SetSymbolSecret.png"
+data/tcgRarity.ts:81:    image: "https://archives.bulbagarden.net/media/upload/e/e7/SetSymbolPromo.png"
+data/tcgRarity.ts:87:    image: "https://archives.bulbagarden.net/media/upload/b/b0/SetSymbolAmazing.png"
+data/tcgRarity.ts:95:    image: "https://archives.bulbagarden.net/media/upload/c/c5/SetSymbolSecret.png"
+data/tcgRarity.ts:101:    image: "https://archives.bulbagarden.net/media/upload/0/09/SetSymbolIllustration.png"
+data/tcgRarity.ts:107:    image: "https://archives.bulbagarden.net/media/upload/0/0a/SetSymbolSpecial.png"
+data/tcgRarity.ts:113:    image: "https://archives.bulbagarden.net/media/upload/c/c5/SetSymbolSecret.png"
+data/tcgRarity.ts:121:    image: "https://archives.bulbagarden.net/media/upload/7/7c/SetSymbolShining.png"
+data/tcgRarity.ts:127:    image: "https://archives.bulbagarden.net/media/upload/2/2e/SetSymbolACE.png"
+data/tcgRarity.ts:138:    image: "https://archives.bulbagarden.net/media/upload/8/88/TCG_Pocket_Common.png"
+data/tcgRarity.ts:145:    image: "https://archives.bulbagarden.net/media/upload/4/4a/TCG_Pocket_Uncommon.png"
+data/tcgRarity.ts:152:    image: "https://archives.bulbagarden.net/media/upload/9/95/TCG_Pocket_Rare.png"
+data/tcgRarity.ts:159:    image: "https://archives.bulbagarden.net/media/upload/f/fe/TCG_Pocket_Double_rare.png"
+data/tcgRarity.ts:166:    image: "https://archives.bulbagarden.net/media/upload/4/43/TCG_Pocket_Art_rare.png"
+data/tcgRarity.ts:173:    image: "https://archives.bulbagarden.net/media/upload/c/cb/TCG_Pocket_Super_rare.png"
+data/tcgRarity.ts:180:    image: "https://archives.bulbagarden.net/media/upload/1/17/TCG_Pocket_Immersive_rare.png"
+data/tcgRarity.ts:187:    image: "https://archives.bulbagarden.net/media/upload/3/3e/TCG_Pocket_Crown_rare.png"
+scripts/scrapeTCGRaritySimple.js:13:// Known TCG rarity icons from Bulbagarden archives
+scripts/scrapeTCGRaritySimple.js:17:  { name: 'common.png', url: 'https://archives.bulbagarden.net/media/upload/e/e7/Rarity_Common.png' },
+scripts/scrapeTCGRaritySimple.js:18:  { name: 'uncommon.png', url: 'https://archives.bulbagarden.net/media/upload/e/e1/Rarity_Uncommon.png' },
+scripts/scrapeTCGRaritySimple.js:19:  { name: 'rare.png', url: 'https://archives.bulbagarden.net/media/upload/8/88/Rarity_Rare.png' },
+scripts/scrapeTCGRaritySimple.js:22:  { name: 'rare-holo.png', url: 'https://archives.bulbagarden.net/media/upload/d/d4/Rarity_Rare_Holo.png' },
+scripts/scrapeTCGRaritySimple.js:23:  { name: 'rare-holo-ex.png', url: 'https://archives.bulbagarden.net/media/upload/b/b0/Rarity_Rare_Holo_ex.png' },
+scripts/scrapeTCGRaritySimple.js:24:  { name: 'rare-holo-gx.png', url: 'https://archives.bulbagarden.net/media/upload/1/1e/Rarity_Rare_Holo_GX.png' },
+scripts/scrapeTCGRaritySimple.js:25:  { name: 'rare-holo-v.png', url: 'https://archives.bulbagarden.net/media/upload/a/ad/Rarity_Rare_Holo_V.png' },
+scripts/scrapeTCGRaritySimple.js:26:  { name: 'rare-holo-vmax.png', url: 'https://archives.bulbagarden.net/media/upload/f/fa/Rarity_Rare_Holo_VMAX.png' },
+scripts/scrapeTCGRaritySimple.js:27:  { name: 'rare-holo-vstar.png', url: 'https://archives.bulbagarden.net/media/upload/3/30/Rarity_Rare_Holo_VSTAR.png' },
+scripts/scrapeTCGRaritySimple.js:30:  { name: 'rare-ultra.png', url: 'https://archives.bulbagarden.net/media/upload/5/5a/Rarity_Rare_Ultra.png' },
+scripts/scrapeTCGRaritySimple.js:31:  { name: 'rare-secret.png', url: 'https://archives.bulbagarden.net/media/upload/e/e8/Rarity_Rare_Secret.png' },
+scripts/scrapeTCGRaritySimple.js:32:  { name: 'rare-rainbow.png', url: 'https://archives.bulbagarden.net/media/upload/8/8b/Rarity_Rare_Rainbow.png' },
+scripts/scrapeTCGRaritySimple.js:33:  { name: 'rare-shining.png', url: 'https://archives.bulbagarden.net/media/upload/a/ac/Rarity_Rare_Shining.png' },
+scripts/scrapeTCGRaritySimple.js:34:  { name: 'rare-shiny.png', url: 'https://archives.bulbagarden.net/media/upload/9/99/Rarity_Rare_Shiny.png' },
+scripts/scrapeTCGRaritySimple.js:37:  { name: 'rare-ace.png', url: 'https://archives.bulbagarden.net/media/upload/8/84/Rarity_Rare_ACE.png' },
+scripts/scrapeTCGRaritySimple.js:38:  { name: 'rare-break.png', url: 'https://archives.bulbagarden.net/media/upload/f/fd/Rarity_Rare_BREAK.png' },
+scripts/scrapeTCGRaritySimple.js:39:  { name: 'rare-prime.png', url: 'https://archives.bulbagarden.net/media/upload/6/67/Rarity_Rare_Prime.png' },
+scripts/scrapeTCGRaritySimple.js:40:  { name: 'rare-prism-star.png', url: 'https://archives.bulbagarden.net/media/upload/a/a9/Rarity_Rare_Prism_Star.png' },
+scripts/scrapeTCGRaritySimple.js:41:  { name: 'amazing-rare.png', url: 'https://archives.bulbagarden.net/media/upload/f/f1/Rarity_Amazing_Rare.png' },
+scripts/scrapeTCGRaritySimple.js:44:  { name: 'trainer-gallery.png', url: 'https://archives.bulbagarden.net/media/upload/5/5d/Rarity_TG.png' },
+scripts/scrapeTCGRaritySimple.js:45:  { name: 'classic-collection.png', url: 'https://archives.bulbagarden.net/media/upload/7/72/Rarity_Classic_Collection.png' },
+scripts/scrapeTCGRaritySimple.js:48:  { name: 'double-rare.png', url: 'https://archives.bulbagarden.net/media/upload/4/44/Rarity_Double_Rare.png' },
+scripts/scrapeTCGRaritySimple.js:49:  { name: 'illustration-rare.png', url: 'https://archives.bulbagarden.net/media/upload/e/ef/Rarity_Illustration_Rare.png' },
+scripts/scrapeTCGRaritySimple.js:50:  { name: 'ultra-rare.png', url: 'https://archives.bulbagarden.net/media/upload/b/b1/Rarity_Ultra_Rare.png' },
+scripts/scrapeTCGRaritySimple.js:51:  { name: 'special-illustration-rare.png', url: 'https://archives.bulbagarden.net/media/upload/c/c9/Rarity_Special_Illustration_Rare.png' },
+scripts/scrapeTCGRaritySimple.js:52:  { name: 'hyper-rare.png', url: 'https://archives.bulbagarden.net/media/upload/5/58/Rarity_Hyper_Rare.png' },
+scripts/scrapeTCGRaritySimple.js:55:  { name: 'promo.png', url: 'https://archives.bulbagarden.net/media/upload/d/d0/Rarity_Promo.png' }
+data/gameCovers.ts:54:    red: "https://archives.bulbagarden.net/media/upload/thumb/5/53/Red_EN_boxart.png/250px-Red_EN_boxart.png",
+data/gameCovers.ts:55:    blue: "https://archives.bulbagarden.net/media/upload/thumb/f/f7/Blue_EN_boxart.png/250px-Blue_EN_boxart.png",
+data/gameCovers.ts:57:      red: "https://archives.bulbagarden.net/media/upload/8/8b/Pokemon_Red_Version_logo.png",
+data/gameCovers.ts:58:      blue: "https://archives.bulbagarden.net/media/upload/f/fb/Pokemon_Blue_Version_logo.png"
+data/gameCovers.ts:62:    cover: "https://archives.bulbagarden.net/media/upload/thumb/5/5d/Yellow_EN_boxart.png/250px-Yellow_EN_boxart.png",
+data/gameCovers.ts:63:    logo: "https://archives.bulbagarden.net/media/upload/5/53/Pok%C3%A9mon_Yellow_Version_logo.png"
+data/gameCovers.ts:68:    gold: "https://archives.bulbagarden.net/media/upload/thumb/4/42/Gold_EN_boxart.png/250px-Gold_EN_boxart.png",
+data/gameCovers.ts:69:    silver: "https://archives.bulbagarden.net/media/upload/thumb/2/21/Silver_EN_boxart.png/250px-Silver_EN_boxart.png",
+data/gameCovers.ts:71:      gold: "https://archives.bulbagarden.net/media/upload/7/70/Pokemon_Gold_Version_logo.png",
+data/gameCovers.ts:72:      silver: "https://archives.bulbagarden.net/media/upload/e/e8/Pokemon_Silver_Version_logo.png"
+data/gameCovers.ts:76:    cover: "https://archives.bulbagarden.net/media/upload/thumb/a/af/Crystal_EN_boxart.png/250px-Crystal_EN_boxart.png",
+data/gameCovers.ts:77:    logo: "https://archives.bulbagarden.net/media/upload/6/6a/Pok%C3%A9mon_Crystal_Version_logo.png"
+data/gameCovers.ts:82:    ruby: "https://archives.bulbagarden.net/media/upload/thumb/3/3b/Ruby_EN_boxart.png/250px-Ruby_EN_boxart.png",
+data/gameCovers.ts:83:    sapphire: "https://archives.bulbagarden.net/media/upload/thumb/a/a6/Sapphire_EN_boxart.png/250px-Sapphire_EN_boxart.png",
+data/gameCovers.ts:85:      ruby: "https://archives.bulbagarden.net/media/upload/2/2e/Pokemon_Ruby_Version_logo.png",
+data/gameCovers.ts:86:      sapphire: "https://archives.bulbagarden.net/media/upload/f/fc/Pokemon_Sapphire_Version_logo.png"
+data/gameCovers.ts:90:    cover: "https://archives.bulbagarden.net/media/upload/thumb/d/da/Emerald_EN_boxart.png/250px-Emerald_EN_boxart.png",
+data/gameCovers.ts:91:    logo: "https://archives.bulbagarden.net/media/upload/a/ae/Pokemon_Emerald_Version_logo.png"
+data/gameCovers.ts:94:    firered: "https://archives.bulbagarden.net/media/upload/thumb/a/af/FireRed_EN_boxart.png/250px-FireRed_EN_boxart.png",
+data/gameCovers.ts:95:    leafgreen: "https://archives.bulbagarden.net/media/upload/thumb/b/b1/LeafGreen_EN_boxart.png/250px-LeafGreen_EN_boxart.png",
+data/gameCovers.ts:97:      firered: "https://archives.bulbagarden.net/media/upload/c/c7/Pokemon_FireRed_Version_logo.png",
+data/gameCovers.ts:98:      leafgreen: "https://archives.bulbagarden.net/media/upload/5/56/Pokemon_LeafGreen_Version_logo.png"
+data/gameCovers.ts:104:    diamond: "https://archives.bulbagarden.net/media/upload/thumb/e/e7/Diamond_EN_boxart.jpg/250px-Diamond_EN_boxart.jpg",
+data/gameCovers.ts:105:    pearl: "https://archives.bulbagarden.net/media/upload/thumb/e/e5/Pearl_EN_boxart.jpg/250px-Pearl_EN_boxart.jpg",
+data/gameCovers.ts:107:      diamond: "https://archives.bulbagarden.net/media/upload/9/93/Pokemon_Diamond_Version_logo.png",
+data/gameCovers.ts:108:      pearl: "https://archives.bulbagarden.net/media/upload/3/3f/Pokemon_Pearl_Version_logo.png"
+data/gameCovers.ts:112:    cover: "https://archives.bulbagarden.net/media/upload/thumb/7/74/Platinum_EN_boxart.png/250px-Platinum_EN_boxart.png",
+data/gameCovers.ts:113:    logo: "https://archives.bulbagarden.net/media/upload/d/d6/Pokemon_Platinum_Version_logo.png"
+data/gameCovers.ts:116:    heartgold: "https://archives.bulbagarden.net/media/upload/thumb/4/4c/HeartGold_EN_boxart.jpg/250px-HeartGold_EN_boxart.jpg",
+data/gameCovers.ts:117:    soulsilver: "https://archives.bulbagarden.net/media/upload/thumb/3/3e/SoulSilver_EN_boxart.jpg/250px-SoulSilver_EN_boxart.jpg",
+data/gameCovers.ts:119:      heartgold: "https://archives.bulbagarden.net/media/upload/d/d4/Pokemon_HeartGold_Version_logo.png",
+data/gameCovers.ts:120:      soulsilver: "https://archives.bulbagarden.net/media/upload/7/76/Pokemon_SoulSilver_Version_logo.png"
+data/gameCovers.ts:126:    black: "https://archives.bulbagarden.net/media/upload/thumb/2/27/Black_EN_boxart.png/250px-Black_EN_boxart.png",
+data/gameCovers.ts:127:    white: "https://archives.bulbagarden.net/media/upload/thumb/0/01/White_EN_boxart.png/250px-White_EN_boxart.png",
+data/gameCovers.ts:129:      black: "https://archives.bulbagarden.net/media/upload/c/c9/Pokemon_Black_Version_logo.png",
+data/gameCovers.ts:130:      white: "https://archives.bulbagarden.net/media/upload/e/ef/Pokemon_White_Version_logo.png"
+data/gameCovers.ts:134:    black2: "https://archives.bulbagarden.net/media/upload/thumb/1/17/Black_2_EN_boxart.png/250px-Black_2_EN_boxart.png",
+data/gameCovers.ts:135:    white2: "https://archives.bulbagarden.net/media/upload/thumb/1/11/White_2_EN_boxart.png/250px-White_2_EN_boxart.png",
+data/gameCovers.ts:137:      black2: "https://archives.bulbagarden.net/media/upload/9/94/Pokemon_Black_Version_2_logo.png",
+data/gameCovers.ts:138:      white2: "https://archives.bulbagarden.net/media/upload/3/34/Pokemon_White_Version_2_logo.png"
+data/gameCovers.ts:144:    x: "https://archives.bulbagarden.net/media/upload/thumb/b/b1/X_EN_boxart.png/250px-X_EN_boxart.png",
+data/gameCovers.ts:145:    y: "https://archives.bulbagarden.net/media/upload/thumb/6/65/Y_EN_boxart.png/250px-Y_EN_boxart.png",
+data/gameCovers.ts:147:      x: "https://archives.bulbagarden.net/media/upload/a/a5/Pokemon_X_logo.png",
+data/gameCovers.ts:148:      y: "https://archives.bulbagarden.net/media/upload/f/f3/Pokemon_Y_logo.png"
+data/gameCovers.ts:152:    omegaruby: "https://archives.bulbagarden.net/media/upload/thumb/b/bb/Omega_Ruby_EN_boxart.png/250px-Omega_Ruby_EN_boxart.png",
+data/gameCovers.ts:153:    alphasapphire: "https://archives.bulbagarden.net/media/upload/thumb/a/a1/Alpha_Sapphire_EN_boxart.png/250px-Alpha_Sapphire_EN_boxart.png",
+data/gameCovers.ts:155:      omegaruby: "https://archives.bulbagarden.net/media/upload/5/5e/Pokemon_Omega_Ruby_logo.png",
+data/gameCovers.ts:156:      alphasapphire: "https://archives.bulbagarden.net/media/upload/d/db/Pokemon_Alpha_Sapphire_logo.png"
+data/gameCovers.ts:162:    sun: "https://archives.bulbagarden.net/media/upload/thumb/0/0f/Sun_EN_boxart.png/250px-Sun_EN_boxart.png",
+data/gameCovers.ts:163:    moon: "https://archives.bulbagarden.net/media/upload/thumb/d/d5/Moon_EN_boxart.png/250px-Moon_EN_boxart.png",
+data/gameCovers.ts:165:      sun: "https://archives.bulbagarden.net/media/upload/b/b9/Pokemon_Sun_logo.png",
+data/gameCovers.ts:166:      moon: "https://archives.bulbagarden.net/media/upload/7/75/Pokemon_Moon_logo.png"
+data/gameCovers.ts:170:    ultrasun: "https://archives.bulbagarden.net/media/upload/thumb/b/b1/Ultra_Sun_EN_boxart.png/250px-Ultra_Sun_EN_boxart.png",
+data/gameCovers.ts:171:    ultramoon: "https://archives.bulbagarden.net/media/upload/thumb/f/f5/Ultra_Moon_EN_boxart.png/250px-Ultra_Moon_EN_boxart.png",
+data/gameCovers.ts:173:      ultrasun: "https://archives.bulbagarden.net/media/upload/f/f5/Pokemon_Ultra_Sun_logo.png",
+data/gameCovers.ts:174:      ultramoon: "https://archives.bulbagarden.net/media/upload/c/c5/Pokemon_Ultra_Moon_logo.png"
+data/gameCovers.ts:178:    pikachu: "https://archives.bulbagarden.net/media/upload/thumb/2/2b/Lets_Go_Pikachu_EN_boxart.png/250px-Lets_Go_Pikachu_EN_boxart.png",
+data/gameCovers.ts:179:    eevee: "https://archives.bulbagarden.net/media/upload/thumb/1/1f/Lets_Go_Eevee_EN_boxart.png/250px-Lets_Go_Eevee_EN_boxart.png",
+data/gameCovers.ts:181:      pikachu: "https://archives.bulbagarden.net/media/upload/7/70/Logo_EN_Pokemon_Lets_Go_Pikachu.png",
+data/gameCovers.ts:182:      eevee: "https://archives.bulbagarden.net/media/upload/d/d6/Logo_EN_Pokemon_Lets_Go_Eevee.png"
+data/gameCovers.ts:188:    sword: "https://archives.bulbagarden.net/media/upload/thumb/f/f1/Sword_EN_boxart.png/250px-Sword_EN_boxart.png",
+data/gameCovers.ts:189:    shield: "https://archives.bulbagarden.net/media/upload/thumb/d/dc/Shield_EN_boxart.png/250px-Shield_EN_boxart.png",
+data/gameCovers.ts:191:      sword: "https://archives.bulbagarden.net/media/upload/d/d1/Pokemon_Sword_logo.png",
+data/gameCovers.ts:192:      shield: "https://archives.bulbagarden.net/media/upload/c/c1/Pokemon_Shield_logo.png"
+data/gameCovers.ts:196:    brilliantdiamond: "https://archives.bulbagarden.net/media/upload/thumb/6/65/Brilliant_Diamond_EN_boxart.png/250px-Brilliant_Diamond_EN_boxart.png",
+data/gameCovers.ts:197:    shiningpearl: "https://archives.bulbagarden.net/media/upload/thumb/e/ea/Shining_Pearl_EN_boxart.png/250px-Shining_Pearl_EN_boxart.png",
+data/gameCovers.ts:199:      brilliantdiamond: "https://archives.bulbagarden.net/media/upload/0/05/Pokemon_Brilliant_Diamond_logo.png",
+data/gameCovers.ts:200:      shiningpearl: "https://archives.bulbagarden.net/media/upload/2/2f/Pokemon_Shining_Pearl_logo.png"
+data/gameCovers.ts:204:    cover: "https://archives.bulbagarden.net/media/upload/thumb/7/7c/Legends_Arceus_EN_boxart.png/250px-Legends_Arceus_EN_boxart.png",
+data/gameCovers.ts:205:    logo: "https://archives.bulbagarden.net/media/upload/2/2f/Pokemon_Legends_Arceus_logo.png"
+data/gameCovers.ts:210:    scarlet: "https://archives.bulbagarden.net/media/upload/thumb/7/76/Scarlet_EN_boxart.png/250px-Scarlet_EN_boxart.png",
+data/gameCovers.ts:211:    violet: "https://archives.bulbagarden.net/media/upload/thumb/3/3f/Violet_EN_boxart.png/250px-Violet_EN_boxart.png",
+data/gameCovers.ts:213:      scarlet: "https://archives.bulbagarden.net/media/upload/4/4f/Pokemon_Scarlet_logo.png",
+data/gameCovers.ts:214:      violet: "https://archives.bulbagarden.net/media/upload/9/91/Pokemon_Violet_logo.png"
+data/gameCovers.ts:220:    cover: "https://archives.bulbagarden.net/media/upload/thumb/4/43/Stadium_EN_boxart.jpg/250px-Stadium_EN_boxart.jpg",
+data/gameCovers.ts:221:    logo: "https://archives.bulbagarden.net/media/upload/f/fc/Pokemon_Stadium_logo.png"
+data/gameCovers.ts:224:    cover: "https://archives.bulbagarden.net/media/upload/thumb/b/be/Colosseum_boxart.jpg/250px-Colosseum_boxart.jpg",
+data/gameCovers.ts:225:    logo: "https://archives.bulbagarden.net/media/upload/4/4b/Pokemon_Colosseum_logo.png"
+data/gameCovers.ts:228:    cover: "https://archives.bulbagarden.net/media/upload/thumb/4/4e/Pokemon_GO_app_icon.png/250px-Pokemon_GO_app_icon.png",
+data/gameCovers.ts:229:    logo: "https://archives.bulbagarden.net/media/upload/2/21/Pokemon_GO_logo.png"
+data/gameCovers.ts:232:    cover: "https://archives.bulbagarden.net/media/upload/thumb/3/32/Masters_EX_logo.png/250px-Masters_EX_logo.png",
+data/gameCovers.ts:233:    logo: "https://archives.bulbagarden.net/media/upload/3/32/Masters_EX_logo.png"
+data/gameCovers.ts:236:    cover: "https://archives.bulbagarden.net/media/upload/thumb/9/9c/UNITE_app_icon.png/250px-UNITE_app_icon.png",
+data/gameCovers.ts:237:    logo: "https://archives.bulbagarden.net/media/upload/9/93/Pokemon_UNITE_logo.png"
+data/gameCovers.ts:240:    cover: "https://archives.bulbagarden.net/media/upload/thumb/9/9f/Red_Rescue_Team_EN_boxart.jpg/250px-Red_Rescue_Team_EN_boxart.jpg",
+data/gameCovers.ts:241:    logo: "https://archives.bulbagarden.net/media/upload/8/85/Mystery_Dungeon_Red_Rescue_Team_logo.png"
+data/gameCovers.ts:244:    cover: "https://archives.bulbagarden.net/media/upload/thumb/4/44/Explorers_of_Time_EN_boxart.jpg/250px-Explorers_of_Time_EN_boxart.jpg",
+data/gameCovers.ts:245:    logo: "https://archives.bulbagarden.net/media/upload/8/8f/PMD_Explorers_of_Time_logo.png"
+data/gameCovers.ts:248:    cover: "https://archives.bulbagarden.net/media/upload/thumb/d/d2/Ranger_EN_boxart.jpg/250px-Ranger_EN_boxart.jpg",
+data/gameCovers.ts:249:    logo: "https://archives.bulbagarden.net/media/upload/c/cf/Pokemon_Ranger_logo.png"
+data/gymLeaderImages.ts:10:  brock: "https://archives.bulbagarden.net/media/upload/thumb/d/d2/Lets_Go_Pikachu_Eevee_Brock.png/200px-Lets_Go_Pikachu_Eevee_Brock.png",
+data/gymLeaderImages.ts:11:  misty: "https://archives.bulbagarden.net/media/upload/thumb/f/f6/Lets_Go_Pikachu_Eevee_Misty.png/200px-Lets_Go_Pikachu_Eevee_Misty.png",
+data/gymLeaderImages.ts:12:  "lt. surge": "https://archives.bulbagarden.net/media/upload/thumb/8/8a/Lets_Go_Pikachu_Eevee_Lt_Surge.png/200px-Lets_Go_Pikachu_Eevee_Lt_Surge.png",
+data/gymLeaderImages.ts:13:  erika: "https://archives.bulbagarden.net/media/upload/thumb/8/83/Lets_Go_Pikachu_Eevee_Erika.png/200px-Lets_Go_Pikachu_Eevee_Erika.png",
+data/gymLeaderImages.ts:14:  koga: "https://archives.bulbagarden.net/media/upload/thumb/1/14/Lets_Go_Pikachu_Eevee_Koga.png/200px-Lets_Go_Pikachu_Eevee_Koga.png",
+data/gymLeaderImages.ts:15:  janine: "https://archives.bulbagarden.net/media/upload/thumb/9/9a/HeartGold_SoulSilver_Janine.png/200px-HeartGold_SoulSilver_Janine.png",
+data/gymLeaderImages.ts:16:  sabrina: "https://archives.bulbagarden.net/media/upload/thumb/e/e8/Lets_Go_Pikachu_Eevee_Sabrina.png/200px-Lets_Go_Pikachu_Eevee_Sabrina.png",
+data/gymLeaderImages.ts:17:  blaine: "https://archives.bulbagarden.net/media/upload/thumb/8/8c/Lets_Go_Pikachu_Eevee_Blaine.png/200px-Lets_Go_Pikachu_Eevee_Blaine.png",
+data/gymLeaderImages.ts:18:  giovanni: "https://archives.bulbagarden.net/media/upload/thumb/4/46/Lets_Go_Pikachu_Eevee_Giovanni.png/200px-Lets_Go_Pikachu_Eevee_Giovanni.png",
+data/gymLeaderImages.ts:21:  falkner: "https://archives.bulbagarden.net/media/upload/thumb/7/7f/HeartGold_SoulSilver_Falkner.png/200px-HeartGold_SoulSilver_Falkner.png",
+data/gymLeaderImages.ts:22:  bugsy: "https://archives.bulbagarden.net/media/upload/thumb/4/44/HeartGold_SoulSilver_Bugsy.png/200px-HeartGold_SoulSilver_Bugsy.png",
+data/gymLeaderImages.ts:23:  whitney: "https://archives.bulbagarden.net/media/upload/thumb/9/90/HeartGold_SoulSilver_Whitney.png/200px-HeartGold_SoulSilver_Whitney.png",
+data/gymLeaderImages.ts:24:  morty: "https://archives.bulbagarden.net/media/upload/thumb/d/d9/HeartGold_SoulSilver_Morty.png/200px-HeartGold_SoulSilver_Morty.png",
+data/gymLeaderImages.ts:25:  chuck: "https://archives.bulbagarden.net/media/upload/thumb/c/c5/HeartGold_SoulSilver_Chuck.png/200px-HeartGold_SoulSilver_Chuck.png",
+data/gymLeaderImages.ts:26:  jasmine: "https://archives.bulbagarden.net/media/upload/thumb/6/6f/HeartGold_SoulSilver_Jasmine.png/200px-HeartGold_SoulSilver_Jasmine.png",
+data/gymLeaderImages.ts:27:  pryce: "https://archives.bulbagarden.net/media/upload/thumb/b/b6/HeartGold_SoulSilver_Pryce.png/200px-HeartGold_SoulSilver_Pryce.png",
+data/gymLeaderImages.ts:28:  clair: "https://archives.bulbagarden.net/media/upload/thumb/d/d5/HeartGold_SoulSilver_Clair.png/200px-HeartGold_SoulSilver_Clair.png",
+data/gymLeaderImages.ts:31:  roxanne: "https://archives.bulbagarden.net/media/upload/thumb/3/3f/Omega_Ruby_Alpha_Sapphire_Roxanne.png/200px-Omega_Ruby_Alpha_Sapphire_Roxanne.png",
+data/gymLeaderImages.ts:32:  brawly: "https://archives.bulbagarden.net/media/upload/thumb/e/e0/Omega_Ruby_Alpha_Sapphire_Brawly.png/200px-Omega_Ruby_Alpha_Sapphire_Brawly.png",
+data/gymLeaderImages.ts:33:  wattson: "https://archives.bulbagarden.net/media/upload/thumb/7/75/Omega_Ruby_Alpha_Sapphire_Wattson.png/200px-Omega_Ruby_Alpha_Sapphire_Wattson.png",
+data/gymLeaderImages.ts:34:  flannery: "https://archives.bulbagarden.net/media/upload/thumb/f/f0/Omega_Ruby_Alpha_Sapphire_Flannery.png/200px-Omega_Ruby_Alpha_Sapphire_Flannery.png",
+data/gymLeaderImages.ts:35:  norman: "https://archives.bulbagarden.net/media/upload/thumb/2/26/Omega_Ruby_Alpha_Sapphire_Norman.png/200px-Omega_Ruby_Alpha_Sapphire_Norman.png",
+data/gymLeaderImages.ts:36:  winona: "https://archives.bulbagarden.net/media/upload/thumb/8/8a/Omega_Ruby_Alpha_Sapphire_Winona.png/200px-Omega_Ruby_Alpha_Sapphire_Winona.png",
+data/gymLeaderImages.ts:37:  "tate and liza": "https://archives.bulbagarden.net/media/upload/thumb/f/fe/Omega_Ruby_Alpha_Sapphire_Tate_and_Liza.png/250px-Omega_Ruby_Alpha_Sapphire_Tate_and_Liza.png",
+data/gymLeaderImages.ts:38:  "wallace": "https://archives.bulbagarden.net/media/upload/thumb/d/d3/Omega_Ruby_Alpha_Sapphire_Wallace.png/200px-Omega_Ruby_Alpha_Sapphire_Wallace.png",
+data/gymLeaderImages.ts:39:  juan: "https://archives.bulbagarden.net/media/upload/thumb/3/36/Emerald_Juan.png/200px-Emerald_Juan.png",
+data/gymLeaderImages.ts:42:  roark: "https://archives.bulbagarden.net/media/upload/thumb/4/44/Brilliant_Diamond_Shining_Pearl_Roark.png/200px-Brilliant_Diamond_Shining_Pearl_Roark.png",
+data/gymLeaderImages.ts:43:  gardenia: "https://archives.bulbagarden.net/media/upload/thumb/0/05/Brilliant_Diamond_Shining_Pearl_Gardenia.png/200px-Brilliant_Diamond_Shining_Pearl_Gardenia.png",
+data/gymLeaderImages.ts:44:  fantina: "https://archives.bulbagarden.net/media/upload/thumb/c/cd/Brilliant_Diamond_Shining_Pearl_Fantina.png/200px-Brilliant_Diamond_Shining_Pearl_Fantina.png",
+data/gymLeaderImages.ts:45:  maylene: "https://archives.bulbagarden.net/media/upload/thumb/b/b9/Brilliant_Diamond_Shining_Pearl_Maylene.png/200px-Brilliant_Diamond_Shining_Pearl_Maylene.png",
+data/gymLeaderImages.ts:46:  "crasher wake": "https://archives.bulbagarden.net/media/upload/thumb/8/80/Brilliant_Diamond_Shining_Pearl_Crasher_Wake.png/200px-Brilliant_Diamond_Shining_Pearl_Crasher_Wake.png",
+data/gymLeaderImages.ts:47:  byron: "https://archives.bulbagarden.net/media/upload/thumb/8/8f/Brilliant_Diamond_Shining_Pearl_Byron.png/200px-Brilliant_Diamond_Shining_Pearl_Byron.png",
+data/gymLeaderImages.ts:48:  candice: "https://archives.bulbagarden.net/media/upload/thumb/9/96/Brilliant_Diamond_Shining_Pearl_Candice.png/200px-Brilliant_Diamond_Shining_Pearl_Candice.png",
+data/gymLeaderImages.ts:49:  volkner: "https://archives.bulbagarden.net/media/upload/thumb/0/08/Brilliant_Diamond_Shining_Pearl_Volkner.png/200px-Brilliant_Diamond_Shining_Pearl_Volkner.png",
+data/gymLeaderImages.ts:52:  "cilan": "https://archives.bulbagarden.net/media/upload/thumb/a/ac/Black_White_Cilan.png/200px-Black_White_Cilan.png",
+data/gymLeaderImages.ts:53:  "chili": "https://archives.bulbagarden.net/media/upload/thumb/d/db/Black_White_Chili.png/200px-Black_White_Chili.png",
+data/gymLeaderImages.ts:54:  "cress": "https://archives.bulbagarden.net/media/upload/thumb/2/29/Black_White_Cress.png/200px-Black_White_Cress.png",
+data/gymLeaderImages.ts:55:  lenora: "https://archives.bulbagarden.net/media/upload/thumb/3/34/Black_White_Lenora.png/200px-Black_White_Lenora.png",
+data/gymLeaderImages.ts:56:  burgh: "https://archives.bulbagarden.net/media/upload/thumb/b/b4/Black_White_Burgh.png/200px-Black_White_Burgh.png",
+data/gymLeaderImages.ts:57:  elesa: "https://archives.bulbagarden.net/media/upload/thumb/6/63/Black_2_White_2_Elesa.png/200px-Black_2_White_2_Elesa.png",
+data/gymLeaderImages.ts:58:  clay: "https://archives.bulbagarden.net/media/upload/thumb/3/34/Black_White_Clay.png/200px-Black_White_Clay.png",
+data/gymLeaderImages.ts:59:  skyla: "https://archives.bulbagarden.net/media/upload/thumb/7/7e/Black_White_Skyla.png/200px-Black_White_Skyla.png",
+data/gymLeaderImages.ts:60:  brycen: "https://archives.bulbagarden.net/media/upload/thumb/e/ec/Black_White_Brycen.png/200px-Black_White_Brycen.png",
+data/gymLeaderImages.ts:61:  drayden: "https://archives.bulbagarden.net/media/upload/thumb/a/a1/Black_White_Drayden.png/200px-Black_White_Drayden.png",
+data/gymLeaderImages.ts:62:  iris: "https://archives.bulbagarden.net/media/upload/thumb/3/30/Black_2_White_2_Iris.png/200px-Black_2_White_2_Iris.png",
+data/gymLeaderImages.ts:65:  cheren: "https://archives.bulbagarden.net/media/upload/thumb/e/e1/Black_2_White_2_Cheren.png/200px-Black_2_White_2_Cheren.png",
+data/gymLeaderImages.ts:66:  roxie: "https://archives.bulbagarden.net/media/upload/thumb/a/a6/Black_2_White_2_Roxie.png/200px-Black_2_White_2_Roxie.png",
+data/gymLeaderImages.ts:67:  marlon: "https://archives.bulbagarden.net/media/upload/thumb/f/fb/Black_2_White_2_Marlon.png/200px-Black_2_White_2_Marlon.png",
+data/gymLeaderImages.ts:70:  viola: "https://archives.bulbagarden.net/media/upload/thumb/8/84/XY_Viola.png/200px-XY_Viola.png",
+data/gymLeaderImages.ts:71:  grant: "https://archives.bulbagarden.net/media/upload/thumb/f/f5/XY_Grant.png/200px-XY_Grant.png",
+data/gymLeaderImages.ts:72:  korrina: "https://archives.bulbagarden.net/media/upload/thumb/d/d7/XY_Korrina.png/200px-XY_Korrina.png",
+data/gymLeaderImages.ts:73:  ramos: "https://archives.bulbagarden.net/media/upload/thumb/3/3a/XY_Ramos.png/200px-XY_Ramos.png",
+data/gymLeaderImages.ts:74:  clemont: "https://archives.bulbagarden.net/media/upload/thumb/e/ee/XY_Clemont.png/200px-XY_Clemont.png",
+data/gymLeaderImages.ts:75:  valerie: "https://archives.bulbagarden.net/media/upload/thumb/9/9c/XY_Valerie.png/200px-XY_Valerie.png",
+data/gymLeaderImages.ts:76:  olympia: "https://archives.bulbagarden.net/media/upload/thumb/9/93/XY_Olympia.png/200px-XY_Olympia.png",
+data/gymLeaderImages.ts:77:  wulfric: "https://archives.bulbagarden.net/media/upload/thumb/8/8b/XY_Wulfric.png/200px-XY_Wulfric.png",
+data/gymLeaderImages.ts:80:  ilima: "https://archives.bulbagarden.net/media/upload/thumb/8/80/Sun_Moon_Ilima.png/200px-Sun_Moon_Ilima.png",
+data/gymLeaderImages.ts:81:  lana: "https://archives.bulbagarden.net/media/upload/thumb/2/24/Sun_Moon_Lana.png/200px-Sun_Moon_Lana.png",
+data/gymLeaderImages.ts:82:  kiawe: "https://archives.bulbagarden.net/media/upload/thumb/7/78/Sun_Moon_Kiawe.png/200px-Sun_Moon_Kiawe.png",
+data/gymLeaderImages.ts:83:  mallow: "https://archives.bulbagarden.net/media/upload/thumb/8/84/Sun_Moon_Mallow.png/200px-Sun_Moon_Mallow.png",
+data/gymLeaderImages.ts:84:  sophocles: "https://archives.bulbagarden.net/media/upload/thumb/8/88/Sun_Moon_Sophocles.png/200px-Sun_Moon_Sophocles.png",
+data/gymLeaderImages.ts:85:  acerola: "https://archives.bulbagarden.net/media/upload/thumb/1/18/Sun_Moon_Acerola.png/200px-Sun_Moon_Acerola.png",
+data/gymLeaderImages.ts:86:  mina: "https://archives.bulbagarden.net/media/upload/thumb/b/b0/Ultra_Sun_Ultra_Moon_Mina.png/200px-Ultra_Sun_Ultra_Moon_Mina.png",
+data/gymLeaderImages.ts:89:  milo: "https://archives.bulbagarden.net/media/upload/thumb/8/82/Sword_Shield_Milo.png/200px-Sword_Shield_Milo.png",
+data/gymLeaderImages.ts:90:  nessa: "https://archives.bulbagarden.net/media/upload/thumb/b/b5/Sword_Shield_Nessa.png/200px-Sword_Shield_Nessa.png",
+data/gymLeaderImages.ts:91:  kabu: "https://archives.bulbagarden.net/media/upload/thumb/b/b1/Sword_Shield_Kabu.png/200px-Sword_Shield_Kabu.png",
+data/gymLeaderImages.ts:92:  "bea": "https://archives.bulbagarden.net/media/upload/thumb/3/34/Sword_Shield_Bea.png/200px-Sword_Shield_Bea.png",
+data/gymLeaderImages.ts:93:  "allister": "https://archives.bulbagarden.net/media/upload/thumb/8/8a/Sword_Shield_Allister.png/200px-Sword_Shield_Allister.png",
+data/gymLeaderImages.ts:94:  opal: "https://archives.bulbagarden.net/media/upload/thumb/9/90/Sword_Shield_Opal.png/200px-Sword_Shield_Opal.png",
+data/gymLeaderImages.ts:95:  "bede": "https://archives.bulbagarden.net/media/upload/thumb/5/53/Sword_Shield_Bede.png/200px-Sword_Shield_Bede.png",
+data/gymLeaderImages.ts:96:  "gordie": "https://archives.bulbagarden.net/media/upload/thumb/8/86/Sword_Shield_Gordie.png/200px-Sword_Shield_Gordie.png",
+data/gymLeaderImages.ts:97:  "melony": "https://archives.bulbagarden.net/media/upload/thumb/2/28/Sword_Shield_Melony.png/200px-Sword_Shield_Melony.png",
+data/gymLeaderImages.ts:98:  piers: "https://archives.bulbagarden.net/media/upload/thumb/5/5b/Sword_Shield_Piers.png/200px-Sword_Shield_Piers.png",
+data/gymLeaderImages.ts:99:  "marnie": "https://archives.bulbagarden.net/media/upload/thumb/c/cd/Sword_Shield_Marnie.png/200px-Sword_Shield_Marnie.png",
+data/gymLeaderImages.ts:100:  raihan: "https://archives.bulbagarden.net/media/upload/thumb/1/13/Sword_Shield_Raihan.png/200px-Sword_Shield_Raihan.png",
+data/gymLeaderImages.ts:103:  katy: "https://archives.bulbagarden.net/media/upload/thumb/2/23/Scarlet_Violet_Katy.png/200px-Scarlet_Violet_Katy.png",
+data/gymLeaderImages.ts:104:  brassius: "https://archives.bulbagarden.net/media/upload/thumb/3/36/Scarlet_Violet_Brassius.png/200px-Scarlet_Violet_Brassius.png",
+data/gymLeaderImages.ts:105:  iono: "https://archives.bulbagarden.net/media/upload/thumb/b/b4/Scarlet_Violet_Iono.png/200px-Scarlet_Violet_Iono.png",
+data/gymLeaderImages.ts:106:  kofu: "https://archives.bulbagarden.net/media/upload/thumb/f/fd/Scarlet_Violet_Kofu.png/200px-Scarlet_Violet_Kofu.png",
+data/gymLeaderImages.ts:107:  larry: "https://archives.bulbagarden.net/media/upload/thumb/5/58/Scarlet_Violet_Larry.png/200px-Scarlet_Violet_Larry.png",
+data/gymLeaderImages.ts:108:  ryme: "https://archives.bulbagarden.net/media/upload/thumb/5/5e/Scarlet_Violet_Ryme.png/200px-Scarlet_Violet_Ryme.png",
+data/gymLeaderImages.ts:109:  tulip: "https://archives.bulbagarden.net/media/upload/thumb/5/5b/Scarlet_Violet_Tulip.png/200px-Scarlet_Violet_Tulip.png",
+data/gymLeaderImages.ts:110:  grusha: "https://archives.bulbagarden.net/media/upload/thumb/5/59/Scarlet_Violet_Grusha.png/200px-Scarlet_Violet_Grusha.png"
+data/gymLeaderImages.ts:115:  lorelei: "https://archives.bulbagarden.net/media/upload/thumb/9/96/Lets_Go_Pikachu_Eevee_Lorelei.png/200px-Lets_Go_Pikachu_Eevee_Lorelei.png",
+data/gymLeaderImages.ts:116:  bruno: "https://archives.bulbagarden.net/media/upload/thumb/5/58/Lets_Go_Pikachu_Eevee_Bruno.png/200px-Lets_Go_Pikachu_Eevee_Bruno.png",
+data/gymLeaderImages.ts:117:  agatha: "https://archives.bulbagarden.net/media/upload/thumb/5/5b/Lets_Go_Pikachu_Eevee_Agatha.png/200px-Lets_Go_Pikachu_Eevee_Agatha.png",
+data/gymLeaderImages.ts:118:  lance: "https://archives.bulbagarden.net/media/upload/thumb/5/56/Lets_Go_Pikachu_Eevee_Lance.png/200px-Lets_Go_Pikachu_Eevee_Lance.png",
+data/gymLeaderImages.ts:121:  will: "https://archives.bulbagarden.net/media/upload/thumb/a/aa/HeartGold_SoulSilver_Will.png/200px-HeartGold_SoulSilver_Will.png",
+data/gymLeaderImages.ts:122:  koga_e4: "https://archives.bulbagarden.net/media/upload/thumb/3/39/HeartGold_SoulSilver_Koga.png/200px-HeartGold_SoulSilver_Koga.png",
+data/gymLeaderImages.ts:123:  bruno_johto: "https://archives.bulbagarden.net/media/upload/thumb/2/2e/HeartGold_SoulSilver_Bruno.png/200px-HeartGold_SoulSilver_Bruno.png",
+data/gymLeaderImages.ts:124:  karen: "https://archives.bulbagarden.net/media/upload/thumb/9/96/HeartGold_SoulSilver_Karen.png/200px-HeartGold_SoulSilver_Karen.png",
+data/gymLeaderImages.ts:127:  sidney: "https://archives.bulbagarden.net/media/upload/thumb/f/fe/Omega_Ruby_Alpha_Sapphire_Sidney.png/200px-Omega_Ruby_Alpha_Sapphire_Sidney.png",
+data/gymLeaderImages.ts:128:  phoebe: "https://archives.bulbagarden.net/media/upload/thumb/9/98/Omega_Ruby_Alpha_Sapphire_Phoebe.png/200px-Omega_Ruby_Alpha_Sapphire_Phoebe.png",
+data/gymLeaderImages.ts:129:  glacia: "https://archives.bulbagarden.net/media/upload/thumb/4/40/Omega_Ruby_Alpha_Sapphire_Glacia.png/200px-Omega_Ruby_Alpha_Sapphire_Glacia.png",
+data/gymLeaderImages.ts:130:  drake: "https://archives.bulbagarden.net/media/upload/thumb/4/40/Omega_Ruby_Alpha_Sapphire_Drake.png/200px-Omega_Ruby_Alpha_Sapphire_Drake.png",
+data/gymLeaderImages.ts:133:  aaron: "https://archives.bulbagarden.net/media/upload/thumb/4/4d/Brilliant_Diamond_Shining_Pearl_Aaron.png/200px-Brilliant_Diamond_Shining_Pearl_Aaron.png",
+data/gymLeaderImages.ts:134:  bertha: "https://archives.bulbagarden.net/media/upload/thumb/0/06/Brilliant_Diamond_Shining_Pearl_Bertha.png/200px-Brilliant_Diamond_Shining_Pearl_Bertha.png",
+data/gymLeaderImages.ts:135:  flint: "https://archives.bulbagarden.net/media/upload/thumb/c/ca/Brilliant_Diamond_Shining_Pearl_Flint.png/200px-Brilliant_Diamond_Shining_Pearl_Flint.png",
+data/gymLeaderImages.ts:136:  lucian: "https://archives.bulbagarden.net/media/upload/thumb/b/b3/Brilliant_Diamond_Shining_Pearl_Lucian.png/200px-Brilliant_Diamond_Shining_Pearl_Lucian.png",
+data/gymLeaderImages.ts:139:  shauntal: "https://archives.bulbagarden.net/media/upload/thumb/a/a4/Black_White_Shauntal.png/200px-Black_White_Shauntal.png",
+data/gymLeaderImages.ts:140:  marshal: "https://archives.bulbagarden.net/media/upload/thumb/0/08/Black_White_Marshal.png/200px-Black_White_Marshal.png",
+data/gymLeaderImages.ts:141:  grimsley: "https://archives.bulbagarden.net/media/upload/thumb/b/b0/Black_White_Grimsley.png/200px-Black_White_Grimsley.png",
+data/gymLeaderImages.ts:142:  caitlin: "https://archives.bulbagarden.net/media/upload/thumb/7/78/Black_White_Caitlin.png/200px-Black_White_Caitlin.png",
+data/gymLeaderImages.ts:145:  malva: "https://archives.bulbagarden.net/media/upload/thumb/8/84/XY_Malva.png/200px-XY_Malva.png",
+data/gymLeaderImages.ts:146:  siebold: "https://archives.bulbagarden.net/media/upload/thumb/8/85/XY_Siebold.png/200px-XY_Siebold.png",
+data/gymLeaderImages.ts:147:  wikstrom: "https://archives.bulbagarden.net/media/upload/thumb/c/c6/XY_Wikstrom.png/200px-XY_Wikstrom.png",
+data/gymLeaderImages.ts:148:  drasna: "https://archives.bulbagarden.net/media/upload/thumb/a/a3/XY_Drasna.png/200px-XY_Drasna.png",
+data/gymLeaderImages.ts:151:  hala: "https://archives.bulbagarden.net/media/upload/thumb/e/eb/Sun_Moon_Hala.png/200px-Sun_Moon_Hala.png",
+data/gymLeaderImages.ts:152:  olivia: "https://archives.bulbagarden.net/media/upload/thumb/2/22/Sun_Moon_Olivia.png/200px-Sun_Moon_Olivia.png",
+data/gymLeaderImages.ts:153:  acerola_e4: "https://archives.bulbagarden.net/media/upload/thumb/1/18/Sun_Moon_Acerola.png/200px-Sun_Moon_Acerola.png",
+data/gymLeaderImages.ts:154:  kahili: "https://archives.bulbagarden.net/media/upload/thumb/3/31/Sun_Moon_Kahili.png/200px-Sun_Moon_Kahili.png",
+data/gymLeaderImages.ts:155:  molayne: "https://archives.bulbagarden.net/media/upload/thumb/3/3d/Sun_Moon_Molayne.png/200px-Sun_Moon_Molayne.png",
+data/gymLeaderImages.ts:158:  rika: "https://archives.bulbagarden.net/media/upload/thumb/9/99/Scarlet_Violet_Rika.png/200px-Scarlet_Violet_Rika.png",
+data/gymLeaderImages.ts:159:  poppy: "https://archives.bulbagarden.net/media/upload/thumb/e/ea/Scarlet_Violet_Poppy.png/200px-Scarlet_Violet_Poppy.png",
+data/gymLeaderImages.ts:160:  larry_e4: "https://archives.bulbagarden.net/media/upload/thumb/5/58/Scarlet_Violet_Larry.png/200px-Scarlet_Violet_Larry.png",
+data/gymLeaderImages.ts:161:  hassel: "https://archives.bulbagarden.net/media/upload/thumb/3/32/Scarlet_Violet_Hassel.png/200px-Scarlet_Violet_Hassel.png"
+data/gymLeaderImages.ts:166:  blue: "https://archives.bulbagarden.net/media/upload/thumb/c/c5/Lets_Go_Pikachu_Eevee_Blue.png/200px-Lets_Go_Pikachu_Eevee_Blue.png",
+data/gymLeaderImages.ts:167:  red: "https://archives.bulbagarden.net/media/upload/thumb/d/d2/Lets_Go_Pikachu_Eevee_Red.png/200px-Lets_Go_Pikachu_Eevee_Red.png",
+data/gymLeaderImages.ts:168:  lance_champion: "https://archives.bulbagarden.net/media/upload/thumb/1/1f/HeartGold_SoulSilver_Lance.png/200px-HeartGold_SoulSilver_Lance.png",
+data/gymLeaderImages.ts:169:  steven: "https://archives.bulbagarden.net/media/upload/thumb/0/07/Omega_Ruby_Alpha_Sapphire_Steven.png/200px-Omega_Ruby_Alpha_Sapphire_Steven.png",
+data/gymLeaderImages.ts:170:  wallace_champion: "https://archives.bulbagarden.net/media/upload/thumb/d/d3/Omega_Ruby_Alpha_Sapphire_Wallace.png/200px-Omega_Ruby_Alpha_Sapphire_Wallace.png",
+data/gymLeaderImages.ts:171:  cynthia: "https://archives.bulbagarden.net/media/upload/thumb/e/e8/Brilliant_Diamond_Shining_Pearl_Cynthia.png/200px-Brilliant_Diamond_Shining_Pearl_Cynthia.png",
+data/gymLeaderImages.ts:172:  alder: "https://archives.bulbagarden.net/media/upload/thumb/6/63/Black_White_Alder.png/200px-Black_White_Alder.png",
+data/gymLeaderImages.ts:173:  iris_champion: "https://archives.bulbagarden.net/media/upload/thumb/9/98/Black_2_White_2_Iris.png/200px-Black_2_White_2_Iris.png",
+data/gymLeaderImages.ts:174:  diantha: "https://archives.bulbagarden.net/media/upload/thumb/e/ec/XY_Diantha.png/200px-XY_Diantha.png",
+data/gymLeaderImages.ts:175:  kukui: "https://archives.bulbagarden.net/media/upload/thumb/5/5b/Sun_Moon_Professor_Kukui.png/200px-Sun_Moon_Professor_Kukui.png",
+data/gymLeaderImages.ts:176:  leon: "https://archives.bulbagarden.net/media/upload/thumb/0/00/Sword_Shield_Leon.png/200px-Sword_Shield_Leon.png",
+data/gymLeaderImages.ts:177:  geeta: "https://archives.bulbagarden.net/media/upload/thumb/5/58/Scarlet_Violet_Geeta.png/200px-Scarlet_Violet_Geeta.png",
+data/gymLeaderImages.ts:178:  nemona: "https://archives.bulbagarden.net/media/upload/thumb/0/08/Scarlet_Violet_Nemona.png/200px-Scarlet_Violet_Nemona.png"
+data/gymLeaderImages.ts:183:  "boulder badge": "https://archives.bulbagarden.net/media/upload/d/dd/Boulder_Badge.png",
+data/gymLeaderImages.ts:184:  "cascade badge": "https://archives.bulbagarden.net/media/upload/9/9c/Cascade_Badge.png",
+data/gymLeaderImages.ts:185:  "thunder badge": "https://archives.bulbagarden.net/media/upload/a/a6/Thunder_Badge.png",
+data/gymLeaderImages.ts:186:  "rainbow badge": "https://archives.bulbagarden.net/media/upload/b/b5/Rainbow_Badge.png",
+data/gymLeaderImages.ts:187:  "soul badge": "https://archives.bulbagarden.net/media/upload/7/7d/Soul_Badge.png",
+data/gymLeaderImages.ts:188:  "marsh badge": "https://archives.bulbagarden.net/media/upload/6/6b/Marsh_Badge.png",
+data/gymLeaderImages.ts:189:  "volcano badge": "https://archives.bulbagarden.net/media/upload/1/12/Volcano_Badge.png",
+data/gymLeaderImages.ts:190:  "earth badge": "https://archives.bulbagarden.net/media/upload/7/78/Earth_Badge.png",
+data/gymLeaderImages.ts:193:  "zephyr badge": "https://archives.bulbagarden.net/media/upload/6/62/Zephyr_Badge.png",
+data/gymLeaderImages.ts:194:  "hive badge": "https://archives.bulbagarden.net/media/upload/6/67/Hive_Badge.png",
+data/gymLeaderImages.ts:195:  "plain badge": "https://archives.bulbagarden.net/media/upload/6/6d/Plain_Badge.png",
+data/gymLeaderImages.ts:196:  "fog badge": "https://archives.bulbagarden.net/media/upload/e/e9/Fog_Badge.png",
+data/gymLeaderImages.ts:197:  "storm badge": "https://archives.bulbagarden.net/media/upload/7/7d/Storm_Badge.png",
+data/gymLeaderImages.ts:198:  "mineral badge": "https://archives.bulbagarden.net/media/upload/8/88/Mineral_Badge.png",
+data/gymLeaderImages.ts:199:  "glacier badge": "https://archives.bulbagarden.net/media/upload/3/3b/Glacier_Badge.png",
+data/gymLeaderImages.ts:200:  "rising badge": "https://archives.bulbagarden.net/media/upload/c/c5/Rising_Badge.png",
+data/gymLeaderImages.ts:203:  "stone badge": "https://archives.bulbagarden.net/media/upload/e/eb/Stone_Badge.png",
+data/gymLeaderImages.ts:204:  "knuckle badge": "https://archives.bulbagarden.net/media/upload/7/7b/Knuckle_Badge.png",
+data/gymLeaderImages.ts:205:  "dynamo badge": "https://archives.bulbagarden.net/media/upload/3/34/Dynamo_Badge.png",
+data/gymLeaderImages.ts:206:  "heat badge": "https://archives.bulbagarden.net/media/upload/6/60/Heat_Badge.png",
+data/gymLeaderImages.ts:207:  "balance badge": "https://archives.bulbagarden.net/media/upload/d/d4/Balance_Badge.png",
+data/gymLeaderImages.ts:208:  "feather badge": "https://archives.bulbagarden.net/media/upload/4/42/Feather_Badge.png",
+data/gymLeaderImages.ts:209:  "mind badge": "https://archives.bulbagarden.net/media/upload/7/7b/Mind_Badge.png",
+data/gymLeaderImages.ts:210:  "rain badge": "https://archives.bulbagarden.net/media/upload/1/11/Rain_Badge.png",
+data/gymLeaderImages.ts:213:  "coal badge": "https://archives.bulbagarden.net/media/upload/3/3e/Coal_Badge.png",
+data/gymLeaderImages.ts:214:  "forest badge": "https://archives.bulbagarden.net/media/upload/5/54/Forest_Badge.png",
+data/gymLeaderImages.ts:215:  "relic badge": "https://archives.bulbagarden.net/media/upload/8/86/Relic_Badge.png",
+data/gymLeaderImages.ts:216:  "cobble badge": "https://archives.bulbagarden.net/media/upload/9/97/Cobble_Badge.png",
+data/gymLeaderImages.ts:217:  "fen badge": "https://archives.bulbagarden.net/media/upload/4/49/Fen_Badge.png",
+data/gymLeaderImages.ts:218:  "mine badge": "https://archives.bulbagarden.net/media/upload/d/d7/Mine_Badge.png",
+data/gymLeaderImages.ts:219:  "icicle badge": "https://archives.bulbagarden.net/media/upload/8/88/Icicle_Badge.png",
+data/gymLeaderImages.ts:220:  "beacon badge": "https://archives.bulbagarden.net/media/upload/2/2b/Beacon_Badge.png",
+data/gymLeaderImages.ts:223:  "trio badge": "https://archives.bulbagarden.net/media/upload/8/82/Trio_Badge.png",
+data/gymLeaderImages.ts:224:  "basic badge": "https://archives.bulbagarden.net/media/upload/2/2f/Basic_Badge.png",
+data/gymLeaderImages.ts:225:  "insect badge": "https://archives.bulbagarden.net/media/upload/d/d0/Insect_Badge.png",
+data/gymLeaderImages.ts:226:  "bolt badge": "https://archives.bulbagarden.net/media/upload/7/7e/Bolt_Badge.png",
+data/gymLeaderImages.ts:227:  "quake badge": "https://archives.bulbagarden.net/media/upload/f/f8/Quake_Badge.png",
+data/gymLeaderImages.ts:228:  "jet badge": "https://archives.bulbagarden.net/media/upload/7/7d/Jet_Badge.png",
+data/gymLeaderImages.ts:229:  "freeze badge": "https://archives.bulbagarden.net/media/upload/0/05/Freeze_Badge.png",
+data/gymLeaderImages.ts:230:  "legend badge": "https://archives.bulbagarden.net/media/upload/c/c4/Legend_Badge.png",
+data/gymLeaderImages.ts:233:  "toxic badge": "https://archives.bulbagarden.net/media/upload/0/06/Toxic_Badge.png",
+data/gymLeaderImages.ts:234:  "wave badge": "https://archives.bulbagarden.net/media/upload/d/d1/Wave_Badge.png",
+data/gymLeaderImages.ts:237:  "bug badge": "https://archives.bulbagarden.net/media/upload/a/a6/Bug_Badge.png",
+data/gymLeaderImages.ts:238:  "cliff badge": "https://archives.bulbagarden.net/media/upload/2/2b/Cliff_Badge.png",
+data/gymLeaderImages.ts:239:  "rumble badge": "https://archives.bulbagarden.net/media/upload/9/9c/Rumble_Badge.png",
+data/gymLeaderImages.ts:240:  "plant badge": "https://archives.bulbagarden.net/media/upload/b/b1/Plant_Badge.png",
+data/gymLeaderImages.ts:241:  "voltage badge": "https://archives.bulbagarden.net/media/upload/0/04/Voltage_Badge.png",
+data/gymLeaderImages.ts:242:  "fairy badge": "https://archives.bulbagarden.net/media/upload/e/ec/Fairy_Badge.png",
+data/gymLeaderImages.ts:243:  "psychic badge": "https://archives.bulbagarden.net/media/upload/c/c4/Psychic_Badge.png",
+data/gymLeaderImages.ts:244:  "iceberg badge": "https://archives.bulbagarden.net/media/upload/b/b3/Iceberg_Badge.png",
+data/gymLeaderImages.ts:247:  "grass badge": "https://archives.bulbagarden.net/media/upload/e/e0/Grass_Badge.png",
+data/gymLeaderImages.ts:248:  "water badge": "https://archives.bulbagarden.net/media/upload/8/8b/Water_Badge.png",
+data/gymLeaderImages.ts:249:  "fire badge": "https://archives.bulbagarden.net/media/upload/3/36/Fire_Badge.png",
+data/gymLeaderImages.ts:250:  "fighting badge": "https://archives.bulbagarden.net/media/upload/1/1b/Fighting_Badge.png",
+data/gymLeaderImages.ts:251:  "ghost badge": "https://archives.bulbagarden.net/media/upload/0/01/Ghost_Badge.png",
+data/gymLeaderImages.ts:252:  "fairy badge galar": "https://archives.bulbagarden.net/media/upload/c/cc/Fairy_Badge_Galar.png",
+data/gymLeaderImages.ts:253:  "rock badge": "https://archives.bulbagarden.net/media/upload/1/1c/Rock_Badge.png",
+data/gymLeaderImages.ts:254:  "ice badge": "https://archives.bulbagarden.net/media/upload/8/85/Ice_Badge.png",
+data/gymLeaderImages.ts:255:  "dark badge": "https://archives.bulbagarden.net/media/upload/8/82/Dark_Badge.png",
+data/gymLeaderImages.ts:256:  "dragon badge": "https://archives.bulbagarden.net/media/upload/6/6d/Dragon_Badge.png"
+scripts/scrapeTCGRarityActual.js:13:// Actual TCG rarity icons from Bulbagarden archives (verified URLs)
+scripts/scrapeTCGRarityActual.js:16:  { name: 'rarity-a.png', url: 'https://archives.bulbagarden.net/media/upload/2/2d/Rarity_A.png' },
+scripts/scrapeTCGRarityActual.js:17:  { name: 'rarity-c.png', url: 'https://archives.bulbagarden.net/media/upload/f/f9/Rarity_C.png' },
+scripts/scrapeTCGRarityActual.js:18:  { name: 'rarity-cc.png', url: 'https://archives.bulbagarden.net/media/upload/7/72/Rarity_CC.png' },
+scripts/scrapeTCGRarityActual.js:19:  { name: 'rarity-common.png', url: 'https://archives.bulbagarden.net/media/upload/2/20/Rarity_Common_SV.png' },
+scripts/scrapeTCGRarityActual.js:20:  { name: 'rarity-uncommon.png', url: 'https://archives.bulbagarden.net/media/upload/d/d0/Rarity_Uncommon_SV.png' },
+scripts/scrapeTCGRarityActual.js:21:  { name: 'rarity-rare.png', url: 'https://archives.bulbagarden.net/media/upload/d/d5/Rarity_Rare_SV.png' },
+scripts/scrapeTCGRarityActual.js:24:  { name: 'rarity-h.png', url: 'https://archives.bulbagarden.net/media/upload/3/32/Rarity_H.png' },
+scripts/scrapeTCGRarityActual.js:25:  { name: 'rarity-hr.png', url: 'https://archives.bulbagarden.net/media/upload/d/d2/Rarity_HR.png' },
+scripts/scrapeTCGRarityActual.js:26:  { name: 'rarity-rare-holo.png', url: 'https://archives.bulbagarden.net/media/upload/0/08/Rarity_Rare_Holo_SV.png' },
+scripts/scrapeTCGRarityActual.js:29:  { name: 'rarity-rrr.png', url: 'https://archives.bulbagarden.net/media/upload/6/60/Rarity_RRR.png' },
+scripts/scrapeTCGRarityActual.js:30:  { name: 'rarity-rr.png', url: 'https://archives.bulbagarden.net/media/upload/f/fc/Rarity_RR.png' },
+scripts/scrapeTCGRarityActual.js:31:  { name: 'rarity-sr.png', url: 'https://archives.bulbagarden.net/media/upload/e/ed/Rarity_SR.png' },
+scripts/scrapeTCGRarityActual.js:32:  { name: 'rarity-ssr.png', url: 'https://archives.bulbagarden.net/media/upload/2/28/Rarity_SSR.png' },
+scripts/scrapeTCGRarityActual.js:33:  { name: 'rarity-sar.png', url: 'https://archives.bulbagarden.net/media/upload/9/9c/Rarity_SAR.png' },
+scripts/scrapeTCGRarityActual.js:34:  { name: 'rarity-ur.png', url: 'https://archives.bulbagarden.net/media/upload/c/c1/Rarity_UR.png' },
+scripts/scrapeTCGRarityActual.js:37:  { name: 'rarity-ace.png', url: 'https://archives.bulbagarden.net/media/upload/4/44/Rarity_ACE.png' },
+scripts/scrapeTCGRarityActual.js:38:  { name: 'rarity-ace-spec-rare.png', url: 'https://archives.bulbagarden.net/media/upload/f/f6/Rarity_ACE_SPEC_Rare.png' },
+scripts/scrapeTCGRarityActual.js:41:  { name: 'rarity-ar.png', url: 'https://archives.bulbagarden.net/media/upload/4/42/Rarity_AR.png' },
+scripts/scrapeTCGRarityActual.js:44:  { name: 'rarity-k.png', url: 'https://archives.bulbagarden.net/media/upload/d/d4/Rarity_K.png' },
+scripts/scrapeTCGRarityActual.js:47:  { name: 'rarity-pr.png', url: 'https://archives.bulbagarden.net/media/upload/3/30/Rarity_PR.png' },
+scripts/scrapeTCGRarityActual.js:50:  { name: 'rarity-r.png', url: 'https://archives.bulbagarden.net/media/upload/0/0f/Rarity_R.png' },
+scripts/scrapeTCGRarityActual.js:53:  { name: 'rarity-sh.png', url: 'https://archives.bulbagarden.net/media/upload/e/e3/Rarity_SH.png' },
+scripts/scrapeTCGRarityActual.js:54:  { name: 'rarity-shiny-common.png', url: 'https://archives.bulbagarden.net/media/upload/3/38/Rarity_Shiny_C.png' },
+scripts/scrapeTCGRarityActual.js:55:  { name: 'rarity-shiny-r.png', url: 'https://archives.bulbagarden.net/media/upload/d/d3/Rarity_Shiny_R.png' },
+scripts/scrapeTCGRarityActual.js:56:  { name: 'rarity-shiny-rr.png', url: 'https://archives.bulbagarden.net/media/upload/3/3f/Rarity_Shiny_RR.png' },
+scripts/scrapeTCGRarityActual.js:57:  { name: 'rarity-shiny-uc.png', url: 'https://archives.bulbagarden.net/media/upload/e/ee/Rarity_Shiny_UC.png' },
+scripts/scrapeTCGRarityActual.js:60:  { name: 'rarity-tr.png', url: 'https://archives.bulbagarden.net/media/upload/7/74/Rarity_TR.png' },
+scripts/scrapeTCGRarityActual.js:63:  { name: 'rarity-u.png', url: 'https://archives.bulbagarden.net/media/upload/8/84/Rarity_U.png' },
+scripts/scrapeTCGRarityActual.js:64:  { name: 'rarity-uc.png', url: 'https://archives.bulbagarden.net/media/upload/1/1f/Rarity_UC.png' },
+scripts/scrapeTCGRarityActual.js:67:  { name: 'rarity-black-white-rare.png', url: 'https://archives.bulbagarden.net/media/upload/f/fb/Rarity_Black_White_Rare.png' },
+scripts/scrapeTCGRarityActual.js:70:  { name: 'rarity-tg.png', url: 'https://archives.bulbagarden.net/media/upload/5/54/Rarity_TG.png' },
+scripts/scrapeTCGRarityActual.js:73:  { name: 'rarity-double-rare.png', url: 'https://archives.bulbagarden.net/media/upload/2/2e/Rarity_Double_Rare_SV.png' },
+scripts/scrapeTCGRarityActual.js:74:  { name: 'rarity-illustration-rare.png', url: 'https://archives.bulbagarden.net/media/upload/f/fa/Rarity_Illustration_Rare_SV.png' },
+scripts/scrapeTCGRarityActual.js:75:  { name: 'rarity-ultra-rare.png', url: 'https://archives.bulbagarden.net/media/upload/b/b9/Rarity_Ultra_Rare_SV.png' },
+scripts/scrapeTCGRarityActual.js:76:  { name: 'rarity-special-illustration-rare.png', url: 'https://archives.bulbagarden.net/media/upload/1/19/Rarity_Special_Illustration_Rare_SV.png' },
+scripts/scrapeTCGRarityActual.js:77:  { name: 'rarity-hyper-rare.png', url: 'https://archives.bulbagarden.net/media/upload/e/e2/Rarity_Hyper_Rare_SV.png' }
+scripts/getTateLizaPair.js:53:    // Try manual search on Bulbagarden Archives
+scripts/getTateLizaPair.js:54:    console.log('\nTrying direct Bulbagarden Archives search...');
+scripts/getTateLizaPair.js:56:    const archivesApiUrl = 'https://archives.bulbagarden.net/w/api.php';
+scripts/getTateLizaPair.js:67:    const response = await fetch(`${archivesApiUrl}?${new URLSearchParams(searchParams)}`);
+scripts/generate-rename-mapping.js:138:                   files.find(f => !f.includes('/_archive/')) ||
+scripts/scrapeTCGRarity.js:7:const baseUrl = 'https://archives.bulbagarden.net';
+scripts/runScraper.js:13:import { archivesCategoryScraper } from '../utils/scrapers/archivesCategoryScraper.js';
+scripts/runScraper.js:59:    path.join(projectRoot, scraperConfig.storage.dataDir, 'archives'),
+scripts/runScraper.js:60:    path.join(projectRoot, scraperConfig.storage.imagesDir, 'archives'),
+scripts/runScraper.js:85:  archives     Scrape from Bulbagarden Archives categories
+scripts/runScraper.js:100:  --limit [number]   Override the default download limit for archives scraping
+scripts/runScraper.js:101:  --categories       Comma-separated list of categories to scrape (archives only)
+scripts/runScraper.js:108:  node scripts/runScraper.js archives
+scripts/runScraper.js:109:  node scripts/runScraper.js archives --limit 300
+scripts/runScraper.js:110:  node scripts/runScraper.js archives --categories gymLeaderArt,eliteFourArt --limit 200
+scripts/runScraper.js:288:// Scrape from Bulbagarden Archives categories
+scripts/runScraper.js:289:async function scrapeArchives(options) {
+scripts/runScraper.js:290:  colorLog('magenta', '📦 Starting Bulbagarden Archives category scraping...');
+scripts/runScraper.js:296:      const data = await archivesCategoryScraper.scrapeCategories(categories, options.limit);
+scripts/runScraper.js:302:    const data = await archivesCategoryScraper.scrapeAllCategories(options.limit);
+scripts/runScraper.js:303:    colorLog('green', `✅ Successfully scraped all Archive categories`);
+scripts/runScraper.js:312:    colorLog('red', `❌ Error scraping archives: ${error.message}`);
+scripts/runScraper.js:365:      case 'archives':
+scripts/runScraper.js:366:        await scrapeArchives(options);
+scripts/fetchTCGRarityPage.js:20:    const html = await fetchPage('https://archives.bulbagarden.net/wiki/Category:TCG_rarity_icons');
+scripts/fetchTCGRarityPage.js:27:    const imageRegex = /src="(\/\/archives\.bulbagarden\.net\/media\/upload\/[^"]+\.png)"/g;
+scripts/fetchTCGRarityPage.js:40:        filePages.push('https://archives.bulbagarden.net' + match[1]);
+utils/scrapers/gymLeaderDirectScraper.ts:65:  private archivesApiUrl: string;
+utils/scrapers/gymLeaderDirectScraper.ts:72:    this.archivesApiUrl = 'https://archives.bulbagarden.net/w/api.php';
+utils/scrapers/gymLeaderDirectScraper.ts:147:      const response = await fetch(`${this.archivesApiUrl}?${new URLSearchParams(stringParams)}`);
+utils/scrapers/gymLeaderDirectScraper.ts:190:      const response = await fetch(`${this.archivesApiUrl}?${new URLSearchParams(stringParams)}`);
+utils/scrapers/scraperConfig.ts:200:    imageUrl: 'https://archives.bulbagarden.net'
+utils/scrapers/archivesCategoryScraper.ts:1:// Archives Category Scraper
+utils/scrapers/archivesCategoryScraper.ts:2:// Downloads images directly from Bulbagarden Archives categories
+utils/scrapers/archivesCategoryScraper.ts:65:class ArchivesCategoryScraper {
+utils/scrapers/archivesCategoryScraper.ts:67:  private archivesApiUrl: string;
+utils/scrapers/archivesCategoryScraper.ts:72:    this.archivesApiUrl = 'https://archives.bulbagarden.net/w/api.php';
+utils/scrapers/archivesCategoryScraper.ts:74:    // Category mappings - using actual Archives categories
+utils/scrapers/archivesCategoryScraper.ts:289:  // Fetch category members from Archives
+utils/scrapers/archivesCategoryScraper.ts:306:      const response = await fetch(`${this.archivesApiUrl}?${new URLSearchParams(params)}`);
+utils/scrapers/archivesCategoryScraper.ts:336:  // Get image info from Archives
+utils/scrapers/archivesCategoryScraper.ts:348:      const response = await fetch(`${this.archivesApiUrl}?${new URLSearchParams(params)}`);
+utils/scrapers/archivesCategoryScraper.ts:375:    const cacheKey = `archives-category-${categoryKey}`;
+utils/scrapers/archivesCategoryScraper.ts:464:    logger.debug('Starting Archives category scraping...');
+utils/scrapers/archivesCategoryScraper.ts:478:    logger.debug('Archives category scraping completed!');
+utils/scrapers/archivesCategoryScraper.ts:485:    logger.debug(`Starting Archives category scraping for: ${categoryKeys.join(', ')}`);
+utils/scrapers/archivesCategoryScraper.ts:549:      await saveDataToFile(this.scrapedData, 'archives-categories.json', 'archives');
+utils/scrapers/archivesCategoryScraper.ts:553:        await saveDataToFile(data, `archives-${key}.json`, 'archives');
+utils/scrapers/archivesCategoryScraper.ts:556:      logger.debug('Archives category data saved successfully');
+utils/scrapers/archivesCategoryScraper.ts:558:      logger.error('Error saving archives data:', { error: (error as Error).message });
+utils/scrapers/archivesCategoryScraper.ts:564:export const archivesCategoryScraper = new ArchivesCategoryScraper();
+utils/scrapers/archivesCategoryScraper.ts:565:export default ArchivesCategoryScraper;
+docs/README.md:36:### `/archive/`
+docs/showdown-integration/DATA_SYNC_STRATEGY.md:445:-- Trigger to archive before update
+docs/showdown-integration/DATA_SYNC_STRATEGY.md:446:CREATE TRIGGER archive_before_sync
+docs/showdown-integration/DATA_SYNC_STRATEGY.md:449:EXECUTE FUNCTION archive_sync_data();
+docs/showdown-integration/DATA_SYNC_STRATEGY.md:485:3. **Weekly**: Archived to cold storage
+docs/archive/README_ARCHIVED_DOCS.md:1:# Archived Documentation
+docs/archive/README_ARCHIVED_DOCS.md:3:## Why These Are Archived
+docs/archive/README_ARCHIVED_DOCS.md:5:Multiple documentation files were created during different Claude sessions, leading to confusion with conflicting phase numbers and plans. These have been archived in favor of a single source of truth.
+docs/archive/README_ARCHIVED_DOCS.md:13:## Archived Documents (For Reference Only)
+docs/archive/TECHNICAL_DEBT_PLAN.md:96:  - Excluded archive files from compilation
+docs/archive/TECHNICAL_DEBT_PLAN.md:332:   - Excluded archive files from tsconfig
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_STATUS_JULY_13.md:46:utils/scrapers/archivesCategoryScraper.js
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_NOTES.md:15:   - `archivesCategoryScraper.js → archivesCategoryScraper.ts` (510 lines)
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_27_COMPLETE.md:29:### 3. Archived Duplicate JS Files
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_27_COMPLETE.md:30:**Archived 44 JS files from utils directory**
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_27_COMPLETE.md:32:- Files moved to archive directory instead of deletion
+docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_27_COMPLETE.md:122:4. **Archive Don't Delete**: Keeping backups proved valuable
+docs/archive/cleanup-project-august-2025/SESSION_SUMMARY.md:91:- Archive duplicate pages
+docs/archive/cleanup-project-august-2025/PROJECT_EXECUTION_PLAN.md:204:## Phase 6: Archive Duplicate Pages 🗂️
+docs/archive/cleanup-project-august-2025/PROJECT_EXECUTION_PLAN.md:214:- [ ] Move unused to `_archive/pages/`
+docs/archive/cleanup-project-august-2025/PROJECT_EXECUTION_PLAN.md:227:- [ ] Duplicates archived (not deleted)
+docs/archive/cleanup-project-august-2025/PROJECT_EXECUTION_PLAN.md:229:- [ ] Commit: "refactor: Archive duplicate page implementations"
+docs/archive/cleanup-project-august-2025/NEXT_SESSION_PROMPT.md:59:6. Phase 6: Archive Duplicate Pages
+docs/archive/cleanup-project-august-2025/PHASE_1_INVESTIGATION_COMPLETE.md:160:**Recommendation**: Keep latest only, archive others
+docs/archive/cleanup-project-august-2025/PHASE_1_INVESTIGATION_COMPLETE.md:173:3. **Archive old documentation** - Keep for reference
+docs/archive/cleanup-project-august-2025/PHASE_1_INVESTIGATION_COMPLETE.md:194:1. **Archive obsolete docs** - TypeScript migration notes
+docs/archive/cleanup-project-august-2025/CRITICAL_FINDINGS_REPORT.md:30:- Create /pages/_experimental/ or archive folder
+docs/archive/cleanup-project-august-2025/CRITICAL_FINDINGS_REPORT.md:70:- `OverviewTabV2.tsx` (archived but why?)
+docs/archive/cleanup-project-august-2025/CRITICAL_FINDINGS_REPORT.md:75:- Old versions not properly archived
+docs/archive/cleanup-project-august-2025/CRITICAL_FINDINGS_REPORT.md:114:- 43 files in archive folders
+docs/archive/cleanup-project-august-2025/CRITICAL_FINDINGS_REPORT.md:135:4. **Archive outdated documentation**
+docs/archive/cleanup-project-august-2025/EMERGENCY_FIX_LOG.md:131:- [ ] Archive or delete experimental pages after review
+docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:17:- `/components/MobileBattleSimulator.tsx` (archived)
+docs/archive/cleanup-project-august-2025/PROJECT_CLEAN_MASTER_PLAN.md:126:### Phase 6: Archive Duplicate Pages
+docs/archive/cleanup-project-august-2025/PROJECT_CLEAN_MASTER_PLAN.md:128:- Keep active version, archive others
+docs/archive/cleanup-project-august-2025/PROJECT_CLEAN_MASTER_PLAN.md:208:- [ ] Phase 6: Archive Duplicate Pages
+docs/archive/cleanup-project-august-2025/PROJECT_CLEAN_MASTER_PLAN.md:334:- **Phase 6**: Archive pages (30 min)
+docs/archive/cleanup-project-august-2025/PHASE_CLARIFICATION.md:40:### Phase 6: Archive Duplicate Pages
+docs/archive/cleanup-project-august-2025/CLEANUP_STATUS_TRUTH.md:121:- Archive 120+ obsolete docs
+docs/archive/cleanup-project-august-2025/CLEANUP_STATUS_TRUTH.md:199:**This is the single source of truth. All other documentation is now archived for reference only.**
+docs/archive/cleanup-project-august-2025/MASTER_INVENTORY_PHASE_0.md:40:- OverviewTabV3 (V2 exists in archive)
+docs/archive/cleanup-project-august-2025/MASTER_INVENTORY_PHASE_0.md:42:- EvolutionTabV3 (V2 exists in archive)
+docs/archive/cleanup-project-august-2025/CLEANUP_PLAN.md:35:- Old mobile-specific components (already archived)
+docs/archive/cleanup-project-august-2025/CLEANUP_PLAN.md:153:- Keep archived code for 30 days
+docs/archive/old-project-resources/DOCUMENTATION_INDEX.md:39:### Archive Directories
+docs/archive/old-project-resources/DOCUMENTATION_INDEX.md:40:- **[archive/typescript-migration/](archive/typescript-migration/)** - Historical TypeScript migration session files
+docs/archive/old-project-resources/DOCUMENTATION_INDEX.md:41:- **[archive/phase-progress/](archive/phase-progress/)** - Phase-based development progress files
+docs/archive/old-project-resources/DOCUMENTATION_INDEX.md:42:- **[archive/design-notes/](archive/design-notes/)** - Original design implementation notes
+docs/archive/old-project-resources/DOCUMENTATION_INDEX.md:43:- **[archive/debugging/](archive/debugging/)** - Debugging and fix documentation
+docs/archive/old-project-resources/DOCUMENTATION_INDEX.md:66:- TypeScript migration sessions archived for historical reference
+docs/archive/old-project-resources/DOCUMENTATION_INDEX.md:67:- Phase progress files archived but accessible
+docs/archive/old-project-resources/CLAUDE_DETAILED_ARCHIVE.md:67:- Archived 44 duplicate JS files from utils directory
+docs/archive/old-project-resources/CLAUDE_DETAILED_ARCHIVE.md:270:   - `archivesCategoryScraper.js → archivesCategoryScraper.ts` (510 lines)
+docs/archive/old-project-resources/badges-analysis-report.md:108:The badge collection is exceptionally comprehensive with 98.8% coverage of all official gym badges. Only one anime-exclusive badge is missing. The collection also includes extensive additional content from TCG, anime character collections, and special variants, making it a thorough archive of Pokémon badge imagery.
+docs/archive/ARCHIVE_SUMMARY.md:1:# Documentation Archive Summary
+docs/archive/ARCHIVE_SUMMARY.md:3:## Archive Structure
+docs/archive/ARCHIVE_SUMMARY.md:36:### Previous Archives
+docs/archive/ARCHIVE_SUMMARY.md:42:## Why These Were Archived
+docs/archive/ARCHIVE_SUMMARY.md:49:## Accessing Archived Documentation
+docs/archive/ARCHIVE_SUMMARY.md:51:All archived documentation remains accessible for historical reference:
+docs/archive/ARCHIVE_SUMMARY.md:57:## Archive Policy
+docs/archive/ARCHIVE_SUMMARY.md:59:Documents are archived when they:
+docs/archive/ARCHIVE_SUMMARY.md:68:*Archive Created: August 31, 2025*
+docs/archive/ARCHIVE_SUMMARY.md:69:*Total Archived Documents: ~120 files*
+docs/archive/DOCUMENTATION_INDEX.md:83:## Archived Documentation
+docs/archive/DOCUMENTATION_INDEX.md:85:All legacy documentation has been moved to `/docs/archive/2024-09-01-legacy/`.
+docs/archive/DOCUMENTATION_INDEX.md:87:**DO NOT USE ARCHIVED DOCS** - They contain outdated patterns and confusing information.
+docs/archive/DOCUMENTATION_INDEX.md:94:- **`/docs/archive/`**: Legacy documentation (reference only)
+docs/archive/SAFE_TO_DELETE_COMPONENTS.md:155:### Archive before deletion:
+docs/archive/SAFE_TO_DELETE_COMPONENTS.md:157:# Create archive directory
+docs/archive/SAFE_TO_DELETE_COMPONENTS.md:158:mkdir -p archived-components/phase-8-stage-1
+docs/archive/SAFE_TO_DELETE_COMPONENTS.md:160:# Archive specific component
+docs/archive/SAFE_TO_DELETE_COMPONENTS.md:161:cp -r components/ui/forms/EnhancedInput.tsx archived-components/phase-8-stage-1/
+docs/archive/SAFE_TO_DELETE_COMPONENTS.md:163:# Archive entire directory
+docs/archive/SAFE_TO_DELETE_COMPONENTS.md:164:cp -r components/mobile archived-components/phase-8-stage-1/
+docs/archive/SAFE_TO_DELETE_COMPONENTS.md:175:4. [ ] Archive to `archived-components/`
+docs/archive/CURRENT_WORK.md:29:- ✅ Archived legacy docs to `/docs/archive/2024-09-01-legacy/`
+docs/archive/CURRENT_WORK.md:222:   - Archive mobile-legacy directory
+docs/audit/deleted_files.txt:3:components/_archive/mobile-legacy/CardScanner.tsx
+docs/audit/deleted_files.txt:4:components/_archive/mobile-legacy/EnhancedTouchInteractions.tsx
+docs/audit/deleted_files.txt:5:components/_archive/mobile-legacy/FloatingActionButton.tsx
+docs/audit/deleted_files.txt:6:components/_archive/mobile-legacy/GestureCardSorting.tsx
+docs/audit/deleted_files.txt:7:components/_archive/mobile-legacy/LongPressMenu.tsx
+docs/audit/deleted_files.txt:8:components/_archive/mobile-legacy/MobileCardGrid.tsx
+docs/audit/deleted_files.txt:9:components/_archive/mobile-legacy/MobileFilterSheet.tsx
+docs/audit/deleted_files.txt:10:components/_archive/mobile-legacy/MobileIntegration.tsx
+docs/audit/deleted_files.txt:11:components/_archive/mobile-legacy/MobileNavigation.tsx
+docs/audit/deleted_files.txt:12:components/_archive/mobile-legacy/MobileSearchExperience.tsx
+docs/audit/deleted_files.txt:13:components/_archive/mobile-legacy/MobileShare.tsx
+docs/audit/deleted_files.txt:14:components/_archive/mobile-legacy/MobileTypeFilter.tsx
+docs/audit/deleted_files.txt:15:components/_archive/mobile-legacy/PinchToZoom.tsx
+docs/audit/deleted_files.txt:16:components/_archive/mobile-legacy/PushNotifications.tsx
+docs/audit/deleted_files.txt:17:components/_archive/mobile-legacy/SwipeToRefresh.tsx
+docs/audit/deleted_files.txt:18:components/_archive/mobile-legacy/TypeEffectivenessCards.tsx
+docs/audit/deleted_files.txt:19:components/_archive/mobile-legacy/VoiceSearch.tsx
+docs/audit/name_status_main_to_head.txt:13:C098	components/tcg-set-detail/EnhancedCardGrid.tsx	archived-components/renames/EnhancedCardGrid.tsx
+docs/audit/name_status_main_to_head.txt:14:R100	components/ui/AdvancedKeyboardShortcuts.tsx	archived-components/stage-1/AdvancedKeyboardShortcuts.tsx
+docs/audit/name_status_main_to_head.txt:15:R100	components/ui/AdvancedSearchInterface.tsx	archived-components/stage-1/AdvancedSearchInterface.tsx
+docs/audit/name_status_main_to_head.txt:16:R100	components/ui/forms/EnhancedInput.tsx	archived-components/stage-1/EnhancedInput.tsx
+docs/audit/name_status_main_to_head.txt:17:R100	components/ui/forms/EnhancedSelect.tsx	archived-components/stage-1/EnhancedSelect.tsx
+docs/audit/name_status_main_to_head.txt:18:R100	components/ui/forms/EnhancedSwitch.tsx	archived-components/stage-1/EnhancedSwitch.tsx
+docs/audit/name_status_main_to_head.txt:19:R100	components/ui/forms/EnhancedTextarea.tsx	archived-components/stage-1/EnhancedTextarea.tsx
+docs/audit/name_status_main_to_head.txt:20:R100	components/FastRefreshQuickTest.tsx	archived-components/stage-1/FastRefreshQuickTest.tsx
+docs/audit/name_status_main_to_head.txt:21:R099	components/pokemon/MobileAbilitiesPage.tsx	archived-components/stage-1/MobileAbilitiesPage.tsx
+docs/audit/name_status_main_to_head.txt:22:R100	components/battle-simulator/MobileBattleSimulator.tsx	archived-components/stage-1/MobileBattleSimulator.tsx
+docs/audit/name_status_main_to_head.txt:23:R100	components/ui/MobileDesignSystem.tsx	archived-components/stage-1/MobileDesignSystem.tsx
+docs/audit/name_status_main_to_head.txt:24:R099	components/pokemon/MobileItemsPage.tsx	archived-components/stage-1/MobileItemsPage.tsx
+docs/audit/name_status_main_to_head.txt:25:R100	components/pokemon/MobileMovesPage.tsx	archived-components/stage-1/MobileMovesPage.tsx
+docs/audit/name_status_main_to_head.txt:26:R100	components/ui/MobileOptimizedPokeID.tsx	archived-components/stage-1/MobileOptimizedPokeID.tsx
+docs/audit/name_status_main_to_head.txt:27:R098	components/tcg-set-detail/MobileTCGSetDetail.tsx	archived-components/stage-1/MobileTCGSetDetail.tsx
+docs/audit/name_status_main_to_head.txt:28:R100	components/ui/QATestingSuite.tsx	archived-components/stage-1/QATestingSuite.tsx
+docs/audit/name_status_main_to_head.txt:29:R100	components/ui/QATestingTool.tsx	archived-components/stage-1/QATestingTool.tsx
+docs/audit/name_status_main_to_head.txt:30:C100	components/ui/cards/UnifiedCard.tsx	archived-components/stage-1/UnifiedCard.tsx
+docs/audit/name_status_main_to_head.txt:31:R100	components/ui/iPhoneQATests.tsx	archived-components/stage-1/iPhoneQATests.tsx
+docs/audit/name_status_main_to_head.txt:32:R100	components/ui/OptimizedImageMobile.tsx	archived-components/stage-2/OptimizedImageMobile.tsx
+docs/audit/name_status_main_to_head.txt:33:R100	hooks/useMobileOptimization.ts	archived-components/stage-2/useMobileOptimization.ts
+docs/audit/name_status_main_to_head.txt:34:R100	components/ui/ComparisonModal.tsx	archived-components/stage-3/ComparisonModal.tsx
+docs/audit/name_status_main_to_head.txt:35:R083	components/GlobalModal.tsx	archived-components/stage-3/GlobalModal.tsx
+docs/audit/name_status_main_to_head.txt:36:A	archived-components/stage-3/ModalWrapper.tsx
+docs/audit/name_status_main_to_head.txt:37:R100	components/ui/filters/AnimatedFilterPanel.tsx	archived-components/stage-4/AnimatedFilterPanel.tsx
+docs/audit/name_status_main_to_head.txt:38:R100	components/ui/progress/CircularProgress.tsx	archived-components/stage-4/CircularProgress.tsx
+docs/audit/name_status_main_to_head.txt:39:R100	components/ui/DeckStackDisplay.tsx	archived-components/stage-4/DeckStackDisplay.tsx
+docs/audit/name_status_main_to_head.txt:40:R100	components/ui/EnhancedEvolutionDisplay.tsx	archived-components/stage-4/EnhancedEvolutionDisplay.tsx
+docs/audit/name_status_main_to_head.txt:41:R100	components/ui/EnhancedRarityBadge.tsx	archived-components/stage-4/EnhancedRarityBadge.tsx
+docs/audit/name_status_main_to_head.txt:42:R100	components/ui/filters/FilterChips.tsx	archived-components/stage-4/FilterChips.tsx
+docs/audit/name_status_main_to_head.txt:43:R100	components/ui/GymLeaderShowcase.tsx	archived-components/stage-4/GymLeaderShowcase.tsx
+docs/audit/name_status_main_to_head.txt:44:R100	components/ui/KpiCard.tsx	archived-components/stage-4/KpiCard.tsx
+docs/audit/name_status_main_to_head.txt:45:R100	components/ui/LevelTag.tsx	archived-components/stage-4/LevelTag.tsx
+docs/audit/name_status_main_to_head.txt:46:R100	components/ui/progress/LinearProgress.tsx	archived-components/stage-4/LinearProgress.tsx
+docs/audit/name_status_main_to_head.txt:47:R100	components/ui/layout/ListContainer.tsx	archived-components/stage-4/ListContainer.tsx
+docs/audit/name_status_main_to_head.txt:48:R100	components/ui/filters/MultiSelectFilter.tsx	archived-components/stage-4/MultiSelectFilter.tsx
+docs/audit/name_status_main_to_head.txt:49:R100	components/ui/PokemonEasterEggs.tsx	archived-components/stage-4/PokemonEasterEggs.tsx
+docs/audit/name_status_main_to_head.txt:50:R100	components/ui/ProfessionalSetHeader.tsx	archived-components/stage-4/ProfessionalSetHeader.tsx
+docs/audit/name_status_main_to_head.txt:51:R100	components/ui/Radio.tsx	archived-components/stage-4/Radio.tsx
+docs/audit/name_status_main_to_head.txt:52:R100	components/ui/RegionNavigation.tsx	archived-components/stage-4/RegionNavigation.tsx
+docs/audit/name_status_main_to_head.txt:53:R100	components/ui/RegionSelector.tsx	archived-components/stage-4/RegionSelector.tsx
+docs/audit/name_status_main_to_head.txt:54:R100	components/ui/RegionalEvolutionHandler.tsx	archived-components/stage-4/RegionalEvolutionHandler.tsx
+docs/audit/name_status_main_to_head.txt:55:R100	components/ui/SimpleEvolutionDisplay.tsx	archived-components/stage-4/SimpleEvolutionDisplay.tsx
+docs/audit/name_status_main_to_head.txt:56:R100	components/ui/SimplifiedMovesDisplay.tsx	archived-components/stage-4/SimplifiedMovesDisplay.tsx
+docs/audit/name_status_main_to_head.txt:57:R100	components/ui/SmartRecommendationEngine.tsx	archived-components/stage-4/SmartRecommendationEngine.tsx
+docs/audit/name_status_main_to_head.txt:58:R100	components/ui/SocialCommunityHub.tsx	archived-components/stage-4/SocialCommunityHub.tsx
+docs/audit/name_status_main_to_head.txt:59:R100	components/ui/progress/StepProgress.tsx	archived-components/stage-4/StepProgress.tsx
+docs/audit/name_status_main_to_head.txt:60:R100	components/ui/TouchGestureSystem.tsx	archived-components/stage-4/TouchGestureSystem.tsx
+docs/audit/name_status_main_to_head.txt:61:R100	components/ui/UIPanel.tsx	archived-components/stage-4/UIPanel.tsx
+docs/audit/name_status_main_to_head.txt:62:R100	components/ui/VirtualizedList.tsx	archived-components/stage-4/VirtualizedList.tsx
+docs/audit/name_status_main_to_head.txt:63:R100	components/ui/VisualCardSearch.tsx	archived-components/stage-4/VisualCardSearch.tsx
+docs/audit/name_status_main_to_head.txt:64:R099	components/ui/forms/VisualSearchFilters.tsx	archived-components/stage-4/VisualSearchFilters.tsx
+docs/audit/name_status_main_to_head.txt:65:R095	components/ui/ZoomableImage.tsx	archived-components/stage-4/ZoomableImage.tsx
+docs/audit/name_status_main_to_head.txt:66:R100	components/ui/AriaLiveAnnouncer.hooks.tsx	archived-components/stage-5/AriaLiveAnnouncer.hooks.tsx
+docs/audit/name_status_main_to_head.txt:67:R100	components/ui/AriaLiveAnnouncer.tsx	archived-components/stage-5/AriaLiveAnnouncer.tsx
+docs/audit/name_status_main_to_head.txt:68:R100	components/pokemon/BaseStatsRanking.tsx	archived-components/stage-5/BaseStatsRanking.tsx
+docs/audit/name_status_main_to_head.txt:69:R100	components/BulbapediaDataExample.tsx	archived-components/stage-5/BulbapediaDataExample.tsx
+docs/audit/name_status_main_to_head.txt:70:R100	components/ui/CacheStatus.tsx	archived-components/stage-5/CacheStatus.tsx
+docs/audit/name_status_main_to_head.txt:71:R099	components/ui/cards/CardComparisonTool.tsx	archived-components/stage-5/CardComparisonTool.tsx
+docs/audit/name_status_main_to_head.txt:72:R100	components/tcg-set-detail/CircularRarityChart.tsx	archived-components/stage-5/CircularRarityChart.tsx
+docs/audit/name_status_main_to_head.txt:73:R100	components/tcg-set-detail/CompactStatsContainer.tsx	archived-components/stage-5/CompactStatsContainer.tsx
+docs/audit/name_status_main_to_head.txt:74:R100	components/ui/ComparisonFAB.tsx	archived-components/stage-5/ComparisonFAB.tsx
+docs/audit/name_status_main_to_head.txt:75:R100	components/ui/DataAnalyticsDashboard.tsx	archived-components/stage-5/DataAnalyticsDashboard.tsx
+docs/audit/name_status_main_to_head.txt:76:R100	components/ui/EnhancedAnimationSystem.hooks.tsx	archived-components/stage-5/EnhancedAnimationSystem.hooks.tsx
+docs/audit/name_status_main_to_head.txt:77:R100	components/pokemon/EnhancedMoveDisplay.tsx	archived-components/stage-5/EnhancedMoveDisplay.tsx
+docs/audit/name_status_main_to_head.txt:78:R100	components/ui/EnhancedMovesDisplay.tsx	archived-components/stage-5/EnhancedMovesDisplay.tsx
+docs/audit/name_status_main_to_head.txt:79:R100	components/ui/EnhancedSetStatistics.tsx	archived-components/stage-5/EnhancedSetStatistics.tsx
+docs/audit/name_status_main_to_head.txt:80:R100	components/ui/cards/EvolutionStageCard.tsx	archived-components/stage-5/EvolutionStageCard.tsx
+docs/audit/name_status_main_to_head.txt:81:R100	components/ui/FeedbackStates.tsx	archived-components/stage-5/FeedbackStates.tsx
+docs/audit/name_status_main_to_head.txt:82:A	archived-components/stage-5/FlippableTCGCard.tsx
+docs/audit/name_status_main_to_head.txt:83:R100	components/ui/FloatingActionSystem.tsx	archived-components/stage-5/FloatingActionSystem.tsx
+docs/audit/name_status_main_to_head.txt:84:R100	components/pokemon/FloatingStatsWidget.tsx	archived-components/stage-5/FloatingStatsWidget.tsx
+docs/audit/name_status_main_to_head.txt:85:R100	components/pokemon/tabs/competitive/FormatStats.tsx	archived-components/stage-5/FormatStats.tsx
+docs/audit/name_status_main_to_head.txt:86:R100	components/ui/KeyboardNavigation.hooks.tsx	archived-components/stage-5/KeyboardNavigation.hooks.tsx
+docs/audit/name_status_main_to_head.txt:87:R100	components/ui/MarketInsightsDashboard.tsx	archived-components/stage-5/MarketInsightsDashboard.tsx
+docs/audit/name_status_main_to_head.txt:88:R100	components/ui/MicroInteractionSystem.tsx	archived-components/stage-5/MicroInteractionSystem.tsx
+docs/audit/name_status_main_to_head.txt:89:R100	components/ui/navigation/NavigationEnhancements.tsx	archived-components/stage-5/NavigationEnhancements.tsx
+docs/audit/name_status_main_to_head.txt:90:R100	components/pokemon/tabs/OverviewTabV3.tsx	archived-components/stage-5/OverviewTabV3.tsx
+docs/audit/name_status_main_to_head.txt:91:R100	components/ui/PerformanceDashboard.tsx	archived-components/stage-5/PerformanceDashboard.tsx
+docs/audit/name_status_main_to_head.txt:92:R100	components/ui/PillBadge.tsx	archived-components/stage-5/PillBadge.tsx
+docs/audit/name_status_main_to_head.txt:93:R100	components/PocketDeckViewer.tsx	archived-components/stage-5/PocketDeckViewer.tsx
+docs/audit/name_status_main_to_head.txt:94:R100	components/PocketExpansionViewer.tsx	archived-components/stage-5/PocketExpansionViewer.tsx
+docs/audit/name_status_main_to_head.txt:95:R100	components/PokedexDisplay.tsx	archived-components/stage-5/PokedexDisplay.tsx
+docs/audit/name_status_main_to_head.txt:96:R100	components/pokemon/PokemonGlassPanel.tsx	archived-components/stage-5/PokemonGlassPanel.tsx
+docs/audit/name_status_main_to_head.txt:97:R100	components/pokemon/PokemonStatBars.tsx	archived-components/stage-5/PokemonStatBars.tsx
+docs/audit/name_status_main_to_head.txt:98:R100	components/pokemon/PokemonStatRadar.tsx	archived-components/stage-5/PokemonStatRadar.tsx
+docs/audit/name_status_main_to_head.txt:99:R100	components/pokemon/PokemonStatRing.tsx	archived-components/stage-5/PokemonStatRing.tsx
+docs/audit/name_status_main_to_head.txt:100:R100	components/pokemon/archive/PokemonStatsTab.tsx	archived-components/stage-5/PokemonStatsTab.tsx
+docs/audit/name_status_main_to_head.txt:101:R099	components/ui/PortfolioManager.tsx	archived-components/stage-5/PortfolioManager.tsx
+docs/audit/name_status_main_to_head.txt:102:R100	components/ui/PriceDisplay.tsx	archived-components/stage-5/PriceDisplay.tsx
+docs/audit/name_status_main_to_head.txt:103:R100	components/ui/PriceIntelligenceSystem.tsx	archived-components/stage-5/PriceIntelligenceSystem.tsx
+docs/audit/name_status_main_to_head.txt:104:R099	components/ui/PrintableCardLists.tsx	archived-components/stage-5/PrintableCardLists.tsx
+docs/audit/name_status_main_to_head.txt:105:R100	components/ui/SecurityProvider.tsx	archived-components/stage-5/SecurityProvider.tsx
+docs/audit/name_status_main_to_head.txt:106:R100	components/tcg-set-detail/sections/SetStats.tsx	archived-components/stage-5/SetStats.tsx
+docs/audit/name_status_main_to_head.txt:107:R100	components/FastRefreshTests/scenarios/StatePreservation.tsx	archived-components/stage-5/StatePreservation.tsx
+docs/audit/name_status_main_to_head.txt:108:R100	components/pokemon/tabs/StatsTabV2.tsx	archived-components/stage-5/StatsTabV2.tsx
+docs/audit/name_status_main_to_head.txt:109:R095	components/ui/navigation/StickySidebar.tsx	archived-components/stage-5/StickySidebar.tsx
+docs/audit/name_status_main_to_head.txt:110:R100	components/ui/TooltipHelpSystem.tsx	archived-components/stage-5/TooltipHelpSystem.tsx
+docs/audit/name_status_main_to_head.txt:111:R100	components/pokemon/TypeEffectivenessChart.tsx	archived-components/stage-5/TypeEffectivenessChart.tsx
+docs/audit/name_status_main_to_head.txt:112:R099	components/tcg-set-detail/UnifiedSetDashboard.tsx	archived-components/stage-5/UnifiedSetDashboard.tsx
+docs/audit/name_status_main_to_head.txt:113:R100	components/tcg-set-detail/UnifiedStatsGraph.tsx	archived-components/stage-5/UnifiedStatsGraph.tsx
+docs/audit/name_status_main_to_head.txt:114:R100	components/ui/charts/chartcontainer.tsx	archived-components/stage-5/chartcontainer.tsx
+docs/audit/name_status_main_to_head.txt:124:D	components/_archive/mobile-legacy/CardScanner.tsx
+docs/audit/name_status_main_to_head.txt:125:D	components/_archive/mobile-legacy/EnhancedTouchInteractions.tsx
+docs/audit/name_status_main_to_head.txt:126:D	components/_archive/mobile-legacy/FloatingActionButton.tsx
+docs/audit/name_status_main_to_head.txt:127:D	components/_archive/mobile-legacy/GestureCardSorting.tsx
+docs/audit/name_status_main_to_head.txt:128:D	components/_archive/mobile-legacy/LongPressMenu.tsx
+docs/audit/name_status_main_to_head.txt:129:D	components/_archive/mobile-legacy/MobileCardGrid.tsx
+docs/audit/name_status_main_to_head.txt:130:D	components/_archive/mobile-legacy/MobileFilterSheet.tsx
+docs/audit/name_status_main_to_head.txt:131:D	components/_archive/mobile-legacy/MobileIntegration.tsx
+docs/audit/name_status_main_to_head.txt:132:D	components/_archive/mobile-legacy/MobileNavigation.tsx
+docs/audit/name_status_main_to_head.txt:133:D	components/_archive/mobile-legacy/MobileSearchExperience.tsx
+docs/audit/name_status_main_to_head.txt:134:D	components/_archive/mobile-legacy/MobileShare.tsx
+docs/audit/name_status_main_to_head.txt:135:D	components/_archive/mobile-legacy/MobileTypeFilter.tsx
+docs/audit/name_status_main_to_head.txt:136:D	components/_archive/mobile-legacy/PinchToZoom.tsx
+docs/audit/name_status_main_to_head.txt:137:D	components/_archive/mobile-legacy/PushNotifications.tsx
+docs/audit/name_status_main_to_head.txt:138:D	components/_archive/mobile-legacy/SwipeToRefresh.tsx
+docs/audit/name_status_main_to_head.txt:139:D	components/_archive/mobile-legacy/TypeEffectivenessCards.tsx
+docs/audit/name_status_main_to_head.txt:140:D	components/_archive/mobile-legacy/VoiceSearch.tsx
+docs/audit/name_status_main_to_head.txt:238:R100	ARCHITECTURE.md	docs/archive/2024-09-01-legacy/ARCHITECTURE.md
+docs/audit/name_status_main_to_head.txt:239:R100	BACKLOG.md	docs/archive/2024-09-01-legacy/BACKLOG.md
+docs/audit/name_status_main_to_head.txt:240:R100	COMPREHENSIVE_CLEANUP_ANALYSIS.md	docs/archive/2024-09-01-legacy/COMPREHENSIVE_CLEANUP_ANALYSIS.md
+docs/audit/name_status_main_to_head.txt:241:R100	CURRENT_STATUS.md	docs/archive/2024-09-01-legacy/CURRENT_STATUS.md
+docs/audit/name_status_main_to_head.txt:242:C100	DOCUMENTATION_INDEX.md	docs/archive/2024-09-01-legacy/DOCUMENTATION_INDEX.md
+docs/audit/name_status_main_to_head.txt:243:R100	MOBILE_FEATURES_PROTECTED.md	docs/archive/2024-09-01-legacy/MOBILE_FEATURES_PROTECTED.md
+docs/audit/name_status_main_to_head.txt:244:R100	PRODUCTION_DEPLOYMENT.md	docs/archive/2024-09-01-legacy/PRODUCTION_DEPLOYMENT.md
+docs/audit/name_status_main_to_head.txt:245:R100	PRODUCTION_ROUTES.md	docs/archive/2024-09-01-legacy/PRODUCTION_ROUTES.md
+docs/audit/name_status_main_to_head.txt:246:R100	PROJECT_CLEANUP_FINAL_SUMMARY.md	docs/archive/2024-09-01-legacy/PROJECT_CLEANUP_FINAL_SUMMARY.md
+docs/audit/name_status_main_to_head.txt:247:R100	UNUSED_CODE_AUDIT.md	docs/archive/2024-09-01-legacy/UNUSED_CODE_AUDIT.md
+docs/archive/2024-09-01-legacy/PROJECT_CLEANUP_FINAL_SUMMARY.md:33:- Archived 97 obsolete documentation files
+docs/archive/2024-09-01-legacy/PROJECT_CLEANUP_FINAL_SUMMARY.md:54:- **Archived**: 97 historical documents
+docs/archive/2024-09-01-legacy/PROJECT_CLEANUP_FINAL_SUMMARY.md:55:- **Created**: Documentation index and archive summary
+docs/archive/2024-09-01-legacy/PROJECT_CLEANUP_FINAL_SUMMARY.md:90:- 97 docs archived, 9 active
+docs/audit/localhost_hits.txt:77:docs/_archive/PROJECT_MOBILE_STATUS.md:306:# Navigate to http://localhost:3001 and resize to 320-460px
+docs/audit/localhost_hits.txt:82:docs/archive/old-project-resources/IMMEDIATE_FIXES_REQUIRED.md:155:# Visit: http://localhost:3001/pocketmode
+docs/audit/localhost_hits.txt:83:docs/archive/old-project-resources/IMMEDIATE_FIXES_REQUIRED.md:156:# Visit: http://localhost:3001/pokedex/83 (Farfetch'd)
+docs/audit/localhost_hits.txt:84:docs/archive/old-project-resources/IMMEDIATE_FIXES_REQUIRED.md:157:# Visit: http://localhost:3001/battle-simulator
+docs/audit/localhost_hits.txt:85:docs/archive/old-project-resources/SUPABASE_SETUP.md:68:Visit: `http://localhost:3001/api/test-supabase`
+docs/audit/localhost_hits.txt:86:docs/archive/old-project-resources/DEVELOPER_GUIDE.md:120:http://localhost:3001/pokedex           # Main Pokedex
+docs/audit/localhost_hits.txt:87:docs/archive/old-project-resources/DEVELOPER_GUIDE.md:121:http://localhost:3001/pokedex/25        # Pokemon detail
+docs/audit/localhost_hits.txt:88:docs/archive/old-project-resources/DEVELOPER_GUIDE.md:122:http://localhost:3001/battle-simulator  # Battle simulator
+docs/audit/localhost_hits.txt:89:docs/archive/old-project-resources/DEVELOPER_GUIDE.md:123:http://localhost:3001/pocketmode        # Pocket TCG
+docs/audit/localhost_hits.txt:90:docs/archive/old-project-resources/FEATURE_RESTORATION_PROGRESS.md:403:http://localhost:3001/pokedex/83        # Farfetch'd
+docs/audit/localhost_hits.txt:91:docs/archive/old-project-resources/FEATURE_RESTORATION_PROGRESS.md:404:http://localhost:3001/pokedex/122       # Mr. Mime  
+docs/audit/localhost_hits.txt:92:docs/archive/old-project-resources/FEATURE_RESTORATION_PROGRESS.md:405:http://localhost:3001/pokedex/32        # Nidoran♀
+docs/audit/localhost_hits.txt:93:docs/archive/old-project-resources/FEATURE_RESTORATION_PROGRESS.md:406:http://localhost:3001/pokedex/29        # Nidoran♂
+docs/audit/localhost_hits.txt:94:docs/archive/old-project-resources/FEATURE_RESTORATION_PROGRESS.md:407:http://localhost:3001/pokedex/386       # Deoxys (forms)
+docs/audit/localhost_hits.txt:95:docs/archive/development-history/UI_IMPROVEMENT_PROGRESS.md:361:- http://localhost:3001/ (Homepage)
+docs/audit/localhost_hits.txt:96:docs/archive/development-history/UI_IMPROVEMENT_PROGRESS.md:362:- http://localhost:3001/pokedex (Pokedex grid)
+docs/audit/localhost_hits.txt:97:docs/archive/development-history/UI_IMPROVEMENT_PROGRESS.md:363:- http://localhost:3001/pokedex/25 (Pokemon detail)
+docs/audit/localhost_hits.txt:98:docs/archive/development-history/UI_IMPROVEMENT_PROGRESS.md:364:- http://localhost:3001/tcgsets (TCG sets)
+docs/audit/localhost_hits.txt:99:docs/archive/development-history/UI_IMPROVEMENT_PROGRESS.md:365:- http://localhost:3001/type-effectiveness (Type chart)
+docs/audit/localhost_hits.txt:100:docs/archive/typescript-migration/SESSION_29_CONTINUATION_NOTES.md:241:# http://localhost:3001/pokedex/83  # Farfetch'd
+docs/audit/localhost_hits.txt:101:docs/archive/typescript-migration/SESSION_29_CONTINUATION_NOTES.md:242:# http://localhost:3001/battle-simulator
+docs/audit/localhost_hits.txt:102:docs/archive/typescript-migration/SESSION_29_CONTINUATION_NOTES.md:243:# http://localhost:3001/pocketmode
+docs/archive/2024-09-01-legacy/CURRENT_STATUS.md:48:- **Phase 6**: Archive Duplicate Pages
+docs/audit/red_flag_comments.txt:198:public/data/scraped/archives/archives-energyCards.json:1646:      "original": "File:MistEnergyTemporalForces161.jpg",
+docs/audit/red_flag_comments.txt:199:public/data/scraped/archives/archives-energyCards.json:1647:      "local": "mistenergytemporalforces161.jpg",
+docs/audit/red_flag_comments.txt:200:public/data/scraped/archives/archives-energyCards.json:1648:      "path": "/images/scraped/energy/mistenergytemporalforces161.jpg",
+docs/audit/red_flag_comments.txt:201:public/data/scraped/archives/archives-energyCards.json:1674:      "original": "File:NeoUpperEnergyTemporalForces162.jpg",
+docs/audit/red_flag_comments.txt:202:public/data/scraped/archives/archives-energyCards.json:1675:      "local": "neoupperenergytemporalforces162.jpg",
+docs/audit/red_flag_comments.txt:203:public/data/scraped/archives/archives-energyCards.json:1676:      "path": "/images/scraped/energy/neoupperenergytemporalforces162.jpg",
+docs/audit/red_flag_comments.txt:204:public/data/scraped/archives/archives-energyCards.json:1947:      "original": "File:RegenerativeEnergySilverTempest168.jpg",
+docs/audit/red_flag_comments.txt:205:public/data/scraped/archives/archives-energyCards.json:1948:      "local": "regenerativeenergysilvertempest168.jpg",
+docs/audit/red_flag_comments.txt:206:public/data/scraped/archives/archives-energyCards.json:1949:      "path": "/images/scraped/energy/regenerativeenergysilvertempest168.jpg",
+docs/audit/red_flag_comments.txt:240:docs/archive/QUICK_START.md:31:# 4. Check for active TODOs
+docs/audit/red_flag_comments.txt:241:docs/archive/QUICK_START.md:32:grep -r "TODO" --include="*.tsx" --include="*.ts" | head -10
+docs/audit/red_flag_comments.txt:245:docs/archive/ZERO_TYPESCRIPT_ERRORS.md:13:- Resolved TODO comments
+docs/audit/red_flag_comments.txt:246:docs/archive/SESSION_HANDOFF_CHECKLIST.md:36:- [ ] Scan for TODOs: `grep -r "TODO" --include="*.tsx" | head -10`
+docs/audit/red_flag_comments.txt:247:docs/archive/SESSION_HANDOFF_CHECKLIST.md:124:### 5. Commit Message Template
+docs/audit/red_flag_comments.txt:248:docs/archive/TECHNICAL_IMPROVEMENTS.md:41:- Added blur placeholders and proper loading strategies
+docs/audit/red_flag_comments.txt:249:docs/archive/TECHNICAL_IMPROVEMENTS.md:103:  placeholder="blur"
+docs/audit/red_flag_comments.txt:250:docs/archive/TECHNICAL_IMPROVEMENTS.md:104:  blurDataURL={BLUR_PLACEHOLDER}
+docs/audit/red_flag_comments.txt:251:docs/archive/old-project-resources/SKELETON_LOADER_ASSESSMENT.md:104:- **Charts** - Shows chart area placeholder
+docs/audit/red_flag_comments.txt:252:docs/archive/old-project-resources/SKELETON_LOADER_ASSESSMENT.md:132:3. Chart placeholders (shows expected size)
+docs/audit/red_flag_comments.txt:253:docs/archive/cleanup-project-august-2025/CLEANUP_PROGRESS.md:12:  - TODO comments: 1
+docs/audit/red_flag_comments.txt:254:docs/archive/cleanup-project-august-2025/CLEANUP_PROGRESS.md:70:   - Unimplemented features (add TODO)
+docs/audit/red_flag_comments.txt:255:docs/archive/cleanup-project-august-2025/PHASE_2_COMPLETION.md:28:#### Utilities (1 attempted)
+docs/audit/red_flag_comments.txt:256:docs/archive/cleanup-project-august-2025/SESSION_SUMMARY.md:128:- 30% unimplemented features (keep with TODOs)
+docs/audit/red_flag_comments.txt:257:docs/archive/cleanup-project-august-2025/NEXT_SESSION_PROMPT.md:53:### Current TODO List (7 Phases)
+docs/audit/red_flag_comments.txt:258:docs/archive/cleanup-project-august-2025/PROJECT_EXECUTION_PLAN.md:176:- ~30% unimplemented features (keep with TODOs)
+docs/audit/red_flag_comments.txt:259:docs/archive/cleanup-project-august-2025/PROJECT_EXECUTION_PLAN.md:181:- [ ] Add TODOs for unimplemented features
+docs/audit/red_flag_comments.txt:260:docs/archive/cleanup-project-august-2025/PROJECT_EXECUTION_PLAN.md:271:### Daily Standup Template
+docs/audit/red_flag_comments.txt:261:docs/archive/typescript-migration/SESSION_30_COMPLETE_SUMMARY.md:55:   - Shows placeholders immediately
+docs/audit/red_flag_comments.txt:262:docs/archive/typescript-migration/SESSION_30_COMPLETE_SUMMARY.md:113:- Show placeholders immediately
+docs/audit/red_flag_comments.txt:263:docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_NOTES.md:162:5. Continue tracking with TodoWrite tool
+docs/audit/red_flag_comments.txt:264:docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_NOTES.md:61:   - Removed template spreading from scraperConfig
+docs/audit/red_flag_comments.txt:265:docs/archive/typescript-migration/TYPESCRIPT_MIGRATION_SESSION_20_STATUS.md:71:2. `_document.js` - Document template
+docs/audit/red_flag_comments.txt:266:docs/archive/typescript-migration/SESSION_31_FINAL_STATUS.md:33:### 4. 🔄 Attempted TCG API Mocking Fix
+docs/audit/red_flag_comments.txt:267:docs/archive/typescript-migration/SESSION_31_FINAL_STATUS.md:35:- **Attempted Fix**: Added comprehensive TCG mock data for sets and cards
+docs/audit/red_flag_comments.txt:268:docs/archive/typescript-migration/SESSION_29_CONTINUATION_NOTES.md:103:- Use blur placeholders
+docs/audit/red_flag_comments.txt:269:docs/archive/typescript-migration/SESSION_32_HANDOFF_NOTES.md:49:### 5. 🔄 TCG API Mocking (Attempted)
+docs/audit/red_flag_comments.txt:270:docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:10:- ⚫ **Disabled** - Feature was working but temporarily disabled
+docs/audit/red_flag_comments.txt:271:docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:20:**TODO**: 
+docs/audit/red_flag_comments.txt:272:docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:32:**TODO**:
+docs/audit/red_flag_comments.txt:273:docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:42:- `/components/ui/SocialPlatform.tsx` (placeholder)
+docs/audit/red_flag_comments.txt:274:docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:44:**TODO**:
+docs/audit/red_flag_comments.txt:275:docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:55:**TODO**:
+docs/audit/red_flag_comments.txt:276:docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:67:**TODO**:
+docs/audit/red_flag_comments.txt:277:docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:78:- `/utils/priceTracking.ts` (placeholder)
+docs/audit/red_flag_comments.txt:278:docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:80:**TODO**:
+docs/audit/red_flag_comments.txt:279:docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:92:**TODO**:
+docs/audit/red_flag_comments.txt:280:docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:103:**TODO**:
+docs/audit/red_flag_comments.txt:281:docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:113:**TODO**:
+docs/audit/red_flag_comments.txt:282:docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:123:**TODO**:
+docs/audit/red_flag_comments.txt:283:docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:136:**TODO**:
+docs/audit/red_flag_comments.txt:284:docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:147:**TODO**:
+docs/audit/red_flag_comments.txt:285:docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:161:**TODO**:
+docs/audit/red_flag_comments.txt:286:docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:172:**TODO**:
+docs/audit/red_flag_comments.txt:287:docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:182:**TODO**:
+docs/audit/red_flag_comments.txt:288:docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:196:**TODO**:
+docs/audit/red_flag_comments.txt:289:docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:208:**TODO**:
+docs/audit/red_flag_comments.txt:290:docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:236:- Add TODO comments in code when working on these features
+docs/audit/red_flag_comments.txt:291:docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:247:4. **Component shells** with TODO comments
+docs/audit/red_flag_comments.txt:292:docs/archive/cleanup-project-august-2025/UNIMPLEMENTED_FEATURES.md:248:5. **API integration stubs**
+docs/audit/red_flag_comments.txt:293:docs/archive/cleanup-project-august-2025/EMERGENCY_FIX_LOG.md:127:### TODO
+docs/audit/red_flag_comments.txt:294:docs/archive/cleanup-project-august-2025/NAMING_PROJECT_SUMMARY.md:81:4. **Phase 4**: Add TODOs for unimplemented features
+docs/audit/red_flag_comments.txt:295:docs/archive/cleanup-project-august-2025/PROJECT_CLEAN_MASTER_PLAN.md:123:- 30% unimplemented features (add TODOs)
+docs/audit/red_flag_comments.txt:296:docs/archive/cleanup-project-august-2025/PROJECT_CLEAN_MASTER_PLAN.md:148:- **~30% (345)**: Unimplemented features - keep with TODOs
+docs/audit/red_flag_comments.txt:297:docs/archive/cleanup-project-august-2025/PROJECT_CLEAN_MASTER_PLAN.md:237:- ✅ All unimplemented features preserved with TODOs
+docs/audit/red_flag_comments.txt:298:docs/archive/cleanup-project-august-2025/MASTER_INVENTORY_PHASE_0.md:172:   - Check TODO comments
+docs/audit/red_flag_comments.txt:299:docs/archive/cleanup-project-august-2025/CLEANUP_PLAN.md:10:  - ~30% (300 items): Unimplemented features - keep with TODO comments
+docs/audit/red_flag_comments.txt:300:docs/archive/cleanup-project-august-2025/CLEANUP_PLAN.md:42:- Add TODO comments in code for each unimplemented feature
+docs/audit/red_flag_comments.txt:301:docs/archive/cleanup-project-august-2025/CLEANUP_PLAN.md:94:- Document new TODO items
+docs/audit/red_flag_comments.txt:302:docs/archive/cleanup-project-august-2025/CLEANUP_PLAN.md:113:- [ ] Add TODO comments
+docs/audit/red_flag_comments.txt:303:docs/archive/cleanup-project-august-2025/CLEANUP_PLAN.md:139:- [ ] TODOs documented
+docs/audit/red_flag_comments.txt:304:docs/archive/old-project-resources/WEBPACK_ERROR_FIX.md:40:### 4. Temporary Workaround
+docs/audit/red_flag_comments.txt:305:docs/archive/old-project-resources/ROOT_CLEANUP_SUMMARY.md:15:- TODO_LIST.md
+docs/audit/red_flag_comments.txt:306:docs/archive/old-project-resources/QA_AGENT_2_DEEP_DIVE_TEST_REPORT.md:23:- Navigation attempts to use `window.location.href` (line 428)
+docs/audit/red_flag_comments.txt:307:docs/archive/old-project-resources/SIMILAR_CARDS_CONTEXT.md:243:// Add temporarily for debugging specific Pokemon
+docs/audit/red_flag_comments.txt:308:docs/archive/old-project-resources/TODO_LIST.md:1:# TODO Items in Codebase
+docs/audit/red_flag_comments.txt:309:docs/archive/old-project-resources/TODO_LIST.md:3:This document tracks all TODO comments found in the codebase with implementation suggestions.
+docs/audit/red_flag_comments.txt:310:docs/archive/old-project-resources/TODO_LIST.md:10:// TODO: Send to error tracking service like Sentry
+docs/audit/red_flag_comments.txt:311:docs/archive/old-project-resources/TODO_LIST.md:21:performanceData: any; // TODO: Replace with proper type from performanceMonitor
+docs/audit/red_flag_comments.txt:312:docs/archive/old-project-resources/TODO_LIST.md:41:// TODO: Implement favorites filter
+docs/audit/red_flag_comments.txt:313:docs/archive/old-project-resources/TODO_LIST.md:51:// TODO: Implement region-specific scraping
+docs/audit/red_flag_comments.txt:314:docs/archive/old-project-resources/TODO_LIST.md:82:- All TODOs are non-critical for basic functionality
+docs/audit/red_flag_comments.txt:315:docs/archive/old-project-resources/POKEDEX_TYPESCRIPT_PLAN.md:42:  placeholder?: string;
+docs/audit/red_flag_comments.txt:316:docs/archive/old-project-resources/TYPESCRIPT_MIGRATION_PROGRESS.md:236:3. **CollectionManager.js** - Fixed temporal dead zone issue
+docs/audit/red_flag_comments.txt:317:docs/archive/old-project-resources/TEST_FIX_PROGRESS.md:274:- Pokedex now loads placeholder data immediately
+docs/audit/red_flag_comments.txt:318:docs/archive/old-project-resources/iOS_MOBILE_DEVELOPMENT_GUIDE.md:82:  placeholder="blur"
+docs/audit/red_flag_comments.txt:319:docs/archive/old-project-resources/CODE_QA_STATUS.md:46:- [x] **14 Placeholder Animations**: All return console warnings, no implementation
+docs/audit/red_flag_comments.txt:320:docs/archive/old-project-resources/CODE_QA_STATUS.md:51:- [x] **API Placeholders**: Hardcoded mock data in pocket-types.ts
+docs/audit/red_flag_comments.txt:321:docs/archive/old-project-resources/CODE_QA_STATUS.md:52:- [x] **TODO Comments**: Missing userPreferences, disabled special forms
+docs/audit/red_flag_comments.txt:322:docs/archive/old-project-resources/CODE_QA_STATUS.md:115:1. Implement or remove 14 placeholder animations
+docs/audit/red_flag_comments.txt:323:docs/archive/old-project-resources/CODE_QA_STATUS.md:134:- Fix TODO items in code
+docs/audit/red_flag_comments.txt:324:docs/archive/old-project-resources/CODE_QA_STATUS.md:177:- [x] **Animation Cleanup**: Removed 14 placeholder animations and placeholders.tsx file
+docs/audit/red_flag_comments.txt:325:docs/archive/old-project-resources/QOL_Components_README.md:54:- **Animated placeholders** to improve perceived performance
+docs/audit/red_flag_comments.txt:326:docs/archive/old-project-resources/QOL_Components_README.md:137:  placeholder="Search Pokemon or cards..."
+docs/audit/red_flag_comments.txt:327:docs/archive/old-project-resources/QOL_Components_README.md:194:  placeholder="Search..."
+docs/audit/red_flag_comments.txt:328:docs/archive/old-project-resources/COMPREHENSIVE_FEATURE_COMPARISON.md:113:- Charts show placeholder data
+docs/audit/red_flag_comments.txt:329:docs/archive/old-project-resources/FEATURE_RESTORATION_PROGRESS.md:333:## 🔄 Daily Standup Template
+docs/audit/red_flag_comments.txt:330:docs/archive/old-project-resources/FEATURE_RESTORATION_PROGRESS.md:424:3. Review todo list
+docs/audit/red_flag_comments.txt:331:docs/archive/old-project-resources/IMAGE_MIGRATION_PLAN.md:22:- Logo files and placeholders - ~3MB
+docs/audit/red_flag_comments.txt:332:docs/archive/old-project-resources/CURRENT_STATUS_JULY_13_2025.md:88:- Added proper loading placeholders for dynamic imports
+docs/audit/red_flag_comments.txt:333:docs/archive/old-project-resources/CURRENT_STATUS_JULY_13_2025.md:97:- CollectionManager temporal dead zone
+docs/audit/red_flag_comments.txt:334:docs/archive/old-project-resources/CLAUDE_DETAILED_ARCHIVE.md:282:- CollectionManager.js temporal dead zone
+docs/audit/red_flag_comments.txt:335:docs/archive/old-project-resources/CLAUDE_DETAILED_ARCHIVE.md:492:   - Dynamic imports now show placeholder divs instead of null
+docs/audit/red_flag_comments.txt:336:docs/archive/old-project-resources/TESTING_PROTOCOL.md:25:✓ All data must be REAL (no placeholders)
+docs/audit/red_flag_comments.txt:337:docs/archive/old-project-resources/TESTING_PROTOCOL.md:45:- [ ] Verify Evolution shows actual chain (not placeholder)
+docs/audit/red_flag_comments.txt:338:docs/archive/old-project-resources/TESTING_PROTOCOL.md:104:4. **Placeholder text visible** - BROKEN
+docs/audit/red_flag_comments.txt:339:docs/archive/old-project-resources/TESTING_PROTOCOL.md:136:- Testing notes: This template
+docs/audit/red_flag_comments.txt:340:docs/archive/old-project-resources/BULBAPEDIA_SCRAPER_README.md:45:│   └── cache/            # Temporary cache files
+docs/audit/red_flag_comments.txt:341:docs/archive/old-project-resources/BULBAPEDIA_SCRAPER_README.md:242:  retryAttempts: 3,        // Retry failed requests
+docs/audit/red_flag_comments.txt:342:docs/archive/old-project-resources/BULBAPEDIA_SCRAPER_README.md:358:- Some Bulbapedia pages might be temporarily unavailable
+docs/audit/red_flag_comments.txt:343:docs/archive/old-project-resources/PROJECT_EFFICIENCY_TRACKER.md:82:- Retry logic with configurable attempts
+docs/audit/red_flag_comments.txt:344:docs/archive/old-project-resources/PROJECT_EFFICIENCY_TRACKER.md:123:- Attempted consolidation with UnifiedCardGrid
+docs/audit/red_flag_comments.txt:345:docs/archive/old-project-resources/PROJECT_EFFICIENCY_TRACKER.md:252:- ❌ Phase 1.3: Attempted card consolidation - decided to keep separate
+docs/audit/red_flag_comments.txt:346:docs/archive/old-project-resources/PRODUCTION_FIXES_SUMMARY.md:45:### 8. **TODO Items Documented** ✅
+docs/audit/red_flag_comments.txt:347:docs/archive/old-project-resources/PRODUCTION_FIXES_SUMMARY.md:46:- Created TODO_LIST.md listing all TODOs with:
+docs/audit/red_flag_comments.txt:348:docs/archive/old-project-resources/PRODUCTION_FIXES_SUMMARY.md:86:2. **TODO Comments** (6 items)
+docs/audit/red_flag_comments.txt:349:docs/archive/old-project-resources/PRODUCTION_FIXES_SUMMARY.md:88:   - See TODO_LIST.md for details
+docs/audit/red_flag_comments.txt:350:docs/archive/old-project-resources/MOUSE_EVENT_ERROR_FIX.md:48:## Temporary Workaround
+docs/audit/red_flag_comments.txt:351:docs/archive/TECHNICAL_DEBT_PLAN.md:28:- **TODO Comments**: 0 remaining (100% elimination) ✅✅
+docs/audit/red_flag_comments.txt:352:docs/archive/TECHNICAL_DEBT_PLAN.md:30:- **Deprecated Dependencies**: Updated (100%) ✅
+docs/audit/red_flag_comments.txt:353:docs/archive/TECHNICAL_DEBT_PLAN.md:238:### 17. TODO Comments
+docs/audit/red_flag_comments.txt:354:docs/archive/TECHNICAL_DEBT_PLAN.md:240:- **Count**: 10 TODO/FIXME comments (reduced from 20+)
+docs/audit/red_flag_comments.txt:355:docs/archive/TECHNICAL_DEBT_PLAN.md:241:- **Completed TODOs**:
+docs/audit/red_flag_comments.txt:356:docs/archive/TECHNICAL_DEBT_PLAN.md:245:- **Remaining TODOs**:
+docs/audit/red_flag_comments.txt:357:docs/archive/TECHNICAL_DEBT_PLAN.md:248:  - [ ] Other minor TODOs (7 remaining)
+docs/audit/red_flag_comments.txt:358:docs/archive/TECHNICAL_DEBT_PLAN.md:254:### 18. Deprecated Dependencies
+docs/audit/red_flag_comments.txt:359:docs/archive/TECHNICAL_DEBT_PLAN.md:406:- TODO comment resolution (20+)
+docs/audit/red_flag_comments.txt:360:docs/archive/TECHNICAL_DEBT_PLAN.md:411:- Resolve TODO comments (20+ instances)
+docs/audit/red_flag_comments.txt:361:docs/archive/TECHNICAL_DEBT_PLAN.md:438:#### Session 10 (2025-08-08) - Hook Dependencies & TODOs
+docs/audit/red_flag_comments.txt:362:docs/archive/TECHNICAL_DEBT_PLAN.md:449:   - Replaced TODO comment with proper implementation
+docs/audit/red_flag_comments.txt:363:docs/archive/TECHNICAL_DEBT_PLAN.md:454:- TODO comments reduced: 20 → 15 (25% reduction)
+docs/audit/red_flag_comments.txt:364:docs/archive/TECHNICAL_DEBT_PLAN.md:461:- Resolve remaining TODO comments (10)
+docs/audit/red_flag_comments.txt:365:docs/archive/TECHNICAL_DEBT_PLAN.md:464:#### Session 11 (2025-08-08 Continued) - Hook Fixes & TODO Implementation
+docs/audit/red_flag_comments.txt:366:docs/archive/TECHNICAL_DEBT_PLAN.md:480:- TODO comments reduced: 15 → 10 (33% reduction)
+docs/audit/red_flag_comments.txt:367:docs/archive/TECHNICAL_DEBT_PLAN.md:506:- TODO comments: 10 remaining (unchanged)
+docs/audit/red_flag_comments.txt:368:docs/archive/TECHNICAL_DEBT_PLAN.md:577:- React Hook warnings: 40 → 44 (temporary increase due to new proper dependencies)
+docs/audit/red_flag_comments.txt:369:docs/archive/TECHNICAL_DEBT_PLAN.md:647:3. Resolve remaining TODO comments (10)
+docs/audit/red_flag_comments.txt:370:docs/archive/TECHNICAL_DEBT_PLAN.md:648:4. Update deprecated dependencies
+docs/audit/red_flag_comments.txt:371:docs/archive/TECHNICAL_DEBT_PLAN.md:672:4. ✅ **TODO Comments Resolution**
+docs/audit/red_flag_comments.txt:372:docs/archive/TECHNICAL_DEBT_PLAN.md:673:   - Fixed all 3 remaining TODO comments:
+docs/audit/red_flag_comments.txt:373:docs/archive/TECHNICAL_DEBT_PLAN.md:680:- **TODO comments**: 0 remaining (100% elimination)
+docs/audit/red_flag_comments.txt:374:docs/archive/TECHNICAL_DEBT_PLAN.md:687:- Zero TODO comments
+docs/audit/red_flag_comments.txt:375:docs/archive/TECHNICAL_DEBT_PLAN.md:883:3. ✅ **Deprecated Dependencies Updated**
+docs/audit/red_flag_comments.txt:376:docs/archive/TECHNICAL_DEBT_PLAN.md:927:# Check TODO comments
+docs/audit/red_flag_comments.txt:377:docs/archive/TECHNICAL_DEBT_PLAN.md:928:grep -r "TODO\|FIXME" --include="*.ts" --include="*.tsx" | grep -v node_modules
+docs/audit/red_flag_comments.txt:378:docs/archive/DOCUMENTATION_INDEX.md:71:# Find TODOs in docs
+docs/audit/red_flag_comments.txt:379:docs/archive/DOCUMENTATION_INDEX.md:72:grep -r "TODO" *.md
+docs/audit/red_flag_comments.txt:380:docs/archive/COMPONENT_NAMING_FIXES.md:189:2. **Create compatibility export** (temporary):
+docs/audit/red_flag_comments.txt:381:docs/archive/COMPONENT_NAMING_FIXES.md:193:   export { NewNameComponent as OldName }; // Temporary
+docs/audit/red_flag_comments.txt:382:docs/archive/COMPONENT_INVENTORY.md:20:| `UnifiedCard.tsx` | Unified version | Attempted merge, incomplete | ❌ Delete |
+docs/audit/red_flag_comments.txt:383:docs/archive/COMPONENT_INVENTORY.md:64:| `Unified*` | Combined version | Usually broken attempt at merging |
+docs/audit/red_flag_comments.txt:384:docs/archive/COMPONENT_INVENTORY.md:198:4. **"Unification" Attempt**: Created Unified* versions
+docs/audit/red_flag_comments.txt:385:docs/archive/COMPONENT_INVENTORY.md:240:- `Unified*` - Failed unification attempt
+docs/audit/red_flag_comments.txt:386:docs/archive/PROJECT_STATUS_ANALYSIS.md:92:- 12 TODO comments in codebase
+docs/audit/red_flag_comments.txt:387:docs/archive/TCG_100_CARD_LIMIT_FIX.md:21:- First attempts to load 1000 cards in one request
+docs/audit/red_flag_comments.txt:388:docs/archive/SAFE_TO_DELETE_COMPONENTS.md:77:components/legacy/*  # Check for @deprecated tags
+docs/audit/red_flag_comments.txt:389:docs/archive/CLEANUP_PLAN.md:188:### Migration Script Template
+docs/audit/red_flag_comments.txt:395:docs/archive/2024-09-01-legacy/UNUSED_CODE_AUDIT.md:93:4. Consider adding TODO comments for unimplemented features instead of removing them
+docs/audit/red_flag_comments.txt:396:docs/archive/2024-09-01-legacy/COMPREHENSIVE_CLEANUP_ANALYSIS.md:103:- All marked with TODOs where appropriate
+docs/audit/red_flag_comments.txt:397:docs/archive/2024-09-01-legacy/PROJECT_CLEANUP_FINAL_SUMMARY.md:68:- Added TODOs where appropriate
+docs/audit/red_flag_comments.txt:398:docs/archive/2024-09-01-legacy/BACKLOG.md:12:- [ ] Add image lazy loading with blur-up placeholders
+docs/audit/red_flag_comments.txt:399:docs/archive/2024-09-01-legacy/BACKLOG.md:60:- [ ] Remove deprecated dependencies
+docs/audit/red_flag_comments.txt:400:docs/archive/development-history/IMPLEMENTATION_SUMMARY.md:36:- ✅ `/pages/pokemon/moves.tsx` - Attempted enhancement
+docs/audit/red_flag_comments.txt:401:docs/archive/development-history/FIX_MOVES_DATABASE.md:63:Once the database is fixed, remove the temporary workaround from `pages/pokemon/moves.tsx`:
+docs/audit/red_flag_comments.txt:402:docs/archive/development-history/PERFORMANCE_OPTIMIZATION_COMPLETE.md:10:- Blur-up placeholders for smooth transitions
+docs/audit/red_flag_comments.txt:403:docs/archive/development-history/PERFORMANCE_OPTIMIZATION_COMPLETE.md:11:- Low-quality image placeholders (LQIP) for TCG cards
+docs/audit/red_flag_comments.txt:404:docs/archive/development-history/PERFORMANCE_OPTIMIZATION_COMPLETE.md:69:  placeholder={lowQualityUrl}
+docs/audit/red_flag_comments.txt:917:project-resources/docs/archive/phase-progress/PHASE_6_TYPESCRIPT_MIGRATION_PROGRESS.md:107:2. **Use `any` sparingly** - add TODO comments for later refinement
+docs/audit/red_flag_comments.txt:918:project-resources/docs/archive/phase-progress/PHASE_7_COMPONENT_MIGRATION_PLAN.md:134:3. Set up component template for consistency
+docs/archive/2024-09-01-legacy/DOCUMENTATION_INDEX.md:26:## Archived Documentation
+docs/archive/2024-09-01-legacy/DOCUMENTATION_INDEX.md:28:### Historical Archives
+docs/archive/2024-09-01-legacy/DOCUMENTATION_INDEX.md:29:- [`docs/archive/cleanup-project-august-2025/`](./docs/archive/cleanup-project-august-2025/) - August 2025 cleanup project
+docs/archive/2024-09-01-legacy/DOCUMENTATION_INDEX.md:30:- [`docs/archive/old-project-resources/`](./docs/archive/old-project-resources/) - Legacy project resources
+docs/archive/2024-09-01-legacy/DOCUMENTATION_INDEX.md:31:- [`docs/archive/development-history/`](./docs/archive/development-history/) - Development history
+docs/archive/2024-09-01-legacy/DOCUMENTATION_INDEX.md:33:### Why Archived?
+docs/archive/2024-09-01-legacy/DOCUMENTATION_INDEX.md:34:These documents were archived to maintain a clean documentation structure while preserving historical context. They contain:
+docs/archive/2024-09-01-legacy/DOCUMENTATION_INDEX.md:49:- Archive completed projects and obsolete guides
+docs/archive/2024-09-01-legacy/DOCUMENTATION_INDEX.md:57:*Total Archived: 100+ historical documents*
+docs/archive/2024-09-01-legacy/ARCHITECTURE.md:45:└── _archive/             # Legacy components (not in use)
+docs/archive/2024-09-01-legacy/PRODUCTION_ROUTES.md:100:3. Delete or archive experimental pages after review
+docs/archive/2024-09-01-legacy/COMPREHENSIVE_CLEANUP_ANALYSIS.md:118:- **Docs archived**: 97 obsolete files
+docs/audit/renamed_files.txt:1: rename {components/tcg-set-detail => archived-components/renames}/EnhancedCardGrid.tsx (98%)
+docs/audit/renamed_files.txt:2: rename {components/ui => archived-components/stage-1}/AdvancedKeyboardShortcuts.tsx (100%)
+docs/audit/renamed_files.txt:3: rename {components/ui => archived-components/stage-1}/AdvancedSearchInterface.tsx (100%)
+docs/audit/renamed_files.txt:4: rename {components/ui/forms => archived-components/stage-1}/EnhancedInput.tsx (100%)
+docs/audit/renamed_files.txt:5: rename {components/ui/forms => archived-components/stage-1}/EnhancedSelect.tsx (100%)
+docs/audit/renamed_files.txt:6: rename {components/ui/forms => archived-components/stage-1}/EnhancedSwitch.tsx (100%)
+docs/audit/renamed_files.txt:7: rename {components/ui/forms => archived-components/stage-1}/EnhancedTextarea.tsx (100%)
+docs/audit/renamed_files.txt:8: rename {components => archived-components/stage-1}/FastRefreshQuickTest.tsx (100%)
+docs/audit/renamed_files.txt:9: rename {components/pokemon => archived-components/stage-1}/MobileAbilitiesPage.tsx (99%)
+docs/audit/renamed_files.txt:10: rename {components/battle-simulator => archived-components/stage-1}/MobileBattleSimulator.tsx (100%)
+docs/audit/renamed_files.txt:11: rename {components/ui => archived-components/stage-1}/MobileDesignSystem.tsx (100%)
+docs/audit/renamed_files.txt:12: rename {components/pokemon => archived-components/stage-1}/MobileItemsPage.tsx (99%)
+docs/audit/renamed_files.txt:13: rename {components/pokemon => archived-components/stage-1}/MobileMovesPage.tsx (100%)
+docs/audit/renamed_files.txt:14: rename {components/ui => archived-components/stage-1}/MobileOptimizedPokeID.tsx (100%)
+docs/audit/renamed_files.txt:15: rename {components/tcg-set-detail => archived-components/stage-1}/MobileTCGSetDetail.tsx (98%)
+docs/audit/renamed_files.txt:16: rename {components/ui => archived-components/stage-1}/QATestingSuite.tsx (100%)
+docs/audit/renamed_files.txt:17: rename {components/ui => archived-components/stage-1}/QATestingTool.tsx (100%)
+docs/audit/renamed_files.txt:18: rename {components/ui/cards => archived-components/stage-1}/UnifiedCard.tsx (100%)
+docs/audit/renamed_files.txt:19: rename {components/ui => archived-components/stage-1}/iPhoneQATests.tsx (100%)
+docs/audit/renamed_files.txt:20: rename {components/ui => archived-components/stage-2}/OptimizedImageMobile.tsx (100%)
+docs/audit/renamed_files.txt:21: rename {hooks => archived-components/stage-2}/useMobileOptimization.ts (100%)
+docs/audit/renamed_files.txt:22: rename {components/ui => archived-components/stage-3}/ComparisonModal.tsx (100%)
+docs/audit/renamed_files.txt:23: rename {components => archived-components/stage-3}/GlobalModal.tsx (83%)
+docs/audit/renamed_files.txt:24: rename {components/ui/filters => archived-components/stage-4}/AnimatedFilterPanel.tsx (100%)
+docs/audit/renamed_files.txt:25: rename {components/ui/progress => archived-components/stage-4}/CircularProgress.tsx (100%)
+docs/audit/renamed_files.txt:26: rename {components/ui => archived-components/stage-4}/DeckStackDisplay.tsx (100%)
+docs/audit/renamed_files.txt:27: rename {components/ui => archived-components/stage-4}/EnhancedEvolutionDisplay.tsx (100%)
+docs/audit/renamed_files.txt:28: rename {components/ui => archived-components/stage-4}/EnhancedRarityBadge.tsx (100%)
+docs/audit/renamed_files.txt:29: rename {components/ui/filters => archived-components/stage-4}/FilterChips.tsx (100%)
+docs/audit/renamed_files.txt:30: rename {components/ui => archived-components/stage-4}/GymLeaderShowcase.tsx (100%)
+docs/audit/renamed_files.txt:31: rename {components/ui => archived-components/stage-4}/KpiCard.tsx (100%)
+docs/audit/renamed_files.txt:32: rename {components/ui => archived-components/stage-4}/LevelTag.tsx (100%)
+docs/audit/renamed_files.txt:33: rename {components/ui/progress => archived-components/stage-4}/LinearProgress.tsx (100%)
+docs/audit/renamed_files.txt:34: rename {components/ui/layout => archived-components/stage-4}/ListContainer.tsx (100%)
+docs/audit/renamed_files.txt:35: rename {components/ui/filters => archived-components/stage-4}/MultiSelectFilter.tsx (100%)
+docs/audit/renamed_files.txt:36: rename {components/ui => archived-components/stage-4}/PokemonEasterEggs.tsx (100%)
+docs/audit/renamed_files.txt:37: rename {components/ui => archived-components/stage-4}/ProfessionalSetHeader.tsx (100%)
+docs/audit/renamed_files.txt:38: rename {components/ui => archived-components/stage-4}/Radio.tsx (100%)
+docs/audit/renamed_files.txt:39: rename {components/ui => archived-components/stage-4}/RegionNavigation.tsx (100%)
+docs/audit/renamed_files.txt:40: rename {components/ui => archived-components/stage-4}/RegionSelector.tsx (100%)
+docs/audit/renamed_files.txt:41: rename {components/ui => archived-components/stage-4}/RegionalEvolutionHandler.tsx (100%)
+docs/audit/renamed_files.txt:42: rename {components/ui => archived-components/stage-4}/SimpleEvolutionDisplay.tsx (100%)
+docs/audit/renamed_files.txt:43: rename {components/ui => archived-components/stage-4}/SimplifiedMovesDisplay.tsx (100%)
+docs/audit/renamed_files.txt:44: rename {components/ui => archived-components/stage-4}/SmartRecommendationEngine.tsx (100%)
+docs/audit/renamed_files.txt:45: rename {components/ui => archived-components/stage-4}/SocialCommunityHub.tsx (100%)
+docs/audit/renamed_files.txt:46: rename {components/ui/progress => archived-components/stage-4}/StepProgress.tsx (100%)
+docs/audit/renamed_files.txt:47: rename {components/ui => archived-components/stage-4}/TouchGestureSystem.tsx (100%)
+docs/audit/renamed_files.txt:48: rename {components/ui => archived-components/stage-4}/UIPanel.tsx (100%)
+docs/audit/renamed_files.txt:49: rename {components/ui => archived-components/stage-4}/VirtualizedList.tsx (100%)
+docs/audit/renamed_files.txt:50: rename {components/ui => archived-components/stage-4}/VisualCardSearch.tsx (100%)
+docs/audit/renamed_files.txt:51: rename {components/ui/forms => archived-components/stage-4}/VisualSearchFilters.tsx (99%)
+docs/audit/renamed_files.txt:52: rename {components/ui => archived-components/stage-4}/ZoomableImage.tsx (95%)
+docs/audit/renamed_files.txt:53: rename {components/ui => archived-components/stage-5}/AriaLiveAnnouncer.hooks.tsx (100%)
+docs/audit/renamed_files.txt:54: rename {components/ui => archived-components/stage-5}/AriaLiveAnnouncer.tsx (100%)
+docs/audit/renamed_files.txt:55: rename {components/pokemon => archived-components/stage-5}/BaseStatsRanking.tsx (100%)
+docs/audit/renamed_files.txt:56: rename {components => archived-components/stage-5}/BulbapediaDataExample.tsx (100%)
+docs/audit/renamed_files.txt:57: rename {components/ui => archived-components/stage-5}/CacheStatus.tsx (100%)
+docs/audit/renamed_files.txt:58: rename {components/ui/cards => archived-components/stage-5}/CardComparisonTool.tsx (99%)
+docs/audit/renamed_files.txt:59: rename {components/tcg-set-detail => archived-components/stage-5}/CircularRarityChart.tsx (100%)
+docs/audit/renamed_files.txt:60: rename {components/tcg-set-detail => archived-components/stage-5}/CompactStatsContainer.tsx (100%)
+docs/audit/renamed_files.txt:61: rename {components/ui => archived-components/stage-5}/ComparisonFAB.tsx (100%)
+docs/audit/renamed_files.txt:62: rename {components/ui => archived-components/stage-5}/DataAnalyticsDashboard.tsx (100%)
+docs/audit/renamed_files.txt:63: rename {components/ui => archived-components/stage-5}/EnhancedAnimationSystem.hooks.tsx (100%)
+docs/audit/renamed_files.txt:64: rename {components/pokemon => archived-components/stage-5}/EnhancedMoveDisplay.tsx (100%)
+docs/audit/renamed_files.txt:65: rename {components/ui => archived-components/stage-5}/EnhancedMovesDisplay.tsx (100%)
+docs/audit/renamed_files.txt:66: rename {components/ui => archived-components/stage-5}/EnhancedSetStatistics.tsx (100%)
+docs/audit/renamed_files.txt:67: rename {components/ui/cards => archived-components/stage-5}/EvolutionStageCard.tsx (100%)
+docs/audit/renamed_files.txt:68: rename {components/ui => archived-components/stage-5}/FeedbackStates.tsx (100%)
+docs/audit/renamed_files.txt:69: rename {components/ui => archived-components/stage-5}/FloatingActionSystem.tsx (100%)
+docs/audit/renamed_files.txt:70: rename {components/pokemon => archived-components/stage-5}/FloatingStatsWidget.tsx (100%)
+docs/audit/renamed_files.txt:71: rename {components/pokemon/tabs/competitive => archived-components/stage-5}/FormatStats.tsx (100%)
+docs/audit/renamed_files.txt:72: rename {components/ui => archived-components/stage-5}/KeyboardNavigation.hooks.tsx (100%)
+docs/audit/renamed_files.txt:73: rename {components/ui => archived-components/stage-5}/MarketInsightsDashboard.tsx (100%)
+docs/audit/renamed_files.txt:74: rename {components/ui => archived-components/stage-5}/MicroInteractionSystem.tsx (100%)
+docs/audit/renamed_files.txt:75: rename {components/ui/navigation => archived-components/stage-5}/NavigationEnhancements.tsx (100%)
+docs/audit/renamed_files.txt:76: rename {components/pokemon/tabs => archived-components/stage-5}/OverviewTabV3.tsx (100%)
+docs/audit/renamed_files.txt:77: rename {components/ui => archived-components/stage-5}/PerformanceDashboard.tsx (100%)
+docs/audit/renamed_files.txt:78: rename {components/ui => archived-components/stage-5}/PillBadge.tsx (100%)
+docs/audit/renamed_files.txt:79: rename {components => archived-components/stage-5}/PocketDeckViewer.tsx (100%)
+docs/audit/renamed_files.txt:80: rename {components => archived-components/stage-5}/PocketExpansionViewer.tsx (100%)
+docs/audit/renamed_files.txt:81: rename {components => archived-components/stage-5}/PokedexDisplay.tsx (100%)
+docs/audit/renamed_files.txt:82: rename {components/pokemon => archived-components/stage-5}/PokemonGlassPanel.tsx (100%)
+docs/audit/renamed_files.txt:83: rename {components/pokemon => archived-components/stage-5}/PokemonStatBars.tsx (100%)
+docs/audit/renamed_files.txt:84: rename {components/pokemon => archived-components/stage-5}/PokemonStatRadar.tsx (100%)
+docs/audit/renamed_files.txt:85: rename {components/pokemon => archived-components/stage-5}/PokemonStatRing.tsx (100%)
+docs/audit/renamed_files.txt:86: rename {components/pokemon/archive => archived-components/stage-5}/PokemonStatsTab.tsx (100%)
+docs/audit/renamed_files.txt:87: rename {components/ui => archived-components/stage-5}/PortfolioManager.tsx (99%)
+docs/audit/renamed_files.txt:88: rename {components/ui => archived-components/stage-5}/PriceDisplay.tsx (100%)
+docs/audit/renamed_files.txt:89: rename {components/ui => archived-components/stage-5}/PriceIntelligenceSystem.tsx (100%)
+docs/audit/renamed_files.txt:90: rename {components/ui => archived-components/stage-5}/PrintableCardLists.tsx (99%)
+docs/audit/renamed_files.txt:91: rename {components/ui => archived-components/stage-5}/SecurityProvider.tsx (100%)
+docs/audit/renamed_files.txt:92: rename {components/tcg-set-detail/sections => archived-components/stage-5}/SetStats.tsx (100%)
+docs/audit/renamed_files.txt:93: rename {components/FastRefreshTests/scenarios => archived-components/stage-5}/StatePreservation.tsx (100%)
+docs/audit/renamed_files.txt:94: rename {components/pokemon/tabs => archived-components/stage-5}/StatsTabV2.tsx (100%)
+docs/audit/renamed_files.txt:95: rename {components/ui/navigation => archived-components/stage-5}/StickySidebar.tsx (95%)
+docs/audit/renamed_files.txt:96: rename {components/ui => archived-components/stage-5}/TooltipHelpSystem.tsx (100%)
+docs/audit/renamed_files.txt:97: rename {components/pokemon => archived-components/stage-5}/TypeEffectivenessChart.tsx (100%)
+docs/audit/renamed_files.txt:98: rename {components/tcg-set-detail => archived-components/stage-5}/UnifiedSetDashboard.tsx (99%)
+docs/audit/renamed_files.txt:99: rename {components/tcg-set-detail => archived-components/stage-5}/UnifiedStatsGraph.tsx (100%)
+docs/audit/renamed_files.txt:100: rename {components/ui/charts => archived-components/stage-5}/chartcontainer.tsx (100%)
+docs/audit/renamed_files.txt:102: rename ARCHITECTURE.md => docs/archive/2024-09-01-legacy/ARCHITECTURE.md (100%)
+docs/audit/renamed_files.txt:103: rename BACKLOG.md => docs/archive/2024-09-01-legacy/BACKLOG.md (100%)
+docs/audit/renamed_files.txt:104: rename COMPREHENSIVE_CLEANUP_ANALYSIS.md => docs/archive/2024-09-01-legacy/COMPREHENSIVE_CLEANUP_ANALYSIS.md (100%)
+docs/audit/renamed_files.txt:105: rename CURRENT_STATUS.md => docs/archive/2024-09-01-legacy/CURRENT_STATUS.md (100%)
+docs/audit/renamed_files.txt:106: rename MOBILE_FEATURES_PROTECTED.md => docs/archive/2024-09-01-legacy/MOBILE_FEATURES_PROTECTED.md (100%)
+docs/audit/renamed_files.txt:107: rename PRODUCTION_DEPLOYMENT.md => docs/archive/2024-09-01-legacy/PRODUCTION_DEPLOYMENT.md (100%)
+docs/audit/renamed_files.txt:108: rename PRODUCTION_ROUTES.md => docs/archive/2024-09-01-legacy/PRODUCTION_ROUTES.md (100%)
+docs/audit/renamed_files.txt:109: rename PROJECT_CLEANUP_FINAL_SUMMARY.md => docs/archive/2024-09-01-legacy/PROJECT_CLEANUP_FINAL_SUMMARY.md (100%)
+docs/audit/renamed_files.txt:110: rename UNUSED_CODE_AUDIT.md => docs/archive/2024-09-01-legacy/UNUSED_CODE_AUDIT.md (100%)
+CLEANUP_SUMMARY.md:13:- `archived-components/` - 13 stage directories with ~200 old components
+CLEANUP_SUMMARY.md:19:- Moved 8 documentation files to `docs/archive/`
+CLEANUP_SUMMARY.md:51:rm -rf backups/ archived-components/ scripts/migration/
+unused-analysis/typescript-analysis.json:13:      "file": "components/_archive/mobile-legacy/GestureCardSorting.tsx",
+unused-analysis/typescript-analysis.json:19:      "file": "components/_archive/mobile-legacy/GestureCardSorting.tsx",
+unused-analysis/typescript-analysis.json:25:      "file": "components/_archive/mobile-legacy/GestureCardSorting.tsx",
+unused-analysis/typescript-analysis.json:31:      "file": "components/_archive/mobile-legacy/MobileCardGrid.tsx",
+unused-analysis/typescript-analysis.json:37:      "file": "components/_archive/mobile-legacy/MobileCardGrid.tsx",
+unused-analysis/typescript-analysis.json:43:      "file": "components/_archive/mobile-legacy/MobileFilterSheet.tsx",
+unused-analysis/typescript-analysis.json:49:      "file": "components/_archive/mobile-legacy/MobileFilterSheet.tsx",
+unused-analysis/typescript-analysis.json:55:      "file": "components/_archive/mobile-legacy/MobileFilterSheet.tsx",
+unused-analysis/typescript-analysis.json:61:      "file": "components/_archive/mobile-legacy/MobileIntegration.tsx",
+unused-analysis/typescript-analysis.json:67:      "file": "components/_archive/mobile-legacy/MobileIntegration.tsx",
+unused-analysis/typescript-analysis.json:73:      "file": "components/_archive/mobile-legacy/MobileIntegration.tsx",
+unused-analysis/typescript-analysis.json:79:      "file": "components/_archive/mobile-legacy/MobileIntegration.tsx",
+unused-analysis/typescript-analysis.json:85:      "file": "components/_archive/mobile-legacy/MobileIntegration.tsx",
+unused-analysis/typescript-analysis.json:91:      "file": "components/_archive/mobile-legacy/MobileIntegration.tsx",
+unused-analysis/typescript-analysis.json:97:      "file": "components/_archive/mobile-legacy/MobileIntegration.tsx",
+unused-analysis/typescript-analysis.json:103:      "file": "components/_archive/mobile-legacy/MobileSearchExperience.tsx",
+unused-analysis/typescript-analysis.json:109:      "file": "components/_archive/mobile-legacy/MobileSearchExperience.tsx",
+unused-analysis/typescript-analysis.json:115:      "file": "components/_archive/mobile-legacy/VoiceSearch.tsx",
+unused-analysis/typescript-analysis.json:121:      "file": "components/_archive/mobile-legacy/VoiceSearch.tsx",
+unused-analysis/typescript-analysis.json:127:      "file": "components/_archive/mobile-legacy/VoiceSearch.tsx",
+unused-analysis/typescript-analysis.json:181:      "file": "components/pokemon/archive/PokemonAbilitiesTab.tsx",
+unused-analysis/typescript-analysis.json:187:      "file": "components/pokemon/archive/PokemonAbilitiesTab.tsx",
+unused-analysis/typescript-analysis.json:193:      "file": "components/pokemon/archive/PokemonMovesTab.tsx",
+unused-analysis/typescript-analysis.json:199:      "file": "components/pokemon/archive/PokemonMovesTab.tsx",
+unused-analysis/typescript-analysis.json:493:      "file": "components/pokemon/tabs/archive/EvolutionTabV2.tsx",
+unused-analysis/typescript-analysis.json:6379:      "file": "utils/scrapers/archivesCategoryScraper.ts",
+next.config.js:19:        hostname: "archives.bulbagarden.net",
+next.config.mjs:243:        hostname: 'archives.bulbagarden.net',
+public/data/monthly_org_trends.csv:2484:2019-06,Library And Archives Canada,4,2910.8,353.03999999999996,1918.1,1150.17,102.0
+public/data/monthly_org_trends.csv:2566:2019-07,Library And Archives Canada,1,705.43,32.4,0.0,50.65,0.0
+public/data/monthly_org_trends.csv:2641:2019-08,Library And Archives Canada,3,6286.83,558.58,3875.03,2557.1400000000003,0.0
+public/data/monthly_org_trends.csv:2723:2019-09,Library And Archives Canada,3,1731.08,277.91999999999996,302.5,285.05,229.9
+public/data/monthly_org_trends.csv:2809:2019-10,Library And Archives Canada,5,2607.94,850.36,1524.31,1333.2399999999998,116.0
+public/data/monthly_org_trends.csv:2898:2019-11,Library And Archives Canada,3,986.81,144.78,438.68,190.01999999999998,24.0
+public/data/monthly_org_trends.csv:2984:2019-12,Library And Archives Canada,2,600.51,123.0,349.2,184.35,48.0
+public/data/monthly_org_trends.csv:3067:2020-01,Library And Archives Canada,5,1744.6599999999999,441.79,1583.6,850.9,108.0
+public/data/monthly_org_trends.csv:3151:2020-02,Library And Archives Canada,1,0.0,0.0,0.0,0.0,120.0
+public/data/monthly_org_trends.csv:3233:2020-03,Library And Archives Canada,3,1397.04,124.69,184.45,105.5,78.66
+public/data/monthly_org_trends.csv:3279:2020-04,Library And Archives Canada,1,944.91,0.0,0.0,0.0,39.76
+public/data/monthly_org_trends.csv:3663:2021-08,Library And Archives Canada,1,0.0,190.12,633.04,518.3,120.99
+public/data/monthly_org_trends.csv:3751:2021-10,Library And Archives Canada,1,0.0,76.05,290.38,200.6,91.33
+public/data/monthly_org_trends.csv:3812:2021-11,Library And Archives Canada,1,0.0,114.07,295.11,254.1,147.18
+public/data/monthly_org_trends.csv:3993:2022-03,Library And Archives Canada,1,541.64,217.32,239.74,183.55,0.0
+public/data/monthly_org_trends.csv:4064:2022-04,Library And Archives Canada,1,180.41,224.42,1123.48,304.1,0.0
+public/data/monthly_org_trends.csv:4153:2022-05,Library And Archives Canada,6,4126.46,1429.73,2999.73,1744.75,0.0
+public/data/monthly_org_trends.csv:4244:2022-06,Library And Archives Canada,3,2331.66,523.62,1653.2,1393.6,0.0
+public/data/monthly_org_trends.csv:4328:2022-07,Library And Archives Canada,1,2268.81,183.39,2199.62,1721.3,0.0
+public/data/monthly_org_trends.csv:4482:2022-09,Library And Archives Canada,5,6315.06,665.04,2026.3899999999999,1265.35,0.0
+public/data/monthly_org_trends.csv:4572:2022-10,Library And Archives Canada,6,1747.41,1224.36,1056.07,1409.81,0.0
+public/data/monthly_org_trends.csv:4668:2022-11,Library And Archives Canada,6,11344.28,1012.56,1910.51,1714.7,0.0
+public/data/monthly_org_trends.csv:4835:2023-01,Library And Archives Canada,4,2378.45,1016.03,2389.7799999999997,981.9000000000001,0.0
+public/data/monthly_org_trends.csv:4916:2023-02,Library And Archives Canada,2,0.0,401.33,1018.89,450.70000000000005,0.0
+public/data/monthly_org_trends.csv:5000:2023-03,Library And Archives Canada,2,0.0,669.1500000000001,446.26,307.65,0.0
+public/data/monthly_org_trends.csv:5086:2023-04,Library And Archives Canada,7,8763.62,1159.8500000000001,8545.41,3416.16,0.0
+public/data/monthly_org_trends.csv:5175:2023-05,Library And Archives Canada,4,1490.34,1191.46,1746.38,701.4,0.0
+public/data/monthly_org_trends.csv:5280:2023-06,Library And Archives Canada,4,10154.009999999998,643.51,3242.77,3325.87,0.0
+public/data/monthly_org_trends.csv:5464:2023-08,Library And Archives Canada,2,4918.02,479.5,3848.68,3388.9700000000003,0.0
+public/data/monthly_org_trends.csv:5549:2023-09,Library And Archives Canada,2,0.0,551.11,397.22,649.5,0.0
+public/data/monthly_org_trends.csv:5654:2023-10,Library And Archives Canada,4,19006.77,704.81,6489.74,5596.93,0.0
+public/data/monthly_org_trends.csv:5753:2023-11,Library And Archives Canada,3,0.0,674.31,1621.92,435.05,0.0
+public/data/monthly_org_trends.csv:5852:2023-12,Library And Archives Canada,3,1144.39,517.3199999999999,966.08,1162.3600000000001,0.0
+public/data/monthly_org_trends.csv:5939:2024-01,Library And Archives Canada,3,1286.55,631.49,4010.2799999999997,1438.8,0.0
+public/data/monthly_org_trends.csv:6036:2024-02,Library And Archives Canada,1,663.37,146.51,597.99,422.2,0.0
+public/data/monthly_org_trends.csv:6135:2024-03,Library And Archives Canada,1,1273.85,75.0,889.64,238.99,0.0
+public/data/monthly_org_trends.csv:6233:2024-04,Library And Archives Canada,2,2491.19,481.22,713.91,1108.03,0.0
+public/data/monthly_org_trends.csv:6342:2024-05,Library And Archives Canada,6,2361.72,891.1,3195.54,2513.46,0.0
+public/data/monthly_org_trends.csv:6452:2024-06,Library And Archives Canada,2,2453.4700000000003,340.2,2066.67,1177.92,0.0
+public/data/monthly_org_trends.csv:6640:2024-08,Library And Archives Canada,1,1565.53,54.65,577.96,690.75,0.0
+public/data/monthly_org_trends.csv:6735:2024-09,Library And Archives Canada,2,8350.55,492.28,5773.5599999999995,3446.55,0.0
+public/data/monthly_org_trends.csv:6839:2024-10,Library And Archives Canada,3,6041.59,871.0899999999999,3222.4799999999996,1755.87,0.0
+public/data/monthly_org_trends.csv:6949:2024-11,Library And Archives Canada,4,1038.51,787.3299999999999,2374.55,1050.3500000000001,0.0
+public/data/monthly_org_trends.csv:7050:2024-12,Library And Archives Canada,1,4115.69,139.54,0.0,1080.36,0.0
+project-resources/docs/archive/README.md:1:# Documentation Archive
+project-resources/docs/archive/README.md:3:This directory contains historical documentation that has been archived but is preserved for reference.
+project-resources/docs/archive/README.md:5:## Archive Structure
+project-resources/docs/archive/README.md:19:## Why These Files Are Archived
+project-resources/docs/archive/README.md:21:These files have been moved to the archive to:
+project-resources/docs/archive/README.md:26:## Accessing Archived Content
+project-resources/docs/archive/README.md:28:All archived files remain fully accessible and searchable. They provide valuable context for understanding:
+project-resources/docs/archive/README.md:35:*Files archived on: 2025-07-24*
+project-resources/tests/config/tsconfig.json:89:    "**/archive/**/*",
+project-resources/tests/config/tsconfig.json:90:    "**/_archive/**/*",
+project-resources/tests/config/tsconfig.json:91:    "components/pokemon/archive/**/*",
+project-resources/tests/config/tsconfig.json:92:    "components/_archive/**/*"

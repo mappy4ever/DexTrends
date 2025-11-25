@@ -4,7 +4,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import Navbar from "../Navbar";
 import Footer from "../Footer";
 import React, { ReactNode } from "react";
-import ComparisonFAB from '../ui/ComparisonFAB';
+// import ComparisonFAB from '../ui/ComparisonFAB'; // Removed in Stage 5
 import BottomNavigation from '../ui/BottomNavigation';
 
 interface LayoutProps {
@@ -36,7 +36,7 @@ export default function Layout({ children, fullBleed = false }: LayoutProps) {
       </div>
       <Footer />
       {/* Floating comparison button */}
-      <ComparisonFAB />
+      {/* <ComparisonFAB /> */}
       {/* Bottom navigation for mobile */}
       <BottomNavigation />
     </div>

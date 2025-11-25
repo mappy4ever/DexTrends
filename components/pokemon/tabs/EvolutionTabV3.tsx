@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { Pokemon, PokemonSpecies, EvolutionChain } from "../../../types/pokemon";
 import type { TypeColors } from '../../../types/pokemon-tabs';
-import { GlassContainer } from '../../ui/design-system';
+import { GlassContainer } from '../../ui/glass-components';
 import { TypeBadge } from '../../ui/TypeBadge';
 import { cn } from '../../../utils/cn';
 import { 

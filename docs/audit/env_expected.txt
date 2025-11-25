@@ -1,0 +1,5 @@
+Expected env keys to verify later
+SITE_URL
+VERCEL_URL
+NEXT_PUBLIC_SITE_URL
+POKEMONTCG_API_KEY

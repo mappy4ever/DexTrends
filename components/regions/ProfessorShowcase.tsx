@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { getProfessorImage } from '../../utils/scrapedImageMapping';
 // Using direct PokeAPI URLs for Pokémon images
 import { FadeIn, SlideUp } from '../ui/animations/animations';
-import { GlassContainer } from '../ui/design-system';
+import { GlassContainer } from '../ui/glass-components';
 import { 
   BsBook, 
   BsTrophy, 

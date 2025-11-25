@@ -8,9 +8,11 @@ import { useDebounce } from "../../hooks/useDebounce";
 import { safeRequestIdleCallback } from "../../utils/requestIdleCallback";
 import { safeSessionStorage } from "../../utils/safeStorage";
 import { motion, AnimatePresence } from 'framer-motion';
-import { createGlassStyle, GradientButton, CircularButton } from '../../components/ui/design-system';
+import Button from '../../components/ui/Button';
 import { cn } from '../../utils/cn';
-import { UnifiedSearchBar, EmptyStateGlass, LoadingStateGlass } from '../../components/ui/glass-components';
+import UnifiedSearchBar from '../../components/ui/UnifiedSearchBar';
+import EmptyStateGlass from '../../components/ui/EmptyStateGlass';
+import { DetailPageSkeleton, LoadingStateGlass } from '../../components/ui/glass-components';
 import TCGCardList from "../../components/TCGCardList";
 import VirtualCardGrid from "../../components/ui/VirtualizedCardGrid";
 // SimpleCardWrapper removed - using div instead
@@ -27,16 +29,16 @@ const SimpleCardWrapper = ({ children, className, rarity }: any) => {
 };
 import { useTheme, useFavorites } from '../../context/UnifiedAppContext';
 import { useViewSettings } from "../../context/UnifiedAppContext";
-import { DetailPageSkeleton, InlineLoader } from '@/components/ui/SkeletonLoadingSystem';
+import { SkeletonCard, Skeleton } from '@/components/ui/Skeleton';
 import logger from "../../utils/logger";
 import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
 import performanceMonitor from "../../utils/performanceMonitor";
 import { CardGridSkeleton } from "../../components/ui/SkeletonLoader";
 import type { TCGCard, CardSet } from "../../types/api/cards";
 import type { FavoriteCard } from "../../context/modules/types";
-import TCGSetErrorBoundary from "../../components/TCGSetErrorBoundary";
-import { HorizontalCardShowcase } from "../../components/tcg-set-detail/HorizontalCardShowcase";
-import { CompactStatsBar } from "../../components/tcg-set-detail/CompactStatsBar";
+import PageErrorBoundary from "../../components/ui/PageErrorBoundary";
+// HorizontalCardShowcase removed - using inline card display
+// CompactStatsBar removed - using inline stats display
 import { RarityBadge } from "../../components/ui/RarityBadge";
 import { RarityIcon, RARITY_ORDER, getRarityRank } from "../../components/ui/RarityIcon";
 // Removed - using unified responsive approach
@@ -209,7 +211,7 @@ const SetIdPage: NextPage = () => {
         
         abortController = new AbortController();
         
-        const data = await fetchJSON(`/api/tcgexpansions/${setid}`, {
+        const data = await fetchJSON(`/api/tcg-sets/${setid}`, {
           signal: abortController.signal
         }) as any;
         
@@ -413,14 +415,7 @@ const SetIdPage: NextPage = () => {
   if (!router.isReady) {
     return (
       <FullBleedWrapper>
-        <DetailPageSkeleton 
-          variant="tcgset"
-          showHeader={true}
-          showImage={true}
-          showStats={true}
-          showTabs={false}
-          showRelated={true}
-        />
+        <DetailPageSkeleton />
       </FullBleedWrapper>
     );
   }
@@ -444,14 +439,7 @@ const SetIdPage: NextPage = () => {
   if (loading && !setInfo) {
     return (
       <FullBleedWrapper>
-        <DetailPageSkeleton 
-          variant="tcgset"
-          showHeader={true}
-          showImage={true}
-          showStats={true}
-          showTabs={false}
-          showRelated={true}
-        />
+        <DetailPageSkeleton />
       </FullBleedWrapper>
     );
   }
@@ -492,14 +480,7 @@ const SetIdPage: NextPage = () => {
   if (!setInfo) {
     return (
       <FullBleedWrapper>
-        <DetailPageSkeleton 
-          variant="tcgset"
-          showHeader={true}
-          showImage={true}
-          showStats={true}
-          showTabs={false}
-          showRelated={true}
-        />
+        <DetailPageSkeleton />
       </FullBleedWrapper>
     );
   }
@@ -522,7 +503,7 @@ const SetIdPage: NextPage = () => {
             </button>
           </div>
           
-          {/* Compact Stats Bar */}
+          {/* Compact Stats Bar - Temporarily disabled after Phase 8 
           <div className="mb-4 sm:mb-6 md:mb-8">
             <CompactStatsBar
               setInfo={setInfo}
@@ -531,9 +512,9 @@ const SetIdPage: NextPage = () => {
               uniqueRarities={uniqueRarities}
               averagePrice={averagePrice}
             />
-          </div>
+          </div> */}
           
-          {/* Horizontal Card Showcase */}
+          {/* Horizontal Card Showcase - Temporarily disabled after Phase 8 
           {topValueCards.length > 0 && (
             <div className="mb-4 sm:mb-6 md:mb-8">
               <HorizontalCardShowcase
@@ -542,18 +523,10 @@ const SetIdPage: NextPage = () => {
                 getPrice={getCardPrice}
               />
             </div>
-          )}
+          )} */}
           
           {/* Original Card List Display */}
-          <div className={`${createGlassStyle({ 
-            blur: 'xl',
-            opacity: 'medium',
-            gradient: true,
-            border: 'strong',
-            rounded: 'xl',
-            shadow: 'xl',
-            hover: 'shadowOnly'
-          })} relative overflow-hidden`}>
+          <div className={`${"bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"} relative overflow-hidden`}>
             {/* Subtle gradient background */}
             <div className="absolute inset-0 bg-gradient-to-br from-purple-100/10 via-transparent to-blue-100/10 pointer-events-none" />
             
@@ -716,14 +689,7 @@ const SetIdPage: NextPage = () => {
               <div className="pointer-events-auto max-w-6xl w-full max-h-[90vh] overflow-auto rounded-3xl">
                 <div className={cn(
                   'relative border-2 border-gray-400/50',
-                  createGlassStyle({ 
-                    blur: '2xl',
-                    opacity: 'strong',
-                    gradient: true,
-                    border: 'strong',
-                    rounded: 'xl',
-                    shadow: 'xl'
-                  })
+                  "bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20"
                 )}>
                   {/* Close button */}
                   <button
@@ -870,9 +836,9 @@ const SetIdPage: NextPage = () => {
 // Wrap the component with error boundary
 const SetIdPageWithErrorBoundary: NextPage = () => {
   return (
-    <TCGSetErrorBoundary>
+    <PageErrorBoundary pageName="TCG Set Detail">
       <SetIdPage />
-    </TCGSetErrorBoundary>
+    </PageErrorBoundary>
   );
 };
 

@@ -4,7 +4,7 @@ import Head from "next/head";
 import { motion } from 'framer-motion';
 import { fetchJSON } from "../../utils/unifiedFetch";
 import { useTheme } from "../../context/UnifiedAppContext";
-import { createGlassStyle, GradientButton, CircularButton } from '../../components/ui/design-system';
+import Button from '../../components/ui/Button';
 import { UnifiedSearchBar, EmptyStateGlass } from '../../components/ui/glass-components';
 import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
 import { UnifiedGrid } from '../../components/unified/UnifiedGrid';
@@ -49,7 +49,7 @@ const UnifiedTcgSetsPage: NextPage = () => {
     try {
       // Fetch all sets at once for virtual scrolling
       const res = await fetchJSON<{ data: CardSet[], pagination: PaginationInfo }>(
-        `/api/tcgexpansions?pageSize=500`, // Get all sets
+        `/api/tcg-sets?pageSize=500`, // Get all sets
         {
           useCache: true,
           timeout: 60000,
@@ -224,14 +224,7 @@ const UnifiedTcgSetsPage: NextPage = () => {
     </motion.div>
   );
 
-  const glassStyle = createGlassStyle({
-    blur: '2xl',
-    opacity: 'strong',
-    gradient: true,
-    border: 'strong',
-    shadow: 'xl',
-    rounded: 'lg'
-  });
+  const glassStyle = "bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20";
 
   return (
     <FullBleedWrapper gradient="tcg">
@@ -248,14 +241,14 @@ const UnifiedTcgSetsPage: NextPage = () => {
       >
         <div className="container mx-auto px-4 py-4 sm:py-6">
           <div className="flex items-center justify-between flex-wrap gap-4">
-            <CircularButton
+            <Button rounded="full"
               onClick={() => router.push('/')}
               variant="secondary"
               size="sm"
               className="scale-90 sm:scale-100"
             >
               ← Back
-            </CircularButton>
+            </Button>
             
             <div className="text-center flex-1">
               <h1 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
@@ -268,7 +261,7 @@ const UnifiedTcgSetsPage: NextPage = () => {
               )}
             </div>
             
-            <GradientButton
+            <Button gradient={true}
               variant="primary"
               size="sm"
               onClick={() => fetchSets()}
@@ -280,7 +273,7 @@ const UnifiedTcgSetsPage: NextPage = () => {
               }
             >
               Refresh
-            </GradientButton>
+            </Button>
           </div>
         </div>
       </motion.div>

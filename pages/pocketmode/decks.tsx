@@ -5,9 +5,9 @@ import Link from "next/link";
 import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../../components/ui/animations/animations";
 import { useTheme } from "../../context/UnifiedAppContext";
 import { useInfiniteScroll } from "../../hooks/useInfiniteScroll";
-import { GlassContainer } from "../../components/ui/design-system/GlassContainer";
-import { GradientButton } from "../../components/ui/design-system/GradientButton";
-import { TypeGradientBadge } from "../../components/ui/design-system/TypeGradientBadge";
+import { GlassContainer } from '../../components/ui/glass-components';
+import Button from '../../components/ui/Button';
+import { TypeBadge } from '../../components/ui/TypeBadge';
 import { motion } from "framer-motion";
 import { InlineLoader, PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import StyledBackButton from "../../components/ui/StyledBackButton";
@@ -330,7 +330,7 @@ const PocketDecks: NextPage = () => {
                   </div>
                 </div>
             
-                <GradientButton 
+                <Button gradient={true} 
                   variant="secondary"
                   size="md"
                   onClick={() => {
@@ -342,7 +342,7 @@ const PocketDecks: NextPage = () => {
                   }}
                 >
                   Clear Filters
-                </GradientButton>
+                </Button>
               </div>
             </div>
           </GlassContainer>

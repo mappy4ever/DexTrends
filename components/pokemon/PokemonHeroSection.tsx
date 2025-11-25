@@ -3,14 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import type { Pokemon, PokemonSpecies } from "../../types/api/pokemon";
 import type { FavoritePokemon } from "../../context/modules/types";
 import { TypeBadge } from '../ui/TypeBadge';
-import PokemonGlassPanel from './PokemonGlassPanel';
 import { getTypeUIColors, getTypeRingGradient } from '../../utils/pokemonTypeGradients';
 import { calculateCatchRate, calculateGenderRatio } from '../../utils/pokemonDetailUtils';
-import { CircularButton } from '../ui/design-system';
+import Button from '../ui/Button';
 import { useFavorites } from '../../context/UnifiedAppContext';
 import { cn } from '../../utils/cn';
 import { FaHeart, FaRegHeart, FaShare, FaStar } from 'react-icons/fa';
-import TypeEffectivenessChart from './TypeEffectivenessChart';
+import TypeEffectivenessWheel from './TypeEffectivenessWheel';
 import ShareMenu from '../ui/ShareMenu';
 import { sharePokemon } from '../../utils/shareUtils';
 
@@ -115,28 +114,30 @@ const PokemonHeroSection: React.FC<PokemonHeroSectionProps> = ({
               <div className="absolute top-2 right-2 flex flex-col gap-2">
                 {/* Shiny toggle */}
                 {pokemon.sprites?.other?.['official-artwork']?.front_shiny && (
-                  <CircularButton
-                    size="icon"
+                  <Button
+                    size="sm"
                     variant={showShiny ? 'primary' : 'secondary'}
                     onClick={onShinyToggle}
-                    className="shadow-lg"
+                    className="shadow-lg !p-2"
+                    rounded="full"
                     title="Toggle shiny form"
                   >
                     <FaStar className={showShiny ? 'text-yellow-400' : ''} />
-                  </CircularButton>
+                  </Button>
                 )}
                 
                 {/* Forms button */}
                 {species.varieties && species.varieties.length > 1 && (
-                  <CircularButton
-                    size="icon"
+                  <Button
+                    size="sm"
                     variant="secondary"
                     onClick={() => {/* Open forms modal */}}
-                    className="shadow-lg"
+                    className="shadow-lg !p-2"
+                    rounded="full"
                     title="View forms"
                   >
                     <span className="text-lg">🔄</span>
-                  </CircularButton>
+                  </Button>
                 )}
               </div>
               
@@ -289,12 +290,12 @@ const PokemonHeroSection: React.FC<PokemonHeroSectionProps> = ({
             <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
               Type Effectiveness
             </h3>
-            <TypeEffectivenessChart types={pokemon.types || []} variant="compact" />
+            <TypeEffectivenessWheel pokemonTypes={pokemon.types || []} />
           </div>
           
           {/* Action buttons */}
           <div className="flex gap-3 justify-center lg:justify-start">
-            <CircularButton
+            <Button
               variant={isFavorite ? 'primary' : 'secondary'}
               onClick={() => {
                 if (isFavorite) {
@@ -310,20 +311,20 @@ const PokemonHeroSection: React.FC<PokemonHeroSectionProps> = ({
                   addToFavorites('pokemon', favoritePokemon);
                 }
               }}
-              leftIcon={isFavorite ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
+              icon={isFavorite ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
             >
               {isFavorite ? 'Favorited' : 'Add to Favorites'}
-            </CircularButton>
+            </Button>
             
             <ShareMenu
               onShare={(method) => sharePokemon(pokemon, method)}
               trigger={
-                <CircularButton
+                <Button
                   variant="secondary"
-                  leftIcon={<FaShare />}
+                  icon={<FaShare />}
                 >
                   Share
-                </CircularButton>
+                </Button>
               }
             />
           </div>

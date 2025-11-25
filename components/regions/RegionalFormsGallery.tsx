@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 // Using direct PokeAPI URLs for Pokémon images
-import { GlassContainer } from '../ui/design-system';
+import { GlassContainer } from '../ui/glass-components';
 import { FadeIn, SlideUp } from '../ui/animations/animations';
 import { 
   BsArrowRepeat,

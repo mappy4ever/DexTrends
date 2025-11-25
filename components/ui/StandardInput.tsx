@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 import { cn } from '@/utils/cn';
-import { createGlassStyle } from './design-system/glass-constants';
+// Glass styles replaced with Tailwind classes - createGlassStyle removed
 
 interface StandardInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -35,13 +35,7 @@ export const StandardInput = forwardRef<HTMLInputElement, StandardInputProps>(
     ...props 
   }, ref) => {
     const glassClasses = variant === 'glass' 
-      ? createGlassStyle({
-          blur: 'sm',
-          opacity: 'subtle',
-          border: 'subtle',
-          rounded: 'xl',
-          shadow: 'sm'
-        })
+      ? 'bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 rounded-xl shadow-sm'
       : '';
 
     return (

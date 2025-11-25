@@ -54,14 +54,16 @@ export default function EvolutionTreeRenderer({
   return (
     <div className="flex items-center justify-center">
       <div className="flex flex-col items-center">
-        <EvolutionStageCard
-          name={node.name}
-          id={node.id}
-          spriteUrl={(showShiny ? node.shinySpriteUrl : node.spriteUrl) || '/dextrendslogo.png'}
-          types={node.types}
-          isCurrent={isCurrent}
-          circleSize={isCurrent ? "large" : "medium"}
-        />
+        {/* EvolutionStageCard removed in Stage 5 - Using simple display */}
+        <div className={`flex flex-col items-center ${isCurrent ? 'scale-110' : ''}`}>
+          <img 
+            src={(showShiny ? node.shinySpriteUrl : node.spriteUrl) || '/dextrendslogo.png'}
+            alt={node.name}
+            className="w-20 h-20 object-contain"
+          />
+          <p className="text-sm font-semibold">{node.name}</p>
+          <p className="text-xs text-gray-500">#{node.id}</p>
+        </div>
         
         {node.children && Array.isArray(node.children) && node.children.length > 0 && (
           <>

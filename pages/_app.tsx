@@ -14,8 +14,8 @@ import "../styles/globals.css";
 import "../components/typebadge.css";
 import Layout from "../components/layout/Layout";
 import logger from "../utils/logger";
-import ErrorBoundary from "../components/layout/ErrorBoundary";
-import { PageTransition } from "../components/layout/PageTransition";
+import ErrorBoundary from "../components/ui/ErrorBoundary";
+import { PageTransition } from "../components/ui/PageTransition";
 import { UnifiedAppProvider } from '../context/UnifiedAppContext';
 import GlobalErrorHandler from '../components/GlobalErrorHandler';
 import { PWAProvider } from '../components/pwa/PWAProvider';
@@ -197,12 +197,7 @@ function MyApp({ Component, pageProps, router }: MyAppProps) {
       setNeedsRecovery(true);
     }
     
-    // Apply iOS-specific fixes
-    import('../utils/iosFixes').then(({ applyIOSFixes }) => {
-      applyIOSFixes();
-    }).catch(err => {
-      logger.warn('iOS fixes failed to load', { error: err });
-    });
+    // iOS-specific fixes removed during Phase 8 consolidation
     
     // iOS scroll performance optimization
     // Store state setter in external object to avoid nested functions
