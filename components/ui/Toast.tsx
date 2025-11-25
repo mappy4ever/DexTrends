@@ -22,18 +22,19 @@ const toastIcons = {
   warning: <FaExclamationTriangle className="w-5 h-5" />
 };
 
+// Toast colors using semantic design tokens where available
 const toastColors = {
-  success: 'bg-green-500',
-  error: 'bg-red-500',
-  info: 'bg-blue-500',
-  warning: 'bg-yellow-500'
+  success: 'bg-[var(--color-success)]',
+  error: 'bg-[var(--color-error)]',
+  info: 'bg-[var(--color-info)]',
+  warning: 'bg-[var(--color-warning)]'
 };
 
 const toastTextColors = {
-  success: 'text-green-500',
-  error: 'text-red-500',
-  info: 'text-blue-500',
-  warning: 'text-yellow-500'
+  success: 'text-[var(--color-success)]',
+  error: 'text-[var(--color-error)]',
+  info: 'text-[var(--color-info)]',
+  warning: 'text-[var(--color-warning)]'
 };
 
 export const Toast: React.FC<ToastProps> = ({
@@ -129,7 +130,7 @@ export const Toast: React.FC<ToastProps> = ({
 
   return (
     <motion.div
-      className={`fixed ${getPositionClasses()} z-50 pointer-events-auto`}
+      className={`fixed ${getPositionClasses()} z-[var(--z-toast)] pointer-events-auto`}
       variants={getAnimationVariants()}
       initial="initial"
       animate="animate"
@@ -144,20 +145,20 @@ export const Toast: React.FC<ToastProps> = ({
       onDragEnd={handleDragEnd}
       style={{ x: dragX }}
     >
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden min-w-[300px] max-w-md">
+      <div className="bg-[var(--color-bg-elevated)] dark:bg-gray-800 rounded-[var(--radius-lg)] shadow-[var(--shadow-xl)] overflow-hidden min-w-[300px] max-w-md">
         <div className="p-4">
           <div className="flex items-start gap-3">
             <div className={`flex-shrink-0 ${toastTextColors[type]}`}>
               {toastIcons[type]}
             </div>
             <div className="flex-1">
-              <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+              <p className="text-[var(--text-sm)] font-medium text-[var(--color-text-primary)]">
                 {message}
               </p>
             </div>
             <button
               onClick={() => onClose(id)}
-              className="flex-shrink-0 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+              className="flex-shrink-0 text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] transition-colors duration-[var(--duration-fast)]"
             >
               <FaTimes className="w-4 h-4" />
             </button>
