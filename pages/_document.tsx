@@ -100,7 +100,9 @@ class MyDocument extends Document {
                         document.documentElement.classList.add('dark');
                       }
                     }
-                  } catch (e) {}
+                  } catch (e) {
+                    // Theme detection failed, default to light mode
+                  }
                 })();
               `
             }}

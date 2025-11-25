@@ -87,9 +87,14 @@ const Expansions: NextPage = () => {
         if (typeof window !== 'undefined') {
           const savedHistory = localStorage.getItem('packOpeningHistory');
           if (savedHistory) {
-            const history = JSON.parse(savedHistory);
-            setPackHistory(history);
-            setPackOpenCount(history.length);
+            try {
+              const history = JSON.parse(savedHistory);
+              setPackHistory(history);
+              setPackOpenCount(history.length);
+            } catch (parseError) {
+              logger.warn('Failed to parse pack history, resetting:', { error: parseError });
+              localStorage.removeItem('packOpeningHistory');
+            }
           }
         }
       } catch (err) {

@@ -11,6 +11,7 @@ import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
 import { FullBleedWrapper } from '../../components/ui/FullBleedWrapper';
 import { validateDeck, getDeckSuggestions, ValidationResult } from '../../utils/deckValidation';
 import { analyzeDeckMeta, getMetaSuggestions, MetaAnalysis } from '../../utils/metaAnalysis';
+import logger from '../../utils/logger';
 import type { PocketCard } from '../../types/api/pocket-cards';
 
 // Extended PocketCard type for deck builder specific fields
@@ -376,7 +377,16 @@ function DeckBuilder() {
     
     try {
       if (typeof window !== 'undefined') {
-        const savedDecks = JSON.parse(localStorage.getItem('pocketDecks') || '[]') as SavedDeck[];
+        let savedDecks: SavedDeck[] = [];
+        const storedDecks = localStorage.getItem('pocketDecks');
+        if (storedDecks) {
+          try {
+            savedDecks = JSON.parse(storedDecks) as SavedDeck[];
+          } catch (parseError) {
+            logger.warn('Failed to parse saved decks, starting fresh:', { error: parseError });
+            savedDecks = [];
+          }
+        }
         savedDecks.push(deckData);
         localStorage.setItem('pocketDecks', JSON.stringify(savedDecks));
         alert('Deck saved successfully!');
@@ -385,6 +395,7 @@ function DeckBuilder() {
         alert('Saving is not available on server-side');
       }
     } catch (error) {
+      logger.error('Failed to save deck:', { error });
       alert('Failed to save deck');
     }
   }, [deck, deckName, deckStats]);

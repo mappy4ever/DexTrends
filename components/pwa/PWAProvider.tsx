@@ -169,7 +169,9 @@ export const PWAProvider: React.FC<PWAProviderProps> = ({ children }) => {
       // Check for updates every 30 seconds in development
       if (process.env.NODE_ENV === 'development') {
         setInterval(() => {
-          registration.update().catch(() => {});
+          registration.update().catch((updateError) => {
+            logger.debug('Service worker update check failed:', { error: updateError });
+          });
         }, 30000);
       }
       

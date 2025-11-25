@@ -4,6 +4,7 @@ import Image from "next/image";
 import pokemon from "pokemontcgsdk";
 import { fetchJSON } from "../utils/unifiedFetch";
 import { useDebounce } from "../hooks/useDebounce";
+import logger from "../utils/logger";
 import type { TCGCard, CardSet } from "../types/api/cards";
 
 const POKE_API = "https://pokeapi.co/api/v2/pokemon?limit=10&offset=0";
@@ -135,8 +136,10 @@ const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSea
       try {
         const res = await pokemon.card.where({ q: `name:${q}*` });
         cards = (res?.data?.slice(0, 5) || []) as TCGCard[];
-      } catch {}
-      
+      } catch (cardError) {
+        logger.warn('Card search failed:', { error: cardError, query: q });
+      }
+
       // Set search
       let sets: CardSet[] = [];
       try {
@@ -144,7 +147,9 @@ const GlobalSearchModal = forwardRef<GlobalSearchModalHandle>(function GlobalSea
         sets = (allSets.data as CardSet[])
           .filter((s: CardSet) => s.name.toLowerCase().includes(q.toLowerCase()))
           .slice(0, 5);
-      } catch {}
+      } catch (setError) {
+        logger.warn('Set search failed:', { error: setError, query: q });
+      }
       
       // Pokémon search
       let pokemonResults: PokemonResult[] = [];

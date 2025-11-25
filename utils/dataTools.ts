@@ -1177,13 +1177,12 @@ class DataTools {
         this.getTableCount('card_cache'),
         this.getTableCount('pokemon_cache')
       ]);
-      const performanceMetrics = null; // databaseOptimizer removed
-
+      // databaseOptimizer was removed, use default metrics
       return {
         cardCount: cardCount || 0,
         pokemonCount: pokemonCount || 0,
-        performance: this.normalizePerformanceMetrics(performanceMetrics?.metrics || {}),
-        cacheHitRate: performanceMetrics?.cacheStats?.hitRate || 0,
+        performance: this.getDefaultPerformanceMetrics(),
+        cacheHitRate: 0,
         averageResponseTime: 150, // Would be calculated from real metrics
         errorRate: 0.02 // Would be calculated from real metrics
       };
