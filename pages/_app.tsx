@@ -7,7 +7,7 @@ import "../styles/design-tokens.css"; // All CSS variables: colors, spacing, typ
 
 // Consolidated CSS architecture - 5 core files
 import "../styles/core.css";       // Reset, base styles, breakpoints
-import "../styles/tokens.css";     // Legacy tokens (to be migrated to design-tokens.css)
+import "../styles/tokens.css";     // DEPRECATED: Will be removed after full migration to design-tokens.css
 import "../styles/components.css"; // All component styles
 import "../styles/utilities.css";  // Helper classes, animations
 import "../styles/overrides.css";  // Temporary fixes only

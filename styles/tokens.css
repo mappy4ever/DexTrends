@@ -1,5 +1,17 @@
 /**
- * Design Tokens - Centralized design system values
+ * DEPRECATED: This file is being phased out.
+ * All tokens are being migrated to design-tokens.css
+ *
+ * DO NOT add new tokens here. Use design-tokens.css instead.
+ * This file will be removed in a future update once all components
+ * have been verified to use design-tokens.css variables.
+ *
+ * @deprecated Use design-tokens.css instead
+ * @see styles/design-tokens.css
+ */
+
+/**
+ * Legacy Design Tokens - Centralized design system values
  * All colors, typography, spacing, and other design decisions
  */
 
