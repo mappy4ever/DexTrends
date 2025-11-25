@@ -1,35 +1,65 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { fetchJSON } from '../../../utils/unifiedFetch';
 import logger from '../../../utils/logger';
-import { tcgCache } from '../../../lib/tcg-cache';
 import { createFallbackResponse } from '../../../lib/static-sets-fallback';
 import type { TCGApiResponse, TCGSetListApiResponse } from '../../../types/api/enhanced-responses';
+
+// Lazy import tcgCache to avoid module loading errors
+let tcgCacheModule: typeof import('../../../lib/tcg-cache') | null = null;
+async function getTcgCache() {
+  if (!tcgCacheModule) {
+    try {
+      tcgCacheModule = await import('../../../lib/tcg-cache');
+    } catch (error) {
+      logger.warn('Failed to load tcg-cache module, caching disabled', { error });
+      return null;
+    }
+  }
+  return tcgCacheModule.tcgCache;
+}
 
 // TCG Sets list endpoint - /api/tcgexpansions
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const startTime = Date.now();
+
+  // Parse query params with defaults
   const { page = '1', pageSize = '25', forceRefresh = 'false' } = req.query;
-  const pageNum = parseInt(Array.isArray(page) ? page[0] : page, 10);
-  const pageSizeNum = Math.min(parseInt(Array.isArray(pageSize) ? pageSize[0] : pageSize, 10), 50);
+  const pageNum = parseInt(Array.isArray(page) ? page[0] : page, 10) || 1;
+  const pageSizeNum = Math.min(parseInt(Array.isArray(pageSize) ? pageSize[0] : pageSize, 10) || 25, 50);
   const shouldForceRefresh = (Array.isArray(forceRefresh) ? forceRefresh[0] : forceRefresh) === 'true';
   const apiKey = process.env.NEXT_PUBLIC_POKEMON_TCG_SDK_API_KEY;
 
+  // Set CORS headers for browser requests
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   try {
+    // Try to get tcgCache (lazy loaded to handle import failures)
+    const tcgCache = await getTcgCache();
+
     // Check Redis cache first (unless force refresh)
-    if (!shouldForceRefresh) {
-      const cached = await tcgCache.getSetsList(pageNum, pageSizeNum);
-      if (cached) {
-        logger.info('Returning cached TCG sets', {
-          page: pageNum,
-          pageSize: pageSizeNum,
-          responseTime: Date.now() - startTime
-        });
+    if (!shouldForceRefresh && tcgCache) {
+      try {
+        const cached = await tcgCache.getSetsList(pageNum, pageSizeNum);
+        if (cached) {
+          logger.info('Returning cached TCG sets', {
+            page: pageNum,
+            pageSize: pageSizeNum,
+            responseTime: Date.now() - startTime
+          });
 
-        res.setHeader('X-Cache-Status', 'hit');
-        res.setHeader('X-Response-Time', `${Date.now() - startTime}ms`);
-        res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+          res.setHeader('X-Cache-Status', 'hit');
+          res.setHeader('X-Response-Time', `${Date.now() - startTime}ms`);
+          res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
 
-        return res.status(200).json(cached);
+          return res.status(200).json(cached);
+        }
+      } catch (cacheError) {
+        logger.warn('Cache lookup failed, continuing to API', { error: cacheError });
       }
     }
 
@@ -110,10 +140,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     };
 
-    // Cache the response asynchronously
-    tcgCache.cacheSetsList(pageNum, pageSizeNum, response as TCGSetListApiResponse).catch(err => {
-      logger.error('Failed to cache TCG sets', { error: err });
-    });
+    // Cache the response asynchronously (if cache is available)
+    if (tcgCache) {
+      tcgCache.cacheSetsList(pageNum, pageSizeNum, response as TCGSetListApiResponse).catch(err => {
+        logger.error('Failed to cache TCG sets', { error: err });
+      });
+    }
 
     res.setHeader('Cache-Control', 'public, s-maxage=604800, stale-while-revalidate=2592000');
     res.setHeader('X-Cache-Status', 'miss');
@@ -122,19 +154,29 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(200).json(response);
   } catch (error) {
     logger.error('Failed to fetch TCG sets', {
-      error: error instanceof Error ? error.message : String(error)
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined
     });
 
     // Try to return stale cache first
-    const staleCache = await tcgCache.getSetsList(pageNum, pageSizeNum);
-    if (staleCache) {
-      res.setHeader('X-Cache-Status', 'stale-fallback');
-      return res.status(200).json(staleCache);
+    try {
+      const tcgCache = await getTcgCache();
+      if (tcgCache) {
+        const staleCache = await tcgCache.getSetsList(pageNum, pageSizeNum);
+        if (staleCache) {
+          res.setHeader('X-Cache-Status', 'stale-fallback');
+          return res.status(200).json(staleCache);
+        }
+      }
+    } catch (cacheError) {
+      logger.warn('Stale cache lookup failed', { error: cacheError });
     }
 
-    // Use static fallback as last resort
+    // Use static fallback as last resort - this should ALWAYS succeed
+    logger.info('Using static fallback for TCG sets', { page: pageNum, pageSize: pageSizeNum });
     const fallback = createFallbackResponse(pageNum, pageSizeNum);
     res.setHeader('X-Cache-Status', 'static-fallback');
+    res.setHeader('X-Response-Time', `${Date.now() - startTime}ms`);
     return res.status(200).json(fallback);
   }
 }
