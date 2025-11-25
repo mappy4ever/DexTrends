@@ -17,6 +17,8 @@ const LazyCollectionDashboard = React.lazy(() => import("../components/ui/layout
 import { PokemonAvatar } from '../components/ui/PokemonDisplay';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import Button from '../components/ui/Button';
+import { PageHeader } from '../components/ui/PageHeader';
+import { ErrorState } from '../components/ui/ErrorState';
 import { NextPage } from 'next';
 import { TCGCard } from '../types/api/cards';
 import Head from 'next/head';
@@ -253,8 +255,15 @@ const FavoritesPage: NextPage = () => {
         <meta name="description" content="View and manage your favorite Pokemon, cards, and decks in one place" />
       </Head>
       <FullBleedWrapper gradient="pokedex">
-        <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto px-2 sm:px-4 animate-fadeIn">
-          <h1 className="text-2xl md:text-3xl font-bold text-center mb-8 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Your Favorites</h1>
+        <div className="section-spacing-y-default max-w-[98vw] 2xl:max-w-[1800px] mx-auto px-[var(--page-padding-x)] animate-fadeIn">
+          {/* Page Header */}
+          <PageHeader
+            title="Your Favorites"
+            subtitle={`${favorites?.pokemon?.length || 0} Pokémon • ${favorites?.cards?.length || 0} Cards`}
+            gradient="purple"
+            size="lg"
+            centered
+          />
       
         {/* Tabs */}
         <div className="flex justify-center mb-8">
@@ -325,25 +334,14 @@ const FavoritesPage: NextPage = () => {
           {activeTab === 'pokemon' && (
             <div className="animate-fadeIn">
               {pokemonError ? (
-                <div className="bg-red-50 text-red-600 p-6 rounded-lg text-center mb-6">
-                  <div className="mb-4">
-                    <svg className="w-12 h-12 mx-auto text-red-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                    </svg>
-                    <h3 className="text-lg font-semibold mb-2">Unable to Load Pokemon</h3>
-                    <p className="text-sm">{pokemonError}</p>
-                  </div>
-                  {retryCount.pokemon > 0 && (
-                    <div className="text-xs text-gray-500 mb-4">
-                      Attempted {retryCount.pokemon} time{retryCount.pokemon !== 1 ? 's' : ''}
-                    </div>
-                  )}
-                  <button 
-                    onClick={() => window.location.reload()} 
-                    className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors text-sm"
-                  >
-                    Refresh Page
-                  </button>
+                <div className="max-w-md mx-auto mb-6">
+                  <ErrorState
+                    type="network"
+                    title="Unable to Load Pokemon"
+                    message={pokemonError}
+                    onRetry={() => window.location.reload()}
+                    retryText={retryCount.pokemon > 0 ? `Try Again (${retryCount.pokemon} attempts)` : "Try Again"}
+                  />
                 </div>
               ) : pokemonData.length > 0 ? (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 justify-items-center">

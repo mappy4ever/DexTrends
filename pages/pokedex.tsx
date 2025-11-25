@@ -14,6 +14,7 @@ import logger from '@/utils/logger';
 import { cn } from '@/utils/cn';
 import { SkeletonPokemonCard } from '@/components/ui/Skeleton';
 import { PullToRefresh } from '@/components/ui/gestures/PullToRefresh';
+import { PageHeader } from '@/components/ui/PageHeader';
 import type { Pokemon as APIPokemon, PokemonType, PokemonStat } from '@/types/api/pokemon';
 
 /**
@@ -416,32 +417,31 @@ const UnifiedPokedex: NextPage = () => {
       
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6">
-          {/* Header */}
-          <div className="text-center mb-4 sm:mb-8">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-1 sm:mb-2 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Pokédex
-            </h1>
-            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
-              {filteredPokemon.length} of {TOTAL_POKEMON} Pokémon
-            </p>
-            
-            {/* Stats Pills */}
-            <div className="flex justify-center gap-2 sm:gap-3 mt-3 sm:mt-4">
-              <div className="px-3 sm:px-4 py-1.5 sm:py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur rounded-full shadow-md">
-                <span className="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300">
-                  {filteredPokemon.length} Found
-                </span>
-              </div>
-              {loading && (
-                <div className="px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-100/80 dark:bg-blue-900/80 backdrop-blur rounded-full">
-                  <span className="text-xs sm:text-sm text-blue-600 dark:text-blue-400">Loading...</span>
+          {/* Header - Using PageHeader component with design tokens */}
+          <PageHeader
+            title="Pokédex"
+            subtitle={`${filteredPokemon.length} of ${TOTAL_POKEMON} Pokémon`}
+            gradient="purple"
+            size="lg"
+            centered
+            trailing={
+              <div className="flex justify-center gap-2 sm:gap-3">
+                <div className="px-3 sm:px-4 py-1.5 sm:py-2 bg-[var(--glass-bg-medium)] backdrop-blur-[var(--glass-blur-light)] rounded-full shadow-[var(--shadow-sm)]">
+                  <span className="text-[var(--text-sm)] font-semibold text-gray-700 dark:text-gray-300">
+                    {filteredPokemon.length} Found
+                  </span>
                 </div>
-              )}
-            </div>
-          </div>
+                {loading && (
+                  <div className="px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-100/80 dark:bg-blue-900/80 backdrop-blur rounded-full">
+                    <span className="text-[var(--text-sm)] text-blue-600 dark:text-blue-400">Loading...</span>
+                  </div>
+                )}
+              </div>
+            }
+          />
           
-          {/* Search and Filter Bar */}
-          <div className="sticky top-0 z-20 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-xl sm:rounded-2xl p-3 sm:p-4 mb-4 sm:mb-6 shadow-lg">
+          {/* Search and Filter Bar - Using design tokens */}
+          <div className="sticky top-0 z-[var(--z-sticky)] bg-[var(--glass-bg-heavy)] backdrop-blur-[var(--glass-blur-medium)] rounded-xl sm:rounded-2xl p-[var(--container-padding)] mb-4 sm:mb-6 shadow-[var(--shadow-lg)]">
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
               {/* Search Input */}
               <div className="flex-1 relative">
