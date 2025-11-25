@@ -41,10 +41,11 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     };
     
     // Base styles with consistent hover and active states
+    // Using design token animation timing for consistent feel
     const baseStyles = cn(
       'relative inline-flex items-center justify-center font-medium',
       roundedStyles[rounded],
-      'transition-all duration-200 ease-out',
+      'transition-all duration-[var(--duration-fast)] ease-[var(--ease-out)]',
       'transform hover:scale-[1.02] active:scale-[0.98]',
       'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
       'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:active:scale-100',

@@ -355,3 +355,53 @@
 .safe-area-all {
   padding: var(--safe-area-top) var(--safe-area-right) var(--safe-area-bottom) var(--safe-area-left);
 }
+
+/* ========================================
+   REDUCED MOTION SUPPORT
+   ======================================== */
+
+/**
+ * Global reduced motion support
+ * Respects user's system preference for reduced animations
+ * Applied to all elements with animations/transitions
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Override specific animation classes */
+  .animate-fadeIn,
+  .animate-slideUp,
+  .animate-scaleIn,
+  .animate-bounce,
+  .animate-pulse,
+  .animate-spin {
+    animation: none !important;
+  }
+}
+
+/* GPU Acceleration utility */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+/* Animate on hover only (prevents animation on touch) */
+@media (hover: hover) {
+  .hover-animate {
+    transition: transform var(--duration-fast) var(--ease-out),
+                box-shadow var(--duration-fast) var(--ease-out);
+  }
+
+  .hover-animate:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+}

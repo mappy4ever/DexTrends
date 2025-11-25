@@ -2,12 +2,22 @@ import { Variants, Transition, Easing } from 'framer-motion';
 
 /**
  * Unified Animation System
- * 
+ *
  * Consistent, performant animations across the application
  * - Respects user preferences (prefers-reduced-motion)
  * - GPU-accelerated transforms only
  * - Spring physics for natural movement
  * - Stagger effects for lists
+ *
+ * DESIGN TOKEN ALIGNMENT:
+ * These values are aligned with CSS variables in design-tokens.css:
+ * - --duration-instant: 100ms (0.1s)
+ * - --duration-fast: 150ms (0.15s)
+ * - --duration-normal: 300ms (0.3s)
+ * - --duration-slow: 500ms (0.5s)
+ * - --ease-out: cubic-bezier(0.33, 1, 0.68, 1)
+ * - --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1)
+ * - --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1)
  */
 
 // Check for reduced motion preference
@@ -16,14 +26,17 @@ export const prefersReducedMotion = () => {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 };
 
-// Animation durations
+/**
+ * Animation durations (in seconds)
+ * Aligned with design-tokens.css --duration-* variables
+ */
 export const duration = {
-  instant: 0,
-  fast: 0.15,
-  normal: 0.3,
-  slow: 0.5,
-  slower: 0.8,
-  slowest: 1.2
+  instant: 0.1,    // 100ms - micro-interactions (--duration-instant)
+  fast: 0.15,      // 150ms - button feedback (--duration-fast)
+  normal: 0.3,     // 300ms - standard transitions (--duration-normal)
+  slow: 0.5,       // 500ms - page transitions (--duration-slow)
+  slower: 0.8,     // 800ms - complex animations
+  slowest: 1.2     // 1200ms - loading states
 };
 
 // Spring configurations
@@ -55,13 +68,19 @@ export const spring = {
   }
 } as const;
 
-// Easing functions
+/**
+ * Easing functions (cubic-bezier arrays)
+ * Aligned with design-tokens.css --ease-* variables
+ */
 export const ease = {
-  inOut: [0.4, 0, 0.2, 1],
-  out: [0, 0, 0.2, 1],
-  in: [0.4, 0, 1, 1],
-  bounce: [0.68, -0.55, 0.265, 1.55],
-  elastic: [0.175, 0.885, 0.32, 1.275]
+  // Standard easings - aligned with design tokens
+  out: [0.33, 1, 0.68, 1],           // --ease-out: smooth deceleration
+  inOut: [0.65, 0, 0.35, 1],         // --ease-in-out: balanced
+  in: [0.4, 0, 1, 1],                // Acceleration
+  // Special easings
+  spring: [0.34, 1.56, 0.64, 1],     // --ease-spring: bouncy feedback
+  bounce: [0.68, -0.55, 0.265, 1.55], // Strong bounce
+  elastic: [0.175, 0.885, 0.32, 1.275] // Elastic feel
 } as const;
 
 /**
