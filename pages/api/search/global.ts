@@ -27,6 +27,13 @@ interface SearchResponse {
 const searchCache = new Map<string, { data: SearchResponse; timestamp: number }>();
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
+// Helper to get base URL from request
+function getBaseUrl(req: NextApiRequest): string {
+  const protocol = req.headers['x-forwarded-proto'] || 'http';
+  const host = req.headers['x-forwarded-host'] || req.headers.host || 'localhost:3000';
+  return `${protocol}://${host}`;
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<SearchResponse | { error: string }>
@@ -37,7 +44,7 @@ export default async function handler(
 
   const { q, limit = '20', categories } = req.query;
   const query = (q as string || '').trim().toLowerCase();
-  
+
   if (!query || query.length < 2) {
     return res.status(400).json({ error: 'Query must be at least 2 characters' });
   }
@@ -48,6 +55,9 @@ export default async function handler(
   if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
     return res.status(200).json(cached.data);
   }
+
+  // Get base URL for internal API calls
+  const baseUrl = getBaseUrl(req);
 
   try {
     const results: SearchResult[] = [];
@@ -69,7 +79,7 @@ export default async function handler(
     // Search TCG Cards
     if (!categoryFilter || categoryFilter.includes('card')) {
       try {
-        const cardResults = await searchTCGCards(query, resultLimit);
+        const cardResults = await searchTCGCards(query, resultLimit, baseUrl);
         results.push(...cardResults);
       } catch (error) {
         logger.error('[Global Search] Card search failed:', { error: error instanceof Error ? error.message : String(error) });
@@ -79,7 +89,7 @@ export default async function handler(
     // Search TCG Sets
     if (!categoryFilter || categoryFilter.includes('set')) {
       try {
-        const setResults = await searchTCGSets(query, resultLimit);
+        const setResults = await searchTCGSets(query, resultLimit, baseUrl);
         results.push(...setResults);
       } catch (error) {
         logger.error('[Global Search] Set search failed:', { error: error instanceof Error ? error.message : String(error) });
@@ -164,10 +174,10 @@ async function searchPokemon(query: string, limit: number): Promise<SearchResult
 }
 
 // Helper function to search TCG Cards
-async function searchTCGCards(query: string, limit: number): Promise<SearchResult[]> {
+async function searchTCGCards(query: string, limit: number, baseUrl: string): Promise<SearchResult[]> {
   try {
     const response = await fetchJSON<TCGApiResponse<unknown[]>>(
-      `/api/tcg-cards?q=${encodeURIComponent(query)}&pageSize=${limit}`
+      `${baseUrl}/api/tcg-cards?q=${encodeURIComponent(query)}&pageSize=${limit}`
     );
     
     if (!response?.data) return [];
@@ -190,9 +200,9 @@ async function searchTCGCards(query: string, limit: number): Promise<SearchResul
 }
 
 // Helper function to search TCG Sets
-async function searchTCGSets(query: string, limit: number): Promise<SearchResult[]> {
+async function searchTCGSets(query: string, limit: number, baseUrl: string): Promise<SearchResult[]> {
   try {
-    const response = await fetchJSON<TCGApiResponse<unknown[]>>('/api/tcgexpansions?pageSize=100');
+    const response = await fetchJSON<TCGApiResponse<unknown[]>>(`${baseUrl}/api/tcgexpansions?pageSize=100`);
     
     if (!response?.data) return [];
 
