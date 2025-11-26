@@ -34,8 +34,8 @@ if (typeof window === 'undefined') {
 import { NotificationProvider } from '../components/qol/NotificationSystem';
 import { ContextualHelpProvider } from '../components/qol/ContextualHelp';
 import { PreferencesProvider } from '../components/qol/UserPreferences';
-// AuthProvider temporarily disabled for debugging
-// import { AuthProvider } from '../context/AuthContext';
+// AuthProvider for authentication
+import { AuthProvider } from '../context/AuthContext';
 
 // Toast system imports
 import { ToastProvider } from '../components/providers/ToastProvider';
@@ -137,6 +137,7 @@ const AppContent: React.FC<AppContentProps> = ({
         </Head>
         
         <UnifiedAppProvider>
+          <AuthProvider>
             <ToastProvider>
               {/* ModalProvider removed - using unified Modal */}
                 <NotificationProvider>
@@ -164,6 +165,7 @@ const AppContent: React.FC<AppContentProps> = ({
                 </NotificationProvider>
               {/* End ModalProvider removal */}
             </ToastProvider>
+          </AuthProvider>
           </UnifiedAppProvider>
       </PWAProvider>
     </>

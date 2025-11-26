@@ -3,13 +3,14 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { RiGovernmentFill } from "react-icons/ri";
 import { AiOutlineBulb } from "react-icons/ai";
-import { BsSun, BsMoon, BsGlobeEuropeAfrica, BsHeart, BsSearch, BsCardList, BsGrid, BsBook, BsChevronDown } from "react-icons/bs";
+import { BsSun, BsMoon, BsGlobeEuropeAfrica, BsHeart, BsSearch, BsCardList, BsGrid, BsBook, BsChevronDown, BsPerson } from "react-icons/bs";
 import { GiPokerHand, GiCardPickup, GiCrossedSwords } from "react-icons/gi";
 import { FiTrendingUp, FiShoppingBag, FiBarChart2 } from "react-icons/fi";
 import GlobalSearchModal from "./GlobalSearchModal";
 import logger from "../utils/logger";
 import { DynamicAdvancedSearchModal } from "./dynamic/DynamicComponents";
 import { useAppContext, useFavorites } from "../context/UnifiedAppContext";
+import { useAuth } from "../context/AuthContext";
 import ClientOnly from "./ClientOnly";
 import { NavbarLogo } from "../components/ui/DexTrendsLogo";
 import { PokeballSVG } from "./ui/PokeballSVG";
@@ -38,6 +39,7 @@ interface GlobalSearchModalHandle {
 export default function Navbar() {
   const { theme, toggleTheme, mounted } = useAppContext();
   const { favorites } = useFavorites();
+  const { user } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dropdownStates, setDropdownStates] = useState<Record<string, boolean>>({});
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
@@ -374,6 +376,27 @@ export default function Navbar() {
               }
             </ClientOnly>
           </button>
+
+          {/* Sign In / User */}
+          <ClientOnly>
+            {user ? (
+              <Link
+                href="/profile"
+                aria-label="View profile"
+                title="View profile"
+                className="p-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30 transition-colors duration-150"
+              >
+                <BsPerson className="w-5 h-5" />
+              </Link>
+            ) : (
+              <Link
+                href="/auth/login"
+                className="px-3 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30 transition-colors duration-150"
+              >
+                Sign In
+              </Link>
+            )}
+          </ClientOnly>
         </div>
       </div>
       {/* Mobile Menu Overlay - Proper z-index and rendering */}
