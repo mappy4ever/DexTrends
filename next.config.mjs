@@ -360,6 +360,9 @@ const nextConfig = {
   experimental: {
     // Only enable stable experimental features
     esmExternals: true,
+    // Reduce memory usage for Vercel Hobby plan
+    workerThreads: false,
+    cpus: 1,
   },
   
   // Production optimizations
