@@ -275,6 +275,56 @@ export const TYPE_GRADIENTS = {
 } as const;
 
 // ===========================================
+// ICON SIZES - Consistent across app
+// ===========================================
+
+export const ICON_SIZE = {
+  xs: 'w-3 h-3',        // 12px - tiny indicators
+  sm: 'w-4 h-4',        // 16px - inline icons, badges
+  md: 'w-5 h-5',        // 20px - default for buttons, inputs
+  lg: 'w-6 h-6',        // 24px - prominent icons
+  xl: 'w-8 h-8',        // 32px - feature icons
+  '2xl': 'w-10 h-10',   // 40px - hero icons
+  '3xl': 'w-12 h-12',   // 48px - large feature icons
+} as const;
+
+// Numeric values for react-icons
+export const ICON_SIZE_PX = {
+  xs: 12,
+  sm: 16,
+  md: 20,
+  lg: 24,
+  xl: 32,
+  '2xl': 40,
+  '3xl': 48,
+} as const;
+
+// ===========================================
+// INPUT SIZES - Consistent form elements
+// ===========================================
+
+export const INPUT_SIZE = {
+  sm: {
+    height: 'h-9',         // 36px
+    padding: 'px-3 py-2',
+    text: 'text-sm',
+    iconSize: 'w-4 h-4',
+  },
+  md: {
+    height: 'h-11',        // 44px - iOS touch target
+    padding: 'px-4 py-2.5',
+    text: 'text-base',
+    iconSize: 'w-5 h-5',
+  },
+  lg: {
+    height: 'h-12',        // 48px
+    padding: 'px-5 py-3',
+    text: 'text-lg',
+    iconSize: 'w-5 h-5',
+  },
+} as const;
+
+// ===========================================
 // REGION ACCENT COLORS
 // ===========================================
 
@@ -343,6 +393,9 @@ export default {
   TRANSITION,
   HOVER,
   GLASS_BG,
+  ICON_SIZE,
+  ICON_SIZE_PX,
+  INPUT_SIZE,
   // Legacy exports for backward compatibility
   GLASS_BLUR,
   GLASS_OPACITY,
