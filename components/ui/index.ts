@@ -119,3 +119,6 @@ export { default as PokemonSoundEffects } from './PokemonSoundEffects';
 export { default as OptimizationEnhancer } from './OptimizationEnhancer';
 export { default as UserExperienceEnhancer } from './UserExperienceEnhancer';
 // ComparisonFAB removed - unused component
+
+// SEO Component
+export { SEO, SEOPresets } from './SEO';
