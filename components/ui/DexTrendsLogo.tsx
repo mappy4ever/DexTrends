@@ -56,6 +56,7 @@ export const DexTrendsLogo: React.FC<DexTrendsLogoProps> = ({
         className
       )}
       priority={priority}
+      unoptimized
     />
   );
 
@@ -104,6 +105,7 @@ export const NavbarLogo: React.FC<{ className?: string }> = ({ className }) => {
           className
         )}
         priority
+        unoptimized
       />
     </Link>
   );

@@ -278,24 +278,33 @@ export async function fetchJSON<T = unknown>(
   
   // Debug logging for cached responses
   if (result.fromCache) {
-    logger.debug('fetchJSON returning cached data', { 
-      url, 
+    logger.debug('fetchJSON returning cached data', {
+      url,
       hasData: !!result.data,
       dataType: typeof result.data,
-      fromCache: result.fromCache 
+      fromCache: result.fromCache
     });
   }
-  
-  // If there's an error and throwOnError is true (or not specified), throw it
-  if (result.error && (options?.throwOnError !== false)) {
-    logger.error('fetchJSON throwing error', { 
-      url, 
+
+  // Only throw if explicitly requested via throwOnError: true
+  // This prevents unhandled rejections when callers don't have try/catch
+  if (result.error && options?.throwOnError === true) {
+    logger.error('fetchJSON throwing error', {
+      url,
       error: result.error.message,
-      fromCache: result.fromCache 
+      fromCache: result.fromCache
     });
     throw result.error;
   }
-  
+
+  // Log errors even when not throwing
+  if (result.error && !result.fromCache) {
+    logger.warn('fetchJSON returning null due to error', {
+      url,
+      error: result.error.message
+    });
+  }
+
   return result.data;
 }
 

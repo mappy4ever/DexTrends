@@ -153,7 +153,7 @@ export const GlobalSearch: React.FC = () => {
   };
 
   return (
-    <div ref={searchRef} className="relative w-full max-w-2xl mx-auto">
+    <div ref={searchRef} className="relative w-full max-w-xl mx-auto px-4">
       <form onSubmit={handleSubmit}>
         <div className="relative">
           <input
@@ -163,33 +163,30 @@ export const GlobalSearch: React.FC = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
             onFocus={() => setShowResults(true)}
             onKeyDown={handleKeyDown}
-            placeholder="Search Pokémon, cards, moves, items..."
-            className="w-full px-12 py-4 text-lg bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-full shadow-lg focus:outline-none focus:border-purple-500 focus:shadow-xl transition-all duration-200 touch-manipulation [&::-webkit-inner-spin-button]:appearance-none"
-            style={{ fontSize: '18px' }} // Explicit size to prevent zoom
+            placeholder="Search Pokémon, cards, moves..."
+            className="w-full h-12 pl-11 pr-10 text-base bg-white dark:bg-gray-800/95 border border-gray-200 dark:border-gray-700 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-150 touch-manipulation"
+            style={{ fontSize: '16px' }}
           />
-          
+
           {/* Search Icon */}
-          <div className="absolute left-4 top-1/2 -translate-y-1/2">
-            <Search className="w-6 h-6 text-gray-400" />
+          <div className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none">
+            <Search className="w-5 h-5 text-gray-400" />
           </div>
 
-          {/* Clear Button */}
-          {searchTerm && (
-            <button
-              type="button"
-              onClick={clearSearch}
-              className="absolute right-4 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
-            >
-              <X className="w-5 h-5 text-gray-500" />
-            </button>
-          )}
-
-          {/* Loading Spinner */}
-          {loading && (
-            <div className="absolute right-12 top-1/2 -translate-y-1/2">
-              <div className="w-5 h-5 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" />
-            </div>
-          )}
+          {/* Clear Button / Loading Spinner */}
+          <div className="absolute right-3 top-1/2 -translate-y-1/2">
+            {loading ? (
+              <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+            ) : searchTerm ? (
+              <button
+                type="button"
+                onClick={clearSearch}
+                className="p-0.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors duration-150"
+              >
+                <X className="w-4 h-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300" />
+              </button>
+            ) : null}
+          </div>
         </div>
       </form>
 
@@ -197,16 +194,17 @@ export const GlobalSearch: React.FC = () => {
       <AnimatePresence>
         {showResults && (searchTerm.length >= 2 || recentSearches.length > 0) && (
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="absolute top-full mt-2 w-full bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50"
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.15 }}
+            className="absolute top-full mt-2 w-full bg-white dark:bg-gray-800/95 rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-gray-100 dark:border-gray-700/50 overflow-hidden z-50"
           >
             {/* Recent Searches */}
             {searchTerm.length < 2 && recentSearches.length > 0 && (
-              <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-                <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2">Recent Searches</h3>
-                <div className="space-y-1">
+              <div className="p-3 border-b border-gray-100 dark:border-gray-700/50">
+                <h3 className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2 px-1">Recent</h3>
+                <div className="space-y-0.5">
                   {recentSearches.map((search, idx) => (
                     <button
                       key={idx}
@@ -214,7 +212,7 @@ export const GlobalSearch: React.FC = () => {
                         setSearchTerm(search);
                         performSearch(search);
                       }}
-                      className="w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors text-gray-700 dark:text-gray-300"
+                      className="w-full text-left px-2.5 py-2 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg transition-colors duration-150 text-sm text-gray-700 dark:text-gray-300"
                     >
                       {search}
                     </button>
@@ -225,17 +223,17 @@ export const GlobalSearch: React.FC = () => {
 
             {/* Search Results */}
             {results.length > 0 && (
-              <div className="max-h-96 overflow-y-auto">
+              <div className="max-h-80 overflow-y-auto py-1">
                 {results.map((result, idx) => (
                   <Link href={result.url} key={`${result.category}-${result.id}`}>
                     <div
-                      className={`flex items-center gap-3 p-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer ${
-                        idx === selectedIndex ? 'bg-gray-100 dark:bg-gray-700' : ''
+                      className={`flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-150 cursor-pointer ${
+                        idx === selectedIndex ? 'bg-gray-50 dark:bg-gray-700/50' : ''
                       }`}
                       onMouseEnter={() => setSelectedIndex(idx)}
                     >
                       {/* Category Icon */}
-                      <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium ${categoryColors[result.category]}`}>
+                      <div className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-xs ${categoryColors[result.category]}`}>
                         {categoryIcons[result.category]}
                       </div>
 

@@ -8,7 +8,14 @@ interface ImageLoaderProps {
 }
 
 export default function imageLoader({ src, width, quality }: ImageLoaderProps): string {
-  // Simply return the src without modification to avoid optimization
-  // This prevents any URL changes that might cause re-renders
+  // For local images (starting with /), return as-is without width param
+  // This avoids Next.js warnings about loader not implementing width
+  if (src.startsWith('/')) {
+    return src;
+  }
+
+  // For external images, we can optionally add width/quality params
+  // but most CDNs serve the original image anyway
+  // Return as-is for simplicity since we're bypassing optimization
   return src;
 }

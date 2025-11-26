@@ -3,7 +3,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { NextPage } from 'next';
+import { NextPage, GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -15,9 +15,65 @@ import logger from '@/utils/logger';
 
 type AuthMode = 'login' | 'signup' | 'forgot';
 
+// Password validation helper - enforces strong passwords
+const validatePassword = (password: string): { valid: boolean; message: string } => {
+  if (password.length < 8) {
+    return { valid: false, message: 'Password must be at least 8 characters' };
+  }
+  if (!/[A-Z]/.test(password)) {
+    return { valid: false, message: 'Password must contain at least one uppercase letter' };
+  }
+  if (!/[a-z]/.test(password)) {
+    return { valid: false, message: 'Password must contain at least one lowercase letter' };
+  }
+  if (!/[0-9]/.test(password)) {
+    return { valid: false, message: 'Password must contain at least one number' };
+  }
+  return { valid: true, message: '' };
+};
+
+// Email validation helper
+const validateEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+// Sanitize input to prevent XSS
+const sanitizeInput = (input: string): string => {
+  return input
+    .replace(/[<>]/g, '') // Remove angle brackets
+    .trim()
+    .slice(0, 254); // Limit length
+};
+
+// Generic error messages to prevent information leakage
+const getSecureErrorMessage = (error: string): string => {
+  const lowerError = error.toLowerCase();
+  // Don't reveal if email exists or not
+  if (lowerError.includes('user not found') || lowerError.includes('invalid login')) {
+    return 'Invalid email or password';
+  }
+  if (lowerError.includes('email already') || lowerError.includes('already registered')) {
+    return 'Unable to create account. Please try a different email or sign in.';
+  }
+  if (lowerError.includes('rate limit') || lowerError.includes('too many')) {
+    return 'Too many attempts. Please wait a moment and try again.';
+  }
+  return error;
+};
+
 const AuthPage: NextPage = () => {
   const router = useRouter();
-  const { signIn, signUp, signInWithProvider, resetPassword, user, loading } = useAuth();
+  // Safe hook usage - will have default values if provider not available
+  const auth = useAuth();
+  const { signIn, signUp, signInWithProvider, resetPassword, user, loading } = auth || {
+    signIn: async () => ({ error: { message: 'Auth not available' } }),
+    signUp: async () => ({ error: { message: 'Auth not available' } }),
+    signInWithProvider: async () => ({ error: { message: 'Auth not available' } }),
+    resetPassword: async () => ({ error: { message: 'Auth not available' } }),
+    user: null,
+    loading: false
+  };
 
   const [mode, setMode] = useState<AuthMode>('login');
   const [email, setEmail] = useState('');
@@ -42,40 +98,65 @@ const AuthPage: NextPage = () => {
     setSuccess('');
     setIsSubmitting(true);
 
+    // Sanitize inputs
+    const sanitizedEmail = sanitizeInput(email);
+    const sanitizedUsername = sanitizeInput(username);
+
+    // Validate email format
+    if (!validateEmail(sanitizedEmail)) {
+      setError('Please enter a valid email address');
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
       if (mode === 'login') {
-        const { error } = await signIn(email, password);
+        const { error } = await signIn(sanitizedEmail, password);
         if (error) {
-          setError(error.message);
+          setError(getSecureErrorMessage(error.message));
         }
       } else if (mode === 'signup') {
+        // Validate password strength
+        const passwordValidation = validatePassword(password);
+        if (!passwordValidation.valid) {
+          setError(passwordValidation.message);
+          setIsSubmitting(false);
+          return;
+        }
         if (password !== confirmPassword) {
           setError('Passwords do not match');
           setIsSubmitting(false);
           return;
         }
-        if (password.length < 6) {
-          setError('Password must be at least 6 characters');
+        // Validate username
+        if (sanitizedUsername.length < 3) {
+          setError('Username must be at least 3 characters');
           setIsSubmitting(false);
           return;
         }
-        const { error } = await signUp(email, password, username);
+        if (!/^[a-zA-Z0-9_]+$/.test(sanitizedUsername)) {
+          setError('Username can only contain letters, numbers, and underscores');
+          setIsSubmitting(false);
+          return;
+        }
+        const { error } = await signUp(sanitizedEmail, password, sanitizedUsername);
         if (error) {
-          setError(error.message);
+          setError(getSecureErrorMessage(error.message));
         } else {
           setSuccess('Check your email for a confirmation link!');
         }
       } else if (mode === 'forgot') {
-        const { error } = await resetPassword(email);
+        const { error } = await resetPassword(sanitizedEmail);
         if (error) {
-          setError(error.message);
+          // Always show success message to prevent email enumeration
+          setSuccess('If an account exists with this email, you will receive a password reset link.');
         } else {
-          setSuccess('Password reset link sent to your email!');
+          setSuccess('If an account exists with this email, you will receive a password reset link.');
         }
       }
     } catch (err) {
       logger.error('Auth error', { error: err });
-      setError('An unexpected error occurred');
+      setError('An unexpected error occurred. Please try again.');
     }
 
     setIsSubmitting(false);
@@ -170,6 +251,10 @@ const AuthPage: NextPage = () => {
                       className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                       placeholder="Choose a username"
                       required
+                      maxLength={30}
+                      autoComplete="username"
+                      pattern="^[a-zA-Z0-9_]+$"
+                      title="Username can only contain letters, numbers, and underscores"
                     />
                   </div>
                 )}
@@ -185,6 +270,8 @@ const AuthPage: NextPage = () => {
                     className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                     placeholder="trainer@pokemon.com"
                     required
+                    maxLength={254}
+                    autoComplete={mode === 'login' ? 'email' : 'email'}
                   />
                 </div>
 
@@ -200,7 +287,15 @@ const AuthPage: NextPage = () => {
                       className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                       placeholder="••••••••"
                       required
+                      maxLength={128}
+                      autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
+                      minLength={8}
                     />
+                    {mode === 'signup' && (
+                      <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                        Min 8 chars with uppercase, lowercase, and number
+                      </p>
+                    )}
                   </div>
                 )}
 
@@ -216,6 +311,9 @@ const AuthPage: NextPage = () => {
                       className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                       placeholder="••••••••"
                       required
+                      maxLength={128}
+                      autoComplete="new-password"
+                      minLength={8}
                     />
                   </div>
                 )}
@@ -359,6 +457,11 @@ const AuthPage: NextPage = () => {
       </FullBleedWrapper>
     </>
   );
+};
+
+// Disable static generation - this page requires client-side auth
+export const getServerSideProps: GetServerSideProps = async () => {
+  return { props: {} };
 };
 
 export default AuthPage;

@@ -51,69 +51,54 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const baseStyles = cn(
       'relative inline-flex items-center justify-center font-medium',
       roundedStyles[rounded],
-      TRANSITION.default,
-      'transform hover:scale-[1.01] active:scale-[0.99]', // More subtle scale
+      'transition-colors duration-150',
+      'active:scale-[0.98]', // Subtle press feedback
       'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
-      'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:active:scale-100',
+      'disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100',
       'tap-highlight-transparent touch-manipulation',
       fullWidth && 'w-full'
     );
 
-    // Variant styles with consistent gradients and shadows
+    // Variant styles - clean, solid colors
     const variantStyles = {
       primary: cn(
-        gradient
-          ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700'
-          : 'bg-blue-600 hover:bg-blue-700',
+        'bg-blue-600 hover:bg-blue-700',
         'text-white',
-        SHADOW.sm,
-        'hover:shadow-md active:shadow-sm',
-        'focus-visible:ring-blue-500'
+        'focus-visible:ring-blue-500/30'
       ),
       secondary: cn(
         'bg-white dark:bg-gray-800 text-gray-900 dark:text-white',
         'border border-gray-200 dark:border-gray-700',
         'hover:bg-gray-50 dark:hover:bg-gray-700',
-        SHADOW.sm,
-        'hover:shadow-md active:shadow-sm',
-        'focus-visible:ring-gray-500'
+        'focus-visible:ring-gray-500/30'
       ),
       ghost: cn(
         'bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800',
         'text-gray-700 dark:text-gray-300',
-        'focus-visible:ring-gray-500'
+        'focus-visible:ring-gray-500/30'
       ),
       danger: cn(
-        gradient
-          ? 'bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700'
-          : 'bg-red-600 hover:bg-red-700',
+        'bg-red-600 hover:bg-red-700',
         'text-white',
-        SHADOW.sm,
-        'hover:shadow-md active:shadow-sm',
-        'focus-visible:ring-red-500'
+        'focus-visible:ring-red-500/30'
       ),
       success: cn(
-        gradient
-          ? 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700'
-          : 'bg-green-600 hover:bg-green-700',
+        'bg-green-600 hover:bg-green-700',
         'text-white',
-        SHADOW.sm,
-        'hover:shadow-md active:shadow-sm',
-        'focus-visible:ring-green-500'
+        'focus-visible:ring-green-500/30'
       ),
       clean: cn(
         'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300',
         'hover:bg-gray-200 dark:hover:bg-gray-700',
-        'focus-visible:ring-gray-500'
+        'focus-visible:ring-gray-500/30'
       ),
       glass: cn(
-        'bg-white/75 dark:bg-gray-800/75',
+        'bg-white/80 dark:bg-gray-800/80',
         'backdrop-blur-sm',
         'border border-gray-200/50 dark:border-gray-700/50',
         'text-gray-900 dark:text-white',
-        SHADOW.sm,
-        'hover:shadow-md',
-        'focus-visible:ring-blue-500'
+        'hover:bg-white/90 dark:hover:bg-gray-800/90',
+        'focus-visible:ring-blue-500/30'
       )
     };
 
