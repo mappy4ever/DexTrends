@@ -677,22 +677,6 @@ const TcgSetsContent: React.FC = () => {
               />
             </motion.div>
           )}
-          <script dangerouslySetInnerHTML={{
-            __html: `
-              // Prefetch the individual set pages for faster navigation
-              if ('requestIdleCallback' in window) {
-                requestIdleCallback(() => {
-                  const links = document.querySelectorAll('a[href^="/tcgexpansions/"]');
-                  links.forEach(link => {
-                    const prefetchLink = document.createElement('link');
-                    prefetchLink.rel = 'prefetch';
-                    prefetchLink.href = link.href;
-                    document.head.appendChild(prefetchLink);
-                  });
-                });
-              }
-            `
-          }} />
         </div>
       </FullBleedWrapper>
     );

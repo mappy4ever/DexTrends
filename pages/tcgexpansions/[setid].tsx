@@ -14,7 +14,7 @@ import { UnifiedSearchBar, EmptyStateGlass, LoadingStateGlass } from '../../comp
 import TCGCardList from "../../components/TCGCardList";
 import VirtualCardGrid from "../../components/ui/VirtualizedCardGrid";
 // SimpleCardWrapper removed - using div instead
-const SimpleCardWrapper = ({ children, className, rarity }: any) => {
+const SimpleCardWrapper = ({ children, className, rarity }: { children: React.ReactNode; className?: string; rarity?: string }) => {
   const getBorderClass = () => {
     if (!rarity) return 'border-gray-300';
     const rarityLower = rarity.toLowerCase();
@@ -51,6 +51,14 @@ interface SetStatistics {
   rarityDistribution: Record<string, number>;
   valueByRarity: Record<string, { total: number; average: number; count: number }>;
   highestValueCards: CardWithMarketPrice[];
+}
+
+// API response type for set data
+interface SetApiResponse {
+  set: CardSet;
+  cards: TCGCard[];
+  warning?: string;
+  stats?: SetStatistics;
 }
 
 const SetIdPage: NextPage = () => {
@@ -209,9 +217,9 @@ const SetIdPage: NextPage = () => {
         
         abortController = new AbortController();
         
-        const data = await fetchJSON(`/api/tcgexpansions/${setid}`, {
+        const data = await fetchJSON<SetApiResponse>(`/api/tcgexpansions/${setid}`, {
           signal: abortController.signal
-        }) as any;
+        });
         
         if (!mounted) return;
         
@@ -325,14 +333,12 @@ const SetIdPage: NextPage = () => {
       id: card.id,
       name: card.name,
       images: card.images,
-      rarity: card.rarity,
       set: {
         id: card.set.id,
         name: card.set.name
-      } as any,
-      number: card.number,
-      type: 'card' as const
-    } as any;
+      },
+      addedAt: Date.now()
+    };
     
     if (favorites.cards.some((c: FavoriteCard) => c.id === card.id)) {
       removeFromFavorites('cards', card.id);
@@ -807,19 +813,17 @@ const SetIdPage: NextPage = () => {
                           </h3>
                           <div className="space-y-3">
                             {Object.entries(modalCard.tcgplayer.prices || {})
-                              .filter(([type, prices]) => {
-                                const priceData = prices as any;
-                                return priceData && priceData.market;
+                              .filter(([, prices]) => {
+                                return prices && prices.market;
                               })
                               .map(([type, prices]) => {
-                                const priceData = prices as any;
                                 return (
                                   <div key={type} className="flex justify-between items-center">
                                     <span className="text-gray-700 capitalize font-medium">
                                       {type.replace(/([A-Z])/g, ' $1').trim()}
                                     </span>
                                     <span className="font-bold text-xl text-green-600">
-                                      ${priceData.market?.toFixed(2) || '0.00'}
+                                      ${prices?.market?.toFixed(2) || '0.00'}
                                     </span>
                                   </div>
                                 );
