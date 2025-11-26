@@ -9,12 +9,12 @@
   --ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
   --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
   
-  /* Animation Durations */
-  --duration-instant: 150ms;
-  --duration-fast: 250ms;
-  --duration-normal: 400ms;
-  --duration-slow: 600ms;
-  --duration-slower: 800ms;
+  /* Animation Durations - Snappier for better UX */
+  --duration-instant: 100ms;
+  --duration-fast: 180ms;
+  --duration-normal: 280ms;
+  --duration-slow: 400ms;
+  --duration-slower: 550ms;
   
   /* Animation Delays */
   --stagger-1: 50ms;
@@ -556,14 +556,15 @@
   }
 }
 
-/* Interactive States */
+/* Interactive States - Subtle and refined */
 .interactive-hover {
-  transition: all var(--duration-fast) var(--ease-out-quart);
+  transition: transform var(--duration-fast) var(--ease-out-quart),
+              box-shadow var(--duration-fast) var(--ease-out-quart);
 }
 
 .interactive-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .interactive-active:active {
@@ -571,14 +572,28 @@
   transition-duration: var(--duration-instant);
 }
 
-/* Card hover states */
+/* Card hover states - Elegant and smooth */
 .card-hover-lift {
-  transition: all var(--duration-normal) var(--ease-out-quart);
+  transition: transform var(--duration-fast) var(--ease-out-quart),
+              box-shadow var(--duration-fast) var(--ease-out-quart);
 }
 
 .card-hover-lift:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  transform: translateY(-4px);
+  box-shadow:
+    0 10px 20px rgba(0, 0, 0, 0.08),
+    0 4px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* Smooth card - minimal lift, focus on shadow */
+.card-hover-smooth {
+  transition: box-shadow var(--duration-fast) var(--ease-out-quart);
+}
+
+.card-hover-smooth:hover {
+  box-shadow:
+    0 8px 16px rgba(0, 0, 0, 0.06),
+    0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
 /* Button interactions */

@@ -264,63 +264,40 @@ const TcgSetsContent: React.FC = () => {
     <FullBleedWrapper gradient="pokedex">
       <div className="section-spacing-y-default max-w-7xl mx-auto px-2 xs:px-3 sm:px-6 lg:px-8 animate-fadeIn pt-4 xs:pt-6 sm:pt-8 overflow-x-hidden">
           <FadeIn>
-            {/* Hero Section with Glass Effect */}
-            <motion.div 
-              className="text-center mb-6 xs:mb-8 sm:mb-12"
-              initial={{ opacity: 0, y: -20 }}
+            {/* Hero Section - Clean and minimal */}
+            <motion.div
+              className="text-center mb-6 xs:mb-8 sm:mb-10"
+              initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.4 }}
             >
-              <div className={createGlassStyle({ 
-                blur: 'xl', 
-                opacity: 'strong', 
-                gradient: true, 
-                rounded: 'xl',
-                shadow: 'xl'
-              })} style={{ 
-                padding: '1.5rem 1rem',
-                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 240, 255, 0.95))'
-              }}>
-                <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-black mb-3 xs:mb-4 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent drop-shadow-sm">
-                  Pokémon TCG Collection
-                </h1>
-                <p className="text-base xs:text-lg sm:text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto font-medium">
-                  Discover every Trading Card Game set from Base Set to the latest releases
-                </p>
-                <div className="flex flex-wrap justify-center gap-2 xs:gap-3 sm:gap-4 mt-4 xs:mt-5 sm:mt-6">
-                  <div className="px-3 xs:px-4 py-1.5 xs:py-2 rounded-full backdrop-blur-xl bg-white/80 dark:bg-gray-800/80 border border-white/50 shadow-lg">
-                    <span className="text-xs xs:text-sm font-bold text-purple-600 dark:text-purple-400">{sets.length} Sets Available</span>
-                  </div>
-                  <div className="px-3 xs:px-4 py-1.5 xs:py-2 rounded-full backdrop-blur-xl bg-white/80 dark:bg-gray-800/80 border border-white/50 shadow-lg">
-                    <span className="text-xs xs:text-sm font-bold text-pink-600 dark:text-pink-400">Thousands of Cards</span>
-                  </div>
-                </div>
+              <h1 className="text-2xl xs:text-3xl sm:text-4xl font-bold mb-2 xs:mb-3 text-gray-800 dark:text-white">
+                Pokémon TCG Collection
+              </h1>
+              <p className="text-sm xs:text-base sm:text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
+                Discover every Trading Card Game set from Base Set to the latest releases
+              </p>
+              <div className="flex flex-wrap justify-center gap-2 xs:gap-3 mt-4">
+                <span className="px-3 py-1.5 rounded-full bg-blue-50 dark:bg-blue-900/20 text-xs font-medium text-blue-600 dark:text-blue-400">
+                  {sets.length} Sets
+                </span>
+                <span className="px-3 py-1.5 rounded-full bg-gray-100 dark:bg-gray-800 text-xs font-medium text-gray-600 dark:text-gray-400">
+                  15,000+ Cards
+                </span>
               </div>
             </motion.div>
             
-            {/* Search and Filters Card with Glass Effect */}
-            <motion.div 
-              className={createGlassStyle({ 
-                blur: 'xl', 
-                opacity: 'medium', 
-                gradient: false, 
-                rounded: 'xl',
-                shadow: 'xl'
-              })}
-              style={{ 
-                padding: '0.75rem',
-                marginBottom: '1rem',
-                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(245, 245, 255, 0.9))',
-                overflow: 'hidden'
-              }}
-              initial={{ opacity: 0, y: 20 }}
+            {/* Search and Filters - Clean card */}
+            <motion.div
+              className="bg-white dark:bg-gray-800/95 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-gray-100 dark:border-gray-700/50 p-3 sm:p-4 mb-6"
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
             >
               {/* Search and Filters */}
-              <div className="flex flex-col gap-3 sm:gap-4">
-                {/* Enhanced Search Bar */}
-                <div className="relative w-full overflow-hidden">
+              <div className="flex flex-col gap-3">
+                {/* Search Bar */}
+                <div className="relative w-full">
                   <UnifiedSearchBar
                     placeholder="Search sets..."
                     value={search}
@@ -331,16 +308,16 @@ const TcgSetsContent: React.FC = () => {
                     className="w-full"
                   />
                 </div>
-                
-                {/* Filter Controls - Stack on mobile */}
+
+                {/* Filter Controls */}
                 <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 items-stretch">
-            
+
                   <div className="flex-1">
-                    <label htmlFor="seriesFilter" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Filter by Series</label>
+                    <label htmlFor="seriesFilter" className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5">Series</label>
                     <div className="relative">
                       <select
                         id="seriesFilter"
-                        className="w-full px-3 py-2 sm:px-4 sm:py-3 backdrop-blur-xl bg-white/80 dark:bg-gray-800/80 rounded-full text-xs sm:text-sm font-medium border border-white/40 dark:border-gray-700/40 shadow-md focus:outline-none focus:ring-4 focus:ring-purple-500/30 transition-all pr-8 sm:pr-10 appearance-none"
+                        className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg text-sm border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all pr-8 appearance-none"
                         value={filterSeries}
                         onChange={(e) => setFilterSeries(e.target.value)}
                       >
@@ -349,8 +326,8 @@ const TcgSetsContent: React.FC = () => {
                           <option key={series} value={series}>{series}</option>
                         ))}
                       </select>
-                      <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                        <svg className="w-4 h-4 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                        <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                         </svg>
                       </div>
@@ -508,19 +485,19 @@ const TcgSetsContent: React.FC = () => {
                 <motion.div
                   key={set.id}
                   variants={{
-                    hidden: { 
-                      opacity: 0, 
-                      y: 30,
-                      scale: 0.9
+                    hidden: {
+                      opacity: 0,
+                      y: 20,
+                      scale: 0.98
                     },
-                    show: { 
-                      opacity: 1, 
+                    show: {
+                      opacity: 1,
                       y: 0,
                       scale: 1,
                       transition: {
                         type: "spring",
-                        stiffness: 100,
-                        damping: 15
+                        stiffness: 200,
+                        damping: 20
                       }
                     }
                   }}
@@ -532,68 +509,55 @@ const TcgSetsContent: React.FC = () => {
                   }}
                 >
                   <motion.div
-                    whileHover={{ scale: 1.02, y: -5 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    className={`h-full rounded-2xl sm:rounded-3xl overflow-hidden backdrop-blur-2xl bg-gradient-to-br from-white/95 via-purple-50/80 to-pink-50/80 dark:from-gray-800/95 dark:via-purple-900/30 dark:to-pink-900/30 shadow-xl sm:shadow-2xl border border-white/50 dark:border-gray-700/50 ${
-                      selectedSetId === set.id 
-                        ? 'ring-4 ring-purple-500 ring-offset-2 ring-offset-white dark:ring-offset-gray-900' 
+                    whileHover={{ y: -4 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                    className={`h-full rounded-xl sm:rounded-2xl overflow-hidden bg-white dark:bg-gray-800/95 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.1)] transition-shadow duration-200 border border-gray-100 dark:border-gray-700/50 ${
+                      selectedSetId === set.id
+                        ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-white dark:ring-offset-gray-900'
                         : ''
                     }`}
                   >
-                    {/* Set Image Background with Glass Overlay */}
+                    {/* Set Image Background - Clean and minimal */}
                     {set.images?.logo && (
-                      <div className="relative h-36 xs:h-40 sm:h-48 w-full bg-gradient-to-br from-purple-200/50 via-pink-200/40 to-blue-200/50 dark:from-purple-800/30 dark:via-pink-800/20 dark:to-blue-800/30 flex items-center justify-center p-4 sm:p-6 overflow-hidden">
-                        {/* Animated gradient background */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 via-transparent to-pink-400/20 animate-pulse" />
-                        
-                        {/* Glass overlay */}
-                        <div className="absolute inset-0 backdrop-blur-sm bg-white/10" />
-                        
+                      <div className="relative h-32 xs:h-36 sm:h-44 w-full bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-750 flex items-center justify-center p-4 sm:p-6 overflow-hidden">
                         <ProgressiveImage
                           src={set.images.logo}
                           alt={set.name}
-                          className="max-h-20 xs:max-h-24 sm:max-h-28 max-w-[80%] xs:max-w-[85%] z-10"
-                          imgClassName="object-contain drop-shadow-xl sm:drop-shadow-2xl group-hover:scale-110 transition-transform duration-500"
+                          className="max-h-16 xs:max-h-20 sm:max-h-24 max-w-[85%] z-10"
+                          imgClassName="object-contain drop-shadow-md group-hover:scale-105 transition-transform duration-200"
                           aspectRatio="16/9"
                         />
-                        
-                        {/* Shimmer effect */}
-                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                        </div>
                       </div>
                     )}
                 
-                    {/* Set Info with Glass Sections */}
-                    <div className="p-3 xs:p-4 sm:p-6 flex-1 flex flex-col relative">
-                      <h3 className="text-lg xs:text-xl sm:text-2xl font-bold text-gray-800 dark:text-white mb-1 xs:mb-2">{set.name}</h3>
-                      
+                    {/* Set Info - Clean and minimal */}
+                    <div className="p-3 xs:p-4 sm:p-5 flex-1 flex flex-col">
+                      <h3 className="text-sm xs:text-base sm:text-lg font-semibold text-gray-800 dark:text-white mb-0.5 xs:mb-1 line-clamp-2">{set.name}</h3>
+
                       {set.series && (
-                        <p className="text-xs xs:text-sm font-medium text-gray-600 dark:text-gray-400 mb-3 xs:mb-4 sm:mb-6">{set.series}</p>
+                        <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-3 xs:mb-4">{set.series}</p>
                       )}
-                      
-                      <div className="mt-auto space-y-2 xs:space-y-3 mb-3 xs:mb-4 sm:mb-6">
-                        {/* Release Date Glass Card */}
-                        <div className="rounded-xl backdrop-blur-md bg-gradient-to-r from-purple-100/70 to-pink-100/70 dark:from-purple-900/30 dark:to-pink-900/30 p-2.5 xs:p-3 sm:p-4 border border-purple-200/40 dark:border-purple-700/40 shadow-md">
-                          <p className="text-[10px] xs:text-xs font-bold text-purple-700 dark:text-purple-300 uppercase tracking-wider mb-0.5 xs:mb-1">Released</p>
-                          <p className="text-base xs:text-lg sm:text-xl font-black text-purple-900 dark:text-purple-100">{set.releaseDate || "Unknown"}</p>
+
+                      <div className="mt-auto space-y-2">
+                        {/* Release Date - Simple badge */}
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="text-gray-500 dark:text-gray-400">Released</span>
+                          <span className="font-medium text-gray-700 dark:text-gray-300">{set.releaseDate || "Unknown"}</span>
                         </div>
                         
-                        {/* Card Count Glass Card */}
-                        <div className="rounded-xl backdrop-blur-md bg-gradient-to-r from-blue-100/70 to-indigo-100/70 dark:from-blue-900/30 dark:to-indigo-900/30 p-2.5 xs:p-3 sm:p-4 border border-blue-200/40 dark:border-blue-700/40 shadow-md">
-                          <p className="text-[10px] xs:text-xs font-bold text-blue-700 dark:text-blue-300 uppercase tracking-wider mb-0.5 xs:mb-1">Total Cards</p>
-                          <p className="text-base xs:text-lg sm:text-xl font-black text-blue-900 dark:text-blue-100">{set.total || "?"}</p>
+                        {/* Card Count */}
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="text-gray-500 dark:text-gray-400">Cards</span>
+                          <span className="font-semibold text-blue-600 dark:text-blue-400">{set.total || "?"}</span>
                         </div>
                       </div>
-                      
-                      {/* View Set Button with Glass Effect */}
-                      <button className="w-full py-2.5 xs:py-3 px-4 xs:px-6 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold text-sm xs:text-base shadow-xl transform transition-all duration-300 hover:scale-105 backdrop-blur-sm border border-white/20">
-                        <span className="flex items-center justify-center gap-2">
-                          View Cards
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                          </svg>
-                        </span>
+
+                      {/* View Set Button - Clean and minimal */}
+                      <button className="w-full mt-3 py-2 px-4 rounded-lg bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 font-medium text-xs sm:text-sm transition-colors duration-150 flex items-center justify-center gap-1.5 group-hover:bg-blue-50 dark:group-hover:bg-blue-900/20 group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                        View Cards
+                        <svg className="w-3.5 h-3.5 transition-transform duration-150 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
                       </button>
                     </div>
                   </motion.div>

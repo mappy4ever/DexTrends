@@ -68,40 +68,40 @@ const Container = forwardRef<HTMLDivElement, CardProps>(
       custom: customGradient || ''
     };
 
-    // Variant styles - unified and consistent
+    // Variant styles - unified, refined and consistent
     const variantStyles = {
       default: cn(
-        'bg-white dark:bg-gray-800',
-        GLASS_BORDER.medium,
-        SHADOW.sm
+        'bg-white dark:bg-gray-800/95',
+        'border border-gray-100 dark:border-gray-700/50',
+        SHADOW.soft
       ),
       elevated: cn(
-        'bg-white dark:bg-gray-800',
-        GLASS_BORDER.subtle,
-        SHADOW.lg
+        'bg-white dark:bg-gray-800/95',
+        'border border-gray-100 dark:border-gray-700/50',
+        SHADOW.elevated
       ),
       outline: cn(
         'bg-transparent',
-        'border-2 border-gray-200 dark:border-gray-700'
+        'border border-gray-200 dark:border-gray-700'
       ),
       ghost: cn(
         'bg-transparent'
       ),
       gradient: cn(
         gradient ? gradientStyles[gradient] : gradientStyles.blue,
-        GLASS_BORDER.subtle,
-        SHADOW.sm
+        'border border-gray-100/50 dark:border-gray-700/30',
+        SHADOW.soft
       ),
       featured: cn(
         'bg-gradient-to-br from-blue-600 to-indigo-600',
         'text-white',
-        SHADOW.xl,
+        SHADOW.floating,
         'border-0'
       ),
       glass: cn(
         GLASS_BG.frosted.medium,
-        GLASS_BORDER.subtle,
-        SHADOW.md,
+        'border border-white/20 dark:border-gray-700/30',
+        SHADOW.soft,
         'backdrop-blur-md'
       )
     };
@@ -115,7 +115,7 @@ const Container = forwardRef<HTMLDivElement, CardProps>(
 
     // Hover effects - subtle and elegant
     const hoverStyles = (hover || interactive || onClick) ? cn(
-      HOVER.lift,
+      'hover:-translate-y-px hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]',
       variant === 'outline' && 'hover:border-gray-300 dark:hover:border-gray-600',
       variant === 'ghost' && 'hover:bg-gray-50 dark:hover:bg-gray-800/50'
     ) : '';
