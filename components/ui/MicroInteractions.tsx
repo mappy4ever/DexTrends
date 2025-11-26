@@ -291,15 +291,16 @@ export const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
       const now = Date.now();
       const progress = Math.min((now - startTime) / (duration * 1000), 1);
       const easeProgress = 1 - Math.pow(1 - progress, 3); // Cubic ease-out
-      
+
       setDisplayValue(Math.round(startValue + diff * easeProgress));
-      
+
       if (progress < 1) {
         requestAnimationFrame(animate);
       }
     };
 
     requestAnimationFrame(animate);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, duration]);
 
   return (

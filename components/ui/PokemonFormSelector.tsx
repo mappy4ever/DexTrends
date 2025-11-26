@@ -157,6 +157,7 @@ export default function PokemonFormSelector({
     };
 
     loadForms();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pokemon, species]);
 
   const isValidForm = (formName: string): boolean => {

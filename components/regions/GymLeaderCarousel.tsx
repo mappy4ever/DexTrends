@@ -67,6 +67,7 @@ const GymLeaderCarousel: React.FC<GymLeaderCarouselProps> = ({ region, gymLeader
         scrollToLeader(0);
       }, 100);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Gym leader quotes/facts and signature Pokemon
