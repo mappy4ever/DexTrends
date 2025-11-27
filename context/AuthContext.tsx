@@ -363,6 +363,12 @@ export const useAuth = (): AuthContextType => {
   return context;
 };
 
+// Safe hook that doesn't throw if provider is missing (for components like Navbar)
+export const useAuthSafe = (): AuthContextType | null => {
+  const context = useContext(AuthContext);
+  return context ?? null;
+};
+
 // Helper hook to check if user is authenticated
 export const useRequireAuth = (redirectTo = '/login') => {
   const { user, loading, initialized } = useAuth();

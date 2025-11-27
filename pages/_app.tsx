@@ -11,7 +11,6 @@ import "../styles/overrides.css";  // Temporary fixes only
 
 // Legacy CSS - To be removed after full migration
 import "../styles/globals.css";
-import "../components/typebadge.css";
 import Layout from "../components/layout/Layout";
 import logger from "../utils/logger";
 import ErrorBoundary from "../components/ui/ErrorBoundary";
@@ -131,7 +130,7 @@ const AppContent: React.FC<AppContentProps> = ({
           <link rel="prefetch" href="/back-card.png" />
           <link rel="manifest" href="/manifest.json" />
           <link rel="icon" href="/favicon.ico" />
-          <link rel="apple-touch-icon" href="/icon-192x192.png" />
+          <link rel="apple-touch-icon" href="/dextrendslogo.png" />
           <meta name="description" content="Discover, track, and explore Pokémon TCG card prices and trends in a beautiful Pokédex-inspired experience." />
           <meta name="keywords" content="Pokemon, TCG, cards, prices, trends, pokedex, collection, trading cards" />
         </Head>

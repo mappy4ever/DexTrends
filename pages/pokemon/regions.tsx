@@ -203,6 +203,7 @@ const RegionTile: React.FC<RegionTileProps> = ({ region }) => {
               fill
               className="object-cover object-center"
               sizes="100vw"
+              unoptimized
             />
           </div>
           {/* Dark overlay for text visibility */}

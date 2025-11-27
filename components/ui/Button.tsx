@@ -59,23 +59,23 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       fullWidth && 'w-full'
     );
 
-    // Variant styles - clean, solid colors
+    // Variant styles - clean, solid colors with warm palette
     const variantStyles = {
       primary: cn(
-        'bg-blue-600 hover:bg-blue-700',
+        'bg-amber-600 hover:bg-amber-700',
         'text-white',
-        'focus-visible:ring-blue-500/30'
+        'focus-visible:ring-amber-500/30'
       ),
       secondary: cn(
-        'bg-white dark:bg-gray-800 text-gray-900 dark:text-white',
-        'border border-gray-200 dark:border-gray-700',
-        'hover:bg-gray-50 dark:hover:bg-gray-700',
-        'focus-visible:ring-gray-500/30'
+        'bg-white dark:bg-stone-800 text-stone-700 dark:text-white',
+        'border border-stone-200 dark:border-stone-700',
+        'hover:bg-stone-50 dark:hover:bg-stone-700',
+        'focus-visible:ring-stone-500/30'
       ),
       ghost: cn(
-        'bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800',
-        'text-gray-700 dark:text-gray-300',
-        'focus-visible:ring-gray-500/30'
+        'bg-transparent hover:bg-stone-100 dark:hover:bg-stone-800',
+        'text-stone-600 dark:text-stone-300',
+        'focus-visible:ring-stone-500/30'
       ),
       danger: cn(
         'bg-red-600 hover:bg-red-700',
@@ -88,17 +88,16 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         'focus-visible:ring-green-500/30'
       ),
       clean: cn(
-        'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300',
-        'hover:bg-gray-200 dark:hover:bg-gray-700',
-        'focus-visible:ring-gray-500/30'
+        'bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300',
+        'hover:bg-stone-200 dark:hover:bg-stone-700',
+        'focus-visible:ring-stone-500/30'
       ),
       glass: cn(
-        'bg-white/80 dark:bg-gray-800/80',
-        'backdrop-blur-sm',
-        'border border-gray-200/50 dark:border-gray-700/50',
-        'text-gray-900 dark:text-white',
-        'hover:bg-white/90 dark:hover:bg-gray-800/90',
-        'focus-visible:ring-blue-500/30'
+        'bg-white/80 dark:bg-stone-800/80',
+        'border border-stone-200/50 dark:border-stone-700/50',
+        'text-stone-800 dark:text-white',
+        'hover:bg-white/90 dark:hover:bg-stone-800/90',
+        'focus-visible:ring-amber-500/30'
       )
     };
 

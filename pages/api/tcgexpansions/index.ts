@@ -86,8 +86,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       useCache: true,
       cacheTime: 24 * 60 * 60 * 1000, // Cache for 24 hours - sets rarely change
       forceRefresh: shouldForceRefresh,
-      timeout: apiKey ? 10000 : 5000, // 10s with API key, 5s without
-      retries: apiKey ? 1 : 0, // Retry with API key, no retry without
+      timeout: apiKey ? 15000 : 8000, // 15s with API key, 8s without (increased for reliability)
+      retries: apiKey ? 2 : 1, // More retries for better reliability
       retryDelay: 1000,
       throwOnError: false // NEVER throw - return null on error to avoid unhandled rejections
     });

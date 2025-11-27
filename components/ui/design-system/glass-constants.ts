@@ -2,12 +2,84 @@
  * DexTrends Unified Design System
  *
  * Design Philosophy:
- * - Clean, elegant, modern aesthetic
+ * - Clean Minimal aesthetic (Apple-inspired)
+ * - Warm cream backgrounds with amber accents
  * - Consistent border radius (xl = 12px for most elements)
- * - Subtle glass morphism without tacky purple tints
- * - Smooth transitions and micro-interactions
+ * - Subtle micro-interactions, no heavy effects
  * - Works beautifully on both mobile and desktop
+ *
+ * Updated: 2025-11-27 - Warm Tones Overhaul
  */
+
+// ===========================================
+// COLORS - Warm Palette
+// ===========================================
+
+export const COLORS = {
+  // Warm backgrounds
+  warm: {
+    bg: {
+      primary: '#FFFDF7',      // Soft cream - main background
+      secondary: '#FBF8F3',    // Light beige - cards
+      tertiary: '#F5F1EA',     // Warm gray - secondary surfaces
+      elevated: '#FFFFFF',      // Pure white - elevated cards
+    },
+    // Amber-based accents
+    accent: {
+      primary: '#D97706',      // Amber 600 - primary actions
+      secondary: '#B45309',    // Amber 700 - hover states
+      tertiary: '#92400E',     // Amber 800 - active states
+      soft: '#FEF3C7',         // Amber 100 - soft highlights
+    },
+    // Stone palette for text (warmer than gray)
+    text: {
+      primary: '#292524',      // Stone 800 - headings
+      secondary: '#57534E',    // Stone 600 - body text
+      tertiary: '#78716C',     // Stone 500 - muted text
+      disabled: '#A8A29E',     // Stone 400 - disabled
+    },
+    // Warm borders
+    border: {
+      subtle: '#E7E5E4',       // Stone 200
+      default: '#D6D3D1',      // Stone 300
+      strong: '#A8A29E',       // Stone 400
+    },
+    // Dark mode variants
+    dark: {
+      bg: {
+        primary: '#1C1917',    // Stone 900
+        secondary: '#292524',  // Stone 800
+        tertiary: '#44403C',   // Stone 700
+      },
+      text: {
+        primary: '#FAFAF9',    // Stone 50
+        secondary: '#E7E5E4',  // Stone 200
+        tertiary: '#A8A29E',   // Stone 400
+      },
+      border: {
+        subtle: '#44403C',     // Stone 700
+        default: '#57534E',    // Stone 600
+      },
+    },
+  },
+} as const;
+
+// ===========================================
+// SURFACE - Clean background presets
+// ===========================================
+
+export const SURFACE = {
+  // Main page background
+  primary: 'bg-[#FFFDF7] dark:bg-stone-900',
+  // Secondary surfaces (sidebar, sections)
+  secondary: 'bg-[#FBF8F3] dark:bg-stone-800',
+  // Elevated elements (cards, modals)
+  elevated: 'bg-white dark:bg-stone-800',
+  // Card preset with border
+  card: 'bg-white dark:bg-stone-800/95 border border-stone-200 dark:border-stone-700',
+  // Subtle card (less prominent)
+  cardSubtle: 'bg-stone-50 dark:bg-stone-800/80 border border-stone-100 dark:border-stone-700/50',
+} as const;
 
 // ===========================================
 // BORDER RADIUS - Unified System
@@ -91,9 +163,9 @@ export const SHADOW = {
   elevated: 'shadow-[0_4px_12px_rgba(0,0,0,0.05),0_8px_24px_rgba(0,0,0,0.05)]',
   floating: 'shadow-[0_8px_24px_rgba(0,0,0,0.08),0_16px_48px_rgba(0,0,0,0.06)]',
   // Colored shadows for special emphasis (subtle)
-  primary: 'shadow-lg shadow-blue-500/15',
-  success: 'shadow-lg shadow-green-500/15',
-  warning: 'shadow-lg shadow-amber-500/15',
+  primary: 'shadow-lg shadow-amber-500/15',
+  success: 'shadow-lg shadow-emerald-500/15',
+  warning: 'shadow-lg shadow-orange-500/15',
   danger: 'shadow-lg shadow-red-500/15',
 } as const;
 
@@ -103,8 +175,8 @@ export const GLASS_SHADOW = {
   md: 'shadow-md',
   lg: 'shadow-lg',
   xl: 'shadow-xl',
-  glow: 'shadow-lg shadow-blue-500/15', // Changed from purple to blue
-  glowHover: 'hover:shadow-xl hover:shadow-blue-500/20',
+  glow: 'shadow-lg shadow-amber-500/15',
+  glowHover: 'hover:shadow-xl hover:shadow-amber-500/20',
 } as const;
 
 // Legacy alias for border radius
@@ -140,16 +212,16 @@ export const HOVER = {
   // Subtle, elegant hover effects
   lift: 'hover:-translate-y-0.5 hover:shadow-md',
   scale: 'hover:scale-[1.01]',
-  glow: 'hover:shadow-md hover:shadow-blue-500/8',
+  glow: 'hover:shadow-md hover:shadow-amber-500/10',
   brighten: 'hover:brightness-[1.02]',
   // Combined effects
   shadowOnly: 'hover:shadow-md',
   subtle: 'hover:-translate-y-px hover:shadow-md',
   medium: 'hover:-translate-y-0.5 hover:shadow-lg',
-  // New refined effects
+  // Refined card/button effects
   card: 'hover:shadow-lg hover:-translate-y-0.5',
   button: 'hover:shadow-md active:scale-[0.98]',
-  link: 'hover:text-blue-600 dark:hover:text-blue-400',
+  link: 'hover:text-amber-600 dark:hover:text-amber-400',
 } as const;
 
 // Legacy alias
@@ -387,16 +459,19 @@ export function createGlassStyle(options: {
 // ===========================================
 
 export default {
-  // New design tokens
+  // NEW: Warm color palette
+  COLORS,
+  SURFACE,
+  // Core design tokens
   RADIUS,
   SHADOW,
   TRANSITION,
   HOVER,
-  GLASS_BG,
   ICON_SIZE,
   ICON_SIZE_PX,
   INPUT_SIZE,
-  // Legacy exports for backward compatibility
+  // Glass morphism (deprecated - use SURFACE instead)
+  GLASS_BG,
   GLASS_BLUR,
   GLASS_OPACITY,
   GLASS_BORDER,

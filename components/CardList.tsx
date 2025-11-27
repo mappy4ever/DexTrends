@@ -46,15 +46,15 @@ const CardItem = memo<CardItemProps>(({ card, onMagnifyClick, onCardClick, isScr
   
   // Determine rarity color
   const getRarityPillColor = (rarity?: string) => {
-    if (!rarity) return 'from-gray-100/80 to-gray-200/80';
+    if (!rarity) return 'from-stone-100/80 to-stone-200/80';
     const lower = rarity.toLowerCase();
     if (lower.includes('rare')) {
-      if (lower.includes('ultra') || lower.includes('secret')) return 'from-purple-200/90 to-pink-200/90';
-      if (lower.includes('holo')) return 'from-blue-200/90 to-purple-200/90';
-      return 'from-blue-100/80 to-blue-200/80';
+      if (lower.includes('ultra') || lower.includes('secret')) return 'from-amber-200/90 to-orange-200/90';
+      if (lower.includes('holo')) return 'from-amber-100/90 to-amber-200/90';
+      return 'from-amber-100/80 to-amber-200/80';
     }
     if (lower.includes('uncommon')) return 'from-green-100/80 to-green-200/80';
-    return 'from-gray-100/80 to-gray-200/80';
+    return 'from-stone-100/80 to-stone-200/80';
   };
   
   return (
@@ -72,9 +72,9 @@ const CardItem = memo<CardItemProps>(({ card, onMagnifyClick, onCardClick, isScr
       {/* Main Card Container with Glass Effect */}
       <motion.div
         className="
-          backdrop-blur-xl bg-white/95 dark:bg-gray-800/95
+          bg-white dark:bg-stone-800/95
           rounded-2xl p-4
-          border border-white/50 dark:border-gray-700/50
+          border border-stone-100 dark:border-stone-700/50
           shadow-lg hover:shadow-2xl
           transform transition-all duration-300
           cursor-pointer
@@ -87,7 +87,7 @@ const CardItem = memo<CardItemProps>(({ card, onMagnifyClick, onCardClick, isScr
         onClick={() => onCardClick(card)}
       >
         {/* Card Image Container */}
-        <div className="relative rounded-xl overflow-hidden mb-3 bg-gradient-to-br from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-800">
+        <div className="relative rounded-xl overflow-hidden mb-3 bg-gradient-to-br from-stone-100 to-stone-50 dark:from-stone-700 dark:to-stone-800">
           <img
             src={card.images?.small || '/back-card.png'}
             alt={card.name}
@@ -116,9 +116,9 @@ const CardItem = memo<CardItemProps>(({ card, onMagnifyClick, onCardClick, isScr
             className="
               absolute bottom-2 right-2
               w-8 h-8 rounded-full
-              backdrop-blur-md bg-white/80 dark:bg-gray-800/80
+              bg-white/80 dark:bg-stone-800/80
               flex items-center justify-center
-              shadow-md border border-white/50
+              shadow-md border border-stone-200/50
               opacity-0 group-hover:opacity-100
               transition-opacity duration-200
             "
@@ -127,7 +127,7 @@ const CardItem = memo<CardItemProps>(({ card, onMagnifyClick, onCardClick, isScr
               onMagnifyClick(card);
             }}
           >
-            <svg className="w-4 h-4 text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-4 h-4 text-stone-700 dark:text-stone-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </button>
@@ -136,12 +136,12 @@ const CardItem = memo<CardItemProps>(({ card, onMagnifyClick, onCardClick, isScr
         {/* Card Info Section */}
         <div className="space-y-2">
           {/* Name */}
-          <h3 className="font-semibold text-gray-800 dark:text-white text-sm truncate">
+          <h3 className="font-semibold text-stone-800 dark:text-white text-sm truncate">
             {card.name}
           </h3>
 
           {/* Glass Divider */}
-          <div className="h-px bg-gradient-to-r from-transparent via-purple-200/30 to-transparent" />
+          <div className="h-px bg-gradient-to-r from-transparent via-stone-200/30 to-transparent" />
 
           {/* Price & Set Info */}
           <div className="flex justify-between items-center">
@@ -149,9 +149,8 @@ const CardItem = memo<CardItemProps>(({ card, onMagnifyClick, onCardClick, isScr
             {price > 0 && (
               <div className="
                 px-3 py-1 rounded-full
-                bg-gradient-to-r from-purple-100/80 to-pink-100/80 dark:from-purple-900/30 dark:to-pink-900/30
-                backdrop-blur-sm
-                text-xs font-bold text-purple-700 dark:text-purple-300
+                bg-gradient-to-r from-amber-100/80 to-orange-100/80 dark:from-amber-900/30 dark:to-orange-900/30
+                text-xs font-bold text-amber-700 dark:text-amber-300
               ">
                 ${price.toFixed(2)}
               </div>
@@ -160,8 +159,8 @@ const CardItem = memo<CardItemProps>(({ card, onMagnifyClick, onCardClick, isScr
             {/* Set Badge */}
             <div className="
               px-2 py-1 rounded-full
-              bg-gray-100/80 dark:bg-gray-700/80
-              text-xs text-gray-600 dark:text-gray-400
+              bg-stone-100/80 dark:bg-stone-700/80
+              text-xs text-stone-600 dark:text-stone-400
               font-medium
             ">
               {setId} #{setNumber}
@@ -368,12 +367,12 @@ const CardList = memo<CardListProps>(({
             alignItems: 'center',
             gap: '0.75rem'
           }}>
-            <label htmlFor="sort" className="text-sm font-bold text-gray-700 dark:text-gray-300">Sort by:</label>
+            <label htmlFor="sort" className="text-sm font-bold text-stone-700 dark:text-stone-300">Sort by:</label>
             <select
               id="sort"
               value={sortOption}
               onChange={handleSortChange}
-              className="px-4 py-2 backdrop-blur-xl bg-white/80 dark:bg-gray-800/80 rounded-full text-sm font-medium border border-white/40 dark:border-gray-700/40 shadow-md focus:outline-none focus:ring-4 focus:ring-purple-500/30 transition-all cursor-pointer"
+              className="px-4 py-2 bg-white dark:bg-stone-800 rounded-full text-sm font-medium border border-stone-200 dark:border-stone-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500/30 transition-all cursor-pointer"
             >
               <option value="price">Price</option>
               <option value="releaseDate">Release Date</option>
@@ -454,12 +453,12 @@ const CardList = memo<CardListProps>(({
             margin: '0 auto',
             padding: '2rem'
           }}>
-            <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-16 h-16 bg-gradient-to-br from-amber-100 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
               </svg>
             </div>
-            <p className="text-lg font-semibold text-gray-700 dark:text-gray-300">
+            <p className="text-lg font-semibold text-stone-700 dark:text-stone-300">
               No cards found
             </p>
           </div>
@@ -473,11 +472,11 @@ const CardList = memo<CardListProps>(({
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-          <div className="inline-flex items-center gap-2 backdrop-blur-xl bg-white/80 dark:bg-gray-800/80 rounded-full px-6 py-3 shadow-lg border border-white/50 dark:border-gray-700/50">
-            <svg className="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="inline-flex items-center gap-2 bg-white/80 dark:bg-stone-800/80 rounded-full px-6 py-3 shadow-lg border border-stone-200/50 dark:border-stone-700/50">
+            <svg className="w-5 h-5 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
             </svg>
-            <span className="text-sm font-bold text-gray-700 dark:text-gray-300">
+            <span className="text-sm font-bold text-stone-700 dark:text-stone-300">
               {cards.length} cards displayed
             </span>
           </div>

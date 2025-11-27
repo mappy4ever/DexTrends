@@ -10,7 +10,7 @@ import GlobalSearchModal from "./GlobalSearchModal";
 import logger from "../utils/logger";
 import { DynamicAdvancedSearchModal } from "./dynamic/DynamicComponents";
 import { useAppContext, useFavorites } from "../context/UnifiedAppContext";
-import { useAuth } from "../context/AuthContext";
+import { useAuthSafe } from "../context/AuthContext";
 import ClientOnly from "./ClientOnly";
 import { NavbarLogo } from "../components/ui/DexTrendsLogo";
 import { PokeballSVG } from "./ui/PokeballSVG";
@@ -39,7 +39,9 @@ interface GlobalSearchModalHandle {
 export default function Navbar() {
   const { theme, toggleTheme, mounted } = useAppContext();
   const { favorites } = useFavorites();
-  const { user, loading: authLoading } = useAuth();
+  const auth = useAuthSafe();
+  const user = auth?.user ?? null;
+  const authLoading = auth?.loading ?? false;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dropdownStates, setDropdownStates] = useState<Record<string, boolean>>({});
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
@@ -191,13 +193,13 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Clean Navbar with subtle glass effect */}
-      <div className="fixed top-0 left-0 right-0 flex items-center justify-between px-3 md:px-6 h-14 md:h-16 z-30 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 shadow-[0_1px_3px_rgba(0,0,0,0.05)] safe-area-padding-top">
+      {/* Clean Navbar - Warm cream background */}
+      <div className="fixed top-0 left-0 right-0 flex items-center justify-between px-3 md:px-6 h-14 md:h-16 z-30 bg-[#FFFDF7] dark:bg-stone-900 border-b border-stone-200 dark:border-stone-800 shadow-[0_1px_3px_rgba(0,0,0,0.04)] safe-area-padding-top">
         <div className="flex items-center gap-x-2">
           {/* Mobile Menu Button */}
           <button
             id="mobile-menu-button"
-            className="md:hidden p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-150 touch-manipulation active:scale-95"
+            className="md:hidden p-2 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors duration-150 touch-manipulation active:scale-95"
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -228,8 +230,8 @@ export default function Navbar() {
                     href={item.href}
                     className={`flex items-center gap-x-1.5 px-3 py-2 rounded-lg font-medium transition-all duration-150 cursor-pointer
                       ${isActive
-                        ? 'bg-blue-600 text-white'
-                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'}`}
+                        ? 'bg-amber-600 text-white'
+                        : 'text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800'}`}
                     onMouseEnter={() => {
                       // Close all other dropdowns first, then open this one
                       setDropdownStates({ [item.href]: true });
@@ -252,7 +254,7 @@ export default function Navbar() {
                       {item.icon}
                     </span>
                     <span className="text-sm font-medium">{item.label}</span>
-                    <BsChevronDown className={`w-3 h-3 transition-transform duration-150 ${dropdownStates[item.href] ? 'rotate-180' : ''} ${isActive ? 'text-white/70' : 'text-gray-400'}`} />
+                    <BsChevronDown className={`w-3 h-3 transition-transform duration-150 ${dropdownStates[item.href] ? 'rotate-180' : ''} ${isActive ? 'text-white/70' : 'text-stone-400'}`} />
                   </Link>
 
                   {/* Invisible bridge to prevent gap */}
@@ -260,9 +262,9 @@ export default function Navbar() {
                     <div className="invisible-bridge absolute top-full left-0 w-full h-2" />
                   )}
 
-                  {/* Dropdown menu - clean design */}
+                  {/* Dropdown menu - clean warm design */}
                   <div
-                    className={`dropdown-menu absolute top-full left-0 mt-1 w-64 bg-white dark:bg-gray-800/95 border border-gray-200 dark:border-gray-700 rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] overflow-hidden ${
+                    className={`dropdown-menu absolute top-full left-0 mt-1 w-64 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] overflow-hidden ${
                       dropdownStates[item.href] ? 'block opacity-100 translate-y-0' : 'hidden opacity-0 -translate-y-1'
                     } transition-all duration-150`}
                     style={{
@@ -285,8 +287,8 @@ export default function Navbar() {
                           href={dropdownItem.href}
                           className={`group flex items-center gap-3 px-3 py-2.5 mx-1.5 rounded-lg transition-colors duration-150 cursor-pointer ${
                             router.pathname === dropdownItem.href
-                              ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
-                              : 'hover:bg-gray-50 dark:hover:bg-gray-700/50 text-gray-700 dark:text-gray-300'
+                              ? 'bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400'
+                              : 'hover:bg-stone-50 dark:hover:bg-stone-700/50 text-stone-700 dark:text-stone-300'
                           }`}
                           onClick={() => {
                             logger.debug('Navigation link clicked', { href: dropdownItem.href });
@@ -295,8 +297,8 @@ export default function Navbar() {
                         >
                           <span className={`flex-shrink-0 w-5 h-5 ${
                             router.pathname === dropdownItem.href
-                              ? 'text-blue-600 dark:text-blue-400'
-                              : 'text-gray-400 dark:text-gray-500'
+                              ? 'text-amber-600 dark:text-amber-400'
+                              : 'text-stone-400 dark:text-stone-500'
                           }`}>
                             {dropdownItem.icon}
                           </span>
@@ -304,7 +306,7 @@ export default function Navbar() {
                             <div className="font-medium text-sm">
                               {dropdownItem.label}
                             </div>
-                            <div className="text-xs text-gray-500 dark:text-gray-400">
+                            <div className="text-xs text-stone-500 dark:text-stone-400">
                               {dropdownItem.description}
                             </div>
                           </div>
@@ -321,11 +323,11 @@ export default function Navbar() {
                 href={item.href}
                 className={`group flex items-center gap-x-1.5 px-3 py-2 rounded-lg font-medium transition-all duration-150 cursor-pointer
                   ${isActive
-                    ? 'bg-blue-600 text-white'
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'}`}
+                    ? 'bg-amber-600 text-white'
+                    : 'text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800'}`}
                 style={{ pointerEvents: 'auto' }}
               >
-                <span className={`flex-shrink-0 flex items-center justify-center w-5 h-5 ${isActive ? 'text-white' : item.color || 'text-gray-500'}`}>
+                <span className={`flex-shrink-0 flex items-center justify-center w-5 h-5 ${isActive ? 'text-white' : item.color || 'text-stone-500'}`}>
                   {item.icon}
                 </span>
                 <span className="text-sm font-medium">{item.label}</span>
@@ -338,7 +340,7 @@ export default function Navbar() {
           <button
             aria-label="Open search"
             title="Search (Cmd+K)"
-            className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30 transition-colors duration-150"
+            className="p-2 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 transition-colors duration-150"
             onClick={() => searchModalRef.current?.open()}
           >
             <BsSearch className="w-5 h-5" />
@@ -349,13 +351,13 @@ export default function Navbar() {
             href="/favorites"
             aria-label="View favorites"
             title="View favorites"
-            className="relative p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30 transition-colors duration-150"
+            className="relative p-2 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 transition-colors duration-150"
             data-is-navbar="true"
           >
             <BsHeart className="w-5 h-5" />
             <ClientOnly>
               {totalFavorites > 0 && (
-                <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
+                <span className="absolute -top-1 -right-1 bg-amber-600 text-white text-xs font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
                   {totalFavorites > 99 ? '99+' : totalFavorites}
                 </span>
               )}
@@ -368,21 +370,21 @@ export default function Navbar() {
               href={user ? "/profile" : "/auth/login"}
               aria-label={user ? "View profile" : "Sign in"}
               title={user ? "View profile" : "Sign in"}
-              className={`relative p-2 rounded-lg transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30 ${
+              className={`relative p-2 rounded-lg transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 ${
                 user
-                  ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-900/60'
-                  : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 hover:bg-amber-200 dark:hover:bg-amber-900/60'
+                  : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
               }`}
             >
               {authLoading ? (
-                <div className="w-5 h-5 border-2 border-gray-300 dark:border-gray-600 border-t-blue-500 rounded-full animate-spin" />
+                <div className="w-5 h-5 border-2 border-stone-300 dark:border-stone-600 border-t-amber-500 rounded-full animate-spin" />
               ) : user ? (
                 <BsPersonFill className="w-5 h-5" />
               ) : (
                 <BsPerson className="w-5 h-5" />
               )}
               {user && (
-                <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-900" />
+                <span className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white dark:border-stone-900" />
               )}
             </Link>
           </ClientOnly>
@@ -391,13 +393,13 @@ export default function Navbar() {
           <button
             aria-label={mounted && theme === 'dark' ? "Activate light mode" : "Activate dark mode"}
             title={mounted && theme === 'dark' ? "Activate light mode" : "Activate dark mode"}
-            className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30 transition-colors duration-150"
+            className="p-2 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/30 transition-colors duration-150"
             onClick={toggleTheme}
           >
             <ClientOnly>
               {theme === 'dark' ?
-                <BsSun className="w-5 h-5 text-yellow-500" /> :
-                <BsMoon className="w-5 h-5 text-blue-600" />
+                <BsSun className="w-5 h-5 text-amber-500" /> :
+                <BsMoon className="w-5 h-5 text-amber-600" />
               }
             </ClientOnly>
           </button>
@@ -418,9 +420,9 @@ export default function Navbar() {
           />
           
           {/* Menu panel - slide in from left, above backdrop */}
-          <div 
+          <div
             ref={menuWrapperRef}
-            className="fixed left-0 top-16 bottom-0 w-80 max-w-[85vw] bg-white dark:bg-gray-900 shadow-2xl z-50 md:hidden overflow-y-auto safe-area-padding-x"
+            className="fixed left-0 top-16 bottom-0 w-80 max-w-[85vw] bg-[#FFFDF7] dark:bg-stone-900 shadow-2xl z-50 md:hidden overflow-y-auto safe-area-padding-x"
             onClick={(e) => e.stopPropagation()}
           >
             <nav className="flex flex-col p-3 space-y-1">
@@ -435,11 +437,11 @@ export default function Navbar() {
                         href={item.href}
                         className={`flex items-center gap-x-3 px-3 py-3 rounded-lg font-medium touch-manipulation transition-colors duration-150
                           ${isActive
-                            ? 'bg-blue-600 text-white'
-                            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'}`}
+                            ? 'bg-amber-600 text-white'
+                            : 'text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800'}`}
                         onClick={() => setMobileOpen(false)}
                       >
-                        <span className={`flex-shrink-0 w-5 h-5 ${isActive ? 'text-white' : item.color || 'text-gray-500'}`}>
+                        <span className={`flex-shrink-0 w-5 h-5 ${isActive ? 'text-white' : item.color || 'text-stone-500'}`}>
                           {item.icon}
                         </span>
                         <span className="font-medium">{item.label}</span>
@@ -451,11 +453,11 @@ export default function Navbar() {
                             href={dropdownItem.href}
                             className={`flex items-center gap-x-3 px-3 py-2.5 rounded-lg font-medium transition-colors duration-150 touch-manipulation
                               ${router.pathname === dropdownItem.href
-                                ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
-                                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}`}
+                                ? 'bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400'
+                                : 'text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800'}`}
                             onClick={() => setMobileOpen(false)}
                           >
-                            <span className={`flex-shrink-0 w-5 h-5 ${router.pathname === dropdownItem.href ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400'}`}>
+                            <span className={`flex-shrink-0 w-5 h-5 ${router.pathname === dropdownItem.href ? 'text-amber-600 dark:text-amber-400' : 'text-stone-400'}`}>
                               {dropdownItem.icon}
                             </span>
                             <span className="text-sm">{dropdownItem.label}</span>
@@ -471,11 +473,11 @@ export default function Navbar() {
                     href={item.href}
                     className={`flex items-center gap-x-3 px-3 py-3 rounded-lg font-medium transition-colors duration-150 touch-manipulation
                       ${isActive
-                        ? 'bg-blue-600 text-white'
-                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'}`}
+                        ? 'bg-amber-600 text-white'
+                        : 'text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800'}`}
                     onClick={() => setMobileOpen(false)}
                   >
-                    <span className={`flex-shrink-0 w-5 h-5 ${isActive ? 'text-white' : item.color || 'text-gray-500'}`}>
+                    <span className={`flex-shrink-0 w-5 h-5 ${isActive ? 'text-white' : item.color || 'text-stone-500'}`}>
                       {item.icon}
                     </span>
                     <span className="font-medium">{item.label}</span>

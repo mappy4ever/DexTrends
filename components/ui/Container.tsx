@@ -58,9 +58,9 @@ const Container = forwardRef<HTMLDivElement, CardProps>(
       TRANSITION.default
     );
 
-    // Gradient backgrounds - clean, elegant
+    // Gradient backgrounds - warm palette
     const gradientStyles = {
-      blue: 'bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30',
+      blue: 'bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30',
       purple: 'bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30',
       green: 'bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30',
       red: 'bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950/30 dark:to-orange-950/30',
@@ -68,41 +68,40 @@ const Container = forwardRef<HTMLDivElement, CardProps>(
       custom: customGradient || ''
     };
 
-    // Variant styles - unified, refined and consistent
+    // Variant styles - warm stone palette
     const variantStyles = {
       default: cn(
-        'bg-white dark:bg-gray-800/95',
-        'border border-gray-100 dark:border-gray-700/50',
+        'bg-white dark:bg-stone-800/95',
+        'border border-stone-100 dark:border-stone-700/50',
         SHADOW.soft
       ),
       elevated: cn(
-        'bg-white dark:bg-gray-800/95',
-        'border border-gray-100 dark:border-gray-700/50',
+        'bg-white dark:bg-stone-800/95',
+        'border border-stone-100 dark:border-stone-700/50',
         SHADOW.elevated
       ),
       outline: cn(
         'bg-transparent',
-        'border border-gray-200 dark:border-gray-700'
+        'border border-stone-200 dark:border-stone-700'
       ),
       ghost: cn(
         'bg-transparent'
       ),
       gradient: cn(
         gradient ? gradientStyles[gradient] : gradientStyles.blue,
-        'border border-gray-100/50 dark:border-gray-700/30',
+        'border border-stone-100/50 dark:border-stone-700/30',
         SHADOW.soft
       ),
       featured: cn(
-        'bg-gradient-to-br from-blue-600 to-indigo-600',
+        'bg-gradient-to-br from-amber-600 to-orange-600',
         'text-white',
         SHADOW.floating,
         'border-0'
       ),
       glass: cn(
         GLASS_BG.frosted.medium,
-        'border border-white/20 dark:border-gray-700/30',
-        SHADOW.soft,
-        'backdrop-blur-md'
+        'border border-white/20 dark:border-stone-700/30',
+        SHADOW.soft
       )
     };
 
@@ -110,14 +109,14 @@ const Container = forwardRef<HTMLDivElement, CardProps>(
     const interactiveStyles = interactive || onClick ? cn(
       'cursor-pointer',
       'active:scale-[0.99]',
-      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2'
+      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2'
     ) : '';
 
     // Hover effects - subtle and elegant
     const hoverStyles = (hover || interactive || onClick) ? cn(
       'hover:-translate-y-px hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]',
-      variant === 'outline' && 'hover:border-gray-300 dark:hover:border-gray-600',
-      variant === 'ghost' && 'hover:bg-gray-50 dark:hover:bg-gray-800/50'
+      variant === 'outline' && 'hover:border-stone-300 dark:hover:border-stone-600',
+      variant === 'ghost' && 'hover:bg-stone-50 dark:hover:bg-stone-800/50'
     ) : '';
 
     return (
@@ -137,8 +136,8 @@ const Container = forwardRef<HTMLDivElement, CardProps>(
         {...props}
       >
         {loading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white/50 dark:bg-gray-800/50 rounded-inherit z-10">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <div className="absolute inset-0 flex items-center justify-center bg-white/50 dark:bg-stone-800/50 rounded-inherit z-10">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-600"></div>
           </div>
         )}
         {children}
@@ -161,7 +160,7 @@ export const ContainerHeader: React.FC<{
     <div
       className={cn(
         'mb-3 sm:mb-4',
-        separator && 'pb-3 sm:pb-4 border-b border-gray-200 dark:border-gray-700',
+        separator && 'pb-3 sm:pb-4 border-b border-stone-200 dark:border-stone-700',
         className
       )}
     >
@@ -186,7 +185,7 @@ export const ContainerTitle: React.FC<{
   };
 
   return (
-    <h3 className={cn(sizeStyles[size], 'text-gray-900 dark:text-white', className)}>
+    <h3 className={cn(sizeStyles[size], 'text-stone-800 dark:text-white', className)}>
       {children}
     </h3>
   );
@@ -200,7 +199,7 @@ export const ContainerDescription: React.FC<{
   className?: string;
 }> = ({ children, className }) => {
   return (
-    <p className={cn('text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1', className)}>
+    <p className={cn('text-sm sm:text-base text-stone-600 dark:text-stone-400 mt-1', className)}>
       {children}
     </p>
   );
@@ -237,7 +236,7 @@ export const ContainerFooter: React.FC<{
       className={cn(
         'mt-4 sm:mt-6 flex items-center gap-2 sm:gap-3',
         alignStyles[align],
-        separator && 'pt-4 sm:pt-6 border-t border-gray-200 dark:border-gray-700',
+        separator && 'pt-4 sm:pt-6 border-t border-stone-200 dark:border-stone-700',
         className
       )}
     >

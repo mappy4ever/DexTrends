@@ -8,7 +8,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useAuth } from '@/context/AuthContext';
+import { useAuthSafe } from '@/context/AuthContext';
 import { ModernCard } from '@/components/ui/ModernCard';
 import FullBleedWrapper from '@/components/ui/FullBleedWrapper';
 import logger from '@/utils/logger';
@@ -65,15 +65,13 @@ const getSecureErrorMessage = (error: string): string => {
 const AuthPage: NextPage = () => {
   const router = useRouter();
   // Safe hook usage - will have default values if provider not available
-  const auth = useAuth();
-  const { signIn, signUp, signInWithProvider, resetPassword, user, loading } = auth || {
-    signIn: async () => ({ error: { message: 'Auth not available' } }),
-    signUp: async () => ({ error: { message: 'Auth not available' } }),
-    signInWithProvider: async () => ({ error: { message: 'Auth not available' } }),
-    resetPassword: async () => ({ error: { message: 'Auth not available' } }),
-    user: null,
-    loading: false
-  };
+  const auth = useAuthSafe();
+  const signIn = auth?.signIn ?? (async () => ({ error: { message: 'Auth not available' } as { message: string } }));
+  const signUp = auth?.signUp ?? (async () => ({ error: { message: 'Auth not available' } as { message: string } }));
+  const signInWithProvider = auth?.signInWithProvider ?? (async () => ({ error: { message: 'Auth not available' } as { message: string } }));
+  const resetPassword = auth?.resetPassword ?? (async () => ({ error: { message: 'Auth not available' } as { message: string } }));
+  const user = auth?.user ?? null;
+  const loading = auth?.loading ?? false;
 
   const [mode, setMode] = useState<AuthMode>('login');
   const [email, setEmail] = useState('');

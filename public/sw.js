@@ -11,11 +11,8 @@ const STATIC_ASSETS = [
   '/',
   '/manifest.json',
   '/favicon.ico',
-  '/icon-192x192.png',
-  '/icon-512x512.png',
-  '/back-card.png',
-  '/images/dextrends-vertical-logo.png',
-  '/images/pokeball-loading.png'
+  '/dextrendslogo.png',
+  '/back-card.png'
 ];
 
 // API endpoints to cache

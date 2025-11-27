@@ -28,12 +28,12 @@ interface SearchResponse {
 }
 
 const categoryColors = {
-  pokemon: 'text-red-600 bg-red-50',
-  card: 'text-blue-600 bg-blue-50',
-  set: 'text-purple-600 bg-purple-50',
-  move: 'text-green-600 bg-green-50',
-  item: 'text-yellow-600 bg-yellow-50',
-  ability: 'text-pink-600 bg-pink-50'
+  pokemon: 'text-red-600 bg-red-50 dark:text-red-400 dark:bg-red-900/20',
+  card: 'text-amber-600 bg-amber-50 dark:text-amber-400 dark:bg-amber-900/20',
+  set: 'text-amber-700 bg-amber-50 dark:text-amber-300 dark:bg-amber-900/20',
+  move: 'text-green-600 bg-green-50 dark:text-green-400 dark:bg-green-900/20',
+  item: 'text-yellow-600 bg-yellow-50 dark:text-yellow-400 dark:bg-yellow-900/20',
+  ability: 'text-pink-600 bg-pink-50 dark:text-pink-400 dark:bg-pink-900/20'
 };
 
 const categoryIcons = {
@@ -164,26 +164,26 @@ export const GlobalSearch: React.FC = () => {
             onFocus={() => setShowResults(true)}
             onKeyDown={handleKeyDown}
             placeholder="Search Pokémon, cards, moves..."
-            className="w-full h-12 pl-11 pr-10 text-base bg-white dark:bg-gray-800/95 border border-gray-200 dark:border-gray-700 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-150 touch-manipulation"
+            className="w-full h-12 pl-11 pr-10 text-base bg-white dark:bg-stone-800/95 border border-stone-200 dark:border-stone-700 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all duration-150 touch-manipulation"
             style={{ fontSize: '16px' }}
           />
 
           {/* Search Icon */}
           <div className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none">
-            <Search className="w-5 h-5 text-gray-400" />
+            <Search className="w-5 h-5 text-stone-400" />
           </div>
 
           {/* Clear Button / Loading Spinner */}
           <div className="absolute right-3 top-1/2 -translate-y-1/2">
             {loading ? (
-              <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
             ) : searchTerm ? (
               <button
                 type="button"
                 onClick={clearSearch}
-                className="p-0.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors duration-150"
+                className="p-0.5 hover:bg-stone-100 dark:hover:bg-stone-700 rounded-md transition-colors duration-150"
               >
-                <X className="w-4 h-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300" />
+                <X className="w-4 h-4 text-stone-400 hover:text-stone-600 dark:hover:text-stone-300" />
               </button>
             ) : null}
           </div>
@@ -198,12 +198,12 @@ export const GlobalSearch: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
             transition={{ duration: 0.15 }}
-            className="absolute top-full mt-2 w-full bg-white dark:bg-gray-800/95 rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-gray-100 dark:border-gray-700/50 overflow-hidden z-50"
+            className="absolute top-full mt-2 w-full bg-white dark:bg-stone-800/95 rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-stone-100 dark:border-stone-700/50 overflow-hidden z-50"
           >
             {/* Recent Searches */}
             {searchTerm.length < 2 && recentSearches.length > 0 && (
-              <div className="p-3 border-b border-gray-100 dark:border-gray-700/50">
-                <h3 className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2 px-1">Recent</h3>
+              <div className="p-3 border-b border-stone-100 dark:border-stone-700/50">
+                <h3 className="text-xs font-medium text-stone-500 dark:text-stone-400 mb-2 px-1">Recent</h3>
                 <div className="space-y-0.5">
                   {recentSearches.map((search, idx) => (
                     <button
@@ -212,7 +212,7 @@ export const GlobalSearch: React.FC = () => {
                         setSearchTerm(search);
                         performSearch(search);
                       }}
-                      className="w-full text-left px-2.5 py-2 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg transition-colors duration-150 text-sm text-gray-700 dark:text-gray-300"
+                      className="w-full text-left px-2.5 py-2 hover:bg-stone-50 dark:hover:bg-stone-700/50 rounded-lg transition-colors duration-150 text-sm text-stone-700 dark:text-stone-300"
                     >
                       {search}
                     </button>
@@ -227,8 +227,8 @@ export const GlobalSearch: React.FC = () => {
                 {results.map((result, idx) => (
                   <Link href={result.url} key={`${result.category}-${result.id}`}>
                     <div
-                      className={`flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-150 cursor-pointer ${
-                        idx === selectedIndex ? 'bg-gray-50 dark:bg-gray-700/50' : ''
+                      className={`flex items-center gap-3 px-3 py-2.5 hover:bg-stone-50 dark:hover:bg-stone-700/50 transition-colors duration-150 cursor-pointer ${
+                        idx === selectedIndex ? 'bg-stone-50 dark:bg-stone-700/50' : ''
                       }`}
                       onMouseEnter={() => setSelectedIndex(idx)}
                     >
@@ -252,11 +252,11 @@ export const GlobalSearch: React.FC = () => {
 
                       {/* Content */}
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-gray-900 dark:text-white truncate">
+                        <p className="font-medium text-stone-900 dark:text-white truncate">
                           {result.name}
                         </p>
                         {result.description && (
-                          <p className="text-sm text-gray-600 dark:text-gray-400 truncate">
+                          <p className="text-sm text-stone-600 dark:text-stone-400 truncate">
                             {result.description}
                           </p>
                         )}
@@ -277,7 +277,7 @@ export const GlobalSearch: React.FC = () => {
             {/* No Results */}
             {searchTerm.length >= 2 && results.length === 0 && !loading && (
               <div className="p-8 text-center">
-                <p className="text-gray-500 dark:text-gray-400">No results found for "{searchTerm}"</p>
+                <p className="text-stone-500 dark:text-stone-400">No results found for "{searchTerm}"</p>
               </div>
             )}
           </motion.div>

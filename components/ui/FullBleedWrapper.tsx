@@ -1,12 +1,13 @@
 import React from 'react';
 
 // Stable gradients defined outside component to prevent re-creation
+// Updated to warm cream/beige palette for clean minimal design
 const STABLE_GRADIENTS = {
-  pokedex: 'bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-slate-900 dark:to-zinc-900',
-  tcg: 'bg-gradient-to-br from-gray-50 via-purple-50/30 to-pink-50/30 dark:from-gray-900 dark:via-purple-950/30 dark:to-pink-950/30',
-  regions: 'bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 dark:from-emerald-950 dark:via-teal-950 dark:to-cyan-950',
-  pocket: 'bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950 dark:via-amber-950 dark:to-orange-950',
-  collections: 'bg-gradient-to-br from-slate-50 via-gray-50 to-zinc-50 dark:from-slate-900 dark:via-gray-900 dark:to-zinc-900',
+  pokedex: 'bg-gradient-to-b from-[#FFFDF7] to-[#FBF8F3] dark:from-stone-900 dark:to-stone-950',
+  tcg: 'bg-gradient-to-b from-[#FFFDF7] via-[#FBF8F3] to-[#F5F1EA] dark:from-stone-900 dark:via-stone-900 dark:to-stone-950',
+  regions: 'bg-gradient-to-b from-[#FFFDF7] to-[#F5F1EA] dark:from-stone-900 dark:to-stone-950',
+  pocket: 'bg-gradient-to-b from-[#FFFDF7] via-amber-50/30 to-[#FBF8F3] dark:from-stone-900 dark:via-amber-950/20 dark:to-stone-950',
+  collections: 'bg-gradient-to-b from-[#FFFDF7] to-stone-50 dark:from-stone-900 dark:to-stone-950',
 };
 
 interface FullBleedWrapperProps {
@@ -65,12 +66,12 @@ export const PageBackground: React.FC<FullBleedWrapperProps> = ({
   pokemonTypes
 }) => {
   const gradients = {
-    pokedex: 'bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-slate-900 dark:to-zinc-900',
-    tcg: 'bg-gradient-to-br from-gray-50 via-purple-50/30 to-pink-50/30 dark:from-gray-900 dark:via-purple-950/30 dark:to-pink-950/30',
-    regions: 'bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 dark:from-emerald-950 dark:via-teal-950 dark:to-cyan-950',
-    pocket: 'bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-950 dark:via-amber-950 dark:to-orange-950',
-    collections: 'bg-gradient-to-br from-slate-50 via-gray-50 to-zinc-50 dark:from-slate-900 dark:via-gray-900 dark:to-zinc-900',
-    'pokemon-type': 'bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-slate-900 dark:to-zinc-900',
+    pokedex: 'bg-gradient-to-b from-[#FFFDF7] to-[#FBF8F3] dark:from-stone-900 dark:to-stone-950',
+    tcg: 'bg-gradient-to-b from-[#FFFDF7] via-[#FBF8F3] to-[#F5F1EA] dark:from-stone-900 dark:via-stone-900 dark:to-stone-950',
+    regions: 'bg-gradient-to-b from-[#FFFDF7] to-[#F5F1EA] dark:from-stone-900 dark:to-stone-950',
+    pocket: 'bg-gradient-to-b from-[#FFFDF7] via-amber-50/30 to-[#FBF8F3] dark:from-stone-900 dark:via-amber-950/20 dark:to-stone-950',
+    collections: 'bg-gradient-to-b from-[#FFFDF7] to-stone-50 dark:from-stone-900 dark:to-stone-950',
+    'pokemon-type': 'bg-gradient-to-b from-[#FFFDF7] to-[#FBF8F3] dark:from-stone-900 dark:to-stone-950',
     custom: customGradient || ''
   };
 

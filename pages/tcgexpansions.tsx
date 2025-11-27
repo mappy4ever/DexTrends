@@ -290,17 +290,17 @@ const TcgSetsContent: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
             >
-              <h1 className="text-2xl xs:text-3xl sm:text-4xl font-bold mb-2 xs:mb-3 text-gray-800 dark:text-white">
+              <h1 className="text-2xl xs:text-3xl sm:text-4xl font-bold mb-2 xs:mb-3 text-stone-800 dark:text-white">
                 Pokémon TCG Collection
               </h1>
-              <p className="text-sm xs:text-base sm:text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
+              <p className="text-sm xs:text-base sm:text-lg text-stone-500 dark:text-stone-400 max-w-2xl mx-auto">
                 Discover every Trading Card Game set from Base Set to the latest releases
               </p>
               <div className="flex flex-wrap justify-center gap-2 xs:gap-3 mt-4">
-                <span className="px-3 py-1.5 rounded-full bg-blue-50 dark:bg-blue-900/20 text-xs font-medium text-blue-600 dark:text-blue-400">
+                <span className="px-3 py-1.5 rounded-full bg-amber-50 dark:bg-amber-900/20 text-xs font-medium text-amber-600 dark:text-amber-400">
                   {sets.length} Sets
                 </span>
-                <span className="px-3 py-1.5 rounded-full bg-gray-100 dark:bg-gray-800 text-xs font-medium text-gray-600 dark:text-gray-400">
+                <span className="px-3 py-1.5 rounded-full bg-stone-100 dark:bg-stone-800 text-xs font-medium text-stone-600 dark:text-stone-400">
                   15,000+ Cards
                 </span>
               </div>
@@ -308,7 +308,7 @@ const TcgSetsContent: React.FC = () => {
             
             {/* Search and Filters - Clean card */}
             <motion.div
-              className="bg-white dark:bg-gray-800/95 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-gray-100 dark:border-gray-700/50 p-3 sm:p-4 mb-6"
+              className="bg-white dark:bg-stone-800/95 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-stone-100 dark:border-stone-700/50 p-3 sm:p-4 mb-6"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.1 }}
@@ -332,11 +332,11 @@ const TcgSetsContent: React.FC = () => {
                 <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 items-stretch">
 
                   <div className="flex-1">
-                    <label htmlFor="seriesFilter" className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5">Series</label>
+                    <label htmlFor="seriesFilter" className="block text-xs font-medium text-stone-500 dark:text-stone-400 mb-1.5">Series</label>
                     <div className="relative">
                       <select
                         id="seriesFilter"
-                        className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg text-sm border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all pr-8 appearance-none"
+                        className="w-full px-3 py-2 bg-stone-50 dark:bg-stone-700/50 rounded-lg text-sm border border-stone-200 dark:border-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 transition-all pr-8 appearance-none"
                         value={filterSeries}
                         onChange={(e) => setFilterSeries(e.target.value)}
                       >
@@ -346,7 +346,7 @@ const TcgSetsContent: React.FC = () => {
                         ))}
                       </select>
                       <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                        <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                         </svg>
                       </div>
@@ -354,11 +354,11 @@ const TcgSetsContent: React.FC = () => {
                   </div>
             
                   <div className="flex-1">
-                    <label htmlFor="sortOption" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Sort By</label>
+                    <label htmlFor="sortOption" className="block text-sm font-semibold text-stone-700 dark:text-stone-300 mb-2">Sort By</label>
                     <div className="relative">
                       <select
                         id="sortOption"
-                        className="w-full px-3 py-2 sm:px-4 sm:py-3 backdrop-blur-xl bg-white/80 dark:bg-gray-800/80 rounded-full text-xs sm:text-sm font-medium border border-white/40 dark:border-gray-700/40 shadow-md focus:outline-none focus:ring-4 focus:ring-purple-500/30 transition-all pr-8 sm:pr-10 appearance-none"
+                        className="w-full px-3 py-2 sm:px-4 sm:py-3 bg-white dark:bg-stone-800 rounded-full text-xs sm:text-sm font-medium border border-stone-200 dark:border-stone-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500/30 transition-all pr-8 sm:pr-10 appearance-none"
                         value={sortOption}
                         onChange={(e) => setSortOption(e.target.value as SortOption)}
                       >
@@ -367,7 +367,7 @@ const TcgSetsContent: React.FC = () => {
                         <option value="cardCount">Card Count</option>
                       </select>
                       <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                        <svg className="w-4 h-4 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 text-stone-400 dark:text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                         </svg>
                       </div>
@@ -375,11 +375,11 @@ const TcgSetsContent: React.FC = () => {
                   </div>
             
                   <div className="flex-1">
-                    <label htmlFor="sortDirection" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Order</label>
+                    <label htmlFor="sortDirection" className="block text-sm font-semibold text-stone-700 dark:text-stone-300 mb-2">Order</label>
                     <div className="relative">
                       <select
                         id="sortDirection"
-                        className="w-full px-3 py-2 sm:px-4 sm:py-3 backdrop-blur-xl bg-white/80 dark:bg-gray-800/80 rounded-full text-xs sm:text-sm font-medium border border-white/40 dark:border-gray-700/40 shadow-md focus:outline-none focus:ring-4 focus:ring-purple-500/30 transition-all pr-8 sm:pr-10 appearance-none"
+                        className="w-full px-3 py-2 sm:px-4 sm:py-3 bg-white dark:bg-stone-800 rounded-full text-xs sm:text-sm font-medium border border-stone-200 dark:border-stone-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500/30 transition-all pr-8 sm:pr-10 appearance-none"
                         value={sortDirection}
                         onChange={(e) => setSortDirection(e.target.value as SortDirection)}
                       >
@@ -387,7 +387,7 @@ const TcgSetsContent: React.FC = () => {
                         <option value="asc">Oldest First</option>
                       </select>
                       <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                        <svg className="w-4 h-4 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 text-stone-400 dark:text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                         </svg>
                       </div>
@@ -530,15 +530,15 @@ const TcgSetsContent: React.FC = () => {
                   <motion.div
                     whileHover={{ y: -4 }}
                     transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                    className={`h-full rounded-xl sm:rounded-2xl overflow-hidden bg-white dark:bg-gray-800/95 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.1)] transition-shadow duration-200 border border-gray-100 dark:border-gray-700/50 ${
+                    className={`h-full rounded-xl sm:rounded-2xl overflow-hidden bg-white dark:bg-stone-800/95 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.1)] transition-shadow duration-200 border border-stone-100 dark:border-stone-700/50 ${
                       selectedSetId === set.id
-                        ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-white dark:ring-offset-gray-900'
+                        ? 'ring-2 ring-amber-500 ring-offset-2 ring-offset-white dark:ring-offset-stone-900'
                         : ''
                     }`}
                   >
                     {/* Set Image Background - Clean and minimal */}
                     {set.images?.logo && (
-                      <div className="relative h-32 xs:h-36 sm:h-44 w-full bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-750 flex items-center justify-center p-4 sm:p-6 overflow-hidden">
+                      <div className="relative h-32 xs:h-36 sm:h-44 w-full bg-gradient-to-br from-stone-50 to-stone-100 dark:from-stone-800 dark:to-stone-750 flex items-center justify-center p-4 sm:p-6 overflow-hidden">
                         <ProgressiveImage
                           src={set.images.logo}
                           alt={set.name}
@@ -551,28 +551,28 @@ const TcgSetsContent: React.FC = () => {
                 
                     {/* Set Info - Clean and minimal */}
                     <div className="p-3 xs:p-4 sm:p-5 flex-1 flex flex-col">
-                      <h3 className="text-sm xs:text-base sm:text-lg font-semibold text-gray-800 dark:text-white mb-0.5 xs:mb-1 line-clamp-2">{set.name}</h3>
+                      <h3 className="text-sm xs:text-base sm:text-lg font-semibold text-stone-800 dark:text-white mb-0.5 xs:mb-1 line-clamp-2">{set.name}</h3>
 
                       {set.series && (
-                        <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-3 xs:mb-4">{set.series}</p>
+                        <p className="text-xs font-medium text-stone-500 dark:text-stone-400 mb-3 xs:mb-4">{set.series}</p>
                       )}
 
                       <div className="mt-auto space-y-2">
                         {/* Release Date - Simple badge */}
                         <div className="flex items-center justify-between text-xs">
-                          <span className="text-gray-500 dark:text-gray-400">Released</span>
-                          <span className="font-medium text-gray-700 dark:text-gray-300">{set.releaseDate || "Unknown"}</span>
+                          <span className="text-stone-500 dark:text-stone-400">Released</span>
+                          <span className="font-medium text-stone-700 dark:text-stone-300">{set.releaseDate || "Unknown"}</span>
                         </div>
-                        
+
                         {/* Card Count */}
                         <div className="flex items-center justify-between text-xs">
-                          <span className="text-gray-500 dark:text-gray-400">Cards</span>
-                          <span className="font-semibold text-blue-600 dark:text-blue-400">{set.total || "?"}</span>
+                          <span className="text-stone-500 dark:text-stone-400">Cards</span>
+                          <span className="font-semibold text-amber-600 dark:text-amber-400">{set.total || "?"}</span>
                         </div>
                       </div>
 
                       {/* View Set Button - Clean and minimal */}
-                      <button className="w-full mt-3 py-2 px-4 rounded-lg bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 font-medium text-xs sm:text-sm transition-colors duration-150 flex items-center justify-center gap-1.5 group-hover:bg-blue-50 dark:group-hover:bg-blue-900/20 group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                      <button className="w-full mt-3 py-2 px-4 rounded-lg bg-stone-50 dark:bg-stone-700/50 hover:bg-stone-100 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-200 font-medium text-xs sm:text-sm transition-colors duration-150 flex items-center justify-center gap-1.5 group-hover:bg-amber-50 dark:group-hover:bg-amber-900/20 group-hover:text-amber-600 dark:group-hover:text-amber-400">
                         View Cards
                         <svg className="w-3.5 h-3.5 transition-transform duration-150 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -592,7 +592,7 @@ const TcgSetsContent: React.FC = () => {
               className="h-4 w-full flex items-center justify-center mt-12"
             >
               {scrollLoading && (
-                <div className="bg-white/80 backdrop-blur-sm rounded-full px-6 py-3 shadow-lg">
+                <div className="bg-white/80 dark:bg-stone-800/80 rounded-full px-6 py-3 shadow-lg">
                   <InlineLoader text="Loading more sets..." />
                 </div>
               )}
@@ -630,18 +630,18 @@ const TcgSetsContent: React.FC = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.5 }}
             >
-              <div className="inline-flex items-center gap-2 backdrop-blur-xl bg-white/80 dark:bg-gray-800/80 rounded-full px-8 py-4 shadow-xl border border-white/50 dark:border-gray-700/50">
+              <div className="inline-flex items-center gap-2 bg-white/80 dark:bg-stone-800/80 rounded-full px-8 py-4 shadow-xl border border-stone-200/50 dark:border-stone-700/50">
                 <div className="flex flex-col items-center gap-1">
-                  <span className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                  <span className="text-sm font-bold text-stone-700 dark:text-stone-300">
                     Showing {visibleSets.length} of {sortedSets.length} filtered sets
                   </span>
-                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                  <span className="text-xs text-stone-500 dark:text-stone-400">
                     ({sets.length} sets loaded{totalSetsCount ? ` out of ${totalSetsCount} available` : ''})
                   </span>
                 </div>
               </div>
               <div className="mt-3">
-                <div className="inline-flex items-center gap-2 text-purple-600 dark:text-purple-400 font-medium">
+                <div className="inline-flex items-center gap-2 text-amber-600 dark:text-amber-400 font-medium">
                   <svg className="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                   </svg>

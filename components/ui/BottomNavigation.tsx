@@ -30,6 +30,12 @@ export const BottomNavigation: React.FC = () => {
   const router = useRouter();
   const viewport = useViewport();
   const [activeRoute, setActiveRoute] = useState('');
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Fix hydration mismatch - only render on client
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Navigation items
   const navItems: NavItem[] = [
@@ -70,8 +76,8 @@ export const BottomNavigation: React.FC = () => {
     setActiveRoute(router.pathname);
   }, [router.pathname]);
 
-  // Don't render on desktop
-  if (!viewport.isMobile) return null;
+  // Don't render on desktop or during SSR (prevents hydration mismatch)
+  if (!isMounted || !viewport.isMobile) return null;
 
   // Check if current route matches nav item (handle nested routes)
   const isActive = (href: string) => {

@@ -33,11 +33,42 @@ const config = {
     },
     extend: {
       colors: {
+        // ===========================================
+        // WARM PALETTE - New Design System
+        // ===========================================
+        warm: {
+          // Backgrounds
+          bg: {
+            primary: '#FFFDF7',
+            secondary: '#FBF8F3',
+            tertiary: '#F5F1EA',
+          },
+          // Accents
+          accent: '#D97706',
+        },
+
+        // Extended stone colors (warmer than gray)
+        stone: {
+          50: '#FAFAF9',
+          100: '#F5F5F4',
+          150: '#EFEDEB',
+          200: '#E7E5E4',
+          300: '#D6D3D1',
+          400: '#A8A29E',
+          500: '#78716C',
+          600: '#57534E',
+          700: '#44403C',
+          800: '#292524',
+          900: '#1C1917',
+          950: '#0C0A09',
+        },
+
         // Extended gray colors for better dark mode
         gray: {
           750: '#2D3748',
           850: '#1A202C',
         },
+
         // Clean base colors
         'white': 'var(--white)',
         'off-white': 'var(--off-white)',
@@ -48,42 +79,46 @@ const config = {
         'dark-text': 'var(--dark-text)',
         'charcoal': 'var(--charcoal)',
         'black': 'var(--black)',
-        
+
         // Strategic Pokémon colors
         'pokemon-red': 'var(--pokemon-red)',
         'pokemon-blue': 'var(--pokemon-blue)',
         'pokemon-yellow': 'var(--pokemon-yellow)',
         'pokemon-green': 'var(--pokemon-green)',
-        
-        // Layout colors
-        'page-bg': 'var(--page-bg)',
-        'card-bg': 'var(--card-bg)',
-        'sidebar-bg': 'var(--sidebar-bg)',
-        'border-color': 'var(--border-color)',
+
+        // Layout colors - Updated to warm palette
+        'page-bg': '#FFFDF7',
+        'card-bg': '#FFFFFF',
+        'sidebar-bg': '#FBF8F3',
+        'border-color': '#E7E5E4',
         'navbar-scrolled': 'var(--navbar-scrolled)',
         'text-navbar': 'var(--text-navbar)',
-        
-        // Clean semantic colors
+
+        // Clean semantic colors - Updated to amber
         primary: {
-          DEFAULT: 'var(--pokemon-red)',
+          DEFAULT: '#D97706',
           foreground: '#ffffff',
+          50: '#FFFBEB',
+          100: '#FEF3C7',
+          200: '#FDE68A',
+          300: '#FCD34D',
+          400: '#FBBF24',
+          500: '#F59E0B',
+          600: '#D97706',
+          700: '#B45309',
+          800: '#92400E',
+          900: '#78350F',
         },
         secondary: {
-          DEFAULT: 'var(--text-grey)',
-          foreground: 'var(--dark-text)',
+          DEFAULT: '#57534E',
+          foreground: '#292524',
         },
-        
-        // Clean backgrounds
-        'page-bg': 'var(--page-bg)',
-        'card-bg': 'var(--card-bg)',
-        'sidebar-bg': 'var(--sidebar-bg)',
-        'border-color': 'var(--border-color)',
-        
-        // Component colors
-        background: 'var(--page-bg)',
+
+        // Component colors - Updated to warm
+        background: '#FFFDF7',
         card: {
-          DEFAULT: 'var(--card-bg)',
-          foreground: 'var(--dark-text)',
+          DEFAULT: '#FFFFFF',
+          foreground: '#292524',
         },
         
         // Official Pokémon type colors (for type badges only)

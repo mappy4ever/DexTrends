@@ -5,7 +5,7 @@ import { cn } from '../../utils/cn';
 import { IoClose } from 'react-icons/io5';
 import logger from '../../utils/logger';
 import { useViewport } from '../../hooks/useViewport';
-import { RADIUS, GLASS_BG, GLASS_BORDER, SHADOW, TRANSITION } from './design-system/glass-constants';
+import { RADIUS, SHADOW, TRANSITION } from './design-system/glass-constants';
 
 export type ModalSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | 'full';
 export type ModalPosition = 'center' | 'top' | 'bottom' | 'left' | 'right';
@@ -250,12 +250,11 @@ export const Modal: React.FC<ModalProps> = ({
     <AnimatePresence mode="wait">
       {isOpen && (
         <>
-          {/* Overlay - elegant backdrop */}
+          {/* Overlay - clean backdrop (no blur for minimal design) */}
           {backdrop && (
             <motion.div
               className={cn(
-                'fixed inset-0',
-                backdrop === 'blur' ? 'bg-black/40 backdrop-blur-md' : 'bg-black/40',
+                'fixed inset-0 bg-black/40',
                 overlayClassName
               )}
               style={{ zIndex }}
@@ -280,12 +279,12 @@ export const Modal: React.FC<ModalProps> = ({
             <motion.div
               ref={modalRef}
               className={cn(
-                // Clean, elegant modal styling using design system
+                // Clean, elegant modal styling - warm palette
                 'relative',
-                GLASS_BG.frosted.strong,
-                GLASS_BORDER.medium,
+                'bg-white dark:bg-stone-800',
+                'border border-stone-200 dark:border-stone-700',
                 SHADOW.xl,
-                RADIUS.xl, // 16px rounded corners
+                'rounded-2xl', // 16px rounded corners
                 'pointer-events-auto',
                 'w-full',
                 sizeStyles[size],
@@ -304,18 +303,18 @@ export const Modal: React.FC<ModalProps> = ({
             >
               {/* Header */}
               {(title || showCloseButton) && (
-                <div className="flex items-center justify-between p-4 md:p-6 border-b border-gray-200 dark:border-gray-700">
+                <div className="flex items-center justify-between p-4 md:p-6 border-b border-stone-200 dark:border-stone-700">
                   {title && (
                     <div className="flex-1">
                       {typeof title === 'string' ? (
-                        <h2 id="modal-title" className="text-xl font-semibold text-gray-900 dark:text-white">
+                        <h2 id="modal-title" className="text-xl font-semibold text-stone-800 dark:text-white">
                           {title}
                         </h2>
                       ) : (
                         <div id="modal-title">{title}</div>
                       )}
                       {description && (
-                        <p id="modal-description" className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                        <p id="modal-description" className="mt-1 text-sm text-stone-500 dark:text-stone-400">
                           {description}
                         </p>
                       )}
@@ -327,10 +326,10 @@ export const Modal: React.FC<ModalProps> = ({
                       className={cn(
                         'ml-4 p-2',
                         RADIUS.lg, // 12px rounded
-                        'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200',
-                        'hover:bg-gray-100 dark:hover:bg-gray-700',
+                        'text-stone-400 hover:text-stone-600 dark:hover:text-stone-200',
+                        'hover:bg-stone-100 dark:hover:bg-stone-700',
                         TRANSITION.fast,
-                        'focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500'
+                        'focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500'
                       )}
                       aria-label="Close modal"
                     >
@@ -347,14 +346,14 @@ export const Modal: React.FC<ModalProps> = ({
 
               {/* Footer */}
               {footer && (
-                <div className="p-4 md:p-6 border-t border-gray-200 dark:border-gray-700">
+                <div className="p-4 md:p-6 border-t border-stone-200 dark:border-stone-700">
                   {footer}
                 </div>
               )}
 
               {/* Pull indicator for mobile sheet */}
               {shouldRenderAsSheet && (
-                <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
+                <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-stone-300 dark:bg-stone-600 rounded-full" />
               )}
             </motion.div>
           </motion.div>
