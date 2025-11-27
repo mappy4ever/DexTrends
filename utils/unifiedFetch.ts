@@ -142,10 +142,23 @@ export async function unifiedFetch<T = unknown>(
       
       clearTimeout(timeoutId);
       
-      // Check response status
+      // Check response status - respect throwOnError option
       if (!response.ok) {
         const error = new Error(`HTTP ${response.status}: ${response.statusText}`);
         (error as Error & { status?: number }).status = response.status;
+
+        // If throwOnError is false, return null data instead of throwing
+        if (opts.throwOnError === false) {
+          logger.warn('HTTP error, returning null:', { url, status: response.status });
+          return {
+            data: null,
+            error,
+            status: response.status,
+            headers: response.headers,
+            fromCache: false,
+            duration: performance.now() - startTime
+          };
+        }
         throw error;
       }
       

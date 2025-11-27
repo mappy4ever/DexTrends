@@ -1,11 +1,35 @@
 /**
  * Static fallback data for TCG sets when API is unavailable
  * This provides instant loading for the most common requests
+ * SORTED BY RELEASE DATE (newest first) to match API default order
  */
 
 export const STATIC_SETS_FALLBACK = {
-  // Recent sets (updated manually when new sets release)
+  // Sets sorted by release date (newest first)
   recentSets: [
+    // Mega Evolution series (new 2025) - NEWEST
+    {
+      id: "me2",
+      name: "Phantasmal Flames",
+      series: "Mega Evolution",
+      releaseDate: "2025/11/14",
+      total: 130,
+      images: {
+        symbol: "https://images.pokemontcg.io/me2/symbol.png",
+        logo: "https://images.pokemontcg.io/me2/logo.png"
+      }
+    },
+    {
+      id: "me1",
+      name: "Mega Evolution",
+      series: "Mega Evolution",
+      releaseDate: "2025/09/26",
+      total: 188,
+      images: {
+        symbol: "https://images.pokemontcg.io/me1/symbol.png",
+        logo: "https://images.pokemontcg.io/me1/logo.png"
+      }
+    },
     {
       id: "zsv10pt5",
       name: "Black Bolt",
@@ -74,7 +98,7 @@ export const STATIC_SETS_FALLBACK = {
     },
     {
       id: "sv7",
-      name: "Stellar Crown", 
+      name: "Stellar Crown",
       series: "Scarlet & Violet",
       releaseDate: "2024/09/13",
       total: 175,
@@ -97,7 +121,7 @@ export const STATIC_SETS_FALLBACK = {
     {
       id: "sv6",
       name: "Twilight Masquerade",
-      series: "Scarlet & Violet", 
+      series: "Scarlet & Violet",
       releaseDate: "2024/05/24",
       total: 226,
       images: {
@@ -109,7 +133,7 @@ export const STATIC_SETS_FALLBACK = {
       id: "sv5",
       name: "Temporal Forces",
       series: "Scarlet & Violet",
-      releaseDate: "2024/03/22", 
+      releaseDate: "2024/03/22",
       total: 218,
       images: {
         symbol: "https://images.pokemontcg.io/sv5/symbol.png",
@@ -182,7 +206,7 @@ export const STATIC_SETS_FALLBACK = {
         logo: "https://images.pokemontcg.io/sv1/logo.png"
       }
     },
-    // Add some popular classic sets
+    // Sword & Shield era sets
     {
       id: "swsh12pt5",
       name: "Crown Zenith",
@@ -206,6 +230,150 @@ export const STATIC_SETS_FALLBACK = {
       }
     },
     {
+      id: "swsh11",
+      name: "Lost Origin",
+      series: "Sword & Shield",
+      releaseDate: "2022/09/09",
+      total: 247,
+      images: {
+        symbol: "https://images.pokemontcg.io/swsh11/symbol.png",
+        logo: "https://images.pokemontcg.io/swsh11/logo.png"
+      }
+    },
+    {
+      id: "swsh10",
+      name: "Astral Radiance",
+      series: "Sword & Shield",
+      releaseDate: "2022/05/27",
+      total: 246,
+      images: {
+        symbol: "https://images.pokemontcg.io/swsh10/symbol.png",
+        logo: "https://images.pokemontcg.io/swsh10/logo.png"
+      }
+    },
+    {
+      id: "swsh9",
+      name: "Brilliant Stars",
+      series: "Sword & Shield",
+      releaseDate: "2022/02/25",
+      total: 216,
+      images: {
+        symbol: "https://images.pokemontcg.io/swsh9/symbol.png",
+        logo: "https://images.pokemontcg.io/swsh9/logo.png"
+      }
+    },
+    {
+      id: "swsh8",
+      name: "Fusion Strike",
+      series: "Sword & Shield",
+      releaseDate: "2021/11/12",
+      total: 284,
+      images: {
+        symbol: "https://images.pokemontcg.io/swsh8/symbol.png",
+        logo: "https://images.pokemontcg.io/swsh8/logo.png"
+      }
+    },
+    {
+      id: "swsh7",
+      name: "Evolving Skies",
+      series: "Sword & Shield",
+      releaseDate: "2021/08/27",
+      total: 237,
+      images: {
+        symbol: "https://images.pokemontcg.io/swsh7/symbol.png",
+        logo: "https://images.pokemontcg.io/swsh7/logo.png"
+      }
+    },
+    {
+      id: "swsh6",
+      name: "Chilling Reign",
+      series: "Sword & Shield",
+      releaseDate: "2021/06/18",
+      total: 233,
+      images: {
+        symbol: "https://images.pokemontcg.io/swsh6/symbol.png",
+        logo: "https://images.pokemontcg.io/swsh6/logo.png"
+      }
+    },
+    {
+      id: "swsh5",
+      name: "Battle Styles",
+      series: "Sword & Shield",
+      releaseDate: "2021/03/19",
+      total: 183,
+      images: {
+        symbol: "https://images.pokemontcg.io/swsh5/symbol.png",
+        logo: "https://images.pokemontcg.io/swsh5/logo.png"
+      }
+    },
+    {
+      id: "swsh45",
+      name: "Shining Fates",
+      series: "Sword & Shield",
+      releaseDate: "2021/02/19",
+      total: 195,
+      images: {
+        symbol: "https://images.pokemontcg.io/swsh45/symbol.png",
+        logo: "https://images.pokemontcg.io/swsh45/logo.png"
+      }
+    },
+    {
+      id: "swsh4",
+      name: "Vivid Voltage",
+      series: "Sword & Shield",
+      releaseDate: "2020/11/13",
+      total: 203,
+      images: {
+        symbol: "https://images.pokemontcg.io/swsh4/symbol.png",
+        logo: "https://images.pokemontcg.io/swsh4/logo.png"
+      }
+    },
+    {
+      id: "swsh35",
+      name: "Champion's Path",
+      series: "Sword & Shield",
+      releaseDate: "2020/09/25",
+      total: 80,
+      images: {
+        symbol: "https://images.pokemontcg.io/swsh35/symbol.png",
+        logo: "https://images.pokemontcg.io/swsh35/logo.png"
+      }
+    },
+    {
+      id: "swsh3",
+      name: "Darkness Ablaze",
+      series: "Sword & Shield",
+      releaseDate: "2020/08/14",
+      total: 201,
+      images: {
+        symbol: "https://images.pokemontcg.io/swsh3/symbol.png",
+        logo: "https://images.pokemontcg.io/swsh3/logo.png"
+      }
+    },
+    {
+      id: "swsh2",
+      name: "Rebel Clash",
+      series: "Sword & Shield",
+      releaseDate: "2020/05/01",
+      total: 209,
+      images: {
+        symbol: "https://images.pokemontcg.io/swsh2/symbol.png",
+        logo: "https://images.pokemontcg.io/swsh2/logo.png"
+      }
+    },
+    {
+      id: "swsh1",
+      name: "Sword & Shield Base",
+      series: "Sword & Shield",
+      releaseDate: "2020/02/07",
+      total: 216,
+      images: {
+        symbol: "https://images.pokemontcg.io/swsh1/symbol.png",
+        logo: "https://images.pokemontcg.io/swsh1/logo.png"
+      }
+    },
+    // Classic/Iconic sets
+    {
       id: "base1",
       name: "Base Set",
       series: "Base",
@@ -215,11 +383,55 @@ export const STATIC_SETS_FALLBACK = {
         symbol: "https://images.pokemontcg.io/base1/symbol.png",
         logo: "https://images.pokemontcg.io/base1/logo.png"
       }
+    },
+    {
+      id: "base2",
+      name: "Jungle",
+      series: "Base",
+      releaseDate: "1999/06/16",
+      total: 64,
+      images: {
+        symbol: "https://images.pokemontcg.io/base2/symbol.png",
+        logo: "https://images.pokemontcg.io/base2/logo.png"
+      }
+    },
+    {
+      id: "base3",
+      name: "Fossil",
+      series: "Base",
+      releaseDate: "1999/10/10",
+      total: 62,
+      images: {
+        symbol: "https://images.pokemontcg.io/base3/symbol.png",
+        logo: "https://images.pokemontcg.io/base3/logo.png"
+      }
+    },
+    {
+      id: "base4",
+      name: "Base Set 2",
+      series: "Base",
+      releaseDate: "2000/02/24",
+      total: 130,
+      images: {
+        symbol: "https://images.pokemontcg.io/base4/symbol.png",
+        logo: "https://images.pokemontcg.io/base4/logo.png"
+      }
+    },
+    {
+      id: "base5",
+      name: "Team Rocket",
+      series: "Base",
+      releaseDate: "2000/04/24",
+      total: 83,
+      images: {
+        symbol: "https://images.pokemontcg.io/base5/symbol.png",
+        logo: "https://images.pokemontcg.io/base5/logo.png"
+      }
     }
   ],
-  
-  totalCount: 168, // Approximate total as of 2025
-  lastUpdated: "2025-08-01T00:00:00.000Z"
+
+  totalCount: 170, // Approximate total as of 2025
+  lastUpdated: "2025-11-27T00:00:00.000Z"
 };
 
 export function createFallbackResponse(page: number = 1, pageSize: number = 25) {

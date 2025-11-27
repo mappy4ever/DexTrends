@@ -79,35 +79,37 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       hasApiKey: !!apiKey
     });
 
-    let data;
-    try {
-      data = await fetchJSON<TCGApiResponse<unknown[]> & { page?: number; pageSize?: number; count?: number; totalCount?: number }>(apiUrl, {
-        headers,
-        useCache: true,
-        cacheTime: 30 * 60 * 1000,
-        forceRefresh: pageNum === 1 && shouldForceRefresh,
-        timeout: 15000,
-        retries: 1,
-        retryDelay: 1000,
-        throwOnError: true
-      });
-    } catch (apiError) {
-      logger.warn('Pokemon TCG API slow/unavailable, using fallback', {
-        error: apiError instanceof Error ? apiError.message : String(apiError),
-        duration: Date.now() - startTime
+    // With API key: should be fast (1-3s), without: very slow (10-30s)
+    // Use throwOnError: false to avoid unhandled rejections
+    const data = await fetchJSON<TCGApiResponse<unknown[]> & { page?: number; pageSize?: number; count?: number; totalCount?: number }>(apiUrl, {
+      headers,
+      useCache: true,
+      cacheTime: 24 * 60 * 60 * 1000, // Cache for 24 hours - sets rarely change
+      forceRefresh: shouldForceRefresh,
+      timeout: apiKey ? 10000 : 5000, // 10s with API key, 5s without
+      retries: apiKey ? 1 : 0, // Retry with API key, no retry without
+      retryDelay: 1000,
+      throwOnError: false // NEVER throw - return null on error to avoid unhandled rejections
+    });
+
+    // If API failed or timed out, use static fallback immediately
+    if (!data) {
+      logger.info('Pokemon TCG API unavailable, using static fallback', {
+        duration: Date.now() - startTime,
+        hasApiKey: !!apiKey
       });
 
       const fallback = createFallbackResponse(pageNum, pageSizeNum);
 
-      res.setHeader('X-Cache-Status', 'fallback');
+      res.setHeader('X-Cache-Status', 'static-fallback');
       res.setHeader('X-Response-Time', `${Date.now() - startTime}ms`);
       res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
 
       return res.status(200).json(fallback);
     }
 
-    if (!data || !data.data) {
-      logger.warn('API returned invalid data, using fallback');
+    if (!data.data) {
+      logger.warn('API returned invalid data structure, using fallback');
       const fallback = createFallbackResponse(pageNum, pageSizeNum);
 
       res.setHeader('X-Cache-Status', 'fallback-invalid-data');
