@@ -101,15 +101,18 @@ async function handler(
     }
 
   } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorStack = error instanceof Error ? error.stack : undefined;
+
     logger.error('Metrics endpoint error', {
-      error: error.message,
-      stack: error.stack,
+      error: errorMessage,
+      stack: errorStack,
       url: req.url
     });
 
     return res.status(500).json({
       error: 'Internal server error',
-      message: process.env.NODE_ENV === 'development' ? error.message : 'Failed to retrieve metrics'
+      message: process.env.NODE_ENV === 'development' ? errorMessage : 'Failed to retrieve metrics'
     });
   }
 }
@@ -216,7 +219,8 @@ function handlePrometheusFormat(req: NextApiRequest, res: NextApiResponse<string
     return res.status(200).send(metrics);
     
   } catch (error) {
-    logger.error('Prometheus metrics error', { error: error.message });
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    logger.error('Prometheus metrics error', { error: errorMessage });
     return res.status(500).send('# Error generating metrics\n');
   }
 }
@@ -262,10 +266,11 @@ function handleDashboardFormat(req: NextApiRequest, res: NextApiResponse<any>, t
     return res.status(200).json(enhancedData);
     
   } catch (error) {
-    logger.error('Dashboard metrics error', { error: error.message });
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    logger.error('Dashboard metrics error', { error: errorMessage });
     return res.status(500).json({
       error: 'Failed to generate dashboard data',
-      message: error instanceof Error ? error.message : String(error)
+      message: errorMessage
     });
   }
 }
@@ -314,10 +319,11 @@ function handleJsonFormat(req: NextApiRequest, res: NextApiResponse<MetricsData 
     return res.status(200).json(data as any);
     
   } catch (error) {
-    logger.error('JSON metrics error', { error: error.message });
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    logger.error('JSON metrics error', { error: errorMessage });
     return res.status(500).json({
       error: 'Failed to generate metrics',
-      message: error instanceof Error ? error.message : String(error)
+      message: errorMessage
     });
   }
 }

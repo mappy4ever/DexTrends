@@ -168,6 +168,7 @@ export default async function handler(
 
   } catch (exception) {
     logger.error("API Route Exception (trends):", exception);
-    res.status(500).json({ error: "An unexpected error occurred.", details: exception.message });
+    const errorMessage = exception instanceof Error ? exception.message : String(exception);
+    res.status(500).json({ error: "An unexpected error occurred.", details: errorMessage });
   }
 }
