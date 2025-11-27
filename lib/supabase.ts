@@ -183,55 +183,87 @@ export class SupabaseCache {
 
   // Card cache operations
   static async getCachedCard(cardId: string): Promise<Record<string, unknown> | null> {
-    const { data, error } = await supabase
-      .from('card_cache')
-      .select('card_data')
-      .eq('card_id', cardId)
-      .gt('expires_at', new Date().toISOString())
-      .single();
-
-    if (error && error.code !== 'PGRST116') {
-      // Error fetching cached card
+    if (!this.isConfigured()) {
+      logger.debug('[SupabaseCache] Skipping card cache lookup - Supabase not configured');
       return null;
     }
 
-    return (data?.card_data as Record<string, unknown>) || null;
+    try {
+      const { data, error } = await supabase
+        .from('card_cache')
+        .select('card_data')
+        .eq('card_id', cardId)
+        .gt('expires_at', new Date().toISOString())
+        .single();
+
+      if (error && error.code !== 'PGRST116') {
+        logger.error('[SupabaseCache] Error fetching cached card:', { cardId, error: error.message });
+        return null;
+      }
+
+      return (data?.card_data as Record<string, unknown>) || null;
+    } catch (error) {
+      logger.error('[SupabaseCache] Unexpected error fetching cached card:', { cardId, error });
+      return null;
+    }
   }
 
   static async setCachedCard(cardId: string, cardData: Record<string, unknown>, cacheKey: string, expiryHours: number = 24): Promise<void> {
-    const expiresAt = new Date();
-    expiresAt.setHours(expiresAt.getHours() + expiryHours);
+    if (!this.isConfigured()) {
+      logger.debug('[SupabaseCache] Skipping card cache write - Supabase not configured');
+      return;
+    }
 
-    const { error } = await supabase
-      .from('card_cache')
-      .upsert({
-        card_id: cardId,
-        card_data: cardData,
-        cache_key: cacheKey,
-        expires_at: expiresAt.toISOString()
-      });
+    try {
+      const expiresAt = new Date();
+      expiresAt.setHours(expiresAt.getHours() + expiryHours);
 
-    if (error) {
-      // Error caching card
+      const { error } = await supabase
+        .from('card_cache')
+        .upsert({
+          card_id: cardId,
+          card_data: cardData,
+          cache_key: cacheKey,
+          expires_at: expiresAt.toISOString()
+        });
+
+      if (error) {
+        logger.error('[SupabaseCache] Error caching card:', { cardId, error: error.message });
+      }
+    } catch (error) {
+      logger.error('[SupabaseCache] Unexpected error caching card:', { cardId, error });
     }
   }
 
   // Clean up expired cache entries
   static async cleanupExpiredCache(): Promise<void> {
-    const now = new Date().toISOString();
-    
-    const { error: pokemonError } = await supabase
-      .from('pokemon_cache')
-      .delete()
-      .lt('expires_at', now);
+    if (!this.isConfigured()) {
+      logger.debug('[SupabaseCache] Skipping cache cleanup - Supabase not configured');
+      return;
+    }
 
-    const { error: cardError } = await supabase
-      .from('card_cache')
-      .delete()
-      .lt('expires_at', now);
+    try {
+      const now = new Date().toISOString();
 
-    if (pokemonError) {} // Error cleaning Pokemon cache
-    if (cardError) {} // Error cleaning card cache
+      const { error: pokemonError } = await supabase
+        .from('pokemon_cache')
+        .delete()
+        .lt('expires_at', now);
+
+      const { error: cardError } = await supabase
+        .from('card_cache')
+        .delete()
+        .lt('expires_at', now);
+
+      if (pokemonError) {
+        logger.error('[SupabaseCache] Error cleaning Pokemon cache:', { error: pokemonError.message });
+      }
+      if (cardError) {
+        logger.error('[SupabaseCache] Error cleaning card cache:', { error: cardError.message });
+      }
+    } catch (error) {
+      logger.error('[SupabaseCache] Unexpected error during cache cleanup:', { error });
+    }
   }
 }
 

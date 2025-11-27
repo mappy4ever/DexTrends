@@ -123,7 +123,12 @@ export default async function handler(
 
   } catch (exception) {
     logger.error("API Route Exception (People Data):", exception);
-    const errorMessage = exception.message || "An unexpected error occurred.";
-    res.status(500).json({ error: errorMessage, details: exception.details || exception.hint || "" });
+    const errorMessage = exception instanceof Error ? exception.message : String(exception);
+    const details = exception instanceof Error && 'details' in exception
+      ? String((exception as Error & { details?: unknown }).details)
+      : (exception instanceof Error && 'hint' in exception
+          ? String((exception as Error & { hint?: unknown }).hint)
+          : "");
+    res.status(500).json({ error: errorMessage || "An unexpected error occurred.", details });
   }
 }
