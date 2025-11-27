@@ -69,20 +69,26 @@ const TcgSetsContent: React.FC = () => {
           }
         );
         
-        // Check if response is null (error case)
-        if (!res) {
-          logger.error(`Failed to fetch page ${page} - response is null`);
-          throw new Error('API returned null response');
-        }
-        
         // Debug logging
         logger.debug(`Page ${page} response:`, {
           dataLength: res?.data?.length || 0,
           pagination: res?.pagination,
-          hasData: !!res?.data
+          hasData: !!res?.data,
+          responseType: typeof res
         });
-        
-        if (res?.data && res.data.length > 0) {
+
+        // Handle null/undefined response gracefully
+        if (!res || !res.data || res.data.length === 0) {
+          logger.warn(`No data received for page ${page}`, { res });
+          if (!append) {
+            // Show empty state instead of error for better UX
+            setSets([]);
+            setHasMorePages(false);
+          }
+          return;
+        }
+
+        if (res.data.length > 0) {
           // Always sort by release date (newest first) to ensure newest sets appear at top
           // This makes the display future-proof as new sets are added
           const sortedData = [...res.data].sort((a, b) =>
