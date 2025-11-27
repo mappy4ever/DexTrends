@@ -84,11 +84,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       data = await fetchJSON<TCGApiResponse<unknown[]> & { page?: number; pageSize?: number; count?: number; totalCount?: number }>(apiUrl, {
         headers,
         useCache: true,
-        cacheTime: 30 * 60 * 1000,
-        forceRefresh: pageNum === 1 && shouldForceRefresh,
-        timeout: 15000,
-        retries: 1,
-        retryDelay: 1000,
+        cacheTime: 24 * 60 * 60 * 1000, // Cache for 24 hours - sets rarely change
+        forceRefresh: shouldForceRefresh,
+        timeout: 10000, // 10 second timeout
+        retries: 1, // One retry on failure
+        retryDelay: 2000,
         throwOnError: true
       });
     } catch (apiError) {
