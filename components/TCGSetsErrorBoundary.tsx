@@ -60,12 +60,12 @@ class TCGSetsErrorBoundary extends React.Component<TCGSetsErrorBoundaryProps, TC
                 Go Back
               </button>
             </div>
-            {process.env.NODE_ENV === 'development' && this.state.errorInfo && (
-              <details className="mt-6">
+            {this.state.errorInfo && (
+              <details className="mt-6" open>
                 <summary className="cursor-pointer text-sm text-gray-500 dark:text-gray-400">
-                  Error Details
+                  Error Details (for debugging)
                 </summary>
-                <pre className="mt-2 text-xs overflow-auto bg-gray-100 dark:bg-gray-900 p-2 rounded">
+                <pre className="mt-2 text-xs overflow-auto bg-gray-100 dark:bg-gray-900 p-2 rounded max-h-48">
                   {this.state.errorInfo.componentStack}
                 </pre>
               </details>
