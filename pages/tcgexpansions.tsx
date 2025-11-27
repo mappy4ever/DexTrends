@@ -57,8 +57,9 @@ const TcgSetsContent: React.FC = () => {
       setError(null);
       
       try {
+        // Request 50 sets per page to ensure newest sets (including Mega Evolution) are included
         const res = await fetchJSON<{ data: CardSet[], pagination: PaginationInfo }>(
-          `/api/tcgexpansions?page=${page}&pageSize=25`,
+          `/api/tcgexpansions?page=${page}&pageSize=50`,
           {
             useCache: true, // Enable caching for better performance
             cacheTime: 5 * 60 * 1000, // Cache for 5 minutes
@@ -82,17 +83,29 @@ const TcgSetsContent: React.FC = () => {
         });
         
         if (res?.data && res.data.length > 0) {
+          // Always sort by release date (newest first) to ensure newest sets appear at top
+          // This makes the display future-proof as new sets are added
+          const sortedData = [...res.data].sort((a, b) =>
+            new Date(b.releaseDate || '1970-01-01').getTime() - new Date(a.releaseDate || '1970-01-01').getTime()
+          );
+
           if (append) {
-            setSets(prevSets => [...prevSets, ...res.data]);
+            setSets(prevSets => {
+              // Merge and re-sort to maintain order
+              const merged = [...prevSets, ...sortedData];
+              return merged.sort((a, b) =>
+                new Date(b.releaseDate || '1970-01-01').getTime() - new Date(a.releaseDate || '1970-01-01').getTime()
+              );
+            });
           } else {
-            setSets(res.data);
+            setSets(sortedData);
           }
           
           setTotalSetsCount(res.pagination?.totalCount || res.data.length);
           setCurrentPage(page);
           
-          // Check if there are more pages
-          const hasMore = res.pagination?.hasMore || (res.data.length === 25);
+          // Check if there are more pages (using 50 as page size now)
+          const hasMore = res.pagination?.hasMore || (res.data.length === 50);
           setHasMorePages(hasMore);
           
           logger.debug(`✓ Successfully fetched ${res.data.length} sets from page ${page}`);
