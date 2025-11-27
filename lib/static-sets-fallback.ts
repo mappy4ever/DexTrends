@@ -1,11 +1,35 @@
 /**
  * Static fallback data for TCG sets when API is unavailable
  * This provides instant loading for the most common requests
+ * SORTED BY RELEASE DATE (newest first) to match API default order
  */
 
 export const STATIC_SETS_FALLBACK = {
-  // Recent sets (updated manually when new sets release)
+  // Sets sorted by release date (newest first)
   recentSets: [
+    // Mega Evolution series (new 2025) - NEWEST
+    {
+      id: "me2",
+      name: "Phantasmal Flames",
+      series: "Mega Evolution",
+      releaseDate: "2025/11/14",
+      total: 130,
+      images: {
+        symbol: "https://images.pokemontcg.io/me2/symbol.png",
+        logo: "https://images.pokemontcg.io/me2/logo.png"
+      }
+    },
+    {
+      id: "me1",
+      name: "Mega Evolution",
+      series: "Mega Evolution",
+      releaseDate: "2025/09/26",
+      total: 188,
+      images: {
+        symbol: "https://images.pokemontcg.io/me1/symbol.png",
+        logo: "https://images.pokemontcg.io/me1/logo.png"
+      }
+    },
     {
       id: "zsv10pt5",
       name: "Black Bolt",
@@ -74,7 +98,7 @@ export const STATIC_SETS_FALLBACK = {
     },
     {
       id: "sv7",
-      name: "Stellar Crown", 
+      name: "Stellar Crown",
       series: "Scarlet & Violet",
       releaseDate: "2024/09/13",
       total: 175,
@@ -97,7 +121,7 @@ export const STATIC_SETS_FALLBACK = {
     {
       id: "sv6",
       name: "Twilight Masquerade",
-      series: "Scarlet & Violet", 
+      series: "Scarlet & Violet",
       releaseDate: "2024/05/24",
       total: 226,
       images: {
@@ -109,7 +133,7 @@ export const STATIC_SETS_FALLBACK = {
       id: "sv5",
       name: "Temporal Forces",
       series: "Scarlet & Violet",
-      releaseDate: "2024/03/22", 
+      releaseDate: "2024/03/22",
       total: 218,
       images: {
         symbol: "https://images.pokemontcg.io/sv5/symbol.png",
@@ -180,29 +204,6 @@ export const STATIC_SETS_FALLBACK = {
       images: {
         symbol: "https://images.pokemontcg.io/sv1/symbol.png",
         logo: "https://images.pokemontcg.io/sv1/logo.png"
-      }
-    },
-    // Mega Evolution series (new 2025)
-    {
-      id: "me2",
-      name: "Phantasmal Flames",
-      series: "Mega Evolution",
-      releaseDate: "2025/11/14",
-      total: 130,
-      images: {
-        symbol: "https://images.pokemontcg.io/me2/symbol.png",
-        logo: "https://images.pokemontcg.io/me2/logo.png"
-      }
-    },
-    {
-      id: "me1",
-      name: "Mega Evolution",
-      series: "Mega Evolution",
-      releaseDate: "2025/09/26",
-      total: 188,
-      images: {
-        symbol: "https://images.pokemontcg.io/me1/symbol.png",
-        logo: "https://images.pokemontcg.io/me1/logo.png"
       }
     },
     // Sword & Shield era sets

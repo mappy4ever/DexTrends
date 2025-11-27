@@ -90,24 +90,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       [setInfo, cardsData] = await Promise.all([
         // Get set information (always needed)
-        fetchJSON<TCGApiResponse<CardSet>>(`https://api.pokemontcg.io/v2/sets/${id}`, { 
+        fetchJSON<TCGApiResponse<CardSet>>(`https://api.pokemontcg.io/v2/sets/${id}`, {
           headers,
           useCache: true,
-          cacheTime: 60 * 60 * 1000, // Cache for 1 hour (increased)
-          retries: 3, // Increased retries
-          retryDelay: 1000, // Increased delay
-          timeout: 30000 // 30 seconds (increased)
+          cacheTime: 24 * 60 * 60 * 1000, // Cache for 24 hours - set info rarely changes
+          retries: apiKey ? 2 : 0, // Retry with API key, no retry without
+          retryDelay: 1000,
+          timeout: apiKey ? 15000 : 8000, // 15s with key, 8s without
+          throwOnError: false // Never throw - return null on error
         }),
         // Get cards for this set with pagination
         fetchJSON<TCGApiResponse<TCGCard[]> & { page?: number; pageSize?: number; count?: number; totalCount?: number }>(
-          cardsUrl, 
-          { 
+          cardsUrl,
+          {
             headers,
             useCache: true,
-            cacheTime: 60 * 60 * 1000, // Cache for 1 hour (increased)
-            retries: 3, // Increased retries
-            retryDelay: 1000, // Increased delay
-            timeout: 30000 // 30 seconds per request (increased)
+            cacheTime: 24 * 60 * 60 * 1000, // Cache for 24 hours - cards rarely change
+            retries: apiKey ? 2 : 0, // Retry with API key, no retry without
+            retryDelay: 1000,
+            timeout: apiKey ? 15000 : 8000, // 15s with key, 8s without
+            throwOnError: false // Never throw - return null on error
           }
         )
       ]);
