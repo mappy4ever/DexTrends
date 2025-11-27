@@ -3,13 +3,14 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { RiGovernmentFill } from "react-icons/ri";
 import { AiOutlineBulb } from "react-icons/ai";
-import { BsSun, BsMoon, BsGlobeEuropeAfrica, BsHeart, BsSearch, BsCardList, BsGrid, BsBook, BsChevronDown } from "react-icons/bs";
+import { BsSun, BsMoon, BsGlobeEuropeAfrica, BsHeart, BsSearch, BsCardList, BsGrid, BsBook, BsChevronDown, BsPerson, BsPersonFill } from "react-icons/bs";
 import { GiPokerHand, GiCardPickup, GiCrossedSwords } from "react-icons/gi";
 import { FiTrendingUp, FiShoppingBag, FiBarChart2 } from "react-icons/fi";
 import GlobalSearchModal from "./GlobalSearchModal";
 import logger from "../utils/logger";
 import { DynamicAdvancedSearchModal } from "./dynamic/DynamicComponents";
 import { useAppContext, useFavorites } from "../context/UnifiedAppContext";
+import { useAuth } from "../context/AuthContext";
 import ClientOnly from "./ClientOnly";
 import { NavbarLogo } from "../components/ui/DexTrendsLogo";
 import { PokeballSVG } from "./ui/PokeballSVG";
@@ -38,16 +39,17 @@ interface GlobalSearchModalHandle {
 export default function Navbar() {
   const { theme, toggleTheme, mounted } = useAppContext();
   const { favorites } = useFavorites();
+  const { user, loading: authLoading } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dropdownStates, setDropdownStates] = useState<Record<string, boolean>>({});
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
   const menuWrapperRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const searchModalRef = useRef<GlobalSearchModalHandle>(null);
-  
+
   // Count total favorites
-  const totalFavorites = favorites ? 
-    (favorites.pokemon ? favorites.pokemon.length : 0) + 
+  const totalFavorites = favorites ?
+    (favorites.pokemon ? favorites.pokemon.length : 0) +
     (favorites.cards ? favorites.cards.length : 0) : 0;
 
   // DexTrends Pokémon-themed navigation with dropdown structure
@@ -359,6 +361,31 @@ export default function Navbar() {
               )}
             </ClientOnly>
           </Link>
+
+          {/* User / Login Button */}
+          <ClientOnly>
+            <Link
+              href={user ? "/profile" : "/auth/login"}
+              aria-label={user ? "View profile" : "Sign in"}
+              title={user ? "View profile" : "Sign in"}
+              className={`relative p-2 rounded-lg transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30 ${
+                user
+                  ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-900/60'
+                  : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+              }`}
+            >
+              {authLoading ? (
+                <div className="w-5 h-5 border-2 border-gray-300 dark:border-gray-600 border-t-blue-500 rounded-full animate-spin" />
+              ) : user ? (
+                <BsPersonFill className="w-5 h-5" />
+              ) : (
+                <BsPerson className="w-5 h-5" />
+              )}
+              {user && (
+                <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-900" />
+              )}
+            </Link>
+          </ClientOnly>
 
           {/* Theme Toggle */}
           <button
