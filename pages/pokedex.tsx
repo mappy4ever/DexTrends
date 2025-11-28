@@ -415,7 +415,7 @@ const UnifiedPokedex: NextPage = () => {
       </Head>
       
       <div className="min-h-screen bg-gradient-to-b from-[#FFFDF7] to-[#FBF8F3] dark:from-stone-900 dark:to-stone-950">
-        <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
           {/* Header */}
           <div className="text-center mb-4 sm:mb-8">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-1 sm:mb-2 text-stone-800 dark:text-white">

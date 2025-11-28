@@ -23,7 +23,7 @@ const SimpleCardWrapper = ({ children, className, rarity }: { children: React.Re
     if (rarityLower.includes('rare')) return 'border-amber-400';
     return 'border-stone-300';
   };
-  return <div className={`relative rounded-lg overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg ${getBorderClass()} border-2 ${className}`}>{children}</div>;
+  return <div className={`relative rounded-lg overflow-hidden transition-all duration-150 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-lg ${getBorderClass()} border-2 ${className}`}>{children}</div>;
 };
 import { useTheme, useFavorites } from '../../context/UnifiedAppContext';
 import { useViewSettings } from "../../context/UnifiedAppContext";
@@ -433,7 +433,7 @@ const SetIdPage: NextPage = () => {
 
   if (!setid) {
     return (
-      <div className="container mx-auto p-4 flex flex-col items-center justify-center min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 flex flex-col items-center justify-center min-h-screen">
         <EmptyStateGlass
           title="Invalid Set ID"
           message="No set ID was provided in the URL."
@@ -464,7 +464,7 @@ const SetIdPage: NextPage = () => {
 
   if (error && fetchAttempted) {
     return (
-      <div className="container mx-auto p-4 flex flex-col items-center justify-center min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 flex flex-col items-center justify-center min-h-screen">
         <EmptyStateGlass
           type="error"
           title="Error Loading Set"
@@ -481,7 +481,7 @@ const SetIdPage: NextPage = () => {
 
   if (!setInfo && fetchAttempted && !loading) {
     return (
-      <div className="container mx-auto p-4 flex flex-col items-center justify-center min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 flex flex-col items-center justify-center min-h-screen">
         <EmptyStateGlass
           title="Set Not Found"
           message="The set you're looking for couldn't be found."
@@ -514,7 +514,7 @@ const SetIdPage: NextPage = () => {
   return (
     <FullBleedWrapper gradient="pokedex">
       <div className="w-full">
-        <div className="container mx-auto px-4 py-4 sm:px-6 sm:py-6 lg:px-8 max-w-7xl">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
           {/* Back Button - Minimal */}
           <div className="mb-4 sm:mb-6">
             <button
@@ -590,14 +590,14 @@ const SetIdPage: NextPage = () => {
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className={cn(
                           'pl-10 pr-4 py-2 rounded-full',
-                          'bg-white/50 dark:bg-gray-800/50',
+                          'bg-white/50 dark:bg-stone-800/50',
                           'backdrop-blur-md',
-                          'border border-white/30 dark:border-gray-700/30',
-                          'focus:outline-none focus:ring-2 focus:ring-purple-500/50',
+                          'border border-white/30 dark:border-stone-700/30',
+                          'focus:outline-none focus:ring-2 focus:ring-amber-500/50',
                           'text-sm w-64'
                         )}
                       />
-                      <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                       </svg>
                     </div>
@@ -614,8 +614,8 @@ const SetIdPage: NextPage = () => {
                       className={cn(
                         'min-h-[36px] px-3 py-1 rounded-full text-xs font-medium transition-all touch-target',
                         !filterRarity
-                          ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
-                          : 'bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm hover:bg-white/70'
+                          ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white'
+                          : 'bg-white/50 dark:bg-stone-800/50 backdrop-blur-sm hover:bg-white/70'
                       )}
                     >
                       All
@@ -627,8 +627,8 @@ const SetIdPage: NextPage = () => {
                         className={cn(
                           'min-h-[36px] px-3 py-1.5 rounded-full text-xs font-medium transition-all flex items-center gap-1 touch-target',
                           filterRarity === rarity
-                            ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md'
-                            : 'bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm hover:bg-white/70'
+                            ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-md'
+                            : 'bg-white/50 dark:bg-stone-800/50 backdrop-blur-sm hover:bg-white/70'
                         )}
                       >
                         <RarityIcon rarity={rarity} size="xs" showLabel={false} />
@@ -645,8 +645,8 @@ const SetIdPage: NextPage = () => {
                       className={cn(
                         'min-h-[36px] px-3 py-1 rounded-full text-xs font-medium transition-all touch-target',
                         !filterSupertype
-                          ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
-                          : 'bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm hover:bg-white/70'
+                          ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white'
+                          : 'bg-white/50 dark:bg-stone-800/50 backdrop-blur-sm hover:bg-white/70'
                       )}
                     >
                       All
@@ -658,8 +658,8 @@ const SetIdPage: NextPage = () => {
                         className={cn(
                           'min-h-[36px] px-3 py-1 rounded-full text-xs font-medium transition-all touch-target',
                           filterSupertype === type
-                            ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
-                            : 'bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm hover:bg-white/70'
+                            ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white'
+                            : 'bg-white/50 dark:bg-stone-800/50 backdrop-blur-sm hover:bg-white/70'
                         )}
                       >
                         {type}
@@ -721,8 +721,8 @@ const SetIdPage: NextPage = () => {
             >
               <div className="pointer-events-auto max-w-6xl w-full max-h-[90vh] overflow-auto rounded-3xl">
                 <div className={cn(
-                  'relative border-2 border-gray-400/50',
-                  createGlassStyle({ 
+                  'relative border-2 border-stone-400/50',
+                  createGlassStyle({
                     blur: '2xl',
                     opacity: 'strong',
                     gradient: true,
@@ -759,7 +759,7 @@ const SetIdPage: NextPage = () => {
                           className="w-full max-w-md h-auto rounded-2xl shadow-2xl"
                         />
                         {/* Glow effect behind card */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 blur-3xl -z-10" />
+                        <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-amber-600/20 blur-3xl -z-10" />
                       </motion.div>
                     </div>
 
@@ -767,10 +767,10 @@ const SetIdPage: NextPage = () => {
                     <div className="space-y-6">
                       {/* Card Name with gradient */}
                       <div>
-                        <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
+                        <h2 className="text-3xl font-bold bg-gradient-to-r from-amber-600 to-amber-700 bg-clip-text text-transparent mb-2">
                           {modalCard.name.replace(/Team Rocket's/gi, "TR's")}
                         </h2>
-                        <p className="text-gray-700 dark:text-gray-700 font-medium">
+                        <p className="text-stone-700 dark:text-stone-700 font-medium">
                           {modalCard.set.name} • #{modalCard.number}/{modalCard.set.printedTotal}
                         </p>
                       </div>
@@ -843,16 +843,16 @@ const SetIdPage: NextPage = () => {
                             }
                             router.push(`/cards/${modalCard.id}`);
                           }}
-                          className="flex-1 px-6 py-3 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-medium hover:from-blue-600 hover:to-cyan-600 transition-all transform hover:scale-105 shadow-lg">
+                          className="flex-1 px-6 py-3 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 text-white font-medium hover:from-amber-600 hover:to-amber-700 transition-all duration-150 hover:scale-[1.02] shadow-lg">
                           View Full Details
                         </button>
                         <button
                           onClick={() => handleFavoriteToggle(modalCard)}
                           className={cn(
-                            "flex-1 px-6 py-3 rounded-full font-medium transition-all transform hover:scale-105 shadow-lg",
+                            "flex-1 px-6 py-3 rounded-full font-medium transition-all duration-150 hover:scale-[1.02] shadow-lg",
                             favorites.cards.some((c: FavoriteCard) => c.id === modalCard.id)
                               ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white'
-                              : 'bg-white/70 backdrop-blur-md border border-gray-300/50 text-gray-800 hover:bg-white/80'
+                              : 'bg-white/70 backdrop-blur-md border border-stone-300/50 text-stone-800 hover:bg-white/80'
                           )}
                         >
                           {favorites.cards.some((c: FavoriteCard) => c.id === modalCard.id) ? 

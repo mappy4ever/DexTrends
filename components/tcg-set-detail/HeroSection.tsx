@@ -185,7 +185,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       </div>
       
       {/* Main content */}
-      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 p-8">
+      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 p-8">
         {/* Left side - Set information and metrics */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}

@@ -544,7 +544,7 @@ export default function PocketPokemonDetail() {
               >
                 {/* Card Glow Effect */}
                 <motion.div
-                  className="absolute -inset-4 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-2xl opacity-0 blur-xl"
+                  className="absolute -inset-4 bg-gradient-to-r from-amber-600 via-pink-600 to-amber-600 rounded-2xl opacity-0 blur-xl"
                   variants={{
                     hover: { opacity: 0.4 }
                   }}
@@ -725,14 +725,14 @@ export default function PocketPokemonDetail() {
                   )}
                   
                   {pokemonDetails.stage && (
-                    <motion.div 
-                      className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-500/10 to-purple-500/10 p-6 border border-blue-500/20"
+                    <motion.div
+                      className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-500/10 to-orange-500/10 p-6 border border-amber-500/20"
                       whileHover={{ scale: 1.02, y: -2 }}
                       transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent" />
                       <h3 className="text-sm font-medium text-stone-400 mb-2">Evolution Stage</h3>
-                      <p className="text-2xl font-bold text-blue-400">{pokemonDetails.stage}</p>
+                      <p className="text-2xl font-bold text-amber-400">{pokemonDetails.stage}</p>
                     </motion.div>
                   )}
                   
@@ -749,12 +749,12 @@ export default function PocketPokemonDetail() {
                   )}
                   
                   {pokemonDetails.retreat && (
-                    <motion.div 
-                      className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-500/10 to-stone-500/10 p-6 border border-stone-500/20"
+                    <motion.div
+                      className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-stone-500/10 to-stone-500/10 p-6 border border-stone-500/20"
                       whileHover={{ scale: 1.02, y: -2 }}
                       transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br from-gray-500/5 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-stone-500/5 to-transparent" />
                       <h3 className="text-sm font-medium text-stone-400 mb-2">Retreat Cost</h3>
                       <p className="text-2xl font-bold text-stone-300">{pokemonDetails.retreat}</p>
                     </motion.div>
@@ -762,12 +762,12 @@ export default function PocketPokemonDetail() {
                 </div>
 
                 {pokemonDetails.ability && (
-                  <motion.div 
-                    className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-500/10 to-pink-500/10 p-6 border border-purple-500/20 mt-4"
+                  <motion.div
+                    className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-500/10 to-pink-500/10 p-6 border border-amber-500/20 mt-4"
                     whileHover={{ scale: 1.01, y: -2 }}
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent" />
                     <h3 className="text-sm font-medium text-stone-400 mb-3">Special Ability</h3>
                     <p className="text-stone-200 leading-relaxed">{pokemonDetails.ability}</p>
                   </motion.div>
@@ -789,7 +789,7 @@ export default function PocketPokemonDetail() {
               
               {/* Type Effectiveness Wheel */}
               <GlassContainer variant="dark" blur="lg" hover gradient className="p-6 mt-6">
-                <h2 className="text-xl font-semibold mb-6 text-center bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                <h2 className="text-xl font-semibold mb-6 text-center bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
                   Type Matchups
                 </h2>
                 <div className="flex justify-center">

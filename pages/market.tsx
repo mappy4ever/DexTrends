@@ -130,7 +130,7 @@ const MarketPage: NextPage = () => {
             {/* Tab Navigation with Glass Morphism */}
             <div className="flex justify-center mb-8">
               <GlassContainer variant="medium" rounded="2xl" padding="sm" className="max-w-4xl w-full">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
                   {tabs.map(tab => (
                     <CircularButton
                       key={tab.id}
@@ -232,8 +232,8 @@ const MarketPage: NextPage = () => {
                       <p className="text-stone-600 dark:text-stone-400">Biggest price changes in the last 24 hours</p>
                     </div>
                   </div>
-                  
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
                     {/* Top Gainers */}
                     <div>
                       <h3 className="text-lg font-semibold text-green-700 dark:text-green-400 mb-4 flex items-center gap-2">
@@ -307,7 +307,7 @@ const MarketPage: NextPage = () => {
                       </div>
                     </div>
                     
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
                       {/* Key Insights */}
                       <div>
                         <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">Key Market Insights</h3>

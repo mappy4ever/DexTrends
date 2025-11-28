@@ -346,7 +346,7 @@ const FavoritesPage: NextPage = () => {
                   </button>
                 </div>
               ) : pokemonData.length > 0 ? (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 justify-items-center">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6 justify-items-center">
                   {pokemonData.map(pokemon => (
                     <div key={pokemon.id} className="relative">
                       <PokemonAvatar
@@ -413,7 +413,7 @@ const FavoritesPage: NextPage = () => {
                   </button>
                 </div>
               ) : cardsData.length > 0 ? (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
                   {cardsData.map(card => (
                     <div 
                       key={card.id}

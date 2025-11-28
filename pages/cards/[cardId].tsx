@@ -22,7 +22,7 @@ const SimpleCardWrapper = ({ children, className, rarity }: any) => {
     if (rarityLower.includes('rare')) return 'border-amber-400';
     return 'border-stone-300';
   };
-  return <div className={`relative rounded-lg overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg ${getBorderClass()} border-2 ${className}`}>{children}</div>;
+  return <div className={`relative rounded-lg overflow-hidden transition-all duration-150 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-lg ${getBorderClass()} border-2 ${className}`}>{children}</div>;
 };
 import logger from "../../utils/logger";
 import { useAppContext } from "../../context/UnifiedAppContext";
@@ -797,7 +797,7 @@ export default function CardDetailPage() {
                     showPrice={false}
                     imageWidth={160}
                     imageHeight={224}
-                    className="transform transition-transform hover:scale-105"
+                    className="transform transition-all duration-150 hover:scale-[1.02] hover:-translate-y-1"
                   />
                 ))}
               </div>

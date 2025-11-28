@@ -243,7 +243,7 @@ export const TurnIndicator: React.FC<TurnIndicatorProps> = ({
       key={currentTurn}
       initial={{ opacity: 0, x: currentTurn === 1 ? -20 : 20 }}
       animate={{ opacity: 1, x: 0 }}
-      className="flex items-center justify-center gap-2 py-2 px-4 bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm rounded-full shadow-md"
+      className="flex items-center justify-center gap-2 py-2 px-4 bg-white/80 dark:bg-stone-800/80 rounded-full shadow-md"
     >
       <motion.div
         animate={{ scale: [1, 1.2, 1] }}

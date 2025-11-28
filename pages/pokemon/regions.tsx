@@ -169,11 +169,10 @@ const RegionTile: React.FC<RegionTileProps> = ({ region }) => {
       initial={{ opacity: 0, x: -50 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5, delay: region.generation * 0.1 }}
-      whileHover={{ scale: 1.02 }}
     >
       <Link href={`/pokemon/regions/${region.id}`}>
         <div
-          className={`relative h-40 md:h-48 overflow-hidden cursor-pointer transform transition-all duration-700 hover:z-10 ${createGlassStyle({
+          className={`relative h-40 md:h-48 overflow-hidden cursor-pointer transform transition-all duration-200 hover:z-10 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-lg ${createGlassStyle({
             blur: 'md',
             opacity: 'subtle',
             gradient: false,
@@ -387,7 +386,7 @@ const RegionsPage: NextPage = () => {
 
       <div className="relative" style={{ marginTop: '0', zIndex: 1 }}>
         {/* Back Button */}
-        <div className="container mx-auto px-4 py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
           <CircularButton
             onClick={() => router.push('/pokemon')}
             variant="secondary"

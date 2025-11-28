@@ -525,11 +525,11 @@ const Expansions: NextPage = () => {
       rarity: 'Uncommon'
     };
     return {
-      color: 'from-gray-400 to-gray-600',
+      color: 'from-stone-400 to-stone-600',
       textColor: 'text-white',
       glow: 'drop-shadow-sm',
-      border: 'border-gray-400',
-      bg: 'bg-gradient-to-r from-gray-400 to-gray-600',
+      border: 'border-stone-400',
+      bg: 'bg-gradient-to-r from-stone-400 to-stone-600',
       rarity: 'Common'
     };
   };
@@ -555,7 +555,7 @@ const Expansions: NextPage = () => {
         <div className="bg-black/60 backdrop-blur-xl rounded-3xl p-12 text-center border border-red-500/20 shadow-2xl">
           <div className="text-6xl mb-6">❌</div>
           <h2 className="text-3xl font-bold mb-4 text-red-400">Oops! Something went wrong</h2>
-          <p className="text-gray-300 mb-8 text-lg">{error}</p>
+          <p className="text-stone-300 mb-8 text-lg">{error}</p>
           <button 
             onClick={() => window.location.reload()}
             className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105 shadow-lg"

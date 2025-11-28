@@ -281,7 +281,7 @@ const TcgSetsContent: React.FC = () => {
 
   const mainContent = (
     <FullBleedWrapper gradient="pokedex">
-      <div className="section-spacing-y-default max-w-7xl mx-auto px-2 xs:px-3 sm:px-6 lg:px-8 animate-fadeIn pt-4 xs:pt-6 sm:pt-8 overflow-x-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 animate-fadeIn py-6 md:py-8 overflow-x-hidden">
           <FadeIn>
             {/* Hero Section - Clean and minimal */}
             <motion.div

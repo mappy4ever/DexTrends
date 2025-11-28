@@ -187,7 +187,7 @@ export const MarketPulse: React.FC<MarketPulseProps> = ({
               transition={{ delay: index * 0.1 }}
               className={cn(
                 "relative p-4 rounded-xl",
-                "backdrop-blur-md bg-white/60 dark:bg-stone-800/60",
+                "bg-white/60 dark:bg-stone-800/60",
                 "border border-white/30 dark:border-stone-700/30",
                 "hover:bg-white/80 dark:hover:bg-stone-800/80",
                 "transition-all cursor-pointer hover:scale-[1.02]"
@@ -246,12 +246,9 @@ export const MarketPulse: React.FC<MarketPulseProps> = ({
         {/* Top Gainers */}
         <div className={cn(
           "p-4 rounded-xl",
-          createGlassStyle({
-            blur: 'md',
-            opacity: 'subtle',
-            border: 'subtle',
-            rounded: 'xl'
-          })
+          "bg-white/40 dark:bg-stone-800/40",
+          "border border-white/20 dark:border-stone-700/20",
+          "shadow-sm"
         )}>
           <h4 className="text-lg font-semibold text-stone-800 dark:text-stone-200 mb-4 flex items-center gap-2">
             <span className="text-green-500">↑</span>
@@ -296,12 +293,9 @@ export const MarketPulse: React.FC<MarketPulseProps> = ({
         {/* Top Losers */}
         <div className={cn(
           "p-4 rounded-xl",
-          createGlassStyle({
-            blur: 'md',
-            opacity: 'subtle',
-            border: 'subtle',
-            rounded: 'xl'
-          })
+          "bg-white/40 dark:bg-stone-800/40",
+          "border border-white/20 dark:border-stone-700/20",
+          "shadow-sm"
         )}>
           <h4 className="text-lg font-semibold text-stone-800 dark:text-stone-200 mb-4 flex items-center gap-2">
             <span className="text-red-500">↓</span>

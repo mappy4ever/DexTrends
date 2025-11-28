@@ -40,7 +40,7 @@ export const FeaturedCardsGrid: React.FC<FeaturedCardsGridProps> = ({
       </h3>
       
       {/* 5x2 Grid */}
-      <div className="grid grid-cols-5 gap-3">
+      <div className="grid grid-cols-5 gap-4 md:gap-6">
         {featuredCards.map((card) => {
           const price = getPrice(card);
           return (
@@ -54,7 +54,7 @@ export const FeaturedCardsGrid: React.FC<FeaturedCardsGridProps> = ({
                   src={card.images?.small || ''}
                   alt={card.name}
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-200"
+                  className="object-cover group-hover:scale-[1.02] transition-transform duration-150"
                 />
                 {/* Price overlay */}
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2">

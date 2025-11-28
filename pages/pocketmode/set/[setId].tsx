@@ -278,12 +278,12 @@ function SetView() {
                   transition={{ duration: 0.6, delay: 0.2 }}
                 >
                   <span className="text-3xl">{setInfo.emoji}</span>
-                  <h1 className="text-2xl md:text-3xl font-black bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
+                  <h1 className="text-2xl md:text-3xl font-black bg-gradient-to-r from-amber-600 via-pink-600 to-amber-600 bg-clip-text text-transparent">
                     {setInfo.name}
                   </h1>
                 </motion.div>
-                <motion.p 
-                  className="text-sm text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed"
+                <motion.p
+                  className="text-sm text-stone-600 dark:text-stone-400 max-w-2xl mx-auto leading-relaxed"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.6, delay: 0.4 }}
@@ -307,7 +307,7 @@ function SetView() {
                   shadow: 'md',
                   rounded: 'full'
                 })} px-4 py-2`}>
-                  <span className="text-sm font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                  <span className="text-sm font-bold bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent">
                     {setInfo.cardCount} Cards
                   </span>
                 </div>
@@ -320,7 +320,7 @@ function SetView() {
                   shadow: 'md',
                   rounded: 'full'
                 })} px-4 py-2`}>
-                  <span className="text-sm font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  <span className="text-sm font-bold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
                     {[...new Set(allCards.map(c => c.type).filter(Boolean))].length} Types
                   </span>
                 </div>
@@ -333,7 +333,7 @@ function SetView() {
                   shadow: 'md',
                   rounded: 'full'
                 })} px-4 py-2`}>
-                  <span className="text-sm font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+                  <span className="text-sm font-bold bg-gradient-to-r from-pink-600 to-amber-600 bg-clip-text text-transparent">
                     {[...new Set(allCards.map(c => c.rarity).filter(Boolean))].length} Rarities
                   </span>
                 </div>

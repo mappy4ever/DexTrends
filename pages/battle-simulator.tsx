@@ -1362,7 +1362,7 @@ const BattleSimulator: NextPage = () => {
               <div className="flex justify-center gap-2">
                 <motion.button
                   onClick={() => setBattleFormat('singles')}
-                  className={`min-h-[44px] px-4 sm:px-6 py-2 sm:py-3 rounded-lg text-xs sm:text-sm font-medium transition-all duration-300 relative overflow-hidden touch-target ${
+                  className={`min-h-[44px] px-4 sm:px-6 py-2 sm:py-3 rounded-lg text-xs sm:text-sm font-medium transition-all duration-150 relative overflow-hidden touch-target ${
                     battleFormat === 'singles'
                       ? 'bg-red-100 text-stone-700 shadow-lg border-[4px] border-red-400'
                       : 'bg-stone-100 hover:bg-stone-200 text-stone-600 hover:text-stone-800 border-[1.5px] border-stone-300'
@@ -1373,7 +1373,7 @@ const BattleSimulator: NextPage = () => {
                 </motion.button>
                 <motion.button
                   onClick={() => setBattleFormat('doubles')}
-                  className={`min-h-[44px] px-4 sm:px-6 py-2 sm:py-3 rounded-lg text-xs sm:text-sm font-medium transition-all duration-300 relative overflow-hidden touch-target ${
+                  className={`min-h-[44px] px-4 sm:px-6 py-2 sm:py-3 rounded-lg text-xs sm:text-sm font-medium transition-all duration-150 relative overflow-hidden touch-target ${
                     battleFormat === 'doubles'
                       ? 'bg-red-100 text-stone-700 shadow-lg border-[4px] border-red-400'
                       : 'bg-stone-100 hover:bg-stone-200 text-stone-600 hover:text-stone-800 border-[1.5px] border-stone-300'
@@ -1390,7 +1390,7 @@ const BattleSimulator: NextPage = () => {
                   <motion.button
                     key={weatherType}
                     onClick={() => setWeather(weatherType)}
-                    className={`min-h-[44px] px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-300 relative overflow-hidden touch-target ${
+                    className={`min-h-[44px] px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-150 relative overflow-hidden touch-target ${
                       weather === weatherType
                         ? 'bg-orange-100 text-stone-700 shadow-lg border-[3px] border-orange-400'
                         : 'bg-stone-100 hover:bg-stone-200 text-stone-600 hover:text-stone-800 border-[1px] border-stone-300'
@@ -1413,7 +1413,7 @@ const BattleSimulator: NextPage = () => {
                     selectRandomPokemon(1);
                     selectRandomPokemon(2);
                   }}
-                  className="min-h-[44px] px-6 sm:px-8 py-2 sm:py-3 bg-gradient-to-r from-red-400 to-orange-400 text-white text-sm sm:text-base font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border-2 sm:border-4 border-orange-400 touch-target"
+                  className="min-h-[44px] px-6 sm:px-8 py-2 sm:py-3 bg-gradient-to-r from-red-400 to-orange-400 text-white text-sm sm:text-base font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 border-2 sm:border-4 border-orange-400 touch-target"
                                                     >
                   <span className="flex items-center gap-2">
                     <div className="w-4 h-4 bg-white/20 rounded animate-pulse" />
@@ -1862,7 +1862,7 @@ const BattleSimulator: NextPage = () => {
                   <div className="space-y-4">
                     <button
                       onClick={() => startBattle()}
-                      className="px-8 py-4 bg-gradient-to-r from-red-400 to-orange-400 text-white font-bold text-lg rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border-4 border-orange-400"
+                      className="px-8 py-4 bg-gradient-to-r from-red-400 to-orange-400 text-white font-bold text-lg rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 border-4 border-orange-400"
                     >
                       <span className="flex items-center gap-3">
                         <div className="w-4 h-4 bg-white rounded animate-pulse" />

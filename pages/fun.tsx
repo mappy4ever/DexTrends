@@ -181,7 +181,7 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
       <FullBleedWrapper gradient="pokedex">
         <div className="max-w-6xl mx-auto py-8">
           <div className="text-center mb-12">
-            <h1 className="text-3xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-pokemon-red to-pokemon-blue bg-clip-text text-transparent">
+            <h1 className="text-3xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent">
               🎉 Fun Zone 🎉
             </h1>
             <p className="text-xl text-stone-600 dark:text-stone-300 mb-6">
@@ -191,8 +191,8 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Random Pokemon */}
-            <div className="bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-stone-200 dark:border-stone-700">
-              <h2 className="text-2xl font-bold mb-4 text-center text-pokemon-blue">
+            <div className="bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-stone-200 dark:border-stone-700 transition-all duration-150 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-lg">
+              <h2 className="text-2xl font-bold mb-4 text-center text-amber-600">
                 🎲 Random Pokémon
               </h2>
               {loadingRandomPokemon ? (
@@ -251,8 +251,8 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
             </div>
 
             {/* Pokemon Facts */}
-            <div className="bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-stone-200 dark:border-stone-700">
-              <h2 className="text-2xl font-bold mb-4 text-center text-pokemon-red">
+            <div className="bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-stone-200 dark:border-stone-700 transition-all duration-150 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-lg">
+              <h2 className="text-2xl font-bold mb-4 text-center text-amber-600">
                 💡 Pokémon Facts
               </h2>
               <div className="bg-gradient-to-r from-amber-500 to-amber-600 text-white p-6 rounded-xl">
@@ -272,8 +272,8 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
             </div>
 
             {/* Pokemon Quiz */}
-            <div className="bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-stone-200 dark:border-stone-700">
-              <h2 className="text-2xl font-bold mb-4 text-center text-pokemon-red">
+            <div className="bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-stone-200 dark:border-stone-700 transition-all duration-150 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-lg">
+              <h2 className="text-2xl font-bold mb-4 text-center text-amber-600">
                 🧠 Pokémon Quiz
               </h2>
               <div className="mb-4">
@@ -321,8 +321,8 @@ const FunPage: NextPage & { fullBleed?: boolean } = () => {
           </div>
 
           {/* Pokemon Joke Section */}
-          <div className="mt-12 bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-stone-200 dark:border-stone-700">
-            <h2 className="text-3xl font-bold mb-6 text-center text-pokemon-yellow">
+          <div className="mt-12 bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-stone-200 dark:border-stone-700 transition-all duration-150 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-lg">
+            <h2 className="text-3xl font-bold mb-6 text-center text-amber-600">
               😂 Pokémon Jokes
             </h2>
             <div className="grid md:grid-cols-2 gap-6">

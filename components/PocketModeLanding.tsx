@@ -67,7 +67,7 @@ const PocketModeLanding: React.FC = () => {
       <div className="container mx-auto px-4 py-16">
         {/* Hero Section */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-3 bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm px-6 py-3 rounded-full mb-6 shadow-lg">
+          <div className="inline-flex items-center gap-3 bg-white/80 dark:bg-stone-800/80 px-6 py-3 rounded-full mb-6 shadow-lg">
             <GiCardPickup className="w-6 h-6 text-amber-600" />
             <span className="font-medium text-stone-900 dark:text-white">Pokémon TCG Pocket</span>
           </div>
@@ -86,7 +86,7 @@ const PocketModeLanding: React.FC = () => {
           {/* Highlights */}
           <div className="flex flex-wrap justify-center gap-4 mb-12">
             {highlights.map((highlight, index) => (
-              <div key={index} className="bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
+              <div key={index} className="bg-white/80 dark:bg-stone-800/80 px-4 py-2 rounded-full shadow-sm">
                 <span className="mr-2">{highlight.icon}</span>
                 <span className="font-medium text-stone-900 dark:text-white">{highlight.label}</span>
               </div>
@@ -98,7 +98,7 @@ const PocketModeLanding: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           {features.map((feature, index) => (
             <Link key={index} href={feature.href}>
-              <div className="group bg-white/90 dark:bg-stone-800/90 backdrop-blur-sm p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer relative overflow-hidden">
+              <div className="group bg-white/90 dark:bg-stone-800/90 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer relative overflow-hidden">
                 {/* Badge */}
                 <div className="absolute top-4 right-4 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-xs px-2 py-1 rounded-full font-medium">
                   {feature.badge}
@@ -125,7 +125,7 @@ const PocketModeLanding: React.FC = () => {
         </div>
 
         {/* Key Differences Section */}
-        <div className="bg-white/90 dark:bg-stone-800/90 backdrop-blur-sm rounded-2xl shadow-lg p-8 mb-16">
+        <div className="bg-white/90 dark:bg-stone-800/90 rounded-2xl shadow-lg p-8 mb-16">
           <h2 className="text-3xl font-bold text-stone-900 dark:text-white mb-8 text-center">
             🎮 What Makes Pocket Different?
           </h2>
@@ -181,7 +181,7 @@ const PocketModeLanding: React.FC = () => {
           
           <div className="flex flex-wrap justify-center gap-4">
             <Link href="/pocketmode/decks">
-              <button className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:scale-105">
+              <button className="bg-white/20 hover:bg-white/30 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:scale-105">
                 View Top Decks
               </button>
             </Link>

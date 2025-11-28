@@ -233,7 +233,7 @@ const PocketMode: NextPage = () => {
 
   return (
     <FullBleedWrapper gradient="pokedex">
-      <div className="section-spacing-y-default max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 animate-fadeIn">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 animate-fadeIn">
         <Head>
         <title>Pokémon TCG Pocket | DexTrends</title>
         <meta name="description" content="Explore the Pokémon Trading Card Game Pocket - the streamlined mobile version with simplified rules, exclusive cards, top decks, and expansions." />

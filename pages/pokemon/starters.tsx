@@ -250,23 +250,23 @@ const StartersPage: NextPage = () => {
                       key={region.id}
                       onClick={() => setSelectedRegion(region.id)}
                       className={cn(
-                        "px-4 py-2 rounded-xl font-medium transition-all duration-300 transform",
+                        "px-4 py-2 rounded-xl font-medium transition-all duration-200 transform",
                         selectedRegion === region.id
-                          ? "scale-105"
-                          : "hover:scale-102"
+                          ? "scale-105 hover:scale-105"
+                          : "hover:scale-[1.02]"
                       )}
                       style={{
                         background: selectedRegion === region.id
-                          ? 'linear-gradient(135deg, #9333ea 0%, #ec4899 100%)'
+                          ? 'linear-gradient(135deg, #d97706 0%, #ec4899 100%)'
                           : 'rgba(255, 255, 255, 0.8)',
                         backdropFilter: 'blur(10px)',
                         border: selectedRegion === region.id
-                          ? '2px solid rgba(147, 51, 234, 0.3)'
+                          ? '2px solid rgba(217, 119, 6, 0.3)'
                           : '1px solid rgba(255, 255, 255, 0.3)',
                         boxShadow: selectedRegion === region.id
-                          ? '0 4px 16px rgba(147, 51, 234, 0.2)'
+                          ? '0 4px 16px rgba(217, 119, 6, 0.2)'
                           : '0 2px 8px rgba(0, 0, 0, 0.05)',
-                        color: selectedRegion === region.id ? 'white' : '#4b5563'
+                        color: selectedRegion === region.id ? 'white' : '#57534e'
                       }}
                     >
                       <span className="text-sm font-semibold">
@@ -316,7 +316,7 @@ const StartersPage: NextPage = () => {
               transition={{ delay: 0.4 }}
             >
               <motion.div
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => router.push('/pokedex')}
                 className={`${createGlassStyle({
@@ -327,15 +327,15 @@ const StartersPage: NextPage = () => {
                   shadow: 'lg',
                   rounded: 'xl',
                   hover: 'lift',
-                })} p-6 rounded-2xl cursor-pointer group`}
+                })} p-6 rounded-2xl cursor-pointer group transition-all duration-150`}
               >
-                <FiBook className="w-8 h-8 mb-3 text-purple-500 group-hover:text-purple-600 transition-colors" />
+                <FiBook className="w-8 h-8 mb-3 text-amber-500 group-hover:text-amber-600 transition-colors duration-150" />
                 <h4 className="font-bold text-stone-800 dark:text-white mb-1">Pokedex</h4>
                 <p className="text-xs text-stone-600 dark:text-stone-400">Browse all Pokemon</p>
               </motion.div>
-              
+
               <motion.div
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => router.push('/pokemon/regions')}
                 className={`${createGlassStyle({
@@ -346,15 +346,15 @@ const StartersPage: NextPage = () => {
                   shadow: 'lg',
                   rounded: 'xl',
                   hover: 'lift',
-                })} p-6 rounded-2xl cursor-pointer group`}
+                })} p-6 rounded-2xl cursor-pointer group transition-all duration-150`}
               >
-                <FiMapPin className="w-8 h-8 mb-3 text-amber-500 group-hover:text-amber-600 transition-colors" />
+                <FiMapPin className="w-8 h-8 mb-3 text-amber-500 group-hover:text-amber-600 transition-colors duration-150" />
                 <h4 className="font-bold text-stone-800 dark:text-white mb-1">Regions</h4>
                 <p className="text-xs text-stone-600 dark:text-stone-400">Explore worlds</p>
               </motion.div>
-              
+
               <motion.div
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => router.push('/tcgexpansions')}
                 className={`${createGlassStyle({
@@ -365,15 +365,15 @@ const StartersPage: NextPage = () => {
                   shadow: 'lg',
                   rounded: 'xl',
                   hover: 'lift',
-                })} p-6 rounded-2xl cursor-pointer group`}
+                })} p-6 rounded-2xl cursor-pointer group transition-all duration-150`}
               >
-                <FiLayers className="w-8 h-8 mb-3 text-pink-500 group-hover:text-pink-600 transition-colors" />
+                <FiLayers className="w-8 h-8 mb-3 text-pink-500 group-hover:text-pink-600 transition-colors duration-150" />
                 <h4 className="font-bold text-stone-800 dark:text-white mb-1">TCG Sets</h4>
                 <p className="text-xs text-stone-600 dark:text-stone-400">Card collections</p>
               </motion.div>
-              
+
               <motion.div
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => router.push('/pocketmode')}
                 className={`${createGlassStyle({
@@ -384,9 +384,9 @@ const StartersPage: NextPage = () => {
                   shadow: 'lg',
                   rounded: 'xl',
                   hover: 'lift',
-                })} p-6 rounded-2xl cursor-pointer group`}
+                })} p-6 rounded-2xl cursor-pointer group transition-all duration-150`}
               >
-                <FiSmartphone className="w-8 h-8 mb-3 text-green-500 group-hover:text-green-600 transition-colors" />
+                <FiSmartphone className="w-8 h-8 mb-3 text-green-500 group-hover:text-green-600 transition-colors duration-150" />
                 <h4 className="font-bold text-stone-800 dark:text-white mb-1">TCG Pocket</h4>
                 <p className="text-xs text-stone-600 dark:text-stone-400">Mobile game cards</p>
               </motion.div>

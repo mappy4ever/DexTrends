@@ -112,9 +112,9 @@ const Container = forwardRef<HTMLDivElement, CardProps>(
       'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2'
     ) : '';
 
-    // Hover effects - subtle and elegant
+    // Hover effects - standardized lift (scale 1.02, -4px lift, shadow-lg)
     const hoverStyles = (hover || interactive || onClick) ? cn(
-      'hover:-translate-y-px hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]',
+      HOVER.card, // Standard: hover:scale-[1.02] hover:-translate-y-1 hover:shadow-lg
       variant === 'outline' && 'hover:border-stone-300 dark:hover:border-stone-600',
       variant === 'ghost' && 'hover:bg-stone-50 dark:hover:bg-stone-800/50'
     ) : '';

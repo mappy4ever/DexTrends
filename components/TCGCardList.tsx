@@ -134,8 +134,8 @@ const TCGCardItem = memo<TCGCardProps>(({
           rounded-3xl p-2 sm:p-3
           border-2 border-stone-200/50 dark:border-stone-600/50
           shadow-lg hover:shadow-2xl
-          transition-all duration-300
-          hover:scale-[1.05] hover:-translate-y-2
+          transition-all duration-150
+          hover:scale-[1.02] hover:-translate-y-1
           cursor-pointer
           drop-shadow-md
           relative overflow-visible

@@ -267,7 +267,7 @@ export const RarityFilterBar: React.FC<{
   return (
     <div className={cn(
       'flex flex-wrap gap-2 p-3',
-      'backdrop-blur-xl bg-white/80 dark:bg-stone-800/80',
+      'bg-white/80 dark:bg-stone-800/80',
       'rounded-2xl border border-white/50 dark:border-stone-700/50',
       'shadow-lg',
       className
@@ -277,7 +277,7 @@ export const RarityFilterBar: React.FC<{
         onClick={() => onRaritySelect(null)}
         className={cn(
           'px-3 py-1.5 rounded-full text-xs font-medium',
-          'backdrop-blur-md transition-all duration-200',
+          'transition-all duration-200',
           selectedRarity === null
             ? 'bg-gradient-to-r from-amber-500 to-pink-500 text-white shadow-md'
             : 'bg-white/50 dark:bg-stone-700/50 text-stone-700 dark:text-stone-300 hover:bg-white/70'

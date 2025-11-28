@@ -191,7 +191,7 @@ const MovesPage: NextPage = () => {
       case 'special':
         return <span className="text-blue-500">✨</span>;
       case 'status':
-        return <span className="text-gray-500">🛡️</span>;
+        return <span className="text-stone-500">🛡️</span>;
       default:
         return null;
     }
@@ -221,7 +221,7 @@ const MovesPage: NextPage = () => {
       priority: 'primary',
       renderCell: (move) => (
         <Link href={`/pokemon/moves/${move.name}`}>
-          <span className="font-semibold text-blue-600 dark:text-blue-400 hover:underline capitalize">
+          <span className="font-semibold text-amber-600 dark:text-amber-400 hover:underline capitalize">
             {move.name.replace(/-/g, ' ')}
           </span>
         </Link>
@@ -313,7 +313,7 @@ const MovesPage: NextPage = () => {
       label: 'Effect',
       priority: 'detail',
       renderCell: (move) => (
-        <span className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2">
+        <span className="text-xs text-stone-600 dark:text-stone-400 line-clamp-2">
           {move.short_effect || move.effect || 'No description available'}
         </span>
       )
@@ -329,33 +329,33 @@ const MovesPage: NextPage = () => {
       <div className="space-y-4">
         {/* Full effect description */}
         <div>
-          <h4 className="font-semibold text-sm mb-2 text-gray-700 dark:text-gray-300">Full Description</h4>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
+          <h4 className="font-semibold text-sm mb-2 text-stone-700 dark:text-stone-300">Full Description</h4>
+          <p className="text-sm text-stone-600 dark:text-stone-400">
             {move.effect || move.short_effect || 'No description available'}
           </p>
         </div>
-        
+
         {/* Move details */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
           <div>
-            <span className="text-gray-500 dark:text-gray-400">Generation:</span>
+            <span className="text-stone-500 dark:text-stone-400">Generation:</span>
             <span className="ml-2 font-medium">Gen {move.generation}</span>
           </div>
           {move.effect_chance && (
             <div>
-              <span className="text-gray-500 dark:text-gray-400">Effect Chance:</span>
+              <span className="text-stone-500 dark:text-stone-400">Effect Chance:</span>
               <span className="ml-2 font-medium">{move.effect_chance}%</span>
             </div>
           )}
         </div>
-        
+
         {/* Pokemon that can learn this move */}
         <div>
-          <h4 className="font-semibold text-sm mb-2 text-gray-700 dark:text-gray-300">
+          <h4 className="font-semibold text-sm mb-2 text-stone-700 dark:text-stone-300">
             Pokémon that can learn {move.name.replace(/-/g, ' ')}
           </h4>
           {isLoading ? (
-            <div className="text-sm text-gray-500">Loading...</div>
+            <div className="text-sm text-stone-500">Loading...</div>
           ) : learners.length > 0 ? (
             <div className="flex flex-wrap gap-2">
               {learners.slice(0, 20).map(learner => {
@@ -364,20 +364,20 @@ const MovesPage: NextPage = () => {
                   <Link
                     key={learner.pokemon_id}
                     href={`/pokedex/${pokemonId || learner.pokemon_id}`}
-                    className="px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-full text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors capitalize"
+                    className="px-3 py-1 bg-stone-100 dark:bg-stone-800 rounded-full text-sm hover:bg-stone-200 dark:hover:bg-stone-700 transition-all duration-150 capitalize"
                   >
                     {learner.pokemon_id.replace(/-/g, ' ')}
                   </Link>
                 );
               })}
               {learners.length > 20 && (
-                <span className="px-3 py-1 text-sm text-gray-500">
+                <span className="px-3 py-1 text-sm text-stone-500">
                   +{learners.length - 20} more
                 </span>
               )}
             </div>
           ) : (
-            <p className="text-sm text-gray-500">No Pokémon data available</p>
+            <p className="text-sm text-stone-500">No Pokémon data available</p>
           )}
         </div>
       </div>
@@ -391,30 +391,30 @@ const MovesPage: NextPage = () => {
         <meta name="description" content="Browse all Pokémon moves with details on power, accuracy, type, and effects" />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-stone-900 dark:via-stone-800 dark:to-stone-900">
         <div className="container mx-auto px-4 py-6">
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text-4xl sm:text-5xl font-bold mb-2 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-4xl sm:text-5xl font-bold mb-2 bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent">
               Pokémon Moves
             </h1>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-stone-600 dark:text-stone-400">
               {filteredMoves.length} moves available
             </p>
           </div>
 
           {/* Filters */}
-          <div className="mb-6 bg-white/80 dark:bg-gray-800/80 backdrop-blur rounded-2xl p-4 shadow-lg">
+          <div className="mb-6 bg-white/80 dark:bg-stone-800/80 backdrop-blur rounded-2xl p-4 shadow-lg">
             <div className="flex flex-wrap gap-4">
               {/* Type Filter */}
               <div className="flex-1 min-w-[200px]">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
                   Type
                 </label>
                 <select
                   value={selectedType}
                   onChange={(e) => setSelectedType(e.target.value)}
-                  className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-3 py-2 bg-white dark:bg-stone-700 border border-stone-300 dark:border-stone-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
                 >
                   <option value="">All Types</option>
                   {['normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy'].map(type => (
@@ -427,13 +427,13 @@ const MovesPage: NextPage = () => {
 
               {/* Category Filter */}
               <div className="flex-1 min-w-[200px]">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
                   Category
                 </label>
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-3 py-2 bg-white dark:bg-stone-700 border border-stone-300 dark:border-stone-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
                 >
                   <option value="">All Categories</option>
                   <option value="physical">Physical</option>

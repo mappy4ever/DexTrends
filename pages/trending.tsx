@@ -288,7 +288,7 @@ const TrendingPage: NextPage = () => {
             </h2>
             <div className={`p-6 rounded-xl shadow-lg ${theme === 'dark' ? 'bg-stone-800' : 'bg-white'}`}>
               {trendingData.rising.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                   {trendingData.rising.map(card => (
                     <Link
                       href={`/cards/${card.id}`}
@@ -329,7 +329,7 @@ const TrendingPage: NextPage = () => {
             </h2>
             <div className={`p-6 rounded-xl shadow-lg ${theme === 'dark' ? 'bg-stone-800' : 'bg-white'}`}>
               {trendingData.falling.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                   {trendingData.falling.map(card => (
                     <Link
                       href={`/cards/${card.id}`}

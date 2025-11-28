@@ -217,7 +217,7 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6"
           >
             {/* Featured Card Display */}
             <div className="space-y-4">
@@ -279,7 +279,7 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
             </div>
             
             {/* Card Thumbnails */}
-            <div className="grid grid-cols-3 gap-3 max-h-[600px] overflow-y-auto custom-scrollbar">
+            <div className="grid grid-cols-3 gap-4 md:gap-6 max-h-[600px] overflow-y-auto custom-scrollbar">
               {sortedCards.slice(0, 12).map((card, index) => (
                 <PremiumCard
                   key={card.id}
@@ -298,7 +298,7 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6"
           >
             {sortedCards.map((card, index) => (
               <PremiumCard key={card.id} card={card} index={index} />
@@ -374,7 +374,7 @@ export const ChaseCardsGallery: React.FC<ChaseCardsGalleryProps> = ({
       
       {/* Summary Stats */}
       <div className="mt-6 pt-6 border-t border-stone-200/50 dark:border-stone-700/50">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           <StatCard
             label="Total Value"
             value={`$${cards.reduce((sum, card) => sum + getPrice(card), 0).toFixed(2)}`}

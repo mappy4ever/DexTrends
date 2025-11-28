@@ -26,7 +26,7 @@ const HomePage: NextPage = () => {
       <FullBleedWrapper gradient="pokedex">
         <div className="min-h-screen">
           {/* Hero Section */}
-          <section className="max-w-7xl mx-auto px-4 md:px-6 pt-12 pb-8">
+          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -60,7 +60,7 @@ const HomePage: NextPage = () => {
 
           {/* Quick Stats Bar - Responsive grid */}
           <section className="border-y border-stone-200 dark:border-stone-700 bg-white/60 dark:bg-stone-800/50">
-            <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 sm:py-4">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-center">
                 <div className="flex flex-col items-center justify-center py-2">
                   <p className="text-xl sm:text-2xl font-bold text-stone-800 dark:text-white leading-tight">1,025</p>
@@ -83,7 +83,7 @@ const HomePage: NextPage = () => {
           </section>
 
           {/* Main Features - Mobile-optimized grid */}
-          <section className="max-w-7xl mx-auto px-4 md:px-6 py-8 sm:py-12">
+          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -173,7 +173,7 @@ const HomePage: NextPage = () => {
           </section>
 
           {/* What's New Section */}
-          <section className="max-w-7xl mx-auto px-4 md:px-6 py-12 border-t border-stone-100 dark:border-stone-800">
+          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 border-t border-stone-100 dark:border-stone-800">
             <h2 className="text-2xl font-semibold text-stone-800 dark:text-white mb-6">What's New</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
@@ -222,7 +222,7 @@ const HomePage: NextPage = () => {
 
           {/* Footer */}
           <footer className="border-t border-stone-100 dark:border-stone-800 mt-12">
-            <div className="container mx-auto px-4 py-8">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
               <div className="text-center text-amber-500 dark:text-amber-400">
                 <p className="mb-2 text-sm">© 2024 DexTrends. Not affiliated with Nintendo, Game Freak, or The Pokémon Company.</p>
                 <p className="text-xs text-amber-400 dark:text-amber-500">

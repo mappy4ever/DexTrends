@@ -363,7 +363,7 @@ const UnifiedTypeEffectivenessPage = () => {
                     onClick={() => setViewMode(key as any)}
                     className={cn(
                       'min-h-[44px] px-3 sm:px-6 py-2 sm:py-3 rounded-full font-semibold text-xs sm:text-sm touch-target',
-                      'transition-all duration-300',
+                      'transition-all duration-200',
                       viewMode === key
                         ? 'bg-gradient-to-r from-amber-500 via-amber-500 to-amber-600 text-white shadow-xl'
                         : cn('text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white', glassButtonStyle)

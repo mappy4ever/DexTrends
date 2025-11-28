@@ -179,15 +179,15 @@ export const HorizontalCardShowcase: React.FC<HorizontalCardShowcaseProps> = ({
                   className={cn(
                     'relative group cursor-pointer',
                     'w-[280px] h-[160px]',
-                    createGlassStyle({ 
-                      blur: 'lg', 
-                      opacity: 'medium', 
+                    createGlassStyle({
+                      blur: 'lg',
+                      opacity: 'medium',
                       border: 'strong',
                       rounded: 'xl',
                       shadow: 'lg'
                     }),
                     'overflow-hidden',
-                    'hover:scale-105 transition-transform duration-300'
+                    'hover:scale-[1.02] hover:-translate-y-1 hover:shadow-2xl transition-all duration-150'
                   )}
                 >
                   {/* Background gradient */}

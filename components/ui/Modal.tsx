@@ -250,11 +250,12 @@ export const Modal: React.FC<ModalProps> = ({
     <AnimatePresence mode="wait">
       {isOpen && (
         <>
-          {/* Overlay - clean backdrop (no blur for minimal design) */}
+          {/* Overlay - backdrop with selective blur (modals/sheets only per design) */}
           {backdrop && (
             <motion.div
               className={cn(
                 'fixed inset-0 bg-black/40',
+                backdrop === 'blur' && 'backdrop-blur-sm',
                 overlayClassName
               )}
               style={{ zIndex }}

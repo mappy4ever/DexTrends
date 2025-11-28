@@ -87,10 +87,10 @@ export const CardShowcase: React.FC<CardShowcaseProps> = ({
                 transition={{ duration: 0.3 }}
                 className="relative w-48 h-64"
               >
-                <div 
+                <div
                   className={cn(
                     'relative rounded-xl overflow-hidden cursor-pointer',
-                    'shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300'
+                    'shadow-xl hover:shadow-2xl transform hover:scale-[1.02] hover:-translate-y-1 transition-all duration-150'
                   )}
                   onClick={() => onCardClick?.(activeCard)}
                 >
