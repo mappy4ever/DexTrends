@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { fetchJSON } from '@/utils/unifiedFetch';
 import logger from '@/utils/logger';
 import { cn } from '@/utils/cn';
-import { GlassContainer } from '@/components/ui/design-system/GlassContainer';
+import { Container } from '@/components/ui/Container';
 import UnifiedCacheManager from '@/utils/UnifiedCacheManager';
 
 interface PokemonEvolution {

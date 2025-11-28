@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 // Using direct PokeAPI URLs for Pokémon images
-import { GlassContainer } from '../ui/design-system';
+import { Container } from '../ui/Container';
 import { FadeIn, SlideUp } from '../ui/animations/animations';
 import { 
   BsStarFill, 
@@ -95,12 +95,10 @@ const LegendaryPokemonShowcase: React.FC<LegendaryPokemonShowcaseProps> = ({
         <div className={`absolute inset-0 bg-gradient-to-br ${region.color} animate-pulse`} />
       </div>
 
-      <GlassContainer 
-        variant="default" 
-        blur="xl" 
-        rounded="3xl" 
-        padding="lg"
-        className="relative"
+      <Container
+        variant="default"
+        rounded="xl"
+        className="relative p-8"
       >
         {/* Section Header */}
         <FadeIn>
@@ -260,7 +258,7 @@ const LegendaryPokemonShowcase: React.FC<LegendaryPokemonShowcaseProps> = ({
             <BsChevronRight className="text-xl" />
           </Link>
         </motion.div>
-      </GlassContainer>
+      </Container>
 
     </div>
   );

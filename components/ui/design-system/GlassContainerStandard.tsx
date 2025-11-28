@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { GlassContainer } from './GlassContainer';
+import { Container } from '../Container';
 import { cn } from '../../../utils/cn';
 
 interface StandardGlassContainerProps {
@@ -11,25 +11,23 @@ interface StandardGlassContainerProps {
   withMotion?: boolean;
 }
 
-// Standard GlassContainer configuration for consistent usage across tabs
+// Standard Container configuration for consistent usage across tabs
 export const StandardGlassContainer: React.FC<StandardGlassContainerProps> = ({
   children,
   className,
-  animate = false,
   delay = 0,
   withMotion = true,
 }) => {
   const container = (
-    <GlassContainer 
-      variant="default" 
+    <Container
+      variant="default"
       className={cn(
         "backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl",
         className
       )}
-      animate={animate}
     >
       {children}
-    </GlassContainer>
+    </Container>
   );
 
   if (withMotion) {

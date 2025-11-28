@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
+import {
   BsStar,
   BsShieldFill,
   BsGeoAltFill,
@@ -9,13 +9,13 @@ import {
   BsHexagonFill
 } from 'react-icons/bs';
 import { FaCrown } from 'react-icons/fa';
-import { 
+import {
   GiCrystalShine,
   GiStoneSphere,
   GiPalmTree,
   GiWaveStrike
 } from 'react-icons/gi';
-import { 
+import {
   createGlassStyle,
   TYPE_GRADIENTS
 } from '../ui/design-system/glass-constants';

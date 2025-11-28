@@ -158,13 +158,13 @@ const PokemonSelectionItem: React.FC<PokemonSelectionItemProps> = ({ pokemon, po
     <button
       onClick={handleSelect}
       disabled={itemLoading}
-      className="w-full text-left min-h-0 p-4 justify-start bg-white/80 hover:bg-white/90 transition-all duration-200 border border-stone-200 hover:border-stone-300 shadow-sm hover:shadow-md backdrop-blur-sm"
+      className="w-full text-left min-h-0 p-4 justify-start bg-white dark:bg-stone-800 hover:bg-stone-50 dark:hover:bg-stone-700 transition-all duration-200 border border-stone-200 dark:border-stone-700 hover:border-stone-300 dark:hover:border-stone-600 shadow-sm hover:shadow-md"
       data-testid="pokemon-option"
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           {/* Type Color Badge - Rectangular design per requirements */}
-          <div className="w-16 h-16 rounded-lg flex items-center justify-center overflow-hidden relative bg-gradient-to-br from-white/20 to-transparent backdrop-blur-sm border border-white/20">
+          <div className="w-16 h-16 rounded-lg flex items-center justify-center overflow-hidden relative border border-stone-200 dark:border-stone-600">
             {colors.dual ? (
               <div className="absolute inset-0 rounded-lg overflow-hidden">
                 <div 

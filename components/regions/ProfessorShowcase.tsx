@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { getProfessorImage } from '../../utils/scrapedImageMapping';
 // Using direct PokeAPI URLs for Pokémon images
 import { FadeIn, SlideUp } from '../ui/animations/animations';
-import { GlassContainer } from '../ui/design-system';
+import { Container } from '../ui/Container';
 import { 
   BsBook, 
   BsTrophy, 
@@ -597,7 +597,7 @@ His unwavering commitment to his research vision led to both remarkable scientif
             {/* Starter Pokémon Showcase */}
             {professorInfo.starterPokemon && (
               <SlideUp delay={0.05}>
-                <GlassContainer variant="default" blur="lg" rounded="2xl" padding="md" hover gradient>
+                <Container variant="gradient" rounded="lg" className="p-4">
                   <h4 className="text-lg font-bold mb-4 flex items-center gap-2">
                     <GiPokecog className="text-amber-500" />
                     Starter Pokémon Given
@@ -656,7 +656,7 @@ His unwavering commitment to his research vision led to both remarkable scientif
                       </Link>
                     ))}
                   </div>
-                </GlassContainer>
+                </Container>
               </SlideUp>
             )}
             {/* Biography */}

@@ -326,12 +326,10 @@ const RegionalFormsGallery: React.FC<RegionalFormsGalleryProps> = ({ region, the
         <div className="absolute inset-0 bg-gradient-to-br from-amber-500 via-pink-500 to-blue-500 animate-pulse" />
       </div>
 
-      <Container 
-        variant="default" 
-        blur="xl" 
-        rounded="3xl" 
-        padding="lg"
-        className="relative"
+      <Container
+        variant="default"
+        rounded="xl"
+        className="relative p-8"
       >
         {/* Section Header */}
         <FadeIn>

@@ -551,17 +551,7 @@ const SetIdPage: NextPage = () => {
           )}
           
           {/* Original Card List Display */}
-          <div className={`${createGlassStyle({ 
-            blur: 'xl',
-            opacity: 'medium',
-            gradient: true,
-            border: 'strong',
-            rounded: 'xl',
-            shadow: 'xl',
-            hover: 'shadowOnly'
-          })} relative overflow-hidden`}>
-            {/* Subtle gradient background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-amber-100/10 via-transparent to-amber-100/10 pointer-events-none" />
+          <div className="relative overflow-hidden bg-white dark:bg-stone-800 rounded-xl border border-stone-200 dark:border-stone-700 shadow-lg">
             
             <div className="relative z-10">
               {/* Integrated Header with Controls */}

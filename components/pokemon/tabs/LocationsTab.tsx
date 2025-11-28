@@ -194,7 +194,7 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
       <Container 
         variant="default" 
         className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl p-8 text-center"
-        animate={false}
+       
       >
         <p className="text-stone-500 dark:text-stone-400">Loading location data...</p>
       </Container>
@@ -213,7 +213,7 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
           <Container 
             variant="default" 
             className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
-            animate={false}
+           
           >
             <div className="p-4 md:p-6 space-y-4">
               {/* Habitat */}
@@ -461,7 +461,7 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
           <Container 
             variant="default" 
             className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
-            animate={false}
+           
           >
             <div className="p-6 space-y-3">
               <div className="flex items-center gap-3">

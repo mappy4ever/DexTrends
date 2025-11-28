@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { cn } from '@/utils/cn';
 import { Container } from '../ui/Container';
+import { createGlassStyle } from '../ui/design-system/glass-constants';
 import type { CardSet, TCGCard } from '@/types/api/cards';
 
 interface HeroSectionProps {
@@ -194,8 +195,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <Container
             variant="elevated"
             rounded="xl"
-            padding="lg"
-            className="h-full"
+            className="h-full p-8"
           >
             {/* Set Logo and Info */}
             <div className="flex items-start gap-6 mb-8">
@@ -337,8 +337,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <Container
             variant="elevated"
             rounded="xl"
-            padding="lg"
-            className="h-full"
+            className="h-full p-8"
           >
             <motion.h2
               className="text-2xl font-bold text-stone-800 dark:text-stone-200 mb-6 text-center"

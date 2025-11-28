@@ -4,6 +4,7 @@ import { cn } from '../../utils/cn';
 import { FaHeart, FaRegHeart, FaShare, FaArrowUp } from 'react-icons/fa';
 import { CircularButton } from '../ui/design-system';
 import { useFavorites } from '../../context/UnifiedAppContext';
+import { useToast } from '../providers/ToastProvider';
 import ShareMenu from '../ui/ShareMenu';
 import { sharePokemon } from '../../utils/shareUtils';
 import type { Pokemon } from "../../types/api/pokemon";
@@ -19,6 +20,7 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
   className
 }) => {
   const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
+  const toast = useToast();
   const [showScrollTop, setShowScrollTop] = useState(false);
   
   // Check if favorited
@@ -98,8 +100,10 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
         size="icon"
         variant={isFavorite ? 'primary' : 'secondary'}
         onClick={() => {
+          const pokemonName = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
           if (isFavorite) {
             removeFromFavorites('pokemon', pokemon.id);
+            toast.info(`${pokemonName} removed from favorites`);
           } else {
             const favoritePokemon: FavoritePokemon = {
               id: typeof pokemon.id === 'string' ? parseInt(pokemon.id) : pokemon.id,
@@ -109,6 +113,7 @@ const FloatingActionBar: React.FC<FloatingActionBarProps> = ({
               addedAt: Date.now()
             };
             addToFavorites('pokemon', favoritePokemon);
+            toast.success(`${pokemonName} added to favorites!`);
           }
         }}
         className={cn(

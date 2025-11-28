@@ -80,7 +80,7 @@ export const CircularTypeMatrix: React.FC<CircularTypeMatrixProps> = ({
     <div className="space-y-8">
       {/* View Mode Toggle */}
       <div className="flex justify-center">
-        <Container variant="default" rounded="full" padding="none" className="inline-flex">
+        <Container variant="default" rounded="full" className="inline-flex">
           <button
             onClick={() => setViewMode('attacking')}
             className={`px-6 py-3 rounded-full transition-all ${

@@ -462,7 +462,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
           <Container 
             variant="default" 
             className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
-            animate={false}
+           
           >
             <div className="p-6 md:p-8">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
@@ -552,7 +552,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
         <Container 
           variant="default" 
           className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
-          animate={false}
+         
         >
           <div className="p-6 md:p-8">
             <div className="flex items-center justify-between cursor-pointer mb-4" onClick={() => setShowCompatible(!showCompatible)}>
@@ -651,7 +651,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
         <Container 
           variant="default" 
           className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
-          animate={false}
+         
         >
           <div className="p-6 md:p-8">
             <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400 mb-6">

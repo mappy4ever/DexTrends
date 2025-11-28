@@ -27,7 +27,7 @@ export const SpeedTiersSection: React.FC<SpeedTiersSectionProps> = ({ pokemon })
       <Container 
         variant="default" 
         className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
-        animate={false}
+       
       >
         <div className="p-6 md:p-8">
           <div className="flex items-center gap-3 mb-6">

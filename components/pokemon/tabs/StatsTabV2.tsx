@@ -134,7 +134,7 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
         <Container
           variant="default"
           className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
-          animate={false}
+         
         >
           <div className="flex flex-col h-full">
             <div className="p-6 md:p-8 flex-1">
@@ -162,7 +162,7 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
                 stats={calculatedStats}
                 selectedLevel={selectedLevel}
                 typeColors={typeColors}
-                animate={false}
+               
                 totalStats={totalActualStats}
                 baseTotal={totalBaseStats}
                 ranking={ranking}

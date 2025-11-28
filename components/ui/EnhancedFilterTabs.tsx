@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { cn } from '@/utils/cn';
 import { RarityIcon, RarityFilterBar } from './RarityIcon';
-import { GlassContainer } from './design-system/GlassContainer';
+import { Container } from '@/components/ui/Container';
 
 interface FilterTabsProps {
   // Rarity filter
@@ -46,11 +46,9 @@ export const EnhancedFilterTabs: React.FC<FilterTabsProps> = ({
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <GlassContainer
+    <Container
       variant="default"
-      blur="lg"
-      rounded="2xl"
-      padding="none"
+      rounded="lg"
       className="sticky top-20 z-30"
     >
       <div className="p-4">
@@ -332,7 +330,7 @@ export const EnhancedFilterTabs: React.FC<FilterTabsProps> = ({
           </div>
         </div>
       </div>
-    </GlassContainer>
+    </Container>
   );
 };
 

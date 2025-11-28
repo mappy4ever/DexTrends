@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { cn } from '@/utils/cn';
-import { GlassContainer } from './design-system/GlassContainer';
+import { Container } from '@/components/ui/Container';
 import { RarityIcon } from './RarityIcon';
 import type { CardSet } from '@/types/api/cards';
 
@@ -100,11 +100,9 @@ export const EnhancedSetHeader: React.FC<EnhancedSetHeaderProps> = ({
     .slice(0, 5);
 
   return (
-    <GlassContainer
+    <Container
       variant="gradient"
-      blur="xl"
-      rounded="2xl"
-      padding="none"
+      rounded="lg"
       className="overflow-hidden"
     >
       <div className="relative">
@@ -178,7 +176,7 @@ export const EnhancedSetHeader: React.FC<EnhancedSetHeaderProps> = ({
           </div>
         </div>
       </div>
-    </GlassContainer>
+    </Container>
   );
 };
 

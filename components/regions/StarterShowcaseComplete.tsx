@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { fetchJSON } from '../../utils/unifiedFetch';
 import logger from '@/utils/logger';
-import { 
+import {
   BsChevronRight,
   BsLightningFill,
   BsShieldFill,
@@ -14,16 +14,16 @@ import {
   BsArrowRight,
   BsCheckCircleFill
 } from 'react-icons/bs';
-import { 
-  GiSwordWound, 
-  GiShield, 
+import {
+  GiSwordWound,
+  GiShield,
   GiRunningNinja,
   GiFlame,
   GiWaterDrop,
   GiTreeBranch
 } from 'react-icons/gi';
 import { FaFire, FaLeaf, FaTint } from 'react-icons/fa';
-import { 
+import {
   GLASS_BLUR,
   GLASS_OPACITY,
   GLASS_BORDER,

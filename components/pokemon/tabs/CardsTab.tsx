@@ -53,7 +53,7 @@ class CardsErrorBoundary extends Component<
   override render() {
     if (this.state.hasError) {
       return (
-        <Container variant="default" className="backdrop-blur-xl" animate={false}>
+        <Container variant="default" className="backdrop-blur-xl">
           <div className="p-6 text-center">
             <div className="text-6xl mb-4">⚠️</div>
             <p className="text-red-500 font-semibold mb-2">Error loading cards</p>
@@ -137,7 +137,7 @@ const CardsTab: React.FC<CardsTabProps> = ({
         <Container 
           variant="default" 
           className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
-          animate={false}
+         
         >
           <div className="p-6 md:p-8">
             <div className="flex items-center justify-between">
@@ -191,7 +191,7 @@ const CardsTab: React.FC<CardsTabProps> = ({
         <Container 
           variant="default" 
           className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
-          animate={false}
+         
         >
           <div className="p-6 md:p-8">
             <AnimatePresence mode="wait">

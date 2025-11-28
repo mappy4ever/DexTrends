@@ -1,32 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { useTheme } from "../../../context/UnifiedAppContext";
-import { FullBleedWrapper } from "../../../components/ui";
-import RouteErrorBoundary from "../../../components/RouteErrorBoundary";
-import { SectionHeader, CircularButton } from '../../../components/ui/design-system';
-import { Container } from '../../../components/ui/Container';
+import Container from "../../../components/ui/Container";
+import { TypeBadge } from "../../../components/ui/TypeBadge";
+import { FiChevronLeft, FiChevronRight, FiMapPin, FiMap, FiUsers, FiStar, FiBook, FiInfo } from "react-icons/fi";
 
-// Import Region Components
-import RegionHero from "../../../components/regions/RegionHero";
-import RegionInfo from "../../../components/regions/RegionInfo";
-import ProfessorShowcase from "../../../components/regions/ProfessorShowcase";
-import StarterShowcaseComplete from "../../../components/regions/StarterShowcaseComplete";
-import SpecialPokemonShowcase from "../../../components/regions/SpecialPokemonShowcase";
-import GameShowcase from "../../../components/regions/GameShowcase";
-import EvilTeamShowcase from "../../../components/regions/EvilTeamShowcase";
-import GymLeaderGrid from "../../../components/regions/GymLeaderGrid";
-import EliteFourGrid from "../../../components/regions/EliteFourGrid";
-import IslandKahunasGrid from "../../../components/regions/IslandKahunasGrid";
-import LegendaryPokemonShowcase from "../../../components/regions/LegendaryPokemonShowcase";
-import RegionalFormsGallery from "../../../components/regions/RegionalFormsGallery";
-
-import { BsChevronLeft, BsChevronRight, BsGeoAlt, BsCompass, BsStar, BsLightbulb } from "react-icons/bs";
-
-// Type definitions (keeping existing ones)
+// Type definitions
 interface Location {
   name: string;
   type: string;
@@ -81,9 +62,10 @@ interface PageRegionData {
   eliteFour?: EliteFourMember[];
   champion?: Champion;
   trivia?: string[];
+  gradientFrom: string;
+  gradientTo: string;
 }
 
-// Keep existing region data
 const regionOrder = ['kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', 'paldea'];
 
 const regionsData: Record<string, PageRegionData> = {
@@ -92,7 +74,7 @@ const regionsData: Record<string, PageRegionData> = {
     name: "Kanto",
     generation: 1,
     games: ["Red", "Blue", "Yellow", "FireRed", "LeafGreen", "Let's Go Pikachu/Eevee"],
-    description: "The region where it all began. Home to the original 151 Pokémon.",
+    description: "The region where it all began. Home to the original 151 Pokémon and the starting point for countless trainers' journeys.",
     professor: "Professor Oak",
     starters: ["Bulbasaur", "Charmander", "Squirtle"],
     starterIds: [1, 4, 7],
@@ -102,9 +84,11 @@ const regionsData: Record<string, PageRegionData> = {
     cities: 10,
     routes: 25,
     pokemonRange: "001-151",
-    color: "from-red-500 to-amber-500",
-    bgColor: "bg-gradient-to-br from-red-100 to-blue-100 dark:from-red-900 dark:to-blue-900",
+    color: "red",
+    bgColor: "from-red-500 to-orange-400",
     map: '/images/scraped/maps/PE_Kanto_Map.png',
+    gradientFrom: "from-red-500",
+    gradientTo: "to-orange-400",
     locations: [
       { name: "Pallet Town", type: "town", description: "Your journey begins here" },
       { name: "Viridian City", type: "city", description: "The eternally green paradise" },
@@ -148,7 +132,7 @@ const regionsData: Record<string, PageRegionData> = {
     name: "Johto",
     generation: 2,
     games: ["Gold", "Silver", "Crystal", "HeartGold", "SoulSilver"],
-    description: "A region steeped in history and tradition, connected to Kanto.",
+    description: "A region steeped in history and tradition, connected to Kanto. Known for its ancient ruins and legendary beasts.",
     professor: "Professor Elm",
     starters: ["Chikorita", "Cyndaquil", "Totodile"],
     starterIds: [152, 155, 158],
@@ -158,22 +142,23 @@ const regionsData: Record<string, PageRegionData> = {
     cities: 10,
     routes: 20,
     pokemonRange: "152-251",
-    color: "from-yellow-500 to-gray-500",
-    bgColor: "bg-gradient-to-br from-yellow-100 to-gray-100 dark:from-yellow-900 dark:to-gray-900",
+    color: "yellow",
+    bgColor: "from-yellow-500 to-amber-400",
     map: '/images/scraped/maps/JohtoMap.png',
+    gradientFrom: "from-yellow-500",
+    gradientTo: "to-amber-400",
     locations: [
-      { name: "New Bark Town", type: "town", description: "The town where the winds of a new beginning blow" },
+      { name: "New Bark Town", type: "town", description: "The town where winds of new beginnings blow" },
       { name: "Violet City", type: "city", description: "The city of nostalgic scents" },
-      { name: "Goldenrod City", type: "city", description: "The festive city of opulent charm" },
+      { name: "Goldenrod City", type: "city", description: "A happening big city" },
       { name: "Ecruteak City", type: "city", description: "A historical city" },
       { name: "Blackthorn City", type: "city", description: "A quiet mountain retreat" }
     ],
     landmarks: [
-      { name: "Sprout Tower", description: "A tower where monks train with Bellsprout" },
-      { name: "Ruins of Alph", description: "Ancient ruins filled with Unown mysteries" },
-      { name: "Bell Tower", description: "A tower where Ho-Oh once perched" },
-      { name: "Whirl Islands", description: "Four islands that are home to Lugia" },
-      { name: "Mt. Silver", description: "The highest mountain where Red awaits" }
+      { name: "Sprout Tower", description: "A tower swaying with an enormous pillar" },
+      { name: "Ruins of Alph", description: "Ancient ruins with mysterious Unown" },
+      { name: "Bell Tower", description: "Ho-Oh once perched atop this tower" },
+      { name: "Whirl Islands", description: "Maze-like islands home to Lugia" }
     ],
     gymLeaders: [
       { name: "Falkner", city: "Violet City", type: "flying", badge: "Zephyr Badge" },
@@ -194,9 +179,9 @@ const regionsData: Record<string, PageRegionData> = {
     champion: { name: "Lance", team: "Dragon", signature: "Dragonite" },
     trivia: [
       "Johto is based on the Kansai region of Japan",
-      "First region to introduce breeding and baby Pokémon",
-      "Features two evil teams: Team Rocket's return",
-      "Only region where you can earn 16 badges"
+      "It was the first region to introduce breeding",
+      "The Legendary Beasts were resurrected by Ho-Oh",
+      "After beating Johto, players can travel to Kanto"
     ]
   },
   hoenn: {
@@ -204,19 +189,32 @@ const regionsData: Record<string, PageRegionData> = {
     name: "Hoenn",
     generation: 3,
     games: ["Ruby", "Sapphire", "Emerald", "Omega Ruby", "Alpha Sapphire"],
-    description: "A tropical region with diverse ecosystems and weather phenomena.",
+    description: "A tropical region with diverse ecosystems and weather phenomena. The clash between land and sea defines its legend.",
     professor: "Professor Birch",
     starters: ["Treecko", "Torchic", "Mudkip"],
     starterIds: [252, 255, 258],
-    starterTypes: [["grass"], ["fire"], ["water"]],
-    legendaries: ["Kyogre", "Groudon", "Rayquaza", "Regice", "Regirock", "Registeel"],
-    legendaryIds: [382, 383, 384, 378, 377, 379],
+    starterTypes: [["grass"], ["fire"], ["water", "ground"]],
+    legendaries: ["Regirock", "Regice", "Registeel", "Latias", "Latios", "Kyogre", "Groudon", "Rayquaza", "Jirachi", "Deoxys"],
+    legendaryIds: [377, 378, 379, 380, 381, 382, 383, 384, 385, 386],
     cities: 16,
     routes: 34,
     pokemonRange: "252-386",
-    color: "from-emerald-500 to-amber-600",
-    bgColor: "bg-gradient-to-br from-emerald-100 to-blue-100 dark:from-emerald-900 dark:to-blue-900",
+    color: "green",
+    bgColor: "from-emerald-500 to-teal-400",
     map: '/images/scraped/maps/Hoenn_ORAS.png',
+    gradientFrom: "from-emerald-500",
+    gradientTo: "to-teal-400",
+    locations: [
+      { name: "Littleroot Town", type: "town", description: "A town that can't be Pokemon-mapped" },
+      { name: "Petalburg City", type: "city", description: "Where people mingle with nature" },
+      { name: "Rustboro City", type: "city", description: "The city probing the integration of nature and science" },
+      { name: "Sootopolis City", type: "city", description: "The mystical city rising from the sea" }
+    ],
+    landmarks: [
+      { name: "Sky Pillar", description: "An ancient tower reaching toward the heavens" },
+      { name: "Cave of Origin", description: "A cave where life energy gathers" },
+      { name: "Mt. Chimney", description: "A volcano with a cable car to the summit" }
+    ],
     gymLeaders: [
       { name: "Roxanne", city: "Rustboro City", type: "rock", badge: "Stone Badge" },
       { name: "Brawly", city: "Dewford Town", type: "fighting", badge: "Knuckle Badge" },
@@ -225,20 +223,20 @@ const regionsData: Record<string, PageRegionData> = {
       { name: "Norman", city: "Petalburg City", type: "normal", badge: "Balance Badge" },
       { name: "Winona", city: "Fortree City", type: "flying", badge: "Feather Badge" },
       { name: "Tate & Liza", city: "Mossdeep City", type: "psychic", badge: "Mind Badge" },
-      { name: "Wallace", city: "Sootopolis City", type: "water", badge: "Rain Badge" }
+      { name: "Wallace/Juan", city: "Sootopolis City", type: "water", badge: "Rain Badge" }
     ],
     eliteFour: [
       { name: "Sidney", type: "dark", signature: "Absol" },
       { name: "Phoebe", type: "ghost", signature: "Dusclops" },
-      { name: "Glacia", type: "ice", signature: "Walrein" },
+      { name: "Glacia", type: "ice", signature: "Glalie" },
       { name: "Drake", type: "dragon", signature: "Salamence" }
     ],
-    champion: { name: "Steven", team: "Steel/Rock", signature: "Metagross" },
+    champion: { name: "Steven/Wallace", team: "Steel/Water", signature: "Metagross/Milotic" },
     trivia: [
-      "Hoenn is based on the Kyushu region of Japan",
-      "First region to feature double battles and abilities",
-      "Has the most water routes of any region",
-      "Features two villainous teams: Team Aqua and Team Magma"
+      "Hoenn is based on the Kyushu region of Japan (rotated 90°)",
+      "It introduced Double Battles to the series",
+      "Weather conditions play a major role in the storyline",
+      "The region has the most water routes of any region"
     ]
   },
   sinnoh: {
@@ -246,19 +244,32 @@ const regionsData: Record<string, PageRegionData> = {
     name: "Sinnoh",
     generation: 4,
     games: ["Diamond", "Pearl", "Platinum", "Brilliant Diamond", "Shining Pearl"],
-    description: "A region rich in mythology, featuring Mt. Coronet at its center.",
+    description: "A region rich in mythology, featuring Mt. Coronet at its center. Home to the creation trio that shaped the universe.",
     professor: "Professor Rowan",
     starters: ["Turtwig", "Chimchar", "Piplup"],
     starterIds: [387, 390, 393],
     starterTypes: [["grass"], ["fire"], ["water"]],
-    legendaries: ["Dialga", "Palkia", "Giratina", "Uxie", "Mesprit", "Azelf"],
-    legendaryIds: [483, 484, 487, 480, 481, 482],
+    legendaries: ["Uxie", "Mesprit", "Azelf", "Dialga", "Palkia", "Heatran", "Regigigas", "Giratina", "Cresselia", "Darkrai", "Shaymin", "Arceus"],
+    legendaryIds: [480, 481, 482, 483, 484, 485, 486, 487, 488, 491, 492, 493],
     cities: 14,
     routes: 30,
     pokemonRange: "387-493",
-    color: "from-amber-500 to-amber-600",
-    bgColor: "bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900 dark:to-purple-900",
+    color: "blue",
+    bgColor: "from-blue-500 to-indigo-400",
     map: '/images/scraped/maps/Sinnoh_BDSP_artwork.png',
+    gradientFrom: "from-blue-500",
+    gradientTo: "to-indigo-400",
+    locations: [
+      { name: "Twinleaf Town", type: "town", description: "Fresh and Pokemon-free" },
+      { name: "Jubilife City", type: "city", description: "The city of joy" },
+      { name: "Veilstone City", type: "city", description: "Hewn from rock" },
+      { name: "Sunyshore City", type: "city", description: "Solar powered" }
+    ],
+    landmarks: [
+      { name: "Mt. Coronet", description: "The sacred mountain dividing Sinnoh" },
+      { name: "Spear Pillar", description: "The summit where space-time converges" },
+      { name: "Distortion World", description: "A bizarre realm ruled by Giratina" }
+    ],
     gymLeaders: [
       { name: "Roark", city: "Oreburgh City", type: "rock", badge: "Coal Badge" },
       { name: "Gardenia", city: "Eterna City", type: "grass", badge: "Forest Badge" },
@@ -273,14 +284,14 @@ const regionsData: Record<string, PageRegionData> = {
       { name: "Aaron", type: "bug", signature: "Drapion" },
       { name: "Bertha", type: "ground", signature: "Hippowdon" },
       { name: "Flint", type: "fire", signature: "Infernape" },
-      { name: "Lucian", type: "psychic", signature: "Bronzong" }
+      { name: "Lucian", type: "psychic", signature: "Gallade" }
     ],
     champion: { name: "Cynthia", team: "Varied", signature: "Garchomp" },
     trivia: [
-      "Sinnoh is based on the Hokkaido region of Japan",
-      "Features the creation trio: Dialga, Palkia, and Giratina",
-      "First region to have the Battle Frontier in the initial paired versions",
-      "Home to many evolutions of previous generation Pokémon"
+      "Sinnoh is based on Hokkaido, Japan",
+      "Mt. Coronet divides the region climatically",
+      "Cynthia is considered one of the strongest Champions",
+      "The Underground introduced a new multiplayer experience"
     ]
   },
   unova: {
@@ -288,41 +299,54 @@ const regionsData: Record<string, PageRegionData> = {
     name: "Unova",
     generation: 5,
     games: ["Black", "White", "Black 2", "White 2"],
-    description: "A diverse region inspired by New York, featuring only new Pokémon initially.",
+    description: "A diverse region inspired by New York City. The first region to feature only new Pokémon until post-game.",
     professor: "Professor Juniper",
     starters: ["Snivy", "Tepig", "Oshawott"],
     starterIds: [495, 498, 501],
     starterTypes: [["grass"], ["fire"], ["water"]],
-    legendaries: ["Reshiram", "Zekrom", "Kyurem", "Cobalion", "Terrakion", "Virizion"],
-    legendaryIds: [643, 644, 646, 638, 639, 640],
-    cities: 17,
+    legendaries: ["Victini", "Cobalion", "Terrakion", "Virizion", "Tornadus", "Thundurus", "Reshiram", "Zekrom", "Landorus", "Kyurem", "Keldeo", "Meloetta", "Genesect"],
+    legendaryIds: [494, 638, 639, 640, 641, 642, 643, 644, 645, 646, 647, 648, 649],
+    cities: 12,
     routes: 23,
     pokemonRange: "494-649",
-    color: "from-stone-600 to-black",
-    bgColor: "bg-gradient-to-br from-stone-100 to-stone-300 dark:from-stone-800 dark:to-stone-900",
+    color: "gray",
+    bgColor: "from-stone-600 to-stone-500",
     map: '/images/scraped/maps/Unova_B2W2_alt.png',
+    gradientFrom: "from-stone-600",
+    gradientTo: "to-stone-500",
+    locations: [
+      { name: "Nuvema Town", type: "town", description: "The Pokemon journey begins" },
+      { name: "Castelia City", type: "city", description: "A Pokemon metropolis" },
+      { name: "Nimbasa City", type: "city", description: "The entertainment capital" },
+      { name: "Opelucid City", type: "city", description: "Varies by version" }
+    ],
+    landmarks: [
+      { name: "Dragonspiral Tower", description: "Ancient tower housing a legendary dragon" },
+      { name: "Giant Chasm", description: "A mysterious crater" },
+      { name: "Liberty Garden", description: "Home of Victini" }
+    ],
     gymLeaders: [
-      { name: "Cilan", city: "Striaton City", type: "grass", badge: "Trio Badge" },
+      { name: "Cilan/Chili/Cress", city: "Striaton City", type: "grass/fire/water", badge: "Trio Badge" },
       { name: "Lenora", city: "Nacrene City", type: "normal", badge: "Basic Badge" },
       { name: "Burgh", city: "Castelia City", type: "bug", badge: "Insect Badge" },
       { name: "Elesa", city: "Nimbasa City", type: "electric", badge: "Bolt Badge" },
       { name: "Clay", city: "Driftveil City", type: "ground", badge: "Quake Badge" },
       { name: "Skyla", city: "Mistralton City", type: "flying", badge: "Jet Badge" },
       { name: "Brycen", city: "Icirrus City", type: "ice", badge: "Freeze Badge" },
-      { name: "Drayden", city: "Opelucid City", type: "dragon", badge: "Legend Badge" }
+      { name: "Drayden/Iris", city: "Opelucid City", type: "dragon", badge: "Legend Badge" }
     ],
     eliteFour: [
       { name: "Shauntal", type: "ghost", signature: "Chandelure" },
-      { name: "Marshal", type: "fighting", signature: "Conkeldurr" },
       { name: "Grimsley", type: "dark", signature: "Bisharp" },
-      { name: "Caitlin", type: "psychic", signature: "Gothitelle" }
+      { name: "Caitlin", type: "psychic", signature: "Gothitelle" },
+      { name: "Marshal", type: "fighting", signature: "Mienshao" }
     ],
-    champion: { name: "Alder", team: "Varied", signature: "Volcarona" },
+    champion: { name: "Alder/Iris", team: "Varied", signature: "Volcarona/Haxorus" },
     trivia: [
-      "Unova is based on New York City and surrounding areas",
-      "First region to have sequels instead of a third version",
-      "Features seasons that change monthly",
-      "Only region where the first gym depends on your starter"
+      "Unova is the first region based on a location outside Japan (New York City)",
+      "It features 156 new Pokémon, the most of any generation",
+      "Seasons were introduced for the first time",
+      "Black 2 and White 2 were direct sequels"
     ]
   },
   kalos: {
@@ -330,19 +354,32 @@ const regionsData: Record<string, PageRegionData> = {
     name: "Kalos",
     generation: 6,
     games: ["X", "Y"],
-    description: "A beautiful region inspired by France, introducing Mega Evolution.",
+    description: "A beautiful region inspired by France, introducing Mega Evolution and the Fairy type.",
     professor: "Professor Sycamore",
     starters: ["Chespin", "Fennekin", "Froakie"],
     starterIds: [650, 653, 656],
     starterTypes: [["grass"], ["fire"], ["water"]],
-    legendaries: ["Xerneas", "Yveltal", "Zygarde"],
-    legendaryIds: [716, 717, 718],
-    cities: 16,
+    legendaries: ["Xerneas", "Yveltal", "Zygarde", "Diancie", "Hoopa", "Volcanion"],
+    legendaryIds: [716, 717, 718, 719, 720, 721],
+    cities: 17,
     routes: 22,
     pokemonRange: "650-721",
-    color: "from-pink-500 to-amber-500",
-    bgColor: "bg-gradient-to-br from-pink-100 to-purple-100 dark:from-pink-900 dark:to-purple-900",
+    color: "pink",
+    bgColor: "from-pink-500 to-rose-400",
     map: '/images/scraped/maps/Kalos_map.png',
+    gradientFrom: "from-pink-500",
+    gradientTo: "to-rose-400",
+    locations: [
+      { name: "Vaniville Town", type: "town", description: "A Pokemon adventure begins" },
+      { name: "Lumiose City", type: "city", description: "The city of light" },
+      { name: "Laverre City", type: "city", description: "An ancient fairy tale" },
+      { name: "Anistar City", type: "city", description: "The starry sundial" }
+    ],
+    landmarks: [
+      { name: "Prism Tower", description: "The iconic symbol of Lumiose City" },
+      { name: "Team Flare Secret HQ", description: "Hidden beneath a café" },
+      { name: "Parfum Palace", description: "A grand palace with beautiful gardens" }
+    ],
     gymLeaders: [
       { name: "Viola", city: "Santalune City", type: "bug", badge: "Bug Badge" },
       { name: "Grant", city: "Cyllage City", type: "rock", badge: "Cliff Badge" },
@@ -354,7 +391,7 @@ const regionsData: Record<string, PageRegionData> = {
       { name: "Wulfric", city: "Snowbelle City", type: "ice", badge: "Iceberg Badge" }
     ],
     eliteFour: [
-      { name: "Malva", type: "fire", signature: "Chandelure" },
+      { name: "Malva", type: "fire", signature: "Talonflame" },
       { name: "Siebold", type: "water", signature: "Barbaracle" },
       { name: "Wikstrom", type: "steel", signature: "Aegislash" },
       { name: "Drasna", type: "dragon", signature: "Noivern" }
@@ -362,9 +399,9 @@ const regionsData: Record<string, PageRegionData> = {
     champion: { name: "Diantha", team: "Varied", signature: "Gardevoir" },
     trivia: [
       "Kalos is based on northern France",
-      "First region to introduce Fairy type",
-      "Features the smallest number of new Pokémon",
-      "Introduced Mega Evolution and horde encounters"
+      "It introduced Mega Evolution and the Fairy type",
+      "Lumiose City is based on Paris",
+      "The first games to feature full 3D graphics"
     ]
   },
   alola: {
@@ -372,24 +409,53 @@ const regionsData: Record<string, PageRegionData> = {
     name: "Alola",
     generation: 7,
     games: ["Sun", "Moon", "Ultra Sun", "Ultra Moon"],
-    description: "A tropical paradise made up of four natural islands.",
+    description: "A tropical paradise made up of four natural islands and one artificial island. Features Island Trials instead of gyms.",
     professor: "Professor Kukui",
     starters: ["Rowlet", "Litten", "Popplio"],
     starterIds: [722, 725, 728],
     starterTypes: [["grass", "flying"], ["fire"], ["water"]],
-    legendaries: ["Solgaleo", "Lunala", "Necrozma", "Tapu Koko", "Tapu Lele", "Tapu Bulu", "Tapu Fini"],
-    legendaryIds: [791, 792, 800, 785, 786, 787, 788],
-    cities: 10,
+    legendaries: ["Type: Null", "Silvally", "Tapu Koko", "Tapu Lele", "Tapu Bulu", "Tapu Fini", "Cosmog", "Cosmoem", "Solgaleo", "Lunala", "Necrozma", "Magearna", "Marshadow", "Zeraora"],
+    legendaryIds: [772, 773, 785, 786, 787, 788, 789, 790, 791, 792, 800, 801, 802, 807],
+    cities: 16,
     routes: 17,
     pokemonRange: "722-809",
-    color: "from-orange-500 to-teal-500",
-    bgColor: "bg-gradient-to-br from-orange-100 to-teal-100 dark:from-orange-900 dark:to-teal-900",
+    color: "orange",
+    bgColor: "from-orange-500 to-amber-400",
     map: '/images/scraped/maps/Alola_USUM_artwork.png',
+    gradientFrom: "from-orange-500",
+    gradientTo: "to-amber-400",
+    locations: [
+      { name: "Iki Town", type: "town", description: "A town for worshipping Tapu Koko" },
+      { name: "Hau'oli City", type: "city", description: "A beachfront shopping district" },
+      { name: "Konikoni City", type: "city", description: "A jewelry city" },
+      { name: "Malie City", type: "city", description: "A city with Johto influences" }
+    ],
+    landmarks: [
+      { name: "Altar of the Sunne/Moone", description: "Where the legendary Pokémon can be summoned" },
+      { name: "Ultra Wormhole", description: "Portal to Ultra Space" },
+      { name: "Aether Paradise", description: "An artificial island for Pokémon conservation" }
+    ],
+    gymLeaders: [
+      { name: "Ilima (Trial)", city: "Melemele Island", type: "normal", badge: "Normalium Z" },
+      { name: "Lana (Trial)", city: "Akala Island", type: "water", badge: "Waterium Z" },
+      { name: "Kiawe (Trial)", city: "Akala Island", type: "fire", badge: "Firium Z" },
+      { name: "Mallow (Trial)", city: "Akala Island", type: "grass", badge: "Grassium Z" },
+      { name: "Sophocles (Trial)", city: "Ula'ula Island", type: "electric", badge: "Electrium Z" },
+      { name: "Acerola (Trial)", city: "Ula'ula Island", type: "ghost", badge: "Ghostium Z" },
+      { name: "Mina (Trial)", city: "Poni Island", type: "fairy", badge: "Fairium Z" }
+    ],
+    eliteFour: [
+      { name: "Hala", type: "fighting", signature: "Crabominable" },
+      { name: "Olivia", type: "rock", signature: "Lycanroc" },
+      { name: "Acerola", type: "ghost", signature: "Palossand" },
+      { name: "Kahili", type: "flying", signature: "Toucannon" }
+    ],
+    champion: { name: "Professor Kukui", team: "Varied", signature: "Incineroar" },
     trivia: [
       "Alola is based on Hawaii",
-      "First region without traditional gyms",
-      "Features regional variants of classic Pokémon",
-      "Introduced Z-Moves and Ultra Beasts"
+      "It replaced gyms with Island Trials",
+      "Regional forms were introduced (Alolan Forms)",
+      "Z-Moves replaced Mega Evolution as the battle gimmick"
     ]
   },
   galar: {
@@ -397,36 +463,49 @@ const regionsData: Record<string, PageRegionData> = {
     name: "Galar",
     generation: 8,
     games: ["Sword", "Shield"],
-    description: "An industrial region inspired by Great Britain with Dynamax battles.",
+    description: "An industrial region inspired by Great Britain. Features Dynamax battles in massive stadiums.",
     professor: "Professor Magnolia",
     starters: ["Grookey", "Scorbunny", "Sobble"],
     starterIds: [810, 813, 816],
     starterTypes: [["grass"], ["fire"], ["water"]],
-    legendaries: ["Zacian", "Zamazenta", "Eternatus"],
-    legendaryIds: [888, 889, 890],
-    cities: 13,
+    legendaries: ["Zacian", "Zamazenta", "Eternatus", "Kubfu", "Urshifu", "Zarude", "Regieleki", "Regidrago", "Glastrier", "Spectrier", "Calyrex"],
+    legendaryIds: [888, 889, 890, 891, 892, 893, 894, 895, 896, 897, 898],
+    cities: 11,
     routes: 10,
     pokemonRange: "810-898",
-    color: "from-amber-600 to-red-600",
-    bgColor: "bg-gradient-to-br from-purple-100 to-red-100 dark:from-purple-900 dark:to-red-900",
+    color: "purple",
+    bgColor: "from-purple-500 to-violet-400",
     map: '/images/scraped/maps/Galar_artwork.png',
+    gradientFrom: "from-purple-500",
+    gradientTo: "to-violet-400",
+    locations: [
+      { name: "Postwick", type: "town", description: "A small town with Pokemon research" },
+      { name: "Motostoke", type: "city", description: "A steam-powered city" },
+      { name: "Hammerlocke", type: "city", description: "A city with a historic castle" },
+      { name: "Wyndon", type: "city", description: "The city hosting the Pokemon League" }
+    ],
+    landmarks: [
+      { name: "Hammerlocke Stadium", description: "Home of the Dragon-type gym" },
+      { name: "Wild Area", description: "A vast expanse of wilderness" },
+      { name: "Crown Tundra", description: "A snowy region full of legends" }
+    ],
     gymLeaders: [
       { name: "Milo", city: "Turffield", type: "grass", badge: "Grass Badge" },
       { name: "Nessa", city: "Hulbury", type: "water", badge: "Water Badge" },
       { name: "Kabu", city: "Motostoke", type: "fire", badge: "Fire Badge" },
-      { name: "Bea", city: "Stow-on-Side", type: "fighting", badge: "Fighting Badge" },
-      { name: "Opal", city: "Ballonlea", type: "fairy", badge: "Fairy Badge" },
-      { name: "Gordie", city: "Circhester", type: "rock", badge: "Rock Badge" },
+      { name: "Bea/Allister", city: "Stow-on-Side", type: "fighting/ghost", badge: "Fighting/Ghost Badge" },
+      { name: "Opal/Bede", city: "Ballonlea", type: "fairy", badge: "Fairy Badge" },
+      { name: "Gordie/Melony", city: "Circhester", type: "rock/ice", badge: "Rock/Ice Badge" },
       { name: "Piers", city: "Spikemuth", type: "dark", badge: "Dark Badge" },
       { name: "Raihan", city: "Hammerlocke", type: "dragon", badge: "Dragon Badge" }
     ],
     eliteFour: [],
     champion: { name: "Leon", team: "Varied", signature: "Charizard" },
     trivia: [
-      "Galar is based on Great Britain",
-      "Features Dynamax and Gigantamax forms",
-      "First region with version-exclusive gym leaders",
-      "Introduced the Wild Area for open exploration"
+      "Galar is based on the United Kingdom",
+      "It introduced the Wild Area and Dynamax",
+      "Gym battles are held in large stadiums",
+      "There is no traditional Elite Four - just a Champion tournament"
     ]
   },
   paldea: {
@@ -434,19 +513,32 @@ const regionsData: Record<string, PageRegionData> = {
     name: "Paldea",
     generation: 9,
     games: ["Scarlet", "Violet"],
-    description: "An open-world region inspired by Spain with three storylines to explore.",
+    description: "An open-world region inspired by the Iberian Peninsula. Features three intertwining storylines and the Terastal phenomenon.",
     professor: "Professor Sada/Turo",
     starters: ["Sprigatito", "Fuecoco", "Quaxly"],
     starterIds: [906, 909, 912],
     starterTypes: [["grass"], ["fire"], ["water"]],
-    legendaries: ["Koraidon", "Miraidon"],
-    legendaryIds: [1007, 1008],
+    legendaries: ["Koraidon", "Miraidon", "Wo-Chien", "Chien-Pao", "Ting-Lu", "Chi-Yu", "Ogerpon", "Terapagos"],
+    legendaryIds: [1007, 1008, 1001, 1002, 1003, 1004, 1017, 1024],
     cities: 10,
-    routes: 15,
+    routes: 0,
     pokemonRange: "906-1025",
-    color: "from-red-500 to-amber-600",
-    bgColor: "bg-gradient-to-br from-red-100 to-purple-100 dark:from-red-900 dark:to-purple-900",
+    color: "violet",
+    bgColor: "from-violet-500 to-purple-400",
     map: '/images/scraped/maps/Paldea_artwork.png',
+    gradientFrom: "from-violet-500",
+    gradientTo: "to-purple-400",
+    locations: [
+      { name: "Cabo Poco", type: "town", description: "A small coastal town" },
+      { name: "Mesagoza", type: "city", description: "Home of the Naranja/Uva Academy" },
+      { name: "Levincia", type: "city", description: "An electric city" },
+      { name: "Cascarrafa", type: "city", description: "A water-themed city" }
+    ],
+    landmarks: [
+      { name: "Area Zero", description: "The mysterious Great Crater of Paldea" },
+      { name: "Naranja/Uva Academy", description: "The school where your adventure begins" },
+      { name: "Titan Pokémon Locations", description: "Where powerful Titan Pokémon dwell" }
+    ],
     gymLeaders: [
       { name: "Katy", city: "Cortondo", type: "bug", badge: "Bug Badge" },
       { name: "Brassius", city: "Artazon", type: "grass", badge: "Grass Badge" },
@@ -465,48 +557,79 @@ const regionsData: Record<string, PageRegionData> = {
     ],
     champion: { name: "Geeta", team: "Varied", signature: "Glimmora" },
     trivia: [
-      "Paldea is based on the Iberian Peninsula",
-      "First fully open-world main series game",
-      "Features three separate storylines",
-      "Introduced Terastallization mechanic"
+      "Paldea is based on the Iberian Peninsula (Spain/Portugal)",
+      "It's the first fully open-world Pokémon game",
+      "Features three storylines: Victory Road, Path of Legends, Starfall Street",
+      "The Terastal phenomenon allows Pokémon to change types"
     ]
   }
 };
 
+// Starter Card Component
+const StarterCard: React.FC<{ id: number; name: string; types: string[] }> = ({ id, name, types }) => (
+  <Link href={`/pokedex/${id}`}>
+    <Container variant="elevated" rounded="xl" className="p-4 text-center hover:scale-105 transition-transform cursor-pointer">
+      <Image
+        src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`}
+        alt={name}
+        width={120}
+        height={120}
+        className="mx-auto"
+      />
+      <h4 className="font-bold text-stone-800 dark:text-stone-100 mt-2">{name}</h4>
+      <div className="flex justify-center gap-1 mt-2">
+        {types.map(type => (
+          <TypeBadge key={type} type={type} size="xs" />
+        ))}
+      </div>
+    </Container>
+  </Link>
+);
+
+// Legendary Card Component
+const LegendaryCard: React.FC<{ id: number; name: string }> = ({ id, name }) => (
+  <Link href={`/pokedex/${id}`}>
+    <Container variant="elevated" rounded="lg" className="p-3 text-center hover:scale-105 transition-transform cursor-pointer">
+      <Image
+        src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`}
+        alt={name}
+        width={80}
+        height={80}
+        className="mx-auto"
+      />
+      <p className="text-sm font-medium text-stone-700 dark:text-stone-300 mt-1 truncate">{name}</p>
+    </Container>
+  </Link>
+);
+
+// Gym Leader Card Component
+const GymLeaderCard: React.FC<{ leader: GymLeader }> = ({ leader }) => (
+  <Container variant="outline" rounded="lg" className="p-4">
+    <div className="flex items-center justify-between">
+      <div>
+        <h4 className="font-bold text-stone-800 dark:text-stone-100">{leader.name}</h4>
+        <p className="text-sm text-stone-600 dark:text-stone-400">{leader.city}</p>
+      </div>
+      <div className="text-right">
+        <TypeBadge type={leader.type.split('/')[0]} size="sm" />
+        <p className="text-xs text-stone-500 dark:text-stone-400 mt-1">{leader.badge}</p>
+      </div>
+    </div>
+  </Container>
+);
+
+// Elite Four Card Component
+const EliteFourCard: React.FC<{ member: EliteFourMember }> = ({ member }) => (
+  <Container variant="elevated" rounded="lg" className="p-4 text-center">
+    <TypeBadge type={member.type} size="sm" />
+    <h4 className="font-bold text-stone-800 dark:text-stone-100 mt-2">{member.name}</h4>
+    <p className="text-sm text-stone-600 dark:text-stone-400">Signature: {member.signature}</p>
+  </Container>
+);
+
 export default function RegionDetailPage() {
   const router = useRouter();
   const { region: regionId } = router.query;
-  const { theme } = useTheme();
-  const [activeSection, setActiveSection] = useState('overview');
-  const [isNavSticky, setIsNavSticky] = useState(false);
-  
-  // Handle scroll for sticky navigation (SSR safe)
-  useEffect(() => {
-    const handleScroll = () => {
-      if (typeof window !== 'undefined') {
-        const heroHeight = window.innerHeight; // Height of hero section
-        const scrollPosition = window.scrollY;
-        setIsNavSticky(scrollPosition > heroHeight - 100);
-      }
-    };
-    
-    if (typeof window !== 'undefined') {
-      window.addEventListener('scroll', handleScroll);
-      return () => window.removeEventListener('scroll', handleScroll);
-    }
-    return undefined;
-  }, []);
-  
-  // Handle loading state
-  if (!regionId) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-stone-50 dark:bg-stone-900">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-stone-900 dark:text-white">Loading...</h1>
-        </div>
-      </div>
-    );
-  }
 
   const region = regionsData[regionId as string];
   const currentRegionIndex = regionOrder.indexOf(regionId as string);
@@ -514,611 +637,301 @@ export default function RegionDetailPage() {
   if (!region) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-stone-50 dark:bg-stone-900">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4 text-stone-900 dark:text-white">Region Not Found</h1>
-          <p className="text-stone-600 dark:text-stone-400 mb-8">
-            The region "{regionId}" does not exist.
-          </p>
-          <CircularButton
-            onClick={() => router.push('/pokemon/regions')}
-            variant="primary"
-          >
-            Back to Regions
-          </CircularButton>
-        </div>
+        <Container variant="elevated" className="p-8 text-center">
+          <h1 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-4">Region Not Found</h1>
+          <p className="text-stone-600 dark:text-stone-400 mb-6">The region you're looking for doesn't exist.</p>
+          <Link href="/pokemon/regions" className="text-purple-600 hover:text-purple-700 font-medium">
+            ← Back to Regions
+          </Link>
+        </Container>
       </div>
     );
   }
 
-  const sections = [
-    { id: 'overview', label: 'Overview' },
-    { id: 'professor', label: 'Professor' },
-    { id: 'starters', label: 'Starters' },
-    { id: 'legendaries', label: 'Legendaries' },
-    { id: 'leaders', label: region.gymLeaders ? 'Gym Leaders' : 'Trial Captains' },
-    { id: 'elite-four', label: 'Elite Four' },
-    { id: 'locations', label: 'Locations' },
-    { id: 'games', label: 'Games' },
-    { id: 'teams', label: 'Evil Teams' },
-    { id: 'trivia', label: 'Trivia' }
-  ];
-
   return (
-    <RouteErrorBoundary routeName={`Region: ${region.name}`}>
+    <>
       <Head>
-        <title>{region.name} Region | Pokémon | DexTrends</title>
+        <title>{region.name} Region | DexTrends</title>
         <meta name="description" content={region.description} />
       </Head>
 
-      <FullBleedWrapper gradient="regions">
-        {/* Hero Section with overlapping navigation */}
-        <div className="relative">
-          <RegionHero region={region} theme={theme} />
-          
-          {/* Overlapping Navigation Bar */}
-          <motion.div 
-            className={`${isNavSticky ? 'fixed top-20' : 'absolute bottom-0'} left-0 right-0 z-30 bg-stone-50/95 dark:bg-stone-900/95 backdrop-blur-sm border-b border-stone-200/50 dark:border-stone-700/50 transition-all duration-300`}
-            style={{ 
-              transform: isNavSticky ? 'translateY(0)' : 'translateY(50%)'
-            }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <div className="container mx-auto px-4">
-              <div className="flex items-center justify-between py-2">
-                {/* Back Button */}
-                <CircularButton
-                  onClick={() => router.push('/pokemon/regions')}
-                  variant="secondary"
-                  size="sm"
-                  leftIcon={<BsChevronLeft className="w-4 h-4" />}
-                >
-                  Back to Regions
-                </CircularButton>
+      <div className="min-h-screen bg-gradient-to-b from-stone-50 to-stone-100 dark:from-stone-900 dark:to-stone-950">
+        {/* Hero Section */}
+        <div className={`relative bg-gradient-to-br ${region.gradientFrom} ${region.gradientTo} py-16 md:py-24`}>
+          {/* Map Background */}
+          <div className="absolute inset-0 opacity-20">
+            <Image src={region.map} alt={`${region.name} Map`} fill className="object-cover" />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/30" />
 
-                {/* Section Navigation */}
-                <nav className="hidden md:flex items-center space-x-1">
-                  {sections.map((section) => (
-                    <button
-                      key={section.id}
-                      onClick={() => {
-                        setActiveSection(section.id);
-                        if (typeof document !== 'undefined') {
-                          document.getElementById(section.id)?.scrollIntoView({ behavior: 'smooth' });
-                        }
-                      }}
-                      className={`px-3 py-1 rounded-full text-xs font-medium transition-all duration-300 ${
-                        activeSection === section.id
-                          ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-900'
-                          : 'hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300'
-                      }`}
-                    >
-                      {section.label}
-                    </button>
-                  ))}
-                </nav>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            {/* Navigation */}
+            <div className="flex items-center justify-between mb-8">
+              <Link href="/pokemon/regions" className="flex items-center gap-2 text-white/80 hover:text-white transition-colors">
+                <FiChevronLeft className="w-5 h-5" />
+                <span>All Regions</span>
+              </Link>
 
-                {/* Region Navigation */}
-                <div className="flex items-center gap-2">
-                  {regionOrder[currentRegionIndex - 1] && (
-                    <CircularButton
-                      onClick={() => router.push(`/pokemon/regions/${regionOrder[currentRegionIndex - 1]}`)}
-                      variant="secondary"
-                      size="sm"
-                      aria-label="Previous region"
-                    >
-                      <BsChevronLeft className="w-4 h-4" />
-                    </CircularButton>
-                  )}
-                  
-                  <span className="hidden sm:inline text-sm text-stone-600 dark:text-stone-400 font-medium px-3">
-                    {currentRegionIndex + 1} / {regionOrder.length}
-                  </span>
-                  
-                  {regionOrder[currentRegionIndex + 1] && (
-                    <CircularButton
-                      onClick={() => router.push(`/pokemon/regions/${regionOrder[currentRegionIndex + 1]}`)}
-                      variant="secondary"
-                      size="sm"
-                      aria-label="Next region"
-                    >
-                      <BsChevronRight className="w-4 h-4" />
-                    </CircularButton>
-                  )}
-                </div>
+              <div className="flex items-center gap-2">
+                {currentRegionIndex > 0 && (
+                  <button
+                    onClick={() => router.push(`/pokemon/regions/${regionOrder[currentRegionIndex - 1]}`)}
+                    className="p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors"
+                  >
+                    <FiChevronLeft className="w-5 h-5" />
+                  </button>
+                )}
+                <span className="text-white/80 text-sm px-3">
+                  {currentRegionIndex + 1} / {regionOrder.length}
+                </span>
+                {currentRegionIndex < regionOrder.length - 1 && (
+                  <button
+                    onClick={() => router.push(`/pokemon/regions/${regionOrder[currentRegionIndex + 1]}`)}
+                    className="p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors"
+                  >
+                    <FiChevronRight className="w-5 h-5" />
+                  </button>
+                )}
               </div>
             </div>
-          </motion.div>
+
+            {/* Title */}
+            <div className="text-center">
+              <span className="inline-block px-4 py-1 bg-white/20 rounded-full text-white text-sm font-medium mb-4">
+                Generation {region.generation}
+              </span>
+              <h1 className="text-5xl md:text-7xl font-bold text-white mb-4 drop-shadow-lg">
+                {region.name}
+              </h1>
+              <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
+                {region.description}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Quick Stats Bar */}
+        <div className="bg-white dark:bg-stone-800 border-b border-stone-200 dark:border-stone-700 sticky top-0 z-40">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div className="flex flex-wrap justify-center gap-6 md:gap-12 text-sm">
+              <div className="text-center">
+                <div className="font-bold text-stone-900 dark:text-stone-100">{region.pokemonRange}</div>
+                <div className="text-stone-500 dark:text-stone-400">Pokédex</div>
+              </div>
+              <div className="text-center">
+                <div className="font-bold text-stone-900 dark:text-stone-100">{region.cities}</div>
+                <div className="text-stone-500 dark:text-stone-400">Cities</div>
+              </div>
+              <div className="text-center">
+                <div className="font-bold text-stone-900 dark:text-stone-100">{region.gymLeaders?.length || 0}</div>
+                <div className="text-stone-500 dark:text-stone-400">Gyms</div>
+              </div>
+              <div className="text-center">
+                <div className="font-bold text-stone-900 dark:text-stone-100">{region.legendaries.length}</div>
+                <div className="text-stone-500 dark:text-stone-400">Legendaries</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Main Content */}
-        <main className="relative bg-gradient-to-br from-stone-50 via-purple-50/30 to-stone-100 dark:from-stone-900 dark:via-purple-900/20 dark:to-stone-900 pt-16 overflow-x-hidden">
-          {/* Content Sections */}
-          <div className="container mx-auto px-2 sm:px-4 py-8 space-y-16 max-w-full overflow-hidden">
-            {/* Overview Section */}
-            <motion.section 
-              id="overview"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="overflow-hidden"
-            >
-              <Container variant="default" className="max-w-full">
-                <RegionInfo region={{
-                  ...region,
-                  gymLeaders: region.gymLeaders?.map(leader => ({
-                    ...leader,
-                    type: [leader.type],
-                    location: leader.city
-                  })),
-                  legendaries: region.legendaryIds?.map((id, index) => ({
-                    id,
-                    name: region.legendaries[index] || `Legendary ${id}`
-                  })) || []
-                }} theme={theme} />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+          {/* Professor & Games */}
+          <section>
+            <div className="grid md:grid-cols-2 gap-6">
+              <Container variant="elevated" rounded="xl" className="p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <FiUsers className="w-6 h-6 text-purple-500" />
+                  <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100">Professor</h2>
+                </div>
+                <p className="text-2xl font-semibold text-stone-700 dark:text-stone-200">{region.professor}</p>
               </Container>
-            </motion.section>
 
-            {/* Professor Section */}
-            <motion.section 
-              id="professor"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="overflow-hidden"
-            >
-              <Container variant="default" className="max-w-full">
-                <ProfessorShowcase region={region} professor={region.professor} theme={theme} />
+              <Container variant="elevated" rounded="xl" className="p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <FiBook className="w-6 h-6 text-blue-500" />
+                  <h2 className="text-xl font-bold text-stone-800 dark:text-stone-100">Games</h2>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {region.games.map(game => (
+                    <span key={game} className="px-3 py-1 bg-stone-100 dark:bg-stone-700 rounded-full text-sm text-stone-700 dark:text-stone-300">
+                      {game}
+                    </span>
+                  ))}
+                </div>
               </Container>
-            </motion.section>
+            </div>
+          </section>
 
-            {/* Unified Starters Section */}
-            <motion.section 
-              id="starters"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="overflow-hidden"
-            >
-              <StarterShowcaseComplete 
-                region={region.name} 
-                starters={region.starters}
-                starterIds={region.starterIds}
-                theme={theme} 
-              />
-            </motion.section>
-
-            {/* Legendary Pokémon Section */}
-            <motion.section 
-              id="legendaries"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.25 }}
-              className="overflow-hidden"
-            >
-              <LegendaryPokemonShowcase 
-                region={region} 
-                legendaries={region.legendaries}
-                legendaryIds={region.legendaryIds}
-                theme={theme} 
-              />
-            </motion.section>
-
-            {/* Island Kahunas - Only for Alola */}
-            {region.id === 'alola' && (
-              <motion.section 
-                id="island-kahunas"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.26 }}
-              >
-                <IslandKahunasGrid theme={theme} />
-              </motion.section>
-            )}
-
-            {/* Regional Forms Gallery - Only for regions with forms */}
-            {(region.id === 'alola' || region.id === 'galar' || region.id === 'paldea') && (
-              <motion.section 
-                id="regional-forms"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.27 }}
-              >
-                <RegionalFormsGallery 
-                  region={region}
-                  theme={theme} 
+          {/* Starters */}
+          <section>
+            <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-6 flex items-center gap-3">
+              <FiStar className="text-amber-500" />
+              Starter Pokémon
+            </h2>
+            <div className="grid grid-cols-3 gap-4 md:gap-6">
+              {region.starters.map((starter, index) => (
+                <StarterCard
+                  key={starter}
+                  id={region.starterIds[index]}
+                  name={starter}
+                  types={region.starterTypes[index]}
                 />
-              </motion.section>
-            )}
+              ))}
+            </div>
+          </section>
 
-            {/* Gym Leaders / Elite Four Section */}
-            <motion.section 
-              id="leaders"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              <div className="backdrop-blur-xl bg-gradient-to-br from-stone-100/90 to-stone-200/80 dark:from-stone-900/50 dark:to-stone-800/50 border border-stone-200 dark:border-stone-700 shadow-xl rounded-2xl p-8">
-                <div className="space-y-12">
-                  <div className="text-center">
-                    <h2 className="text-3xl font-bold text-stone-900 dark:text-white mb-2">
-                      Your Journey in {region.name}
-                    </h2>
-                    <p className="text-lg text-stone-600 dark:text-stone-400">
-                      Challenge the strongest trainers on your path to becoming Champion
-                    </p>
-                  </div>
+          {/* Legendaries */}
+          <section>
+            <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-6 flex items-center gap-3">
+              <FiStar className="text-yellow-500" />
+              Legendary Pokémon
+            </h2>
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4">
+              {region.legendaries.map((legendary, index) => (
+                <LegendaryCard key={legendary} id={region.legendaryIds[index]} name={legendary} />
+              ))}
+            </div>
+          </section>
 
-                  {/* Gym Leaders Grid */}
-                  {region.gymLeaders && (
-                    <div className="space-y-6">
-                      <div className="text-center">
-                        <h3 className="text-xl font-semibold uppercase tracking-wider text-stone-700 dark:text-stone-300">
-                          Gym Leaders
-                        </h3>
-                        <div className="mt-2 h-1 w-24 mx-auto bg-gradient-to-r from-transparent via-stone-400 to-transparent rounded-full"></div>
-                      </div>
-                      <GymLeaderGrid region={region} gymLeaders={region.gymLeaders} theme={theme} />
-                    </div>
-                  )}
-
-                  {/* Elite Four Grid */}
-                  {region.eliteFour && (
-                    <div id="elite-four" className="space-y-6">
-                      <div className="text-center">
-                        <h3 className="text-xl font-semibold uppercase tracking-wider text-stone-700 dark:text-stone-300">
-                          Elite Four & Champion
-                        </h3>
-                        <div className="mt-2 h-1 w-24 mx-auto bg-gradient-to-r from-transparent via-stone-400 to-transparent rounded-full"></div>
-                      </div>
-                      <EliteFourGrid 
-                        region={region} 
-                        eliteFour={region.eliteFour} 
-                        champion={region.champion || null} 
-                        theme={theme} 
-                      />
-                    </div>
-                  )}
-                </div>
+          {/* Gym Leaders */}
+          {region.gymLeaders && region.gymLeaders.length > 0 && (
+            <section>
+              <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-6 flex items-center gap-3">
+                <FiUsers className="text-red-500" />
+                {region.id === 'alola' ? 'Trial Captains' : 'Gym Leaders'}
+              </h2>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {region.gymLeaders.map(leader => (
+                  <GymLeaderCard key={leader.name} leader={leader} />
+                ))}
               </div>
-            </motion.section>
+            </section>
+          )}
 
-            {/* Enhanced Locations Section with Glass Cards */}
-            <motion.section 
-              id="locations"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-            >
-              <div className="relative">
-                {/* Animated Map Background */}
-                <div className="absolute inset-0 opacity-5 pointer-events-none">
-                  <div className="absolute inset-0 bg-gradient-to-br from-amber-400 via-amber-500 to-pink-500 animate-pulse" />
-                </div>
-                
-                <Container variant="default">
-                  <SectionHeader 
-                    icon={<BsGeoAlt className="text-2xl text-amber-500" />}
-                    title="Explore the Region"
-                    subtitle={`Journey through the diverse landscapes of ${region.name}`}
-                  />
-                  
-                  <div className="grid lg:grid-cols-2 gap-8">
-                    {/* Cities & Towns Glass Gallery */}
-                    {region.locations && (
-                      <div>
-                        <div className="flex items-center gap-3 mb-6">
-                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center shadow-lg">
-                            <BsGeoAlt className="text-white text-xl" />
-                          </div>
-                          <h3 className="text-2xl font-bold bg-gradient-to-r from-amber-600 to-amber-600 bg-clip-text text-transparent">
-                            Cities & Towns
-                          </h3>
-                        </div>
-                        
-                        <div className="space-y-4">
-                          {region.locations.map((location, index) => (
-                            <motion.div
-                              key={index}
-                              initial={{ opacity: 0, x: -20 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: index * 0.1 }}
-                              whileHover={{ scale: 1.02, x: 10 }}
-                              className="relative group cursor-pointer"
-                            >
-                              <div className="relative rounded-2xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/80 via-blue-50/60 to-white/70 dark:from-stone-800/80 dark:via-blue-900/30 dark:to-stone-900/70 shadow-lg hover:shadow-2xl transition-all duration-300 border border-white/30 dark:border-stone-700/30">
-                                {/* Location Type Badge */}
-                                <div className="absolute top-3 right-3 z-10">
-                                  <span className="px-3 py-1 rounded-full text-xs font-bold backdrop-blur-md bg-gradient-to-r from-amber-500/80 to-amber-500/80 text-white shadow-md">
-                                    {location.type?.toUpperCase() || 'CITY'}
-                                  </span>
-                                </div>
-                                
-                                {/* Glass Content */}
-                                <div className="p-6">
-                                  <div className="flex items-start gap-4">
-                                    {/* Location Icon */}
-                                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center flex-shrink-0 shadow-lg group-hover:shadow-xl transition-shadow">
-                                      <BsGeoAlt className="text-white text-2xl" />
-                                    </div>
-                                    
-                                    {/* Location Info */}
-                                    <div className="flex-1">
-                                      <h4 className="text-lg font-bold text-stone-800 dark:text-white mb-2 group-hover:text-amber-600 dark:group-hover:text-purple-400 transition-colors">
-                                        {location.name}
-                                      </h4>
-                                      <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed">
-                                        {location.description}
-                                      </p>
-                                      
-                                      {/* Hover Indicator */}
-                                      <div className="flex items-center gap-2 mt-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <span className="text-xs font-medium text-amber-600 dark:text-purple-400">Explore</span>
-                                        <BsChevronRight className="text-xs text-amber-600 dark:text-purple-400 group-hover:translate-x-1 transition-transform" />
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                
-                                {/* Animated Border Gradient */}
-                                <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                                  <div className="absolute inset-[-1px] rounded-2xl bg-gradient-to-r from-amber-400 via-purple-400 to-pink-400 opacity-50 blur-sm" />
-                                </div>
-                              </div>
-                            </motion.div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Landmarks Glass Gallery */}
-                    {region.landmarks && (
-                      <div>
-                        <div className="flex items-center gap-3 mb-6">
-                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-500 to-pink-600 flex items-center justify-center shadow-lg">
-                            <BsCompass className="text-white text-xl" />
-                          </div>
-                          <h3 className="text-2xl font-bold bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent">
-                            Notable Landmarks
-                          </h3>
-                        </div>
-                        
-                        <div className="space-y-4">
-                          {region.landmarks.map((landmark, index) => (
-                            <motion.div
-                              key={index}
-                              initial={{ opacity: 0, x: 20 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: index * 0.1 }}
-                              whileHover={{ scale: 1.02, x: -10 }}
-                              className="relative group cursor-pointer"
-                            >
-                              <div className="relative rounded-2xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/80 via-purple-50/60 to-white/70 dark:from-stone-800/80 dark:via-purple-900/30 dark:to-stone-900/70 shadow-lg hover:shadow-2xl transition-all duration-300 border border-white/30 dark:border-stone-700/30">
-                                {/* Special Location Indicator */}
-                                <div className="absolute top-3 right-3 z-10">
-                                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center shadow-md animate-pulse">
-                                    <BsStar className="text-white text-sm" />
-                                  </div>
-                                </div>
-                                
-                                {/* Glass Content */}
-                                <div className="p-6">
-                                  <div className="flex items-start gap-4">
-                                    {/* Landmark Icon */}
-                                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center flex-shrink-0 shadow-lg group-hover:shadow-xl transition-shadow">
-                                      <BsCompass className="text-white text-2xl" />
-                                    </div>
-                                    
-                                    {/* Landmark Info */}
-                                    <div className="flex-1">
-                                      <h4 className="text-lg font-bold text-stone-800 dark:text-white mb-2 group-hover:text-amber-600 dark:group-hover:text-purple-400 transition-colors">
-                                        {landmark.name}
-                                      </h4>
-                                      <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed">
-                                        {landmark.description}
-                                      </p>
-                                      
-                                      {/* Special Features Tags */}
-                                      <div className="flex flex-wrap gap-2 mt-3">
-                                        {landmark.name.toLowerCase().includes('cave') && (
-                                          <span className="px-2 py-1 rounded-full text-xs font-medium bg-stone-200/50 dark:bg-stone-700/50 text-stone-700 dark:text-stone-300">Cave</span>
-                                        )}
-                                        {landmark.name.toLowerCase().includes('tower') && (
-                                          <span className="px-2 py-1 rounded-full text-xs font-medium bg-purple-200/50 dark:bg-purple-700/50 text-purple-700 dark:text-purple-300">Tower</span>
-                                        )}
-                                        {landmark.name.toLowerCase().includes('forest') && (
-                                          <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-200/50 dark:bg-green-700/50 text-green-700 dark:text-green-300">Forest</span>
-                                        )}
-                                        {landmark.name.toLowerCase().includes('island') && (
-                                          <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-200/50 dark:bg-blue-700/50 text-blue-700 dark:text-blue-300">Island</span>
-                                        )}
-                                      </div>
-                                      
-                                      {/* Hover Indicator */}
-                                      <div className="flex items-center gap-2 mt-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <span className="text-xs font-medium text-amber-600 dark:text-purple-400">Discover</span>
-                                        <BsChevronRight className="text-xs text-amber-600 dark:text-purple-400 group-hover:translate-x-1 transition-transform" />
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                
-                                {/* Animated Border Gradient */}
-                                <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                                  <div className="absolute inset-[-1px] rounded-2xl bg-gradient-to-r from-purple-400 via-pink-400 to-yellow-400 opacity-50 blur-sm" />
-                                </div>
-                              </div>
-                            </motion.div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  
-                  {/* Map Preview Card */}
-                  {region.map && (
-                    <motion.div 
-                      className="mt-8 p-6 rounded-3xl backdrop-blur-xl bg-gradient-to-br from-purple-100/60 via-pink-100/40 to-blue-100/60 dark:from-purple-900/30 dark:via-pink-900/20 dark:to-blue-900/30 border border-purple-200/30 dark:border-purple-700/30"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.3 }}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-pink-500 flex items-center justify-center shadow-md">
-                            <BsCompass className="text-white text-lg" />
-                          </div>
-                          <div>
-                            <h4 className="font-bold text-stone-800 dark:text-white">Region Map Available</h4>
-                            <p className="text-sm text-stone-600 dark:text-stone-400">Explore the full {region.name} region map</p>
-                          </div>
-                        </div>
-                        <button className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-600 to-pink-600 text-white font-medium shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
-                          View Map
-                        </button>
-                      </div>
-                    </motion.div>
-                  )}
-                </Container>
-              </div>
-            </motion.section>
-
-            {/* Games Section */}
-            <motion.section 
-              id="games"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-            >
-              <Container variant="default">
-                <GameShowcase region={region} theme={theme} />
-              </Container>
-            </motion.section>
-
-            {/* Evil Teams Section */}
-            <motion.section 
-              id="teams"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-            >
-              <Container variant="default">
-                <EvilTeamShowcase region={region} theme={theme} />
-              </Container>
-            </motion.section>
-
-            {/* Enhanced Trivia Section - Glass Knowledge Cards */}
-            {region.trivia && (
-              <motion.section 
-                id="trivia"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.7 }}
-              >
-                <div className="relative">
-                  {/* Animated Knowledge Background */}
-                  <div className="absolute inset-0 opacity-5 pointer-events-none">
-                    <div className="absolute inset-0 bg-gradient-to-br from-yellow-400 via-amber-500 to-pink-500 animate-pulse" />
-                  </div>
-                  
-                  <Container variant="default">
-                    <div className="text-center mb-10">
-                      <div className="flex items-center justify-center gap-3 mb-4">
-                        <BsStar className="text-3xl text-yellow-500 animate-pulse" />
-                        <h2 className="text-3xl font-bold bg-gradient-to-r from-yellow-600 via-amber-600 to-pink-600 bg-clip-text text-transparent">
-                          Did You Know?
-                        </h2>
-                        <BsStar className="text-3xl text-yellow-500 animate-pulse" />
-                      </div>
-                      <p className="text-lg text-stone-600 dark:text-stone-400">
-                        Fascinating facts and hidden secrets about {region.name}
-                      </p>
-                    </div>
-                    
-                    <div className="grid sm:grid-cols-2 gap-6">
-                      {region.trivia.map((fact, index) => (
-                        <motion.div
-                          key={index}
-                          initial={{ opacity: 0, rotateY: -180 }}
-                          animate={{ opacity: 1, rotateY: 0 }}
-                          transition={{ delay: index * 0.15, duration: 0.6 }}
-                          whileHover={{ scale: 1.05, rotateY: 5 }}
-                          className="relative group"
-                        >
-                          <div className="relative rounded-3xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/90 via-yellow-50/60 to-white/80 dark:from-stone-800/90 dark:via-yellow-900/20 dark:to-stone-900/80 shadow-xl hover:shadow-2xl transition-all duration-500 border border-white/30 dark:border-stone-700/30">
-                            {/* Fact Number Badge */}
-                            <div className="absolute top-4 left-4 z-10">
-                              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center shadow-lg transform -rotate-12 group-hover:rotate-0 transition-transform duration-300">
-                                <span className="text-white font-bold text-sm">#{index + 1}</span>
-                              </div>
-                            </div>
-                            
-                            {/* Decorative Star */}
-                            <div className="absolute top-4 right-4 opacity-20 group-hover:opacity-40 transition-opacity">
-                              <BsStar className="text-4xl text-yellow-500" />
-                            </div>
-                            
-                            {/* Fact Content */}
-                            <div className="p-8 pt-16">
-                              <p className="text-stone-700 dark:text-stone-300 leading-relaxed font-medium">
-                                {fact}
-                              </p>
-                              
-                              {/* Category Tags */}
-                              <div className="flex flex-wrap gap-2 mt-4">
-                                {fact.toLowerCase().includes('based on') && (
-                                  <span className="px-3 py-1 rounded-full text-xs font-medium bg-purple-200/50 dark:bg-purple-700/30 text-purple-700 dark:text-purple-300 backdrop-blur-sm">Real World</span>
-                                )}
-                                {fact.toLowerCase().includes('first') && (
-                                  <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-200/50 dark:bg-green-700/30 text-green-700 dark:text-green-300 backdrop-blur-sm">Pioneer</span>
-                                )}
-                                {fact.toLowerCase().includes('only') && (
-                                  <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-200/50 dark:bg-blue-700/30 text-blue-700 dark:text-blue-300 backdrop-blur-sm">Unique</span>
-                                )}
-                                {(fact.toLowerCase().includes('team') || fact.toLowerCase().includes('evil')) && (
-                                  <span className="px-3 py-1 rounded-full text-xs font-medium bg-red-200/50 dark:bg-red-700/30 text-red-700 dark:text-red-300 backdrop-blur-sm">Villains</span>
-                                )}
-                              </div>
-                            </div>
-                            
-                            {/* Animated Shimmer Effect */}
-                            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
-                              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                            </div>
-                            
-                            {/* Bottom Gradient Edge */}
-                            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-yellow-400 via-amber-500 to-pink-500 opacity-60 group-hover:opacity-100 transition-opacity" />
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-                    
-                    {/* Fun Fact Footer */}
-                    <motion.div 
-                      className="mt-10 p-6 rounded-2xl backdrop-blur-md bg-gradient-to-r from-yellow-100/50 via-purple-100/50 to-pink-100/50 dark:from-yellow-900/20 dark:via-purple-900/20 dark:to-pink-900/20 border border-yellow-200/30 dark:border-yellow-700/30 text-center"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.5 }}
-                    >
-                      <div className="flex items-center justify-center gap-2 mb-2">
-                        <BsLightbulb className="text-yellow-500 text-xl" />
-                        <span className="font-bold text-stone-800 dark:text-white">Pro Tip:</span>
-                      </div>
-                      <p className="text-sm text-stone-600 dark:text-stone-400">
-                        Share these facts with fellow trainers to become a {region.name} expert!
-                      </p>
-                    </motion.div>
+          {/* Elite Four */}
+          {region.eliteFour && region.eliteFour.length > 0 && (
+            <section>
+              <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-6 flex items-center gap-3">
+                <FiStar className="text-purple-500" />
+                Elite Four & Champion
+              </h2>
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                {region.eliteFour.map(member => (
+                  <EliteFourCard key={member.name} member={member} />
+                ))}
+                {region.champion && (
+                  <Container variant="featured" rounded="lg" className="p-4 text-center col-span-2 md:col-span-1">
+                    <span className="text-xs uppercase tracking-wider text-amber-200">Champion</span>
+                    <h4 className="font-bold text-white text-lg mt-1">{region.champion.name}</h4>
+                    <p className="text-sm text-amber-200 mt-1">{region.champion.signature}</p>
                   </Container>
-                </div>
-              </motion.section>
-            )}
+                )}
+              </div>
+            </section>
+          )}
+
+          {/* Locations */}
+          {region.locations && (
+            <section>
+              <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-6 flex items-center gap-3">
+                <FiMapPin className="text-emerald-500" />
+                Notable Locations
+              </h2>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {region.locations.map(location => (
+                  <Container key={location.name} variant="outline" rounded="lg" className="p-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center flex-shrink-0">
+                        <FiMapPin className="text-emerald-600 dark:text-emerald-400" />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-stone-800 dark:text-stone-100">{location.name}</h4>
+                        <span className="text-xs uppercase text-stone-500 dark:text-stone-400">{location.type}</span>
+                        <p className="text-sm text-stone-600 dark:text-stone-400 mt-1">{location.description}</p>
+                      </div>
+                    </div>
+                  </Container>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Landmarks */}
+          {region.landmarks && (
+            <section>
+              <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-6 flex items-center gap-3">
+                <FiMap className="text-amber-500" />
+                Landmarks
+              </h2>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {region.landmarks.map(landmark => (
+                  <Container key={landmark.name} variant="elevated" rounded="lg" className="p-4">
+                    <h4 className="font-bold text-stone-800 dark:text-stone-100">{landmark.name}</h4>
+                    <p className="text-sm text-stone-600 dark:text-stone-400 mt-1">{landmark.description}</p>
+                  </Container>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Trivia */}
+          {region.trivia && (
+            <section>
+              <h2 className="text-2xl font-bold text-stone-800 dark:text-stone-100 mb-6 flex items-center gap-3">
+                <FiInfo className="text-blue-500" />
+                Did You Know?
+              </h2>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {region.trivia.map((fact, index) => (
+                  <Container key={index} variant="outline" rounded="lg" className="p-4">
+                    <div className="flex gap-3">
+                      <span className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-sm">
+                        {index + 1}
+                      </span>
+                      <p className="text-stone-700 dark:text-stone-300">{fact}</p>
+                    </div>
+                  </Container>
+                ))}
+              </div>
+            </section>
+          )}
+        </div>
+
+        {/* Footer Navigation */}
+        <div className="bg-stone-100 dark:bg-stone-800/50 py-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center">
+              {currentRegionIndex > 0 ? (
+                <Link
+                  href={`/pokemon/regions/${regionOrder[currentRegionIndex - 1]}`}
+                  className="flex items-center gap-2 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors"
+                >
+                  <FiChevronLeft className="w-5 h-5" />
+                  <span className="capitalize">{regionOrder[currentRegionIndex - 1]}</span>
+                </Link>
+              ) : <div />}
+
+              <Link
+                href="/pokemon/regions"
+                className="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-medium transition-colors"
+              >
+                All Regions
+              </Link>
+
+              {currentRegionIndex < regionOrder.length - 1 ? (
+                <Link
+                  href={`/pokemon/regions/${regionOrder[currentRegionIndex + 1]}`}
+                  className="flex items-center gap-2 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors"
+                >
+                  <span className="capitalize">{regionOrder[currentRegionIndex + 1]}</span>
+                  <FiChevronRight className="w-5 h-5" />
+                </Link>
+              ) : <div />}
+            </div>
           </div>
-        </main>
-      </FullBleedWrapper>
-    </RouteErrorBoundary>
+        </div>
+      </div>
+    </>
   );
 }
-
-// Enable full bleed mode
-(RegionDetailPage as any).fullBleed = true;

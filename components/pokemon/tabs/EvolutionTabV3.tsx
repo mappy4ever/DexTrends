@@ -71,7 +71,7 @@ const EvolutionCard = ({ node, isCurrent }: { node: EvolutionNode; isCurrent: bo
     >
       <Container 
         variant="default" 
-        animate={false}
+       
         className={cn(
           "p-4 text-center border transition-all duration-200 hover:border-white/30",
           isCurrent ? "border-amber-500/50 bg-amber-500/10" : "border-stone-700/50",
@@ -566,7 +566,7 @@ interface EvolutionChainNode {
         <Container 
           variant="default" 
           className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
-          animate={false}
+         
         >
           <div className="p-8 text-center space-y-4">
             <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-stone-500/20 to-stone-600/10 flex items-center justify-center mx-auto">
@@ -592,7 +592,7 @@ interface EvolutionChainNode {
         <Container 
           variant="default" 
           className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
-          animate={false}
+         
         >
           <div className="p-6 md:p-8">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -642,7 +642,7 @@ interface EvolutionChainNode {
         <Container 
           variant="default" 
           className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
-          animate={false}
+         
         >
           <div className="p-6 md:p-8">
             <div className="max-w-4xl mx-auto">
@@ -734,7 +734,7 @@ interface EvolutionChainNode {
           <Container 
             variant="default" 
             className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
-            animate={false}
+           
           >
             <div className="p-6 md:p-8">
               <div className="flex items-center gap-3 mb-6">
@@ -824,7 +824,7 @@ interface EvolutionChainNode {
           <Container 
             variant="default" 
             className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
-            animate={false}
+           
           >
             <div className="p-6 md:p-8">
               <div className="flex items-center gap-3 mb-6">
@@ -883,7 +883,7 @@ interface EvolutionChainNode {
                           >
                             <Container 
                               variant="default" 
-                              animate={false}
+                             
                               className={cn(
                                 "p-4 text-center border transition-all duration-200 hover:border-amber-500/30",
                                 pokemon.name === variety.pokemon.name ? "border-amber-500/50 bg-amber-500/10" : "border-stone-700/50"
@@ -945,7 +945,7 @@ interface EvolutionChainNode {
           <Container 
             variant="default" 
             className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
-            animate={false}
+           
           >
             <div className="p-6 md:p-8">
               <div className="flex items-center gap-3 mb-6">
@@ -1002,7 +1002,7 @@ interface EvolutionChainNode {
                         >
                           <Container 
                             variant="default" 
-                            animate={false}
+                           
                             className={cn(
                               "p-4 text-center border transition-all duration-200 hover:border-red-500/30",
                               pokemon.name === variety.pokemon.name ? "border-red-500/50 bg-red-500/10" : "border-stone-700/50"

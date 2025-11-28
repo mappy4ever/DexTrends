@@ -56,7 +56,7 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
   // Info card component for consistent styling
   const InfoCard = ({ icon: Icon, title, children, iconColor = "text-stone-500", className = "" }: { icon: React.ComponentType<{ className?: string }>, title: string, children: React.ReactNode, iconColor?: string, className?: string }) => (
     <div className="transform transition-transform duration-300 hover:scale-[1.02] will-change-transform">
-      <Container variant="default" className={cn("h-full", className)} animate={false}>
+      <Container variant="default" className={cn("h-full", className)}>
         <div className="p-6">
           <div className="flex items-center gap-3 mb-4">
             <div className={cn("w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center", iconColor)}>
@@ -93,7 +93,7 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
         <Container
           variant="default"
           className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
-          animate={false}
+         
         >
           <div className="p-6 md:p-8">
             <h2
@@ -274,7 +274,7 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
         <Container
           variant="default"
           className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
-          animate={false}
+         
         >
           <div className="p-6 md:p-8">
             <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400 mb-6">
@@ -296,7 +296,7 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
         <Container
           variant="default"
           className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
-          animate={false}
+         
         >
           <div className="p-6 md:p-8">
             <h2 className="text-sm font-medium uppercase tracking-[0.15em] text-stone-500 dark:text-stone-400 mb-6">

@@ -576,7 +576,7 @@ const Expansions: NextPage = () => {
       </Head>
       <div className="min-h-screen">
       {/* Clean Header */}
-      <div className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-border-color shadow-sm">
+      <div className="sticky top-0 z-40 bg-white/95 dark:bg-stone-900/95 backdrop-blur-sm border-b border-border-color shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-6">
@@ -646,7 +646,7 @@ const Expansions: NextPage = () => {
             return (
               <div
                 key={expansion.id}
-                className="group bg-white border border-border-color rounded-lg shadow-sm card-holographic overflow-hidden hover:shadow-lg hover:border-pokemon-red/20 transition-all duration-300"
+                className="group bg-white dark:bg-stone-800 border border-border-color rounded-lg shadow-sm card-holographic overflow-hidden hover:shadow-lg hover:border-pokemon-red/20 transition-all duration-300"
                 data-testid="pack-item"
               >
                 {/* Pack Image - Vertical Showcase */}
@@ -742,7 +742,7 @@ const Expansions: NextPage = () => {
 
         {/* Pack Opening Statistics */}
         {packHistory.length > 0 && (
-          <div className="bg-white rounded-lg border border-border-color shadow-sm p-8 mb-8">
+          <div className="bg-white dark:bg-stone-800 rounded-lg border border-border-color shadow-sm p-8 mb-8">
             <h3 className="text-2xl font-bold text-dark-text mb-6 text-center">
               Your Pack Opening Stats
             </h3>
@@ -781,7 +781,7 @@ const Expansions: NextPage = () => {
         )}
 
         {/* Clean Feature Highlights */}
-        <div className="bg-white rounded-lg border border-border-color shadow-sm p-8 text-center">
+        <div className="bg-white dark:bg-stone-800 rounded-lg border border-border-color shadow-sm p-8 text-center">
           <h3 className="text-2xl font-bold text-dark-text mb-6">
             Pack Opening Features
           </h3>

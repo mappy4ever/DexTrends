@@ -40,7 +40,7 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
       <Container
         variant="default"
         className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
-        animate={false}
+       
       >
         <div className="p-6 md:p-8">
           {/* Format Tabs */}

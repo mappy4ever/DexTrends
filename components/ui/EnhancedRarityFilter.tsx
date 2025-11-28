@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { GlassContainer } from './design-system/GlassContainer';
+import { Container } from '@/components/ui/Container';
 import { cn } from '@/utils/cn';
 
 interface RarityOption {
@@ -278,10 +278,9 @@ export const EnhancedRarityFilter: React.FC<EnhancedRarityFilterProps> = ({
 
   return (
     <div className={cn('space-y-4', className)}>
-      <GlassContainer
+      <Container
         variant="default"
-        blur="md"
-        rounded="3xl"
+        rounded="xl"
         className="overflow-hidden"
       >
         {/* Header */}
@@ -411,14 +410,14 @@ export const EnhancedRarityFilter: React.FC<EnhancedRarityFilterProps> = ({
               </div>
             </div>
           )}
-      </GlassContainer>
+      </Container>
 
       {/* Visual Rarity Legend (shown when expanded) */}
         {isExpanded && showLegend && (
           <div
             className="mt-4 transition-all duration-200"
           >
-            <GlassContainer variant="outline" rounded="2xl" className="p-4">
+            <Container variant="outline" rounded="lg" className="p-4">
               <h4 className="text-sm font-bold text-stone-700 dark:text-stone-300 mb-3">
                 Rarity Legend
               </h4>
@@ -448,7 +447,7 @@ export const EnhancedRarityFilter: React.FC<EnhancedRarityFilterProps> = ({
                   <span className="text-stone-600 dark:text-stone-400">Ultra Rare</span>
                 </div>
               </div>
-            </GlassContainer>
+            </Container>
           </div>
         )}
     </div>

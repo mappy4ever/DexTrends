@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/utils/cn';
 import { Container } from '../ui/Container';
+import { createGlassStyle } from '../ui/design-system/glass-constants';
 import type { TCGCard } from '@/types/api/cards';
 
 interface ValueHeatmapProps {
@@ -109,8 +110,7 @@ export const ValueHeatmap: React.FC<ValueHeatmapProps> = ({
     <Container
       variant="elevated"
       rounded="xl"
-      padding="lg"
-      className="w-full"
+      className="w-full p-8"
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
