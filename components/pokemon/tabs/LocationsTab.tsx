@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Pokemon, PokemonSpecies, LocationAreaEncounterDetail } from "../../../types/pokemon";
-import { GlassContainer } from '../../ui/design-system';
+import { Container } from '../../ui/Container';
 import { cn } from '../../../utils/cn';
 import { 
   FaGamepad, FaMapMarkerAlt, FaGlobeAmericas, FaFilter,
@@ -191,13 +191,13 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
   // Early return if no data to prevent processing errors
   if (!pokemon || !species) {
     return (
-      <GlassContainer 
-        variant="dark" 
+      <Container 
+        variant="default" 
         className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl p-8 text-center"
         animate={false}
       >
         <p className="text-stone-500 dark:text-stone-400">Loading location data...</p>
-      </GlassContainer>
+      </Container>
     );
   }
 
@@ -210,8 +210,8 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <GlassContainer 
-            variant="dark" 
+          <Container 
+            variant="default" 
             className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
             animate={false}
           >
@@ -303,7 +303,7 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
                 </div>
               )}
             </div>
-          </GlassContainer>
+          </Container>
         </motion.div>
       )}
 
@@ -458,8 +458,8 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <GlassContainer 
-            variant="dark" 
+          <Container 
+            variant="default" 
             className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
             animate={false}
           >
@@ -486,7 +486,7 @@ const LocationsTab: React.FC<LocationsTabProps> = ({ pokemon, species, locationE
                 Check the Evolution or Breeding tabs for alternative methods to obtain this Pokémon.
               </p>
             </div>
-          </GlassContainer>
+          </Container>
         </motion.div>
       )}
     </div>

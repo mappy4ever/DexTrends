@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GlassContainer } from '../../../ui/design-system';
+import { Container } from '../../../ui/Container';
 import { cn } from '../../../../utils/cn';
 import { FaChessBishop, FaFistRaised } from 'react-icons/fa';
 import { HiSparkles } from 'react-icons/hi';
@@ -22,8 +22,8 @@ export const MovesetsSection: React.FC<MovesetsSectionProps> = ({ movesets, load
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
     >
-      <GlassContainer 
-        variant="dark" 
+      <Container 
+        variant="default" 
         className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
         animate={false}
       >
@@ -165,7 +165,7 @@ export const MovesetsSection: React.FC<MovesetsSectionProps> = ({ movesets, load
             </div>
           )}
         </div>
-      </GlassContainer>
+      </Container>
     </motion.div>
   );
 };

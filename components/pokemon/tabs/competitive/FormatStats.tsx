@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { GlassContainer } from '../../../ui/design-system';
+import { Container } from '../../../ui/Container';
 import { TierBadge } from '../../../ui/TierBadge';
 import { cn } from '../../../../utils/cn';
 import { MdCatchingPokemon } from 'react-icons/md';
@@ -37,8 +37,8 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.1 }}
     >
-      <GlassContainer
-        variant="dark"
+      <Container
+        variant="default"
         className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
         animate={false}
       >
@@ -447,7 +447,7 @@ export const FormatStats: React.FC<FormatStatsProps> = ({
             )}
           </div>
         </div>
-      </GlassContainer>
+      </Container>
     </motion.div>
   );
 };

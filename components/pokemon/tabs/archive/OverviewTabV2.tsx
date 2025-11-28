@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Pokemon, PokemonSpecies } from "../../../types/pokemon";
 import type { CompetitiveTierRecord } from '../../../utils/supabase';
-import { GlassContainer } from '../../ui/design-system';
+import { Container } from '../../ui/Container';
 import TypeEffectivenessWheel from '../TypeEffectivenessWheel';
 import { TierBadgeGroup } from '../../ui/TierBadge';
 import { formatEggGroups } from '../../../utils/pokemonDetailUtils';
@@ -49,7 +49,7 @@ const OverviewTabV2: React.FC<OverviewTabV2Props> = ({
   return (
     <div className="space-y-6">
       {/* Magazine-style hero section with Pokedex entry */}
-      <GlassContainer variant="dark" className="relative overflow-hidden">
+      <Container variant="default" className="relative overflow-hidden">
         {/* Background gradient accent */}
         <div 
           className={cn(
@@ -69,7 +69,7 @@ const OverviewTabV2: React.FC<OverviewTabV2Props> = ({
             <div className="text-6xl text-stone-300 dark:text-stone-500 mt-4 rotate-180">"</div>
           </div>
         </div>
-      </GlassContainer>
+      </Container>
       
       {/* Info grid with visual icons */}
       <div className={cn(
@@ -79,7 +79,7 @@ const OverviewTabV2: React.FC<OverviewTabV2Props> = ({
           : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
       )}>
         {/* Biological Info Card */}
-        <GlassContainer variant="dark" className="p-6">
+        <Container variant="default" className="p-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="text-2xl text-green-600 dark:text-green-400">
               <FaFlask />
@@ -120,10 +120,10 @@ const OverviewTabV2: React.FC<OverviewTabV2Props> = ({
               </span>
             </div>
           </div>
-        </GlassContainer>
+        </Container>
         
         {/* Training Info Card */}
-        <GlassContainer variant="dark" className="p-6">
+        <Container variant="default" className="p-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="text-2xl text-amber-600 dark:text-amber-400">
               <FaBullseye />
@@ -160,10 +160,10 @@ const OverviewTabV2: React.FC<OverviewTabV2Props> = ({
               <span className="font-semibold">{species.hatch_counter || 0} cycles</span>
             </div>
           </div>
-        </GlassContainer>
+        </Container>
         
         {/* Battle Info Card */}
-        <GlassContainer variant="dark" className="p-6">
+        <Container variant="default" className="p-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="text-2xl text-red-600 dark:text-red-400">
               <FaTrophy />
@@ -202,11 +202,11 @@ const OverviewTabV2: React.FC<OverviewTabV2Props> = ({
               </span>
             </div>
           </div>
-        </GlassContainer>
+        </Container>
         
         {/* Competitive Info Card */}
         {competitiveTiers && (
-          <GlassContainer variant="dark" className="p-6">
+          <Container variant="default" className="p-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="text-2xl text-amber-600 dark:text-amber-400">
                 <FaTrophy />
@@ -223,7 +223,7 @@ const OverviewTabV2: React.FC<OverviewTabV2Props> = ({
                 size="sm"
               />
             </div>
-          </GlassContainer>
+          </Container>
         )}
       </div>
       
@@ -241,9 +241,9 @@ const OverviewTabV2: React.FC<OverviewTabV2Props> = ({
             const ability = abilities[abilityInfo.ability.name];
             
             return (
-              <GlassContainer
+              <Container
                 key={abilityInfo.ability.name}
-                variant="dark"
+                variant="default"
                 className={cn(
                   "p-6 transition-all duration-300",
                   abilityInfo.is_hidden && "ring-2 ring-amber-500 ring-offset-2 dark:ring-offset-stone-900"
@@ -277,7 +277,7 @@ const OverviewTabV2: React.FC<OverviewTabV2Props> = ({
                     </div>
                   )}
                 </div>
-              </GlassContainer>
+              </Container>
             );
           })}
         </div>

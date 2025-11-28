@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GlassContainer } from '../../../ui/design-system';
+import { Container } from '../../../ui/Container';
 import { TierBadge } from '../../../ui/TierBadge';
 import { cn } from '../../../../utils/cn';
 import { MdCatchingPokemon } from 'react-icons/md';
@@ -16,8 +16,8 @@ export const TierLegend: React.FC = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <GlassContainer 
-        variant="dark" 
+      <Container 
+        variant="default" 
         className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
         animate={false}
       >
@@ -125,7 +125,7 @@ export const TierLegend: React.FC = () => {
             )}
           </AnimatePresence>
         </div>
-      </GlassContainer>
+      </Container>
     </motion.div>
   );
 };

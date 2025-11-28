@@ -4,7 +4,7 @@ import Image from 'next/image';
 import type { Pokemon, PokemonSpecies } from "../../types/api/pokemon";
 import type { FavoritePokemon } from "../../context/modules/types";
 import { TypeBadge } from '../ui/TypeBadge';
-import { GlassContainer } from '../ui/design-system';
+import { Container } from '../ui/Container';
 import { getTypeUIColors } from '../../utils/pokemonTypeGradients';
 import { calculateCatchRate, calculateGenderRatio, getStatColor } from '../../utils/pokemonDetailUtils';
 import { cn } from '../../utils/cn';
@@ -246,7 +246,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
   
   return (
     <div className="w-full">
-      <GlassContainer variant="dark" className="relative overflow-hidden p-3 xs:p-4 sm:p-6 md:p-8 bg-stone-100/80 dark:bg-stone-900/40">
+      <Container variant="default" className="relative overflow-hidden p-3 xs:p-4 sm:p-6 md:p-8 bg-stone-100/80 dark:bg-stone-900/40">
         {/* Subtle type gradient background */}
         <div 
           className="absolute inset-0 opacity-10"
@@ -582,7 +582,7 @@ const PokemonHeroSectionV3: React.FC<PokemonHeroSectionV3Props> = ({
             </div>
           </div>
         </div>
-      </GlassContainer>
+      </Container>
     </div>
   );
 };

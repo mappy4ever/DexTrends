@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import { GlassContainer } from '../../ui/design-system/GlassContainer';
+import { Container } from '../../ui/Container';
 import Button, { default as GradientButton } from '@/components/ui/Button';
 import { motion } from 'framer-motion';
 import type { CardSet } from '../../../types/api/cards';
@@ -55,7 +55,7 @@ export default function SetHeader({ setInfo, onScrollToCards }: SetHeaderProps) 
         </GradientButton>
       </div>
 
-      <GlassContainer variant="medium" className="mb-8">
+      <Container variant="elevated" className="mb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Set Image */}
           <motion.div 
@@ -156,7 +156,7 @@ export default function SetHeader({ setInfo, onScrollToCards }: SetHeaderProps) 
             </motion.div>
           </motion.div>
         </div>
-      </GlassContainer>
+      </Container>
     </motion.div>
   );
 }

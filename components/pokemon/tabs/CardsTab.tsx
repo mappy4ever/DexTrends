@@ -4,7 +4,7 @@ import type { Pokemon, PokemonSpecies } from "../../../types/pokemon";
 import type { TypeColors } from '../../../types/pokemon-tabs';
 import type { PocketCard } from '../../../types/api/pocket-cards';
 import type { TCGCard } from '../../../types/api/cards';
-import { GlassContainer } from '../../ui/design-system';
+import { Container } from '../../ui/Container';
 import CardList from '../../CardList';
 import PocketCardList from '../../PocketCardList';
 import { cn } from '../../../utils/cn';
@@ -53,7 +53,7 @@ class CardsErrorBoundary extends Component<
   override render() {
     if (this.state.hasError) {
       return (
-        <GlassContainer variant="dark" className="backdrop-blur-xl" animate={false}>
+        <Container variant="default" className="backdrop-blur-xl" animate={false}>
           <div className="p-6 text-center">
             <div className="text-6xl mb-4">⚠️</div>
             <p className="text-red-500 font-semibold mb-2">Error loading cards</p>
@@ -67,7 +67,7 @@ class CardsErrorBoundary extends Component<
               Try Again
             </button>
           </div>
-        </GlassContainer>
+        </Container>
       );
     }
 
@@ -134,8 +134,8 @@ const CardsTab: React.FC<CardsTabProps> = ({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <GlassContainer 
-          variant="dark" 
+        <Container 
+          variant="default" 
           className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
           animate={false}
         >
@@ -179,7 +179,7 @@ const CardsTab: React.FC<CardsTabProps> = ({
               </div>
             </div>
           </div>
-        </GlassContainer>
+        </Container>
       </motion.div>
       
       {/* Card Display Area */}
@@ -188,8 +188,8 @@ const CardsTab: React.FC<CardsTabProps> = ({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
       >
-        <GlassContainer 
-          variant="dark" 
+        <Container 
+          variant="default" 
           className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
           animate={false}
         >
@@ -261,7 +261,7 @@ const CardsTab: React.FC<CardsTabProps> = ({
               )}
             </AnimatePresence>
           </div>
-        </GlassContainer>
+        </Container>
       </motion.div>
       
       {/* Card Statistics */}

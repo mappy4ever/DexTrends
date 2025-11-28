@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import type { Pokemon, PokemonSpecies } from "../../../types/pokemon";
 import type { TypeColors } from '../../../types/pokemon-tabs';
-import { GlassContainer } from '../../ui/design-system';
+import { Container } from '../../ui/Container';
 import { TypeBadge } from '../../ui/TypeBadge';
 import { fetchJSON } from '../../../utils/unifiedFetch';
 import logger from '../../../utils/logger';
@@ -459,8 +459,8 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <GlassContainer 
-            variant="dark" 
+          <Container 
+            variant="default" 
             className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
             animate={false}
           >
@@ -539,7 +539,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
               </div>
             )}
             </div>
-          </GlassContainer>
+          </Container>
         </motion.div>
       )}
 
@@ -549,8 +549,8 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.3 }}
       >
-        <GlassContainer 
-          variant="dark" 
+        <Container 
+          variant="default" 
           className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
           animate={false}
         >
@@ -639,7 +639,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
             )}
           </AnimatePresence>
           </div>
-        </GlassContainer>
+        </Container>
       </motion.div>
 
       {/* Breeding Items */}
@@ -648,8 +648,8 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
       >
-        <GlassContainer 
-          variant="dark" 
+        <Container 
+          variant="default" 
           className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
           animate={false}
         >
@@ -692,7 +692,7 @@ const BreedingTab: React.FC<BreedingTabProps> = ({ pokemon, species, typeColors 
               ))}
             </div>
           </div>
-        </GlassContainer>
+        </Container>
       </motion.div>
     </div>
   );

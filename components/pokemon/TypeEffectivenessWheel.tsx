@@ -2,7 +2,7 @@ import React, { useState, useMemo, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../../utils/cn';
 import { TypeBadge } from '../ui/TypeBadge';
-import { GlassContainer } from '../ui/design-system';
+import { Container } from '../ui/Container';
 import { useTypeEffectiveness } from '../../hooks/useTypeEffectiveness';
 import { POKEMON_TYPE_COLORS } from '../../utils/unifiedTypeColors';
 import { FaExclamationTriangle, FaBan, FaCircle } from 'react-icons/fa';
@@ -203,7 +203,7 @@ const TypeEffectivenessWheel: React.FC<TypeEffectivenessWheelProps> = ({
           <motion.div
             {...getAnimationProps('slideUp')}
           >
-            <GlassContainer variant="dark" className="p-6">
+            <Container variant="default" className="p-6">
               <div className="flex flex-wrap gap-3">
                 {displayRelations.map((relation, index) => (
                   <motion.div
@@ -245,14 +245,14 @@ const TypeEffectivenessWheel: React.FC<TypeEffectivenessWheelProps> = ({
                   </motion.div>
                 ))}
               </div>
-            </GlassContainer>
+            </Container>
           </motion.div>
         )}
       </AnimatePresence>
       
       {/* Visual effectiveness chart */}
       {!selectedCategory && (
-        <GlassContainer variant="dark" className="p-6">
+        <Container variant="default" className="p-6">
           <h4 className="text-sm font-semibold text-stone-600 dark:text-stone-400 mb-4 text-center">
             Click a category above to see type matchups
           </h4>
@@ -284,7 +284,7 @@ const TypeEffectivenessWheel: React.FC<TypeEffectivenessWheelProps> = ({
               </div>
             </div>
           </div>
-        </GlassContainer>
+        </Container>
       )}
     </div>
   );

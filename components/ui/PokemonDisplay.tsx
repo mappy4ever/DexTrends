@@ -15,14 +15,15 @@
  * - Glass morphism effects
  */
 
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 import { TypeBadge } from './TypeBadge';
 import { cn } from '@/utils/cn';
 import { cardHover } from '@/utils/animations';
-import { useProgressiveImage } from '@/hooks/useProgressiveImage';
+
+const FALLBACK_IMAGE = '/dextrendslogo.png';
 
 // Type color mappings for gradients - Official Pokemon colors
 // Removed /60 opacity for more vibrant colors
@@ -151,8 +152,11 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
   height,
 }) => {
   const router = useRouter();
-  const { currentSrc, isLoading } = useProgressiveImage({ src: sprite || '' });
-  
+  const [imgError, setImgError] = useState(false);
+
+  // Get the image source with fallback
+  const imageSrc = imgError || !sprite ? FALLBACK_IMAGE : sprite;
+
   // Normalize types to string array
   const typeNames = types.map(t => 
     typeof t === 'string' ? t : t.type.name
@@ -207,15 +211,14 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
           
           {/* Pokemon image */}
           <div className="relative z-10 w-full h-full flex items-center justify-center">
-            {sprite && (
-              <Image
-                src={currentSrc || sprite}
-                alt={name}
-                width={imageSize}
-                height={imageSize}
-                className="object-contain drop-shadow-lg"
-              />
-            )}
+            <Image
+              src={imageSrc}
+              alt={name}
+              width={imageSize}
+              height={imageSize}
+              className="object-contain drop-shadow-lg"
+              onError={() => setImgError(true)}
+            />
           </div>
           
           {/* Special badge */}
@@ -255,15 +258,14 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
               'bg-gradient-to-br',
               gradient
             )}>
-              {sprite && (
-                <Image
-                  src={currentSrc || sprite}
-                  alt={name}
-                  width={imageSize}
-                  height={imageSize}
-                  className="object-contain p-2"
-                />
-              )}
+              <Image
+                src={imageSrc}
+                alt={name}
+                width={imageSize}
+                height={imageSize}
+                className="object-contain p-2"
+                onError={() => setImgError(true)}
+              />
             </div>
             
             {/* Info */}
@@ -344,15 +346,14 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
             className
           )}
         >
-          {sprite && (
-            <Image
-              src={currentSrc || sprite}
-              alt={name}
-              width={40}
-              height={40}
-              className="object-contain"
-            />
-          )}
+          <Image
+            src={imageSrc}
+            alt={name}
+            width={40}
+            height={40}
+            className="object-contain"
+            onError={() => setImgError(true)}
+          />
           <div className="flex-1 min-w-0">
             <div className="font-medium text-stone-900 dark:text-white truncate">
               {name}
@@ -425,15 +426,14 @@ export const PokemonDisplay: React.FC<PokemonDisplayProps> = memo(({
             
             {/* Pokemon image */}
             <div className="flex justify-center">
-              {sprite && (
-                <Image
-                  src={currentSrc || sprite}
-                  alt={name}
-                  width={imageSize}
-                  height={imageSize}
-                  className="object-contain drop-shadow-2xl"
-                />
-              )}
+              <Image
+                src={imageSrc}
+                alt={name}
+                width={imageSize}
+                height={imageSize}
+                className="object-contain drop-shadow-2xl"
+                onError={() => setImgError(true)}
+              />
             </div>
             
             {/* Stats */}

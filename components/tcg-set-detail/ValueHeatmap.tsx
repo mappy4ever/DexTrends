@@ -1,8 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/utils/cn';
-import { GlassContainer } from '../ui/design-system/GlassContainer';
-import { createGlassStyle } from '../ui/design-system/glass-constants';
+import { Container } from '../ui/Container';
 import type { TCGCard } from '@/types/api/cards';
 
 interface ValueHeatmapProps {
@@ -107,10 +106,9 @@ export const ValueHeatmap: React.FC<ValueHeatmapProps> = ({
   const treemapLayout = viewMode === 'treemap' ? createTreemapLayout() : [];
   
   return (
-    <GlassContainer
-      variant="colored"
-      blur="xl"
-      rounded="2xl"
+    <Container
+      variant="elevated"
+      rounded="xl"
       padding="lg"
       className="w-full"
     >
@@ -326,7 +324,7 @@ export const ValueHeatmap: React.FC<ValueHeatmapProps> = ({
           />
         </div>
       </div>
-    </GlassContainer>
+    </Container>
   );
 };
 

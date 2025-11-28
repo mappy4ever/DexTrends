@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import logger from "@/utils/logger";
 import type { Pokemon, PokemonSpecies } from "../../../types/pokemon";
 import type { TypeColors } from '../../../types/pokemon-tabs';
-import { GlassContainer } from '../../ui/design-system';
+import { Container } from '../../ui/Container';
 import { PokemonLearnset } from '../PokemonLearnset';
 import { cn } from '../../../utils/cn';
 import { TypeBadge } from '../../ui/TypeBadge';
@@ -219,12 +219,12 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
 
   if (!pokemon || !pokemon.name) {
     return (
-      <GlassContainer variant="dark" className="backdrop-blur-xl" animate={false}>
+      <Container variant="default" className="backdrop-blur-xl" animate={false}>
         <div className="p-6 text-center">
           <div className="text-6xl mb-4">🔍</div>
           <p className="text-stone-500">Pokemon data not available</p>
         </div>
-      </GlassContainer>
+      </Container>
     );
   }
 
@@ -236,7 +236,7 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <GlassContainer variant="dark" className="backdrop-blur-xl" animate={false}>
+        <Container variant="default" className="backdrop-blur-xl" animate={false}>
           <div className="p-6">
             {/* Title and Generation Selector */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
@@ -371,7 +371,7 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
               </div>
             </div>
           </div>
-        </GlassContainer>
+        </Container>
       </motion.div>
 
       {/* Statistics Cards */}
@@ -382,7 +382,7 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
         className="grid grid-cols-1 md:grid-cols-4 gap-4"
       >
         {/* Total Moves */}
-        <GlassContainer variant="dark" className="backdrop-blur-xl" animate={false}>
+        <Container variant="default" className="backdrop-blur-xl" animate={false}>
           <div className="p-5">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center">
@@ -397,10 +397,10 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
               Available moves
             </p>
           </div>
-        </GlassContainer>
+        </Container>
 
         {/* Physical Moves */}
-        <GlassContainer variant="dark" className="backdrop-blur-xl" animate={false}>
+        <Container variant="default" className="backdrop-blur-xl" animate={false}>
           <div className="p-5">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-orange-600/10 flex items-center justify-center">
@@ -418,10 +418,10 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
               />
             </div>
           </div>
-        </GlassContainer>
+        </Container>
 
         {/* Special Moves */}
-        <GlassContainer variant="dark" className="backdrop-blur-xl" animate={false}>
+        <Container variant="default" className="backdrop-blur-xl" animate={false}>
           <div className="p-5">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center">
@@ -439,10 +439,10 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
               />
             </div>
           </div>
-        </GlassContainer>
+        </Container>
 
         {/* Status Moves */}
-        <GlassContainer variant="dark" className="backdrop-blur-xl" animate={false}>
+        <Container variant="default" className="backdrop-blur-xl" animate={false}>
           <div className="p-5">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-stone-500/20 to-stone-600/10 flex items-center justify-center">
@@ -460,7 +460,7 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
               />
             </div>
           </div>
-        </GlassContainer>
+        </Container>
       </motion.div>
 
       {/* Moves Display */}
@@ -469,7 +469,7 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <GlassContainer variant="dark" className="backdrop-blur-xl" animate={false}>
+        <Container variant="default" className="backdrop-blur-xl" animate={false}>
           <div className="p-6">
             {loading ? (
               <div className="text-center py-8">
@@ -534,7 +534,7 @@ const MovesTabV2: React.FC<MovesTabV2Props> = ({ pokemon, species, typeColors })
               </div>
             )}
           </div>
-        </GlassContainer>
+        </Container>
       </motion.div>
     </div>
   );

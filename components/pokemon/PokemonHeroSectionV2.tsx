@@ -2,7 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from '../ui/LazyMotion';
 import type { Pokemon, PokemonSpecies } from "../../types/pokemon";
 import { TypeBadge } from '../ui/TypeBadge';
-import { GlassContainer, CircularCard } from '../ui/design-system';
+import { CircularCard } from '../ui/design-system';
+import { Container } from '../ui/Container';
 import { getTypeUIColors, getTypeRingGradient } from '../../utils/pokemonTypeGradients';
 import { calculateCatchRate, calculateGenderRatio } from '../../utils/pokemonDetailUtils';
 import { cn } from '../../utils/cn';
@@ -72,7 +73,7 @@ const PokemonHeroSectionV2: React.FC<PokemonHeroSectionV2Props> = ({
   };
   
   return (
-    <GlassContainer variant="dark" className="relative overflow-hidden">
+    <Container variant="default" className="relative overflow-hidden">
       {/* Subtle type-based background gradient */}
       <div 
         className="absolute inset-0 opacity-5"
@@ -393,7 +394,7 @@ const PokemonHeroSectionV2: React.FC<PokemonHeroSectionV2Props> = ({
           )}
         </div>
       </div>
-    </GlassContainer>
+    </Container>
   );
 };
 

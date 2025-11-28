@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import type { Pokemon, PokemonSpecies, Nature } from "../../../types/pokemon";
 import type { TypeColors } from '../../../types/pokemon-tabs';
-import { GlassContainer } from '../../ui/design-system';
+import { Container } from '../../ui/Container';
 import PokemonStatBars from '../PokemonStatBars';
 import { cn } from '../../../utils/cn';
 import {
@@ -131,8 +131,8 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
       >
-        <GlassContainer
-          variant="dark"
+        <Container
+          variant="default"
           className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
           animate={false}
         >
@@ -187,7 +187,7 @@ const StatsTabV2: React.FC<StatsTabV2Props> = ({
               </div>
             </div>
           </div>
-        </GlassContainer>
+        </Container>
       </motion.div>
 
       {/* Nature, Level, and EV Yield in single row */}

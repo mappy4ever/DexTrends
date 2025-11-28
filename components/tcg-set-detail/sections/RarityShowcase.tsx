@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import Image from 'next/image';
-import { GlassContainer } from '../../ui/design-system/GlassContainer';
+import { Container } from '../../ui/Container';
 // SmartRecommendationEngine removed - simplified version
 import { CompactPriceIndicator } from '../../ui/PriceIndicator';
 // Import removed - EnhancedAnimationSystem not needed as a wrapper
@@ -88,7 +88,7 @@ export default function RarityShowcase({ cards, onCardClick }: RarityShowcasePro
         animate="visible"
         className="mb-8"
       >
-        <GlassContainer variant="light">
+        <Container variant="outline">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold bg-gradient-to-r from-yellow-500 to-amber-600 bg-clip-text text-transparent">
               Rarity Showcase
@@ -249,7 +249,7 @@ export default function RarityShowcase({ cards, onCardClick }: RarityShowcasePro
               More Cards Coming Soon...
             </h3>
           </motion.div>
-        </GlassContainer>
+        </Container>
       </motion.div>
   );
 }

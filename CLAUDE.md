@@ -118,7 +118,31 @@ fetchJSON(url, { useCache: false, forceRefresh: true })
 - **Pokemon TCG API**: Card data (pokemontcg.io)
 - **TCGDex**: Pokemon Pocket data (tcgdex.net)
 
+## Current Work: UI Standardization
+
+**Status:** In Progress
+**Details:** See `docs/UI-PROGRESS-NOTES.md`
+
+### Key Rules
+- **Glass effects** = Modals/sheets ONLY (not content cards)
+- **Container variants**: `default`, `elevated`, `outline`, `ghost`, `gradient`, `featured`, `glass`
+- **Container rounded**: `none`, `sm`, `md`, `lg`, `xl`, `full` (NOT `2xl`/`3xl`)
+
+### Immediate TODOs
+1. ~~Fix Pokedex image "?" placeholders~~ - DONE (removed broken useProgressiveImage, added onError fallback)
+2. ~~Fix search bar text overlap~~ - DONE (pl-14 sm:pl-16)
+3. Migrate 20+ components still using GlassContainer (see docs/UI-PROGRESS-NOTES.md for full list)
+
+### Completed
+- GlassContainer removed from all 12 page files
+- Type gradients fixed in PokemonDisplay.tsx
+- UnifiedGrid virtualization fixed
+- Pokedex image loading fixed (PokemonDisplay.tsx)
+- Search bar padding fixed (pokedex.tsx)
+- Build passes, TypeScript passes
+
 ## Documentation
 
 - **README.md** - Project overview and setup
+- **docs/UI-PROGRESS-NOTES.md** - Current UI work progress and remaining tasks
 - **docs/archive/** - Historical documentation and phase reports

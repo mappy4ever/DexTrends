@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
-import { GlassContainer } from '../../../ui/design-system';
+import { Container } from '../../../ui/Container';
 import { MdCatchingPokemon } from 'react-icons/md';
 import { PokemonListItem } from './PokemonListItem';
 import type { TeammateData, CounterData } from './types';
@@ -27,8 +27,8 @@ export const TeammatesCountersSection: React.FC<TeammatesCountersSectionProps> =
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.3 }}
       >
-        <GlassContainer 
-          variant="dark" 
+        <Container 
+          variant="default" 
           className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl h-full"
           animate={false}
         >
@@ -62,7 +62,7 @@ export const TeammatesCountersSection: React.FC<TeammatesCountersSectionProps> =
               ))}
             </div>
           </div>
-        </GlassContainer>
+        </Container>
       </motion.div>
 
       {/* Top Counters */}
@@ -71,8 +71,8 @@ export const TeammatesCountersSection: React.FC<TeammatesCountersSectionProps> =
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
       >
-        <GlassContainer 
-          variant="dark" 
+        <Container 
+          variant="default" 
           className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl h-full"
           animate={false}
         >
@@ -104,7 +104,7 @@ export const TeammatesCountersSection: React.FC<TeammatesCountersSectionProps> =
               ))}
             </div>
           </div>
-        </GlassContainer>
+        </Container>
       </motion.div>
     </div>
   );

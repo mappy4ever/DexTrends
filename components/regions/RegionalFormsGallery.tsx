@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 // Using direct PokeAPI URLs for Pokémon images
-import { GlassContainer } from '../ui/design-system';
+import { Container } from '../ui/Container';
 import { FadeIn, SlideUp } from '../ui/animations/animations';
 import { 
   BsArrowRepeat,
@@ -326,8 +326,8 @@ const RegionalFormsGallery: React.FC<RegionalFormsGalleryProps> = ({ region, the
         <div className="absolute inset-0 bg-gradient-to-br from-amber-500 via-pink-500 to-blue-500 animate-pulse" />
       </div>
 
-      <GlassContainer 
-        variant="dark" 
+      <Container 
+        variant="default" 
         blur="xl" 
         rounded="3xl" 
         padding="lg"
@@ -472,7 +472,7 @@ const RegionalFormsGallery: React.FC<RegionalFormsGalleryProps> = ({ region, the
             showcasing the incredible diversity of Pokémon evolution across different regions.
           </p>
         </motion.div>
-      </GlassContainer>
+      </Container>
 
       <style jsx>{`
         @keyframes spin-slow {

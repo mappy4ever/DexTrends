@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { Pokemon, PokemonSpecies, EvolutionChain } from "../../../types/pokemon";
 import type { TypeColors } from '../../../types/pokemon-tabs';
-import { GlassContainer } from '../../ui/design-system';
+import { Container } from '../../ui/Container';
 import { TypeBadge } from '../../ui/TypeBadge';
 import { cn } from '../../../utils/cn';
 import { 
@@ -69,8 +69,8 @@ const EvolutionCard = ({ node, isCurrent }: { node: EvolutionNode; isCurrent: bo
         WebkitBackfaceVisibility: 'visible'
       }}
     >
-      <GlassContainer 
-        variant="dark" 
+      <Container 
+        variant="default" 
         animate={false}
         className={cn(
           "p-4 text-center border transition-all duration-200 hover:border-white/30",
@@ -103,7 +103,7 @@ const EvolutionCard = ({ node, isCurrent }: { node: EvolutionNode; isCurrent: bo
         
         {/* Pokemon Number */}
         <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-400">#{String(node.id).padStart(3, '0')}</p>
-      </GlassContainer>
+      </Container>
     </motion.div>
   </Link>
 );
@@ -563,8 +563,8 @@ interface EvolutionChainNode {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <GlassContainer 
-          variant="dark" 
+        <Container 
+          variant="default" 
           className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
           animate={false}
         >
@@ -576,7 +576,7 @@ interface EvolutionChainNode {
               No evolution data available for this Pokémon.
             </p>
           </div>
-        </GlassContainer>
+        </Container>
       </motion.div>
     );
   }
@@ -589,8 +589,8 @@ interface EvolutionChainNode {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <GlassContainer 
-          variant="dark" 
+        <Container 
+          variant="default" 
           className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
           animate={false}
         >
@@ -630,7 +630,7 @@ interface EvolutionChainNode {
           </button>
             </div>
           </div>
-        </GlassContainer>
+        </Container>
       </motion.div>
       
       {/* Evolution Chain Display */}
@@ -639,8 +639,8 @@ interface EvolutionChainNode {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
       >
-        <GlassContainer 
-          variant="dark" 
+        <Container 
+          variant="default" 
           className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
           animate={false}
         >
@@ -721,7 +721,7 @@ interface EvolutionChainNode {
           </div>
             </div>
           </div>
-        </GlassContainer>
+        </Container>
       </motion.div>
       
       {/* Evolution Details */}
@@ -731,8 +731,8 @@ interface EvolutionChainNode {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <GlassContainer 
-            variant="dark" 
+          <Container 
+            variant="default" 
             className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
             animate={false}
           >
@@ -810,7 +810,7 @@ interface EvolutionChainNode {
                 </motion.div>
               </div>
             </div>
-          </GlassContainer>
+          </Container>
         </motion.div>
       )}
       
@@ -821,8 +821,8 @@ interface EvolutionChainNode {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-          <GlassContainer 
-            variant="dark" 
+          <Container 
+            variant="default" 
             className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
             animate={false}
           >
@@ -881,8 +881,8 @@ interface EvolutionChainNode {
                               pokemon.name === variety.pokemon.name && "ring-2 ring-amber-500/50"
                             )}
                           >
-                            <GlassContainer 
-                              variant="dark" 
+                            <Container 
+                              variant="default" 
                               animate={false}
                               className={cn(
                                 "p-4 text-center border transition-all duration-200 hover:border-amber-500/30",
@@ -919,7 +919,7 @@ interface EvolutionChainNode {
                               </h3>
                               
                               <p className="text-xs sm:text-sm text-amber-400">Mega Stone Required</p>
-                            </GlassContainer>
+                            </Container>
                           </motion.div>
                         </Link>
                       );
@@ -931,7 +931,7 @@ interface EvolutionChainNode {
                 <p>Mega Evolution is a temporary transformation that requires a Mega Stone and a strong bond with the trainer.</p>
               </div>
             </div>
-          </GlassContainer>
+          </Container>
         </motion.div>
       )}
       
@@ -942,8 +942,8 @@ interface EvolutionChainNode {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <GlassContainer 
-            variant="dark" 
+          <Container 
+            variant="default" 
             className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
             animate={false}
           >
@@ -1000,8 +1000,8 @@ interface EvolutionChainNode {
                             pokemon.name === variety.pokemon.name && "ring-2 ring-red-500/50"
                           )}
                         >
-                          <GlassContainer 
-                            variant="dark" 
+                          <Container 
+                            variant="default" 
                             animate={false}
                             className={cn(
                               "p-4 text-center border transition-all duration-200 hover:border-red-500/30",
@@ -1037,7 +1037,7 @@ interface EvolutionChainNode {
                             </h3>
                             
                             <p className="text-xs sm:text-sm text-red-400">Max Soup Required</p>
-                          </GlassContainer>
+                          </Container>
                         </motion.div>
                       </Link>
                     ))}
@@ -1048,7 +1048,7 @@ interface EvolutionChainNode {
                 <p>Gigantamax is a phenomenon that makes Pokemon giant with a special appearance. It requires a Pokemon with the Gigantamax Factor.</p>
               </div>
             </div>
-          </GlassContainer>
+          </Container>
         </motion.div>
       )}
     </div>

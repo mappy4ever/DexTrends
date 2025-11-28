@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '../../utils/cn';
-import { CircularCard, GlassContainer } from '../ui/design-system';
+import { CircularCard } from '../ui/design-system';
+import { Container } from '../ui/Container';
 import { TypeBadge } from '../ui/TypeBadge';
 import type { EvolutionChain, EvolutionLink, Pokemon, PokemonSpecies } from "../../types/pokemon";
 
@@ -77,11 +78,11 @@ const EvolutionFlow: React.FC<EvolutionFlowProps> = ({
   
   if (!evolutionTree) {
     return (
-      <GlassContainer variant="dark" className={cn("text-center py-12", className)}>
+      <Container variant="default" className={cn("text-center py-12", className)}>
         <p className="text-stone-600 dark:text-stone-400">
           No evolution data available
         </p>
-      </GlassContainer>
+      </Container>
     );
   }
   
@@ -183,8 +184,8 @@ const EvolutionFlow: React.FC<EvolutionFlowProps> = ({
   );
   
   return (
-    <GlassContainer 
-      variant="dark" 
+    <Container 
+      variant="default" 
       className={cn("p-8", className)}
     >
       <div className={cn(
@@ -210,7 +211,7 @@ const EvolutionFlow: React.FC<EvolutionFlowProps> = ({
           ))}
         </div>
       </div>
-    </GlassContainer>
+    </Container>
   );
 };
 

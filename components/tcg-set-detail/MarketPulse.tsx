@@ -1,8 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/utils/cn';
-import { GlassContainer } from '../ui/design-system/GlassContainer';
-import { createGlassStyle } from '../ui/design-system/glass-constants';
+import { Container } from '../ui/Container';
 import type { TCGCard } from '@/types/api/cards';
 
 interface MarketPulseProps {
@@ -128,10 +127,9 @@ export const MarketPulse: React.FC<MarketPulseProps> = ({
   };
   
   return (
-    <GlassContainer
-      variant="colored"
-      blur="xl"
-      rounded="2xl"
+    <Container
+      variant="elevated"
+      rounded="xl"
       padding="lg"
       className="w-full"
     >
@@ -355,7 +353,7 @@ export const MarketPulse: React.FC<MarketPulseProps> = ({
           </div>
         </div>
       </div>
-    </GlassContainer>
+    </Container>
   );
 };
 

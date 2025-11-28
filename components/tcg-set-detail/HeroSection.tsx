@@ -2,8 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { cn } from '@/utils/cn';
-import { GlassContainer } from '../ui/design-system/GlassContainer';
-import { createGlassStyle } from '../ui/design-system/glass-constants';
+import { Container } from '../ui/Container';
 import type { CardSet, TCGCard } from '@/types/api/cards';
 
 interface HeroSectionProps {
@@ -192,10 +191,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <GlassContainer
-            variant="colored"
-            blur="xl"
-            rounded="3xl"
+          <Container
+            variant="elevated"
+            rounded="xl"
             padding="lg"
             className="h-full"
           >
@@ -326,7 +324,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 gradient="from-orange-500 to-red-500"
               />
             </div>
-          </GlassContainer>
+          </Container>
         </motion.div>
         
         {/* Right side - Top cards carousel */}
@@ -336,10 +334,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           transition={{ duration: 0.6 }}
           className="relative"
         >
-          <GlassContainer
-            variant="colored"
-            blur="xl"
-            rounded="3xl"
+          <Container
+            variant="elevated"
+            rounded="xl"
             padding="lg"
             className="h-full"
           >
@@ -382,7 +379,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 View All Cards
               </button>
             </motion.div>
-          </GlassContainer>
+          </Container>
         </motion.div>
       </div>
     </div>

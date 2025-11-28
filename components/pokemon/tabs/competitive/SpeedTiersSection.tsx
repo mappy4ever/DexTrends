@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { GlassContainer } from '../../../ui/design-system';
+import { Container } from '../../../ui/Container';
 import { MdCatchingPokemon } from 'react-icons/md';
 import { FaRunning, FaStar, FaExchangeAlt } from 'react-icons/fa';
 import type { Pokemon } from '../../../../types/pokemon';
@@ -24,8 +24,8 @@ export const SpeedTiersSection: React.FC<SpeedTiersSectionProps> = ({ pokemon })
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.5 }}
     >
-      <GlassContainer 
-        variant="dark" 
+      <Container 
+        variant="default" 
         className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
         animate={false}
       >
@@ -91,7 +91,7 @@ export const SpeedTiersSection: React.FC<SpeedTiersSectionProps> = ({ pokemon })
             </p>
           </div>
         </div>
-      </GlassContainer>
+      </Container>
     </motion.div>
   );
 };

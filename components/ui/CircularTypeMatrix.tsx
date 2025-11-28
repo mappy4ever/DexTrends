@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TypeGradientBadge } from './design-system/TypeGradientBadge';
-import { GlassContainer } from './design-system/GlassContainer';
+import { Container } from './Container';
 
 interface TypeMatchup {
   attacking: string;
@@ -80,7 +80,7 @@ export const CircularTypeMatrix: React.FC<CircularTypeMatrixProps> = ({
     <div className="space-y-8">
       {/* View Mode Toggle */}
       <div className="flex justify-center">
-        <GlassContainer variant="medium" rounded="full" padding="none" className="inline-flex">
+        <Container variant="medium" rounded="full" padding="none" className="inline-flex">
           <button
             onClick={() => setViewMode('attacking')}
             className={`px-6 py-3 rounded-full transition-all ${
@@ -101,7 +101,7 @@ export const CircularTypeMatrix: React.FC<CircularTypeMatrixProps> = ({
           >
             Defending
           </button>
-        </GlassContainer>
+        </Container>
       </div>
 
       {/* Type Grid */}
@@ -137,7 +137,7 @@ export const CircularTypeMatrix: React.FC<CircularTypeMatrixProps> = ({
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
           >
-            <GlassContainer variant="colored" className="p-8">
+            <Container variant="colored" className="p-8">
               <div className="text-center mb-6">
                 <TypeGradientBadge
                   type={selectedType}
@@ -321,7 +321,7 @@ export const CircularTypeMatrix: React.FC<CircularTypeMatrixProps> = ({
                   </div>
                 </div>
               )}
-            </GlassContainer>
+            </Container>
           </motion.div>
         )}
       </AnimatePresence>
@@ -335,7 +335,7 @@ export const CircularTypeMatrix: React.FC<CircularTypeMatrixProps> = ({
             exit={{ opacity: 0, scale: 0.9 }}
             className="fixed bottom-4 right-4 z-50"
           >
-            <GlassContainer variant="dark" className="p-4">
+            <Container variant="default" className="p-4">
               <TypeGradientBadge
                 type={hoveredType}
                 size="md"
@@ -345,7 +345,7 @@ export const CircularTypeMatrix: React.FC<CircularTypeMatrixProps> = ({
               <p className="text-sm mt-2 text-stone-600 dark:text-stone-400">
                 Click to view details
               </p>
-            </GlassContainer>
+            </Container>
           </motion.div>
         )}
       </AnimatePresence>

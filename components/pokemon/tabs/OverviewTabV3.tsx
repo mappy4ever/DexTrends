@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import type { Pokemon, PokemonSpecies } from "../../../types/pokemon";
 import type { CompetitiveTierRecord } from '../../../utils/supabase';
-import { GlassContainer } from '../../ui/design-system';
+import { Container } from '../../ui/Container';
 import CompactTypeEffectiveness from '../CompactTypeEffectiveness';
 import { formatEggGroups } from '../../../utils/pokemonDetailUtils';
 import { cn } from '../../../utils/cn';
@@ -56,7 +56,7 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
   // Info card component for consistent styling
   const InfoCard = ({ icon: Icon, title, children, iconColor = "text-stone-500", className = "" }: { icon: React.ComponentType<{ className?: string }>, title: string, children: React.ReactNode, iconColor?: string, className?: string }) => (
     <div className="transform transition-transform duration-300 hover:scale-[1.02] will-change-transform">
-      <GlassContainer variant="dark" className={cn("h-full", className)} animate={false}>
+      <Container variant="default" className={cn("h-full", className)} animate={false}>
         <div className="p-6">
           <div className="flex items-center gap-3 mb-4">
             <div className={cn("w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center", iconColor)}>
@@ -68,7 +68,7 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
             {children}
           </div>
         </div>
-      </GlassContainer>
+      </Container>
     </div>
   );
 
@@ -90,8 +90,8 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <GlassContainer
-          variant="dark"
+        <Container
+          variant="default"
           className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
           animate={false}
         >
@@ -110,7 +110,7 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
               {getFlavorText()}
             </p>
           </div>
-        </GlassContainer>
+        </Container>
       </motion.div>
 
       {/* Training, Breeding, and Biology Cards */}
@@ -271,8 +271,8 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
       >
-        <GlassContainer
-          variant="dark"
+        <Container
+          variant="default"
           className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
           animate={false}
         >
@@ -282,7 +282,7 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
             </h2>
             <CompactTypeEffectiveness types={pokemon.types || []} competitiveTiers={competitiveTiers} />
           </div>
-        </GlassContainer>
+        </Container>
       </motion.div>
 
 
@@ -293,8 +293,8 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <GlassContainer
-          variant="dark"
+        <Container
+          variant="default"
           className="backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl"
           animate={false}
         >
@@ -353,7 +353,7 @@ const OverviewTabV3: React.FC<OverviewTabV3Props> = ({
               })}
             </div>
           </div>
-        </GlassContainer>
+        </Container>
       </motion.div>
 
     </div>
