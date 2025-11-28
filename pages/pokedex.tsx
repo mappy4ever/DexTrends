@@ -450,7 +450,7 @@ const UnifiedPokedex: NextPage = () => {
                   placeholder="Search Pokémon..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full min-h-[44px] px-4 py-2.5 sm:py-3 pl-11 sm:pl-12 text-base bg-stone-100 dark:bg-stone-800 rounded-full focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all touch-manipulation"
+                  className="w-full min-h-[44px] px-4 py-2.5 sm:py-3 pl-12 sm:pl-14 text-base bg-stone-100 dark:bg-stone-800 rounded-full focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all touch-manipulation"
                   style={{ fontSize: '16px' }}
                 />
                 <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

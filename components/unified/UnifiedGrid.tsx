@@ -264,10 +264,12 @@ export function UnifiedGrid<T extends GridItem>({
         {visibleItems.map(({ item: row, index: rowIndex, offsetTop }) => (
           <div
             key={rowIndex}
-            className="absolute flex"
+            className="absolute left-0 right-0 flex justify-start"
             style={{
               top: offsetTop,
-              gap: `${gapSize}px`
+              gap: `${gapSize}px`,
+              paddingLeft: '0',
+              paddingRight: '0'
             }}
           >
             {row.map((item, colIndex) => (

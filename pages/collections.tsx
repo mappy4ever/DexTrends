@@ -4,7 +4,7 @@ import { useTheme } from '../context/UnifiedAppContext';
 import { DynamicCollectionManager, DynamicPriceAlerts } from '../components/dynamic/DynamicComponents';
 import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import PageErrorBoundary from '../components/ui/PageErrorBoundary';
-import { GlassContainer } from '../components/ui/design-system/GlassContainer';
+import { Container } from '../components/ui/Container';
 import { GradientButton } from '../components/ui/design-system';
 import { CircularCard } from '../components/ui/design-system/CircularCard';
 import { CircularButton, DefaultCard, CardHeader, CardTitle, CardContent } from '../components/ui/design-system';
@@ -89,7 +89,7 @@ const CollectionsPage: NextPage = () => {
           transition={{ delay: 0.2 }}
           className="flex justify-center mb-8"
         >
-          <GlassContainer variant="medium" rounded="full" padding="none" className="inline-flex">
+          <Container variant="default" rounded="full" padding="none" className="inline-flex">
             <div className="flex space-x-1 p-1">
               {tabs.map(tab => (
                 <CircularButton
@@ -102,7 +102,7 @@ const CollectionsPage: NextPage = () => {
                 </CircularButton>
               ))}
             </div>
-          </GlassContainer>
+          </Container>
         </motion.div>
 
         {/* Tab Content */}
@@ -172,7 +172,7 @@ const PortfolioOverview: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
-          <GlassContainer variant="colored" hover className="h-full">
+          <Container variant="gradient" hover className="h-full">
             <div className="text-sm text-stone-600 dark:text-stone-400">Total Value</div>
             <div className="text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
               {formatCurrency(portfolioData.totalValue)}
@@ -180,7 +180,7 @@ const PortfolioOverview: React.FC = () => {
             <div className="text-sm text-green-600 mt-1">
               +12.5% this month
             </div>
-          </GlassContainer>
+          </Container>
         </motion.div>
         
         <motion.div
@@ -188,7 +188,7 @@ const PortfolioOverview: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <GlassContainer variant="medium" hover className="h-full">
+          <Container variant="default" hover className="h-full">
             <div className="text-sm text-stone-600 dark:text-stone-400">Total Cards</div>
             <div className="text-3xl font-bold text-stone-800 dark:text-white">
               {portfolioData.totalCards}
@@ -196,7 +196,7 @@ const PortfolioOverview: React.FC = () => {
             <div className="text-sm text-stone-500 dark:text-stone-400 mt-1">
               across all collections
             </div>
-          </GlassContainer>
+          </Container>
         </motion.div>
         
         <motion.div
@@ -204,7 +204,7 @@ const PortfolioOverview: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          <GlassContainer variant="medium" hover className="h-full">
+          <Container variant="default" hover className="h-full">
             <div className="text-sm text-stone-600 dark:text-stone-400">Unique Cards</div>
             <div className="text-3xl font-bold text-stone-800 dark:text-white">
               {portfolioData.uniqueCards}
@@ -212,7 +212,7 @@ const PortfolioOverview: React.FC = () => {
             <div className="text-sm text-stone-500 dark:text-stone-400 mt-1">
               different cards
             </div>
-          </GlassContainer>
+          </Container>
         </motion.div>
         
         <motion.div
@@ -220,7 +220,7 @@ const PortfolioOverview: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <GlassContainer variant="medium" hover className="h-full">
+          <Container variant="default" hover className="h-full">
             <div className="text-sm text-stone-600 dark:text-stone-400">Avg Card Value</div>
             <div className="text-3xl font-bold text-stone-800 dark:text-white">
               {formatCurrency(portfolioData.totalValue / portfolioData.totalCards)}
@@ -228,13 +228,13 @@ const PortfolioOverview: React.FC = () => {
             <div className="text-sm text-stone-500 dark:text-stone-400 mt-1">
               per card
             </div>
-          </GlassContainer>
+          </Container>
         </motion.div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Top Performing Cards */}
-        <GlassContainer variant="medium">
+        <Container variant="default">
           <h3 className="text-lg font-semibold text-stone-800 dark:text-white mb-4">
             Top Performing Cards
           </h3>
@@ -260,7 +260,7 @@ const PortfolioOverview: React.FC = () => {
                 </div>
               ))}
             </div>
-          </GlassContainer>
+          </Container>
 
         {/* Recent Activity */}
         <DefaultCard 

@@ -24,26 +24,27 @@ import { cn } from '@/utils/cn';
 import { cardHover } from '@/utils/animations';
 import { useProgressiveImage } from '@/hooks/useProgressiveImage';
 
-// Type color mappings for gradients
+// Type color mappings for gradients - Official Pokemon colors
+// Removed /60 opacity for more vibrant colors
 const typeGradients: Record<string, string> = {
-  normal: 'from-stone-300/60 via-stone-200/40 to-stone-100/60',
-  fire: 'from-red-300/60 via-orange-200/40 to-yellow-100/60',
-  water: 'from-amber-300/60 via-amber-200/40 to-amber-100/60',
-  electric: 'from-yellow-300/60 via-amber-200/40 to-yellow-100/60',
-  grass: 'from-green-300/60 via-emerald-200/40 to-lime-100/60',
-  ice: 'from-cyan-300/60 via-amber-200/40 to-sky-100/60',
-  fighting: 'from-red-400/60 via-orange-300/40 to-red-200/60',
-  poison: 'from-amber-400/60 via-amber-300/40 to-amber-200/60',
-  ground: 'from-yellow-500/60 via-amber-400/40 to-orange-300/60',
-  flying: 'from-amber-300/60 via-amber-200/40 to-sky-100/60',
-  psychic: 'from-amber-400/60 via-amber-300/40 to-amber-200/60',
-  bug: 'from-lime-400/60 via-green-300/40 to-lime-200/60',
-  rock: 'from-yellow-600/60 via-amber-500/40 to-yellow-400/60',
-  ghost: 'from-stone-500/60 via-stone-400/40 to-stone-300/60',
-  dragon: 'from-amber-500/60 via-amber-400/40 to-amber-300/60',
-  dark: 'from-stone-700/60 via-stone-600/40 to-stone-500/60',
-  steel: 'from-stone-400/60 via-stone-300/40 to-stone-200/60',
-  fairy: 'from-pink-300/60 via-rose-200/40 to-pink-100/60',
+  normal: 'from-stone-400 via-stone-300 to-stone-200',
+  fire: 'from-orange-500 via-orange-400 to-amber-300',
+  water: 'from-blue-500 via-blue-400 to-sky-300',
+  electric: 'from-yellow-400 via-amber-300 to-yellow-200',
+  grass: 'from-green-500 via-emerald-400 to-lime-300',
+  ice: 'from-cyan-400 via-teal-300 to-sky-200',
+  fighting: 'from-red-600 via-red-500 to-orange-400',
+  poison: 'from-purple-500 via-purple-400 to-fuchsia-300',
+  ground: 'from-amber-500 via-yellow-400 to-orange-300',
+  flying: 'from-indigo-400 via-violet-300 to-purple-200',
+  psychic: 'from-pink-500 via-rose-400 to-pink-300',
+  bug: 'from-lime-500 via-green-400 to-lime-300',
+  rock: 'from-amber-600 via-yellow-500 to-amber-400',
+  ghost: 'from-purple-600 via-violet-500 to-purple-400',
+  dragon: 'from-violet-600 via-indigo-500 to-purple-400',
+  dark: 'from-stone-700 via-stone-600 to-stone-500',
+  steel: 'from-slate-400 via-slate-300 to-slate-200',
+  fairy: 'from-pink-400 via-rose-300 to-pink-200',
 };
 
 interface PokemonType {

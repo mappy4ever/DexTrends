@@ -7,7 +7,7 @@ import { fetchJSON } from '../utils/unifiedFetch';
 import { POKEMON_TYPE_COLORS } from '../utils/unifiedTypeColors';
 import { POKEAPI } from '../config/api';
 import { TypeBadge } from '../components/ui/TypeBadge';
-import { GlassContainer } from '../components/ui/design-system/GlassContainer';
+import { Container } from '../components/ui/Container';
 // Removed div and button imports - using standard rectangular designs
 import { TypeGradientBadge } from '../components/ui/design-system/TypeGradientBadge';
 import { motion } from 'framer-motion';
@@ -1331,7 +1331,7 @@ const BattleSimulator: NextPage = () => {
         {/* Main Content */}
         <div className="container mx-auto px-4 py-4 sm:py-6 md:py-8">
           {/* Quick Links */}
-          <GlassContainer variant="colored" className="mb-4 sm:mb-6 md:mb-8">
+          <Container variant="colored" className="mb-4 sm:mb-6 md:mb-8">
             <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-4">
               <Link href="/team-builder/advanced">
                 <button
@@ -1351,10 +1351,10 @@ const BattleSimulator: NextPage = () => {
                 </button>
               </Link>
             </div>
-          </GlassContainer>
+          </Container>
           
           {/* Battle Format & Weather Selection */}
-          <GlassContainer variant="medium" className="mb-4 sm:mb-6 md:mb-8">
+          <Container variant="default" className="mb-4 sm:mb-6 md:mb-8">
             <div className="space-y-4 sm:space-y-6">
               <h3 className="text-base sm:text-lg font-semibold text-stone-700 dark:text-stone-300 text-center">Battle Configuration</h3>
               
@@ -1422,13 +1422,13 @@ const BattleSimulator: NextPage = () => {
                 </motion.button>
               </div>
             </div>
-          </GlassContainer>
+          </Container>
           
           {/* Battle Arena */}
-          <GlassContainer variant="dark" className="mb-4 sm:mb-6 md:mb-8">
+          <Container variant="dark" className="mb-4 sm:mb-6 md:mb-8">
             <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 mb-4 sm:mb-6 md:mb-8">
               {/* Pokemon 1 */}
-              <GlassContainer variant="colored" className="text-center lg:flex-1 bg-gradient-to-br from-red-50/80 to-orange-50/80">
+              <Container variant="colored" className="text-center lg:flex-1 bg-gradient-to-br from-red-50/80 to-orange-50/80">
                 {/* Editable Trainer Name */}
                 <div className="mb-4">
                   {editingPlayer1 ? (
@@ -1628,7 +1628,7 @@ const BattleSimulator: NextPage = () => {
                     <span className="text-stone-500">Click to select Pokemon</span>
                   </button>
                 )}
-              </GlassContainer>
+              </Container>
 
               {/* VS Divider with Modern Badge */}
               <div className="lg:flex items-center justify-center lg:flex-col lg:justify-center lg:px-4">
@@ -1651,7 +1651,7 @@ const BattleSimulator: NextPage = () => {
               </div>
 
               {/* Pokemon 2 */}
-              <GlassContainer variant="colored" className="text-center lg:flex-1 bg-gradient-to-br from-yellow-50/80 to-red-50/80">
+              <Container variant="colored" className="text-center lg:flex-1 bg-gradient-to-br from-yellow-50/80 to-red-50/80">
                 {/* Editable Trainer Name */}
                 <div className="mb-4">
                   {editingPlayer2 ? (
@@ -1851,13 +1851,13 @@ const BattleSimulator: NextPage = () => {
                     <span className="text-stone-500">Click to select Pokemon</span>
                   </button>
                 )}
-              </GlassContainer>
+              </Container>
             </div>
-          </GlassContainer>
+          </Container>
 
             {/* Battle Controls */}
             {selectedPokemon1 && selectedPokemon2 && (
-              <GlassContainer variant="medium" className="text-center">
+              <Container variant="default" className="text-center">
                 {!battleActive ? (
                   <div className="space-y-4">
                     <button
@@ -2019,12 +2019,12 @@ const BattleSimulator: NextPage = () => {
                     )}
                   </div>
                 </div>
-              </GlassContainer>
+              </Container>
             )}
 
           {/* Battle Log */}
           {battleLog.length > 0 && (
-            <GlassContainer variant="dark" className="mb-8">
+            <Container variant="dark" className="mb-8">
               <h3 className="text-2xl font-semibold mb-4 text-stone-700 dark:text-stone-300">Battle Log</h3>
               <div className="bg-white/50 dark:bg-stone-800/50 rounded-xl p-4 max-h-64 overflow-y-auto space-y-2 backdrop-blur-sm border border-white/20">
                 {battleLog.map((log, index) => {
@@ -2086,12 +2086,12 @@ const BattleSimulator: NextPage = () => {
                   );
                 })}
               </div>
-            </GlassContainer>
+            </Container>
           )}
 
           {/* Battle History */}
           {battleHistory.length > 0 && (
-            <GlassContainer variant="medium" className="mb-8">
+            <Container variant="default" className="mb-8">
               <h3 className="text-2xl font-semibold mb-4 text-stone-700 dark:text-stone-300">Battle History</h3>
               <div className="space-y-3">
                 {battleHistory.slice(-5).reverse().map((battle, index) => (
@@ -2112,7 +2112,7 @@ const BattleSimulator: NextPage = () => {
                   </div>
                 ))}
               </div>
-            </GlassContainer>
+            </Container>
           )}
 
           {/* Pokemon Selector Modal */}

@@ -20,7 +20,7 @@ import {
   FiMonitor,
   FiTablet
 } from 'react-icons/fi';
-import { GlassContainer } from '../components/ui/design-system/GlassContainer';
+import { Container } from '../components/ui/Container';
 import { LineChart, BarChart, DoughnutChart } from '../components/ui/LazyChart';
 import ExportButton from '../components/ui/ExportButton';
 import PageErrorBoundary from '../components/ui/PageErrorBoundary';
@@ -126,7 +126,7 @@ const generateMockAnalyticsData = (): AnalyticsDashboardData => {
 
 // Metric Card Component
 const MetricCard: React.FC<{ metric: AnalyticsMetric; icon: React.ReactNode }> = ({ metric, icon }) => (
-  <GlassContainer variant="medium" blur="md" hover className="h-full">
+  <Container variant="default" hover className="h-full">
     <div className="flex items-start justify-between">
       <div className="flex-1">
         <div className="flex items-center gap-3 mb-2">
@@ -161,17 +161,17 @@ const MetricCard: React.FC<{ metric: AnalyticsMetric; icon: React.ReactNode }> =
         )}
       </div>
     </div>
-  </GlassContainer>
+  </Container>
 );
 
 // Popular Items List Component
-const PopularItemsList: React.FC<{ 
-  title: string; 
-  items: PopularItem[]; 
+const PopularItemsList: React.FC<{
+  title: string;
+  items: PopularItem[];
   icon: React.ReactNode;
   showPercentage?: boolean;
 }> = ({ title, items, icon, showPercentage = true }) => (
-  <GlassContainer variant="medium" blur="md" className="h-full">
+  <Container variant="default" className="h-full">
     <div className="flex items-center gap-3 mb-4">
       <div className="text-purple-600 dark:text-purple-400">
         {icon}
@@ -212,7 +212,7 @@ const PopularItemsList: React.FC<{
         </motion.div>
       ))}
     </div>
-  </GlassContainer>
+  </Container>
 );
 
 const Analytics: NextPage = () => {
@@ -413,13 +413,13 @@ const Analytics: NextPage = () => {
             <div className="grid gap-6">
               {/* Loading skeletons */}
               {Array.from({ length: 6 }).map((_, i) => (
-                <GlassContainer key={i} variant="medium" blur="md">
+                <Container key={i} variant="default">
                   <div className="animate-pulse">
                     <div className="h-4 bg-stone-300 dark:bg-stone-600 rounded w-1/4 mb-2"></div>
                     <div className="h-8 bg-stone-300 dark:bg-stone-600 rounded w-1/3 mb-4"></div>
                     <div className="h-32 bg-stone-300 dark:bg-stone-600 rounded"></div>
                   </div>
-                </GlassContainer>
+                </Container>
               ))}
             </div>
           </div>
@@ -433,7 +433,7 @@ const Analytics: NextPage = () => {
       <PageErrorBoundary pageName="Analytics Dashboard">
         <FullBleedWrapper gradient="pokedex">
           <div className="container mx-auto px-4 py-8">
-            <GlassContainer variant="medium" blur="md">
+            <Container variant="default">
               <div className="text-center py-12">
                 <FiBarChart2 className="w-16 h-16 text-stone-400 mx-auto mb-4" />
                 <h2 className="text-xl font-semibold text-stone-900 dark:text-white mb-2">
@@ -443,7 +443,7 @@ const Analytics: NextPage = () => {
                   Analytics data is not available at the moment. Please try again later.
                 </p>
               </div>
-            </GlassContainer>
+            </Container>
           </div>
         </FullBleedWrapper>
       </PageErrorBoundary>
@@ -539,7 +539,7 @@ const Analytics: NextPage = () => {
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Search Trends Chart */}
-              <GlassContainer variant="medium" blur="md" className="p-6">
+              <Container variant="default" className="p-6">
                 <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">
                   Search Trends (30 Days)
                 </h3>
@@ -552,10 +552,10 @@ const Analytics: NextPage = () => {
                     />
                   )}
                 </div>
-              </GlassContainer>
+              </Container>
 
               {/* Page Views Chart */}
-              <GlassContainer variant="medium" blur="md" className="p-6">
+              <Container variant="default" className="p-6">
                 <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">
                   Page Views by Section
                 </h3>
@@ -568,10 +568,10 @@ const Analytics: NextPage = () => {
                     />
                   )}
                 </div>
-              </GlassContainer>
+              </Container>
 
               {/* Device Statistics */}
-              <GlassContainer variant="medium" blur="md" className="p-6">
+              <Container variant="default" className="p-6">
                 <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">
                   Device Usage
                 </h3>
@@ -584,10 +584,10 @@ const Analytics: NextPage = () => {
                     />
                   )}
                 </div>
-              </GlassContainer>
+              </Container>
 
               {/* Performance Metrics */}
-              <GlassContainer variant="medium" blur="md" className="p-6">
+              <Container variant="default" className="p-6">
                 <h3 className="text-lg font-semibold text-stone-900 dark:text-white mb-4">
                   Performance Metrics
                 </h3>
@@ -605,7 +605,7 @@ const Analytics: NextPage = () => {
                     icon={<FiActivity className="w-5 h-5" />} 
                   />
                 </div>
-              </GlassContainer>
+              </Container>
             </div>
           </motion.section>
 

@@ -12,7 +12,7 @@ import Image from 'next/image';
 import { getPokemonSDK } from '../../utils/pokemonSDK';
 import { FadeIn, SlideUp } from '../../components/ui/animations/animations';
 import { TypeBadge } from '../../components/ui/TypeBadge';
-import { GlassContainer } from '../../components/ui/design-system/GlassContainer';
+import { Container } from '../../components/ui/Container';
 import { CircularCard } from '../../components/ui/design-system/CircularCard';
 import { GradientButton } from '../../components/ui/design-system';
 import { TypeGradientBadge } from '../../components/ui/design-system/TypeGradientBadge';
@@ -188,7 +188,7 @@ const EVOptimizer: NextPage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Pokemon Selection */}
             <div className="lg:col-span-1">
-              <GlassContainer variant="medium">
+              <Container variant="default">
                 <h2 className="text-xl font-bold mb-4 text-stone-800 dark:text-stone-200">Select Pokemon</h2>
                 
                 <input
@@ -238,7 +238,7 @@ const EVOptimizer: NextPage = () => {
 
                 {selectedPokemon && (
                   <div className="mt-6">
-                    <GlassContainer variant="light" rounded="2xl" padding="md">
+                    <Container variant="outline" rounded="2xl" padding="md">
                       <div className="flex items-center justify-center mb-4">
                         <CircularCard
                           size="md"
@@ -288,10 +288,10 @@ const EVOptimizer: NextPage = () => {
                         </select>
                       </div>
                     </div>
-                    </GlassContainer>
+                    </Container>
                   </div>
                 )}
-              </GlassContainer>
+              </Container>
 
               {/* Speed Calculator */}
               {selectedPokemon && (

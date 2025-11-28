@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { useTheme } from "../../context/UnifiedAppContext";
 import { useSmoothParallax } from "../../hooks/useSmoothParallax";
 import EnhancedStarterSelector from "../../components/ui/EnhancedStarterSelector";
-import { GlassContainer } from "../../components/ui/design-system/GlassContainer";
+import { Container } from "../../components/ui/Container";
 import { createGlassStyle } from '../../components/ui/design-system/glass-constants';
 import { GradientButton, CircularButton } from '../../components/ui/design-system';
 import { FiChevronLeft, FiMapPin, FiBook, FiLayers, FiSmartphone } from 'react-icons/fi';
@@ -393,7 +393,7 @@ const StartersPage: NextPage = () => {
             </motion.div>
 
             {/* Fun Facts Section */}
-            <GlassContainer
+            <Container
               variant="colored"
               rounded="3xl"
               padding="lg"
@@ -406,34 +406,34 @@ const StartersPage: NextPage = () => {
                 </span>
               </h3>
               <div className="grid md:grid-cols-3 gap-6">
-                <GlassContainer variant="light" rounded="2xl" padding="md" className="text-center">
+                <Container variant="light" rounded="2xl" padding="md" className="text-center">
                   <div className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent mb-3">
                     27
                   </div>
                   <p className="text-sm text-stone-700 dark:text-stone-300 font-medium">
                     Total starter Pokemon across all generations
                   </p>
-                </GlassContainer>
+                </Container>
                 
-                <GlassContainer variant="light" rounded="2xl" padding="md" className="text-center">
+                <Container variant="light" rounded="2xl" padding="md" className="text-center">
                   <div className="text-4xl font-bold bg-gradient-to-r from-pink-600 to-pink-400 bg-clip-text text-transparent mb-3">
                     3
                   </div>
                   <p className="text-sm text-stone-700 dark:text-stone-300 font-medium">
                     Starters in each generation - always Grass, Fire, and Water
                   </p>
-                </GlassContainer>
+                </Container>
                 
-                <GlassContainer variant="light" rounded="2xl" padding="md" className="text-center">
+                <Container variant="light" rounded="2xl" padding="md" className="text-center">
                   <div className="text-4xl font-bold bg-gradient-to-r from-amber-600 to-amber-400 bg-clip-text text-transparent mb-3">
                     87.5%
                   </div>
                   <p className="text-sm text-stone-700 dark:text-stone-300 font-medium">
                     Male gender ratio for all starter Pokemon
                   </p>
-                </GlassContainer>
+                </Container>
               </div>
-            </GlassContainer>
+            </Container>
           </div>
         </div>
       </div>

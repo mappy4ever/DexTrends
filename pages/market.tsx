@@ -6,7 +6,7 @@ import FullBleedWrapper from '../components/ui/FullBleedWrapper';
 import PageErrorBoundary from '../components/ui/PageErrorBoundary';
 import BackToTop from '../components/ui/BaseBackToTop';
 import { FadeIn, SlideUp } from '../components/ui/animations/animations';
-import { GlassContainer } from '../components/ui/design-system/GlassContainer';
+import { Container } from '../components/ui/Container';
 import { GradientButton, CircularButton } from '../components/ui/design-system';
 import { motion } from 'framer-motion';
 import type { NextPage } from 'next';
@@ -87,40 +87,40 @@ const MarketPage: NextPage = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 }}
                 >
-                  <GlassContainer variant="medium" hover className="text-center">
+                  <Container variant="default" hover className="text-center">
                     <div className="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">2.4K+</div>
                     <div className="text-sm text-stone-600 dark:text-stone-400">Cards Tracked</div>
-                  </GlassContainer>
+                  </Container>
                 </motion.div>
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
                 >
-                  <GlassContainer variant="medium" hover className="text-center">
+                  <Container variant="default" hover className="text-center">
                     <div className="text-2xl font-bold bg-gradient-to-r from-amber-600 to-cyan-600 bg-clip-text text-transparent">$45K</div>
                     <div className="text-sm text-stone-600 dark:text-stone-400">Daily Volume</div>
-                  </GlassContainer>
+                  </Container>
                 </motion.div>
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
                 >
-                  <GlassContainer variant="medium" hover className="text-center">
+                  <Container variant="default" hover className="text-center">
                     <div className="text-2xl font-bold bg-gradient-to-r from-amber-600 to-pink-600 bg-clip-text text-transparent">+12.5%</div>
                     <div className="text-sm text-stone-600 dark:text-stone-400">Weekly Growth</div>
-                  </GlassContainer>
+                  </Container>
                 </motion.div>
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
                 >
-                  <GlassContainer variant="medium" hover className="text-center">
+                  <Container variant="default" hover className="text-center">
                     <div className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">156</div>
                     <div className="text-sm text-stone-600 dark:text-stone-400">Active Traders</div>
-                  </GlassContainer>
+                  </Container>
                 </motion.div>
               </div>
             </div>
@@ -129,7 +129,7 @@ const MarketPage: NextPage = () => {
           <SlideUp>
             {/* Tab Navigation with Glass Morphism */}
             <div className="flex justify-center mb-8">
-              <GlassContainer variant="medium" rounded="2xl" padding="sm" className="max-w-4xl w-full">
+              <Container variant="default" rounded="2xl" padding="sm" className="max-w-4xl w-full">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
                   {tabs.map(tab => (
                     <CircularButton
@@ -159,7 +159,7 @@ const MarketPage: NextPage = () => {
                     </CircularButton>
                   ))}
                 </div>
-              </GlassContainer>
+              </Container>
             </div>
           </SlideUp>
 

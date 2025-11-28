@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import { motion } from 'framer-motion';
-import { GlassContainer } from '../components/ui/design-system/GlassContainer';
+import { Container } from '../components/ui/Container';
 import { CircularButton } from '../components/ui/design-system';
 import { FullBleedWrapper } from '../components/ui/FullBleedWrapper';
 import { FiRefreshCw } from 'react-icons/fi';
@@ -65,7 +65,7 @@ const Custom500: NextPage = () => {
         transition={{ duration: 0.5 }}
         className="relative z-10"
       >
-        <GlassContainer variant="colored" className="max-w-lg mx-auto text-center">
+        <Container variant="default" className="max-w-lg mx-auto text-center">
           {/* DexTrends Logo */}
           <div className="mb-6">
             <DexTrendsLogo variant="horizontal" size="sm" className="mx-auto opacity-80" />
@@ -173,7 +173,7 @@ const Custom500: NextPage = () => {
             <FaBolt className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />
             Server is paralyzed! It may be unable to move!
           </motion.div>
-        </GlassContainer>
+        </Container>
       </motion.div>
     </div>
     </FullBleedWrapper>
