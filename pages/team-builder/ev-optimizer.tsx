@@ -238,7 +238,7 @@ const EVOptimizer: NextPage = () => {
 
                 {selectedPokemon && (
                   <div className="mt-6">
-                    <Container variant="outline" rounded="2xl" padding="md">
+                    <Container variant="outline" rounded="xl" padding="md">
                       <div className="flex items-center justify-center mb-4">
                         <CircularCard
                           size="md"

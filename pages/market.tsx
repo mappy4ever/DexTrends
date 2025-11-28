@@ -129,7 +129,7 @@ const MarketPage: NextPage = () => {
           <SlideUp>
             {/* Tab Navigation with Glass Morphism */}
             <div className="flex justify-center mb-8">
-              <Container variant="default" rounded="2xl" padding="sm" className="max-w-4xl w-full">
+              <Container variant="default" rounded="xl" padding="sm" className="max-w-4xl w-full">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
                   {tabs.map(tab => (
                     <CircularButton
