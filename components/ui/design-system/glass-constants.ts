@@ -120,15 +120,15 @@ export const GLASS_BLUR = {
 export const GLASS_BG = {
   // Light glass (for light backgrounds)
   light: {
-    subtle: 'bg-white/60 dark:bg-gray-900/60',
-    medium: 'bg-white/75 dark:bg-gray-900/75',
-    strong: 'bg-white/90 dark:bg-gray-900/90',
+    subtle: 'bg-white/60 dark:bg-stone-900/60',
+    medium: 'bg-white/75 dark:bg-stone-900/75',
+    strong: 'bg-white/90 dark:bg-stone-900/90',
   },
   // Frosted glass (more opacity)
   frosted: {
-    subtle: 'bg-gray-50/70 dark:bg-gray-800/70',
-    medium: 'bg-gray-50/85 dark:bg-gray-800/85',
-    strong: 'bg-white/95 dark:bg-gray-800/95',
+    subtle: 'bg-stone-50/70 dark:bg-stone-800/70',
+    medium: 'bg-stone-50/85 dark:bg-stone-800/85',
+    strong: 'bg-white/95 dark:bg-stone-800/95',
   },
 } as const;
 
@@ -141,9 +141,9 @@ export const GLASS_OPACITY = {
 // Glass borders - subtle, elegant
 export const GLASS_BORDER = {
   none: '',
-  subtle: 'border border-gray-200/50 dark:border-gray-700/50',
-  medium: 'border border-gray-200 dark:border-gray-700',
-  strong: 'border border-gray-300 dark:border-gray-600',
+  subtle: 'border border-stone-200/50 dark:border-stone-700/50',
+  medium: 'border border-stone-200 dark:border-stone-700',
+  strong: 'border border-stone-300 dark:border-stone-600',
 } as const;
 
 // ===========================================
@@ -204,13 +204,53 @@ export const TRANSITION = {
 export const GLASS_TRANSITION = TRANSITION;
 
 // ===========================================
+// ANIMATION DURATION - Standardized Timing
+// ===========================================
+// Use these values for consistent animation timing across the app
+
+export const ANIMATION_DURATION = {
+  instant: 75,     // Instant feedback (ms)
+  fast: 150,       // Default transitions, hover effects
+  medium: 200,     // Card transitions, small animations
+  slow: 300,       // Modal transitions, larger animations
+  slower: 500,     // Page transitions, complex animations
+  // Tailwind class equivalents
+  classes: {
+    instant: 'duration-75',
+    fast: 'duration-150',
+    medium: 'duration-200',
+    slow: 'duration-300',
+    slower: 'duration-500',
+  },
+} as const;
+
+// ===========================================
+// SPRING PHYSICS - For framer-motion/animations
+// ===========================================
+// Standardized spring configurations for smooth animations
+
+export const SPRING_PHYSICS = {
+  // Quick, snappy animations (buttons, toggles)
+  snappy: { type: 'spring', stiffness: 400, damping: 30 },
+  // Default for most UI elements
+  default: { type: 'spring', stiffness: 300, damping: 30 },
+  // Smooth, gentle animations (modals, sheets)
+  gentle: { type: 'spring', stiffness: 200, damping: 25 },
+  // Bouncy animations (celebratory, playful)
+  bouncy: { type: 'spring', stiffness: 300, damping: 15 },
+  // No spring, just easing
+  easing: { duration: 0.2, ease: [0.4, 0, 0.2, 1] },
+} as const;
+
+// ===========================================
 // HOVER EFFECTS - Subtle & Elegant
 // ===========================================
 
 export const HOVER = {
   none: '',
-  // Subtle, elegant hover effects
-  lift: 'hover:-translate-y-0.5 hover:shadow-md',
+  // Standard lift - the default hover for cards (per user preference)
+  lift: 'hover:scale-[1.02] hover:-translate-y-1 hover:shadow-lg',
+  // Subtle alternatives
   scale: 'hover:scale-[1.01]',
   glow: 'hover:shadow-md hover:shadow-amber-500/10',
   brighten: 'hover:brightness-[1.02]',
@@ -218,8 +258,9 @@ export const HOVER = {
   shadowOnly: 'hover:shadow-md',
   subtle: 'hover:-translate-y-px hover:shadow-md',
   medium: 'hover:-translate-y-0.5 hover:shadow-lg',
-  // Refined card/button effects
-  card: 'hover:shadow-lg hover:-translate-y-0.5',
+  // Standard card hover - same as lift (per user preference: scale 1.02, -4px lift, shadow-lg)
+  card: 'hover:scale-[1.02] hover:-translate-y-1 hover:shadow-lg',
+  // Button hover with press feedback
   button: 'hover:shadow-md active:scale-[0.98]',
   link: 'hover:text-amber-600 dark:hover:text-amber-400',
 } as const;
@@ -470,6 +511,9 @@ export default {
   ICON_SIZE,
   ICON_SIZE_PX,
   INPUT_SIZE,
+  // Animation tokens (new)
+  ANIMATION_DURATION,
+  SPRING_PHYSICS,
   // Glass morphism (deprecated - use SURFACE instead)
   GLASS_BG,
   GLASS_BLUR,

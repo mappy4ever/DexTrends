@@ -206,7 +206,11 @@ const config = {
         bounce: {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-5px)' },
-        }
+        },
+        shimmer: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' },
+        },
       },
       animation: {
         fadeIn: 'fadeIn 0.5s ease-in-out',
@@ -215,6 +219,7 @@ const config = {
         pulse: 'pulse 2s ease-in-out infinite',
         float: 'float 3s ease-in-out infinite',
         bounce: 'bounce 1s ease-in-out infinite',
+        shimmer: 'shimmer 2s infinite',
       },
     },
   },
