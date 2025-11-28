@@ -7,7 +7,8 @@ import { motion } from "framer-motion";
 import { useTheme } from "../../../context/UnifiedAppContext";
 import { FullBleedWrapper } from "../../../components/ui";
 import RouteErrorBoundary from "../../../components/RouteErrorBoundary";
-import { StandardGlassContainer, SectionHeader, CircularButton } from '../../../components/ui/design-system';
+import { SectionHeader, CircularButton } from '../../../components/ui/design-system';
+import { Container } from '../../../components/ui/Container';
 
 // Import Region Components
 import RegionHero from "../../../components/regions/RegionHero";
@@ -643,7 +644,7 @@ export default function RegionDetailPage() {
               transition={{ duration: 0.5 }}
               className="overflow-hidden"
             >
-              <StandardGlassContainer className="max-w-full">
+              <Container variant="default" className="max-w-full">
                 <RegionInfo region={{
                   ...region,
                   gymLeaders: region.gymLeaders?.map(leader => ({
@@ -656,7 +657,7 @@ export default function RegionDetailPage() {
                     name: region.legendaries[index] || `Legendary ${id}`
                   })) || []
                 }} theme={theme} />
-              </StandardGlassContainer>
+              </Container>
             </motion.section>
 
             {/* Professor Section */}
@@ -667,9 +668,9 @@ export default function RegionDetailPage() {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="overflow-hidden"
             >
-              <StandardGlassContainer className="max-w-full">
+              <Container variant="default" className="max-w-full">
                 <ProfessorShowcase region={region} professor={region.professor} theme={theme} />
-              </StandardGlassContainer>
+              </Container>
             </motion.section>
 
             {/* Unified Starters Section */}
@@ -796,7 +797,7 @@ export default function RegionDetailPage() {
                   <div className="absolute inset-0 bg-gradient-to-br from-amber-400 via-amber-500 to-pink-500 animate-pulse" />
                 </div>
                 
-                <StandardGlassContainer>
+                <Container variant="default">
                   <SectionHeader 
                     icon={<BsGeoAlt className="text-2xl text-amber-500" />}
                     title="Explore the Region"
@@ -979,7 +980,7 @@ export default function RegionDetailPage() {
                       </div>
                     </motion.div>
                   )}
-                </StandardGlassContainer>
+                </Container>
               </div>
             </motion.section>
 
@@ -990,9 +991,9 @@ export default function RegionDetailPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.5 }}
             >
-              <StandardGlassContainer>
+              <Container variant="default">
                 <GameShowcase region={region} theme={theme} />
-              </StandardGlassContainer>
+              </Container>
             </motion.section>
 
             {/* Evil Teams Section */}
@@ -1002,9 +1003,9 @@ export default function RegionDetailPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.6 }}
             >
-              <StandardGlassContainer>
+              <Container variant="default">
                 <EvilTeamShowcase region={region} theme={theme} />
-              </StandardGlassContainer>
+              </Container>
             </motion.section>
 
             {/* Enhanced Trivia Section - Glass Knowledge Cards */}
@@ -1021,7 +1022,7 @@ export default function RegionDetailPage() {
                     <div className="absolute inset-0 bg-gradient-to-br from-yellow-400 via-amber-500 to-pink-500 animate-pulse" />
                   </div>
                   
-                  <StandardGlassContainer>
+                  <Container variant="default">
                     <div className="text-center mb-10">
                       <div className="flex items-center justify-center gap-3 mb-4">
                         <BsStar className="text-3xl text-yellow-500 animate-pulse" />
@@ -1108,7 +1109,7 @@ export default function RegionDetailPage() {
                         Share these facts with fellow trainers to become a {region.name} expert!
                       </p>
                     </motion.div>
-                  </StandardGlassContainer>
+                  </Container>
                 </div>
               </motion.section>
             )}

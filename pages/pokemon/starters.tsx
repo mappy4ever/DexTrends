@@ -395,9 +395,9 @@ const StartersPage: NextPage = () => {
             {/* Fun Facts Section */}
             <Container
               variant="gradient"
-              rounded="3xl"
+              rounded="xl"
               padding="lg"
-              gradient
+              gradient="purple"
               className="mt-12"
             >
               <h3 className="text-3xl font-bold text-center mb-8">
