@@ -11,7 +11,7 @@ import Modal from "../../components/ui/Modal";
 import logger from "../../utils/logger";
 import { getEvolutionChain } from "../../utils/evolutionUtils";
 import { PageLoader } from '@/components/ui/SkeletonLoadingSystem';
-import { GlassContainer } from "../../components/ui/design-system/GlassContainer";
+import { Container } from "../../components/ui/Container";
 import { GradientButton } from "../../components/ui/design-system";
 import { TypeGradientBadge } from "../../components/ui/design-system/TypeGradientBadge";
 import FullBleedWrapper from "../../components/ui/FullBleedWrapper";
@@ -672,7 +672,7 @@ export default function PocketPokemonDetail() {
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               {/* Hexagonal Stats Radar */}
-              <GlassContainer variant="dark" blur="lg" hover gradient className="p-8">
+              <Container variant="default" hover className="p-8">
                 <h2 className="text-2xl font-bold mb-6 text-center bg-gradient-to-r from-purple-600 to-amber-600 bg-clip-text text-transparent">
                   Battle Statistics
                 </h2>
@@ -695,10 +695,10 @@ export default function PocketPokemonDetail() {
                     interactive
                   />
                 </div>
-              </GlassContainer>
+              </Container>
 
               {/* Card Details in Premium Containers */}
-              <GlassContainer variant="dark" blur="lg" hover gradient>
+              <Container variant="default" hover>
                 <h2 className="text-xl font-semibold mb-6 bg-gradient-to-r from-purple-600 to-amber-600 bg-clip-text text-transparent">
                   Card Information
                 </h2>
@@ -785,10 +785,10 @@ export default function PocketPokemonDetail() {
                     </p>
                   </motion.div>
                 )}
-              </GlassContainer>
+              </Container>
               
               {/* Type Effectiveness Wheel */}
-              <GlassContainer variant="dark" blur="lg" hover gradient className="p-6 mt-6">
+              <Container variant="default" hover className="p-6 mt-6">
                 <h2 className="text-xl font-semibold mb-6 text-center bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
                   Type Matchups
                 </h2>
@@ -799,7 +799,7 @@ export default function PocketPokemonDetail() {
                     interactive
                   />
                 </div>
-              </GlassContainer>
+              </Container>
             </motion.div>
           </div>
 
@@ -813,7 +813,7 @@ export default function PocketPokemonDetail() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          <GlassContainer variant="dark" blur="lg" hover gradient>
+          <Container variant="default" hover>
             <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-orange-600 bg-clip-text text-transparent">Similar Cards</h2>
             
             {/* Same Pokémon Cards Section */}
@@ -844,7 +844,7 @@ export default function PocketPokemonDetail() {
                 transition={{ duration: 0.5, delay: 0.5 }}
                 className="col-span-full"
               >
-                <GlassContainer variant="dark" blur="lg" hover gradient className="p-6">
+                <Container variant="default" hover className="p-6">
                   <h3 className="text-2xl font-bold mb-6 text-center bg-gradient-to-r from-green-500 to-emerald-500 bg-clip-text text-transparent">
                     Evolution Chain
                   </h3>
@@ -863,7 +863,7 @@ export default function PocketPokemonDetail() {
                       router.push(`/pocketmode/${card.id}`);
                     }}
                   />
-                </GlassContainer>
+                </Container>
               </motion.div>
             )}
 
@@ -933,7 +933,7 @@ export default function PocketPokemonDetail() {
                 </p>
               </div>
             )}
-            </GlassContainer>
+            </Container>
           </motion.div>
         </SlideUp>
       

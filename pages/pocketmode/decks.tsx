@@ -5,7 +5,7 @@ import Link from "next/link";
 import { FadeIn, SlideUp, CardHover, StaggeredChildren } from "../../components/ui/animations/animations";
 import { useTheme } from "../../context/UnifiedAppContext";
 import { useInfiniteScroll } from "../../hooks/useInfiniteScroll";
-import { GlassContainer } from "../../components/ui/design-system/GlassContainer";
+import { Container } from "../../components/ui/Container";
 import { GradientButton } from "../../components/ui/design-system";
 import { TypeGradientBadge } from "../../components/ui/design-system/TypeGradientBadge";
 import { motion } from "framer-motion";
@@ -216,7 +216,7 @@ const PocketDecks: NextPage = () => {
           </div>
           
           {/* Search and Filters Card */}
-          <GlassContainer variant="medium" className="mb-8">
+          <Container variant="default" className="mb-8">
             {/* Search and Filters */}
             <div className="flex flex-col gap-6">
               {/* Search Bar */}
@@ -345,16 +345,16 @@ const PocketDecks: NextPage = () => {
                 </GradientButton>
               </div>
             </div>
-          </GlassContainer>
+          </Container>
         </FadeIn>
       
       {loading ? (
         <PageLoader text="Loading meta decks..." />
         ) : error ? (
-          <GlassContainer variant="colored" className="text-center">
+          <Container variant="gradient" className="text-center">
             <h2 className="text-2xl font-bold text-red-600">Error</h2>
             <p className="text-red-600 mt-2">{error}</p>
-          </GlassContainer>
+          </Container>
         ) : (
           <StaggeredChildren className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {visibleDecks.map((deck) => (

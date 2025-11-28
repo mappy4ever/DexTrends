@@ -1331,7 +1331,7 @@ const BattleSimulator: NextPage = () => {
         {/* Main Content */}
         <div className="container mx-auto px-4 py-4 sm:py-6 md:py-8">
           {/* Quick Links */}
-          <Container variant="colored" className="mb-4 sm:mb-6 md:mb-8">
+          <Container variant="gradient" className="mb-4 sm:mb-6 md:mb-8">
             <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-4">
               <Link href="/team-builder/advanced">
                 <button
@@ -1425,10 +1425,10 @@ const BattleSimulator: NextPage = () => {
           </Container>
           
           {/* Battle Arena */}
-          <Container variant="dark" className="mb-4 sm:mb-6 md:mb-8">
+          <Container variant="default" className="mb-4 sm:mb-6 md:mb-8">
             <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 mb-4 sm:mb-6 md:mb-8">
               {/* Pokemon 1 */}
-              <Container variant="colored" className="text-center lg:flex-1 bg-gradient-to-br from-red-50/80 to-orange-50/80">
+              <Container variant="gradient" className="text-center lg:flex-1 bg-gradient-to-br from-red-50/80 to-orange-50/80">
                 {/* Editable Trainer Name */}
                 <div className="mb-4">
                   {editingPlayer1 ? (
@@ -1651,7 +1651,7 @@ const BattleSimulator: NextPage = () => {
               </div>
 
               {/* Pokemon 2 */}
-              <Container variant="colored" className="text-center lg:flex-1 bg-gradient-to-br from-yellow-50/80 to-red-50/80">
+              <Container variant="gradient" className="text-center lg:flex-1 bg-gradient-to-br from-yellow-50/80 to-red-50/80">
                 {/* Editable Trainer Name */}
                 <div className="mb-4">
                   {editingPlayer2 ? (
@@ -2024,7 +2024,7 @@ const BattleSimulator: NextPage = () => {
 
           {/* Battle Log */}
           {battleLog.length > 0 && (
-            <Container variant="dark" className="mb-8">
+            <Container variant="default" className="mb-8">
               <h3 className="text-2xl font-semibold mb-4 text-stone-700 dark:text-stone-300">Battle Log</h3>
               <div className="bg-white/50 dark:bg-stone-800/50 rounded-xl p-4 max-h-64 overflow-y-auto space-y-2 backdrop-blur-sm border border-white/20">
                 {battleLog.map((log, index) => {

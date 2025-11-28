@@ -394,7 +394,7 @@ const StartersPage: NextPage = () => {
 
             {/* Fun Facts Section */}
             <Container
-              variant="colored"
+              variant="gradient"
               rounded="3xl"
               padding="lg"
               gradient
@@ -406,7 +406,7 @@ const StartersPage: NextPage = () => {
                 </span>
               </h3>
               <div className="grid md:grid-cols-3 gap-6">
-                <Container variant="light" rounded="2xl" padding="md" className="text-center">
+                <Container variant="outline" rounded="2xl" padding="md" className="text-center">
                   <div className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent mb-3">
                     27
                   </div>
@@ -415,7 +415,7 @@ const StartersPage: NextPage = () => {
                   </p>
                 </Container>
                 
-                <Container variant="light" rounded="2xl" padding="md" className="text-center">
+                <Container variant="outline" rounded="2xl" padding="md" className="text-center">
                   <div className="text-4xl font-bold bg-gradient-to-r from-pink-600 to-pink-400 bg-clip-text text-transparent mb-3">
                     3
                   </div>
@@ -424,7 +424,7 @@ const StartersPage: NextPage = () => {
                   </p>
                 </Container>
                 
-                <Container variant="light" rounded="2xl" padding="md" className="text-center">
+                <Container variant="outline" rounded="2xl" padding="md" className="text-center">
                   <div className="text-4xl font-bold bg-gradient-to-r from-amber-600 to-amber-400 bg-clip-text text-transparent mb-3">
                     87.5%
                   </div>
