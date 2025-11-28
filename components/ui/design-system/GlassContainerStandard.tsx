@@ -21,7 +21,7 @@ export const StandardGlassContainer: React.FC<StandardGlassContainerProps> = ({
 }) => {
   const container = (
     <GlassContainer 
-      variant="dark" 
+      variant="default" 
       className={cn(
         "backdrop-blur-xl bg-white dark:bg-stone-900/50 border border-stone-200 dark:border-stone-700 shadow-xl",
         className

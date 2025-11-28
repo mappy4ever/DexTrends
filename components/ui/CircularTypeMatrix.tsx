@@ -80,7 +80,7 @@ export const CircularTypeMatrix: React.FC<CircularTypeMatrixProps> = ({
     <div className="space-y-8">
       {/* View Mode Toggle */}
       <div className="flex justify-center">
-        <Container variant="medium" rounded="full" padding="none" className="inline-flex">
+        <Container variant="default" rounded="full" padding="none" className="inline-flex">
           <button
             onClick={() => setViewMode('attacking')}
             className={`px-6 py-3 rounded-full transition-all ${
@@ -137,7 +137,7 @@ export const CircularTypeMatrix: React.FC<CircularTypeMatrixProps> = ({
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
           >
-            <Container variant="colored" className="p-8">
+            <Container variant="gradient" className="p-8">
               <div className="text-center mb-6">
                 <TypeGradientBadge
                   type={selectedType}

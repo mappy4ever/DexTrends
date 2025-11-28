@@ -101,7 +101,7 @@ export const EnhancedSetHeader: React.FC<EnhancedSetHeaderProps> = ({
 
   return (
     <GlassContainer
-      variant="colored"
+      variant="gradient"
       blur="xl"
       rounded="2xl"
       padding="none"

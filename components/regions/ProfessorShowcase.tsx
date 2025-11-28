@@ -597,7 +597,7 @@ His unwavering commitment to his research vision led to both remarkable scientif
             {/* Starter Pokémon Showcase */}
             {professorInfo.starterPokemon && (
               <SlideUp delay={0.05}>
-                <GlassContainer variant="dark" blur="lg" rounded="2xl" padding="md" hover gradient>
+                <GlassContainer variant="default" blur="lg" rounded="2xl" padding="md" hover gradient>
                   <h4 className="text-lg font-bold mb-4 flex items-center gap-2">
                     <GiPokecog className="text-amber-500" />
                     Starter Pokémon Given

@@ -279,7 +279,7 @@ export const EnhancedRarityFilter: React.FC<EnhancedRarityFilterProps> = ({
   return (
     <div className={cn('space-y-4', className)}>
       <GlassContainer
-        variant="medium"
+        variant="default"
         blur="md"
         rounded="3xl"
         className="overflow-hidden"
@@ -418,7 +418,7 @@ export const EnhancedRarityFilter: React.FC<EnhancedRarityFilterProps> = ({
           <div
             className="mt-4 transition-all duration-200"
           >
-            <GlassContainer variant="light" rounded="2xl" className="p-4">
+            <GlassContainer variant="outline" rounded="2xl" className="p-4">
               <h4 className="text-sm font-bold text-stone-700 dark:text-stone-300 mb-3">
                 Rarity Legend
               </h4>

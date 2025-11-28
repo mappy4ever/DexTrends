@@ -96,7 +96,7 @@ const LegendaryPokemonShowcase: React.FC<LegendaryPokemonShowcaseProps> = ({
       </div>
 
       <GlassContainer 
-        variant="dark" 
+        variant="default" 
         blur="xl" 
         rounded="3xl" 
         padding="lg"

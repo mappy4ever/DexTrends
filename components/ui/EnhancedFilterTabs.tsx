@@ -47,7 +47,7 @@ export const EnhancedFilterTabs: React.FC<FilterTabsProps> = ({
 
   return (
     <GlassContainer
-      variant="medium"
+      variant="default"
       blur="lg"
       rounded="2xl"
       padding="none"
